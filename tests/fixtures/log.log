@@ -1,0 +1,87 @@
+0 silly argv { _: [ 'publish' ],
+0 silly argv   progress: true,
+0 silly argv   sort: true,
+0 silly argv   ci: false,
+0 silly argv   loglevel: 'info',
+0 silly argv   lernaVersion: '3.0.0-rc.0',
+0 silly argv   '$0': 'lerna' }
+1 info version 3.0.0-rc.0
+2 verbose rootPath /Users/dlynch/Sites/skitch
+3 info current version 0.10.5
+4 silly isAnythingCommitted
+5 verbose isAnythingCommitted 1
+6 silly currentBranch
+7 verbose currentBranch master
+8 silly isBehindUpstream
+9 silly isBehindUpstream master is behind origin/master by 0 commit(s) and ahead by 0
+10 silly hasTags
+11 verbose hasTags true
+12 info Looking for changed packages since v0.10.5.
+13 silly diffSinceIn v0.10.5 cli/skitch
+14 silly diff
+15 silly diffSinceIn v0.10.5 core/skitch-path
+16 silly diff
+17 silly diffSinceIn v0.10.5 core/skitch-template
+18 silly diff
+19 silly diffSinceIn v0.10.5 core/skitch-templates
+20 silly diff
+21 silly diffSinceIn v0.10.5 core/skitch-testing
+22 silly diff core/skitch-testing/build/src/connection.js
+22 silly diff core/skitch-testing/build/src/connection.js.map
+22 silly diff core/skitch-testing/build/src/wrapper.js
+22 silly diff core/skitch-testing/build/src/wrapper.js.map
+22 silly diff core/skitch-testing/build/types/src/wrapper.d.ts
+22 silly diff core/skitch-testing/src/connection.ts
+22 silly diff core/skitch-testing/src/wrapper.ts
+23 silly diffSinceIn v0.10.5 core/skitch-transform
+24 silly diff
+25 silly diffSinceIn v0.10.5 core/skitch-types
+26 silly diff
+27 silly diffSinceIn v0.10.5 core/skitch-utils
+28 silly diff
+29 verbose updated skitch
+30 verbose updated skitch-testing
+31 silly batched [ PackageGraphNode {
+31 silly batched     name: 'skitch-testing',
+31 silly batched     externalDependencies:
+31 silly batched      Map {
+31 silly batched        'pg' => [Object],
+31 silly batched        'pg-promise' => [Object],
+31 silly batched        'skitch-path' => [Object],
+31 silly batched        'streamify-string' => [Object],
+31 silly batched        'uuid' => [Object] },
+31 silly batched     localDependencies: Map {},
+31 silly batched     localDependents: Map { 'skitch' => [PackageGraphNode] } } ]
+32 silly batched [ PackageGraphNode {
+32 silly batched     name: 'skitch',
+32 silly batched     externalDependencies:
+32 silly batched      Map {
+32 silly batched        'case' => [Object],
+32 silly batched        'glob' => [Object],
+32 silly batched        'inquirerer' => [Object],
+32 silly batched        'minimist' => [Object],
+32 silly batched        'mkdirp' => [Object],
+32 silly batched        'pg-promise' => [Object],
+32 silly batched        'pgsql-parser' => [Object],
+32 silly batched        'shelljs' => [Object],
+32 silly batched        'skitch-path' => [Object],
+32 silly batched        'skitch-template' => [Object],
+32 silly batched        'skitch-templates' => [Object],
+32 silly batched        'skitch-transform' => [Object],
+32 silly batched        'skitch-types' => [Object],
+32 silly batched        'skitch-utils' => [Object] },
+32 silly batched     localDependencies: Map {},
+32 silly batched     localDependents: Map {} } ]
+33 warn ENOLICENSE Packages skitch, skitch-testing are missing a license
+34 silly gitAdd [ '/Users/dlynch/Sites/skitch/core/skitch-testing/package.json',
+34 silly gitAdd   '/Users/dlynch/Sites/skitch/cli/skitch/package.json',
+34 silly gitAdd   '/Users/dlynch/Sites/skitch/lerna.json' ]
+35 silly gitCommit v0.10.6
+36 verbose commit [ 'commit', '--no-verify', '-m', 'v0.10.6' ]
+37 silly gitTag v0.10.6
+38 error Error: Command failed: git tag v0.10.6 -m v0.10.6
+38 error fatal: tag 'v0.10.6' already exists
+38 error
+38 error     at makeError (/Users/dlynch/.nvm/versions/node/v9.2.0/lib/node_modules/lerna/node_modules/execa/index.js:172:9)
+38 error     at Promise.all.then.arr (/Users/dlynch/.nvm/versions/node/v9.2.0/lib/node_modules/lerna/node_modules/execa/index.js:277:16)
+38 error     at <anonymous>
