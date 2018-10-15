@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UUID v5 uuids from streams 1`] = `
+Object {
+  "Another String": "6683e2b8-dbf7-5927-bdf0-22520ace81b1",
+  "Hello World": "7bf3746c-6273-5e2d-8174-be6c0a78c192",
+}
+`;
