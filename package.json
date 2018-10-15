@@ -1,0 +1,34 @@
+{
+  "name": "uuid-hash",
+  "version": "1.0.2",
+  "description": "",
+  "main": "./lib/index.js",
+  "module": "./src/index.js",
+  "scripts": {
+    "test:watch": "yarn test --watch",
+    "test": "jest",
+    "build": "babel src --out-dir lib"
+  },
+  "author": "pyramation@gmail.com",
+  "license": "MIT",
+  "keywords": [
+    "hash",
+    "crypto",
+    "uuidv5",
+    "uuid"
+  ],
+  "homepage": "https://github.com/pyramation/uuid-hash",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@types/jest": "23.3.4",
+    "@types/node": "10.11.5",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "jest": "23.6.0"
+  }
+}
