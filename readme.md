@@ -2,6 +2,8 @@
 
 Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.
 
+Useful for verifying Amazon S3 multi-part uploads.
+
 ## Installation
 
 ```sh
