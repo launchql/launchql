@@ -1,0 +1,16 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+CREATE TYPE [% schema %].[% type %] AS (
+  -- fields
+);
+
+COMMIT;

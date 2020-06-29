@@ -1,0 +1,35 @@
+language: node_js
+notifications:
+  email: false
+node_js:
+  - node
+services:
+  - docker
+env:
+  global:
+    - PGPORT=7777
+    - PGDATABASE=testing-db
+    - PGTEMPLATE_DATABASE=testing-template-db
+    - PGHOST=localhost
+    - PGPASSWORD=
+    - PGUSER=postgres
+    - TMPDIR=/tmp
+  matrix:
+    - PACKAGE=packages/db-testing
+    - PACKAGE=packages/db-transform
+    - PACKAGE=packages/db-utils
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -qy --force-yes perl build-essential cpanminus
+  - PERL_MM_USE_DEFAULT=1 sudo cpan List::MoreUtils >/dev/null 2>/dev/null
+  - PERL_MM_USE_DEFAULT=1 sudo cpan DBD::Pg >/dev/null 2>/dev/null
+  - PERL_MM_USE_DEFAULT=1 sudo cpan App::Sqitch >/dev/null 2>/dev/null
+  - docker run -p 7777:5432 --name postgritty -d postgres:10.3
+  - sleep 3
+  - while ! docker exec -it postgritty pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
+script:
+  - yarn
+  - yarn bootstrap
+  - yarn build
+  - cd $PACKAGE
+  - yarn test

@@ -1,0 +1,8 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+DROP TRIGGER [% triggername %] ON [% schema %].[% table %];
+[% IF procedure %]DROP FUNCTION [% schema | replace('_public', '_private') %].tg_[% triggername %]; [% END %]
+
+COMMIT;

@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`deps sqitch package dependencies 1`] = `
+"referencing bad project name inside of deploy file
+-- Deploy not_secrets:procedures/secretfunction to pg"
+`;

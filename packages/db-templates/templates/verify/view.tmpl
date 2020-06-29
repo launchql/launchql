@@ -1,0 +1,7 @@
+-- Verify [% change %] on pg
+
+BEGIN;
+
+SELECT verify_table ('[% schema %].[% view %]');
+
+ROLLBACK;

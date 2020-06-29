@@ -1,0 +1,20 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+ALTER TABLE [% schema %].[% table %] ADD COLUMN created_by UUID;
+ALTER TABLE [% schema %].[% table %] ADD COLUMN updated_by UUID;
+
+CREATE TRIGGER update_[% schema %]_[% table %]_moduser
+BEFORE UPDATE OR INSERT ON [% schema %].[% table %]
+FOR EACH ROW
+EXECUTE PROCEDURE tg_update_peoplestamps();
+
+COMMIT;

@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+DROP TYPE [% schema %].[% type %];
+
+COMMIT;

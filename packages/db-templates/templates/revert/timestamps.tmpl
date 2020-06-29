@@ -1,0 +1,9 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+ALTER TABLE [% schema %].[% table %] DROP COLUMN created_at;
+ALTER TABLE [% schema %].[% table %] DROP COLUMN updated_at;
+DROP TRIGGER update_[% schema %]_[% table %]_modtime ON [% schema %].[% table %];
+
+COMMIT;

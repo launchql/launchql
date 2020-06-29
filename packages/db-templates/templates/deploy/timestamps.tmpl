@@ -1,0 +1,23 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+ALTER TABLE [% schema %].[% table %] ADD COLUMN created_at TIMESTAMPTZ;
+ALTER TABLE [% schema %].[% table %] ALTER COLUMN created_at SET DEFAULT NOW();
+
+ALTER TABLE [% schema %].[% table %] ADD COLUMN updated_at TIMESTAMPTZ;
+ALTER TABLE [% schema %].[% table %] ALTER COLUMN updated_at SET DEFAULT NOW();
+
+CREATE TRIGGER update_[% schema %]_[% table %]_modtime
+BEFORE UPDATE OR INSERT ON [% schema %].[% table %]
+FOR EACH ROW
+EXECUTE PROCEDURE tg_update_timestamps();
+
+COMMIT;

@@ -1,0 +1,55 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+CREATE FUNCTION [% schema | replace('_public', '_private')  %].[% table %]_policy_fn(
+  role_id uuid
+  -- TODO other args
+)
+   RETURNS boolean AS
+$$
+BEGIN
+  -- TODO fill out policy function here
+END;
+$$
+LANGUAGE 'plpgsql' STABLE SECURITY DEFINER;
+
+CREATE POLICY can_select_[% table %] ON [% schema %].[% table %]
+  FOR SELECT
+  USING (
+    [% schema | replace('_public', '_private')  %].[% table %]_policy_fn(roles_public.current_role_id(), owner_id)
+  );
+
+CREATE POLICY can_insert_[% table %] ON [% schema %].[% table %]
+  FOR INSERT
+  WITH CHECK (
+    [% schema | replace('_public', '_private')  %].[% table %]_policy_fn(roles_public.current_role_id(), owner_id)
+  );
+
+CREATE POLICY can_update_[% table %] ON [% schema %].[% table %]
+  FOR UPDATE
+  USING (
+    [% schema | replace('_public', '_private')  %].[% table %]_policy_fn(roles_public.current_role_id(), owner_id)
+  );
+
+CREATE POLICY can_delete_[% table %] ON [% schema %].[% table %]
+  FOR DELETE
+  USING (
+    [% schema | replace('_public', '_private')  %].[% table %]_policy_fn(roles_public.current_role_id(), owner_id)
+  );
+
+[% IF grant.size %]
+GRANT INSERT ON TABLE [% schema %].[% table %] TO [% grant.join(', ') %];
+GRANT SELECT ON TABLE [% schema %].[% table %] TO [% grant.join(', ') %];
+GRANT UPDATE ON TABLE [% schema %].[% table %] TO [% grant.join(', ') %];
+GRANT DELETE ON TABLE [% schema %].[% table %] TO [% grant.join(', ') %];
+[% END %]
+
+COMMIT;

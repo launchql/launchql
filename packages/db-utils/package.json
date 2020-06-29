@@ -1,0 +1,79 @@
+{
+  "name": "@launchql/db-utils",
+  "version": "0.0.8",
+  "description": "utils",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db-utils#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "main/index.js",
+  "module": "module/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "main",
+    "module"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql-db"
+  },
+  "scripts": {
+    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
+    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build": "npm run build:module && npm run build:main",
+    "prepare": "npm run build",
+    "lint": "eslint src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql-db/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.4",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-export-default-from": "7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.9.6",
+    "@babel/plugin-transform-runtime": "7.9.6",
+    "@babel/preset-env": "7.9.6",
+    "@babel/preset-react": "7.9.4",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.0.3",
+    "babel-plugin-macros": "2.8.0",
+    "dotenv": "5.0.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react-app": "5.2.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "4.0.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.2",
+    "@launchql/db-env": "^0.0.3",
+    "@launchql/db-template": "^0.0.5",
+    "@launchql/db-transform": "^0.0.3",
+    "fuzzy": "0.1.3",
+    "glob": "7.1.2",
+    "mkdirp": "^0.5.1",
+    "node-walkup": "^1.1.1",
+    "pg": "^7.4.3",
+    "pgsql-parser": "0.6.10",
+    "rimraf": "^2.6.2",
+    "semver": "^5.5.1",
+    "shelljs": "^0.8.2",
+    "skitch-ext-defaults": "0.0.1",
+    "skitch-ext-utilities": "0.0.1",
+    "skitch-ext-verify": "0.0.1"
+  }
+}

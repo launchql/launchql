@@ -1,0 +1,24 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+CREATE POLICY [% policy %] ON [% schema %].[% table %]
+  FOR [% action.join(', ') %]
+  [% IF role.size %]TO [% role.join(', ') %][% END %]
+  USING (
+    author_id = current_setting('user.id')::uuid
+  );
+
+[% IF grant.size %]
+GRANT [% action.join(', ') %] ON TABLE [% schema %].[% table %] TO [% grant.join(', ') %];
+[% END %]
+
+
+COMMIT;

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`deps skitch path skitch init 1`] = `
+Array [
+  "bootstrap-roles.sql",
+  "docker-compose.yml",
+  "Makefile",
+  "myproject",
+  "package.json",
+  "packages",
+  "packages/install.sh",
+  "readme.md",
+  "skitch.json",
+]
+`;
+
+exports[`deps skitch path skitch init 2`] = `
+Array [
+  ".DS_Store",
+  ".eslintrc.json",
+  ".gitignore",
+  ".travis.yml",
+]
+`;
+
+exports[`deps skitch path sqitch init 1`] = `
+Array [
+  "deploy",
+  "Makefile",
+  "myproject.control",
+  "package.json",
+  "revert",
+  "sqitch.conf",
+  "sqitch.plan",
+  "sql",
+  "test",
+  "test/utils",
+  "test/utils/index.js",
+  "verify",
+]
+`;
+
+exports[`deps skitch path sqitch init 2`] = `
+Array [
+  ".babelrc",
+  ".DS_Store",
+  ".env",
+]
+`;

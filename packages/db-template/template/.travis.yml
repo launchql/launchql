@@ -1,0 +1,39 @@
+language: node_js
+cache:
+  yarn: true
+  directories:
+    - node_modules
+notifications:
+  email: false
+node_js:
+  - node
+services:
+  - docker
+env:
+  global:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=password
+    - PGPORT=7777
+    - PGDATABASE=testing-db
+    - PGTEMPLATE_DATABASE=testing-template-db
+    - PGHOST=localhost
+    - PGPASSWORD=password
+    - PGUSER=postgres
+    - APP_USER=app_user
+    - APP_PASSWORD=app_password
+  matrix:
+    - PACKAGE=packages/yourpackage1
+    - PACKAGE=packages/yourpackage2
+
+before_install:
+  - yarn install
+  - docker run -p 7777:5432 --name postgres -v `pwd`/packages:/sql-extensions -v `pwd`/node_modules:/sql-modules -d pyramation/postgres-plv8
+  - sleep 3
+  - while ! docker exec -it postgres pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
+  - while ! docker exec postgres /sql-extensions/install.sh; do echo "installing plugins"; sleep 3; done
+  - psql -f ./bootstrap-roles.sql postgres
+script:
+  - cd $PACKAGE
+  - yarn install
+  - export PGEXTENSIONS=$(cat .env | grep PGEXTENSIONS | awk -F'=' '{print $2}')
+  - yarn test

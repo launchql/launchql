@@ -1,0 +1,19 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+[% IF grant.size %]
+REVOKE INSERT ON TABLE [% schema %].[% table %] FROM [% grant.join(', ') %];
+REVOKE SELECT ON TABLE [% schema %].[% table %] FROM [% grant.join(', ') %];
+REVOKE UPDATE ON TABLE [% schema %].[% table %] FROM [% grant.join(', ') %];
+REVOKE DELETE ON TABLE [% schema %].[% table %] FROM [% grant.join(', ') %];
+[% END %]
+
+DROP POLICY can_select_[% table %] ON [% schema %].[% table %];
+DROP POLICY can_insert_[% table %] ON [% schema %].[% table %];
+DROP POLICY can_update_[% table %] ON [% schema %].[% table %];
+DROP POLICY can_delete_[% table %] ON [% schema %].[% table %];
+
+DROP FUNCTION [% schema | replace('_public', '_private')  %].[% table %]_policy_fn;
+
+COMMIT;

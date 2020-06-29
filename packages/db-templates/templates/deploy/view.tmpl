@@ -1,0 +1,17 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+CREATE VIEW [% schema %].[% view %] AS
+    --- SELECT * FROM ... ;
+
+COMMENT ON VIEW [% schema %].[% view %] IS 'A comment.';
+
+COMMIT;

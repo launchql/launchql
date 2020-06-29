@@ -1,0 +1,7 @@
+# pg-verify extension
+comment = 'PostgreSQL verification utilities'
+default_version = '0.0.1'
+module_pathname = '$libdir/pg-verify'
+requires = 'plpgsql,uuid-ossp,pg-utilities'
+relocatable = false
+superuser = false

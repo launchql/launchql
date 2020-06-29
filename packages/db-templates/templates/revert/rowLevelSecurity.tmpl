@@ -1,0 +1,8 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+ALTER TABLE [% schema %].[% table %]
+    DISABLE ROW LEVEL SECURITY;
+
+COMMIT;

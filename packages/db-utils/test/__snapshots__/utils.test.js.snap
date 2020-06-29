@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sqitch modules should be able to create a deps for cross-project requires with changes 1`] = `
+Object {
+  "native": Array [
+    "plpgsql",
+    "uuid-ossp",
+  ],
+  "sqitch": Array [
+    Object {
+      "latest": "procedures/generate_secret",
+      "name": "totp",
+      "version": "0.0.1",
+    },
+    Object {
+      "latest": "procedures/verify_view",
+      "name": "pg-verify",
+      "version": "0.0.1",
+    },
+  ],
+}
+`;
+
+exports[`sqitch modules should get modules 1`] = `
+Object {
+  "pg-utilities": Object {
+    "path": "packages/utilities",
+    "requires": Array [
+      "plpgsql",
+    ],
+    "version": "0.0.1",
+  },
+  "pg-verify": Object {
+    "path": "packages/verify",
+    "requires": Array [
+      "plpgsql",
+      "uuid-ossp",
+      "pg-utilities",
+    ],
+    "version": "0.0.1",
+  },
+  "secrets": Object {
+    "path": "packages/secrets",
+    "requires": Array [
+      "plpgsql",
+      "uuid-ossp",
+      "totp",
+      "pg-verify",
+    ],
+    "version": "0.0.1",
+  },
+  "totp": Object {
+    "path": "packages/totp",
+    "requires": Array [
+      "plpgsql",
+      "uuid-ossp",
+      "pgcrypto",
+      "pg-verify",
+    ],
+    "version": "0.0.1",
+  },
+  "utils": Object {
+    "path": "packages/utils",
+    "requires": Array [
+      "plpgsql",
+      "uuid-ossp",
+      "totp",
+      "pg-verify",
+    ],
+    "version": "0.0.1",
+  },
+}
+`;

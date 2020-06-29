@@ -1,0 +1,84 @@
+{
+  "name": "@launchql/server",
+  "version": "0.15.8",
+  "description": "graphile explorer module for multiple dbs and schemas",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/pyramation/launchql/tree/master/packages/launchql#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyramation/launchql"
+  },
+  "bin": {
+    "service": "dist/cjs/server.js"
+  },
+  "scripts": {
+    "dist:cjs": "NODE_ENV=production BABEL_ENV=cjs babel src --out-dir ./dist/cjs --delete-dir-on-start",
+    "dist:esm": "NODE_ENV=production BABEL_ENV=esm babel src --out-dir ./dist/esm --delete-dir-on-start",
+    "dist:es": "NODE_ENV=production BABEL_ENV=es babel src --out-dir ./dist/es --delete-dir-on-start",
+    "build": "npm run dist:cjs && npm run dist:esm",
+    "prepare": "npm run build",
+    "lint": "eslint src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "dev": "NODE_ENV=development babel-node src/server",
+    "watch": "NODE_ENV=development babel-watch src/server",
+    "start": "node dist/cjs/server"
+  },
+  "bugs": {
+    "url": "https://github.com/pyramation/launchql/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.4",
+    "@babel/node": "7.8.7",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-export-default-from": "7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.9.6",
+    "@babel/plugin-transform-runtime": "7.9.6",
+    "@babel/preset-env": "7.9.6",
+    "@babel/preset-react": "7.9.4",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.0.3",
+    "babel-plugin-macros": "2.8.0",
+    "babel-watch": "7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react-app": "5.2.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "4.0.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.2",
+    "@pyramation/pg-query-context": "0.0.1",
+    "@pyramation/postgraphile": "4.7.5",
+    "@pyramation/url-domains": "0.0.4",
+    "colors": "1.4.0",
+    "cors": "2.8.5",
+    "envalid": "6.0.1",
+    "express": "4.17.1",
+    "graphile-build": "4.7.0",
+    "graphile-build-pg": "4.7.0",
+    "graphile-utils": "4.7.0",
+    "inflection": "1.12.0",
+    "lru-cache": "5.1.1",
+    "pg": "8.2.1"
+  }
+}
