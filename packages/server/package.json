@@ -67,6 +67,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
+    "@pyramation/crypto-keys": "0.1.1",
+    "@pyramation/crypto-networks": "0.1.0",
     "@pyramation/pg-query-context": "0.0.1",
     "@pyramation/postgraphile": "4.7.5",
     "@pyramation/url-domains": "0.0.4",

@@ -127,7 +127,7 @@ export default ({
   const getGraphileInstanceObj = async (req) => {
     const svc = req.svc;
 
-    const { schemas, dbname, anon_role, role_name, role_key } = svc;
+    const { schemas, dbname } = svc;
 
     const key = req.svc_key;
 
@@ -143,9 +143,7 @@ export default ({
         port,
         host: env.SERVER_HOST,
         schema: schemas,
-        anon_role,
-        role_name,
-        role_key
+        svc
       }),
       graphqlRoute: '/graphql',
       graphiqlRoute: '/graphiql'
