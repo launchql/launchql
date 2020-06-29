@@ -29,11 +29,11 @@ const PublicKeySignature = (svc) => {
       }
 
       type createUserAccountWithPublicKeyPayload {
-        challenge: String!
+        message: String!
       }
 
       type getMessageForSigningPayload {
-        challenge: String!
+        message: String!
       }
 
       type verifyMessageForSigningPayload {
@@ -72,7 +72,7 @@ const PublicKeySignature = (svc) => {
           });
 
           const {
-            rows: [{ [f2]: challenge }]
+            rows: [{ [f2]: message }]
           } = await pgQueryWithContext({
             client: pgClient,
             context: {
@@ -83,7 +83,7 @@ const PublicKeySignature = (svc) => {
           });
 
           return {
-            challenge
+            message
           };
         },
       async getMessageForSigning(parent, args, context, _info) { // eslint-disable-line
@@ -92,7 +92,7 @@ const PublicKeySignature = (svc) => {
           const publicKey = args.input.publicKey;
 
           const {
-            rows: [{ [f2]: challenge }]
+            rows: [{ [f2]: message }]
           } = await pgQueryWithContext({
             client: pgClient,
             context: {
@@ -102,12 +102,12 @@ const PublicKeySignature = (svc) => {
             variables: [publicKey]
           });
 
-          if (!challenge) {
+          if (!message) {
             throw new Error('NO_ACCOUNT_EXISTS');
           }
 
           return {
-            challenge
+            message
           };
         },
       async verifyMessageForSigning(parent, args, context, _info) { // eslint-disable-line
