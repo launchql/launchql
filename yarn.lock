@@ -2636,10 +2636,10 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-"@pyramation/postgraphile@4.7.5":
-  version "4.7.5"
-  resolved "https://registry.npmjs.org/@pyramation/postgraphile/-/postgraphile-4.7.5.tgz#d37a0effcd0af18cac00f59672633a1958e968e6"
-  integrity sha512-BYB3/JQExh6ALMsx9HXoI95gWIJvqTKbplqms5kqLZB6+44DShgr2XMhvkKIPsA7rm5Jgwoq4vNtMrIFxMAcKw==
+"@pyramation/postgraphile@4.7.6":
+  version "4.7.6"
+  resolved "https://registry.npmjs.org/@pyramation/postgraphile/-/postgraphile-4.7.6.tgz#e14e7236f23596a59043ab8dd167dcb6d37985de"
+  integrity sha512-KBJGUUgRhe1TZs0HTynLMDawXkr4OtA7HbeiI1kjRxnASUX/pmblnj6jVkOvDXxUmo1GTamaPWdtpVWSDAOMzA==
   dependencies:
     "@graphile/lru" "4.5.0"
     "@types/json5" "^0.0.30"

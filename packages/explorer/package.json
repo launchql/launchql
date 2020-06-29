@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@pyramation/postgraphile": "4.7.5",
+    "@pyramation/postgraphile": "4.7.6",
     "@pyramation/url-domains": "0.0.4",
     "colors": "1.4.0",
     "cors": "2.8.5",
