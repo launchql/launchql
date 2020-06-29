@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/pyramation/launchql/compare/@launchql/server@0.15.9...@launchql/server@0.16.0) (2020-06-29)
+
+
+### Features
+
+* public key signups ([4a88076](https://github.com/pyramation/launchql/commit/4a88076f00443252e18e715b868139416a979202))
+* update pkgs ([d1d42bc](https://github.com/pyramation/launchql/commit/d1d42bc7a86ff312544eceb4b2773f2baaa30db5))
+
+
+
+
+
 ## 0.15.9 (2020-06-29)
 
 **Note:** Version bump only for package @launchql/server
