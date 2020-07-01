@@ -1,15 +1,12 @@
 {
-  "name": "@launchql/cli",
-  "version": "0.3.36",
-  "description": "launchql cli",
+  "name": "@launchql/db-migrate",
+  "version": "0.0.1",
+  "description": "db migrate",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db#readme",
+  "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/db-migrate#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
-  "bin": {
-    "launchql": "main/index.js"
-  },
   "directories": {
     "lib": "src",
     "test": "__tests__"
@@ -30,7 +27,6 @@
     "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
     "build": "npm run build:module && npm run build:main",
     "prepare": "npm run build",
-    "prebuild": "node ./bin/build.js",
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -48,38 +44,25 @@
     "@babel/plugin-transform-runtime": "7.9.6",
     "@babel/preset-env": "7.9.6",
     "@babel/preset-react": "7.9.4",
+    "babel-plugin-macros": "2.8.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.3",
-    "babel-plugin-macros": "2.8.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "5.2.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "4.0.0",
+    "eslint-plugin-react": "^7.18.3",
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/db-env": "^0.0.4",
-    "@launchql/db-template": "^0.0.6",
-    "@launchql/db-templates": "^0.0.9",
-    "@launchql/db-testing": "^0.0.9",
-    "@launchql/db-transform": "^0.0.4",
-    "@launchql/db-utils": "^0.0.9",
-    "@launchql/db-migrate": "^0.0.1",
-    "@launchql/explorer": "^0.8.0",
-    "@launchql/server": "^0.16.1",
-    "@pyramation/prompt": "0.0.1",
-    "case": "1.5.4",
-    "glob": "7.1.2",
-    "inquirerer": "^0.1.3",
-    "minimist": "^1.2.0",
-    "mkdirp": "0.5.1",
-    "pg-promise": "8.2.1",
-    "pgsql-parser": "0.6.10",
-    "shelljs": "0.8.1"
+    "case": "^1.6.3",
+    "envalid": "^6.0.2",
+    "mkdirp": "^1.0.4",
+    "moment": "^2.27.0",
+    "pg": "^8.2.1"
   }
 }
