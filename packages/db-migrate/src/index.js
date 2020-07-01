@@ -7,10 +7,9 @@ import Case from 'case';
 import moment from 'moment';
 
 const write = async ({ database, databaseid, author, outdir }) => {
-
   outdir = outdir + '/';
 
-  const getDbString = db =>
+  const getDbString = (db) =>
     `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
 
   const pgPool = new pg.Pool({
@@ -18,9 +17,9 @@ const write = async ({ database, databaseid, author, outdir }) => {
   });
 
   const writeResults = (rows, opts) => {
-    rows.forEach(row => writeVerify(row, opts));
-    rows.forEach(row => writeRevert(row, opts));
-    rows.forEach(row => writeDeploy(row, opts));
+    rows.forEach((row) => writeVerify(row, opts));
+    rows.forEach((row) => writeRevert(row, opts));
+    rows.forEach((row) => writeDeploy(row, opts));
   };
 
   const writeDeploy = (row, opts) => {
@@ -33,7 +32,9 @@ const write = async ({ database, databaseid, author, outdir }) => {
     const content = `-- Deploy: ${deploy} to pg
 -- made with <3 @ launchql.com
 
-${opts.replacer(row?.deps?.map(dep => `-- requires: ${dep}`).join('\n') || '')}
+${opts.replacer(
+  row?.deps?.map((dep) => `-- requires: ${dep}`).join('\n') || ''
+)}
 
 BEGIN;
 ${opts.replacer(row.content)}
@@ -95,10 +96,10 @@ PGEXTENSIONS=plpgsql,uuid-ossp,citext,btree_gist,hstore
   `;
     fs.writeFileSync(dir + '/.env', env);
 
-    const ctl = opts.replacer(`# launchql-extension-name-replacement extension
+    const ctl = opts.replacer(`# launchql-extension-name extension
 comment = 'launchql project'
 default_version = '0.0.1'
-module_pathname = '$libdir/launchql-extension-name-replacement'
+module_pathname = '$libdir/launchql-extension-name'
 requires = 'plpgsql,uuid-ossp,citext,btree_gist,hstore'
 relocatable = false
 superuser = false
@@ -128,9 +129,9 @@ PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
     
   `);
-  fs.writeFileSync(dir + '/' + 'Makefile', mkfl);
+    fs.writeFileSync(dir + '/' + 'Makefile', mkfl);
 
-  const blb = opts.replacer(`{
+    const blb = opts.replacer(`{
   "plugins": [
     "dynamic-import-node",
     "syntax-dynamic-import",
@@ -142,8 +143,8 @@ include $(PGXS)
   "presets": ["env"]
 }  
 `);
-  fs.writeFileSync(dir + '/' + '.babelrc', blb);
-  const pkg = opts.replacer(`{
+    fs.writeFileSync(dir + '/' + '.babelrc', blb);
+    const pkg = opts.replacer(`{
   "name": "launchql-extension-name",
   "version": "0.0.1",
   "description": "launchql-extension-name",
@@ -174,27 +175,27 @@ include $(PGXS)
     const duplicates = {};
 
     const plan = opts.replacer(`%syntax-version=1.0.0
-%project=launchql-extension-name-replacement
-%uri=launchql-extension-name-replacement
+%project=launchql-extension-name
+%uri=launchql-extension-name
 
 ${rows
-        .map(row => {
-          if (duplicates.hasOwnProperty(row.deploy)) {
-            console.log('DUPLICATE ' + row.deploy);
-            return '';
-          } else {
-            duplicates[row.deploy] = true;
-          }
-          if (row.deps?.length > 0) {
-            return `${row.deploy} [${row.deps.map(dep => dep).join(' ')}] ${date(
-              row
-            )} launchql <launchql@5b0c196eeb62> # add ${row.name}`;
-          }
-          return `${row.deploy} ${date(row)} launchql <launchql@5b0c196eeb62> # add ${
-            row.name
-            }`;
-        })
-        .join('\n')}
+  .map((row) => {
+    if (duplicates.hasOwnProperty(row.deploy)) {
+      console.log('DUPLICATE ' + row.deploy);
+      return '';
+    } else {
+      duplicates[row.deploy] = true;
+    }
+    if (row.deps?.length > 0) {
+      return `${row.deploy} [${row.deps.map((dep) => dep).join(' ')}] ${date(
+        row
+      )} launchql <launchql@5b0c196eeb62> # add ${row.name}`;
+    }
+    return `${row.deploy} ${date(row)} launchql <launchql@5b0c196eeb62> # add ${
+      row.name
+    }`;
+  })
+  .join('\n')}
 `);
 
     fs.writeFileSync(dir + '/sqitch.plan', plan);
@@ -218,7 +219,7 @@ ${rows
   const replace = [
     [schema_name, Case.snake(name + '_public')],
     [private_schema_name, Case.snake(name + '_private')],
-    ['launchql-extension-name-replacement', name]
+    ['launchql-extension-name', name]
   ].map(([f, r]) => {
     return [new RegExp(f, 'g'), r];
   });
@@ -296,8 +297,8 @@ DROP EXTENSION IF EXISTS hstore;
 
 export default async ({ dbInfo, author, outdir }) => {
   const databaseid = console.log(dbInfo);
-  for (let v=0; v<dbInfo.database_ids.length; v++) {
+  for (let v = 0; v < dbInfo.database_ids.length; v++) {
     const databaseid = dbInfo.database_ids[v];
-    await write({database: dbInfo.dbname, databaseid, author, outdir})
+    await write({ database: dbInfo.dbname, databaseid, author, outdir });
   }
 };
