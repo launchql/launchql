@@ -6,27 +6,29 @@ import mkdirp from 'mkdirp';
 import Case from 'case';
 import moment from 'moment';
 
-const getDbString = db =>
-  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
+export default async ({ database, databaseid, author, outdir }) => {
 
-const pgPool = new pg.Pool({
-  connectionString: getDbString(database)
-});
+  const getDbString = db =>
+    `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
 
-const writeResults = (rows, opts) => {
-  rows.forEach(row => writeVerify(row, opts));
-  rows.forEach(row => writeRevert(row, opts));
-  rows.forEach(row => writeDeploy(row, opts));
-};
+  const pgPool = new pg.Pool({
+    connectionString: getDbString(database)
+  });
 
-const writeDeploy = (row, opts) => {
-  const deploy = opts.replacer(row.deploy);
-  const dir = path.dirname(deploy);
-  const prefix = opts.outdir + opts.name + '/deploy/';
-  const actualDir = path.resolve(prefix + dir);
-  const actualFile = path.resolve(prefix + deploy + '.sql');
-  mkdirp.sync(actualDir);
-  const content = `-- Deploy: ${deploy} to pg
+  const writeResults = (rows, opts) => {
+    rows.forEach(row => writeVerify(row, opts));
+    rows.forEach(row => writeRevert(row, opts));
+    rows.forEach(row => writeDeploy(row, opts));
+  };
+
+  const writeDeploy = (row, opts) => {
+    const deploy = opts.replacer(row.deploy);
+    const dir = path.dirname(deploy);
+    const prefix = opts.outdir + opts.name + '/deploy/';
+    const actualDir = path.resolve(prefix + dir);
+    const actualFile = path.resolve(prefix + deploy + '.sql');
+    mkdirp.sync(actualDir);
+    const content = `-- Deploy: ${deploy} to pg
 -- made with <3 @ launchql.com
 
 ${opts.replacer(row?.deps?.map(dep => `-- requires: ${dep}`).join('\n') || '')}
@@ -35,51 +37,51 @@ BEGIN;
 ${opts.replacer(row.content)}
 COMMIT;
 `;
-  fs.writeFileSync(actualFile, content);
-};
-const writeVerify = (row, opts) => {
-  const deploy = opts.replacer(row.deploy);
-  const dir = path.dirname(deploy);
-  const prefix = opts.outdir + opts.name + '/verify/';
-  const actualDir = path.resolve(prefix + dir);
-  const actualFile = path.resolve(prefix + deploy + '.sql');
-  mkdirp.sync(actualDir);
-  const content = opts.replacer(`-- Verify: ${deploy} on pg
+    fs.writeFileSync(actualFile, content);
+  };
+  const writeVerify = (row, opts) => {
+    const deploy = opts.replacer(row.deploy);
+    const dir = path.dirname(deploy);
+    const prefix = opts.outdir + opts.name + '/verify/';
+    const actualDir = path.resolve(prefix + dir);
+    const actualFile = path.resolve(prefix + deploy + '.sql');
+    mkdirp.sync(actualDir);
+    const content = opts.replacer(`-- Verify: ${deploy} on pg
 
   BEGIN;
   ${row.verify && opts.replacer(row.verify)}
   COMMIT;  
 
 `);
-  fs.writeFileSync(actualFile, content);
-};
+    fs.writeFileSync(actualFile, content);
+  };
 
-const writeRevert = (row, opts) => {
-  const deploy = opts.replacer(row.deploy);
-  const dir = path.dirname(deploy);
-  const prefix = opts.outdir + opts.name + '/revert/';
-  const actualDir = path.resolve(prefix + dir);
-  const actualFile = path.resolve(prefix + deploy + '.sql');
-  mkdirp.sync(actualDir);
-  const content = `-- Revert: ${deploy} from pg
+  const writeRevert = (row, opts) => {
+    const deploy = opts.replacer(row.deploy);
+    const dir = path.dirname(deploy);
+    const prefix = opts.outdir + opts.name + '/revert/';
+    const actualDir = path.resolve(prefix + dir);
+    const actualFile = path.resolve(prefix + deploy + '.sql');
+    mkdirp.sync(actualDir);
+    const content = `-- Revert: ${deploy} from pg
 
   BEGIN;
   ${row.revert && opts.replacer(row.revert)}
   COMMIT;  
 
 `;
-  fs.writeFileSync(actualFile, content);
-};
+    fs.writeFileSync(actualFile, content);
+  };
 
-const writeSqitchStuff = (rows, opts) => {
-  const dir = path.resolve(opts.outdir + opts.name);
-  mkdirp.sync(dir);
-  const conf = `[core]
+  const writeSqitchStuff = (rows, opts) => {
+    const dir = path.resolve(opts.outdir + opts.name);
+    mkdirp.sync(dir);
+    const conf = `[core]
     engine=pg
 `;
-  fs.writeFileSync(dir + '/sqitch.conf', conf);
+    fs.writeFileSync(dir + '/sqitch.conf', conf);
 
-  const env = `PGDATABASE=testing-db
+    const env = `PGDATABASE=testing-db
   PGTEMPLATE_DATABASE=testing-template-db
   PGHOST=localhost
   PGPASSWORD=password
@@ -89,9 +91,9 @@ const writeSqitchStuff = (rows, opts) => {
   APP_PASSWORD=app_password
   PGEXTENSIONS=plpgsql,uuid-ossp,citext,btree_gist,hstore
   `;
-  fs.writeFileSync(dir + '/.env', env);
+    fs.writeFileSync(dir + '/.env', env);
 
-  const ctl = opts.replacer(`# launchql-extension-name-replacement extension
+    const ctl = opts.replacer(`# launchql-extension-name-replacement extension
   comment = 'launchql project'
   default_version = '0.0.1'
   module_pathname = '$libdir/launchql-extension-name-replacement'
@@ -99,9 +101,9 @@ const writeSqitchStuff = (rows, opts) => {
   relocatable = false
   superuser = false
   `);
-  fs.writeFileSync(dir + '/' + opts.name + '.control', ctl);
+    fs.writeFileSync(dir + '/' + opts.name + '.control', ctl);
 
-  const test = opts.replacer(`import * as testing from 'skitch-testing';
+    const test = opts.replacer(`import * as testing from 'skitch-testing';
 
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
   import * as dotenv from 'dotenv';
@@ -113,10 +115,10 @@ const writeSqitchStuff = (rows, opts) => {
   
   export { closeConnection, getConnections, closeConnections } from 'skitch-testing'   
   `);
-  mkdirp.sync(dir + '/test/utils');
-  fs.writeFileSync(dir + '/test/utils/index.js', test);
+    mkdirp.sync(dir + '/test/utils');
+    fs.writeFileSync(dir + '/test/utils/index.js', test);
 
-  const mkfl = opts.replacer(`EXTENSION = launchql-extension-name
+    const mkfl = opts.replacer(`EXTENSION = launchql-extension-name
   DATA = sql/launchql-extension-name--0.0.1.sql
   
   PG_CONFIG = pg_config
@@ -124,9 +126,9 @@ const writeSqitchStuff = (rows, opts) => {
   include $(PGXS)
     
   `);
-  fs.writeFileSync(dir + '/' + 'Makefile', mkfl);
+    fs.writeFileSync(dir + '/' + 'Makefile', mkfl);
 
-  const blb = opts.replacer(`{
+    const blb = opts.replacer(`{
     "plugins": [
       "dynamic-import-node",
       "syntax-dynamic-import",
@@ -138,8 +140,8 @@ const writeSqitchStuff = (rows, opts) => {
     "presets": ["env"]
   }  
   `);
-  fs.writeFileSync(dir + '/' + '.babelrc', blb);
-  const pkg = opts.replacer(`{
+    fs.writeFileSync(dir + '/' + '.babelrc', blb);
+    const pkg = opts.replacer(`{
     "name": "launchql-extension-name",
     "version": "0.0.1",
     "description": "launchql-extension-name",
@@ -162,41 +164,39 @@ const writeSqitchStuff = (rows, opts) => {
     }
   }
   `);
-  fs.writeFileSync(dir + '/' + 'package.json', pkg);
-  const date = () => `2017-08-11T08:11:51Z`;
-  // TODO timestamp issue
-  //   const date = row => moment(row.created_at).format();
+    fs.writeFileSync(dir + '/' + 'package.json', pkg);
+    const date = () => `2017-08-11T08:11:51Z`;
+    // TODO timestamp issue
+    //   const date = row => moment(row.created_at).format();
 
-  const duplicates = {};
+    const duplicates = {};
 
-  const plan = opts.replacer(`%syntax-version=1.0.0
+    const plan = opts.replacer(`%syntax-version=1.0.0
 %project=launchql-extension-name-replacement
 %uri=launchql-extension-name-replacement
 
 ${rows
-  .map(row => {
-    if (duplicates.hasOwnProperty(row.deploy)) {
-      console.log('DUPLICATE ' + row.deploy);
-      return '';
-    } else {
-      duplicates[row.deploy] = true;
-    }
-    if (row.deps?.length > 0) {
-      return `${row.deploy} [${row.deps.map(dep => dep).join(' ')}] ${date(
-        row
-      )} launchql <launchql@5b0c196eeb62> # add ${row.name}`;
-    }
-    return `${row.deploy} ${date(row)} launchql <launchql@5b0c196eeb62> # add ${
-      row.name
-    }`;
-  })
-  .join('\n')}
+        .map(row => {
+          if (duplicates.hasOwnProperty(row.deploy)) {
+            console.log('DUPLICATE ' + row.deploy);
+            return '';
+          } else {
+            duplicates[row.deploy] = true;
+          }
+          if (row.deps?.length > 0) {
+            return `${row.deploy} [${row.deps.map(dep => dep).join(' ')}] ${date(
+              row
+            )} launchql <launchql@5b0c196eeb62> # add ${row.name}`;
+          }
+          return `${row.deploy} ${date(row)} launchql <launchql@5b0c196eeb62> # add ${
+            row.name
+            }`;
+        })
+        .join('\n')}
 `);
 
-  fs.writeFileSync(dir + '/sqitch.plan', plan);
-};
-
-export default async ({database, databaseid, author, outdir}) => { 
+    fs.writeFileSync(dir + '/sqitch.plan', plan);
+  };
 
   const dbname = await pgPool.query(
     `select * from collections_public.database
