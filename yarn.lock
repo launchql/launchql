@@ -9819,10 +9819,10 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.6.10:
-  version "0.6.10"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.6.10.tgz#9128ed93edd0064db5358a50b38d170bd2de5240"
-  integrity sha512-dCjv2DXJuMFWr7sERFHjP5kvc5OsP/88FqOlxNDb4HTqVzGXWErE7/epx/I+ZzUNeFHkMwSOtgex2AhYMlws0Q==
+pgsql-parser@0.6.11:
+  version "0.6.11"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.6.11.tgz#b16f8603956d38efdd1c7f6f0436b8c38b0d0445"
+  integrity sha512-QrQE62ecb008SeVlLYmnc9x2KuT6DIQl80xlHfw9aTHHfBMR8F10WjI3lkv7B7zAsbNfsRTKJPznxqNrFmleYw==
   dependencies:
     dotty "^0.1.0"
     lodash "^4.13.1"
