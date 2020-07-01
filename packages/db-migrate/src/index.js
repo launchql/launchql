@@ -139,7 +139,6 @@ const writeSqitchStuff = (rows, opts) => {
   }  
   `);
   fs.writeFileSync(dir + '/' + '.babelrc', blb);
-
   const pkg = opts.replacer(`{
     "name": "launchql-extension-name",
     "version": "0.0.1",
@@ -213,7 +212,6 @@ export default async ({database, databaseid, author, outdir}) => {
   const name = dbname.rows[0].name;
   const schema_name = dbname.rows[0].schema_name;
   const private_schema_name = dbname.rows[0].private_schema_name;
-  console.log({ name, schema_name, private_schema_name });
 
   const replace = [
     [schema_name, Case.snake(name + '_public')],
