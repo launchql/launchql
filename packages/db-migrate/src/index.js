@@ -286,6 +286,13 @@ DROP EXTENSION IF EXISTS hstore;
         verify: ``
       },
       ...results.rows
+      // {
+      //   deploy: 'tags/' + Date.now(),
+      //   deps: results.rows.map((row) => row.deploy),
+      //   content: ``,
+      //   revert: ``,
+      //   verify: ``
+      // }
     ];
 
     writeSqitchStuff(rows, opts);
