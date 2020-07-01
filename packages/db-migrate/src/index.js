@@ -6,7 +6,7 @@ import mkdirp from 'mkdirp';
 import Case from 'case';
 import moment from 'moment';
 
-export default async ({ database, databaseid, author, outdir }) => {
+const write = async ({ database, databaseid, author, outdir }) => {
 
   const getDbString = db =>
     `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
@@ -290,4 +290,12 @@ DROP EXTENSION IF EXISTS hstore;
   }
 
   pgPool.end();
+};
+
+export default async ({ dbInfo, author, outdir }) => {
+  const databaseid = console.log(dbInfo);
+  for (let v=0; v<dbInfo.database_ids.length; v++) {
+    const databaseid = dbInfo.database_ids[v];
+    await write({database: dbInfo.dbname, databaseid, author, outdir})
+  }
 };

@@ -34,7 +34,8 @@
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "dev": "NODE_ENV=development babel-node src/index"
   },
   "bugs": {
     "url": "https://github.com/launchql/launchql-db/issues"
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@babel/cli": "7.8.4",
     "@babel/core": "7.8.4",
+    "@babel/node": "^7.10.4",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-proposal-export-default-from": "7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "7.9.6",
