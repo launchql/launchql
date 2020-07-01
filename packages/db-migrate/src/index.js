@@ -8,6 +8,8 @@ import moment from 'moment';
 
 const write = async ({ database, databaseid, author, outdir }) => {
 
+  outdir = outdir + '/';
+
   const getDbString = db =>
     `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
 
