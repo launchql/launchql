@@ -50,9 +50,9 @@ COMMIT;
     mkdirp.sync(actualDir);
     const content = opts.replacer(`-- Verify: ${deploy} on pg
 
-  BEGIN;
-  ${row.verify && opts.replacer(row.verify)}
-  COMMIT;  
+BEGIN;
+${row.verify && opts.replacer(row.verify)}
+COMMIT;  
 
 `);
     fs.writeFileSync(actualFile, content);
@@ -67,9 +67,9 @@ COMMIT;
     mkdirp.sync(actualDir);
     const content = `-- Revert: ${deploy} from pg
 
-  BEGIN;
-  ${row.revert && opts.replacer(row.revert)}
-  COMMIT;  
+BEGIN;
+${row.revert && opts.replacer(row.revert)}
+COMMIT;  
 
 `;
     fs.writeFileSync(actualFile, content);
@@ -84,24 +84,24 @@ COMMIT;
     fs.writeFileSync(dir + '/sqitch.conf', conf);
 
     const env = `PGDATABASE=testing-db
-  PGTEMPLATE_DATABASE=testing-template-db
-  PGHOST=localhost
-  PGPASSWORD=password
-  PGPORT=5432
-  PGUSER=postgres
-  APP_USER=app_user
-  APP_PASSWORD=app_password
-  PGEXTENSIONS=plpgsql,uuid-ossp,citext,btree_gist,hstore
+PGTEMPLATE_DATABASE=testing-template-db
+PGHOST=localhost
+PGPASSWORD=password
+PGPORT=5432
+PGUSER=postgres
+APP_USER=app_user
+APP_PASSWORD=app_password
+PGEXTENSIONS=plpgsql,uuid-ossp,citext,btree_gist,hstore
   `;
     fs.writeFileSync(dir + '/.env', env);
 
     const ctl = opts.replacer(`# launchql-extension-name-replacement extension
-  comment = 'launchql project'
-  default_version = '0.0.1'
-  module_pathname = '$libdir/launchql-extension-name-replacement'
-  requires = 'plpgsql,uuid-ossp,citext,btree_gist,hstore'
-  relocatable = false
-  superuser = false
+comment = 'launchql project'
+default_version = '0.0.1'
+module_pathname = '$libdir/launchql-extension-name-replacement'
+requires = 'plpgsql,uuid-ossp,citext,btree_gist,hstore'
+relocatable = false
+superuser = false
   `);
     fs.writeFileSync(dir + '/' + opts.name + '.control', ctl);
 
@@ -121,51 +121,51 @@ COMMIT;
     fs.writeFileSync(dir + '/test/utils/index.js', test);
 
     const mkfl = opts.replacer(`EXTENSION = launchql-extension-name
-  DATA = sql/launchql-extension-name--0.0.1.sql
-  
-  PG_CONFIG = pg_config
-  PGXS := $(shell $(PG_CONFIG) --pgxs)
-  include $(PGXS)
+DATA = sql/launchql-extension-name--0.0.1.sql
+
+PG_CONFIG = pg_config
+PGXS := $(shell $(PG_CONFIG) --pgxs)
+include $(PGXS)
     
   `);
-    fs.writeFileSync(dir + '/' + 'Makefile', mkfl);
+  fs.writeFileSync(dir + '/' + 'Makefile', mkfl);
 
-    const blb = opts.replacer(`{
-    "plugins": [
-      "dynamic-import-node",
-      "syntax-dynamic-import",
-      "transform-class-properties",
-      "transform-object-rest-spread",
-      "transform-regenerator",
-      "transform-runtime"
-    ],
-    "presets": ["env"]
-  }  
-  `);
-    fs.writeFileSync(dir + '/' + '.babelrc', blb);
-    const pkg = opts.replacer(`{
-    "name": "launchql-extension-name",
-    "version": "0.0.1",
-    "description": "launchql-extension-name",
-    "author": "${opts.author}",
-    "private": true,
-    "scripts": {
-      "test": "FAST_TEST=1 skitch-templatedb && jest",
-      "test:watch": "FAST_TEST=1 jest --watch"
-    },
-    "devDependencies": {
-      "@types/jest": "21.1.0",
-      "@types/node": "8.0.0",
-      "babel-cli": "6.24.1",
-      "babel-jest": "20.0.3",
-      "babel-preset-react-app": "3.0.0",
-      "dotenv": "5.0.1",
-      "jest": "20.0.4",
-      "skitch-testing": "latest",
-      "uuid": "3.1.0"
-    }
+  const blb = opts.replacer(`{
+  "plugins": [
+    "dynamic-import-node",
+    "syntax-dynamic-import",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-regenerator",
+    "transform-runtime"
+  ],
+  "presets": ["env"]
+}  
+`);
+  fs.writeFileSync(dir + '/' + '.babelrc', blb);
+  const pkg = opts.replacer(`{
+  "name": "launchql-extension-name",
+  "version": "0.0.1",
+  "description": "launchql-extension-name",
+  "author": "${opts.author}",
+  "private": true,
+  "scripts": {
+    "test": "FAST_TEST=1 skitch-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "devDependencies": {
+    "@types/jest": "21.1.0",
+    "@types/node": "8.0.0",
+    "babel-cli": "6.24.1",
+    "babel-jest": "20.0.3",
+    "babel-preset-react-app": "3.0.0",
+    "dotenv": "5.0.1",
+    "jest": "20.0.4",
+    "skitch-testing": "latest",
+    "uuid": "3.1.0"
   }
-  `);
+}
+`);
     fs.writeFileSync(dir + '/' + 'package.json', pkg);
     const date = () => `2017-08-11T08:11:51Z`;
     // TODO timestamp issue
