@@ -58,7 +58,6 @@ export const getExtensionName = async (packageDir) => {
 
 export const getInstalledExtensions = async () => {
   const info = await getExtensionInfo();
-  console.log({ info });
   let extensions;
   try {
     extensions = readFileSync(info.controlFile)
