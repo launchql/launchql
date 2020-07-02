@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/launchql/launchql-db/compare/@launchql/graphql-testing@0.0.27...@launchql/graphql-testing@0.0.28) (2020-07-02)
+
+**Note:** Version bump only for package @launchql/graphql-testing
+
+
+
+
+
 ## [0.0.27](https://github.com/launchql/launchql-db/compare/@launchql/graphql-testing@0.0.26...@launchql/graphql-testing@0.0.27) (2020-07-02)
 
 **Note:** Version bump only for package @launchql/graphql-testing
