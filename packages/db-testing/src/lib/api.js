@@ -18,6 +18,7 @@ export const getApi = async ([pub, priv]) => {
     private: wrapConn(db, priv)
   };
 
+  // TODO don't hardcode this:
   const auth = (userId) => {
     conn.setContext({
       role: 'authenticated',

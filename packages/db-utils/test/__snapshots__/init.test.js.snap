@@ -16,7 +16,6 @@ Array [
 
 exports[`deps skitch path skitch init 2`] = `
 Array [
-  ".DS_Store",
   ".eslintrc.json",
   ".gitignore",
   ".travis.yml",
@@ -43,7 +42,6 @@ Array [
 exports[`deps skitch path sqitch init 2`] = `
 Array [
   ".babelrc",
-  ".DS_Store",
   ".env",
 ]
 `;

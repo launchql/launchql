@@ -33,7 +33,6 @@ export const sqitchPath = (cwd = process.cwd()) => {
 
 export const skitchPath = (cwd = process.cwd()) => {
   let obj;
-
   return new Promise((resolve, reject) => {
     if (process.env.SKITCH_PATH) {
       return resolve(process.env.SKITCH_PATH);

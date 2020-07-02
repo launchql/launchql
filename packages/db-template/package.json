@@ -8,7 +8,7 @@
   "main": "./index.js",
   "files": [
     "sqitch",
-    "launchql",
+    "template",
     "index.js"
   ],
   "publishConfig": {

@@ -86,8 +86,8 @@ export const init = async ({ name, description, author, extensions }) => {
 
 export const initSkitch = async () => {
   const dir = process.cwd();
-  shell.cp('-r', `${srcPath}/launchql/*`, `${dir}/`);
-  shell.cp('-r', `${srcPath}/launchql/.*`, `${dir}/`);
+  shell.cp('-r', `${srcPath}/template/*`, `${dir}/`);
+  shell.cp('-r', `${srcPath}/template/.*`, `${dir}/`);
   const name = sluggify(basename(dirname(process.cwd())));
   const pkg = {
     name,
