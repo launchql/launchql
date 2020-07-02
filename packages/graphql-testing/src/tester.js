@@ -60,7 +60,7 @@ export const GraphQLTest = ({ settings }) => {
 
   const graphQL = async function graphQL() {
     // Any additional items to set on `req` (e.g. `{user: {id: 17}}`)
-    let reqOptions;
+    let reqOptions = {};
     // Place test assertions in this function
     let checker = () => {};
 
