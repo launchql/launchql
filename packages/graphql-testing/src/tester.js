@@ -174,7 +174,9 @@ export const GraphQLTest = ({ settings }) => {
     let vars;
     let commit = false;
 
-    if (arguments.length == 2) {
+    if (arguments.length == 1) {
+      Query = arguments[0];
+    } else if (arguments.length == 2) {
       Query = arguments[0];
       vars = arguments[1];
     } else if (arguments.length == 3) {
