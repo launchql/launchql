@@ -2,12 +2,13 @@ const v4 = require('uuid/v4');
 import { IConnected } from 'pg-promise';
 import { createdb, dropdb, templatedb, installExt } from './db';
 import { sqitchFast, sqitch } from './sqitch';
-import { sqitchPath } from '@launchql/db-utils';
+import { sqitchPath, getInstalledExtensions } from '@launchql/db-utils';
 import { connect, close } from './connection';
 import { resolve as pathResolve } from 'path';
+import env from '../env';
 
-export const getOpts = async configOpts => {
-  const { PGUSER, PGPASSWORD, PGPORT, PGHOST, FAST_TEST } = process.env;
+export const getOpts = async (configOpts) => {
+  const { PGUSER, PGPASSWORD, PGPORT, PGHOST, FAST_TEST } = env;
   configOpts = configOpts || {};
   let {
     user = PGUSER,
@@ -63,7 +64,7 @@ export const getConnection = async (configOpts, database) => {
     user,
     port,
     password,
-    host,
+    host
   };
 
   if (hot) {
@@ -95,16 +96,16 @@ export const closeConnection = async (db) => {
 
 const prefix = 'testing-db';
 export const getTestConnection = async () => {
-  const options = process.env.FAST_TEST
+  const options = env.FAST_TEST
     ? {
         hot: true,
         prefix
       }
     : {
-        template: process.env.PGTEMPLATE_DATABASE,
+        template: env.PGTEMPLATE_DATABASE,
         prefix
       };
-  options.extensions = process.env.PGEXTENSIONS;
+  options.extensions = await getInstalledExtensions();
   return await getConnection(options);
 };
 
@@ -140,14 +141,10 @@ export const grantConnect = async (db, user) => {
 export const getConnections = async () => {
   const db = await getTestConnection();
   const dbName = db.client.database;
-  await createUserRole(db, process.env.APP_USER, process.env.APP_PASSWORD);
-  await grantConnect(db, process.env.APP_USER);
+  await createUserRole(db, env.APP_USER, env.APP_PASSWORD);
+  await grantConnect(db, env.APP_USER);
 
-  const conn = await connectTest(
-    dbName,
-    process.env.APP_USER,
-    process.env.APP_PASSWORD
-  );
+  const conn = await connectTest(dbName, env.APP_USER, env.APP_PASSWORD);
   conn.setContext({
     role: 'anonymous'
   });
