@@ -174,7 +174,7 @@ export const GraphQLTest = ({ settings }) => {
         ? await pgSettingsGenerator(req)
         : pgSettingsGenerator;
 
-    await withPostGraphileContext(
+    return await withPostGraphileContext(
       {
         ...options,
         pgPool: rootPgPool,
