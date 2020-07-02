@@ -181,23 +181,17 @@ export const GraphQLTest = ({ settings }) => {
         Query = arguments[0];
         commit = arguments[1];
       } else {
-        if (arguments[0].kind === 'Document') {
-          Query = arguments[0];
-          vars = arguments[1];
-        } else {
-          reqOptions = arguments[0];
-          Query = arguments[1];
-        }
+        Query = arguments[0];
+        vars = arguments[1];
       }
     } else if (arguments.length == 3) {
-      if (arguments[1].kind === 'Document') {
-        reqOptions = arguments[0];
-        Query = arguments[1];
-      }
-
       if (typeof arguments[2] === 'boolean') {
+        Query = arguments[0];
+        vars = arguments[1];
         commit = arguments[2];
       } else {
+        reqOptions = arguments[0];
+        Query = arguments[1];
         vars = arguments[2];
       }
     } else if (arguments.length == 4) {
@@ -208,8 +202,6 @@ export const GraphQLTest = ({ settings }) => {
     } else {
       throw new Error('no args supplied to graphQL');
     }
-
-    console.log(reqOptions, Query, vars, commit);
 
     const { schema, rootPgPool, options } = ctx;
     const req = new MockReq({
