@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { TestDatabase } from '../lib/@launchql/db-test';
+import { TestDatabase } from '../lib/test-db';
 import { dropdb } from '../lib/db';
 import { getOpts } from '../lib/testing';
 
