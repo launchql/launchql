@@ -3,7 +3,7 @@ import { getApi, closeConnections } from '@launchql/db-testing';
 
 export const getConnections = async ([pub, priv], getService) => {
   const { api, admin, db, conn, auth } = await getApi([pub, priv]);
-  const { setup, teardown, graphQL } = GraphQLTest(
+  const { setup, teardown, graphQL, graphQL2 } = GraphQLTest(
     getService({ dbname: db.client.database })
   );
   await setup();
@@ -21,6 +21,7 @@ export const getConnections = async ([pub, priv], getService) => {
     auth,
     setup,
     teardown: td,
-    graphQL
+    graphQL,
+    graphQL2
   };
 };
