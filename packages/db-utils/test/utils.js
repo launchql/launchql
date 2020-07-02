@@ -1,7 +1,8 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 require('dotenv').load();
 
-import { connectionString, TUtilsConfig } from '../src/index';
+import { connectionString } from '../src/index';
+import env from '../src/env';
 
 import pgPromise from 'pg-promise';
 
@@ -9,7 +10,7 @@ const pgp = pgPromise({
   noWarnings: true
 });
 
-const { PGHOST, PGPASSWORD, PGPORT, PGUSER } = process.env;
+const { PGHOST, PGPASSWORD, PGPORT, PGUSER } = env;
 
 export const getConnObj = (config = {}) => {
   if (!config.host) {

@@ -8,12 +8,8 @@ import { writeFileSync } from 'fs';
 
 const TMPDIR = process.env.TMPDIR;
 const rnd = () =>
-  Math.random()
-    .toString(36)
-    .substring(2, 15) +
-  Math.random()
-    .toString(36)
-    .substring(2, 15);
+  Math.random().toString(36).substring(2, 15) +
+  Math.random().toString(36).substring(2, 15);
 
 export const install = async () => {
   const sPath = await skitchPath();

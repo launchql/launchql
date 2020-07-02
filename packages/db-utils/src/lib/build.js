@@ -24,17 +24,13 @@ export const build = async (project) => {
     return m;
   }, {});
 
-  let deps = Object.keys(extensions).reduce((m, k) => {
+  const deps = Object.keys(extensions).reduce((m, k) => {
     m[k] = extensions[k].requires;
     return m;
   }, {});
 
   // https://www.electricmonk.nl/log/2008/08/07/dependency-resolving-algorithm/
-  function dep_resolve(
-    sqlmodule,
-    resolved,
-    unresolved
-  ) {
+  function dep_resolve(sqlmodule, resolved, unresolved) {
     unresolved.push(sqlmodule);
     let edges = deps[sqlmodule];
     if (!edges) {
@@ -42,7 +38,7 @@ export const build = async (project) => {
       edges = deps[sqlmodule] = [];
     }
     for (let i = 0; i < edges.length; i++) {
-      let dep = edges[i];
+      const dep = edges[i];
       if (!resolved.includes(dep)) {
         if (unresolved.includes(dep)) {
           throw new Error(`Circular reference detected ${sqlmodule}, ${dep}`);
@@ -51,18 +47,18 @@ export const build = async (project) => {
       }
     }
     resolved.push(sqlmodule);
-    let index = unresolved.indexOf(sqlmodule);
+    const index = unresolved.indexOf(sqlmodule);
     unresolved.splice(index);
   }
 
-  let resolved = [];
-  let unresolved = [];
+  const resolved = [];
+  const unresolved = [];
 
   dep_resolve(project, resolved, unresolved);
 
-  let sql = [];
+  const sql = [];
 
-  resolved.forEach(extension => {
+  resolved.forEach((extension) => {
     if (native.includes(extension)) {
       sql.push(`CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`);
     } else {

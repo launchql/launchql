@@ -4,10 +4,9 @@ import { sync as glob } from 'glob';
 import { listModules } from './modules';
 import { getExtensionName } from './extensions';
 
-const makeKey = sqlmodule => '/deploy/' + sqlmodule + '.sql';
+const makeKey = (sqlmodule) => '/deploy/' + sqlmodule + '.sql';
 
 export const getDeps = async (packageDir) => {
-
   const extname = await getExtensionName(packageDir);
 
   var external = [];
@@ -15,11 +14,7 @@ export const getDeps = async (packageDir) => {
   var deps = {};
 
   // https://www.electricmonk.nl/log/2008/08/07/dependency-resolving-algorithm/
-  function dep_resolve(
-    sqlmodule,
-    resolved,
-    unresolved
-  ) {
+  function dep_resolve(sqlmodule, resolved, unresolved) {
     unresolved.push(sqlmodule);
     let edges = deps[makeKey(sqlmodule)];
     if (!edges) {
@@ -75,7 +70,8 @@ export const getDeps = async (packageDir) => {
           }
           if (key != makeKey(keyToTest)) {
             throw new Error(
-              'deployment script in wrong place or is named wrong internally\n' + lines[j]
+              'deployment script in wrong place or is named wrong internally\n' +
+                lines[j]
             );
           }
         }
@@ -85,7 +81,8 @@ export const getDeps = async (packageDir) => {
           keyToTest = m2[1];
           if (key != makeKey(keyToTest)) {
             throw new Error(
-              'deployment script in wrong place or is named wrong internally\n' + lines[j]
+              'deployment script in wrong place or is named wrong internally\n' +
+                lines[j]
             );
           }
         }
@@ -99,8 +96,8 @@ export const getDeps = async (packageDir) => {
   deps = Object.assign(
     {
       [makeKey('apps/index')]: Object.keys(deps)
-        .filter(dep => dep.match(/^\/deploy\//))
-        .map(dep => dep.replace(/^\/deploy\//, '').replace(/.sql$/, ''))
+        .filter((dep) => dep.match(/^\/deploy\//))
+        .map((dep) => dep.replace(/^\/deploy\//, '').replace(/.sql$/, ''))
     },
     deps
   );
@@ -111,8 +108,8 @@ export const getDeps = async (packageDir) => {
   delete deps[makeKey('apps/index')];
 
   // move extensions up
-  const extensions = resolved.filter(a => a.match(/^extensions/));
-  const normalSql = resolved.filter(a => !a.match(/^extensions/));
+  const extensions = resolved.filter((a) => a.match(/^extensions/));
+  const normalSql = resolved.filter((a) => !a.match(/^extensions/));
 
   // resolved = useExtensions ? [...extensions, ...normalSql] : [...normalSql];
   resolved = [...extensions, ...normalSql];
@@ -123,28 +120,22 @@ export const getDeps = async (packageDir) => {
     resolved,
     deps
   };
-
 };
 
 export const extDeps = async (name) => {
-
   const modules = await listModules();
   const external = [];
   if (!modules[name]) {
     throw new Error(`module ${name} does not exist!`);
   }
   // build deps
-  let deps = Object.keys(modules).reduce((memo, key)=>{
+  const deps = Object.keys(modules).reduce((memo, key) => {
     memo[key] = modules[key].requires;
     return memo;
   }, {});
 
   // https://www.electricmonk.nl/log/2008/08/07/dependency-resolving-algorithm/
-  function dep_resolve(
-    sqlmodule,
-    resolved,
-    unresolved
-  ) {
+  function dep_resolve(sqlmodule, resolved, unresolved) {
     unresolved.push(sqlmodule);
     let edges = deps[sqlmodule];
     if (!edges) {
@@ -167,10 +158,10 @@ export const extDeps = async (name) => {
     unresolved.splice(index);
   }
 
-  let resolved = [];
+  const resolved = [];
   var unresolved = [];
 
   dep_resolve(name, resolved, unresolved);
 
-  return {external, resolved};
+  return { external, resolved };
 };
