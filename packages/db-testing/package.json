@@ -64,6 +64,7 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "@launchql/db-utils": "^0.0.10",
+    "envalid": "6.0.2",
     "pg": "6.4.0",
     "pg-promise": "6.10.3",
     "streamify-string": "1.0.1",

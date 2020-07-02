@@ -1806,16 +1806,6 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@launchql/db-testing@0.0.1":
-  version "0.0.10"
-  dependencies:
-    "@babel/runtime" "^7.4.2"
-    "@launchql/db-utils" "^0.0.10"
-    pg "6.4.0"
-    pg-promise "6.10.3"
-    streamify-string "1.0.1"
-    uuid "3.1.0"
-
 "@lerna/add@3.20.0":
   version "3.20.0"
   resolved "https://registry.npmjs.org/@lerna/add/-/add-3.20.0.tgz#bea7edf36fc93fb72ec34cb9ba854c48d4abf309"
