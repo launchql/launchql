@@ -156,7 +156,7 @@ export const GraphQLTest = ({ settings }) => {
     );
   };
 
-  const graphQL2 = async function graphQL2(reqOptions = {}) {
+  const graphQLQuery = async function graphQLQuery(reqOptions = {}) {
     const { schema, rootPgPool, options } = ctx;
     const req = new MockReq({
       url: options.graphqlRoute || '/graphql',
@@ -187,7 +187,7 @@ export const GraphQLTest = ({ settings }) => {
         // we need to replace it, and re-implement the settings logic. Sorry.
 
         const replacementPgClient = await rootPgPool.connect();
-        await replacementPgClient.query('begin');
+        await replacementPgClient.query('BEGIN');
         await replacementPgClient.query("select set_config('role', $1, true)", [
           POSTGRAPHILE_AUTHENTICATOR_ROLE
         ]);
@@ -220,8 +220,6 @@ export const GraphQLTest = ({ settings }) => {
           await replacementPgClient.query(sqlQuery, values);
         }
         /* END: pgClient REPLACEMENT */
-
-        let checkResult;
         try {
           // This runs our GraphQL query, passing the replacement client
           const query = async (q, variables) => {
@@ -234,17 +232,10 @@ export const GraphQLTest = ({ settings }) => {
               variables
             );
           };
-
-          // This is were we call the `checker` so you can do your assertions.
-          // Also note that we pass the `replacementPgClient` so that you can
-          // query the data in the database from within the transaction before it
-          // gets rolled back.
           return query;
         } finally {
-          // Rollback the transaction so no changes are written to the DB - this
-          // makes our tests fairly deterministic.
-          await replacementPgClient.query('rollback');
           replacementPgClient.release();
+          await replacementPgClient.query('COMMIT');
         }
       }
     );
@@ -254,7 +245,7 @@ export const GraphQLTest = ({ settings }) => {
     setup,
     teardown,
     graphQL,
-    graphQL2,
+    graphQLQuery,
     withContext: (cb) => cb(ctx)
   };
 };
