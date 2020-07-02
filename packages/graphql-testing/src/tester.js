@@ -159,7 +159,8 @@ export const GraphQLTest = ({ settings }) => {
   const graphQLQuery = async function graphQLQuery(
     reqOptions, // Any additional items to set on `req` (e.g. `{user: {id: 17}}`)
     Query,
-    vars
+    vars,
+    commit = false
   ) {
     const { schema, rootPgPool, options } = ctx;
     const req = new MockReq({
@@ -240,7 +241,7 @@ export const GraphQLTest = ({ settings }) => {
           // Rollback the transaction so no changes are written to the DB - this
           // makes our tests fairly deterministic.
 
-          await replacementPgClient.query('commit');
+          await replacementPgClient.query(commit ? 'commit' : 'rollback');
           replacementPgClient.release();
         }
         return getResult;
