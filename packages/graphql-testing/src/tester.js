@@ -153,10 +153,103 @@ export const GraphQLTest = ({ settings }) => {
     );
   };
 
+  const graphQL2 = async function graphQL2(reqOptions = {}) {
+    const { schema, rootPgPool, options } = ctx;
+    const req = new MockReq({
+      url: options.graphqlRoute || '/graphql',
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      ...reqOptions
+    });
+
+    const { pgSettings: pgSettingsGenerator } = options;
+    const pgSettings =
+      typeof pgSettingsGenerator === 'function'
+        ? await pgSettingsGenerator(req)
+        : pgSettingsGenerator;
+
+    await withPostGraphileContext(
+      {
+        ...options,
+        pgPool: rootPgPool,
+        pgSettings
+      },
+      async (context) => {
+        /* BEGIN: pgClient REPLACEMENT */
+        // We're not going to use the `pgClient` that came with
+        // `withPostGraphileContext` because we want to ROLLBACK at the end. So
+        // we need to replace it, and re-implement the settings logic. Sorry.
+
+        const replacementPgClient = await rootPgPool.connect();
+        await replacementPgClient.query('begin');
+        await replacementPgClient.query("select set_config('role', $1, true)", [
+          POSTGRAPHILE_AUTHENTICATOR_ROLE
+        ]);
+
+        const localSettings = new Map();
+
+        // Set the custom provided settings before jwt claims and role are set
+        // this prevents an accidentional overwriting
+        if (typeof pgSettings === 'object') {
+          for (const key of Object.keys(pgSettings)) {
+            localSettings.set(key, String(pgSettings[key]));
+          }
+        }
+
+        // If there is at least one local setting.
+        if (localSettings.size !== 0) {
+          // Actually create our query.
+          const values = [];
+          const sqlQuery = `select ${Array.from(localSettings)
+            .map(([key, value]) => {
+              values.push(key);
+              values.push(value);
+              return `set_config($${values.length - 1}, $${
+                values.length
+              }, true)`;
+            })
+            .join(', ')}`;
+
+          // Execute the query.
+          await replacementPgClient.query(sqlQuery, values);
+        }
+        /* END: pgClient REPLACEMENT */
+
+        let checkResult;
+        try {
+          // This runs our GraphQL query, passing the replacement client
+          const query = async (q, variables) =>
+            await graphql(
+              schema,
+              q,
+              null,
+              { ...context, pgClient: replacementPgClient },
+              variables
+            );
+
+          // This is were we call the `checker` so you can do your assertions.
+          // Also note that we pass the `replacementPgClient` so that you can
+          // query the data in the database from within the transaction before it
+          // gets rolled back.
+          return query;
+        } finally {
+          // Rollback the transaction so no changes are written to the DB - this
+          // makes our tests fairly deterministic.
+          await replacementPgClient.query('rollback');
+          replacementPgClient.release();
+        }
+      }
+    );
+  };
+
   return {
     setup,
     teardown,
     graphQL,
+    graphQL2,
     withContext: (cb) => cb(ctx)
   };
 };
