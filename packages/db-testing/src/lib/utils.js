@@ -1,5 +1,6 @@
 const Streamify = require('streamify-string');
 import { spawn } from 'child_process';
+import env from '../env';
 
 export const setArgs = (config) => {
   let args = [];
@@ -7,7 +8,7 @@ export const setArgs = (config) => {
   args = Object.entries({
     '-U': config.user,
     '-h': config.host,
-    '-p': config.port,
+    '-p': config.port
   }).reduce((args, [key, value]) => {
     if (value) args.push(key, `${value}`);
     return args;
@@ -17,29 +18,23 @@ export const setArgs = (config) => {
   return args;
 };
 
-export async function streamSql(
-  config,
-  sql = ''
-) {
+export async function streamSql(config, sql = '') {
   const args = setArgs(config);
-  return new Promise(async resolve => {
+  return new Promise(async (resolve) => {
     const str = new Streamify(sql);
 
     const proc = spawn('psql', args, {
-      env: { ...process.env, PGPASSWORD: config.password },
+      env: { ...env, PGPASSWORD: config.password }
     });
 
     str.pipe(proc.stdin);
-    proc.on('close', code => {
+    proc.on('close', (code) => {
       resolve();
     });
   });
 }
 
-export async function setTemplate(
-  config,
-  template = process.cwd()
-) {
+export async function setTemplate(config, template = process.cwd()) {
   if (config.user !== 'postgres') {
     throw new Error('setTemplate requires postgres user');
   }
