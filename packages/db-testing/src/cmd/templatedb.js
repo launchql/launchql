@@ -3,7 +3,7 @@
 import { TestDatabase } from '../lib/test-db';
 import { dropdb } from '../lib/db';
 import { getOpts } from '../lib/testing';
-import { sqitchPath } from '@launchql/db-utils';
+import { controlPath } from '@launchql/db-utils';
 import env from '../env';
 
 if (!env.PGTEMPLATE_DATABASE) {
@@ -11,10 +11,10 @@ if (!env.PGTEMPLATE_DATABASE) {
 }
 
 const run = async () => {
-  const pth = await sqitchPath();
+  const control = await controlPath();
   let extensions = env.PGEXTENSIONS;
   if (!extensions) {
-    console.log(pth);
+    console.log(control);
     console.log(process.cwd());
     throw new Error('extensions not found');
   }

@@ -1,4 +1,5 @@
-var walkup = require('node-walkup');
+import walkup from 'node-walkup';
+import glob from 'glob';
 
 export const sqitchPath = (cwd = process.cwd()) => {
   let obj;
@@ -28,6 +29,12 @@ export const sqitchPath = (cwd = process.cwd()) => {
       }
     );
   });
+};
+
+export const controlPath = async (cwd = process.cwd()) => {
+  const sqitchPath = await sqitchPath();
+  const controlFile = glob.sync(`${sqitchPath}/*.control`);
+  console.log({ controlFile });
 };
 
 export const skitchPath = (cwd = process.cwd()) => {
