@@ -23,7 +23,7 @@ export const getExtensionInfo = async (packageDir) => {
   }
   const pkgPath = `${packageDir}/package.json`;
   const pkg = require(pkgPath);
-  const extname = sluggify(pkg.name);
+  const extname = await getExtensionName(packageDir);
   const version = pkg.version;
   const Makefile = `${packageDir}/Makefile`;
   const controlFile = `${packageDir}/${extname}.control`;
@@ -53,7 +53,7 @@ export const getExtensionName = async (packageDir) => {
     throw new Error('no plan name!');
   }
 
-  return plan[0].split('=')[1];
+  return plan[0].split('=')[1].trim();
 };
 
 export const getInstalledExtensions = async () => {

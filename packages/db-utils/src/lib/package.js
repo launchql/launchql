@@ -1,11 +1,12 @@
 import { sqitchPath as path } from './paths';
+import { getExtensionName } from './extensions';
 const parser = require('pgsql-parser');
 import { resolve } from './resolve';
 import { sync as mkdirp } from 'mkdirp';
 import { relative } from 'path';
 import { transformProps } from '@launchql/db-transform';
 import { writeFileSync, readFileSync } from 'fs';
-import  { sluggify } from './utils';
+import { sluggify } from './utils';
 
 const noop = () => undefined;
 
@@ -17,30 +18,33 @@ export const cleanTree = (tree) => {
   });
 };
 
-export const packageModule = async (extension=true) => {
+export const packageModule = async (extension = true) => {
   const sqitchPath = await path();
   const sql = await resolve(sqitchPath);
   const pkgPath = `${sqitchPath}/package.json`;
   const pkg = require(pkgPath);
-  const extname = sluggify(pkg.name);
+  const extname = await getExtensionName(sqitchPath);
 
   // sql
   try {
-    const query = parser.parse(sql).query.reduce((m, stmt)=>{
+    const query = parser.parse(sql).query.reduce((m, stmt) => {
       if (extension) {
         if (stmt.RawStmt.stmt.hasOwnProperty('TransactionStmt')) return m;
         if (stmt.RawStmt.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
       }
       return [...m, stmt];
     }, []);
-    const topLine = extension ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n` : '';
+    const topLine = extension
+      ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
+      : '';
     const finalSql = parser.deparse(query);
     const tree1 = query;
     const tree2 = parser.parse(finalSql).query;
     const results = {
       sql: `${topLine}${finalSql}`
     };
-    const diff = (JSON.stringify(cleanTree(tree1)) !== JSON.stringify(cleanTree(tree2)));
+    const diff =
+      JSON.stringify(cleanTree(tree1)) !== JSON.stringify(cleanTree(tree2));
     if (diff) {
       results.diff = true;
       results.tree1 = JSON.stringify(cleanTree(tree1), null, 2);
@@ -51,16 +55,15 @@ export const packageModule = async (extension=true) => {
   } catch (e) {
     console.error(e);
   }
-
 };
 
-export const writePackage = async (version, extension=true, sqitchPath) => {
+export const writePackage = async (version, extension = true, sqitchPath) => {
   if (!sqitchPath) {
     sqitchPath = await path();
   }
   const pkgPath = `${sqitchPath}/package.json`;
   const pkg = require(pkgPath);
-  const extname = sluggify(pkg.name);
+  const extname = await getExtensionName(sqitchPath);
   const makePath = `${sqitchPath}/Makefile`;
   const controlPath = `${sqitchPath}/${extname}.control`;
   const sqlFileName = `${extname}--${version}.sql`;
@@ -86,10 +89,7 @@ export const writePackage = async (version, extension=true, sqitchPath) => {
 
     // package json
     pkg.version = version;
-    writeFileSync(
-      pkgPath,
-      JSON.stringify(pkg, null, 2)
-    );
+    writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
     // makefile
     var regex = new RegExp(extname + '--[0-9.]+.sql');
@@ -97,7 +97,9 @@ export const writePackage = async (version, extension=true, sqitchPath) => {
   }
 
   if (diff) {
-    console.error(`DIFF exists! Careful. Check ${relative(sqitchPath, outPath)}/ folder...`);
+    console.error(
+      `DIFF exists! Careful. Check ${relative(sqitchPath, outPath)}/ folder...`
+    );
     writeFileSync(`${outPath}/orig.${sqlFileName}.tree.json`, tree1);
     writeFileSync(`${outPath}/parsed.${sqlFileName}.tree.json`, tree2);
   }
@@ -105,5 +107,4 @@ export const writePackage = async (version, extension=true, sqitchPath) => {
   const writePath = `${outPath}/${sqlFileName}`;
   writeFileSync(writePath, sql);
   console.log(`${relative(sqitchPath, writePath)} written`);
-
 };

@@ -4,7 +4,7 @@ import { sync as mkdirp } from 'mkdirp';
 import { exec } from 'child_process';
 import { prompt } from 'inquirerer';
 import { sync as glob } from 'glob';
-import { sqitchPath as path } from '@launchql/db-utils';
+import { sqitchPath as path, getExtensionName } from '@launchql/db-utils';
 import { dirname, basename, resolve } from 'path';
 import * as shell from 'shelljs';
 import { writeFileSync, readFileSync } from 'fs';
@@ -88,5 +88,6 @@ export default async (argv) => {
   });
 
   const pkg = require(`${sqitchPath}/package.json`);
-  await plan({ name: pkg.name });
+  const name = await getExtensionName(sqitchPath);
+  await plan({ name });
 };
