@@ -228,14 +228,14 @@ export const GraphQLTest = ({ settings }) => {
         let getResult;
         try {
           // This runs our GraphQL query, passing the replacement client
-            if (typeof Query !== 'string') Query = print(Query);
-            getResult = await graphql(
-              schema,
-              Query,
-              null,
-              { ...context, pgClient: replacementPgClient },
-              vars
-            );
+          if (typeof Query !== 'string') Query = print(Query);
+          getResult = await graphql(
+            schema,
+            Query,
+            null,
+            { ...context, pgClient: replacementPgClient },
+            vars
+          );
         } finally {
           // Rollback the transaction so no changes are written to the DB - this
           // makes our tests fairly deterministic.
@@ -248,3 +248,11 @@ export const GraphQLTest = ({ settings }) => {
     );
   };
 
+  return {
+    setup,
+    teardown,
+    graphQL,
+    graphQLQuery,
+    withContext: (cb) => cb(ctx)
+  };
+};

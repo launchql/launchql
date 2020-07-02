@@ -65,5 +65,6 @@
     "graphql": "^14.0.2",
     "mock-req": "0.2.0",
     "postgraphile": "4.7.0"
-  }
+  },
+  "gitHead": "41fab8194848708cbf6758f3933832395a89bae1"
 }
