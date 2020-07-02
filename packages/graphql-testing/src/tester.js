@@ -177,16 +177,27 @@ export const GraphQLTest = ({ settings }) => {
     if (arguments.length == 1) {
       Query = arguments[0];
     } else if (arguments.length == 2) {
-      Query = arguments[0];
-      vars = arguments[1];
-    } else if (arguments.length == 3) {
-      if (typeof arguments[2] === 'boolean') {
+      if (typeof arguments[1] === 'boolean') {
         Query = arguments[0];
-        vars = arguments[1];
-        commit = arguments[2];
+        commit = arguments[1];
       } else {
+        if (arguments[0].kind === 'Document') {
+          Query = arguments[0];
+          vars = arguments[1];
+        } else {
+          reqOptions = {};
+          Query = arguments[1];
+        }
+      }
+    } else if (arguments.length == 3) {
+      if (arguments[1].kind === 'Document') {
         reqOptions = arguments[0];
         Query = arguments[1];
+      }
+
+      if (typeof arguments[2] === 'boolean') {
+        commit = arguments[2];
+      } else {
         vars = arguments[2];
       }
     } else if (arguments.length == 4) {
