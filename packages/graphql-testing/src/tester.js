@@ -180,9 +180,15 @@ export const GraphQLTest = ({ settings }) => {
       Query = arguments[0];
       vars = arguments[1];
     } else if (arguments.length == 3) {
-      reqOptions = arguments[0];
-      Query = arguments[1];
-      vars = arguments[2];
+      if (typeof arguments[2] === 'boolean') {
+        Query = arguments[0];
+        vars = arguments[1];
+        commit = arguments[2];
+      } else {
+        reqOptions = arguments[0];
+        Query = arguments[1];
+        vars = arguments[2];
+      }
     } else if (arguments.length == 4) {
       reqOptions = arguments[0];
       Query = arguments[1];
