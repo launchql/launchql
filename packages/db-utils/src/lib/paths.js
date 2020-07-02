@@ -32,9 +32,10 @@ export const sqitchPath = (cwd = process.cwd()) => {
 };
 
 export const controlPath = async (cwd = process.cwd()) => {
-  const sqitchPath = await sqitchPath();
-  const controlFile = glob.sync(`${sqitchPath}/*.control`);
+  const sp = await sqitchPath();
+  const controlFile = glob.sync(`${sp}/*.control`);
   console.log({ controlFile });
+  return controlFile;
 };
 
 export const skitchPath = (cwd = process.cwd()) => {
