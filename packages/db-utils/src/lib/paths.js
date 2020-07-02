@@ -34,8 +34,12 @@ export const sqitchPath = (cwd = process.cwd()) => {
 export const controlPath = async (cwd = process.cwd()) => {
   const sp = await sqitchPath();
   const controlFile = glob.sync(`${sp}/*.control`);
-  console.log({ controlFile });
-  return controlFile;
+  if (controlFile.length > 1) {
+    throw new Error('only 1 .control file allowed!');
+  } else if (controlFile.length < 1) {
+    throw new Error('requires a .control file!');
+  }
+  return controlFile[0];
 };
 
 export const skitchPath = (cwd = process.cwd()) => {

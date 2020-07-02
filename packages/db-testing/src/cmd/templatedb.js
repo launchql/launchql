@@ -3,20 +3,19 @@
 import { TestDatabase } from '../lib/test-db';
 import { dropdb } from '../lib/db';
 import { getOpts } from '../lib/testing';
-import { controlPath } from '@launchql/db-utils';
+import { getInstalledExtensions } from '@launchql/db-utils';
 import env from '../env';
+import fs from 'fs';
 
 if (!env.PGTEMPLATE_DATABASE) {
   throw new Error('no PGTEMPLATE_DATABASE defined in env!');
 }
 
 const run = async () => {
-  const control = await controlPath();
+  const exts = await getInstalledExtensions();
   let extensions = env.PGEXTENSIONS;
   if (!extensions) {
-    console.log(control);
-    console.log(process.cwd());
-    throw new Error('extensions not found');
+    console.log({ exts });
   }
   extensions = extensions.split(',');
 
