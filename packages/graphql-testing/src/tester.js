@@ -7,6 +7,7 @@ import {
 } from 'postgraphile';
 import { graphql } from 'graphql';
 import MockReq from 'mock-req';
+import { print } from 'graphql/language/printer';
 
 export const GraphQLTest = ({ settings }) => {
   const getDbString = (db) =>
@@ -128,14 +129,16 @@ export const GraphQLTest = ({ settings }) => {
         let checkResult;
         try {
           // This runs our GraphQL query, passing the replacement client
-          const query = async (query, variables) =>
-            await graphql(
+          const query = async (q, variables) => {
+            if (typeof q !== 'string') q = print(q);
+            return await graphql(
               schema,
-              query,
+              q,
               null,
               { ...context, pgClient: replacementPgClient },
               variables
             );
+          };
 
           // This is were we call the `checker` so you can do your assertions.
           // Also note that we pass the `replacementPgClient` so that you can
@@ -221,14 +224,16 @@ export const GraphQLTest = ({ settings }) => {
         let checkResult;
         try {
           // This runs our GraphQL query, passing the replacement client
-          const query = async (q, variables) =>
-            await graphql(
+          const query = async (q, variables) => {
+            if (typeof q !== 'string') q = print(q);
+            return await graphql(
               schema,
               q,
               null,
               { ...context, pgClient: replacementPgClient },
               variables
             );
+          };
 
           // This is were we call the `checker` so you can do your assertions.
           // Also note that we pass the `replacementPgClient` so that you can
