@@ -17,7 +17,7 @@ export const getAvailableExtensions = async () => {
   return modules;
 };
 
-export const getExtensionInfo = async packageDir => {
+export const getExtensionInfo = async (packageDir) => {
   if (!packageDir) {
     packageDir = await path();
   }
@@ -38,16 +38,16 @@ export const getExtensionInfo = async packageDir => {
   };
 };
 
-export const getExtensionName = async packageDir => {
+export const getExtensionName = async (packageDir) => {
   if (!packageDir) {
     packageDir = await path();
   }
   const plan = readFileSync(`${packageDir}/sqitch.plan`)
     .toString()
     .split('\n')
-    .map(line => line.trim())
-    .filter(l => l)
-    .filter(l => /^%project=/.test(l));
+    .map((line) => line.trim())
+    .filter((l) => l)
+    .filter((l) => /^%project=/.test(l));
 
   if (!plan.length) {
     throw new Error('no plan name!');
@@ -58,17 +58,17 @@ export const getExtensionName = async packageDir => {
 
 export const getInstalledExtensions = async () => {
   const info = await getExtensionInfo();
-
+  console.log({ info });
   let extensions;
   try {
     extensions = readFileSync(info.controlFile)
       .toString()
       .split('\n')
-      .find(line => line.match(/^requires/))
+      .find((line) => line.match(/^requires/))
       .split('=')[1]
-      .split('\'')[1]
+      .split("'")[1]
       .split(',')
-      .map(a => a.trim());
+      .map((a) => a.trim());
   } catch (e) {
     throw new Error('missing requires from control files or bad syntax');
   }
@@ -108,7 +108,7 @@ superuser = false
   );
 };
 
-export const writeExtensions = async extensions => {
+export const writeExtensions = async (extensions) => {
   const { controlFile: path, extname, version } = await getExtensionInfo();
   await writeExtensionControlFile({ path, extname, extensions, version });
 };
@@ -130,11 +130,11 @@ export const writeExtensionsToEnv = async () => {
     extensions = readFileSync(controlFile[0])
       .toString()
       .split('\n')
-      .find(line => line.match(/^requires/))
+      .find((line) => line.match(/^requires/))
       .split('=')[1]
-      .split('\'')[1]
+      .split("'")[1]
       .split(',')
-      .map(a => a.trim());
+      .map((a) => a.trim());
   } catch (e) {
     throw new Error('missing requires from control files or bad syntax');
   }
