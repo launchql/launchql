@@ -157,20 +157,94 @@ export const GraphQLTest = ({ settings }) => {
   };
 
   const graphQLQuery = async function graphQLQuery(
-    reqOptions = {},
+    reqOptions, // Any additional items to set on `req` (e.g. `{user: {id: 17}}`)
     Query,
-    variables
+    vars
   ) {
-    return await graphQL(reqOptions, async (query) => {
-      return await query(Query, variables);
+    const { schema, rootPgPool, options } = ctx;
+    const req = new MockReq({
+      url: options.graphqlRoute || '/graphql',
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      ...reqOptions
     });
+
+    const { pgSettings: pgSettingsGenerator } = options;
+    const pgSettings =
+      typeof pgSettingsGenerator === 'function'
+        ? await pgSettingsGenerator(req)
+        : pgSettingsGenerator;
+
+    return await withPostGraphileContext(
+      {
+        ...options,
+        pgPool: rootPgPool,
+        pgSettings
+      },
+      async (context) => {
+        /* BEGIN: pgClient REPLACEMENT */
+        // We're not going to use the `pgClient` that came with
+        // `withPostGraphileContext` because we want to ROLLBACK at the end. So
+        // we need to replace it, and re-implement the settings logic. Sorry.
+
+        const replacementPgClient = await rootPgPool.connect();
+        await replacementPgClient.query('begin');
+        await replacementPgClient.query("select set_config('role', $1, true)", [
+          POSTGRAPHILE_AUTHENTICATOR_ROLE
+        ]);
+
+        const localSettings = new Map();
+
+        // Set the custom provided settings before jwt claims and role are set
+        // this prevents an accidentional overwriting
+        if (typeof pgSettings === 'object') {
+          for (const key of Object.keys(pgSettings)) {
+            localSettings.set(key, String(pgSettings[key]));
+          }
+        }
+
+        // If there is at least one local setting.
+        if (localSettings.size !== 0) {
+          // Actually create our query.
+          const values = [];
+          const sqlQuery = `select ${Array.from(localSettings)
+            .map(([key, value]) => {
+              values.push(key);
+              values.push(value);
+              return `set_config($${values.length - 1}, $${
+                values.length
+              }, true)`;
+            })
+            .join(', ')}`;
+
+          // Execute the query.
+          await replacementPgClient.query(sqlQuery, values);
+        }
+        /* END: pgClient REPLACEMENT */
+
+        let getResult;
+        try {
+          // This runs our GraphQL query, passing the replacement client
+            if (typeof Query !== 'string') Query = print(Query);
+            getResult = await graphql(
+              schema,
+              Query,
+              null,
+              { ...context, pgClient: replacementPgClient },
+              vars
+            );
+        } finally {
+          // Rollback the transaction so no changes are written to the DB - this
+          // makes our tests fairly deterministic.
+
+          await replacementPgClient.query('commit');
+          replacementPgClient.release();
+        }
+        return getResult;
+      }
+    );
   };
 
-  return {
-    setup,
-    teardown,
-    graphQL,
-    graphQLQuery,
-    withContext: (cb) => cb(ctx)
-  };
-};
