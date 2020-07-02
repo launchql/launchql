@@ -5046,6 +5046,16 @@ envalid@6.0.1:
     meant "^1.0.1"
     validator "^12.0.0"
 
+envalid@6.0.2, envalid@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.npmjs.org/envalid/-/envalid-6.0.2.tgz#7139770e089acc945c0e47b5075d72915d8683e8"
+  integrity sha512-ChJb9a5rjwZ/NkcXfBrzEl5cFZaGLg38N7MlWJkv5qsmSypX2WJe28LkoAWcklC60nKZXYKRlBbsjuJSjYw0Xg==
+  dependencies:
+    chalk "^3.0.0"
+    dotenv "^8.2.0"
+    meant "^1.0.1"
+    validator "^13.0.0"
+
 envalid@^4.1.4:
   version "4.2.2"
   resolved "https://registry.npmjs.org/envalid/-/envalid-4.2.2.tgz#3ed23b3e42c987b4105b43789d8eb526538c025d"
@@ -5055,16 +5065,6 @@ envalid@^4.1.4:
     dotenv "^6.2.0"
     meant "^1.0.1"
     validator "^10.11.0"
-
-envalid@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.npmjs.org/envalid/-/envalid-6.0.2.tgz#7139770e089acc945c0e47b5075d72915d8683e8"
-  integrity sha512-ChJb9a5rjwZ/NkcXfBrzEl5cFZaGLg38N7MlWJkv5qsmSypX2WJe28LkoAWcklC60nKZXYKRlBbsjuJSjYw0Xg==
-  dependencies:
-    chalk "^3.0.0"
-    dotenv "^8.2.0"
-    meant "^1.0.1"
-    validator "^13.0.0"
 
 envinfo@^7.3.1:
   version "7.5.0"
@@ -6218,7 +6218,7 @@ graphql-parse-resolve-info@4.7.0:
   dependencies:
     debug "^4.1.1"
 
-"graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2":
+"graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
   version "14.6.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-14.6.0.tgz#57822297111e874ea12f5cd4419616930cd83e49"
   integrity sha512-VKzfvHEKybTKjQVpTFrA5yUq2S9ihcZvfJAtsDBBCuV6wauPu1xl/f9ehgVf0FcEJJs4vz6ysb/ZMkGigQZseg==
@@ -8832,6 +8832,11 @@ mkdirp@^1.0.4:
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+mock-req@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/mock-req/-/mock-req-0.2.0.tgz#749446804d2c006169342ee7be6bba1cffd534c2"
+  integrity sha1-dJRGgE0sAGFpNC7nvmu6HP/VNMI=
+
 modify-values@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
@@ -9942,6 +9947,37 @@ postgraphile-core@4.7.0:
   dependencies:
     graphile-build "4.7.0"
     graphile-build-pg "4.7.0"
+
+postgraphile@4.7.0:
+  version "4.7.0"
+  resolved "https://registry.npmjs.org/postgraphile/-/postgraphile-4.7.0.tgz#b6ec4ca5762b5d78c5b6c53b29a26fc89a4445e0"
+  integrity sha512-EtXs2laSS7/1N86eQ9uNgO9k1EP7+V9emop+OWbmGqbNGQsYTGPrUG9e3dvdyzuuDPN0+GgMvUzaZRBxpeaAWg==
+  dependencies:
+    "@graphile/lru" "4.5.0"
+    "@types/json5" "^0.0.30"
+    "@types/jsonwebtoken" "^8.3.2"
+    "@types/koa" "^2.0.44"
+    "@types/pg" "^7.4.10"
+    "@types/ws" "^6.0.1"
+    body-parser "^1.15.2"
+    chalk "^2.4.2"
+    commander "^2.19.0"
+    debug "^4.1.1"
+    finalhandler "^1.0.6"
+    graphile-utils "^4.7.0"
+    graphql "^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2"
+    http-errors "^1.5.1"
+    iterall "^1.0.2"
+    json5 "^2.1.1"
+    jsonwebtoken "^8.0.0"
+    parseurl "^1.3.2"
+    pg ">=6.1.0 <9"
+    pg-connection-string "^2.0.0"
+    pg-sql2 "4.7.0"
+    postgraphile-core "4.7.0"
+    subscriptions-transport-ws "^0.9.15"
+    tslib "^1.5.0"
+    ws "^6.1.3"
 
 postgres-array@~1.0.0:
   version "1.0.3"
