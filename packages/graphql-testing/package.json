@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphql-testing",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "graphql-testing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/graphql-testing#readme",
