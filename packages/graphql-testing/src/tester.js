@@ -209,6 +209,8 @@ export const GraphQLTest = ({ settings }) => {
       throw new Error('no args supplied to graphQL');
     }
 
+    console.log(reqOptions, Query, vars, commit);
+
     const { schema, rootPgPool, options } = ctx;
     const req = new MockReq({
       url: options.graphqlRoute || '/graphql',
