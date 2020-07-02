@@ -3,16 +3,23 @@
 import { TestDatabase } from '../lib/test-db';
 import { dropdb } from '../lib/db';
 import { getOpts } from '../lib/testing';
+import { sqitchPath } from '@launchql/db-utils';
 import env from '../env';
 
 if (!env.PGTEMPLATE_DATABASE) {
   throw new Error('no PGTEMPLATE_DATABASE defined in env!');
 }
 
-let extensions = env.PGEXTENSIONS;
-extensions = extensions.split(',');
-
 const run = async () => {
+  const pth = await sqitchPath();
+  let extensions = env.PGEXTENSIONS;
+  if (!extensions) {
+    console.log(pth);
+    console.log(process.cwd());
+    throw new Error('extensions not found');
+  }
+  extensions = extensions.split(',');
+
   const config = await getOpts({});
   try {
     await dropdb({ ...config, database: env.PGTEMPLATE_DATABASE });
