@@ -185,7 +185,7 @@ export const GraphQLTest = ({ settings }) => {
           Query = arguments[0];
           vars = arguments[1];
         } else {
-          reqOptions = {};
+          reqOptions = arguments[0];
           Query = arguments[1];
         }
       }
