@@ -240,7 +240,7 @@ export const GraphQLTest = ({ settings }) => {
           // Rollback the transaction so no changes are written to the DB - this
           // makes our tests fairly deterministic.
 
-          await replacementPgClient.query('rollback');
+          await replacementPgClient.query('commit');
           replacementPgClient.release();
         }
         return getResult;
