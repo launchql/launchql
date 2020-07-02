@@ -167,12 +167,29 @@ export const GraphQLTest = ({ settings }) => {
     );
   };
 
-  const graphQLQuery = async function graphQLQuery(
-    reqOptions, // Any additional items to set on `req` (e.g. `{user: {id: 17}}`)
-    Query,
-    vars,
-    commit = false
-  ) {
+  const graphQLQuery = async function graphQLQuery() {
+    // Any additional items to set on `req` (e.g. `{user: {id: 17}}`)
+    let reqOptions = {};
+    let Query;
+    let vars;
+    let commit = false;
+
+    if (arguments.length == 2) {
+      Query = arguments[0];
+      vars = arguments[1];
+    } else if (arguments.length == 3) {
+      reqOptions = arguments[0];
+      Query = arguments[1];
+      vars = arguments[2];
+    } else if (arguments.length == 4) {
+      reqOptions = arguments[0];
+      Query = arguments[1];
+      vars = arguments[2];
+      commit = arguments[3];
+    } else {
+      throw new Error('no args supplied to graphQL');
+    }
+
     const { schema, rootPgPool, options } = ctx;
     const req = new MockReq({
       url: options.graphqlRoute || '/graphql',
