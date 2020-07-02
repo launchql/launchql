@@ -234,8 +234,8 @@ export const GraphQLTest = ({ settings }) => {
           };
           return query;
         } finally {
-          replacementPgClient.release();
           await replacementPgClient.query('COMMIT');
+          replacementPgClient.release();
         }
       }
     );
