@@ -306,3 +306,5 @@ export default ({
     console.log(`[app listening at http://${env.SERVER_HOST}:${port}`)
   );
 };
+
+export { getGraphileSettings };
