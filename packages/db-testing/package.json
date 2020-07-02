@@ -8,8 +8,8 @@
   "main": "main/index.js",
   "module": "module/index.js",
   "bin": {
-    "launchql-db-templatedb": "./main/cmd/templatedb.js",
-    "launchql-db-droptemplatedb": "./main/cmd/droptemplatedb.js"
+    "launchql-templatedb": "./main/cmd/templatedb.js",
+    "launchql-droptemplatedb": "./main/cmd/droptemplatedb.js"
   },
   "directories": {
     "lib": "src",
