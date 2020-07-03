@@ -4,7 +4,10 @@ import gql from 'graphql-tag';
 let teardown, graphQLQuery;
 
 beforeAll(async () => {
-  ({ teardown, graphQLQuery } = await getConnections());
+  ({ teardown, graphQLQuery } = await getConnections([
+    'myschema_public',
+    'myschema_private'
+  ]));
 });
 
 afterAll(async () => {
@@ -13,7 +16,7 @@ afterAll(async () => {
 
 const CreateUser = gql`
   mutation CreateUser($username: String!) {
-    createUser(input: { username: $username }) {
+    createUser(input: { user: { username: $username } }) {
       user {
         id
         username
@@ -28,13 +31,14 @@ describe('signup', () => {
       const result = await graphQLQuery(
         CreateUser,
         {
-          name: 'pyramation'
+          username: 'pyramation'
         },
         true
       );
-      console.log(result);
       expect(result.data).toBeTruthy();
-      expect(result.data.CreateUser).toBeTruthy();
+      expect(result.data.createUser).toBeTruthy();
+      expect(result.data.createUser.user).toBeTruthy();
+      expect(result.data.createUser.user.id).toBeTruthy();
     });
   });
 });
