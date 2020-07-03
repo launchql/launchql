@@ -13,8 +13,9 @@ export const getConnectionsApi = async ([pub, priv], getService) => {
   await setup();
 
   const td = async () => {
-    await t1();
     await t2();
+    // do last
+    await t1();
   };
 
   return {
@@ -36,8 +37,9 @@ export const getConnections = async (getService) => {
   await setup();
 
   const td = async () => {
-    await t1();
     await t2();
+    // do last
+    await t1();
   };
 
   return {
