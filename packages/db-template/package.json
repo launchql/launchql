@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-template",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "launchql db template",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db-template#readme",
