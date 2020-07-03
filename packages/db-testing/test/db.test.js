@@ -9,7 +9,6 @@ const pgp = pgPromise({
 import { getConnObj, getConnStr, cleanup, verifydb } from './utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-require('dotenv').load();
 
 describe('createdb', () => {
   const database = `testing-db-${v4()}`;

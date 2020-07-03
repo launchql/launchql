@@ -16,7 +16,6 @@ import {
 } from './utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-require('dotenv').load();
 
 let db;
 

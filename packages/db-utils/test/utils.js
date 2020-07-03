@@ -1,5 +1,4 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-require('dotenv').load();
 
 import { connectionString } from '../src/index';
 import env from '../src/env';

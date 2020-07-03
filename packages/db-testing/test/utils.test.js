@@ -11,7 +11,6 @@ import pgPromise from 'pg-promise';
 import { config, getConnStr, expectBasicSeed } from './utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-require('dotenv').load();
 
 const pgp = pgPromise({
   noWarnings: true
