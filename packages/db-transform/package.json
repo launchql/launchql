@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-transform",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "transform",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db-transform#readme",
