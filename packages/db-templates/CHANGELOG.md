@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/launchql/launchql-db/compare/@launchql/db-templates@0.0.37...@launchql/db-templates@0.1.0) (2020-07-03)
+
+**Note:** Version bump only for package @launchql/db-templates
+
+
+
+
+
 ## [0.0.37](https://github.com/launchql/launchql-db/compare/@launchql/db-templates@0.0.36...@launchql/db-templates@0.0.37) (2020-07-03)
 
 **Note:** Version bump only for package @launchql/db-templates
