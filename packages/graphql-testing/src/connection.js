@@ -6,15 +6,15 @@ import {
 } from '@launchql/db-testing';
 
 export const getConnectionsApi = async ([pub, priv], getService) => {
-  const { api, admin, db, conn, auth } = await getApi([pub, priv]);
-  const { setup, teardown, graphQL, graphQLQuery } = GraphQLTest(
+  const { api, admin, db, conn, teardown: t1 } = await getApi([pub, priv]);
+  const { setup, teardown: t2, graphQL, graphQLQuery } = GraphQLTest(
     getService({ dbname: db.client.database })
   );
   await setup();
 
   const td = async () => {
-    await teardown();
-    await closeConnections({ db, conn });
+    await t1();
+    await t2();
   };
 
   return {
@@ -22,14 +22,13 @@ export const getConnectionsApi = async ([pub, priv], getService) => {
     admin,
     db,
     conn,
-    auth,
     teardown: td,
     graphQL,
     graphQLQuery
   };
 };
 
-export const getConnections = async (schemas, getService) => {
+export const getConnections = async (getService) => {
   const { db, conn, teardown: t1 } = await getC();
   const { setup, teardown: t2, graphQL, graphQLQuery } = GraphQLTest(
     getService({ dbname: db.client.database })
@@ -50,7 +49,7 @@ export const getConnections = async (schemas, getService) => {
   };
 };
 
-export const getQuery = async (dbname, schemas, getService) => {
+export const getQuery = async (dbname, getService) => {
   const { setup, teardown, graphQL, graphQLQuery } = GraphQLTest(
     getService({ dbname })
   );
