@@ -25,9 +25,9 @@ export default async (argv) => {
   ✨ Great work! Now, try this:
 
   cd packages/
-  mkdir myfirstmodule
-  cd myfirstmodule/
-  skitch init
+  mkdir mymodule
+  cd mymodule/
+  lql init
   `);
 
     return;
