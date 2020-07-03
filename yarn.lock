@@ -2606,6 +2606,14 @@
   dependencies:
     "@types/node" ">= 8"
 
+"@pgql/parse@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npmjs.org/@pgql/parse/-/parse-1.2.2.tgz#27633b83c2d8ef834e10eb018350a5328b1002ad"
+  integrity sha512-qBjMkn8vXL3kVC2roRhIw+YjQSIXOsS2cJCkAhQfulc5K6P9Dt+cKcVLlNeAPBiob3wXrKS2RGTV5HSlVKeK7A==
+  dependencies:
+    node-addon-api "^1.6.3"
+    node-gyp "^3.3.1"
+
 "@pyramation/args@^0.0.4":
   version "0.0.4"
   resolved "https://registry.npmjs.org/@pyramation/args/-/args-0.0.4.tgz#97ac0f07469ccd27d5b7d624061cf41cda52aba0"
@@ -9685,14 +9693,6 @@ pg-packet-stream@^1.1.0:
   resolved "https://registry.npmjs.org/pg-packet-stream/-/pg-packet-stream-1.1.0.tgz#e45c3ae678b901a2873af1e17b92d787962ef914"
   integrity sha512-kRBH0tDIW/8lfnnOyTwKD23ygJ/kexQVXZs7gEyBljw4FYqimZFxnMMx50ndZ8In77QgfGuItS5LLclC2TtjYg==
 
-pg-plpgsql-query-native@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/pg-plpgsql-query-native/-/pg-plpgsql-query-native-1.2.1.tgz#6064951aed19821d0ae7278a6d088c2519e19cef"
-  integrity sha512-sIApkXWNkHe54M5V7OLj1H5RbangRUBNom0qjWGCofhOWkVxwqh1SrLs4XVDjZo5OC9+YHY0yzq0BKFoa2ZO+Q==
-  dependencies:
-    node-addon-api "^1.6.3"
-    node-gyp "^3.3.1"
-
 pg-pool@1.*:
   version "1.8.0"
   resolved "https://registry.npmjs.org/pg-pool/-/pg-pool-1.8.0.tgz#f7ec73824c37a03f076f51bfdf70e340147c4f37"
@@ -9853,15 +9853,15 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.7.1:
-  version "0.7.1"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.1.tgz#6ba7040b555bea1d7501365e3f546f109f13e871"
-  integrity sha512-KW/I9LnS6rlBhskX0KZEUdDJR6nmwMHq3wEeBVnjfpQeiP3tZgoCr2mSYsgZ+1K6P4Am3R8j9X4tYanE8His+g==
+pgsql-parser@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.2.tgz#e31ab4d5dfd0329e7bef99ac8eaf4929da2770b9"
+  integrity sha512-UYl9SLLAwF2fb9OAOAxYBYxL0vcq/WjT4X3RCgO5B5pp7fZqs/7GXjblOtW/uwTwGpJNxFC8spBwLz/WQhKLNQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
+    "@pgql/parse" "1.2.2"
     dotty "^0.1.0"
     lodash "^4.13.1"
-    pg-plpgsql-query-native "1.2.1"
 
 picomatch@^2.0.4, picomatch@^2.0.5:
   version "2.2.1"

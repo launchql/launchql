@@ -59,6 +59,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "pgsql-parser": "0.7.1"
+    "pgsql-parser": "0.7.2"
   }
 }
