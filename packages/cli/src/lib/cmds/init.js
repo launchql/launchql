@@ -84,7 +84,7 @@ export default async (argv) => {
 
 Now try this:
 
-launchql generate
+lql generate
 
 `);
 };

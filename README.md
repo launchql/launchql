@@ -53,8 +53,8 @@ https://github.com/pyramation/pg-utils
 Initialize a project
 
 ```sh
-launchql init --bare
-launchql install
+lql init --bare
+lql install
 ```
 
 Now you should have a `packages/` folder
@@ -63,20 +63,20 @@ Now you should have a `packages/` folder
 cd packages/
 mkdir myfirstmodule
 cd myfirstmodule/
-launchql init
+lql init
 ```
 
 Now you can create some `sql` using `sqitch`!
 
 ```sh
-launchql generate schema
-launchql generate table
+lql generate schema
+lql generate table
 ```
 
 Deploy recursively, using all the required modules!
 
 ```sh
-launchql deploy --createdb --recursive
+lql deploy --createdb --recursive
 ```
 
 ## testing
@@ -85,7 +85,7 @@ To create a test, first cd into a sqitch module
 
 ```sh
 cd packages/myfirstmodule
-launchql maketest
+lql maketest
 ```
 
 Then you can use `jest` via `yarn` to test your logic.
@@ -133,12 +133,12 @@ You can install an npm module and then bundle it for `plv8`
 
 ```sh
 yarn add my-awesome-npm-module
-launchql bundle my-awesome-npm-module awesomeThing
+lql bundle my-awesome-npm-module awesomeThing
 ```
 
 ## Install some existing packages
 
 ```sh
-launchql install skitch-extension-verify
-launchql install skitch-extension-jobs
+lql install skitch-extension-verify
+lql install skitch-extension-jobs
 ```
