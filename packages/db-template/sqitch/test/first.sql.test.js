@@ -11,7 +11,10 @@ describe('signup', () => {
   });
   describe('has a database', () => {
     it('query your  database', async () => {
-      const res = await db.any('SELECT 1');
+      await db.any('INSERT INTO myschema.mytable DEFAULT VALUES');
+      const res = await db.any('SELECT * FROM myschema.mytable');
+      console.log(res);
+      expect(res.length).toBe(1);
       expect(res.length).toBe(0);
     });
   });
