@@ -27,7 +27,7 @@ export const packageModule = async (extension = true) => {
 
   // sql
   try {
-    const query = parser.parse(sql).query.reduce((m, stmt) => {
+    const query = parser.parse(sql).reduce((m, stmt) => {
       if (extension) {
         if (stmt.RawStmt.stmt.hasOwnProperty('TransactionStmt')) return m;
         if (stmt.RawStmt.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
@@ -39,7 +39,7 @@ export const packageModule = async (extension = true) => {
       : '';
     const finalSql = parser.deparse(query);
     const tree1 = query;
-    const tree2 = parser.parse(finalSql).query;
+    const tree2 = parser.parse(finalSql);
     const results = {
       sql: `${topLine}${finalSql}`
     };
