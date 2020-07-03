@@ -5,7 +5,10 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "transform-regenerator",
-    "transform-runtime"
+    "transform-runtime",
+    "import-graphql"
   ],
-  "presets": ["env"]
+  "presets": [
+    "env"
+  ]
 }

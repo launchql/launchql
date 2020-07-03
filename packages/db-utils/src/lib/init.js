@@ -26,14 +26,32 @@ const makePackage = ({ name, description, author }) => {
       'test:watch': 'FAST_TEST=1 jest --watch'
     },
     devDependencies: {
-      '@types/jest': '21.1.0',
-      '@types/node': '8.0.0',
-      'babel-cli': '6.24.1',
+      '@babel/cli': '7.8.4',
+      '@babel/core': '7.8.4',
+      '@babel/plugin-proposal-class-properties': '7.8.3',
+      '@babel/plugin-proposal-export-default-from': '7.8.3',
+      '@babel/plugin-proposal-object-rest-spread': '7.9.6',
+      '@babel/plugin-transform-runtime': '7.9.6',
+      '@babel/preset-env': '7.9.6',
+      '@babel/preset-react': '7.9.4',
+      '@launchql/db-testing': '0.0.25',
+      '@launchql/graphql-testing': '0.0.40',
+      'babel-core': '7.0.0-bridge.0',
+      'babel-eslint': '10.0.3',
       'babel-jest': '20.0.3',
-      'babel-preset-react-app': '3.0.0',
+      'babel-plugin-import-graphql': '2.7.0',
+      'babel-plugin-macros': '2.8.0',
+      dotenv: '5.0.1',
+      eslint: '^6.8.0',
+      'eslint-config-prettier': '^6.10.0',
+      'eslint-plugin-prettier': '^3.1.2',
+      'graphql-tag': '2.10.3',
       jest: '20.0.4',
-      '@launchql/db-testing': 'latest',
-      uuid: '3.1.0'
+      prettier: '^1.19.1',
+      'regenerator-runtime': '^0.13.2'
+    },
+    dependencies: {
+      '@babel/runtime': '^7.4.2'
     }
   };
 };
