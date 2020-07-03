@@ -4,10 +4,7 @@ import gql from 'graphql-tag';
 let teardown, graphQLQuery;
 
 beforeAll(async () => {
-  ({ teardown, graphQLQuery } = await getConnections([
-    'myschema_public',
-    'myschema_private'
-  ]));
+  ({ teardown, graphQLQuery } = await getConnections(['myschema_public']));
 });
 
 afterAll(async () => {
