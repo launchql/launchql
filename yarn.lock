@@ -2606,10 +2606,10 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@pgql/parse@1.2.5":
-  version "1.2.5"
-  resolved "https://registry.npmjs.org/@pgql/parse/-/parse-1.2.5.tgz#ab028a106c0c203a423ad51533b869a46a3063fe"
-  integrity sha512-oAvLZ4kpOfleNEH/wWOrLRc92BcVofFRL2ymQpctISWMf+b0XqabNm8y0GcGnRDJe0CfJmSC02ge7b54ihaPRg==
+"@pgql/parse@1.2.6":
+  version "1.2.6"
+  resolved "https://registry.npmjs.org/@pgql/parse/-/parse-1.2.6.tgz#abda96d49cfbb54b06e63293d9b2e0fea5b26f91"
+  integrity sha512-YQu8io3va70Qpv3Wn36xSe7Mr5P7i9IYVdCS4XK2O08Q1Rc1F1JFm9zKPSQk8TQ8Uth7g4gQCoV0zf+MwW+IBg==
   dependencies:
     node-addon-api "^1.6.3"
     node-gyp "^3.3.1"
@@ -9853,13 +9853,13 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.7.5:
-  version "0.7.5"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.5.tgz#c48e10032747582f7fc0d1bb30b2b80987fe62d2"
-  integrity sha512-JHpGHrTtt+lf+tmB4zfKIxgdBx1GVSP5MoeZo2hh88xGv7oM573O27Eqax3M/HXEQzsEhlFS+mNWO+oF6w5oxQ==
+pgsql-parser@0.7.6:
+  version "0.7.6"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.6.tgz#c7d8bceef854f574b3a38f703f29347cf194fc23"
+  integrity sha512-37A7WnnGu+WAaD7aZ/vnvIcvKuMAIrt5YuxEmwM5+4klCpdu57d5ch1chFIahpUgrQLOT5HGMaamUbFWAplvSg==
   dependencies:
     "@babel/runtime" "^7.4.2"
-    "@pgql/parse" "1.2.5"
+    "@pgql/parse" "1.2.6"
     dotty "^0.1.0"
     lodash "^4.13.1"
 
