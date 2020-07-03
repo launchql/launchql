@@ -201,16 +201,16 @@ packages/**/module`;
     `${process.cwd()}/Makefile`,
     `
 up:
-docker-compose up -d
+\tdocker-compose up -d
 
 down:
-docker-compose down -v
+\tdocker-compose down -v
 
 ssh:
-docker exec -it ${name}-postgres /bin/bash
+\tdocker exec -it ${name}-postgres /bin/bash
 
 install:
-docker exec ${name}-postgres /sql-extensions/install.sh
+\tdocker exec ${name}-postgres /sql-extensions/install.sh
 
   `
   );
