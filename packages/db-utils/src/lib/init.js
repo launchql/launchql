@@ -22,7 +22,7 @@ const makePackage = ({ name, description, author }) => {
     author,
     private: true,
     scripts: {
-      test: 'FAST_TEST=1 launchql-db-templatedb && jest',
+      test: 'FAST_TEST=1 launchql-templatedb && jest',
       'test:watch': 'FAST_TEST=1 jest --watch'
     },
     devDependencies: {

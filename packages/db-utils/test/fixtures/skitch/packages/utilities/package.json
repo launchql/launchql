@@ -5,8 +5,8 @@
   "author": "Dan Lynch <pyramation@gmail.com>",
   "private": true,
   "scripts": {
-    "test": "FAST_TEST=1 launchql-db-templatedb && jest",
-    "test:watch": "FAST_TEST=1 launchql-db-templatedb && jest --watch"
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 launchql-templatedb && jest --watch"
   },
   "devDependencies": {
     "@types/jest": "21.1.0",
