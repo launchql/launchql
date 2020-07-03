@@ -137,7 +137,7 @@ export const initSkitch = async () => {
   const dir = process.cwd();
   shell.cp('-r', `${srcPath}/template/*`, `${dir}/`);
   shell.cp('-r', `${srcPath}/template/.*`, `${dir}/`);
-  const name = sluggify(basename(dirname(process.cwd())));
+  const name = sluggify(basename(process.cwd()));
   const pkg = {
     private: true,
     name,
