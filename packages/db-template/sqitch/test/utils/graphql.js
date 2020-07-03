@@ -1,6 +1,9 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
-import { getConnections as getC } from '@launchql/graphql-testing';
+import {
+  getConnections as getC,
+  getConnectionsApi as getA
+} from '@launchql/graphql-testing';
 
 export const getService = (schemas) => ({ dbname }) => ({
   settings: {
@@ -17,6 +20,10 @@ export const getService = (schemas) => ({ dbname }) => ({
   }
 });
 
-export const getConnections = async ([PUBLIC_SCHEMA, PRIVATE_SCHEMA]) => {
-  return getC([PUBLIC_SCHEMA, PRIVATE_SCHEMA], getService([PUBLIC_SCHEMA]));
+export const getConnections = async (schemas) => {
+  return getC(schemas, getService(schemas));
+};
+
+export const getConnectionsApi = async ([pub, priv]) => {
+  return getA([pub, priv], getService([pub]));
 };
