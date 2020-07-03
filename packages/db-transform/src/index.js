@@ -50,7 +50,7 @@ export const transformProps = (obj, props) => {
 };
 
 export const transform = (statement, props) => {
-  let { query } = parse(statement);
-  query = transformProps(query, props);
-  return deparse(query);
+  let tree = parse(statement);
+  tree = transformProps(tree, props);
+  return deparse(tree);
 };

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "0.4.43",
+  "version": "0.4.44",
   "description": "launchql cli",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db#readme",
@@ -69,10 +69,10 @@
     "@launchql/db-env": "^0.0.5",
     "@launchql/db-migrate": "^0.1.7",
     "@launchql/db-template": "^0.0.18",
-    "@launchql/db-templates": "^0.0.36",
-    "@launchql/db-testing": "^0.0.42",
-    "@launchql/db-transform": "^0.0.5",
-    "@launchql/db-utils": "^0.0.36",
+    "@launchql/db-templates": "^0.0.37",
+    "@launchql/db-testing": "^0.0.43",
+    "@launchql/db-transform": "^0.0.6",
+    "@launchql/db-utils": "^0.0.37",
     "@launchql/explorer": "^0.8.0",
     "@launchql/server": "^0.16.2",
     "@pyramation/prompt": "0.0.1",
@@ -82,7 +82,7 @@
     "minimist": "^1.2.0",
     "mkdirp": "0.5.1",
     "pg-promise": "8.2.1",
-    "pgsql-parser": "0.6.11",
+    "pgsql-parser": "0.7.0",
     "shelljs": "0.8.1"
   }
 }
