@@ -9853,11 +9853,12 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.0.tgz#44d13793b181e73bbe969424ff6323405ae8b1b8"
-  integrity sha512-kWmfn13rXd4NFvD3q6Bs3EDXzh8IjQ5xTvy+MM9FO3r4jW0cmB9csEn0u1KIbdhugl4mNDDQSOvLXXp8P4j/SQ==
+pgsql-parser@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.1.tgz#6ba7040b555bea1d7501365e3f546f109f13e871"
+  integrity sha512-KW/I9LnS6rlBhskX0KZEUdDJR6nmwMHq3wEeBVnjfpQeiP3tZgoCr2mSYsgZ+1K6P4Am3R8j9X4tYanE8His+g==
   dependencies:
+    "@babel/runtime" "^7.4.2"
     dotty "^0.1.0"
     lodash "^4.13.1"
     pg-plpgsql-query-native "1.2.1"
