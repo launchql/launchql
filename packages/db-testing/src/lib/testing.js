@@ -1,5 +1,4 @@
 const v4 = require('uuid/v4');
-import { IConnected } from 'pg-promise';
 import { createdb, dropdb, templatedb, installExt } from './db';
 import { sqitchFast, sqitch } from './sqitch';
 import { sqitchPath, getInstalledExtensions } from '@launchql/db-utils';
@@ -148,7 +147,12 @@ export const getConnections = async () => {
   conn.setContext({
     role: 'anonymous'
   });
-  return { db, conn };
+
+  const teardown = async () => {
+    await closeConnections({ db, conn });
+  };
+
+  return { db, conn, teardown };
 };
 
 export const closeConnections = async ({ db, conn }) => {

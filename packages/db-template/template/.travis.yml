@@ -35,5 +35,4 @@ before_install:
 script:
   - cd $PACKAGE
   - yarn install
-  - export PGEXTENSIONS=$(cat .env | grep PGEXTENSIONS | awk -F'=' '{print $2}')
   - yarn test

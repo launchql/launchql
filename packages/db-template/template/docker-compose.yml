@@ -1,7 +1,7 @@
-version: '2'
+version: "2"
 services:
   postgres:
-    container_name: postgres
+    container_name: launchql-postgres
     image: pyramation/postgres-plv8
     environment:
       - "POSTGRES_USER=postgres"
