@@ -61,7 +61,7 @@ export default async (argv) => {
       message: 'which extensions?',
       choices: modules,
       type: 'checkbox',
-      default: ['plpgsql'],
+      default: ['plpgsql', 'uuid-ossp'],
       required: true
     }
   ];
