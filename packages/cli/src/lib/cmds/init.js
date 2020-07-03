@@ -53,7 +53,7 @@ export default async (argv) => {
     {
       name: 'description',
       message: 'project description',
-      default: 'skitch project',
+      default: basename(process.cwd()),
       required: true
     },
     {

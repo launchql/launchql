@@ -23,7 +23,6 @@ export const getConnectionsApi = async ([pub, priv], getService) => {
     db,
     conn,
     auth,
-    setup,
     teardown: td,
     graphQL,
     graphQLQuery
@@ -45,7 +44,6 @@ export const getConnections = async (schemas, getService) => {
   return {
     db,
     conn,
-    setup,
     teardown: td,
     graphQL,
     graphQLQuery
@@ -59,7 +57,6 @@ export const getQuery = async (dbname, schemas, getService) => {
   await setup();
 
   return {
-    setup,
     teardown,
     graphQL,
     graphQLQuery

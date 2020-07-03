@@ -43,6 +43,7 @@ const makePackage = ({ name, description, author }) => {
       'eslint-config-prettier': '^6.10.0',
       'eslint-plugin-prettier': '^3.1.2',
       'graphql-tag': '2.10.3',
+      graphql: '^14.0.2',
       jest: '26.1.0',
       prettier: '2.0.5',
       'regenerator-runtime': '^0.13.2'
