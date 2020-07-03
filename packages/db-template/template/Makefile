@@ -6,7 +6,7 @@ down:
 	docker-compose down -v
 
 ssh:
-	docker exec -it postgres /bin/bash
+	docker exec -it launchql-postgres /bin/bash
 
 install:
-	docker exec postgres /sql-extensions/install.sh
+	docker exec launchql-postgres /sql-extensions/install.sh

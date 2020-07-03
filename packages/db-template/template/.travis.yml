@@ -23,7 +23,6 @@ env:
     - APP_PASSWORD=app_password
   matrix:
     - PACKAGE=packages/yourpackage1
-    - PACKAGE=packages/yourpackage2
 
 before_install:
   - yarn install

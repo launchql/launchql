@@ -180,4 +180,15 @@ export const initSkitch = async () => {
     }
   };
   writeFileSync(`${process.cwd()}/lerna.json`, JSON.stringify(lerna, null, 2));
+  const ignore = `node_modules
+.DS_Store
+.eslintcache
+*.log
+**/node_modules
+coverage
+packages/**/build
+packages/**/main
+packages/**/module`;
+  writeFileSync(`${process.cwd()}/.gitignore`, ignore);
+  writeFileSync(`${process.cwd()}/.npmignore`, ignore);
 };
