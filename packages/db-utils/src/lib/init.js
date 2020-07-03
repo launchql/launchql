@@ -41,7 +41,6 @@ const makePackage = ({ name, description, author }) => {
       'babel-jest': '20.0.3',
       'babel-plugin-import-graphql': '2.7.0',
       'babel-plugin-macros': '2.8.0',
-      dotenv: '5.0.1',
       eslint: '^6.8.0',
       'eslint-config-prettier': '^6.10.0',
       'eslint-plugin-prettier': '^3.1.2',
@@ -99,6 +98,35 @@ export const init = async ({ name, description, author, extensions }) => {
 
   const plan = await makePlan(sqitchPath, settings);
   writeFileSync(`${sqitchPath}/sqitch.plan`, plan);
+  writeFileSync(
+    `${sqitchPath}/.npmignore`,
+    `*.log
+npm-debug.log*
+
+# Coverage directory used by tools like istanbul
+coverage
+.nyc_output
+
+# Dependency directories
+node_modules
+
+# npm package lock
+package-lock.json
+yarn.lock
+
+# project files
+src
+test
+examples
+CHANGELOG.md
+.travis.yml
+.editorconfig
+.eslintignore
+.eslintrc
+.babelrc
+.gitignore
+`
+  );
 };
 
 export const initSkitch = async () => {
