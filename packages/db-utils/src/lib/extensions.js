@@ -12,7 +12,15 @@ export const getAvailableExtensions = async () => {
       m.push(v);
       return m;
     },
-    ['plpgsql', 'uuid-ossp', 'pgcrypto', 'citext', 'hstore', 'plv8']
+    [
+      'plpgsql',
+      'uuid-ossp',
+      'pgcrypto',
+      'citext',
+      'hstore',
+      'btree_gist',
+      'plv8'
+    ]
   );
   return modules;
 };

@@ -125,6 +125,11 @@ CHANGELOG.md
 .gitignore
 `
   );
+  writeFileSync(
+    `${sqitchPath}/.gitignore`,
+    `node_modules
+`
+  );
 };
 
 export const initSkitch = async () => {
@@ -191,4 +196,40 @@ packages/**/main
 packages/**/module`;
   writeFileSync(`${process.cwd()}/.gitignore`, ignore);
   writeFileSync(`${process.cwd()}/.npmignore`, ignore);
+  writeFileSync(
+    `${process.cwd()}/Makefile`,
+    `
+up:
+docker-compose up -d
+
+down:
+docker-compose down -v
+
+ssh:
+docker exec -it ${name}-postgres /bin/bash
+
+install:
+docker exec ${name}-postgres /sql-extensions/install.sh
+
+  `
+  );
+  writeFileSync(
+    `${process.cwd()}/docker-compose.yml`,
+    `version: "2"
+services:
+  postgres:
+    container_name: ${name}-postgres
+    image: pyramation/postgres-plv8
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=password"
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    volumes:
+      - ./packages:/sql-extensions
+      - ./node_modules:/sql-modules
+  `
+  );
 };
