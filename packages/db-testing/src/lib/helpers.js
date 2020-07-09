@@ -54,15 +54,24 @@ export const getInsertStmt = (name, vars, casts = {}) => {
   const keys = Object.keys(vars);
   const castVals = keys.map((k) => casts[k]);
   const values = Object.values(vars);
+  // console.log( `INSERT INTO ${name} (${keys.join(',')}) VALUES ${P(values, castVals)} RETURNING *`);
   return `INSERT INTO ${name} (${keys.join(',')}) VALUES ${P(
     values,
     castVals
   )} RETURNING *`;
 };
 
+export const getInsertDefaultStmt = (name) => {
+  return `INSERT INTO ${name} DEFAULT VALUES RETURNING *`;
+};
+
 export const getInsert = (name, vars, casts) => {
-  const values = Object.values(vars);
-  return [getInsertStmt(name, vars, casts), values];
+  const values = Object.values(vars || {});
+  if (values.length > 0) {
+    return [getInsertStmt(name, vars, casts), values];
+  } else {
+    return [getInsertDefaultStmt(name)];
+  }
 };
 
 export const getUpdateStmt = (name, vars, where, casts = {}) => {
