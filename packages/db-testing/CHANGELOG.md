@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.7](https://github.com/launchql/launchql-db/compare/@launchql/db-testing@0.1.6...@launchql/db-testing@0.1.7) (2020-07-09)
+
+
+### Bug Fixes
+
+* insert default values ([8fa0d25](https://github.com/launchql/launchql-db/commit/8fa0d254bd0116b5d38a7a2e9e68de7b434e3ceb))
+
+
+
+
+
 ## [0.1.6](https://github.com/launchql/launchql-db/compare/@launchql/db-testing@0.1.5...@launchql/db-testing@0.1.6) (2020-07-03)
 
 **Note:** Version bump only for package @launchql/db-testing
