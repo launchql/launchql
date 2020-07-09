@@ -52,7 +52,7 @@ COMMIT;
     const content = opts.replacer(`-- Verify: ${deploy} on pg
 
 BEGIN;
-${row.verify && opts.replacer(row.verify)}
+${opts.replacer(row.verify)}
 COMMIT;  
 
 `);
@@ -69,7 +69,7 @@ COMMIT;
     const content = `-- Revert: ${deploy} from pg
 
 BEGIN;
-${row.revert && opts.replacer(row.revert)}
+${opts.replacer(row.revert)}
 COMMIT;  
 
 `;
