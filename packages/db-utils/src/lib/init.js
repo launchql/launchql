@@ -56,7 +56,7 @@ const makePackage = ({ name, description, author }) => {
 
 export const init = async ({ name, description, author, extensions }) => {
   await sPath();
-
+  console.log({ name, description, author, extensions });
   // init sqitch
 
   const cmd = ['sqitch', 'init', name, '--engine', 'pg'].join(' ');
