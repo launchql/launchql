@@ -224,7 +224,7 @@ ${rows
     return [new RegExp(f, 'g'), r];
   });
 
-  const replacer = (str, n = 0) => {
+  const replacer = (str = '', n = 0) => {
     if (replace[n] && replace[n].length == 2) {
       return replacer(str.replace(replace[n][0], replace[n][1]), n + 1);
     }
