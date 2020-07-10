@@ -1,4 +1,4 @@
-process.env.SKITCH_PATH = __dirname + '/fixtures/broken';
+process.env.SKITCH_PATH = __dirname + '/../__fixtures__/broken';
 import { getDeps, extDeps } from '../src/lib/deps';
 
 describe('deps', () => {
@@ -6,7 +6,7 @@ describe('deps', () => {
     let failed = false;
     try {
       const res = await getDeps(
-        __dirname + '/fixtures/broken/packages/secrets',
+        __dirname + '/../__fixtures__/broken/packages/secrets',
         'secrets'
       );
     } catch (e) {

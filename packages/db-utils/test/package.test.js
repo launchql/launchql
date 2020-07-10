@@ -1,6 +1,6 @@
 import { packageModule } from '../src/lib/package';
-process.env.SKITCH_PATH = __dirname + '/fixtures/skitch';
-process.env.SQITCH_PATH = __dirname + '/fixtures/skitch/packages/secrets';
+process.env.SKITCH_PATH = __dirname + '/../__fixtures__/skitch';
+process.env.SQITCH_PATH = __dirname + '/../__fixtures__/skitch/packages/secrets';
 
 const clean = (t) =>
   t

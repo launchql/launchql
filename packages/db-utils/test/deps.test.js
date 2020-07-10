@@ -1,10 +1,10 @@
-process.env.SKITCH_PATH = __dirname + '/fixtures/skitch';
+process.env.SKITCH_PATH = __dirname + '/../__fixtures__/skitch';
 import { getDeps, extDeps } from '../src/lib/deps';
 
 describe('deps', () => {
   it('sqitch package dependencies', async () => {
     const res = await getDeps(
-      __dirname + '/fixtures/skitch/packages/utils',
+      __dirname + '/../__fixtures__/skitch/packages/utils',
       'utils'
     );
     expect(res).toEqual({

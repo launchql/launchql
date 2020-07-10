@@ -1,5 +1,5 @@
 import { build } from '../src/lib/build';
-process.env.SKITCH_PATH = __dirname + '/fixtures/skitch';
+process.env.SKITCH_PATH = __dirname + '/../__fixtures__/skitch';
 
 const clean = (t) =>
   t

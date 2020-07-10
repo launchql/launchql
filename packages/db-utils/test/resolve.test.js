@@ -24,7 +24,7 @@ describe('resolve', () => {
   it('throws an error if file not found', async () => {
     let failed = false;
     try {
-      await resolve(__dirname + '/fixtures/resolve/error-case');
+      await resolve(__dirname + '/../__fixtures__/resolve/error-case');
     } catch (e) {
       expect(e.message).toEqual(
         'no module schemas/myschema/somethingdoesntexist'
@@ -36,7 +36,7 @@ describe('resolve', () => {
   it('throws an error if circular reference found', async () => {
     let failed = false;
     try {
-      await resolve(__dirname + '/fixtures/resolve/circular');
+      await resolve(__dirname + '/../__fixtures__/resolve/circular');
     } catch (e) {
       expect(e.message).toEqual(
         'Circular reference detected schemas/myschema/tables/sometable/table, schemas/myschema/schema'
@@ -48,7 +48,7 @@ describe('resolve', () => {
   it('throws an error if invalid sql found', async () => {
     let failed = false;
     try {
-      await resolve(__dirname + '/fixtures/resolve/invalid');
+      await resolve(__dirname + '/../__fixtures__/resolve/invalid');
     } catch (e) {
       expect(e.message).toEqual(
         `deployment script in wrong place or is named wrong internally
@@ -59,14 +59,14 @@ describe('resolve', () => {
     expect(failed).toBe(true);
   });
   it('resolves sql in proper order', async () => {
-    let sql = await resolve(__dirname + '/fixtures/resolve/basic');
+    const sql = await resolve(__dirname + '/../__fixtures__/resolve/basic');
     expect(sql).toBeTruthy();
     expect(sql.trim()).toEqual(expectResult);
   });
   it('resolves sql in proper order using cwd()', async () => {
     const dir = process.cwd();
-    process.chdir(__dirname + '/fixtures/resolve/basic');
-    let sql = await resolve();
+    process.chdir(__dirname + '/../__fixtures__/resolve/basic');
+    const sql = await resolve();
     expect(sql).toBeTruthy();
     expect(sql.trim()).toEqual(expectResult);
     process.chdir(dir);

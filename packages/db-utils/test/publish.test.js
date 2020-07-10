@@ -12,7 +12,7 @@ describe('publish', () => {
   let dir, projDir;
   beforeEach(async () => {
     dir = TMPDIR + '/' + random();
-    shell.cp('-r', __dirname + '/fixtures/publish', dir);
+    shell.cp('-r', __dirname + '/../__fixtures__/publish', dir);
     process.env.SKITCH_PATH = dir;
     process.env.SQITCH_PATH = dir + '/packages/secrets';
     process.chdir(dir);

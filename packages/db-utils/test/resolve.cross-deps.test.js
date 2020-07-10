@@ -28,7 +28,9 @@ COMMIT;`;
 
 describe('resolve works with cross deps', () => {
   it('resolves sql in proper order', async () => {
-    const sql = await resolve(__dirname + '/fixtures/skitch/packages/utils');
+    const sql = await resolve(
+      __dirname + '/../__fixtures__/skitch/packages/utils'
+    );
     expect(sql).toBeTruthy();
     expect(clean(sql)).toEqual(clean(expectResult));
   });

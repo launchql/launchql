@@ -1,4 +1,4 @@
-process.env.SKITCH_PATH = __dirname + '/fixtures/skitch';
+process.env.SKITCH_PATH = __dirname + '/../__fixtures__/skitch';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
