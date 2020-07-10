@@ -1,6 +1,6 @@
 # launchql
 
-<!-- [![Build Status](https://travis-ci.org/launchql/launchql.svg?branch=master)](https://travis-ci.org/launchql/launchql) -->
+[![Build Status](https://travis-ci.org/launchql/launchql.svg?branch=master)](https://travis-ci.org/launchql/launchql)
 
 Create high-performance APIs with GraphQL and Postgres
 
