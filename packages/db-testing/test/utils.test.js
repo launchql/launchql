@@ -8,7 +8,7 @@ import {
   templatedb
 } from '../src/index';
 import pgPromise from 'pg-promise';
-import { config, getConnStr, expectBasicSeed } from './utils';
+import { config, getConnStr, expectBasicSeed } from '../utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
@@ -34,7 +34,7 @@ describe('sqitch', () => {
   });
 
   it('sqitch', async () => {
-    await sqitch(opts, __dirname + '/fixtures/basic');
+    await sqitch(opts, __dirname + '/../__fixtures__/basic');
 
     const cn = await pgp(opts);
     const db = await cn.connect({ direct: true });
@@ -46,7 +46,7 @@ describe('sqitch', () => {
 
   it('sqitch II', async () => {
     const dir = process.cwd();
-    process.chdir(__dirname + '/fixtures/basic');
+    process.chdir(__dirname + '/../__fixtures__/basic');
     await sqitch(opts);
 
     const cn = await pgp(opts);
@@ -59,7 +59,7 @@ describe('sqitch', () => {
   });
 
   it('sqitchFast', async () => {
-    await sqitchFast(opts, __dirname + '/fixtures/basic');
+    await sqitchFast(opts, __dirname + '/../__fixtures__/basic');
 
     const cn = await pgp(opts);
     const db = await cn.connect({ direct: true });
@@ -71,7 +71,7 @@ describe('sqitch', () => {
 
   it('sqitchFast II', async () => {
     const dir = process.cwd();
-    process.chdir(__dirname + '/fixtures/basic');
+    process.chdir(__dirname + '/../__fixtures__/basic');
     await sqitchFast(opts);
 
     const cn = await pgp(opts);

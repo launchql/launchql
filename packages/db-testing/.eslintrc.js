@@ -2,6 +2,9 @@ module.exports = {
   plugins: ['prettier', 'react-hooks'],
   extends: ['eslint:recommended', 'prettier', 'prettier/react', 'plugin:react-hooks/recommended'],
   parser: 'babel-eslint',
+  globals: {
+    jasmine: true
+  },
   parserOptions: {
     ecmaVersion: 11,
     sourceType: 'module',

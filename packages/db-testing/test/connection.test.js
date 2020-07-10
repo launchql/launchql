@@ -7,7 +7,7 @@ const pgp = pgPromise({
   noWarnings: true
 });
 
-import { getConnObj, verifydb, config } from './utils';
+import { getConnObj, verifydb, config } from '../utils';
 
 describe('connect', () => {
   const database = `testing-db-${v4()}`;

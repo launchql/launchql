@@ -6,7 +6,7 @@ const pgp = pgPromise({
   noWarnings: true
 });
 
-import { getConnObj, getConnStr, cleanup, verifydb } from './utils';
+import { getConnObj, getConnStr, cleanup, verifydb } from '../utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 

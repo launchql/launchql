@@ -36,29 +36,29 @@
     "url": "https://github.com/launchql/launchql-db/issues"
   },
   "devDependencies": {
-    "@babel/cli": "7.8.4",
-    "@babel/core": "7.8.4",
-    "@babel/plugin-proposal-class-properties": "7.8.3",
-    "@babel/plugin-proposal-export-default-from": "7.8.3",
-    "@babel/plugin-proposal-object-rest-spread": "7.9.6",
-    "@babel/plugin-transform-runtime": "7.9.6",
-    "@babel/preset-env": "7.9.6",
-    "@babel/preset-react": "7.9.4",
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/preset-react": "7.10.4",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.0.3",
+    "babel-eslint": "10.1.0",
     "babel-plugin-macros": "2.8.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
-    "eslint-config-react-app": "5.2.0",
+    "eslint-config-react-app": "5.2.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.18.3",
-    "eslint-plugin-react-hooks": "4.0.0",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "4.0.6",
     "jest": "^25.1.0",
-    "prettier": "^1.19.1",
-    "regenerator-runtime": "^0.13.2"
+    "prettier": "^2.0.5",
+    "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
+    "@babel/runtime": "^7.10.4",
     "pgsql-parser": "0.7.7"
   }
 }

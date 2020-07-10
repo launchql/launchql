@@ -13,7 +13,7 @@ import {
   verifydb,
   expectBasicSeed,
   config
-} from './utils';
+} from '../utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
@@ -28,7 +28,7 @@ describe('testing', () => {
     db = await getConnection({
       ...config,
       hot: true,
-      directory: __dirname + '/fixtures/basic',
+      directory: __dirname + '/../__fixtures__/basic',
       extensions: ['pgcrypto', 'citext']
     });
     await expectBasicSeed(db);
@@ -37,13 +37,13 @@ describe('testing', () => {
     db = await getConnection({
       ...config,
       hot: true,
-      directory: __dirname + '/fixtures/basic'
+      directory: __dirname + '/../__fixtures__/basic'
     });
     await expectBasicSeed(db);
   });
   it('hot seed option prefix', async () => {
     const dir = process.cwd();
-    process.chdir(__dirname + '/fixtures/basic');
+    process.chdir(__dirname + '/../__fixtures__/basic');
     db = await getConnection({
       ...config,
       hot: true,
@@ -55,13 +55,13 @@ describe('testing', () => {
   it('sqitch seed option', async () => {
     db = await getConnection({
       ...config,
-      directory: __dirname + '/fixtures/basic'
+      directory: __dirname + '/../__fixtures__/basic'
     });
     await expectBasicSeed(db);
   });
   it('sqitch seed option prefix', async () => {
     const dir = process.cwd();
-    process.chdir(__dirname + '/fixtures/basic');
+    process.chdir(__dirname + '/../__fixtures__/basic');
     db = await getConnection({
       ...config,
       prefix: 'testing-another-'

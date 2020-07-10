@@ -7,17 +7,17 @@ import {
   closeConnection,
   dropdb
 } from '../src/index';
-import { expectBasicSeed } from './utils';
+import { expectBasicSeed } from '../utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
 let db;
 
-import { TestDatabase } from '../src/lib/skitch-test';
+import { TestDatabase } from '../src/lib/test-db';
 import { getOpts } from '../src/lib/testing';
 import { setTemplate } from '../src/lib/utils';
 
-const directory = __dirname + '/fixtures/basic';
+const directory = __dirname + '/../__fixtures__/basic';
 
 describe('skitchtest', () => {
   it('works', async () => {
@@ -41,7 +41,7 @@ describe('templatedb', () => {
     const templatedb = await getConnection({
       ...config,
       hot: true,
-      directory: __dirname + '/fixtures/basic'
+      directory: __dirname + '/../__fixtures__/basic'
     });
     await expectBasicSeed(templatedb);
     close(templatedb);

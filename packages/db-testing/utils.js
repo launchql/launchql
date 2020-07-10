@@ -1,7 +1,9 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
-import { connectionString } from '../src/index';
-import env from '../src/env';
+process.env.SQITCH_PATH = __dirname + '/__fixtures__/basic/';
+
+import { connectionString } from './src/index';
+import env from './src/env';
 import pgPromise from 'pg-promise';
 
 const pgp = pgPromise({
