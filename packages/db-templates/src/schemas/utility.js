@@ -1,11 +1,8 @@
-import { change as schema } from './schema'
+import { change as schema } from './schema';
 
-export const requires = (res) => []
+export const requires = (res) => [];
 
-export const change = ({ procedure }) => [
-  'procedures',
-  procedure
-]
+export const change = ({ procedure }) => ['procedures', procedure];
 
 const questions = [
   {
@@ -25,9 +22,9 @@ const questions = [
     type: 'list',
     name: 'lang',
     message: 'choose the language',
-    choices: ['sql', 'plpgsql', 'plv8'],
+    choices: ['sql', 'plpgsql'],
     required: true
   }
-]
+];
 
-export default questions
+export default questions;

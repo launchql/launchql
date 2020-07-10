@@ -5,7 +5,7 @@ exports[`extensions skitch extensions write 1`] = `
 comment = 'myproject extension'
 default_version = '0.0.1'
 module_pathname = '$libdir/myproject'
-requires = 'plpgsql,uuid-ossp,pgcrypto,plv8'
+requires = 'plpgsql,uuid-ossp,pgcrypto'
 relocatable = false
 superuser = false
   "

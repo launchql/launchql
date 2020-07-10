@@ -1,19 +1,14 @@
-import { change as schema } from './schema'
-import { searchSchemas } from '@launchql/db-utils'
+import { change as schema } from './schema';
+import { searchSchemas } from '@launchql/db-utils';
 
-export const requires = (res) => [
-  schema(res)
-]
+export const requires = (res) => [schema(res)];
 
-export const change = ({
-  schema,
-  procedure
-}) => [
+export const change = ({ schema, procedure }) => [
   'schemas',
   schema,
   'procedures',
   procedure
-]
+];
 
 const questions = [
   {
@@ -40,9 +35,9 @@ const questions = [
     type: 'list',
     name: 'lang',
     message: 'choose the language',
-    choices: ['sql', 'plpgsql', 'plv8'],
+    choices: ['sql', 'plpgsql'],
     required: true
   }
-]
+];
 
-export default questions
+export default questions;

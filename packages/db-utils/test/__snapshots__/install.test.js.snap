@@ -11,7 +11,10 @@ Array [
   "sqitch.plan",
   "sql",
   "test",
+  "test/first.gql.test.js",
+  "test/first.sql.test.js",
   "test/utils",
+  "test/utils/graphql.js",
   "test/utils/index.js",
   "verify",
 ]
@@ -19,8 +22,11 @@ Array [
 
 exports[`installs skitch path sqitch install 2`] = `
 Array [
+  "babel.config.js",
   "bootstrap-roles.sql",
   "docker-compose.yml",
+  "jest.config.js",
+  "lerna.json",
   "Makefile",
   "myproject",
   "myproject/deploy",
@@ -32,7 +38,10 @@ Array [
   "myproject/sqitch.plan",
   "myproject/sql",
   "myproject/test",
+  "myproject/test/first.gql.test.js",
+  "myproject/test/first.sql.test.js",
   "myproject/test/utils",
+  "myproject/test/utils/graphql.js",
   "myproject/test/utils/index.js",
   "myproject/verify",
   "node_modules",

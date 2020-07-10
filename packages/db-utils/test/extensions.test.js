@@ -41,15 +41,17 @@ describe('extensions', () => {
         'plpgsql',
         'uuid-ossp',
         'pgcrypto',
-        'plv8',
+        'citext',
+        'hstore',
+        'btree_gist',
         'myproject'
       ]);
       expect(installed).toEqual(['plpgsql', 'citext']);
     });
     it('write', async () => {
-      await writeExtensions(['plpgsql', 'uuid-ossp', 'pgcrypto', 'plv8']);
+      await writeExtensions(['plpgsql', 'uuid-ossp', 'pgcrypto']);
       const installed = await getInstalledExtensions();
-      expect(installed).toEqual(['plpgsql', 'uuid-ossp', 'pgcrypto', 'plv8']);
+      expect(installed).toEqual(['plpgsql', 'uuid-ossp', 'pgcrypto']);
       const info = await getExtensionInfo();
       expect(readFileSync(info.controlFile).toString()).toMatchSnapshot();
     });

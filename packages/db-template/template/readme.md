@@ -1,6 +1,6 @@
 # start the postgres db process
 
-First you'll want to create the postgres-plv8 docker (you can also just use `docker-compose up -d`):
+First you'll want to start the postgres docker (you can also just use `docker-compose up -d`):
 
 ```sh
 make up

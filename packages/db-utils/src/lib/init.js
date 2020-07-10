@@ -220,7 +220,7 @@ install:
 services:
   postgres:
     container_name: ${name}-postgres
-    image: pyramation/postgres-plv8
+    image: pyramation/postgres
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=password"

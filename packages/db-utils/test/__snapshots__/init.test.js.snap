@@ -2,8 +2,11 @@
 
 exports[`deps skitch path skitch init 1`] = `
 Array [
+  "babel.config.js",
   "bootstrap-roles.sql",
   "docker-compose.yml",
+  "jest.config.js",
+  "lerna.json",
   "Makefile",
   "myproject",
   "package.json",
@@ -16,9 +19,14 @@ Array [
 
 exports[`deps skitch path skitch init 2`] = `
 Array [
-  ".eslintrc.json",
+  ".editorconfig",
+  ".eslintrc.js",
+  ".gitattributes",
   ".gitignore",
+  ".npmignore",
   ".travis.yml",
+  ".vscode",
+  ".yarnrc",
 ]
 `;
 
@@ -33,7 +41,10 @@ Array [
   "sqitch.plan",
   "sql",
   "test",
+  "test/first.gql.test.js",
+  "test/first.sql.test.js",
   "test/utils",
+  "test/utils/graphql.js",
   "test/utils/index.js",
   "verify",
 ]
@@ -42,6 +53,11 @@ Array [
 exports[`deps skitch path sqitch init 2`] = `
 Array [
   ".babelrc",
-  ".env",
+  ".editorconfig",
+  ".eslintignore",
+  ".eslintrc.js",
+  ".gitignore",
+  ".npmignore",
+  ".npmrc",
 ]
 `;

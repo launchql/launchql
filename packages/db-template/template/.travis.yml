@@ -26,7 +26,7 @@ env:
 
 before_install:
   - yarn install
-  - docker run -p 7777:5432 --name postgres -v `pwd`/packages:/sql-extensions -v `pwd`/node_modules:/sql-modules -d pyramation/postgres-plv8
+  - docker run -p 7777:5432 --name postgres -v `pwd`/packages:/sql-extensions -v `pwd`/node_modules:/sql-modules -d pyramation/postgres
   - sleep 3
   - while ! docker exec -it postgres pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
   - while ! docker exec postgres /sql-extensions/install.sh; do echo "installing plugins"; sleep 3; done
