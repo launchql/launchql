@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/launchql/launchql-db/compare/@launchql/db-template@0.0.18...@launchql/db-template@0.1.0) (2020-07-10)
+
+
+### Features
+
+* use pyramation/postgres ([4de7571](https://github.com/launchql/launchql-db/commit/4de7571ca1abb80f309cda82582a4f8a4d70fd83))
+
+
+
+
+
 ## [0.0.18](https://github.com/launchql/launchql-db/compare/@launchql/db-template@0.0.17...@launchql/db-template@0.0.18) (2020-07-03)
 
 **Note:** Version bump only for package @launchql/db-template

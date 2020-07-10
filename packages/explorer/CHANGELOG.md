@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/pyramation/launchql/compare/@launchql/explorer@0.8.0...@launchql/explorer@0.8.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* tests ([dc56e8a](https://github.com/pyramation/launchql/commit/dc56e8aa103c62a271f2ea8824b2bcb7791aa6a4))
+
+
+
+
+
 # [0.8.0](https://github.com/pyramation/launchql/compare/@launchql/explorer@0.7.2...@launchql/explorer@0.8.0) (2020-06-29)
 
 
