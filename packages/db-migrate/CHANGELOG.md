@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.15](https://github.com/launchql/launchql-db/compare/@launchql/db-migrate@0.1.14...@launchql/db-migrate@0.1.15) (2020-07-18)
+
+
+### Bug Fixes
+
+* **cli:** add pgcrypto ([60e3656](https://github.com/launchql/launchql-db/commit/60e3656e3a3220897ea0363bcb558cfbaeca59e8))
+
+
+
+
+
 ## [0.1.14](https://github.com/launchql/launchql-db/compare/@launchql/db-migrate@0.1.13...@launchql/db-migrate@0.1.14) (2020-07-18)
 
 
