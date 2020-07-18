@@ -253,7 +253,14 @@ DROP EXTENSION IF EXISTS hstore;
       name,
       description: name,
       author,
-      extensions: ['plpgsql', 'uuid-ossp', 'citext', 'btree_gist', 'hstore']
+      extensions: [
+        'plpgsql',
+        'uuid-ossp',
+        'citext',
+        'pgcrypto',
+        'btree_gist',
+        'hstore'
+      ]
     });
 
     if (service) {
