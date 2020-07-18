@@ -82,7 +82,7 @@
     "minimist": "^1.2.5",
     "mkdirp": "1.0.4",
     "pg-promise": "10.5.8",
-    "pgsql-parser": "0.7.7",
+    "pgsql-parser": "0.7.8",
     "shelljs": "0.8.4"
   }
 }

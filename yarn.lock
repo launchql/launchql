@@ -10523,10 +10523,10 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.7.7:
-  version "0.7.7"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.7.tgz#bbb80246b8c03a7bb8f09f646398f062fef81259"
-  integrity sha512-IB8/1Z9F/mEYQISmOKGQOHlGtKjbZGqa6cs6RHkUyYDo2JEXz3fj9FnNbGcRy/9L0/OuDW6N3cjMbsoO9hzxyA==
+pgsql-parser@0.7.8:
+  version "0.7.8"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.8.tgz#e2620e83e6207c3e2c259c1c9bcb4772867f8893"
+  integrity sha512-pSDXiUujo56O1yUgGP74+EiIVNQjDweTN1+vi0EiiYAJnH5EXo6jOCuifN/nguqWjBuPzcWHe6GBtJ3/9nq6Ng==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@pgql/parse" "1.2.6"
