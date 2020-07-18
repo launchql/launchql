@@ -1,5 +1,5 @@
 const psqlArray = (array) => {
-  return `{${array.join(',')}}`;
+  return `ARRAY[${array.join(',')}]`;
 };
 
 export default (rows) => {
