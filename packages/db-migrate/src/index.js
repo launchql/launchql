@@ -5,6 +5,7 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import Case from 'case';
 import moment from 'moment';
+import makeSvc from './service';
 
 import { init } from '@launchql/db-utils';
 
@@ -118,6 +119,12 @@ ${rows
     [databaseid]
   );
 
+  const svcs = await pgPool.query(
+    `select * from services_public.services
+        where database_id=$1`,
+    [databaseid]
+  );
+
   if (!dbname?.rows?.length) {
     console.log('NO DATABASES.');
     return;
@@ -143,6 +150,17 @@ ${rows
     return str;
   };
 
+  let service = null;
+  let serviceObj = {};
+  if (svcs?.rows?.length) {
+    service = makeSvc(svcs.rows);
+    serviceObj = svcs.rows.reduce((m, svc) => {
+      const { id, name, dbname, is_public, database_id, ...rest } = svc;
+      m[svc.subdomain] = JSON.parse(replacer(JSON.stringify(rest)));
+      return m;
+    }, {});
+  }
+
   const results = await pgPool.query(
     `select * from db_migrate.sql_actions order by id`
   );
@@ -164,17 +182,37 @@ BEGIN
       SELECT FROM pg_catalog.pg_roles
       WHERE  rolname = 'administrator') THEN
       CREATE ROLE administrator;
+      ALTER USER administrator WITH NOCREATEDB;
+      ALTER USER administrator WITH NOSUPERUSER;
+      ALTER USER administrator WITH NOCREATEROLE;
+      ALTER USER administrator WITH NOLOGIN;
+      ALTER USER administrator WITH NOREPLICATION;
+      ALTER USER administrator WITH BYPASSRLS;
    END IF;
    IF NOT EXISTS (
       SELECT FROM pg_catalog.pg_roles
       WHERE  rolname = 'anonymous') THEN
       CREATE ROLE anonymous;
+      ALTER USER anonymous WITH NOCREATEDB;
+      ALTER USER anonymous WITH NOSUPERUSER;
+      ALTER USER anonymous WITH NOCREATEROLE;
+      ALTER USER anonymous WITH NOLOGIN;
+      ALTER USER anonymous WITH NOREPLICATION;
+      ALTER USER anonymous WITH NOBYPASSRLS;
    END IF;
    IF NOT EXISTS (
       SELECT FROM pg_catalog.pg_roles
       WHERE  rolname = 'authenticated') THEN
       CREATE ROLE authenticated;
+      ALTER USER authenticated WITH NOCREATEDB;
+      ALTER USER authenticated WITH NOSUPERUSER;
+      ALTER USER authenticated WITH NOCREATEROLE;
+      ALTER USER authenticated WITH NOLOGIN;
+      ALTER USER authenticated WITH NOREPLICATION;
+      ALTER USER authenticated WITH NOBYPASSRLS;
    END IF;
+   GRANT anonymous TO administrator;
+   GRANT authenticated TO administrator;
 END
 $do$;        
             `,
@@ -208,14 +246,27 @@ DROP EXTENSION IF EXISTS hstore;
     ];
 
     const curDir = process.cwd();
-    mkdirp.sync(path.resolve(outdir + '/' + name));
-    process.chdir(path.resolve(outdir + '/' + name));
+    const sqitchDir = path.resolve(outdir + '/' + name);
+    mkdirp.sync(sqitchDir);
+    process.chdir(sqitchDir);
     await init({
       name,
       description: name,
       author,
       extensions: ['plpgsql', 'uuid-ossp', 'citext', 'btree_gist', 'hstore']
     });
+
+    if (service) {
+      service = replacer(service);
+      const utilsDir = path.resolve(sqitchDir + '/utils');
+      mkdirp.sync(utilsDir);
+      fs.writeFileSync(utilsDir + '/services.sql', service);
+      fs.writeFileSync(
+        utilsDir + '/services.json',
+        JSON.stringify(serviceObj, null, 2)
+      );
+    }
+
     process.chdir(curDir);
     writeSqitchStuff(rows, opts);
     writeResults(rows, opts);
@@ -227,6 +278,11 @@ DROP EXTENSION IF EXISTS hstore;
 export default async ({ dbInfo, author, outdir }) => {
   for (let v = 0; v < dbInfo.database_ids.length; v++) {
     const databaseid = dbInfo.database_ids[v];
-    await write({ database: dbInfo.dbname, databaseid, author, outdir });
+    await write({
+      database: dbInfo.dbname,
+      databaseid,
+      author,
+      outdir
+    });
   }
 };
