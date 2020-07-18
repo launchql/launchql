@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.13](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.5.12...@launchql/cli@0.5.13) (2020-07-18)
+
+
+### Bug Fixes
+
+* upgrade pgql ([52b4866](https://github.com/launchql/launchql-db/commit/52b48669e0a1cd8e0b8b65d02e8373da6f1c02f2))
+
+
+
+
+
 ## [0.5.12](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.5.11...@launchql/cli@0.5.12) (2020-07-10)
 
 

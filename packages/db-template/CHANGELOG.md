@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/launchql/launchql-db/compare/@launchql/db-template@0.1.0...@launchql/db-template@0.1.1) (2020-07-18)
+
+
+### Bug Fixes
+
+* **db-template:** roles ([066e702](https://github.com/launchql/launchql-db/commit/066e7021126ec9a93b92057aaa2e2fc04d266c65))
+
+
+
+
+
 # [0.1.0](https://github.com/launchql/launchql-db/compare/@launchql/db-template@0.0.18...@launchql/db-template@0.1.0) (2020-07-10)
 
 
