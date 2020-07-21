@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-worker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "job worker",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-worker#readme",
@@ -49,8 +49,8 @@
     "@babel/preset-react": "7.9.4",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.3",
-    "babel-watch": "7.0.0",
     "babel-plugin-macros": "2.8.0",
+    "babel-watch": "7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "5.2.0",

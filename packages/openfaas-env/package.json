@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-env",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "envalid for openfaas functions",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-env#readme",
