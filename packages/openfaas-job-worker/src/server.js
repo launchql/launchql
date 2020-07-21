@@ -17,6 +17,12 @@ app.post('/complete', async (req, res, next) => {
   console.log(req.body);
 
   if (jobError === 'true') {
+    console.error(
+      'failed job'
+      // `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
+      // { err, stack: err.stack }
+    );
+
     try {
       const workerId = req.get('X-Worker-Id');
       const jobId = req.get('X-Job-Id');
@@ -33,6 +39,16 @@ app.post('/complete', async (req, res, next) => {
       client.release();
     }
   } else {
+    console.error(
+      'successful job'
+      // `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
+      // { err, stack: err.stack }
+    );
+
+    // console.log(
+    //   `Completed task ${job.id} (${job.task_identifier}) with success (${duration}ms)`
+    // );
+
     try {
       const workerId = req.get('X-Worker-Id');
       const jobId = req.get('X-Job-Id');
