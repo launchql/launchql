@@ -8,9 +8,12 @@ functions:
     handler: ./packages/openfaas-job-util-jobs
     image: pyramation/openfaas-job-util-jobs:latest
     environment:
+      PGDATABASE: jobs
       INTERNAL_GATEWAY_URL: gateway.openfaas.svc.cluster.local:8080
       scale_from_zero: true
       inactivity_duration: 1m
+    secrets:
+      - postgres-secrets
   example-fn:
     lang: dockerfile
     handler: ./packages/openfaas-job-example

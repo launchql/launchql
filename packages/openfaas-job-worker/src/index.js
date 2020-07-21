@@ -1,8 +1,8 @@
-import env from './env';
 import pg from 'pg';
-import * as jobs from '@launchql/job-utils';
 import crypto from 'crypto';
+import * as jobs from '@launchql/job-utils';
 import { request as req } from '@launchql/openfaas-job-req';
+import env from './env';
 
 const getDbString = () =>
   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;

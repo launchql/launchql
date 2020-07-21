@@ -21,7 +21,7 @@ app.post('/complete', async (req, res, next) => {
         'Content-Type': 'application/json'
       })
       .status(200)
-      .send('OK, great!');
+      .send({ workerId, jobId });
   } catch (e) {
     next(e);
   } finally {
@@ -42,14 +42,14 @@ app.post('/error', async (req, res, next) => {
   try {
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
-    const message = req.get('X-Error-Message') || 'Error found during job';
+    const message = req.body.message || 'Error found during job';
     await jobs.complete(client, { workerId, jobId, message });
     res
       .set({
         'Content-Type': 'application/json'
       })
       .status(200)
-      .send('there was an error, GREAT!');
+      .send({ workerId, jobId });
   } catch (e) {
     next(e);
   } finally {
