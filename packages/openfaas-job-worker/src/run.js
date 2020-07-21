@@ -2,9 +2,14 @@
 
 import Worker from './index';
 import env from './env';
+import server from './server';
 
-const worker = new Worker({
-  tasks: env.SUPPORTED_JOBS
+server.listen(env.PORT, () => {
+  console.log(`listening ON ${env.PORT}`);
+
+  const worker = new Worker({
+    tasks: env.SUPPORTED_JOBS
+  });
+
+  worker.listen();
 });
-
-worker.listen();

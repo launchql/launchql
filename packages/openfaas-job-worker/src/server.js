@@ -67,4 +67,4 @@ app.post('/error', async (req, res, next) => {
   });
 });
 
-app.listen(env.PORT);
+export default app;

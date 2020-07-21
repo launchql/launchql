@@ -2,11 +2,11 @@ import env from './env';
 import requestLib from 'request';
 
 // for outputs
-const payloadUrl = `${env.INTERNAL_GATEWAY_URL}/function/jobs/payload`;
+const payloadUrl = `${env.INTERNAL_JOB_REQ_URL}/payload`;
 // for completion
-const completeUrl = `${env.INTERNAL_GATEWAY_URL}/function/jobs/complete`;
+const completeUrl = `${env.INTERNAL_JOB_REQ_URL}/complete`;
 // for errors
-const errorUrl = `${env.INTERNAL_GATEWAY_URL}/function/jobs/error`;
+const errorUrl = `${env.INTERNAL_JOB_REQ_URL}/error`;
 
 const request = (fn, { body, workerId, jobId, taskId }) => {
   return new Promise((resolve, reject) => {

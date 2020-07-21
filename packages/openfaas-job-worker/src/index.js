@@ -1,15 +1,8 @@
-import pg from 'pg';
+import pgPool from './pg';
 import crypto from 'crypto';
 import * as jobs from '@launchql/job-utils';
 import { request as req } from '@launchql/openfaas-job-req';
 import env from './env';
-
-const getDbString = () =>
-  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
-
-const pgPoolConfig = {
-  connectionString: getDbString()
-};
 
 /* eslint-disable no-console */
 
@@ -27,13 +20,7 @@ export default class Worker {
     this.supportedTaskNames = tasks;
     this.workerId = `worker-${crypto.randomBytes(20).toString('hex')}`;
     this.doNextTimer = undefined;
-    this.pgPool = new pg.Pool(pgPoolConfig);
-    const close = () => {
-      console.log('closing connection...');
-      this.close();
-    };
-    process.once('SIGTERM', close);
-    process.once('SIGINT', close);
+    this.pgPool = pgPool;
   }
   close() {
     if (!this._ended) {
