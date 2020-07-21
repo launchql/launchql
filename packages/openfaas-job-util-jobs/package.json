@@ -60,6 +60,7 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "@launchql/openfaas-env": "^0.0.2",
+    "@launchql/job-utils": "^0.0.1",
     "body-parser": "1.19.0",
     "envalid": "6.0.2",
     "express": "4.17.1",

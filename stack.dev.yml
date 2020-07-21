@@ -1,6 +1,6 @@
 provider:
   name: openfaas
-  gateway: http://127.0.0.1:8080
+  gateway: http://127.0.0.1:31112
 
 functions:
   jobs:
@@ -8,7 +8,6 @@ functions:
     handler: ./packages/openfaas-job-util-jobs
     image: pyramation/openfaas-job-util-jobs:latest
     environment:
-      GATEWAY_URL: gateway-external.openfaas.svc.cluster.local:8080
       INTERNAL_GATEWAY_URL: gateway.openfaas.svc.cluster.local:8080
       scale_from_zero: true
       inactivity_duration: 1m
@@ -17,7 +16,6 @@ functions:
     handler: ./packages/openfaas-job-example
     image: pyramation/openfaas-job-example:latest
     environment:
-      GATEWAY_URL: gateway-external.openfaas.svc.cluster.local:8080
       INTERNAL_GATEWAY_URL: gateway.openfaas.svc.cluster.local:8080
       scale_from_zero: true
       inactivity_duration: 1m

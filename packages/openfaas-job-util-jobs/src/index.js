@@ -1,25 +1,33 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import * as jobs from '@launchql/job-utils';
+import pgPool from './pg';
 import env from './env';
-
-// const getDbString = () =>
-//   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
 
 const app = express();
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-//   res.set({
-//     'Content-Type': 'application/json',
-//     'X-Worker-Id': req.get('X-Worker-Id'),
-//     'X-Job-Id': req.get('X-Job-Id')
-//   });
-//   next();
-// });
 app.use((error, req, res, next) => {
   res.status(500).send({ error });
 });
 
-app.post('complete', (req, res) => {
+app.post('/complete', async (req, res, next) => {
+  const client = await pgPool.connect();
+  try {
+    const workerId = req.get('X-Worker-Id');
+    const jobId = req.get('X-Job-Id');
+    await jobs.complete(client, { workerId, jobId });
+    res
+      .set({
+        'Content-Type': 'application/json'
+      })
+      .status(200)
+      .send('OK, great!');
+  } catch (e) {
+    next(e);
+  } finally {
+    client.release();
+  }
+
   console.log('complete');
   console.log({
     'X-Error-Url': req.get('X-Error-Url'),
@@ -27,10 +35,27 @@ app.post('complete', (req, res) => {
     'X-Worker-Id': req.get('X-Worker-Id'),
     'X-Job-Id': req.get('X-Job-Id')
   });
-  res.status(200).send({ complete: true });
 });
 
-app.post('error', (req, res) => {
+app.post('/error', async (req, res, next) => {
+  const client = await pgPool.connect();
+  try {
+    const workerId = req.get('X-Worker-Id');
+    const jobId = req.get('X-Job-Id');
+    const message = req.get('X-Error-Message') || 'Error found during job';
+    await jobs.complete(client, { workerId, jobId, message });
+    res
+      .set({
+        'Content-Type': 'application/json'
+      })
+      .status(200)
+      .send('there was an error, GREAT!');
+  } catch (e) {
+    next(e);
+  } finally {
+    client.release();
+  }
+
   console.log('error');
   console.log({
     'X-Error-Url': req.get('X-Error-Url'),
@@ -38,7 +63,6 @@ app.post('error', (req, res) => {
     'X-Worker-Id': req.get('X-Worker-Id'),
     'X-Job-Id': req.get('X-Job-Id')
   });
-  res.status(200).send({ complete: true });
 });
 
 app.listen(env.PORT);

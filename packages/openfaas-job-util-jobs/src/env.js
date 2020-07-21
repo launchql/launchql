@@ -6,5 +6,6 @@ export default env({
   PGPASSWORD: str({ default: 'password' }),
   PGPORT: port({ default: 5432 }),
   PGDATABASE: str({ default: 'jobs' }),
+  JOBS_SCHEMA: str({ default: 'app_jobs' }),
   PORT: port({ default: 10101 })
 });

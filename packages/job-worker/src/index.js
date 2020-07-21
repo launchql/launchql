@@ -1,6 +1,6 @@
 import env from './env';
 import pg from 'pg';
-import * as jobs from './jobs';
+import * as jobs from '@launchql/job-utils';
 import crypto from 'crypto';
 
 const getDbString = () =>

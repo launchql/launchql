@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/openfaas-job-example",
-  "version": "0.0.2",
-  "description": "job example",
+  "name": "@launchql/job-utils",
+  "version": "0.0.1",
+  "description": "job utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-example#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-utils#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -15,7 +15,9 @@
     "main",
     "module"
   ],
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/launchql/jobs"
@@ -57,7 +59,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/openfaas-job-fn": "^0.0.2",
     "envalid": "6.0.2"
   }
 }

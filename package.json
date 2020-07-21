@@ -8,6 +8,8 @@
   "scripts": {
     "commit": "git-cz",
     "build": "lerna run prepare --parallel",
+    "build:dev": "yarn build && faas build -f stack.dev.yml",
+    "build:prod": "yarn build && faas build -f stack.prod.yml",
     "bootstrap": "lerna bootstrap --use-workspaces",
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "eslint --ignore-path .gitignore . --fix",
@@ -16,7 +18,9 @@
     "test": "jest"
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "config": {
     "commitizen": {
@@ -53,7 +57,9 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/launchql/jobs"
