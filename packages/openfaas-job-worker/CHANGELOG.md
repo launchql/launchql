@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/launchql/jobs/compare/@launchql/openfaas-job-worker@0.1.2...@launchql/openfaas-job-worker@0.1.3) (2020-07-21)
+
+
+### Bug Fixes
+
+* update ([858e7c3](https://github.com/launchql/jobs/commit/858e7c32b127be56163704d41cc372931f123a49))
+
+
+
+
+
 ## [0.1.2](https://github.com/launchql/jobs/compare/@launchql/openfaas-job-worker@0.1.1...@launchql/openfaas-job-worker@0.1.2) (2020-07-21)
 
 
