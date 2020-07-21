@@ -1,7 +1,7 @@
 import pgPool from './pg';
 import crypto from 'crypto';
 import * as jobs from '@launchql/job-utils';
-import { request as req } from '@launchql/openfaas-job-req';
+import { request as req } from './req';
 import env from './env';
 
 /* eslint-disable no-console */
