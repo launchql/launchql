@@ -1,6 +1,7 @@
 import request from 'request';
 
 export default ({ url, body }) => {
+  console.log('inside of faas-job-fn calling ' + url);
   return new Promise((resolve, reject) => {
     request.post(
       {

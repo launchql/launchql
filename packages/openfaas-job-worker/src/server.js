@@ -12,6 +12,9 @@ app.use((error, req, res, next) => {
 
 app.post('/complete', async (req, res, next) => {
   const client = await pgPool.connect();
+  const jobError = req.get('X-Job-Error');
+  console.log({ jobError });
+
   try {
     console.log(req.body);
     const workerId = req.get('X-Worker-Id');
