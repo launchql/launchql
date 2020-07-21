@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import sendError from './error';
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,8 +13,9 @@ app.use((req, res, next) => {
   next();
 });
 // eslint-disable-next-line no-unused-vars
-app.use((error, _req, res, _next) => {
-  res.status(500).send({ error });
+app.use(async (error, req, res, _next) => {
+  await sendError({ url: req.get('X-Error-Url'), message: error });
+  return res.status(500).send({ error });
 });
 
 export default app;
