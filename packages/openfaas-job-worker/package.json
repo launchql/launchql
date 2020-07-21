@@ -16,7 +16,7 @@
     "module"
   ],
   "bin": {
-    "faas-jobs": "main/server.js"
+    "faas-jobs": "main/run.js"
   },
   "publishConfig": {
     "access": "public"

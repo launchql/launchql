@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import Worker from './index';
 import env from './env';
 
