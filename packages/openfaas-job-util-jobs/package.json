@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-job-util-jobs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "util jobs",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-util-jobs#readme",
