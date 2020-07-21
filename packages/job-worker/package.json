@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-worker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "job worker",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-worker#readme",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/job-utils": "0.0.1",
+    "@launchql/job-utils": "^0.0.2",
     "envalid": "6.0.2",
     "pg": "8.3.0"
   }

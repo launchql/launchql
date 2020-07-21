@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-job-util-jobs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "util jobs",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-util-jobs#readme",
@@ -59,8 +59,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
+    "@launchql/job-utils": "^0.0.2",
     "@launchql/openfaas-env": "^0.0.2",
-    "@launchql/job-utils": "^0.0.1",
     "body-parser": "1.19.0",
     "envalid": "6.0.2",
     "express": "4.17.1",
