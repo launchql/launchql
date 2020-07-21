@@ -14,60 +14,41 @@ app.post('/complete', async (req, res, next) => {
   const client = await pgPool.connect();
   const jobError = req.get('X-Job-Error');
   console.log({ jobError });
+  console.log(req.body);
 
-  try {
-    console.log(req.body);
-    const workerId = req.get('X-Worker-Id');
-    const jobId = req.get('X-Job-Id');
-    await jobs.complete(client, { workerId, jobId });
-    res
-      .set({
-        'Content-Type': 'application/json'
-      })
-      .status(200)
-      .send({ workerId, jobId });
-  } catch (e) {
-    next(e);
-  } finally {
-    client.release();
+  if (jobError === 'true') {
+    try {
+      const workerId = req.get('X-Worker-Id');
+      const jobId = req.get('X-Job-Id');
+      await jobs.fail(client, { workerId, jobId, message: req.body.error });
+      res
+        .set({
+          'Content-Type': 'application/json'
+        })
+        .status(200)
+        .send({ workerId, jobId });
+    } catch (e) {
+      next(e);
+    } finally {
+      client.release();
+    }
+  } else {
+    try {
+      const workerId = req.get('X-Worker-Id');
+      const jobId = req.get('X-Job-Id');
+      await jobs.complete(client, { workerId, jobId });
+      res
+        .set({
+          'Content-Type': 'application/json'
+        })
+        .status(200)
+        .send({ workerId, jobId });
+    } catch (e) {
+      next(e);
+    } finally {
+      client.release();
+    }
   }
-
-  console.log('complete');
-  console.log({
-    'X-Error-Url': req.get('X-Error-Url'),
-    'X-Callback-Url': req.get('X-Callback-Url'),
-    'X-Worker-Id': req.get('X-Worker-Id'),
-    'X-Job-Id': req.get('X-Job-Id')
-  });
-});
-
-app.post('/error', async (req, res, next) => {
-  const client = await pgPool.connect();
-  try {
-    console.log(req.body);
-    const workerId = req.get('X-Worker-Id');
-    const jobId = req.get('X-Job-Id');
-    const message = req.body.message || 'Error found during job';
-    await jobs.complete(client, { workerId, jobId, message });
-    res
-      .set({
-        'Content-Type': 'application/json'
-      })
-      .status(200)
-      .send({ workerId, jobId });
-  } catch (e) {
-    next(e);
-  } finally {
-    client.release();
-  }
-
-  console.log('error');
-  console.log({
-    'X-Error-Url': req.get('X-Error-Url'),
-    'X-Callback-Url': req.get('X-Callback-Url'),
-    'X-Worker-Id': req.get('X-Worker-Id'),
-    'X-Job-Id': req.get('X-Job-Id')
-  });
 });
 
 export default app;

@@ -8,6 +8,12 @@ app.post('*', async (req, res, next) => {
     next(new Error('THROWN_ERROR'));
   } else if (req.body.throws) {
     throw new Error('THROWN_ERROR');
+  } else if (req.body.throws2) {
+    res.set({
+      'Content-Type': 'application/json',
+      'X-Job-Error': true
+    });
+    return res.status(500).send({ error: 'here my error from fn' });
   } else {
     res.status(200).send({
       fn: 'example-fn',
