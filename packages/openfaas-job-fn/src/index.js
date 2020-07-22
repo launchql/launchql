@@ -11,13 +11,23 @@ app.use((req, res, next) => {
   });
   next();
 });
-// eslint-disable-next-line no-unused-vars
-app.use(async (error, req, res, _next) => {
-  res.set({
-    'Content-Type': 'application/json',
-    'X-Job-Error': true
-  });
-  return res.status(500).send({ error });
-});
 
-export default app;
+export default {
+  post: function () {
+    return app.post.apply(app, arguments);
+  },
+  listen: (port, cb = () => {}) => {
+    // NOTE Remember that Express middleware executes in order.
+    // You should define error handlers last, after all other middleware.
+    // Otherwise, your error handler won't get called
+    // eslint-disable-next-line no-unused-vars
+    app.use(async (error, req, res, next) => {
+      res.set({
+        'Content-Type': 'application/json',
+        'X-Job-Error': true
+      });
+      return res.status(500).send({ error });
+    });
+    app.listen(port, cb);
+  }
+};
