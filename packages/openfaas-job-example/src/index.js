@@ -13,7 +13,7 @@ app.post('*', async (req, res, next) => {
       'Content-Type': 'application/json',
       'X-Job-Error': true
     });
-    return res.status(500).send({ error: 'here my error from fn' });
+    return res.status(200).send({ message: 'here my error from fn' });
   } else {
     res.status(200).send({
       fn: 'example-fn',

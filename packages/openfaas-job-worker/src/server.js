@@ -39,9 +39,9 @@ const fail = withClient(async (client, req, res) => {
   const workerId = req.get('X-Worker-Id');
   const jobId = req.get('X-Job-Id');
   console.log(
-    `Failed task ${jobId} (${jobName}) with error: \n${req.body.error}\n\n`
+    `Failed task ${jobId} (${jobName}) with error: \n${req.body.message}\n\n`
   );
-  await jobs.fail(client, { workerId, jobId, message: req.body.error });
+  await jobs.fail(client, { workerId, jobId, message: req.body.message });
   res
     .set({
       'Content-Type': 'application/json'
@@ -54,6 +54,7 @@ app.post('*', async (req, res, next) => {
   const jobId = req.get('X-Job-Id');
 
   if (typeof jobId === 'undefined') {
+    console.log('undefined JOB, what is this? healthcheck?');
     console.log(req.url);
     console.log(req.originalUrl);
     return res
