@@ -5,9 +5,6 @@ import pgPool from './pg';
 
 const app = express();
 app.use(bodyParser.json());
-app.use((error, req, res, next) => {
-  res.status(500).send({ error });
-});
 
 const withClient = (cb) => async (req, res, next) => {
   const client = await pgPool.connect();
@@ -70,6 +67,11 @@ app.post('*', async (req, res, next) => {
   } else {
     await complete(req, res, next);
   }
+});
+
+app.use((error, req, res, next) => {
+  // TODO check headers for jobId and call fail?
+  res.status(500).send({ error });
 });
 
 export default app;
