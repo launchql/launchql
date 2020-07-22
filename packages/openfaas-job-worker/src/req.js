@@ -2,7 +2,7 @@ import env from './env';
 import requestLib from 'request';
 
 // for completion
-const completeUrl = `${env.INTERNAL_JOB_REQ_URL}/complete`;
+const completeUrl = env.INTERNAL_JOB_REQ_URL;
 
 const request = (fn, { body, workerId, jobId, taskId }) => {
   return new Promise((resolve, reject) => {
@@ -10,9 +10,13 @@ const request = (fn, { body, workerId, jobId, taskId }) => {
       {
         headers: {
           'Content-Type': 'application/json',
+
+          // these are used by job-worker
           'X-Worker-Id': workerId,
           'X-Job-Id': jobId,
+          'X-Function-Name': fn,
           'X-Task-Id': taskId,
+
           // this one is used by OpenFAAS
           'X-Callback-Url': completeUrl
         },

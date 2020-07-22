@@ -55,16 +55,19 @@ export default class Worker {
   }
   async doWork(job) {
     const { payload, task_identifier } = job;
-    if (!this.supportedTaskNames.includes(task_identifier)) {
+
+    if (
+      !env.SUPPORT_ANY_JOBS &&
+      !this.supportedTaskNames.includes(task_identifier)
+    ) {
       throw new Error('Unsupported task');
     }
-    const res = await req(task_identifier, {
+    await req(task_identifier, {
       body: payload,
       taskId: task_identifier,
       workerId: this.workerId,
       jobId: job.id
     });
-    console.log(res);
   }
   async doNext(client) {
     this.doNextTimer = clearTimeout(this.doNextTimer);
