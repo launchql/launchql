@@ -4,11 +4,11 @@ import env from './env';
 app.post('*', async (req, res, next) => {
   console.log('inside example fn');
   console.log(req.body);
-  if (req.body.throw) {
+  if (req.body.throw1) {
     next(new Error('THROWN_ERROR'));
-  } else if (req.body.throws) {
+  } else if (req.body.throw2) {
     throw new Error('THROWN_ERROR');
-  } else if (req.body.throws2) {
+  } else if (req.body.throw3) {
     res.set({
       'Content-Type': 'application/json',
       'X-Job-Error': true

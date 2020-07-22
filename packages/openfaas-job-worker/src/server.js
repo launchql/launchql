@@ -51,6 +51,19 @@ const fail = withClient(async (client, req, res) => {
 });
 
 app.post('*', async (req, res, next) => {
+  const jobId = req.get('X-Job-Id');
+
+  if (typeof jobId === 'undefined') {
+    console.log(req.url);
+    console.log(req.originalUrl);
+    return res
+      .set({
+        'Content-Type': 'application/json'
+      })
+      .status(200)
+      .send('OK');
+  }
+
   if (req.get('X-Job-Error') === 'true') {
     await fail(req, res, next);
   } else {
