@@ -50,7 +50,7 @@ export default class Worker {
   }
   async handleSuccess(client, { job }) {
     console.log(
-      `Async task ${job.id} (${job.task_identifier}) will be completed later`
+      `Async task ${job.id} (${job.task_identifier}) to be processed`
     );
   }
   async doWork(job) {
