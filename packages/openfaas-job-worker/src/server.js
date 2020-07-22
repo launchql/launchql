@@ -20,7 +20,7 @@ const withClient = (cb) => async (req, res, next) => {
   }
 };
 
-const complete = withClient(async (client, req, res, next) => {
+const complete = withClient(async (client, req, res) => {
   const jobName = req.get('X-Function-Name');
   const workerId = req.get('X-Worker-Id');
   const jobId = req.get('X-Job-Id');
@@ -34,14 +34,14 @@ const complete = withClient(async (client, req, res, next) => {
     .send({ workerId, jobId });
 });
 
-const fail = withClient(async (client, req, res, next) => {
+const fail = withClient(async (client, req, res) => {
   const jobName = req.get('X-Function-Name');
   const workerId = req.get('X-Worker-Id');
   const jobId = req.get('X-Job-Id');
   console.log(
     `Failed task ${jobId} (${jobName}) with error: \n${req.body.error}\n\n`
   );
-  await jobs.complete(client, { workerId, jobId });
+  await jobs.fail(client, { workerId, jobId, message: req.body.error });
   res
     .set({
       'Content-Type': 'application/json'
