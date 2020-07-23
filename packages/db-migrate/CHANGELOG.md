@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.16](https://github.com/launchql/launchql-db/compare/@launchql/db-migrate@0.1.15...@launchql/db-migrate@0.1.16) (2020-07-23)
+
+
+### Bug Fixes
+
+* update ([0b0288c](https://github.com/launchql/launchql-db/commit/0b0288ca112d90f4128a6f1a2c1f7d52e90b1054))
+
+
+
+
+
 ## [0.1.15](https://github.com/launchql/launchql-db/compare/@launchql/db-migrate@0.1.14...@launchql/db-migrate@0.1.15) (2020-07-18)
 
 
