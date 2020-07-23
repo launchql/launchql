@@ -51,11 +51,11 @@ export const getGraphileSettings = ({
     },
     async pgSettings(req) {
       // TODO both role_ids and role_id
-      if (req?.token?.role_id) {
+      if (req?.token?.user_id) {
         return {
           role: role_name,
-          [`jwt.claims.${role_key}`]: req.token.role_id,
-          [`jwt.claims.role_ids`]: '{' + req.token.role_id + '}'
+          [`jwt.claims.${role_key}`]: req.token.user_id,
+          [`jwt.claims.role_ids`]: '{' + req.token.user_id + '}'
         };
       }
       return { role: anon_role };
