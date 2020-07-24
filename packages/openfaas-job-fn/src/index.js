@@ -26,7 +26,8 @@ export default {
         'Content-Type': 'application/json',
         'X-Job-Error': true
       });
-      return res.status(200).send({ message: error.message });
+      res.status(200);
+      return res.json({ message: error.message });
     });
     app.listen(port, cb);
   }
