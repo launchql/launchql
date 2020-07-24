@@ -5,8 +5,7 @@ app.post('*', async (req, res, next) => {
   if (req.body.throw) {
     next(new Error('THROWN_ERROR'));
   } else {
-    res.status(200);
-    res.json({
+    res.status(200).json({
       fn: 'example-fn',
       message: 'hi I did a lot of work',
       body: req.body

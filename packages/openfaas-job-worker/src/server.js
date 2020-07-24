@@ -39,12 +39,7 @@ const fail = withClient(async (client, req, res) => {
     `Failed task ${jobId} (${jobName}) with error: \n${req.body.message}\n\n`
   );
   await jobs.fail(client, { workerId, jobId, message: req.body.message });
-  res
-    .set({
-      'Content-Type': 'application/json'
-    })
-    .status(200)
-    .send({ workerId, jobId });
+  res.status(200).json({ workerId, jobId });
 });
 
 app.post('*', async (req, res, next) => {
@@ -54,12 +49,7 @@ app.post('*', async (req, res, next) => {
     console.log('undefined JOB, what is this? healthcheck?');
     console.log(req.url);
     console.log(req.originalUrl);
-    return res
-      .set({
-        'Content-Type': 'application/json'
-      })
-      .status(200)
-      .send('OK');
+    return res.status(200).json('OK');
   }
 
   if (req.get('X-Job-Error') === 'true') {
@@ -71,7 +61,7 @@ app.post('*', async (req, res, next) => {
 
 app.use((error, req, res, next) => {
   // TODO check headers for jobId and call fail?
-  res.status(500).send({ error });
+  res.status(500).json({ error });
 });
 
 export default app;
