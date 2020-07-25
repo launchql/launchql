@@ -50,17 +50,29 @@ BEGIN
                 fn = TG_ARGV[i - 1];
             ELSE
                 args = array_append(args, TG_ARGV[i - 1]);
-                EXECUTE format('SELECT ($1).%s::text', TG_ARGV[i - 1])
-                USING NEW INTO arg;
+                IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+                    EXECUTE format('SELECT ($1).%s::text', TG_ARGV[i - 1])
+                    USING NEW INTO arg;
+                END IF;
+                IF (TG_OP = 'DELETE') THEN
+                    EXECUTE format('SELECT ($1).%s::text', TG_ARGV[i - 1])
+                    USING OLD INTO arg;
+                END IF;
                 args = array_append(args, arg);
             END IF;
         END LOOP;
     PERFORM
         app_jobs.add_job (fn, my_test_schema.json_build_object_apply (args));
-    RETURN NEW;
+    IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        RETURN NEW;
+    END IF;
+    IF (TG_OP = 'DELETE') THEN
+        RETURN OLD;
+    END IF;
 END;
 $$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql
+VOLATILE;
 
 CREATE TRIGGER my_trigger
     AFTER INSERT ON my_test_schema.my_table
