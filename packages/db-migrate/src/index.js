@@ -113,9 +113,15 @@ ${rows
     fs.writeFileSync(dir + '/sqitch.plan', plan);
   };
 
-  const dbname = await pgPool.query(
+  const db = await pgPool.query(
     `select * from collections_public.database
         where id=$1`,
+    [databaseid]
+  );
+
+  const schemas = await pgPool.query(
+    `select * from collections_public.schema
+        where database_id=$1`,
     [databaseid]
   );
 
@@ -125,22 +131,29 @@ ${rows
     [databaseid]
   );
 
-  if (!dbname?.rows?.length) {
+  if (!db?.rows?.length) {
     console.log('NO DATABASES.');
     return;
   }
 
-  const name = dbname.rows[0].name;
-  const schema_name = dbname.rows[0].schema_name;
-  const private_schema_name = dbname.rows[0].private_schema_name;
+  if (!schemas?.rows?.length) {
+    console.log('NO SCHEMAS.');
+    return;
+  }
 
-  const replace = [
-    [schema_name, Case.snake(name + '_public')],
-    [private_schema_name, Case.snake(name + '_private')],
-    ['launchql-extension-name', name]
-  ].map(([f, r]) => {
-    return [new RegExp(f, 'g'), r];
+  const name = db.rows[0].name;
+  const schema_name = db.rows[0].schema_name;
+  const private_schema_name = db.rows[0].private_schema_name;
+
+  const schemaReplacers = schemas.rows.map((schema) => {
+    return [schema.schema_name, Case.snake(name + '_' + schema.name)];
   });
+
+  const replace = [...schemaReplacers, ['launchql-extension-name', name]].map(
+    ([f, r]) => {
+      return [new RegExp(f, 'g'), r];
+    }
+  );
 
   const replacer = (str, n = 0) => {
     if (!str) return '';
