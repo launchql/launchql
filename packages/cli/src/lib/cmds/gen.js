@@ -137,12 +137,18 @@ SELECT
 
   //     console.log({wbds});
 
-  const { author } = await prompt(
+  const { author, init } = await prompt(
     [
       {
         name: 'author',
         message: 'project author',
         default: `${username} <${email}>`,
+        required: true
+      },
+      {
+        name: 'init',
+        type: 'confirm',
+        message: 'initialize new project?',
         required: true
       }
     ],
@@ -151,7 +157,12 @@ SELECT
 
   //   console.log({ dbInfo, author, outdir: resolve(pth + '/packages/') });
 
-  await dbMigrate({ dbInfo, author, outdir: resolve(pth + '/packages/') });
+  await dbMigrate({
+    dbInfo,
+    author,
+    outdir: resolve(pth + '/packages/'),
+    init
+  });
 
   console.log(`
 

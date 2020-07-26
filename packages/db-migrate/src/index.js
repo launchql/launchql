@@ -4,12 +4,13 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import Case from 'case';
+import rimraf from 'rimraf';
 import moment from 'moment';
 import makeSvc from './service';
 
 import { init } from '@launchql/db-utils';
 
-const write = async ({ database, databaseid, author, outdir }) => {
+const write = async ({ database, databaseid, author, outdir, initialize }) => {
   outdir = outdir + '/';
 
   const getDbString = (db) =>
@@ -262,19 +263,26 @@ DROP EXTENSION IF EXISTS hstore;
     const sqitchDir = path.resolve(outdir + '/' + name);
     mkdirp.sync(sqitchDir);
     process.chdir(sqitchDir);
-    await init({
-      name,
-      description: name,
-      author,
-      extensions: [
-        'plpgsql',
-        'uuid-ossp',
-        'citext',
-        'pgcrypto',
-        'btree_gist',
-        'hstore'
-      ]
-    });
+    if (initialize) {
+      await init({
+        name,
+        description: name,
+        author,
+        extensions: [
+          'plpgsql',
+          'uuid-ossp',
+          'citext',
+          'pgcrypto',
+          'btree_gist',
+          'hstore'
+        ]
+      });
+    } else {
+      // until we fix the migrations and/or redeploy our app
+      rimraf.sync(path.resolve(sqitchDir + '/deploy'));
+      rimraf.sync(path.resolve(sqitchDir + '/revert'));
+      rimraf.sync(path.resolve(sqitchDir + '/verify'));
+    }
 
     if (service) {
       service = replacer(service);
@@ -295,10 +303,11 @@ DROP EXTENSION IF EXISTS hstore;
   pgPool.end();
 };
 
-export default async ({ dbInfo, author, outdir }) => {
+export default async ({ dbInfo, author, outdir, init }) => {
   for (let v = 0; v < dbInfo.database_ids.length; v++) {
     const databaseid = dbInfo.database_ids[v];
     await write({
+      initialize: init,
       database: dbInfo.dbname,
       databaseid,
       author,
