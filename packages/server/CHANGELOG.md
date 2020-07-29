@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/pyramation/launchql/compare/@launchql/server@0.16.4...@launchql/server@0.17.0) (2020-07-29)
+
+
+### Features
+
+* filter ([99bb193](https://github.com/pyramation/launchql/commit/99bb1933540c6cadb68a759049c877a486d53c72))
+
+
+
+
+
 ## [0.16.4](https://github.com/pyramation/launchql/compare/@launchql/server@0.16.3...@launchql/server@0.16.4) (2020-07-23)
 
 
