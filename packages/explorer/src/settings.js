@@ -1,6 +1,8 @@
-const env = require('./env');
-const { NodePlugin } = require('graphile-build');
+import env from './env';
+import { NodePlugin } from 'graphile-build';
 import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
+import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
 
 export const getGraphileSettings = ({
   connection,
@@ -9,37 +11,58 @@ export const getGraphileSettings = ({
   schema,
   simpleInflection,
   oppositeBaseNames
-}) => ({
-  graphileBuildOptions: {
-    pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false
-  },
-  appendPlugins: simpleInflection ? [PgSimplifyInflectorPlugin] : undefined,
-  skipPlugins: [NodePlugin],
-  dynamicJson: true,
-  disableGraphiql: false,
-  enhanceGraphiql: true,
-  graphiql: true,
-  watch: false,
-  connection,
-  port,
-  host,
-  schema,
-  ignoreRBAC: false,
-  showErrorStack: false,
-  extendedErrors: false,
-  disableQueryLog: false,
-  includeExtensionResources: true,
-  setofFunctionsContainNulls: false,
-  // https://github.com/graphile/postgraphile/issues/1073
-  retryOnInitFail: false,
-  handleSeriousError(error) {
-    throw error;
-  },
-  additionalGraphQLContextFromRequest(req, res) {
-    return { req, res, env };
-  },
-  async pgSettings(req) {
-    // TODO use real roles
-    return { role: 'postgres' };
+}) => {
+  const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
+  if (simpleInflection) {
+    plugins.push(PgSimplifyInflectorPlugin);
   }
-});
+
+  return {
+    graphileBuildOptions: {
+      pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false,
+      // connectionFilterAllowedOperators: [
+      //   "isNull",
+      //   "equalTo",
+      //   "notEqualTo",
+      //   "distinctFrom",
+      //   "notDistinctFrom",
+      //   "lessThan",
+      //   "lessThanOrEqualTo",
+      //   "greaterThan",
+      //   "greaterThanOrEqualTo",
+      //   "in",
+      //   "notIn",
+      // ],
+      connectionFilterComputedColumns: false
+    },
+    appendPlugins: plugins.length > 0 ? plugins : undefined,
+    skipPlugins: [NodePlugin],
+    dynamicJson: true,
+    disableGraphiql: false,
+    enhanceGraphiql: true,
+    graphiql: true,
+    watch: false,
+    connection,
+    port,
+    host,
+    schema,
+    ignoreRBAC: false,
+    showErrorStack: false,
+    extendedErrors: false,
+    disableQueryLog: false,
+    includeExtensionResources: true,
+    setofFunctionsContainNulls: false,
+    // https://github.com/graphile/postgraphile/issues/1073
+    retryOnInitFail: false,
+    handleSeriousError(error) {
+      throw error;
+    },
+    additionalGraphQLContextFromRequest(req, res) {
+      return { req, res, env };
+    },
+    async pgSettings(req) {
+      // TODO use real roles
+      return { role: 'postgres' };
+    }
+  };
+};

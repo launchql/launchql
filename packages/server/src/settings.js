@@ -1,7 +1,9 @@
-const env = require('./env');
-const { NodePlugin } = require('graphile-build');
+import env from './env';
+import { NodePlugin } from 'graphile-build';
 import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import PublicKeySignature from './plugins/PublicKeySignature';
+import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
 
 export const getGraphileSettings = ({
   connection,
@@ -12,7 +14,7 @@ export const getGraphileSettings = ({
   oppositeBaseNames,
   svc
 }) => {
-  const plugins = [];
+  const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
   if (simpleInflection) {
     plugins.push(PgSimplifyInflectorPlugin);
   }
@@ -22,7 +24,21 @@ export const getGraphileSettings = ({
   }
   return {
     graphileBuildOptions: {
-      pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false
+      pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false,
+      // connectionFilterAllowedOperators: [
+      //   "isNull",
+      //   "equalTo",
+      //   "notEqualTo",
+      //   "distinctFrom",
+      //   "notDistinctFrom",
+      //   "lessThan",
+      //   "lessThanOrEqualTo",
+      //   "greaterThan",
+      //   "greaterThanOrEqualTo",
+      //   "in",
+      //   "notIn",
+      // ],
+      connectionFilterComputedColumns: false
     },
     appendPlugins: plugins.length > 0 ? plugins : undefined,
     skipPlugins: [NodePlugin],

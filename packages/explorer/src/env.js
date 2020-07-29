@@ -5,7 +5,7 @@ const array = makeValidator((x) => x.split(','), '');
 module.exports = cleanEnv(
   process.env,
   {
-    SERVER_PORT: port({ default: 5555 }),
+    SERVER_PORT: port({ default: 5757 }),
     SERVER_HOST: str({ default: 'localhost' }),
     PGUSER: str({ default: 'postgres' }),
     PGHOST: str({ default: 'localhost' }),

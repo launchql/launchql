@@ -303,7 +303,7 @@ export default ({
   });
 
   app.listen(port, env.SERVER_HOST, () =>
-    console.log(`[app listening at http://${env.SERVER_HOST}:${port}`)
+    console.log(`app listening at http://${env.SERVER_HOST}:${port}`)
   );
 };
 
