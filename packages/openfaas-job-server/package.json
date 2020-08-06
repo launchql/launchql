@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/openfaas-job-worker",
-  "version": "0.1.13",
-  "description": "openfaas job worker",
+  "name": "@launchql/openfaas-job-server",
+  "version": "0.0.1",
+  "description": "openfaas job server",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-worker#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-server#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -16,7 +16,7 @@
     "module"
   ],
   "bin": {
-    "faas-jobs": "main/run.js"
+    "faas-job-server": "main/run.js"
   },
   "publishConfig": {
     "access": "public"
@@ -68,8 +68,9 @@
     "@babel/runtime": "^7.4.2",
     "@launchql/job-utils": "^0.0.2",
     "@launchql/job-pg": "^0.0.1",
+    "body-parser": "1.19.0",
     "envalid": "6.0.2",
-    "pg": "8.3.0",
-    "request": "2.88.2"
+    "express": "4.17.1",
+    "pg": "8.3.0"
   }
 }

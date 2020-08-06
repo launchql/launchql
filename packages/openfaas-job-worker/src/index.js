@@ -3,26 +3,6 @@ import * as jobs from '@launchql/job-utils';
 import { request as req } from './req';
 import env from './env';
 
-// function once(fn, context) {
-//   let result;
-//   return function () {
-//     if (fn) {
-//       result = fn.apply(context || this, arguments);
-//       fn = null;
-//     }
-//     return result;
-//   };
-// }
-
-// const SYS_EVENTS = [
-//   'SIGUSR2',
-//   'SIGINT',
-//   'SIGTERM',
-//   'SIGPIPE',
-//   'SIGHUP',
-//   'SIGABRT'
-// ];
-
 /* eslint-disable no-console */
 
 export default class Worker {

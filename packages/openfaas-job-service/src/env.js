@@ -17,7 +17,8 @@ export default cleanEnv(
       default: 'worker-0'
     }),
     INTERNAL_GATEWAY_URL: url(),
-    INTERNAL_JOB_REQ_URL: url()
+    INTERNAL_JOB_REQ_URL: url(),
+    PORT: port({ default: 12345 })
   },
   { dotEnvPath: null }
 );
