@@ -26,6 +26,15 @@ const write = async ({ database, databaseid, author, outdir, initialize }) => {
     rows.forEach((row) => writeDeploy(row, opts));
   };
 
+  const ordered = (arr) => {
+    if (!arr) return [];
+    return arr.sort((a, b) => {
+      return (
+        a.length - b.length || a.localeCompare(b) // sort by length, if equal then
+      ); // sort by dictionary order
+    });
+  };
+
   const writeDeploy = (row, opts) => {
     const deploy = opts.replacer(row.deploy);
     const dir = path.dirname(deploy);
@@ -37,7 +46,9 @@ const write = async ({ database, databaseid, author, outdir, initialize }) => {
 -- made with <3 @ launchql.com
 
 ${opts.replacer(
-  row?.deps?.map((dep) => `-- requires: ${dep}`).join('\n') || ''
+  ordered(row?.deps)
+    .map((dep) => `-- requires: ${dep}`)
+    .join('\n') || ''
 )}
 
 BEGIN;
@@ -197,7 +208,6 @@ BEGIN
       WHERE  rolname = 'administrator') THEN
       CREATE ROLE administrator;
       ALTER USER administrator WITH NOCREATEDB;
-      ALTER USER administrator WITH NOSUPERUSER;
       ALTER USER administrator WITH NOCREATEROLE;
       ALTER USER administrator WITH NOLOGIN;
       ALTER USER administrator WITH NOREPLICATION;
@@ -208,7 +218,6 @@ BEGIN
       WHERE  rolname = 'anonymous') THEN
       CREATE ROLE anonymous;
       ALTER USER anonymous WITH NOCREATEDB;
-      ALTER USER anonymous WITH NOSUPERUSER;
       ALTER USER anonymous WITH NOCREATEROLE;
       ALTER USER anonymous WITH NOLOGIN;
       ALTER USER anonymous WITH NOREPLICATION;
@@ -219,7 +228,6 @@ BEGIN
       WHERE  rolname = 'authenticated') THEN
       CREATE ROLE authenticated;
       ALTER USER authenticated WITH NOCREATEDB;
-      ALTER USER authenticated WITH NOSUPERUSER;
       ALTER USER authenticated WITH NOCREATEROLE;
       ALTER USER authenticated WITH NOLOGIN;
       ALTER USER authenticated WITH NOREPLICATION;
