@@ -20,13 +20,11 @@ export default class Scheduler {
      * LISTEN/NOTIFY fails for whatever reason.
      */
     this.idleDelay = idleDelay;
-
     this.supportedTaskNames = tasks;
     this.workerId = workerId;
     this.doNextTimer = undefined;
     this.pgPool = pgPool;
     this.jobs = {};
-
     poolManager.onClose(jobs.releaseScheduledJobs, null, [
       pgPool,
       { workerId: this.workerId }
