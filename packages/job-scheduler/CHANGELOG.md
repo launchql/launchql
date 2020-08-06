@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/launchql/jobs/compare/@launchql/job-scheduler@0.1.0...@launchql/job-scheduler@0.1.1) (2020-08-06)
+
+
+### Bug Fixes
+
+* update ([7056076](https://github.com/launchql/jobs/commit/7056076ec886e9d9a19d06cc89784103e0987802))
+
+
+
+
+
 # 0.1.0 (2020-08-06)
 
 

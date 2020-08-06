@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-job-service",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "openfaas job service",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-service#readme",
@@ -67,7 +67,7 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "@launchql/job-pg": "^0.1.0",
-    "@launchql/job-scheduler": "^0.1.0",
+    "@launchql/job-scheduler": "^0.1.1",
     "@launchql/openfaas-job-server": "^0.1.0",
     "@launchql/openfaas-job-worker": "^0.2.1",
     "envalid": "6.0.2"
