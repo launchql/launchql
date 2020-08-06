@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/launchql/jobs/compare/@launchql/openfaas-job-worker@0.1.13...@launchql/openfaas-job-worker@0.2.0) (2020-08-06)
+
+
+### Bug Fixes
+
+* logging ([41515e4](https://github.com/launchql/jobs/commit/41515e4010b9bb6ab13a48d1abc20b97f62cfd3d))
+
+
+### Features
+
+* **job-scheduler:** scheduler ([f658180](https://github.com/launchql/jobs/commit/f658180add1945b4baa3294fab8d7b34fedb15ae))
+* server and service ([46e92a7](https://github.com/launchql/jobs/commit/46e92a77794eacfae11e4f33b767d7f1d39b2c7a))
+
+
+
+
+
 ## [0.1.13](https://github.com/launchql/jobs/compare/@launchql/openfaas-job-worker@0.1.12...@launchql/openfaas-job-worker@0.1.13) (2020-07-24)
 
 **Note:** Version bump only for package @launchql/openfaas-job-worker

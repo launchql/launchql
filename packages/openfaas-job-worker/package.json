@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-job-worker",
-  "version": "0.1.13",
+  "version": "0.2.0",
   "description": "openfaas job worker",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-worker#readme",
@@ -66,8 +66,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/job-utils": "^0.0.2",
-    "@launchql/job-pg": "^0.0.1",
+    "@launchql/job-pg": "^0.1.0",
+    "@launchql/job-utils": "^0.1.0",
     "envalid": "6.0.2",
     "pg": "8.3.0",
     "request": "2.88.2"
