@@ -1,7 +1,6 @@
 import env from './env';
 import pg from 'pg';
 import * as jobs from '@launchql/job-utils';
-import crypto from 'crypto';
 
 const getDbString = () =>
   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
@@ -10,10 +9,26 @@ const pgPoolConfig = {
   connectionString: getDbString()
 };
 
+function once(fn, context) {
+  let result;
+  return function () {
+    if (fn) {
+      result = fn.apply(context || this, arguments);
+      fn = null;
+    }
+    return result;
+  };
+}
+
 /* eslint-disable no-console */
 
 export default class Worker {
-  constructor({ tasks, idleDelay = 15000 }) {
+  constructor({
+    tasks,
+    idleDelay = 15000,
+    pgPool = new pg.Pool(pgPoolConfig),
+    workerId = 'worker-0'
+  }) {
     this.tasks = tasks;
     /*
      * idleDelay: This is how long to wait between polling for jobs.
@@ -25,9 +40,9 @@ export default class Worker {
     this.idleDelay = idleDelay;
 
     this.supportedTaskNames = Object.keys(this.tasks);
-    this.workerId = `worker-${crypto.randomBytes(20).toString('hex')}`;
+    this.workerId = workerId;
     this.doNextTimer = undefined;
-    this.pgPool = new pg.Pool(pgPoolConfig);
+    this.pgPool = pgPool;
     const close = () => {
       console.log('closing connection...');
       this.close();
@@ -55,7 +70,7 @@ export default class Worker {
       { err, stack: err.stack }
     );
     console.error(err.stack);
-    await jobs.fail(client, {
+    await jobs.failJob(client, {
       workerId: this.workerId,
       jobId: job.id,
       message: err.message
@@ -65,7 +80,7 @@ export default class Worker {
     console.log(
       `Completed task ${job.id} (${job.task_identifier}) with success (${duration}ms)`
     );
-    await jobs.complete(client, { workerId: this.workerId, jobId: job.id });
+    await jobs.completeJob(client, { workerId: this.workerId, jobId: job.id });
   }
   async doWork(job) {
     const { task_identifier } = job;
@@ -84,7 +99,7 @@ export default class Worker {
   async doNext(client) {
     this.doNextTimer = clearTimeout(this.doNextTimer);
     try {
-      const job = await jobs.get(client, {
+      const job = await jobs.getJob(client, {
         workerId: this.workerId,
         supportedTaskNames: this.supportedTaskNames
       });

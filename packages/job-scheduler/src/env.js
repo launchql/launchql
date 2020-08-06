@@ -14,10 +14,10 @@ export default cleanEnv(
     SUPPORT_ANY_JOBS: bool({ default: true }),
     SUPPORTED_JOBS: array({ default: '' }),
     HOSTNAME: str({
-      default: 'worker-0'
+      default: 'scheduler-0'
     }),
-    INTERNAL_GATEWAY_URL: url(),
-    INTERNAL_JOB_REQ_URL: url(),
+    // INTERNAL_GATEWAY_URL: url(),
+    // INTERNAL_JOB_REQ_URL: url(),
     PORT: port({ default: 12345 })
   },
   { dotEnvPath: null }

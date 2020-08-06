@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/openfaas-job-worker",
-  "version": "0.1.13",
-  "description": "openfaas job worker",
+  "name": "@launchql/job-pg",
+  "version": "0.0.1",
+  "description": "job pg",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-worker#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-pg#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -15,9 +15,6 @@
     "main",
     "module"
   ],
-  "bin": {
-    "faas-jobs": "main/run.js"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -30,8 +27,6 @@
     "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
     "build": "npm run build:module && npm run build:main",
     "prepare": "npm run build",
-    "dev": "NODE_ENV=development babel-node src/run",
-    "watch": "NODE_ENV=development babel-watch src/run",
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -43,7 +38,6 @@
   "devDependencies": {
     "@babel/cli": "7.8.4",
     "@babel/core": "7.8.4",
-    "@babel/node": "7.10.5",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-proposal-export-default-from": "7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "7.9.6",
@@ -53,7 +47,6 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.3",
     "babel-plugin-macros": "2.8.0",
-    "babel-watch": "7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "5.2.0",
@@ -66,12 +59,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/job-utils": "^0.0.2",
-    "@launchql/job-pg": "^0.0.1",
-    "body-parser": "1.19.0",
     "envalid": "6.0.2",
-    "express": "4.17.1",
-    "pg": "8.3.0",
-    "request": "2.88.2"
+    "pg": "8.3.0"
   }
 }
