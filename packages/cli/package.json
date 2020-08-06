@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "0.5.19",
+  "version": "0.5.20",
   "description": "launchql cli",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db#readme",
@@ -67,7 +67,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@launchql/db-env": "^0.0.6",
-    "@launchql/db-migrate": "^0.2.1",
+    "@launchql/db-migrate": "^0.2.2",
     "@launchql/db-template": "^0.1.1",
     "@launchql/db-templates": "^0.2.1",
     "@launchql/db-testing": "^0.1.10",
