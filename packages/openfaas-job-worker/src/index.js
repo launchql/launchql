@@ -4,7 +4,6 @@ import { request as req } from './req';
 import env from './env';
 
 /* eslint-disable no-console */
-
 export default class Worker {
   constructor({
     tasks,
@@ -19,12 +18,12 @@ export default class Worker {
      * notified when new jobs are added - this is just used in the case where
      * LISTEN/NOTIFY fails for whatever reason.
      */
+
     this.idleDelay = idleDelay;
     this.supportedTaskNames = tasks;
     this.workerId = workerId;
     this.doNextTimer = undefined;
     this.pgPool = pgPool;
-
     poolManager.onClose(jobs.releaseJobs, null, [
       pgPool,
       { workerId: this.workerId }
