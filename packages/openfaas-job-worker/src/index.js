@@ -42,7 +42,7 @@ export default class Worker {
   async handleFatalError(client, { err, fatalError, jobId }) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
-      `Failed to release job '${jobId}' ${when}; committing seppuku`
+      `worker: Failed to release job '${jobId}' ${when}; committing seppuku`
     );
     await poolManager.close();
     console.error(fatalError);
@@ -50,7 +50,7 @@ export default class Worker {
   }
   async handleError(client, { err, job, duration }) {
     console.error(
-      `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
+      `worker: Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
       { err, stack: err.stack }
     );
     console.error(err.stack);
@@ -62,7 +62,7 @@ export default class Worker {
   }
   async handleSuccess(client, { job }) {
     console.log(
-      `Async task ${job.id} (${job.task_identifier}) to be processed`
+      `worker: Async task ${job.id} (${job.task_identifier}) to be processed`
     );
   }
   async doWork(job) {
@@ -85,7 +85,7 @@ export default class Worker {
       return await this.initialize(client);
     }
 
-    console.log('checking for jobs...');
+    console.log('worker: checking for jobs...');
     this.doNextTimer = clearTimeout(this.doNextTimer);
     try {
       const job = await jobs.getJob(client, {
@@ -132,7 +132,7 @@ export default class Worker {
   listen() {
     const listenForChanges = (err, client, release) => {
       if (err) {
-        console.error('Error connecting with notify listener', err);
+        console.error('worker: Error connecting with notify listener', err);
         // Try again in 5 seconds
         // should this really be done in the node process?
         setTimeout(this.listen, 5000);
@@ -146,11 +146,11 @@ export default class Worker {
       });
       client.query('LISTEN "jobs:insert"');
       client.on('error', (e) => {
-        console.error('Error with database notify listener', e);
+        console.error('worker: Error with database notify listener', e);
         release();
         this.listen();
       });
-      console.log(`${this.workerId} connected and looking for jobs...`);
+      console.log(`worker: ${this.workerId} connected and looking for jobs...`);
       this.doNext(client);
     };
     this.pgPool.connect(listenForChanges);

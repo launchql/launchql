@@ -22,7 +22,7 @@ export default (pgPool = poolManager.getPool()) => {
     const jobName = req.get('X-Function-Name');
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
-    console.log(`Completed task ${jobId} (${jobName}) with success`);
+    console.log(`server: Completed task ${jobId} (${jobName}) with success`);
     await jobs.completeJob(client, { workerId, jobId });
     res
       .set({
@@ -37,7 +37,7 @@ export default (pgPool = poolManager.getPool()) => {
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
     console.log(
-      `Failed task ${jobId} (${jobName}) with error: \n${req.body.message}\n\n`
+      `server: Failed task ${jobId} (${jobName}) with error: \n${req.body.message}\n\n`
     );
     await jobs.failJob(client, { workerId, jobId, message: req.body.message });
     res.status(200).json({ workerId, jobId });
@@ -47,7 +47,7 @@ export default (pgPool = poolManager.getPool()) => {
     const jobId = req.get('X-Job-Id');
 
     if (typeof jobId === 'undefined') {
-      console.log('undefined JOB, what is this? healthcheck?');
+      console.log('server: undefined JOB, what is this? healthcheck?');
       console.log(req.url);
       console.log(req.originalUrl);
       return res.status(200).json('OK');

@@ -51,7 +51,7 @@ export default class Scheduler {
   }
   async handleError(client, { err, job, duration }) {
     console.error(
-      `Failed to initialize scheduler for ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
+      `scheduler: Failed to initialize scheduler for ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
       { err, stack: err.stack }
     );
     const j = this.jobs[job.id];
@@ -63,7 +63,7 @@ export default class Scheduler {
   }
   async handleSuccess(client, { job, duration }) {
     console.log(
-      `scheduler initialized ${job.id} (${job.task_identifier}) with success (${duration}ms)`
+      `scheduler: initialized ${job.id} (${job.task_identifier}) with success (${duration}ms)`
     );
   }
   async scheduleJob(client, job) {
@@ -79,14 +79,14 @@ export default class Scheduler {
         } else {
           // this means the scheduled_job has been deleted from db, so cancel it
           console.log(
-            `attempted job[${job.task_identifier}] but it's probably non existent, unscheduling...`
+            `scheduler: attempted job[${job.task_identifier}] but it's probably non existent, unscheduling...`
           );
           const j = this.jobs[job.id];
           if (j) j.cancel();
         }
       } else {
         console.log(
-          `job already scheduled but not yet run: [${job.task_identifier}]`
+          `scheduler: job already scheduled but not yet run: [${job.task_identifier}]`
         );
       }
     });
@@ -143,14 +143,14 @@ export default class Scheduler {
   listen() {
     const listenForChanges = (err, client, release) => {
       if (err) {
-        console.error('Error connecting with notify listener', err);
+        console.error('scheduler: Error connecting with notify listener', err);
         // Try again in 5 seconds
         // should this really be done in the node process?
         setTimeout(this.listen, 5000);
         return;
       }
       client.on('notification', () => {
-        console.log('a NEW scheduled JOB!');
+        console.log('scheduler: a NEW scheduled JOB!');
         if (this.doNextTimer) {
           // Must be idle, do something!
           this.doNext(client);
@@ -158,12 +158,12 @@ export default class Scheduler {
       });
       client.query('LISTEN "scheduled_jobs:insert"');
       client.on('error', (e) => {
-        console.error('Error with database notify listener', e);
+        console.error('scheduler: Error with database notify listener', e);
         release();
         this.listen();
       });
       console.log(
-        `${this.workerId} connected and looking for scheduled jobs...`
+        `scheduler: ${this.workerId} connected and looking for scheduled jobs...`
       );
       this.doNext(client);
     };
