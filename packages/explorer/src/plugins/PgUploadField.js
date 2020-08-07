@@ -110,6 +110,7 @@ export default function UploadFieldPlugin(
 
             // Add our new resolver which wraps the old resolver
             async resolve(source, args, context, info) {
+
                 // Recursively check for Upload promises to resolve
                 async function resolvePromises(obj) {
                     for (let key of Object.keys(obj)) {
@@ -121,8 +122,7 @@ export default function UploadFieldPlugin(
                                     upload,
                                     args,
                                     context,
-                                    info,
-                                    tags[key],
+                                    {...info, uploadPlugin: {tags: tags[key]}}
                                 );
                             }
                         } else if (obj[key] !== null && typeof obj[key] === "object") {

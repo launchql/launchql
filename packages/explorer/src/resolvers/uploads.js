@@ -57,27 +57,32 @@ const uploadMethod1 = async ({ upload }) => {
     });
 }
 
-const uploadMethod2 = async ({ upload }) => {
+const uploadAsyncS3 = async ({ upload }) => {
     const readStream = upload.createReadStream();
+    if (upload.filename.match(/\.svg$/)) {
+        upload.mimetype = 'image/svg+xml';
+    }
     return s3.upload({
         Body: readStream,
         Key: upload.filename,
+        ContentType: upload.mimetype,
         Bucket: env.BUCKET_NAME
     })
         .on('httpUploadProgress', progress => {
             console.log('progress', progress);
         })
         .promise();
-}
+};
+
 
 
 // TODO use https://github.com/minio/minio-js
-export default async function resolveUpload(upload, _args, _context, _info, tags) {
-
+export default async function resolveUpload(upload, _args, _context, info) {
+    const {uploadPlugin: { tags }} = info;
     console.log({ tags })
     console.log({ upload })
 
-    const result = await uploadMethod2({ upload });
+    const result = await uploadAsyncS3({ upload });
     console.log({ result })
     const url = result.Location;
 
