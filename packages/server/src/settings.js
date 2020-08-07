@@ -4,6 +4,8 @@ import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import PublicKeySignature from './plugins/PublicKeySignature';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
+import PostGraphileUploadFieldPlugin from 'postgraphile-plugin-upload-field';
+import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
   connection,
@@ -15,6 +17,9 @@ export const getGraphileSettings = ({
   svc
 }) => {
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
+
+  plugins.push(PostGraphileUploadFieldPlugin);
+
   if (simpleInflection) {
     plugins.push(PgSimplifyInflectorPlugin);
   }
@@ -24,6 +29,14 @@ export const getGraphileSettings = ({
   }
   return {
     graphileBuildOptions: {
+      uploadFieldDefinitions: [
+        {
+          match: (args) => {
+            return args.tags.upload;
+          },
+          resolve: resolveUpload
+        }
+      ],
       pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false,
       // connectionFilterAllowedOperators: [
       //   "isNull",

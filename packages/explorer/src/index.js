@@ -1,13 +1,13 @@
-import express from 'express';
 import { getGraphileSettings } from './settings';
+import { graphqlUploadExpress } from 'graphql-upload';
+import { middleware as parseDomains } from '@pyramation/url-domains';
 import { postgraphile } from '@pyramation/postgraphile';
-import 'colors';
-import pg from 'pg';
+import { printSchemas, printDatabases } from './render';
 import cors from 'cors';
 import env from './env';
+import express from 'express';
 import LRU from 'lru-cache';
-import { printSchemas, printDatabases } from './render';
-import { middleware as parseDomains } from '@pyramation/url-domains';
+import pg from 'pg';
 
 const end = (pool) => {
   try {
@@ -26,7 +26,7 @@ const end = (pool) => {
 const cache = new LRU({
   max: 15,
   dispose: function (key, obj) {
-    console.log(`disposing ${'PostGraphile'.green}[${key.blue}]`);
+    console.log(`disposing ${'PostGraphile'}[${key}]`);
   },
   updateAgeOnGet: true,
   maxAge: 1000 * 60 * 60
@@ -35,7 +35,7 @@ const cache = new LRU({
 const pgCache = new LRU({
   max: 10,
   dispose: function (key, pgPool) {
-    console.log(`disposing pg ${key}`.red);
+    console.log(`disposing pg ${key}`);
     const inUse = false;
     cache.forEach((obj, k) => {
       if (obj.pgPoolKey === key) {
@@ -138,6 +138,8 @@ export default ({
     });
     return next();
   });
+  // Attach multipart request handling middleware
+  app.use(graphqlUploadExpress());
 
   process.on('SIGTERM', () => {
     cache.reset();

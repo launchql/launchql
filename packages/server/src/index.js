@@ -1,11 +1,12 @@
-import express from 'express';
 import { getGraphileSettings } from './settings';
+import { graphqlUploadExpress } from 'graphql-upload';
+import { middleware as parseDomains } from '@pyramation/url-domains';
 import { postgraphile } from '@pyramation/postgraphile';
-import pg from 'pg';
 import cors from 'cors';
 import env from './env';
+import express from 'express';
 import LRU from 'lru-cache';
-import { middleware as parseDomains } from '@pyramation/url-domains';
+import pg from 'pg';
 
 const end = (pool) => {
   try {
@@ -206,6 +207,8 @@ export default ({
     });
     return next();
   });
+  // Attach multipart request handling middleware
+  app.use(graphqlUploadExpress());
 
   // get service
   app.use(async (req, res, next) => {
