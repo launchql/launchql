@@ -4,7 +4,8 @@ import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import PublicKeySignature from './plugins/PublicKeySignature';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
-import PostGraphileUploadFieldPlugin from 'postgraphile-plugin-upload-field';
+import PostGraphileUploadFieldPlugin from './plugins/PgUploadField';
+// import PostGraphileUploadFieldPlugin from 'postgraphile-plugin-upload-field';
 import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({

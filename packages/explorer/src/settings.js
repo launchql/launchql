@@ -3,7 +3,8 @@ import { NodePlugin } from 'graphile-build';
 import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
-import PostGraphileUploadFieldPlugin from 'postgraphile-plugin-upload-field';
+// import PostGraphileUploadFieldPlugin from 'postgraphile-plugin-upload-field';
+import PostGraphileUploadFieldPlugin from './plugins/PgUploadField';
 import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
