@@ -10,7 +10,11 @@ module.exports = cleanEnv(
     PGUSER: str({ default: 'postgres' }),
     PGHOST: str({ default: 'localhost' }),
     PGPASSWORD: str({ default: 'password' }),
-    PGPORT: port({ default: 5432 })
+    PGPORT: port({ default: 5432 }),
+
+    BUCKET_NAME: str(),
+    AWS_SECRET_KEY: str(),
+    AWS_ACCESS_KEY: str(),
   },
   { dotEnvPath: null }
 );
