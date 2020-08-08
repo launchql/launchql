@@ -8,7 +8,7 @@ import {
 import stream from 'stream';
 
 const s3 = new S3({
-  region: 'us-east-1',
+  region: env.AWS_REGION,
   apiVersion: '2006-03-01'
 });
 
