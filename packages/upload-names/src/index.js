@@ -14,9 +14,8 @@ export default (
 
   if (english) {
     const fname = slugify(name);
-    const ename = slugify(ext);
     if (fname.length === 0 && name.length > 0) {
-      throw new Error(`${name} resolves to nothing`);
+      throw new Error(`BAD_FILE_NAME ${name}`);
     }
   }
 

@@ -38,7 +38,7 @@ describe('uploads', () => {
     const use = files;
     for (var i = 0; i < use.length; i++) {
       const file = use[i];
-      const results = await getName(file);
+      const results = getName(file);
       res[basename(file)] = results;
     }
     expect(res).toMatchSnapshot();
@@ -48,7 +48,7 @@ describe('uploads', () => {
     const use = files;
     for (var i = 0; i < use.length; i++) {
       const file = use[i];
-      const results = await getName(file, { lower: false });
+      const results = getName(file, { lower: false });
       res[basename(file)] = results;
     }
     expect(res).toMatchSnapshot();
@@ -59,7 +59,7 @@ describe('uploads', () => {
     for (var i = 0; i < use.length; i++) {
       const file = use[i];
       try {
-        await getName(file);
+        getName(file);
       } catch (e) {
         expect(e.message).toMatchSnapshot();
       }

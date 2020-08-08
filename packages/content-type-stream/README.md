@@ -1,8 +1,10 @@
 # content-type-stream
 
-In my life I've always found that `content-type`s or mimetypes to be totally hacky and different across operating systems, browsers, knowing when to use the magic bytes compared to how we actually use files based on their extensions... so this is aimed to make all that simple :)
+```sh
+npm install @pyramation/content-type-stream
+```
 
-
+In my life I've always found that `content-type`s or mimetypes to be totally hacky and different across operating systems and browsers. Also, knowing when to use the magic bytes compared to how we actually use files based on their extensions is never consistent... so this is aimed to make all that simple :)
 
 ## content-type info
 

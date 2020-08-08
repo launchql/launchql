@@ -1,5 +1,9 @@
 # stream-to-s3
 
+```sh
+npm install @pyramation/stream-to-s3
+```
+
 Stream uploads to s3
 
 ```js
