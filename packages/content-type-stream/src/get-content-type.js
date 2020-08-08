@@ -11,7 +11,7 @@ const special = {
   }
 };
 
-const replaceNeeded = [
+const needsMimeReplacement = [
   'text/plain',
   'application/zip',
   'application/octet-stream',
@@ -19,13 +19,14 @@ const replaceNeeded = [
   'application/font-sfnt'
 ];
 
-const reduceThese = {
+const directReplacements = {
   'font/ttf': 'application/x-font-ttf',
   'application/vnd.ms-opentype': 'application/x-font-opentype',
   'font/otf': 'application/x-font-opentype',
   'font/woff2': 'application/font-woff2',
   'font/woff': 'application/font-woff',
-  'font/eot': 'application/vnd.ms-fontobject'
+  'font/eot': 'application/vnd.ms-fontobject',
+  'image/svg': 'image/svg+xml'
 };
 
 // https: //stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
@@ -42,7 +43,7 @@ export const getContentType = (file, type, charset) => {
   const ext = extname(file).replace(/./, '');
 
   let final = type;
-  if (replaceNeeded.includes(type)) {
+  if (needsMimeReplacement.includes(type)) {
     const test = mime.getType(file);
     if (test) final = test;
   }
@@ -52,8 +53,8 @@ export const getContentType = (file, type, charset) => {
       final = special[ext][key];
     }
   }
-  if (reduceThese.hasOwnProperty(final)) {
-    return reduceThese[final];
+  if (directReplacements.hasOwnProperty(final)) {
+    return directReplacements[final];
   }
 
   return final;
