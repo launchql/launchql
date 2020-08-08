@@ -3449,10 +3449,10 @@
     "@babel/preset-react" "7.9.4"
     babel-plugin-macros "2.8.0"
 
-"@pyramation/content-type-stream@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@pyramation/content-type-stream/-/content-type-stream-0.0.3.tgz#7cccd226c2fb5447a9e2d2e0d5ae6d4b2e2e7bfe"
-  integrity sha512-yzYenON1QWCWjcBGjwV5di8at5WzDC1c0GUR4qSOMLIj5qfil7f+ALG6nAO8qdxyrIBX9nKW6cazyvj30vYWOg==
+"@pyramation/content-type-stream@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@pyramation/content-type-stream/-/content-type-stream-0.0.4.tgz#4bea6faa10f6694e7074eddaf85794c72d985f88"
+  integrity sha512-uo3s3nXkRrmO4cKXoFcmIF+IIdI76Bu97cPq6dsgOlSprYOuPyM14BW6fcv6le6q3tL6rO8SrQHPNLYKRmFs8A==
   dependencies:
     "@babel/runtime" "^7.4.2"
     buffer-peek-stream "1.1.0"
@@ -3495,10 +3495,10 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-"@pyramation/postgraphile-upload-field@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@pyramation/postgraphile-upload-field/-/postgraphile-upload-field-0.0.2.tgz#764def265a0e03bb02b0576bb61f89e4ffbac3ed"
-  integrity sha512-M3QLPbEgbM+oSP39TemzOdmR9ZHk0b2BMbPbkBSBavtI37Nt7V/gmfc9eqcQmNulIq88yTRiL6Ny4HumC/vQvg==
+"@pyramation/postgraphile-upload-field@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@pyramation/postgraphile-upload-field/-/postgraphile-upload-field-0.0.3.tgz#76007cf0c2d63881c68653bf4d8b949e03873244"
+  integrity sha512-eQA78ftV+rX1i23JP95TZGzfGH1ta9+3kALQmiiD3mdsxWFEGWMmuw5lsCSuJV0EjCdpcFPAOFgvp7IAomGrBA==
   dependencies:
     "@babel/runtime" "^7.4.2"
     graphql-upload "11.0.0"
@@ -3545,20 +3545,20 @@
     inquirer "^6.0.0"
     inquirer-autocomplete-prompt "^0.11.1"
 
-"@pyramation/stream-to-s3@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@pyramation/stream-to-s3/-/stream-to-s3-0.0.5.tgz#ebb19e77f84b1f44beff5b4180b595df8d87a3e8"
-  integrity sha512-OXIsUK+8gb7y8xf6O/aRWNH5Rbu6F3PZXWvhoTmz0t3rDPZYMhWkDUmk0f1qGG3/RvXZS8P65yQAZ0nsGfsunQ==
+"@pyramation/stream-to-s3@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@pyramation/stream-to-s3/-/stream-to-s3-0.0.8.tgz#d530b294e2198efc794ff9782dbf7e468942a865"
+  integrity sha512-qbjx9Aqu71HVpD1sWX7iG2jFNuS3FdoZV3enRDIBUnVvVilU8WXeArKRvVCexv5OKgYr7kB70nw2N4tTSr8LQw==
   dependencies:
     "@babel/runtime" "^7.4.2"
-    "@pyramation/content-type-stream" "^0.0.3"
+    "@pyramation/content-type-stream" "^0.0.4"
     aws-sdk "2.729.0"
     envalid "6.0.2"
 
-"@pyramation/upload-names@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.0.2.tgz#a0cbb950de19cf0a46eabfbb40624359cf7e78ae"
-  integrity sha512-5GCjhV2UMviDoLIwzdKaEl+OwX2JbURn0NnYvYQNwAEUHA7sAeZ8/wLTa51xzZJIsDfsSnMErew/RDr3Y0gfbw==
+"@pyramation/upload-names@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.0.3.tgz#a495a73ef5fdb17cc4024180c29e03c6d3dbea8c"
+  integrity sha512-qBXE2vyLK5WGoYHp9k7saXIfIY+J7OWZxFIKcAxQLe6tAxa1vQWC8v95IMWTHcV1NTsjImPUNZIOX6a5zUVJRg==
   dependencies:
     "@babel/runtime" "^7.4.2"
 
