@@ -68,6 +68,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@pyramation/postgraphile": "4.7.6",
+    "@pyramation/postgraphile-upload-field": "0.0.2",
     "@pyramation/stream-to-s3": "0.0.5",
     "@pyramation/upload-names": "0.0.2",
     "@pyramation/url-domains": "0.0.4",
@@ -82,7 +83,6 @@
     "lru-cache": "5.1.1",
     "pg": "8.3.0",
     "postgraphile-plugin-connection-filter": "2.0.0",
-    "postgraphile-plugin-fulltext-filter": "1.0.0-beta.7",
-    "postgraphile-plugin-upload-field": "1.0.0-alpha.10"
+    "postgraphile-plugin-fulltext-filter": "1.0.0-beta.7"
   }
 }

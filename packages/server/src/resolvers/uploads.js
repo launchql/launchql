@@ -1,31 +1,47 @@
-import fs from 'fs';
-import path from 'path';
+import uploadAsyncS3 from '@pyramation/stream-to-s3';
+import uploadNames from '@pyramation/upload-names';
+import env from '../env';
 
-const UPLOAD_DIR_NAME = 'uploads';
+export default async function resolveUpload(upload, _args, _context, info) {
+  const {
+    uploadPlugin: { tags }
+  } = info;
+  console.log({ tags });
+  console.log({ upload });
+  const readStream = upload.createReadStream();
+  const { filename, mimetype, encoding } = upload;
 
-export default async function resolveUpload(upload) {
-  const { filename, createReadStream } = upload;
-  const stream = createReadStream();
-  // Save file to the local filesystem
-  const { filepath } = await saveLocal({ stream, filename });
+  const rand =
+    Math.random().toString(36).substring(2, 7) +
+    Math.random().toString(36).substring(2, 7);
+  const key = rand + '-' + uploadNames(filename);
+  const result = await uploadAsyncS3({
+    readStream,
+    filename,
+    key,
+    bucket: env.BUCKET_NAME
+  });
+  const url = result.upload.Location;
+
+  console.log({ mimetype, vs: result });
+
+  const {
+    contentType,
+    magic: { charset }
+  } = result;
+
   // Return metadata to save it to Postgres
-  return filepath;
-}
-
-function saveLocal({ stream, filename }) {
-  const timestamp = new Date().toISOString().replace(/\D/g, '');
-  const id = `${timestamp}_${filename}`;
-  const filepath = path.join(UPLOAD_DIR_NAME, id);
-  const fsPath = path.join(process.cwd(), filepath);
-  return new Promise((resolve, reject) =>
-    stream
-      .on('error', (error) => {
-        if (stream.truncated)
-          // Delete the truncated file
-          fs.unlinkSync(fsPath);
-        reject(error);
-      })
-      .on('end', () => resolve({ id, filepath }))
-      .pipe(fs.createWriteStream(fsPath))
-  );
+  const type = tags.type;
+  switch (type) {
+    case 'attachment':
+      return {
+        filename,
+        mimetype: contentType,
+        encoding,
+        charset,
+        url
+      };
+    default:
+      return url;
+  }
 }

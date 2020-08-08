@@ -14,7 +14,11 @@ module.exports = cleanEnv(
     SERVICE_SCHEMA: str({ default: 'services_public' }),
     SERVICE_TABLE: str({ default: 'services' }),
     TRUST_PROXY: bool({ default: false }),
-    PGPORT: port({ default: 5432 })
+    PGPORT: port({ default: 5432 }),
+
+    BUCKET_NAME: str(),
+    AWS_SECRET_KEY: str(),
+    AWS_ACCESS_KEY: str()
   },
   { dotEnvPath: null }
 );
