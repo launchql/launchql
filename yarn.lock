@@ -1678,6 +1678,14 @@
     "@babel/helper-create-regexp-features-plugin" "^7.8.3"
     "@babel/helper-plugin-utils" "^7.8.3"
 
+"@babel/polyfill@^7.0.0":
+  version "7.10.4"
+  resolved "https://registry.npmjs.org/@babel/polyfill/-/polyfill-7.10.4.tgz#915e5bfe61490ac0199008e35ca9d7d151a8e45a"
+  integrity sha512-8BYcnVqQ5kMD2HXoHInBH7H1b/uP3KdnwCYXOqFnXqguOyuu443WXusbIUbWEfY3Z0Txk0M1uG/8YuAMhNl6zg==
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.4"
+
 "@babel/preset-env@7.10.4":
   version "7.10.4"
   resolved "https://registry.npmjs.org/@babel/preset-env/-/preset-env-7.10.4.tgz#fbf57f9a803afd97f4f32e4f798bb62e4b2bef5f"
@@ -3441,6 +3449,18 @@
     "@babel/preset-react" "7.9.4"
     babel-plugin-macros "2.8.0"
 
+"@pyramation/content-type-stream@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@pyramation/content-type-stream/-/content-type-stream-0.0.3.tgz#7cccd226c2fb5447a9e2d2e0d5ae6d4b2e2e7bfe"
+  integrity sha512-yzYenON1QWCWjcBGjwV5di8at5WzDC1c0GUR4qSOMLIj5qfil7f+ALG6nAO8qdxyrIBX9nKW6cazyvj30vYWOg==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    buffer-peek-stream "1.1.0"
+    etag-hash "1.0.1"
+    mime "2.4.6"
+    mmmagic "0.5.3"
+    uuid-hash "1.0.2"
+
 "@pyramation/crypto-coins@^0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@pyramation/crypto-coins/-/crypto-coins-0.1.0.tgz#4a5865d4c916d79e4ce951043106d81261903d56"
@@ -3516,6 +3536,23 @@
     colors "^1.1.2"
     inquirer "^6.0.0"
     inquirer-autocomplete-prompt "^0.11.1"
+
+"@pyramation/stream-to-s3@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@pyramation/stream-to-s3/-/stream-to-s3-0.0.4.tgz#8e7de3ef838ad897b82692eb07ae7fa5fbccfc92"
+  integrity sha512-ucwWeN9NRweQGQDfsXbQK9EAFnCCVUwXUOV3vuPqZK3/cp/iYDINgGQWcDBg0vsErfNgnanvo199WC7WeUT5GQ==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    "@pyramation/content-type-stream" "^0.0.3"
+    aws-sdk "2.729.0"
+    envalid "6.0.2"
+
+"@pyramation/upload-names@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.0.2.tgz#a0cbb950de19cf0a46eabfbb40624359cf7e78ae"
+  integrity sha512-5GCjhV2UMviDoLIwzdKaEl+OwX2JbURn0NnYvYQNwAEUHA7sAeZ8/wLTa51xzZJIsDfsSnMErew/RDr3Y0gfbw==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
 
 "@pyramation/url-domains@0.0.4":
   version "0.0.4"
@@ -4187,10 +4224,10 @@ atob@^2.1.2:
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-aws-sdk@2.728.0:
-  version "2.728.0"
-  resolved "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.728.0.tgz#381805dcac7835b5686694e9468d104595bfce42"
-  integrity sha512-pUVSxb+04urr6BMHg32Op+kT1IWGmwbelrQKMdLnvgcgysmBu1P4XbGBg8/SmAXWfuqqWjz8YnmFNY46VJE43A==
+aws-sdk@2.729.0:
+  version "2.729.0"
+  resolved "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.729.0.tgz#3d850f7825b94b5d8b2aca58ec096973bc4c7e34"
+  integrity sha512-x5q/+9wM37tBYCmYNGMj+aU9qeXqhbUH0Dz3wlSpAW55+N4NwlBbpqhyCV3oF9bePEJtEnxLGWNXpb9BNWNhew==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -4701,6 +4738,11 @@ buffer-from@^1.0.0:
   version "1.1.1"
   resolved "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
+
+buffer-peek-stream@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/buffer-peek-stream/-/buffer-peek-stream-1.1.0.tgz#4d0c3605274e1af479a2654b9b9674458897cd86"
+  integrity sha512-b3MXlJ52rPOL5xCAQsiCOy/tY9WXOP/hwATporJriUDxnT3MjJgVppDzTFegpg2Nw7NMS28MKC6IKvaXLnGr+Q==
 
 buffer-writer@2.0.0:
   version "2.0.0"
@@ -5382,7 +5424,7 @@ core-js-compat@^3.6.2:
     browserslist "^4.8.3"
     semver "7.0.0"
 
-core-js@^2.4.0, core-js@^2.5.0:
+core-js@^2.4.0, core-js@^2.5.0, core-js@^2.6.5:
   version "2.6.11"
   resolved "https://registry.npmjs.org/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
@@ -6147,6 +6189,13 @@ esutils@^2.0.2:
   version "2.0.3"
   resolved "https://registry.npmjs.org/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
+
+etag-hash@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/etag-hash/-/etag-hash-1.0.1.tgz#60528ecc30b534f85fa9a4746115e182a90d2990"
+  integrity sha512-fGgrWRhqbnVBw6cEhoSiYaL0EBnhtoiQqvmUxlWJVwSOfj4l5ajrRVQ1ZHm8ovpKuruXv2PTrxoof4JFljgEFw==
+  dependencies:
+    "@babel/polyfill" "^7.0.0"
 
 etag@~1.8.1:
   version "1.8.1"
@@ -9556,6 +9605,11 @@ mime@1.6.0:
   resolved "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
 
+mime@2.4.6:
+  version "2.4.6"
+  resolved "https://registry.npmjs.org/mime/-/mime-2.4.6.tgz#e5b407c90db442f2beb5b162373d07b69affa4d1"
+  integrity sha512-RZKhC3EmpBchfTGBVb8fb+RL2cWyw/32lshnsETttkBAyAUXSGHxbEJWWRXc751DrIxG1q04b8QwMbAwkRPpUA==
+
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
@@ -9680,6 +9734,13 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+mmmagic@0.5.3:
+  version "0.5.3"
+  resolved "https://registry.npmjs.org/mmmagic/-/mmmagic-0.5.3.tgz#a28feb0cf85632fd6a1e233e4a584990ae0d7302"
+  integrity sha512-xLqCu7GJYTzJczg0jafXFuh+iPzQL/ru0YYf4GiTTz8Cehru/wiXtUS8Pp8Xi77zNaiVndJ0OO1yAFci6iHyFg==
+  dependencies:
+    nan "^2.13.2"
 
 mock-req@0.2.0:
   version "0.2.0"
@@ -10618,10 +10679,10 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.7.8:
-  version "0.7.8"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.8.tgz#e2620e83e6207c3e2c259c1c9bcb4772867f8893"
-  integrity sha512-pSDXiUujo56O1yUgGP74+EiIVNQjDweTN1+vi0EiiYAJnH5EXo6jOCuifN/nguqWjBuPzcWHe6GBtJ3/9nq6Ng==
+pgsql-parser@0.7.9:
+  version "0.7.9"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.9.tgz#12b579da89fe5f32941be360c58c4998786536be"
+  integrity sha512-Sv0lPWc1IhteFTsj9ScrC5C2+uUngfz9+OO3Ufma9DRrJHdtEqc4Zo7tXFin+iTucac1pyBTVQehoQ0ZDaberg==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@pgql/parse" "1.2.6"
@@ -12831,6 +12892,13 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+
+uuid-hash@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/uuid-hash/-/uuid-hash-1.0.2.tgz#85dfd5e173ab8056a9135b02a34076b454cb6116"
+  integrity sha512-+JGNvyl4Qir+SAKYFSWzDisBca4vpLoYJfJqTC+ATrMuO/EBU93NmzK2O+qrZye8hCMkyCnFBolnKoLbZi2Oew==
+  dependencies:
+    "@babel/polyfill" "^7.0.0"
 
 uuid@3.1.0:
   version "3.1.0"

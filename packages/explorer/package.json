@@ -68,8 +68,9 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@pyramation/postgraphile": "4.7.6",
+    "@pyramation/stream-to-s3": "0.0.4",
+    "@pyramation/upload-names": "0.0.2",
     "@pyramation/url-domains": "0.0.4",
-    "aws-sdk": "2.728.0",
     "cors": "2.8.5",
     "envalid": "6.0.2",
     "express": "4.17.1",
