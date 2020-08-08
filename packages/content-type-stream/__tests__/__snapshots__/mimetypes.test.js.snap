@@ -1,0 +1,431 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mimetypes good files 1`] = `
+Object {
+  ".gitignore": Object {
+    "contentType": "text/plain",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  ".travis.yml": Object {
+    "contentType": "text/yaml",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "LICENSE": Object {
+    "contentType": "text/plain",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "ai.ai": Object {
+    "contentType": "application/pdf",
+    "magic": Object {
+      "charset": "iso-8859-1",
+      "type": "application/pdf",
+    },
+  },
+  "apng.png": Object {
+    "contentType": "image/png",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/png",
+    },
+  },
+  "bmp.bmp": Object {
+    "contentType": "image/x-ms-bmp",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/x-ms-bmp",
+    },
+  },
+  "build.js": Object {
+    "contentType": "application/javascript",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "build.js.map": Object {
+    "contentType": "application/json",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "css.css": Object {
+    "contentType": "text/css",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "csv.csv": Object {
+    "contentType": "text/csv",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "docs.js": Object {
+    "contentType": "application/javascript",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "docs.jsx": Object {
+    "contentType": "text/jsx",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "docx.docx": Object {
+    "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+  },
+  "dwg.dwg": Object {
+    "contentType": "image/vnd.dwg",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/vnd.dwg",
+    },
+  },
+  "dxf.dxf": Object {
+    "contentType": "image/vnd.dxf",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "emf.emf": Object {
+    "contentType": "image/emf",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "epub.epub": Object {
+    "contentType": "application/epub+zip",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/epub+zip",
+    },
+  },
+  "font.otf": Object {
+    "contentType": "application/x-font-opentype",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/vnd.ms-opentype",
+    },
+  },
+  "font.ttf": Object {
+    "contentType": "application/x-font-ttf",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/font-sfnt",
+    },
+  },
+  "font.woff": Object {
+    "contentType": "application/font-woff",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "font.woff2": Object {
+    "contentType": "application/font-woff2",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "gif-w-alpha.gif": Object {
+    "contentType": "image/gif",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/gif",
+    },
+  },
+  "gif.gif": Object {
+    "contentType": "image/gif",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/gif",
+    },
+  },
+  "jpg.jpg": Object {
+    "contentType": "image/jpeg",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/jpeg",
+    },
+  },
+  "json.json": Object {
+    "contentType": "application/json",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "less.less": Object {
+    "contentType": "text/less",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "lock.lock": Object {
+    "contentType": "text/plain",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "log.log": Object {
+    "contentType": "text/plain",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "md.md": Object {
+    "contentType": "text/markdown",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "mp4.mp4": Object {
+    "contentType": "video/mp4",
+    "magic": Object {
+      "charset": "binary",
+      "type": "video/mp4",
+    },
+  },
+  "ods.ods": Object {
+    "contentType": "application/vnd.oasis.opendocument.spreadsheet",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/vnd.oasis.opendocument.spreadsheet",
+    },
+  },
+  "odt.odt": Object {
+    "contentType": "application/vnd.oasis.opendocument.text",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/vnd.oasis.opendocument.text",
+    },
+  },
+  "pct.pct": Object {
+    "contentType": "image/x-pict",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "pdf.pdf": Object {
+    "contentType": "application/pdf",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/pdf",
+    },
+  },
+  "png-w-alpha.png": Object {
+    "contentType": "image/png",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/png",
+    },
+  },
+  "psd.psd": Object {
+    "contentType": "image/vnd.adobe.photoshop",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/vnd.adobe.photoshop",
+    },
+  },
+  "scss.scss": Object {
+    "contentType": "text/x-scss",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "shellscript": Object {
+    "contentType": "text/x-shellscript",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/x-shellscript",
+    },
+  },
+  "sql.sql": Object {
+    "contentType": "application/x-sql",
+    "magic": Object {
+      "charset": "utf-8",
+      "type": "text/plain",
+    },
+  },
+  "svg-with-alpha-and-text.svg": Object {
+    "contentType": "image/svg",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+  },
+  "svg.svg": Object {
+    "contentType": "image/svg",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+  },
+  "svgo.yaml": Object {
+    "contentType": "text/yaml",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "swf.swf": Object {
+    "contentType": "application/x-shockwave-flash",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/x-shockwave-flash",
+    },
+  },
+  "tga.tga": Object {
+    "contentType": "image/x-tga",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/x-tga",
+    },
+  },
+  "tif.tif": Object {
+    "contentType": "image/tiff",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/tiff",
+    },
+  },
+  "todo-0.1.0.tgz": Object {
+    "contentType": "application/x-gzip",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/x-gzip",
+    },
+  },
+  "tsv.tsv": Object {
+    "contentType": "text/tab-separated-values",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "txt.txt": Object {
+    "contentType": "text/plain",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "typescript.ts": Object {
+    "contentType": "text/x-typescript",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "typescript.tsx": Object {
+    "contentType": "text/x-typescript",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "wmf.wmf": Object {
+    "contentType": "image/wmf",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "xlsx.xlsx": Object {
+    "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+  },
+  "zip.zip": Object {
+    "contentType": "application/zip",
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+  },
+}
+`;
+
+exports[`mimetypes malicious files 1`] = `
+Object {
+  "html-as-jpg.jpg": Object {
+    "contentType": "text/html",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/html",
+    },
+  },
+  "image-as-html.html": Object {
+    "contentType": "image/jpeg",
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/jpeg",
+    },
+  },
+  "js-as-image.jpg": Object {
+    "contentType": "image/jpeg",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "js-as-svg.svg": Object {
+    "contentType": "image/svg+xml",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "svg-with-script-tag-guya.svg": Object {
+    "contentType": "image/svg+xml",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "image/svg+xml",
+    },
+  },
+  "svg-with-script-tag.svg": Object {
+    "contentType": "image/svg",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+  },
+  "xml-as-xvg.svg": Object {
+    "contentType": "image/svg+xml",
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+}
+`;

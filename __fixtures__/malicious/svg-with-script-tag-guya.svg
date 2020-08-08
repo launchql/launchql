@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:ev="http://www.w3.org/2001/xml-events"
+    version="1.1"
+    baseProfile="full"
+    width="100%"
+    height="100%">
+
+<style type="text/css">
+<![CDATA[
+.input {
+    fill: #fff;
+    pointer-events: all;
+    stroke: #d9d9d9;
+    stroke-width: 1;
+    cursor: text;
+}
+.input:hover {
+    stroke: #a0a0a0;
+    filter: url(#innershadow);
+}
+
+.label {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.gray-box {
+    fill: #f1f1f1;
+    stroke: #e5e5e5;
+    stroke-width: 1;
+}
+
+text {
+    font-family: arial, helvetica, sans-serif;
+}
+
+.google {
+    fill: #acacac;
+    font-size: 16px;
+    font-family: georgia;
+}
+
+.h1 {
+    font-size: 36px;
+}
+
+.h4 {
+    font-size: 13px;
+}
+
+a {
+    fill: #15c;
+    font-size: 13px;
+}
+
+a:hover {
+   text-decoration: underline;
+}
+
+.button {
+    stroke: #3079ed;
+    stroke-width: 1;
+    fill: #4d90fe;
+}
+
+.button:hover {
+    stroke: #2f5bb7;
+    fill: #357ae8;
+}
+
+.button-text {
+    fill: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    kerning: 0.5;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+.msg {
+    fill: red;
+    fill-opacity: 0.8;
+    opacity: 0;
+    transition: all 1s;
+    filter: url(#dropshadow);
+    pointer-events: none;
+}
+
+.msg-text {
+    fill: #fff;
+    font-size: 20px;
+    text-shadow: 2px 2px 1px #666;
+}
+]]>
+</style>
+<script type="text/javascript">
+    function attack(e) {
+        var el = document.getElementById('msg');
+
+        if (!+el.style.opacity) {
+            el.style.opacity = 1;
+            el.style['pointer-events'] = 'all';
+        } else {
+            el.style.opacity = 0;
+            el.style['pointer-events'] = 'none';
+        }
+    }
+</script>
+
+    <svg viewBox="0 0 300 900" width="100%" height="900px" preserveAspectRatio="xMidYMid meet">
+    <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="dropshadow" height="130%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+          <feOffset dx="2" dy="2" result="offsetblur"/>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="innershadow" x0="-50%" y0="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+                    <feOffset dy="1" dx="1"/>
+                    <feComposite in2="SourceAlpha" operator="arithmetic"
+                            k2="-1" k3="1" result="shadowDiff"/>
+                    <feFlood flood-color="black" flood-opacity="0.4"/>
+                    <feComposite in2="shadowDiff" operator="in"/>
+                    <feComposite in2="SourceGraphic" operator="over"/>
+                </filter>
+      </defs>
+      <g>
+       <text class="h1" x="1" y="67">Sign in to Chrome</text>
+       <text class="h4" x="-105" y="115">Sign in to get your bookmarks, history, and settings on all your devices.</text>
+       <a xlink:href="https://www.google.com/chrome/intl/en/more/sign-in.html" target="_blank">
+            <text class="h4" text-anchor="middle" fill="#15c" x="350" y="115">Learn more.</text>
+       </a>
+       <rect class="gray-box" width="360" height="354" x="-34" y="156"/>
+         <g>
+          <text class="google" x="255" y="190">Google</text>
+          <text x="-10" y="190" style="font-size:17px;">Sign In</text>
+          <text class="label" x="-10" y="226">Email</text>
+          <rect class="input" x="-10" y="234" width="308" height="37" onclick="attack();"/>
+          <line x1="-10" y1="234" x2="298" y2="234" stroke="#c0c0c0" stroke-width="1" stroke-opacity="0.4"/>
+          <text class="label" x="-10" y="302">Password</text>
+          <rect class="input" x="-10" y="310" width="308" height="37" onclick="attack();"/>
+          <line x1="-10" y1="310" x2="298" y2="310" stroke="#c0c0c0" stroke-width="1" stroke-opacity="0.4"/>
+          <rect class="button" x="-10" y="366" width="75" height="37" rx="2" onclick="attack();"/>
+          <text class="button-text" x="4" y="390">Sign in</text>
+          <a xlink:href="https://accounts.google.com/RecoverAccount" target="_blank">
+            <text class="h4" text-anchor="left" fill="#15c" x="-10" y="440">Can't access your account?</text>
+          </a>
+          <a xlink:href="https://accounts.google.com/SignUp" target="_blank">
+            <text class="h4" text-anchor="left" fill="#15c" x="-10" y="472">Create a Google account</text>
+          </a>
+          <g>
+            <svg id="msg" class="msg" x="20" y="200" onclick="attack();">
+                <rect width="250" height="200" rx="10"/>
+                <text class="msg-text" x="10" y="30">
+                    <tspan x="10">This is a demonstration of</tspan>
+                    <tspan x="10" dy="1.2em">how SVG can be abused</tspan>
+                    <tspan x="10" dy="1.2em">for Phishing attacks.</tspan>
+                    <tspan x="10" dy="2.5em">For more info visit:</tspan>
+                </text>
+                <a xlink:href="http://guya.net" target="_blank">
+                   <text text-anchor="left" x="10" y="160" style="font-size:20px;font-weight:bold;">http://guya.net</text>
+                </a>
+            </svg>
+          </g>
+
+         </g>
+      </g>
+    </svg>
+</svg>
