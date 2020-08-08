@@ -36,14 +36,14 @@ function uploadFromStream({ key, contentType, bucket }) {
   return pass;
 }
 
-const asyncUpload = ({ key, contentType, readStream, magic }) => {
+const asyncUpload = ({ key, contentType, readStream, magic, bucket }) => {
   return new Promise((resolve, reject) => {
     // upload stream
     let upload;
     const uploadStream = uploadFromStream({
       key,
       contentType,
-      bucket: env.BUCKET_NAME
+      bucket
     });
 
     // content stream
@@ -82,11 +82,17 @@ const asyncUpload = ({ key, contentType, readStream, magic }) => {
   });
 };
 
-export default async ({ readStream, filename, key }) => {
+export default async ({ readStream, filename, bucket, key }) => {
   const { stream: newStream, magic, contentType } = await streamContentType({
     readStream,
     filename
   });
 
-  return await asyncUpload({ key, contentType, readStream: newStream, magic });
+  return await asyncUpload({
+    key,
+    contentType,
+    readStream: newStream,
+    magic,
+    bucket
+  });
 };

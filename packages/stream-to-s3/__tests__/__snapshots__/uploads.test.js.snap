@@ -744,7 +744,7 @@ Object {
     },
   },
   "svg-with-alpha-and-text.svg": Object {
-    "contentType": "image/svg",
+    "contentType": "image/svg+xml",
     "contents": Object {
       "etag": "6036843b30c15b80898bc23174da05f7",
       "sha": "137fd8a16a01f3c0de2d5ffd786ce7978de997d3",
@@ -763,7 +763,7 @@ Object {
     },
   },
   "svg.svg": Object {
-    "contentType": "image/svg",
+    "contentType": "image/svg+xml",
     "contents": Object {
       "etag": "a82efeaff853f1cf8cf85c2d526c0d9e",
       "sha": "e471602538abcec3c8ef4b8dad0e3d9b545e8e56",

@@ -3,6 +3,16 @@ import { createReadStream } from 'fs';
 import { basename } from 'path';
 
 import asyncUpload from '../src';
+import env from '../src/env';
+import { cleanEnv, str } from 'envalid';
+
+const testEnv = cleanEnv(
+  env,
+  {
+    BUCKET_NAME: str()
+  },
+  { dotEnvPath: null }
+);
 
 jest.setTimeout(3000000);
 const files = []
@@ -29,6 +39,7 @@ describe('uploads', () => {
       const results = await asyncUpload({
         readStream,
         filename: file.path,
+        bucket: testEnv.BUCKET_NAME,
         key: 'db1/assets/' + basename(file.path)
       });
       res[key] = results;
