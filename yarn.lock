@@ -3537,10 +3537,10 @@
     inquirer "^6.0.0"
     inquirer-autocomplete-prompt "^0.11.1"
 
-"@pyramation/stream-to-s3@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@pyramation/stream-to-s3/-/stream-to-s3-0.0.4.tgz#8e7de3ef838ad897b82692eb07ae7fa5fbccfc92"
-  integrity sha512-ucwWeN9NRweQGQDfsXbQK9EAFnCCVUwXUOV3vuPqZK3/cp/iYDINgGQWcDBg0vsErfNgnanvo199WC7WeUT5GQ==
+"@pyramation/stream-to-s3@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@pyramation/stream-to-s3/-/stream-to-s3-0.0.5.tgz#ebb19e77f84b1f44beff5b4180b595df8d87a3e8"
+  integrity sha512-OXIsUK+8gb7y8xf6O/aRWNH5Rbu6F3PZXWvhoTmz0t3rDPZYMhWkDUmk0f1qGG3/RvXZS8P65yQAZ0nsGfsunQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@pyramation/content-type-stream" "^0.0.3"
