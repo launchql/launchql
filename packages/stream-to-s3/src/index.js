@@ -5,6 +5,7 @@ import {
   streamContentType,
   ContentStream
 } from '@pyramation/content-type-stream';
+export * from './utils';
 
 const s3 = getS3();
 
