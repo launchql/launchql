@@ -61,10 +61,6 @@
     "@babel/runtime": "^7.4.2",
     "@pyramation/content-type-stream": "^0.0.2",
     "aws-sdk": "2.729.0",
-    "envalid": "6.0.2",
-    "etag-hash": "1.0.1",
-    "mime": "2.4.6",
-    "mmmagic": "0.5.3",
-    "uuid-hash": "1.0.2"
+    "envalid": "6.0.2"
   }
 }
