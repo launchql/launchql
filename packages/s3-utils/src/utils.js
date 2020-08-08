@@ -1,4 +1,5 @@
 import { createWriteStream, createReadStream } from 'fs';
+import stream from 'stream';
 
 export const fileExists = async ({ client, bucket, key }) => {
   try {
@@ -17,14 +18,13 @@ export const fileExists = async ({ client, bucket, key }) => {
   return true;
 };
 
-export const downloadToLocal = async ({ client, local, bucket, key }) => {
+export const download = async ({ client, writeStream, bucket, key }) => {
   return new Promise((resolve, reject) => {
     const errors = [];
-    const file = createWriteStream(local);
-    file.on('error', function (e) {
+    writeStream.on('error', function (e) {
       errors.push(e);
     });
-    file.on('finish', function () {
+    writeStream.on('finish', function () {
       if (errors.length) {
         return reject(errors[0]);
       }
@@ -36,17 +36,39 @@ export const downloadToLocal = async ({ client, local, bucket, key }) => {
         Key: key
       })
       .createReadStream()
-      .pipe(file);
+      .pipe(writeStream);
   });
 };
 
-export const uploadFromLocal = async ({ client, local, bucket, key }) => {
-  const stream = createReadStream(local);
+export const upload = async ({
+  client,
+  readStream,
+  bucket,
+  key,
+  contentType
+}) => {
   const upload = client.upload({
     Bucket: bucket,
     Key: key,
-    Body: stream,
-    ContentType: 'image/jpg'
+    Body: readStream,
+    ContentType: contentType
   });
   return upload.promise();
+};
+
+export const uploadThrough = ({ key, contentType, bucket, client }) => {
+  const pass = new stream.PassThrough();
+  const params = {
+    Body: pass,
+    Key: key,
+    ContentType: contentType,
+    Bucket: bucket
+  };
+  client.upload(params, function (err, data) {
+    if (err) {
+      return pass.emit('error', err);
+    }
+    pass.emit('upload', data);
+  });
+  return pass;
 };
