@@ -28,3 +28,22 @@ contents:
     sha: '7d65523f2a5afb69d76824dd1dfa62a34faa3197',
     etag: '952fd44d14cee87882239b707231609d' } }
 ```
+
+## variables
+
+### production
+
+`AWS_REGION` defaults `us-east-1`
+`AWS_SECRET_KEY`
+`AWS_ACCESS_KEY`
+
+### testing
+
+`BUCKET_NAME`=yourbucket
+
+### using minio
+
+`MINIO_ENDPOINT`=http://localhost:9000
+`AWS_ACCESS_KEY`=minio-access
+`AWS_SECRET_KEY`=minio-secret
+
