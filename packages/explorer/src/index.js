@@ -108,13 +108,14 @@ export default ({
     res.send('ok');
   });
 
-  const corsOptions = origin
-    ? {
-        origin,
-        credentials: true,
-        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-      }
-    : undefined;
+  const corsOptions =
+    origin && origin.trim() !== '*'
+      ? {
+          origin,
+          credentials: true,
+          optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        }
+      : undefined;
 
   if (corsOptions) {
     app.use(cors(corsOptions));
@@ -217,9 +218,10 @@ export default ({
   app.use(async (req, res, next) => {
     if (req.urlDomains.subdomains.length == 2) {
       if (req.url === '/flush') {
-        const key = req.urlDomains.subdomains.join('');
+        const [schemaName, dbName] = req.urlDomains.subdomains;
+        const key = [dbName, schemaName].join('.');
         cache.del(key);
-        return res.send(200);
+        return res.status(200).send('OK');
       }
     }
     return next();
