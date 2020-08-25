@@ -171,13 +171,14 @@ export default ({
     pgCache.reset();
   });
 
-  const corsOptions = origin
-    ? {
-        origin,
-        credentials: true,
-        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-      }
-    : undefined;
+  const corsOptions =
+    origin && origin.trim() !== '*'
+      ? {
+          origin,
+          credentials: true,
+          optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        }
+      : undefined;
 
   if (corsOptions) {
     app.use(cors(corsOptions));
@@ -297,10 +298,9 @@ export default ({
   app.use(async (req, res, next) => {
     if (req.url === '/flush') {
       // TODO check bearer for a flush?
-      const subdomain = getSubdomain(req.urlDomains.subdomains);
-      cache.del(subdomain);
-      svcCache.del(subdomain);
-      return res.send(200);
+      cache.del(req.svc_key);
+      svcCache.del(req.svc_key);
+      return res.status(200).send('OK');
     }
     return next();
   });
