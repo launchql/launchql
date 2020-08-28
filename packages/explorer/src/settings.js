@@ -3,6 +3,8 @@ import { NodePlugin } from 'graphile-build';
 import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
+import PostGraphileUploadFieldPlugin from '@pyramation/postgraphile-upload-field';
+import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
   connection,
@@ -13,12 +15,23 @@ export const getGraphileSettings = ({
   oppositeBaseNames
 }) => {
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
+
+  plugins.push(PostGraphileUploadFieldPlugin);
+
   if (simpleInflection) {
     plugins.push(PgSimplifyInflectorPlugin);
   }
 
   return {
     graphileBuildOptions: {
+      uploadFieldDefinitions: [
+        {
+          match: (args) => {
+            return args.tags.upload;
+          },
+          resolve: resolveUpload
+        }
+      ],
       pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false,
       // connectionFilterAllowedOperators: [
       //   "isNull",
