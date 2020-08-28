@@ -2,7 +2,7 @@ import { sync as glob } from 'glob';
 import { createReadStream } from 'fs';
 import { basename } from 'path';
 
-import Streamer from '../src';
+import { Streamer, getClient, upload } from '../src';
 import { cleanEnv, str } from 'envalid';
 
 const minioEnv = cleanEnv(
@@ -38,7 +38,7 @@ const files = []
   }));
 
 describe('uploads', () => {
-  it('upload files', async () => {
+  it('upload files via class', async () => {
     const streamer = new Streamer({
       defaultBucket: BUCKET_NAME,
       AWS_REGION,
@@ -57,6 +57,32 @@ describe('uploads', () => {
       const results = await streamer.upload({
         readStream,
         filename: file.path,
+        key: 'db1/assets/' + basename(file.path)
+      });
+      res[key] = results;
+    }
+    expect(res).toMatchSnapshot();
+  });
+  it('upload files via functions', async () => {
+    const client = new getClient({
+      AWS_REGION,
+      AWS_SECRET_KEY,
+      AWS_ACCESS_KEY,
+      MINIO_ENDPOINT
+    });
+
+    const res = {};
+    const use = files;
+    // const use = [files[3]];
+    for (var i = 0; i < use.length; i++) {
+      const file = use[i];
+      const key = file.key;
+      const readStream = createReadStream(file.path);
+      const results = await upload({
+        client,
+        readStream,
+        filename: file.path,
+        bucket: BUCKET_NAME,
         key: 'db1/assets/' + basename(file.path)
       });
       res[key] = results;

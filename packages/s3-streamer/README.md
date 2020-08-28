@@ -35,6 +35,23 @@ contents:
     etag: '952fd44d14cee87882239b707231609d' } }
 ```
 
+## functional utils
+
+If you don't want to use the `Streamer` class you can use the utils directly:
+
+```js
+import { getClient, upload } from '@pyramation/s3-streamer';
+const client = getClient(opts)
+const readStream = createReadStream(filename);
+const results = await upload({
+    client,
+    readStream,
+    filename,
+    bucket,
+    key
+});
+```
+
 ## variables
 
 ### production

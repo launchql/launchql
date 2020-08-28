@@ -1,6 +1,1018 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`uploads upload files 1`] = `
+exports[`uploads upload files via class 1`] = `
+Object {
+  ".gitignore": Object {
+    "contentType": "text/plain",
+    "contents": Object {
+      "etag": "952fd44d14cee87882239b707231609d",
+      "sha": "7d65523f2a5afb69d76824dd1dfa62a34faa3197",
+      "uuid": "278aee01-1404-5725-8f0e-7044c9c16397",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"952fd44d14cee87882239b707231609d\\"",
+      "Key": "db1/assets/.gitignore",
+      "Location": "http://localhost:9000/launchql/db1/assets/.gitignore",
+      "key": "db1/assets/.gitignore",
+    },
+  },
+  ".travis.yml": Object {
+    "contentType": "text/yaml",
+    "contents": Object {
+      "etag": "eed1da4a1867d8af5f529e8668d23fd0",
+      "sha": "d92d5fb6cf5a031d7036bed36a8447114a23ad02",
+      "uuid": "f3dc1ee0-18fc-5f9e-af17-ff1ed4698f8c",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"eed1da4a1867d8af5f529e8668d23fd0\\"",
+      "Key": "db1/assets/.travis.yml",
+      "Location": "http://localhost:9000/launchql/db1/assets/.travis.yml",
+      "key": "db1/assets/.travis.yml",
+    },
+  },
+  "LICENSE": Object {
+    "contentType": "text/plain",
+    "contents": Object {
+      "etag": "17c231f7b93a4b3c5bd4c2c18effb21e",
+      "sha": "aab4092fc03df815831fada0eefbb36d8e745eb7",
+      "uuid": "bcf3bf1d-249b-571f-b141-2402736dbd80",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"17c231f7b93a4b3c5bd4c2c18effb21e\\"",
+      "Key": "db1/assets/LICENSE",
+      "Location": "http://localhost:9000/launchql/db1/assets/LICENSE",
+      "key": "db1/assets/LICENSE",
+    },
+  },
+  "ai.ai": Object {
+    "contentType": "application/pdf",
+    "contents": Object {
+      "etag": "648644bf1b5fcadf5c0a0ac67577b64f",
+      "sha": "5ff33d36055240efecf6307aff015efacb7de5d8",
+      "uuid": "32334d6b-424a-58a9-99aa-7037c1aa2f10",
+    },
+    "magic": Object {
+      "charset": "iso-8859-1",
+      "type": "application/pdf",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"648644bf1b5fcadf5c0a0ac67577b64f\\"",
+      "Key": "db1/assets/ai.ai",
+      "Location": "http://localhost:9000/launchql/db1/assets/ai.ai",
+      "key": "db1/assets/ai.ai",
+    },
+  },
+  "apng.png": Object {
+    "contentType": "image/png",
+    "contents": Object {
+      "etag": "425e622d348abc7ea349245e7e8738c2",
+      "sha": "7bd00aabcf434ec8648276fa443775fa54b7c8e5",
+      "uuid": "53f6f4a0-7140-5c9b-afa4-b417e51464a5",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/png",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"425e622d348abc7ea349245e7e8738c2\\"",
+      "Key": "db1/assets/apng.png",
+      "Location": "http://localhost:9000/launchql/db1/assets/apng.png",
+      "key": "db1/assets/apng.png",
+    },
+  },
+  "bmp.bmp": Object {
+    "contentType": "image/x-ms-bmp",
+    "contents": Object {
+      "etag": "a986c2384e5e2d4ee0d5133f3c27d62d",
+      "sha": "f45a12e5dcae2710a4e6c841c481363caea648a2",
+      "uuid": "20f0ad46-a93c-538b-a5d1-c107f98932ac",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/x-ms-bmp",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"a986c2384e5e2d4ee0d5133f3c27d62d\\"",
+      "Key": "db1/assets/bmp.bmp",
+      "Location": "http://localhost:9000/launchql/db1/assets/bmp.bmp",
+      "key": "db1/assets/bmp.bmp",
+    },
+  },
+  "build.js": Object {
+    "contentType": "application/javascript",
+    "contents": Object {
+      "etag": "01e41e2830bae8fcc21129ce6095d9be",
+      "sha": "eb7d3181cd0b6105dade03af525dc1b3fe2a7c0c",
+      "uuid": "31e59e9a-30ba-510d-afb3-3dc78a7b1b78",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"01e41e2830bae8fcc21129ce6095d9be\\"",
+      "Key": "db1/assets/build.js",
+      "Location": "http://localhost:9000/launchql/db1/assets/build.js",
+      "key": "db1/assets/build.js",
+    },
+  },
+  "build.js.map": Object {
+    "contentType": "application/json",
+    "contents": Object {
+      "etag": "c8cbb12bb4ef453eceac8c3fb889d082",
+      "sha": "0d5d3124cfc4fa46a26628b1cb3790ca606503aa",
+      "uuid": "b929c3e1-004b-59e0-af46-801e04b6ca96",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"c8cbb12bb4ef453eceac8c3fb889d082\\"",
+      "Key": "db1/assets/build.js.map",
+      "Location": "http://localhost:9000/launchql/db1/assets/build.js.map",
+      "key": "db1/assets/build.js.map",
+    },
+  },
+  "css.css": Object {
+    "contentType": "text/css",
+    "contents": Object {
+      "etag": "216e807dd0b784846799cb18051f250d",
+      "sha": "e01ef3dfa09c24f2692e0b8b9d57b2e25eeb4f48",
+      "uuid": "f68dd34c-37a6-53a1-b556-369c18963897",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"216e807dd0b784846799cb18051f250d\\"",
+      "Key": "db1/assets/css.css",
+      "Location": "http://localhost:9000/launchql/db1/assets/css.css",
+      "key": "db1/assets/css.css",
+    },
+  },
+  "csv.csv": Object {
+    "contentType": "text/csv",
+    "contents": Object {
+      "etag": "fedefb601304bf36f8c5f076191e7d44",
+      "sha": "3d13c82bf6132b33cefab537bc0e20608339fe33",
+      "uuid": "d466f82f-b2b4-53a5-92a3-c5324794a2f4",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"fedefb601304bf36f8c5f076191e7d44\\"",
+      "Key": "db1/assets/csv.csv",
+      "Location": "http://localhost:9000/launchql/db1/assets/csv.csv",
+      "key": "db1/assets/csv.csv",
+    },
+  },
+  "docs.js": Object {
+    "contentType": "application/javascript",
+    "contents": Object {
+      "etag": "fc829c7b7378701e2e5f835ab968bba1",
+      "sha": "0b01be0b43e824c875a5281b5e9c7602b76e2030",
+      "uuid": "5f416069-1240-5fe3-b978-f39ca5fc493e",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"fc829c7b7378701e2e5f835ab968bba1\\"",
+      "Key": "db1/assets/docs.js",
+      "Location": "http://localhost:9000/launchql/db1/assets/docs.js",
+      "key": "db1/assets/docs.js",
+    },
+  },
+  "docs.jsx": Object {
+    "contentType": "text/jsx",
+    "contents": Object {
+      "etag": "fc829c7b7378701e2e5f835ab968bba1",
+      "sha": "0b01be0b43e824c875a5281b5e9c7602b76e2030",
+      "uuid": "5f416069-1240-5fe3-b978-f39ca5fc493e",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"fc829c7b7378701e2e5f835ab968bba1\\"",
+      "Key": "db1/assets/docs.jsx",
+      "Location": "http://localhost:9000/launchql/db1/assets/docs.jsx",
+      "key": "db1/assets/docs.jsx",
+    },
+  },
+  "docx.docx": Object {
+    "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "contents": Object {
+      "etag": "352c6f638cc9ff63590f818eeea6707d",
+      "sha": "c2766fc50294aaa0967aaa3c1010edba56ac46d3",
+      "uuid": "c87b1ebc-a545-581f-b4c8-733a844ebc09",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"352c6f638cc9ff63590f818eeea6707d\\"",
+      "Key": "db1/assets/docx.docx",
+      "Location": "http://localhost:9000/launchql/db1/assets/docx.docx",
+      "key": "db1/assets/docx.docx",
+    },
+  },
+  "dwg.dwg": Object {
+    "contentType": "image/vnd.dwg",
+    "contents": Object {
+      "etag": "2feedee43f2d4f6a7a6b467d6faf27fa",
+      "sha": "1507590977dbbc08c8dd72d7ccc14552efa6e4b2",
+      "uuid": "8c7c2f87-7d31-5d9a-a06f-f15a34d6bb3b",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/vnd.dwg",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"2feedee43f2d4f6a7a6b467d6faf27fa\\"",
+      "Key": "db1/assets/dwg.dwg",
+      "Location": "http://localhost:9000/launchql/db1/assets/dwg.dwg",
+      "key": "db1/assets/dwg.dwg",
+    },
+  },
+  "dxf.dxf": Object {
+    "contentType": "image/vnd.dxf",
+    "contents": Object {
+      "etag": "29996844c6142ef9905f8ea35a6eca4e",
+      "sha": "589ee13adeb0d062b2e484f1e0520a374f5a6b95",
+      "uuid": "a7f3e053-7156-58c1-9962-ddd6cd0058aa",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"29996844c6142ef9905f8ea35a6eca4e\\"",
+      "Key": "db1/assets/dxf.dxf",
+      "Location": "http://localhost:9000/launchql/db1/assets/dxf.dxf",
+      "key": "db1/assets/dxf.dxf",
+    },
+  },
+  "emf.emf": Object {
+    "contentType": "image/emf",
+    "contents": Object {
+      "etag": "bab54b66b80237d5bb800b1aef9ebe9b",
+      "sha": "cb634df027769806647358b95b4406c8d0fcb213",
+      "uuid": "03aa38bc-adf1-528d-a8a8-e2b47ae99370",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"bab54b66b80237d5bb800b1aef9ebe9b\\"",
+      "Key": "db1/assets/emf.emf",
+      "Location": "http://localhost:9000/launchql/db1/assets/emf.emf",
+      "key": "db1/assets/emf.emf",
+    },
+  },
+  "epub.epub": Object {
+    "contentType": "application/epub+zip",
+    "contents": Object {
+      "etag": "8dc60cd4a41395178a3d80bfa2974c41",
+      "sha": "2cac547509eb495f781588496c42b13c46d13f7e",
+      "uuid": "e7c45793-44c9-59c9-8ca9-42e2a838f257",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/epub+zip",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"8dc60cd4a41395178a3d80bfa2974c41\\"",
+      "Key": "db1/assets/epub.epub",
+      "Location": "http://localhost:9000/launchql/db1/assets/epub.epub",
+      "key": "db1/assets/epub.epub",
+    },
+  },
+  "font.otf": Object {
+    "contentType": "application/x-font-opentype",
+    "contents": Object {
+      "etag": "945b9e0e38dcfd294b4b26150ccade3c",
+      "sha": "f6b7979678bdf06d2fdca5093cec308e84c3c2c5",
+      "uuid": "e0d4ed22-7c80-52aa-b042-241ebafa1e3e",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/vnd.ms-opentype",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"945b9e0e38dcfd294b4b26150ccade3c\\"",
+      "Key": "db1/assets/font.otf",
+      "Location": "http://localhost:9000/launchql/db1/assets/font.otf",
+      "key": "db1/assets/font.otf",
+    },
+  },
+  "font.ttf": Object {
+    "contentType": "application/x-font-ttf",
+    "contents": Object {
+      "etag": "3736a705526e0ecd366f70a59f704ec6",
+      "sha": "f7df25a76f7d79a7682eb9949fff7c2e173cf59f",
+      "uuid": "62ee870d-67a9-5e1b-89a2-d40bd65e8d6f",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/font-sfnt",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"3736a705526e0ecd366f70a59f704ec6\\"",
+      "Key": "db1/assets/font.ttf",
+      "Location": "http://localhost:9000/launchql/db1/assets/font.ttf",
+      "key": "db1/assets/font.ttf",
+    },
+  },
+  "font.woff": Object {
+    "contentType": "application/font-woff",
+    "contents": Object {
+      "etag": "f2af1f64bc0a0e5cfe4b5fee322e4157",
+      "sha": "fb9679572962f410b5f56d159573debcd5c4eabd",
+      "uuid": "4014a9c5-832e-58a2-a2ef-15fb5eca009e",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"f2af1f64bc0a0e5cfe4b5fee322e4157\\"",
+      "Key": "db1/assets/font.woff",
+      "Location": "http://localhost:9000/launchql/db1/assets/font.woff",
+      "key": "db1/assets/font.woff",
+    },
+  },
+  "font.woff2": Object {
+    "contentType": "application/font-woff2",
+    "contents": Object {
+      "etag": "f2af1f64bc0a0e5cfe4b5fee322e4157",
+      "sha": "fb9679572962f410b5f56d159573debcd5c4eabd",
+      "uuid": "4014a9c5-832e-58a2-a2ef-15fb5eca009e",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"f2af1f64bc0a0e5cfe4b5fee322e4157\\"",
+      "Key": "db1/assets/font.woff2",
+      "Location": "http://localhost:9000/launchql/db1/assets/font.woff2",
+      "key": "db1/assets/font.woff2",
+    },
+  },
+  "gif-w-alpha.gif": Object {
+    "contentType": "image/gif",
+    "contents": Object {
+      "etag": "70b8ba9aebd02707cdcc43b6f9061fb0",
+      "sha": "068a05d7fc36947e1e57905a3244f547cbd04ecf",
+      "uuid": "9fcbccec-b5b4-5112-bb49-4da5d6535212",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/gif",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"70b8ba9aebd02707cdcc43b6f9061fb0\\"",
+      "Key": "db1/assets/gif-w-alpha.gif",
+      "Location": "http://localhost:9000/launchql/db1/assets/gif-w-alpha.gif",
+      "key": "db1/assets/gif-w-alpha.gif",
+    },
+  },
+  "gif.gif": Object {
+    "contentType": "image/gif",
+    "contents": Object {
+      "etag": "b411ab31d73df4637d9ddcd99c03b7e9",
+      "sha": "f56f613f1fa92d9ba8ec8c33feb1fbaaa3f09c84",
+      "uuid": "a054dca6-4cac-578b-ba1d-6cc3d6afd10a",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/gif",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"b411ab31d73df4637d9ddcd99c03b7e9\\"",
+      "Key": "db1/assets/gif.gif",
+      "Location": "http://localhost:9000/launchql/db1/assets/gif.gif",
+      "key": "db1/assets/gif.gif",
+    },
+  },
+  "jpg.jpg": Object {
+    "contentType": "image/jpeg",
+    "contents": Object {
+      "etag": "0d55576e9c5c346dc0ed4adedfaf0619",
+      "sha": "c5cb787fc921ec5f9ce65b56024099f349f73d31",
+      "uuid": "e0bfb599-dba9-58f1-96ae-e15f2b12d764",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/jpeg",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"0d55576e9c5c346dc0ed4adedfaf0619\\"",
+      "Key": "db1/assets/jpg.jpg",
+      "Location": "http://localhost:9000/launchql/db1/assets/jpg.jpg",
+      "key": "db1/assets/jpg.jpg",
+    },
+  },
+  "json.json": Object {
+    "contentType": "application/json",
+    "contents": Object {
+      "etag": "64dcb5b3b291074d02c80f600fda3f6e",
+      "sha": "e6c7c64d292a414941d239c57117b36f24c9f829",
+      "uuid": "78160718-8dfa-5cb4-bb50-e479c8c58383",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"64dcb5b3b291074d02c80f600fda3f6e\\"",
+      "Key": "db1/assets/json.json",
+      "Location": "http://localhost:9000/launchql/db1/assets/json.json",
+      "key": "db1/assets/json.json",
+    },
+  },
+  "less.less": Object {
+    "contentType": "text/less",
+    "contents": Object {
+      "etag": "ec5315f0f5af9b39421b6d06512ceb64",
+      "sha": "7e271b5244414ebe8b0ccc47ad74d1edd58f2b65",
+      "uuid": "be9337b6-dda5-5ca1-a0ad-4c75aa531cea",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"ec5315f0f5af9b39421b6d06512ceb64\\"",
+      "Key": "db1/assets/less.less",
+      "Location": "http://localhost:9000/launchql/db1/assets/less.less",
+      "key": "db1/assets/less.less",
+    },
+  },
+  "lock.lock": Object {
+    "contentType": "text/plain",
+    "contents": Object {
+      "etag": "78f1c5a17d4a71257b95061e2432cadc",
+      "sha": "4a70e2938dcb22b766977ac3dd49940c803ccdd4",
+      "uuid": "66278343-543b-527c-95b0-08ed0452c0b7",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"78f1c5a17d4a71257b95061e2432cadc\\"",
+      "Key": "db1/assets/lock.lock",
+      "Location": "http://localhost:9000/launchql/db1/assets/lock.lock",
+      "key": "db1/assets/lock.lock",
+    },
+  },
+  "log.log": Object {
+    "contentType": "text/plain",
+    "contents": Object {
+      "etag": "218502e6edf4ccb28daaf6089e2fe1a2",
+      "sha": "2ea09bc437f1080f2e525fc9141855c7e36c1268",
+      "uuid": "d9bea037-e72e-5bf2-8c84-7cbe570ec2b8",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"218502e6edf4ccb28daaf6089e2fe1a2\\"",
+      "Key": "db1/assets/log.log",
+      "Location": "http://localhost:9000/launchql/db1/assets/log.log",
+      "key": "db1/assets/log.log",
+    },
+  },
+  "md.md": Object {
+    "contentType": "text/markdown",
+    "contents": Object {
+      "etag": "2524b9c1caad97610a5149886a7e793f",
+      "sha": "62c8208c3f148ada7e1a1a3b8972ac5898dfbf89",
+      "uuid": "89250a3c-a794-5d26-8ee4-d692dff9fc35",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"2524b9c1caad97610a5149886a7e793f\\"",
+      "Key": "db1/assets/md.md",
+      "Location": "http://localhost:9000/launchql/db1/assets/md.md",
+      "key": "db1/assets/md.md",
+    },
+  },
+  "mp4.mp4": Object {
+    "contentType": "video/mp4",
+    "contents": Object {
+      "etag": "0c147ea51be2c7425677a04e800a4342",
+      "sha": "3e1eb4cde2d9c61c399899a6034c20b15214caa1",
+      "uuid": "57826c39-fea3-5588-b4f2-db1958025495",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "video/mp4",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"0c147ea51be2c7425677a04e800a4342\\"",
+      "Key": "db1/assets/mp4.mp4",
+      "Location": "http://localhost:9000/launchql/db1/assets/mp4.mp4",
+      "key": "db1/assets/mp4.mp4",
+    },
+  },
+  "ods.ods": Object {
+    "contentType": "application/vnd.oasis.opendocument.spreadsheet",
+    "contents": Object {
+      "etag": "28f9c41946c806e049bd5e7d1ad07fde",
+      "sha": "c6abbd7353da3b158965a9a7327a4f57f339f639",
+      "uuid": "efadabfe-a65f-5235-a6da-353e750c6510",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/vnd.oasis.opendocument.spreadsheet",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"28f9c41946c806e049bd5e7d1ad07fde\\"",
+      "Key": "db1/assets/ods.ods",
+      "Location": "http://localhost:9000/launchql/db1/assets/ods.ods",
+      "key": "db1/assets/ods.ods",
+    },
+  },
+  "odt.odt": Object {
+    "contentType": "application/vnd.oasis.opendocument.text",
+    "contents": Object {
+      "etag": "24cac2f0a673e3af35095a109dc6a9fa",
+      "sha": "ae7b8a3011c7db10633a4ee85cbd61c3ab7a5f27",
+      "uuid": "f9ac160d-597d-5252-a948-de54365160ed",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/vnd.oasis.opendocument.text",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"24cac2f0a673e3af35095a109dc6a9fa\\"",
+      "Key": "db1/assets/odt.odt",
+      "Location": "http://localhost:9000/launchql/db1/assets/odt.odt",
+      "key": "db1/assets/odt.odt",
+    },
+  },
+  "pct.pct": Object {
+    "contentType": "image/x-pict",
+    "contents": Object {
+      "etag": "630620c4f931bd94573cafe460ad4af6",
+      "sha": "5115a779068096d58af256a49c1935c2b73dee6e",
+      "uuid": "9a9d7dd2-a146-5972-b899-cb4fa933e4df",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"630620c4f931bd94573cafe460ad4af6\\"",
+      "Key": "db1/assets/pct.pct",
+      "Location": "http://localhost:9000/launchql/db1/assets/pct.pct",
+      "key": "db1/assets/pct.pct",
+    },
+  },
+  "pdf.pdf": Object {
+    "contentType": "application/pdf",
+    "contents": Object {
+      "etag": "b9aa628349df6cc1c99919fe4a12216c",
+      "sha": "072c23927a91b19e96b72fc14e99cb66958103b7",
+      "uuid": "e6f5ba06-d53f-5f5b-b606-6476fe7ea639",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/pdf",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"b9aa628349df6cc1c99919fe4a12216c\\"",
+      "Key": "db1/assets/pdf.pdf",
+      "Location": "http://localhost:9000/launchql/db1/assets/pdf.pdf",
+      "key": "db1/assets/pdf.pdf",
+    },
+  },
+  "png-w-alpha.png": Object {
+    "contentType": "image/png",
+    "contents": Object {
+      "etag": "e81f3ad8e657fe1df43548c4a20f7b76",
+      "sha": "17f794e8c92370f208f0f9892c88e497c24b4b1d",
+      "uuid": "5c05dc14-8036-5edc-9f26-82f9758d77d4",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/png",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"e81f3ad8e657fe1df43548c4a20f7b76\\"",
+      "Key": "db1/assets/png-w-alpha.png",
+      "Location": "http://localhost:9000/launchql/db1/assets/png-w-alpha.png",
+      "key": "db1/assets/png-w-alpha.png",
+    },
+  },
+  "psd.psd": Object {
+    "contentType": "image/vnd.adobe.photoshop",
+    "contents": Object {
+      "etag": "2625e3d597d2bc0d0223169c3b6a7c58",
+      "sha": "b2c7f8cf7fa2ea7763b0d589d756a01ef1b7ca89",
+      "uuid": "e66ef9d4-f9e0-54d1-9d6b-90b6f3da6b03",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/vnd.adobe.photoshop",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"2625e3d597d2bc0d0223169c3b6a7c58\\"",
+      "Key": "db1/assets/psd.psd",
+      "Location": "http://localhost:9000/launchql/db1/assets/psd.psd",
+      "key": "db1/assets/psd.psd",
+    },
+  },
+  "scss.scss": Object {
+    "contentType": "text/x-scss",
+    "contents": Object {
+      "etag": "cd8759ad9f9530b6f852675d1db3235a",
+      "sha": "8a5a7fe68e341aea02b05d0d4309b643fca6f73e",
+      "uuid": "d56076b2-b52a-58a9-bf15-20c6791d8d23",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"cd8759ad9f9530b6f852675d1db3235a\\"",
+      "Key": "db1/assets/scss.scss",
+      "Location": "http://localhost:9000/launchql/db1/assets/scss.scss",
+      "key": "db1/assets/scss.scss",
+    },
+  },
+  "shellscript": Object {
+    "contentType": "text/x-shellscript",
+    "contents": Object {
+      "etag": "9e73a9fd45d381175f3791bc4f33ec11",
+      "sha": "8301dee1416543a8ed2756efd4eeeaf83690eac4",
+      "uuid": "6baad900-76df-55cb-8d32-a73ec827dc8a",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/x-shellscript",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"9e73a9fd45d381175f3791bc4f33ec11\\"",
+      "Key": "db1/assets/shellscript",
+      "Location": "http://localhost:9000/launchql/db1/assets/shellscript",
+      "key": "db1/assets/shellscript",
+    },
+  },
+  "sql.sql": Object {
+    "contentType": "application/x-sql",
+    "contents": Object {
+      "etag": "157f77e51feb9ef7c31948ea507d63df",
+      "sha": "7a3a22718666e9ed3d4baabc3ea7d756d5a02ba6",
+      "uuid": "40908120-e381-5654-a410-b1d86249af60",
+    },
+    "magic": Object {
+      "charset": "utf-8",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"157f77e51feb9ef7c31948ea507d63df\\"",
+      "Key": "db1/assets/sql.sql",
+      "Location": "http://localhost:9000/launchql/db1/assets/sql.sql",
+      "key": "db1/assets/sql.sql",
+    },
+  },
+  "svg-with-alpha-and-text.svg": Object {
+    "contentType": "image/svg+xml",
+    "contents": Object {
+      "etag": "6036843b30c15b80898bc23174da05f7",
+      "sha": "137fd8a16a01f3c0de2d5ffd786ce7978de997d3",
+      "uuid": "1b901d29-7d0a-5eac-ae79-0d794e109907",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"6036843b30c15b80898bc23174da05f7\\"",
+      "Key": "db1/assets/svg-with-alpha-and-text.svg",
+      "Location": "http://localhost:9000/launchql/db1/assets/svg-with-alpha-and-text.svg",
+      "key": "db1/assets/svg-with-alpha-and-text.svg",
+    },
+  },
+  "svg.svg": Object {
+    "contentType": "image/svg+xml",
+    "contents": Object {
+      "etag": "a82efeaff853f1cf8cf85c2d526c0d9e",
+      "sha": "e471602538abcec3c8ef4b8dad0e3d9b545e8e56",
+      "uuid": "296837f5-d3cf-55f4-b3ba-3e388fb0a037",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"a82efeaff853f1cf8cf85c2d526c0d9e\\"",
+      "Key": "db1/assets/svg.svg",
+      "Location": "http://localhost:9000/launchql/db1/assets/svg.svg",
+      "key": "db1/assets/svg.svg",
+    },
+  },
+  "svgo.yaml": Object {
+    "contentType": "text/yaml",
+    "contents": Object {
+      "etag": "08541d86097e1750cf2d980a9e405ad8",
+      "sha": "955b0053a46d5fa4b202c275cf58101da506fd13",
+      "uuid": "7a35a57d-b2ab-57db-bb15-a7a0dfd93902",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"08541d86097e1750cf2d980a9e405ad8\\"",
+      "Key": "db1/assets/svgo.yaml",
+      "Location": "http://localhost:9000/launchql/db1/assets/svgo.yaml",
+      "key": "db1/assets/svgo.yaml",
+    },
+  },
+  "swf.swf": Object {
+    "contentType": "application/x-shockwave-flash",
+    "contents": Object {
+      "etag": "008b732b6223004db383b3d605b0fe70",
+      "sha": "3aabad40e5e25f1b10a38674b53a99e2546b391b",
+      "uuid": "cf63cc7c-406b-542c-a923-6d0584ecf2be",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/x-shockwave-flash",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"008b732b6223004db383b3d605b0fe70\\"",
+      "Key": "db1/assets/swf.swf",
+      "Location": "http://localhost:9000/launchql/db1/assets/swf.swf",
+      "key": "db1/assets/swf.swf",
+    },
+  },
+  "tga.tga": Object {
+    "contentType": "image/x-tga",
+    "contents": Object {
+      "etag": "4b4384288a9b5b1a3b544decc957dbe5",
+      "sha": "3d6584fd6b585a5fc0d2738b680005f2d2b91700",
+      "uuid": "2ab6572b-c97d-582c-b3dd-2b76891de092",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/x-tga",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"4b4384288a9b5b1a3b544decc957dbe5\\"",
+      "Key": "db1/assets/tga.tga",
+      "Location": "http://localhost:9000/launchql/db1/assets/tga.tga",
+      "key": "db1/assets/tga.tga",
+    },
+  },
+  "tif.tif": Object {
+    "contentType": "image/tiff",
+    "contents": Object {
+      "etag": "4171810ca9e1293197110c23f324161f",
+      "sha": "6e6237ff0e65cbbc3ce372079093edda2a1f950b",
+      "uuid": "aa3916b5-a7c2-5c10-9c76-aef5f4442901",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "image/tiff",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"4171810ca9e1293197110c23f324161f\\"",
+      "Key": "db1/assets/tif.tif",
+      "Location": "http://localhost:9000/launchql/db1/assets/tif.tif",
+      "key": "db1/assets/tif.tif",
+    },
+  },
+  "todo-0.1.0.tgz": Object {
+    "contentType": "application/x-gzip",
+    "contents": Object {
+      "etag": "b3af984d63447e8173fb565ae3874754",
+      "sha": "175b3bf38c377bb282bfe28978a3d5641dc61a5f",
+      "uuid": "cd15f500-6a08-5870-b103-718e0c1ee11c",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/x-gzip",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"b3af984d63447e8173fb565ae3874754\\"",
+      "Key": "db1/assets/todo-0.1.0.tgz",
+      "Location": "http://localhost:9000/launchql/db1/assets/todo-0.1.0.tgz",
+      "key": "db1/assets/todo-0.1.0.tgz",
+    },
+  },
+  "tsv.tsv": Object {
+    "contentType": "text/tab-separated-values",
+    "contents": Object {
+      "etag": "2ddf1d91d0e148ba36b1d711d3f15518",
+      "sha": "bcfb990493b50b9d568274cc79a13eae02a6ac0e",
+      "uuid": "aa2f950a-cf7a-537a-a800-961b3870319c",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"2ddf1d91d0e148ba36b1d711d3f15518\\"",
+      "Key": "db1/assets/tsv.tsv",
+      "Location": "http://localhost:9000/launchql/db1/assets/tsv.tsv",
+      "key": "db1/assets/tsv.tsv",
+    },
+  },
+  "txt.txt": Object {
+    "contentType": "text/plain",
+    "contents": Object {
+      "etag": "b9d78e5636ec484481763d0213cc39cb",
+      "sha": "b241078102f68969da7c8e442229a390fecd3473",
+      "uuid": "eec733bd-dfee-5647-ae8f-fffaacd7a54a",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"b9d78e5636ec484481763d0213cc39cb\\"",
+      "Key": "db1/assets/txt.txt",
+      "Location": "http://localhost:9000/launchql/db1/assets/txt.txt",
+      "key": "db1/assets/txt.txt",
+    },
+  },
+  "typescript.ts": Object {
+    "contentType": "text/x-typescript",
+    "contents": Object {
+      "etag": "d318a3bfecfad0286a38ab05f901302e",
+      "sha": "e0c625144d4b1bbfcbf599dad444f78390f2d094",
+      "uuid": "4cb57844-fed2-5b51-b56b-c957a3f1f046",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"d318a3bfecfad0286a38ab05f901302e\\"",
+      "Key": "db1/assets/typescript.ts",
+      "Location": "http://localhost:9000/launchql/db1/assets/typescript.ts",
+      "key": "db1/assets/typescript.ts",
+    },
+  },
+  "typescript.tsx": Object {
+    "contentType": "text/x-typescript",
+    "contents": Object {
+      "etag": "d318a3bfecfad0286a38ab05f901302e",
+      "sha": "e0c625144d4b1bbfcbf599dad444f78390f2d094",
+      "uuid": "4cb57844-fed2-5b51-b56b-c957a3f1f046",
+    },
+    "magic": Object {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"d318a3bfecfad0286a38ab05f901302e\\"",
+      "Key": "db1/assets/typescript.tsx",
+      "Location": "http://localhost:9000/launchql/db1/assets/typescript.tsx",
+      "key": "db1/assets/typescript.tsx",
+    },
+  },
+  "wmf.wmf": Object {
+    "contentType": "image/wmf",
+    "contents": Object {
+      "etag": "adc25f2984aa0dbaaa6a54fb486ea3e3",
+      "sha": "c674de1fedd2c5f0d23c77b5275bac2aca53d687",
+      "uuid": "9c08564f-148d-573e-869f-080cd49a95eb",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"adc25f2984aa0dbaaa6a54fb486ea3e3\\"",
+      "Key": "db1/assets/wmf.wmf",
+      "Location": "http://localhost:9000/launchql/db1/assets/wmf.wmf",
+      "key": "db1/assets/wmf.wmf",
+    },
+  },
+  "xlsx.xlsx": Object {
+    "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "contents": Object {
+      "etag": "11ee509d7e7015cbb693787206345c67",
+      "sha": "e8f3cfd46b660904f6c1040513cf677366997c9e",
+      "uuid": "f6a1afd3-110a-530e-8279-e4e9291726ae",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"11ee509d7e7015cbb693787206345c67\\"",
+      "Key": "db1/assets/xlsx.xlsx",
+      "Location": "http://localhost:9000/launchql/db1/assets/xlsx.xlsx",
+      "key": "db1/assets/xlsx.xlsx",
+    },
+  },
+  "zip.zip": Object {
+    "contentType": "application/zip",
+    "contents": Object {
+      "etag": "9dfdfd1ae3cb267b12ef9d63bffa2295",
+      "sha": "249f27795f59c3c5f4c9a60298c271f261454250",
+      "uuid": "b23685b4-04f1-5244-bad3-be5fa6a5af7f",
+    },
+    "magic": Object {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+    "upload": Object {
+      "Bucket": "launchql",
+      "ETag": "\\"9dfdfd1ae3cb267b12ef9d63bffa2295\\"",
+      "Key": "db1/assets/zip.zip",
+      "Location": "http://localhost:9000/launchql/db1/assets/zip.zip",
+      "key": "db1/assets/zip.zip",
+    },
+  },
+}
+`;
+
+exports[`uploads upload files via functions 1`] = `
 Object {
   ".gitignore": Object {
     "contentType": "text/plain",
