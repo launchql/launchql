@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/pyramation/launchql/compare/@launchql/explorer@0.9.1...@launchql/explorer@0.10.0) (2020-08-28)
+
+
+### Bug Fixes
+
+* update pkg ([eb6b509](https://github.com/pyramation/launchql/commit/eb6b509bb0a44cf213de097958cda7d168dcd06f))
+
+
+### Features
+
+* server and explorer use uploads ([8f0ac6e](https://github.com/pyramation/launchql/commit/8f0ac6e8daed846fe6376c12fdc30ee3d278443c))
+* **explorer:** uploads ([1b794b2](https://github.com/pyramation/launchql/commit/1b794b23b166a648a6388b6425d89a9d34d84a17))
+* **explorer:** uploads ([b1f95ff](https://github.com/pyramation/launchql/commit/b1f95ff88dc838638159a3939fc54a7a15ffbb7d))
+
+
+
+
+
 ## [0.9.1](https://github.com/pyramation/launchql/compare/@launchql/explorer@0.9.0...@launchql/explorer@0.9.1) (2020-08-25)
 
 
