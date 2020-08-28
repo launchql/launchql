@@ -1,6 +1,5 @@
 import stream from 'stream';
 import getS3 from './s3';
-import env from './env';
 import {
   streamContentType,
   ContentStream
