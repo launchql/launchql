@@ -30,7 +30,14 @@ Or you can install the full-blown postgres locally, but it is recommended that y
 #### Install sqitch
 
 https://sqitch.org/
-mac users can use brew: https://github.com/sqitchers/homebrew-sqitch
+
+mac users can use brew 
+
+```
+brew install sqitch --with-postgres-support --without-postgresql
+```
+
+or for brew sqitch docs: https://github.com/sqitchers/homebrew-sqitch
 
 #### Install the Template library from http://www.tt2.org/
 

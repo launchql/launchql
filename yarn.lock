@@ -3545,15 +3545,14 @@
     inquirer "^6.0.0"
     inquirer-autocomplete-prompt "^0.11.1"
 
-"@pyramation/stream-to-s3@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@pyramation/stream-to-s3/-/stream-to-s3-0.0.8.tgz#d530b294e2198efc794ff9782dbf7e468942a865"
-  integrity sha512-qbjx9Aqu71HVpD1sWX7iG2jFNuS3FdoZV3enRDIBUnVvVilU8WXeArKRvVCexv5OKgYr7kB70nw2N4tTSr8LQw==
+"@pyramation/s3-streamer@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/@pyramation/s3-streamer/-/s3-streamer-0.1.1.tgz#667cf57ae74bf8df51aa041e37801fd3a6cb16a8"
+  integrity sha512-6aHhmTMCw8TiSN5SWIPtTwnFKbIzq6KNGU5+x5crbC0ETGfbuhwgt+ntjTP8x7UTIvKFfLFDtH4Km8rEfiww2A==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@pyramation/content-type-stream" "^0.0.4"
     aws-sdk "2.729.0"
-    envalid "6.0.2"
 
 "@pyramation/upload-names@0.0.3":
   version "0.0.3"
