@@ -32,7 +32,7 @@ function getUploader() {
 }
 export default async function resolveUpload(upload, _args, _context, info) {
   const {
-    uploadPlugin: { tags }
+    uploadPlugin: { tags, type }
   } = info;
   console.log({ tags });
   console.log({ upload });
@@ -59,17 +59,41 @@ export default async function resolveUpload(upload, _args, _context, info) {
     magic: { charset }
   } = result;
 
+  // get field type
+  const typ = type || tags.type;
+
+  // get allowed mimetypes
+  const mim = tags.mime
+    ? tags.mime
+        .trim()
+        .split(',')
+        .map((a) => a.trim())
+    : typ === 'image'
+    ? ['image/jpg', 'image/jpeg', 'image/png']
+    : [];
+
+  // is it allowed?
+  let allowed = true;
+  if (mim && mim.length) {
+    allowed = mim.includes(contentType);
+  }
+
+  if (!allowed) {
+    throw new Error(`UPLOAD_MIMETYPE ${mim.join(',')}`);
+  }
+
+  console.log({ type });
+
   // Return metadata to save it to Postgres
-  const type = tags.type;
-  switch (type) {
+  switch (typ) {
+    case 'image':
     case 'attachment':
       return {
         filename,
-        mimetype: contentType,
-        encoding,
-        charset,
+        mime: contentType,
         url
       };
+    case 'upload':
     default:
       return url;
   }

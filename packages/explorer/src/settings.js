@@ -27,7 +27,10 @@ export const getGraphileSettings = ({
       uploadFieldDefinitions: [
         {
           match: (args) => {
-            return args.tags.upload;
+            return (
+              args.tags.upload ||
+              ['upload', 'image', 'attachment'].includes(args.type.name)
+            );
           },
           resolve: resolveUpload
         }

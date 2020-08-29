@@ -3495,10 +3495,10 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-"@pyramation/postgraphile-upload-field@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@pyramation/postgraphile-upload-field/-/postgraphile-upload-field-0.0.3.tgz#76007cf0c2d63881c68653bf4d8b949e03873244"
-  integrity sha512-eQA78ftV+rX1i23JP95TZGzfGH1ta9+3kALQmiiD3mdsxWFEGWMmuw5lsCSuJV0EjCdpcFPAOFgvp7IAomGrBA==
+"@pyramation/postgraphile-upload-field@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@pyramation/postgraphile-upload-field/-/postgraphile-upload-field-0.0.5.tgz#92c873ae5bb402c403207a375181cef461b4a317"
+  integrity sha512-LCbpFYEJsSSQpC3FUyelQdO11PEuTbIwge2fJOxauV7lnPKL/P7YOqSWHdTey6cGp/YiyYxBOePDB1fSYA6QMg==
   dependencies:
     "@babel/runtime" "^7.4.2"
     graphql-upload "11.0.0"
@@ -3554,10 +3554,10 @@
     "@pyramation/content-type-stream" "^0.0.4"
     aws-sdk "2.729.0"
 
-"@pyramation/upload-names@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.0.3.tgz#a495a73ef5fdb17cc4024180c29e03c6d3dbea8c"
-  integrity sha512-qBXE2vyLK5WGoYHp9k7saXIfIY+J7OWZxFIKcAxQLe6tAxa1vQWC8v95IMWTHcV1NTsjImPUNZIOX6a5zUVJRg==
+"@pyramation/upload-names@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.0.4.tgz#0ff7e6b672b7a8e3f5c5ed3b6576cfd5f68bf386"
+  integrity sha512-FcTqWfaNUG4KadIB/QzKrD3ZVCKFz5Oyp8RA6AI/kUYQWqdi3KLZgtfbqq7rYorjamLLBiGE1mFSUTyKfpW2EQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
 
