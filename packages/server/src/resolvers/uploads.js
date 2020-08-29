@@ -69,7 +69,7 @@ export default async function resolveUpload(upload, _args, _context, info) {
         .split(',')
         .map((a) => a.trim())
     : typ === 'image'
-    ? ['image/jpg', 'image/jpeg', 'image/png']
+    ? ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml']
     : [];
 
   // is it allowed?
