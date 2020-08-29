@@ -6,6 +6,7 @@ export default function UploadFieldPlugin(builder, { uploadFieldDefinitions }) {
       schema: table.namespaceName,
       table: table.name,
       column: attr.name,
+      type: attr.type,
       tags: attr.tags
     });
 
