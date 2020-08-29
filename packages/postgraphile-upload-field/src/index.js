@@ -84,6 +84,7 @@ export default function UploadFieldPlugin(builder, { uploadFieldDefinitions }) {
     const { resolve: oldResolve = defaultResolver, ...rest } = field;
 
     const tags = {};
+    const types = {};
 
     const uploadResolversByFieldName = introspectionResultsByKind.attribute
       .filter((attr) => attr.classId === table.id)
@@ -98,6 +99,7 @@ export default function UploadFieldPlugin(builder, { uploadFieldDefinitions }) {
           const fieldName = inflection.column(attr);
           memo[fieldName] = defs[0].resolve;
           tags[fieldName] = attr.tags;
+          types[fieldName] = attr.type.name;
         }
         return memo;
       }, {});
@@ -119,7 +121,10 @@ export default function UploadFieldPlugin(builder, { uploadFieldDefinitions }) {
                   upload,
                   args,
                   context,
-                  { ...info, uploadPlugin: { tags: tags[key] } }
+                  {
+                    ...info,
+                    uploadPlugin: { tags: tags[key], type: types[key] }
+                  }
                 );
               }
             } else if (obj[key] !== null && typeof obj[key] === 'object') {
