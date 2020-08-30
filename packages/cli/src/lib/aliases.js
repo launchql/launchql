@@ -1,16 +1,17 @@
 
   import { aliases as _add } from './cmds/add';
 import { aliases as _addproject } from './cmds/addproject';
+import { aliases as _api } from './cmds/api';
 import { aliases as _bundle } from './cmds/bundle';
 import { aliases as _createdb } from './cmds/createdb';
 import { aliases as _deploy } from './cmds/deploy';
 import { aliases as _dropdb } from './cmds/dropdb';
 import { aliases as _dump } from './cmds/dump';
 import { aliases as _explorer } from './cmds/explorer';
+import { aliases as _export } from './cmds/export';
 import { aliases as _ext } from './cmds/ext';
 import { aliases as _extension } from './cmds/extension';
 import { aliases as _format } from './cmds/format';
-import { aliases as _gen } from './cmds/gen';
 import { aliases as _generate } from './cmds/generate';
 import { aliases as _info } from './cmds/info';
 import { aliases as _init } from './cmds/init';
@@ -31,16 +32,17 @@ import { aliases as _version } from './cmds/version';
 
   module.exports['add'] = _add;
 module.exports['addproject'] = _addproject;
+module.exports['api'] = _api;
 module.exports['bundle'] = _bundle;
 module.exports['createdb'] = _createdb;
 module.exports['deploy'] = _deploy;
 module.exports['dropdb'] = _dropdb;
 module.exports['dump'] = _dump;
 module.exports['explorer'] = _explorer;
+module.exports['export'] = _export;
 module.exports['ext'] = _ext;
 module.exports['extension'] = _extension;
 module.exports['format'] = _format;
-module.exports['gen'] = _gen;
 module.exports['generate'] = _generate;
 module.exports['info'] = _info;
 module.exports['init'] = _init;

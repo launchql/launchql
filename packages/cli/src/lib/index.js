@@ -1,16 +1,17 @@
 
 import _add from './cmds/add';
 import _addproject from './cmds/addproject';
+import _api from './cmds/api';
 import _bundle from './cmds/bundle';
 import _createdb from './cmds/createdb';
 import _deploy from './cmds/deploy';
 import _dropdb from './cmds/dropdb';
 import _dump from './cmds/dump';
 import _explorer from './cmds/explorer';
+import _export from './cmds/export';
 import _ext from './cmds/ext';
 import _extension from './cmds/extension';
 import _format from './cmds/format';
-import _gen from './cmds/gen';
 import _generate from './cmds/generate';
 import _info from './cmds/info';
 import _init from './cmds/init';
@@ -31,16 +32,17 @@ import _version from './cmds/version';
 
 module.exports['add'] = _add;
 module.exports['addproject'] = _addproject;
+module.exports['api'] = _api;
 module.exports['bundle'] = _bundle;
 module.exports['createdb'] = _createdb;
 module.exports['deploy'] = _deploy;
 module.exports['dropdb'] = _dropdb;
 module.exports['dump'] = _dump;
 module.exports['explorer'] = _explorer;
+module.exports['export'] = _export;
 module.exports['ext'] = _ext;
 module.exports['extension'] = _extension;
 module.exports['format'] = _format;
-module.exports['gen'] = _gen;
 module.exports['generate'] = _generate;
 module.exports['info'] = _info;
 module.exports['init'] = _init;
