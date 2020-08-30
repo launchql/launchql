@@ -28,26 +28,5 @@ export default async (argv) => {
 
   if (!questions[object]) throw new Error(`cannot find ${object}`);
   const { action } = await prompt(questions[object], argv);
-
-  //   const args = await prompt(questions[object], argv);
-
-  const argsQuestions = await functions[object][action].args(client, argv);
-  let args = {};
-  if (argsQuestions && argsQuestions.length > 0) {
-    args = await prompt(argsQuestions, argv);
-  }
-  await functions[object][action].func(client, args);
-  //   console.log({ questions, answers });
-  //   const cmd = await generate({
-  //     templates,
-  //     template,
-  //     templatePath,
-  //     payload: answers
-  //   });
-
-  //   console.log(cmd);
-
-  //   const sqitch = exec(cmd.trim());
-  //   sqitch.stdout.pipe(process.stdout);
-  //   sqitch.stderr.pipe(process.stderr);
+  await functions[object][action](client, argv);
 };
