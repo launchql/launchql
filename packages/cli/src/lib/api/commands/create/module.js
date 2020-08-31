@@ -55,10 +55,11 @@ export default async (client, args) => {
   console.log(props);
 
   console.log(db.id, mod.id);
-
+  console.log({ mod });
   const result3 = await client2.request(createModuleMutation, {
     databaseId: db.id,
     moduleDefnId: mod.id,
+    context: mod.context,
     data: props
   });
   console.log(JSON.stringify(result3, null, 2));

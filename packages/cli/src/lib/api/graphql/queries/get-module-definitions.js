@@ -7,6 +7,7 @@ export const getModuleDefinitionsQuery = gql`
         id
         name
         mods
+        context
         fields: moduleFieldsByModuleDefnId {
           nodes {
             id
