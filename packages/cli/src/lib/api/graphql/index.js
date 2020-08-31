@@ -12,6 +12,8 @@ export * from './queries/get-foreign-key-constraints';
 export * from './queries/get-primary-key-constraints';
 export * from './queries/get-module-outputs-by-definition-ids';
 export * from './queries/get-unique-constraints';
+export * from './queries/get-sql-actions';
+export * from './queries/get-services';
 
 // ==== Mutations
 export * from './mutations/create-database';

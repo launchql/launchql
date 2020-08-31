@@ -11,8 +11,8 @@ import { makeAutocompleteFunctionWithInput as makeSearch } from '@launchql/db-ut
 
 export default async (client, args) => {
   const env = await lqlEnv();
-  const client2 = new GraphQLClient(env.MODULE_GRAPHQL_URL);
-  const result = await client2.request(getModuleDefinitionsQuery);
+  const moduleClient = new GraphQLClient(env.MODULE_GRAPHQL_URL);
+  const result = await moduleClient.request(getModuleDefinitionsQuery);
   const db = await getDatabase(client, args);
 
   const { mod: module } = await prompt(
@@ -41,7 +41,7 @@ export default async (client, args) => {
 
   const reqIds = mod.mods || [];
 
-  const requiredModules = await client2.request(
+  const requiredModules = await moduleClient.request(
     getModuleOutputsByDefinitionsIds,
     {
       databaseId: db.id,
@@ -94,7 +94,7 @@ export default async (client, args) => {
   //   console.log(db.id, mod.id);
   //   console.log({ mod });
   console.log(`installing ${mod.name}`);
-  const result3 = await client2.request(createModuleMutation, {
+  const result3 = await moduleClient.request(createModuleMutation, {
     databaseId: db.id,
     moduleDefnId: mod.id,
     context: mod.context,
