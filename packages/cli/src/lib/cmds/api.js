@@ -28,5 +28,9 @@ export default async (argv) => {
 
   if (!questions[object]) throw new Error(`cannot find ${object}`);
   const { action } = await prompt(questions[object], argv);
+
+  if (typeof functions[object][action] !== 'function') {
+    throw new Error(`${action} not found!`);
+  }
   await functions[object][action](client, argv);
 };
