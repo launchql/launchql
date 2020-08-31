@@ -70,6 +70,28 @@ export const getTable = async (client, tables, args) => {
   });
 };
 
+export const getAny = async (client, ctx, args) => {
+  const { key, nodes, nameKey = 'name' } = ctx;
+  const message = ctx.message || `enter value for ${key}`;
+  const result = await prompt(
+    [
+      {
+        type: 'autocomplete',
+        name: key,
+        message,
+        source: makeSearch(nodes.map((n) => n[nameKey])),
+        required: true
+      }
+    ],
+    args
+  );
+
+  return nodes.reduce((m, v) => {
+    if (v[nameKey] === result[key]) return v;
+    return m;
+  });
+};
+
 export const getField = async (client, fields, args) => {
   const result = await prompt(
     [

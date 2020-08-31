@@ -4,6 +4,9 @@ import createDatabase from './commands/create/database';
 import createField from './commands/create/field';
 import createTable from './commands/create/table';
 import createModule from './commands/create/module';
+import createRelation from './commands/create/relation';
+import createUnique from './commands/create/unique';
+import createPrimary from './commands/create/primary';
 
 import updateField from './commands/update/field';
 import updateTable from './commands/update/table';
@@ -17,6 +20,9 @@ import listFields from './commands/list/fields';
 // later make this generated from folders/files nested
 export const functions = {
   create: {
+    primaryKey: createPrimary,
+    uniqueKey: createUnique,
+    relation: createRelation,
     module: createModule,
     field: createField,
     table: createTable,
