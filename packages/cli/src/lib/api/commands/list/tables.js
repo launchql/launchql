@@ -15,7 +15,7 @@ export default async (client, args) => {
   });
 
   tables.tables.nodes.forEach((el) => {
-    console.log(`\n${el.name}:`);
+    console.log(`\n${el.name} [${el.id}]`);
     el.fields.nodes.forEach((field) => {
       console.log(`   ${field.name}: ${field.type}`);
     });

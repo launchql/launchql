@@ -10,6 +10,7 @@ export * from './queries/get-all-constraints';
 export * from './queries/get-constraints';
 export * from './queries/get-foreign-key-constraints';
 export * from './queries/get-primary-key-constraints';
+export * from './queries/get-module-outputs-by-definition-ids';
 export * from './queries/get-unique-constraints';
 
 // ==== Mutations
