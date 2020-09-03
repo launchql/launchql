@@ -3,20 +3,14 @@ import {
   getSqlActionsQuery,
   getServicesQuery
 } from '../../graphql';
-import { getDatabase, getTable } from '../../prompts';
-import { lqlEnv } from '../../env';
-import { GraphQLClient } from 'graphql-request';
+import { getDatabase } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-
-  const env = await lqlEnv();
-  const migrationClient = new GraphQLClient(env.MIGRATE_GRAPHQL_URL);
-  const serviceClient = new GraphQLClient(env.SERVICE_GRAPHQL_URL);
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
 
   console.log(db);
 
-  const schemata = await client.request(getSchemataQuery, {
+  const schemata = await ctx.db.request(getSchemataQuery, {
     databaseId: db.id
   });
 
@@ -24,13 +18,13 @@ export default async (client, args) => {
 
   console.log(getSqlActionsQuery);
 
-  const actions = await migrationClient.request(getSqlActionsQuery, {
+  const actions = await ctx.migrate.request(getSqlActionsQuery, {
     databaseId: db.id
   });
 
   console.log(actions.sqlActions.nodes);
 
-  const services = await serviceClient.request(getServicesQuery, {
+  const services = await ctx.svc.request(getServicesQuery, {
     databaseId: db.id
   });
 

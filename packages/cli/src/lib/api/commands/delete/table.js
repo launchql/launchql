@@ -1,16 +1,15 @@
-import { prompt } from 'inquirerer';
 import { deleteTableMutation, getTablesQuery } from '../../graphql';
-import { getDatabase, getTable, getField, getAny } from '../../prompts';
+import { getDatabase, getAny } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const tables = await client.request(getTablesQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const tables = await ctx.db.request(getTablesQuery, {
     databaseId: db.id
   });
 
-  // const table1 = await getTable(client, tables.tables, args);
+  // const table1 = await getTable(ctx.db, tables.tables, args);
   const table1 = await getAny(
-    client,
+    ctx.db,
     {
       key: 'table',
       message: `table:`,
@@ -19,7 +18,7 @@ export default async (client, args) => {
     args
   );
   console.log(table1.id);
-  const result = await client.request(deleteTableMutation, {
+  const result = await ctx.db.request(deleteTableMutation, {
     id: table1.id
   });
   console.log(JSON.stringify(result, null, 2));

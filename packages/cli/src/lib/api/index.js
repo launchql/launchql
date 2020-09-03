@@ -23,8 +23,21 @@ import listSchemata from './commands/list/schemata';
 import listTables from './commands/list/tables';
 import listFields from './commands/list/fields';
 
+import configCreds from './commands/config/set-credentials';
+import configServer from './commands/config/set-server';
+import configContext from './commands/config/use-context';
+import configView from './commands/config/view';
+import configCreate from './commands/config/create';
+
 // later make this generated from folders/files nested
 export const functions = {
+  config: {
+    create: configCreate,
+    user: configCreds,
+    server: configServer,
+    context: configContext,
+    view: configView
+  },
   create: {
     primaryKey: createPrimary,
     uniqueKey: createUnique,

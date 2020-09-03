@@ -5,30 +5,15 @@ import {
 } from '../../graphql';
 import { getDatabase, getTable, getField, getAny } from '../../prompts';
 
-export default async (client, args) => {
-  // tableId: UUID!
-  // fieldId: UUID!
-  // refTableId: UUID!
-  // refFieldId: UUID!
-  // name: 'we should not need this'
-
-  //     const result = await client.request(createForeignKeyConstraintMutation, {
-  //     tableId: UUID!
-  //     fieldId: UUID!
-  //     refTableId: UUID!
-  //     refFieldId: UUID!
-  //     name: String!
-  //   });
-  //   console.log(JSON.stringify(result, null, 2));
-
-  const db = await getDatabase(client, args);
-  const tables = await client.request(getTablesQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const tables = await ctx.db.request(getTablesQuery, {
     databaseId: db.id
   });
 
-  // const table1 = await getTable(client, tables.tables, args);
+  // const table1 = await getTable(ctx.db, tables.tables, args);
   const table1 = await getAny(
-    client,
+    ctx.db,
     {
       key: 'table',
       message: `table:`,
@@ -37,7 +22,7 @@ export default async (client, args) => {
     args
   );
   const field1 = await getAny(
-    client,
+    ctx.db,
     {
       key: 'field',
       message: `${table1.name} field:`,
@@ -46,7 +31,7 @@ export default async (client, args) => {
     args
   );
   const table2 = await getAny(
-    client,
+    ctx.db,
     {
       key: 'refTable',
       message: `reference table:`,
@@ -55,7 +40,7 @@ export default async (client, args) => {
     args
   );
   const field2 = await getAny(
-    client,
+    ctx.db,
     {
       key: 'refField',
       message: `${table2.name} field:`,
@@ -66,7 +51,7 @@ export default async (client, args) => {
 
   // console.log({ table1, table2, field1, field2 });
 
-  const constraint = await client.request(createForeignKeyConstraintMutation, {
+  const constraint = await ctx.db.request(createForeignKeyConstraintMutation, {
     databaseId: db.id,
     tableId: table1.id,
     fieldId: field1.id,

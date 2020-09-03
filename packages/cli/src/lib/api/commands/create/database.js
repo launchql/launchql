@@ -1,7 +1,7 @@
 import { prompt } from 'inquirerer';
 import { createDatabaseMutation } from '../../graphql';
 
-export default async (client, args) => {
+export default async (ctx, args) => {
   const { database } = await prompt(
     [
       {
@@ -14,7 +14,7 @@ export default async (client, args) => {
     args
   );
 
-  const result = await client.request(createDatabaseMutation, {
+  const result = await ctx.db.request(createDatabaseMutation, {
     name: database
   });
   console.log(JSON.stringify(result, null, 2));

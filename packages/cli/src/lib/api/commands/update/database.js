@@ -1,9 +1,9 @@
 import { prompt } from 'inquirerer';
-import { getDatabase, getTable, getField } from '../../prompts';
-import { getTablesQuery, updateDatabaseMutation } from '../../graphql';
+import { getDatabase } from '../../prompts';
+import { updateDatabaseMutation } from '../../graphql';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
 
   const props = Object.keys(db).filter(
     (field) => !['id', 'tableId'].includes(field)
@@ -34,7 +34,7 @@ export default async (client, args) => {
     {} // dont pass in args for this one
   );
 
-  const updated = await client.request(updateDatabaseMutation, {
+  const updated = await ctx.db.request(updateDatabaseMutation, {
     id: db.id,
     ...getProps
   });

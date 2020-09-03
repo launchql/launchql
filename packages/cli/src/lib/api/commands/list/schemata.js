@@ -1,9 +1,9 @@
 import { getSchemataQuery } from '../../graphql';
 import { getDatabase } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const final = await client.request(getSchemataQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const final = await ctx.db.request(getSchemataQuery, {
     databaseId: db.id
   });
 

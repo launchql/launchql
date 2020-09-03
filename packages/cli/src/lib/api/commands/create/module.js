@@ -1,19 +1,16 @@
 import { prompt } from 'inquirerer';
-import { getDatabase, getTable } from '../../prompts';
+import { getDatabase } from '../../prompts';
 import {
   getModuleDefinitionsQuery,
   createModuleMutation,
   getModuleOutputsByDefinitionsIds
 } from '../../graphql';
-import { lqlEnv } from '../../env';
-import { GraphQLClient } from 'graphql-request';
+
 import { makeAutocompleteFunctionWithInput as makeSearch } from '@launchql/db-utils';
 
-export default async (client, args) => {
-  const env = await lqlEnv();
-  const moduleClient = new GraphQLClient(env.MODULE_GRAPHQL_URL);
-  const result = await moduleClient.request(getModuleDefinitionsQuery);
-  const db = await getDatabase(client, args);
+export default async (ctx, args) => {
+  const result = await ctx.mods.request(getModuleDefinitionsQuery);
+  const db = await getDatabase(ctx.db, args);
 
   const { mod: module } = await prompt(
     [
@@ -41,7 +38,7 @@ export default async (client, args) => {
 
   const reqIds = mod.mods || [];
 
-  const requiredModules = await moduleClient.request(
+  const requiredModules = await ctx.mods.request(
     getModuleOutputsByDefinitionsIds,
     {
       databaseId: db.id,
@@ -94,7 +91,7 @@ export default async (client, args) => {
   //   console.log(db.id, mod.id);
   //   console.log({ mod });
   console.log(`installing ${mod.name}`);
-  const result3 = await moduleClient.request(createModuleMutation, {
+  const result3 = await ctx.mods.request(createModuleMutation, {
     databaseId: db.id,
     moduleDefnId: mod.id,
     context: mod.context,

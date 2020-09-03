@@ -1,13 +1,13 @@
 import { getTablesQuery } from '../../graphql';
 import { getDatabase, getTable } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const tables = await client.request(getTablesQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const tables = await ctx.db.request(getTablesQuery, {
     databaseId: db.id
   });
 
-  const table = await getTable(client, tables.tables, args);
+  const table = await getTable(ctx.db, tables.tables, args);
 
   tables.tables.nodes.forEach((el) => {
     if (el.id !== table.id) return;

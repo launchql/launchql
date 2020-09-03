@@ -1,13 +1,13 @@
 import { prompt } from 'inquirerer';
-import { getDatabase, getTable, getField } from '../../prompts';
+import { getDatabase, getTable } from '../../prompts';
 import { getTablesQuery, updateTableMutation } from '../../graphql';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const tables = await client.request(getTablesQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const tables = await ctx.db.request(getTablesQuery, {
     databaseId: db.id
   });
-  const table = await getTable(client, tables.tables, args);
+  const table = await getTable(ctx.db, tables.tables, args);
 
   const props = Object.keys(table).filter(
     (field) => !['id', 'tableId'].includes(field)
@@ -38,7 +38,7 @@ export default async (client, args) => {
     {} // dont pass in args for this one
   );
 
-  const updated = await client.request(updateTableMutation, {
+  const updated = await ctx.db.request(updateTableMutation, {
     id: table.id,
     ...getProps
   });

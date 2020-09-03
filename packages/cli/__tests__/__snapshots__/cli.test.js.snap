@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`configurations config 1`] = `
+Object {
+  "apiVersion": "v1",
+  "contexts": Array [
+    Object {
+      "name": "dans-laptop",
+      "server": "local",
+      "user": "admin",
+    },
+    Object {
+      "name": "production",
+      "server": "prod",
+      "user": "pyramation",
+    },
+  ],
+  "currentContext": "dans-laptop",
+  "servers": Array [
+    Object {
+      "endpoints": Object {
+        "db": "http://collection.lql.localhost:5555/graphql",
+        "migrate": "http://migrate.lql.localhost:5555/graphql",
+        "mods": "http://mods.lql.localhost:5555/graphql",
+        "svc": "http://svc.lql.localhost:5555/graphql",
+      },
+      "env": "development",
+      "name": "local",
+    },
+    Object {
+      "endpoint": "https://admin.io/graphql",
+      "env": "production",
+      "name": "prod",
+    },
+  ],
+  "users": Array [
+    Object {
+      "name": "pyramation",
+      "token": Object {
+        "accessToken": "redacted",
+        "refreshToken": "redacted",
+      },
+    },
+    Object {
+      "basic": Object {
+        "header": "randomstuffgoeshere",
+        "password": "redactedtillweneedit",
+        "username": "admin",
+      },
+      "name": "admin",
+    },
+    Object {
+      "basic": Object {
+        "header": "randomstuffgoeshere",
+        "password": "redactedtillweneedit",
+        "username": "user",
+      },
+      "name": "user",
+    },
+  ],
+}
+`;
+
+exports[`configurations current 1`] = `
+Object {
+  "name": "dans-laptop",
+  "server": Object {
+    "endpoints": Object {
+      "db": "http://collection.lql.localhost:5555/graphql",
+      "migrate": "http://migrate.lql.localhost:5555/graphql",
+      "mods": "http://mods.lql.localhost:5555/graphql",
+      "svc": "http://svc.lql.localhost:5555/graphql",
+    },
+    "env": "development",
+    "name": "local",
+  },
+  "user": Object {
+    "basic": Object {
+      "header": "randomstuffgoeshere",
+      "password": "redactedtillweneedit",
+      "username": "admin",
+    },
+    "name": "admin",
+  },
+}
+`;

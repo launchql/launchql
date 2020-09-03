@@ -1,15 +1,15 @@
 import { prompt } from 'inquirerer';
 import { createUniqueConstraintMutation, getTablesQuery } from '../../graphql';
-import { getDatabase, getTable, getField, getAny } from '../../prompts';
+import { getDatabase, getAny } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const tables = await client.request(getTablesQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const tables = await ctx.db.request(getTablesQuery, {
     databaseId: db.id
   });
 
   const table = await getAny(
-    client,
+    ctx.db,
     {
       key: 'table',
       message: `table:`,
@@ -35,7 +35,7 @@ export default async (client, args) => {
     .filter((node) => res.fields.includes(node.name))
     .map((n) => n.id);
 
-  const constraint = await client.request(createUniqueConstraintMutation, {
+  const constraint = await ctx.db.request(createUniqueConstraintMutation, {
     databaseId: db.id,
     tableId: table.id,
     fieldIds,

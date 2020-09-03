@@ -2,14 +2,14 @@ import { prompt } from 'inquirerer';
 import { getSchemataQuery, createTableMutation } from '../../graphql';
 import { getDatabase, getSchema } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const result = await client.request(getSchemataQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const result = await ctx.db.request(getSchemataQuery, {
     databaseId: db.id
   });
 
   // apparently you dont have schemaId on tables...
-  const schema = await getSchema(client, result.schemata, args);
+  const schema = await getSchema(ctx.db, result.schemata, args);
   let isVisible = false;
   if (schema.name !== 'public') {
     isVisible = true;
@@ -27,7 +27,7 @@ export default async (client, args) => {
     args
   );
 
-  const final = await client.request(createTableMutation, {
+  const final = await ctx.db.request(createTableMutation, {
     databaseId: db.id,
     name: table,
     isVisible

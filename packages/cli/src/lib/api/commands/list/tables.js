@@ -1,15 +1,15 @@
 import { getSchemataQuery, getTablesByVisibilityQuery } from '../../graphql';
 import { getDatabase, getSchema } from '../../prompts';
 
-export default async (client, args) => {
-  const db = await getDatabase(client, args);
-  const result = await client.request(getSchemataQuery, {
+export default async (ctx, args) => {
+  const db = await getDatabase(ctx.db, args);
+  const result = await ctx.db.request(getSchemataQuery, {
     databaseId: db.id
   });
   // apparently you dont have schemaId on tables...
-  const schema = await getSchema(client, result.schemata, args);
+  const schema = await getSchema(ctx.db, result.schemata, args);
 
-  const tables = await client.request(getTablesByVisibilityQuery, {
+  const tables = await ctx.db.request(getTablesByVisibilityQuery, {
     databaseId: db.id,
     isVisible: schema.name === 'public'
   });
