@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.27](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.5.26...@launchql/cli@0.5.27) (2020-09-03)
+
+
+### Bug Fixes
+
+* graphql versions ([c41a951](https://github.com/launchql/launchql-db/commit/c41a951239e9463b6720038bb30e3c82bad433a7))
+
+
+
+
+
 ## [0.5.26](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.5.25...@launchql/cli@0.5.26) (2020-09-03)
 
 **Note:** Version bump only for package @launchql/cli
