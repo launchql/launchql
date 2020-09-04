@@ -1,8 +1,6 @@
 import plz from 'pluralize';
 import inflection from 'inflection';
-import * as t from './types';
-
-export { t };
+import * as t from '@pyramation/graphql-ast';
 
 function getType(type) {
   // TODO look in postgraphile
