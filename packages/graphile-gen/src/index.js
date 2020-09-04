@@ -119,7 +119,7 @@ export const createOne = (defn) => {
     ]
   });
 
-  return ast;
+  return { name: mutationName, ast };
 };
 
 // TODO use constraints...
@@ -226,7 +226,7 @@ export const updateOne = (defn) => {
     ]
   });
 
-  return ast;
+  return { name: mutationName, ast };
 };
 
 const GETTER_FIELD = 'id';
@@ -306,7 +306,7 @@ export const getOne = (defn) => {
     ]
   });
 
-  return ast;
+  return { name: queryName, ast };
 };
 
 export const getMany = (defn) => {
@@ -366,7 +366,7 @@ export const getMany = (defn) => {
     ]
   });
 
-  return ast;
+  return { name: queryName, ast };
 };
 
 export const getManyOwned = (defn, ownedField) => {
@@ -467,7 +467,7 @@ export const getManyOwned = (defn, ownedField) => {
     ]
   });
 
-  return ast;
+  return { name: queryName, ast };
 };
 
 const DELETER_FIELD = 'id';
@@ -562,5 +562,5 @@ export const deleteOne = (defn) => {
     ]
   });
 
-  return ast;
+  return { name: mutationName, ast };
 };

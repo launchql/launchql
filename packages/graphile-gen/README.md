@@ -19,7 +19,7 @@ import {
 } from 'graphile-gen';
 import { print } from 'graphql/language';
 
-const ast = createOne(tableDefn);
+const { ast } = createOne(tableDefn);
 console.log(print(ast));
 ```
 

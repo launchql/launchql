@@ -12,54 +12,54 @@ import tables from '../__fixtures__/tables';
 
 cases(
   'getOne',
-  options => {
-    const value = getOne(options.defn);
-    expect(print(value)).toMatchSnapshot();
+  (options) => {
+    const { ast } = getOne(options.defn);
+    expect(print(ast)).toMatchSnapshot();
   },
   tables
 );
 
 cases(
   'getMany',
-  options => {
-    const value = getMany(options.defn);
-    expect(print(value)).toMatchSnapshot();
+  (options) => {
+    const { ast } = getMany(options.defn);
+    expect(print(ast)).toMatchSnapshot();
   },
   tables
 );
 
 cases(
   'getManyOwned',
-  options => {
-    const value = getManyOwned(options.defn, 'owner_id');
-    expect(print(value)).toMatchSnapshot();
+  (options) => {
+    const { ast } = getManyOwned(options.defn, 'owner_id');
+    expect(print(ast)).toMatchSnapshot();
   },
   tables
 );
 
 cases(
   'updateOne',
-  options => {
-    const value = updateOne(options.defn);
-    expect(print(value)).toMatchSnapshot();
+  (options) => {
+    const { ast } = updateOne(options.defn);
+    expect(print(ast)).toMatchSnapshot();
   },
   tables
 );
 
 cases(
   'createOne',
-  options => {
-    const value = createOne(options.defn);
-    expect(print(value)).toMatchSnapshot();
+  (options) => {
+    const { ast } = createOne(options.defn);
+    expect(print(ast)).toMatchSnapshot();
   },
   tables
 );
 
 cases(
   'deleteOne',
-  options => {
-    const value = deleteOne(options.defn);
-    expect(print(value)).toMatchSnapshot();
+  (options) => {
+    const { ast } = deleteOne(options.defn);
+    expect(print(ast)).toMatchSnapshot();
   },
   tables
 );
