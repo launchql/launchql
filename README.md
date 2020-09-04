@@ -41,7 +41,7 @@ mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhino
 }
 ```
 
-## methods urrently supported
+## methods currently supported
 
 ```
   crudify
