@@ -1,5 +1,6 @@
-const pg = require('pg');
 import { introspect, introspectionResultsFromRaw } from '../src';
+const pg = require('pg');
+const jsonStringify = require('json-stringify-safe');
 
 const getDbString = (db) =>
   `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${db}`;
@@ -19,8 +20,9 @@ it('introspect', async () => {
     schemas: ['app_public']
   });
   expect(raw).toMatchSnapshot();
-
   const processed = introspectionResultsFromRaw(raw);
-  console.log('we cleared...');
-  console.log(processed);
+  require('fs').writeFileSync(
+    __dirname + '/introspect.json',
+    jsonStringify(processed, null, 2)
+  );
 });

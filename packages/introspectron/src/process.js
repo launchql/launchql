@@ -224,8 +224,6 @@ export const introspectionResultsFromRaw = (
 ) => {
   const introspectionResultsByKind = deepClone(rawResults);
 
-  console.log('made it here');
-
   const xByY = (arrayOfX, attrKey) =>
     arrayOfX.reduce((memo, x) => {
       memo[x[attrKey]] = x;
@@ -237,7 +235,7 @@ export const introspectionResultsFromRaw = (
       memo[x[attrKey]][x[attrKey2]] = x;
       return memo;
     }, {});
-  console.log('1');
+
   introspectionResultsByKind.namespaceById = xByY(
     introspectionResultsByKind.namespace,
     'id'
@@ -250,7 +248,7 @@ export const introspectionResultsFromRaw = (
     introspectionResultsByKind.type,
     'id'
   );
-  console.log('2');
+
   introspectionResultsByKind.attributeByClassIdAndNum = xByYAndZ(
     introspectionResultsByKind.attribute,
     'classId',
@@ -262,7 +260,6 @@ export const introspectionResultsFromRaw = (
   );
 
   const relate = (array, newAttr, lookupAttr, lookup, missingOk = false) => {
-    console.log('relate');
     array.forEach((entry) => {
       const key = entry[lookupAttr];
       if (Array.isArray(key)) {
@@ -404,8 +401,6 @@ export const introspectionResultsFromRaw = (
     introspectionResultsByKind.classById
   );
 
-  console.log('arrayType');
-
   // Reverse arrayItemType -> arrayType
   introspectionResultsByKind.type.forEach((type) => {
     if (type.arrayItemType) {
@@ -413,7 +408,6 @@ export const introspectionResultsFromRaw = (
     }
   });
 
-  console.log('columns constraints');
   // Table/type columns / constraints
   introspectionResultsByKind.class.forEach((klass) => {
     klass.attributes = introspectionResultsByKind.attribute.filter(
@@ -452,7 +446,6 @@ export const introspectionResultsFromRaw = (
     }
   });
 
-  console.log('detect indexed');
   // Detect which columns and constraints are indexed
   introspectionResultsByKind.index.forEach((index) => {
     const columns = index.attributeNums.map((nr) =>
@@ -481,8 +474,6 @@ export const introspectionResultsFromRaw = (
         }
       });
   });
-
-  console.log('done!');
 
   return introspectionResultsByKind;
 };
