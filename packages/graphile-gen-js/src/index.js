@@ -16,7 +16,7 @@ export const generateJS = ({ name, ast }) => {
 export const crudify = (introspectron) => {
   const val = gen.crudify(introspectron);
   return Object.keys(val).reduce((m, key) => {
-    m[key] = generateJS(val[key]);
+    m[key] = generateJS({ name: key, ast: val[key] });
     return m;
   }, {});
 };
