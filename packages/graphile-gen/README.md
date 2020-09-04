@@ -4,7 +4,6 @@ Generate JS files for mutations/queries for your Graphile projects
 
 * assumes using simple inflection
 
-
 ```sh
 npm install graphile-gen
 ```
@@ -24,7 +23,7 @@ const ast = createOne(tableDefn);
 console.log(print(ast));
 ```
 
-output:
+which will output:
 
 ```
 mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhinoFoot: String, $hiddenFoot: String, $lizardFeet: String) {

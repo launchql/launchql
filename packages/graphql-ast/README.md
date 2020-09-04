@@ -7,17 +7,17 @@ npm install @pyramation/graphql-ast
 ```
 
 ```js
-  import * as t from '@pyramation/graphql-ast';
+import * as t from '@pyramation/graphql-ast';
 
-  const ast = t.document({
-    definitions: [
-      t.operationDefinition({
-        operation: 'mutation',
-        name: mutationName,
-        variableDefinitions,
-        selectionSet: t.selectionSet({ selections: ... })
-      })
-    ]
-  });
+const ast = t.document({
+  definitions: [
+    t.operationDefinition({
+      operation: 'mutation',
+      name: mutationName,
+      variableDefinitions,
+      selectionSet: t.selectionSet({ selections: ... })
+    })
+  ]
+});
 
 ```
