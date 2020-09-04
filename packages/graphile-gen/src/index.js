@@ -1,7 +1,8 @@
 import plz from 'pluralize';
 import inflection from 'inflection';
 import * as t from './types';
-import { print } from 'graphql/language';
+
+export { t };
 
 function getType(type) {
   // TODO look in postgraphile
@@ -26,7 +27,7 @@ function getType(type) {
   }
 }
 
-export const createOne = defn => {
+export const createOne = (defn) => {
   const operationName = inflection.camelize(
     ['create', plz.singular(defn.name)].join('_'),
     true
@@ -57,7 +58,7 @@ export const createOne = defn => {
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes.map(field => {
+  const variableDefinitions = defn.fields.nodes.map((field) => {
     const { fieldName, fieldType, isRequired, isArray } = fieldMap[field.name];
     let type = t.namedType({ type: fieldType });
     if (isArray) type = t.listType({ type });
@@ -76,7 +77,7 @@ export const createOne = defn => {
           t.objectField({
             name: modelName,
             value: t.objectValue({
-              fields: defn.fields.nodes.map(field =>
+              fields: defn.fields.nodes.map((field) =>
                 t.objectField({
                   name: fieldMap[field.name].fieldName,
                   value: t.variable({
@@ -91,7 +92,7 @@ export const createOne = defn => {
     })
   ];
 
-  const selections = defn.fields.nodes.map(field =>
+  const selections = defn.fields.nodes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -126,7 +127,7 @@ export const createOne = defn => {
 // TODO use constraints...
 
 const PATCHER_FIELD = 'id';
-export const updateOne = defn => {
+export const updateOne = (defn) => {
   const operationName = inflection.camelize(
     ['update', plz.singular(defn.name)].join('_'),
     true
@@ -157,7 +158,7 @@ export const updateOne = defn => {
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes.map(field => {
+  const variableDefinitions = defn.fields.nodes.map((field) => {
     const { fieldName, fieldType, isRequired, isArray } = fieldMap[field.name];
     let type = t.namedType({ type: fieldType });
     if (isArray) type = t.listType({ type });
@@ -182,8 +183,8 @@ export const updateOne = defn => {
             name: 'patch',
             value: t.objectValue({
               fields: defn.fields.nodes
-                .filter(field => field.name !== PATCHER_FIELD)
-                .map(field =>
+                .filter((field) => field.name !== PATCHER_FIELD)
+                .map((field) =>
                   t.objectField({
                     name: fieldMap[field.name].fieldName,
                     value: t.variable({
@@ -198,7 +199,7 @@ export const updateOne = defn => {
     })
   ];
 
-  const selections = defn.fields.nodes.map(field =>
+  const selections = defn.fields.nodes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -231,7 +232,7 @@ export const updateOne = defn => {
 };
 
 const GETTER_FIELD = 'id';
-export const getOne = defn => {
+export const getOne = (defn) => {
   const operationName = inflection.camelize(
     [plz.singular(defn.name)].join('_'),
     true
@@ -263,8 +264,8 @@ export const getOne = defn => {
   }, {});
 
   const variableDefinitions = defn.fields.nodes
-    .filter(field => field.name === GETTER_FIELD)
-    .map(field => {
+    .filter((field) => field.name === GETTER_FIELD)
+    .map((field) => {
       const { fieldName, fieldType, isRequired, isArray } = fieldMap[
         field.name
       ];
@@ -285,7 +286,7 @@ export const getOne = defn => {
     })
   ];
 
-  const selections = defn.fields.nodes.map(field =>
+  const selections = defn.fields.nodes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -310,7 +311,7 @@ export const getOne = defn => {
   return ast;
 };
 
-export const getMany = defn => {
+export const getMany = (defn) => {
   const operationName = inflection.camelize(
     [plz.plural(defn.name)].join('_'),
     true
@@ -337,7 +338,7 @@ export const getMany = defn => {
     return m;
   }, {});
 
-  const selections = defn.fields.nodes.map(field =>
+  const selections = defn.fields.nodes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -405,8 +406,8 @@ export const getManyOwned = (defn, ownedField) => {
   }, {});
 
   const variableDefinitions = defn.fields.nodes
-    .filter(field => field.name === ownedField)
-    .map(field => {
+    .filter((field) => field.name === ownedField)
+    .map((field) => {
       const { fieldName, fieldType, isRequired, isArray } = fieldMap[
         field.name
       ];
@@ -436,7 +437,7 @@ export const getManyOwned = (defn, ownedField) => {
     })
   ];
 
-  const selections = defn.fields.nodes.map(field =>
+  const selections = defn.fields.nodes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -472,7 +473,7 @@ export const getManyOwned = (defn, ownedField) => {
 };
 
 const DELETER_FIELD = 'id';
-export const deleteOne = defn => {
+export const deleteOne = (defn) => {
   const operationName = inflection.camelize(
     ['delete', plz.singular(defn.name)].join('_'),
     true
@@ -504,8 +505,8 @@ export const deleteOne = defn => {
   }, {});
 
   const variableDefinitions = defn.fields.nodes
-    .filter(field => field.name === DELETER_FIELD)
-    .map(field => {
+    .filter((field) => field.name === DELETER_FIELD)
+    .map((field) => {
       const { fieldName, fieldType, isRequired, isArray } = fieldMap[
         field.name
       ];
@@ -534,7 +535,7 @@ export const deleteOne = defn => {
     })
   ];
 
-  const selections = defn.fields.nodes.map(field =>
+  const selections = defn.fields.nodes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [

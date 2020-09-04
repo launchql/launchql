@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createOne test1 1`] = `
+"mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhinoFoot: String, $hiddenFoot: String, $lizardFeet: String) {
+  createProduct(input: {product: {id: $id, ownerId: $ownerId, name: $name, rhinoFoot: $rhinoFoot, hiddenFoot: $hiddenFoot, lizardFeet: $lizardFeet}}) {
+    product {
+      id
+      ownerId
+      name
+      rhinoFoot
+      hiddenFoot
+      lizardFeet
+    }
+  }
+}
+"
+`;
+
+exports[`deleteOne test1 1`] = `
+"mutation deleteProductMutation($id: UUID!) {
+  deleteProduct(input: {id: $id}) {
+    product {
+      id
+      ownerId
+      name
+      rhinoFoot
+      hiddenFoot
+      lizardFeet
+    }
+  }
+}
+"
+`;
+
+exports[`getMany test1 1`] = `
+"query getProductsQuery {
+  products {totalCount, nodes: {
+    id
+    ownerId
+    name
+    rhinoFoot
+    hiddenFoot
+    lizardFeet
+  }}
+}
+"
+`;
+
+exports[`getManyOwned test1 1`] = `
+"query getProductsOwnedByOwnerIdQuery($ownerId: UUID!) {
+  products(condition: {ownerId: $ownerId}) {totalCount, nodes: {
+    id
+    ownerId
+    name
+    rhinoFoot
+    hiddenFoot
+    lizardFeet
+  }}
+}
+"
+`;
+
+exports[`getOne test1 1`] = `
+"query getProductQuery($id: UUID!) {
+  product(id: $id) {
+    id
+    ownerId
+    name
+    rhinoFoot
+    hiddenFoot
+    lizardFeet
+  }
+}
+"
+`;
+
+exports[`updateOne test1 1`] = `
+"mutation updateProductMutation($id: UUID!, $ownerId: UUID, $name: String, $rhinoFoot: String, $hiddenFoot: String, $lizardFeet: String) {
+  updateProduct(input: {id: $id, patch: {ownerId: $ownerId, name: $name, rhinoFoot: $rhinoFoot, hiddenFoot: $hiddenFoot, lizardFeet: $lizardFeet}}) {
+    product {
+      id
+      ownerId
+      name
+      rhinoFoot
+      hiddenFoot
+      lizardFeet
+    }
+  }
+}
+"
+`;
