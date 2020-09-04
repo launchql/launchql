@@ -98,8 +98,6 @@ export const createOne = (klass) => {
   return { name: mutationName, ast };
 };
 
-// TODO use constraints...
-
 const getPrimaryKeyName = (klass) => {
   // TODO support multiple keys
   return klass.primaryKeyConstraint.keyAttributes[0].name;
