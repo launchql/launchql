@@ -3488,6 +3488,13 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
+"@pyramation/graphql-ast@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@pyramation/graphql-ast/-/graphql-ast-0.0.3.tgz#2fbcd32dc051d24e3f8f991bb82c5c1205ff5505"
+  integrity sha512-nT5Tj6hT+qWr1oNAVm6oiESsRI3TtvDTH1d4gyzE+THE8pFKflTiFHmSOqZTyDUwAmH+grevb2cyVDFycYarUA==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+
 "@pyramation/pg-query-context@0.0.1":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@pyramation/pg-query-context/-/pg-query-context-0.0.1.tgz#0673131d7848c50f0a8749fd29ff6a6567e3c864"
@@ -7093,6 +7100,25 @@ graphile-build@4.7.0:
     pluralize "^7.0.0"
     semver "^6.0.0"
 
+graphile-gen-js@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/graphile-gen-js/-/graphile-gen-js-0.0.9.tgz#1d83ff894a44b4877f201c4cebf03b596062cf59"
+  integrity sha512-7SkwojSfdzzUyeQi+Q4Sjjy4PvEdywaYVp07Aik6SmwLwCGInkOHNa5LKVpV1oymtLNtRrITaCJ8iJFiYyWx6A==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    graphile-gen "^0.0.8"
+    graphql "^14.0.2"
+
+graphile-gen@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/graphile-gen/-/graphile-gen-0.0.8.tgz#d025c488d2e156e04a46b67c7b61be14725db31a"
+  integrity sha512-RVKPr1wsgWhHKZ7lN631fS1yDeXzJIIf8R8WyjaiwNFU5rZawzbgR5ynN5WqQ24ib+sBYy/Kij+x3INrWnN9KA==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    "@pyramation/graphql-ast" "0.0.3"
+    inflection "^1.12.0"
+    pluralize "^8.0.0"
+
 graphile-utils@4.7.0, graphile-utils@^4.7.0:
   version "4.7.0"
   resolved "https://registry.npmjs.org/graphile-utils/-/graphile-utils-4.7.0.tgz#f1b4b77a84741bbcbb69c1f3d2c009bd9c7336f6"
@@ -7456,7 +7482,7 @@ infer-owner@^1.0.3, infer-owner@^1.0.4:
   resolved "https://registry.npmjs.org/infer-owner/-/infer-owner-1.0.4.tgz#c4cefcaa8e51051c2a40ba2ce8a3d27295af9467"
   integrity sha512-IClj+Xz94+d7irH5qRyfJonOdfTzuDaifE6ZPWfx0N0+/ATZCbuTPq2prFl526urkQd90WyUKIh1DfBQ2hMz9A==
 
-inflection@1.12.0:
+inflection@1.12.0, inflection@^1.12.0:
   version "1.12.0"
   resolved "https://registry.npmjs.org/inflection/-/inflection-1.12.0.tgz#a200935656d6f5f6bc4dc7502e1aecb703228416"
   integrity sha1-ogCTVlbW9fa8TcdQLhrstwMihBY=
@@ -7610,6 +7636,14 @@ interpret@^1.0.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
+
+introspectron@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/introspectron/-/introspectron-0.0.4.tgz#c26c22c7eae7c84ae19c0b813a4ea43ba54d9213"
+  integrity sha512-WWLEG2eR0gWVbdBIb1WEabuBWueFjty3bol/hJ886xWjfuUxYUxO9tzY2RmBSbCMpFSOog31LWY6CoLLeaRYzw==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    lodash "4.17.20"
 
 invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
@@ -9313,6 +9347,11 @@ lodash@4.17.15, "lodash@>=4 <5", lodash@^4.13.1, lodash@^4.17.11, lodash@^4.17.1
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
+lodash@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
 log-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/log-symbols/-/log-symbols-1.0.2.tgz#376ff7b58ea3086a0f09facc74617eca501e1a18"
@@ -10781,6 +10820,11 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.npmjs.org/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
   integrity sha512-ARhBOdzS3e41FbkW/XWrTEtukqqLoK5+Z/4UeDaLuSW+39JPeFgs4gCGqsrJHVZX0fUrx//4OF0K1CUGwlIFow==
+
+pluralize@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npmjs.org/pluralize/-/pluralize-8.0.0.tgz#1a6fa16a38d12a1901e0320fa017051c539ce3b1"
+  integrity sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==
 
 pn@^1.1.0:
   version "1.1.0"
