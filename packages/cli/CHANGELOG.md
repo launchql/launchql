@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.5.27...@launchql/cli@0.6.0) (2020-09-04)
+
+
+### Features
+
+* **cli:** codegen ([8f1c36b](https://github.com/launchql/launchql-db/commit/8f1c36b6db7e942fb2a0bf5f72ba0bc6c3b9d04d))
+
+
+
+
+
 ## [0.5.27](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.5.26...@launchql/cli@0.5.27) (2020-09-03)
 
 
