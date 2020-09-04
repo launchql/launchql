@@ -28,3 +28,16 @@ export const parseTags = (str) => {
     }
   );
 };
+
+export const deepClone = (value) => {
+  if (Array.isArray(value)) {
+    return value.map((val) => deepClone(val));
+  } else if (typeof value === 'object' && value) {
+    return Object.keys(value).reduce((memo, k) => {
+      memo[k] = deepClone(value[k]);
+      return memo;
+    }, {});
+  } else {
+    return value;
+  }
+};

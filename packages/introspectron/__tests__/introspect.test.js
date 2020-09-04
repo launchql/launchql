@@ -1,5 +1,5 @@
 const pg = require('pg');
-import { introspect } from '../src';
+import { introspect, introspectionResultsFromRaw } from '../src';
 
 const getDbString = (db) =>
   `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${db}`;
@@ -13,10 +13,14 @@ beforeAll(() => {
 afterAll(() => {
   pgPool.end();
 });
-
+let raw;
 it('introspect', async () => {
-  const result = await introspect(pgPool, {
+  raw = await introspect(pgPool, {
     schemas: ['app_public']
   });
-  expect(result).toMatchSnapshot();
+  expect(raw).toMatchSnapshot();
+
+  const processed = introspectionResultsFromRaw(raw);
+  console.log('we cleared...');
+  console.log(processed);
 });
