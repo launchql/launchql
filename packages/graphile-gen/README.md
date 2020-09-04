@@ -1,6 +1,6 @@
 # graphile-gen
 
-Generate JS files for mutations/queries for your Graphile projects
+Generate JS files for mutations/queries for your Graphile GraphQL projects
 
 * assumes using simple inflection
 
