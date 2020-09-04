@@ -40,9 +40,7 @@ mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhino
 }
 ```
 
-# methods
-
-currently supported
+# methods currently supported
 
 ```
   updateOne

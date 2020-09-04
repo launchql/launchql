@@ -85,7 +85,7 @@ will produce
     }`;
 ```
 
-## methods urrently supported
+## methods currently supported
 
 ```
   crudify
