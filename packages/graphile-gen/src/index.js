@@ -1,66 +1,42 @@
 import plz from 'pluralize';
 import inflection from 'inflection';
 import * as t from '@pyramation/graphql-ast';
+import { getType } from './types';
+export * from './introspect';
 
-function getType(type) {
-  // TODO look in postgraphile
-  switch (type) {
-    case 'uuid':
-      return 'UUID';
-    case 'json':
-    case 'jsonb':
-      return 'JSON';
-    case 'numeric':
-      return 'BigFloat';
-    case 'int':
-    case 'integer':
-      return 'Int';
-    case 'upload':
-    case 'attachment':
-    case 'image':
-      return 'Upload';
-    case 'text':
-    default:
-      return 'String';
-  }
-}
-
-export const createOne = (defn) => {
+export const createOne = (klass) => {
   const operationName = inflection.camelize(
-    ['create', plz.singular(defn.name)].join('_'),
+    ['create', plz.singular(klass.name)].join('_'),
     true
   );
   const mutationName = inflection.camelize(
-    ['create', plz.singular(defn.name), 'mutation'].join('_'),
+    ['create', plz.singular(klass.name), 'mutation'].join('_'),
     true
   );
   const modelName = inflection.camelize(
-    [plz.singular(defn.name)].join('_'),
+    [plz.singular(klass.name)].join('_'),
     true
   );
 
-  const fieldMap = defn.fields.nodes.reduce((m, field) => {
+  const fieldMap = klass.attributes.reduce((m, field) => {
     const fieldName = inflection.camelize(plz.singular(field.name), true);
-    const fieldType = getType(field.type);
+    const fieldType = getType(field.type.name);
     const isArray = !!field.isArray;
-    const isRequired =
-      field.isRequired &&
-      (typeof field.defaultValue === 'undefined' ||
-        field.defaultValue === null);
+    const isNotNull = field.isNotNull && !field.hasDefault;
     m[field.name] = {
       fieldName,
       fieldType,
-      isRequired,
+      isNotNull,
       isArray
     };
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes.map((field) => {
-    const { fieldName, fieldType, isRequired, isArray } = fieldMap[field.name];
+  const variableDefinitions = klass.attributes.map((field) => {
+    const { fieldName, fieldType, isNotNull, isArray } = fieldMap[field.name];
     let type = t.namedType({ type: fieldType });
     if (isArray) type = t.listType({ type });
-    if (isRequired) type = t.nonNullType({ type });
+    if (isNotNull) type = t.nonNullType({ type });
     return t.variableDefinition({
       variable: t.variable({ name: fieldName }),
       type
@@ -75,7 +51,7 @@ export const createOne = (defn) => {
           t.objectField({
             name: modelName,
             value: t.objectValue({
-              fields: defn.fields.nodes.map((field) =>
+              fields: klass.attributes.map((field) =>
                 t.objectField({
                   name: fieldMap[field.name].fieldName,
                   value: t.variable({
@@ -90,7 +66,7 @@ export const createOne = (defn) => {
     })
   ];
 
-  const selections = defn.fields.nodes.map((field) =>
+  const selections = klass.attributes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -122,42 +98,50 @@ export const createOne = (defn) => {
   return { name: mutationName, ast };
 };
 
-// TODO use constraints...
+const getPrimaryKeyName = (klass) => {
+  // TODO support multiple keys
+  return klass.primaryKeyConstraint.keyAttributes[0].name;
+};
 
-const PATCHER_FIELD = 'id';
-export const updateOne = (defn) => {
+export const updateOne = (klass) => {
+  if (
+    !klass.primaryKeyConstraint ||
+    !klass.primaryKeyConstraint.keyAttributes ||
+    !klass.primaryKeyConstraint.keyAttributes.length
+  ) {
+    return {};
+  }
+
+  const PATCHER_FIELD = getPrimaryKeyName(klass);
   const operationName = inflection.camelize(
-    ['update', plz.singular(defn.name)].join('_'),
+    ['update', plz.singular(klass.name)].join('_'),
     true
   );
   const mutationName = inflection.camelize(
-    ['update', plz.singular(defn.name), 'mutation'].join('_'),
+    ['update', plz.singular(klass.name), 'mutation'].join('_'),
     true
   );
   const modelName = inflection.camelize(
-    [plz.singular(defn.name)].join('_'),
+    [plz.singular(klass.name)].join('_'),
     true
   );
 
-  const fieldMap = defn.fields.nodes.reduce((m, field) => {
+  const fieldMap = klass.attributes.reduce((m, field) => {
     const fieldName = inflection.camelize(plz.singular(field.name), true);
-    const fieldType = getType(field.type);
+    const fieldType = getType(field.type.name);
     const isArray = !!field.isArray;
-    const isRequired =
-      field.isRequired &&
-      (typeof field.defaultValue === 'undefined' ||
-        field.defaultValue === null);
+    const isNotNull = field.isNotNull && !field.hasDefault;
     m[field.name] = {
       fieldName,
       fieldType,
-      isRequired,
+      isNotNull,
       isArray
     };
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes.map((field) => {
-    const { fieldName, fieldType, isRequired, isArray } = fieldMap[field.name];
+  const variableDefinitions = klass.attributes.map((field) => {
+    const { fieldName, fieldType, isNotNull, isArray } = fieldMap[field.name];
     let type = t.namedType({ type: fieldType });
     if (isArray) type = t.listType({ type });
     // later we can use primary key info...
@@ -180,7 +164,7 @@ export const updateOne = (defn) => {
           t.objectField({
             name: 'patch',
             value: t.objectValue({
-              fields: defn.fields.nodes
+              fields: klass.attributes
                 .filter((field) => field.name !== PATCHER_FIELD)
                 .map((field) =>
                   t.objectField({
@@ -197,7 +181,7 @@ export const updateOne = (defn) => {
     })
   ];
 
-  const selections = defn.fields.nodes.map((field) =>
+  const selections = klass.attributes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -229,44 +213,47 @@ export const updateOne = (defn) => {
   return { name: mutationName, ast };
 };
 
-const GETTER_FIELD = 'id';
-export const getOne = (defn) => {
+export const getOne = (klass) => {
+  if (
+    !klass.primaryKeyConstraint ||
+    !klass.primaryKeyConstraint.keyAttributes ||
+    !klass.primaryKeyConstraint.keyAttributes.length
+  ) {
+    return {};
+  }
+
+  const GETTER_FIELD = getPrimaryKeyName(klass);
   const operationName = inflection.camelize(
-    [plz.singular(defn.name)].join('_'),
+    [plz.singular(klass.name)].join('_'),
     true
   );
   const queryName = inflection.camelize(
-    ['get', plz.singular(defn.name), 'query'].join('_'),
+    ['get', plz.singular(klass.name), 'query'].join('_'),
     true
   );
   const modelName = inflection.camelize(
-    [plz.singular(defn.name)].join('_'),
+    [plz.singular(klass.name)].join('_'),
     true
   );
 
-  const fieldMap = defn.fields.nodes.reduce((m, field) => {
+  const fieldMap = klass.attributes.reduce((m, field) => {
     const fieldName = inflection.camelize(plz.singular(field.name), true);
-    const fieldType = getType(field.type);
+    const fieldType = getType(field.type.name);
     const isArray = !!field.isArray;
-    const isRequired =
-      field.isRequired &&
-      (typeof field.defaultValue === 'undefined' ||
-        field.defaultValue === null);
+    const isNotNull = field.isNotNull && !field.hasDefault;
     m[field.name] = {
       fieldName,
       fieldType,
-      isRequired,
+      isNotNull,
       isArray
     };
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes
+  const variableDefinitions = klass.attributes
     .filter((field) => field.name === GETTER_FIELD)
     .map((field) => {
-      const { fieldName, fieldType, isRequired, isArray } = fieldMap[
-        field.name
-      ];
+      const { fieldName, fieldType, isNotNull, isArray } = fieldMap[field.name];
       let type = t.namedType({ type: fieldType });
       if (isArray) type = t.listType({ type });
       // later we can use primary key info...
@@ -284,7 +271,7 @@ export const getOne = (defn) => {
     })
   ];
 
-  const selections = defn.fields.nodes.map((field) =>
+  const selections = klass.attributes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -309,34 +296,31 @@ export const getOne = (defn) => {
   return { name: queryName, ast };
 };
 
-export const getMany = (defn) => {
+export const getMany = (klass) => {
   const operationName = inflection.camelize(
-    [plz.plural(defn.name)].join('_'),
+    [plz.plural(klass.name)].join('_'),
     true
   );
   const queryName = inflection.camelize(
-    ['get', plz.plural(defn.name), 'query'].join('_'),
+    ['get', plz.plural(klass.name), 'query'].join('_'),
     true
   );
 
-  const fieldMap = defn.fields.nodes.reduce((m, field) => {
+  const fieldMap = klass.attributes.reduce((m, field) => {
     const fieldName = inflection.camelize(plz.singular(field.name), true);
-    const fieldType = getType(field.type);
+    const fieldType = getType(field.type.name);
     const isArray = !!field.isArray;
-    const isRequired =
-      field.isRequired &&
-      (typeof field.defaultValue === 'undefined' ||
-        field.defaultValue === null);
+    const isNotNull = field.isNotNull && !field.hasDefault;
     m[field.name] = {
       fieldName,
       fieldType,
-      isRequired,
+      isNotNull,
       isArray
     };
     return m;
   }, {});
 
-  const selections = defn.fields.nodes.map((field) =>
+  const selections = klass.attributes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -369,16 +353,15 @@ export const getMany = (defn) => {
   return { name: queryName, ast };
 };
 
-export const getManyOwned = (defn, ownedField) => {
+export const getManyOwned = (klass, ownedField) => {
   const operationName = inflection.camelize(
-    [plz.plural(defn.name)].join('_'),
+    [plz.plural(klass.name)].join('_'),
     true
   );
   const queryName = inflection.camelize(
     [
       'get',
-      plz.plural(defn.name),
-      'owned',
+      plz.plural(klass.name),
       'by',
       plz.singular(ownedField),
       'query'
@@ -386,29 +369,24 @@ export const getManyOwned = (defn, ownedField) => {
     true
   );
 
-  const fieldMap = defn.fields.nodes.reduce((m, field) => {
+  const fieldMap = klass.attributes.reduce((m, field) => {
     const fieldName = inflection.camelize(plz.singular(field.name), true);
-    const fieldType = getType(field.type);
+    const fieldType = getType(field.type.name);
     const isArray = !!field.isArray;
-    const isRequired =
-      field.isRequired &&
-      (typeof field.defaultValue === 'undefined' ||
-        field.defaultValue === null);
+    const isNotNull = field.isNotNull && !field.hasDefault;
     m[field.name] = {
       fieldName,
       fieldType,
-      isRequired,
+      isNotNull,
       isArray
     };
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes
+  const variableDefinitions = klass.attributes
     .filter((field) => field.name === ownedField)
     .map((field) => {
-      const { fieldName, fieldType, isRequired, isArray } = fieldMap[
-        field.name
-      ];
+      const { fieldName, fieldType, isNotNull, isArray } = fieldMap[field.name];
       let type = t.namedType({ type: fieldType });
       if (isArray) type = t.listType({ type });
       // required
@@ -435,7 +413,7 @@ export const getManyOwned = (defn, ownedField) => {
     })
   ];
 
-  const selections = defn.fields.nodes.map((field) =>
+  const selections = klass.attributes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -470,44 +448,47 @@ export const getManyOwned = (defn, ownedField) => {
   return { name: queryName, ast };
 };
 
-const DELETER_FIELD = 'id';
-export const deleteOne = (defn) => {
+export const deleteOne = (klass) => {
+  if (
+    !klass.primaryKeyConstraint ||
+    !klass.primaryKeyConstraint.keyAttributes ||
+    !klass.primaryKeyConstraint.keyAttributes.length
+  ) {
+    return {};
+  }
+
+  const DELETER_FIELD = getPrimaryKeyName(klass);
   const operationName = inflection.camelize(
-    ['delete', plz.singular(defn.name)].join('_'),
+    ['delete', plz.singular(klass.name)].join('_'),
     true
   );
   const mutationName = inflection.camelize(
-    ['delete', plz.singular(defn.name), 'mutation'].join('_'),
+    ['delete', plz.singular(klass.name), 'mutation'].join('_'),
     true
   );
   const modelName = inflection.camelize(
-    [plz.singular(defn.name)].join('_'),
+    [plz.singular(klass.name)].join('_'),
     true
   );
 
-  const fieldMap = defn.fields.nodes.reduce((m, field) => {
+  const fieldMap = klass.attributes.reduce((m, field) => {
     const fieldName = inflection.camelize(plz.singular(field.name), true);
-    const fieldType = getType(field.type);
+    const fieldType = getType(field.type.name);
     const isArray = !!field.isArray;
-    const isRequired =
-      field.isRequired &&
-      (typeof field.defaultValue === 'undefined' ||
-        field.defaultValue === null);
+    const isNotNull = field.isNotNull && !field.hasDefault;
     m[field.name] = {
       fieldName,
       fieldType,
-      isRequired,
+      isNotNull,
       isArray
     };
     return m;
   }, {});
 
-  const variableDefinitions = defn.fields.nodes
+  const variableDefinitions = klass.attributes
     .filter((field) => field.name === DELETER_FIELD)
     .map((field) => {
-      const { fieldName, fieldType, isRequired, isArray } = fieldMap[
-        field.name
-      ];
+      const { fieldName, fieldType, isNotNull, isArray } = fieldMap[field.name];
       let type = t.namedType({ type: fieldType });
       if (isArray) type = t.listType({ type });
 
@@ -525,15 +506,15 @@ export const deleteOne = (defn) => {
       value: t.objectValue({
         fields: [
           t.objectField({
-            name: PATCHER_FIELD,
-            value: t.variable({ name: PATCHER_FIELD })
+            name: DELETER_FIELD,
+            value: t.variable({ name: DELETER_FIELD })
           })
         ]
       })
     })
   ];
 
-  const selections = defn.fields.nodes.map((field) =>
+  const selections = klass.attributes.map((field) =>
     t.field({ name: fieldMap[field.name].fieldName })
   );
   const opSel = [
@@ -563,4 +544,88 @@ export const deleteOne = (defn) => {
   });
 
   return { name: mutationName, ast };
+};
+
+export const crudTable = ({ table, introspectron }) => {
+  const c = createOne(table);
+  const r = getOne(table);
+  const rn = getMany(table);
+  const u = updateOne(table);
+  const d = deleteOne(table);
+
+  return {
+    [c.name]: c.ast,
+    [r.name]: r.ast,
+    [rn.name]: rn.ast,
+    [u.name]: u.ast,
+    [d.name]: d.ast
+  };
+};
+
+export const ownedTable = ({ table, introspectron }) => {
+  const owned = {};
+  for (let k = 0; k < table.foreignConstraints.length; k++) {
+    const rel = table.foreignConstraints[k];
+
+    // console.log(table.name); // merchants
+    // console.log(rel.name); // products_merchant_id_fkey
+    // console.log(rel.class.name); // products
+    // console.log(rel.keyAttributeNums);
+    // console.log(rel.foreignKeyAttributeNums);
+    // console.log(rel.class.attributes.map((a) => a.name));
+    // console.log(table.attributes.map((a) => a.name));
+    // console.log(rel);
+
+    // TODO this feels backwards...
+    const attrFields = rel.foreignKeyAttributeNums.map(
+      (num) => table.attributes.find((attr) => attr.num == num).name
+    );
+    const ownedFields = rel.keyAttributeNums.map(
+      (num) => rel.class.attributes.find((attr) => attr.num == num).name
+    );
+
+    if (attrFields.length !== 1 || ownedFields.length !== 1) {
+      console.warn("we don't yet support relations with two keys");
+      continue;
+    }
+
+    // console.log({ attrFields, ownedFields });
+
+    const { name, ast } = getManyOwned(rel.class, ownedFields[0]);
+    owned[name] = ast;
+  }
+
+  return owned;
+};
+
+export const crudify = (introspectron) => {
+  const namespaces = introspectron.namespace.map((n) => n.name);
+  const classes = introspectron.class.filter((c) =>
+    namespaces.includes(c.namespaceName)
+  );
+
+  const fun = {};
+
+  for (let c = 0; c < classes.length; c++) {
+    const klass = classes[c];
+    Object.assign(fun, crudTable({ table: klass, introspectron }));
+  }
+
+  return fun;
+};
+
+export const owned = (introspectron) => {
+  const namespaces = introspectron.namespace.map((n) => n.name);
+  const classes = introspectron.class.filter((c) =>
+    namespaces.includes(c.namespaceName)
+  );
+
+  const fun = {};
+
+  for (let c = 0; c < classes.length; c++) {
+    const klass = classes[c];
+    Object.assign(fun, ownedTable({ table: klass, introspectron }));
+  }
+
+  return fun;
 };

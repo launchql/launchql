@@ -55,12 +55,12 @@
     "eslint-plugin-react-hooks": "4.0.0",
     "jest": "^25.1.0",
     "json-stringify-safe": "5.0.1",
+    "pg": "8.3.3",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "lodash": "4.17.20",
-    "pg": "8.3.3"
+    "lodash": "4.17.20"
   }
 }

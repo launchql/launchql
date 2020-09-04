@@ -4,11 +4,32 @@ import {
   deleteOne,
   getOne,
   getMany,
-  getManyOwned
+  getManyOwned,
+  crudify,
+  owned,
+  introspect
 } from '../src';
+
 import cases from 'jest-in-case';
 import { print } from 'graphql';
 import tables from '../__fixtures__/tables';
+const introspectron = JSON.parse(
+  require('fs')
+    .readFileSync(__dirname + '/../__fixtures__/introspectron.json')
+    .toString()
+);
+
+// introspect(introspectron);
+
+it('crudify', () => {
+  const crud = crudify(introspectron);
+  Object.assign(crud, owned(introspectron));
+  const fn = Object.keys(crud).reduce((m, key) => {
+    m[key] = print(crud[key]);
+    return m;
+  }, {});
+  expect(fn).toMatchSnapshot();
+});
 
 cases(
   'getOne',

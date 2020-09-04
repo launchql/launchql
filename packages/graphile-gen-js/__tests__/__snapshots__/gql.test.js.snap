@@ -54,8 +54,8 @@ exports[`getMany test1 1`] = `
 
 exports[`getManyOwned test1 1`] = `
 "
-  export const getProductsOwnedByOwnerIdQuery = gql\`
-    query getProductsOwnedByOwnerIdQuery($ownerId: UUID!) {
+  export const getProductsByOwnerIdQuery = gql\`
+    query getProductsByOwnerIdQuery($ownerId: UUID!) {
       products(condition: {ownerId: $ownerId}) {totalCount, nodes: {
         id
         ownerId
