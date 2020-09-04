@@ -6,8 +6,7 @@ import {
   getMany,
   getManyOwned,
   crudify,
-  owned,
-  introspect
+  owned
 } from '../src';
 
 import cases from 'jest-in-case';

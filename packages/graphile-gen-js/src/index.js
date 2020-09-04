@@ -1,7 +1,7 @@
 import * as gen from 'graphile-gen';
 import { print } from 'graphql/language';
 
-const generateJS = ({ name, ast }) => {
+export const generateJS = ({ name, ast }) => {
   const ql = print(ast)
     .split('\n')
     .map((line) => '    ' + line)
@@ -11,6 +11,22 @@ const generateJS = ({ name, ast }) => {
   export const ${name} = gql\`
     ${ql}\`;
   `;
+};
+
+export const crudify = (introspectron) => {
+  const val = gen.crudify(introspectron);
+  return Object.keys(val).reduce((m, key) => {
+    m[key] = generateJS(val[key]);
+    return m;
+  }, {});
+};
+
+export const owned = (introspectron) => {
+  const val = gen.owned(introspectron);
+  return Object.keys(val).reduce((m, key) => {
+    m[key] = generateJS(val[key]);
+    return m;
+  }, {});
 };
 
 export const updateOne = (defn) => {
