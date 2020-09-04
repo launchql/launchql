@@ -4,8 +4,12 @@ import {
   deleteOne,
   getOne,
   getMany,
-  getManyOwned
+  getManyOwned,
+  crudify,
+  owned,
+  introspect
 } from '../src';
+
 import cases from 'jest-in-case';
 import { print } from 'graphql';
 import tables from '../__fixtures__/tables';
@@ -15,39 +19,17 @@ const introspectron = JSON.parse(
     .toString()
 );
 
-const namespaces = introspectron.namespace.map((n) => n.name);
-console.log(namespaces);
-const classes = introspectron.class.filter((c) =>
-  namespaces.includes(c.namespaceName)
-);
-console.log(classes.map((c) => c.name));
+// introspect(introspectron);
 
-for (let c = 0; c < classes.length; c++) {
-  const klass = classes[c];
-  console.log(
-    klass.attributes?.map((k) => k.name) ||
-      `klass ${klass.name} has no attributes`
-  );
-  console.log(
-    klass.constraints?.map((k) => k.name) ||
-      `klass ${klass.name} has no constriants`
-  );
-
-  for (let k = 0; k < klass.constraints.length; k++) {
-    const konstraint = klass.constraints[k];
-    console.log(
-      konstraint.keyAttributes?.map((k) => k.name) ||
-        `klass ${konstraint.name} has no keyAttrs`
-    );
-  }
-  console.log(
-    klass.foreignConstraints?.map((k) => k.name) ||
-      `klass ${klass.name} has no foreign`
-  );
-  console.log(
-    klass.primaryKeyConstraint?.name || `klass ${klass.name} has no primary`
-  );
-}
+it('crudify', () => {
+  const crud = crudify(introspectron);
+  Object.assign(crud, owned(introspectron));
+  const fn = Object.keys(crud).reduce((m, key) => {
+    m[key] = print(crud[key]);
+    return m;
+  }, {});
+  expect(fn).toMatchSnapshot();
+});
 
 cases(
   'getOne',
