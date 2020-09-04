@@ -1,6 +1,6 @@
 {
   "name": "graphile-gen-js",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Generate queries and mutations as JS functions for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-gen/tree/master/packages/graphile-gen-js#readme",
