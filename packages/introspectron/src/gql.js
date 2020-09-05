@@ -110,6 +110,15 @@ export const parseGraphQuery = (introQuery) => {
   };
 
   const mutations = mutationsRoot.fields.reduce((m, mutation) => {
+    let mutationType = 'other';
+    if (/Create/.test(mutation.type.name)) {
+      mutationType = 'create';
+    } else if (/Update/.test(mutation.type.name)) {
+      mutationType = 'patch';
+    } else if (/Delete/.test(mutation.type.name)) {
+      mutationType = 'delete';
+    }
+
     const props = mutation.args.reduce((m2, arg) => {
       const type = arg.type?.ofType?.name;
       const isNotNull = arg.type?.kind === 'NON_NULL';
@@ -118,6 +127,7 @@ export const parseGraphQuery = (introQuery) => {
         const fields = schema.inputFields.filter(
           (a) => a.name !== 'clientMutationId'
         );
+
         const properties = fields
           .map((a) => getInputForMutations(a.type, { name: a.name }))
           .reduce((m3, v) => {
@@ -140,21 +150,37 @@ export const parseGraphQuery = (introQuery) => {
         .filter((t) => t.type.kind === 'OBJECT')
         .filter((t) => t.type.name !== 'Query')
         .map((f) => ({ name: f.name, type: f.type }));
-      // .filter((t) => t.type.name !== 'Query');
     };
     const models = getModelTypes(HASH[mutation.type.name]);
     if (models.length > 0) {
+      // TODO this is probably brittle
       const model = models[0].type.name;
       m[mutation.name] = {
         qtype: 'mutation',
+        mutationType,
         model,
-        properties: props
+        properties: props,
+        output: mutation.type
       };
     } else {
       // no return args, probably void functions
+
+      let t;
+      let outputFields = [];
+      if (mutation.type.kind === 'OBJECT') {
+        t = HASH[mutation.type.name];
+        outputFields = t.fields
+          .map((f) => ({ name: f.name, type: f.type }))
+          .filter((f) => f.name !== 'clientMutationId')
+          .filter((f) => f.type.name !== 'Query');
+      }
+
       m[mutation.name] = {
         qtype: 'mutation',
-        properties: props
+        mutationType,
+        properties: props,
+        output: mutation.type,
+        outputs: outputFields
       };
     }
 

@@ -4,6 +4,12 @@ exports[`mutations 1`] = `
 Object {
   "createApiToken": Object {
     "model": "ApiToken",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateApiTokenPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -39,6 +45,12 @@ Object {
   },
   "createArticle": Object {
     "model": "Article",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateArticlePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -98,6 +110,12 @@ Object {
   },
   "createCampaign": Object {
     "model": "Campaign",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateCampaignPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -165,6 +183,12 @@ Object {
   },
   "createCampaignAction": Object {
     "model": "CampaignAction",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateCampaignActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -232,8 +256,8 @@ Object {
                 "name": "thumbnailId",
                 "type": "UUID",
               },
-              "totalBitgLimit": Object {
-                "name": "totalBitgLimit",
+              "totalBitcoinLimit": Object {
+                "name": "totalBitcoinLimit",
                 "type": "BigFloat",
               },
               "updatedAt": Object {
@@ -266,6 +290,12 @@ Object {
   },
   "createCompletedAction": Object {
     "model": "CompletedAction",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateCompletedActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -322,6 +352,12 @@ Object {
   },
   "createImage": Object {
     "model": "Image",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateImagePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -384,15 +420,21 @@ Object {
     },
     "qtype": "mutation",
   },
-  "createInitiativesGoldenRecord": Object {
-    "model": "InitiativesGoldenRecord",
+  "createInitiativesPyraRecord": Object {
+    "model": "InitiativesPyraRecord",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateInitiativesPyraRecordPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "initiativesGoldenRecord": Object {
+          "initiativesPyraRecord": Object {
             "isNotNull": true,
-            "name": "initiativesGoldenRecord",
+            "name": "initiativesPyraRecord",
             "properties": Object {
               "actionId": Object {
                 "isNotNull": true,
@@ -403,8 +445,8 @@ Object {
                 "name": "actionsCompleted",
                 "type": "Int",
               },
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "createdAt": Object {
@@ -442,13 +484,19 @@ Object {
             },
           },
         },
-        "type": "CreateInitiativesGoldenRecordInput",
+        "type": "CreateInitiativesPyraRecordInput",
       },
     },
     "qtype": "mutation",
   },
   "createMerchant": Object {
     "model": "Merchant",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateMerchantPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -461,8 +509,8 @@ Object {
                 "name": "backgroundImageId",
                 "type": "UUID",
               },
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "createdAt": Object {
@@ -512,6 +560,12 @@ Object {
   },
   "createPartner": Object {
     "model": "Partner",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreatePartnerPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -524,8 +578,8 @@ Object {
                 "name": "backgroundImageId",
                 "type": "UUID",
               },
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "createdAt": Object {
@@ -575,6 +629,12 @@ Object {
   },
   "createPermission": Object {
     "model": "Permission",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreatePermissionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -622,6 +682,12 @@ Object {
   },
   "createProduct": Object {
     "model": "Product",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateProductPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -677,6 +743,12 @@ Object {
   },
   "createService": Object {
     "model": "Service",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateServicePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -739,6 +811,12 @@ Object {
   },
   "createShopifyAccount": Object {
     "model": "ShopifyAccount",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateShopifyAccountPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -794,6 +872,12 @@ Object {
   },
   "createShopifyOrder": Object {
     "model": "ShopifyOrder",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateShopifyOrderPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -802,16 +886,16 @@ Object {
             "isNotNull": true,
             "name": "shopifyOrder",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
-              "bitgRebate": Object {
-                "name": "bitgRebate",
+              "bitcoinRebate": Object {
+                "name": "bitcoinRebate",
                 "type": "BigFloat",
               },
-              "bitgUpdatedAt": Object {
-                "name": "bitgUpdatedAt",
+              "bitcoinUpdatedAt": Object {
+                "name": "bitcoinUpdatedAt",
                 "type": "Datetime",
               },
               "createdAt": Object {
@@ -890,6 +974,12 @@ Object {
   },
   "createShopifySecret": Object {
     "model": "ShopifySecret",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateShopifySecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -930,6 +1020,12 @@ Object {
   },
   "createUser": Object {
     "model": "User",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -938,8 +1034,8 @@ Object {
             "isNotNull": true,
             "name": "user",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "id": Object {
@@ -960,6 +1056,12 @@ Object {
   },
   "createUserEncryptedSecret": Object {
     "model": "UserEncryptedSecret",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateUserEncryptedSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1000,6 +1102,12 @@ Object {
   },
   "createUserSecret": Object {
     "model": "UserSecret",
+    "mutationType": "create",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "CreateUserSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1036,6 +1144,12 @@ Object {
   },
   "deleteApiToken": Object {
     "model": "ApiToken",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteApiTokenPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1053,6 +1167,12 @@ Object {
   },
   "deleteApiTokenByAccessToken": Object {
     "model": "ApiToken",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteApiTokenPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1070,6 +1190,12 @@ Object {
   },
   "deleteArticle": Object {
     "model": "Article",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteArticlePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1087,6 +1213,12 @@ Object {
   },
   "deleteCampaign": Object {
     "model": "Campaign",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteCampaignPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1104,6 +1236,12 @@ Object {
   },
   "deleteCampaignAction": Object {
     "model": "CampaignAction",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteCampaignActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1121,6 +1259,12 @@ Object {
   },
   "deleteCampaignActionByName": Object {
     "model": "CampaignAction",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteCampaignActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1138,6 +1282,12 @@ Object {
   },
   "deleteCompletedAction": Object {
     "model": "CompletedAction",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteCompletedActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1155,6 +1305,12 @@ Object {
   },
   "deleteImage": Object {
     "model": "Image",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteImagePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1170,8 +1326,14 @@ Object {
     },
     "qtype": "mutation",
   },
-  "deleteInitiativesGoldenRecord": Object {
-    "model": "InitiativesGoldenRecord",
+  "deleteInitiativesPyraRecord": Object {
+    "model": "InitiativesPyraRecord",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteInitiativesPyraRecordPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1182,13 +1344,19 @@ Object {
             "type": "UUID",
           },
         },
-        "type": "DeleteInitiativesGoldenRecordInput",
+        "type": "DeleteInitiativesPyraRecordInput",
       },
     },
     "qtype": "mutation",
   },
   "deleteMerchant": Object {
     "model": "Merchant",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteMerchantPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1206,6 +1374,12 @@ Object {
   },
   "deletePartner": Object {
     "model": "Partner",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeletePartnerPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1223,6 +1397,12 @@ Object {
   },
   "deletePermission": Object {
     "model": "Permission",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeletePermissionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1240,6 +1420,12 @@ Object {
   },
   "deleteProduct": Object {
     "model": "Product",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteProductPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1257,6 +1443,12 @@ Object {
   },
   "deleteService": Object {
     "model": "Service",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteServicePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1274,6 +1466,12 @@ Object {
   },
   "deleteShopifyAccount": Object {
     "model": "ShopifyAccount",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteShopifyAccountPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1291,6 +1489,12 @@ Object {
   },
   "deleteShopifyOrder": Object {
     "model": "ShopifyOrder",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteShopifyOrderPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1308,6 +1512,12 @@ Object {
   },
   "deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountId": Object {
     "model": "ShopifyOrder",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteShopifyOrderPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1335,6 +1545,12 @@ Object {
   },
   "deleteShopifySecret": Object {
     "model": "ShopifySecret",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteShopifySecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1352,6 +1568,12 @@ Object {
   },
   "deleteShopifySecretByShopifyAccountIdAndName": Object {
     "model": "ShopifySecret",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteShopifySecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1374,6 +1596,12 @@ Object {
   },
   "deleteUser": Object {
     "model": "User",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1389,25 +1617,37 @@ Object {
     },
     "qtype": "mutation",
   },
-  "deleteUserByBitgAddress": Object {
+  "deleteUserByBitcoinAddress": Object {
     "model": "User",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "bitgAddress": Object {
+          "bitcoinAddress": Object {
             "isNotNull": true,
-            "name": "bitgAddress",
+            "name": "bitcoinAddress",
             "type": "String",
           },
         },
-        "type": "DeleteUserByBitgAddressInput",
+        "type": "DeleteUserByBitcoinAddressInput",
       },
     },
     "qtype": "mutation",
   },
   "deleteUserByUsername": Object {
     "model": "User",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1425,6 +1665,12 @@ Object {
   },
   "deleteUserEncryptedSecret": Object {
     "model": "UserEncryptedSecret",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserEncryptedSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1442,6 +1688,12 @@ Object {
   },
   "deleteUserEncryptedSecretByUserIdAndName": Object {
     "model": "UserEncryptedSecret",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserEncryptedSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1464,6 +1716,12 @@ Object {
   },
   "deleteUserSecret": Object {
     "model": "UserSecret",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1481,6 +1739,12 @@ Object {
   },
   "deleteUserSecretByUserIdAndName": Object {
     "model": "UserSecret",
+    "mutationType": "delete",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "DeleteUserSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1502,6 +1766,22 @@ Object {
     "qtype": "mutation",
   },
   "shopifySecretsUpsert": Object {
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "ShopifySecretsUpsertPayload",
+      "ofType": null,
+    },
+    "outputs": Array [
+      Object {
+        "name": "boolean",
+        "type": Object {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null,
+        },
+      },
+    ],
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1529,13 +1809,20 @@ Object {
     "qtype": "mutation",
   },
   "signInRecordFailure": Object {
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "SignInRecordFailurePayload",
+      "ofType": null,
+    },
+    "outputs": Array [],
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "bitgAddress": Object {
+          "bitcoinAddress": Object {
             "isNotNull": true,
-            "name": "bitgAddress",
+            "name": "bitcoinAddress",
             "type": "String",
           },
         },
@@ -1545,13 +1832,29 @@ Object {
     "qtype": "mutation",
   },
   "signInRequestChallenge": Object {
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "SignInRequestChallengePayload",
+      "ofType": null,
+    },
+    "outputs": Array [
+      Object {
+        "name": "string",
+        "type": Object {
+          "kind": "SCALAR",
+          "name": "String",
+          "ofType": null,
+        },
+      },
+    ],
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "bitgAddress": Object {
+          "bitcoinAddress": Object {
             "isNotNull": true,
-            "name": "bitgAddress",
+            "name": "bitcoinAddress",
             "type": "String",
           },
         },
@@ -1562,13 +1865,19 @@ Object {
   },
   "signInWithChallenge": Object {
     "model": "ApiToken",
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "SignInWithChallengePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "bitgAddress": Object {
+          "bitcoinAddress": Object {
             "isNotNull": true,
-            "name": "bitgAddress",
+            "name": "bitcoinAddress",
             "type": "String",
           },
           "specialValue": Object {
@@ -1582,24 +1891,36 @@ Object {
     },
     "qtype": "mutation",
   },
-  "signUpWithBitgAddress": Object {
+  "signUpWithBitcoinAddress": Object {
     "model": "User",
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "SignUpWithBitcoinAddressPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "bitgAddress": Object {
-            "name": "bitgAddress",
+          "bitcoinAddress": Object {
+            "name": "bitcoinAddress",
             "type": "String",
           },
         },
-        "type": "SignUpWithBitgAddressInput",
+        "type": "SignUpWithBitcoinAddressInput",
       },
     },
     "qtype": "mutation",
   },
   "updateApiToken": Object {
     "model": "ApiToken",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateApiTokenPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1639,6 +1960,12 @@ Object {
   },
   "updateApiTokenByAccessToken": Object {
     "model": "ApiToken",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateApiTokenPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1678,6 +2005,12 @@ Object {
   },
   "updateArticle": Object {
     "model": "Article",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateArticlePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1741,6 +2074,12 @@ Object {
   },
   "updateCampaign": Object {
     "model": "Campaign",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateCampaignPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1812,6 +2151,12 @@ Object {
   },
   "updateCampaignAction": Object {
     "model": "CampaignAction",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateCampaignActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1881,8 +2226,8 @@ Object {
                 "name": "thumbnailId",
                 "type": "UUID",
               },
-              "totalBitgLimit": Object {
-                "name": "totalBitgLimit",
+              "totalBitcoinLimit": Object {
+                "name": "totalBitcoinLimit",
                 "type": "BigFloat",
               },
               "updatedAt": Object {
@@ -1915,6 +2260,12 @@ Object {
   },
   "updateCampaignActionByName": Object {
     "model": "CampaignAction",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateCampaignActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -1984,8 +2335,8 @@ Object {
                 "name": "thumbnailId",
                 "type": "UUID",
               },
-              "totalBitgLimit": Object {
-                "name": "totalBitgLimit",
+              "totalBitcoinLimit": Object {
+                "name": "totalBitcoinLimit",
                 "type": "BigFloat",
               },
               "updatedAt": Object {
@@ -2018,6 +2369,12 @@ Object {
   },
   "updateCompletedAction": Object {
     "model": "CompletedAction",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateCompletedActionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2077,6 +2434,12 @@ Object {
   },
   "updateImage": Object {
     "model": "Image",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateImagePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2131,8 +2494,14 @@ Object {
     },
     "qtype": "mutation",
   },
-  "updateInitiativesGoldenRecord": Object {
-    "model": "InitiativesGoldenRecord",
+  "updateInitiativesPyraRecord": Object {
+    "model": "InitiativesPyraRecord",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateInitiativesPyraRecordPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2154,8 +2523,8 @@ Object {
                 "name": "actionsCompleted",
                 "type": "Int",
               },
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "createdAt": Object {
@@ -2193,13 +2562,19 @@ Object {
             },
           },
         },
-        "type": "UpdateInitiativesGoldenRecordInput",
+        "type": "UpdateInitiativesPyraRecordInput",
       },
     },
     "qtype": "mutation",
   },
   "updateMerchant": Object {
     "model": "Merchant",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateMerchantPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2217,8 +2592,8 @@ Object {
                 "name": "backgroundImageId",
                 "type": "UUID",
               },
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "createdAt": Object {
@@ -2267,6 +2642,12 @@ Object {
   },
   "updatePartner": Object {
     "model": "Partner",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdatePartnerPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2284,8 +2665,8 @@ Object {
                 "name": "backgroundImageId",
                 "type": "UUID",
               },
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "createdAt": Object {
@@ -2334,6 +2715,12 @@ Object {
   },
   "updatePermission": Object {
     "model": "Permission",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdatePermissionPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2385,6 +2772,12 @@ Object {
   },
   "updateProduct": Object {
     "model": "Product",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateProductPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2444,6 +2837,12 @@ Object {
   },
   "updateService": Object {
     "model": "Service",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateServicePayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2511,6 +2910,12 @@ Object {
   },
   "updateShopifyAccount": Object {
     "model": "ShopifyAccount",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateShopifyAccountPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2570,6 +2975,12 @@ Object {
   },
   "updateShopifyOrder": Object {
     "model": "ShopifyOrder",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateShopifyOrderPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2583,16 +2994,16 @@ Object {
             "isNotNull": true,
             "name": "patch",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
-              "bitgRebate": Object {
-                "name": "bitgRebate",
+              "bitcoinRebate": Object {
+                "name": "bitcoinRebate",
                 "type": "BigFloat",
               },
-              "bitgUpdatedAt": Object {
-                "name": "bitgUpdatedAt",
+              "bitcoinUpdatedAt": Object {
+                "name": "bitcoinUpdatedAt",
                 "type": "Datetime",
               },
               "createdAt": Object {
@@ -2669,6 +3080,12 @@ Object {
   },
   "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId": Object {
     "model": "ShopifyOrder",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateShopifyOrderPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2687,16 +3104,16 @@ Object {
             "isNotNull": true,
             "name": "patch",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
-              "bitgRebate": Object {
-                "name": "bitgRebate",
+              "bitcoinRebate": Object {
+                "name": "bitcoinRebate",
                 "type": "BigFloat",
               },
-              "bitgUpdatedAt": Object {
-                "name": "bitgUpdatedAt",
+              "bitcoinUpdatedAt": Object {
+                "name": "bitcoinUpdatedAt",
                 "type": "Datetime",
               },
               "createdAt": Object {
@@ -2778,6 +3195,12 @@ Object {
   },
   "updateShopifySecret": Object {
     "model": "ShopifySecret",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateShopifySecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2821,6 +3244,12 @@ Object {
   },
   "updateShopifySecretByShopifyAccountIdAndName": Object {
     "model": "ShopifySecret",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateShopifySecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2869,6 +3298,12 @@ Object {
   },
   "updateUser": Object {
     "model": "User",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2882,8 +3317,8 @@ Object {
             "isNotNull": true,
             "name": "patch",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "id": Object {
@@ -2902,23 +3337,29 @@ Object {
     },
     "qtype": "mutation",
   },
-  "updateUserByBitgAddress": Object {
+  "updateUserByBitcoinAddress": Object {
     "model": "User",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
         "properties": Object {
-          "bitgAddress": Object {
+          "bitcoinAddress": Object {
             "isNotNull": true,
-            "name": "bitgAddress",
+            "name": "bitcoinAddress",
             "type": "String",
           },
           "patch": Object {
             "isNotNull": true,
             "name": "patch",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "id": Object {
@@ -2932,13 +3373,19 @@ Object {
             },
           },
         },
-        "type": "UpdateUserByBitgAddressInput",
+        "type": "UpdateUserByBitcoinAddressInput",
       },
     },
     "qtype": "mutation",
   },
   "updateUserByUsername": Object {
     "model": "User",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -2947,8 +3394,8 @@ Object {
             "isNotNull": true,
             "name": "patch",
             "properties": Object {
-              "bitgAddress": Object {
-                "name": "bitgAddress",
+              "bitcoinAddress": Object {
+                "name": "bitcoinAddress",
                 "type": "String",
               },
               "id": Object {
@@ -2974,6 +3421,12 @@ Object {
   },
   "updateUserEncryptedSecret": Object {
     "model": "UserEncryptedSecret",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserEncryptedSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3017,6 +3470,12 @@ Object {
   },
   "updateUserEncryptedSecretByUserIdAndName": Object {
     "model": "UserEncryptedSecret",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserEncryptedSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3065,6 +3524,12 @@ Object {
   },
   "updateUserSecret": Object {
     "model": "UserSecret",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3104,6 +3569,12 @@ Object {
   },
   "updateUserSecretByUserIdAndName": Object {
     "model": "UserSecret",
+    "mutationType": "patch",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UpdateUserSecretPayload",
+      "ofType": null,
+    },
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3147,6 +3618,22 @@ Object {
     "qtype": "mutation",
   },
   "userEncryptedSecretsUpsert": Object {
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UserEncryptedSecretsUpsertPayload",
+      "ofType": null,
+    },
+    "outputs": Array [
+      Object {
+        "name": "boolean",
+        "type": Object {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null,
+        },
+      },
+    ],
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3174,6 +3661,22 @@ Object {
     "qtype": "mutation",
   },
   "uuidGenerateSeededUuid": Object {
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UuidGenerateSeededUuidPayload",
+      "ofType": null,
+    },
+    "outputs": Array [
+      Object {
+        "name": "uuid",
+        "type": Object {
+          "kind": "SCALAR",
+          "name": "UUID",
+          "ofType": null,
+        },
+      },
+    ],
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3189,6 +3692,22 @@ Object {
     "qtype": "mutation",
   },
   "uuidGenerateV4": Object {
+    "mutationType": "other",
+    "output": Object {
+      "kind": "OBJECT",
+      "name": "UuidGenerateV4Payload",
+      "ofType": null,
+    },
+    "outputs": Array [
+      Object {
+        "name": "uuid",
+        "type": Object {
+          "kind": "SCALAR",
+          "name": "UUID",
+          "ofType": null,
+        },
+      },
+    ],
     "properties": Object {
       "input": Object {
         "isNotNull": true,
@@ -3326,7 +3845,7 @@ Object {
       "description",
       "rewardUnit",
       "rewardAmount",
-      "totalBitgLimit",
+      "totalBitcoinLimit",
       "actionWeeklyLimit",
       "actionDailyLimit",
       "userTotalLimit",
@@ -3346,7 +3865,7 @@ Object {
       "thumbnail",
       "completedActionsByActionId",
       "services",
-      "initiativesGoldenRecordsByActionId",
+      "initiativesPyraRecordsByActionId",
     ],
   },
   "campaignActionByName": Object {
@@ -3364,7 +3883,7 @@ Object {
       "description",
       "rewardUnit",
       "rewardAmount",
-      "totalBitgLimit",
+      "totalBitcoinLimit",
       "actionWeeklyLimit",
       "actionDailyLimit",
       "userTotalLimit",
@@ -3384,7 +3903,7 @@ Object {
       "thumbnail",
       "completedActionsByActionId",
       "services",
-      "initiativesGoldenRecordsByActionId",
+      "initiativesPyraRecordsByActionId",
     ],
   },
   "campaignActions": Object {
@@ -3396,7 +3915,7 @@ Object {
       "description",
       "rewardUnit",
       "rewardAmount",
-      "totalBitgLimit",
+      "totalBitcoinLimit",
       "actionWeeklyLimit",
       "actionDailyLimit",
       "userTotalLimit",
@@ -3416,7 +3935,7 @@ Object {
       "thumbnail",
       "completedActionsByActionId",
       "services",
-      "initiativesGoldenRecordsByActionId",
+      "initiativesPyraRecordsByActionId",
     ],
   },
   "campaigns": Object {
@@ -3488,7 +4007,7 @@ Object {
     "selection": Array [
       "id",
       "username",
-      "bitgAddress",
+      "bitcoinAddress",
       "permissions",
       "completedActions",
     ],
@@ -3547,8 +4066,8 @@ Object {
       "shopifyAccountsByIconId",
     ],
   },
-  "initiativesGoldenRecord": Object {
-    "model": "InitiativesGoldenRecord",
+  "initiativesPyraRecord": Object {
+    "model": "InitiativesPyraRecord",
     "properties": Object {
       "id": Object {
         "isNotNull": true,
@@ -3560,7 +4079,7 @@ Object {
       "id",
       "name",
       "email",
-      "bitgAddress",
+      "bitcoinAddress",
       "date",
       "actionsCompleted",
       "createdBy",
@@ -3571,14 +4090,14 @@ Object {
       "action",
     ],
   },
-  "initiativesGoldenRecords": Object {
-    "model": "InitiativesGoldenRecord",
+  "initiativesPyraRecords": Object {
+    "model": "InitiativesPyraRecord",
     "qtype": "getMany",
     "selection": Array [
       "id",
       "name",
       "email",
-      "bitgAddress",
+      "bitcoinAddress",
       "date",
       "actionsCompleted",
       "createdBy",
@@ -3601,7 +4120,7 @@ Object {
     "selection": Array [
       "id",
       "name",
-      "bitgAddress",
+      "bitcoinAddress",
       "description",
       "ownerId",
       "createdBy",
@@ -3621,7 +4140,7 @@ Object {
     "selection": Array [
       "id",
       "name",
-      "bitgAddress",
+      "bitcoinAddress",
       "description",
       "ownerId",
       "createdBy",
@@ -3648,7 +4167,7 @@ Object {
       "id",
       "name",
       "description",
-      "bitgAddress",
+      "bitcoinAddress",
       "ownerId",
       "createdBy",
       "updatedBy",
@@ -3671,7 +4190,7 @@ Object {
       "id",
       "name",
       "description",
-      "bitgAddress",
+      "bitcoinAddress",
       "ownerId",
       "createdBy",
       "updatedBy",
@@ -3865,9 +4384,9 @@ Object {
       "subtotalPrice",
       "orderCreatedAt",
       "orderClosedAt",
-      "bitgUpdatedAt",
-      "bitgRebate",
-      "bitgAddress",
+      "bitcoinUpdatedAt",
+      "bitcoinRebate",
+      "bitcoinAddress",
       "paidDate",
       "transactionId",
       "createdBy",
@@ -3906,9 +4425,9 @@ Object {
       "subtotalPrice",
       "orderCreatedAt",
       "orderClosedAt",
-      "bitgUpdatedAt",
-      "bitgRebate",
-      "bitgAddress",
+      "bitcoinUpdatedAt",
+      "bitcoinRebate",
+      "bitcoinAddress",
       "paidDate",
       "transactionId",
       "createdBy",
@@ -3933,9 +4452,9 @@ Object {
       "subtotalPrice",
       "orderCreatedAt",
       "orderClosedAt",
-      "bitgUpdatedAt",
-      "bitgRebate",
-      "bitgAddress",
+      "bitcoinUpdatedAt",
+      "bitcoinRebate",
+      "bitcoinAddress",
       "paidDate",
       "transactionId",
       "createdBy",
@@ -4009,15 +4528,15 @@ Object {
     "selection": Array [
       "id",
       "username",
-      "bitgAddress",
+      "bitcoinAddress",
       "permissions",
       "completedActions",
     ],
   },
-  "userByBitgAddress": Object {
+  "userByBitcoinAddress": Object {
     "model": "User",
     "properties": Object {
-      "bitgAddress": Object {
+      "bitcoinAddress": Object {
         "isNotNull": true,
         "type": "String",
       },
@@ -4026,7 +4545,7 @@ Object {
     "selection": Array [
       "id",
       "username",
-      "bitgAddress",
+      "bitcoinAddress",
       "permissions",
       "completedActions",
     ],
@@ -4043,7 +4562,7 @@ Object {
     "selection": Array [
       "id",
       "username",
-      "bitgAddress",
+      "bitcoinAddress",
       "permissions",
       "completedActions",
     ],
@@ -4149,7 +4668,7 @@ Object {
     "selection": Array [
       "id",
       "username",
-      "bitgAddress",
+      "bitcoinAddress",
       "permissions",
       "completedActions",
     ],

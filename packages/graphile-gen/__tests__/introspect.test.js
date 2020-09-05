@@ -12,6 +12,8 @@ import {
 import cases from 'jest-in-case';
 import { print } from 'graphql';
 import tables from '../__fixtures__/tables';
+
+// this comes from a postgres introspect query
 const introspectron = JSON.parse(
   require('fs')
     .readFileSync(__dirname + '/../__fixtures__/introspectron.json')

@@ -87,7 +87,7 @@ Object {
     description
     rewardUnit
     rewardAmount
-    totalBitgLimit
+    totalBitcoinLimit
     actionWeeklyLimit
     actionDailyLimit
     userTotalLimit
@@ -107,7 +107,7 @@ Object {
     thumbnail
     completedActionsByActionId
     services
-    initiativesGoldenRecordsByActionId
+    initiativesPyraRecordsByActionId
   }
 }
 ",
@@ -118,7 +118,7 @@ Object {
     description
     rewardUnit
     rewardAmount
-    totalBitgLimit
+    totalBitcoinLimit
     actionWeeklyLimit
     actionDailyLimit
     userTotalLimit
@@ -138,7 +138,7 @@ Object {
     thumbnail
     completedActionsByActionId
     services
-    initiativesGoldenRecordsByActionId
+    initiativesPyraRecordsByActionId
   }
 }
 ",
@@ -149,7 +149,7 @@ Object {
     description
     rewardUnit
     rewardAmount
-    totalBitgLimit
+    totalBitcoinLimit
     actionWeeklyLimit
     actionDailyLimit
     userTotalLimit
@@ -169,7 +169,7 @@ Object {
     thumbnail
     completedActionsByActionId
     services
-    initiativesGoldenRecordsByActionId
+    initiativesPyraRecordsByActionId
   }}
 }
 ",
@@ -273,15 +273,15 @@ Object {
   }
 }
 ",
-  "createCampaignAction": "mutation createCampaignActionMutation($id: UUID, $name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitgLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID!, $partnerId: UUID!, $thumbnailId: UUID) {
-  createCampaignAction(input: {campaignAction: {id: $id, name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitgLimit: $totalBitgLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+  "createCampaignAction": "mutation createCampaignActionMutation($id: UUID, $name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID!, $partnerId: UUID!, $thumbnailId: UUID) {
+  createCampaignAction(input: {campaignAction: {id: $id, name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
     campaignAction {
       id
       name
       description
       rewardUnit
       rewardAmount
-      totalBitgLimit
+      totalBitcoinLimit
       actionWeeklyLimit
       actionDailyLimit
       userTotalLimit
@@ -333,13 +333,13 @@ Object {
   }
 }
 ",
-  "createInitiativesGoldenRecord": "mutation createInitiativesGoldenRecordMutation($id: UUID, $name: String, $email: String, $bitgAddress: String, $date: Datetime, $actionsCompleted: Int, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $actionId: UUID!) {
-  createInitiativesGoldenRecord(input: {initiativesGoldenRecord: {id: $id, name: $name, email: $email, bitgAddress: $bitgAddress, date: $date, actionsCompleted: $actionsCompleted, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, actionId: $actionId}}) {
-    initiativesGoldenRecord {
+  "createInitiativesPyraRecord": "mutation createInitiativesPyraRecordMutation($id: UUID, $name: String, $email: String, $bitcoinAddress: String, $date: Datetime, $actionsCompleted: Int, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $actionId: UUID!) {
+  createInitiativesPyraRecord(input: {initiativesPyraRecord: {id: $id, name: $name, email: $email, bitcoinAddress: $bitcoinAddress, date: $date, actionsCompleted: $actionsCompleted, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, actionId: $actionId}}) {
+    initiativesPyraRecord {
       id
       name
       email
-      bitgAddress
+      bitcoinAddress
       date
       actionsCompleted
       createdBy
@@ -351,12 +351,12 @@ Object {
   }
 }
 ",
-  "createMerchant": "mutation createMerchantMutation($id: UUID, $name: String, $bitgAddress: String, $description: String, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
-  createMerchant(input: {merchant: {id: $id, name: $name, bitgAddress: $bitgAddress, description: $description, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+  "createMerchant": "mutation createMerchantMutation($id: UUID, $name: String, $bitcoinAddress: String, $description: String, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  createMerchant(input: {merchant: {id: $id, name: $name, bitcoinAddress: $bitcoinAddress, description: $description, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
     merchant {
       id
       name
-      bitgAddress
+      bitcoinAddress
       description
       ownerId
       createdBy
@@ -369,13 +369,13 @@ Object {
   }
 }
 ",
-  "createPartner": "mutation createPartnerMutation($id: UUID, $name: String, $description: String, $bitgAddress: String, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
-  createPartner(input: {partner: {id: $id, name: $name, description: $description, bitgAddress: $bitgAddress, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+  "createPartner": "mutation createPartnerMutation($id: UUID, $name: String, $description: String, $bitcoinAddress: String, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  createPartner(input: {partner: {id: $id, name: $name, description: $description, bitcoinAddress: $bitcoinAddress, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
     partner {
       id
       name
       description
-      bitgAddress
+      bitcoinAddress
       ownerId
       createdBy
       updatedBy
@@ -451,8 +451,8 @@ Object {
   }
 }
 ",
-  "createShopifyOrder": "mutation createShopifyOrderMutation($id: UUID, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitgUpdatedAt: Datetime, $bitgRebate: BigFloat, $bitgAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID!, $shopifyAccountId: UUID!) {
-  createShopifyOrder(input: {shopifyOrder: {id: $id, orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitgUpdatedAt: $bitgUpdatedAt, bitgRebate: $bitgRebate, bitgAddress: $bitgAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
+  "createShopifyOrder": "mutation createShopifyOrderMutation($id: UUID, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID!, $shopifyAccountId: UUID!) {
+  createShopifyOrder(input: {shopifyOrder: {id: $id, orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
     shopifyOrder {
       id
       orderId
@@ -462,9 +462,9 @@ Object {
       subtotalPrice
       orderCreatedAt
       orderClosedAt
-      bitgUpdatedAt
-      bitgRebate
-      bitgAddress
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
       paidDate
       transactionId
       createdBy
@@ -489,12 +489,12 @@ Object {
   }
 }
 ",
-  "createUser": "mutation createUserMutation($id: UUID, $username: String, $bitgAddress: String) {
-  createUser(input: {user: {id: $id, username: $username, bitgAddress: $bitgAddress}}) {
+  "createUser": "mutation createUserMutation($id: UUID, $username: String, $bitcoinAddress: String) {
+  createUser(input: {user: {id: $id, username: $username, bitcoinAddress: $bitcoinAddress}}) {
     user {
       id
       username
-      bitgAddress
+      bitcoinAddress
     }
   }
 }
@@ -586,9 +586,9 @@ Object {
   }
 }
 ",
-  "deleteInitiativesGoldenRecord": "mutation deleteInitiativesGoldenRecordMutation($id: UUID!) {
-  deleteInitiativesGoldenRecord(input: {id: $id}) {
-    initiativesGoldenRecord {
+  "deleteInitiativesPyraRecord": "mutation deleteInitiativesPyraRecordMutation($id: UUID!) {
+  deleteInitiativesPyraRecord(input: {id: $id}) {
+    initiativesPyraRecord {
       id
     }
   }
@@ -685,10 +685,10 @@ Object {
   }
 }
 ",
-  "deleteUserByBitgAddress": "mutation deleteUserByBitgAddressMutation($bitgAddress: String!) {
-  deleteUserByBitgAddress(input: {bitgAddress: $bitgAddress}) {
+  "deleteUserByBitcoinAddress": "mutation deleteUserByBitcoinAddressMutation($bitcoinAddress: String!) {
+  deleteUserByBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress}) {
     user {
-      bitgAddress
+      bitcoinAddress
     }
   }
 }
@@ -739,7 +739,7 @@ Object {
   getCurrentUser {
     id
     username
-    bitgAddress
+    bitcoinAddress
     permissions
     completedActions
   }
@@ -791,12 +791,12 @@ Object {
   }}
 }
 ",
-  "initiativesGoldenRecord": "query initiativesGoldenRecordQuery($id: UUID!) {
-  initiativesGoldenRecord(id: $id) {
+  "initiativesPyraRecord": "query initiativesPyraRecordQuery($id: UUID!) {
+  initiativesPyraRecord(id: $id) {
     id
     name
     email
-    bitgAddress
+    bitcoinAddress
     date
     actionsCompleted
     createdBy
@@ -808,12 +808,12 @@ Object {
   }
 }
 ",
-  "initiativesGoldenRecords": "query initiativesGoldenRecordsQuery {
-  initiativesGoldenRecords {totalCount, nodes: {
+  "initiativesPyraRecords": "query initiativesPyraRecordsQuery {
+  initiativesPyraRecords {totalCount, nodes: {
     id
     name
     email
-    bitgAddress
+    bitcoinAddress
     date
     actionsCompleted
     createdBy
@@ -829,7 +829,7 @@ Object {
   merchant(id: $id) {
     id
     name
-    bitgAddress
+    bitcoinAddress
     description
     ownerId
     createdBy
@@ -848,7 +848,7 @@ Object {
   merchants {totalCount, nodes: {
     id
     name
-    bitgAddress
+    bitcoinAddress
     description
     ownerId
     createdBy
@@ -868,7 +868,7 @@ Object {
     id
     name
     description
-    bitgAddress
+    bitcoinAddress
     ownerId
     createdBy
     updatedBy
@@ -890,7 +890,7 @@ Object {
     id
     name
     description
-    bitgAddress
+    bitcoinAddress
     ownerId
     createdBy
     updatedBy
@@ -1045,9 +1045,9 @@ Object {
     subtotalPrice
     orderCreatedAt
     orderClosedAt
-    bitgUpdatedAt
-    bitgRebate
-    bitgAddress
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
     paidDate
     transactionId
     createdBy
@@ -1071,9 +1071,9 @@ Object {
     subtotalPrice
     orderCreatedAt
     orderClosedAt
-    bitgUpdatedAt
-    bitgRebate
-    bitgAddress
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
     paidDate
     transactionId
     createdBy
@@ -1097,9 +1097,9 @@ Object {
     subtotalPrice
     orderCreatedAt
     orderClosedAt
-    bitgUpdatedAt
-    bitgRebate
-    bitgAddress
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
     paidDate
     transactionId
     createdBy
@@ -1145,30 +1145,30 @@ Object {
 ",
   "shopifySecretsUpsert": "mutation shopifySecretsUpsertMutation($vShopifyAccountId: UUID!, $secretName: String!, $secretValue: String!, $fieldEncoding: String!) {
   shopifySecretsUpsert(input: {vShopifyAccountId: $vShopifyAccountId, secretName: $secretName, secretValue: $secretValue, fieldEncoding: $fieldEncoding}) {
+    boolean
+  }
+}
+",
+  "signInRecordFailure": "mutation signInRecordFailureMutation($bitcoinAddress: String!) {
+  signInRecordFailure(input: {bitcoinAddress: $bitcoinAddress}) {
     clientMutationId
   }
 }
 ",
-  "signInRecordFailure": "mutation signInRecordFailureMutation($bitgAddress: String!) {
-  signInRecordFailure(input: {bitgAddress: $bitgAddress}) {
+  "signInRequestChallenge": "mutation signInRequestChallengeMutation($bitcoinAddress: String!) {
+  signInRequestChallenge(input: {bitcoinAddress: $bitcoinAddress}) {
+    string
+  }
+}
+",
+  "signInWithChallenge": "mutation signInWithChallengeMutation($bitcoinAddress: String!, $specialValue: String!) {
+  signInWithChallenge(input: {bitcoinAddress: $bitcoinAddress, specialValue: $specialValue}) {
     clientMutationId
   }
 }
 ",
-  "signInRequestChallenge": "mutation signInRequestChallengeMutation($bitgAddress: String!) {
-  signInRequestChallenge(input: {bitgAddress: $bitgAddress}) {
-    clientMutationId
-  }
-}
-",
-  "signInWithChallenge": "mutation signInWithChallengeMutation($bitgAddress: String!, $specialValue: String!) {
-  signInWithChallenge(input: {bitgAddress: $bitgAddress, specialValue: $specialValue}) {
-    clientMutationId
-  }
-}
-",
-  "signUpWithBitgAddress": "mutation signUpWithBitgAddressMutation($bitgAddress: String!) {
-  signUpWithBitgAddress(input: {bitgAddress: $bitgAddress}) {
+  "signUpWithBitcoinAddress": "mutation signUpWithBitcoinAddressMutation($bitcoinAddress: String!) {
+  signUpWithBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress}) {
     clientMutationId
   }
 }
@@ -1231,15 +1231,15 @@ Object {
   }
 }
 ",
-  "updateCampaignAction": "mutation updateCampaignActionMutation($id: UUID!, $name: String, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitgLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
-  updateCampaignAction(input: {id: $id, patch: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitgLimit: $totalBitgLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+  "updateCampaignAction": "mutation updateCampaignActionMutation($id: UUID!, $name: String, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  updateCampaignAction(input: {id: $id, patch: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
     campaignAction {
       id
       name
       description
       rewardUnit
       rewardAmount
-      totalBitgLimit
+      totalBitcoinLimit
       actionWeeklyLimit
       actionDailyLimit
       userTotalLimit
@@ -1258,15 +1258,15 @@ Object {
   }
 }
 ",
-  "updateCampaignActionByName": "mutation updateCampaignActionByNameMutation($id: UUID, $name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitgLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
-  updateCampaignActionByName(input: {name: $name, patch: {id: $id, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitgLimit: $totalBitgLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+  "updateCampaignActionByName": "mutation updateCampaignActionByNameMutation($id: UUID, $name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  updateCampaignActionByName(input: {name: $name, patch: {id: $id, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
     campaignAction {
       id
       name
       description
       rewardUnit
       rewardAmount
-      totalBitgLimit
+      totalBitcoinLimit
       actionWeeklyLimit
       actionDailyLimit
       userTotalLimit
@@ -1316,13 +1316,13 @@ Object {
   }
 }
 ",
-  "updateInitiativesGoldenRecord": "mutation updateInitiativesGoldenRecordMutation($id: UUID!, $name: String, $email: String, $bitgAddress: String, $date: Datetime, $actionsCompleted: Int, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $actionId: UUID) {
-  updateInitiativesGoldenRecord(input: {id: $id, patch: {name: $name, email: $email, bitgAddress: $bitgAddress, date: $date, actionsCompleted: $actionsCompleted, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, actionId: $actionId}}) {
-    initiativesGoldenRecord {
+  "updateInitiativesPyraRecord": "mutation updateInitiativesPyraRecordMutation($id: UUID!, $name: String, $email: String, $bitcoinAddress: String, $date: Datetime, $actionsCompleted: Int, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $actionId: UUID) {
+  updateInitiativesPyraRecord(input: {id: $id, patch: {name: $name, email: $email, bitcoinAddress: $bitcoinAddress, date: $date, actionsCompleted: $actionsCompleted, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, actionId: $actionId}}) {
+    initiativesPyraRecord {
       id
       name
       email
-      bitgAddress
+      bitcoinAddress
       date
       actionsCompleted
       createdBy
@@ -1334,12 +1334,12 @@ Object {
   }
 }
 ",
-  "updateMerchant": "mutation updateMerchantMutation($id: UUID!, $name: String, $bitgAddress: String, $description: String, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
-  updateMerchant(input: {id: $id, patch: {name: $name, bitgAddress: $bitgAddress, description: $description, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+  "updateMerchant": "mutation updateMerchantMutation($id: UUID!, $name: String, $bitcoinAddress: String, $description: String, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  updateMerchant(input: {id: $id, patch: {name: $name, bitcoinAddress: $bitcoinAddress, description: $description, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
     merchant {
       id
       name
-      bitgAddress
+      bitcoinAddress
       description
       ownerId
       createdBy
@@ -1352,13 +1352,13 @@ Object {
   }
 }
 ",
-  "updatePartner": "mutation updatePartnerMutation($id: UUID!, $name: String, $description: String, $bitgAddress: String, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
-  updatePartner(input: {id: $id, patch: {name: $name, description: $description, bitgAddress: $bitgAddress, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+  "updatePartner": "mutation updatePartnerMutation($id: UUID!, $name: String, $description: String, $bitcoinAddress: String, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  updatePartner(input: {id: $id, patch: {name: $name, description: $description, bitcoinAddress: $bitcoinAddress, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
     partner {
       id
       name
       description
-      bitgAddress
+      bitcoinAddress
       ownerId
       createdBy
       updatedBy
@@ -1434,8 +1434,8 @@ Object {
   }
 }
 ",
-  "updateShopifyOrder": "mutation updateShopifyOrderMutation($id: UUID!, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitgUpdatedAt: Datetime, $bitgRebate: BigFloat, $bitgAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $shopifyAccountId: UUID) {
-  updateShopifyOrder(input: {id: $id, patch: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitgUpdatedAt: $bitgUpdatedAt, bitgRebate: $bitgRebate, bitgAddress: $bitgAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
+  "updateShopifyOrder": "mutation updateShopifyOrderMutation($id: UUID!, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $shopifyAccountId: UUID) {
+  updateShopifyOrder(input: {id: $id, patch: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
     shopifyOrder {
       id
       orderId
@@ -1445,9 +1445,9 @@ Object {
       subtotalPrice
       orderCreatedAt
       orderClosedAt
-      bitgUpdatedAt
-      bitgRebate
-      bitgAddress
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
       paidDate
       transactionId
       createdBy
@@ -1460,8 +1460,8 @@ Object {
   }
 }
 ",
-  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId": "mutation updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($id: UUID, $orderId: Int!, $email: String!, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitgUpdatedAt: Datetime, $bitgRebate: BigFloat, $bitgAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $shopifyAccountId: UUID!) {
-  updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId, patch: {id: $id, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitgUpdatedAt: $bitgUpdatedAt, bitgRebate: $bitgRebate, bitgAddress: $bitgAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId}}) {
+  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId": "mutation updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($id: UUID, $orderId: Int!, $email: String!, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $shopifyAccountId: UUID!) {
+  updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId, patch: {id: $id, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId}}) {
     shopifyOrder {
       id
       orderId
@@ -1471,9 +1471,9 @@ Object {
       subtotalPrice
       orderCreatedAt
       orderClosedAt
-      bitgUpdatedAt
-      bitgRebate
-      bitgAddress
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
       paidDate
       transactionId
       createdBy
@@ -1510,32 +1510,32 @@ Object {
   }
 }
 ",
-  "updateUser": "mutation updateUserMutation($id: UUID!, $username: String, $bitgAddress: String) {
-  updateUser(input: {id: $id, patch: {username: $username, bitgAddress: $bitgAddress}}) {
+  "updateUser": "mutation updateUserMutation($id: UUID!, $username: String, $bitcoinAddress: String) {
+  updateUser(input: {id: $id, patch: {username: $username, bitcoinAddress: $bitcoinAddress}}) {
     user {
       id
       username
-      bitgAddress
+      bitcoinAddress
     }
   }
 }
 ",
-  "updateUserByBitgAddress": "mutation updateUserByBitgAddressMutation($id: UUID, $username: String, $bitgAddress: String!) {
-  updateUserByBitgAddress(input: {bitgAddress: $bitgAddress, patch: {id: $id, username: $username}}) {
+  "updateUserByBitcoinAddress": "mutation updateUserByBitcoinAddressMutation($id: UUID, $username: String, $bitcoinAddress: String!) {
+  updateUserByBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress, patch: {id: $id, username: $username}}) {
     user {
       id
       username
-      bitgAddress
+      bitcoinAddress
     }
   }
 }
 ",
-  "updateUserByUsername": "mutation updateUserByUsernameMutation($id: UUID, $username: String!, $bitgAddress: String) {
-  updateUserByUsername(input: {username: $username, patch: {id: $id, bitgAddress: $bitgAddress}}) {
+  "updateUserByUsername": "mutation updateUserByUsernameMutation($id: UUID, $username: String!, $bitcoinAddress: String) {
+  updateUserByUsername(input: {username: $username, patch: {id: $id, bitcoinAddress: $bitcoinAddress}}) {
     user {
       id
       username
-      bitgAddress
+      bitcoinAddress
     }
   }
 }
@@ -1590,17 +1590,17 @@ Object {
   user(id: $id) {
     id
     username
-    bitgAddress
+    bitcoinAddress
     permissions
     completedActions
   }
 }
 ",
-  "userByBitgAddress": "query userByBitgAddressQuery($bitgAddress: String!) {
-  userByBitgAddress(bitgAddress: $bitgAddress) {
+  "userByBitcoinAddress": "query userByBitcoinAddressQuery($bitcoinAddress: String!) {
+  userByBitcoinAddress(bitcoinAddress: $bitcoinAddress) {
     id
     username
-    bitgAddress
+    bitcoinAddress
     permissions
     completedActions
   }
@@ -1610,7 +1610,7 @@ Object {
   userByUsername(username: $username) {
     id
     username
-    bitgAddress
+    bitcoinAddress
     permissions
     completedActions
   }
@@ -1648,7 +1648,7 @@ Object {
 ",
   "userEncryptedSecretsUpsert": "mutation userEncryptedSecretsUpsertMutation($vUserId: UUID!, $secretName: String!, $secretValue: String!, $fieldEncoding: String!) {
   userEncryptedSecretsUpsert(input: {vUserId: $vUserId, secretName: $secretName, secretValue: $secretValue, fieldEncoding: $fieldEncoding}) {
-    clientMutationId
+    boolean
   }
 }
 ",
@@ -1683,7 +1683,7 @@ Object {
   users {totalCount, nodes: {
     id
     username
-    bitgAddress
+    bitcoinAddress
     permissions
     completedActions
   }}
@@ -1691,13 +1691,13 @@ Object {
 ",
   "uuidGenerateSeededUuid": "mutation uuidGenerateSeededUuidMutation($seed: String!) {
   uuidGenerateSeededUuid(input: {seed: $seed}) {
-    clientMutationId
+    uuid
   }
 }
 ",
   "uuidGenerateV4": "mutation uuidGenerateV4Mutation {
   uuidGenerateV4 {
-    clientMutationId
+    uuid
   }
 }
 ",

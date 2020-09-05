@@ -1344,8 +1344,8 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecords",
-                            "description": "Reads and enables pagination through a set of `InitiativesGoldenRecord`.",
+                            "name": "initiativesPyraRecords",
+                            "description": "Reads and enables pagination through a set of `InitiativesPyraRecord`.",
                             "args": [
                                 {
                                     "name": "first",
@@ -1399,7 +1399,7 @@
                                 },
                                 {
                                     "name": "orderBy",
-                                    "description": "The method to use when ordering `InitiativesGoldenRecord`.",
+                                    "description": "The method to use when ordering `InitiativesPyraRecord`.",
                                     "type": {
                                         "kind": "LIST",
                                         "name": null,
@@ -1408,7 +1408,7 @@
                                             "name": null,
                                             "ofType": {
                                                 "kind": "ENUM",
-                                                "name": "InitiativesGoldenRecordsOrderBy",
+                                                "name": "InitiativesPyraRecordsOrderBy",
                                                 "ofType": null
                                             }
                                         }
@@ -1420,7 +1420,7 @@
                                     "description": "A condition to be used in determining which values should be returned by the collection.",
                                     "type": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "InitiativesGoldenRecordCondition",
+                                        "name": "InitiativesPyraRecordCondition",
                                         "ofType": null
                                     },
                                     "defaultValue": null
@@ -1430,7 +1430,7 @@
                                     "description": "A filter to be used in determining which values should be returned by the collection.",
                                     "type": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "InitiativesGoldenRecordFilter",
+                                        "name": "InitiativesPyraRecordFilter",
                                         "ofType": null
                                     },
                                     "defaultValue": null
@@ -1438,7 +1438,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecordsConnection",
+                                "name": "InitiativesPyraRecordsConnection",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -2282,11 +2282,11 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "userByBitgAddress",
+                            "name": "userByBitcoinAddress",
                             "description": null,
                             "args": [
                                 {
-                                    "name": "bitgAddress",
+                                    "name": "bitcoinAddress",
                                     "description": null,
                                     "type": {
                                         "kind": "NON_NULL",
@@ -2363,7 +2363,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecord",
+                            "name": "initiativesPyraRecord",
                             "description": null,
                             "args": [
                                 {
@@ -2383,7 +2383,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecord",
+                                "name": "InitiativesPyraRecord",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -4500,13 +4500,13 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "TOTAL_BITG_LIMIT_ASC",
+                            "name": "TOTAL_BTC_LIMIT_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "TOTAL_BITG_LIMIT_DESC",
+                            "name": "TOTAL_BTC_LIMIT_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -4751,8 +4751,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "totalBitgLimit",
-                            "description": "Checks for equality with the object’s `totalBitgLimit` field.",
+                            "name": "totalBitcoinLimit",
+                            "description": "Checks for equality with the object’s `totalBitcoinLimit` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "BigFloat",
@@ -4972,8 +4972,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "totalBitgLimit",
-                            "description": "Filter by the object’s `totalBitgLimit` field.",
+                            "name": "totalBitcoinLimit",
+                            "description": "Filter by the object’s `totalBitcoinLimit` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "BigFloatFilter",
@@ -5611,7 +5611,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "totalBitgLimit",
+                            "name": "totalBitcoinLimit",
                             "description": null,
                             "args": [],
                             "type": {
@@ -6045,8 +6045,8 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecordsByActionId",
-                            "description": "Reads and enables pagination through a set of `InitiativesGoldenRecord`.",
+                            "name": "initiativesPyraRecordsByActionId",
+                            "description": "Reads and enables pagination through a set of `InitiativesPyraRecord`.",
                             "args": [
                                 {
                                     "name": "first",
@@ -6100,7 +6100,7 @@
                                 },
                                 {
                                     "name": "orderBy",
-                                    "description": "The method to use when ordering `InitiativesGoldenRecord`.",
+                                    "description": "The method to use when ordering `InitiativesPyraRecord`.",
                                     "type": {
                                         "kind": "LIST",
                                         "name": null,
@@ -6109,7 +6109,7 @@
                                             "name": null,
                                             "ofType": {
                                                 "kind": "ENUM",
-                                                "name": "InitiativesGoldenRecordsOrderBy",
+                                                "name": "InitiativesPyraRecordsOrderBy",
                                                 "ofType": null
                                             }
                                         }
@@ -6121,7 +6121,7 @@
                                     "description": "A condition to be used in determining which values should be returned by the collection.",
                                     "type": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "InitiativesGoldenRecordCondition",
+                                        "name": "InitiativesPyraRecordCondition",
                                         "ofType": null
                                     },
                                     "defaultValue": null
@@ -6131,7 +6131,7 @@
                                     "description": "A filter to be used in determining which values should be returned by the collection.",
                                     "type": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "InitiativesGoldenRecordFilter",
+                                        "name": "InitiativesPyraRecordFilter",
                                         "ofType": null
                                     },
                                     "defaultValue": null
@@ -6142,7 +6142,7 @@
                                 "name": null,
                                 "ofType": {
                                     "kind": "OBJECT",
-                                    "name": "InitiativesGoldenRecordsConnection",
+                                    "name": "InitiativesPyraRecordsConnection",
                                     "ofType": null
                                 }
                             },
@@ -6505,7 +6505,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "args": [],
                             "type": {
@@ -8280,13 +8280,13 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_ASC",
+                            "name": "BTC_ADDRESS_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_DESC",
+                            "name": "BTC_ADDRESS_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -8427,8 +8427,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Checks for equality with the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Checks for equality with the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "String",
@@ -8548,8 +8548,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Filter by the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Filter by the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "StringFilter",
@@ -10198,13 +10198,13 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_ASC",
+                            "name": "BTC_ADDRESS_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_DESC",
+                            "name": "BTC_ADDRESS_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -10347,8 +10347,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Checks for equality with the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Checks for equality with the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "String",
@@ -10468,8 +10468,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Filter by the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Filter by the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "StringFilter",
@@ -10733,7 +10733,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "args": [],
                             "type": {
@@ -12527,37 +12527,37 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_UPDATED_AT_ASC",
+                            "name": "BTC_UPDATED_AT_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_UPDATED_AT_DESC",
+                            "name": "BTC_UPDATED_AT_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_REBATE_ASC",
+                            "name": "BTC_REBATE_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_REBATE_DESC",
+                            "name": "BTC_REBATE_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_ASC",
+                            "name": "BTC_ADDRESS_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_DESC",
+                            "name": "BTC_ADDRESS_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -12760,8 +12760,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgUpdatedAt",
-                            "description": "Checks for equality with the object’s `bitgUpdatedAt` field.",
+                            "name": "bitcoinUpdatedAt",
+                            "description": "Checks for equality with the object’s `bitcoinUpdatedAt` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "Datetime",
@@ -12770,8 +12770,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgRebate",
-                            "description": "Checks for equality with the object’s `bitgRebate` field.",
+                            "name": "bitcoinRebate",
+                            "description": "Checks for equality with the object’s `bitcoinRebate` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "BigFloat",
@@ -12780,8 +12780,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Checks for equality with the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Checks for equality with the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "String",
@@ -12961,8 +12961,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgUpdatedAt",
-                            "description": "Filter by the object’s `bitgUpdatedAt` field.",
+                            "name": "bitcoinUpdatedAt",
+                            "description": "Filter by the object’s `bitcoinUpdatedAt` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "DatetimeFilter",
@@ -12971,8 +12971,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgRebate",
-                            "description": "Filter by the object’s `bitgRebate` field.",
+                            "name": "bitcoinRebate",
+                            "description": "Filter by the object’s `bitcoinRebate` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "BigFloatFilter",
@@ -12981,8 +12981,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Filter by the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Filter by the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "StringFilter",
@@ -13318,7 +13318,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgUpdatedAt",
+                            "name": "bitcoinUpdatedAt",
                             "description": null,
                             "args": [],
                             "type": {
@@ -13330,7 +13330,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgRebate",
+                            "name": "bitcoinRebate",
                             "description": null,
                             "args": [],
                             "type": {
@@ -13342,7 +13342,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "args": [],
                             "type": {
@@ -14230,7 +14230,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "args": [],
                             "type": {
@@ -15064,8 +15064,8 @@
                 },
                 {
                     "kind": "ENUM",
-                    "name": "InitiativesGoldenRecordsOrderBy",
-                    "description": "Methods to use when ordering `InitiativesGoldenRecord`.",
+                    "name": "InitiativesPyraRecordsOrderBy",
+                    "description": "Methods to use when ordering `InitiativesPyraRecord`.",
                     "fields": null,
                     "inputFields": null,
                     "interfaces": null,
@@ -15113,13 +15113,13 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_ASC",
+                            "name": "BTC_ADDRESS_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_DESC",
+                            "name": "BTC_ADDRESS_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -15225,8 +15225,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "InitiativesGoldenRecordCondition",
-                    "description": "A condition to be used against `InitiativesGoldenRecord` object types. All fields are tested for equality and combined with a logical ‘and.’",
+                    "name": "InitiativesPyraRecordCondition",
+                    "description": "A condition to be used against `InitiativesPyraRecord` object types. All fields are tested for equality and combined with a logical ‘and.’",
                     "fields": null,
                     "inputFields": [
                         {
@@ -15260,8 +15260,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Checks for equality with the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Checks for equality with the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "String",
@@ -15346,8 +15346,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "InitiativesGoldenRecordFilter",
-                    "description": "A filter to be used against `InitiativesGoldenRecord` object types. All fields are combined with a logical ‘and.’",
+                    "name": "InitiativesPyraRecordFilter",
+                    "description": "A filter to be used against `InitiativesPyraRecord` object types. All fields are combined with a logical ‘and.’",
                     "fields": null,
                     "inputFields": [
                         {
@@ -15381,8 +15381,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Filter by the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Filter by the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "StringFilter",
@@ -15471,7 +15471,7 @@
                                     "name": null,
                                     "ofType": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "InitiativesGoldenRecordFilter",
+                                        "name": "InitiativesPyraRecordFilter",
                                         "ofType": null
                                     }
                                 }
@@ -15489,7 +15489,7 @@
                                     "name": null,
                                     "ofType": {
                                         "kind": "INPUT_OBJECT",
-                                        "name": "InitiativesGoldenRecordFilter",
+                                        "name": "InitiativesPyraRecordFilter",
                                         "ofType": null
                                     }
                                 }
@@ -15501,7 +15501,7 @@
                             "description": "Negates the expression.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
-                                "name": "InitiativesGoldenRecordFilter",
+                                "name": "InitiativesPyraRecordFilter",
                                 "ofType": null
                             },
                             "defaultValue": null
@@ -15513,12 +15513,12 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "InitiativesGoldenRecordsConnection",
-                    "description": "A connection to a list of `InitiativesGoldenRecord` values.",
+                    "name": "InitiativesPyraRecordsConnection",
+                    "description": "A connection to a list of `InitiativesPyraRecord` values.",
                     "fields": [
                         {
                             "name": "nodes",
-                            "description": "A list of `InitiativesGoldenRecord` objects.",
+                            "description": "A list of `InitiativesPyraRecord` objects.",
                             "args": [],
                             "type": {
                                 "kind": "NON_NULL",
@@ -15531,7 +15531,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "OBJECT",
-                                            "name": "InitiativesGoldenRecord",
+                                            "name": "InitiativesPyraRecord",
                                             "ofType": null
                                         }
                                     }
@@ -15542,7 +15542,7 @@
                         },
                         {
                             "name": "edges",
-                            "description": "A list of edges which contains the `InitiativesGoldenRecord` and cursor to aid in pagination.",
+                            "description": "A list of edges which contains the `InitiativesPyraRecord` and cursor to aid in pagination.",
                             "args": [],
                             "type": {
                                 "kind": "NON_NULL",
@@ -15555,7 +15555,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "OBJECT",
-                                            "name": "InitiativesGoldenRecordsEdge",
+                                            "name": "InitiativesPyraRecordsEdge",
                                             "ofType": null
                                         }
                                     }
@@ -15582,7 +15582,7 @@
                         },
                         {
                             "name": "totalCount",
-                            "description": "The count of *all* `InitiativesGoldenRecord` you could get from the connection.",
+                            "description": "The count of *all* `InitiativesPyraRecord` you could get from the connection.",
                             "args": [],
                             "type": {
                                 "kind": "NON_NULL",
@@ -15604,7 +15604,7 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "InitiativesGoldenRecord",
+                    "name": "InitiativesPyraRecord",
                     "description": null,
                     "fields": [
                         {
@@ -15648,7 +15648,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "args": [],
                             "type": {
@@ -15749,7 +15749,7 @@
                         },
                         {
                             "name": "action",
-                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesGoldenRecord`.",
+                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesPyraRecord`.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
@@ -15767,8 +15767,8 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "InitiativesGoldenRecordsEdge",
-                    "description": "A `InitiativesGoldenRecord` edge in the connection.",
+                    "name": "InitiativesPyraRecordsEdge",
+                    "description": "A `InitiativesPyraRecord` edge in the connection.",
                     "fields": [
                         {
                             "name": "cursor",
@@ -15784,14 +15784,14 @@
                         },
                         {
                             "name": "node",
-                            "description": "The `InitiativesGoldenRecord` at the end of the edge.",
+                            "description": "The `InitiativesPyraRecord` at the end of the edge.",
                             "args": [],
                             "type": {
                                 "kind": "NON_NULL",
                                 "name": null,
                                 "ofType": {
                                     "kind": "OBJECT",
-                                    "name": "InitiativesGoldenRecord",
+                                    "name": "InitiativesPyraRecord",
                                     "ofType": null
                                 }
                             },
@@ -16359,13 +16359,13 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_ASC",
+                            "name": "BTC_ADDRESS_ASC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "BITG_ADDRESS_DESC",
+                            "name": "BTC_ADDRESS_DESC",
                             "description": null,
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -16412,8 +16412,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Checks for equality with the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Checks for equality with the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "SCALAR",
                                 "name": "String",
@@ -16453,8 +16453,8 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
-                            "description": "Filter by the object’s `bitgAddress` field.",
+                            "name": "bitcoinAddress",
+                            "description": "Filter by the object’s `bitcoinAddress` field.",
                             "type": {
                                 "kind": "INPUT_OBJECT",
                                 "name": "StringFilter",
@@ -18776,8 +18776,8 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "createInitiativesGoldenRecord",
-                            "description": "Creates a single `InitiativesGoldenRecord`.",
+                            "name": "createInitiativesPyraRecord",
+                            "description": "Creates a single `InitiativesPyraRecord`.",
                             "args": [
                                 {
                                     "name": "input",
@@ -18787,7 +18787,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "INPUT_OBJECT",
-                                            "name": "CreateInitiativesGoldenRecordInput",
+                                            "name": "CreateInitiativesPyraRecordInput",
                                             "ofType": null
                                         }
                                     },
@@ -18796,7 +18796,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "CreateInitiativesGoldenRecordPayload",
+                                "name": "CreateInitiativesPyraRecordPayload",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -19316,7 +19316,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "updateUserByBitgAddress",
+                            "name": "updateUserByBitcoinAddress",
                             "description": "Updates a single `User` using a unique key and a patch.",
                             "args": [
                                 {
@@ -19327,7 +19327,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "INPUT_OBJECT",
-                                            "name": "UpdateUserByBitgAddressInput",
+                                            "name": "UpdateUserByBitcoinAddressInput",
                                             "ofType": null
                                         }
                                     },
@@ -19397,8 +19397,8 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "updateInitiativesGoldenRecord",
-                            "description": "Updates a single `InitiativesGoldenRecord` using a unique key and a patch.",
+                            "name": "updateInitiativesPyraRecord",
+                            "description": "Updates a single `InitiativesPyraRecord` using a unique key and a patch.",
                             "args": [
                                 {
                                     "name": "input",
@@ -19408,7 +19408,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "INPUT_OBJECT",
-                                            "name": "UpdateInitiativesGoldenRecordInput",
+                                            "name": "UpdateInitiativesPyraRecordInput",
                                             "ofType": null
                                         }
                                     },
@@ -19417,7 +19417,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "UpdateInitiativesGoldenRecordPayload",
+                                "name": "UpdateInitiativesPyraRecordPayload",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -20018,7 +20018,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "deleteUserByBitgAddress",
+                            "name": "deleteUserByBitcoinAddress",
                             "description": "Deletes a single `User` using a unique key.",
                             "args": [
                                 {
@@ -20029,7 +20029,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "INPUT_OBJECT",
-                                            "name": "DeleteUserByBitgAddressInput",
+                                            "name": "DeleteUserByBitcoinAddressInput",
                                             "ofType": null
                                         }
                                     },
@@ -20099,8 +20099,8 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "deleteInitiativesGoldenRecord",
-                            "description": "Deletes a single `InitiativesGoldenRecord` using a unique key.",
+                            "name": "deleteInitiativesPyraRecord",
+                            "description": "Deletes a single `InitiativesPyraRecord` using a unique key.",
                             "args": [
                                 {
                                     "name": "input",
@@ -20110,7 +20110,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "INPUT_OBJECT",
-                                            "name": "DeleteInitiativesGoldenRecordInput",
+                                            "name": "DeleteInitiativesPyraRecordInput",
                                             "ofType": null
                                         }
                                     },
@@ -20119,7 +20119,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "DeleteInitiativesGoldenRecordPayload",
+                                "name": "DeleteInitiativesPyraRecordPayload",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -20423,7 +20423,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "signUpWithBitgAddress",
+                            "name": "signUpWithBitcoinAddress",
                             "description": null,
                             "args": [
                                 {
@@ -20434,7 +20434,7 @@
                                         "name": null,
                                         "ofType": {
                                             "kind": "INPUT_OBJECT",
-                                            "name": "SignUpWithBitgAddressInput",
+                                            "name": "SignUpWithBitcoinAddressInput",
                                             "ofType": null
                                         }
                                     },
@@ -20443,7 +20443,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "SignUpWithBitgAddressPayload",
+                                "name": "SignUpWithBitcoinAddressPayload",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -20860,7 +20860,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "totalBitgLimit",
+                            "name": "totalBitcoinLimit",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -21973,7 +21973,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -22245,7 +22245,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -23299,7 +23299,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgUpdatedAt",
+                            "name": "bitcoinUpdatedAt",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -23309,7 +23309,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgRebate",
+                            "name": "bitcoinRebate",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -23319,7 +23319,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -23585,7 +23585,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -23847,8 +23847,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "CreateInitiativesGoldenRecordInput",
-                    "description": "All input for the create `InitiativesGoldenRecord` mutation.",
+                    "name": "CreateInitiativesPyraRecordInput",
+                    "description": "All input for the create `InitiativesPyraRecord` mutation.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -23862,14 +23862,14 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "initiativesGoldenRecord",
-                            "description": "The `InitiativesGoldenRecord` to be created by this mutation.",
+                            "name": "initiativesPyraRecord",
+                            "description": "The `InitiativesPyraRecord` to be created by this mutation.",
                             "type": {
                                 "kind": "NON_NULL",
                                 "name": null,
                                 "ofType": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "InitiativesGoldenRecordInput",
+                                    "name": "InitiativesPyraRecordInput",
                                     "ofType": null
                                 }
                             },
@@ -23882,8 +23882,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "InitiativesGoldenRecordInput",
-                    "description": "An input for mutations affecting `InitiativesGoldenRecord`",
+                    "name": "InitiativesPyraRecordInput",
+                    "description": "An input for mutations affecting `InitiativesPyraRecord`",
                     "fields": null,
                     "inputFields": [
                         {
@@ -23917,7 +23917,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -24007,8 +24007,8 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "CreateInitiativesGoldenRecordPayload",
-                    "description": "The output of our create `InitiativesGoldenRecord` mutation.",
+                    "name": "CreateInitiativesPyraRecordPayload",
+                    "description": "The output of our create `InitiativesPyraRecord` mutation.",
                     "fields": [
                         {
                             "name": "clientMutationId",
@@ -24023,12 +24023,12 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecord",
-                            "description": "The `InitiativesGoldenRecord` that was created by this mutation.",
+                            "name": "initiativesPyraRecord",
+                            "description": "The `InitiativesPyraRecord` that was created by this mutation.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecord",
+                                "name": "InitiativesPyraRecord",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -24048,7 +24048,7 @@
                         },
                         {
                             "name": "action",
-                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesGoldenRecord`.",
+                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesPyraRecord`.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
@@ -24059,12 +24059,12 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecordEdge",
-                            "description": "An edge for our `InitiativesGoldenRecord`. May be used by Relay 1.",
+                            "name": "initiativesPyraRecordEdge",
+                            "description": "An edge for our `InitiativesPyraRecord`. May be used by Relay 1.",
                             "args": [
                                 {
                                     "name": "orderBy",
-                                    "description": "The method to use when ordering `InitiativesGoldenRecord`.",
+                                    "description": "The method to use when ordering `InitiativesPyraRecord`.",
                                     "type": {
                                         "kind": "LIST",
                                         "name": null,
@@ -24073,7 +24073,7 @@
                                             "name": null,
                                             "ofType": {
                                                 "kind": "ENUM",
-                                                "name": "InitiativesGoldenRecordsOrderBy",
+                                                "name": "InitiativesPyraRecordsOrderBy",
                                                 "ofType": null
                                             }
                                         }
@@ -24083,7 +24083,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecordsEdge",
+                                "name": "InitiativesPyraRecordsEdge",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -25185,7 +25185,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "totalBitgLimit",
+                            "name": "totalBitcoinLimit",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -26346,7 +26346,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -26628,7 +26628,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -27726,7 +27726,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgUpdatedAt",
+                            "name": "bitcoinUpdatedAt",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -27736,7 +27736,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgRebate",
+                            "name": "bitcoinRebate",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -27746,7 +27746,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -28095,7 +28095,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -28238,8 +28238,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "UpdateUserByBitgAddressInput",
-                    "description": "All input for the `updateUserByBitgAddress` mutation.",
+                    "name": "UpdateUserByBitcoinAddressInput",
+                    "description": "All input for the `updateUserByBitcoinAddress` mutation.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -28267,7 +28267,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -28514,8 +28514,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "UpdateInitiativesGoldenRecordInput",
-                    "description": "All input for the `updateInitiativesGoldenRecord` mutation.",
+                    "name": "UpdateInitiativesPyraRecordInput",
+                    "description": "All input for the `updateInitiativesPyraRecord` mutation.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -28530,13 +28530,13 @@
                         },
                         {
                             "name": "patch",
-                            "description": "An object where the defined keys will be set on the `InitiativesGoldenRecord` being updated.",
+                            "description": "An object where the defined keys will be set on the `InitiativesPyraRecord` being updated.",
                             "type": {
                                 "kind": "NON_NULL",
                                 "name": null,
                                 "ofType": {
                                     "kind": "INPUT_OBJECT",
-                                    "name": "InitiativesGoldenRecordPatch",
+                                    "name": "InitiativesPyraRecordPatch",
                                     "ofType": null
                                 }
                             },
@@ -28563,8 +28563,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "InitiativesGoldenRecordPatch",
-                    "description": "Represents an update to a `InitiativesGoldenRecord`. Fields that are set will be updated.",
+                    "name": "InitiativesPyraRecordPatch",
+                    "description": "Represents an update to a `InitiativesPyraRecord`. Fields that are set will be updated.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -28598,7 +28598,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -28684,8 +28684,8 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "UpdateInitiativesGoldenRecordPayload",
-                    "description": "The output of our update `InitiativesGoldenRecord` mutation.",
+                    "name": "UpdateInitiativesPyraRecordPayload",
+                    "description": "The output of our update `InitiativesPyraRecord` mutation.",
                     "fields": [
                         {
                             "name": "clientMutationId",
@@ -28700,12 +28700,12 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecord",
-                            "description": "The `InitiativesGoldenRecord` that was updated by this mutation.",
+                            "name": "initiativesPyraRecord",
+                            "description": "The `InitiativesPyraRecord` that was updated by this mutation.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecord",
+                                "name": "InitiativesPyraRecord",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -28725,7 +28725,7 @@
                         },
                         {
                             "name": "action",
-                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesGoldenRecord`.",
+                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesPyraRecord`.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
@@ -28736,12 +28736,12 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecordEdge",
-                            "description": "An edge for our `InitiativesGoldenRecord`. May be used by Relay 1.",
+                            "name": "initiativesPyraRecordEdge",
+                            "description": "An edge for our `InitiativesPyraRecord`. May be used by Relay 1.",
                             "args": [
                                 {
                                     "name": "orderBy",
-                                    "description": "The method to use when ordering `InitiativesGoldenRecord`.",
+                                    "description": "The method to use when ordering `InitiativesPyraRecord`.",
                                     "type": {
                                         "kind": "LIST",
                                         "name": null,
@@ -28750,7 +28750,7 @@
                                             "name": null,
                                             "ofType": {
                                                 "kind": "ENUM",
-                                                "name": "InitiativesGoldenRecordsOrderBy",
+                                                "name": "InitiativesPyraRecordsOrderBy",
                                                 "ofType": null
                                             }
                                         }
@@ -28760,7 +28760,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecordsEdge",
+                                "name": "InitiativesPyraRecordsEdge",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -31620,8 +31620,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "DeleteUserByBitgAddressInput",
-                    "description": "All input for the `deleteUserByBitgAddress` mutation.",
+                    "name": "DeleteUserByBitcoinAddressInput",
+                    "description": "All input for the `deleteUserByBitcoinAddress` mutation.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -31635,7 +31635,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -31815,8 +31815,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "DeleteInitiativesGoldenRecordInput",
-                    "description": "All input for the `deleteInitiativesGoldenRecord` mutation.",
+                    "name": "DeleteInitiativesPyraRecordInput",
+                    "description": "All input for the `deleteInitiativesPyraRecord` mutation.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -31850,8 +31850,8 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "DeleteInitiativesGoldenRecordPayload",
-                    "description": "The output of our delete `InitiativesGoldenRecord` mutation.",
+                    "name": "DeleteInitiativesPyraRecordPayload",
+                    "description": "The output of our delete `InitiativesPyraRecord` mutation.",
                     "fields": [
                         {
                             "name": "clientMutationId",
@@ -31866,19 +31866,19 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecord",
-                            "description": "The `InitiativesGoldenRecord` that was deleted by this mutation.",
+                            "name": "initiativesPyraRecord",
+                            "description": "The `InitiativesPyraRecord` that was deleted by this mutation.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecord",
+                                "name": "InitiativesPyraRecord",
                                 "ofType": null
                             },
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "deletedInitiativesGoldenRecordNodeId",
+                            "name": "deletedInitiativesPyraRecordNodeId",
                             "description": null,
                             "args": [],
                             "type": {
@@ -31903,7 +31903,7 @@
                         },
                         {
                             "name": "action",
-                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesGoldenRecord`.",
+                            "description": "Reads a single `CampaignAction` that is related to this `InitiativesPyraRecord`.",
                             "args": [],
                             "type": {
                                 "kind": "OBJECT",
@@ -31914,12 +31914,12 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "initiativesGoldenRecordEdge",
-                            "description": "An edge for our `InitiativesGoldenRecord`. May be used by Relay 1.",
+                            "name": "initiativesPyraRecordEdge",
+                            "description": "An edge for our `InitiativesPyraRecord`. May be used by Relay 1.",
                             "args": [
                                 {
                                     "name": "orderBy",
-                                    "description": "The method to use when ordering `InitiativesGoldenRecord`.",
+                                    "description": "The method to use when ordering `InitiativesPyraRecord`.",
                                     "type": {
                                         "kind": "LIST",
                                         "name": null,
@@ -31928,7 +31928,7 @@
                                             "name": null,
                                             "ofType": {
                                                 "kind": "ENUM",
-                                                "name": "InitiativesGoldenRecordsOrderBy",
+                                                "name": "InitiativesPyraRecordsOrderBy",
                                                 "ofType": null
                                             }
                                         }
@@ -31938,7 +31938,7 @@
                             ],
                             "type": {
                                 "kind": "OBJECT",
-                                "name": "InitiativesGoldenRecordsEdge",
+                                "name": "InitiativesPyraRecordsEdge",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -32734,7 +32734,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -32804,7 +32804,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -32886,7 +32886,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -32998,8 +32998,8 @@
                 },
                 {
                     "kind": "INPUT_OBJECT",
-                    "name": "SignUpWithBitgAddressInput",
-                    "description": "All input for the `signUpWithBitgAddress` mutation.",
+                    "name": "SignUpWithBitcoinAddressInput",
+                    "description": "All input for the `signUpWithBitcoinAddress` mutation.",
                     "fields": null,
                     "inputFields": [
                         {
@@ -33013,7 +33013,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "bitgAddress",
+                            "name": "bitcoinAddress",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -33029,8 +33029,8 @@
                 },
                 {
                     "kind": "OBJECT",
-                    "name": "SignUpWithBitgAddressPayload",
-                    "description": "The output of our `signUpWithBitgAddress` mutation.",
+                    "name": "SignUpWithBitcoinAddressPayload",
+                    "description": "The output of our `signUpWithBitcoinAddress` mutation.",
                     "fields": [
                         {
                             "name": "clientMutationId",
