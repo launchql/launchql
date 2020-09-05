@@ -1,5 +1,5 @@
 export const parseGraphQuery = (introQuery) => {
-  const types = introQuery.data.__schema.types;
+  const types = introQuery.__schema.types;
   const HASH = types.reduce((m, v) => {
     m[v.name] = v;
     return m;
