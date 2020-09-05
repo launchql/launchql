@@ -1,6 +1,6 @@
 {
   "name": "graphile-gen-js",
-  "version": "0.0.13",
+  "version": "0.1.0",
   "description": "Generate queries and mutations as JS functions for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-gen/tree/master/packages/graphile-gen-js#readme",
@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "graphile-gen": "^0.0.10",
+    "graphile-gen": "^0.1.0",
     "graphql": "^14.0.2"
   }
 }
