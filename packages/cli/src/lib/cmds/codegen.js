@@ -1,6 +1,6 @@
 import { exec } from 'shelljs';
 import { prompt } from 'inquirerer';
-import { crudify } from 'graphile-gen-js';
+import { pg as pgGen } from 'graphile-gen-js';
 import { introspect, introspectionResultsFromRaw } from 'introspectron';
 import { resolve } from 'path';
 import { PGUSER, PGPASSWORD, PGHOST, PGPORT } from '@launchql/db-env';
@@ -86,7 +86,7 @@ and datname !~ '^pg_';
   });
   const introspectron = introspectionResultsFromRaw(raw);
 
-  const obj = crudify(introspectron);
+  const obj = pgGen.crudify(introspectron);
   const pth = path.join(process.cwd(), 'codegen', database);
   mkdirp.sync(pth);
 

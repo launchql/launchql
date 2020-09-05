@@ -17,6 +17,7 @@ import deleteTable from './commands/delete/table';
 import deleteDatabase from './commands/delete/database';
 
 import exportDatabase from './commands/export/database';
+import exportSdk from './commands/export/sdk';
 
 import listDatabases from './commands/list/databases';
 import listSchemata from './commands/list/schemata';
@@ -58,7 +59,8 @@ export const functions = {
     table: updateTable
   },
   export: {
-    database: exportDatabase
+    database: exportDatabase,
+    sdk: exportSdk
   },
   list: {
     fields: listFields,
