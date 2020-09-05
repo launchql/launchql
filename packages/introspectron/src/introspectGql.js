@@ -1,83 +1,93 @@
-export const IntrospectionQuery = `
-    query IntrospectionQuery {
-        __schema {
-          queryType { name }
-      mutationType { name }
-      subscriptionType { name }
+import gql from 'graphql-tag';
+
+export const IntrospectionQuery = gql`
+  query IntrospectionQuery {
+    __schema {
+      queryType {
+        name
+      }
+      mutationType {
+        name
+      }
+      subscriptionType {
+        name
+      }
       types {
-            ...FullType
+        ...FullType
       }
       directives {
-            name
+        name
         description
         locations
         args {
-              ...InputValue
+          ...InputValue
         }
       }
     }
   }
   fragment FullType on __Type {
-        kind
+    kind
     name
     description
     fields(includeDeprecated: true) {
-          name
+      name
       description
       args {
-            ...InputValue
+        ...InputValue
       }
       type {
-            ...TypeRef
+        ...TypeRef
       }
       isDeprecated
       deprecationReason
     }
     inputFields {
-          ...InputValue
+      ...InputValue
     }
     interfaces {
-          ...TypeRef
+      ...TypeRef
     }
     enumValues(includeDeprecated: true) {
-          name
+      name
       description
       isDeprecated
       deprecationReason
     }
     possibleTypes {
-          ...TypeRef
+      ...TypeRef
     }
   }
   fragment InputValue on __InputValue {
-        name
+    name
     description
-    type { ...TypeRef }
+    type {
+      ...TypeRef
+    }
     defaultValue
   }
   fragment TypeRef on __Type {
-        kind
+    kind
     name
     ofType {
-          kind
+      kind
       name
       ofType {
-            kind
+        kind
         name
         ofType {
-              kind
+          kind
           name
           ofType {
-                kind
+            kind
             name
             ofType {
-                  kind
+              kind
               name
               ofType {
-                    kind
+                kind
                 name
                 ofType {
-                      kind
+                  kind
                   name
                 }
               }
