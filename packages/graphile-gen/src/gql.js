@@ -95,10 +95,19 @@ export const getOne = ({ operationName, query }) => {
     .map((key) => ({ name: key, ...query.properties[key] }))
     .filter((field) => field.isNotNull)
     .map((field) => {
-      const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+      const {
+        name: fieldName,
+        type: fieldType,
+        isNotNull,
+        isArray,
+        isArrayNotNull
+      } = field;
       let type = t.namedType({ type: fieldType });
-      if (isArray) type = t.listType({ type });
       if (isNotNull) type = t.nonNullType({ type });
+      if (isArray) {
+        type = t.listType({ type });
+        if (isArrayNotNull) type = t.nonNullType({ type });
+      }
       return t.variableDefinition({
         variable: t.variable({ name: fieldName }),
         type
@@ -159,10 +168,19 @@ export const createOne = ({ operationName, mutation }) => {
   );
 
   const variableDefinitions = attrs.map((field) => {
-    const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull
+    } = field;
     let type = t.namedType({ type: fieldType });
-    if (isArray) type = t.listType({ type });
     if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      if (isArrayNotNull) type = t.nonNullType({ type });
+    }
     return t.variableDefinition({
       variable: t.variable({ name: fieldName }),
       type
@@ -232,7 +250,7 @@ export const patchOne = ({ operationName, mutation }) => {
   const patchers = patchByAttrs.map((p) => p.name);
 
   const variableDefinitions = patchAttrs.map((field) => {
-    const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+    const { name: fieldName, type: fieldType, isArray } = field;
     let type = t.namedType({ type: fieldType });
     if (isArray) type = t.listType({ type });
     if (patchers.includes(field.name)) type = t.nonNullType({ type });
@@ -304,10 +322,20 @@ export const deleteOne = ({ operationName, mutation }) => {
 
   const deleteAttrs = objectToArray(mutation.properties.input.properties);
   const variableDefinitions = deleteAttrs.map((field) => {
-    const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull
+    } = field;
     let type = t.namedType({ type: fieldType });
-    if (isArray) type = t.listType({ type });
-    type = t.nonNullType({ type });
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      // no need to check isArrayNotNull since we need this field for deletion
+      type = t.nonNullType({ type });
+    }
     return t.variableDefinition({
       variable: t.variable({ name: fieldName }),
       type
@@ -355,10 +383,22 @@ export const createMutation = ({ operationName, mutation }) => {
   const otherAttrs = objectToArray(mutation.properties.input.properties);
 
   const variableDefinitions = otherAttrs.map((field) => {
-    const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull
+    } = field;
     let type = t.namedType({ type: fieldType });
-    if (isArray) type = t.listType({ type });
+    // if (isNotNull) type = t.nonNullType({ type });
+    // for some reason "other mutations" didn't have NON_NULL types
+    // in the introspection query, so for now just making it required
     type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      if (isArrayNotNull) type = t.nonNullType({ type });
+    }
     return t.variableDefinition({
       variable: t.variable({ name: fieldName }),
       type

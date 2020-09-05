@@ -395,19 +395,19 @@ Object {
                 "type": "String",
               },
               "versions": Object {
-                "isList": true,
+                "isArray": true,
                 "name": "versions",
                 "type": "JSON",
               },
               "versions2": Object {
-                "isList": true,
-                "isListNotNull": true,
+                "isArray": true,
+                "isArrayNotNull": true,
                 "name": "versions2",
                 "type": "JSON",
               },
               "versions3": Object {
-                "isList": true,
-                "isListNotNull": true,
+                "isArray": true,
+                "isArrayNotNull": true,
                 "isNotNull": true,
                 "name": "versions3",
                 "type": "JSON",
@@ -2482,7 +2482,7 @@ Object {
                 "type": "String",
               },
               "versions": Object {
-                "isList": true,
+                "isArray": true,
                 "name": "versions",
                 "type": "JSON",
               },
