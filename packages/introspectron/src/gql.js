@@ -212,7 +212,11 @@ export const parseGraphQuery = (introQuery) => {
 
         // multiple getters
         const model = getObjectType(nodes.type);
-        const selection = HASH[model].fields.map((f) => f.name);
+        // don't automatically select objects...
+        const selectionFields = HASH[model].fields.filter(
+          (f) => f.type.kind !== 'OBJECT'
+        );
+        const selection = selectionFields.map((f) => f.name);
         m[query.name] = {
           qtype: 'getMany',
           model,
@@ -221,7 +225,11 @@ export const parseGraphQuery = (introQuery) => {
       } else {
         // single getters
         const model = query.type.name;
-        const selection = HASH[model].fields.map((f) => f.name);
+        // don't automatically select objects...
+        const selectionFields = HASH[model].fields.filter(
+          (f) => f.type.kind !== 'OBJECT'
+        );
+        const selection = selectionFields.map((f) => f.name);
 
         m[query.name] = {
           model,
