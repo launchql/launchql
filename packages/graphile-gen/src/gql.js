@@ -50,7 +50,7 @@ const createGqlMutation = ({
 
 export const getMany = ({ operationName, query }) => {
   const queryName = inflection.camelize(
-    [operationName, 'query'].join('_'),
+    ['get', inflection.underscore(operationName), 'query'].join('_'),
     true
   );
 
@@ -87,7 +87,7 @@ export const getMany = ({ operationName, query }) => {
 
 export const getOne = ({ operationName, query }) => {
   const queryName = inflection.camelize(
-    [operationName, 'query'].join('_'),
+    ['get', inflection.underscore(operationName), 'query'].join('_'),
     true
   );
 
@@ -140,7 +140,7 @@ export const getOne = ({ operationName, query }) => {
 
 export const createOne = ({ operationName, mutation }) => {
   const mutationName = inflection.camelize(
-    [operationName, 'mutation'].join('_'),
+    [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
@@ -207,7 +207,7 @@ export const createOne = ({ operationName, mutation }) => {
 
 export const patchOne = ({ operationName, mutation }) => {
   const mutationName = inflection.camelize(
-    [operationName, 'mutation'].join('_'),
+    [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
@@ -288,7 +288,7 @@ export const patchOne = ({ operationName, mutation }) => {
 
 export const deleteOne = ({ operationName, mutation }) => {
   const mutationName = inflection.camelize(
-    [operationName, 'mutation'].join('_'),
+    [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
@@ -343,7 +343,7 @@ export const deleteOne = ({ operationName, mutation }) => {
 
 export const createMutation = ({ operationName, mutation }) => {
   const mutationName = inflection.camelize(
-    [operationName, 'mutation'].join('_'),
+    [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
@@ -404,26 +404,26 @@ export const createMutation = ({ operationName, mutation }) => {
 
 export const generate = (gql) => {
   return Object.keys(gql).reduce((m, v) => {
-    m[v] = false;
     const defn = gql[v];
+    let name, ast;
     if (defn.qtype === 'mutation') {
       if (defn.mutationType === 'create') {
-        m[v] = createOne({ operationName: v, mutation: defn });
+        ({ name, ast } = createOne({ operationName: v, mutation: defn }));
       } else if (defn.mutationType === 'patch') {
-        m[v] = patchOne({ operationName: v, mutation: defn });
+        ({ name, ast } = patchOne({ operationName: v, mutation: defn }));
       } else if (defn.mutationType === 'delete') {
-        m[v] = deleteOne({ operationName: v, mutation: defn });
+        ({ name, ast } = deleteOne({ operationName: v, mutation: defn }));
       } else {
-        m[v] = createMutation({ operationName: v, mutation: defn });
+        ({ name, ast } = createMutation({ operationName: v, mutation: defn }));
       }
     } else if (defn.qtype === 'getMany') {
-      m[v] = getMany({ operationName: v, query: defn });
+      ({ name, ast } = getMany({ operationName: v, query: defn }));
     } else if (defn.qtype === 'getOne') {
-      m[v] = getOne({ operationName: v, query: defn });
+      ({ name, ast } = getOne({ operationName: v, query: defn }));
     } else {
       console.warn('what is ' + v);
     }
-
+    if (name && ast) m[name] = { name, ast };
     return m;
   }, {});
 };
