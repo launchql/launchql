@@ -8,20 +8,32 @@ Generate JS files for mutations/queries for your Graphile GraphQL projects
 npm install graphile-gen
 ```
 
+## introspecting via Postgres
+
 ```js
 import {
-  updateOne,
-  createOne,
-  deleteOne,
-  getOne,
-  getMany,
-  getManyOwned
+  pg as gen
 } from 'graphile-gen';
 import { print } from 'graphql/language';
 
-const { ast } = createOne(tableDefn);
+const { ast } = gen.createOne(tableDefn);
 console.log(print(ast));
 ```
+
+
+## introspecting via GraphQL
+
+```js
+import {
+  gql as gen
+} from 'graphile-gen';
+import { print } from 'graphql/language';
+
+const { ast } = pgGen.generate(resultOfIntrospectionQuery);
+console.log(print(ast));
+```
+
+# output
 
 which will output:
 
@@ -38,15 +50,4 @@ mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhino
     }
   }
 }
-```
-
-# methods currently supported
-
-```
-  updateOne
-  createOne
-  deleteOne
-  getOne
-  getMany
-  getManyOwned
 ```

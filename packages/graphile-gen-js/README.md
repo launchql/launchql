@@ -7,9 +7,9 @@ npm install graphile-gen-js
 ```
 
 ```js
-import { crudify } from 'graphile-gen-js';
+import { pg as gen } from 'graphile-gen-js';
 
-crudify(introspection);
+gen.crudify(introspection);
 ```
 
 will produce

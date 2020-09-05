@@ -2,8 +2,10 @@
 
 Generate JS files for mutations/queries for your Graphile GraphQL projects
 
-* assumes using simple inflection
+## notes
 
+* assumes using simple inflection
+* used for scaffolding, NOT for production use
 
 ```sh
 npm install graphile-gen
