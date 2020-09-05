@@ -15,9 +15,9 @@ export const parseGraphQuery = (introQuery) => {
     }
 
     if (input.kind === 'LIST') {
-      context.isList = true;
+      context.isArray = true;
       if (context.isNotNull) {
-        context.isListNotNull = true;
+        context.isArrayNotNull = true;
         delete context.isNotNull;
       }
       return getInputForQueries(input.ofType, context);
@@ -67,9 +67,9 @@ export const parseGraphQuery = (introQuery) => {
     }
 
     if (input.kind === 'LIST') {
-      context.isList = true;
+      context.isArray = true;
       if (context.isNotNull) {
-        context.isListNotNull = true;
+        context.isArrayNotNull = true;
         delete context.isNotNull;
       }
       return getInputForMutations(input.ofType, context);
