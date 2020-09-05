@@ -1,254 +1,1705 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createOne test1 1`] = `
-"mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhinoFoot: String, $hiddenFoot: String, $lizardFeet: String) {
-  createProduct(input: {product: {id: $id, ownerId: $ownerId, name: $name, rhinoFoot: $rhinoFoot, hiddenFoot: $hiddenFoot, lizardFeet: $lizardFeet}}) {
-    product {
-      id
-      ownerId
-      name
-      rhinoFoot
-      hiddenFoot
-      lizardFeet
-    }
+exports[`generate 1`] = `
+Object {
+  "apiToken": "query apiTokenQuery($id: UUID!) {
+  apiToken(id: $id) {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
   }
 }
-"
-`;
-
-exports[`crudify 1`] = `
-Object {
-  "createMerchantMutation": "mutation createMerchantMutation($id: String, $name: String!) {
-  createMerchant(input: {merchant: {id: $id, name: $name}}) {
-    merchant {
+",
+  "apiTokenByAccessToken": "query apiTokenByAccessTokenQuery($accessToken: String!) {
+  apiTokenByAccessToken(accessToken: $accessToken) {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }
+}
+",
+  "apiTokens": "query apiTokensQuery {
+  apiTokens {totalCount, nodes: {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }}
+}
+",
+  "article": "query articleQuery($id: UUID!) {
+  article(id: $id) {
+    id
+    header
+    url
+    image
+    datePublished
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }
+}
+",
+  "articles": "query articlesQuery {
+  articles {totalCount, nodes: {
+    id
+    header
+    url
+    image
+    datePublished
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }}
+}
+",
+  "campaign": "query campaignQuery($id: UUID!) {
+  campaign(id: $id) {
+    id
+    name
+    description
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    logoId
+    backgroundImageId
+    partner
+    logo
+    backgroundImage
+    campaignActions
+  }
+}
+",
+  "campaignAction": "query campaignActionQuery($id: UUID!) {
+  campaignAction(id: $id) {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitgLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesGoldenRecordsByActionId
+  }
+}
+",
+  "campaignActionByName": "query campaignActionByNameQuery($name: String!) {
+  campaignActionByName(name: $name) {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitgLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesGoldenRecordsByActionId
+  }
+}
+",
+  "campaignActions": "query campaignActionsQuery {
+  campaignActions {totalCount, nodes: {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitgLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesGoldenRecordsByActionId
+  }}
+}
+",
+  "campaigns": "query campaignsQuery {
+  campaigns {totalCount, nodes: {
+    id
+    name
+    description
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    logoId
+    backgroundImageId
+    partner
+    logo
+    backgroundImage
+    campaignActions
+  }}
+}
+",
+  "completedAction": "query completedActionQuery($id: UUID!) {
+  completedAction(id: $id) {
+    id
+    dateCompleted
+    txid
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    actionId
+    user
+    action
+  }
+}
+",
+  "completedActions": "query completedActionsQuery {
+  completedActions {totalCount, nodes: {
+    id
+    dateCompleted
+    txid
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    actionId
+    user
+    action
+  }}
+}
+",
+  "createApiToken": "mutation createApiTokenMutation($id: UUID, $userId: UUID!, $accessToken: String, $accessTokenExpiresAt: Datetime) {
+  createApiToken(input: {apiToken: {id: $id, userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
       id
-      name
+      userId
+      accessToken
+      accessTokenExpiresAt
     }
   }
 }
 ",
-  "createProductMutation": "mutation createProductMutation($id: String, $merchantId: String, $name: String!, $description: String, $price: BigFloat) {
-  createProduct(input: {product: {id: $id, merchantId: $merchantId, name: $name, description: $description, price: $price}}) {
-    product {
+  "createArticle": "mutation createArticleMutation($id: UUID, $header: String, $url: String, $image: String, $datePublished: Datetime, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime) {
+  createArticle(input: {article: {id: $id, header: $header, url: $url, image: $image, datePublished: $datePublished, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt}}) {
+    article {
       id
-      merchantId
+      header
+      url
+      image
+      datePublished
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "createCampaign": "mutation createCampaignMutation($id: UUID, $name: String, $description: String, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID!, $logoId: UUID, $backgroundImageId: UUID) {
+  createCampaign(input: {campaign: {id: $id, name: $name, description: $description, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    campaign {
+      id
       name
       description
-      price
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      logoId
+      backgroundImageId
     }
   }
 }
 ",
-  "createUserMutation": "mutation createUserMutation($id: String, $name: String!, $email: String!, $password: String!) {
-  createUser(input: {user: {id: $id, name: $name, email: $email, password: $password}}) {
-    user {
+  "createCampaignAction": "mutation createCampaignActionMutation($id: UUID, $name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitgLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID!, $partnerId: UUID!, $thumbnailId: UUID) {
+  createCampaignAction(input: {campaignAction: {id: $id, name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitgLimit: $totalBitgLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+    campaignAction {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitgLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+    }
+  }
+}
+",
+  "createCompletedAction": "mutation createCompletedActionMutation($id: UUID, $dateCompleted: Datetime, $txid: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $userId: UUID!, $actionId: UUID!) {
+  createCompletedAction(input: {completedAction: {id: $id, dateCompleted: $dateCompleted, txid: $txid, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId, actionId: $actionId}}) {
+    completedAction {
+      id
+      dateCompleted
+      txid
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }
+  }
+}
+",
+  "createImage": "mutation createImageMutation($id: UUID, $name: String, $url: String, $versions: JSON, $versions2: JSON, $versions3: JSON!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime) {
+  createImage(input: {image: {id: $id, name: $name, url: $url, versions: $versions, versions2: $versions2, versions3: $versions3, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt}}) {
+    image {
+      id
+      name
+      url
+      versions
+      versions2
+      versions3
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "createInitiativesGoldenRecord": "mutation createInitiativesGoldenRecordMutation($id: UUID, $name: String, $email: String, $bitgAddress: String, $date: Datetime, $actionsCompleted: Int, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $actionId: UUID!) {
+  createInitiativesGoldenRecord(input: {initiativesGoldenRecord: {id: $id, name: $name, email: $email, bitgAddress: $bitgAddress, date: $date, actionsCompleted: $actionsCompleted, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, actionId: $actionId}}) {
+    initiativesGoldenRecord {
       id
       name
       email
-      password
+      bitgAddress
+      date
+      actionsCompleted
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
     }
   }
 }
 ",
-  "deleteMerchantMutation": "mutation deleteMerchantMutation($id: String!) {
+  "createMerchant": "mutation createMerchantMutation($id: UUID, $name: String, $bitgAddress: String, $description: String, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  createMerchant(input: {merchant: {id: $id, name: $name, bitgAddress: $bitgAddress, description: $description, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    merchant {
+      id
+      name
+      bitgAddress
+      description
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "createPartner": "mutation createPartnerMutation($id: UUID, $name: String, $description: String, $bitgAddress: String, $ownerId: UUID!, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  createPartner(input: {partner: {id: $id, name: $name, description: $description, bitgAddress: $bitgAddress, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    partner {
+      id
+      name
+      description
+      bitgAddress
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "createPermission": "mutation createPermissionMutation($id: UUID, $name: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $userId: UUID!) {
+  createPermission(input: {permission: {id: $id, name: $name, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId}}) {
+    permission {
+      id
+      name
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
+}
+",
+  "createProduct": "mutation createProductMutation($id: UUID, $name: String, $url: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $merchantId: UUID!, $iconId: UUID) {
+  createProduct(input: {product: {id: $id, name: $name, url: $url, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, merchantId: $merchantId, iconId: $iconId}}) {
+    product {
+      id
+      name
+      url
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      merchantId
+      iconId
+    }
+  }
+}
+",
+  "createService": "mutation createServiceMutation($id: UUID, $name: String, $description: String, $type: String, $data: JSON, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignActionId: UUID, $iconId: UUID) {
+  createService(input: {service: {id: $id, name: $name, description: $description, type: $type, data: $data, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignActionId: $campaignActionId, iconId: $iconId}}) {
+    service {
+      id
+      name
+      description
+      type
+      data
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignActionId
+      iconId
+    }
+  }
+}
+",
+  "createShopifyAccount": "mutation createShopifyAccountMutation($id: UUID, $name: String, $shopLink: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID!, $iconId: UUID) {
+  createShopifyAccount(input: {shopifyAccount: {id: $id, name: $name, shopLink: $shopLink, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, iconId: $iconId}}) {
+    shopifyAccount {
+      id
+      name
+      shopLink
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      iconId
+    }
+  }
+}
+",
+  "createShopifyOrder": "mutation createShopifyOrderMutation($id: UUID, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitgUpdatedAt: Datetime, $bitgRebate: BigFloat, $bitgAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID!, $shopifyAccountId: UUID!) {
+  createShopifyOrder(input: {shopifyOrder: {id: $id, orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitgUpdatedAt: $bitgUpdatedAt, bitgRebate: $bitgRebate, bitgAddress: $bitgAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
+    shopifyOrder {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitgUpdatedAt
+      bitgRebate
+      bitgAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+    }
+  }
+}
+",
+  "createShopifySecret": "mutation createShopifySecretMutation($id: UUID, $shopifyAccountId: UUID!, $name: String!, $value: String, $enc: String) {
+  createShopifySecret(input: {shopifySecret: {id: $id, shopifyAccountId: $shopifyAccountId, name: $name, value: $value, enc: $enc}}) {
+    shopifySecret {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "createUser": "mutation createUserMutation($id: UUID, $username: String, $bitgAddress: String) {
+  createUser(input: {user: {id: $id, username: $username, bitgAddress: $bitgAddress}}) {
+    user {
+      id
+      username
+      bitgAddress
+    }
+  }
+}
+",
+  "createUserEncryptedSecret": "mutation createUserEncryptedSecretMutation($id: UUID, $userId: UUID!, $name: String!, $value: String, $enc: String) {
+  createUserEncryptedSecret(input: {userEncryptedSecret: {id: $id, userId: $userId, name: $name, value: $value, enc: $enc}}) {
+    userEncryptedSecret {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "createUserSecret": "mutation createUserSecretMutation($id: UUID, $userId: UUID!, $name: String!, $value: String) {
+  createUserSecret(input: {userSecret: {id: $id, userId: $userId, name: $name, value: $value}}) {
+    userSecret {
+      id
+      userId
+      name
+      value
+    }
+  }
+}
+",
+  "deleteApiToken": "mutation deleteApiTokenMutation($id: UUID!) {
+  deleteApiToken(input: {id: $id}) {
+    apiToken {
+      id
+    }
+  }
+}
+",
+  "deleteApiTokenByAccessToken": "mutation deleteApiTokenByAccessTokenMutation($accessToken: String!) {
+  deleteApiTokenByAccessToken(input: {accessToken: $accessToken}) {
+    apiToken {
+      accessToken
+    }
+  }
+}
+",
+  "deleteArticle": "mutation deleteArticleMutation($id: UUID!) {
+  deleteArticle(input: {id: $id}) {
+    article {
+      id
+    }
+  }
+}
+",
+  "deleteCampaign": "mutation deleteCampaignMutation($id: UUID!) {
+  deleteCampaign(input: {id: $id}) {
+    campaign {
+      id
+    }
+  }
+}
+",
+  "deleteCampaignAction": "mutation deleteCampaignActionMutation($id: UUID!) {
+  deleteCampaignAction(input: {id: $id}) {
+    campaignAction {
+      id
+    }
+  }
+}
+",
+  "deleteCampaignActionByName": "mutation deleteCampaignActionByNameMutation($name: String!) {
+  deleteCampaignActionByName(input: {name: $name}) {
+    campaignAction {
+      name
+    }
+  }
+}
+",
+  "deleteCompletedAction": "mutation deleteCompletedActionMutation($id: UUID!) {
+  deleteCompletedAction(input: {id: $id}) {
+    completedAction {
+      id
+    }
+  }
+}
+",
+  "deleteImage": "mutation deleteImageMutation($id: UUID!) {
+  deleteImage(input: {id: $id}) {
+    image {
+      id
+    }
+  }
+}
+",
+  "deleteInitiativesGoldenRecord": "mutation deleteInitiativesGoldenRecordMutation($id: UUID!) {
+  deleteInitiativesGoldenRecord(input: {id: $id}) {
+    initiativesGoldenRecord {
+      id
+    }
+  }
+}
+",
+  "deleteMerchant": "mutation deleteMerchantMutation($id: UUID!) {
   deleteMerchant(input: {id: $id}) {
     merchant {
       id
-      name
     }
   }
 }
 ",
-  "deleteProductMutation": "mutation deleteProductMutation($id: String!) {
+  "deletePartner": "mutation deletePartnerMutation($id: UUID!) {
+  deletePartner(input: {id: $id}) {
+    partner {
+      id
+    }
+  }
+}
+",
+  "deletePermission": "mutation deletePermissionMutation($id: UUID!) {
+  deletePermission(input: {id: $id}) {
+    permission {
+      id
+    }
+  }
+}
+",
+  "deleteProduct": "mutation deleteProductMutation($id: UUID!) {
   deleteProduct(input: {id: $id}) {
     product {
       id
-      merchantId
-      name
-      description
-      price
     }
   }
 }
 ",
-  "deleteUserMutation": "mutation deleteUserMutation($id: String!) {
+  "deleteService": "mutation deleteServiceMutation($id: UUID!) {
+  deleteService(input: {id: $id}) {
+    service {
+      id
+    }
+  }
+}
+",
+  "deleteShopifyAccount": "mutation deleteShopifyAccountMutation($id: UUID!) {
+  deleteShopifyAccount(input: {id: $id}) {
+    shopifyAccount {
+      id
+    }
+  }
+}
+",
+  "deleteShopifyOrder": "mutation deleteShopifyOrderMutation($id: UUID!) {
+  deleteShopifyOrder(input: {id: $id}) {
+    shopifyOrder {
+      id
+    }
+  }
+}
+",
+  "deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountId": "mutation deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($orderId: Int!, $email: String!, $shopifyAccountId: UUID!) {
+  deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId}) {
+    shopifyOrder {
+      orderId
+      email
+      shopifyAccountId
+    }
+  }
+}
+",
+  "deleteShopifySecret": "mutation deleteShopifySecretMutation($id: UUID!) {
+  deleteShopifySecret(input: {id: $id}) {
+    shopifySecret {
+      id
+    }
+  }
+}
+",
+  "deleteShopifySecretByShopifyAccountIdAndName": "mutation deleteShopifySecretByShopifyAccountIdAndNameMutation($shopifyAccountId: UUID!, $name: String!) {
+  deleteShopifySecretByShopifyAccountIdAndName(input: {shopifyAccountId: $shopifyAccountId, name: $name}) {
+    shopifySecret {
+      shopifyAccountId
+      name
+    }
+  }
+}
+",
+  "deleteUser": "mutation deleteUserMutation($id: UUID!) {
   deleteUser(input: {id: $id}) {
     user {
       id
-      name
-      email
-      password
     }
   }
 }
 ",
-  "getMerchantQuery": "query getMerchantQuery($id: String!) {
+  "deleteUserByBitgAddress": "mutation deleteUserByBitgAddressMutation($bitgAddress: String!) {
+  deleteUserByBitgAddress(input: {bitgAddress: $bitgAddress}) {
+    user {
+      bitgAddress
+    }
+  }
+}
+",
+  "deleteUserByUsername": "mutation deleteUserByUsernameMutation($username: String!) {
+  deleteUserByUsername(input: {username: $username}) {
+    user {
+      username
+    }
+  }
+}
+",
+  "deleteUserEncryptedSecret": "mutation deleteUserEncryptedSecretMutation($id: UUID!) {
+  deleteUserEncryptedSecret(input: {id: $id}) {
+    userEncryptedSecret {
+      id
+    }
+  }
+}
+",
+  "deleteUserEncryptedSecretByUserIdAndName": "mutation deleteUserEncryptedSecretByUserIdAndNameMutation($userId: UUID!, $name: String!) {
+  deleteUserEncryptedSecretByUserIdAndName(input: {userId: $userId, name: $name}) {
+    userEncryptedSecret {
+      userId
+      name
+    }
+  }
+}
+",
+  "deleteUserSecret": "mutation deleteUserSecretMutation($id: UUID!) {
+  deleteUserSecret(input: {id: $id}) {
+    userSecret {
+      id
+    }
+  }
+}
+",
+  "deleteUserSecretByUserIdAndName": "mutation deleteUserSecretByUserIdAndNameMutation($userId: UUID!, $name: String!) {
+  deleteUserSecretByUserIdAndName(input: {userId: $userId, name: $name}) {
+    userSecret {
+      userId
+      name
+    }
+  }
+}
+",
+  "getCurrentUser": "query getCurrentUserQuery {
+  getCurrentUser {
+    id
+    username
+    bitgAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "image": "query imageQuery($id: UUID!) {
+  image(id: $id) {
+    id
+    name
+    url
+    versions
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnersByLogoId
+    partnersByBackgroundImageId
+    campaignsByLogoId
+    campaignsByBackgroundImageId
+    campaignActionsByThumbnailId
+    servicesByIconId
+    merchantsByLogoId
+    merchantsByBackgroundImageId
+    productsByIconId
+    shopifyAccountsByIconId
+  }
+}
+",
+  "images": "query imagesQuery {
+  images {totalCount, nodes: {
+    id
+    name
+    url
+    versions
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnersByLogoId
+    partnersByBackgroundImageId
+    campaignsByLogoId
+    campaignsByBackgroundImageId
+    campaignActionsByThumbnailId
+    servicesByIconId
+    merchantsByLogoId
+    merchantsByBackgroundImageId
+    productsByIconId
+    shopifyAccountsByIconId
+  }}
+}
+",
+  "initiativesGoldenRecord": "query initiativesGoldenRecordQuery($id: UUID!) {
+  initiativesGoldenRecord(id: $id) {
+    id
+    name
+    email
+    bitgAddress
+    date
+    actionsCompleted
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    action
+  }
+}
+",
+  "initiativesGoldenRecords": "query initiativesGoldenRecordsQuery {
+  initiativesGoldenRecords {totalCount, nodes: {
+    id
+    name
+    email
+    bitgAddress
+    date
+    actionsCompleted
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    action
+  }}
+}
+",
+  "merchant": "query merchantQuery($id: UUID!) {
   merchant(id: $id) {
     id
     name
+    bitgAddress
+    description
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    products
   }
 }
 ",
-  "getMerchantsQuery": "query getMerchantsQuery {
+  "merchants": "query merchantsQuery {
   merchants {totalCount, nodes: {
     id
     name
+    bitgAddress
+    description
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    products
   }}
 }
 ",
-  "getProductQuery": "query getProductQuery($id: String!) {
+  "partner": "query partnerQuery($id: UUID!) {
+  partner(id: $id) {
+    id
+    name
+    description
+    bitgAddress
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    campaigns
+    campaignActions
+    shopifyAccounts
+    shopifyOrders
+  }
+}
+",
+  "partners": "query partnersQuery {
+  partners {totalCount, nodes: {
+    id
+    name
+    description
+    bitgAddress
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    campaigns
+    campaignActions
+    shopifyAccounts
+    shopifyOrders
+  }}
+}
+",
+  "permission": "query permissionQuery($id: UUID!) {
+  permission(id: $id) {
+    id
+    name
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    user
+  }
+}
+",
+  "permissions": "query permissionsQuery {
+  permissions {totalCount, nodes: {
+    id
+    name
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    user
+  }}
+}
+",
+  "product": "query productQuery($id: UUID!) {
   product(id: $id) {
     id
-    merchantId
     name
-    description
-    price
+    url
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    merchantId
+    iconId
+    merchant
+    icon
   }
 }
 ",
-  "getProductsByMerchantIdQuery": "query getProductsByMerchantIdQuery($merchantId: String!) {
-  products(condition: {merchantId: $merchantId}) {totalCount, nodes: {
-    id
-    merchantId
-    name
-    description
-    price
-  }}
-}
-",
-  "getProductsQuery": "query getProductsQuery {
+  "products": "query productsQuery {
   products {totalCount, nodes: {
     id
+    name
+    url
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
     merchantId
+    iconId
+    merchant
+    icon
+  }}
+}
+",
+  "service": "query serviceQuery($id: UUID!) {
+  service(id: $id) {
+    id
     name
     description
-    price
-  }}
-}
-",
-  "getUserQuery": "query getUserQuery($id: String!) {
-  user(id: $id) {
-    id
-    name
-    email
-    password
+    type
+    data
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignActionId
+    iconId
+    campaignAction
+    icon
   }
 }
 ",
-  "getUsersQuery": "query getUsersQuery {
-  users {totalCount, nodes: {
+  "services": "query servicesQuery {
+  services {totalCount, nodes: {
     id
     name
-    email
-    password
+    description
+    type
+    data
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignActionId
+    iconId
+    campaignAction
+    icon
   }}
 }
 ",
-  "updateMerchantMutation": "mutation updateMerchantMutation($id: String!, $name: String) {
-  updateMerchant(input: {id: $id, patch: {name: $name}}) {
-    merchant {
+  "shopifyAccount": "query shopifyAccountQuery($id: UUID!) {
+  shopifyAccount(id: $id) {
+    id
+    name
+    shopLink
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    iconId
+    partner
+    icon
+    shopifyOrders
+  }
+}
+",
+  "shopifyAccounts": "query shopifyAccountsQuery {
+  shopifyAccounts {totalCount, nodes: {
+    id
+    name
+    shopLink
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    iconId
+    partner
+    icon
+    shopifyOrders
+  }}
+}
+",
+  "shopifyOrder": "query shopifyOrderQuery($id: UUID!) {
+  shopifyOrder(id: $id) {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitgUpdatedAt
+    bitgRebate
+    bitgAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }
+}
+",
+  "shopifyOrderByOrderIdAndEmailAndShopifyAccountId": "query shopifyOrderByOrderIdAndEmailAndShopifyAccountIdQuery($orderId: Int!, $email: String!, $shopifyAccountId: UUID!) {
+  shopifyOrderByOrderIdAndEmailAndShopifyAccountId(orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId) {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitgUpdatedAt
+    bitgRebate
+    bitgAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }
+}
+",
+  "shopifyOrders": "query shopifyOrdersQuery {
+  shopifyOrders {totalCount, nodes: {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitgUpdatedAt
+    bitgRebate
+    bitgAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }}
+}
+",
+  "shopifySecret": "query shopifySecretQuery($id: UUID!) {
+  shopifySecret(id: $id) {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }
+}
+",
+  "shopifySecretByShopifyAccountIdAndName": "query shopifySecretByShopifyAccountIdAndNameQuery($shopifyAccountId: UUID!, $name: String!) {
+  shopifySecretByShopifyAccountIdAndName(shopifyAccountId: $shopifyAccountId, name: $name) {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }
+}
+",
+  "shopifySecrets": "query shopifySecretsQuery {
+  shopifySecrets {totalCount, nodes: {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }}
+}
+",
+  "shopifySecretsUpsert": "mutation shopifySecretsUpsertMutation($vShopifyAccountId: UUID!, $secretName: String!, $secretValue: String!, $fieldEncoding: String!) {
+  shopifySecretsUpsert(input: {vShopifyAccountId: $vShopifyAccountId, secretName: $secretName, secretValue: $secretValue, fieldEncoding: $fieldEncoding}) {
+    clientMutationId
+  }
+}
+",
+  "signInRecordFailure": "mutation signInRecordFailureMutation($bitgAddress: String!) {
+  signInRecordFailure(input: {bitgAddress: $bitgAddress}) {
+    clientMutationId
+  }
+}
+",
+  "signInRequestChallenge": "mutation signInRequestChallengeMutation($bitgAddress: String!) {
+  signInRequestChallenge(input: {bitgAddress: $bitgAddress}) {
+    clientMutationId
+  }
+}
+",
+  "signInWithChallenge": "mutation signInWithChallengeMutation($bitgAddress: String!, $specialValue: String!) {
+  signInWithChallenge(input: {bitgAddress: $bitgAddress, specialValue: $specialValue}) {
+    clientMutationId
+  }
+}
+",
+  "signUpWithBitgAddress": "mutation signUpWithBitgAddressMutation($bitgAddress: String!) {
+  signUpWithBitgAddress(input: {bitgAddress: $bitgAddress}) {
+    clientMutationId
+  }
+}
+",
+  "updateApiToken": "mutation updateApiTokenMutation($id: UUID!, $userId: UUID, $accessToken: String, $accessTokenExpiresAt: Datetime) {
+  updateApiToken(input: {id: $id, patch: {userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
       id
-      name
+      userId
+      accessToken
+      accessTokenExpiresAt
     }
   }
 }
 ",
-  "updateProductMutation": "mutation updateProductMutation($id: String!, $merchantId: String, $name: String, $description: String, $price: BigFloat) {
-  updateProduct(input: {id: $id, patch: {merchantId: $merchantId, name: $name, description: $description, price: $price}}) {
-    product {
+  "updateApiTokenByAccessToken": "mutation updateApiTokenByAccessTokenMutation($id: UUID, $userId: UUID, $accessToken: String!, $accessTokenExpiresAt: Datetime) {
+  updateApiTokenByAccessToken(input: {accessToken: $accessToken, patch: {id: $id, userId: $userId, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
       id
-      merchantId
+      userId
+      accessToken
+      accessTokenExpiresAt
+    }
+  }
+}
+",
+  "updateArticle": "mutation updateArticleMutation($id: UUID!, $header: String, $url: String, $image: String, $datePublished: Datetime, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime) {
+  updateArticle(input: {id: $id, patch: {header: $header, url: $url, image: $image, datePublished: $datePublished, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt}}) {
+    article {
+      id
+      header
+      url
+      image
+      datePublished
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "updateCampaign": "mutation updateCampaignMutation($id: UUID!, $name: String, $description: String, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  updateCampaign(input: {id: $id, patch: {name: $name, description: $description, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    campaign {
+      id
       name
       description
-      price
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      logoId
+      backgroundImageId
     }
   }
 }
 ",
-  "updateUserMutation": "mutation updateUserMutation($id: String!, $name: String, $email: String, $password: String) {
-  updateUser(input: {id: $id, patch: {name: $name, email: $email, password: $password}}) {
-    user {
+  "updateCampaignAction": "mutation updateCampaignActionMutation($id: UUID!, $name: String, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitgLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  updateCampaignAction(input: {id: $id, patch: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitgLimit: $totalBitgLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+    campaignAction {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitgLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+    }
+  }
+}
+",
+  "updateCampaignActionByName": "mutation updateCampaignActionByNameMutation($id: UUID, $name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitgLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  updateCampaignActionByName(input: {name: $name, patch: {id: $id, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitgLimit: $totalBitgLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+    campaignAction {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitgLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+    }
+  }
+}
+",
+  "updateCompletedAction": "mutation updateCompletedActionMutation($id: UUID!, $dateCompleted: Datetime, $txid: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $userId: UUID, $actionId: UUID) {
+  updateCompletedAction(input: {id: $id, patch: {dateCompleted: $dateCompleted, txid: $txid, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId, actionId: $actionId}}) {
+    completedAction {
+      id
+      dateCompleted
+      txid
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }
+  }
+}
+",
+  "updateImage": "mutation updateImageMutation($id: UUID!, $name: String, $url: String, $versions: JSON, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime) {
+  updateImage(input: {id: $id, patch: {name: $name, url: $url, versions: $versions, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt}}) {
+    image {
+      id
+      name
+      url
+      versions
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "updateInitiativesGoldenRecord": "mutation updateInitiativesGoldenRecordMutation($id: UUID!, $name: String, $email: String, $bitgAddress: String, $date: Datetime, $actionsCompleted: Int, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $actionId: UUID) {
+  updateInitiativesGoldenRecord(input: {id: $id, patch: {name: $name, email: $email, bitgAddress: $bitgAddress, date: $date, actionsCompleted: $actionsCompleted, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, actionId: $actionId}}) {
+    initiativesGoldenRecord {
       id
       name
       email
-      password
+      bitgAddress
+      date
+      actionsCompleted
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
     }
   }
 }
 ",
-}
-`;
-
-exports[`deleteOne test1 1`] = `
-"mutation deleteProductMutation($id: UUID!) {
-  deleteProduct(input: {id: $id}) {
-    product {
+  "updateMerchant": "mutation updateMerchantMutation($id: UUID!, $name: String, $bitgAddress: String, $description: String, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  updateMerchant(input: {id: $id, patch: {name: $name, bitgAddress: $bitgAddress, description: $description, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    merchant {
       id
-      ownerId
       name
-      rhinoFoot
-      hiddenFoot
-      lizardFeet
+      bitgAddress
+      description
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
     }
   }
 }
-"
-`;
-
-exports[`getMany test1 1`] = `
-"query getProductsQuery {
-  products {totalCount, nodes: {
-    id
-    ownerId
-    name
-    rhinoFoot
-    hiddenFoot
-    lizardFeet
-  }}
-}
-"
-`;
-
-exports[`getManyOwned test1 1`] = `
-"query getProductsByOwnerIdQuery($ownerId: UUID!) {
-  products(condition: {ownerId: $ownerId}) {totalCount, nodes: {
-    id
-    ownerId
-    name
-    rhinoFoot
-    hiddenFoot
-    lizardFeet
-  }}
-}
-"
-`;
-
-exports[`getOne test1 1`] = `
-"query getProductQuery($id: UUID!) {
-  product(id: $id) {
-    id
-    ownerId
-    name
-    rhinoFoot
-    hiddenFoot
-    lizardFeet
-  }
-}
-"
-`;
-
-exports[`updateOne test1 1`] = `
-"mutation updateProductMutation($id: UUID!, $ownerId: UUID, $name: String, $rhinoFoot: String, $hiddenFoot: String, $lizardFeet: String) {
-  updateProduct(input: {id: $id, patch: {ownerId: $ownerId, name: $name, rhinoFoot: $rhinoFoot, hiddenFoot: $hiddenFoot, lizardFeet: $lizardFeet}}) {
-    product {
+",
+  "updatePartner": "mutation updatePartnerMutation($id: UUID!, $name: String, $description: String, $bitgAddress: String, $ownerId: UUID, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $logoId: UUID, $backgroundImageId: UUID) {
+  updatePartner(input: {id: $id, patch: {name: $name, description: $description, bitgAddress: $bitgAddress, ownerId: $ownerId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    partner {
       id
-      ownerId
       name
-      rhinoFoot
-      hiddenFoot
-      lizardFeet
+      description
+      bitgAddress
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
     }
   }
 }
-"
+",
+  "updatePermission": "mutation updatePermissionMutation($id: UUID!, $name: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $userId: UUID) {
+  updatePermission(input: {id: $id, patch: {name: $name, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId}}) {
+    permission {
+      id
+      name
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
+}
+",
+  "updateProduct": "mutation updateProductMutation($id: UUID!, $name: String, $url: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $merchantId: UUID, $iconId: UUID) {
+  updateProduct(input: {id: $id, patch: {name: $name, url: $url, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, merchantId: $merchantId, iconId: $iconId}}) {
+    product {
+      id
+      name
+      url
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      merchantId
+      iconId
+    }
+  }
+}
+",
+  "updateService": "mutation updateServiceMutation($id: UUID!, $name: String, $description: String, $type: String, $data: JSON, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $campaignActionId: UUID, $iconId: UUID) {
+  updateService(input: {id: $id, patch: {name: $name, description: $description, type: $type, data: $data, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, campaignActionId: $campaignActionId, iconId: $iconId}}) {
+    service {
+      id
+      name
+      description
+      type
+      data
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignActionId
+      iconId
+    }
+  }
+}
+",
+  "updateShopifyAccount": "mutation updateShopifyAccountMutation($id: UUID!, $name: String, $shopLink: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $iconId: UUID) {
+  updateShopifyAccount(input: {id: $id, patch: {name: $name, shopLink: $shopLink, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, iconId: $iconId}}) {
+    shopifyAccount {
+      id
+      name
+      shopLink
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      iconId
+    }
+  }
+}
+",
+  "updateShopifyOrder": "mutation updateShopifyOrderMutation($id: UUID!, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitgUpdatedAt: Datetime, $bitgRebate: BigFloat, $bitgAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $shopifyAccountId: UUID) {
+  updateShopifyOrder(input: {id: $id, patch: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitgUpdatedAt: $bitgUpdatedAt, bitgRebate: $bitgRebate, bitgAddress: $bitgAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
+    shopifyOrder {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitgUpdatedAt
+      bitgRebate
+      bitgAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+    }
+  }
+}
+",
+  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId": "mutation updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($id: UUID, $orderId: Int!, $email: String!, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitgUpdatedAt: Datetime, $bitgRebate: BigFloat, $bitgAddress: String, $paidDate: Datetime, $transactionId: String, $createdBy: UUID, $updatedBy: UUID, $createdAt: Datetime, $updatedAt: Datetime, $partnerId: UUID, $shopifyAccountId: UUID!) {
+  updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId, patch: {id: $id, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitgUpdatedAt: $bitgUpdatedAt, bitgRebate: $bitgRebate, bitgAddress: $bitgAddress, paidDate: $paidDate, transactionId: $transactionId, createdBy: $createdBy, updatedBy: $updatedBy, createdAt: $createdAt, updatedAt: $updatedAt, partnerId: $partnerId}}) {
+    shopifyOrder {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitgUpdatedAt
+      bitgRebate
+      bitgAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+    }
+  }
+}
+",
+  "updateShopifySecret": "mutation updateShopifySecretMutation($id: UUID!, $shopifyAccountId: UUID, $name: String, $value: String, $enc: String) {
+  updateShopifySecret(input: {id: $id, patch: {shopifyAccountId: $shopifyAccountId, name: $name, value: $value, enc: $enc}}) {
+    shopifySecret {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateShopifySecretByShopifyAccountIdAndName": "mutation updateShopifySecretByShopifyAccountIdAndNameMutation($id: UUID, $shopifyAccountId: UUID!, $name: String!, $value: String, $enc: String) {
+  updateShopifySecretByShopifyAccountIdAndName(input: {shopifyAccountId: $shopifyAccountId, name: $name, patch: {id: $id, value: $value, enc: $enc}}) {
+    shopifySecret {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateUser": "mutation updateUserMutation($id: UUID!, $username: String, $bitgAddress: String) {
+  updateUser(input: {id: $id, patch: {username: $username, bitgAddress: $bitgAddress}}) {
+    user {
+      id
+      username
+      bitgAddress
+    }
+  }
+}
+",
+  "updateUserByBitgAddress": "mutation updateUserByBitgAddressMutation($id: UUID, $username: String, $bitgAddress: String!) {
+  updateUserByBitgAddress(input: {bitgAddress: $bitgAddress, patch: {id: $id, username: $username}}) {
+    user {
+      id
+      username
+      bitgAddress
+    }
+  }
+}
+",
+  "updateUserByUsername": "mutation updateUserByUsernameMutation($id: UUID, $username: String!, $bitgAddress: String) {
+  updateUserByUsername(input: {username: $username, patch: {id: $id, bitgAddress: $bitgAddress}}) {
+    user {
+      id
+      username
+      bitgAddress
+    }
+  }
+}
+",
+  "updateUserEncryptedSecret": "mutation updateUserEncryptedSecretMutation($id: UUID!, $userId: UUID, $name: String, $value: String, $enc: String) {
+  updateUserEncryptedSecret(input: {id: $id, patch: {userId: $userId, name: $name, value: $value, enc: $enc}}) {
+    userEncryptedSecret {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateUserEncryptedSecretByUserIdAndName": "mutation updateUserEncryptedSecretByUserIdAndNameMutation($id: UUID, $userId: UUID!, $name: String!, $value: String, $enc: String) {
+  updateUserEncryptedSecretByUserIdAndName(input: {userId: $userId, name: $name, patch: {id: $id, value: $value, enc: $enc}}) {
+    userEncryptedSecret {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateUserSecret": "mutation updateUserSecretMutation($id: UUID!, $userId: UUID, $name: String, $value: String) {
+  updateUserSecret(input: {id: $id, patch: {userId: $userId, name: $name, value: $value}}) {
+    userSecret {
+      id
+      userId
+      name
+      value
+    }
+  }
+}
+",
+  "updateUserSecretByUserIdAndName": "mutation updateUserSecretByUserIdAndNameMutation($id: UUID, $userId: UUID!, $name: String!, $value: String) {
+  updateUserSecretByUserIdAndName(input: {userId: $userId, name: $name, patch: {id: $id, value: $value}}) {
+    userSecret {
+      id
+      userId
+      name
+      value
+    }
+  }
+}
+",
+  "user": "query userQuery($id: UUID!) {
+  user(id: $id) {
+    id
+    username
+    bitgAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "userByBitgAddress": "query userByBitgAddressQuery($bitgAddress: String!) {
+  userByBitgAddress(bitgAddress: $bitgAddress) {
+    id
+    username
+    bitgAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "userByUsername": "query userByUsernameQuery($username: String!) {
+  userByUsername(username: $username) {
+    id
+    username
+    bitgAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "userEncryptedSecret": "query userEncryptedSecretQuery($id: UUID!) {
+  userEncryptedSecret(id: $id) {
+    id
+    userId
+    name
+    value
+    enc
+  }
+}
+",
+  "userEncryptedSecretByUserIdAndName": "query userEncryptedSecretByUserIdAndNameQuery($userId: UUID!, $name: String!) {
+  userEncryptedSecretByUserIdAndName(userId: $userId, name: $name) {
+    id
+    userId
+    name
+    value
+    enc
+  }
+}
+",
+  "userEncryptedSecrets": "query userEncryptedSecretsQuery {
+  userEncryptedSecrets {totalCount, nodes: {
+    id
+    userId
+    name
+    value
+    enc
+  }}
+}
+",
+  "userEncryptedSecretsUpsert": "mutation userEncryptedSecretsUpsertMutation($vUserId: UUID!, $secretName: String!, $secretValue: String!, $fieldEncoding: String!) {
+  userEncryptedSecretsUpsert(input: {vUserId: $vUserId, secretName: $secretName, secretValue: $secretValue, fieldEncoding: $fieldEncoding}) {
+    clientMutationId
+  }
+}
+",
+  "userSecret": "query userSecretQuery($id: UUID!) {
+  userSecret(id: $id) {
+    id
+    userId
+    name
+    value
+  }
+}
+",
+  "userSecretByUserIdAndName": "query userSecretByUserIdAndNameQuery($userId: UUID!, $name: String!) {
+  userSecretByUserIdAndName(userId: $userId, name: $name) {
+    id
+    userId
+    name
+    value
+  }
+}
+",
+  "userSecrets": "query userSecretsQuery {
+  userSecrets {totalCount, nodes: {
+    id
+    userId
+    name
+    value
+  }}
+}
+",
+  "users": "query usersQuery {
+  users {totalCount, nodes: {
+    id
+    username
+    bitgAddress
+    permissions
+    completedActions
+  }}
+}
+",
+  "uuidGenerateSeededUuid": "mutation uuidGenerateSeededUuidMutation($seed: String!) {
+  uuidGenerateSeededUuid(input: {seed: $seed}) {
+    clientMutationId
+  }
+}
+",
+  "uuidGenerateV4": "mutation uuidGenerateV4Mutation {
+  uuidGenerateV4 {
+    clientMutationId
+  }
+}
+",
+}
 `;

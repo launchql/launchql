@@ -1,0 +1,4158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mutations 1`] = `
+Object {
+  "createApiToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "apiToken": Object {
+            "isNotNull": true,
+            "name": "apiToken",
+            "properties": Object {
+              "accessToken": Object {
+                "name": "accessToken",
+                "type": "String",
+              },
+              "accessTokenExpiresAt": Object {
+                "name": "accessTokenExpiresAt",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "isNotNull": true,
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateApiTokenInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createArticle": Object {
+    "model": "Article",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "article": Object {
+            "isNotNull": true,
+            "name": "article",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "datePublished": Object {
+                "name": "datePublished",
+                "type": "Datetime",
+              },
+              "header": Object {
+                "name": "header",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "image": Object {
+                "name": "image",
+                "type": "String",
+              },
+              "ownerId": Object {
+                "isNotNull": true,
+                "name": "ownerId",
+                "type": "UUID",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "url": Object {
+                "name": "url",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "CreateArticleInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createCampaign": Object {
+    "model": "Campaign",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "campaign": Object {
+            "isNotNull": true,
+            "name": "campaign",
+            "properties": Object {
+              "backgroundImageId": Object {
+                "name": "backgroundImageId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "endDate": Object {
+                "name": "endDate",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "logoId": Object {
+                "name": "logoId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "isNotNull": true,
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "startDate": Object {
+                "name": "startDate",
+                "type": "Datetime",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateCampaignInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createCampaignAction": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "campaignAction": Object {
+            "isNotNull": true,
+            "name": "campaignAction",
+            "properties": Object {
+              "actionDailyLimit": Object {
+                "name": "actionDailyLimit",
+                "type": "Int",
+              },
+              "actionWeeklyLimit": Object {
+                "name": "actionWeeklyLimit",
+                "type": "Int",
+              },
+              "campaignId": Object {
+                "isNotNull": true,
+                "name": "campaignId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "endDate": Object {
+                "name": "endDate",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "isNotNull": true,
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "isNotNull": true,
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "rewardAmount": Object {
+                "name": "rewardAmount",
+                "type": "BigFloat",
+              },
+              "rewardUnit": Object {
+                "name": "rewardUnit",
+                "type": "String",
+              },
+              "startDate": Object {
+                "name": "startDate",
+                "type": "Datetime",
+              },
+              "thumbnailId": Object {
+                "name": "thumbnailId",
+                "type": "UUID",
+              },
+              "totalBitgLimit": Object {
+                "name": "totalBitgLimit",
+                "type": "BigFloat",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userDailyLimit": Object {
+                "name": "userDailyLimit",
+                "type": "Int",
+              },
+              "userTotalLimit": Object {
+                "name": "userTotalLimit",
+                "type": "Int",
+              },
+              "userWeeklyLimit": Object {
+                "name": "userWeeklyLimit",
+                "type": "Int",
+              },
+            },
+          },
+        },
+        "type": "CreateCampaignActionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createCompletedAction": Object {
+    "model": "CompletedAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "completedAction": Object {
+            "isNotNull": true,
+            "name": "completedAction",
+            "properties": Object {
+              "actionId": Object {
+                "isNotNull": true,
+                "name": "actionId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "dateCompleted": Object {
+                "name": "dateCompleted",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "txid": Object {
+                "name": "txid",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "isNotNull": true,
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateCompletedActionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createImage": Object {
+    "model": "Image",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "image": Object {
+            "isNotNull": true,
+            "name": "image",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "url": Object {
+                "name": "url",
+                "type": "String",
+              },
+              "versions": Object {
+                "isList": true,
+                "name": "versions",
+                "type": "JSON",
+              },
+              "versions2": Object {
+                "isList": true,
+                "isListNotNull": true,
+                "name": "versions2",
+                "type": "JSON",
+              },
+              "versions3": Object {
+                "isList": true,
+                "isListNotNull": true,
+                "isNotNull": true,
+                "name": "versions3",
+                "type": "JSON",
+              },
+            },
+          },
+        },
+        "type": "CreateImageInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createInitiativesGoldenRecord": Object {
+    "model": "InitiativesGoldenRecord",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "initiativesGoldenRecord": Object {
+            "isNotNull": true,
+            "name": "initiativesGoldenRecord",
+            "properties": Object {
+              "actionId": Object {
+                "isNotNull": true,
+                "name": "actionId",
+                "type": "UUID",
+              },
+              "actionsCompleted": Object {
+                "name": "actionsCompleted",
+                "type": "Int",
+              },
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "date": Object {
+                "name": "date",
+                "type": "Datetime",
+              },
+              "email": Object {
+                "name": "email",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateInitiativesGoldenRecordInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createMerchant": Object {
+    "model": "Merchant",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "merchant": Object {
+            "isNotNull": true,
+            "name": "merchant",
+            "properties": Object {
+              "backgroundImageId": Object {
+                "name": "backgroundImageId",
+                "type": "UUID",
+              },
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "logoId": Object {
+                "name": "logoId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "ownerId": Object {
+                "isNotNull": true,
+                "name": "ownerId",
+                "type": "UUID",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateMerchantInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createPartner": Object {
+    "model": "Partner",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "partner": Object {
+            "isNotNull": true,
+            "name": "partner",
+            "properties": Object {
+              "backgroundImageId": Object {
+                "name": "backgroundImageId",
+                "type": "UUID",
+              },
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "logoId": Object {
+                "name": "logoId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "ownerId": Object {
+                "isNotNull": true,
+                "name": "ownerId",
+                "type": "UUID",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreatePartnerInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createPermission": Object {
+    "model": "Permission",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "permission": Object {
+            "isNotNull": true,
+            "name": "permission",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "isNotNull": true,
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreatePermissionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createProduct": Object {
+    "model": "Product",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "product": Object {
+            "isNotNull": true,
+            "name": "product",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "iconId": Object {
+                "name": "iconId",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "merchantId": Object {
+                "isNotNull": true,
+                "name": "merchantId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "url": Object {
+                "name": "url",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "CreateProductInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createService": Object {
+    "model": "Service",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "service": Object {
+            "isNotNull": true,
+            "name": "service",
+            "properties": Object {
+              "campaignActionId": Object {
+                "name": "campaignActionId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "data": Object {
+                "name": "data",
+                "type": "JSON",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "iconId": Object {
+                "name": "iconId",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "type": Object {
+                "name": "type",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateServiceInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createShopifyAccount": Object {
+    "model": "ShopifyAccount",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "shopifyAccount": Object {
+            "isNotNull": true,
+            "name": "shopifyAccount",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "iconId": Object {
+                "name": "iconId",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "isNotNull": true,
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "shopLink": Object {
+                "name": "shopLink",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateShopifyAccountInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createShopifyOrder": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "shopifyOrder": Object {
+            "isNotNull": true,
+            "name": "shopifyOrder",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "bitgRebate": Object {
+                "name": "bitgRebate",
+                "type": "BigFloat",
+              },
+              "bitgUpdatedAt": Object {
+                "name": "bitgUpdatedAt",
+                "type": "Datetime",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "email": Object {
+                "name": "email",
+                "type": "String",
+              },
+              "financialStatus": Object {
+                "name": "financialStatus",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "orderClosedAt": Object {
+                "name": "orderClosedAt",
+                "type": "Datetime",
+              },
+              "orderCreatedAt": Object {
+                "name": "orderCreatedAt",
+                "type": "Datetime",
+              },
+              "orderId": Object {
+                "name": "orderId",
+                "type": "Int",
+              },
+              "orderStatus": Object {
+                "name": "orderStatus",
+                "type": "String",
+              },
+              "paidDate": Object {
+                "name": "paidDate",
+                "type": "Datetime",
+              },
+              "partnerId": Object {
+                "isNotNull": true,
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "shopifyAccountId": Object {
+                "isNotNull": true,
+                "name": "shopifyAccountId",
+                "type": "UUID",
+              },
+              "subtotalPrice": Object {
+                "name": "subtotalPrice",
+                "type": "BigFloat",
+              },
+              "transactionId": Object {
+                "name": "transactionId",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "CreateShopifyOrderInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createShopifySecret": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "shopifySecret": Object {
+            "isNotNull": true,
+            "name": "shopifySecret",
+            "properties": Object {
+              "enc": Object {
+                "name": "enc",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "isNotNull": true,
+                "name": "name",
+                "type": "String",
+              },
+              "shopifyAccountId": Object {
+                "isNotNull": true,
+                "name": "shopifyAccountId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "CreateShopifySecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createUser": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "user": Object {
+            "isNotNull": true,
+            "name": "user",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "username": Object {
+                "name": "username",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "CreateUserInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createUserEncryptedSecret": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "userEncryptedSecret": Object {
+            "isNotNull": true,
+            "name": "userEncryptedSecret",
+            "properties": Object {
+              "enc": Object {
+                "name": "enc",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "isNotNull": true,
+                "name": "name",
+                "type": "String",
+              },
+              "userId": Object {
+                "isNotNull": true,
+                "name": "userId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "CreateUserEncryptedSecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "createUserSecret": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "userSecret": Object {
+            "isNotNull": true,
+            "name": "userSecret",
+            "properties": Object {
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "isNotNull": true,
+                "name": "name",
+                "type": "String",
+              },
+              "userId": Object {
+                "isNotNull": true,
+                "name": "userId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "CreateUserSecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteApiToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteApiTokenInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteApiTokenByAccessToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "accessToken": Object {
+            "isNotNull": true,
+            "name": "accessToken",
+            "type": "String",
+          },
+        },
+        "type": "DeleteApiTokenByAccessTokenInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteArticle": Object {
+    "model": "Article",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteArticleInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteCampaign": Object {
+    "model": "Campaign",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteCampaignInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteCampaignAction": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteCampaignActionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteCampaignActionByName": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+        },
+        "type": "DeleteCampaignActionByNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteCompletedAction": Object {
+    "model": "CompletedAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteCompletedActionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteImage": Object {
+    "model": "Image",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteImageInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteInitiativesGoldenRecord": Object {
+    "model": "InitiativesGoldenRecord",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteInitiativesGoldenRecordInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteMerchant": Object {
+    "model": "Merchant",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteMerchantInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deletePartner": Object {
+    "model": "Partner",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeletePartnerInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deletePermission": Object {
+    "model": "Permission",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeletePermissionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteProduct": Object {
+    "model": "Product",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteProductInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteService": Object {
+    "model": "Service",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteServiceInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteShopifyAccount": Object {
+    "model": "ShopifyAccount",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteShopifyAccountInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteShopifyOrder": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteShopifyOrderInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountId": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "email": Object {
+            "isNotNull": true,
+            "name": "email",
+            "type": "String",
+          },
+          "orderId": Object {
+            "isNotNull": true,
+            "name": "orderId",
+            "type": "Int",
+          },
+          "shopifyAccountId": Object {
+            "isNotNull": true,
+            "name": "shopifyAccountId",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteShopifyOrderByOrderIdAndEmailAndShopifyAccountIdInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteShopifySecret": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteShopifySecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteShopifySecretByShopifyAccountIdAndName": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "shopifyAccountId": Object {
+            "isNotNull": true,
+            "name": "shopifyAccountId",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteShopifySecretByShopifyAccountIdAndNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUser": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteUserInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUserByBitgAddress": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "bitgAddress": Object {
+            "isNotNull": true,
+            "name": "bitgAddress",
+            "type": "String",
+          },
+        },
+        "type": "DeleteUserByBitgAddressInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUserByUsername": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "username": Object {
+            "isNotNull": true,
+            "name": "username",
+            "type": "String",
+          },
+        },
+        "type": "DeleteUserByUsernameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUserEncryptedSecret": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteUserEncryptedSecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUserEncryptedSecretByUserIdAndName": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "userId": Object {
+            "isNotNull": true,
+            "name": "userId",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteUserEncryptedSecretByUserIdAndNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUserSecret": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteUserSecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "deleteUserSecretByUserIdAndName": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "userId": Object {
+            "isNotNull": true,
+            "name": "userId",
+            "type": "UUID",
+          },
+        },
+        "type": "DeleteUserSecretByUserIdAndNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "shopifySecretsUpsert": Object {
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "fieldEncoding": Object {
+            "name": "fieldEncoding",
+            "type": "String",
+          },
+          "secretName": Object {
+            "name": "secretName",
+            "type": "String",
+          },
+          "secretValue": Object {
+            "name": "secretValue",
+            "type": "String",
+          },
+          "vShopifyAccountId": Object {
+            "name": "vShopifyAccountId",
+            "type": "UUID",
+          },
+        },
+        "type": "ShopifySecretsUpsertInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "signInRecordFailure": Object {
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "bitgAddress": Object {
+            "isNotNull": true,
+            "name": "bitgAddress",
+            "type": "String",
+          },
+        },
+        "type": "SignInRecordFailureInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "signInRequestChallenge": Object {
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "bitgAddress": Object {
+            "isNotNull": true,
+            "name": "bitgAddress",
+            "type": "String",
+          },
+        },
+        "type": "SignInRequestChallengeInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "signInWithChallenge": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "bitgAddress": Object {
+            "isNotNull": true,
+            "name": "bitgAddress",
+            "type": "String",
+          },
+          "specialValue": Object {
+            "isNotNull": true,
+            "name": "specialValue",
+            "type": "String",
+          },
+        },
+        "type": "SignInWithChallengeInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "signUpWithBitgAddress": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "bitgAddress": Object {
+            "name": "bitgAddress",
+            "type": "String",
+          },
+        },
+        "type": "SignUpWithBitgAddressInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateApiToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "accessToken": Object {
+                "name": "accessToken",
+                "type": "String",
+              },
+              "accessTokenExpiresAt": Object {
+                "name": "accessTokenExpiresAt",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateApiTokenInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateApiTokenByAccessToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "accessToken": Object {
+            "isNotNull": true,
+            "name": "accessToken",
+            "type": "String",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "accessToken": Object {
+                "name": "accessToken",
+                "type": "String",
+              },
+              "accessTokenExpiresAt": Object {
+                "name": "accessTokenExpiresAt",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateApiTokenByAccessTokenInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateArticle": Object {
+    "model": "Article",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "datePublished": Object {
+                "name": "datePublished",
+                "type": "Datetime",
+              },
+              "header": Object {
+                "name": "header",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "image": Object {
+                "name": "image",
+                "type": "String",
+              },
+              "ownerId": Object {
+                "name": "ownerId",
+                "type": "UUID",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "url": Object {
+                "name": "url",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateArticleInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateCampaign": Object {
+    "model": "Campaign",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "backgroundImageId": Object {
+                "name": "backgroundImageId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "endDate": Object {
+                "name": "endDate",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "logoId": Object {
+                "name": "logoId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "startDate": Object {
+                "name": "startDate",
+                "type": "Datetime",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateCampaignInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateCampaignAction": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "actionDailyLimit": Object {
+                "name": "actionDailyLimit",
+                "type": "Int",
+              },
+              "actionWeeklyLimit": Object {
+                "name": "actionWeeklyLimit",
+                "type": "Int",
+              },
+              "campaignId": Object {
+                "name": "campaignId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "endDate": Object {
+                "name": "endDate",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "rewardAmount": Object {
+                "name": "rewardAmount",
+                "type": "BigFloat",
+              },
+              "rewardUnit": Object {
+                "name": "rewardUnit",
+                "type": "String",
+              },
+              "startDate": Object {
+                "name": "startDate",
+                "type": "Datetime",
+              },
+              "thumbnailId": Object {
+                "name": "thumbnailId",
+                "type": "UUID",
+              },
+              "totalBitgLimit": Object {
+                "name": "totalBitgLimit",
+                "type": "BigFloat",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userDailyLimit": Object {
+                "name": "userDailyLimit",
+                "type": "Int",
+              },
+              "userTotalLimit": Object {
+                "name": "userTotalLimit",
+                "type": "Int",
+              },
+              "userWeeklyLimit": Object {
+                "name": "userWeeklyLimit",
+                "type": "Int",
+              },
+            },
+          },
+        },
+        "type": "UpdateCampaignActionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateCampaignActionByName": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "actionDailyLimit": Object {
+                "name": "actionDailyLimit",
+                "type": "Int",
+              },
+              "actionWeeklyLimit": Object {
+                "name": "actionWeeklyLimit",
+                "type": "Int",
+              },
+              "campaignId": Object {
+                "name": "campaignId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "endDate": Object {
+                "name": "endDate",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "rewardAmount": Object {
+                "name": "rewardAmount",
+                "type": "BigFloat",
+              },
+              "rewardUnit": Object {
+                "name": "rewardUnit",
+                "type": "String",
+              },
+              "startDate": Object {
+                "name": "startDate",
+                "type": "Datetime",
+              },
+              "thumbnailId": Object {
+                "name": "thumbnailId",
+                "type": "UUID",
+              },
+              "totalBitgLimit": Object {
+                "name": "totalBitgLimit",
+                "type": "BigFloat",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userDailyLimit": Object {
+                "name": "userDailyLimit",
+                "type": "Int",
+              },
+              "userTotalLimit": Object {
+                "name": "userTotalLimit",
+                "type": "Int",
+              },
+              "userWeeklyLimit": Object {
+                "name": "userWeeklyLimit",
+                "type": "Int",
+              },
+            },
+          },
+        },
+        "type": "UpdateCampaignActionByNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateCompletedAction": Object {
+    "model": "CompletedAction",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "actionId": Object {
+                "name": "actionId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "dateCompleted": Object {
+                "name": "dateCompleted",
+                "type": "Datetime",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "txid": Object {
+                "name": "txid",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateCompletedActionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateImage": Object {
+    "model": "Image",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "url": Object {
+                "name": "url",
+                "type": "String",
+              },
+              "versions": Object {
+                "isList": true,
+                "name": "versions",
+                "type": "JSON",
+              },
+            },
+          },
+        },
+        "type": "UpdateImageInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateInitiativesGoldenRecord": Object {
+    "model": "InitiativesGoldenRecord",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "actionId": Object {
+                "name": "actionId",
+                "type": "UUID",
+              },
+              "actionsCompleted": Object {
+                "name": "actionsCompleted",
+                "type": "Int",
+              },
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "date": Object {
+                "name": "date",
+                "type": "Datetime",
+              },
+              "email": Object {
+                "name": "email",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateInitiativesGoldenRecordInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateMerchant": Object {
+    "model": "Merchant",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "backgroundImageId": Object {
+                "name": "backgroundImageId",
+                "type": "UUID",
+              },
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "logoId": Object {
+                "name": "logoId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "ownerId": Object {
+                "name": "ownerId",
+                "type": "UUID",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateMerchantInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updatePartner": Object {
+    "model": "Partner",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "backgroundImageId": Object {
+                "name": "backgroundImageId",
+                "type": "UUID",
+              },
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "logoId": Object {
+                "name": "logoId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "ownerId": Object {
+                "name": "ownerId",
+                "type": "UUID",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdatePartnerInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updatePermission": Object {
+    "model": "Permission",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdatePermissionInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateProduct": Object {
+    "model": "Product",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "iconId": Object {
+                "name": "iconId",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "merchantId": Object {
+                "name": "merchantId",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+              "url": Object {
+                "name": "url",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateProductInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateService": Object {
+    "model": "Service",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "campaignActionId": Object {
+                "name": "campaignActionId",
+                "type": "UUID",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "data": Object {
+                "name": "data",
+                "type": "JSON",
+              },
+              "description": Object {
+                "name": "description",
+                "type": "String",
+              },
+              "iconId": Object {
+                "name": "iconId",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "type": Object {
+                "name": "type",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateServiceInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateShopifyAccount": Object {
+    "model": "ShopifyAccount",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "iconId": Object {
+                "name": "iconId",
+                "type": "UUID",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "partnerId": Object {
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "shopLink": Object {
+                "name": "shopLink",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateShopifyAccountInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateShopifyOrder": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "bitgRebate": Object {
+                "name": "bitgRebate",
+                "type": "BigFloat",
+              },
+              "bitgUpdatedAt": Object {
+                "name": "bitgUpdatedAt",
+                "type": "Datetime",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "email": Object {
+                "name": "email",
+                "type": "String",
+              },
+              "financialStatus": Object {
+                "name": "financialStatus",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "orderClosedAt": Object {
+                "name": "orderClosedAt",
+                "type": "Datetime",
+              },
+              "orderCreatedAt": Object {
+                "name": "orderCreatedAt",
+                "type": "Datetime",
+              },
+              "orderId": Object {
+                "name": "orderId",
+                "type": "Int",
+              },
+              "orderStatus": Object {
+                "name": "orderStatus",
+                "type": "String",
+              },
+              "paidDate": Object {
+                "name": "paidDate",
+                "type": "Datetime",
+              },
+              "partnerId": Object {
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "shopifyAccountId": Object {
+                "name": "shopifyAccountId",
+                "type": "UUID",
+              },
+              "subtotalPrice": Object {
+                "name": "subtotalPrice",
+                "type": "BigFloat",
+              },
+              "transactionId": Object {
+                "name": "transactionId",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+        },
+        "type": "UpdateShopifyOrderInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "email": Object {
+            "isNotNull": true,
+            "name": "email",
+            "type": "String",
+          },
+          "orderId": Object {
+            "isNotNull": true,
+            "name": "orderId",
+            "type": "Int",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "bitgRebate": Object {
+                "name": "bitgRebate",
+                "type": "BigFloat",
+              },
+              "bitgUpdatedAt": Object {
+                "name": "bitgUpdatedAt",
+                "type": "Datetime",
+              },
+              "createdAt": Object {
+                "name": "createdAt",
+                "type": "Datetime",
+              },
+              "createdBy": Object {
+                "name": "createdBy",
+                "type": "UUID",
+              },
+              "email": Object {
+                "name": "email",
+                "type": "String",
+              },
+              "financialStatus": Object {
+                "name": "financialStatus",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "orderClosedAt": Object {
+                "name": "orderClosedAt",
+                "type": "Datetime",
+              },
+              "orderCreatedAt": Object {
+                "name": "orderCreatedAt",
+                "type": "Datetime",
+              },
+              "orderId": Object {
+                "name": "orderId",
+                "type": "Int",
+              },
+              "orderStatus": Object {
+                "name": "orderStatus",
+                "type": "String",
+              },
+              "paidDate": Object {
+                "name": "paidDate",
+                "type": "Datetime",
+              },
+              "partnerId": Object {
+                "name": "partnerId",
+                "type": "UUID",
+              },
+              "shopifyAccountId": Object {
+                "name": "shopifyAccountId",
+                "type": "UUID",
+              },
+              "subtotalPrice": Object {
+                "name": "subtotalPrice",
+                "type": "BigFloat",
+              },
+              "transactionId": Object {
+                "name": "transactionId",
+                "type": "String",
+              },
+              "updatedAt": Object {
+                "name": "updatedAt",
+                "type": "Datetime",
+              },
+              "updatedBy": Object {
+                "name": "updatedBy",
+                "type": "UUID",
+              },
+            },
+          },
+          "shopifyAccountId": Object {
+            "isNotNull": true,
+            "name": "shopifyAccountId",
+            "type": "UUID",
+          },
+        },
+        "type": "UpdateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateShopifySecret": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "enc": Object {
+                "name": "enc",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "shopifyAccountId": Object {
+                "name": "shopifyAccountId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateShopifySecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateShopifySecretByShopifyAccountIdAndName": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "enc": Object {
+                "name": "enc",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "shopifyAccountId": Object {
+                "name": "shopifyAccountId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+          "shopifyAccountId": Object {
+            "isNotNull": true,
+            "name": "shopifyAccountId",
+            "type": "UUID",
+          },
+        },
+        "type": "UpdateShopifySecretByShopifyAccountIdAndNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUser": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "username": Object {
+                "name": "username",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateUserInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUserByBitgAddress": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "bitgAddress": Object {
+            "isNotNull": true,
+            "name": "bitgAddress",
+            "type": "String",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "username": Object {
+                "name": "username",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateUserByBitgAddressInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUserByUsername": Object {
+    "model": "User",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "bitgAddress": Object {
+                "name": "bitgAddress",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "username": Object {
+                "name": "username",
+                "type": "String",
+              },
+            },
+          },
+          "username": Object {
+            "isNotNull": true,
+            "name": "username",
+            "type": "String",
+          },
+        },
+        "type": "UpdateUserByUsernameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUserEncryptedSecret": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "enc": Object {
+                "name": "enc",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateUserEncryptedSecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUserEncryptedSecretByUserIdAndName": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "enc": Object {
+                "name": "enc",
+                "type": "String",
+              },
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+          "userId": Object {
+            "isNotNull": true,
+            "name": "userId",
+            "type": "UUID",
+          },
+        },
+        "type": "UpdateUserEncryptedSecretByUserIdAndNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUserSecret": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "id": Object {
+            "isNotNull": true,
+            "name": "id",
+            "type": "UUID",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+        },
+        "type": "UpdateUserSecretInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "updateUserSecretByUserIdAndName": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "name": Object {
+            "isNotNull": true,
+            "name": "name",
+            "type": "String",
+          },
+          "patch": Object {
+            "isNotNull": true,
+            "name": "patch",
+            "properties": Object {
+              "id": Object {
+                "name": "id",
+                "type": "UUID",
+              },
+              "name": Object {
+                "name": "name",
+                "type": "String",
+              },
+              "userId": Object {
+                "name": "userId",
+                "type": "UUID",
+              },
+              "value": Object {
+                "name": "value",
+                "type": "String",
+              },
+            },
+          },
+          "userId": Object {
+            "isNotNull": true,
+            "name": "userId",
+            "type": "UUID",
+          },
+        },
+        "type": "UpdateUserSecretByUserIdAndNameInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "userEncryptedSecretsUpsert": Object {
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "fieldEncoding": Object {
+            "name": "fieldEncoding",
+            "type": "String",
+          },
+          "secretName": Object {
+            "name": "secretName",
+            "type": "String",
+          },
+          "secretValue": Object {
+            "name": "secretValue",
+            "type": "String",
+          },
+          "vUserId": Object {
+            "name": "vUserId",
+            "type": "UUID",
+          },
+        },
+        "type": "UserEncryptedSecretsUpsertInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "uuidGenerateSeededUuid": Object {
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {
+          "seed": Object {
+            "name": "seed",
+            "type": "String",
+          },
+        },
+        "type": "UuidGenerateSeededUuidInput",
+      },
+    },
+    "qtype": "mutation",
+  },
+  "uuidGenerateV4": Object {
+    "properties": Object {
+      "input": Object {
+        "isNotNull": true,
+        "properties": Object {},
+        "type": "UuidGenerateV4Input",
+      },
+    },
+    "qtype": "mutation",
+  },
+}
+`;
+
+exports[`queries 1`] = `
+Object {
+  "apiToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "userId",
+      "accessToken",
+      "accessTokenExpiresAt",
+    ],
+  },
+  "apiTokenByAccessToken": Object {
+    "model": "ApiToken",
+    "properties": Object {
+      "accessToken": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "userId",
+      "accessToken",
+      "accessTokenExpiresAt",
+    ],
+  },
+  "apiTokens": Object {
+    "model": "ApiToken",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "userId",
+      "accessToken",
+      "accessTokenExpiresAt",
+    ],
+  },
+  "article": Object {
+    "model": "Article",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "header",
+      "url",
+      "image",
+      "datePublished",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+    ],
+  },
+  "articles": Object {
+    "model": "Article",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "header",
+      "url",
+      "image",
+      "datePublished",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+    ],
+  },
+  "campaign": Object {
+    "model": "Campaign",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "startDate",
+      "endDate",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "logoId",
+      "backgroundImageId",
+      "partner",
+      "logo",
+      "backgroundImage",
+      "campaignActions",
+    ],
+  },
+  "campaignAction": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "rewardUnit",
+      "rewardAmount",
+      "totalBitgLimit",
+      "actionWeeklyLimit",
+      "actionDailyLimit",
+      "userTotalLimit",
+      "userWeeklyLimit",
+      "userDailyLimit",
+      "startDate",
+      "endDate",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "campaignId",
+      "partnerId",
+      "thumbnailId",
+      "campaign",
+      "partner",
+      "thumbnail",
+      "completedActionsByActionId",
+      "services",
+      "initiativesGoldenRecordsByActionId",
+    ],
+  },
+  "campaignActionByName": Object {
+    "model": "CampaignAction",
+    "properties": Object {
+      "name": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "rewardUnit",
+      "rewardAmount",
+      "totalBitgLimit",
+      "actionWeeklyLimit",
+      "actionDailyLimit",
+      "userTotalLimit",
+      "userWeeklyLimit",
+      "userDailyLimit",
+      "startDate",
+      "endDate",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "campaignId",
+      "partnerId",
+      "thumbnailId",
+      "campaign",
+      "partner",
+      "thumbnail",
+      "completedActionsByActionId",
+      "services",
+      "initiativesGoldenRecordsByActionId",
+    ],
+  },
+  "campaignActions": Object {
+    "model": "CampaignAction",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "rewardUnit",
+      "rewardAmount",
+      "totalBitgLimit",
+      "actionWeeklyLimit",
+      "actionDailyLimit",
+      "userTotalLimit",
+      "userWeeklyLimit",
+      "userDailyLimit",
+      "startDate",
+      "endDate",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "campaignId",
+      "partnerId",
+      "thumbnailId",
+      "campaign",
+      "partner",
+      "thumbnail",
+      "completedActionsByActionId",
+      "services",
+      "initiativesGoldenRecordsByActionId",
+    ],
+  },
+  "campaigns": Object {
+    "model": "Campaign",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "startDate",
+      "endDate",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "logoId",
+      "backgroundImageId",
+      "partner",
+      "logo",
+      "backgroundImage",
+      "campaignActions",
+    ],
+  },
+  "completedAction": Object {
+    "model": "CompletedAction",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "dateCompleted",
+      "txid",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "actionId",
+      "user",
+      "action",
+    ],
+  },
+  "completedActions": Object {
+    "model": "CompletedAction",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "dateCompleted",
+      "txid",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "actionId",
+      "user",
+      "action",
+    ],
+  },
+  "getCurrentUser": Object {
+    "model": "User",
+    "properties": Object {},
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "username",
+      "bitgAddress",
+      "permissions",
+      "completedActions",
+    ],
+  },
+  "image": Object {
+    "model": "Image",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "url",
+      "versions",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnersByLogoId",
+      "partnersByBackgroundImageId",
+      "campaignsByLogoId",
+      "campaignsByBackgroundImageId",
+      "campaignActionsByThumbnailId",
+      "servicesByIconId",
+      "merchantsByLogoId",
+      "merchantsByBackgroundImageId",
+      "productsByIconId",
+      "shopifyAccountsByIconId",
+    ],
+  },
+  "images": Object {
+    "model": "Image",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "url",
+      "versions",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnersByLogoId",
+      "partnersByBackgroundImageId",
+      "campaignsByLogoId",
+      "campaignsByBackgroundImageId",
+      "campaignActionsByThumbnailId",
+      "servicesByIconId",
+      "merchantsByLogoId",
+      "merchantsByBackgroundImageId",
+      "productsByIconId",
+      "shopifyAccountsByIconId",
+    ],
+  },
+  "initiativesGoldenRecord": Object {
+    "model": "InitiativesGoldenRecord",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "email",
+      "bitgAddress",
+      "date",
+      "actionsCompleted",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      "action",
+    ],
+  },
+  "initiativesGoldenRecords": Object {
+    "model": "InitiativesGoldenRecord",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "email",
+      "bitgAddress",
+      "date",
+      "actionsCompleted",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      "action",
+    ],
+  },
+  "merchant": Object {
+    "model": "Merchant",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "bitgAddress",
+      "description",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "logoId",
+      "backgroundImageId",
+      "logo",
+      "backgroundImage",
+      "products",
+    ],
+  },
+  "merchants": Object {
+    "model": "Merchant",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "bitgAddress",
+      "description",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "logoId",
+      "backgroundImageId",
+      "logo",
+      "backgroundImage",
+      "products",
+    ],
+  },
+  "partner": Object {
+    "model": "Partner",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "bitgAddress",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "logoId",
+      "backgroundImageId",
+      "logo",
+      "backgroundImage",
+      "campaigns",
+      "campaignActions",
+      "shopifyAccounts",
+      "shopifyOrders",
+    ],
+  },
+  "partners": Object {
+    "model": "Partner",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "bitgAddress",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "logoId",
+      "backgroundImageId",
+      "logo",
+      "backgroundImage",
+      "campaigns",
+      "campaignActions",
+      "shopifyAccounts",
+      "shopifyOrders",
+    ],
+  },
+  "permission": Object {
+    "model": "Permission",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "user",
+    ],
+  },
+  "permissions": Object {
+    "model": "Permission",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "user",
+    ],
+  },
+  "product": Object {
+    "model": "Product",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "url",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "merchantId",
+      "iconId",
+      "merchant",
+      "icon",
+    ],
+  },
+  "products": Object {
+    "model": "Product",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "url",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "merchantId",
+      "iconId",
+      "merchant",
+      "icon",
+    ],
+  },
+  "service": Object {
+    "model": "Service",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "type",
+      "data",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "campaignActionId",
+      "iconId",
+      "campaignAction",
+      "icon",
+    ],
+  },
+  "services": Object {
+    "model": "Service",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "description",
+      "type",
+      "data",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "campaignActionId",
+      "iconId",
+      "campaignAction",
+      "icon",
+    ],
+  },
+  "shopifyAccount": Object {
+    "model": "ShopifyAccount",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "name",
+      "shopLink",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "iconId",
+      "partner",
+      "icon",
+      "shopifyOrders",
+    ],
+  },
+  "shopifyAccounts": Object {
+    "model": "ShopifyAccount",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "name",
+      "shopLink",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "iconId",
+      "partner",
+      "icon",
+      "shopifyOrders",
+    ],
+  },
+  "shopifyOrder": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "orderId",
+      "email",
+      "orderStatus",
+      "financialStatus",
+      "subtotalPrice",
+      "orderCreatedAt",
+      "orderClosedAt",
+      "bitgUpdatedAt",
+      "bitgRebate",
+      "bitgAddress",
+      "paidDate",
+      "transactionId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "shopifyAccountId",
+      "partner",
+      "shopifyAccount",
+    ],
+  },
+  "shopifyOrderByOrderIdAndEmailAndShopifyAccountId": Object {
+    "model": "ShopifyOrder",
+    "properties": Object {
+      "email": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+      "orderId": Object {
+        "isNotNull": true,
+        "type": "Int",
+      },
+      "shopifyAccountId": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "orderId",
+      "email",
+      "orderStatus",
+      "financialStatus",
+      "subtotalPrice",
+      "orderCreatedAt",
+      "orderClosedAt",
+      "bitgUpdatedAt",
+      "bitgRebate",
+      "bitgAddress",
+      "paidDate",
+      "transactionId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "shopifyAccountId",
+      "partner",
+      "shopifyAccount",
+    ],
+  },
+  "shopifyOrders": Object {
+    "model": "ShopifyOrder",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "orderId",
+      "email",
+      "orderStatus",
+      "financialStatus",
+      "subtotalPrice",
+      "orderCreatedAt",
+      "orderClosedAt",
+      "bitgUpdatedAt",
+      "bitgRebate",
+      "bitgAddress",
+      "paidDate",
+      "transactionId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "partnerId",
+      "shopifyAccountId",
+      "partner",
+      "shopifyAccount",
+    ],
+  },
+  "shopifySecret": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "shopifyAccountId",
+      "name",
+      "value",
+      "enc",
+    ],
+  },
+  "shopifySecretByShopifyAccountIdAndName": Object {
+    "model": "ShopifySecret",
+    "properties": Object {
+      "name": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+      "shopifyAccountId": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "shopifyAccountId",
+      "name",
+      "value",
+      "enc",
+    ],
+  },
+  "shopifySecrets": Object {
+    "model": "ShopifySecret",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "shopifyAccountId",
+      "name",
+      "value",
+      "enc",
+    ],
+  },
+  "user": Object {
+    "model": "User",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "username",
+      "bitgAddress",
+      "permissions",
+      "completedActions",
+    ],
+  },
+  "userByBitgAddress": Object {
+    "model": "User",
+    "properties": Object {
+      "bitgAddress": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "username",
+      "bitgAddress",
+      "permissions",
+      "completedActions",
+    ],
+  },
+  "userByUsername": Object {
+    "model": "User",
+    "properties": Object {
+      "username": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "username",
+      "bitgAddress",
+      "permissions",
+      "completedActions",
+    ],
+  },
+  "userEncryptedSecret": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "userId",
+      "name",
+      "value",
+      "enc",
+    ],
+  },
+  "userEncryptedSecretByUserIdAndName": Object {
+    "model": "UserEncryptedSecret",
+    "properties": Object {
+      "name": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+      "userId": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "userId",
+      "name",
+      "value",
+      "enc",
+    ],
+  },
+  "userEncryptedSecrets": Object {
+    "model": "UserEncryptedSecret",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "userId",
+      "name",
+      "value",
+      "enc",
+    ],
+  },
+  "userSecret": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "id": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "userId",
+      "name",
+      "value",
+    ],
+  },
+  "userSecretByUserIdAndName": Object {
+    "model": "UserSecret",
+    "properties": Object {
+      "name": Object {
+        "isNotNull": true,
+        "type": "String",
+      },
+      "userId": Object {
+        "isNotNull": true,
+        "type": "UUID",
+      },
+    },
+    "qtype": "getOne",
+    "selection": Array [
+      "id",
+      "userId",
+      "name",
+      "value",
+    ],
+  },
+  "userSecrets": Object {
+    "model": "UserSecret",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "userId",
+      "name",
+      "value",
+    ],
+  },
+  "users": Object {
+    "model": "User",
+    "qtype": "getMany",
+    "selection": Array [
+      "id",
+      "username",
+      "bitgAddress",
+      "permissions",
+      "completedActions",
+    ],
+  },
+}
+`;

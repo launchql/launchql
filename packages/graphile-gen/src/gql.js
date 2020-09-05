@@ -1,0 +1,402 @@
+import plz from 'pluralize';
+import inflection from 'inflection';
+import * as t from '@pyramation/graphql-ast';
+
+const objectToArray = (obj) =>
+  Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
+
+const createGqlMutation = ({
+  operationName,
+  mutationName,
+  selectArgs,
+  selections,
+  variableDefinitions,
+  modelName
+}) => {
+  const opSel = !modelName
+    ? [
+        t.field({
+          name: operationName,
+          args: selectArgs,
+          selectionSet: t.selectionSet({ selections })
+        })
+      ]
+    : [
+        t.field({
+          name: operationName,
+          args: selectArgs,
+          selectionSet: t.selectionSet({
+            selections: [
+              t.field({
+                name: modelName,
+                selectionSet: t.selectionSet({ selections })
+              })
+            ]
+          })
+        })
+      ];
+
+  return t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'mutation',
+        name: mutationName,
+        variableDefinitions,
+        selectionSet: t.selectionSet({ selections: opSel })
+      })
+    ]
+  });
+};
+
+export const getMany = ({ operationName, query }) => {
+  const queryName = inflection.camelize(
+    [operationName, 'query'].join('_'),
+    true
+  );
+
+  const selections = query.selection.map((field) => t.field({ name: field }));
+  const opSel = [
+    t.field({
+      name: operationName,
+      selectionSet: t.objectValue({
+        fields: [
+          t.field({
+            name: 'totalCount'
+          }),
+          t.objectField({
+            name: 'nodes',
+            value: t.selectionSet({ selections })
+          })
+        ]
+      })
+    })
+  ];
+
+  const ast = t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'query',
+        name: queryName,
+        selectionSet: t.selectionSet({ selections: opSel })
+      })
+    ]
+  });
+
+  return { name: queryName, ast };
+};
+
+export const getOne = ({ operationName, query }) => {
+  const queryName = inflection.camelize(
+    [operationName, 'query'].join('_'),
+    true
+  );
+
+  const variableDefinitions = Object.keys(query.properties)
+    .map((key) => ({ name: key, ...query.properties[key] }))
+    .filter((field) => field.isNotNull)
+    .map((field) => {
+      const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+      let type = t.namedType({ type: fieldType });
+      if (isArray) type = t.listType({ type });
+      if (isNotNull) type = t.nonNullType({ type });
+      return t.variableDefinition({
+        variable: t.variable({ name: fieldName }),
+        type
+      });
+    });
+
+  const props = objectToArray(query.properties);
+
+  const selectArgs = props
+    .filter((field) => field.isNotNull)
+    .map((field) => {
+      return t.argument({
+        name: field.name,
+        value: t.variable({ name: field.name })
+      });
+    });
+
+  const selections = query.selection.map((field) => t.field({ name: field }));
+  const opSel = [
+    t.field({
+      name: operationName,
+      args: selectArgs,
+      selectionSet: t.selectionSet({ selections })
+    })
+  ];
+
+  const ast = t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'query',
+        name: queryName,
+        variableDefinitions,
+        selectionSet: t.selectionSet({ selections: opSel })
+      })
+    ]
+  });
+  return { name: queryName, ast };
+};
+
+export const createMutation = ({ operationName, mutation }) => {
+  const mutationName = inflection.camelize(
+    [operationName, 'mutation'].join('_'),
+    true
+  );
+
+  if (!mutation.properties?.input?.properties) {
+    console.log('no input field for mutation for' + mutationName);
+    return;
+  }
+
+  // TODO move this to introspect
+  let mutationType;
+  let modelName;
+
+  if (!mutation.model) {
+    mutationType = 'other';
+  } else {
+    modelName = inflection.camelize(
+      [plz.singular(mutation.model)].join('_'),
+      true
+    );
+  }
+
+  if (mutationType) {
+    // nop
+  } else if (/Create/.test(mutation.properties.input.type)) {
+    mutationType = 'create';
+  } else if (/Update/.test(mutation.properties.input.type)) {
+    mutationType = 'patch';
+  } else if (/Delete/.test(mutation.properties.input.type)) {
+    mutationType = 'delete';
+  }
+
+  if (mutationType === 'create') {
+    const attrs = objectToArray(
+      mutation.properties.input.properties[modelName].properties
+    );
+
+    const variableDefinitions = attrs.map((field) => {
+      const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+      let type = t.namedType({ type: fieldType });
+      if (isArray) type = t.listType({ type });
+      if (isNotNull) type = t.nonNullType({ type });
+      return t.variableDefinition({
+        variable: t.variable({ name: fieldName }),
+        type
+      });
+    });
+
+    const selectArgs = [
+      t.argument({
+        name: 'input',
+        value: t.objectValue({
+          fields: [
+            t.objectField({
+              name: modelName,
+              value: t.objectValue({
+                fields: attrs.map((field) =>
+                  t.objectField({
+                    name: field.name,
+                    value: t.variable({
+                      name: field.name
+                    })
+                  })
+                )
+              })
+            })
+          ]
+        })
+      })
+    ];
+
+    const selections = attrs.map((field) => t.field({ name: field.name }));
+    const ast = createGqlMutation({
+      operationName,
+      mutationName,
+      selectArgs,
+      selections,
+      variableDefinitions,
+      modelName
+    });
+
+    return { name: mutationName, ast };
+  }
+
+  if (mutationType === 'patch') {
+    const patchAttrs = objectToArray(
+      mutation.properties.input.properties['patch'].properties
+    );
+
+    const patchByAttrs = objectToArray(
+      mutation.properties.input.properties
+    ).filter((n) => n.name !== 'patch');
+
+    const patchers = patchByAttrs.map((p) => p.name);
+
+    const variableDefinitions = patchAttrs.map((field) => {
+      const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+      let type = t.namedType({ type: fieldType });
+      if (isArray) type = t.listType({ type });
+      if (patchers.includes(field.name)) type = t.nonNullType({ type });
+      return t.variableDefinition({
+        variable: t.variable({ name: fieldName }),
+        type
+      });
+    });
+
+    const selectArgs = [
+      t.argument({
+        name: 'input',
+        value: t.objectValue({
+          fields: [
+            ...patchByAttrs.map((field) =>
+              t.objectField({
+                name: field.name,
+                value: t.variable({ name: field.name })
+              })
+            ),
+            t.objectField({
+              name: 'patch',
+              value: t.objectValue({
+                fields: patchAttrs
+                  .filter((field) => !patchers.includes(field.name))
+                  .map((field) =>
+                    t.objectField({
+                      name: field.name,
+                      value: t.variable({
+                        name: field.name
+                      })
+                    })
+                  )
+              })
+            })
+          ]
+        })
+      })
+    ];
+
+    const selections = patchAttrs.map((field) => t.field({ name: field.name }));
+    const ast = createGqlMutation({
+      operationName,
+      mutationName,
+      selectArgs,
+      selections,
+      variableDefinitions,
+      modelName
+    });
+
+    return { name: mutationName, ast };
+  }
+
+  if (mutationType === 'delete') {
+    const deleteAttrs = objectToArray(mutation.properties.input.properties);
+    const variableDefinitions = deleteAttrs.map((field) => {
+      const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+      let type = t.namedType({ type: fieldType });
+      if (isArray) type = t.listType({ type });
+      type = t.nonNullType({ type });
+      return t.variableDefinition({
+        variable: t.variable({ name: fieldName }),
+        type
+      });
+    });
+
+    const selectArgs = [
+      t.argument({
+        name: 'input',
+        value: t.objectValue({
+          fields: deleteAttrs.map((f) =>
+            t.objectField({
+              name: f.name,
+              value: t.variable({ name: f.name })
+            })
+          )
+        })
+      })
+    ];
+
+    const selections = deleteAttrs.map((field) =>
+      t.field({ name: field.name })
+    );
+    const ast = createGqlMutation({
+      operationName,
+      mutationName,
+      selectArgs,
+      selections,
+      variableDefinitions,
+      modelName
+    });
+
+    return { name: mutationName, ast };
+  }
+
+  // other mutations
+
+  if (
+    mutationType !== 'patch' &&
+    mutationType !== 'delete' &&
+    mutationType !== 'create'
+  ) {
+    const otherAttrs = objectToArray(mutation.properties.input.properties);
+
+    const variableDefinitions = otherAttrs.map((field) => {
+      const { name: fieldName, type: fieldType, isNotNull, isArray } = field;
+      let type = t.namedType({ type: fieldType });
+      if (isArray) type = t.listType({ type });
+      type = t.nonNullType({ type });
+      return t.variableDefinition({
+        variable: t.variable({ name: fieldName }),
+        type
+      });
+    });
+
+    const selectArgs =
+      otherAttrs.length > 0
+        ? [
+            t.argument({
+              name: 'input',
+              value: t.objectValue({
+                fields: otherAttrs.map((f) =>
+                  t.objectField({
+                    name: f.name,
+                    value: t.variable({ name: f.name })
+                  })
+                )
+              })
+            })
+          ]
+        : [];
+
+    const selections = [t.field({ name: 'clientMutationId' })];
+
+    const ast = createGqlMutation({
+      operationName,
+      mutationName,
+      selectArgs,
+      selections,
+      variableDefinitions
+    });
+
+    return { name: mutationName, ast };
+  }
+};
+
+export const generate = (gql) => {
+  return Object.keys(gql).reduce((m, v) => {
+    m[v] = false;
+    const defn = gql[v];
+    if (defn.qtype === 'mutation') {
+      m[v] = createMutation({ operationName: v, mutation: defn });
+    } else if (defn.qtype === 'getMany') {
+      m[v] = getMany({ operationName: v, query: defn });
+    } else if (defn.qtype === 'getOne') {
+      m[v] = getOne({ operationName: v, query: defn });
+    } else {
+      console.warn('what is ' + v);
+    }
+
+    return m;
+  }, {});
+};
