@@ -6,6 +6,6 @@ import poolManager from '@launchql/job-pg';
 
 const pgPool = poolManager.getPool();
 
-server(pgPool).listen(env.PORT, () => {
-  console.log(`listening ON ${env.PORT}`);
+server(pgPool).listen(env.INTERNAL_JOBS_CALLBACK_PORT, () => {
+  console.log(`listening ON ${env.INTERNAL_JOBS_CALLBACK_PORT}`);
 });

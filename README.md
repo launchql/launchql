@@ -64,6 +64,23 @@ pod-logs openfaas-fn example-fn
 SELECT app_jobs.add_job('example-fn', json_build_object('hello', 'world!'));
 ```
 
+### insert a scheduled job
+
+```sql
+SELECT app_jobs.add_scheduled_job(
+    'example-fn',
+    json_build_object('hello', 'world!'),
+    json_build_object(
+        'start',
+        NOW(),
+        'end',
+        NOW() + '1 day'::interval,
+        'rule',
+        '*/1 * * * *'
+    )
+);
+```
+
 ### create a trigger on insert
 
 ```sql

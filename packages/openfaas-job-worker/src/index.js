@@ -67,7 +67,7 @@ export default class Worker {
   async doWork(job) {
     const { payload, task_identifier } = job;
     if (
-      !env.SUPPORT_ANY_JOBS &&
+      !env.JOBS_SUPPORT_ANY &&
       !this.supportedTaskNames.includes(task_identifier)
     ) {
       throw new Error('Unsupported task');
@@ -89,7 +89,7 @@ export default class Worker {
     try {
       const job = await jobs.getJob(client, {
         workerId: this.workerId,
-        supportedTaskNames: env.SUPPORT_ANY_JOBS
+        supportedTaskNames: env.JOBS_SUPPORT_ANY
           ? null
           : this.supportedTaskNames
       });

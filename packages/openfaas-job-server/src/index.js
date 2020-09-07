@@ -19,10 +19,9 @@ export default (pgPool = poolManager.getPool()) => {
   };
 
   const complete = withClient(async (client, req, res) => {
-    const jobName = req.get('X-Function-Name');
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
-    console.log(`server: Completed task ${jobId} (${jobName}) with success`);
+    console.log(`server: Completed task ${jobId} with success`);
     await jobs.completeJob(client, { workerId, jobId });
     res
       .set({
@@ -33,11 +32,10 @@ export default (pgPool = poolManager.getPool()) => {
   });
 
   const fail = withClient(async (client, req, res) => {
-    const jobName = req.get('X-Function-Name');
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
     console.log(
-      `server: Failed task ${jobId} (${jobName}) with error: \n${req.body.message}\n\n`
+      `server: Failed task ${jobId} with error: \n${req.body.message}\n\n`
     );
     await jobs.failJob(client, { workerId, jobId, message: req.body.message });
     res.status(200).json({ workerId, jobId });

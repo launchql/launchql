@@ -9,7 +9,7 @@ export default cleanEnv(
     PGPORT: port({ default: 5432 }),
     PGDATABASE: str({ default: 'jobs' }),
     JOBS_SCHEMA: str({ default: 'app_jobs' }),
-    PORT: port({ default: 23456 })
+    INTERNAL_JOBS_API_PORT: port({ default: 23456 })
   },
   { dotEnvPath: null }
 );

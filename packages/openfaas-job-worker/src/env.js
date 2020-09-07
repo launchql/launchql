@@ -11,13 +11,13 @@ export default cleanEnv(
     PGPORT: port({ default: 5432 }),
     PGDATABASE: str({ default: 'jobs' }),
     JOBS_SCHEMA: str({ default: 'app_jobs' }),
-    SUPPORT_ANY_JOBS: bool({ default: true }),
-    SUPPORTED_JOBS: array({ default: '' }),
+    JOBS_SUPPORT_ANY: bool({ default: true }),
+    JOBS_SUPPORTED: array({ default: '' }),
     HOSTNAME: str({
       default: 'worker-0'
     }),
     INTERNAL_GATEWAY_URL: url(),
-    INTERNAL_JOB_CALLBACK_URL: url()
+    INTERNAL_JOBS_CALLBACK_URL: url()
   },
   { dotEnvPath: null }
 );
