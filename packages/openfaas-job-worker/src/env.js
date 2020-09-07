@@ -17,7 +17,7 @@ export default cleanEnv(
       default: 'worker-0'
     }),
     INTERNAL_GATEWAY_URL: url(),
-    INTERNAL_JOB_REQ_URL: url()
+    INTERNAL_JOB_CALLBACK_URL: url()
   },
   { dotEnvPath: null }
 );
