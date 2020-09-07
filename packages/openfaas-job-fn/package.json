@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-job-fn",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "openfaas job fn",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-fn#readme",

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-api-server",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "job api server",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-api-server#readme",
@@ -66,7 +66,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/job-pg": "^0.1.0",
+    "@launchql/job-pg": "^0.2.0",
     "@pyramation/postgraphile": "4.7.6",
     "body-parser": "1.19.0",
     "envalid": "6.0.2",

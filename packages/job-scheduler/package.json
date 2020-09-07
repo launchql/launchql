@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-scheduler",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "job scheduler",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-scheduler#readme",
@@ -63,8 +63,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@launchql/job-pg": "^0.1.0",
-    "@launchql/job-utils": "^0.1.0",
+    "@launchql/job-pg": "^0.2.0",
+    "@launchql/job-utils": "^0.2.0",
     "envalid": "6.0.2",
     "node-schedule": "1.3.2"
   }
