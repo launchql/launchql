@@ -1,6 +1,4 @@
-import { cleanEnv, url, str, bool, port, makeValidator } from 'envalid';
-
-const array = makeValidator((x) => x.split(',').filter((i) => i), '');
+import { cleanEnv, url, str, bool, port } from 'envalid';
 
 export default cleanEnv(
   process.env,
@@ -11,11 +9,7 @@ export default cleanEnv(
     PGPORT: port({ default: 5432 }),
     PGDATABASE: str({ default: 'jobs' }),
     JOBS_SCHEMA: str({ default: 'app_jobs' }),
-    JOBS_SUPPORT_ANY: bool({ default: true }),
-    JOBS_SUPPORTED: array({ default: '' }),
-    HOSTNAME: str({
-      default: 'scheduler-0'
-    })
+    INTERNAL_JOBS_API_PORT: port({ default: 23456 })
   },
   { dotEnvPath: null }
 );

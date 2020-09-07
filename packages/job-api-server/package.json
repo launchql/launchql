@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/openfaas-job-service",
-  "version": "0.1.2",
-  "description": "openfaas job service",
+  "name": "@launchql/job-api-server",
+  "version": "0.0.1",
+  "description": "job api server",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-service#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-api-server#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -16,7 +16,7 @@
     "module"
   ],
   "bin": {
-    "faas-job-service": "main/run.js"
+    "job-api": "main/run.js"
   },
   "publishConfig": {
     "access": "public"
@@ -67,10 +67,13 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "@launchql/job-pg": "^0.1.0",
-    "@launchql/job-scheduler": "^0.1.1",
-    "@launchql/openfaas-job-server": "^0.1.0",
-    "@launchql/openfaas-job-worker": "^0.2.1",
-    "@launchql/job-api-server": "0.0.1",
-    "envalid": "6.0.2"
+    "@pyramation/postgraphile": "4.7.6",
+    "body-parser": "1.19.0",
+    "envalid": "6.0.2",
+    "express": "4.17.1",
+    "graphile-build": "4.7.0",
+    "graphile-build-pg": "4.7.0",
+    "graphile-utils": "4.7.0",
+    "pg": "8.3.0"
   }
 }

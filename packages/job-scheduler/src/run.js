@@ -9,7 +9,7 @@ const pgPool = poolManager.getPool();
 const scheduler = new Scheduler({
   pgPool,
   workerId: env.HOSTNAME,
-  tasks: env.SUPPORTED_JOBS
+  tasks: env.JOBS_SUPPORTED
 });
 
 scheduler.listen();

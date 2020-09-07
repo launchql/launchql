@@ -2,7 +2,7 @@ import env from './env';
 import requestLib from 'request';
 
 // for completion
-const completeUrl = env.INTERNAL_JOB_REQ_URL;
+const completeUrl = env.INTERNAL_JOBS_CALLBACK_URL;
 
 const request = (fn, { body, workerId, jobId, taskId }) => {
   return new Promise((resolve, reject) => {

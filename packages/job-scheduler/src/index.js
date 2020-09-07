@@ -84,7 +84,7 @@ export default class Scheduler {
         }
       } else {
         console.log(
-          `scheduler: job already scheduled but not yet run: [${job.task_identifier}]`
+          `scheduler: job already scheduled but not yet run or complete: [${job.task_identifier}]`
         );
       }
     });
@@ -99,7 +99,7 @@ export default class Scheduler {
     try {
       const job = await jobs.getScheduledJob(client, {
         workerId: this.workerId,
-        supportedTaskNames: env.SUPPORT_ANY_JOBS
+        supportedTaskNames: env.JOBS_SUPPORT_ANY
           ? null
           : this.supportedTaskNames
       });
