@@ -47,7 +47,8 @@ const wait = async () => {
     await pgClient.query(`SELECT * FROM "${env.JOBS_SCHEMA}".jobs LIMIT 1;`);
   } catch (e) {
     failed = 1;
-    process.stderr.write(e.message);
+    // process.stderr.write(e.message);
+    console.log(e);
   } finally {
     pgClient.end();
   }
