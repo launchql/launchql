@@ -1,6 +1,6 @@
 {
   "name": "@launchql/openfaas-job-service",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "openfaas job service",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-service#readme",
