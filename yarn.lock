@@ -3502,14 +3502,6 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-"@pyramation/postgraphile-upload-field@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@pyramation/postgraphile-upload-field/-/postgraphile-upload-field-0.0.5.tgz#92c873ae5bb402c403207a375181cef461b4a317"
-  integrity sha512-LCbpFYEJsSSQpC3FUyelQdO11PEuTbIwge2fJOxauV7lnPKL/P7YOqSWHdTey6cGp/YiyYxBOePDB1fSYA6QMg==
-  dependencies:
-    "@babel/runtime" "^7.4.2"
-    graphql-upload "11.0.0"
-
 "@pyramation/postgraphile@4.7.6":
   version "4.7.6"
   resolved "https://registry.npmjs.org/@pyramation/postgraphile/-/postgraphile-4.7.6.tgz#e14e7236f23596a59043ab8dd167dcb6d37985de"
@@ -10849,6 +10841,14 @@ postgraphile-core@4.7.0:
   dependencies:
     graphile-build "4.7.0"
     graphile-build-pg "4.7.0"
+
+postgraphile-derived-upload-field@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/postgraphile-derived-upload-field/-/postgraphile-derived-upload-field-0.0.5.tgz#10e428b3a8855a455367fd70ee7f1d9846edea24"
+  integrity sha512-1RF2g6k5CKZPG4oG6eFwFEUB/FjCsaOiLqYhnXNwyWM4LdNeTCSGPvz6aIsT/QQ79acvcpi3uT466iRROCYk8g==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    graphql-upload "11.0.0"
 
 postgraphile-plugin-connection-filter@2.0.0:
   version "2.0.0"
