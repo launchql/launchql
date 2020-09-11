@@ -4,7 +4,7 @@ import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import PublicKeySignature from './plugins/PublicKeySignature';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
-import PostGraphileUploadFieldPlugin from '@pyramation/postgraphile-upload-field';
+import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
 import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
@@ -31,9 +31,25 @@ export const getGraphileSettings = ({
     graphileBuildOptions: {
       uploadFieldDefinitions: [
         {
-          match: (args) => {
-            return args.tags.upload;
-          },
+          name: 'upload',
+          namespaceName: 'public',
+          type: 'String',
+          resolve: resolveUpload
+        },
+        {
+          name: 'attachment',
+          namespaceName: 'public',
+          type: 'JSON',
+          resolve: resolveUpload
+        },
+        {
+          name: 'image',
+          namespaceName: 'public',
+          type: 'JSON',
+          resolve: resolveUpload
+        },
+        {
+          tag: 'upload',
           resolve: resolveUpload
         }
       ],
