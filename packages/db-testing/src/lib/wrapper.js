@@ -9,7 +9,7 @@ export default function PgpWrapper(db) {
   wrapConn(this);
 }
 
-PgpWrapper.prototype.helper = async function (schemaName) {
+PgpWrapper.prototype.helper = function (schemaName) {
   if (!schemaName) return this;
   return wrapConn(this, schemaName);
 };
