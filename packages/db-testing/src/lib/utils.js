@@ -20,7 +20,7 @@ export const setArgs = (config) => {
 
 export async function streamSql(config, sql = '') {
   const args = setArgs(config);
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const str = new Streamify(sql);
 
     const proc = spawn('psql', args, {
@@ -30,6 +30,12 @@ export async function streamSql(config, sql = '') {
     str.pipe(proc.stdin);
     proc.on('close', (code) => {
       resolve();
+    });
+    proc.on('error', (error) => {
+      reject(error);
+    });
+    proc.stderr.on('data', (data) => {
+      reject(data.toString());
     });
   });
 }

@@ -21,6 +21,10 @@ const P = (values, castVals) => {
 };
 
 export const getSelectStmt = (name, vars, where = {}, casts = {}) => {
+  // const castVals = keys.map(k => casts[k]);
+  // const values = Object.values(vars);
+  // return `SELECT ${vars.join(',')} FROM ${name}`;
+
   const whereKeys = Object.keys(where);
   const castVals = whereKeys.map((k) => casts[k]);
 
@@ -30,14 +34,14 @@ export const getSelectStmt = (name, vars, where = {}, casts = {}) => {
 
   let c = 0;
   return `SELECT ${vars.join(',')} FROM ${name}
-        WHERE
-        ${whereKeys
-          .map((key, i) => {
-            c++;
-            return `${key}=${getParameter(c, c - 1, castVals)}`;
-          })
-          .join(' AND ')}
-      `;
+    WHERE
+    ${whereKeys
+      .map((key, i) => {
+        c++;
+        return `${key}=${getParameter(c, c - 1, castVals)}`;
+      })
+      .join(' AND ')}
+  `;
 };
 
 export const getSelect = (name, vars = {}, where = {}, casts) => {
@@ -74,6 +78,35 @@ export const getInsert = (name, vars, casts) => {
   }
 };
 
+export const getDeleteStmt = (name, where, casts = {}) => {
+  const whereKeys = Object.keys(where);
+  const keys = [...whereKeys];
+  const castVals = keys.map((k) => casts[k]);
+  let c = 0;
+  return `DELETE FROM ${name}
+  WHERE
+  ${whereKeys
+    .map((key, i) => {
+      c++;
+      return `${key}=${getParameter(c, c - 1, castVals)}`;
+    })
+    .join(',')}
+`;
+};
+
+export const getDeleteAllStmt = (name) => {
+  return `DELETE FROM ${name} WHERE TRUE`;
+};
+
+export const getDelete = (name, where, casts) => {
+  const values = Object.values(where || {});
+  if (values.length > 0) {
+    return [getDeleteStmt(name, where, casts), values];
+  } else {
+    return [getDeleteAllStmt(name)];
+  }
+};
+
 export const getUpdateStmt = (name, vars, where, casts = {}) => {
   const varkeys = Object.keys(vars);
   const whereKeys = Object.keys(where);
@@ -84,20 +117,20 @@ export const getUpdateStmt = (name, vars, where, casts = {}) => {
 
   let c = 0;
   return `UPDATE ${name} 
-        SET ${varkeys
-          .map((key, i) => {
-            c++;
-            return `${key}=${getParameter(c, c - 1, castVals)}`;
-          })
-          .join(',')}
-        WHERE
-        ${whereKeys
-          .map((key, i) => {
-            c++;
-            return `${key}=${getParameter(c, c - 1, castVals)}`;
-          })
-          .join(',')}
-      `;
+    SET ${varkeys
+      .map((key, i) => {
+        c++;
+        return `${key}=${getParameter(c, c - 1, castVals)}`;
+      })
+      .join(',')}
+    WHERE
+    ${whereKeys
+      .map((key, i) => {
+        c++;
+        return `${key}=${getParameter(c, c - 1, castVals)}`;
+      })
+      .join(',')}
+  `;
 };
 
 export const getUpdate = (name, vars, where, casts) => {
@@ -112,7 +145,7 @@ export const getFuncStmt = (name, vars, casts = {}) => {
   return `SELECT * FROM ${name} ${P(values, castVals)};`;
 };
 
-export const getFunc = (name, vars = {}, casts) => {
+export const getFunc = (name, vars, casts) => {
   const values = Object.values(vars);
   return [getFuncStmt(name, vars, casts), values];
 };
@@ -133,10 +166,13 @@ export const wrapConn = (conn, schema, nick) => {
       name = n(name);
       return await conn.any(...getFunc(name, vars, casts));
     };
-
     obj.update = async (name, vars, where, casts) => {
       name = n(name);
       return await conn.any(...getUpdate(name, vars, where, casts));
+    };
+    obj.delete = async (name, where, casts) => {
+      name = n(name);
+      return await conn.any(...getDelete(name, where, casts));
     };
     obj.select = async (name, vars, where, casts) => {
       name = n(name);
@@ -153,8 +189,11 @@ export const wrapConn = (conn, schema, nick) => {
     obj.call = obj.callAny;
     obj.insertOne = async (name, vars, casts) => {
       name = n(name);
-      const stmt = getInsert(name, vars, casts);
-      return await conn.one(...stmt);
+      return await conn.one(...getInsert(name, vars, casts));
+    };
+    obj.insert = async (name, vars, casts) => {
+      name = n(name);
+      return await conn.any(...getInsert(name, vars, casts));
     };
 
     return obj;

@@ -1,4 +1,3 @@
-const v4 = require('uuid/v4');
 import { createdb, dropdb, templatedb, installExt } from './db';
 import { sqitchFast, sqitch } from './sqitch';
 import { sqitchPath, getInstalledExtensions } from '@launchql/db-utils';
@@ -56,7 +55,7 @@ export const getConnection = async (configOpts, database) => {
   } = configOpts;
 
   if (!database) {
-    database = `${prefix}-${v4()}`;
+    database = `${prefix}-${Date.now()}`;
   }
   const connection = {
     database,
