@@ -1,9 +1,19 @@
+import { wrapConn } from './helpers';
+import { wrap } from 'regenerator-runtime';
+
 export default function PgpWrapper(db) {
   this.db = db;
   this.client = db.client;
   this.done = db.done;
   this.ctxStmts = '';
+  this.schemas = {};
+  wrapConn(this);
 }
+
+PgpWrapper.prototype.helper = async function (schemaName, nick) {
+  if (!schemaName) return this;
+  return wrapConn(this, schemaName, nick);
+};
 
 PgpWrapper.prototype.begin = async function () {
   await this.db.any(`BEGIN;`);
