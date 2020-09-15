@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/launchql/launchql-db/compare/@launchql/db-testing@0.2.3...@launchql/db-testing@0.2.4) (2020-09-15)
+
+
+### Bug Fixes
+
+* test db ([3687c2c](https://github.com/launchql/launchql-db/commit/3687c2c22541ca736f2cded40cddab94fc7f2df3))
+
+
+
+
+
 ## [0.2.3](https://github.com/launchql/launchql-db/compare/@launchql/db-testing@0.2.2...@launchql/db-testing@0.2.3) (2020-09-15)
 
 
