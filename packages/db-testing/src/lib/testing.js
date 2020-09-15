@@ -91,7 +91,9 @@ export const getConnection = async (configOpts, database) => {
 export const closeConnection = async (db) => {
   const { connectionParameters } = db.client;
   close(db);
-  await dropdb(connectionParameters);
+  if (!process.env.TEST_DB) {
+    await dropdb(connectionParameters);
+  }
 };
 
 const prefix = 'testing-db';
