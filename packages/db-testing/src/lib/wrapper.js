@@ -5,6 +5,32 @@ export default function PgpWrapper(db) {
   this.ctxStmts = '';
 }
 
+PgpWrapper.prototype.begin = async function () {
+  await this.db.any(`BEGIN;`);
+};
+
+PgpWrapper.prototype.savepoint = async function (name = 'jsqltest') {
+  await this.db.any(`SAVEPOINT "${name}";`);
+};
+
+PgpWrapper.prototype.rollback = async function (name = 'jsqltest') {
+  await this.db.any(`ROLLBACK TO SAVEPOINT "${name}";`);
+};
+
+PgpWrapper.prototype.commit = async function () {
+  await this.db.any(`COMMIT;`);
+};
+
+PgpWrapper.prototype.beforeEach = async function () {
+  await this.begin();
+  await this.savepoint();
+};
+
+PgpWrapper.prototype.afterEach = async function () {
+  await this.rollback();
+  await this.commit();
+};
+
 PgpWrapper.prototype.setContext = function (ctx) {
   this.ctxStmts = Object.keys(ctx || {})
     .reduce((m, el) => {
