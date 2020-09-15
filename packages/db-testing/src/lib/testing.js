@@ -65,7 +65,9 @@ export const getConnection = async (configOpts, database) => {
     host
   };
 
-  if (hot) {
+  if (process.env.TEST_DB) {
+    connection.database = process.env.TEST_DB;
+  } else if (hot) {
     // FAST_TEST=1
     // createdb + hot loaded sql
     await createdb(connection);
