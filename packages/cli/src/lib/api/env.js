@@ -112,13 +112,13 @@ export const getCurrentContext = async (cwd = process.cwd()) => {
   }
 
   const current = config.currentContext;
-  const context = config.contexts.find((context) => context.name == current);
+  const context = config.contexts?.find((context) => context.name == current);
   if (!context) {
     console.warn('no context found!');
     return {};
   }
-  context.user = config.users.find((el) => el.name == context.user);
-  context.server = config.servers.find((el) => el.name == context.server);
+  context.user = config.users?.find((el) => el.name == context.user);
+  context.server = config.servers?.find((el) => el.name == context.server);
   return context;
 };
 
@@ -136,7 +136,8 @@ export const getConfig = async (cwd = process.cwd()) => {
   if (ls.includes(CONFIG_JSON)) {
     config = JSON.parse(readFileSync(join(dir, CONFIG_JSON)).toString());
   } else {
-    console.warn('missing lql config!');
+    console.warn('missing lql config');
+    console.log(ls);
     return {};
   }
 
