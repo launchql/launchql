@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.11](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.6.10...@launchql/cli@0.6.11) (2020-09-21)
+
+
+### Bug Fixes
+
+* fix ([0acbc9b](https://github.com/launchql/launchql-db/commit/0acbc9b5de31f705d02a14d63b0eafe636565aac))
+
+
+
+
+
 ## [0.6.10](https://github.com/launchql/launchql-db/compare/@launchql/cli@0.6.9...@launchql/cli@0.6.10) (2020-09-15)
 
 **Note:** Version bump only for package @launchql/cli
