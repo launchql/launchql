@@ -1,7 +1,7 @@
-import { getOpts, getConnection, closeConnection } from './testing';
+import { getOpts, getConnection } from './testing';
 import { setTemplate } from './utils';
 import { close } from './connection';
-import { dropdb } from './db';
+import { droptemplatedb } from './db';
 import env from '../env';
 
 export class TestDatabase {
@@ -34,6 +34,6 @@ export class TestDatabase {
     return db;
   }
   async close() {
-    await dropdb(this.templateConfig);
+    await droptemplatedb(this.templateConfig);
   }
 }

@@ -8,10 +8,32 @@ export async function dropdb({ database, host, password, port, user }) {
     `dropdb -U ${user} -h ${host} -p ${port} ${database}`,
     {
       env: {
-        PGPASSWORD: password
+        PGPASSWORD: password,
+        PATH: process.env.PATH
       }
     }
   );
+}
+
+export async function droptemplatedb({ database, host, password, port, user }) {
+  await asyncExec(
+    `psql -c "UPDATE pg_database SET datistemplate='false' WHERE datname='${database}';"`,
+    {
+      env: {
+        PGHOST: host,
+        PGPORT: port,
+        PGUSER: user,
+        PGPASSWORD: password,
+        PATH: process.env.PATH
+      }
+    }
+  );
+  await asyncExec(`dropdb -U ${user} -h ${host} -p ${port} ${database}`, {
+    env: {
+      PGPASSWORD: password,
+      PATH: process.env.PATH
+    }
+  });
 }
 
 export async function createdb({ database, host, password, port, user }) {
@@ -19,7 +41,8 @@ export async function createdb({ database, host, password, port, user }) {
     `createdb -U ${user} -h ${host} -p ${port} ${database}`,
     {
       env: {
-        PGPASSWORD: password
+        PGPASSWORD: password,
+        PATH: process.env.PATH
       }
     }
   );
@@ -37,7 +60,8 @@ export async function templatedb({
     `createdb -U ${user} -h ${host} -p ${port} -e ${database} -T ${template}`,
     {
       env: {
-        PGPASSWORD: password
+        PGPASSWORD: password,
+        PATH: process.env.PATH
       }
     }
   );

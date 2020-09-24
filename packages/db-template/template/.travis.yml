@@ -14,7 +14,6 @@ env:
     - POSTGRES_USER=postgres
     - POSTGRES_PASSWORD=password
     - PGPORT=7777
-    - PGDATABASE=testing-db
     - PGTEMPLATE_DATABASE=testing-template-db
     - PGHOST=localhost
     - PGPASSWORD=password
