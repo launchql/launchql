@@ -4,7 +4,6 @@ const { bool, port, str } = envalid;
 module.exports = envalid.cleanEnv(
   process.env,
   {
-    PGDATABASE: str({ default: 'testing-db' }),
     PGTEMPLATE_DATABASE: str({ default: 'testing-template-db' }),
     PGHOST: str({ default: 'localhost' }),
     PGPASSWORD: str({ default: 'password' }),

@@ -53,7 +53,6 @@ export const getConnection = async (configOpts, database) => {
     directory,
     extensions
   } = configOpts;
-
   if (!database) {
     database = `${prefix}-${Date.now()}`;
   }
@@ -64,7 +63,6 @@ export const getConnection = async (configOpts, database) => {
     password,
     host
   };
-
   if (process.env.TEST_DB) {
     connection.database = process.env.TEST_DB;
   } else if (hot) {

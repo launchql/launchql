@@ -1,11 +1,10 @@
-import { IConnected } from 'pg-promise';
 import v4 from 'uuid/v4';
 import {
   close,
   connect,
   getConnection,
   closeConnection,
-  dropdb
+  droptemplatedb
 } from '../src/index';
 import { expectBasicSeed } from '../utils';
 
@@ -64,7 +63,7 @@ describe('templatedb', () => {
     ]);
 
     {
-      await dropdb(connectionParameters);
+      await droptemplatedb(connectionParameters);
     }
 
     await closeConnection(db);

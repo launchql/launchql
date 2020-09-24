@@ -8,15 +8,15 @@ export const getConnection = async () => {
   const options = process.env.FAST_TEST
     ? {
         hot: true,
-        prefix,
+        prefix
       }
     : {
         template: process.env.PGTEMPLATE_DATABASE,
-        prefix,
+        prefix
       };
   return await testing.getConnection(options);
 };
 
-export const closeConnection = async db => {
+export const closeConnection = async (db) => {
   await testing.closeConnection(db);
 };

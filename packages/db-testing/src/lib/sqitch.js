@@ -16,7 +16,8 @@ export async function sqitch(
         PGPASSWORD: password,
         PGUSER: user,
         PGHOST: host,
-        PGPORT: port
+        PGPORT: port,
+        PATH: process.env.PATH
       })
     });
     proc.on('close', (code) => {
