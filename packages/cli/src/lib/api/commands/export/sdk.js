@@ -59,13 +59,19 @@ export default async (ctx, argv) => {
     headers.authorization = authorization;
   }
 
-  const { convention } = await prompt(
+  const { convention, folder } = await prompt(
     [
       {
         name: 'convention',
         message: 'convention',
         choices: ['underscore', 'dashed', 'camelcase', 'camelUpper'],
         type: 'list',
+        required: true
+      },
+      {
+        name: 'folder',
+        message: 'folder',
+        type: 'string',
         required: true
       }
     ],
@@ -78,7 +84,7 @@ export default async (ctx, argv) => {
   const { queries, mutations } = parseGraphQuery(results);
   const obj = gqlGen.generate({ ...queries, ...mutations });
 
-  const pth = path.join(process.cwd(), 'codegen');
+  const pth = path.join(process.cwd(), folder);
   mkdirp.sync(pth);
 
   const indexJs = [];
