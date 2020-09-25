@@ -1,10 +1,9 @@
-import { exec } from 'shelljs';
 import { prompt } from 'inquirerer';
-import { pg as pgGen } from 'graphile-gen-js';
+import { pg as pgGen } from 'graphile-gen';
 import { introspect, introspectionResultsFromRaw } from 'introspectron';
-import { resolve } from 'path';
 import { PGUSER, PGPASSWORD, PGHOST, PGPORT } from '@launchql/db-env';
 import inflection from 'inflection';
+import { print } from 'graphql/language';
 
 const fs = require('fs');
 const path = require('path');
@@ -86,11 +85,21 @@ and datname !~ '^pg_';
   });
   const introspectron = introspectionResultsFromRaw(raw);
 
-  const obj = pgGen.crudify(introspectron);
-  const pth = path.join(process.cwd(), 'codegen', database);
-  mkdirp.sync(pth);
+  const val = pgGen.crudify(introspectron);
+  const obj = Object.keys(val).reduce((m, key) => {
+    const ast = val[key];
+    const ql = (print(ast) || '')
+      .split('\n')
+      .map((line) => '    ' + line)
+      .join('\n')
+      .trim();
+    const str = `export const ${key} = gql\`
+    ${ql}\`;`;
+    m[key] = str;
+    return m;
+  }, {});
 
-  const { convention } = await prompt(
+  const { convention, folder } = await prompt(
     [
       {
         name: 'convention',
@@ -98,10 +107,19 @@ and datname !~ '^pg_';
         choices: ['underscore', 'dashed', 'camelcase', 'camelUpper'],
         type: 'list',
         required: true
+      },
+      {
+        name: 'folder',
+        message: 'folder',
+        type: 'string',
+        required: true
       }
     ],
     argv
   );
+
+  const pth = path.join(process.cwd(), folder, database);
+  mkdirp.sync(pth);
 
   const indexJs = [];
   Object.keys(obj).forEach((key) => {

@@ -1,6 +1,8 @@
 import { getCurrentContext } from '../../env';
-import { gql as gqlGen } from 'graphile-gen-js';
+import { gql as gqlGenPure } from 'graphile-gen';
 import { IntrospectionQuery, parseGraphQuery } from 'introspectron';
+import { print } from 'graphql/language';
+
 import { GraphQLClient } from 'graphql-request';
 import { prompt } from 'inquirerer';
 import inflection from 'inflection';
@@ -59,12 +61,19 @@ export default async (ctx, argv) => {
     headers.authorization = authorization;
   }
 
-  const { convention, folder } = await prompt(
+  const { convention, folder, type } = await prompt(
     [
       {
         name: 'convention',
         message: 'convention',
         choices: ['underscore', 'dashed', 'camelcase', 'camelUpper'],
+        type: 'list',
+        required: true
+      },
+      {
+        name: 'type',
+        message: 'which file type?',
+        choices: ['js', 'graphql'],
         type: 'list',
         required: true
       },
@@ -82,23 +91,51 @@ export default async (ctx, argv) => {
 
   const results = await client.request(IntrospectionQuery);
   const { queries, mutations } = parseGraphQuery(results);
-  const obj = gqlGen.generate({ ...queries, ...mutations });
 
   const pth = path.join(process.cwd(), folder);
   mkdirp.sync(pth);
 
-  const indexJs = [];
-  Object.keys(obj).forEach((key) => {
-    const code = `import gql from 'graphql-tag';
+  if (type === 'js') {
+    const val = gqlGenPure.generate({ ...queries, ...mutations });
+    const gqlObj = Object.keys(val).reduce((m, key) => {
+      const ast = val[key].ast;
+      const ql = (print(ast) || '')
+        .split('\n')
+        .map((line) => '    ' + line)
+        .join('\n')
+        .trim();
+      const str = `export const ${key} = gql\`
+      ${ql}\`;`;
+      m[key] = str;
+      return m;
+    }, {});
 
-${obj[key]}
-    `;
+    const indexJs = [];
+    Object.keys(gqlObj).forEach((key) => {
+      const code = `import gql from 'graphql-tag';
+  
+  ${gqlObj[key]}
+      `;
 
-    const filename = getFilename(key, convention) + '.js';
-    fs.writeFileSync(path.join(pth, filename), code);
-    indexJs.push(`export * from './${filename}';`);
-  });
-  fs.writeFileSync(path.join(pth, 'index.js'), indexJs.sort().join('\n'));
+      const filename = getFilename(key, convention) + '.js';
+      fs.writeFileSync(path.join(pth, filename), code);
+      indexJs.push(`export * from './${filename}';`);
+    });
+    fs.writeFileSync(path.join(pth, 'index.js'), indexJs.sort().join('\n'));
+  } else if (type === 'graphql') {
+    const val = gqlGenPure.generate({ ...queries, ...mutations });
+    const gqlObj = Object.keys(val).reduce((m, key) => {
+      const ast = val[key].ast;
+      const ql = print(ast);
+      m[key] = ql;
+      return m;
+    }, {});
+    Object.keys(gqlObj).forEach((key) => {
+      const code = gqlObj[key];
+      const filename = getFilename(key, convention) + '.gql';
+      fs.writeFileSync(path.join(pth, filename), code);
+    });
+  }
 
   console.log(`
 

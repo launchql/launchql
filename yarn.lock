@@ -7101,7 +7101,7 @@ graphile-gen-js@0.1.2:
     graphile-gen "^0.1.2"
     graphql "^14.0.2"
 
-graphile-gen@^0.1.2:
+graphile-gen@0.1.2, graphile-gen@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/graphile-gen/-/graphile-gen-0.1.2.tgz#be0c77cf95fe0fc3c7bb04781ee1ed6e3a978855"
   integrity sha512-E9vvF4zYLUkvT5IbXwzo85YL0gC2Lya3sQrM/QowAUJlISE4J4MOPu8+u+esE6VsHDLfBau1kNA3kkIbZB4/hA==

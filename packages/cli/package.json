@@ -78,6 +78,7 @@
     "@pyramation/prompt": "0.0.1",
     "case": "1.6.3",
     "glob": "7.1.6",
+    "graphile-gen": "0.1.2",
     "graphile-gen-js": "0.1.2",
     "graphql": "^14.0.2",
     "graphql-request": "3.0.0",
