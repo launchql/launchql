@@ -63,9 +63,9 @@ export const getMany = ({ operationName, query }) => {
           t.field({
             name: 'totalCount'
           }),
-          t.objectField({
+          t.field({
             name: 'nodes',
-            value: t.selectionSet({ selections })
+            selectionSet: t.selectionSet({ selections })
           })
         ]
       })
