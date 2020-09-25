@@ -530,7 +530,7 @@ Object {
 }
 ",
   "getApiTokensQuery": "query getApiTokensQuery {
-  apiTokens {totalCount, nodes: {
+  apiTokens {totalCount, nodes {
     id
     userId
     accessToken
@@ -554,7 +554,7 @@ Object {
 }
 ",
   "getArticlesQuery": "query getArticlesQuery {
-  articles {totalCount, nodes: {
+  articles {totalCount, nodes {
     id
     header
     url
@@ -631,7 +631,7 @@ Object {
 }
 ",
   "getCampaignActionsQuery": "query getCampaignActionsQuery {
-  campaignActions {totalCount, nodes: {
+  campaignActions {totalCount, nodes {
     id
     name
     description
@@ -683,7 +683,7 @@ Object {
 }
 ",
   "getCampaignsQuery": "query getCampaignsQuery {
-  campaigns {totalCount, nodes: {
+  campaigns {totalCount, nodes {
     id
     name
     description
@@ -720,7 +720,7 @@ Object {
 }
 ",
   "getCompletedActionsQuery": "query getCompletedActionsQuery {
-  completedActions {totalCount, nodes: {
+  completedActions {totalCount, nodes {
     id
     dateCompleted
     txid
@@ -769,7 +769,7 @@ Object {
 }
 ",
   "getImagesQuery": "query getImagesQuery {
-  images {totalCount, nodes: {
+  images {totalCount, nodes {
     id
     name
     url
@@ -809,7 +809,7 @@ Object {
 }
 ",
   "getInitiativesPyraRecordsQuery": "query getInitiativesPyraRecordsQuery {
-  initiativesPyraRecords {totalCount, nodes: {
+  initiativesPyraRecords {totalCount, nodes {
     id
     name
     email
@@ -845,7 +845,7 @@ Object {
 }
 ",
   "getMerchantsQuery": "query getMerchantsQuery {
-  merchants {totalCount, nodes: {
+  merchants {totalCount, nodes {
     id
     name
     bitcoinAddress
@@ -886,7 +886,7 @@ Object {
 }
 ",
   "getPartnersQuery": "query getPartnersQuery {
-  partners {totalCount, nodes: {
+  partners {totalCount, nodes {
     id
     name
     description
@@ -921,7 +921,7 @@ Object {
 }
 ",
   "getPermissionsQuery": "query getPermissionsQuery {
-  permissions {totalCount, nodes: {
+  permissions {totalCount, nodes {
     id
     name
     createdBy
@@ -950,7 +950,7 @@ Object {
 }
 ",
   "getProductsQuery": "query getProductsQuery {
-  products {totalCount, nodes: {
+  products {totalCount, nodes {
     id
     name
     url
@@ -984,7 +984,7 @@ Object {
 }
 ",
   "getServicesQuery": "query getServicesQuery {
-  services {totalCount, nodes: {
+  services {totalCount, nodes {
     id
     name
     description
@@ -1019,7 +1019,7 @@ Object {
 }
 ",
   "getShopifyAccountsQuery": "query getShopifyAccountsQuery {
-  shopifyAccounts {totalCount, nodes: {
+  shopifyAccounts {totalCount, nodes {
     id
     name
     shopLink
@@ -1088,7 +1088,7 @@ Object {
 }
 ",
   "getShopifyOrdersQuery": "query getShopifyOrdersQuery {
-  shopifyOrders {totalCount, nodes: {
+  shopifyOrders {totalCount, nodes {
     id
     orderId
     email
@@ -1134,7 +1134,7 @@ Object {
 }
 ",
   "getShopifySecretsQuery": "query getShopifySecretsQuery {
-  shopifySecrets {totalCount, nodes: {
+  shopifySecrets {totalCount, nodes {
     id
     shopifyAccountId
     name
@@ -1184,7 +1184,7 @@ Object {
 }
 ",
   "getUserEncryptedSecretsQuery": "query getUserEncryptedSecretsQuery {
-  userEncryptedSecrets {totalCount, nodes: {
+  userEncryptedSecrets {totalCount, nodes {
     id
     userId
     name
@@ -1222,7 +1222,7 @@ Object {
 }
 ",
   "getUserSecretsQuery": "query getUserSecretsQuery {
-  userSecrets {totalCount, nodes: {
+  userSecrets {totalCount, nodes {
     id
     userId
     name
@@ -1231,7 +1231,7 @@ Object {
 }
 ",
   "getUsersQuery": "query getUsersQuery {
-  users {totalCount, nodes: {
+  users {totalCount, nodes {
     id
     username
     bitcoinAddress
