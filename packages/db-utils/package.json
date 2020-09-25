@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-utils",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db-utils#readme",
@@ -61,7 +61,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@launchql/db-env": "^0.0.6",
-    "@launchql/db-template": "^0.1.1",
+    "@launchql/db-template": "^0.1.2",
     "@launchql/db-transform": "^0.1.9",
     "envalid": "6.0.2",
     "fuzzy": "0.1.3",
