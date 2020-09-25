@@ -1,6 +1,6 @@
 # graphile-gen
 
-Generate JS files for mutations/queries for your Graphile GraphQL projects
+Generate the GraphQL mutations/queries for your PostGraphile projects
 
 * assumes using simple inflection
 
@@ -8,45 +8,36 @@ Generate JS files for mutations/queries for your Graphile GraphQL projects
 npm install graphile-gen
 ```
 
-## introspecting via Postgres
-
-```js
-import {
-  pg as gen
-} from 'graphile-gen';
-import { print } from 'graphql/language';
-
-const { ast } = gen.createOne(tableDefn);
-console.log(print(ast));
-```
-
-
 ## introspecting via GraphQL
 
 ```js
 import {
-  gql as gen
+  generate
 } from 'graphile-gen';
 import { print } from 'graphql/language';
 
-const { ast } = pgGen.generate(resultOfIntrospectionQuery);
-console.log(print(ast));
+const gen = generate(resultOfIntrospectionQuery);
+const output = Object.keys(gen).reduce((m, key) => {
+  m[key] = print(gen[key].ast);
+  return m;
+}, {});
+
+console.log(output);
 ```
 
 # output
 
-which will output:
+which will output the entire API as an object with the mutations and queries as values
 
-```
-mutation createProductMutation($id: UUID, $ownerId: UUID, $name: String!, $rhinoFoot: String, $hiddenFoot: String, $lizardFeet: String) {
-  createProduct(input: {product: {id: $id, ownerId: $ownerId, name: $name, rhinoFoot: $rhinoFoot, hiddenFoot: $hiddenFoot, lizardFeet: $lizardFeet}}) {
-    product {
+```json
+{
+  "createApiTokenMutation": "mutation createApiTokenMutation($id: UUID, $userId: UUID!, $accessToken: String, $accessTokenExpiresAt: Datetime) {
+  createApiToken(input: {apiToken: {id: $id, userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
       id
-      ownerId
-      name
-      rhinoFoot
-      hiddenFoot
-      lizardFeet
+      userId
+      accessToken
+      accessTokenExpiresAt
     }
   }
 }
