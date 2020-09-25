@@ -1,11 +1,11 @@
-# graphile-gen
+# graphile-gen-sql
 
-Generate JS files for mutations/queries for your Graphile GraphQL projects
+Generate mutations/queries for your PostGraphile projects
 
 * assumes using simple inflection
 
 ```sh
-npm install graphile-gen
+npm install graphile-gen-sql
 ```
 
 ## introspecting via Postgres
@@ -13,7 +13,7 @@ npm install graphile-gen
 ```js
 import {
   pg as gen
-} from 'graphile-gen';
+} from 'graphile-gen-sql';
 import { print } from 'graphql/language';
 
 const { ast } = gen.createOne(tableDefn);
@@ -26,7 +26,7 @@ console.log(print(ast));
 ```js
 import {
   gql as gen
-} from 'graphile-gen';
+} from 'graphile-gen-sql';
 import { print } from 'graphql/language';
 
 const { ast } = pgGen.generate(resultOfIntrospectionQuery);

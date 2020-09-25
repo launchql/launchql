@@ -11,7 +11,8 @@ const createGqlMutation = ({
   selectArgs,
   selections,
   variableDefinitions,
-  modelName
+  modelName,
+  useModel = true
 }) => {
   const opSel = !modelName
     ? [
@@ -26,12 +27,14 @@ const createGqlMutation = ({
           name: operationName,
           args: selectArgs,
           selectionSet: t.selectionSet({
-            selections: [
-              t.field({
-                name: modelName,
-                selectionSet: t.selectionSet({ selections })
-              })
-            ]
+            selections: useModel
+              ? [
+                  t.field({
+                    name: modelName,
+                    selectionSet: t.selectionSet({ selections })
+                  })
+                ]
+              : selections
           })
         })
       ];
@@ -356,12 +359,14 @@ export const deleteOne = ({ operationName, mutation }) => {
     })
   ];
 
-  const selections = deleteAttrs.map((field) => t.field({ name: field.name }));
+  // so we can support column select grants plugin
+  const selections = [t.field({ name: 'clientMutationId' })];
   const ast = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
     selections,
+    useModel: false,
     variableDefinitions,
     modelName
   });

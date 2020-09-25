@@ -300,214 +300,157 @@ Object {
 ",
   "deleteApiTokenByAccessTokenMutation": "mutation deleteApiTokenByAccessTokenMutation($accessToken: String!) {
   deleteApiTokenByAccessToken(input: {accessToken: $accessToken}) {
-    apiToken {
-      accessToken
-    }
+    clientMutationId
   }
 }
 ",
   "deleteApiTokenMutation": "mutation deleteApiTokenMutation($id: UUID!) {
   deleteApiToken(input: {id: $id}) {
-    apiToken {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteArticleMutation": "mutation deleteArticleMutation($id: UUID!) {
   deleteArticle(input: {id: $id}) {
-    article {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteCampaignActionByNameMutation": "mutation deleteCampaignActionByNameMutation($name: String!) {
   deleteCampaignActionByName(input: {name: $name}) {
-    campaignAction {
-      name
-    }
+    clientMutationId
   }
 }
 ",
   "deleteCampaignActionMutation": "mutation deleteCampaignActionMutation($id: UUID!) {
   deleteCampaignAction(input: {id: $id}) {
-    campaignAction {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteCampaignMutation": "mutation deleteCampaignMutation($id: UUID!) {
   deleteCampaign(input: {id: $id}) {
-    campaign {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteCompletedActionMutation": "mutation deleteCompletedActionMutation($id: UUID!) {
   deleteCompletedAction(input: {id: $id}) {
-    completedAction {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteImageMutation": "mutation deleteImageMutation($id: UUID!) {
   deleteImage(input: {id: $id}) {
-    image {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteInitiativesPyraRecordMutation": "mutation deleteInitiativesPyraRecordMutation($id: UUID!) {
   deleteInitiativesPyraRecord(input: {id: $id}) {
-    initiativesPyraRecord {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteMerchantMutation": "mutation deleteMerchantMutation($id: UUID!) {
   deleteMerchant(input: {id: $id}) {
-    merchant {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deletePartnerMutation": "mutation deletePartnerMutation($id: UUID!) {
   deletePartner(input: {id: $id}) {
-    partner {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deletePermissionMutation": "mutation deletePermissionMutation($id: UUID!) {
   deletePermission(input: {id: $id}) {
-    permission {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteProductMutation": "mutation deleteProductMutation($id: UUID!) {
   deleteProduct(input: {id: $id}) {
-    product {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteServiceMutation": "mutation deleteServiceMutation($id: UUID!) {
   deleteService(input: {id: $id}) {
-    service {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteShopifyAccountMutation": "mutation deleteShopifyAccountMutation($id: UUID!) {
   deleteShopifyAccount(input: {id: $id}) {
-    shopifyAccount {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation": "mutation deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($orderId: Int!, $email: String!, $shopifyAccountId: UUID!) {
   deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId}) {
-    shopifyOrder {
-      orderId
-      email
-      shopifyAccountId
-    }
+    clientMutationId
   }
 }
 ",
   "deleteShopifyOrderMutation": "mutation deleteShopifyOrderMutation($id: UUID!) {
   deleteShopifyOrder(input: {id: $id}) {
-    shopifyOrder {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteShopifySecretByShopifyAccountIdAndNameMutation": "mutation deleteShopifySecretByShopifyAccountIdAndNameMutation($shopifyAccountId: UUID!, $name: String!) {
   deleteShopifySecretByShopifyAccountIdAndName(input: {shopifyAccountId: $shopifyAccountId, name: $name}) {
-    shopifySecret {
-      shopifyAccountId
-      name
-    }
+    clientMutationId
   }
 }
 ",
   "deleteShopifySecretMutation": "mutation deleteShopifySecretMutation($id: UUID!) {
   deleteShopifySecret(input: {id: $id}) {
-    shopifySecret {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserByBitcoinAddressMutation": "mutation deleteUserByBitcoinAddressMutation($bitcoinAddress: String!) {
   deleteUserByBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress}) {
-    user {
-      bitcoinAddress
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserByUsernameMutation": "mutation deleteUserByUsernameMutation($username: String!) {
   deleteUserByUsername(input: {username: $username}) {
-    user {
-      username
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserEncryptedSecretByUserIdAndNameMutation": "mutation deleteUserEncryptedSecretByUserIdAndNameMutation($userId: UUID!, $name: String!) {
   deleteUserEncryptedSecretByUserIdAndName(input: {userId: $userId, name: $name}) {
-    userEncryptedSecret {
-      userId
-      name
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserEncryptedSecretMutation": "mutation deleteUserEncryptedSecretMutation($id: UUID!) {
   deleteUserEncryptedSecret(input: {id: $id}) {
-    userEncryptedSecret {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserMutation": "mutation deleteUserMutation($id: UUID!) {
   deleteUser(input: {id: $id}) {
-    user {
-      id
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserSecretByUserIdAndNameMutation": "mutation deleteUserSecretByUserIdAndNameMutation($userId: UUID!, $name: String!) {
   deleteUserSecretByUserIdAndName(input: {userId: $userId, name: $name}) {
-    userSecret {
-      userId
-      name
-    }
+    clientMutationId
   }
 }
 ",
   "deleteUserSecretMutation": "mutation deleteUserSecretMutation($id: UUID!) {
   deleteUserSecret(input: {id: $id}) {
-    userSecret {
-      id
-    }
+    clientMutationId
   }
 }
 ",
