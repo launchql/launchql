@@ -7092,19 +7092,19 @@ graphile-build@4.7.0:
     pluralize "^7.0.0"
     semver "^6.0.0"
 
-graphile-gen-js@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/graphile-gen-js/-/graphile-gen-js-0.1.1.tgz#4da14c0ae92c7a2bbb7d3ab0897d2aa50a1a5a84"
-  integrity sha512-qdn6pMWg8us+Ze9cXK6Auh1r9Zw0PQa2mw871E6dDrc2v0v1FghDOvq9weI+eq+iX9q9PfSjiEHwpSiWk1cgDQ==
+graphile-gen-js@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/graphile-gen-js/-/graphile-gen-js-0.1.2.tgz#ba7b880bc968f1ef20e6da90a51d6da5624b13a8"
+  integrity sha512-wbTc9CcYuXIfw7ocb4Q3YMfjdQPqgO0yf51XXSak66z9IuHas+/HsRlBJvL4SplHJ7aJFqqCNizGVsmxDNIKWg==
   dependencies:
     "@babel/runtime" "^7.4.2"
-    graphile-gen "^0.1.1"
+    graphile-gen "^0.1.2"
     graphql "^14.0.2"
 
-graphile-gen@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/graphile-gen/-/graphile-gen-0.1.1.tgz#b928d7b894810514a474a9229039febbd8caf4de"
-  integrity sha512-N151YBlGlayF3GfpeG2tugx3V4Z23033nAErICRo9LFgzmnSMsQsSSb3d2stY7LhM0SFJwzJ/W3PgQc+neU/9Q==
+graphile-gen@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/graphile-gen/-/graphile-gen-0.1.2.tgz#be0c77cf95fe0fc3c7bb04781ee1ed6e3a978855"
+  integrity sha512-E9vvF4zYLUkvT5IbXwzo85YL0gC2Lya3sQrM/QowAUJlISE4J4MOPu8+u+esE6VsHDLfBau1kNA3kkIbZB4/hA==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@pyramation/graphql-ast" "0.0.3"
