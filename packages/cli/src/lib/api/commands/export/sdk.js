@@ -1,5 +1,5 @@
 import { getCurrentContext } from '../../env';
-import { gql as gqlGenPure } from 'graphile-gen';
+import { generate } from 'graphile-gen';
 import { IntrospectionQuery, parseGraphQuery } from 'introspectron';
 import { print } from 'graphql/language';
 
@@ -96,7 +96,7 @@ export default async (ctx, argv) => {
   mkdirp.sync(pth);
 
   if (type === 'js') {
-    const val = gqlGenPure.generate({ ...queries, ...mutations });
+    const val = generate({ ...queries, ...mutations });
     const gqlObj = Object.keys(val).reduce((m, key) => {
       const ast = val[key].ast;
       const ql = (print(ast) || '')
@@ -123,7 +123,7 @@ export default async (ctx, argv) => {
     });
     fs.writeFileSync(path.join(pth, 'index.js'), indexJs.sort().join('\n'));
   } else if (type === 'graphql') {
-    const val = gqlGenPure.generate({ ...queries, ...mutations });
+    const val = generate({ ...queries, ...mutations });
     const gqlObj = Object.keys(val).reduce((m, key) => {
       const ast = val[key].ast;
       const ql = print(ast);
