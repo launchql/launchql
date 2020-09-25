@@ -330,9 +330,9 @@ export const getMany = (klass) => {
           t.field({
             name: 'totalCount'
           }),
-          t.objectField({
+          t.field({
             name: 'nodes',
-            value: t.selectionSet({ selections })
+            selectionSet: t.selectionSet({ selections })
           })
         ]
       })

@@ -90,7 +90,7 @@ Object {
 }
 ",
   "getMerchantsQuery": "query getMerchantsQuery {
-  merchants {totalCount, nodes: {
+  merchants {totalCount, nodes {
     id
     name
   }}
@@ -117,7 +117,7 @@ Object {
 }
 ",
   "getProductsQuery": "query getProductsQuery {
-  products {totalCount, nodes: {
+  products {totalCount, nodes {
     id
     merchantId
     name
@@ -136,7 +136,7 @@ Object {
 }
 ",
   "getUsersQuery": "query getUsersQuery {
-  users {totalCount, nodes: {
+  users {totalCount, nodes {
     id
     name
     email
@@ -197,7 +197,7 @@ exports[`deleteOne test1 1`] = `
 
 exports[`getMany test1 1`] = `
 "query getProductsQuery {
-  products {totalCount, nodes: {
+  products {totalCount, nodes {
     id
     ownerId
     name
