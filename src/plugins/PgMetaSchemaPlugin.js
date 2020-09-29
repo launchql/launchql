@@ -20,6 +20,11 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
         name: String!
         fields: [MetaschemaField]
         constraints: [MetaschemaConstraint]
+        foreignKeyConstraints: [MetaschemaForeignKeyConstraint]
+        primaryKeyConstraints: [MetaschemaPrimaryKeyConstraint]
+        uniqueConstraints: [MetaschemaUniqueConstraint]
+        checkConstraints: [MetaschemaCheckConstraint]
+        exclusionConstraints: [MetaschemaExclusionConstraint]
       }
       union MetaschemaConstraint =
           MetaschemaForeignKeyConstraint
@@ -113,6 +118,26 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
         /** @param table {import('graphile-build-pg').PgClass} */
         constraints(table) {
           return table.constraints;
+        },
+        /** @param table {import('graphile-build-pg').PgClass} */
+        foreignKeyConstraints(table) {
+          return table.constraints.filter(c => c.type === 'f');
+        },
+        /** @param table {import('graphile-build-pg').PgClass} */
+        primaryKeyConstraints(table) {
+          return table.constraints.filter(c => c.type === 'p');
+        },
+        /** @param table {import('graphile-build-pg').PgClass} */
+        uniqueConstraints(table) {
+          return table.constraints.filter(c => c.type === 'u');
+        },
+        /** @param table {import('graphile-build-pg').PgClass} */
+        checkConstraints(table) {
+          return table.constraints.filter(c => c.type === 'c');
+        },
+        /** @param table {import('graphile-build-pg').PgClass} */
+        exclusionConstraints(table) {
+          return table.constraints.filter(c => c.type === 'x');
         }
       },
       MetaschemaConstraint: {
