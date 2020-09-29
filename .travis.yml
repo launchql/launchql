@@ -29,7 +29,8 @@ before_install:
   - sleep 3
   - while ! docker exec -it postgres pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
   - createdb metaschema_example
-  - psql -f sql/schema.sql metaschema_example
+  - psql -f sql/roles.sql metaschema_example
+  - psql -f sql/test.sql metaschema_example
 
 script:
   - yarn install
