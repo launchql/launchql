@@ -1,10 +1,38 @@
-import fun from '../src';
-import cases from 'jest-in-case';
+import '../utils/env';
+import { GraphQLTest, env, snapshot } from 'graphile-test';
+import { GetMetaSchema, GetMetaSchemaUnion } from '../utils/queries';
+import { PgMetaschemaPlugin } from '../src';
 
-cases(
-  'first test',
-  options => {
-    fun(options);
+const { SCHEMA } = env;
+
+const getDbString = () =>
+  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
+
+const { setup, teardown, graphQL } = GraphQLTest(
+  {
+    appendPlugins: [PgMetaschemaPlugin],
+    schema: SCHEMA,
+    graphqlRoute: '/graphql'
   },
-  [{ name: 'strings' }, { name: 'booleans' }, { name: 'noUnderscores' }]
+  getDbString()
 );
+
+beforeAll(async () => {
+  await setup();
+});
+afterAll(async () => {
+  await teardown();
+});
+
+it('individual', async () => {
+  await graphQL(async query => {
+    const data = await query(GetMetaSchema);
+    expect(snapshot(data)).toMatchSnapshot();
+  });
+});
+it('union', async () => {
+  await graphQL(async query => {
+    const data = await query(GetMetaSchemaUnion);
+    expect(snapshot(data)).toMatchSnapshot();
+  });
+});

@@ -1,10 +1,8 @@
-# graphile-meta-schema
+# graphile-meta-schema [![Build Status](https://travis-ci.org/pyramation/graphile-meta-schema.svg?branch=master)](https://travis-ci.org/pyramation/graphile-meta-schema)
 
 ```sh
-createdb metaschema_example
-psql metaschema_example < schema.sql
+npm install graphile-meta-schema 
 ```
-
 
 ## example query
 
@@ -70,5 +68,11 @@ query MetaQuery {
     }
   }
 }
+```
 
+## testing
+
+```sh
+createdb metaschema_example
+psql metaschema_example < schema.sql
 ```

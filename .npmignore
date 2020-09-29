@@ -15,6 +15,8 @@ yarn.lock
 # project files
 src
 test
+sql
+utils
 examples
 CHANGELOG.md
 .travis.yml

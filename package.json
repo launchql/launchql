@@ -20,8 +20,6 @@
     "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
     "build": "npm run build:module && npm run build:main",
     "prepublish": "npm run build",
-    "dev": "NODE_ENV=development babel-node src/server",
-    "watch": "NODE_ENV=development babel-watch src/server",
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -34,42 +32,38 @@
     "type": "git",
     "url": "https://github.com/pyramation/graphile-meta-schema"
   },
-  "keywords": [],
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "plugin",
+    "postgres",
+    "graphql",
+    "metaschema"
+  ],
   "bugs": {
     "url": "https://github.com/pyramation/graphile-meta-schema/issues"
   },
   "devDependencies": {
     "@babel/cli": "7.10.4",
     "@babel/core": "7.10.4",
-    "@babel/node": "7.10.4",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-proposal-export-default-from": "7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "7.9.6",
     "@babel/plugin-transform-runtime": "7.9.6",
     "@babel/preset-env": "7.9.6",
-    "@babel/preset-react": "7.9.4",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.3",
     "babel-jest": "25.1.0",
-    "babel-plugin-macros": "2.8.0",
-    "babel-watch": "7.0.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "^6.10.0",
-    "eslint-config-react-app": "5.2.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.18.3",
-    "eslint-plugin-react-hooks": "4.0.0",
+    "graphile-test": "0.0.4",
     "jest": "^24.5.0",
-    "jest-in-case": "^1.0.2",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "debug": "^4.2.0",
-    "express": "^4.17.1",
-    "graphile-build": "^4.9.0",
-    "graphile-utils": "^4.9.0",
-    "postgraphile": "^4.9.0"
+    "graphile-utils": "^4.9.0"
   }
 }
