@@ -2,9 +2,9 @@
 // https://github.com/graphile/starter/blob/ce3c683ee19d4c92444431324b76941347fd85db/%40app/db/__tests__/helpers.ts#L46-L76
 
 const uuidRegexp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const idReplacement = (v) => (!v ? v : '[ID]');
+const idReplacement = v => (!v ? v : '[ID]');
 
-export const pruneDates = (row) =>
+export const pruneDates = row =>
   mapValues(row, (v, k) => {
     if (!v) {
       return v;
@@ -26,7 +26,7 @@ const mapValues = (objs, fn) =>
     return a;
   }, {});
 
-export const pruneIds = (row) =>
+export const pruneIds = row =>
   mapValues(row, (v, k) =>
     (k === 'id' || k.endsWith('_id')) &&
     (typeof v === 'string' || typeof v === 'number')
@@ -34,12 +34,12 @@ export const pruneIds = (row) =>
       : v
   );
 
-export const pruneIdArrays = (row) =>
+export const pruneIdArrays = row =>
   mapValues(row, (v, k) =>
     k.endsWith('_ids') && Array.isArray(v) ? `[UUIDs-${v.length}]` : v
   );
 
-export const pruneUUIDs = (row) =>
+export const pruneUUIDs = row =>
   mapValues(row, (v, k) => {
     if (typeof v !== 'string') {
       return v;
@@ -52,17 +52,15 @@ export const pruneUUIDs = (row) =>
       : v;
   });
 
-export const pruneHashes = (row) =>
+export const pruneHashes = row =>
   mapValues(row, (v, k) =>
     k.endsWith('_hash') && typeof v === 'string' && v[0] === '$' ? '[hash]' : v
   );
 
-export const prune = (obj) =>
-  pruneHashes(
-    pruneUUIDs(pruneIds(pruneIdArrays(pruneDates(obj))))
-  );
+export const prune = obj =>
+  pruneHashes(pruneUUIDs(pruneIds(pruneIdArrays(pruneDates(obj)))));
 
-export const snapshot = (obj) => {
+export const snapshot = obj => {
   if (Array.isArray(obj)) {
     return obj.map(snapshot);
   } else if (obj && typeof obj === 'object') {

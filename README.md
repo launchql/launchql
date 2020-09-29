@@ -4,7 +4,9 @@
 npm install graphile-test 
 ```
 
-## how to use
+# how to use
+
+## environment vars
 
 make sure env vars are set:
 
@@ -16,6 +18,14 @@ PGPORT
 PGDATABASE
 SCHEMA
 ```
+
+## postgres users
+
+```sql
+CREATE ROLE authenticated;
+```
+
+## write test
 
 Then in a test:
 
