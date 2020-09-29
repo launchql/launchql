@@ -1,6 +1,6 @@
 {
   "name": "graphile-test",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "PostGraphile Testing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-test#readme",
@@ -32,7 +32,13 @@
     "type": "git",
     "url": "https://github.com/pyramation/graphile-test"
   },
-  "keywords": [],
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "postgres",
+    "graphql",
+    "testing"
+  ],
   "bugs": {
     "url": "https://github.com/pyramation/graphile-test/issues"
   },
