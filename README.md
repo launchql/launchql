@@ -9,11 +9,16 @@ psql metaschema_example < schema.sql
 ## example query
 
 ```gql
-query MyQuery {
-  __typename
+query MetaQuery {
   _meta {
     tables {
       name
+      fields {
+        name
+        type {
+          name
+        }
+      }
       constraints {
         ... on MetaschemaForeignKeyConstraint {
           fields {
@@ -21,18 +26,15 @@ query MyQuery {
           }
           refTable {
             name
-            constraints {
-              __typename
-            }
             fields {
               name
-          
             }
           }
           refFields {
             name
           }
         }
+
         ... on MetaschemaPrimaryKeyConstraint {
           __typename
           fields {
@@ -43,11 +45,26 @@ query MyQuery {
           }
           name
         }
-      }
-      fields {
-        name
-        type {
+
+        ... on MetaschemaUniqueConstraint {
+          __typename
           name
+          fields {
+            name
+            type {
+              name
+            }
+          }
+        }
+        ... on MetaschemaCheckConstraint {
+          __typename
+          name
+          fields {
+            name
+            type {
+              name
+            }
+          }
         }
       }
     }

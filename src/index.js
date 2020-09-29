@@ -7,7 +7,7 @@ import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 const app = express();
 
 app.use(
-  postgraphile('postgres://localhost:5432/mutation_example', 'public', {
+  postgraphile('postgres://localhost:5432/metaschema_example', 'app_meta', {
     graphiql: true,
     enhanceGraphiql: true,
     enableCors: true,
@@ -17,5 +17,4 @@ app.use(
     graphileBuildOptions: {}
   })
 );
-
 export default app;

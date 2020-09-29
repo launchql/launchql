@@ -4,12 +4,8 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
   /** @type {import('graphile-build-pg').PgIntrospectionResultsByKind} */
   const introspection = build.pgIntrospectionResultsByKind;
 
-  // console.log(schemaOptions.pgSchemas);
-
   /** @type {string[]} */
   const schemas = schemaOptions.pgSchemas;
-
-  // r = ordinary table, i = index, S = sequence, t = TOAST table, v = view, m = materialized view, c = composite type, f = foreign table, p = partitioned table, I = partitioned index
 
   return {
     typeDefs: gql`
@@ -25,14 +21,12 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
         fields: [MetaschemaField]
         constraints: [MetaschemaConstraint]
       }
-
       union MetaschemaConstraint =
           MetaschemaForeignKeyConstraint
         | MetaschemaUniqueConstraint
         | MetaschemaPrimaryKeyConstraint
         | MetaschemaCheckConstraint
         | MetaschemaExclusionConstraint
-
       type MetaschemaForeignKeyConstraint {
         name: String!
         fields: [MetaschemaField]
@@ -41,7 +35,7 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
       }
       type MetaschemaUniqueConstraint {
         name: String!
-        fields: [String]
+        fields: [MetaschemaField]
       }
       type MetaschemaPrimaryKeyConstraint {
         name: String!
@@ -49,11 +43,12 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
       }
       type MetaschemaCheckConstraint {
         name: String!
+        fields: [MetaschemaField]
       }
       type MetaschemaExclusionConstraint {
         name: String!
+        fields: [MetaschemaField]
       }
-
       type Metaschema {
         tables: [MetaschemaTable]
       }
@@ -62,6 +57,25 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
       }
     `,
     resolvers: {
+      // TODO determine why check constraints aren't coming through
+      MetaschemaCheckConstraint: {
+        /** @param constraint {import('graphile-build-pg').PgConstraint} */
+        fields(constraint) {
+          return constraint.keyAttributes;
+        }
+      },
+      MetaschemaExclusionConstraint: {
+        /** @param constraint {import('graphile-build-pg').PgConstraint} */
+        fields(constraint) {
+          return constraint.keyAttributes;
+        }
+      },
+      MetaschemaUniqueConstraint: {
+        /** @param constraint {import('graphile-build-pg').PgConstraint} */
+        fields(constraint) {
+          return constraint.keyAttributes;
+        }
+      },
       MetaschemaPrimaryKeyConstraint: {
         /** @param constraint {import('graphile-build-pg').PgConstraint} */
         fields(constraint) {
@@ -122,7 +136,8 @@ export default makeExtendSchemaPlugin((build, schemaOptions) => {
         tables() {
           return introspection.class.filter(kls => {
             if (!schemas.includes(kls.namespaceName)) return false;
-            if (kls.classKind !== 'r') return false; // relation (tables)
+            // r = ordinary table, i = index, S = sequence, t = TOAST table, v = view, m = materialized view, c = composite type, f = foreign table, p = partitioned table, I = partitioned index
+            if (kls.classKind !== 'r') return false;
             return true;
           });
         }
