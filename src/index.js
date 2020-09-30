@@ -1,15 +1,15 @@
-const createHash = require('etag-hash').createHash;
+import { createHash } from 'etag-hash';
 module.exports = function stream2etag(stream, partSizeInMb = 5) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const hash = createHash(partSizeInMb);
     stream
-      .on('error', function(error) {
+      .on('error', function (error) {
         reject(error);
       })
-      .on('data', function(chunk) {
+      .on('data', function (chunk) {
         hash.update(chunk);
       })
-      .on('end', function() {
+      .on('end', function () {
         resolve(hash.digest());
       });
   });
