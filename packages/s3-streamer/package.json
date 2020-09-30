@@ -1,6 +1,6 @@
 {
   "name": "@pyramation/s3-streamer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "stream files to s3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/uploads/tree/master/packages/s3-streamer#readme",
@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@pyramation/content-type-stream": "^0.0.4",
+    "@pyramation/content-type-stream": "^0.0.5",
     "aws-sdk": "2.729.0"
   }
 }
