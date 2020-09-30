@@ -68,6 +68,6 @@
     "pg": "8.3.3",
     "pg-promise": "10.5.8",
     "streamify-string": "1.0.1",
-    "uuid": "3.1.0"
+    "uuid": "8.3.0"
   }
 }

@@ -1,5 +1,5 @@
 import { sqitch, sqitchFast } from '../src/lib/sqitch';
-import v4 from 'uuid/v4';
+import { v4 } from 'uuid';
 import {
   connectionString,
   createdb,
