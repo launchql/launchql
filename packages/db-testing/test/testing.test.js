@@ -1,19 +1,5 @@
-import { v4 }  from 'uuid';
-import {
-  close,
-  connect,
-  getConnection,
-  closeConnection,
-  dropdb
-} from '../src/index';
-import {
-  getConnObj,
-  getConnStr,
-  cleanup,
-  verifydb,
-  expectBasicSeed,
-  config
-} from '../utils';
+import { getConnection, closeConnection, dropdb } from '../src/index';
+import { expectBasicSeed, config } from '../utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
