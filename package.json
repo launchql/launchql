@@ -65,6 +65,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "etag-hash": "^1.0.1"
+    "etag-hash": "^1.1.2"
   }
 }
