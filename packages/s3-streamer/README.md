@@ -78,6 +78,8 @@ const results = await upload({
     });
 ```
 
+values:
+
 `MINIO_ENDPOINT`=http://localhost:9000
 `AWS_ACCESS_KEY`=minio-access
 `AWS_SECRET_KEY`=minio-secret

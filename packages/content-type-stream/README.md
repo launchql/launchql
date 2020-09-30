@@ -43,14 +43,12 @@ if you want more info with your upload, with `ContentStream` you can get nice ha
 * `etag`: Etag/S3 MD5 sum
 * `sha`: A sha sum
 
-
 ```js
     const contentStream = new ContentStream();
 // ...
     readStream.pipe(contentStream);
     contentStream.pipe(uploadStream);
 ```
-
 
 ```js
    { 

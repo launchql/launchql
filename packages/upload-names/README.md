@@ -34,7 +34,6 @@ lowercase is ideal for URLs, but not necessary
 lower: true
 ```
 
-
 ### delimeter 
 
 defaults to `-`
