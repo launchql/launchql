@@ -1,60 +1,52 @@
 {
-  "name": "@launchql/explorer",
-  "version": "0.10.5",
-  "description": "graphile explorer module for multiple dbs and schemas",
+  "name": "@launchql/graphile-settings",
+  "version": "0.0.1",
+  "description": "graphile settings",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/launchql/tree/master/packages/launchql#readme",
+  "homepage": "https://github.com/launchql/launchql/tree/master/packages/graphile-settings#readme",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "main/index.js",
+  "module": "module/index.js",
   "directories": {
     "lib": "src",
     "test": "__tests__"
   },
   "files": [
-    "dist"
+    "main",
+    "module"
   ],
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pyramation/launchql"
-  },
-  "bin": {
-    "server": "dist/cjs/server.js"
+    "url": "https://github.com/launchql/launchql"
   },
   "scripts": {
-    "dist:cjs": "NODE_ENV=production BABEL_ENV=cjs babel src --out-dir ./dist/cjs --delete-dir-on-start",
-    "dist:esm": "NODE_ENV=production BABEL_ENV=esm babel src --out-dir ./dist/esm --delete-dir-on-start",
-    "dist:es": "NODE_ENV=production BABEL_ENV=es babel src --out-dir ./dist/es --delete-dir-on-start",
-    "build": "npm run dist:cjs && npm run dist:esm",
+    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
+    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build": "npm run build:module && npm run build:main",
     "prepare": "npm run build",
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
-    "dev": "NODE_ENV=development babel-node src/server",
-    "watch": "NODE_ENV=development babel-watch src/server",
-    "start": "node dist/cjs/server"
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
   "bugs": {
-    "url": "https://github.com/pyramation/launchql/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
     "@babel/cli": "7.11.6",
     "@babel/core": "7.11.6",
-    "@babel/node": "7.10.5",
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/plugin-proposal-export-default-from": "7.10.4",
     "@babel/plugin-proposal-object-rest-spread": "7.11.0",
     "@babel/plugin-transform-runtime": "7.11.5",
     "@babel/preset-env": "7.11.5",
     "@babel/preset-react": "7.10.4",
+    "babel-plugin-macros": "2.8.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
-    "babel-plugin-macros": "2.8.0",
-    "babel-watch": "7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "5.2.1",
@@ -67,21 +59,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.4",
-    "@pyramation/postgraphile": "4.9.0",
     "@pyramation/s3-streamer": "0.1.1",
     "@pyramation/upload-names": "0.0.4",
-    "@pyramation/url-domains": "0.0.4",
-    "@launchql/server-utils": "0.0.1",
-    "@launchql/graphile-settings": "0.0.1",
     "envalid": "6.0.2",
-    "express": "4.17.1",
-    "graphile-build": "4.9.0",
-    "graphile-build-pg": "4.9.0",
     "graphile-meta-schema": "0.1.0",
     "graphile-simple-inflector": "0.1.0",
-    "graphile-utils": "4.9.0",
-    "graphql-upload": "11.0.0",
-    "inflection": "1.12.0",
+    "graphile-build": "4.9.0",
     "postgraphile-derived-upload-field": "0.0.5",
     "postgraphile-plugin-connection-filter": "2.0.0",
     "postgraphile-plugin-fulltext-filter": "1.0.0-beta.7"
