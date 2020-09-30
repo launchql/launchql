@@ -64,6 +64,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "uuid-hash": "^1.0.2"
+    "uuid-hash": "^1.1.3"
   }
 }
