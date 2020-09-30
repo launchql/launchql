@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/pyramation/uploads/compare/@pyramation/stream-to-s3@0.1.0...@pyramation/stream-to-s3@0.1.1) (2020-09-30)
+
+**Note:** Version bump only for package @pyramation/stream-to-s3
+
+
+
+
+
 # [0.1.0](https://github.com/pyramation/uploads/compare/@pyramation/stream-to-s3@0.0.8...@pyramation/stream-to-s3@0.1.0) (2020-08-28)
 
 

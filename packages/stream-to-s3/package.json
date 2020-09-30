@@ -1,6 +1,6 @@
 {
   "name": "@pyramation/stream-to-s3",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "stream to s3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/uploads/tree/master/packages/stream-to-s3#readme",
