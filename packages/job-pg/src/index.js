@@ -3,13 +3,15 @@
 import pg from 'pg';
 import env from './env';
 
+// k8s only does SIGINT
+// other events are bad for babel-watch
 const SYS_EVENTS = [
-  'SIGUSR2',
-  'SIGINT',
-  'SIGTERM',
-  'SIGPIPE',
-  'SIGHUP',
-  'SIGABRT'
+  // 'SIGUSR2',
+  'SIGINT'
+  // 'SIGTERM',
+  // 'SIGPIPE',
+  // 'SIGHUP',
+  // 'SIGABRT'
 ];
 
 function once(fn, context) {

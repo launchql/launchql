@@ -1,6 +1,6 @@
 module.exports = {
-  plugins: ['prettier', 'react-hooks'],
-  extends: ['eslint:recommended', 'prettier', 'prettier/react', 'plugin:react-hooks/recommended'],
+  plugins: ['prettier'],
+  extends: ['eslint:recommended', 'prettier'],
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 11,
@@ -31,7 +31,7 @@ module.exports = {
       0,
       {
         ignoreSiblings: true,
-        argsIgnorePattern: 'React|res|next|^_'
+        argsIgnorePattern: 'res|next|^_'
       }
     ],
     'prefer-const': [
