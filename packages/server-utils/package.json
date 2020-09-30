@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "server utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/server-utils#readme",
