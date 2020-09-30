@@ -1,4 +1,4 @@
-const uuid = require('../src');
+import uuid from '../src';
 
 describe('UUID v5', () => {
   it('uuid v5 hash', async () => {
