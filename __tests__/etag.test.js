@@ -43,10 +43,10 @@ const getETagThrough = stream => {
 describe('etags', () => {
   it('through mode', async () => {
     const res = {};
-    const files = [].concat(glob(__dirname + '/fixtures/*.*'));
+    const files = [].concat(glob(__dirname + '/../__fixtures__/*.*'));
     for (var i = 0; i < files.length; i++) {
       const file = files[i];
-      const key = file.split('fixtures')[1];
+      const key = file.split('__fixtures__')[1];
       const stream = new ETagStream({ mode: 'through' });
       res[key] = await getETagThrough(createReadStream(file).pipe(stream));
     }
@@ -54,10 +54,10 @@ describe('etags', () => {
   });
   it('other mode', async () => {
     const res = {};
-    const files = [].concat(glob(__dirname + '/fixtures/*.*'));
+    const files = [].concat(glob(__dirname + '/../__fixtures__/*.*'));
     for (var i = 0; i < files.length; i++) {
       const file = files[i];
-      const key = file.split('fixtures')[1];
+      const key = file.split('__fixtures__')[1];
       const stream = new ETagStream({ mode: false });
       res[key] = await getETag(createReadStream(file).pipe(stream));
     }
