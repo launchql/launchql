@@ -7513,12 +7513,12 @@ loud-rejection@^1.0.0:
     currently-unhandled "^0.4.1"
     signal-exit "^3.0.0"
 
-lru-cache@5.1.1, lru-cache@^5.0.0, lru-cache@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz#1da27e6710271947695daf6848e847f01d84b920"
-  integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
+lru-cache@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
+  integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
-    yallist "^3.0.2"
+    yallist "^4.0.0"
 
 "lru-cache@>=4 <5":
   version "4.1.5"
@@ -7527,6 +7527,13 @@ lru-cache@5.1.1, lru-cache@^5.0.0, lru-cache@^5.1.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
+
+lru-cache@^5.0.0, lru-cache@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz#1da27e6710271947695daf6848e847f01d84b920"
+  integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
+  dependencies:
+    yallist "^3.0.2"
 
 macos-release@^2.2.0:
   version "2.4.1"
@@ -9866,21 +9873,6 @@ sisteransi@^1.0.4:
   resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
-skitch-ext-defaults@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/skitch-ext-defaults/-/skitch-ext-defaults-0.0.1.tgz#c369f0d78517c7fa01b6644d2f47af0968d10d62"
-  integrity sha512-1+zSwLpZDVID+j06N+X7HDcYIHjYE52H5I9RdRGseA8TkT1zv3ng/PzfSbQyIt37R/2fXEDgPbUFaX3jNk1l/w==
-
-skitch-ext-utilities@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/skitch-ext-utilities/-/skitch-ext-utilities-0.0.1.tgz#6df12d128c640ad79b96c080715e26498235c2ff"
-  integrity sha512-e19xdMWMpjHYENom/h/d/XH5tC44MuUvLZlIubxkkbV2rSf6aPNx/CGHiraha1cduEwpk0FZGyDSRIx/QIvHQg==
-
-skitch-ext-verify@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/skitch-ext-verify/-/skitch-ext-verify-0.0.1.tgz#afb44b4e122e854f3954468e3b618988b83eb651"
-  integrity sha512-Fa+K4M8ui5Y2N8g0/Dffr3FFKW+p8L4o4ayprQC2uvNEATuGoW6kpuRzr4VKGskGYger+n5dv67YZC1V3xZnqQ==
-
 slash@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
@@ -11183,6 +11175,11 @@ yallist@^3.0.0, yallist@^3.0.2, yallist@^3.0.3:
   version "3.1.1"
   resolved "https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+
+yallist@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
+  integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
 yaml@^1.7.2:
   version "1.10.0"

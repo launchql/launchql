@@ -81,7 +81,7 @@
     "graphile-utils": "4.9.0",
     "graphql-upload": "11.0.0",
     "inflection": "1.12.0",
-    "lru-cache": "5.1.1",
+    "lru-cache": "6.0.0",
     "pg": "8.3.3",
     "postgraphile-derived-upload-field": "0.0.5",
     "postgraphile-plugin-connection-filter": "2.0.0",

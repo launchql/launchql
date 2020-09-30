@@ -72,9 +72,6 @@
     "pgsql-parser": "0.7.9",
     "rimraf": "^3.0.2",
     "semver": "^5.5.1",
-    "shelljs": "^0.8.2",
-    "skitch-ext-defaults": "0.0.1",
-    "skitch-ext-utilities": "0.0.1",
-    "skitch-ext-verify": "0.0.1"
+    "shelljs": "^0.8.2"
   }
 }
