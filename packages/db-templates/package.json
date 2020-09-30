@@ -60,7 +60,7 @@
     "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.11.2",
     "@launchql/db-utils": "^0.2.3"
   }
 }

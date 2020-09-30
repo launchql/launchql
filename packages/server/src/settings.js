@@ -1,7 +1,8 @@
 import env from './env';
 import { NodePlugin } from 'graphile-build';
-import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
 import PublicKeySignature from './plugins/PublicKeySignature';
+import PgSimpleInflector from 'graphile-simple-inflector';
+import PgMetaschema from 'graphile-meta-schema';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
 import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
@@ -19,9 +20,10 @@ export const getGraphileSettings = ({
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
 
   plugins.push(PostGraphileUploadFieldPlugin);
+  plugins.push(PgMetaschema);
 
   if (simpleInflection) {
-    plugins.push(PgSimplifyInflectorPlugin);
+    plugins.push(PgSimpleInflector);
   }
   const { anon_role, role_name, role_key } = svc;
   if (svc.pubkey_challenge?.length == 6) {
@@ -54,19 +56,6 @@ export const getGraphileSettings = ({
         }
       ],
       pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false,
-      // connectionFilterAllowedOperators: [
-      //   "isNull",
-      //   "equalTo",
-      //   "notEqualTo",
-      //   "distinctFrom",
-      //   "notDistinctFrom",
-      //   "lessThan",
-      //   "lessThanOrEqualTo",
-      //   "greaterThan",
-      //   "greaterThanOrEqualTo",
-      //   "in",
-      //   "notIn",
-      // ],
       connectionFilterComputedColumns: false
     },
     appendPlugins: plugins.length > 0 ? plugins : undefined,
@@ -89,10 +78,8 @@ export const getGraphileSettings = ({
     additionalGraphQLContextFromRequest(req, res) {
       return { req, res, env };
     },
-    // https://github.com/graphile/postgraphile/issues/1073
-    retryOnInitFail: false,
-    handleSeriousError(error) {
-      throw error;
+    async retryOnInitFail(error) {
+      return false;
     },
     async pgSettings(req) {
       // TODO both role_ids and role_id

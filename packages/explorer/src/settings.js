@@ -1,6 +1,7 @@
 import env from './env';
 import { NodePlugin } from 'graphile-build';
-import PgSimplifyInflectorPlugin from './plugins/PgSimplifyInflectorPlugin';
+import PgSimpleInflector from 'graphile-simple-inflector';
+import PgMetaschema from 'graphile-meta-schema';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
 import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
@@ -17,9 +18,10 @@ export const getGraphileSettings = ({
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
 
   plugins.push(PostGraphileUploadFieldPlugin);
+  plugins.push(PgMetaschema);
 
   if (simpleInflection) {
-    plugins.push(PgSimplifyInflectorPlugin);
+    plugins.push(PgSimpleInflector);
   }
 
   return {
@@ -49,19 +51,6 @@ export const getGraphileSettings = ({
         }
       ],
       pgSimplifyOppositeBaseNames: oppositeBaseNames ? true : false,
-      // connectionFilterAllowedOperators: [
-      //   "isNull",
-      //   "equalTo",
-      //   "notEqualTo",
-      //   "distinctFrom",
-      //   "notDistinctFrom",
-      //   "lessThan",
-      //   "lessThanOrEqualTo",
-      //   "greaterThan",
-      //   "greaterThanOrEqualTo",
-      //   "in",
-      //   "notIn",
-      // ],
       connectionFilterComputedColumns: false
     },
     appendPlugins: plugins.length > 0 ? plugins : undefined,
@@ -81,10 +70,8 @@ export const getGraphileSettings = ({
     disableQueryLog: false,
     includeExtensionResources: true,
     setofFunctionsContainNulls: false,
-    // https://github.com/graphile/postgraphile/issues/1073
-    retryOnInitFail: false,
-    handleSeriousError(error) {
-      throw error;
+    async retryOnInitFail(error) {
+      return false;
     },
     additionalGraphQLContextFromRequest(req, res) {
       return { req, res, env };
