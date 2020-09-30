@@ -15,8 +15,8 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.4",
-    "@babel/core": "7.10.4",
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
     "@pyramation/babel-preset-env": "0.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
@@ -28,8 +28,8 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "4.0.6",
     "jest": "25.1.0",
-    "lerna": "3.20.2",
-    "prettier": "2.0.5"
+    "lerna": "3.22.1",
+    "prettier": "2.1.2"
   },
   "workspaces": [
     "packages/*"
