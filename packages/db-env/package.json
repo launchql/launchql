@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-env",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "launchql db env",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-env#readme",

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "server utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/server-utils#readme",
@@ -44,24 +44,24 @@
     "@babel/plugin-transform-runtime": "7.11.5",
     "@babel/preset-env": "7.11.5",
     "@babel/preset-react": "7.10.4",
-    "babel-plugin-macros": "2.8.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
+    "babel-plugin-macros": "2.8.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "5.2.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react-hooks": "4.0.0",
     "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "4.0.0",
     "jest": "^25.1.0",
     "prettier": "^2.0.5",
     "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
+    "cors": "2.8.5",
     "envalid": "6.0.2",
     "lru-cache": "6.0.0",
-    "pg": "8.3.3",
-    "cors": "2.8.5"
+    "pg": "8.3.3"
   }
 }
