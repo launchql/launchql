@@ -3,7 +3,7 @@
   "version": "0.2.6",
   "description": "db migrate",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/db-migrate#readme",
+  "homepage": "https://github.com/launchql/launchql/tree/master/packages/db-migrate#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql-db"
+    "url": "https://github.com/launchql/launchql"
   },
   "scripts": {
     "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
@@ -33,7 +33,7 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql-db/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
     "@babel/cli": "7.11.6",

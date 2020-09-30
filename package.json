@@ -1,5 +1,5 @@
 {
-  "name": "launchql-db",
+  "name": "launchql",
   "version": "0.0.1",
   "publishConfig": {
     "access": "restricted"
@@ -36,6 +36,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql-db"
+    "url": "https://github.com/launchql/launchql"
   }
 }
