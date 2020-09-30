@@ -1,8 +1,6 @@
-const { cleanEnv, str, port, url, makeValidator } = require('envalid');
+import { cleanEnv, str, port } from 'envalid';
 
-const array = makeValidator((x) => x.split(','), '');
-
-module.exports = cleanEnv(
+export default cleanEnv(
   process.env,
   {
     SERVER_PORT: port({ default: 5757 }),

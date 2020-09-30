@@ -1,68 +1,18 @@
-import { getGraphileSettings } from './settings';
+import {
+  cache,
+  getRootPgPool,
+  cors,
+  healthz,
+  poweredBy
+} from '@launchql/server-utils';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { middleware as parseDomains } from '@pyramation/url-domains';
 import { postgraphile } from '@pyramation/postgraphile';
-import { printSchemas, printDatabases } from './render';
-import cors from 'cors';
-import env from './env';
 import express from 'express';
-import LRU from 'lru-cache';
-import pg from 'pg';
 
-const end = (pool) => {
-  try {
-    if (pool.ended || pool.ending) {
-      console.error(
-        'DO NOT CLOSE pool, why are you trying to call end() when already ended?'
-      );
-      return;
-    }
-    pool.end();
-  } catch (e) {
-    process.stderr.write(e);
-  }
-};
-
-const cache = new LRU({
-  max: 15,
-  dispose: function (key, obj) {
-    console.log(`disposing ${'PostGraphile'}[${key}]`);
-  },
-  updateAgeOnGet: true,
-  maxAge: 1000 * 60 * 60
-});
-
-const pgCache = new LRU({
-  max: 10,
-  dispose: function (key, pgPool) {
-    console.log(`disposing pg ${key}`);
-    const inUse = false;
-    cache.forEach((obj, k) => {
-      if (obj.pgPoolKey === key) {
-        cache.del(k);
-      }
-    });
-    end(pgPool);
-  },
-  updateAgeOnGet: true,
-  maxAge: 1000 * 60 * 60
-});
-
-const getDbString = (db) =>
-  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
-
-const getRootPgPool = (dbname) => {
-  let pgPool;
-  if (pgCache.has(dbname)) {
-    pgPool = pgCache.get(dbname);
-  } else {
-    pgPool = new pg.Pool({
-      connectionString: getDbString(dbname)
-    });
-    pgCache.set(dbname, pgPool);
-  }
-  return pgPool;
-};
+import { getGraphileSettings } from './settings';
+import { printSchemas, printDatabases } from './render';
+import env from './env';
 
 export default ({
   simpleInflection = true,
@@ -81,7 +31,6 @@ export default ({
       ...getGraphileSettings({
         simpleInflection,
         oppositeBaseNames,
-        connection: getDbString(dbname),
         port,
         host: env.SERVER_HOST,
         schema: schemaname
@@ -103,49 +52,11 @@ export default ({
 
   const app = express();
 
-  app.get('/healthz', (req, res) => {
-    // could be checking db, etc..
-    res.send('ok');
-  });
-
-  const corsOptions =
-    origin && origin.trim() !== '*'
-      ? {
-          origin,
-          credentials: true,
-          optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-        }
-      : undefined;
-
-  if (corsOptions) {
-    app.use(cors(corsOptions));
-  } else {
-    // Chrome was too strict, and * didn't work?
-    // so just setting all origins to OK
-    app.use(async (req, res, next) => {
-      const opts = {
-        origin: req.get('origin'),
-        credentials: true,
-        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-      };
-      return cors(opts)(req, res, next);
-    });
-  }
-
+  healthz(app, origin);
+  cors(app, origin);
   app.use(parseDomains());
-  app.use(async (req, res, next) => {
-    res.set({
-      'X-Powered-By': 'launchql'
-    });
-    return next();
-  });
-  // Attach multipart request handling middleware
+  app.use(poweredBy('launchql'));
   app.use(graphqlUploadExpress());
-
-  process.on('SIGTERM', () => {
-    cache.reset();
-    pgCache.reset();
-  });
 
   app.use(async (req, res, next) => {
     if (req.urlDomains.subdomains.length == 1) {
@@ -232,7 +143,7 @@ export default ({
   app.use(async (req, res, next) => {
     if (req.urlDomains.subdomains.length === 0) {
       try {
-        const rootPgPool = getRootPgPool('postgres');
+        const rootPgPool = getRootPgPool(env.PGUSER);
         const results = await rootPgPool.query(`
         SELECT
         *

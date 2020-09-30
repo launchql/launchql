@@ -1,7 +1,7 @@
+import { v4 } from 'uuid';
+import pgPromise from 'pg-promise';
 import { connect, close } from '../src/lib/connection';
 import { createdb, dropdb } from '../src/index';
-import v4 from 'uuid/v4';
-import pgPromise from 'pg-promise';
 
 const pgp = pgPromise({
   noWarnings: true

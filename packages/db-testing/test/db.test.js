@@ -1,14 +1,12 @@
+import { v4 } from 'uuid';
+import pgPromise from 'pg-promise';
 import { dropdb, createdb, templatedb } from '../src/lib/db';
-const v4 = require('uuid/v4');
-const pgPromise = require('pg-promise');
+import { getConnObj, getConnStr, cleanup, verifydb } from '../utils';
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
 const pgp = pgPromise({
   noWarnings: true
 });
-
-import { getConnObj, getConnStr, cleanup, verifydb } from '../utils';
-
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
 describe('createdb', () => {
   const database = `testing-db-${v4()}`;

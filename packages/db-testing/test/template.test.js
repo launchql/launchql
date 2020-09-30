@@ -1,7 +1,5 @@
-import v4 from 'uuid/v4';
 import {
   close,
-  connect,
   getConnection,
   closeConnection,
   droptemplatedb

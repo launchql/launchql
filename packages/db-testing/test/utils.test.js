@@ -1,14 +1,8 @@
-import { sqitch, sqitchFast } from '../src/lib/sqitch';
-import v4 from 'uuid/v4';
-import {
-  connectionString,
-  createdb,
-  dropdb,
-  setArgs,
-  templatedb
-} from '../src/index';
+import { v4 } from 'uuid';
 import pgPromise from 'pg-promise';
-import { config, getConnStr, expectBasicSeed } from '../utils';
+import { sqitch, sqitchFast } from '../src/lib/sqitch';
+import { createdb, dropdb, setArgs } from '../src/index';
+import { config, expectBasicSeed } from '../utils';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 

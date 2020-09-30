@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "launchql db template",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql-db/tree/master/packages/launchql-db-template#readme",
+  "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-template#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "./index.js",
   "files": [
@@ -16,9 +16,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql-db"
+    "url": "https://github.com/launchql/launchql"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql-db/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   }
 }

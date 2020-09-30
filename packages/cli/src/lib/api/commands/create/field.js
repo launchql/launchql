@@ -32,6 +32,7 @@ export default async (ctx, args) => {
   };
   if (name === 'id' && type === 'uuid') {
     payload.defaultValue = 'uuid_generate_v4()';
+    payload.isRequired = true;
   }
   const final = await ctx.db.request(createFieldMutation, payload);
   console.log(JSON.stringify(final, null, 2));

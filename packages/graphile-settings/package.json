@@ -1,0 +1,72 @@
+{
+  "name": "@launchql/graphile-settings",
+  "version": "0.0.1",
+  "description": "graphile settings",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/launchql/tree/master/packages/graphile-settings#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "main/index.js",
+  "module": "module/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "main",
+    "module"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "scripts": {
+    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
+    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build": "npm run build:module && npm run build:main",
+    "prepare": "npm run build",
+    "lint": "eslint src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
+    "@babel/plugin-transform-runtime": "7.11.5",
+    "@babel/preset-env": "7.11.5",
+    "@babel/preset-react": "7.10.4",
+    "babel-plugin-macros": "2.8.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react-app": "5.2.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "4.0.6",
+    "jest": "^25.1.0",
+    "prettier": "^2.0.5",
+    "regenerator-runtime": "^0.13.5"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.10.4",
+    "@pyramation/s3-streamer": "0.1.1",
+    "@pyramation/upload-names": "0.0.4",
+    "envalid": "6.0.2",
+    "graphile-meta-schema": "0.1.0",
+    "graphile-simple-inflector": "0.1.0",
+    "graphile-build": "4.9.0",
+    "postgraphile-derived-upload-field": "0.0.5",
+    "postgraphile-plugin-connection-filter": "2.0.0",
+    "postgraphile-plugin-fulltext-filter": "1.0.0-beta.7"
+  }
+}
