@@ -17,7 +17,7 @@ env:
     - AWS_ACCESS_KEY=minio-access
     - AWS_SECRET_KEY=minio-secret
     - MINIO_ENDPOINT=http://localhost:9000
-    - BUCKET_NAME=testbucket
+    - BUCKET_NAME=launchql
   matrix:
     - PACKAGE=packages/content-type-stream
     - PACKAGE=packages/s3-streamer
@@ -25,7 +25,17 @@ env:
     - PACKAGE=packages/stream-to-s3
     - PACKAGE=packages/upload-names
 before_install:
+  # start minio
   - docker run -p 9000:9000 -e "MINIO_ACCESS_KEY=minio-access" -e "MINIO_SECRET_KEY=minio-secret" --name minio -d minio/minio server /data
+  - sleep 3
+  # pull minio client
+  - docker pull minio/mc
+  # set alias
+  - docker run minio/mc alias set local-minio http://localhost:9000 minio-access minio-secret
+  #  make bucket
+  - docker run minio/mc mb local-minio/launchql
+  # set policy
+  - docker run minio/mc policy set download local-minio/launchql
 script:
   - yarn
   - yarn bootstrap
