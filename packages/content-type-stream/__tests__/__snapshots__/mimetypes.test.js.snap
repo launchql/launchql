@@ -191,13 +191,6 @@ Object {
       "type": "text/plain",
     },
   },
-  "log.log": Object {
-    "contentType": "text/plain",
-    "magic": Object {
-      "charset": "us-ascii",
-      "type": "text/plain",
-    },
-  },
   "md.md": Object {
     "contentType": "text/markdown",
     "magic": Object {

@@ -515,25 +515,6 @@ Object {
       "key": "db1/assets/lock.lock",
     },
   },
-  "log.log": Object {
-    "contentType": "text/plain",
-    "contents": Object {
-      "etag": "218502e6edf4ccb28daaf6089e2fe1a2",
-      "sha": "2ea09bc437f1080f2e525fc9141855c7e36c1268",
-      "uuid": "d9bea037-e72e-5bf2-8c84-7cbe570ec2b8",
-    },
-    "magic": Object {
-      "charset": "us-ascii",
-      "type": "text/plain",
-    },
-    "upload": Object {
-      "Bucket": "launchql",
-      "ETag": "\\"218502e6edf4ccb28daaf6089e2fe1a2\\"",
-      "Key": "db1/assets/log.log",
-      "Location": "http://localhost:9000/launchql/db1/assets/log.log",
-      "key": "db1/assets/log.log",
-    },
-  },
   "md.md": Object {
     "contentType": "text/markdown",
     "contents": Object {
@@ -1525,25 +1506,6 @@ Object {
       "Key": "db1/assets/lock.lock",
       "Location": "http://localhost:9000/launchql/db1/assets/lock.lock",
       "key": "db1/assets/lock.lock",
-    },
-  },
-  "log.log": Object {
-    "contentType": "text/plain",
-    "contents": Object {
-      "etag": "218502e6edf4ccb28daaf6089e2fe1a2",
-      "sha": "2ea09bc437f1080f2e525fc9141855c7e36c1268",
-      "uuid": "d9bea037-e72e-5bf2-8c84-7cbe570ec2b8",
-    },
-    "magic": Object {
-      "charset": "us-ascii",
-      "type": "text/plain",
-    },
-    "upload": Object {
-      "Bucket": "launchql",
-      "ETag": "\\"218502e6edf4ccb28daaf6089e2fe1a2\\"",
-      "Key": "db1/assets/log.log",
-      "Location": "http://localhost:9000/launchql/db1/assets/log.log",
-      "key": "db1/assets/log.log",
     },
   },
   "md.md": Object {
