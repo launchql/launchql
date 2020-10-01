@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/pyramation/uploads/compare/@pyramation/s3-streamer@0.1.3...@pyramation/s3-streamer@0.2.0) (2020-10-01)
+
+**Note:** Version bump only for package @pyramation/s3-streamer
+
+
+
+
+
 ## [0.1.3](https://github.com/pyramation/uploads/compare/@pyramation/s3-streamer@0.1.2...@pyramation/s3-streamer@0.1.3) (2020-09-30)
 
 **Note:** Version bump only for package @pyramation/s3-streamer
