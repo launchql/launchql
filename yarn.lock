@@ -2298,10 +2298,10 @@
     "@babel/preset-react" "7.9.4"
     babel-plugin-macros "2.8.0"
 
-"@pyramation/content-type-stream@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@pyramation/content-type-stream/-/content-type-stream-0.0.5.tgz#b570144524eecb923c36c21ff75821f303bc879f"
-  integrity sha512-LqrVYxMtI4PtqN+DBp4aCyyQC90JWtTcG1r4BBeScwfPMiOvxwGT+0tOgCxUFy1lx0OCgHhcNZgIszeJdl6Cww==
+"@pyramation/content-type-stream@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@pyramation/content-type-stream/-/content-type-stream-0.1.0.tgz#5a3406f4cd82a0c38e9b56932e7480a277619bf6"
+  integrity sha512-i0aZs8D56oOwwHb0nsv/50hv57RO+rHC1yXpRcrHcMYbIlhuyfCeGV5oP656pFczCkeS5gkJF/tqYoAvl8qmeQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
     buffer-peek-stream "1.1.0"
@@ -2393,19 +2393,19 @@
     inquirer "^6.0.0"
     inquirer-autocomplete-prompt "^0.11.1"
 
-"@pyramation/s3-streamer@0.1.3":
-  version "0.1.3"
-  resolved "https://registry.npmjs.org/@pyramation/s3-streamer/-/s3-streamer-0.1.3.tgz#2e2586ee29c7d7d6a1408323051538c73eb0abff"
-  integrity sha512-0cXRSoSozwyc9l9rvrDQhu/JrjQaH1JHRzqKtFMSIQ+heJ6dNEBtaQu/rtE8JpEHvjoAtX+AYb2qlF2fX5NZDQ==
+"@pyramation/s3-streamer@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@pyramation/s3-streamer/-/s3-streamer-0.2.0.tgz#ee92458b6dab2ac75bac06114f2a37cfdae71e01"
+  integrity sha512-uE2V403NjuKASQ9ujPxkyUsMWPxdI4SePVZJbHY6z1NsFaU2kE5Q44tZQobCpzFyfSzS1zXF0b8Rty+944mjHw==
   dependencies:
     "@babel/runtime" "^7.4.2"
-    "@pyramation/content-type-stream" "^0.0.5"
+    "@pyramation/content-type-stream" "^0.1.0"
     aws-sdk "2.729.0"
 
-"@pyramation/upload-names@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.0.6.tgz#8f20b39927492c8972579fa2ea4f3438ae4bc5bc"
-  integrity sha512-VRcrk85QeVT5A6NMARvO/4o6Tzw0fMyVG2v3r6C/31I616KCkqHduPKbhmRpSBmfVVXqXdQzvMBty4BJW79VFg==
+"@pyramation/upload-names@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@pyramation/upload-names/-/upload-names-0.1.0.tgz#91668eda3fec8e7c5b312d391091d12385ade81a"
+  integrity sha512-yIl1bLhYQVjJRBJztHjLwnnK3RDjdYzCjHwAppvB4wWuqpKVvHBiyflHHM10Et8ZVafRAHmxtWSggqIfaLdUxA==
   dependencies:
     "@babel/runtime" "^7.4.2"
 
