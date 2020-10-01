@@ -1,6 +1,4 @@
-# ETag Hash
-
-[![Build Status](https://travis-ci.org/pyramation/etag-hash.svg?branch=master)]
+# ETag Hash [![Build Status](https://travis-ci.org/pyramation/etag-hash.svg?branch=master)]
 
 Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.
 
