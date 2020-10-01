@@ -1,5 +1,7 @@
 # ETag Stream 
 
+[![Build Status](https://travis-ci.org/pyramation/etag-stream.svg?branch=master)]
+
 A Transform stream that calculates Etag/S3 MD5 sum. Uses the same algorithm that S3 uses to calculate the `ETag`.
 
 This is especially useful for verifying large files uploaded using multipart S3 API, enabling use of `createReadStream` to keep memory usage low.
