@@ -1,5 +1,7 @@
 # UUID Stream 
 
+[![Build Status](https://travis-ci.org/pyramation/uuid-stream.svg?branch=master)]
+
 A Transform stream that generates RFC-compliant UUID v5.
 
 ## Installation
