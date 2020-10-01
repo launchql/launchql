@@ -1,5 +1,7 @@
 # UUID Hash
 
+[![Build Status](https://travis-ci.org/pyramation/uuid-hash.svg?branch=master)]
+
 Es6 class that generates RFC-compliant UUID v5.
 
 ## Installation
