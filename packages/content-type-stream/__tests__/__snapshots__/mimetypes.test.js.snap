@@ -276,14 +276,14 @@ Object {
     },
   },
   "svg-with-alpha-and-text.svg": Object {
-    "contentType": "image/svg",
+    "contentType": "image/svg+xml",
     "magic": Object {
       "charset": "us-ascii",
       "type": "image/svg",
     },
   },
   "svg.svg": Object {
-    "contentType": "image/svg",
+    "contentType": "image/svg+xml",
     "magic": Object {
       "charset": "us-ascii",
       "type": "image/svg",
@@ -414,7 +414,7 @@ Object {
     },
   },
   "svg-with-script-tag.svg": Object {
-    "contentType": "image/svg",
+    "contentType": "image/svg+xml",
     "magic": Object {
       "charset": "us-ascii",
       "type": "image/svg",
