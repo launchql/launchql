@@ -27,7 +27,7 @@ env:
 before_install:
   # start minio
   - docker run -p 9000:9000 -e "MINIO_ACCESS_KEY=minio-access" -e "MINIO_SECRET_KEY=minio-secret" --name minio -d minio/minio server /data
-  - sleep 3
+  - sleep 10
   # pull minio client
   - docker pull minio/mc
   # set alias
