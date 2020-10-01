@@ -271,9 +271,9 @@ Object {
   "dxf.dxf": Object {
     "contentType": "image/vnd.dxf",
     "contents": Object {
-      "etag": "422ffda43f6f6f17a9c0ef5ed62ed9bd",
-      "sha": "583222ce6b89fa92d2a1aa32ad776d36408e06cc",
-      "uuid": "a277c9ad-28f7-5076-a08a-07be148c86bd",
+      "etag": "29996844c6142ef9905f8ea35a6eca4e",
+      "sha": "589ee13adeb0d062b2e484f1e0520a374f5a6b95",
+      "uuid": "a7f3e053-7156-58c1-9962-ddd6cd0058aa",
     },
     "magic": Object {
       "charset": "us-ascii",
@@ -281,7 +281,7 @@ Object {
     },
     "upload": Object {
       "Bucket": "launchql",
-      "ETag": "\\"422ffda43f6f6f17a9c0ef5ed62ed9bd\\"",
+      "ETag": "\\"29996844c6142ef9905f8ea35a6eca4e\\"",
       "Key": "db1/assets/dxf.dxf",
       "Location": "http://localhost:9000/launchql/db1/assets/dxf.dxf",
       "key": "db1/assets/dxf.dxf",
@@ -708,8 +708,8 @@ Object {
   "sql.sql": Object {
     "contentType": "application/x-sql",
     "contents": Object {
-      "etag": "acb01cdf33de89cc35d84d748cf05bc8",
-      "sha": "c0ebf3f51fa0a296fcf8befe4a5f58d0fe01a199",
+      "etag": "157f77e51feb9ef7c31948ea507d63df",
+      "sha": "7a3a22718666e9ed3d4baabc3ea7d756d5a02ba6",
       "uuid": "40908120-e381-5654-a410-b1d86249af60",
     },
     "magic": Object {
@@ -718,7 +718,7 @@ Object {
     },
     "upload": Object {
       "Bucket": "launchql",
-      "ETag": "\\"acb01cdf33de89cc35d84d748cf05bc8\\"",
+      "ETag": "\\"157f77e51feb9ef7c31948ea507d63df\\"",
       "Key": "db1/assets/sql.sql",
       "Location": "http://localhost:9000/launchql/db1/assets/sql.sql",
       "key": "db1/assets/sql.sql",
