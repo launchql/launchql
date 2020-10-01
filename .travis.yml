@@ -21,7 +21,7 @@ env:
   matrix:
     - PACKAGE=packages/content-type-stream
     - PACKAGE=packages/s3-streamer
-    - PACKAGE=packages/s3-utils
+    # - PACKAGE=packages/s3-utils # no tests
     - PACKAGE=packages/stream-to-s3
     - PACKAGE=packages/upload-names
 before_install:
