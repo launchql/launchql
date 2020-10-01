@@ -28,14 +28,21 @@ before_install:
   # start minio
   - docker run -p 9000:9000 -e "MINIO_ACCESS_KEY=minio-access" -e "MINIO_SECRET_KEY=minio-secret" --name minio -d minio/minio server /data
   - sleep 10
+  # https://dl.min.io/client/mc/release/linux-amd64/mc
+  - wget https://dl.min.io/client/mc/release/linux-amd64/mc && chmod +x mc
   # pull minio client
-  - docker pull minio/mc
+  # - docker pull minio/mc
   # set alias
-  - docker run --entrypoint=/bin/sh minio/mc mc alias set local-minio http://localhost:9000 minio-access minio-secret
+  - ./mc alias set local-minio http://localhost:9000 minio-access minio-secret
+  # - docker run --entrypoint=/bin/sh minio/mc mc alias set local-minio http://localhost:9000 minio-access minio-secret
+  # - docker run --entrypoint=/bin/sh minio/mc mc alias set local-minio http://localhost:9000 minio-access minio-secret
+  # - docker run --entrypoint=/bin/sh minio/mc mc alias set danstestminio http://localhost:9000 minio-access minio-secret
   #  make bucket
-  - docker run --entrypoint=/bin/sh minio/mc mc mb local-minio/launchql
+  - ./mc mb local-minio/launchql
+  # - docker run --entrypoint=/bin/sh minio/mc mc mb local-minio/launchql
   # set policy
-  - docker run --entrypoint=/bin/sh minio/mc mc policy set download local-minio/launchql
+  - ./mc policy set download local-minio/launchql
+  # - docker run --entrypoint=/bin/sh minio/mc mc policy set download local-minio/launchql
 script:
   - yarn
   - yarn bootstrap
