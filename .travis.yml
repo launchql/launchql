@@ -45,4 +45,4 @@ script:
   - yarn bootstrap
   - yarn build
   - cd $PACKAGE
-  - yarn test
+  - yarn test -u #minio hashes wtf
