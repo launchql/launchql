@@ -1,6 +1,4 @@
-# Stream to ETag
-
-[![Build Status](https://travis-ci.org/pyramation/stream-to-etag.svg?branch=master)]
+# Stream to ETag [![Build Status](https://travis-ci.org/pyramation/stream-to-etag.svg?branch=master)]
 
 Calculates Etag/S3 MD5 sum given a readable stream. Uses the same algorithm that S3 uses to calculate the `ETag`.
 
