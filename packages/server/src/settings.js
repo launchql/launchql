@@ -7,6 +7,7 @@ export const getGraphileSettings = ({
   schema,
   simpleInflection,
   oppositeBaseNames,
+  postgis,
   svc
 }) => {
   const options = getSettings({
@@ -14,7 +15,8 @@ export const getGraphileSettings = ({
     port,
     schema,
     simpleInflection,
-    oppositeBaseNames
+    oppositeBaseNames,
+    postgis
   });
 
   const { anon_role, role_name, role_key } = svc;

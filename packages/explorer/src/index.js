@@ -18,6 +18,7 @@ export default ({
   simpleInflection = true,
   oppositeBaseNames = true,
   port = env.SERVER_PORT,
+  postgis = false,
   origin
 } = {}) => {
   const getGraphileInstanceObj = (dbname, schemaname) => {
@@ -33,7 +34,8 @@ export default ({
         oppositeBaseNames,
         port,
         host: env.SERVER_HOST,
-        schema: schemaname
+        schema: schemaname,
+        postgis
       }),
       graphqlRoute: '/graphql',
       graphiqlRoute: '/graphiql'

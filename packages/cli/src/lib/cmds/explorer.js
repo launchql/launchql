@@ -18,6 +18,13 @@ const questions = [
     default: true
   },
   {
+    name: 'postgis',
+    message: 'postgis',
+    type: 'boolean',
+    alias: 'g',
+    default: true
+  },
+  {
     name: 'port',
     message: 'port',
     type: 'number',

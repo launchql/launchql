@@ -5,6 +5,9 @@ import PgMetaschema from 'graphile-meta-schema';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
 import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
+import PgPostgis from '@graphile/postgis';
+import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
+
 import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
@@ -12,12 +15,17 @@ export const getGraphileSettings = ({
   port,
   schema,
   simpleInflection,
-  oppositeBaseNames
+  oppositeBaseNames,
+  postgis
 }) => {
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
 
   plugins.push(PostGraphileUploadFieldPlugin);
   plugins.push(PgMetaschema);
+  if (postgis) {
+    plugins.push(PgPostgis);
+    plugins.push(PgPostgisFilter);
+  }
 
   if (simpleInflection) {
     plugins.push(PgSimpleInflector);

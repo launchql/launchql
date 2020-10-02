@@ -7,14 +7,16 @@ export const getGraphileSettings = ({
   port,
   schema,
   simpleInflection,
-  oppositeBaseNames
+  oppositeBaseNames,
+  postgis
 }) => {
   const options = getSettings({
     host,
     port,
     schema,
     simpleInflection,
-    oppositeBaseNames
+    oppositeBaseNames,
+    postgis
   });
 
   options.pgSettings = async function pgSettings(req) {

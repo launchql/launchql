@@ -19,6 +19,7 @@ export default ({
   simpleInflection = true,
   oppositeBaseNames = true,
   port = env.SERVER_PORT,
+  postgis = false,
   origin
 } = {}) => {
   const app = express();
@@ -86,7 +87,8 @@ export default ({
         port,
         host: env.SERVER_HOST,
         schema: schemas,
-        svc
+        svc,
+        postgis
       }),
       graphqlRoute: '/graphql',
       graphiqlRoute: '/graphiql'
