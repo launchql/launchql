@@ -19,7 +19,7 @@
   "dependencies": {
     "graphile-build-pg": "^4.2.0",
     "pg-tsquery": "^6.4.2",
-    "postgraphile-plugin-connection-filter": "^1.0.0-beta.28"
+    "postgraphile-plugin-connection-filter": "^2.0.0"
   },
   "peerDependencies": {
     "postgraphile-core": "^4.2.0",

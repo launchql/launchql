@@ -61,6 +61,7 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
 
@@ -125,6 +126,7 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
 
@@ -189,6 +191,7 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
 
@@ -253,6 +256,7 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
 
@@ -317,6 +321,7 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
 
@@ -399,6 +404,7 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
 
@@ -481,5 +487,6 @@ GraphQLSchema {
   },
   "astNode": undefined,
   "extensionASTNodes": undefined,
+  "extensions": undefined,
 }
 `;
