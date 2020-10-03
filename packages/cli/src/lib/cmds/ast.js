@@ -15,11 +15,12 @@ const questions = [
 
 export default async (argv) => {
   const { file } = await prompt(questions, argv);
-  const filepath = resolve(process.cwd() + '/' + file);
+  const filepath = file.startsWith('/') ? file : process.cwd() + '/' + file;
+  const contents = fs.readFileSync(filepath).toString();
   try {
-    const contents = parser.parse(fs.readFileSync(filepath).toString());
-    console.log(JSON.stringify(contents, null, 2));
+    const parsed = parser.parse(contents);
+    console.log(JSON.stringify(parsed, null, 2));
   } catch (e) {
-    console.log('file does not exist!');
+    console.log(e);
   }
 };
