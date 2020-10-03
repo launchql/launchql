@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "graphile-build-pg": "^4.2.0",
-    "pg-tsquery": "^6.4.2",
+    "pg-tsquery": "^8.1.0",
     "postgraphile-plugin-connection-filter": "^2.0.0"
   },
   "peerDependencies": {

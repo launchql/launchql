@@ -1,5 +1,7 @@
-const tsquery = require('pg-tsquery');
+const { Tsquery } = require('pg-tsquery');
 const { omit } = require('graphile-build-pg');
+
+const tsquery = new Tsquery();
 
 module.exports = function PostGraphileFulltextFilterPlugin(builder) {
   builder.hook('inflection', (inflection, build) => build.extend(inflection, {
@@ -84,7 +86,7 @@ module.exports = function PostGraphileFulltextFilterPlugin(builder) {
       'Performs a full text search on the field.',
       () => GraphQLString,
       (identifier, val, input, fieldName, queryBuilder) => {
-        const tsQueryString = tsquery(input);
+        const tsQueryString = `${tsquery.parse(input) || ''}`;
         queryBuilder.__fts_ranks = queryBuilder.__fts_ranks || {};
         queryBuilder.__fts_ranks[fieldName] = [identifier, tsQueryString];
         return sql.query`${identifier} @@ to_tsquery(${sql.value(tsQueryString)})`;
