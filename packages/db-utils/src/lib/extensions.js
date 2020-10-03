@@ -12,7 +12,27 @@ export const getAvailableExtensions = async () => {
       m.push(v);
       return m;
     },
-    ['plpgsql', 'uuid-ossp', 'pgcrypto', 'citext', 'hstore', 'btree_gist']
+    [
+      'address_standardizer',
+      'address_standardizer_data_us',
+      'bloom',
+      'btree_gin',
+      'btree_gist',
+      'citext',
+      'hstore',
+      'intarray',
+      'pg_trgm',
+      'pgcrypto',
+      'plpgsql',
+      'plperl',
+      'plv8',
+      'postgis_tiger_geocoder',
+      'postgis_topology',
+      'postgis',
+      'postgres_fdw',
+      'unaccent',
+      'uuid-ossp'
+    ]
   );
   return modules;
 };
