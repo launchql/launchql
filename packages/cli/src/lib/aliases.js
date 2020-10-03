@@ -2,6 +2,7 @@
   import { aliases as _add } from './cmds/add';
 import { aliases as _addproject } from './cmds/addproject';
 import { aliases as _api } from './cmds/api';
+import { aliases as _ast } from './cmds/ast';
 import { aliases as _bundle } from './cmds/bundle';
 import { aliases as _createdb } from './cmds/createdb';
 import { aliases as _deploy } from './cmds/deploy';
@@ -33,6 +34,7 @@ import { aliases as _version } from './cmds/version';
   module.exports['add'] = _add;
 module.exports['addproject'] = _addproject;
 module.exports['api'] = _api;
+module.exports['ast'] = _ast;
 module.exports['bundle'] = _bundle;
 module.exports['createdb'] = _createdb;
 module.exports['deploy'] = _deploy;

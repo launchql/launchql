@@ -2,6 +2,7 @@
 import _add from './cmds/add';
 import _addproject from './cmds/addproject';
 import _api from './cmds/api';
+import _ast from './cmds/ast';
 import _bundle from './cmds/bundle';
 import _createdb from './cmds/createdb';
 import _deploy from './cmds/deploy';
@@ -33,6 +34,7 @@ import _version from './cmds/version';
 module.exports['add'] = _add;
 module.exports['addproject'] = _addproject;
 module.exports['api'] = _api;
+module.exports['ast'] = _ast;
 module.exports['bundle'] = _bundle;
 module.exports['createdb'] = _createdb;
 module.exports['deploy'] = _deploy;
