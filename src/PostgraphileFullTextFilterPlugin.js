@@ -81,7 +81,7 @@ module.exports = function PostGraphileFulltextFilterPlugin(builder) {
 
     const InputType = getGqlInputTypeByTypeIdAndModifier(pgTsvType.id, null);
     addConnectionFilterOperator(
-      'FullText',
+      InputType.name,
       'matches',
       'Performs a full text search on the field.',
       () => GraphQLString,
