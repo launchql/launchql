@@ -3,7 +3,7 @@ import { NodePlugin } from 'graphile-build';
 import PgSimpleInflector from 'graphile-simple-inflector';
 import PgMetaschema from 'graphile-meta-schema';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
-import FulltextFilterPlugin from 'postgraphile-plugin-fulltext-filter';
+import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
 import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
 import PgPostgis from '@graphile/postgis';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';

@@ -2361,6 +2361,15 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
+"@pyramation/postgraphile-plugin-fulltext-filter@1.0.0-beta.9":
+  version "1.0.0-beta.9"
+  resolved "https://registry.npmjs.org/@pyramation/postgraphile-plugin-fulltext-filter/-/postgraphile-plugin-fulltext-filter-1.0.0-beta.9.tgz#08965fa99dbeb334a44c503fe6ae5f48a648488f"
+  integrity sha512-f344KRa2KY0CQO/IqfAs9MIKIVncZb+fbXMcO3bF8s4Tp0BKzl/+w/zypa69e1yGQc86+JytE6TCe+LH9prTqg==
+  dependencies:
+    graphile-build-pg "^4.2.0"
+    pg-tsquery "^8.1.0"
+    postgraphile-plugin-connection-filter "^2.0.0"
+
 "@pyramation/postgraphile@4.9.0":
   version "4.9.0"
   resolved "https://registry.npmjs.org/@pyramation/postgraphile/-/postgraphile-4.9.0.tgz#81447589b913afe6e719f3b62ec55d4e90bca602"
@@ -8613,10 +8622,10 @@ pg-sql2@4.9.0:
     debug ">=3 <5"
     tslib "^2.0.1"
 
-pg-tsquery@^6.4.2:
-  version "6.7.2"
-  resolved "https://registry.npmjs.org/pg-tsquery/-/pg-tsquery-6.7.2.tgz#a48416d966d3aab43b1f8f125c851d09d2dbbb24"
-  integrity sha512-q50nJtuCaJy5UBUZEp0yWb+fgPU8URBhWR1eury6Hh84gLyLArX/6mRmP0R9qWotVqck6boX6NQnK5hpinVewg==
+pg-tsquery@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.npmjs.org/pg-tsquery/-/pg-tsquery-8.1.0.tgz#de30d5f3d6721adbf9c0dc33f4e79d8fcb9071a8"
+  integrity sha512-CXTK0HNFA9H1nk12HKHBWaER+c9yhNq/En8u0FtQTjM/KQ6llyCnEAios6TZ+fz8QI2w0qJ8y3HE3Uc/pHXrFg==
 
 pg-types@^2.1.0:
   version "2.2.0"
@@ -8769,24 +8778,10 @@ postgraphile-plugin-connection-filter-postgis@1.0.0-alpha.6:
   resolved "https://registry.npmjs.org/postgraphile-plugin-connection-filter-postgis/-/postgraphile-plugin-connection-filter-postgis-1.0.0-alpha.6.tgz#8865677b4622097a2411077ac8b172c42dda691c"
   integrity sha512-7smLSEsv5Pz38ejLi7wgkWblSlcugrki3WZh4UPNBDUqM3FHqgd+5HWejAmTawSPIMbe2y63YDwGDSlplEES8g==
 
-postgraphile-plugin-connection-filter@2.0.0:
+postgraphile-plugin-connection-filter@2.0.0, postgraphile-plugin-connection-filter@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/postgraphile-plugin-connection-filter/-/postgraphile-plugin-connection-filter-2.0.0.tgz#caec75f8f8913f0a0ef48dcdd393c3e915c5ac3e"
   integrity sha512-4h1L1c7hyexRVmtWQrHsLvn4Ctm2j4kvn2jY593gfgJMotwEl7/exZ4PDszfgZJW8B4AO4c+HRy3v0TUG3AUpw==
-
-postgraphile-plugin-connection-filter@^1.0.0-beta.28:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/postgraphile-plugin-connection-filter/-/postgraphile-plugin-connection-filter-1.1.3.tgz#e33214948f16c0c8331e4f145adfc9860d593d72"
-  integrity sha512-QWn2lDQ3d8M0iiQVZtozIcJmL3b2A3L6DnMD2e8EOOVqxxAy9Kt3b7k4a+bH46rz4Eh6NuDtHWb0PZnxx41kVg==
-
-postgraphile-plugin-fulltext-filter@1.0.0-beta.7:
-  version "1.0.0-beta.7"
-  resolved "https://registry.npmjs.org/postgraphile-plugin-fulltext-filter/-/postgraphile-plugin-fulltext-filter-1.0.0-beta.7.tgz#20b8422ac87a5b5cb037ea03f2778164b2f629c2"
-  integrity sha512-fSHY9hRsigYw8HutRadanWwXqC75atNJ7hotlzLrpYiXpuJeoWLJqIHWc+MQ0FkcZ0BXx2RCMawKrd9sXEj0xA==
-  dependencies:
-    graphile-build-pg "^4.2.0"
-    pg-tsquery "^6.4.2"
-    postgraphile-plugin-connection-filter "^1.0.0-beta.28"
 
 postgraphile@4.9.0:
   version "4.9.0"
