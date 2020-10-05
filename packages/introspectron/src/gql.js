@@ -111,11 +111,11 @@ export const parseGraphQuery = (introQuery) => {
 
   const mutations = mutationsRoot.fields.reduce((m, mutation) => {
     let mutationType = 'other';
-    if (/Create/.test(mutation.type.name)) {
+    if (/^Create/.test(mutation.type.name)) {
       mutationType = 'create';
-    } else if (/Update/.test(mutation.type.name)) {
+    } else if (/^Update/.test(mutation.type.name)) {
       mutationType = 'patch';
-    } else if (/Delete/.test(mutation.type.name)) {
+    } else if (/^Delete/.test(mutation.type.name)) {
       mutationType = 'delete';
     }
 

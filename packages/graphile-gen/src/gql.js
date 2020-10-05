@@ -243,7 +243,7 @@ export const patchOne = ({ operationName, mutation }) => {
   );
 
   const patchAttrs = objectToArray(
-    mutation.properties.input.properties['patch'].properties
+    mutation.properties.input.properties['patch']?.properties || {}
   );
 
   const patchByAttrs = objectToArray(
