@@ -2361,10 +2361,10 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-"@pyramation/postgraphile-plugin-fulltext-filter@1.0.0-beta.9":
-  version "1.0.0-beta.9"
-  resolved "https://registry.npmjs.org/@pyramation/postgraphile-plugin-fulltext-filter/-/postgraphile-plugin-fulltext-filter-1.0.0-beta.9.tgz#08965fa99dbeb334a44c503fe6ae5f48a648488f"
-  integrity sha512-f344KRa2KY0CQO/IqfAs9MIKIVncZb+fbXMcO3bF8s4Tp0BKzl/+w/zypa69e1yGQc86+JytE6TCe+LH9prTqg==
+"@pyramation/postgraphile-plugin-fulltext-filter@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@pyramation/postgraphile-plugin-fulltext-filter/-/postgraphile-plugin-fulltext-filter-2.0.0.tgz#cc4d3df08ad77f28cae5765859dd25bf3854c0a5"
+  integrity sha512-xryIvl8si6iXn07nP72mimHwqKisJlYCryVX5icRQp3jZVSWwL0BZUaeJd0E2fPKguMQqEgxfVb/GFMa2AAITQ==
   dependencies:
     graphile-build-pg "^4.2.0"
     pg-tsquery "^8.1.0"

@@ -55,7 +55,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@graphile/postgis": "0.1.0",
-    "@pyramation/postgraphile-plugin-fulltext-filter": "1.0.0-beta.9",
+    "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",
     "@pyramation/s3-streamer": "0.2.0",
     "@pyramation/upload-names": "0.1.0",
     "envalid": "6.0.2",
