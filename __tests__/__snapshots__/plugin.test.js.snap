@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GoalsSearchViaCondition (order is relevant) 1`] = `
+Object {
+  "data": Object {
+    "goals": Object {
+      "nodes": Array [
+        Object {
+          "description": "Second in years female given. Us firmament. She'd kind there let moved thing evening saying set whales a fowl heaven.",
+          "id": "[ID]",
+          "title": "green fowl",
+        },
+        Object {
+          "description": "Appear evening that gathered saying. Sea subdue so fill stars. Bring is man divided behold fish their. Also won't fowl.",
+          "id": "[ID]",
+          "title": "evenings",
+        },
+        Object {
+          "description": "Heaven. Tree creeping was. Gathered living dominion us likeness first subdue fill. Fowl him moveth fly also the is created.",
+          "id": "[ID]",
+          "title": "heaven",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GoalsSearchViaCondition (order is relevant) 2`] = `
+Object {
+  "data": Object {
+    "goals": Object {
+      "nodes": Array [
+        Object {
+          "description": "Second in years female given. Us firmament. She'd kind there let moved thing evening saying set whales a fowl heaven.",
+          "id": "[ID]",
+          "title": "green fowl",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GoalsSearchViaFilter (order not relevant) 1`] = `
+Object {
+  "data": Object {
+    "goals": Object {
+      "nodes": Array [
+        Object {
+          "description": "Appear evening that gathered saying. Sea subdue so fill stars. Bring is man divided behold fish their. Also won't fowl.",
+          "id": "[ID]",
+          "title": "evenings",
+        },
+        Object {
+          "description": "Heaven. Tree creeping was. Gathered living dominion us likeness first subdue fill. Fowl him moveth fly also the is created.",
+          "id": "[ID]",
+          "title": "heaven",
+        },
+        Object {
+          "description": "Second in years female given. Us firmament. She'd kind there let moved thing evening saying set whales a fowl heaven.",
+          "id": "[ID]",
+          "title": "green fowl",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GoalsSearchViaFilter (order not relevant) 2`] = `
+Object {
+  "data": Object {
+    "goals": Object {
+      "nodes": Array [
+        Object {
+          "description": "Second in years female given. Us firmament. She'd kind there let moved thing evening saying set whales a fowl heaven.",
+          "id": "[ID]",
+          "title": "green fowl",
+        },
+      ],
+    },
+  },
+}
+`;
