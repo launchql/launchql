@@ -37,15 +37,7 @@ describe('extensions', () => {
     it('list', async () => {
       const avail = await getAvailableExtensions();
       const installed = await getInstalledExtensions();
-      expect(avail).toEqual([
-        'plpgsql',
-        'uuid-ossp',
-        'pgcrypto',
-        'citext',
-        'hstore',
-        'btree_gist',
-        'myproject'
-      ]);
+      expect(avail).toMatchSnapshot();
       expect(installed).toEqual(['plpgsql', 'citext']);
     });
     it('write', async () => {
