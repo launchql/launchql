@@ -248,12 +248,14 @@ CREATE EXTENSION IF NOT EXISTS citext;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS hstore;            
+CREATE EXTENSION IF NOT EXISTS postgis;            
             `,
         revert: `
 DROP EXTENSION IF EXISTS citext;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 DROP EXTENSION IF EXISTS pgcrypto;
 DROP EXTENSION IF EXISTS hstore;            
+DROP EXTENSION IF EXISTS postgis;            
             `,
         verify: ``
       },
@@ -309,6 +311,7 @@ COMMENT ON DOMAIN url IS E'@name launchqlInternalTypeUrl';
           'citext',
           'pgcrypto',
           'btree_gist',
+          'postgis',
           'hstore'
         ]
       });

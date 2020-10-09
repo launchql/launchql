@@ -7402,7 +7402,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.20, "lodash@>=4 <5", lodash@^4.13.1, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
+lodash@4.17.20, "lodash@>=4 <5", lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.20"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -8682,15 +8682,15 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.7.9:
-  version "0.7.9"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.7.9.tgz#12b579da89fe5f32941be360c58c4998786536be"
-  integrity sha512-Sv0lPWc1IhteFTsj9ScrC5C2+uUngfz9+OO3Ufma9DRrJHdtEqc4Zo7tXFin+iTucac1pyBTVQehoQ0ZDaberg==
+pgsql-parser@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.8.1.tgz#25c8dc295e695391ef760b6f823852ff33682dcc"
+  integrity sha512-/gpl/9dnnWZHVBzDP/nqrvw3NwQMmiZwtxIifzCqSHUybY+Sh+kxZUG5PpfJ4mTIP2/qT5+0Y+SCK0s6qUINQQ==
   dependencies:
-    "@babel/runtime" "^7.4.2"
+    "@babel/runtime" "^7.11.2"
     "@pgql/parse" "1.2.6"
     dotty "^0.1.0"
-    lodash "^4.13.1"
+    lodash "^4.17.20"
 
 picomatch@^2.0.4, picomatch@^2.0.5:
   version "2.2.2"

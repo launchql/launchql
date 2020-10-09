@@ -64,7 +64,7 @@
     "mkdirp": "^1.0.4",
     "node-walkup": "^1.1.1",
     "pg": "^8.4.0",
-    "pgsql-parser": "0.7.9",
+    "pgsql-parser": "0.8.1",
     "rimraf": "^3.0.2",
     "semver": "^5.5.1",
     "shelljs": "^0.8.2"
