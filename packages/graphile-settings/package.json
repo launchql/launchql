@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.4",
+    "@graphile-contrib/pg-many-to-many": "1.0.0",
     "@graphile/postgis": "0.1.0",
     "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",
     "@pyramation/s3-streamer": "0.2.0",

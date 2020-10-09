@@ -1204,6 +1204,11 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@graphile-contrib/pg-many-to-many@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@graphile-contrib/pg-many-to-many/-/pg-many-to-many-1.0.0.tgz#93f12f9d68724523bef1c833ea24e9f646c257af"
+  integrity sha512-y8DiptnJBDW8mrI9btQi/q/nYVYxG92P5QGBsKW6WdYiSKLvrhnnnqm0Qi2VrWIiRVxj22v0NKRmvZ8c6EIiZg==
+
 "@graphile/lru@4.9.0":
   version "4.9.0"
   resolved "https://registry.npmjs.org/@graphile/lru/-/lru-4.9.0.tgz#f101cbaaaf8a0ae6cb661e8cdc579a11c253cc10"
