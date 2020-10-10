@@ -18,6 +18,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "resolutions": {
+    "graphql": "14.x",
+    "pg-connection-string": "2.x"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/launchql/launchql"

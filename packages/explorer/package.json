@@ -24,6 +24,10 @@
   "bin": {
     "server": "dist/cjs/server.js"
   },
+  "resolutions": {
+    "graphql": "14.x",
+    "pg-connection-string": "2.x"
+  },
   "scripts": {
     "dist:cjs": "NODE_ENV=production BABEL_ENV=cjs babel src --out-dir ./dist/cjs --delete-dir-on-start",
     "dist:esm": "NODE_ENV=production BABEL_ENV=esm babel src --out-dir ./dist/esm --delete-dir-on-start",
