@@ -1216,16 +1216,6 @@
   dependencies:
     tslib "^2.0.1"
 
-"@graphile/postgis@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@graphile/postgis/-/postgis-0.1.0.tgz#de87bf9a3742decc86841e7e00ddda89f868a929"
-  integrity sha512-67lTNvyTnng2oPU9OoA1NRvbAvS/zyTGQIK+d77OFhNi41NHNZynNVRZ+R/UpotcWVQL6rAmo2w8EkI1o4xfAg==
-  dependencies:
-    "@types/debug" "^4.1.2"
-    "@types/graphql" "^14.0.7"
-    debug "^4.1.1"
-    tslib "^1.9.3"
-
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -2517,11 +2507,6 @@
     "@types/keygrip" "*"
     "@types/node" "*"
 
-"@types/debug@^4.1.2":
-  version "4.1.5"
-  resolved "https://registry.npmjs.org/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
-  integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
-
 "@types/express-serve-static-core@*":
   version "4.17.13"
   resolved "https://registry.npmjs.org/@types/express-serve-static-core/-/express-serve-static-core-4.17.13.tgz#d9af025e925fc8b089be37423b8d1eac781be084"
@@ -2555,13 +2540,6 @@
   integrity sha512-AiHRaEB50LQg0pZmm659vNBb9f4SJ0qrAnteuzhSeAUcJKxoYgEnprg/83kppCnc2zvtCKbdZry1a5pVY3lOTQ==
   dependencies:
     "@types/node" "*"
-
-"@types/graphql@^14.0.7":
-  version "14.5.0"
-  resolved "https://registry.npmjs.org/@types/graphql/-/graphql-14.5.0.tgz#a545fb3bc8013a3547cf2f07f5e13a33642b75d6"
-  integrity sha512-MOkzsEp1Jk5bXuAsHsUi6BVv0zCO+7/2PTiZMXWDSsMXvNU6w/PLMQT2vHn8hy2i0JqojPz1Sz6rsFjHtsU0lA==
-  dependencies:
-    graphql "*"
 
 "@types/http-assert@*":
   version "1.5.1"
@@ -5626,6 +5604,13 @@ graphile-meta-schema@0.1.1:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
 
+graphile-postgis@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/graphile-postgis/-/graphile-postgis-0.0.1.tgz#f2ad9531e08551885e11c9bf52b6368d8cc771a6"
+  integrity sha512-vL9zTXIxXOmq92KAwkomKKM7P0b3ZDD+6AUZJIojyqM7wYe3zc9fApdgJQr9oe89bwJdZKQ9B0fpDipDGaKmTQ==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+
 graphile-simple-inflector@0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/graphile-simple-inflector/-/graphile-simple-inflector-0.1.1.tgz#29863c19ad2f13d7eb9a76ed62fc96c1011c0456"
@@ -5677,11 +5662,6 @@ graphql-upload@11.0.0:
     http-errors "^1.7.3"
     isobject "^4.0.0"
     object-path "^0.11.4"
-
-graphql@*:
-  version "15.3.0"
-  resolved "https://registry.npmjs.org/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
-  integrity sha512-GTCJtzJmkFLWRfFJuoo9RWWa/FfamUHgiFosxi/X1Ani4AVWbeyBenZTNX6dM+7WSbbFfTo/25eh0LLkwHMw2w==
 
 "graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
   version "14.7.0"
@@ -10436,7 +10416,7 @@ trim-off-newlines@^1.0.0:
   resolved "https://registry.npmjs.org/trim-off-newlines/-/trim-off-newlines-1.0.1.tgz#9f9ba9d9efa8764c387698bcbfeb2c848f11adb3"
   integrity sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
 
-tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
