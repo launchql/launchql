@@ -10,7 +10,7 @@ module.exports = cleanEnv(
     PGUSER: str({ default: 'postgres' }),
     PGHOST: str({ default: 'localhost' }),
     PGPASSWORD: str({ default: 'password' }),
-    PGDATABASE: str({ default: 'launchql-db' }),
+    PGDATABASE: str({ default: 'services-db' }),
     SERVICE_SCHEMA: str({ default: 'services_public' }),
     SERVICE_TABLE: str({ default: 'services' }),
     TRUST_PROXY: bool({ default: false }),

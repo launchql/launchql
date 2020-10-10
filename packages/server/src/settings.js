@@ -35,4 +35,6 @@ export const getGraphileSettings = ({
     }
     return { role: anon_role };
   };
+
+  return options;
 };

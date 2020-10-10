@@ -98,7 +98,7 @@ export default ({
 
     const obj = {
       pgPool,
-      handler: postgraphile(pgPool, opts.schema, opts)
+      handler: postgraphile(pgPool, schemas, opts)
     };
 
     cache.set(key, obj);
