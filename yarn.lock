@@ -5604,10 +5604,10 @@ graphile-meta-schema@0.1.1:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
 
-graphile-postgis@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/graphile-postgis/-/graphile-postgis-0.0.1.tgz#f2ad9531e08551885e11c9bf52b6368d8cc771a6"
-  integrity sha512-vL9zTXIxXOmq92KAwkomKKM7P0b3ZDD+6AUZJIojyqM7wYe3zc9fApdgJQr9oe89bwJdZKQ9B0fpDipDGaKmTQ==
+graphile-postgis@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/graphile-postgis/-/graphile-postgis-0.1.0.tgz#8a4e78706fa57b2b14cce9d060316ff51036b4f7"
+  integrity sha512-4ypJSGje7TbwRGMEtoaeF3ewAcCgoyS5wiRTpWui6NAQBijmhIR8983Qwutx5QWGDJS3KpBX1JnZ4GuZnd50nA==
   dependencies:
     "@babel/runtime" "^7.11.2"
 
@@ -5663,7 +5663,7 @@ graphql-upload@11.0.0:
     isobject "^4.0.0"
     object-path "^0.11.4"
 
-"graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
+graphql@14.x, "graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
   version "14.7.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
   integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
@@ -8556,7 +8556,7 @@ performance-now@^2.1.0:
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-pg-connection-string@^2.0.0, pg-connection-string@^2.3.0, pg-connection-string@^2.4.0:
+pg-connection-string@2.x, pg-connection-string@^2.0.0, pg-connection-string@^2.3.0, pg-connection-string@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.4.0.tgz#c979922eb47832999a204da5dbe1ebf2341b6a10"
   integrity sha512-3iBXuv7XKvxeMrIgym7njT+HlZkwZqqGX4Bu9cci8xHZNT+Um1gWKqCsAzcC0d95rcKMU5WBg6YRUcHyV0HZKQ==
