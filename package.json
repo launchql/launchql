@@ -12,7 +12,9 @@
     "lint:fix": "eslint --ignore-path .gitignore . --fix",
     "pretest": "yarn lint",
     "test:watch": "jest --watch",
-    "test": "jest"
+    "test": "jest",
+    "launchql:explorer": "lerna run --stream --scope @launchql/explorer dev",
+    "launchql:server": "lerna run --stream --scope @launchql/server dev"
   },
   "devDependencies": {
     "@babel/cli": "7.11.6",
