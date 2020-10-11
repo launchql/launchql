@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphile-settings",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "graphile settings",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/graphile-settings#readme",
@@ -59,13 +59,13 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@graphile-contrib/pg-many-to-many": "1.0.0",
+    "@pyramation/postgis": "0.1.1",
     "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",
     "@pyramation/s3-streamer": "0.2.0",
     "@pyramation/upload-names": "0.1.0",
     "envalid": "6.0.2",
     "graphile-build": "4.9.0",
     "graphile-meta-schema": "0.1.1",
-    "@pyramation/postgis": "0.1.1",
     "graphile-simple-inflector": "0.1.1",
     "postgraphile-derived-upload-field": "0.0.6",
     "postgraphile-plugin-connection-filter": "2.0.0",
