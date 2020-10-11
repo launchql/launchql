@@ -2356,6 +2356,14 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
+"@pyramation/postgis@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/@pyramation/postgis/-/postgis-0.1.1.tgz#638d53e7597529e9514cf8db5918da6ffb3e3b6d"
+  integrity sha512-tzawuoEcQF/CWfjjEB/03/XZ9C+dt+bU6YeydTYIDShM/b6E+lND/74/5AX4KPyTMB66x1Gu41S50wrmxqDnTA==
+  dependencies:
+    debug "^4.1.1"
+    tslib "^1.10.0"
+
 "@pyramation/postgraphile-plugin-fulltext-filter@2.0.0":
   version "2.0.0"
   resolved "https://registry.npmjs.org/@pyramation/postgraphile-plugin-fulltext-filter/-/postgraphile-plugin-fulltext-filter-2.0.0.tgz#cc4d3df08ad77f28cae5765859dd25bf3854c0a5"
@@ -5604,13 +5612,6 @@ graphile-meta-schema@0.1.1:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
 
-graphile-postgis@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/graphile-postgis/-/graphile-postgis-0.1.0.tgz#8a4e78706fa57b2b14cce9d060316ff51036b4f7"
-  integrity sha512-4ypJSGje7TbwRGMEtoaeF3ewAcCgoyS5wiRTpWui6NAQBijmhIR8983Qwutx5QWGDJS3KpBX1JnZ4GuZnd50nA==
-  dependencies:
-    "@babel/runtime" "^7.11.2"
-
 graphile-simple-inflector@0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/graphile-simple-inflector/-/graphile-simple-inflector-0.1.1.tgz#29863c19ad2f13d7eb9a76ed62fc96c1011c0456"
@@ -5663,7 +5664,7 @@ graphql-upload@11.0.0:
     isobject "^4.0.0"
     object-path "^0.11.4"
 
-graphql@14.x, "graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
+"graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
   version "14.7.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
   integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
@@ -8556,7 +8557,7 @@ performance-now@^2.1.0:
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-pg-connection-string@2.x, pg-connection-string@^2.0.0, pg-connection-string@^2.3.0, pg-connection-string@^2.4.0:
+pg-connection-string@^2.0.0, pg-connection-string@^2.3.0, pg-connection-string@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.4.0.tgz#c979922eb47832999a204da5dbe1ebf2341b6a10"
   integrity sha512-3iBXuv7XKvxeMrIgym7njT+HlZkwZqqGX4Bu9cci8xHZNT+Um1gWKqCsAzcC0d95rcKMU5WBg6YRUcHyV0HZKQ==
@@ -10416,7 +10417,7 @@ trim-off-newlines@^1.0.0:
   resolved "https://registry.npmjs.org/trim-off-newlines/-/trim-off-newlines-1.0.1.tgz#9f9ba9d9efa8764c387698bcbfeb2c848f11adb3"
   integrity sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
 
-tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==

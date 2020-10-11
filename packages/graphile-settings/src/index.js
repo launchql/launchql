@@ -5,7 +5,7 @@ import PgMetaschema from 'graphile-meta-schema';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
 import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
-import PgPostgis from 'graphile-postgis';
+import PgPostgis from '@pyramation/postgis';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 
