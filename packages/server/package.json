@@ -22,7 +22,7 @@
     "url": "https://github.com/pyramation/launchql"
   },
   "bin": {
-    "service": "dist/cjs/server.js"
+    "lql-server": "dist/cjs/server.js"
   },
   "resolutions": {
     "graphql": "14.x",
