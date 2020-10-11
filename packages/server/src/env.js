@@ -1,8 +1,6 @@
-const { cleanEnv, bool, str, port, url, makeValidator } = require('envalid');
+import { cleanEnv, str, port, bool } from 'envalid';
 
-const array = makeValidator((x) => x.split(','), '');
-
-module.exports = cleanEnv(
+export default cleanEnv(
   process.env,
   {
     SERVER_PORT: port({ default: 5555 }),
@@ -11,10 +9,13 @@ module.exports = cleanEnv(
     PGHOST: str({ default: 'localhost' }),
     PGPASSWORD: str({ default: 'password' }),
     PGDATABASE: str({ default: 'service-db' }),
+    PGPORT: port({ default: 5432 }),
     SERVICE_SCHEMA: str({ default: 'services_public' }),
     SERVICE_TABLE: str({ default: 'services' }),
     TRUST_PROXY: bool({ default: false }),
-    PGPORT: port({ default: 5432 })
+    USE_SIMPLE_INFLECTION: bool({ default: true }),
+    USE_OPPOSITE_BASENAMES: bool({ default: true }),
+    USE_POSTGIS: bool({ default: true })
   },
   { dotEnvPath: null }
 );

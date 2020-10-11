@@ -1,4 +1,4 @@
-import { cleanEnv, str, port } from 'envalid';
+import { cleanEnv, str, port, bool } from 'envalid';
 
 export default cleanEnv(
   process.env,
@@ -8,7 +8,10 @@ export default cleanEnv(
     PGUSER: str({ default: 'postgres' }),
     PGHOST: str({ default: 'localhost' }),
     PGPASSWORD: str({ default: 'password' }),
-    PGPORT: port({ default: 5432 })
+    PGPORT: port({ default: 5432 }),
+    USE_SIMPLE_INFLECTION: bool({ default: true }),
+    USE_OPPOSITE_BASENAMES: bool({ default: true }),
+    USE_POSTGIS: bool({ default: true })
   },
   { dotEnvPath: null }
 );

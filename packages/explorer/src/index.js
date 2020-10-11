@@ -15,10 +15,10 @@ import { printSchemas, printDatabases } from './render';
 import env from './env';
 
 export default ({
-  simpleInflection = true,
-  oppositeBaseNames = true,
+  simpleInflection = env.USE_SIMPLE_INFLECTION,
+  oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
   port = env.SERVER_PORT,
-  postgis = false,
+  postgis = env.USE_POSTGIS,
   origin
 } = {}) => {
   const getGraphileInstanceObj = (dbname, schemaname) => {
