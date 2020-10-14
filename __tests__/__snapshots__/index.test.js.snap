@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`works 1`] = `
+Object {
+  "A_Expr": Object {
+    "kind": 0,
+    "lexpr": Object {
+      "Integer": Object {
+        "ival": 0,
+      },
+    },
+    "name": Array [
+      Object {
+        "String": Object {
+          "str": "=",
+        },
+      },
+    ],
+    "rexpr": Object {
+      "Integer": Object {
+        "ival": 0,
+      },
+    },
+  },
+}
+`;
