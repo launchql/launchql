@@ -65,7 +65,7 @@
     "@pyramation/upload-names": "0.1.0",
     "envalid": "6.0.2",
     "graphile-build": "4.9.0",
-    "graphile-meta-schema": "0.1.1",
+    "graphile-meta-schema": "0.1.2",
     "graphile-simple-inflector": "0.1.1",
     "postgraphile-derived-upload-field": "0.0.6",
     "postgraphile-plugin-connection-filter": "2.0.0",

@@ -5604,10 +5604,10 @@ graphile-gen@0.3.0:
     inflection "^1.12.0"
     pluralize "^8.0.0"
 
-graphile-meta-schema@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/graphile-meta-schema/-/graphile-meta-schema-0.1.1.tgz#93e1a355573225ead39bbb166d83cdb9f5d90af3"
-  integrity sha512-gpViR4t3fe3AGeLbdizxT+dlXOeEEal9BDEtpG01nfP9e1ThkABc48IjlfO0fMnoGOsxt/DkvWLgEROaj7LNzQ==
+graphile-meta-schema@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/graphile-meta-schema/-/graphile-meta-schema-0.1.2.tgz#fc5486c89ca029ab4e06ccd00d7f70e677d13263"
+  integrity sha512-zIsqPRHc71cB9iaj/r0gUVTLrO/A7c8O81Sohep4FLOeLkf6A1yWmZj5j60Sd10+OsMBY/gasnRU6QAYOMmseg==
   dependencies:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
@@ -5664,7 +5664,7 @@ graphql-upload@11.0.0:
     isobject "^4.0.0"
     object-path "^0.11.4"
 
-"graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
+graphql@14.x, "graphql@>=0.9 <0.14 || ^14.0.2", "graphql@^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.2", graphql@^14.0.2:
   version "14.7.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
   integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
@@ -8557,7 +8557,7 @@ performance-now@^2.1.0:
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-pg-connection-string@^2.0.0, pg-connection-string@^2.3.0, pg-connection-string@^2.4.0:
+pg-connection-string@2.x, pg-connection-string@^2.0.0, pg-connection-string@^2.3.0, pg-connection-string@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.4.0.tgz#c979922eb47832999a204da5dbe1ebf2341b6a10"
   integrity sha512-3iBXuv7XKvxeMrIgym7njT+HlZkwZqqGX4Bu9cci8xHZNT+Um1gWKqCsAzcC0d95rcKMU5WBg6YRUcHyV0HZKQ==
