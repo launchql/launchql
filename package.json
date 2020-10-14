@@ -1,6 +1,6 @@
 {
   "name": "pg-ast",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "PostgreSQL ASTs in JS",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/pg-ast#readme",
@@ -57,6 +57,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^24.5.0",
     "jest-in-case": "^1.0.2",
+    "pgsql-parser": "^0.8.1",
     "prettier": "^2.1.2",
     "regenerator-runtime": "^0.13.7"
   },
