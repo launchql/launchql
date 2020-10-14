@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphile-settings",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "graphile settings",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/graphile-settings#readme",
