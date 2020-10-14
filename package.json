@@ -23,7 +23,7 @@
     "build:module": "cross-env MODULE=true babel src --out-dir module --delete-dir-on-start",
     "build": "npm run build:module && npm run build:main",
     "prepublish": "npm run build",
-    "dev": "cross-env NODE_ENV=development babel-node src/index",
+    "dev": "cross-env NODE_ENV=development babel-node src/cli",
     "watch": "cross-env NODE_ENV=development babel-watch src/index",
     "lint": "eslint src --fix",
     "test": "jest",
