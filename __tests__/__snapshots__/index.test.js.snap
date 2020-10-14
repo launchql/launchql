@@ -14,7 +14,7 @@ Object {
               "name": "permission_assignment_role_id_fkey",
             },
           ],
-          "name": "permission_assignment",
+          "name": "PermissionAssignment",
           "primaryKeyConstraints": Array [
             Object {
               "name": "permission_assignment_pkey",
@@ -24,7 +24,7 @@ Object {
         },
         Object {
           "foreignKeyConstraints": Array [],
-          "name": "permissions",
+          "name": "Permission",
           "primaryKeyConstraints": Array [
             Object {
               "name": "permissions_pkey",
@@ -38,7 +38,7 @@ Object {
               "name": "roles_org_id_fkey",
             },
           ],
-          "name": "roles",
+          "name": "Role",
           "primaryKeyConstraints": Array [
             Object {
               "name": "roles_pkey",
@@ -55,7 +55,7 @@ Object {
               "name": "subject_assignment_role_id_fkey",
             },
           ],
-          "name": "subject_assignment",
+          "name": "SubjectAssignment",
           "primaryKeyConstraints": Array [
             Object {
               "name": "subject_assignment_pkey",
@@ -69,7 +69,7 @@ Object {
               "name": "user_settings_user_id_fkey",
             },
           ],
-          "name": "user_settings",
+          "name": "UserSetting",
           "primaryKeyConstraints": Array [
             Object {
               "name": "user_settings_pkey",
@@ -79,7 +79,7 @@ Object {
         },
         Object {
           "foreignKeyConstraints": Array [],
-          "name": "users",
+          "name": "User",
           "primaryKeyConstraints": Array [
             Object {
               "name": "users_pkey",
@@ -90,6 +90,16 @@ Object {
               "name": "users_username_key",
             },
           ],
+        },
+        Object {
+          "foreignKeyConstraints": Array [],
+          "name": "Postcode",
+          "primaryKeyConstraints": Array [
+            Object {
+              "name": "zip_codes_pkey",
+            },
+          ],
+          "uniqueConstraints": Array [],
         },
       ],
     },
@@ -107,7 +117,7 @@ Object {
             Object {
               "fields": Array [
                 Object {
-                  "name": "perm_id",
+                  "name": "permId",
                 },
               ],
               "refFields": Array [
@@ -124,20 +134,20 @@ Object {
                     "name": "name",
                   },
                 ],
-                "name": "permissions",
+                "name": "Permission",
               },
             },
             Object {
               "__typename": "MetaschemaPrimaryKeyConstraint",
               "fields": Array [
                 Object {
-                  "name": "perm_id",
+                  "name": "permId",
                   "type": Object {
                     "name": "int8",
                   },
                 },
                 Object {
-                  "name": "role_id",
+                  "name": "roleId",
                   "type": Object {
                     "name": "int8",
                   },
@@ -148,7 +158,7 @@ Object {
             Object {
               "fields": Array [
                 Object {
-                  "name": "role_id",
+                  "name": "roleId",
                 },
               ],
               "refFields": Array [
@@ -162,28 +172,39 @@ Object {
                     "name": "id",
                   },
                   Object {
-                    "name": "org_id",
+                    "name": "orgId",
                   },
                 ],
-                "name": "roles",
+                "name": "Role",
               },
             },
           ],
           "fields": Array [
             Object {
-              "name": "perm_id",
+              "name": "permId",
               "type": Object {
                 "name": "int8",
               },
             },
             Object {
-              "name": "role_id",
+              "name": "roleId",
               "type": Object {
                 "name": "int8",
               },
             },
           ],
-          "name": "permission_assignment",
+          "inflection": Object {
+            "allRows": "allPermissionAssignments",
+            "createField": "createPermissionAssignment",
+            "createPayloadType": "CreatePermissionAssignmentPayload",
+            "deleteByPrimaryKey": "deletePermissionAssignmentByPermIdAndRoleId",
+            "deletePayloadType": "DeletePermissionAssignmentPayload",
+            "tableFieldName": "permissionAssignment",
+            "tableType": "PermissionAssignment",
+            "updateByPrimaryKey": "updatePermissionAssignmentByPermIdAndRoleId",
+            "updatePayloadType": "UpdatePermissionAssignmentPayload",
+          },
+          "name": "PermissionAssignment",
         },
         Object {
           "constraints": Array [
@@ -214,7 +235,18 @@ Object {
               },
             },
           ],
-          "name": "permissions",
+          "inflection": Object {
+            "allRows": "allPermissions",
+            "createField": "createPermission",
+            "createPayloadType": "CreatePermissionPayload",
+            "deleteByPrimaryKey": "deletePermissionById",
+            "deletePayloadType": "DeletePermissionPayload",
+            "tableFieldName": "permission",
+            "tableType": "Permission",
+            "updateByPrimaryKey": "updatePermissionById",
+            "updatePayloadType": "UpdatePermissionPayload",
+          },
+          "name": "Permission",
         },
         Object {
           "constraints": Array [
@@ -233,7 +265,7 @@ Object {
             Object {
               "fields": Array [
                 Object {
-                  "name": "org_id",
+                  "name": "orgId",
                 },
               ],
               "refFields": Array [
@@ -250,7 +282,7 @@ Object {
                     "name": "username",
                   },
                 ],
-                "name": "users",
+                "name": "User",
               },
             },
           ],
@@ -262,20 +294,31 @@ Object {
               },
             },
             Object {
-              "name": "org_id",
+              "name": "orgId",
               "type": Object {
                 "name": "int8",
               },
             },
           ],
-          "name": "roles",
+          "inflection": Object {
+            "allRows": "allRoles",
+            "createField": "createRole",
+            "createPayloadType": "CreateRolePayload",
+            "deleteByPrimaryKey": "deleteRoleById",
+            "deletePayloadType": "DeleteRolePayload",
+            "tableFieldName": "role",
+            "tableType": "Role",
+            "updateByPrimaryKey": "updateRoleById",
+            "updatePayloadType": "UpdateRolePayload",
+          },
+          "name": "Role",
         },
         Object {
           "constraints": Array [
             Object {
               "fields": Array [
                 Object {
-                  "name": "subj_id",
+                  "name": "subjId",
                 },
               ],
               "refFields": Array [
@@ -292,20 +335,20 @@ Object {
                     "name": "username",
                   },
                 ],
-                "name": "users",
+                "name": "User",
               },
             },
             Object {
               "__typename": "MetaschemaPrimaryKeyConstraint",
               "fields": Array [
                 Object {
-                  "name": "subj_id",
+                  "name": "subjId",
                   "type": Object {
                     "name": "int8",
                   },
                 },
                 Object {
-                  "name": "role_id",
+                  "name": "roleId",
                   "type": Object {
                     "name": "int8",
                   },
@@ -316,7 +359,7 @@ Object {
             Object {
               "fields": Array [
                 Object {
-                  "name": "role_id",
+                  "name": "roleId",
                 },
               ],
               "refFields": Array [
@@ -330,28 +373,39 @@ Object {
                     "name": "id",
                   },
                   Object {
-                    "name": "org_id",
+                    "name": "orgId",
                   },
                 ],
-                "name": "roles",
+                "name": "Role",
               },
             },
           ],
           "fields": Array [
             Object {
-              "name": "subj_id",
+              "name": "subjId",
               "type": Object {
                 "name": "int8",
               },
             },
             Object {
-              "name": "role_id",
+              "name": "roleId",
               "type": Object {
                 "name": "int8",
               },
             },
           ],
-          "name": "subject_assignment",
+          "inflection": Object {
+            "allRows": "allSubjectAssignments",
+            "createField": "createSubjectAssignment",
+            "createPayloadType": "CreateSubjectAssignmentPayload",
+            "deleteByPrimaryKey": "deleteSubjectAssignmentBySubjIdAndRoleId",
+            "deletePayloadType": "DeleteSubjectAssignmentPayload",
+            "tableFieldName": "subjectAssignment",
+            "tableType": "SubjectAssignment",
+            "updateByPrimaryKey": "updateSubjectAssignmentBySubjIdAndRoleId",
+            "updatePayloadType": "UpdateSubjectAssignmentPayload",
+          },
+          "name": "SubjectAssignment",
         },
         Object {
           "constraints": Array [
@@ -359,7 +413,7 @@ Object {
               "__typename": "MetaschemaPrimaryKeyConstraint",
               "fields": Array [
                 Object {
-                  "name": "user_id",
+                  "name": "userId",
                   "type": Object {
                     "name": "int8",
                   },
@@ -370,7 +424,7 @@ Object {
             Object {
               "fields": Array [
                 Object {
-                  "name": "user_id",
+                  "name": "userId",
                 },
               ],
               "refFields": Array [
@@ -387,13 +441,13 @@ Object {
                     "name": "username",
                   },
                 ],
-                "name": "users",
+                "name": "User",
               },
             },
           ],
           "fields": Array [
             Object {
-              "name": "user_id",
+              "name": "userId",
               "type": Object {
                 "name": "int8",
               },
@@ -405,7 +459,18 @@ Object {
               },
             },
           ],
-          "name": "user_settings",
+          "inflection": Object {
+            "allRows": "allUserSettings",
+            "createField": "createUserSetting",
+            "createPayloadType": "CreateUserSettingPayload",
+            "deleteByPrimaryKey": "deleteUserSettingByUserId",
+            "deletePayloadType": "DeleteUserSettingPayload",
+            "tableFieldName": "userSetting",
+            "tableType": "UserSetting",
+            "updateByPrimaryKey": "updateUserSettingByUserId",
+            "updatePayloadType": "UpdateUserSettingPayload",
+          },
+          "name": "UserSetting",
         },
         Object {
           "constraints": Array [
@@ -448,7 +513,66 @@ Object {
               },
             },
           ],
-          "name": "users",
+          "inflection": Object {
+            "allRows": "allUsers",
+            "createField": "createUser",
+            "createPayloadType": "CreateUserPayload",
+            "deleteByPrimaryKey": "deleteUserById",
+            "deletePayloadType": "DeleteUserPayload",
+            "tableFieldName": "user",
+            "tableType": "User",
+            "updateByPrimaryKey": "updateUserById",
+            "updatePayloadType": "UpdateUserPayload",
+          },
+          "name": "User",
+        },
+        Object {
+          "constraints": Array [
+            Object {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": Array [
+                Object {
+                  "name": "id",
+                  "type": Object {
+                    "name": "int4",
+                  },
+                },
+              ],
+              "name": "zip_codes_pkey",
+            },
+          ],
+          "fields": Array [
+            Object {
+              "name": "id",
+              "type": Object {
+                "name": "int4",
+              },
+            },
+            Object {
+              "name": "zipCode",
+              "type": Object {
+                "name": "int4",
+              },
+            },
+            Object {
+              "name": "location",
+              "type": Object {
+                "name": "text",
+              },
+            },
+          ],
+          "inflection": Object {
+            "allRows": "allPostcodes",
+            "createField": "createPostcode",
+            "createPayloadType": "CreatePostcodePayload",
+            "deleteByPrimaryKey": "deletePostcodeById",
+            "deletePayloadType": "DeletePostcodePayload",
+            "tableFieldName": "postcode",
+            "tableType": "Postcode",
+            "updateByPrimaryKey": "updatePostcodeById",
+            "updatePayloadType": "UpdatePostcodePayload",
+          },
+          "name": "Postcode",
         },
       ],
     },

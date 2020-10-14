@@ -4,6 +4,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
   (build, schemaOptions) => {
     /** @type {import('graphile-build-pg').PgIntrospectionResultsByKind} */
     const introspection = build.pgIntrospectionResultsByKind;
+    const inflection = build.inflection;
 
     /** @type {string[]} */
     const schemas = schemaOptions.pgSchemas;
@@ -17,8 +18,22 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           name: String!
           type: MetaschemaType!
         }
+        type MetaschemaTableInflection {
+          # https://github.com/graphile/graphile-engine/blob/v4/packages/graphile-build-pg/src/plugins/PgBasicsPlugin.js
+          allRows: String!
+          allRowsSimple: String!
+          tableFieldName: String!
+          tableType: String!
+          createPayloadType: String!
+          updatePayloadType: String!
+          deletePayloadType: String!
+          deleteByPrimaryKey: String
+          updateByPrimaryKey: String
+          createField: String!
+        }
         type MetaschemaTable {
           name: String!
+          inflection: MetaschemaTableInflection!
           fields: [MetaschemaField]
           constraints: [MetaschemaConstraint]
           foreignKeyConstraints: [MetaschemaForeignKeyConstraint]
@@ -104,17 +119,73 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
         },
         MetaschemaField: {
           /** @param attr {import('graphile-build-pg').PgAttribute} */
+          name(attr) {
+            return inflection.column(attr);
+          },
+          /** @param attr {import('graphile-build-pg').PgAttribute} */
           type(attr) {
             return attr.type;
           }
         },
+        MetaschemaTableInflection: {
+          deleteByPrimaryKey(table) {
+            if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
+            return inflection.deleteByKeys(
+              table.primaryKeyConstraint.keyAttributes,
+              table,
+              table.primaryKeyConstraint
+            );
+          },
+          updateByPrimaryKey(table) {
+            if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
+            return inflection.updateByKeys(
+              table.primaryKeyConstraint.keyAttributes,
+              table,
+              table.primaryKeyConstraint
+            );
+          },
+          createField(table) {
+            return inflection.createField(table);
+          },
+          allRows(table) {
+            return inflection.allRows(table);
+          },
+          allRowsSimple(table) {
+            return inflection.allRowsSimple(table);
+          },
+          tableFieldName(table) {
+            return inflection.tableFieldName(table);
+          },
+          tableType(table) {
+            return inflection.tableType(table);
+          },
+          createPayloadType(table) {
+            return inflection.createPayloadType(table);
+          },
+          updatePayloadType(table) {
+            return inflection.updatePayloadType(table);
+          },
+          deletePayloadType(table) {
+            return inflection.deletePayloadType(table);
+          }
+        },
         MetaschemaTable: {
+          /** @param table {import('graphile-build-pg').PgClass} */
+          name(table) {
+            return inflection.tableType(table);
+            // return inflection._tableName(table);
+          },
           /** @param table {import('graphile-build-pg').PgClass} */
           fields(table) {
             return table.attributes.filter(attr => {
               if (attr.num < 1) return false; // low-level props
               return true;
             });
+          },
+          /** @param table {import('graphile-build-pg').PgClass} */
+          inflection(table) {
+            // return table so the MetaschemaTableInflection resolver uses that as input
+            return table;
           },
           /** @param table {import('graphile-build-pg').PgClass} */
           constraints(table) {

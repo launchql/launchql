@@ -11,6 +11,17 @@ export const GetMetaSchemaUnion = gql`
             name
           }
         }
+        inflection {
+          allRows
+          tableFieldName
+          tableType
+          createPayloadType
+          updatePayloadType
+          deletePayloadType
+          updateByPrimaryKey
+          deleteByPrimaryKey
+          createField
+        }
         constraints {
           ... on MetaschemaForeignKeyConstraint {
             fields {

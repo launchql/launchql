@@ -32,5 +32,12 @@ CREATE TABLE app_meta.subject_assignment (
     role_id bigint NOT NULL REFERENCES app_meta.roles (id),
     PRIMARY KEY (subj_id, role_id)
 );
+CREATE TABLE app_meta.zip_codes (
+    id serial PRIMARY KEY NOT NULL,
+    zip int,
+    location text
+);
+COMMENT ON TABLE app_meta.zip_codes IS '@name postcode';
+COMMENT ON COLUMN app_meta.zip_codes.zip IS '@name zip_code';
 COMMIT;
 

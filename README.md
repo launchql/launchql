@@ -74,5 +74,5 @@ query MetaQuery {
 
 ```sh
 createdb metaschema_example
-psql metaschema_example < schema.sql
+psql metaschema_example < sql/test.sql
 ```
