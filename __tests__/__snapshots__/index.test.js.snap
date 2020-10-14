@@ -156,14 +156,26 @@ Object {
               "name": "location",
               "type": Object {
                 "name": "geometry",
-                "typmod": "[object Object]",
+                "typmod": Object {
+                  "gisType": "Point",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 1,
+                },
               },
             },
             Object {
               "name": "bbox",
               "type": Object {
                 "name": "geometry",
-                "typmod": "[object Object]",
+                "typmod": Object {
+                  "gisType": "Polygon",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 3,
+                },
               },
             },
           ],
@@ -640,7 +652,13 @@ Object {
               "name": "location",
               "type": Object {
                 "name": "geometry",
-                "typmod": "[object Object]",
+                "typmod": Object {
+                  "gisType": "Point",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 1,
+                },
               },
             },
           ],

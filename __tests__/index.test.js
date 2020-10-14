@@ -11,6 +11,7 @@ const getDbString = () =>
 const { setup, teardown, graphQL } = GraphQLTest(
   {
     appendPlugins: [PgMetaschemaPlugin],
+    dynamicJson: true,
     schema: SCHEMA,
     graphqlRoute: '/graphql'
   },
