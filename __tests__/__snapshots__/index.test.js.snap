@@ -6,6 +6,16 @@ Object {
     "_meta": Object {
       "tables": Array [
         Object {
+          "foreignKeyConstraints": Array [],
+          "name": "BoundingBox",
+          "primaryKeyConstraints": Array [
+            Object {
+              "name": "bounding_box_pkey",
+            },
+          ],
+          "uniqueConstraints": Array [],
+        },
+        Object {
           "foreignKeyConstraints": Array [
             Object {
               "name": "permission_assignment_perm_id_fkey",
@@ -115,6 +125,64 @@ Object {
         Object {
           "constraints": Array [
             Object {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": Array [
+                Object {
+                  "name": "id",
+                  "type": Object {
+                    "name": "int4",
+                  },
+                },
+              ],
+              "name": "bounding_box_pkey",
+            },
+          ],
+          "fields": Array [
+            Object {
+              "name": "id",
+              "type": Object {
+                "name": "int4",
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "zip",
+              "type": Object {
+                "name": "int4",
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "location",
+              "type": Object {
+                "name": "geometry",
+                "typmod": "[object Object]",
+              },
+            },
+            Object {
+              "name": "bbox",
+              "type": Object {
+                "name": "geometry",
+                "typmod": "[object Object]",
+              },
+            },
+          ],
+          "inflection": Object {
+            "allRows": "allBoundingBoxes",
+            "createField": "createBoundingBox",
+            "createPayloadType": "CreateBoundingBoxPayload",
+            "deleteByPrimaryKey": "deleteBoundingBoxById",
+            "deletePayloadType": "DeleteBoundingBoxPayload",
+            "tableFieldName": "boundingBox",
+            "tableType": "BoundingBox",
+            "updateByPrimaryKey": "updateBoundingBoxById",
+            "updatePayloadType": "UpdateBoundingBoxPayload",
+          },
+          "name": "BoundingBox",
+        },
+        Object {
+          "constraints": Array [
+            Object {
               "fields": Array [
                 Object {
                   "name": "permId",
@@ -184,12 +252,14 @@ Object {
               "name": "permId",
               "type": Object {
                 "name": "int8",
+                "typmod": null,
               },
             },
             Object {
               "name": "roleId",
               "type": Object {
                 "name": "int8",
+                "typmod": null,
               },
             },
           ],
@@ -226,12 +296,14 @@ Object {
               "name": "id",
               "type": Object {
                 "name": "int4",
+                "typmod": null,
               },
             },
             Object {
               "name": "name",
               "type": Object {
                 "name": "citext",
+                "typmod": null,
               },
             },
           ],
@@ -291,12 +363,14 @@ Object {
               "name": "id",
               "type": Object {
                 "name": "int4",
+                "typmod": null,
               },
             },
             Object {
               "name": "orgId",
               "type": Object {
                 "name": "int8",
+                "typmod": null,
               },
             },
           ],
@@ -385,12 +459,14 @@ Object {
               "name": "subjId",
               "type": Object {
                 "name": "int8",
+                "typmod": null,
               },
             },
             Object {
               "name": "roleId",
               "type": Object {
                 "name": "int8",
+                "typmod": null,
               },
             },
           ],
@@ -450,12 +526,14 @@ Object {
               "name": "userId",
               "type": Object {
                 "name": "int8",
+                "typmod": null,
               },
             },
             Object {
               "name": "setting1",
               "type": Object {
                 "name": "text",
+                "typmod": null,
               },
             },
           ],
@@ -504,12 +582,14 @@ Object {
               "name": "id",
               "type": Object {
                 "name": "int4",
+                "typmod": null,
               },
             },
             Object {
               "name": "username",
               "type": Object {
                 "name": "citext",
+                "typmod": null,
               },
             },
           ],
@@ -546,18 +626,21 @@ Object {
               "name": "id",
               "type": Object {
                 "name": "int4",
+                "typmod": null,
               },
             },
             Object {
               "name": "zipCode",
               "type": Object {
                 "name": "int4",
+                "typmod": null,
               },
             },
             Object {
               "name": "location",
               "type": Object {
-                "name": "text",
+                "name": "geometry",
+                "typmod": "[object Object]",
               },
             },
           ],

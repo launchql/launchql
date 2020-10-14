@@ -1,5 +1,14 @@
 import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
-
+const GIS_TYPES = [
+  'Geometry',
+  'Point',
+  'LineString',
+  'Polygon',
+  'MultiPoint',
+  'MultiLineString',
+  'MultiPolygon',
+  'GeometryCollection'
+];
 export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
   (build, schemaOptions) => {
     /** @type {import('graphile-build-pg').PgIntrospectionResultsByKind} */
@@ -13,6 +22,8 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
       typeDefs: gql`
         type MetaschemaType {
           name: String!
+          modifier: Int
+          typmod: JSON
           isArray: Boolean!
         }
         type MetaschemaField {
@@ -121,11 +132,6 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
         MetaschemaType: {
           /** @param attr {import('graphile-build-pg').PgType} */
           name(type) {
-            // if (type.name === 'geometry') {
-            //   // TODO how to get the subtype?
-            //   console.log(type);
-            // }
-
             // TODO what is the best API here?
             // 1. we could return original _name, e.g. _citext (= citext[])
             // 2. we could return original type name and include isArray
@@ -133,6 +139,36 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
               return type.arrayItemType.name;
             }
             return type.name;
+          },
+          typmod(type) {
+            const modifier = type.attrTypeModifier;
+            if (!modifier) return null;
+
+            if (type.name === 'geography' || type.name === 'geometry') {
+              // Ref: https://github.com/postgis/postgis/blob/2.5.2/liblwgeom/liblwgeom.h.in#L156-L173
+              // #define TYPMOD_GET_SRID(typmod) ((((typmod) & 0x0FFFFF00) - ((typmod) & 0x10000000)) >> 8)
+              // #define TYPMOD_GET_TYPE(typmod) ((typmod & 0x000000FC)>>2)
+              // #define TYPMOD_GET_Z(typmod) ((typmod & 0x00000002)>>1)
+              // #define TYPMOD_GET_M(typmod) (typmod & 0x00000001)
+              const srid =
+                ((modifier & 0x0fffff00) - (modifier & 0x10000000)) >> 8;
+              const subtype = (modifier & 0x000000fc) >> 2;
+              const hasZ = (modifier & 0x00000002) >> 1 === 1;
+              const hasM = (modifier & 0x00000001) === 1;
+              if (subtype < GIS_TYPES.length) {
+                return {
+                  srid,
+                  subtype,
+                  hasZ,
+                  hasM,
+                  gisType: GIS_TYPES[subtype]
+                };
+              }
+            }
+            return { modifier };
+          },
+          modifier(type) {
+            return type.attrTypeModifier;
           },
           isArray(type) {
             return type.isPgArray;
@@ -145,6 +181,12 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           },
           /** @param attr {import('graphile-build-pg').PgAttribute} */
           type(attr) {
+            if (attr.typeModifier > 0) {
+              return {
+                ...attr.type,
+                attrTypeModifier: attr.typeModifier
+              };
+            }
             return attr.type;
           }
         },

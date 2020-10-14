@@ -9,6 +9,7 @@ export const GetMetaSchemaUnion = gql`
           name
           type {
             name
+            typmod
           }
         }
         inflection {
