@@ -34,7 +34,12 @@
     "type": "git",
     "url": "https://github.com/pyramation/pg-ast"
   },
-  "keywords": [],
+  "keywords": [
+    "postgres",
+    "ast",
+    "parser",
+    "parse"
+  ],
   "bugs": {
     "url": "https://github.com/pyramation/pg-ast/issues"
   },
