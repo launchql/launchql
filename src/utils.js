@@ -18,11 +18,7 @@ export const InsertStmt = ({
             relpersistence: 'p'
           }
         },
-        cols: fields.map((field) => ({
-          ResTarget: {
-            name: field.name
-          }
-        })),
+        cols: fields.map((field) => ast.ResTarget({ name: field.name })),
         selectStmt: {
           SelectStmt: {
             valuesLists: [
@@ -46,6 +42,6 @@ export const InsertStmt = ({
         override: 0
       }
     },
-    stmt_len: 90
+    stmt_len: 1
   }
 });
