@@ -13,6 +13,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
       typeDefs: gql`
         type MetaschemaType {
           name: String!
+          isArray: Boolean!
         }
         type MetaschemaField {
           name: String!
@@ -115,6 +116,26 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           /** @param constraint {import('graphile-build-pg').PgConstraint} */
           refFields(constraint) {
             return constraint.foreignKeyAttributes;
+          }
+        },
+        MetaschemaType: {
+          /** @param attr {import('graphile-build-pg').PgType} */
+          name(type) {
+            // if (type.name === 'geometry') {
+            //   // TODO how to get the subtype?
+            //   console.log(type);
+            // }
+
+            // TODO what is the best API here?
+            // 1. we could return original _name, e.g. _citext (= citext[])
+            // 2. we could return original type name and include isArray
+            if (type.isPgArray && type.arrayItemType?.name) {
+              return type.arrayItemType.name;
+            }
+            return type.name;
+          },
+          isArray(type) {
+            return type.isPgArray;
           }
         },
         MetaschemaField: {
