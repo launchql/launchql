@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-testing",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "testing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-testing#readme",
