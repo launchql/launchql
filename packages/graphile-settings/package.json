@@ -57,7 +57,7 @@
     "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.12.1",
     "@graphile-contrib/pg-many-to-many": "1.0.0",
     "@pyramation/postgis": "0.1.1",
     "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",

@@ -53,10 +53,10 @@
     "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
+    "@babel/runtime": "^7.12.1",
     "cors": "2.8.5",
     "envalid": "6.0.2",
     "lru-cache": "6.0.0",
-    "pg": "8.4.0"
+    "pg": "8.4.1"
   }
 }

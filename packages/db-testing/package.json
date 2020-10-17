@@ -57,11 +57,11 @@
     "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.12.1",
     "@launchql/db-utils": "^0.4.0",
     "envalid": "6.0.2",
-    "pg": "8.4.0",
-    "pg-promise": "10.6.2",
+    "pg": "8.4.1",
+    "pg-promise": "10.7.0",
     "streamify-string": "1.0.1",
     "uuid": "8.3.1"
   }

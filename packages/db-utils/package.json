@@ -54,7 +54,7 @@
     "regenerator-runtime": "^0.13.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.12.1",
     "@launchql/db-env": "^0.1.2",
     "@launchql/db-template": "^0.2.0",
     "@launchql/db-transform": "^0.3.0",
@@ -64,7 +64,7 @@
     "mkdirp": "^1.0.4",
     "node-walkup": "^1.1.1",
     "pg": "^8.4.0",
-    "pgsql-parser": "0.8.1",
+    "pgsql-parser": "0.8.6",
     "rimraf": "^3.0.2",
     "semver": "^5.5.1",
     "shelljs": "^0.8.2"
