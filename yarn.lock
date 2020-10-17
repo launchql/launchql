@@ -5767,10 +5767,10 @@ graphile-build@4.9.0:
     pluralize "^7.0.0"
     semver "^6.0.0"
 
-graphile-gen@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/graphile-gen/-/graphile-gen-0.3.1.tgz#1ab1a39dc5ae71374ec15713e860598ec9d04b53"
-  integrity sha512-IcEuXmFtUrFKav96/zIXj/p6MwtTTY8M/rx1iySl9htSQ3rkd1aUSpAtIH37gTbtyOqFku/JvVATvaV0XYtLhg==
+graphile-gen@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/graphile-gen/-/graphile-gen-0.3.3.tgz#f94d0381b95d0f4156cccc0e2079303118d78f5f"
+  integrity sha512-EEMLq9Ted3SDBBn1llthDXstezSDZ49N9oPQNW4sanBIkkUi3zygexfXJ6LQzMs+qTq1Ds9utTWPt3QcoM7G4A==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@pyramation/graphql-ast" "^0.1.1"
