@@ -59,7 +59,7 @@ const createGqlMutation = ({
 
 export const getMany = ({ operationName, query }) => {
   const queryName = inflection.camelize(
-    ['get', inflection.underscore(operationName), 'query'].join('_'),
+    ['get', inflection.underscore(operationName), 'query', 'all'].join('_'),
     true
   );
 
@@ -94,7 +94,7 @@ export const getMany = ({ operationName, query }) => {
   return { name: queryName, ast };
 };
 
-export const getManyPaginated = ({ operationName, query }) => {
+export const getManyPaginatedEdges = ({ operationName, query }) => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'paginated'].join('_'),
     true
@@ -184,6 +184,104 @@ export const getManyPaginated = ({ operationName, query }) => {
                           selectionSet: t.selectionSet({ selections })
                         })
                       ]
+                    })
+                  })
+                ]
+              })
+            })
+          ]
+        })
+      })
+    ]
+  });
+
+  return { name: queryName, ast };
+};
+
+export const getManyPaginatedNodes = ({ operationName, query }) => {
+  const queryName = inflection.camelize(
+    ['get', inflection.underscore(operationName), 'query'].join('_'),
+    true
+  );
+
+  const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
+
+  const OrderBy = `${Model}OrderBy`;
+  const selections = query.selection.map((field) => t.field({ name: field }));
+
+  const ast = t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'query',
+        name: queryName,
+        variableDefinitions: [
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'first'
+            }),
+            type: t.namedType({
+              type: 'Int'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'offset'
+            }),
+            type: t.namedType({
+              type: 'Int'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'orderBy'
+            }),
+            type: t.listType({
+              type: t.nonNullType({ type: t.namedType({ type: OrderBy }) })
+            })
+          })
+        ],
+        selectionSet: t.selectionSet({
+          selections: [
+            t.field({
+              name: operationName,
+              args: [
+                t.argument({
+                  name: 'first',
+                  value: t.variable({
+                    name: 'first'
+                  })
+                }),
+                t.argument({
+                  name: 'offset',
+                  value: t.variable({
+                    name: 'offset'
+                  })
+                }),
+                t.argument({
+                  name: 'orderBy',
+                  value: t.variable({
+                    name: 'orderBy'
+                  })
+                })
+              ],
+              selectionSet: t.objectValue({
+                fields: [
+                  t.field({
+                    name: 'totalCount'
+                  }),
+                  t.field({
+                    name: 'pageInfo',
+                    selectionSet: t.selectionSet({
+                      selections: [
+                        t.field({ name: 'hasNextPage' }),
+                        t.field({ name: 'hasPreviousPage' })
+                      ]
+                    })
+                  }),
+                  t.field({
+                    name: 'nodes',
+                    selectionSet: t.selectionSet({
+                      selections
                     })
                   })
                 ]
@@ -662,7 +760,15 @@ export const generate = (gql) => {
       if (name && ast) m[name] = { name, ast };
 
       // kinda hacky to just include these here, clearly we need a new model...
-      ({ name, ast } = getManyPaginated({ operationName: v, query: defn }));
+      ({ name, ast } = getManyPaginatedEdges({
+        operationName: v,
+        query: defn
+      }));
+      if (name && ast) m[name] = { name, ast };
+      ({ name, ast } = getManyPaginatedNodes({
+        operationName: v,
+        query: defn
+      }));
       if (name && ast) m[name] = { name, ast };
       ({ name, ast } = getOrderByEnums({ operationName: v, query: defn }));
       if (name && ast) m[name] = { name, ast };

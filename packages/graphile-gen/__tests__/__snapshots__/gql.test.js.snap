@@ -577,7 +577,19 @@ Object {
   }}
 }
 ",
-  "getApiTokensQuery": "query getApiTokensQuery {
+  "getApiTokensQuery": "query getApiTokensQuery($first: Int, $offset: Int, $orderBy: [ApiTokensOrderBy!]) {
+  apiTokens(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }}
+}
+",
+  "getApiTokensQueryAll": "query getApiTokensQueryAll {
   apiTokens {totalCount, nodes {
     id
     userId
@@ -630,7 +642,25 @@ Object {
   }}
 }
 ",
-  "getArticlesQuery": "query getArticlesQuery {
+  "getArticlesQuery": "query getArticlesQuery($first: Int, $offset: Int, $orderBy: [ArticlesOrderBy!]) {
+  articles(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    header
+    url
+    image
+    datePublished
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }}
+}
+",
+  "getArticlesQueryAll": "query getArticlesQueryAll {
   articles {totalCount, nodes {
     id
     header
@@ -752,7 +782,41 @@ Object {
   }}
 }
 ",
-  "getCampaignActionsQuery": "query getCampaignActionsQuery {
+  "getCampaignActionsQuery": "query getCampaignActionsQuery($first: Int, $offset: Int, $orderBy: [CampaignActionsOrderBy!]) {
+  campaignActions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitcoinLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesPyraRecordsByActionId
+  }}
+}
+",
+  "getCampaignActionsQueryAll": "query getCampaignActionsQueryAll {
   campaignActions {totalCount, nodes {
     id
     name
@@ -839,7 +903,31 @@ Object {
   }}
 }
 ",
-  "getCampaignsQuery": "query getCampaignsQuery {
+  "getCampaignsQuery": "query getCampaignsQuery($first: Int, $offset: Int, $orderBy: [CampaignsOrderBy!]) {
+  campaigns(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    description
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    logoId
+    backgroundImageId
+    partner
+    logo
+    backgroundImage
+    campaignActions
+  }}
+}
+",
+  "getCampaignsQueryAll": "query getCampaignsQueryAll {
   campaigns {totalCount, nodes {
     id
     name
@@ -906,7 +994,26 @@ Object {
   }}
 }
 ",
-  "getCompletedActionsQuery": "query getCompletedActionsQuery {
+  "getCompletedActionsQuery": "query getCompletedActionsQuery($first: Int, $offset: Int, $orderBy: [CompletedActionsOrderBy!]) {
+  completedActions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    dateCompleted
+    txid
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    actionId
+    user
+    action
+  }}
+}
+",
+  "getCompletedActionsQueryAll": "query getCompletedActionsQueryAll {
   completedActions {totalCount, nodes {
     id
     dateCompleted
@@ -992,7 +1099,33 @@ Object {
   }}
 }
 ",
-  "getImagesQuery": "query getImagesQuery {
+  "getImagesQuery": "query getImagesQuery($first: Int, $offset: Int, $orderBy: [ImagesOrderBy!]) {
+  images(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    url
+    versions
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnersByLogoId
+    partnersByBackgroundImageId
+    campaignsByLogoId
+    campaignsByBackgroundImageId
+    campaignActionsByThumbnailId
+    servicesByIconId
+    merchantsByLogoId
+    merchantsByBackgroundImageId
+    productsByIconId
+    shopifyAccountsByIconId
+  }}
+}
+",
+  "getImagesQueryAll": "query getImagesQueryAll {
   images {totalCount, nodes {
     id
     name
@@ -1063,7 +1196,27 @@ Object {
   }}
 }
 ",
-  "getInitiativesPyraRecordsQuery": "query getInitiativesPyraRecordsQuery {
+  "getInitiativesPyraRecordsQuery": "query getInitiativesPyraRecordsQuery($first: Int, $offset: Int, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
+  initiativesPyraRecords(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    email
+    bitcoinAddress
+    date
+    actionsCompleted
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    action
+  }}
+}
+",
+  "getInitiativesPyraRecordsQueryAll": "query getInitiativesPyraRecordsQueryAll {
   initiativesPyraRecords {totalCount, nodes {
     id
     name
@@ -1132,7 +1285,29 @@ Object {
   }}
 }
 ",
-  "getMerchantsQuery": "query getMerchantsQuery {
+  "getMerchantsQuery": "query getMerchantsQuery($first: Int, $offset: Int, $orderBy: [MerchantsOrderBy!]) {
+  merchants(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    bitcoinAddress
+    description
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    products
+  }}
+}
+",
+  "getMerchantsQueryAll": "query getMerchantsQueryAll {
   merchants {totalCount, nodes {
     id
     name
@@ -1209,7 +1384,32 @@ Object {
   }}
 }
 ",
-  "getPartnersQuery": "query getPartnersQuery {
+  "getPartnersQuery": "query getPartnersQuery($first: Int, $offset: Int, $orderBy: [PartnersOrderBy!]) {
+  partners(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    description
+    bitcoinAddress
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    campaigns
+    campaignActions
+    shopifyAccounts
+    shopifyOrders
+  }}
+}
+",
+  "getPartnersQueryAll": "query getPartnersQueryAll {
   partners {totalCount, nodes {
     id
     name
@@ -1271,7 +1471,23 @@ Object {
   }}
 }
 ",
-  "getPermissionsQuery": "query getPermissionsQuery {
+  "getPermissionsQuery": "query getPermissionsQuery($first: Int, $offset: Int, $orderBy: [PermissionsOrderBy!]) {
+  permissions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    user
+  }}
+}
+",
+  "getPermissionsQueryAll": "query getPermissionsQueryAll {
   permissions {totalCount, nodes {
     id
     name
@@ -1330,7 +1546,26 @@ Object {
   }}
 }
 ",
-  "getProductsQuery": "query getProductsQuery {
+  "getProductsQuery": "query getProductsQuery($first: Int, $offset: Int, $orderBy: [ProductsOrderBy!]) {
+  products(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    url
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    merchantId
+    iconId
+    merchant
+    icon
+  }}
+}
+",
+  "getProductsQueryAll": "query getProductsQueryAll {
   products {totalCount, nodes {
     id
     name
@@ -1396,7 +1631,28 @@ Object {
   }}
 }
 ",
-  "getServicesQuery": "query getServicesQuery {
+  "getServicesQuery": "query getServicesQuery($first: Int, $offset: Int, $orderBy: [ServicesOrderBy!]) {
+  services(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    description
+    type
+    data
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignActionId
+    iconId
+    campaignAction
+    icon
+  }}
+}
+",
+  "getServicesQueryAll": "query getServicesQueryAll {
   services {totalCount, nodes {
     id
     name
@@ -1462,7 +1718,27 @@ Object {
   }}
 }
 ",
-  "getShopifyAccountsQuery": "query getShopifyAccountsQuery {
+  "getShopifyAccountsQuery": "query getShopifyAccountsQuery($first: Int, $offset: Int, $orderBy: [ShopifyAccountsOrderBy!]) {
+  shopifyAccounts(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    shopLink
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    iconId
+    partner
+    icon
+    shopifyOrders
+  }}
+}
+",
+  "getShopifyAccountsQueryAll": "query getShopifyAccountsQueryAll {
   shopifyAccounts {totalCount, nodes {
     id
     name
@@ -1571,7 +1847,36 @@ Object {
   }}
 }
 ",
-  "getShopifyOrdersQuery": "query getShopifyOrdersQuery {
+  "getShopifyOrdersQuery": "query getShopifyOrdersQuery($first: Int, $offset: Int, $orderBy: [ShopifyOrdersOrderBy!]) {
+  shopifyOrders(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }}
+}
+",
+  "getShopifyOrdersQueryAll": "query getShopifyOrdersQueryAll {
   shopifyOrders {totalCount, nodes {
     id
     orderId
@@ -1641,7 +1946,20 @@ Object {
   }}
 }
 ",
-  "getShopifySecretsQuery": "query getShopifySecretsQuery {
+  "getShopifySecretsQuery": "query getShopifySecretsQuery($first: Int, $offset: Int, $orderBy: [ShopifySecretsOrderBy!]) {
+  shopifySecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }}
+}
+",
+  "getShopifySecretsQueryAll": "query getShopifySecretsQueryAll {
   shopifySecrets {totalCount, nodes {
     id
     shopifyAccountId
@@ -1715,7 +2033,20 @@ Object {
   }}
 }
 ",
-  "getUserEncryptedSecretsQuery": "query getUserEncryptedSecretsQuery {
+  "getUserEncryptedSecretsQuery": "query getUserEncryptedSecretsQuery($first: Int, $offset: Int, $orderBy: [UserEncryptedSecretsOrderBy!]) {
+  userEncryptedSecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    userId
+    name
+    value
+    enc
+  }}
+}
+",
+  "getUserEncryptedSecretsQueryAll": "query getUserEncryptedSecretsQueryAll {
   userEncryptedSecrets {totalCount, nodes {
     id
     userId
@@ -1776,7 +2107,19 @@ Object {
   }}
 }
 ",
-  "getUserSecretsQuery": "query getUserSecretsQuery {
+  "getUserSecretsQuery": "query getUserSecretsQuery($first: Int, $offset: Int, $orderBy: [UserSecretsOrderBy!]) {
+  userSecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    userId
+    name
+    value
+  }}
+}
+",
+  "getUserSecretsQueryAll": "query getUserSecretsQueryAll {
   userSecrets {totalCount, nodes {
     id
     userId
@@ -1809,7 +2152,20 @@ Object {
   }}
 }
 ",
-  "getUsersQuery": "query getUsersQuery {
+  "getUsersQuery": "query getUsersQuery($first: Int, $offset: Int, $orderBy: [UsersOrderBy!]) {
+  users(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }}
+}
+",
+  "getUsersQueryAll": "query getUsersQueryAll {
   users {totalCount, nodes {
     id
     username
