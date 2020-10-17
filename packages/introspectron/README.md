@@ -42,3 +42,8 @@ output
     ...
 
 ```
+
+## testing
+
+createdb testdb
+psql testdb -f ./seed.sql

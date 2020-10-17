@@ -30,3 +30,4 @@ jest.config.js
 package.json
 src
 test
+seed.sql

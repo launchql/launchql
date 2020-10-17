@@ -64,6 +64,27 @@ export const objectValue = ({ fields }) => ({
   fields
 });
 
+export const stringValue = ({ value }) => ({
+  kind: 'StringValue',
+  value
+});
+
+export const fragmentDefinition = ({
+  name,
+  typeCondition,
+  directives,
+  selectionSet
+}) => ({
+  kind: 'FragmentDefinition',
+  name: {
+    kind: 'Name',
+    value: name
+  },
+  typeCondition,
+  directives,
+  selectionSet
+});
+
 export const objectField = ({ name, value }) => ({
   kind: 'ObjectField',
   name: {

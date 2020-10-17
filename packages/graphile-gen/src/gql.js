@@ -1,7 +1,13 @@
 import plz from 'pluralize';
 import inflection from 'inflection';
 import * as t from '@pyramation/graphql-ast';
-
+const NON_MUTABLE_PROPS = [
+  'id',
+  'createdAt',
+  'createdBy',
+  'updatedAt',
+  'updatedBy'
+];
 const objectToArray = (obj) =>
   Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
 
@@ -88,6 +94,188 @@ export const getMany = ({ operationName, query }) => {
   return { name: queryName, ast };
 };
 
+export const getManyPaginated = ({ operationName, query }) => {
+  const queryName = inflection.camelize(
+    ['get', inflection.underscore(operationName), 'paginated'].join('_'),
+    true
+  );
+
+  const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
+
+  const OrderBy = `${Model}OrderBy`;
+  const selections = query.selection.map((field) => t.field({ name: field }));
+
+  const ast = t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'query',
+        name: queryName,
+        variableDefinitions: [
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'first'
+            }),
+            type: t.namedType({
+              type: 'Int'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'offset'
+            }),
+            type: t.namedType({
+              type: 'Int'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'orderBy'
+            }),
+            type: t.listType({
+              type: t.nonNullType({ type: t.namedType({ type: OrderBy }) })
+            })
+          })
+        ],
+        selectionSet: t.selectionSet({
+          selections: [
+            t.field({
+              name: operationName,
+              args: [
+                t.argument({
+                  name: 'first',
+                  value: t.variable({
+                    name: 'first'
+                  })
+                }),
+                t.argument({
+                  name: 'offset',
+                  value: t.variable({
+                    name: 'offset'
+                  })
+                }),
+                t.argument({
+                  name: 'orderBy',
+                  value: t.variable({
+                    name: 'orderBy'
+                  })
+                })
+              ],
+              selectionSet: t.objectValue({
+                fields: [
+                  t.field({
+                    name: 'totalCount'
+                  }),
+                  t.field({
+                    name: 'pageInfo',
+                    selectionSet: t.selectionSet({
+                      selections: [
+                        t.field({ name: 'hasNextPage' }),
+                        t.field({ name: 'hasPreviousPage' })
+                      ]
+                    })
+                  }),
+                  t.field({
+                    name: 'edges',
+                    selectionSet: t.selectionSet({
+                      selections: [
+                        t.field({ name: 'cursor' }),
+                        t.field({
+                          name: 'node',
+                          selectionSet: t.selectionSet({ selections })
+                        })
+                      ]
+                    })
+                  })
+                ]
+              })
+            })
+          ]
+        })
+      })
+    ]
+  });
+
+  return { name: queryName, ast };
+};
+
+export const getOrderByEnums = ({ operationName, query }) => {
+  const queryName = inflection.camelize(
+    ['get', inflection.underscore(operationName), 'Order', 'By', 'Enums'].join(
+      '_'
+    ),
+    true
+  );
+
+  const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
+
+  const OrderBy = `${Model}OrderBy`;
+  const selections = query.selection.map((field) => t.field({ name: field }));
+
+  const ast = t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'query',
+        name: queryName,
+        selectionSet: t.selectionSet({
+          selections: [
+            t.field({
+              name: '__type',
+              args: [
+                t.argument({
+                  name: 'name',
+                  value: t.stringValue({
+                    value: OrderBy
+                  })
+                })
+              ],
+              selectionSet: t.selectionSet({
+                selections: [
+                  t.field({
+                    name: 'enumValues',
+                    selectionSet: t.selectionSet({
+                      selections: [
+                        t.field({
+                          name: 'name'
+                        })
+                      ]
+                    })
+                  })
+                ]
+              })
+            })
+          ]
+        })
+      })
+    ]
+  });
+
+  return { name: queryName, ast };
+};
+
+export const getFragment = ({ operationName, query }) => {
+  const queryName = inflection.camelize(
+    [inflection.underscore(query.model), 'Fragment'].join('_'),
+    true
+  );
+
+  const selections = query.selection.map((field) => t.field({ name: field }));
+  const ast = t.document({
+    definitions: [
+      t.fragmentDefinition({
+        name: queryName,
+        typeCondition: t.namedType({
+          type: query.model
+        }),
+        selectionSet: t.selectionSet({
+          selections: query.selection.map((field) => t.field({ name: field }))
+        })
+      })
+    ]
+  });
+
+  return { name: queryName, ast };
+};
+
 export const getOne = ({ operationName, query }) => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
@@ -166,8 +354,12 @@ export const createOne = ({ operationName, mutation }) => {
     true
   );
 
-  const attrs = objectToArray(
+  const allAttrs = objectToArray(
     mutation.properties.input.properties[modelName].properties
+  );
+
+  const attrs = allAttrs.filter(
+    (field) => !NON_MUTABLE_PROPS.includes(field.name)
   );
 
   const variableDefinitions = attrs.map((field) => {
@@ -213,7 +405,7 @@ export const createOne = ({ operationName, mutation }) => {
     })
   ];
 
-  const selections = attrs.map((field) => t.field({ name: field.name }));
+  const selections = allAttrs.map((field) => t.field({ name: field.name }));
   const ast = createGqlMutation({
     operationName,
     mutationName,
@@ -242,8 +434,12 @@ export const patchOne = ({ operationName, mutation }) => {
     true
   );
 
-  const patchAttrs = objectToArray(
+  const allAttrs = objectToArray(
     mutation.properties.input.properties['patch']?.properties || {}
+  );
+
+  const patchAttrs = allAttrs.filter(
+    (prop) => !NON_MUTABLE_PROPS.includes(prop.name)
   );
 
   const patchByAttrs = objectToArray(
@@ -294,7 +490,7 @@ export const patchOne = ({ operationName, mutation }) => {
     })
   ];
 
-  const selections = patchAttrs.map((field) => t.field({ name: field.name }));
+  const selections = allAttrs.map((field) => t.field({ name: field.name }));
   const ast = createGqlMutation({
     operationName,
     mutationName,
@@ -463,6 +659,15 @@ export const generate = (gql) => {
       }
     } else if (defn.qtype === 'getMany') {
       ({ name, ast } = getMany({ operationName: v, query: defn }));
+      if (name && ast) m[name] = { name, ast };
+
+      // kinda hacky to just include these here, clearly we need a new model...
+      ({ name, ast } = getManyPaginated({ operationName: v, query: defn }));
+      if (name && ast) m[name] = { name, ast };
+      ({ name, ast } = getOrderByEnums({ operationName: v, query: defn }));
+      if (name && ast) m[name] = { name, ast };
+      ({ name, ast } = getFragment({ operationName: v, query: defn }));
+      if (name && ast) m[name] = { name, ast };
     } else if (defn.qtype === 'getOne') {
       ({ name, ast } = getOne({ operationName: v, query: defn }));
     } else {
