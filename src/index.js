@@ -1,4 +1,4 @@
-export const PgSearchPlugin = (builder) => {
+export const PgSearchPlugin = (builder, { pgSearchPrefix = 'tsv' }) => {
   builder.hook('GraphQLInputObjectType:fields', function addConditionInputField(
     fields,
     build,
@@ -21,7 +21,7 @@ export const PgSearchPlugin = (builder) => {
     return build.extend(
       fields,
       tsvs.reduce((m, v) => {
-        const key = inflection.camelCase(`search_${v.name}`);
+        const key = inflection.camelCase(`${pgSearchPrefix}_${v.name}`);
         m[key] = fieldWithHooks(
           key,
           {
