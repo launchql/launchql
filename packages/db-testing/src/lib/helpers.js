@@ -138,14 +138,14 @@ export const getUpdate = (name, vars, where, casts) => {
   return [getUpdateStmt(name, vars, where, casts), values];
 };
 
-export const getFuncStmt = (name, vars, casts = {}) => {
+export const getFuncStmt = (name, vars = {}, casts = {}) => {
   const keys = Object.keys(vars);
   const castVals = keys.map((k) => casts[k]);
   const values = Object.values(vars);
   return `SELECT * FROM ${name} ${P(values, castVals)};`;
 };
 
-export const getFunc = (name, vars, casts) => {
+export const getFunc = (name, vars = {}, casts = {}) => {
   const values = Object.values(vars);
   return [getFuncStmt(name, vars, casts), values];
 };
