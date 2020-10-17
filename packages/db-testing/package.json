@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-testing",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "testing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-testing#readme",
@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.1",
-    "@launchql/db-utils": "^0.4.1",
+    "@launchql/db-utils": "^0.4.2",
     "envalid": "6.0.2",
     "pg": "8.4.1",
     "pg-promise": "10.7.0",
