@@ -8,7 +8,7 @@ import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
 import PgPostgis from '@pyramation/postgis';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
-
+import PgSearch from 'graphile-search-plugin';
 import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
@@ -24,6 +24,7 @@ export const getGraphileSettings = ({
   plugins.push(PostGraphileUploadFieldPlugin);
   plugins.push(PgMetaschema);
   plugins.push(PgManyToMany);
+  plugins.push(PgSearch);
   if (postgis) {
     plugins.push(PgPostgis);
     plugins.push(PgPostgisFilter);
