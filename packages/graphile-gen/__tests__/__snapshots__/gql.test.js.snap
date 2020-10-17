@@ -562,8 +562,8 @@ Object {
   }
 }
 ",
-  "getApiTokensPaginated": "query getApiTokensPaginated($first: Int, $offset: Int, $orderBy: [ApiTokensOrderBy!]) {
-  apiTokens(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getApiTokensPaginated": "query getApiTokensPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ApiTokenCondition, $filter: ApiTokenFilter, $orderBy: [ApiTokensOrderBy!]) {
+  apiTokens(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -577,8 +577,8 @@ Object {
   }}
 }
 ",
-  "getApiTokensQuery": "query getApiTokensQuery($first: Int, $offset: Int, $orderBy: [ApiTokensOrderBy!]) {
-  apiTokens(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getApiTokensQuery": "query getApiTokensQuery($first: Int, $offset: Int, $condition: ApiTokenCondition, $filter: ApiTokenFilter, $orderBy: [ApiTokensOrderBy!]) {
+  apiTokens(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -621,8 +621,8 @@ Object {
   }
 }
 ",
-  "getArticlesPaginated": "query getArticlesPaginated($first: Int, $offset: Int, $orderBy: [ArticlesOrderBy!]) {
-  articles(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getArticlesPaginated": "query getArticlesPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ArticleCondition, $filter: ArticleFilter, $orderBy: [ArticlesOrderBy!]) {
+  articles(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -642,8 +642,8 @@ Object {
   }}
 }
 ",
-  "getArticlesQuery": "query getArticlesQuery($first: Int, $offset: Int, $orderBy: [ArticlesOrderBy!]) {
-  articles(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getArticlesQuery": "query getArticlesQuery($first: Int, $offset: Int, $condition: ArticleCondition, $filter: ArticleFilter, $orderBy: [ArticlesOrderBy!]) {
+  articles(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -745,8 +745,8 @@ Object {
   }
 }
 ",
-  "getCampaignActionsPaginated": "query getCampaignActionsPaginated($first: Int, $offset: Int, $orderBy: [CampaignActionsOrderBy!]) {
-  campaignActions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getCampaignActionsPaginated": "query getCampaignActionsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: CampaignActionCondition, $filter: CampaignActionFilter, $orderBy: [CampaignActionsOrderBy!]) {
+  campaignActions(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -782,8 +782,8 @@ Object {
   }}
 }
 ",
-  "getCampaignActionsQuery": "query getCampaignActionsQuery($first: Int, $offset: Int, $orderBy: [CampaignActionsOrderBy!]) {
-  campaignActions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getCampaignActionsQuery": "query getCampaignActionsQuery($first: Int, $offset: Int, $condition: CampaignActionCondition, $filter: CampaignActionFilter, $orderBy: [CampaignActionsOrderBy!]) {
+  campaignActions(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -876,8 +876,8 @@ Object {
   }
 }
 ",
-  "getCampaignsPaginated": "query getCampaignsPaginated($first: Int, $offset: Int, $orderBy: [CampaignsOrderBy!]) {
-  campaigns(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getCampaignsPaginated": "query getCampaignsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: CampaignCondition, $filter: CampaignFilter, $orderBy: [CampaignsOrderBy!]) {
+  campaigns(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -903,8 +903,8 @@ Object {
   }}
 }
 ",
-  "getCampaignsQuery": "query getCampaignsQuery($first: Int, $offset: Int, $orderBy: [CampaignsOrderBy!]) {
-  campaigns(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getCampaignsQuery": "query getCampaignsQuery($first: Int, $offset: Int, $condition: CampaignCondition, $filter: CampaignFilter, $orderBy: [CampaignsOrderBy!]) {
+  campaigns(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -972,8 +972,8 @@ Object {
   }
 }
 ",
-  "getCompletedActionsPaginated": "query getCompletedActionsPaginated($first: Int, $offset: Int, $orderBy: [CompletedActionsOrderBy!]) {
-  completedActions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getCompletedActionsPaginated": "query getCompletedActionsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: CompletedActionCondition, $filter: CompletedActionFilter, $orderBy: [CompletedActionsOrderBy!]) {
+  completedActions(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -994,8 +994,8 @@ Object {
   }}
 }
 ",
-  "getCompletedActionsQuery": "query getCompletedActionsQuery($first: Int, $offset: Int, $orderBy: [CompletedActionsOrderBy!]) {
-  completedActions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getCompletedActionsQuery": "query getCompletedActionsQuery($first: Int, $offset: Int, $condition: CompletedActionCondition, $filter: CompletedActionFilter, $orderBy: [CompletedActionsOrderBy!]) {
+  completedActions(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1070,8 +1070,8 @@ Object {
   }
 }
 ",
-  "getImagesPaginated": "query getImagesPaginated($first: Int, $offset: Int, $orderBy: [ImagesOrderBy!]) {
-  images(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getImagesPaginated": "query getImagesPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ImageCondition, $filter: ImageFilter, $orderBy: [ImagesOrderBy!]) {
+  images(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1099,8 +1099,8 @@ Object {
   }}
 }
 ",
-  "getImagesQuery": "query getImagesQuery($first: Int, $offset: Int, $orderBy: [ImagesOrderBy!]) {
-  images(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getImagesQuery": "query getImagesQuery($first: Int, $offset: Int, $condition: ImageCondition, $filter: ImageFilter, $orderBy: [ImagesOrderBy!]) {
+  images(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1173,8 +1173,8 @@ Object {
   }
 }
 ",
-  "getInitiativesPyraRecordsPaginated": "query getInitiativesPyraRecordsPaginated($first: Int, $offset: Int, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
-  initiativesPyraRecords(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getInitiativesPyraRecordsPaginated": "query getInitiativesPyraRecordsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: InitiativesPyraRecordCondition, $filter: InitiativesPyraRecordFilter, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
+  initiativesPyraRecords(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1196,8 +1196,8 @@ Object {
   }}
 }
 ",
-  "getInitiativesPyraRecordsQuery": "query getInitiativesPyraRecordsQuery($first: Int, $offset: Int, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
-  initiativesPyraRecords(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getInitiativesPyraRecordsQuery": "query getInitiativesPyraRecordsQuery($first: Int, $offset: Int, $condition: InitiativesPyraRecordCondition, $filter: InitiativesPyraRecordFilter, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
+  initiativesPyraRecords(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1260,8 +1260,8 @@ Object {
   }
 }
 ",
-  "getMerchantsPaginated": "query getMerchantsPaginated($first: Int, $offset: Int, $orderBy: [MerchantsOrderBy!]) {
-  merchants(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getMerchantsPaginated": "query getMerchantsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: MerchantCondition, $filter: MerchantFilter, $orderBy: [MerchantsOrderBy!]) {
+  merchants(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1285,8 +1285,8 @@ Object {
   }}
 }
 ",
-  "getMerchantsQuery": "query getMerchantsQuery($first: Int, $offset: Int, $orderBy: [MerchantsOrderBy!]) {
-  merchants(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getMerchantsQuery": "query getMerchantsQuery($first: Int, $offset: Int, $condition: MerchantCondition, $filter: MerchantFilter, $orderBy: [MerchantsOrderBy!]) {
+  merchants(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1356,8 +1356,8 @@ Object {
   }
 }
 ",
-  "getPartnersPaginated": "query getPartnersPaginated($first: Int, $offset: Int, $orderBy: [PartnersOrderBy!]) {
-  partners(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getPartnersPaginated": "query getPartnersPaginated($first: Int, $offset: Int, $after: Cursor, $condition: PartnerCondition, $filter: PartnerFilter, $orderBy: [PartnersOrderBy!]) {
+  partners(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1384,8 +1384,8 @@ Object {
   }}
 }
 ",
-  "getPartnersQuery": "query getPartnersQuery($first: Int, $offset: Int, $orderBy: [PartnersOrderBy!]) {
-  partners(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getPartnersQuery": "query getPartnersQuery($first: Int, $offset: Int, $condition: PartnerCondition, $filter: PartnerFilter, $orderBy: [PartnersOrderBy!]) {
+  partners(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1452,8 +1452,8 @@ Object {
   }
 }
 ",
-  "getPermissionsPaginated": "query getPermissionsPaginated($first: Int, $offset: Int, $orderBy: [PermissionsOrderBy!]) {
-  permissions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getPermissionsPaginated": "query getPermissionsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: PermissionCondition, $filter: PermissionFilter, $orderBy: [PermissionsOrderBy!]) {
+  permissions(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1471,8 +1471,8 @@ Object {
   }}
 }
 ",
-  "getPermissionsQuery": "query getPermissionsQuery($first: Int, $offset: Int, $orderBy: [PermissionsOrderBy!]) {
-  permissions(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getPermissionsQuery": "query getPermissionsQuery($first: Int, $offset: Int, $condition: PermissionCondition, $filter: PermissionFilter, $orderBy: [PermissionsOrderBy!]) {
+  permissions(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1524,8 +1524,8 @@ Object {
   }
 }
 ",
-  "getProductsPaginated": "query getProductsPaginated($first: Int, $offset: Int, $orderBy: [ProductsOrderBy!]) {
-  products(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getProductsPaginated": "query getProductsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ProductCondition, $filter: ProductFilter, $orderBy: [ProductsOrderBy!]) {
+  products(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1546,8 +1546,8 @@ Object {
   }}
 }
 ",
-  "getProductsQuery": "query getProductsQuery($first: Int, $offset: Int, $orderBy: [ProductsOrderBy!]) {
-  products(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getProductsQuery": "query getProductsQuery($first: Int, $offset: Int, $condition: ProductCondition, $filter: ProductFilter, $orderBy: [ProductsOrderBy!]) {
+  products(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1607,8 +1607,8 @@ Object {
   }
 }
 ",
-  "getServicesPaginated": "query getServicesPaginated($first: Int, $offset: Int, $orderBy: [ServicesOrderBy!]) {
-  services(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getServicesPaginated": "query getServicesPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ServiceCondition, $filter: ServiceFilter, $orderBy: [ServicesOrderBy!]) {
+  services(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1631,8 +1631,8 @@ Object {
   }}
 }
 ",
-  "getServicesQuery": "query getServicesQuery($first: Int, $offset: Int, $orderBy: [ServicesOrderBy!]) {
-  services(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getServicesQuery": "query getServicesQuery($first: Int, $offset: Int, $condition: ServiceCondition, $filter: ServiceFilter, $orderBy: [ServicesOrderBy!]) {
+  services(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1695,8 +1695,8 @@ Object {
   }
 }
 ",
-  "getShopifyAccountsPaginated": "query getShopifyAccountsPaginated($first: Int, $offset: Int, $orderBy: [ShopifyAccountsOrderBy!]) {
-  shopifyAccounts(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getShopifyAccountsPaginated": "query getShopifyAccountsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ShopifyAccountCondition, $filter: ShopifyAccountFilter, $orderBy: [ShopifyAccountsOrderBy!]) {
+  shopifyAccounts(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1718,8 +1718,8 @@ Object {
   }}
 }
 ",
-  "getShopifyAccountsQuery": "query getShopifyAccountsQuery($first: Int, $offset: Int, $orderBy: [ShopifyAccountsOrderBy!]) {
-  shopifyAccounts(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getShopifyAccountsQuery": "query getShopifyAccountsQuery($first: Int, $offset: Int, $condition: ShopifyAccountCondition, $filter: ShopifyAccountFilter, $orderBy: [ShopifyAccountsOrderBy!]) {
+  shopifyAccounts(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1815,8 +1815,8 @@ Object {
   }
 }
 ",
-  "getShopifyOrdersPaginated": "query getShopifyOrdersPaginated($first: Int, $offset: Int, $orderBy: [ShopifyOrdersOrderBy!]) {
-  shopifyOrders(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getShopifyOrdersPaginated": "query getShopifyOrdersPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ShopifyOrderCondition, $filter: ShopifyOrderFilter, $orderBy: [ShopifyOrdersOrderBy!]) {
+  shopifyOrders(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1847,8 +1847,8 @@ Object {
   }}
 }
 ",
-  "getShopifyOrdersQuery": "query getShopifyOrdersQuery($first: Int, $offset: Int, $orderBy: [ShopifyOrdersOrderBy!]) {
-  shopifyOrders(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getShopifyOrdersQuery": "query getShopifyOrdersQuery($first: Int, $offset: Int, $condition: ShopifyOrderCondition, $filter: ShopifyOrderFilter, $orderBy: [ShopifyOrdersOrderBy!]) {
+  shopifyOrders(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1930,8 +1930,8 @@ Object {
   }
 }
 ",
-  "getShopifySecretsPaginated": "query getShopifySecretsPaginated($first: Int, $offset: Int, $orderBy: [ShopifySecretsOrderBy!]) {
-  shopifySecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getShopifySecretsPaginated": "query getShopifySecretsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: ShopifySecretCondition, $filter: ShopifySecretFilter, $orderBy: [ShopifySecretsOrderBy!]) {
+  shopifySecrets(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -1946,8 +1946,8 @@ Object {
   }}
 }
 ",
-  "getShopifySecretsQuery": "query getShopifySecretsQuery($first: Int, $offset: Int, $orderBy: [ShopifySecretsOrderBy!]) {
-  shopifySecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getShopifySecretsQuery": "query getShopifySecretsQuery($first: Int, $offset: Int, $condition: ShopifySecretCondition, $filter: ShopifySecretFilter, $orderBy: [ShopifySecretsOrderBy!]) {
+  shopifySecrets(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -2017,8 +2017,8 @@ Object {
   }
 }
 ",
-  "getUserEncryptedSecretsPaginated": "query getUserEncryptedSecretsPaginated($first: Int, $offset: Int, $orderBy: [UserEncryptedSecretsOrderBy!]) {
-  userEncryptedSecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getUserEncryptedSecretsPaginated": "query getUserEncryptedSecretsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: UserEncryptedSecretCondition, $filter: UserEncryptedSecretFilter, $orderBy: [UserEncryptedSecretsOrderBy!]) {
+  userEncryptedSecrets(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -2033,8 +2033,8 @@ Object {
   }}
 }
 ",
-  "getUserEncryptedSecretsQuery": "query getUserEncryptedSecretsQuery($first: Int, $offset: Int, $orderBy: [UserEncryptedSecretsOrderBy!]) {
-  userEncryptedSecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getUserEncryptedSecretsQuery": "query getUserEncryptedSecretsQuery($first: Int, $offset: Int, $condition: UserEncryptedSecretCondition, $filter: UserEncryptedSecretFilter, $orderBy: [UserEncryptedSecretsOrderBy!]) {
+  userEncryptedSecrets(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -2092,8 +2092,8 @@ Object {
   }
 }
 ",
-  "getUserSecretsPaginated": "query getUserSecretsPaginated($first: Int, $offset: Int, $orderBy: [UserSecretsOrderBy!]) {
-  userSecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getUserSecretsPaginated": "query getUserSecretsPaginated($first: Int, $offset: Int, $after: Cursor, $condition: UserSecretCondition, $filter: UserSecretFilter, $orderBy: [UserSecretsOrderBy!]) {
+  userSecrets(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -2107,8 +2107,8 @@ Object {
   }}
 }
 ",
-  "getUserSecretsQuery": "query getUserSecretsQuery($first: Int, $offset: Int, $orderBy: [UserSecretsOrderBy!]) {
-  userSecrets(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getUserSecretsQuery": "query getUserSecretsQuery($first: Int, $offset: Int, $condition: UserSecretCondition, $filter: UserSecretFilter, $orderBy: [UserSecretsOrderBy!]) {
+  userSecrets(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -2136,8 +2136,8 @@ Object {
   }
 }
 ",
-  "getUsersPaginated": "query getUsersPaginated($first: Int, $offset: Int, $orderBy: [UsersOrderBy!]) {
-  users(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getUsersPaginated": "query getUsersPaginated($first: Int, $offset: Int, $after: Cursor, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(first: $first, offset: $offset, after: $after, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, edges {
@@ -2152,8 +2152,8 @@ Object {
   }}
 }
 ",
-  "getUsersQuery": "query getUsersQuery($first: Int, $offset: Int, $orderBy: [UsersOrderBy!]) {
-  users(first: $first, offset: $offset, orderBy: $orderBy) {totalCount, pageInfo {
+  "getUsersQuery": "query getUsersQuery($first: Int, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(first: $first, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {

@@ -100,9 +100,11 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
     true
   );
 
-  const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
-
-  const OrderBy = `${Model}OrderBy`;
+  const Plural = operationName.charAt(0).toUpperCase() + operationName.slice(1);
+  const Singular = query.model;
+  const Condition = `${Singular}Condition`;
+  const Filter = `${Singular}Filter`;
+  const OrderBy = `${Plural}OrderBy`;
   const selections = query.selection.map((field) => t.field({ name: field }));
 
   const ast = t.document({
@@ -129,6 +131,30 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
           }),
           t.variableDefinition({
             variable: t.variable({
+              name: 'after'
+            }),
+            type: t.namedType({
+              type: 'Cursor'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'condition'
+            }),
+            type: t.namedType({
+              type: Condition
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'filter'
+            }),
+            type: t.namedType({
+              type: Filter
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
               name: 'orderBy'
             }),
             type: t.listType({
@@ -151,6 +177,24 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
                   name: 'offset',
                   value: t.variable({
                     name: 'offset'
+                  })
+                }),
+                t.argument({
+                  name: 'after',
+                  value: t.variable({
+                    name: 'after'
+                  })
+                }),
+                t.argument({
+                  name: 'condition',
+                  value: t.variable({
+                    name: 'condition'
+                  })
+                }),
+                t.argument({
+                  name: 'filter',
+                  value: t.variable({
+                    name: 'filter'
                   })
                 }),
                 t.argument({
@@ -204,9 +248,11 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
     true
   );
 
-  const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
-
-  const OrderBy = `${Model}OrderBy`;
+  const Singular = query.model;
+  const Plural = operationName.charAt(0).toUpperCase() + operationName.slice(1);
+  const Condition = `${Singular}Condition`;
+  const Filter = `${Singular}Filter`;
+  const OrderBy = `${Plural}OrderBy`;
   const selections = query.selection.map((field) => t.field({ name: field }));
 
   const ast = t.document({
@@ -233,6 +279,22 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
           }),
           t.variableDefinition({
             variable: t.variable({
+              name: 'condition'
+            }),
+            type: t.namedType({
+              type: Condition
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'filter'
+            }),
+            type: t.namedType({
+              type: Filter
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
               name: 'orderBy'
             }),
             type: t.listType({
@@ -255,6 +317,18 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
                   name: 'offset',
                   value: t.variable({
                     name: 'offset'
+                  })
+                }),
+                t.argument({
+                  name: 'condition',
+                  value: t.variable({
+                    name: 'condition'
+                  })
+                }),
+                t.argument({
+                  name: 'filter',
+                  value: t.variable({
+                    name: 'filter'
                   })
                 }),
                 t.argument({
