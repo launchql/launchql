@@ -19,6 +19,7 @@ export const GetMetaSchemaUnion = gql`
           allRows
           createPayloadType
           orderByType
+          filterType
           tableType
           inputType
           patchType

@@ -45,6 +45,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           tableType: String!
           createPayloadType: String!
           orderByType: String!
+          filterType: String
           inputType: String!
           patchType: String!
           conditionType: String!
@@ -283,6 +284,11 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           },
           orderByType(table) {
             return inflection.orderByType(inflection.tableType(table));
+          },
+          filterType(table) {
+            if (typeof inflection.filterType === 'function')
+              return inflection.filterType(inflection.tableType(table));
+            return null;
           },
           inputType(table) {
             return inflection.inputType(inflection.tableType(table));
