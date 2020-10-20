@@ -1,4 +1,5 @@
 import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
+
 const GIS_TYPES = [
   'Geometry',
   'Point',
@@ -9,6 +10,7 @@ const GIS_TYPES = [
   'MultiPolygon',
   'GeometryCollection'
 ];
+
 export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
   (build, schemaOptions) => {
     /** @type {import('graphile-build-pg').PgIntrospectionResultsByKind} */
@@ -18,10 +20,15 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
     /** @type {string[]} */
     const schemas = schemaOptions.pgSchemas;
 
+    const pgGetGqlTypeByTypeIdAndModifier =
+      build.pgGetGqlTypeByTypeIdAndModifier;
+
     return {
       typeDefs: gql`
         type MetaschemaType {
-          name: String!
+          pg: String!
+          name: String
+          subtype: String
           modifier: Int
           typmod: JSON
           isArray: Boolean!
@@ -37,14 +44,35 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           tableFieldName: String!
           tableType: String!
           createPayloadType: String!
+          orderByType: String!
+          inputType: String!
+          patchType: String!
+          conditionType: String!
+          patchField: String!
+          edge: String!
+          edgeField: String!
+          connection: String!
+          typeName: String!
+          enumType: String!
+
           updatePayloadType: String!
           deletePayloadType: String!
           deleteByPrimaryKey: String
           updateByPrimaryKey: String
+
           createField: String!
+          createInputType: String!
+        }
+        type MetaschemaTableQuery {
+          all: String!
+          one: String!
+          create: String!
+          update: String!
+          delete: String!
         }
         type MetaschemaTable {
           name: String!
+          query: MetaschemaTableQuery!
           inflection: MetaschemaTableInflection!
           fields: [MetaschemaField]
           constraints: [MetaschemaConstraint]
@@ -131,7 +159,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
         },
         MetaschemaType: {
           /** @param attr {import('graphile-build-pg').PgType} */
-          name(type) {
+          pg(type) {
             // TODO what is the best API here?
             // 1. we could return original _name, e.g. _citext (= citext[])
             // 2. we could return original type name and include isArray
@@ -139,6 +167,34 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
               return type.arrayItemType.name;
             }
             return type.name;
+          },
+          name(type) {
+            const gqlType = pgGetGqlTypeByTypeIdAndModifier(
+              type.id,
+              type.attrTypeModifier
+            );
+            switch (gqlType.name) {
+              case 'GeometryInterface':
+              case 'GeometryPoint':
+              case 'GeometryPolygon':
+                return 'GeoJSON';
+              default:
+                return gqlType;
+            }
+          },
+          subtype(type) {
+            const gqlType = pgGetGqlTypeByTypeIdAndModifier(
+              type.id,
+              type.attrTypeModifier
+            );
+            switch (gqlType.name) {
+              case 'GeometryInterface':
+              case 'GeometryPoint':
+              case 'GeometryPolygon':
+                return gqlType.name;
+              default:
+                return null;
+            }
           },
           typmod(type) {
             const modifier = type.attrTypeModifier;
@@ -210,6 +266,9 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           createField(table) {
             return inflection.createField(table);
           },
+          createInputType(table) {
+            return inflection.createInputType(table);
+          },
           allRows(table) {
             return inflection.allRows(table);
           },
@@ -222,6 +281,36 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           tableType(table) {
             return inflection.tableType(table);
           },
+          orderByType(table) {
+            return inflection.orderByType(inflection.tableType(table));
+          },
+          inputType(table) {
+            return inflection.inputType(inflection.tableType(table));
+          },
+          patchType(table) {
+            return inflection.patchType(inflection.tableType(table));
+          },
+          conditionType(table) {
+            return inflection.conditionType(inflection.tableType(table));
+          },
+          patchField(table) {
+            return inflection.patchField(inflection.tableType(table));
+          },
+          edge(table) {
+            return inflection.edge(inflection.tableType(table));
+          },
+          edgeField(table) {
+            return inflection.edgeField(table);
+          },
+          connection(table) {
+            return inflection.connection(inflection.tableType(table));
+          },
+          typeName(table) {
+            return inflection._typeName(table);
+          },
+          enumType(table) {
+            return inflection.enumType(table);
+          },
           createPayloadType(table) {
             return inflection.createPayloadType(table);
           },
@@ -230,6 +319,33 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           },
           deletePayloadType(table) {
             return inflection.deletePayloadType(table);
+          }
+        },
+        MetaschemaTableQuery: {
+          delete(table) {
+            if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
+            return inflection.deleteByKeys(
+              table.primaryKeyConstraint.keyAttributes,
+              table,
+              table.primaryKeyConstraint
+            );
+          },
+          update(table) {
+            if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
+            return inflection.updateByKeys(
+              table.primaryKeyConstraint.keyAttributes,
+              table,
+              table.primaryKeyConstraint
+            );
+          },
+          create(table) {
+            return inflection.createField(table);
+          },
+          all(table) {
+            return inflection.allRows(table);
+          },
+          one(table) {
+            return inflection.tableFieldName(table);
           }
         },
         MetaschemaTable: {
@@ -248,6 +364,10 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           /** @param table {import('graphile-build-pg').PgClass} */
           inflection(table) {
             // return table so the MetaschemaTableInflection resolver uses that as input
+            return table;
+          },
+          /** @param table {import('graphile-build-pg').PgClass} */
+          query(table) {
             return table;
           },
           /** @param table {import('graphile-build-pg').PgClass} */

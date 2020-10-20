@@ -8,20 +8,42 @@ export const GetMetaSchemaUnion = gql`
         fields {
           name
           type {
-            name
+            pg
+            modifier
             typmod
+            name
+            subtype
           }
         }
         inflection {
           allRows
-          tableFieldName
-          tableType
           createPayloadType
-          updatePayloadType
-          deletePayloadType
-          updateByPrimaryKey
-          deleteByPrimaryKey
+          orderByType
+          tableType
+          inputType
+          patchType
+          conditionType
+          patchField
+          edge
+          connection
+          allRowsSimple
           createField
+          enumType
+          deleteByPrimaryKey
+          deletePayloadType
+          tableFieldName
+          typeName
+          updateByPrimaryKey
+          updatePayloadType
+          createInputType
+          edgeField
+        }
+        query {
+          all
+          one
+          create
+          update
+          delete
         }
         constraints {
           ... on MetaschemaForeignKeyConstraint {
@@ -43,7 +65,11 @@ export const GetMetaSchemaUnion = gql`
             fields {
               name
               type {
+                pg
+                modifier
+                typmod
                 name
+                subtype
               }
             }
             name
@@ -55,7 +81,11 @@ export const GetMetaSchemaUnion = gql`
             fields {
               name
               type {
+                pg
+                modifier
+                typmod
                 name
+                subtype
               }
             }
           }
@@ -65,7 +95,11 @@ export const GetMetaSchemaUnion = gql`
             fields {
               name
               type {
+                pg
+                modifier
+                typmod
                 name
+                subtype
               }
             }
           }
