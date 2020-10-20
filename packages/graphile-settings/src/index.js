@@ -9,6 +9,7 @@ import PgPostgis from '@pyramation/postgis';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import PgSearch from 'graphile-search-plugin';
+import LqlTypesPlugin from './plugins/lql-types';
 import resolveUpload from './resolvers/uploads';
 
 export const getGraphileSettings = ({
@@ -21,6 +22,7 @@ export const getGraphileSettings = ({
 }) => {
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
 
+  plugins.push(LqlTypesPlugin);
   plugins.push(PostGraphileUploadFieldPlugin);
   plugins.push(PgMetaschema);
   plugins.push(PgManyToMany);
