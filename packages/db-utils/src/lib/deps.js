@@ -50,7 +50,7 @@ export const getDeps = async (packageDir) => {
     deps[key] = [];
 
     for (var j = 0; j < lines.length; j++) {
-      var m = lines[j].match(/-- requires: (.*)/);
+      var m = lines[j].match(/^-- requires: (.*)/);
       if (m) {
         deps[key].push(m[1].trim());
       }
@@ -60,7 +60,7 @@ export const getDeps = async (packageDir) => {
       var keyToTest;
 
       if (/:/.test(lines[j])) {
-        m2 = lines[j].match(/-- Deploy ([^:]*):([\w\/]+) to pg/);
+        m2 = lines[j].match(/^-- Deploy ([^:]*):([\w\/]+) to pg/);
         if (m2) {
           keyToTest = m2[2];
           if (extname !== m2[1]) {
@@ -76,7 +76,7 @@ export const getDeps = async (packageDir) => {
           }
         }
       } else {
-        m2 = lines[j].match(/-- Deploy (.*) to pg/);
+        m2 = lines[j].match(/^-- Deploy (.*) to pg/);
         if (m2) {
           keyToTest = m2[1];
           if (key != makeKey(keyToTest)) {
