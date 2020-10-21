@@ -7,6 +7,12 @@ Object {
       "tables": Array [
         Object {
           "foreignKeyConstraints": Array [],
+          "name": "AllType",
+          "primaryKeyConstraints": Array [],
+          "uniqueConstraints": Array [],
+        },
+        Object {
+          "foreignKeyConstraints": Array [],
           "name": "BoundingBox",
           "primaryKeyConstraints": Array [
             Object {
@@ -122,6 +128,1059 @@ Object {
   "data": Object {
     "_meta": Object {
       "tables": Array [
+        Object {
+          "constraints": Array [],
+          "fields": Array [
+            Object {
+              "name": "bigintType",
+              "type": Object {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "bigserialType",
+              "type": Object {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "bitOpt1Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 1,
+                "pgAlias": "bit",
+                "pgType": "bit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 1,
+                },
+              },
+            },
+            Object {
+              "name": "bitOpt2Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 2,
+                "pgAlias": "bit",
+                "pgType": "bit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 2,
+                },
+              },
+            },
+            Object {
+              "name": "bitOpt16Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 16,
+                "pgAlias": "bit",
+                "pgType": "bit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 16,
+                },
+              },
+            },
+            Object {
+              "name": "bitVaryingOpt1Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 1,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 1,
+                },
+              },
+            },
+            Object {
+              "name": "bitVaryingOpt2Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 2,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 2,
+                },
+              },
+            },
+            Object {
+              "name": "boolType",
+              "type": Object {
+                "gqlType": "Boolean",
+                "modifier": null,
+                "pgAlias": "boolean",
+                "pgType": "bool",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "booleanType",
+              "type": Object {
+                "gqlType": "Boolean",
+                "modifier": null,
+                "pgAlias": "boolean",
+                "pgType": "bool",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "boxType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "box",
+                "pgType": "box",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "byteaType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "bytea",
+                "pgType": "bytea",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "charOpt1Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 5,
+                },
+              },
+            },
+            Object {
+              "name": "charOpt140Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 144,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 144,
+                },
+              },
+            },
+            Object {
+              "name": "charOpt1000Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 1004,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 1004,
+                },
+              },
+            },
+            Object {
+              "name": "charType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 5,
+                },
+              },
+            },
+            Object {
+              "name": "characterType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 5,
+                },
+              },
+            },
+            Object {
+              "name": "characterVaryingOpt1Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 5,
+                },
+              },
+            },
+            Object {
+              "name": "characterVaryingOpt10Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 14,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 14,
+                },
+              },
+            },
+            Object {
+              "name": "characterVaryingOpt140Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 144,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 144,
+                },
+              },
+            },
+            Object {
+              "name": "characterVaryingOpt1000Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 1004,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 1004,
+                },
+              },
+            },
+            Object {
+              "name": "characterVaryingType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "cidrType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "cidr",
+                "pgType": "cidr",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "circleType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "circle",
+                "pgType": "circle",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "dateType",
+              "type": Object {
+                "gqlType": "Date",
+                "modifier": null,
+                "pgAlias": "date",
+                "pgType": "date",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "doublePrecisionType",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "float",
+                "pgType": "float8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "float4Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "float8Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "float",
+                "pgType": "float8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatType",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "float",
+                "pgType": "float8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt1Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt2Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt3Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt4Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt5Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt6Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt7Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "floatOpt8Type",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "geometryPointType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 1107460,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": Object {
+                  "gisType": "Point",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 1,
+                },
+              },
+            },
+            Object {
+              "name": "geometryPolygonType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 1107468,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": Object {
+                  "gisType": "Polygon",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 3,
+                },
+              },
+            },
+            Object {
+              "name": "inetType",
+              "type": Object {
+                "gqlType": "InternetAddress",
+                "modifier": null,
+                "pgAlias": "inet",
+                "pgType": "inet",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "intType",
+              "type": Object {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "int2Type",
+              "type": Object {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "smallint",
+                "pgType": "int2",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "int4Type",
+              "type": Object {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "int8Type",
+              "type": Object {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "intervalYearType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": 327679,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 327679,
+                },
+              },
+            },
+            Object {
+              "name": "intervalMonthType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": 196607,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 196607,
+                },
+              },
+            },
+            Object {
+              "name": "intervalDayType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": 589823,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 589823,
+                },
+              },
+            },
+            Object {
+              "name": "intervalHourType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": 67174399,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 67174399,
+                },
+              },
+            },
+            Object {
+              "name": "intervalMinuteType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": 134283263,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 134283263,
+                },
+              },
+            },
+            Object {
+              "name": "intervalSecondType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": 268500991,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 268500991,
+                },
+              },
+            },
+            Object {
+              "name": "intervalType",
+              "type": Object {
+                "gqlType": "Interval",
+                "modifier": null,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "jsonType",
+              "type": Object {
+                "gqlType": "JSON",
+                "modifier": null,
+                "pgAlias": "json",
+                "pgType": "json",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "jsonbType",
+              "type": Object {
+                "gqlType": "JSON",
+                "modifier": null,
+                "pgAlias": "jsonb",
+                "pgType": "jsonb",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "lineType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "line",
+                "pgType": "line",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "lsegType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "lseg",
+                "pgType": "lseg",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "macaddrType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "macaddr",
+                "pgType": "macaddr",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "moneyType",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "money",
+                "pgType": "money",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "numericType",
+              "type": Object {
+                "gqlType": "BigFloat",
+                "modifier": null,
+                "pgAlias": "numeric",
+                "pgType": "numeric",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "numericOptType",
+              "type": Object {
+                "gqlType": "BigFloat",
+                "modifier": 655374,
+                "pgAlias": "numeric",
+                "pgType": "numeric",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 655374,
+                },
+              },
+            },
+            Object {
+              "name": "pathType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "path",
+                "pgType": "path",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "pgLsnType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "pg_lsn",
+                "pgType": "pg_lsn",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "pointType",
+              "type": Object {
+                "gqlType": "Point",
+                "modifier": null,
+                "pgAlias": "point",
+                "pgType": "point",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "polygonType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "polygon",
+                "pgType": "polygon",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "realType",
+              "type": Object {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "serialType",
+              "type": Object {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "serial4Type",
+              "type": Object {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "serial8Type",
+              "type": Object {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "smallintType",
+              "type": Object {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "smallint",
+                "pgType": "int2",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "textType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "text",
+                "pgType": "text",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "timeOpt2Type",
+              "type": Object {
+                "gqlType": "Time",
+                "modifier": 2,
+                "pgAlias": "time",
+                "pgType": "time",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 2,
+                },
+              },
+            },
+            Object {
+              "name": "timeType",
+              "type": Object {
+                "gqlType": "Time",
+                "modifier": null,
+                "pgAlias": "time",
+                "pgType": "time",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "timestampType",
+              "type": Object {
+                "gqlType": "Datetime",
+                "modifier": null,
+                "pgAlias": "timestamp",
+                "pgType": "timestamp",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "timestamptzType",
+              "type": Object {
+                "gqlType": "Datetime",
+                "modifier": null,
+                "pgAlias": "timestamptz",
+                "pgType": "timestamptz",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "timetzOpt2Type",
+              "type": Object {
+                "gqlType": "Time",
+                "modifier": 2,
+                "pgAlias": "timetz",
+                "pgType": "timetz",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 2,
+                },
+              },
+            },
+            Object {
+              "name": "timetzType",
+              "type": Object {
+                "gqlType": "Time",
+                "modifier": null,
+                "pgAlias": "timetz",
+                "pgType": "timetz",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "tsqueryType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "tsquery",
+                "pgType": "tsquery",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "tsvectorType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "tsvector",
+                "pgType": "tsvector",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "uuidType",
+              "type": Object {
+                "gqlType": "UUID",
+                "modifier": null,
+                "pgAlias": "uuid",
+                "pgType": "uuid",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "varbit1Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 1,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 1,
+                },
+              },
+            },
+            Object {
+              "name": "varbit2Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 2,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 2,
+                },
+              },
+            },
+            Object {
+              "name": "varbit16Type",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": 16,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 16,
+                },
+              },
+            },
+            Object {
+              "name": "varbitType",
+              "type": Object {
+                "gqlType": "BitString",
+                "modifier": null,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "varcharOpt1Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 5,
+                },
+              },
+            },
+            Object {
+              "name": "varcharOpt140Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 144,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 144,
+                },
+              },
+            },
+            Object {
+              "name": "varcharOpt1000Type",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": 1004,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": Object {
+                  "modifier": 1004,
+                },
+              },
+            },
+            Object {
+              "name": "varcharType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            Object {
+              "name": "xmlType",
+              "type": Object {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "xml",
+                "pgType": "xml",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "inflection": Object {
+            "allRows": "allAllTypes",
+            "allRowsSimple": "allAllTypesList",
+            "conditionType": "AllTypeCondition",
+            "connection": "AllTypesConnection",
+            "createField": "createAllType",
+            "createInputType": "CreateAllTypeInput",
+            "createPayloadType": "CreateAllTypePayload",
+            "deleteByPrimaryKey": null,
+            "deletePayloadType": "DeleteAllTypePayload",
+            "edge": "AllTypesEdge",
+            "edgeField": "allTypeEdge",
+            "enumType": "AllTypes",
+            "filterType": null,
+            "inputType": "AllTypeInput",
+            "orderByType": "AllTypesOrderBy",
+            "patchField": "allTypePatch",
+            "patchType": "AllTypePatch",
+            "tableFieldName": "allType",
+            "tableType": "AllType",
+            "typeName": "all_types",
+            "updateByPrimaryKey": null,
+            "updatePayloadType": "UpdateAllTypePayload",
+          },
+          "name": "AllType",
+          "query": Object {
+            "all": "allAllTypes",
+            "create": "createAllType",
+            "delete": null,
+            "one": "allType",
+            "update": null,
+          },
+        },
         Object {
           "constraints": Array [
             Object {
