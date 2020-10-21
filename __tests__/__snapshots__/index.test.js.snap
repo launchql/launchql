@@ -130,9 +130,10 @@ Object {
                 Object {
                   "name": "id",
                   "type": Object {
+                    "gqlType": "Int",
                     "modifier": null,
-                    "name": "Int",
-                    "pg": "int4",
+                    "pgAlias": "int",
+                    "pgType": "int4",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -145,9 +146,10 @@ Object {
             Object {
               "name": "id",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -155,9 +157,10 @@ Object {
             Object {
               "name": "zip",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -165,9 +168,10 @@ Object {
             Object {
               "name": "location",
               "type": Object {
+                "gqlType": "String",
                 "modifier": 1107460,
-                "name": "String",
-                "pg": "geometry",
+                "pgAlias": "geometry",
+                "pgType": "geometry",
                 "subtype": null,
                 "typmod": Object {
                   "gisType": "Point",
@@ -181,9 +185,10 @@ Object {
             Object {
               "name": "bbox",
               "type": Object {
+                "gqlType": "String",
                 "modifier": 1107468,
-                "name": "String",
-                "pg": "geometry",
+                "pgAlias": "geometry",
+                "pgType": "geometry",
                 "subtype": null,
                 "typmod": Object {
                   "gisType": "Polygon",
@@ -259,9 +264,10 @@ Object {
                 Object {
                   "name": "permId",
                   "type": Object {
+                    "gqlType": "BigInt",
                     "modifier": null,
-                    "name": "BigInt",
-                    "pg": "int8",
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -269,9 +275,10 @@ Object {
                 Object {
                   "name": "roleId",
                   "type": Object {
+                    "gqlType": "BigInt",
                     "modifier": null,
-                    "name": "BigInt",
-                    "pg": "int8",
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -307,9 +314,10 @@ Object {
             Object {
               "name": "permId",
               "type": Object {
+                "gqlType": "BigInt",
                 "modifier": null,
-                "name": "BigInt",
-                "pg": "int8",
+                "pgAlias": "bigint",
+                "pgType": "int8",
                 "subtype": null,
                 "typmod": null,
               },
@@ -317,9 +325,10 @@ Object {
             Object {
               "name": "roleId",
               "type": Object {
+                "gqlType": "BigInt",
                 "modifier": null,
-                "name": "BigInt",
-                "pg": "int8",
+                "pgAlias": "bigint",
+                "pgType": "int8",
                 "subtype": null,
                 "typmod": null,
               },
@@ -366,9 +375,10 @@ Object {
                 Object {
                   "name": "id",
                   "type": Object {
+                    "gqlType": "Int",
                     "modifier": null,
-                    "name": "Int",
-                    "pg": "int4",
+                    "pgAlias": "int",
+                    "pgType": "int4",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -381,9 +391,10 @@ Object {
             Object {
               "name": "id",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -391,9 +402,10 @@ Object {
             Object {
               "name": "name",
               "type": Object {
+                "gqlType": "String",
                 "modifier": null,
-                "name": "String",
-                "pg": "citext",
+                "pgAlias": "citext",
+                "pgType": "citext",
                 "subtype": null,
                 "typmod": null,
               },
@@ -440,9 +452,10 @@ Object {
                 Object {
                   "name": "id",
                   "type": Object {
+                    "gqlType": "Int",
                     "modifier": null,
-                    "name": "Int",
-                    "pg": "int4",
+                    "pgAlias": "int",
+                    "pgType": "int4",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -478,9 +491,10 @@ Object {
             Object {
               "name": "id",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -488,9 +502,10 @@ Object {
             Object {
               "name": "orgId",
               "type": Object {
+                "gqlType": "BigInt",
                 "modifier": null,
-                "name": "BigInt",
-                "pg": "int8",
+                "pgAlias": "bigint",
+                "pgType": "int8",
                 "subtype": null,
                 "typmod": null,
               },
@@ -560,9 +575,10 @@ Object {
                 Object {
                   "name": "subjId",
                   "type": Object {
+                    "gqlType": "BigInt",
                     "modifier": null,
-                    "name": "BigInt",
-                    "pg": "int8",
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -570,9 +586,10 @@ Object {
                 Object {
                   "name": "roleId",
                   "type": Object {
+                    "gqlType": "BigInt",
                     "modifier": null,
-                    "name": "BigInt",
-                    "pg": "int8",
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -608,9 +625,10 @@ Object {
             Object {
               "name": "subjId",
               "type": Object {
+                "gqlType": "BigInt",
                 "modifier": null,
-                "name": "BigInt",
-                "pg": "int8",
+                "pgAlias": "bigint",
+                "pgType": "int8",
                 "subtype": null,
                 "typmod": null,
               },
@@ -618,9 +636,10 @@ Object {
             Object {
               "name": "roleId",
               "type": Object {
+                "gqlType": "BigInt",
                 "modifier": null,
-                "name": "BigInt",
-                "pg": "int8",
+                "pgAlias": "bigint",
+                "pgType": "int8",
                 "subtype": null,
                 "typmod": null,
               },
@@ -667,9 +686,10 @@ Object {
                 Object {
                   "name": "userId",
                   "type": Object {
+                    "gqlType": "BigInt",
                     "modifier": null,
-                    "name": "BigInt",
-                    "pg": "int8",
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -705,9 +725,10 @@ Object {
             Object {
               "name": "userId",
               "type": Object {
+                "gqlType": "BigInt",
                 "modifier": null,
-                "name": "BigInt",
-                "pg": "int8",
+                "pgAlias": "bigint",
+                "pgType": "int8",
                 "subtype": null,
                 "typmod": null,
               },
@@ -715,9 +736,10 @@ Object {
             Object {
               "name": "setting1",
               "type": Object {
+                "gqlType": "String",
                 "modifier": null,
-                "name": "String",
-                "pg": "text",
+                "pgAlias": "text",
+                "pgType": "text",
                 "subtype": null,
                 "typmod": null,
               },
@@ -764,9 +786,10 @@ Object {
                 Object {
                   "name": "id",
                   "type": Object {
+                    "gqlType": "Int",
                     "modifier": null,
-                    "name": "Int",
-                    "pg": "int4",
+                    "pgAlias": "int",
+                    "pgType": "int4",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -780,9 +803,10 @@ Object {
                 Object {
                   "name": "username",
                   "type": Object {
+                    "gqlType": "String",
                     "modifier": null,
-                    "name": "String",
-                    "pg": "citext",
+                    "pgAlias": "citext",
+                    "pgType": "citext",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -795,9 +819,10 @@ Object {
             Object {
               "name": "id",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -805,9 +830,10 @@ Object {
             Object {
               "name": "username",
               "type": Object {
+                "gqlType": "String",
                 "modifier": null,
-                "name": "String",
-                "pg": "citext",
+                "pgAlias": "citext",
+                "pgType": "citext",
                 "subtype": null,
                 "typmod": null,
               },
@@ -854,9 +880,10 @@ Object {
                 Object {
                   "name": "id",
                   "type": Object {
+                    "gqlType": "Int",
                     "modifier": null,
-                    "name": "Int",
-                    "pg": "int4",
+                    "pgAlias": "int",
+                    "pgType": "int4",
                     "subtype": null,
                     "typmod": null,
                   },
@@ -869,9 +896,10 @@ Object {
             Object {
               "name": "id",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -879,9 +907,10 @@ Object {
             Object {
               "name": "zipCode",
               "type": Object {
+                "gqlType": "Int",
                 "modifier": null,
-                "name": "Int",
-                "pg": "int4",
+                "pgAlias": "int",
+                "pgType": "int4",
                 "subtype": null,
                 "typmod": null,
               },
@@ -889,9 +918,10 @@ Object {
             Object {
               "name": "location",
               "type": Object {
+                "gqlType": "String",
                 "modifier": 1107460,
-                "name": "String",
-                "pg": "geometry",
+                "pgAlias": "geometry",
+                "pgType": "geometry",
                 "subtype": null,
                 "typmod": Object {
                   "gisType": "Point",

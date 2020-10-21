@@ -8,10 +8,11 @@ export const GetMetaSchemaUnion = gql`
         fields {
           name
           type {
-            pg
+            pgType
+            pgAlias
+            gqlType
             modifier
             typmod
-            name
             subtype
           }
         }
@@ -66,10 +67,11 @@ export const GetMetaSchemaUnion = gql`
             fields {
               name
               type {
-                pg
+                pgType
+                gqlType
+                pgAlias
                 modifier
                 typmod
-                name
                 subtype
               }
             }
@@ -82,10 +84,11 @@ export const GetMetaSchemaUnion = gql`
             fields {
               name
               type {
-                pg
+                pgType
+                gqlType
+                pgAlias
                 modifier
                 typmod
-                name
                 subtype
               }
             }
@@ -96,10 +99,11 @@ export const GetMetaSchemaUnion = gql`
             fields {
               name
               type {
-                pg
+                pgType
+                gqlType
+                pgAlias
                 modifier
                 typmod
-                name
                 subtype
               }
             }

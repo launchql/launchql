@@ -11,6 +11,27 @@ const GIS_TYPES = [
   'GeometryCollection'
 ];
 
+const aliasTypes = type => {
+  switch (type) {
+    case 'int8':
+      return 'bigint';
+    case 'bool':
+      return 'boolean';
+    case 'bpchar':
+      return 'char';
+    case 'float8':
+      return 'float';
+    case 'float4':
+      return 'real';
+    case 'int4':
+      return 'int';
+    case 'int2':
+      return 'smallint';
+    default:
+      return type;
+  }
+};
+
 export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
   (build, schemaOptions) => {
     /** @type {import('graphile-build-pg').PgIntrospectionResultsByKind} */
@@ -26,8 +47,9 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
     return {
       typeDefs: gql`
         type MetaschemaType {
-          pg: String!
-          name: String
+          pgAlias: String!
+          pgType: String!
+          gqlType: String!
           subtype: String
           modifier: Int
           typmod: JSON
@@ -47,7 +69,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           orderByType: String!
           filterType: String
           inputType: String!
-          patchType: String!
+          patchType: String
           conditionType: String!
           patchField: String!
           edge: String!
@@ -56,7 +78,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           typeName: String!
           enumType: String!
 
-          updatePayloadType: String!
+          updatePayloadType: String
           deletePayloadType: String!
           deleteByPrimaryKey: String
           updateByPrimaryKey: String
@@ -68,8 +90,8 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           all: String!
           one: String!
           create: String!
-          update: String!
-          delete: String!
+          update: String
+          delete: String
         }
         type MetaschemaTable {
           name: String!
@@ -160,7 +182,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
         },
         MetaschemaType: {
           /** @param attr {import('graphile-build-pg').PgType} */
-          pg(type) {
+          pgType(type) {
             // TODO what is the best API here?
             // 1. we could return original _name, e.g. _citext (= citext[])
             // 2. we could return original type name and include isArray
@@ -169,7 +191,13 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
             }
             return type.name;
           },
-          name(type) {
+          pgAlias(type) {
+            if (type.isPgArray && type.arrayItemType?.name) {
+              return aliasTypes(type.arrayItemType.name);
+            }
+            return aliasTypes(type.name);
+          },
+          gqlType(type) {
             const gqlType = pgGetGqlTypeByTypeIdAndModifier(
               type.id,
               type.attrTypeModifier
