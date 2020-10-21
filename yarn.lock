@@ -5777,10 +5777,10 @@ graphile-gen@0.3.3:
     inflection "^1.12.0"
     pluralize "^8.0.0"
 
-graphile-meta-schema@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmjs.org/graphile-meta-schema/-/graphile-meta-schema-0.2.1.tgz#92bdc69e8b092e3217c776b08895e63f64e2e486"
-  integrity sha512-81mO3JmPPFVWPhEpfzeQT+fBGibwgOT0B8jgj33YiVXUYGnuiTLOr0ShJZAj2NJ/nMohM/w2sQiQ3CYmAYxUAQ==
+graphile-meta-schema@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/graphile-meta-schema/-/graphile-meta-schema-0.2.3.tgz#db02bf482215c817ab8f7e0bf016377cd047ac42"
+  integrity sha512-YJwGiek1+0EFladcTPq9yu2hk09NYaADbakFSy0lN8MajVv68hajrrEATkY+o4MMLGN3UJplTp0Tbhkd5Tbjig==
   dependencies:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
