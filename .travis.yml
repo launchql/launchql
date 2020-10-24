@@ -24,7 +24,7 @@ env:
     - PGUSER=postgres
 
 before_install:
-  - docker run -d -p 7777:5432 --name postgres pyramation/postgres
+  - docker run -d  -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -p 7777:5432 --name postgres pyramation/postgres
   - sleep 3
   - while ! docker exec -it postgres pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
   - createdb test_database
