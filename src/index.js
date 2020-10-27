@@ -61,7 +61,9 @@ export const PgSearchPlugin = (builder, { pgSearchPrefix = 'tsv' }) => {
       if (!tsvs.length) return args;
 
       for (const tsv of tsvs) {
-        const conditionFieldName = inflection.camelCase('search_' + tsv.name);
+        const conditionFieldName = inflection.camelCase(
+          pgSearchPrefix + '_' + tsv.name
+        );
 
         const conditionGenerator = (
           value,

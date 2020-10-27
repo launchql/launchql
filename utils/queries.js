@@ -2,7 +2,7 @@ import { gql } from 'graphile-test';
 
 export const GoalsSearchViaCondition = gql`
   query GoalsSearchViaCondition($search: String!) {
-    goals(condition: { searchTsv: $search }) {
+    goals(condition: { fullTextTsv: $search }) {
       nodes {
         id
         title
@@ -26,7 +26,7 @@ export const GoalsSearchViaFilter = gql`
 
 export const GoalsSearchViaCondition2 = gql`
   query GoalsSearchViaCondition($search: String!) {
-    goals(condition: { searchStsv: $search }) {
+    goals(condition: { fullTextStsv: $search }) {
       nodes {
         id
         title

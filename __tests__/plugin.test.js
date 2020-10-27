@@ -19,7 +19,7 @@ const getDbString = () =>
 const { setup, teardown, graphQL } = GraphQLTest(
   {
     graphileBuildOptions: {
-      pgSearchPrefix: 'search'
+      pgSearchPrefix: 'fullText'
     },
     appendPlugins: [
       PgSimpleInflector,
