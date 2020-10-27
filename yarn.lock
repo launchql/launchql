@@ -4665,7 +4665,7 @@ dotenv@^8.2.0:
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
-dotty@^0.1.0:
+dotty@0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/dotty/-/dotty-0.1.0.tgz#da371ccd931a37282f8f7f77adada7d54539708a"
   integrity sha512-VJzcXJZEckXowvj6yGJC2JH66DLEEm1d1QOB0hik1EvlbUpULvcYt411JeFuy8rNC96FG8V2N7pMkyjvK8LYwQ==
@@ -5777,10 +5777,10 @@ graphile-gen@0.3.3:
     inflection "^1.12.0"
     pluralize "^8.0.0"
 
-graphile-meta-schema@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.npmjs.org/graphile-meta-schema/-/graphile-meta-schema-0.2.3.tgz#db02bf482215c817ab8f7e0bf016377cd047ac42"
-  integrity sha512-YJwGiek1+0EFladcTPq9yu2hk09NYaADbakFSy0lN8MajVv68hajrrEATkY+o4MMLGN3UJplTp0Tbhkd5Tbjig==
+graphile-meta-schema@0.2.4:
+  version "0.2.4"
+  resolved "https://registry.npmjs.org/graphile-meta-schema/-/graphile-meta-schema-0.2.4.tgz#2945e6dd95b3b11efccfd1ebba375ad23d4fe379"
+  integrity sha512-axww2PFmO1R5Wm0wQqiNscD0AmixMzlLpcn4HgEY/KbrFJWmHuCrCLeNGJwaJAxn5BOv9KONMstbMhyAasLcTQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
@@ -7569,7 +7569,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.20, "lodash@>=4 <5", lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
+lodash@4.17.20, "lodash@>=4 <5", lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.20"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -8838,16 +8838,33 @@ pgpass@1.x:
   dependencies:
     split "^1.0.0"
 
-pgsql-parser@0.8.6:
-  version "0.8.6"
-  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-0.8.6.tgz#b127c484ab7300a3487eff7e9cc906fb09387184"
-  integrity sha512-ynsiBazfp6KtjP9ldXxKWF01QaLC2YNZKkw05vaSkD/W+U8sQBbG4LZlapoL5tp8IHcCZRvg4ySd+MdOOQpbeA==
+pgsql-deparser@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/pgsql-deparser/-/pgsql-deparser-1.0.6.tgz#ad2573149fa58533e053168a20dff9ba212d0ac9"
+  integrity sha512-DHGz+qYfQhUurvLzIK3beZNcxE7xgXbdGr6zEccaqRYpcCNAK7UwtQEFFZ0d+qR2u6mLJhzskrV/dj6fsVZd9w==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    dotty "0.1.0"
+    lodash "4.17.20"
+    pgsql-enums "^1.0.2"
+
+pgsql-enums@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/pgsql-enums/-/pgsql-enums-1.0.2.tgz#353a817e97fd1c1e0544aa8e89d141f0cb43c6df"
+  integrity sha512-Z9jpvtbPSm6L9tx1OEs4Ny4vsFHlU+WxD9MScgggmKPHbr/W3wfhL1w+Px+oqOzlcLE+loVNol1RkCN+9ToHLA==
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+
+pgsql-parser@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/pgsql-parser/-/pgsql-parser-1.0.6.tgz#595c82b097cfb823040bfc0e7e09cb92075d6425"
+  integrity sha512-/tcT/X700XUmZ+ZCYjrkN/b0xHodShMFGneM3Pt7MbXjniIUskHdWC3akX01UuwowXQ7UqcjYX0fP+ZGU6NKtA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@pgql/parse" "1.2.6"
-    dotty "^0.1.0"
-    lodash "^4.17.20"
     minimist "^1.2.5"
+    pgsql-deparser "^1.0.6"
+    pgsql-enums "^1.0.2"
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"
