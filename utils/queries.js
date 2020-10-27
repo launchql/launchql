@@ -16,37 +16,6 @@ export const GetMetaSchemaUnion = gql`
             subtype
           }
         }
-        inflection {
-          allRows
-          createPayloadType
-          orderByType
-          filterType
-          tableType
-          inputType
-          patchType
-          conditionType
-          patchField
-          edge
-          connection
-          allRowsSimple
-          createField
-          enumType
-          deleteByPrimaryKey
-          deletePayloadType
-          tableFieldName
-          typeName
-          updateByPrimaryKey
-          updatePayloadType
-          createInputType
-          edgeField
-        }
-        query {
-          all
-          one
-          create
-          update
-          delete
-        }
         constraints {
           ... on MetaschemaForeignKeyConstraint {
             fields {
@@ -127,6 +96,96 @@ export const GetMetaSchema = gql`
         }
         uniqueConstraints {
           name
+        }
+      }
+    }
+  }
+`;
+
+export const GetMetaRelations = gql`
+  query MetaQuery {
+    _meta {
+      tables {
+        name
+        relations {
+          manyToMany {
+            query
+            leftKeyAttributes {
+              name
+            }
+            junctionLeftKeyAttributes {
+              name
+            }
+            junctionRightKeyAttributes {
+              name
+            }
+            rightKeyAttributes {
+              name
+            }
+            junctionTable {
+              name
+            }
+            rightTable {
+              name
+            }
+            junctionLeftConstraint {
+              refTable {
+                name
+              }
+              fields {
+                name
+              }
+            }
+            junctionRightConstraint {
+              refTable {
+                name
+              }
+              fields {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GetMetaInflection = gql`
+  query MetaQuery {
+    _meta {
+      tables {
+        name
+        inflection {
+          allRows
+          createPayloadType
+          orderByType
+          filterType
+          tableType
+          inputType
+          patchType
+          conditionType
+          patchField
+          edge
+          connection
+          allRowsSimple
+          createField
+          enumType
+          deleteByPrimaryKey
+          deletePayloadType
+          tableFieldName
+          typeName
+          updateByPrimaryKey
+          updatePayloadType
+          createInputType
+          edgeField
+        }
+        query {
+          all
+          one
+          create
+          update
+          delete
         }
       }
     }

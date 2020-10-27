@@ -31,6 +31,7 @@ before_install:
   - createdb metaschema_example
   - psql -f sql/roles.sql metaschema_example
   - psql -f sql/test.sql metaschema_example
+  - psql -f sql/types.sql metaschema_example
 
 script:
   - yarn install

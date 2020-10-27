@@ -1,6 +1,587 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`individual 1`] = `
+exports[`GetMetaInflection 1`] = `
+Object {
+  "data": Object {
+    "_meta": Object {
+      "tables": Array [
+        Object {
+          "inflection": Object {
+            "allRows": "allAllTypes",
+            "allRowsSimple": "allAllTypesList",
+            "conditionType": "AllTypeCondition",
+            "connection": "AllTypesConnection",
+            "createField": "createAllType",
+            "createInputType": "CreateAllTypeInput",
+            "createPayloadType": "CreateAllTypePayload",
+            "deleteByPrimaryKey": null,
+            "deletePayloadType": "DeleteAllTypePayload",
+            "edge": "AllTypesEdge",
+            "edgeField": "allTypeEdge",
+            "enumType": "AllTypes",
+            "filterType": null,
+            "inputType": "AllTypeInput",
+            "orderByType": "AllTypesOrderBy",
+            "patchField": "allTypePatch",
+            "patchType": "AllTypePatch",
+            "tableFieldName": "allType",
+            "tableType": "AllType",
+            "typeName": "all_types",
+            "updateByPrimaryKey": null,
+            "updatePayloadType": "UpdateAllTypePayload",
+          },
+          "name": "AllType",
+          "query": Object {
+            "all": "allAllTypes",
+            "create": "createAllType",
+            "delete": null,
+            "one": "allType",
+            "update": null,
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allBoundingBoxes",
+            "allRowsSimple": "allBoundingBoxesList",
+            "conditionType": "BoundingBoxCondition",
+            "connection": "BoundingBoxesConnection",
+            "createField": "createBoundingBox",
+            "createInputType": "CreateBoundingBoxInput",
+            "createPayloadType": "CreateBoundingBoxPayload",
+            "deleteByPrimaryKey": "deleteBoundingBoxById",
+            "deletePayloadType": "DeleteBoundingBoxPayload",
+            "edge": "BoundingBoxesEdge",
+            "edgeField": "boundingBoxEdge",
+            "enumType": "BoundingBox",
+            "filterType": null,
+            "inputType": "BoundingBoxInput",
+            "orderByType": "BoundingBoxesOrderBy",
+            "patchField": "boundingBoxPatch",
+            "patchType": "BoundingBoxPatch",
+            "tableFieldName": "boundingBox",
+            "tableType": "BoundingBox",
+            "typeName": "bounding_box",
+            "updateByPrimaryKey": "updateBoundingBoxById",
+            "updatePayloadType": "UpdateBoundingBoxPayload",
+          },
+          "name": "BoundingBox",
+          "query": Object {
+            "all": "allBoundingBoxes",
+            "create": "createBoundingBox",
+            "delete": "deleteBoundingBoxById",
+            "one": "boundingBox",
+            "update": "updateBoundingBoxById",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allPermissionAssignments",
+            "allRowsSimple": "allPermissionAssignmentsList",
+            "conditionType": "PermissionAssignmentCondition",
+            "connection": "PermissionAssignmentsConnection",
+            "createField": "createPermissionAssignment",
+            "createInputType": "CreatePermissionAssignmentInput",
+            "createPayloadType": "CreatePermissionAssignmentPayload",
+            "deleteByPrimaryKey": "deletePermissionAssignmentByPermIdAndRoleId",
+            "deletePayloadType": "DeletePermissionAssignmentPayload",
+            "edge": "PermissionAssignmentsEdge",
+            "edgeField": "permissionAssignmentEdge",
+            "enumType": "PermissionAssignment",
+            "filterType": null,
+            "inputType": "PermissionAssignmentInput",
+            "orderByType": "PermissionAssignmentsOrderBy",
+            "patchField": "permissionAssignmentPatch",
+            "patchType": "PermissionAssignmentPatch",
+            "tableFieldName": "permissionAssignment",
+            "tableType": "PermissionAssignment",
+            "typeName": "permission_assignment",
+            "updateByPrimaryKey": "updatePermissionAssignmentByPermIdAndRoleId",
+            "updatePayloadType": "UpdatePermissionAssignmentPayload",
+          },
+          "name": "PermissionAssignment",
+          "query": Object {
+            "all": "allPermissionAssignments",
+            "create": "createPermissionAssignment",
+            "delete": "deletePermissionAssignmentByPermIdAndRoleId",
+            "one": "permissionAssignment",
+            "update": "updatePermissionAssignmentByPermIdAndRoleId",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allPermissions",
+            "allRowsSimple": "allPermissionsList",
+            "conditionType": "PermissionCondition",
+            "connection": "PermissionsConnection",
+            "createField": "createPermission",
+            "createInputType": "CreatePermissionInput",
+            "createPayloadType": "CreatePermissionPayload",
+            "deleteByPrimaryKey": "deletePermissionById",
+            "deletePayloadType": "DeletePermissionPayload",
+            "edge": "PermissionsEdge",
+            "edgeField": "permissionEdge",
+            "enumType": "Permissions",
+            "filterType": null,
+            "inputType": "PermissionInput",
+            "orderByType": "PermissionsOrderBy",
+            "patchField": "permissionPatch",
+            "patchType": "PermissionPatch",
+            "tableFieldName": "permission",
+            "tableType": "Permission",
+            "typeName": "permissions",
+            "updateByPrimaryKey": "updatePermissionById",
+            "updatePayloadType": "UpdatePermissionPayload",
+          },
+          "name": "Permission",
+          "query": Object {
+            "all": "allPermissions",
+            "create": "createPermission",
+            "delete": "deletePermissionById",
+            "one": "permission",
+            "update": "updatePermissionById",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allRoles",
+            "allRowsSimple": "allRolesList",
+            "conditionType": "RoleCondition",
+            "connection": "RolesConnection",
+            "createField": "createRole",
+            "createInputType": "CreateRoleInput",
+            "createPayloadType": "CreateRolePayload",
+            "deleteByPrimaryKey": "deleteRoleById",
+            "deletePayloadType": "DeleteRolePayload",
+            "edge": "RolesEdge",
+            "edgeField": "roleEdge",
+            "enumType": "Roles",
+            "filterType": null,
+            "inputType": "RoleInput",
+            "orderByType": "RolesOrderBy",
+            "patchField": "rolePatch",
+            "patchType": "RolePatch",
+            "tableFieldName": "role",
+            "tableType": "Role",
+            "typeName": "roles",
+            "updateByPrimaryKey": "updateRoleById",
+            "updatePayloadType": "UpdateRolePayload",
+          },
+          "name": "Role",
+          "query": Object {
+            "all": "allRoles",
+            "create": "createRole",
+            "delete": "deleteRoleById",
+            "one": "role",
+            "update": "updateRoleById",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allSubjectAssignments",
+            "allRowsSimple": "allSubjectAssignmentsList",
+            "conditionType": "SubjectAssignmentCondition",
+            "connection": "SubjectAssignmentsConnection",
+            "createField": "createSubjectAssignment",
+            "createInputType": "CreateSubjectAssignmentInput",
+            "createPayloadType": "CreateSubjectAssignmentPayload",
+            "deleteByPrimaryKey": "deleteSubjectAssignmentBySubjIdAndRoleId",
+            "deletePayloadType": "DeleteSubjectAssignmentPayload",
+            "edge": "SubjectAssignmentsEdge",
+            "edgeField": "subjectAssignmentEdge",
+            "enumType": "SubjectAssignment",
+            "filterType": null,
+            "inputType": "SubjectAssignmentInput",
+            "orderByType": "SubjectAssignmentsOrderBy",
+            "patchField": "subjectAssignmentPatch",
+            "patchType": "SubjectAssignmentPatch",
+            "tableFieldName": "subjectAssignment",
+            "tableType": "SubjectAssignment",
+            "typeName": "subject_assignment",
+            "updateByPrimaryKey": "updateSubjectAssignmentBySubjIdAndRoleId",
+            "updatePayloadType": "UpdateSubjectAssignmentPayload",
+          },
+          "name": "SubjectAssignment",
+          "query": Object {
+            "all": "allSubjectAssignments",
+            "create": "createSubjectAssignment",
+            "delete": "deleteSubjectAssignmentBySubjIdAndRoleId",
+            "one": "subjectAssignment",
+            "update": "updateSubjectAssignmentBySubjIdAndRoleId",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allUserSettings",
+            "allRowsSimple": "allUserSettingsList",
+            "conditionType": "UserSettingCondition",
+            "connection": "UserSettingsConnection",
+            "createField": "createUserSetting",
+            "createInputType": "CreateUserSettingInput",
+            "createPayloadType": "CreateUserSettingPayload",
+            "deleteByPrimaryKey": "deleteUserSettingByUserId",
+            "deletePayloadType": "DeleteUserSettingPayload",
+            "edge": "UserSettingsEdge",
+            "edgeField": "userSettingEdge",
+            "enumType": "UserSettings",
+            "filterType": null,
+            "inputType": "UserSettingInput",
+            "orderByType": "UserSettingsOrderBy",
+            "patchField": "userSettingPatch",
+            "patchType": "UserSettingPatch",
+            "tableFieldName": "userSetting",
+            "tableType": "UserSetting",
+            "typeName": "user_settings",
+            "updateByPrimaryKey": "updateUserSettingByUserId",
+            "updatePayloadType": "UpdateUserSettingPayload",
+          },
+          "name": "UserSetting",
+          "query": Object {
+            "all": "allUserSettings",
+            "create": "createUserSetting",
+            "delete": "deleteUserSettingByUserId",
+            "one": "userSetting",
+            "update": "updateUserSettingByUserId",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allUsers",
+            "allRowsSimple": "allUsersList",
+            "conditionType": "UserCondition",
+            "connection": "UsersConnection",
+            "createField": "createUser",
+            "createInputType": "CreateUserInput",
+            "createPayloadType": "CreateUserPayload",
+            "deleteByPrimaryKey": "deleteUserById",
+            "deletePayloadType": "DeleteUserPayload",
+            "edge": "UsersEdge",
+            "edgeField": "userEdge",
+            "enumType": "Users",
+            "filterType": null,
+            "inputType": "UserInput",
+            "orderByType": "UsersOrderBy",
+            "patchField": "userPatch",
+            "patchType": "UserPatch",
+            "tableFieldName": "user",
+            "tableType": "User",
+            "typeName": "users",
+            "updateByPrimaryKey": "updateUserById",
+            "updatePayloadType": "UpdateUserPayload",
+          },
+          "name": "User",
+          "query": Object {
+            "all": "allUsers",
+            "create": "createUser",
+            "delete": "deleteUserById",
+            "one": "user",
+            "update": "updateUserById",
+          },
+        },
+        Object {
+          "inflection": Object {
+            "allRows": "allPostcodes",
+            "allRowsSimple": "allPostcodesList",
+            "conditionType": "PostcodeCondition",
+            "connection": "PostcodesConnection",
+            "createField": "createPostcode",
+            "createInputType": "CreatePostcodeInput",
+            "createPayloadType": "CreatePostcodePayload",
+            "deleteByPrimaryKey": "deletePostcodeById",
+            "deletePayloadType": "DeletePostcodePayload",
+            "edge": "PostcodesEdge",
+            "edgeField": "postcodeEdge",
+            "enumType": "Postcode",
+            "filterType": null,
+            "inputType": "PostcodeInput",
+            "orderByType": "PostcodesOrderBy",
+            "patchField": "postcodePatch",
+            "patchType": "PostcodePatch",
+            "tableFieldName": "postcode",
+            "tableType": "Postcode",
+            "typeName": "postcode",
+            "updateByPrimaryKey": "updatePostcodeById",
+            "updatePayloadType": "UpdatePostcodePayload",
+          },
+          "name": "Postcode",
+          "query": Object {
+            "all": "allPostcodes",
+            "create": "createPostcode",
+            "delete": "deletePostcodeById",
+            "one": "postcode",
+            "update": "updatePostcodeById",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetMetaRelations 1`] = `
+Object {
+  "data": Object {
+    "_meta": Object {
+      "tables": Array [
+        Object {
+          "name": "AllType",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "BoundingBox",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "PermissionAssignment",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "Permission",
+          "relations": Object {
+            "manyToMany": Array [
+              Object {
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "permId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Permission",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "permId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "PermissionAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "query": "rolesByPermissionAssignmentPermIdAndRoleId",
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "Role",
+                },
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Role",
+          "relations": Object {
+            "manyToMany": Array [
+              Object {
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "permId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Permission",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "permId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "PermissionAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "query": "permissionsByPermissionAssignmentRoleIdAndPermId",
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "Permission",
+                },
+              },
+              Object {
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "subjId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "User",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "subjId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "SubjectAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "query": "usersBySubjectAssignmentRoleIdAndSubjId",
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "User",
+                },
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "SubjectAssignment",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "UserSetting",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "User",
+          "relations": Object {
+            "manyToMany": Array [
+              Object {
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "subjId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "User",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "subjId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "SubjectAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "query": "rolesBySubjectAssignmentSubjIdAndRoleId",
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "Role",
+                },
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Postcode",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetMetaSchema 1`] = `
 Object {
   "data": Object {
     "_meta": Object {
@@ -123,7 +704,7 @@ Object {
 }
 `;
 
-exports[`union 1`] = `
+exports[`GetMetaSchemaUnion 1`] = `
 Object {
   "data": Object {
     "_meta": Object {
@@ -1148,38 +1729,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allAllTypes",
-            "allRowsSimple": "allAllTypesList",
-            "conditionType": "AllTypeCondition",
-            "connection": "AllTypesConnection",
-            "createField": "createAllType",
-            "createInputType": "CreateAllTypeInput",
-            "createPayloadType": "CreateAllTypePayload",
-            "deleteByPrimaryKey": null,
-            "deletePayloadType": "DeleteAllTypePayload",
-            "edge": "AllTypesEdge",
-            "edgeField": "allTypeEdge",
-            "enumType": "AllTypes",
-            "filterType": null,
-            "inputType": "AllTypeInput",
-            "orderByType": "AllTypesOrderBy",
-            "patchField": "allTypePatch",
-            "patchType": "AllTypePatch",
-            "tableFieldName": "allType",
-            "tableType": "AllType",
-            "typeName": "all_types",
-            "updateByPrimaryKey": null,
-            "updatePayloadType": "UpdateAllTypePayload",
-          },
           "name": "AllType",
-          "query": Object {
-            "all": "allAllTypes",
-            "create": "createAllType",
-            "delete": null,
-            "one": "allType",
-            "update": null,
-          },
         },
         Object {
           "constraints": Array [
@@ -1259,38 +1809,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allBoundingBoxes",
-            "allRowsSimple": "allBoundingBoxesList",
-            "conditionType": "BoundingBoxCondition",
-            "connection": "BoundingBoxesConnection",
-            "createField": "createBoundingBox",
-            "createInputType": "CreateBoundingBoxInput",
-            "createPayloadType": "CreateBoundingBoxPayload",
-            "deleteByPrimaryKey": "deleteBoundingBoxById",
-            "deletePayloadType": "DeleteBoundingBoxPayload",
-            "edge": "BoundingBoxesEdge",
-            "edgeField": "boundingBoxEdge",
-            "enumType": "BoundingBox",
-            "filterType": null,
-            "inputType": "BoundingBoxInput",
-            "orderByType": "BoundingBoxesOrderBy",
-            "patchField": "boundingBoxPatch",
-            "patchType": "BoundingBoxPatch",
-            "tableFieldName": "boundingBox",
-            "tableType": "BoundingBox",
-            "typeName": "bounding_box",
-            "updateByPrimaryKey": "updateBoundingBoxById",
-            "updatePayloadType": "UpdateBoundingBoxPayload",
-          },
           "name": "BoundingBox",
-          "query": Object {
-            "all": "allBoundingBoxes",
-            "create": "createBoundingBox",
-            "delete": "deleteBoundingBoxById",
-            "one": "boundingBox",
-            "update": "updateBoundingBoxById",
-          },
         },
         Object {
           "constraints": Array [
@@ -1393,38 +1912,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allPermissionAssignments",
-            "allRowsSimple": "allPermissionAssignmentsList",
-            "conditionType": "PermissionAssignmentCondition",
-            "connection": "PermissionAssignmentsConnection",
-            "createField": "createPermissionAssignment",
-            "createInputType": "CreatePermissionAssignmentInput",
-            "createPayloadType": "CreatePermissionAssignmentPayload",
-            "deleteByPrimaryKey": "deletePermissionAssignmentByPermIdAndRoleId",
-            "deletePayloadType": "DeletePermissionAssignmentPayload",
-            "edge": "PermissionAssignmentsEdge",
-            "edgeField": "permissionAssignmentEdge",
-            "enumType": "PermissionAssignment",
-            "filterType": null,
-            "inputType": "PermissionAssignmentInput",
-            "orderByType": "PermissionAssignmentsOrderBy",
-            "patchField": "permissionAssignmentPatch",
-            "patchType": "PermissionAssignmentPatch",
-            "tableFieldName": "permissionAssignment",
-            "tableType": "PermissionAssignment",
-            "typeName": "permission_assignment",
-            "updateByPrimaryKey": "updatePermissionAssignmentByPermIdAndRoleId",
-            "updatePayloadType": "UpdatePermissionAssignmentPayload",
-          },
           "name": "PermissionAssignment",
-          "query": Object {
-            "all": "allPermissionAssignments",
-            "create": "createPermissionAssignment",
-            "delete": "deletePermissionAssignmentByPermIdAndRoleId",
-            "one": "permissionAssignment",
-            "update": "updatePermissionAssignmentByPermIdAndRoleId",
-          },
         },
         Object {
           "constraints": Array [
@@ -1470,38 +1958,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allPermissions",
-            "allRowsSimple": "allPermissionsList",
-            "conditionType": "PermissionCondition",
-            "connection": "PermissionsConnection",
-            "createField": "createPermission",
-            "createInputType": "CreatePermissionInput",
-            "createPayloadType": "CreatePermissionPayload",
-            "deleteByPrimaryKey": "deletePermissionById",
-            "deletePayloadType": "DeletePermissionPayload",
-            "edge": "PermissionsEdge",
-            "edgeField": "permissionEdge",
-            "enumType": "Permissions",
-            "filterType": null,
-            "inputType": "PermissionInput",
-            "orderByType": "PermissionsOrderBy",
-            "patchField": "permissionPatch",
-            "patchType": "PermissionPatch",
-            "tableFieldName": "permission",
-            "tableType": "Permission",
-            "typeName": "permissions",
-            "updateByPrimaryKey": "updatePermissionById",
-            "updatePayloadType": "UpdatePermissionPayload",
-          },
           "name": "Permission",
-          "query": Object {
-            "all": "allPermissions",
-            "create": "createPermission",
-            "delete": "deletePermissionById",
-            "one": "permission",
-            "update": "updatePermissionById",
-          },
         },
         Object {
           "constraints": Array [
@@ -1570,38 +2027,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allRoles",
-            "allRowsSimple": "allRolesList",
-            "conditionType": "RoleCondition",
-            "connection": "RolesConnection",
-            "createField": "createRole",
-            "createInputType": "CreateRoleInput",
-            "createPayloadType": "CreateRolePayload",
-            "deleteByPrimaryKey": "deleteRoleById",
-            "deletePayloadType": "DeleteRolePayload",
-            "edge": "RolesEdge",
-            "edgeField": "roleEdge",
-            "enumType": "Roles",
-            "filterType": null,
-            "inputType": "RoleInput",
-            "orderByType": "RolesOrderBy",
-            "patchField": "rolePatch",
-            "patchType": "RolePatch",
-            "tableFieldName": "role",
-            "tableType": "Role",
-            "typeName": "roles",
-            "updateByPrimaryKey": "updateRoleById",
-            "updatePayloadType": "UpdateRolePayload",
-          },
           "name": "Role",
-          "query": Object {
-            "all": "allRoles",
-            "create": "createRole",
-            "delete": "deleteRoleById",
-            "one": "role",
-            "update": "updateRoleById",
-          },
         },
         Object {
           "constraints": Array [
@@ -1704,38 +2130,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allSubjectAssignments",
-            "allRowsSimple": "allSubjectAssignmentsList",
-            "conditionType": "SubjectAssignmentCondition",
-            "connection": "SubjectAssignmentsConnection",
-            "createField": "createSubjectAssignment",
-            "createInputType": "CreateSubjectAssignmentInput",
-            "createPayloadType": "CreateSubjectAssignmentPayload",
-            "deleteByPrimaryKey": "deleteSubjectAssignmentBySubjIdAndRoleId",
-            "deletePayloadType": "DeleteSubjectAssignmentPayload",
-            "edge": "SubjectAssignmentsEdge",
-            "edgeField": "subjectAssignmentEdge",
-            "enumType": "SubjectAssignment",
-            "filterType": null,
-            "inputType": "SubjectAssignmentInput",
-            "orderByType": "SubjectAssignmentsOrderBy",
-            "patchField": "subjectAssignmentPatch",
-            "patchType": "SubjectAssignmentPatch",
-            "tableFieldName": "subjectAssignment",
-            "tableType": "SubjectAssignment",
-            "typeName": "subject_assignment",
-            "updateByPrimaryKey": "updateSubjectAssignmentBySubjIdAndRoleId",
-            "updatePayloadType": "UpdateSubjectAssignmentPayload",
-          },
           "name": "SubjectAssignment",
-          "query": Object {
-            "all": "allSubjectAssignments",
-            "create": "createSubjectAssignment",
-            "delete": "deleteSubjectAssignmentBySubjIdAndRoleId",
-            "one": "subjectAssignment",
-            "update": "updateSubjectAssignmentBySubjIdAndRoleId",
-          },
         },
         Object {
           "constraints": Array [
@@ -1804,38 +2199,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allUserSettings",
-            "allRowsSimple": "allUserSettingsList",
-            "conditionType": "UserSettingCondition",
-            "connection": "UserSettingsConnection",
-            "createField": "createUserSetting",
-            "createInputType": "CreateUserSettingInput",
-            "createPayloadType": "CreateUserSettingPayload",
-            "deleteByPrimaryKey": "deleteUserSettingByUserId",
-            "deletePayloadType": "DeleteUserSettingPayload",
-            "edge": "UserSettingsEdge",
-            "edgeField": "userSettingEdge",
-            "enumType": "UserSettings",
-            "filterType": null,
-            "inputType": "UserSettingInput",
-            "orderByType": "UserSettingsOrderBy",
-            "patchField": "userSettingPatch",
-            "patchType": "UserSettingPatch",
-            "tableFieldName": "userSetting",
-            "tableType": "UserSetting",
-            "typeName": "user_settings",
-            "updateByPrimaryKey": "updateUserSettingByUserId",
-            "updatePayloadType": "UpdateUserSettingPayload",
-          },
           "name": "UserSetting",
-          "query": Object {
-            "all": "allUserSettings",
-            "create": "createUserSetting",
-            "delete": "deleteUserSettingByUserId",
-            "one": "userSetting",
-            "update": "updateUserSettingByUserId",
-          },
         },
         Object {
           "constraints": Array [
@@ -1898,38 +2262,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allUsers",
-            "allRowsSimple": "allUsersList",
-            "conditionType": "UserCondition",
-            "connection": "UsersConnection",
-            "createField": "createUser",
-            "createInputType": "CreateUserInput",
-            "createPayloadType": "CreateUserPayload",
-            "deleteByPrimaryKey": "deleteUserById",
-            "deletePayloadType": "DeleteUserPayload",
-            "edge": "UsersEdge",
-            "edgeField": "userEdge",
-            "enumType": "Users",
-            "filterType": null,
-            "inputType": "UserInput",
-            "orderByType": "UsersOrderBy",
-            "patchField": "userPatch",
-            "patchType": "UserPatch",
-            "tableFieldName": "user",
-            "tableType": "User",
-            "typeName": "users",
-            "updateByPrimaryKey": "updateUserById",
-            "updatePayloadType": "UpdateUserPayload",
-          },
           "name": "User",
-          "query": Object {
-            "all": "allUsers",
-            "create": "createUser",
-            "delete": "deleteUserById",
-            "one": "user",
-            "update": "updateUserById",
-          },
         },
         Object {
           "constraints": Array [
@@ -1992,38 +2325,7 @@ Object {
               },
             },
           ],
-          "inflection": Object {
-            "allRows": "allPostcodes",
-            "allRowsSimple": "allPostcodesList",
-            "conditionType": "PostcodeCondition",
-            "connection": "PostcodesConnection",
-            "createField": "createPostcode",
-            "createInputType": "CreatePostcodeInput",
-            "createPayloadType": "CreatePostcodePayload",
-            "deleteByPrimaryKey": "deletePostcodeById",
-            "deletePayloadType": "DeletePostcodePayload",
-            "edge": "PostcodesEdge",
-            "edgeField": "postcodeEdge",
-            "enumType": "Postcode",
-            "filterType": null,
-            "inputType": "PostcodeInput",
-            "orderByType": "PostcodesOrderBy",
-            "patchField": "postcodePatch",
-            "patchType": "PostcodePatch",
-            "tableFieldName": "postcode",
-            "tableType": "Postcode",
-            "typeName": "postcode",
-            "updateByPrimaryKey": "updatePostcodeById",
-            "updatePayloadType": "UpdatePostcodePayload",
-          },
           "name": "Postcode",
-          "query": Object {
-            "all": "allPostcodes",
-            "create": "createPostcode",
-            "delete": "deletePostcodeById",
-            "one": "postcode",
-            "update": "updatePostcodeById",
-          },
         },
       ],
     },

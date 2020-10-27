@@ -1,4 +1,5 @@
 import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
+import m2m from './many-to-many';
 
 const GIS_TYPES = [
   'Geometry',
@@ -93,10 +94,33 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           update: String
           delete: String
         }
+        type MetaschemaTableManyToManyRelation {
+          query: String
+          leftKeyAttributes: [MetaschemaField]
+          rightKeyAttributes: [MetaschemaField]
+          junctionLeftKeyAttributes: [MetaschemaField]
+          junctionRightKeyAttributes: [MetaschemaField]
+          junctionTable: MetaschemaTable
+          rightTable: MetaschemaTable
+          junctionLeftConstraint: MetaschemaForeignKeyConstraint
+          junctionRightConstraint: MetaschemaForeignKeyConstraint
+        }
+        type MetaschemaTableOneToOneRelation {
+          query: JSON
+        }
+
+        type MetaschemaTableRelation {
+          oneToOne: [MetaschemaTableOneToOneRelation]
+          hasOne: JSON
+          belongsTo: JSON
+          hasMany: JSON
+          manyToMany: [MetaschemaTableManyToManyRelation]
+        }
         type MetaschemaTable {
           name: String!
           query: MetaschemaTableQuery!
           inflection: MetaschemaTableInflection!
+          relations: MetaschemaTableRelation
           fields: [MetaschemaField]
           constraints: [MetaschemaConstraint]
           foreignKeyConstraints: [MetaschemaForeignKeyConstraint]
@@ -382,7 +406,89 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
             return inflection.tableFieldName(table);
           }
         },
+        MetaschemaTableRelation: {
+          oneToOne(table) {
+            return null;
+          },
+          oneToMany(table) {
+            return null;
+          },
+          manyToOne(table) {
+            return null;
+          },
+          hasOne(table) {
+            return null;
+          },
+          belongsTo(table) {
+            return null;
+          },
+          hasMany(table) {
+            return null;
+          },
+          manyToMany(table) {
+            if (!inflection.manyToManyRelationByKeys) {
+              return null;
+            }
+            return m2m(table, build);
+          }
+        },
+        MetaschemaTableOneToOneRelation: {
+          query(relation) {
+            return null;
+          }
+        },
+        MetaschemaTableManyToManyRelation: {
+          leftKeyAttributes(relation) {
+            return relation.leftKeyAttributes;
+          },
+          junctionLeftKeyAttributes(relation) {
+            return relation.junctionLeftKeyAttributes;
+          },
+          junctionRightKeyAttributes(relation) {
+            return relation.junctionRightKeyAttributes;
+          },
+          rightKeyAttributes(relation) {
+            return relation.rightKeyAttributes;
+          },
+          junctionTable(relation) {
+            return relation.junctionTable;
+          },
+          rightTable(relation) {
+            return relation.rightTable;
+          },
+          junctionLeftConstraint(relation) {
+            return relation.junctionLeftConstraint;
+          },
+          junctionRightConstraint(relation) {
+            return relation.junctionRightConstraint;
+          },
+          query(relation) {
+            const {
+              leftKeyAttributes,
+              junctionLeftKeyAttributes,
+              junctionRightKeyAttributes,
+              rightKeyAttributes,
+              junctionTable,
+              rightTable,
+              junctionLeftConstraint,
+              junctionRightConstraint
+            } = relation;
+            return inflection.manyToManyRelationByKeys(
+              leftKeyAttributes,
+              junctionLeftKeyAttributes,
+              junctionRightKeyAttributes,
+              rightKeyAttributes,
+              junctionTable,
+              rightTable,
+              junctionLeftConstraint,
+              junctionRightConstraint
+            );
+          }
+        },
         MetaschemaTable: {
+          relations(table) {
+            return table;
+          },
           /** @param table {import('graphile-build-pg').PgClass} */
           name(table) {
             return inflection.tableType(table);
