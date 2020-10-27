@@ -5785,10 +5785,10 @@ graphile-meta-schema@0.2.4:
     "@babel/runtime" "^7.4.2"
     graphile-utils "^4.9.0"
 
-graphile-search-plugin@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/graphile-search-plugin/-/graphile-search-plugin-0.1.1.tgz#b9c2fbc080865ac03fb3f233973d9a62a0bfd57f"
-  integrity sha512-DqHFP4GcTUK279+arhKol9kwJydUrUf3z1Wi2XYDsfBOxNye1wRR6wuZomjdTY2EUEOm5nAiXFKdNMknWH/1ZA==
+graphile-search-plugin@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/graphile-search-plugin/-/graphile-search-plugin-0.1.2.tgz#810306b820d9845f4a947a8f70ea407766695a0e"
+  integrity sha512-4pb0rqzc2H3tuzqx/iRcpWU1FXvqEJU/ZT3DfGzDKFusjR6qHcOd3JIcxMXEctln/pEt2NM1U+O4I5a3nFG0UA==
   dependencies:
     "@babel/runtime" "^7.11.2"
 
