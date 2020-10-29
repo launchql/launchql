@@ -100,8 +100,8 @@ export const writePackage = async (version, extension = true, sqitchPath) => {
     console.error(
       `DIFF exists! Careful. Check ${relative(sqitchPath, outPath)}/ folder...`
     );
-    writeFileSync(`${outPath}/orig.${sqlFileName}.tree.json`, tree1);
-    writeFileSync(`${outPath}/parsed.${sqlFileName}.tree.json`, tree2);
+    // writeFileSync(`${outPath}/orig.${sqlFileName}.tree.json`, tree1);
+    // writeFileSync(`${outPath}/parsed.${sqlFileName}.tree.json`, tree2);
   }
 
   const writePath = `${outPath}/${sqlFileName}`;
