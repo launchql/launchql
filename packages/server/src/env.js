@@ -8,7 +8,7 @@ export default cleanEnv(
     PGUSER: str({ default: 'postgres' }),
     PGHOST: str({ default: 'localhost' }),
     PGPASSWORD: str({ default: 'password' }),
-    PGDATABASE: str({ default: 'service-db' }),
+    PGDATABASE: str({ default: 'webinc-db' }),
     PGPORT: port({ default: 5432 }),
     SERVICE_SCHEMA: str({ default: 'services_public' }),
     SERVICE_TABLE: str({ default: 'services' }),

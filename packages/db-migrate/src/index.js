@@ -197,124 +197,6 @@ ${rows
     author
   };
   if (results?.rows?.length > 0) {
-    const rows = [
-      {
-        deploy: 'roles/init',
-        content: `DO    
-$do$
-BEGIN
-   IF NOT EXISTS (
-      SELECT FROM pg_catalog.pg_roles
-      WHERE  rolname = 'administrator') THEN
-      CREATE ROLE administrator;
-      ALTER USER administrator WITH NOCREATEDB;
-      ALTER USER administrator WITH NOCREATEROLE;
-      ALTER USER administrator WITH NOLOGIN;
-      ALTER USER administrator WITH NOREPLICATION;
-      ALTER USER administrator WITH BYPASSRLS;
-   END IF;
-   IF NOT EXISTS (
-      SELECT FROM pg_catalog.pg_roles
-      WHERE  rolname = 'anonymous') THEN
-      CREATE ROLE anonymous;
-      ALTER USER anonymous WITH NOCREATEDB;
-      ALTER USER anonymous WITH NOCREATEROLE;
-      ALTER USER anonymous WITH NOLOGIN;
-      ALTER USER anonymous WITH NOREPLICATION;
-      ALTER USER anonymous WITH NOBYPASSRLS;
-   END IF;
-   IF NOT EXISTS (
-      SELECT FROM pg_catalog.pg_roles
-      WHERE  rolname = 'authenticated') THEN
-      CREATE ROLE authenticated;
-      ALTER USER authenticated WITH NOCREATEDB;
-      ALTER USER authenticated WITH NOCREATEROLE;
-      ALTER USER authenticated WITH NOLOGIN;
-      ALTER USER authenticated WITH NOREPLICATION;
-      ALTER USER authenticated WITH NOBYPASSRLS;
-   END IF;
-   GRANT anonymous TO administrator;
-   GRANT authenticated TO administrator;
-END
-$do$;        
-            `,
-        revert: ``,
-        verify: ``
-      },
-      {
-        deploy: 'extensions/init',
-        content: `CREATE EXTENSION IF NOT EXISTS plpgsql;
-CREATE EXTENSION IF NOT EXISTS citext;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-CREATE EXTENSION IF NOT EXISTS hstore;            
-CREATE EXTENSION IF NOT EXISTS postgis;            
-            `,
-        revert: `
-DROP EXTENSION IF EXISTS citext;
-DROP EXTENSION IF EXISTS "uuid-ossp";
-DROP EXTENSION IF EXISTS pgcrypto;
-DROP EXTENSION IF EXISTS hstore;            
-DROP EXTENSION IF EXISTS postgis;            
-            `,
-        verify: ``
-      },
-      {
-        deploy: 'extensions/types',
-        content: `
-        CREATE DOMAIN attachment AS jsonb CHECK ( (((value) ?& (ARRAY['url', 'mime'])) AND ((((value) ->> ('url'))) ~ ('^(https?)://[^\s/$.?#].[^\s]*$'))) );
-
-        COMMENT ON DOMAIN attachment IS E'@name launchqlInternalTypeAttachment';
-        
-        CREATE DOMAIN email AS citext CHECK ( ((value) ~ ('^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')) );
-        
-        COMMENT ON DOMAIN email IS E'@name launchqlInternalTypeEmail';
-        
-        CREATE DOMAIN hostname AS text CHECK ( ((value) ~ ('^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$')) );
-        
-        COMMENT ON DOMAIN hostname IS E'@name launchqlInternalTypeHostname';
-        
-        CREATE DOMAIN image AS jsonb CHECK ( (((value) ?& (ARRAY['url', 'mime'])) AND ((((value) ->> ('url'))) ~ ('^(https?)://[^\s/$.?#].[^\s]*$'))) );
-        
-        COMMENT ON DOMAIN image IS E'@name launchqlInternalTypeImage';
-        
-        CREATE DOMAIN multiple_select AS jsonb CHECK ( ((value) ?& (ARRAY['value'])) );
-        
-        COMMENT ON DOMAIN multiple_select IS E'@name launchqlInternalTypeMultipleSelect';
-        
-        CREATE DOMAIN single_select AS jsonb CHECK ( ((value) ?& (ARRAY['value'])) );
-        
-        COMMENT ON DOMAIN single_select IS E'@name launchqlInternalTypeSingleSelect';
-        
-        CREATE DOMAIN upload AS text CHECK ( ((value) ~ ('^(https?)://[^\s/$.?#].[^\s]*$')) );
-        
-        COMMENT ON DOMAIN upload IS E'@name launchqlInternalTypeUpload';
-        
-        CREATE DOMAIN url AS text CHECK ( ((value) ~ ('^(https?)://[^\s/$.?#].[^\s]*$')) );
-        
-        COMMENT ON DOMAIN url IS E'@name launchqlInternalTypeUrl';
-        `,
-        revert: `
-        DROP DOMAIN attachment;
-        DROP DOMAIN email;
-        DROP DOMAIN hostname;
-        DROP DOMAIN image;
-        DROP DOMAIN upload;
-        DROP DOMAIN url;
-        
-        `,
-        verify: ``
-      },
-      ...results.rows
-      // {
-      //   deploy: 'tags/' + Date.now(),
-      //   deps: results.rows.map((row) => row.deploy),
-      //   content: ``,
-      //   revert: ``,
-      //   verify: ``
-      // }
-    ];
-
     const curDir = process.cwd();
     const sqitchDir = path.resolve(outdir + '/' + name);
     mkdirp.sync(sqitchDir);
@@ -353,8 +235,8 @@ DROP EXTENSION IF EXISTS postgis;
     }
 
     process.chdir(curDir);
-    writeSqitchStuff(rows, opts);
-    writeResults(rows, opts);
+    writeSqitchStuff(results.rows, opts);
+    writeResults(results.rows, opts);
   }
 
   pgPool.end();
