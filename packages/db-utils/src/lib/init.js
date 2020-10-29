@@ -156,12 +156,7 @@ export const initSkitch = async () => {
       build: 'lerna run prepare --parallel',
       bootstrap: 'lerna bootstrap --use-workspaces'
     },
-    dependencies: {
-      'skitch-extension-defaults': 'latest',
-      'skitch-extension-default-roles': 'latest',
-      'skitch-extension-verify': 'latest',
-      'skitch-extension-utils': 'latest'
-    },
+    dependencies: {},
     devDependencies: {
       '@babel/cli': '7.10.4',
       '@babel/core': '7.10.4',
