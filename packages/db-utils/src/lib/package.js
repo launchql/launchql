@@ -6,7 +6,7 @@ import { sync as mkdirp } from 'mkdirp';
 import { relative } from 'path';
 import { transformProps } from '@launchql/db-transform';
 import { writeFileSync, readFileSync } from 'fs';
-import { sluggify } from './utils';
+import { sync as rimraf } from 'rimraf';
 
 const noop = () => undefined;
 
@@ -75,6 +75,7 @@ export const writePackage = async (version, extension = true, sqitchPath) => {
 
   const outPath = extension ? `${sqitchPath}/sql` : `${sqitchPath}/out`;
 
+  rimraf(outPath);
   mkdirp(outPath);
 
   if (extension) {
