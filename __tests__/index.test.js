@@ -4,7 +4,10 @@ import {
   GetMetaSchema,
   GetMetaSchemaUnion,
   GetMetaInflection,
-  GetMetaRelations
+  GetBelongsToRelations,
+  GetHasOneRelations,
+  GetHasManyRelations,
+  GetManyToManyRelations
 } from '../utils/queries';
 import { PgMetaschemaPlugin } from '../src';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
@@ -34,24 +37,49 @@ afterAll(async () => {
 it('GetMetaSchema', async () => {
   await graphQL(async query => {
     const data = await query(GetMetaSchema);
+    expect(data.errors).toBe(undefined);
     expect(snapshot(data)).toMatchSnapshot();
   });
 });
 it('GetMetaSchemaUnion', async () => {
   await graphQL(async query => {
     const data = await query(GetMetaSchemaUnion);
+    expect(data.errors).toBe(undefined);
     expect(snapshot(data)).toMatchSnapshot();
   });
 });
 it('GetMetaInflection', async () => {
   await graphQL(async query => {
     const data = await query(GetMetaInflection);
+    expect(data.errors).toBe(undefined);
     expect(snapshot(data)).toMatchSnapshot();
   });
 });
-it('GetMetaRelations', async () => {
+it('GetHasOneRelations', async () => {
   await graphQL(async query => {
-    const data = await query(GetMetaRelations);
+    const data = await query(GetHasOneRelations);
+    expect(data.errors).toBe(undefined);
+    expect(snapshot(data)).toMatchSnapshot();
+  });
+});
+it('GetHasManyRelations', async () => {
+  await graphQL(async query => {
+    const data = await query(GetHasManyRelations);
+    expect(data.errors).toBe(undefined);
+    expect(snapshot(data)).toMatchSnapshot();
+  });
+});
+it('GetBelongsToRelations', async () => {
+  await graphQL(async query => {
+    const data = await query(GetBelongsToRelations);
+    expect(data.errors).toBe(undefined);
+    expect(snapshot(data)).toMatchSnapshot();
+  });
+});
+it('GetManyToManyRelations', async () => {
+  await graphQL(async query => {
+    const data = await query(GetManyToManyRelations);
+    expect(data.errors).toBe(undefined);
     expect(snapshot(data)).toMatchSnapshot();
   });
 });

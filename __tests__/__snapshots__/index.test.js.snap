@@ -1,5 +1,632 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`GetBelongsToRelations 1`] = `
+Object {
+  "data": Object {
+    "_meta": Object {
+      "tables": Array [
+        Object {
+          "name": "AllType",
+          "relations": Object {
+            "belongsTo": Array [],
+          },
+        },
+        Object {
+          "name": "BoundingBox",
+          "relations": Object {
+            "belongsTo": Array [],
+          },
+        },
+        Object {
+          "name": "PermissionAssignment",
+          "relations": Object {
+            "belongsTo": Array [
+              Object {
+                "fieldName": "permissionByPermId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "permId",
+                  },
+                ],
+                "references": Object {
+                  "name": "Permission",
+                },
+                "type": "BelongsTo",
+              },
+              Object {
+                "fieldName": "roleByRoleId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "references": Object {
+                  "name": "Role",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Permission",
+          "relations": Object {
+            "belongsTo": Array [],
+          },
+        },
+        Object {
+          "name": "Role",
+          "relations": Object {
+            "belongsTo": Array [
+              Object {
+                "fieldName": "userByOrgId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "orgId",
+                  },
+                ],
+                "references": Object {
+                  "name": "User",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "SubjectAssignment",
+          "relations": Object {
+            "belongsTo": Array [
+              Object {
+                "fieldName": "userBySubjId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "subjId",
+                  },
+                ],
+                "references": Object {
+                  "name": "User",
+                },
+                "type": "BelongsTo",
+              },
+              Object {
+                "fieldName": "roleByRoleId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "references": Object {
+                  "name": "Role",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "UserSetting",
+          "relations": Object {
+            "belongsTo": Array [
+              Object {
+                "fieldName": "userByUserId",
+                "isUnique": true,
+                "keys": Array [
+                  Object {
+                    "name": "userId",
+                  },
+                ],
+                "references": Object {
+                  "name": "User",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "User",
+          "relations": Object {
+            "belongsTo": Array [],
+          },
+        },
+        Object {
+          "name": "Postcode",
+          "relations": Object {
+            "belongsTo": Array [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetHasManyRelations 1`] = `
+Object {
+  "data": Object {
+    "_meta": Object {
+      "tables": Array [
+        Object {
+          "name": "AllType",
+          "relations": Object {
+            "hasMany": Array [],
+          },
+        },
+        Object {
+          "name": "BoundingBox",
+          "relations": Object {
+            "hasMany": Array [],
+          },
+        },
+        Object {
+          "name": "PermissionAssignment",
+          "relations": Object {
+            "hasMany": Array [],
+          },
+        },
+        Object {
+          "name": "Permission",
+          "relations": Object {
+            "hasMany": Array [
+              Object {
+                "fieldName": "permissionAssignmentsByPermId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "permId",
+                  },
+                ],
+                "referencedBy": Object {
+                  "name": "PermissionAssignment",
+                },
+                "type": "hasMany",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Role",
+          "relations": Object {
+            "hasMany": Array [
+              Object {
+                "fieldName": "permissionAssignmentsByRoleId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "referencedBy": Object {
+                  "name": "PermissionAssignment",
+                },
+                "type": "hasMany",
+              },
+              Object {
+                "fieldName": "subjectAssignmentsByRoleId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "referencedBy": Object {
+                  "name": "SubjectAssignment",
+                },
+                "type": "hasMany",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "SubjectAssignment",
+          "relations": Object {
+            "hasMany": Array [],
+          },
+        },
+        Object {
+          "name": "UserSetting",
+          "relations": Object {
+            "hasMany": Array [],
+          },
+        },
+        Object {
+          "name": "User",
+          "relations": Object {
+            "hasMany": Array [
+              Object {
+                "fieldName": "rolesByOrgId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "orgId",
+                  },
+                ],
+                "referencedBy": Object {
+                  "name": "Role",
+                },
+                "type": "hasMany",
+              },
+              Object {
+                "fieldName": "subjectAssignmentsBySubjId",
+                "isUnique": false,
+                "keys": Array [
+                  Object {
+                    "name": "subjId",
+                  },
+                ],
+                "referencedBy": Object {
+                  "name": "SubjectAssignment",
+                },
+                "type": "hasMany",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Postcode",
+          "relations": Object {
+            "hasMany": Array [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetHasOneRelations 1`] = `
+Object {
+  "data": Object {
+    "_meta": Object {
+      "tables": Array [
+        Object {
+          "name": "AllType",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "BoundingBox",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "PermissionAssignment",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "Permission",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "Role",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "SubjectAssignment",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "UserSetting",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+        Object {
+          "name": "User",
+          "relations": Object {
+            "hasOne": Array [
+              Object {
+                "fieldName": "userSettingByUserId",
+                "isUnique": true,
+                "keys": Array [
+                  Object {
+                    "name": "userId",
+                  },
+                ],
+                "referencedBy": Object {
+                  "name": "UserSetting",
+                },
+                "type": "hasOne",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Postcode",
+          "relations": Object {
+            "hasOne": Array [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetManyToManyRelations 1`] = `
+Object {
+  "data": Object {
+    "_meta": Object {
+      "tables": Array [
+        Object {
+          "name": "AllType",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "BoundingBox",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "PermissionAssignment",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "Permission",
+          "relations": Object {
+            "manyToMany": Array [
+              Object {
+                "fieldName": "rolesByPermissionAssignmentPermIdAndRoleId",
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "permId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Permission",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "permId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "PermissionAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "Role",
+                },
+                "type": "ManyToMany",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Role",
+          "relations": Object {
+            "manyToMany": Array [
+              Object {
+                "fieldName": "permissionsByPermissionAssignmentRoleIdAndPermId",
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "permId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Permission",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "permId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "PermissionAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "Permission",
+                },
+                "type": "ManyToMany",
+              },
+              Object {
+                "fieldName": "usersBySubjectAssignmentRoleIdAndSubjId",
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "subjId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "User",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "subjId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "SubjectAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "User",
+                },
+                "type": "ManyToMany",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "SubjectAssignment",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "UserSetting",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+        Object {
+          "name": "User",
+          "relations": Object {
+            "manyToMany": Array [
+              Object {
+                "fieldName": "rolesBySubjectAssignmentSubjIdAndRoleId",
+                "junctionLeftConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "subjId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "User",
+                  },
+                },
+                "junctionLeftKeyAttributes": Array [
+                  Object {
+                    "name": "subjId",
+                  },
+                ],
+                "junctionRightConstraint": Object {
+                  "fields": Array [
+                    Object {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": Object {
+                    "name": "Role",
+                  },
+                },
+                "junctionRightKeyAttributes": Array [
+                  Object {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionTable": Object {
+                  "name": "SubjectAssignment",
+                },
+                "leftKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": Array [
+                  Object {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": Object {
+                  "name": "Role",
+                },
+                "type": "ManyToMany",
+              },
+            ],
+          },
+        },
+        Object {
+          "name": "Postcode",
+          "relations": Object {
+            "manyToMany": Array [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
 exports[`GetMetaInflection 1`] = `
 Object {
   "data": Object {
@@ -309,270 +936,6 @@ Object {
             "delete": "deletePostcodeById",
             "one": "postcode",
             "update": "updatePostcodeById",
-          },
-        },
-      ],
-    },
-  },
-}
-`;
-
-exports[`GetMetaRelations 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
-          "name": "AllType",
-          "relations": Object {
-            "manyToMany": Array [],
-          },
-        },
-        Object {
-          "name": "BoundingBox",
-          "relations": Object {
-            "manyToMany": Array [],
-          },
-        },
-        Object {
-          "name": "PermissionAssignment",
-          "relations": Object {
-            "manyToMany": Array [],
-          },
-        },
-        Object {
-          "name": "Permission",
-          "relations": Object {
-            "manyToMany": Array [
-              Object {
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "permId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "Permission",
-                  },
-                },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
-                    "name": "permId",
-                  },
-                ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "roleId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "Role",
-                  },
-                },
-                "junctionRightKeyAttributes": Array [
-                  Object {
-                    "name": "roleId",
-                  },
-                ],
-                "junctionTable": Object {
-                  "name": "PermissionAssignment",
-                },
-                "leftKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "query": "rolesByPermissionAssignmentPermIdAndRoleId",
-                "rightKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "rightTable": Object {
-                  "name": "Role",
-                },
-              },
-            ],
-          },
-        },
-        Object {
-          "name": "Role",
-          "relations": Object {
-            "manyToMany": Array [
-              Object {
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "roleId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "Role",
-                  },
-                },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
-                    "name": "roleId",
-                  },
-                ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "permId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "Permission",
-                  },
-                },
-                "junctionRightKeyAttributes": Array [
-                  Object {
-                    "name": "permId",
-                  },
-                ],
-                "junctionTable": Object {
-                  "name": "PermissionAssignment",
-                },
-                "leftKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "query": "permissionsByPermissionAssignmentRoleIdAndPermId",
-                "rightKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "rightTable": Object {
-                  "name": "Permission",
-                },
-              },
-              Object {
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "roleId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "Role",
-                  },
-                },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
-                    "name": "roleId",
-                  },
-                ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "subjId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "User",
-                  },
-                },
-                "junctionRightKeyAttributes": Array [
-                  Object {
-                    "name": "subjId",
-                  },
-                ],
-                "junctionTable": Object {
-                  "name": "SubjectAssignment",
-                },
-                "leftKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "query": "usersBySubjectAssignmentRoleIdAndSubjId",
-                "rightKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "rightTable": Object {
-                  "name": "User",
-                },
-              },
-            ],
-          },
-        },
-        Object {
-          "name": "SubjectAssignment",
-          "relations": Object {
-            "manyToMany": Array [],
-          },
-        },
-        Object {
-          "name": "UserSetting",
-          "relations": Object {
-            "manyToMany": Array [],
-          },
-        },
-        Object {
-          "name": "User",
-          "relations": Object {
-            "manyToMany": Array [
-              Object {
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "subjId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "User",
-                  },
-                },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
-                    "name": "subjId",
-                  },
-                ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
-                      "name": "roleId",
-                    },
-                  ],
-                  "refTable": Object {
-                    "name": "Role",
-                  },
-                },
-                "junctionRightKeyAttributes": Array [
-                  Object {
-                    "name": "roleId",
-                  },
-                ],
-                "junctionTable": Object {
-                  "name": "SubjectAssignment",
-                },
-                "leftKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "query": "rolesBySubjectAssignmentSubjIdAndRoleId",
-                "rightKeyAttributes": Array [
-                  Object {
-                    "name": "id",
-                  },
-                ],
-                "rightTable": Object {
-                  "name": "Role",
-                },
-              },
-            ],
-          },
-        },
-        Object {
-          "name": "Postcode",
-          "relations": Object {
-            "manyToMany": Array [],
           },
         },
       ],

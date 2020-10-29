@@ -1,5 +1,7 @@
 import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
 import m2m from './many-to-many';
+import belongsTo from './belongs-to';
+import has from './has';
 
 const GIS_TYPES = [
   'Geometry',
@@ -95,27 +97,39 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           delete: String
         }
         type MetaschemaTableManyToManyRelation {
-          query: String
-          leftKeyAttributes: [MetaschemaField]
-          rightKeyAttributes: [MetaschemaField]
-          junctionLeftKeyAttributes: [MetaschemaField]
-          junctionRightKeyAttributes: [MetaschemaField]
-          junctionTable: MetaschemaTable
-          rightTable: MetaschemaTable
-          junctionLeftConstraint: MetaschemaForeignKeyConstraint
-          junctionRightConstraint: MetaschemaForeignKeyConstraint
+          fieldName: String
+          type: String
+          leftKeyAttributes: [MetaschemaField]!
+          rightKeyAttributes: [MetaschemaField]!
+          junctionLeftKeyAttributes: [MetaschemaField]!
+          junctionRightKeyAttributes: [MetaschemaField]!
+          junctionTable: MetaschemaTable!
+          rightTable: MetaschemaTable!
+          junctionLeftConstraint: MetaschemaForeignKeyConstraint!
+          junctionRightConstraint: MetaschemaForeignKeyConstraint!
         }
-        type MetaschemaTableOneToOneRelation {
-          query: JSON
+        type MetaschemaTableHasRelation {
+          fieldName: String
+          type: String
+          referencedBy: MetaschemaTable!
+          isUnique: Boolean!
+          keys: [MetaschemaField]
         }
-
+        type MetaschemaTableBelongsToRelation {
+          fieldName: String
+          type: String
+          references: MetaschemaTable!
+          isUnique: Boolean!
+          keys: [MetaschemaField]
+        }
         type MetaschemaTableRelation {
-          oneToOne: [MetaschemaTableOneToOneRelation]
-          hasOne: JSON
-          belongsTo: JSON
-          hasMany: JSON
+          hasOne: [MetaschemaTableHasRelation]
+          hasMany: [MetaschemaTableHasRelation]
+          has: [MetaschemaTableHasRelation]
+          belongsTo: [MetaschemaTableBelongsToRelation]
           manyToMany: [MetaschemaTableManyToManyRelation]
         }
+
         type MetaschemaTable {
           name: String!
           query: MetaschemaTableQuery!
@@ -407,37 +421,31 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           }
         },
         MetaschemaTableRelation: {
-          oneToOne(table) {
-            return null;
-          },
-          oneToMany(table) {
-            return null;
-          },
-          manyToOne(table) {
-            return null;
-          },
           hasOne(table) {
-            return null;
-          },
-          belongsTo(table) {
-            return null;
+            return has(table, build).filter(a => a.type === 'hasOne');
           },
           hasMany(table) {
-            return null;
+            return has(table, build).filter(a => a.type === 'hasMany');
+          },
+          belongsTo(table) {
+            return belongsTo(table, build);
+          },
+          has(table) {
+            return has(table, build);
           },
           manyToMany(table) {
-            if (!inflection.manyToManyRelationByKeys) {
-              return null;
-            }
             return m2m(table, build);
           }
         },
-        MetaschemaTableOneToOneRelation: {
-          query(relation) {
-            return null;
+        MetaschemaTableBelongsToRelation: {
+          type() {
+            return 'BelongsTo';
           }
         },
         MetaschemaTableManyToManyRelation: {
+          type() {
+            return 'ManyToMany';
+          },
           leftKeyAttributes(relation) {
             return relation.leftKeyAttributes;
           },
@@ -462,7 +470,11 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           junctionRightConstraint(relation) {
             return relation.junctionRightConstraint;
           },
-          query(relation) {
+          fieldName(relation) {
+            if (!inflection.manyToManyRelationByKeys) {
+              return null;
+            }
+
             const {
               leftKeyAttributes,
               junctionLeftKeyAttributes,
