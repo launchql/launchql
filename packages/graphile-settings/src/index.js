@@ -76,6 +76,7 @@ export const getGraphileSettings = ({
     host,
     schema,
     ignoreRBAC: false,
+    legacyRelations: 'omit',
     showErrorStack: false,
     extendedErrors: false,
     disableQueryLog: false,
