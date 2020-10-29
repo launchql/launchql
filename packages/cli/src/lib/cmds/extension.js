@@ -1,8 +1,7 @@
 import {
   getAvailableExtensions,
   getInstalledExtensions,
-  writeExtensions,
-  writeExtensionsToEnv
+  writeExtensions
 } from '@launchql/db-utils';
 
 import { prompt } from 'inquirerer';
@@ -27,5 +26,4 @@ export default async (argv) => {
     await writeExtensions(extensions);
     return;
   }
-  await writeExtensionsToEnv(argv);
 };

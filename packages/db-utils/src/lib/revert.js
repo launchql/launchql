@@ -1,7 +1,7 @@
 import * as shell from 'shelljs';
 import { resolve } from 'path';
 
-import { listModules, getExtensionsAndModules } from './modules';
+import { listModules } from './modules';
 
 import { skitchPath } from './paths';
 import { extDeps } from './deps';
@@ -33,9 +33,7 @@ export const revert = async (name, database, opts) => {
     try {
       if (extensions.external.includes(extension)) {
         console.log(`DROP EXTENSION IF EXISTS "${extension}" CASCADE;`);
-        await pgPool.query(
-          `DROP EXTENSION IF EXISTS "${extension}" CASCADE;`
-        );
+        await pgPool.query(`DROP EXTENSION IF EXISTS "${extension}" CASCADE;`);
       } else {
         console.log(modules[extension].path);
         console.log(`sqitch revert db:pg:${database} -y`);

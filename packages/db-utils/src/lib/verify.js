@@ -1,7 +1,7 @@
 import * as shell from 'shelljs';
 import { resolve } from 'path';
 
-import { listModules, getExtensionsAndModules } from './modules';
+import { listModules } from './modules';
 
 import { skitchPath } from './paths';
 import { extDeps } from './deps';
@@ -31,7 +31,8 @@ export const verify = async (name, database, opts) => {
       if (extensions.external.includes(extension)) {
         console.log(`verify extension ${extension}...`);
         await pgPool.query(
-          `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`, [extension]
+          `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`,
+          [extension]
         );
       } else {
         console.log(modules[extension].path);

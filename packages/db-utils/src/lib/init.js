@@ -20,7 +20,9 @@ const makePackage = ({ name, description, author }) => {
     version: '0.0.1',
     description,
     author,
-    private: true,
+    publishConfig: {
+      access: 'restricted'
+    },
     scripts: {
       test: 'FAST_TEST=1 launchql-templatedb && jest',
       'test:watch': 'FAST_TEST=1 jest --watch'
@@ -33,6 +35,7 @@ const makePackage = ({ name, description, author }) => {
       '@babel/plugin-proposal-object-rest-spread': '7.10.4',
       '@babel/plugin-transform-runtime': '7.10.4',
       '@babel/preset-env': '7.10.4',
+      '@babel/runtime': '^7.4.2',
       '@launchql/db-testing': 'latest',
       '@launchql/graphql-testing': 'latest',
       'babel-eslint': '10.1.0',
@@ -48,24 +51,43 @@ const makePackage = ({ name, description, author }) => {
       prettier: '2.0.5',
       'regenerator-runtime': '^0.13.2'
     },
-    dependencies: {
-      '@babel/runtime': '^7.4.2'
-    }
+    dependencies: {}
   };
 };
 
-export const init = async ({ name, description, author, extensions }) => {
+export const init = async ({
+  name,
+  description,
+  author,
+  extensions,
+  username,
+  scoped
+}) => {
   await sPath();
-  console.log({ name, description, author, extensions });
   // init sqitch
 
-  const cmd = ['sqitch', 'init', name, '--engine', 'pg'].join(' ');
+  const cur = process.cwd();
+  // cur is for enabling us to test with this flag:
+  if (process.env.INIT_PATH) {
+    process.chdir(process.env.INIT_PATH);
+  }
+
+  let pkgname, sqitchname;
+  if (scoped) {
+    pkgname = `@${username}/${name}`;
+    sqitchname = `${username}-${name}`;
+  } else {
+    pkgname = name;
+    sqitchname = name;
+  }
+
+  const cmd = ['sqitch', 'init', sqitchname, '--engine', 'pg'].join(' ');
   await promisify(exec)(cmd.trim());
 
   // now we have a sqitch path!
 
   const sqitchPath = await path();
-  const pkg = makePackage({ name, description, author });
+  const pkg = makePackage({ name: pkgname, description, author });
 
   // initialize template
   shell.cp('-r', `${srcPath}/sqitch/*`, `${sqitchPath}/`);
@@ -74,7 +96,7 @@ export const init = async ({ name, description, author, extensions }) => {
   writeFileSync(`${sqitchPath}/package.json`, JSON.stringify(pkg, null, 2));
 
   shell.mkdir('-p', `${sqitchPath}/sql`);
-  const extname = sluggify(name);
+  const extname = sluggify(sqitchname);
 
   const info = await getExtensionInfo();
 
@@ -91,39 +113,26 @@ export const init = async ({ name, description, author, extensions }) => {
   });
 
   const settings = {
-    name,
+    name: sqitchname,
     projects: true
   };
 
   const plan = await makePlan(sqitchPath, settings);
+
   writeFileSync(`${sqitchPath}/sqitch.plan`, plan);
   writeFileSync(
     `${sqitchPath}/.npmignore`,
-    `*.log
-npm-debug.log*
+    `# NOTE keeping this minimal since we generally want everything
 
-# Coverage directory used by tools like istanbul
-coverage
-.nyc_output
+*.log
+npm-debug.log*
 
 # Dependency directories
 node_modules
 
 # npm package lock
 package-lock.json
-yarn.lock
-
-# project files
-src
-test
-examples
-CHANGELOG.md
-.travis.yml
-.editorconfig
-.eslintignore
-.eslintrc
-.babelrc
-.gitignore
+yarn.lock    
 `
   );
   writeFileSync(
@@ -131,6 +140,8 @@ CHANGELOG.md
     `node_modules
 `
   );
+
+  process.chdir(cur);
 };
 
 export const initSkitch = async () => {
@@ -210,7 +221,7 @@ ssh:
 \tdocker exec -it ${name}-postgres /bin/bash
 
 install:
-\tdocker exec ${name}-postgres /sql-extensions/install.sh
+\tdocker exec ${name}-postgres /sql-bin/install.sh
 
   `
   );
@@ -220,7 +231,7 @@ install:
 services:
   postgres:
     container_name: ${name}-postgres
-    image: pyramation/postgres
+    image: pyramation/postgis
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=password"
@@ -229,8 +240,9 @@ services:
     expose:
       - "5432"
     volumes:
-      - ./packages:/sql-extensions
-      - ./node_modules:/sql-modules
+      - ./bin:/sql-bin
+      - ./packages:/sql-packages
+      - ./extensions:/sql-extensions
   `
   );
 };

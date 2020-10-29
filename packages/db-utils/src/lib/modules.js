@@ -10,13 +10,9 @@ export const listModules = async () => {
   const path = await skitchPath();
   // TODO use skitchPath/package.json to get packages/*
 
-  const moduleFiles = glob(path + '/**/*.control')
-    .filter((c) => !/node_modules/.test(c))
-    .concat(
-      existsSync(path + '/node_modules')
-        ? glob(path + '/node_modules/**/*.control')
-        : []
-    );
+  const moduleFiles = glob(path + '/**/*.control').filter(
+    (c) => !/node_modules/.test(c)
+  );
   const extensions = moduleFiles.reduce((m, v) => {
     const contents = readFileSync(v).toString();
     const key = basename(v).split('.control')[0];
