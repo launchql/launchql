@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.5](https://github.com/launchql/launchql/compare/@launchql/db-utils@0.4.4...@launchql/db-utils@0.4.5) (2020-10-29)
+
+**Note:** Version bump only for package @launchql/db-utils
+
+
+
+
+
 ## [0.4.4](https://github.com/launchql/launchql/compare/@launchql/db-utils@0.4.3...@launchql/db-utils@0.4.4) (2020-10-27)
 
 **Note:** Version bump only for package @launchql/db-utils
