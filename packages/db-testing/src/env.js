@@ -1,7 +1,6 @@
-const envalid = require('envalid');
-const { bool, port, str } = envalid;
+import { cleanEnv, bool, port, str } from 'envalid';
 
-module.exports = envalid.cleanEnv(
+export default cleanEnv(
   process.env,
   {
     PGTEMPLATE_DATABASE: str({ default: 'testing-template-db' }),

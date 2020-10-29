@@ -1,6 +1,6 @@
-const { cleanEnv, str, port } = require('envalid');
+import { cleanEnv, str, port } from 'envalid';
 
-module.exports = cleanEnv(
+export default cleanEnv(
   process.env,
   {
     PGUSER: str({ default: 'postgres' }),
