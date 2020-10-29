@@ -3,6 +3,8 @@
 exports[`deps skitch path skitch init 1`] = `
 Array [
   "babel.config.js",
+  "bin",
+  "bin/install.sh",
   "bootstrap-roles.sql",
   "docker-compose.yml",
   "jest.config.js",
@@ -10,8 +12,6 @@ Array [
   "Makefile",
   "myproject",
   "package.json",
-  "packages",
-  "packages/install.sh",
   "readme.md",
   "skitch.json",
 ]

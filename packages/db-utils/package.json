@@ -63,6 +63,7 @@
     "glob": "7.1.6",
     "mkdirp": "^1.0.4",
     "node-walkup": "^1.1.1",
+    "parse-package-name": "0.1.0",
     "pg": "^8.4.2",
     "pgsql-parser": "1.1.1",
     "rimraf": "^3.0.2",

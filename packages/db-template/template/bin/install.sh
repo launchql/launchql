@@ -22,4 +22,4 @@ function installit {
 }
 
 installit /sql-extensions
-installit /sql-modules
+installit /sql-packages

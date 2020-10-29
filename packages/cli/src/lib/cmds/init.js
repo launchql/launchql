@@ -1,12 +1,14 @@
 import { exec } from 'shelljs';
+import { getLicense, LICENSE, MIT } from '../license';
 import { prompt } from 'inquirerer';
+import { basename } from 'path';
+import { writeFileSync } from 'fs';
 import {
   skitchPath,
   getAvailableExtensions,
   init,
   initSkitch
 } from '@launchql/db-utils';
-import { basename, dirname } from 'path';
 
 // sqitch init flipr --uri https://github.com/theory/sqitch-intro/ --engine pg
 const username = exec('git config --global user.name', { silent: true }).trim();
@@ -15,6 +17,22 @@ const email = exec('git config --global user.email', { silent: true }).trim();
 export default async (argv) => {
   if (argv.bare) {
     await initSkitch();
+
+    const { entity } = await prompt(
+      [
+        {
+          name: 'entity',
+          message: 'your name or company name',
+          required: true
+        }
+      ],
+      []
+    );
+
+    const lic = await getLicense(entity, email);
+
+    writeFileSync('LICENSE', lic);
+
     console.log(`
 
           |||
@@ -40,14 +58,25 @@ export default async (argv) => {
   const questions = [
     {
       name: 'name',
-      message: 'project name (e.g., flipr)',
+      message: `package name (e.g., ${basename(process.cwd())})`,
       default: basename(process.cwd()),
       required: true
     },
     {
-      name: 'author',
-      message: 'project author',
-      default: `${username} <${email}>`,
+      name: 'entity',
+      message: 'your name or company name',
+      default: username,
+      required: true
+    },
+    {
+      name: 'npmname',
+      message: 'your npm username',
+      required: true
+    },
+    {
+      name: 'useremail',
+      message: 'project email',
+      default: email,
       required: true
     },
     {
@@ -61,17 +90,41 @@ export default async (argv) => {
       message: 'which extensions?',
       choices: modules,
       type: 'checkbox',
-      default: ['plpgsql', 'uuid-ossp'],
+      default: ['plpgsql'],
+      required: true
+    },
+    {
+      type: 'confirm',
+      name: 'scoped',
+      message: 'use private scopes? (@username/pkg)',
       required: true
     }
   ];
 
-  const { name, description, author, extensions } = await prompt(
-    questions,
-    argv
-  );
+  const {
+    name,
+    description,
+    entity,
+    npmname,
+    useremail,
+    extensions,
+    scoped
+  } = await prompt(questions, argv);
 
-  await init({ name, description, author, extensions });
+  const author = `${entity} <${useremail}>`;
+
+  const lic = await getLicense(entity, useremail);
+
+  await init({
+    name,
+    description,
+    author,
+    extensions,
+    scoped,
+    username: npmname
+  });
+
+  writeFileSync('LICENSE', lic);
 
   console.log(`
 
@@ -84,7 +137,11 @@ export default async (argv) => {
 
 Now try this:
 
-lql generate
+> lql generate 
+
+or the shortcut:
+
+> lql g 
 
 `);
 };
