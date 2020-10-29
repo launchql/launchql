@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-utils#readme",
