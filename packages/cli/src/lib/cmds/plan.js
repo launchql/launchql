@@ -1,5 +1,5 @@
 import { prompt } from 'inquirerer';
-import { sqitchPath, makePlan } from '@launchql/db-utils';
+import { sqitchPath, makePlan, getExtensionName } from '@launchql/db-utils';
 import { basename } from 'path';
 const fs = require('fs');
 
@@ -18,8 +18,7 @@ export default async (argv) => {
   let name = argv.name;
   if (!name) {
     try {
-      name = JSON.parse(fs.readFileSync(`${PKGDIR}/package.json`).toString())
-        .name;
+      name = await getExtensionName(PKGDIR);
     } catch (e) {
       console.log('>');
     }
