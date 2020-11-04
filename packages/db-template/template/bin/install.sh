@@ -8,11 +8,14 @@ function installit {
     echo "SQL Module Directory $1 exists."
     echo $1
     cd $1
-    for x in $(ls -d */)
+
+    for x in $(find ./ -type f -name "sqitch.plan")
     do
-      cd $x
+      orig=$(pwd)
+      dir=$(dirname $x)
+      cd $dir
       make install
-      cd ../
+      cd $orig
     done
     cd $DIR
   else
