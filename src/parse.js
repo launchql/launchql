@@ -46,31 +46,37 @@ const getFromValue = (from) => {
 
 const getValuesFromKeys = (object, keys) => keys.map((key) => object[key]);
 
+const identity = (a) => a;
+
 // type (int, text, etc)
 // from Array of keys that map to records found (e.g., ['lon', 'lat'])
 const getCoercionFunc = (type, from, opts) => {
+  const parse = (opts.parse = opts.parse || identity);
   switch (type) {
     case 'int':
       return (record) => {
         const val = ast.A_Const({
-          val: ast.Integer({ ival: record[from[0]] })
+          val: ast.Integer({ ival: parse(record[from[0]]) })
         });
         return wrapValue(val, opts);
       };
     case 'float':
       return (record) => {
-        const val = ast.A_Const({ val: ast.Float({ str: record[from[0]] }) });
+        const val = ast.A_Const({
+          val: ast.Float({ str: parse(record[from[0]]) })
+        });
         return wrapValue(val, opts);
       };
     case 'bbox':
       // do bbox magic with args from the fields
       return (record) => {
-        const val = makeBoundingBox(record[from[0]]);
+        const val = makeBoundingBox(parse(record[from[0]]));
         return wrapValue(val, opts);
       };
     case 'location':
       return (record) => {
         const [lon, lat] = getValuesFromKeys(record, from);
+        // NO parse here...
         const val = makeLocation(lon, lat);
         return wrapValue(val, opts);
       };
@@ -85,7 +91,9 @@ const getCoercionFunc = (type, from, opts) => {
     case 'text':
     default:
       return (record) => {
-        const val = ast.A_Const({ val: ast.String({ str: record[from[0]] }) });
+        const val = ast.A_Const({
+          val: ast.String({ str: parse(record[from[0]]) })
+        });
         return wrapValue(val, opts);
       };
   }
@@ -93,7 +101,7 @@ const getCoercionFunc = (type, from, opts) => {
 
 export const parseTypes = (config) => {
   return Object.entries(config.fields).reduce((m, v) => {
-    const [key, value] = v;
+    let [key, value] = v;
     let type;
     let from;
     if (typeof value === 'string') {
@@ -102,6 +110,10 @@ export const parseTypes = (config) => {
       if (['related', 'location'].includes(type)) {
         throw new Error('must use object for ' + type + ' type');
       }
+      value = {
+        type,
+        from
+      };
     } else {
       type = value.type;
       from = getFromValue(value.from || key);

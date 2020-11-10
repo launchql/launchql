@@ -214,20 +214,21 @@ export const getRelatedField = ({
   wrapAst,
   cast,
   record,
+  parse,
   from
 }) => {
   let val;
 
   switch (refType) {
     case 'int':
-      val = ast.A_Const({ val: ast.Integer({ ival: record[from[0]] }) });
+      val = ast.A_Const({ val: ast.Integer({ ival: parse(record[from[0]]) }) });
       break;
     case 'float':
-      val = ast.A_Const({ val: ast.Float({ str: record[from[0]] }) });
+      val = ast.A_Const({ val: ast.Float({ str: parse(record[from[0]]) }) });
       break;
     case 'text':
     default:
-      val = ast.A_Const({ val: ast.String({ str: record[from[0]] }) });
+      val = ast.A_Const({ val: ast.String({ str: parse(record[from[0]]) }) });
   }
 
   val = wrapValue(val, { wrap, wrapAst });

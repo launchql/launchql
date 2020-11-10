@@ -8,6 +8,7 @@ import * as ast from 'pg-ast';
 const zips = resolve(__dirname + '/../__fixtures__/zip.csv');
 const withHeaders = resolve(__dirname + '/../__fixtures__/headers.csv');
 const withDelimeter = resolve(__dirname + '/../__fixtures__/delimeter.csv');
+const forParse = resolve(__dirname + '/../__fixtures__/parse.csv');
 
 it('Insert Many', async () => {
   const config = {
@@ -28,6 +29,45 @@ it('Insert Many', async () => {
   };
 
   const records = await parse(zips, { headers: config.headers });
+  const types = parseTypes(config);
+  const stmt = InsertMany({
+    schema: config.schema,
+    table: config.table,
+    types,
+    records
+  });
+
+  expect(deparse([stmt])).toMatchSnapshot();
+});
+
+it('Insert Many Parse', async () => {
+  const config = {
+    schema: 'my-schema',
+    table: 'my-table',
+    headers: ['username', 'profile_pic'],
+    fields: {
+      username: {
+        type: 'text',
+        from: 'username'
+      },
+      profile_pic: {
+        type: 'text',
+        from: 'profile_pic',
+        cast: 'jsonb',
+        parse: (text) => {
+          if (!text || !/\(([^)]+)\)/.test(text)) return '';
+          const url = text.match(/\(([^)]+)\)/)[1];
+          const obj = {
+            url,
+            mime: url.endsWith('png') ? 'image/png' : 'image/jpg'
+          };
+          return JSON.stringify(obj);
+        }
+      }
+    }
+  };
+
+  const records = await parse(forParse, { headers: config.headers });
   const types = parseTypes(config);
   const stmt = InsertMany({
     schema: config.schema,
