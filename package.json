@@ -1,6 +1,6 @@
 {
   "name": "csv-to-pg",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "csv to pg statements",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/csv-to-pg#readme",

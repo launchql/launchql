@@ -219,16 +219,25 @@ export const getRelatedField = ({
 }) => {
   let val;
 
+  const value = parse(record[from[0]]);
+  if (typeof value === 'undefined') {
+    return ast.Null({});
+  }
+
   switch (refType) {
     case 'int':
-      val = ast.A_Const({ val: ast.Integer({ ival: parse(record[from[0]]) }) });
+      val = ast.A_Const({ val: ast.Integer({ ival: value }) });
       break;
     case 'float':
-      val = ast.A_Const({ val: ast.Float({ str: parse(record[from[0]]) }) });
+      val = ast.A_Const({ val: ast.Float({ str: value }) });
+      break;
+    case 'boolean':
+    case 'bool':
+      val = ast.String({ str: value ? 'TRUE' : 'FALSE' });
       break;
     case 'text':
     default:
-      val = ast.A_Const({ val: ast.String({ str: parse(record[from[0]]) }) });
+      val = ast.A_Const({ val: ast.String({ str: value }) });
   }
 
   val = wrapValue(val, { wrap, wrapAst });

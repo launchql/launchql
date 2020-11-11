@@ -52,18 +52,42 @@ const identity = (a) => a;
 // from Array of keys that map to records found (e.g., ['lon', 'lat'])
 const getCoercionFunc = (type, from, opts) => {
   const parse = (opts.parse = opts.parse || identity);
+
   switch (type) {
     case 'int':
       return (record) => {
+        const value = parse(record[from[0]]);
+        if (typeof value === 'undefined') {
+          return ast.Null({});
+        }
+
         const val = ast.A_Const({
-          val: ast.Integer({ ival: parse(record[from[0]]) })
+          val: ast.Integer({ ival: value })
         });
         return wrapValue(val, opts);
       };
     case 'float':
       return (record) => {
+        const value = parse(record[from[0]]);
+        if (typeof value === 'undefined') {
+          return ast.Null({});
+        }
+
         const val = ast.A_Const({
-          val: ast.Float({ str: parse(record[from[0]]) })
+          val: ast.Float({ str: value })
+        });
+        return wrapValue(val, opts);
+      };
+    case 'boolean':
+    case 'bool':
+      return (record) => {
+        const value = parse(record[from[0]]);
+        if (typeof value === 'undefined') {
+          return ast.Null({});
+        }
+
+        const val = ast.String({
+          str: value ? 'TRUE' : 'FALSE'
         });
         return wrapValue(val, opts);
       };
@@ -91,8 +115,12 @@ const getCoercionFunc = (type, from, opts) => {
     case 'text':
     default:
       return (record) => {
+        const value = parse(record[from[0]]);
+        if (typeof value === 'undefined') {
+          return ast.Null({});
+        }
         const val = ast.A_Const({
-          val: ast.String({ str: parse(record[from[0]]) })
+          val: ast.String({ str: value })
         });
         return wrapValue(val, opts);
       };

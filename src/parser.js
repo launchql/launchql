@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { parse, parseTypes } from './index';
 import { deparse } from 'pgsql-deparser';
 import { InsertOne, InsertMany } from './utils';
@@ -17,7 +17,12 @@ export class Parser {
     if (headers) opts.headers = headers;
     if (delimeter) opts.separator = delimeter;
 
-    const records = await parse(config.input, opts);
+    let records;
+    if (config.json || config.input.endsWith('.json')) {
+      records = JSON.parse(readFileSync(config.input, 'utf-8'));
+    } else {
+      records = await parse(config.input, opts);
+    }
 
     if (config.debug) {
       console.log(records);
