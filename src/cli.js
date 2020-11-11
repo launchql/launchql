@@ -58,6 +58,10 @@ const argv = process.argv.slice(2);
   config.input = results.input;
   config.output = results.output;
 
+  if (argv.includes('--debug')) {
+    config.debug = true;
+  }
+
   const parser = new Parser(config);
   parser.parse();
 })();

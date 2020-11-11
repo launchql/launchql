@@ -18,6 +18,12 @@ export class Parser {
     if (delimeter) opts.separator = delimeter;
 
     const records = await parse(config.input, opts);
+
+    if (config.debug) {
+      console.log(records);
+      return;
+    }
+
     const types = parseTypes(config);
 
     if (singleStmts) {
