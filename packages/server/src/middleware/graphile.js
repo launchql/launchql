@@ -19,9 +19,6 @@ export const graphile = ({
 
     const { schemas, dbname, anon_role, role_name } = svc;
 
-    console.log(appendPlugins);
-    console.log(graphileBuildOptions);
-
     if (graphileCache.has(key)) {
       const { handler } = graphileCache.get(key);
       return handler(req, res, next);
