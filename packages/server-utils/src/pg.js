@@ -38,7 +38,7 @@ const end = (pool) => {
   }
 };
 
-export const cache = new LRU({
+export const graphileCache = new LRU({
   max: 15,
   dispose: function (key, obj) {
     console.log(`disposing ${'PostGraphile'}[${key}]`);
@@ -52,9 +52,9 @@ export const pgCache = new LRU({
   dispose: function (key, pgPool) {
     console.log(`disposing pg ${key}`);
     const inUse = false;
-    cache.forEach((obj, k) => {
+    graphileCache.forEach((obj, k) => {
       if (obj.pgPoolKey === key) {
-        cache.del(k);
+        graphileCache.del(k);
       }
     });
     end(pgPool);
@@ -90,7 +90,7 @@ export const getRootPgPool = (dbname) => {
 
 const close = once(() => {
   console.log('closing server utils...');
-  cache.reset();
+  graphileCache.reset();
   pgCache.reset();
   svcCache.reset();
 });

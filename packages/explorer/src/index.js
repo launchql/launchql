@@ -1,5 +1,5 @@
 import {
-  cache,
+  graphileCache,
   getRootPgPool,
   cors,
   healthz,
@@ -24,8 +24,8 @@ export default ({
   const getGraphileInstanceObj = (dbname, schemaname) => {
     const key = [dbname, schemaname].join('.');
 
-    if (cache.has(key)) {
-      return cache.get(key);
+    if (graphileCache.has(key)) {
+      return graphileCache.get(key);
     }
 
     const opts = {
@@ -48,7 +48,7 @@ export default ({
       handler: postgraphile(pgPool, opts.schema, opts)
     };
 
-    cache.set(key, obj);
+    graphileCache.set(key, obj);
     return obj;
   };
 

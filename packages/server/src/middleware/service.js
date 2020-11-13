@@ -9,6 +9,7 @@ export const getSubdomain = (reqDomains) => {
 export const service = async (req, res, next) => {
   try {
     const svc = await getSvcConfig(req);
+    // const svc = await getSvcConfigByName(req);
     req.svc = svc;
     if (!svc) {
       return res.status(404).send('Not found');
@@ -52,6 +53,34 @@ export const getSvcConfig = async (req) => {
         [domain, subdomain]
       );
     }
+
+    if (svc.rowCount === 0) {
+      return null;
+    } else {
+      svc = svc.rows[0];
+      svcCache.set(key, svc);
+    }
+  }
+  return svc;
+};
+
+// TODO later app.use(`/:service/*`, middleware)
+// hard part was getting graphile handler to work...
+export const getSvcConfigByName = async (req) => {
+  const rootPgPool = getRootPgPool(env.PGDATABASE);
+
+  const key = req.params.service;
+  req.svc_key = key;
+
+  let svc;
+  if (svcCache.has(key)) {
+    svc = svcCache.get(key);
+  } else {
+    svc = await rootPgPool.query(
+      `SELECT * FROM "${env.SERVICE_SCHEMA}"."${env.SERVICE_TABLE}"
+                WHERE name=$1`,
+      [key]
+    );
 
     if (svc.rowCount === 0) {
       return null;
