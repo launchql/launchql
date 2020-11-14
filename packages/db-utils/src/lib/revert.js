@@ -37,7 +37,7 @@ export const revert = async (name, database, opts) => {
       } else {
         console.log(modules[extension].path);
         console.log(`sqitch revert db:pg:${database} -y`);
-        shell.exec(`sqitch revert db:pg:${database} -y`, {
+        const cmd = shell.exec(`sqitch revert db:pg:${database} -y`, {
           cwd: resolve(path, modules[extension].path),
           env: {
             PGUSER,
@@ -47,10 +47,13 @@ export const revert = async (name, database, opts) => {
             PATH
           }
         });
+        if (cmd.code !== 0) {
+          throw new Error('revert failed');
+        }
       }
     } catch (e) {
-      console.error(e);
-      break;
+      pgPool.end();
+      process.exit(1);
     }
   }
   pgPool.end();

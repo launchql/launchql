@@ -37,7 +37,7 @@ export const verify = async (name, database, opts) => {
       } else {
         console.log(modules[extension].path);
         console.log(`sqitch verify db:pg:${database}`);
-        shell.exec(`sqitch verify db:pg:${database}`, {
+        const cmd = shell.exec(`sqitch verify db:pg:${database}`, {
           cwd: resolve(path, modules[extension].path),
           env: {
             PGUSER,
@@ -47,10 +47,13 @@ export const verify = async (name, database, opts) => {
             PATH
           }
         });
+        if (cmd.code !== 0) {
+          throw new Error('deploy failed');
+        }
       }
     } catch (e) {
-      console.error(e);
-      break;
+      pgPool.end();
+      process.exit(1);
     }
   }
   pgPool.end();
