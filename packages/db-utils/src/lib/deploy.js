@@ -49,7 +49,8 @@ export const deploy = async (name, database, opts) => {
       }
     } catch (e) {
       console.error(e);
-      break;
+      pgPool.end();
+      process.exit(1);
     }
   }
   pgPool.end();
