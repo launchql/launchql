@@ -135,7 +135,7 @@ export default ({
       if (req.url === '/flush') {
         const [schemaName, dbName] = req.urlDomains.subdomains;
         const key = [dbName, schemaName].join('.');
-        cache.del(key);
+        graphileCache.del(key);
         return res.status(200).send('OK');
       }
     }
