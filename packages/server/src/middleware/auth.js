@@ -4,7 +4,9 @@ export const authenticate = async (req, res, next) => {
   const svc = req.svc;
   const pool = getRootPgPool(svc.dbname);
 
-  if (svc.auth?.length == 2) {
+  const { rls_module } = svc.data;
+
+  if (rls_module && rls_module.authenticate_schema && rls_module.authenticate) {
     const { authorization = '' } = req.headers;
     const [authType, authToken] = authorization.split(' ');
     let token = {};
@@ -12,7 +14,7 @@ export const authenticate = async (req, res, next) => {
       let result = null;
       try {
         result = await pool.query(
-          `SELECT * FROM "${svc.auth[0]}"."${svc.auth[1]}"($1)`,
+          `SELECT * FROM "${rls_module.authenticate_schema}"."${rls_module.authenticate}"($1)`,
           [authToken]
         );
       } catch (e) {

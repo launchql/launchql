@@ -1,93 +1,23 @@
-const psqlArray = (array) => {
-  return `ARRAY[${array.join(',')}]`;
-};
-
 export default (rows) => {
   return rows.reduce((m, svc) => {
-    if (svc.pubkey_challenge && svc.pubkey_challenge.length) {
-      return (
-        m +
-        `
+    return (
+      m +
+      `
 INSERT INTO services_public.services 
 (
-    subdomain,
-    domain,
-    dbname,
-    role_name,
-    anon_role,
-    schemas,
-    role_key,
-    auth,
-    pubkey_challenge
+  subdomain,
+  domain,
+  dbname,
+  data
 ) VALUES 
 (
-    '${svc.subdomain}',
-    '${svc.domain}',
-    current_database(), -- potentially update this if svc db is not same
-    '${svc.role_name}',
-    '${svc.anon_role}',
-    ${psqlArray(svc.schemas.map((s) => `'${s}'`))},
-    '${svc.role_key}',
-    ${psqlArray(svc.auth.map((s) => `'${s}'`))},
-    ${psqlArray(svc.pubkey_challenge.map((s) => `'${s}'`))}
-
+  '${svc.subdomain}',
+  '${svc.domain}',
+  current_database(), -- potentially update this if svc db is not same
+  '${JSON.stringify(svc.data)}'::jsonb
 );
-
-          `
-      );
-    } else if (svc.auth && svc.auth.length) {
-      return (
-        m +
+      
         `
-INSERT INTO services_public.services 
-(
-    subdomain,
-    domain,
-    dbname,
-    role_name,
-    anon_role,
-    schemas,
-    role_key,
-    auth
-) VALUES 
-(
-    '${svc.subdomain}',
-    '${svc.domain}',
-    current_database(), -- potentially update this if svc db is not same
-    '${svc.role_name}',
-    '${svc.anon_role}',
-    ${psqlArray(svc.schemas.map((s) => `'${s}'`))},
-    '${svc.role_key}',
-    ${psqlArray(svc.auth.map((s) => `'${s}'`))},
-
-);
-        
-          `
-      );
-    } else {
-      return (
-        m +
-        `
-INSERT INTO services_public.services 
-(
-    subdomain,
-    domain,
-    dbname,
-    role_name,
-    anon_role,
-    schemas
-) VALUES 
-(
-    '${svc.subdomain}',
-    '${svc.domain}',
-    current_database(), -- potentially update this if svc db is not same
-    '${svc.role_name}',
-    '${svc.anon_role}',
-    ${psqlArray(svc.schemas.map((s) => `'${s}'`))}
-);
-        
-          `
-      );
-    }
+    );
   }, '');
 };

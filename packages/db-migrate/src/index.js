@@ -5,7 +5,6 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import Case from 'case';
 import rimraf from 'rimraf';
-import moment from 'moment';
 import makeSvc from './service';
 
 import { init } from '@launchql/db-utils';
@@ -180,7 +179,7 @@ ${rows
   if (svcs?.rows?.length) {
     service = makeSvc(svcs.rows);
     serviceObj = svcs.rows.reduce((m, svc) => {
-      const { id, name, dbname, is_public, database_id, ...rest } = svc;
+      const { id, name, dbname, database_id, ...rest } = svc;
       m[svc.subdomain] = JSON.parse(replacer(JSON.stringify(rest)));
       return m;
     }, {});
