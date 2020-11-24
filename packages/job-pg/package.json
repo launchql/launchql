@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-pg",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "job pg",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-pg#readme",
