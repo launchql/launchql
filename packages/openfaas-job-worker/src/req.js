@@ -4,7 +4,7 @@ import requestLib from 'request';
 // for completion
 const completeUrl = env.INTERNAL_JOBS_CALLBACK_URL;
 
-const request = (fn, { body, workerId, jobId, taskId }) => {
+const request = (fn, { body, workerId, jobId }) => {
   return new Promise((resolve, reject) => {
     requestLib.post(
       {
@@ -14,8 +14,7 @@ const request = (fn, { body, workerId, jobId, taskId }) => {
           // these are used by job-worker
           'X-Worker-Id': workerId,
           'X-Job-Id': jobId,
-          'X-Function-Name': fn,
-          'X-Task-Id': taskId,
+          'X-Function': fn,
 
           // this one is used by OpenFAAS
           'X-Callback-Url': completeUrl

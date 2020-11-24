@@ -74,7 +74,6 @@ export default class Worker {
     }
     await req(task_identifier, {
       body: payload,
-      taskId: task_identifier,
       workerId: this.workerId,
       jobId: job.id
     });
