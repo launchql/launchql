@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/pyramation/launchql/compare/@launchql/explorer@0.11.30...@launchql/explorer@0.12.0) (2020-11-24)
+
+**Note:** Version bump only for package @launchql/explorer
+
+
+
+
+
 ## [0.11.30](https://github.com/pyramation/launchql/compare/@launchql/explorer@0.11.29...@launchql/explorer@0.11.30) (2020-11-19)
 
 **Note:** Version bump only for package @launchql/explorer
