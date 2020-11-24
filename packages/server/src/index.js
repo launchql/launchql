@@ -78,7 +78,7 @@ class Server {
   }
   listen() {
     this.app.listen(this.port, env.SERVER_HOST, () =>
-      this.log(`app listening at http://${env.SERVER_HOST}:${this.port}`)
+      this.log(`listening at http://${env.SERVER_HOST}:${this.port}`)
     );
   }
   async flush(svcName) {

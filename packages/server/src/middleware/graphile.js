@@ -1,5 +1,5 @@
-import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import env from '../env';
+import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile } from '@pyramation/postgraphile';
 import PublicKeySignature from '../plugins/PublicKeySignature';
 import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
@@ -17,7 +17,14 @@ export const graphile = ({
     const svc = req.svc;
     const key = req.svc_key;
 
-    const { schemas, dbname, anon_role, role_name } = svc;
+    const graphile = svc.data.graphile;
+
+    if (!graphile) {
+      throw new Error('no graphile options');
+    }
+
+    const { dbname } = svc;
+    const { schemas, anon_role, role_name } = graphile;
 
     if (graphileCache.has(key)) {
       const { handler } = graphileCache.get(key);
@@ -33,7 +40,7 @@ export const graphile = ({
       postgis
     });
 
-    if (svc.pubkey_challenge?.length == 6) {
+    if (svc.data.pubkey_challenge && svc.data.pubkey_challenge.crypto_network) {
       options.appendPlugins.push(PublicKeySignature(svc));
     }
 

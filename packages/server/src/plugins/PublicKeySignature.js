@@ -5,12 +5,19 @@ import pgQueryWithContext from '@pyramation/pg-query-context';
 const { makeExtendSchemaPlugin, gql } = require('graphile-utils');
 
 const PublicKeySignature = (svc) => {
-  const net = svc.pubkey_challenge[0];
-  const privSchema = svc.pubkey_challenge[1];
-  const f1 = svc.pubkey_challenge[2];
-  const f2 = svc.pubkey_challenge[3];
-  const f3 = svc.pubkey_challenge[4];
-  const f4 = svc.pubkey_challenge[5];
+  const { pubkey_challenge } = svc.data;
+  if (!pubkey_challenge) {
+    throw new Error('pubkey_challenge missing!');
+  }
+
+  const {
+    schema,
+    crypto_network,
+    sign_up_unique_key,
+    sign_in_request_challenge,
+    sign_in_record_failure,
+    sign_in_with_challenge
+  } = pubkey_challenge;
 
   return makeExtendSchemaPlugin(() => ({
     typeDefs: gql`
@@ -67,18 +74,18 @@ const PublicKeySignature = (svc) => {
             context: {
               role: 'anonymous'
             },
-            query: `SELECT * FROM "${privSchema}".${f1}($1)`,
+            query: `SELECT * FROM "${schema}".${sign_up_unique_key}($1)`,
             variables: [publicKey]
           });
 
           const {
-            rows: [{ [f2]: message }]
+            rows: [{ [sign_in_request_challenge]: message }]
           } = await pgQueryWithContext({
             client: pgClient,
             context: {
               role: 'anonymous'
             },
-            query: `SELECT * FROM "${privSchema}".${f2}($1)`,
+            query: `SELECT * FROM "${schema}".${sign_in_request_challenge}($1)`,
             variables: [publicKey]
           });
 
@@ -92,13 +99,13 @@ const PublicKeySignature = (svc) => {
           const publicKey = args.input.publicKey;
 
           const {
-            rows: [{ [f2]: message }]
+            rows: [{ [sign_in_request_challenge]: message }]
           } = await pgQueryWithContext({
             client: pgClient,
             context: {
               role: 'anonymous'
             },
-            query: `SELECT * FROM "${privSchema}".${f2}($1)`,
+            query: `SELECT * FROM "${schema}".${sign_in_request_challenge}($1)`,
             variables: [publicKey]
           });
 
@@ -117,7 +124,7 @@ const PublicKeySignature = (svc) => {
           const message = args.input.message;
           const signature = args.input.signature;
 
-          const network = Networks[net];
+          const network = Networks[crypto_network];
           const result = verifyMessage(message, publicKey, signature, network);
 
           if (!result) {
@@ -126,7 +133,7 @@ const PublicKeySignature = (svc) => {
               context: {
                 role: 'anonymous'
               },
-              query: `SELECT * FROM "${privSchema}".${f3}($1)`,
+              query: `SELECT * FROM "${schema}".${sign_in_record_failure}($1)`,
               variables: [publicKey]
             });
             throw new Error('BAD_SIGNIN');
@@ -139,7 +146,7 @@ const PublicKeySignature = (svc) => {
             context: {
               role: 'anonymous'
             },
-            query: `SELECT * FROM "${privSchema}".${f4}($1, $2)`,
+            query: `SELECT * FROM "${schema}".${sign_in_with_challenge}($1, $2)`,
             variables: [publicKey, message]
           });
 
