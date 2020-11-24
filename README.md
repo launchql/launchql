@@ -6,7 +6,7 @@
 
 https://www.openfaas.com/
 
-### install tables into Postges
+### install tables into Postgres
 
 make sure you have `lql` installed 
 
