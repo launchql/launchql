@@ -1,7 +1,7 @@
 import { sqitchPath as path } from './paths';
 import { getExtensionName } from './extensions';
 const parser = require('pgsql-parser');
-import { resolve } from './resolve';
+import { resolve, resolveWithPlan } from './resolve';
 import { sync as mkdirp } from 'mkdirp';
 import { relative } from 'path';
 import { transformProps } from '@launchql/db-transform';
@@ -18,11 +18,14 @@ export const cleanTree = (tree) => {
   });
 };
 
-export const packageModule = async (extension = true) => {
+// default to using the plan, so we stay in sync with the actual order that was developed in code
+export const packageModule = async ({
+  usePlan = true,
+  extension = true
+} = {}) => {
   const sqitchPath = await path();
-  const sql = await resolve(sqitchPath);
-  const pkgPath = `${sqitchPath}/package.json`;
-  const pkg = require(pkgPath);
+  const resolveFn = usePlan ? resolveWithPlan : resolve;
+  const sql = await resolveFn(sqitchPath);
   const extname = await getExtensionName(sqitchPath);
 
   // sql
@@ -57,7 +60,12 @@ export const packageModule = async (extension = true) => {
   }
 };
 
-export const writePackage = async (version, extension = true, sqitchPath) => {
+export const writePackage = async ({
+  version,
+  extension = true,
+  usePlan = true,
+  sqitchPath
+}) => {
   if (!sqitchPath) {
     sqitchPath = await path();
   }
@@ -71,7 +79,10 @@ export const writePackage = async (version, extension = true, sqitchPath) => {
   const Makefile = readFileSync(makePath).toString();
   const control = readFileSync(controlPath).toString();
 
-  const { sql, diff, tree1, tree2 } = await packageModule(extension);
+  const { sql, diff, tree1, tree2 } = await packageModule({
+    extension,
+    usePlan
+  });
 
   const outPath = extension ? `${sqitchPath}/sql` : `${sqitchPath}/out`;
 

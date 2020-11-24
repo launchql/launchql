@@ -1,6 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`package creates an extension 1`] = `
+exports[`creates an extension 1`] = `
+"\\\\echo Use \\"CREATE EXTENSION secrets\\" to load this file. \\\\quit
+CREATE FUNCTION secretfunction (  ) RETURNS text AS $EOFCODE$
+select * from generate_secret();
+$EOFCODE$ LANGUAGE sql STABLE;"
+`;
+
+exports[`creates an extension via plan 1`] = `
 "\\\\echo Use \\"CREATE EXTENSION secrets\\" to load this file. \\\\quit
 CREATE FUNCTION secretfunction (  ) RETURNS text AS $EOFCODE$
 select * from generate_secret();

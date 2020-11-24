@@ -57,7 +57,11 @@ export const publish = async (sqlmodule, release = 'patch') => {
     shell.exec(`sqitch tag ${version} -n 'tag ${version}'`, {
       cwd: info.packageDir
     });
-    await writePackage(version, true, info.packageDir);
+    await writePackage({
+      version,
+      extension: true,
+      sqitchPath: info.packageDir
+    });
 
     // add update
     process.chdir(packageDir);
@@ -82,7 +86,7 @@ export const publish = async (sqlmodule, release = 'patch') => {
   shell.exec(`sqitch tag ${version} -n 'tag ${version}'`, {
     cwd: packageDir
   });
-  await writePackage(version, true, packageDir);
+  await writePackage({ version, extension: true, sqitchPath: packageDir });
 
   process.chdir(cur);
 };
@@ -139,7 +143,11 @@ export const publishAndBump = async (sqlmodule, release = 'patch') => {
     shell.exec(`sqitch tag ${version} -n 'tag ${version}'`, {
       cwd: info.packageDir
     });
-    await writePackage(version, true, info.packageDir);
+    await writePackage({
+      version,
+      extension: true,
+      sqitchPath: info.packageDir
+    });
 
     // add update
     process.chdir(packageDir);
@@ -155,7 +163,7 @@ export const publishAndBump = async (sqlmodule, release = 'patch') => {
   shell.exec(`sqitch tag ${version} -n 'tag ${version}'`, {
     cwd: packageDir
   });
-  await writePackage(version, true, packageDir);
+  await writePackage({ version, extension: true, sqitchPath: packageDir });
 
   process.chdir(cur);
 };

@@ -1,7 +1,6 @@
 import {
   build,
   listModules,
-  packageModule,
   sqitchPath as path,
   skitchPath as sPath,
   writePackage
@@ -26,7 +25,7 @@ const single = async (argv) => {
   ];
 
   const { version } = await prompt(questions, argv);
-  await writePackage(version, false);
+  await writePackage({ version, extension: false });
 };
 
 const all = async (argv) => {

@@ -153,8 +153,6 @@ ${rows
   }
 
   const name = db.rows[0].name;
-  const schema_name = db.rows[0].schema_name;
-  const private_schema_name = db.rows[0].private_schema_name;
 
   const schemaReplacers = schemas.rows.map((schema) => {
     return [schema.schema_name, Case.snake(name + '_' + schema.name)];

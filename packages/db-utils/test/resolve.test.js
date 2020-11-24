@@ -1,4 +1,4 @@
-import { resolve } from '../src/lib/resolve';
+import { resolve, resolveWithPlan } from '../src/lib/resolve';
 
 const expectResult = `-- Deploy schemas/myschema/schema to pg
 
@@ -67,6 +67,14 @@ describe('resolve', () => {
     const dir = process.cwd();
     process.chdir(__dirname + '/../__fixtures__/resolve/basic');
     const sql = await resolve();
+    expect(sql).toBeTruthy();
+    expect(sql.trim()).toEqual(expectResult);
+    process.chdir(dir);
+  });
+  it('resolves sql in plan order', async () => {
+    const dir = process.cwd();
+    process.chdir(__dirname + '/../__fixtures__/resolve/basic');
+    const sql = await resolveWithPlan();
     expect(sql).toBeTruthy();
     expect(sql.trim()).toEqual(expectResult);
     process.chdir(dir);

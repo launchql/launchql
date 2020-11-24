@@ -1,24 +1,25 @@
-import {
-  sqitchPath as path,
-  packageModule,
-  writePackage
-} from '@launchql/db-utils';
+import { sqitchPath as path, writePackage } from '@launchql/db-utils';
 import { prompt } from 'inquirerer';
 
 export default async (argv) => {
+  // do --no-plan and you can set this to false
+  // hacky but we don't want to interupt
+  if (!argv.hasOwnProperty('plan')) {
+    argv.plan = true;
+  }
+
   const sqitchPath = await path();
   const pkgPath = `${sqitchPath}/package.json`;
   const pkg = require(pkgPath);
 
-  // const questions = [
-  //   {
-  //     name: 'version',
-  //     message: 'version',
-  //     default: pkg.version,
-  //     required: true
-  //   }
-  // ];
+  const questions = [
+    {
+      name: 'plan',
+      message: 'use plan',
+      default: true
+    }
+  ];
 
-  // const { version } = await prompt(questions, argv);
-  await writePackage(pkg.version, true);
+  const { plan } = await prompt(questions, argv);
+  await writePackage({ version: pkg.version, extension: true, usePlan: plan });
 };

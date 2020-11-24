@@ -1,5 +1,5 @@
-import { readFileSync, readFile } from 'fs';
-import { basename, dirname, resolve, relative } from 'path';
+import { readFileSync } from 'fs';
+import { relative } from 'path';
 import { sync as glob } from 'glob';
 import { listModules } from './modules';
 import { getExtensionName } from './extensions';
@@ -108,9 +108,10 @@ export const getDeps = async (packageDir) => {
   delete deps[makeKey('apps/index')];
 
   // move extensions up
+  // TODO maybe deprecate this?
   const extensions = resolved.filter((a) => a.match(/^extensions/));
   const normalSql = resolved.filter((a) => !a.match(/^extensions/));
-
+  // console.log({ extensions, normalSql });
   // resolved = useExtensions ? [...extensions, ...normalSql] : [...normalSql];
   resolved = [...extensions, ...normalSql];
   // resolved = [...normalSql];

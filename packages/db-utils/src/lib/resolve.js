@@ -1,13 +1,12 @@
-import { promisify } from 'util';
 const fs = require('fs');
-const glob = require('glob');
-const readFile = promisify(fs.readFile);
-const asyncGlob = promisify(glob);
 
 import { getDeps } from './deps';
 
-export const resolve = async (pkgDir = process.cwd(), scriptType = 'deploy') => {
-  let sqlfile = [];
+export const resolve = async (
+  pkgDir = process.cwd(),
+  scriptType = 'deploy'
+) => {
+  const sqlfile = [];
 
   let { resolved, external } = await getDeps(pkgDir);
 
@@ -15,11 +14,41 @@ export const resolve = async (pkgDir = process.cwd(), scriptType = 'deploy') => 
     resolved = resolved.reverse();
   }
 
-  for (var i=0; i<resolved.length; i++) {
+  for (var i = 0; i < resolved.length; i++) {
     if (external.includes(resolved[i])) continue;
-    const file = `${pkgDir}/${scriptType}/${resolved[i]}.sql`
-    const modName = file.split(`/${scriptType}/`)[1];
-    const dscript = fs.readFileSync(file).toString();
+    const file = `${pkgDir}/${scriptType}/${resolved[i]}.sql`;
+    const dscript = fs.readFileSync(file, 'utf-8');
+    sqlfile.push(dscript);
+  }
+
+  return sqlfile.join('\n');
+};
+
+export const resolveWithPlan = async (
+  pkgDir = process.cwd(),
+  scriptType = 'deploy'
+) => {
+  const sqlfile = [];
+
+  const plan = fs.readFileSync(`${pkgDir}/sqitch.plan`, 'utf-8');
+
+  let resolved = plan
+    .split('\n')
+    .filter(
+      (l) =>
+        l.trim().length > 0 && // empty lines
+        !l.trim().startsWith('%') && // initial project settings
+        !l.trim().startsWith('@') // tags
+    )
+    .map((line) => line.split(' ')[0]);
+
+  if (scriptType === 'revert') {
+    resolved = resolved.reverse();
+  }
+
+  for (var i = 0; i < resolved.length; i++) {
+    const file = `${pkgDir}/${scriptType}/${resolved[i]}.sql`;
+    const dscript = fs.readFileSync(file, 'utf-8');
     sqlfile.push(dscript);
   }
 
