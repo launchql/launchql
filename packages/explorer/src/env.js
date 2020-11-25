@@ -10,7 +10,7 @@ export default cleanEnv(
     PGPASSWORD: str({ default: 'password' }),
     PGPORT: port({ default: 5432 }),
     USE_SIMPLE_INFLECTION: bool({ default: true }),
-    USE_OPPOSITE_BASENAMES: bool({ default: true }),
+    USE_OPPOSITE_BASENAMES: bool({ default: false }),
     USE_POSTGIS: bool({ default: true })
   },
   { dotEnvPath: null }

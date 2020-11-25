@@ -15,7 +15,7 @@ const questions = [
     message: 'oppositeBaseNames',
     type: 'boolean',
     alias: 'o',
-    default: true
+    default: false
   },
   {
     name: 'postgis',

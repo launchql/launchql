@@ -14,7 +14,7 @@ export default cleanEnv(
     SERVICE_TABLE: str({ default: 'services' }),
     TRUST_PROXY: bool({ default: false }),
     USE_SIMPLE_INFLECTION: bool({ default: true }),
-    USE_OPPOSITE_BASENAMES: bool({ default: true }),
+    USE_OPPOSITE_BASENAMES: bool({ default: false }),
     USE_POSTGIS: bool({ default: true })
   },
   { dotEnvPath: null }
