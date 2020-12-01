@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphile-query",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "graphile query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/graphile-query#readme",
@@ -60,8 +60,8 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "@pyramation/postgraphile": "4.9.0",
-    "graphql": "^14.0.2",
     "graphile-build": "4.9.0",
-    "graphile-utils": "4.9.2"
+    "graphile-utils": "4.9.2",
+    "graphql": "^14.0.2"
   }
 }
