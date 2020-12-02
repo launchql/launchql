@@ -23,7 +23,7 @@ export const flushService = async (serviceName) => {
 
   // // currently uses service.name for flushing
   // let svc = await pgPool.query(
-  //   `SELECT * FROM "${env.SERVICE_SCHEMA}"."${env.SERVICE_TABLE}"
+  //   `SELECT * FROM "${env.META_SCHEMA}"."${env.SERVICE_TABLE}"
   //           WHERE name=$1`,
   //   [serviceName]
   // );

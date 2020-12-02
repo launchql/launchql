@@ -78,15 +78,6 @@ export const graphile = ({
       handler
     });
 
-    if (req.originalUrl === '/') {
-      const schemaNotIntrospected = await handler.getGraphQLSchema();
-      const host = req.get('host');
-      return res.send({
-        api: `${req.protocol}://${host}/graphiql`,
-        schema: schemaNotIntrospected
-      });
-    }
-
     return handler(req, res, next);
   } catch (e) {
     // TODO update graphile... why do we not catch
