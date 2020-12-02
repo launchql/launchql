@@ -20,6 +20,9 @@ const aflt = (num) => ast.A_Const({ val: ast.Float({ str: num }) });
 const aint = (num) => ast.A_Const({ val: ast.Integer({ ival: num }) });
 
 export const makeLocation = (longitude, latitude) => {
+  if (!longitude || !latitude) {
+    return ast.Null();
+  }
   return funcCall('st_setsrid', [
     funcCall('st_makepoint', [aflt(longitude), aflt(latitude)]),
     aint(4326)

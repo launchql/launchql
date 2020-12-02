@@ -8,6 +8,13 @@ import {
   getRelatedField,
   wrapValue
 } from './utils';
+function isNumeric(str) {
+  if (typeof str != 'string') return false; // we only process strings!
+  return (
+    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str))
+  ); // ...and ensure strings of whitespace fail
+}
 
 export const parse = (path, opts) =>
   new Promise((resolve, reject) => {
@@ -100,11 +107,17 @@ const getCoercionFunc = (type, from, opts) => {
     case 'location':
       return (record) => {
         const [lon, lat] = getValuesFromKeys(record, from);
-        // NO parse here...
-        if (typeof lon === 'undefined' || typeof lat === 'undefined') {
+        if (typeof lon === 'undefined') {
+          return ast.Null({});
+        }
+        if (typeof lat === 'undefined') {
+          return ast.Null({});
+        }
+        if (!isNumeric(lon) || !isNumeric(lat)) {
           return ast.Null({});
         }
 
+        // NO parse here...
         const val = makeLocation(lon, lat);
         return wrapValue(val, opts);
       };
