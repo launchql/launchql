@@ -101,6 +101,10 @@ const getCoercionFunc = (type, from, opts) => {
       return (record) => {
         const [lon, lat] = getValuesFromKeys(record, from);
         // NO parse here...
+        if (typeof lon === 'undefined' || typeof lat === 'undefined') {
+          return ast.Null({});
+        }
+
         const val = makeLocation(lon, lat);
         return wrapValue(val, opts);
       };
