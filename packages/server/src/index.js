@@ -12,7 +12,7 @@ import { middleware as parseDomains } from '@pyramation/url-domains';
 import express from 'express';
 import { authenticate } from './middleware/auth';
 import { graphile } from './middleware/graphile';
-import { service } from './middleware/service';
+import { api } from './middleware/api';
 import { flush, flushService } from './middleware/flush';
 
 export default ({
@@ -36,7 +36,7 @@ export default ({
 const middleware = {
   authenticate,
   graphile,
-  service
+  api
 };
 
 class Server {
@@ -60,7 +60,7 @@ class Server {
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
     app.use(parseDomains());
-    app.use(service);
+    app.use(api);
     app.use(authenticate);
     app.use(
       graphile({

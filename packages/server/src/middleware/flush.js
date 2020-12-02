@@ -19,28 +19,30 @@ export const flush = async (req, res, next) => {
 export const flushService = async (serviceName) => {
   const pgPool = getRootPgPool(env.PGDATABASE);
 
-  // currently uses service.name for flushing
-  let svc = await pgPool.query(
-    `SELECT * FROM "${env.SERVICE_SCHEMA}"."${env.SERVICE_TABLE}"
-            WHERE name=$1`,
-    [serviceName]
-  );
+  console.log('implement flushing svc ' + serviceName);
 
-  if (svc.rowCount === 0) {
-    return;
-  } else {
-    svc = svc.rows[0];
-    let key;
-    if (!svc.domain && svc.subdomain) {
-      key = [svc.subdomain, 'localhost'].join('.'); // TODO need to set host or create a better key
-    } else if (svc.domain && !svc.subdomain) {
-      key = [svc.domain].join('.');
-    } else if (svc.domain && svc.subdomain) {
-      key = [svc.subdomain, svc.domain].join('.');
-    }
-    if (key) {
-      graphileCache.del(key);
-      svcCache.del(key);
-    }
-  }
+  // // currently uses service.name for flushing
+  // let svc = await pgPool.query(
+  //   `SELECT * FROM "${env.SERVICE_SCHEMA}"."${env.SERVICE_TABLE}"
+  //           WHERE name=$1`,
+  //   [serviceName]
+  // );
+
+  // if (svc.rowCount === 0) {
+  //   return;
+  // } else {
+  //   svc = svc.rows[0];
+  //   let key;
+  //   if (!svc.domain && svc.subdomain) {
+  //     key = [svc.subdomain, 'localhost'].join('.'); // TODO need to set host or create a better key
+  //   } else if (svc.domain && !svc.subdomain) {
+  //     key = [svc.domain].join('.');
+  //   } else if (svc.domain && svc.subdomain) {
+  //     key = [svc.subdomain, svc.domain].join('.');
+  //   }
+  //   if (key) {
+  //     graphileCache.del(key);
+  //     svcCache.del(key);
+  //   }
+  // }
 };

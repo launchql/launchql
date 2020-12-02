@@ -4,12 +4,7 @@ import pgQueryWithContext from '@pyramation/pg-query-context';
 
 const { makeExtendSchemaPlugin, gql } = require('graphile-utils');
 
-const PublicKeySignature = (svc) => {
-  const { pubkey_challenge } = svc.data;
-  if (!pubkey_challenge) {
-    throw new Error('pubkey_challenge missing!');
-  }
-
+const PublicKeySignature = (pubkey_challenge) => {
   const {
     schema,
     crypto_network,

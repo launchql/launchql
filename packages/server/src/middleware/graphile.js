@@ -14,17 +14,10 @@ export const graphile = ({
   overrideSettings = {}
 }) => async (req, res, next) => {
   try {
-    const svc = req.svc;
+    const api = req.apiInfo.data.api;
     const key = req.svc_key;
-
-    const graphile = svc.data.graphile;
-
-    if (!graphile) {
-      throw new Error('no graphile options');
-    }
-
-    const { dbname } = svc;
-    const { schemas, anon_role, role_name } = graphile;
+    const { dbname } = api;
+    const { schemas, anonRole, roleName } = api;
 
     if (graphileCache.has(key)) {
       const { handler } = graphileCache.get(key);
@@ -40,8 +33,12 @@ export const graphile = ({
       postgis
     });
 
-    if (svc.data.pubkey_challenge && svc.data.pubkey_challenge.crypto_network) {
-      options.appendPlugins.push(PublicKeySignature(svc));
+    const pubkey_challenge = api.apiModules.nodes.find(
+      (mod) => mod.name === 'pubkey_challenge'
+    );
+
+    if (pubkey_challenge && pubkey_challenge.data) {
+      options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data));
     }
 
     if (appendPlugins.length) {
@@ -52,12 +49,12 @@ export const graphile = ({
     options.pgSettings = async function pgSettings(req) {
       if (req?.token?.user_id) {
         return {
-          role: role_name,
+          role: roleName,
           [`jwt.claims.user_id`]: req.token.user_id,
           [`jwt.claims.group_ids`]: '{' + req.token.user_id + '}'
         };
       }
-      return { role: anon_role };
+      return { role: anonRole };
     };
 
     options.graphqlRoute = '/graphql';
