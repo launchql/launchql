@@ -63,11 +63,7 @@ export const getApiConfig = async (req) => {
       }
     });
 
-    console.log(JSON.stringify(result, null, 2));
-
     if (result.errors && result.errors.length) {
-      console.error(result.errors);
-      console.error(result.errors);
       console.error(result.errors);
       return null;
     }
