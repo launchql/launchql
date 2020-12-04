@@ -68,7 +68,7 @@ export const getApiConfig = async (req) => {
       return null;
     }
 
-    if (result && result.data && result.data.domain) {
+    if (result && result.data && result.data.domain && result.data.domain.api) {
       svc = {
         client,
         data: result.data.domain
