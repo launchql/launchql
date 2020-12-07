@@ -99,7 +99,9 @@ const getCoercionFunc = (type, from, opts) => {
         if (isEmpty(value)) {
           return ast.Null({});
         }
-
+        if (!isNumeric(value)) {
+          return ast.Null({});
+        }
         const val = ast.A_Const({
           val: ast.Integer({ ival: value })
         });
@@ -109,6 +111,9 @@ const getCoercionFunc = (type, from, opts) => {
       return (record) => {
         const value = parse(record[from[0]]);
         if (isEmpty(value)) {
+          return ast.Null({});
+        }
+        if (!isNumeric(value)) {
           return ast.Null({});
         }
 
