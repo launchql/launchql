@@ -51,9 +51,41 @@ const getFromValue = (from) => {
   return [from];
 };
 
+// looks like the CSV library gives us empty strings?
+const cleanseEmptyStrings = (str) => {
+  if (typeof str === 'string') {
+    if (str.trim() === '') return null;
+    return str;
+  } else {
+    return str;
+  }
+};
+
+const parseBoolean = (str) => {
+  if (typeof str === 'boolean') {
+    return str;
+  } else if (typeof str === 'string') {
+    const s = str.toLowerCase();
+    if (s === 'true') {
+      return true;
+    } else if (s === 't') {
+      return true;
+    } else if (s === 'f') {
+      return false;
+    } else if (s === 'false') {
+      return false;
+    }
+    return null;
+  } else {
+    return null;
+  }
+};
+
 const getValuesFromKeys = (object, keys) => keys.map((key) => object[key]);
 
 const identity = (a) => a;
+
+const isEmpty = (value) => value === null || typeof value === 'undefined';
 
 // type (int, text, etc)
 // from Array of keys that map to records found (e.g., ['lon', 'lat'])
@@ -64,7 +96,7 @@ const getCoercionFunc = (type, from, opts) => {
     case 'int':
       return (record) => {
         const value = parse(record[from[0]]);
-        if (typeof value === 'undefined') {
+        if (isEmpty(value)) {
           return ast.Null({});
         }
 
@@ -76,7 +108,7 @@ const getCoercionFunc = (type, from, opts) => {
     case 'float':
       return (record) => {
         const value = parse(record[from[0]]);
-        if (typeof value === 'undefined') {
+        if (isEmpty(value)) {
           return ast.Null({});
         }
 
@@ -88,8 +120,9 @@ const getCoercionFunc = (type, from, opts) => {
     case 'boolean':
     case 'bool':
       return (record) => {
-        const value = parse(record[from[0]]);
-        if (typeof value === 'undefined') {
+        const value = parse(parseBoolean(record[from[0]]));
+
+        if (isEmpty(value)) {
           return ast.Null({});
         }
 
@@ -132,7 +165,12 @@ const getCoercionFunc = (type, from, opts) => {
     case 'uuid':
       return (record) => {
         const value = parse(record[from[0]]);
-        if (typeof value === 'undefined' || value === '') {
+        if (
+          isEmpty(value) ||
+          !/^([0-9a-fA-F]{8})-(([0-9a-fA-F]{4}-){3})([0-9a-fA-F]{12})$/i.test(
+            value
+          )
+        ) {
           return ast.Null({});
         }
         const val = ast.A_Const({
@@ -141,10 +179,20 @@ const getCoercionFunc = (type, from, opts) => {
         return wrapValue(val, opts);
       };
     case 'text':
+      return (record) => {
+        const value = parse(cleanseEmptyStrings(record[from[0]]));
+        if (isEmpty(value)) {
+          return ast.Null({});
+        }
+        const val = ast.A_Const({
+          val: ast.String({ str: value })
+        });
+        return wrapValue(val, opts);
+      };
     default:
       return (record) => {
-        const value = parse(record[from[0]]);
-        if (typeof value === 'undefined') {
+        const value = parse(cleanseEmptyStrings(record[from[0]]));
+        if (isEmpty(value)) {
           return ast.Null({});
         }
         const val = ast.A_Const({

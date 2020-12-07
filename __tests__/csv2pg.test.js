@@ -9,6 +9,7 @@ const zips = resolve(__dirname + '/../__fixtures__/zip.csv');
 const withHeaders = resolve(__dirname + '/../__fixtures__/headers.csv');
 const withDelimeter = resolve(__dirname + '/../__fixtures__/delimeter.csv');
 const forParse = resolve(__dirname + '/../__fixtures__/parse.csv');
+const testCase = resolve(__dirname + '/../__fixtures__/test-case.csv');
 
 it('Insert Many', async () => {
   const config = {
