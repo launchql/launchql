@@ -129,6 +129,17 @@ const getCoercionFunc = (type, from, opts) => {
           from
         });
       };
+    case 'uuid':
+      return (record) => {
+        const value = parse(record[from[0]]);
+        if (typeof value === 'undefined' || value === '') {
+          return ast.Null({});
+        }
+        const val = ast.A_Const({
+          val: ast.String({ str: value })
+        });
+        return wrapValue(val, opts);
+      };
     case 'text':
     default:
       return (record) => {
