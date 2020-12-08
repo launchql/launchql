@@ -97,7 +97,7 @@ SELECT
       .map((o) => o.id)
   };
 
-  const { author, extensionName } = await prompt(
+  const { author, extensionName, metaExtensionName } = await prompt(
     [
       {
         name: 'author',
@@ -110,6 +110,12 @@ SELECT
         message: 'extension Name',
         default: database_ids[0],
         required: true
+      },
+      {
+        name: 'metaExtensionName',
+        message: 'meta extension name',
+        default: 'svc',
+        required: true
       }
     ],
     argv
@@ -121,7 +127,8 @@ SELECT
     dbInfo,
     author,
     outdir: resolve(pth + '/packages/'),
-    extensionName
+    extensionName,
+    metaExtensionName
   });
 
   console.log(`

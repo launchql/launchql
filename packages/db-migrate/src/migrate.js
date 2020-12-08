@@ -8,7 +8,8 @@ const write = async ({
   databaseid,
   author,
   outdir,
-  extensionName
+  extensionName,
+  metaExtensionName
 }) => {
   outdir = outdir + '/';
 
@@ -85,30 +86,16 @@ const write = async ({
     // replace the inner goods with the schema from above!
     meta = replacer(meta);
 
-    const metaSchemaPackage = 'meta-schema';
-
     await preparePackage({
       author,
       outdir,
-      extensions: [
-        'plpgsql',
-        'uuid-ossp',
-        'citext',
-        'pgcrypto',
-        'btree_gist',
-        'postgis',
-        'hstore',
-        'launchql-inflection',
-        'launchql-ext-types',
-        'launchql-ext-default-roles',
-        'launchql-dbs'
-      ],
-      name: metaSchemaPackage
+      extensions: ['plpgsql', 'db_meta'],
+      name: metaExtensionName
     });
 
     const metaReplacer = makeReplacer({
       schemas,
-      name: metaSchemaPackage
+      name: metaExtensionName
     });
 
     const metaPackage = [
@@ -142,7 +129,7 @@ SET session_replication_role TO DEFAULT;
     ];
 
     opts.replacer = metaReplacer.replacer;
-    opts.name = metaSchemaPackage;
+    opts.name = metaExtensionName;
     writeSqitchPlan(metaPackage, opts);
     writeSqitchFiles(metaPackage, opts);
   }
@@ -150,12 +137,19 @@ SET session_replication_role TO DEFAULT;
   pgPool.end();
 };
 
-export const migrate = async ({ dbInfo, author, outdir, extensionName }) => {
+export const migrate = async ({
+  dbInfo,
+  author,
+  outdir,
+  extensionName,
+  metaExtensionName
+}) => {
   // we really only support one db.... loop iteration of 1
   for (let v = 0; v < dbInfo.database_ids.length; v++) {
     const databaseid = dbInfo.database_ids[v];
     await write({
       extensionName,
+      metaExtensionName,
       database: dbInfo.dbname,
       databaseid,
       author,
