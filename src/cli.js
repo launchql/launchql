@@ -66,7 +66,7 @@ const argv = process.argv.slice(2);
   }
 
   const parser = new Parser(config);
-  const sql = parser.parse();
+  const sql = await parser.parse();
 
   writeFileSync(config.output, sql);
 })();
