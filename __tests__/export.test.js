@@ -93,6 +93,35 @@ it('jsonb/json', async () => {
   expect(sql).toMatchSnapshot();
 });
 
+it('image/attachment', async () => {
+  const parser = new Parser({
+    schema: 'collections_public',
+    singleStmts: true,
+    table: 'field',
+    fields: {
+      id: 'uuid',
+      name: 'text',
+      image: 'image',
+      upload: 'attachment'
+    }
+  });
+
+  const sql = await parser.parse([
+    {
+      id: '450e3b3b-b68d-4abc-990c-65cb8a1dcdb4',
+      name: 'name here',
+      image: {
+        url: 'http://path/to/image.jpg'
+      },
+      upload: {
+        url: 'http://path/to/image.jpg'
+      }
+    }
+  ]);
+
+  expect(sql).toMatchSnapshot();
+});
+
 it('arrays', async () => {
   const parser = new Parser({
     schema: 'collections_public',

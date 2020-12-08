@@ -217,6 +217,8 @@ const getCoercionFunc = (type, from, opts) => {
         });
         return wrapValue(val, opts);
       };
+    case 'image':
+    case 'attachment':
     case 'json':
     case 'jsonb':
       return (record) => {
