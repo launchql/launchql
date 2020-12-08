@@ -16,6 +16,17 @@ function isNumeric(str) {
   ); // ...and ensure strings of whitespace fail
 }
 
+const parseJson = (value) => {
+  if (typeof value === 'string') return value;
+  return value && JSON.stringify(value);
+};
+
+const psqlArray = (value) => {
+  if (value && value.length) {
+    return `{${value.map((v) => v)}}`;
+  }
+};
+
 export const parse = (path, opts) =>
   new Promise((resolve, reject) => {
     const results = [];
@@ -186,6 +197,29 @@ const getCoercionFunc = (type, from, opts) => {
     case 'text':
       return (record) => {
         const value = parse(cleanseEmptyStrings(record[from[0]]));
+        if (isEmpty(value)) {
+          return ast.Null({});
+        }
+        const val = ast.A_Const({
+          val: ast.String({ str: value })
+        });
+        return wrapValue(val, opts);
+      };
+    case 'text[]':
+      return (record) => {
+        const value = parse(psqlArray(cleanseEmptyStrings(record[from[0]])));
+        if (isEmpty(value)) {
+          return ast.Null({});
+        }
+        const val = ast.A_Const({
+          val: ast.String({ str: value })
+        });
+        return wrapValue(val, opts);
+      };
+    case 'json':
+    case 'jsonb':
+      return (record) => {
+        const value = parse(parseJson(cleanseEmptyStrings(record[from[0]])));
         if (isEmpty(value)) {
           return ast.Null({});
         }

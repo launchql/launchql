@@ -67,3 +67,49 @@ it('test case parser', async () => {
 
   expect(sql).toMatchSnapshot();
 });
+
+it('jsonb/json', async () => {
+  const parser = new Parser({
+    schema: 'collections_public',
+    singleStmts: true,
+    table: 'field',
+    fields: {
+      id: 'uuid',
+      name: 'text',
+      data: 'jsonb'
+    }
+  });
+
+  const sql = await parser.parse([
+    {
+      id: '450e3b3b-b68d-4abc-990c-65cb8a1dcdb4',
+      name: 'name here',
+      data: {
+        a: 1
+      }
+    }
+  ]);
+
+  expect(sql).toMatchSnapshot();
+});
+
+it('arrays', async () => {
+  const parser = new Parser({
+    schema: 'collections_public',
+    singleStmts: true,
+    table: 'field',
+    fields: {
+      id: 'uuid',
+      schemas: 'text[]'
+    }
+  });
+
+  const sql = await parser.parse([
+    {
+      id: '450e3b3b-b68d-4abc-990c-65cb8a1dcdb4',
+      schemas: ['a', 'b']
+    }
+  ]);
+
+  expect(sql).toMatchSnapshot();
+});
