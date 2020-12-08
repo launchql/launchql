@@ -118,12 +118,6 @@ GRANT SELECT ON meta_public.site_modules TO administrator;
 GRANT SELECT ON meta_public.site_themes TO administrator;
 GRANT SELECT ON meta_public.site_metadata TO administrator;
 
-UPDATE meta_public.apis
-      SET dbname = current_database() WHERE TRUE;
-
-UPDATE meta_public.sites
-      SET dbname = current_database() WHERE TRUE;
-
 DO $LQLMIGRATION$
   DECLARE
   BEGIN
@@ -135,6 +129,12 @@ DO $LQLMIGRATION$
 $LQLMIGRATION$;
 
 ${meta}
+
+UPDATE meta_public.apis
+      SET dbname = current_database() WHERE TRUE;
+
+UPDATE meta_public.sites
+      SET dbname = current_database() WHERE TRUE;
 
 SET session_replication_role TO DEFAULT;
 `
