@@ -6,10 +6,8 @@ import { InsertOne, InsertMany } from './utils';
 export class Parser {
   constructor(config) {
     this.config = config;
-    if (!this.config.output.endsWith('.sql'))
-      this.config.output = this.config.output + '.sql';
   }
-  async parse() {
+  async parse(data) {
     const config = this.config;
     const { schema, table, singleStmts, conflict, headers, delimeter } = config;
 
@@ -18,10 +16,17 @@ export class Parser {
     if (delimeter) opts.separator = delimeter;
 
     let records;
-    if (config.json || config.input.endsWith('.json')) {
-      records = JSON.parse(readFileSync(config.input, 'utf-8'));
+    if (typeof data === 'undefined') {
+      if (config.json || config.input.endsWith('.json')) {
+        records = JSON.parse(readFileSync(config.input, 'utf-8'));
+      } else {
+        records = await parse(config.input, opts);
+      }
     } else {
-      records = await parse(config.input, opts);
+      if (!Array.isArray(data)) {
+        throw new Error('data is not an array');
+      }
+      records = data;
     }
 
     if (config.debug) {
@@ -41,7 +46,7 @@ export class Parser {
           conflict
         })
       );
-      writeFileSync(config.output, deparse(stmts));
+      return deparse(stmts);
     } else {
       const stmt = InsertMany({
         schema,
@@ -50,7 +55,7 @@ export class Parser {
         records,
         conflict
       });
-      writeFileSync(config.output, deparse([stmt]));
+      return deparse([stmt]);
     }
   }
 }

@@ -4,6 +4,7 @@ import { readConfig } from './parse';
 import { Parser } from './parser';
 import { normalizePath } from './utils';
 import { dirname } from 'path';
+import { writeFileSync } from 'fs';
 
 const argv = process.argv.slice(2);
 
@@ -56,12 +57,16 @@ const argv = process.argv.slice(2);
   );
 
   config.input = results.input;
-  config.output = results.output;
+
+  let outFile = results.output;
+  if (!outFile.endsWith('.sql')) outFile = outFile + '.sql';
 
   if (argv.includes('--debug')) {
     config.debug = true;
   }
 
   const parser = new Parser(config);
-  parser.parse();
+  const sql = parser.parse();
+
+  writeFileSync(config.output, sql);
 })();
