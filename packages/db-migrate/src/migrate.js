@@ -118,8 +118,15 @@ GRANT SELECT ON meta_public.site_modules TO administrator;
 GRANT SELECT ON meta_public.site_themes TO administrator;
 GRANT SELECT ON meta_public.site_metadata TO administrator;
 
-EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', current_database(), 'app_user');
-EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', current_database(), 'app_admin');
+DO $LQLMIGRATION$
+  DECLARE
+  BEGIN
+  
+    EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', current_database(), 'app_user');
+    EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', current_database(), 'app_admin');
+
+  END;
+$LQLMIGRATION$;
 
 ${meta}
 
