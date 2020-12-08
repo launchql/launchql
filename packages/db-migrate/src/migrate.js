@@ -5,7 +5,7 @@ import { writeSqitchFiles, writeSqitchPlan } from './sqitch';
 
 const write = async ({
   database,
-  databaseid,
+  databaseId,
   author,
   outdir,
   extensionName,
@@ -18,13 +18,13 @@ const write = async ({
   const db = await pgPool.query(
     `select * from collections_public.database
         where id=$1`,
-    [databaseid]
+    [databaseId]
   );
 
   const schemas = await pgPool.query(
     `select * from collections_public.schema
         where database_id=$1`,
-    [databaseid]
+    [databaseId]
   );
 
   if (!db?.rows?.length) {
@@ -80,7 +80,7 @@ const write = async ({
 
     let meta = await exportMeta({
       dbname: database,
-      database_id: databaseid
+      database_id: databaseId
     });
 
     // replace the inner goods with the schema from above!
@@ -146,12 +146,12 @@ export const migrate = async ({
 }) => {
   // we really only support one db.... loop iteration of 1
   for (let v = 0; v < dbInfo.database_ids.length; v++) {
-    const databaseid = dbInfo.database_ids[v];
+    const databaseId = dbInfo.database_ids[v];
     await write({
       extensionName,
       metaExtensionName,
       database: dbInfo.dbname,
-      databaseid,
+      databaseId,
       author,
       outdir
     });
