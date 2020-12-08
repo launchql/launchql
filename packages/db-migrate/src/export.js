@@ -78,6 +78,7 @@ const config = {
       id: 'uuid',
       database_id: 'uuid',
       domain_id: 'uuid',
+      name: 'text',
       schemas: 'text[]',
       dbname: 'text',
       role_name: 'text',
