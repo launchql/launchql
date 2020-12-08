@@ -205,6 +205,7 @@ const getCoercionFunc = (type, from, opts) => {
         });
         return wrapValue(val, opts);
       };
+
     case 'text[]':
       return (record) => {
         const value = parse(psqlArray(cleanseEmptyStrings(record[from[0]])));
