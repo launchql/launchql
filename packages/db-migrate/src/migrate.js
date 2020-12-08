@@ -118,6 +118,22 @@ const write = async ({
         content: `SET session_replication_role TO replica;
 -- using replica in case we are deploying triggers to collections_public
 
+GRANT SELECT ON collections_public.database TO administrator;
+GRANT SELECT ON collections_public.schema TO administrator;
+GRANT SELECT ON collections_public.table TO administrator;
+
+GRANT SELECT ON meta_public.domains TO administrator;
+GRANT SELECT ON meta_public.apis TO administrator;
+GRANT SELECT ON meta_public.apps TO administrator;
+GRANT SELECT ON meta_public.sites TO administrator;
+GRANT SELECT ON meta_public.api_modules TO administrator;
+GRANT SELECT ON meta_public.site_modules TO administrator;
+GRANT SELECT ON meta_public.site_themes TO administrator;
+GRANT SELECT ON meta_public.site_metadata TO administrator;
+
+EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', current_database(), 'app_user');
+EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', current_database(), 'app_admin');
+
 ${meta}
 
 SET session_replication_role TO DEFAULT;
