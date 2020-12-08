@@ -3,7 +3,7 @@ import { prompt } from 'inquirerer';
 import { skitchPath } from '@launchql/db-utils';
 
 import { resolve } from 'path';
-import dbMigrate from '@launchql/db-migrate';
+import { migrate } from '@launchql/db-migrate';
 
 import { PGUSER, PGPASSWORD, PGHOST, PGPORT } from '@launchql/db-env';
 
@@ -63,6 +63,7 @@ and datname !~ '^pg_';
     argv
   );
 
+  // ONLY support 1 db at a time
   const dbname = databases[0];
   const d2 = getDb(dbname);
   const dbs = await d2.any(`
@@ -96,48 +97,7 @@ SELECT
       .map((o) => o.id)
   };
 
-  // console.log(JSON.stringify(dbInfo, null, 2));
-
-  //     const wdbs = [];
-  //     for (let d = 0; d < databases.length; d++) {
-  //         console.log('inside');
-  //         const dinner = getDb(databases[d]);
-  //         const results = await dinner.any(`
-  // SELECT
-  //     id, name
-  //     FROM
-  //         collections_public.database;
-  //     `);
-
-  //         console.log(results);
-
-  //         const { database_ids } = await prompt(
-  //             {
-  //                 name: 'database_ids',
-  //                 message: 'database_id(s) for ' + databases[d],
-  //                 // choices: results.map(db => db.name),
-  //                 choices: ['1', '2'],
-  //                 type: 'checkbox',
-  //                 required: true
-  //             },
-  //             {}
-  //         );
-
-  //         console.log(database_ids)
-
-  //         const dbInfo = {
-  //             dbname: databases[d],
-  //             database_ids: database_ids.map((name)=> {
-  //                 return results.find(el=>el.name===name)
-  //             }).map(o=>o.id)
-  //         }
-
-  //         wdbs.push(dbInfo)
-  //     }
-
-  //     console.log({wbds});
-
-  const { author, init } = await prompt(
+  const { author, extensionName } = await prompt(
     [
       {
         name: 'author',
@@ -146,9 +106,9 @@ SELECT
         required: true
       },
       {
-        name: 'init',
-        type: 'confirm',
-        message: 'initialize new project?',
+        name: 'extensionName',
+        message: 'extension Name',
+        default: database_ids[0],
         required: true
       }
     ],
@@ -157,11 +117,11 @@ SELECT
 
   //   console.log({ dbInfo, author, outdir: resolve(pth + '/packages/') });
 
-  await dbMigrate({
+  await migrate({
     dbInfo,
     author,
     outdir: resolve(pth + '/packages/'),
-    init
+    extensionName
   });
 
   console.log(`

@@ -55,7 +55,9 @@
   "dependencies": {
     "@babel/runtime": "^7.12.1",
     "@launchql/db-utils": "^1.2.1",
+    "@launchql/server-utils": "0.1.6",
     "case": "^1.6.3",
+    "csv-to-pg": "0.6.2",
     "envalid": "^6.0.2",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.0",
