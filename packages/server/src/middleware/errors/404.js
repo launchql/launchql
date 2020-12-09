@@ -1,10 +1,11 @@
+export default `
 <html lang="en">
 
 <head>
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
     <META NAME="GOOGLEBOT" CONTENT="NOARCHIVE">
-    <title>Uh Oh</title>
+    <title>Not Found</title>
 
     <link href='//fonts.googleapis.com/css2?family=Fjalla+One&display=swap' rel='stylesheet' type='text/css'>
 
@@ -223,8 +224,8 @@
 
                 </div>
                 <div class="textc">
-                    <h1>Uh Oh!</h1>
-                    <p>We’re really sorry about that. Please contact support of the issue persists.</p>
+                    <h1>Not Found</h1>
+                    <p>We’re really sorry about that. The service you were looking for doesn't exist.</p>
                 </div>
             </div>
         </article>
@@ -232,3 +233,4 @@
 </body>
 
 </html>
+`;

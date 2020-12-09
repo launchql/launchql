@@ -3,16 +3,8 @@ import { GraphileQuery, getSchema } from '@launchql/graphile-query';
 import { ApiQuery } from './gql';
 import { svcCache, getRootPgPool } from '@launchql/server-utils';
 import env from '../env';
-
-const errorPage404 = require('fs').readFileSync(
-  __dirname + '/errors/404.html',
-  'utf-8'
-);
-
-const errorPage50x = require('fs').readFileSync(
-  __dirname + '/errors/50x.html',
-  'utf-8'
-);
+import errorPage404 from './errors/404';
+import errorPage50x from './errors/50x';
 
 export const getSubdomain = (reqDomains) => {
   const names = reqDomains.filter((name) => !['www'].includes(name));
