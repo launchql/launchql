@@ -6,7 +6,7 @@ import env from '../env';
 
 export const getSubdomain = (reqDomains) => {
   const names = reqDomains.filter((name) => !['www'].includes(name));
-  return names.join('.');
+  return !names.length ? null : names.join('.');
 };
 
 export const api = async (req, res, next) => {
@@ -68,10 +68,17 @@ export const getApiConfig = async (req) => {
       return null;
     }
 
-    if (result && result.data && result.data.domain && result.data.domain.api) {
+    if (
+      result &&
+      result.data &&
+      result.data.domains &&
+      result.data.domains &&
+      result.data.domains.nodes &&
+      result.data.domains.nodes.length
+    ) {
       svc = {
         client,
-        data: result.data.domain
+        data: result.data.domains.nodes[0]
       };
       svcCache.set(key, svc);
     } else {
