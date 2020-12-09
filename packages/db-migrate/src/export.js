@@ -82,6 +82,7 @@ const config = {
       name: 'text',
       schemas: 'text[]',
       dbname: 'text',
+      public: 'boolean',
       role_name: 'text',
       anon_role: 'text'
     }
