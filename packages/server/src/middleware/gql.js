@@ -12,6 +12,7 @@ export const ApiQuery = gql`
           schemas
           roleName
           anonRole
+          isPublic
           apiModules {
             nodes {
               name

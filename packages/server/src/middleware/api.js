@@ -4,6 +4,16 @@ import { ApiQuery } from './gql';
 import { svcCache, getRootPgPool } from '@launchql/server-utils';
 import env from '../env';
 
+const errorPage404 = require('fs').readFileSync(
+  __dirname + '/errors/404.html',
+  'utf-8'
+);
+
+const errorPage50x = require('fs').readFileSync(
+  __dirname + '/errors/50x.html',
+  'utf-8'
+);
+
 export const getSubdomain = (reqDomains) => {
   const names = reqDomains.filter((name) => !['www'].includes(name));
   return !names.length ? null : names.join('.');
@@ -14,14 +24,14 @@ export const api = async (req, res, next) => {
     const svc = await getApiConfig(req);
     req.apiInfo = svc;
     if (!svc) {
-      return res.status(404).send('Not found');
+      return res.status(404).send(errorPage404);
     }
   } catch (e) {
     if (e.message.match(/does not exist/)) {
-      return res.status(404).send('API Not found');
+      return res.status(404).send(errorPage404);
     }
     console.error(e);
-    return res.status(500).send('Something bad happened...');
+    return res.status(500).send(errorPage50x);
   }
   return next();
 };
@@ -54,6 +64,8 @@ export const getApiConfig = async (req) => {
     // initialize client
     const client = new GraphileQuery({ schema, pool: rootPgPool, settings });
 
+    const isPublic = env.IS_PUBLIC;
+
     const result = await client.query({
       role: 'administrator',
       query: ApiQuery,
@@ -76,9 +88,14 @@ export const getApiConfig = async (req) => {
       result.data.domains.nodes &&
       result.data.domains.nodes.length
     ) {
+      const data = result.data.domains.nodes[0];
+      if (!data.api || data.api.isPublic !== isPublic) {
+        return null;
+      }
+
       svc = {
         client,
-        data: result.data.domains.nodes[0]
+        data
       };
       svcCache.set(key, svc);
     } else {
