@@ -1,6 +1,7 @@
 import { getRootPgPool } from '@launchql/server-utils';
 import { Parser } from 'csv-to-pg';
 
+// TODO generate this config via introspection
 const config = {
   database: {
     schema: 'collections_public',
