@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-migrate",
-  "version": "1.3.11",
+  "version": "1.3.12",
   "description": "db migrate",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/db-migrate#readme",
