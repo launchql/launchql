@@ -8,6 +8,7 @@ const write = async ({
   databaseId,
   author,
   outdir,
+  schema_names,
   extensionName,
   metaExtensionName
 }) => {
@@ -39,8 +40,11 @@ const write = async ({
 
   const name = extensionName ? extensionName : db.rows[0].name;
 
+  // filter only schemas that were selected for replacement
   const { replace, replacer } = makeReplacer({
-    schemas,
+    schemas: schemas.rows.filter((schema) =>
+      schema_names.includes(schema.schema_name)
+    ),
     name
   });
 
@@ -94,7 +98,9 @@ const write = async ({
     });
 
     const metaReplacer = makeReplacer({
-      schemas,
+      schemas: schemas.rows.filter((schema) =>
+        schema_names.includes(schema.schema_name)
+      ),
       name: metaExtensionName
     });
 
@@ -154,6 +160,7 @@ export const migrate = async ({
   dbInfo,
   author,
   outdir,
+  schema_names,
   extensionName,
   metaExtensionName
 }) => {
@@ -165,6 +172,7 @@ export const migrate = async ({
       metaExtensionName,
       database: dbInfo.dbname,
       databaseId,
+      schema_names,
       author,
       outdir
     });

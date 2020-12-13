@@ -123,9 +123,30 @@ SELECT
 
   //   console.log({ dbInfo, author, outdir: resolve(pth + '/packages/') });
 
+  const schemas = await d2.query(
+    `select * from collections_public.schema
+        where database_id=$1`,
+    [dbInfo.database_ids[0]]
+  );
+
+  const { schema_names } = await prompt(
+    [
+      {
+        name: 'schema_names',
+        message: 'schema_name(s)',
+        choices: schemas.map((schema) => schema.schema_name),
+        default: schemas.map((schema) => schema.schema_name),
+        type: 'checkbox',
+        required: true
+      }
+    ],
+    {}
+  );
+
   await migrate({
     dbInfo,
     author,
+    schema_names,
     outdir: resolve(pth + '/packages/'),
     extensionName,
     metaExtensionName

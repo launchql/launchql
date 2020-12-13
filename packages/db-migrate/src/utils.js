@@ -39,7 +39,7 @@ export const preparePackage = async ({ author, outdir, name, extensions }) => {
 
 export const makeReplacer = ({ schemas, name }) => {
   const replacements = ['launchql-extension-name', name];
-  const schemaReplacers = schemas.rows.map((schema) => {
+  const schemaReplacers = schemas.map((schema) => {
     return [schema.schema_name, Case.snake(name + '_' + schema.name)];
   });
 
