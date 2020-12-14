@@ -47,14 +47,19 @@ export const graphile = ({
 
     // WE probably want people to be able to write their own auth?
     options.pgSettings = async function pgSettings(req) {
+      const context = {
+        [`jwt.claims.user_agent`]: req.get('User-Agent'),
+        [`jwt.claims.ip_address`]: req.clientIp
+      };
       if (req?.token?.user_id) {
         return {
           role: roleName,
           [`jwt.claims.user_id`]: req.token.user_id,
-          [`jwt.claims.group_ids`]: '{' + req.token.user_id + '}'
+          [`jwt.claims.group_ids`]: '{' + req.token.user_id + '}',
+          ...context
         };
       }
-      return { role: anonRole };
+      return { role: anonRole, ...context };
     };
 
     options.graphqlRoute = '/graphql';

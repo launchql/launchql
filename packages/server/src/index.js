@@ -14,6 +14,8 @@ import { authenticate } from './middleware/auth';
 import { graphile } from './middleware/graphile';
 import { api } from './middleware/api';
 import { flush, flushService } from './middleware/flush';
+// import useragent from 'express-useragent';
+import requestIp from 'request-ip';
 
 export default ({
   simpleInflection = env.USE_SIMPLE_INFLECTION,
@@ -60,6 +62,11 @@ class Server {
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
     app.use(parseDomains());
+
+    // info
+    app.use(requestIp.mw());
+
+    // apis
     app.use(api);
     app.use(authenticate);
     app.use(

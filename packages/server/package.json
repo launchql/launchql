@@ -79,6 +79,7 @@
     "graphile-build": "4.9.0",
     "graphile-utils": "4.9.2",
     "graphql-tag": "2.11.0",
-    "graphql-upload": "11.0.0"
+    "graphql-upload": "11.0.0",
+    "request-ip": "2.1.3"
   }
 }
