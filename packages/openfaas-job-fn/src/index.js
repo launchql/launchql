@@ -7,6 +7,7 @@ app.use((req, res, next) => {
   res.set({
     'Content-Type': 'application/json',
     'X-Worker-Id': req.get('X-Worker-Id'),
+    'X-Database-Id': req.get('X-Database-Id'),
     'X-Job-Id': req.get('X-Job-Id')
   });
   next();

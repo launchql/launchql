@@ -74,6 +74,7 @@ export default class Worker {
     }
     await req(task_identifier, {
       body: payload,
+      databaseId: job.database_id,
       workerId: this.workerId,
       jobId: job.id
     });
