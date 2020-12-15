@@ -48,6 +48,7 @@ export const graphile = ({
     // WE probably want people to be able to write their own auth?
     options.pgSettings = async function pgSettings(req) {
       const context = {
+        [`jwt.claims.database_id`]: req.databaseId,
         [`jwt.claims.user_agent`]: req.get('User-Agent'),
         [`jwt.claims.ip_address`]: req.clientIp
       };

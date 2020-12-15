@@ -8,6 +8,7 @@ export const ApiQuery = gql`
     domains(condition: { domain: $domain, subdomain: $subdomain }) {
       nodes {
         api {
+          databaseId
           dbname
           schemas
           roleName

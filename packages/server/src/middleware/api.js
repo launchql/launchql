@@ -14,10 +14,11 @@ export const getSubdomain = (reqDomains) => {
 export const api = async (req, res, next) => {
   try {
     const svc = await getApiConfig(req);
-    req.apiInfo = svc;
     if (!svc) {
       return res.status(404).send(errorPage404);
     }
+    req.apiInfo = svc;
+    req.databaseId = svc.data.api.databaseId;
   } catch (e) {
     if (e.message.match(/does not exist/)) {
       return res.status(404).send(errorPage404);
