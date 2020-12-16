@@ -190,6 +190,12 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
                   })
                 }),
                 t.argument({
+                  name: 'last',
+                  value: t.variable({
+                    name: 'last'
+                  })
+                }),
+                t.argument({
                   name: 'offset',
                   value: t.variable({
                     name: 'offset'
@@ -199,6 +205,12 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
                   name: 'after',
                   value: t.variable({
                     name: 'after'
+                  })
+                }),
+                t.argument({
+                  name: 'before',
+                  value: t.variable({
+                    name: 'before'
                   })
                 }),
                 t.argument({
