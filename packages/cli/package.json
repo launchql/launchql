@@ -73,7 +73,7 @@
     "@pyramation/prompt": "0.0.1",
     "case": "1.6.3",
     "glob": "7.1.6",
-    "graphile-gen": "0.3.3",
+    "graphile-gen": "0.3.6",
     "graphql": "^14.0.2",
     "graphql-request": "3.0.0",
     "inflection": "1.12.0",
