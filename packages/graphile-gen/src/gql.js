@@ -123,6 +123,14 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
           }),
           t.variableDefinition({
             variable: t.variable({
+              name: 'last'
+            }),
+            type: t.namedType({
+              type: 'Int'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
               name: 'offset'
             }),
             type: t.namedType({
@@ -132,6 +140,14 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
           t.variableDefinition({
             variable: t.variable({
               name: 'after'
+            }),
+            type: t.namedType({
+              type: 'Cursor'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'before'
             }),
             type: t.namedType({
               type: 'Cursor'
@@ -271,6 +287,30 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
           }),
           t.variableDefinition({
             variable: t.variable({
+              name: 'last'
+            }),
+            type: t.namedType({
+              type: 'Int'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'after'
+            }),
+            type: t.namedType({
+              type: 'Cursor'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
+              name: 'before'
+            }),
+            type: t.namedType({
+              type: 'Cursor'
+            })
+          }),
+          t.variableDefinition({
+            variable: t.variable({
               name: 'offset'
             }),
             type: t.namedType({
@@ -307,10 +347,36 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
             t.field({
               name: operationName,
               args: [
-                t.argument({
-                  name: 'first',
-                  value: t.variable({
+                t.variableDefinition({
+                  variable: t.variable({
                     name: 'first'
+                  }),
+                  type: t.namedType({
+                    type: 'Int'
+                  })
+                }),
+                t.variableDefinition({
+                  variable: t.variable({
+                    name: 'last'
+                  }),
+                  type: t.namedType({
+                    type: 'Int'
+                  })
+                }),
+                t.variableDefinition({
+                  variable: t.variable({
+                    name: 'after'
+                  }),
+                  type: t.namedType({
+                    type: 'Cursor'
+                  })
+                }),
+                t.variableDefinition({
+                  variable: t.variable({
+                    name: 'before'
+                  }),
+                  type: t.namedType({
+                    type: 'Cursor'
                   })
                 }),
                 t.argument({
