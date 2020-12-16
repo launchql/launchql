@@ -359,42 +359,34 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
             t.field({
               name: operationName,
               args: [
-                t.variableDefinition({
-                  variable: t.variable({
+                t.argument({
+                  name: 'first',
+                  value: t.variable({
                     name: 'first'
-                  }),
-                  type: t.namedType({
-                    type: 'Int'
                   })
                 }),
-                t.variableDefinition({
-                  variable: t.variable({
+                t.argument({
+                  name: 'last',
+                  value: t.variable({
                     name: 'last'
-                  }),
-                  type: t.namedType({
-                    type: 'Int'
-                  })
-                }),
-                t.variableDefinition({
-                  variable: t.variable({
-                    name: 'after'
-                  }),
-                  type: t.namedType({
-                    type: 'Cursor'
-                  })
-                }),
-                t.variableDefinition({
-                  variable: t.variable({
-                    name: 'before'
-                  }),
-                  type: t.namedType({
-                    type: 'Cursor'
                   })
                 }),
                 t.argument({
                   name: 'offset',
                   value: t.variable({
                     name: 'offset'
+                  })
+                }),
+                t.argument({
+                  name: 'after',
+                  value: t.variable({
+                    name: 'after'
+                  })
+                }),
+                t.argument({
+                  name: 'before',
+                  value: t.variable({
+                    name: 'before'
                   })
                 }),
                 t.argument({

@@ -527,7 +527,7 @@ Object {
 }
 ",
   "getActionItemsQuery": "query getActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
-  actionItems($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  actionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -645,7 +645,7 @@ Object {
 }
 ",
   "getActionResultsQuery": "query getActionResultsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionResultCondition, $filter: ActionResultFilter, $orderBy: [ActionResultsOrderBy!]) {
-  actionResults($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  actionResults(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -721,7 +721,7 @@ Object {
 }
 ",
   "getActionsQuery": "query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
-  actions($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -861,7 +861,7 @@ Object {
 }
 ",
   "getGoalsQuery": "query getGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: GoalCondition, $filter: GoalFilter, $orderBy: [GoalsOrderBy!]) {
-  goals($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  goals(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -938,7 +938,7 @@ Object {
 }
 ",
   "getLocationsQuery": "query getLocationsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: LocationCondition, $filter: LocationFilter, $orderBy: [LocationsOrderBy!]) {
-  locations($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  locations(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1011,7 +1011,7 @@ Object {
 }
 ",
   "getNewsUpdatesQuery": "query getNewsUpdatesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: NewsUpdateCondition, $filter: NewsUpdateFilter, $orderBy: [NewsUpdatesOrderBy!]) {
-  newsUpdates($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  newsUpdates(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1088,7 +1088,7 @@ Object {
 }
 ",
   "getUserActionItemsQuery": "query getUserActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionItemCondition, $filter: UserActionItemFilter, $orderBy: [UserActionItemsOrderBy!]) {
-  userActionItems($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userActionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1193,7 +1193,7 @@ Object {
 }
 ",
   "getUserActionResultsQuery": "query getUserActionResultsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionResultCondition, $filter: UserActionResultFilter, $orderBy: [UserActionResultsOrderBy!]) {
-  userActionResults($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userActionResults(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1264,7 +1264,7 @@ Object {
 }
 ",
   "getUserActionsQuery": "query getUserActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionCondition, $filter: UserActionFilter, $orderBy: [UserActionsOrderBy!]) {
-  userActions($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1388,7 +1388,7 @@ Object {
 }
 ",
   "getUserCharacteristicsQuery": "query getUserCharacteristicsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCharacteristicCondition, $filter: UserCharacteristicFilter, $orderBy: [UserCharacteristicsOrderBy!]) {
-  userCharacteristics($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userCharacteristics(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1473,7 +1473,7 @@ Object {
 }
 ",
   "getUserConnectionsQuery": "query getUserConnectionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserConnectionCondition, $filter: UserConnectionFilter, $orderBy: [UserConnectionsOrderBy!]) {
-  userConnections($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userConnections(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1546,7 +1546,7 @@ Object {
 }
 ",
   "getUserContactsQuery": "query getUserContactsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserContactCondition, $filter: UserContactFilter, $orderBy: [UserContactsOrderBy!]) {
-  userContacts($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userContacts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1620,7 +1620,7 @@ Object {
 }
 ",
   "getUserEmailsQuery": "query getUserEmailsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserEmailCondition, $filter: UserEmailFilter, $orderBy: [UserEmailsOrderBy!]) {
-  userEmails($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userEmails(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1706,7 +1706,7 @@ Object {
 }
 ",
   "getUserProfilesQuery": "query getUserProfilesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserProfileCondition, $filter: UserProfileFilter, $orderBy: [UserProfilesOrderBy!]) {
-  userProfiles($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userProfiles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1820,7 +1820,7 @@ Object {
 }
 ",
   "getUserSettingsQuery": "query getUserSettingsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserSettingCondition, $filter: UserSettingFilter, $orderBy: [UserSettingsOrderBy!]) {
-  userSettings($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  userSettings(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
@@ -1886,7 +1886,7 @@ Object {
 }
 ",
   "getUsersQuery": "query getUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
-  users($first: Int, $last: Int, $after: Cursor, $before: Cursor, offset: $offset, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+  users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
   }, nodes {
