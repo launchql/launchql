@@ -6,6 +6,19 @@ function range(start, end) {
   return foo;
 }
 
+const escapeFields = (field) => {
+  switch (field) {
+    case 'current_user':
+      return `"current_user"`;
+    default:
+      return field;
+  }
+};
+
+const listFields = (fields) => {
+  return fields.map((field) => escapeFields(field)).join(',');
+};
+
 const getParameter = (N, i, castsArray) => {
   if (castsArray[i]) {
     return '$' + N + '::' + castsArray[i];
@@ -29,11 +42,11 @@ export const getSelectStmt = (name, vars, where = {}, casts = {}) => {
   const castVals = whereKeys.map((k) => casts[k]);
 
   if (!whereKeys.length) {
-    return `SELECT ${vars.join(',')} FROM ${name}`;
+    return `SELECT ${listFields(vars)} FROM ${name}`;
   }
 
   let c = 0;
-  return `SELECT ${vars.join(',')} FROM ${name}
+  return `SELECT ${listFields(vars)} FROM ${name}
     WHERE
     ${whereKeys
       .map((key, i) => {
@@ -59,7 +72,7 @@ export const getInsertStmt = (name, vars, casts = {}) => {
   const castVals = keys.map((k) => casts[k]);
   const values = Object.values(vars);
   // console.log( `INSERT INTO ${name} (${keys.join(',')}) VALUES ${P(values, castVals)} RETURNING *`);
-  return `INSERT INTO ${name} (${keys.join(',')}) VALUES ${P(
+  return `INSERT INTO ${name} (${listFields(keys)}) VALUES ${P(
     values,
     castVals
   )} RETURNING *`;

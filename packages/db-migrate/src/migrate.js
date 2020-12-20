@@ -73,6 +73,7 @@ const write = async ({
         'postgis',
         'hstore',
         'launchql-inflection',
+        'launchql-uuid',
         'launchql-ext-jobs',
         'launchql-jwt-claims',
         'launchql-stamps',
