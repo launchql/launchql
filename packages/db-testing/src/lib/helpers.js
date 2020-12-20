@@ -10,6 +10,8 @@ const escapeFields = (field) => {
   switch (field) {
     case 'current_user':
       return `"current_user"`;
+    case 'current_role':
+      return `"current_role"`;
     default:
       return field;
   }
