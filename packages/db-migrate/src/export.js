@@ -3,6 +3,16 @@ import { Parser } from 'csv-to-pg';
 
 // TODO generate this config via introspection
 const config = {
+  // extensions: {
+  //   schema: 'collections_public',
+  //   table: 'extension',
+  //   fields: {
+  //     name: 'text',
+  //     public_schemas: 'text[]',
+  //     private_schemas: 'text[]'
+  //   }
+  // },
+  // NOTE: for now, the extensions are baked into the extension itself!
   database: {
     schema: 'collections_public',
     table: 'database',
@@ -10,6 +20,14 @@ const config = {
       id: 'uuid',
       owner_id: 'uuid',
       name: 'text'
+    }
+  },
+  database_extension: {
+    schema: 'collections_public',
+    table: 'database_extensions',
+    fields: {
+      name: 'text',
+      database_id: 'uuid'
     }
   },
   schema: {
@@ -80,7 +98,6 @@ const config = {
       database_id: 'uuid',
       domain_id: 'uuid',
       name: 'text',
-      schemas: 'text[]',
       dbname: 'text',
       is_public: 'boolean',
       role_name: 'text',
@@ -132,6 +149,64 @@ const config = {
       api_id: 'uuid',
       name: 'text',
       data: 'jsonb'
+    }
+  },
+  api_extensions: {
+    schema: 'meta_public',
+    table: 'api_extensions',
+    fields: {
+      id: 'uuid',
+      database_id: 'uuid',
+      api_id: 'uuid',
+      schema_name: 'text'
+    }
+  },
+  api_schemata: {
+    schema: 'meta_public',
+    table: 'api_schemata',
+    fields: {
+      id: 'uuid',
+      database_id: 'uuid',
+      schema_id: 'uuid',
+      api_id: 'uuid'
+    }
+  },
+  rls_module: {
+    schema: 'meta_public',
+    table: 'rls_module',
+    fields: {
+      id: 'uuid',
+      database_id: 'uuid',
+      schema_id: 'uuid',
+      private_schema_id: 'uuid',
+      tokens_table_id: 'uuid',
+      users_table_id: 'uuid',
+      authenticate: 'text',
+      current_role: 'text',
+      current_role_id: 'text',
+      current_group_ids: 'text'
+    }
+  },
+  user_auth_module: {
+    schema: 'meta_public',
+    table: 'user_auth_module',
+    fields: {
+      id: 'uuid',
+      database_id: 'uuid',
+      schema_id: 'uuid',
+      emails_table_id: 'uuid',
+      users_table_id: 'uuid',
+      secrets_table_id: 'uuid',
+      encrypted_table_id: 'uuid',
+      tokens_table_id: 'uuid',
+      sign_in_function: 'text',
+      sign_up_function: 'text',
+      sign_out_function: 'text',
+      set_password_function: 'text',
+      reset_password_function: 'text',
+      forgot_password_function: 'text',
+      send_verification_email_function: 'text',
+      verify_email_function: 'text'
     }
   }
 };
@@ -232,6 +307,66 @@ export const exportMeta = async ({ dbname, database_id }) => {
   );
 
   if (apps.rows.length) sql.apps = await parsers.apps.parse(apps.rows);
+
+  // extensions
+
+  // const extensions = await pool.query(
+  //   `SELECT * FROM collections_public.extension`
+  // );
+  // if (extensions.rows.length)
+  //   sql.extensions = await parsers.extensions.parse(extensions.rows);
+
+  // database_extension
+
+  const database_extension = await pool.query(
+    `SELECT * FROM collections_public.database_extension WHERE database_id = $1`,
+    [database_id]
+  );
+
+  if (database_extension.rows.length)
+    sql.database_extension = await parsers.database_extension.parse(
+      database_extension.rows
+    );
+
+  // api_extensions
+
+  const api_extensions = await pool.query(
+    `SELECT * FROM meta_public.api_extensions WHERE database_id = $1`,
+    [database_id]
+  );
+
+  if (api_extensions.rows.length)
+    sql.api_extensions = await parsers.api_extensions.parse(
+      api_extensions.rows
+    );
+
+  // api_schemata
+
+  const api_schemata = await pool.query(
+    `SELECT * FROM meta_public.api_schemata WHERE database_id = $1`,
+    [database_id]
+  );
+
+  if (api_schemata.rows.length)
+    sql.api_schemata = await parsers.api_schemata.parse(api_schemata.rows);
+
+  // new modules
+
+  const rls_module = await pool.query(
+    `SELECT * FROM meta_public.rls_module WHERE database_id = $1`,
+    [database_id]
+  );
+
+  sql.rls_module = await parsers.rls_module.parse(rls_module.rows);
+
+  const user_auth_module = await pool.query(
+    `SELECT * FROM meta_public.user_auth_module WHERE database_id = $1`,
+    [database_id]
+  );
+
+  sql.user_auth_module = await parsers.user_auth_module.parse(
+    user_auth_module.rows
+  );
 
   return Object.entries(sql).reduce((m, [k, v]) => {
     return m + '\n\n' + v;

@@ -17,7 +17,12 @@ export const graphile = ({
     const api = req.apiInfo.data.api;
     const key = req.svc_key;
     const { dbname } = api;
-    const { schemas, anonRole, roleName } = api;
+    const { anonRole, roleName } = api;
+
+    const { schemaNamesFromExt, schemaNames } = api;
+    const schemas = []
+      .concat(schemaNamesFromExt.nodes.map(({ schemaName }) => schemaName))
+      .concat(schemaNames.nodes.map(({ schemaName }) => schemaName));
 
     if (graphileCache.has(key)) {
       const { handler } = graphileCache.get(key);

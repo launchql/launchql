@@ -1,4 +1,6 @@
-import { cleanEnv, str, port, bool } from 'envalid';
+import { cleanEnv, str, port, bool, makeValidator } from 'envalid';
+
+const array = makeValidator((x) => x.split(','), '');
 
 export default cleanEnv(
   process.env,
@@ -10,7 +12,7 @@ export default cleanEnv(
     PGPASSWORD: str({ default: 'password' }),
     PGDATABASE: str({ default: 'webinc-db' }),
     PGPORT: port({ default: 5432 }),
-    META_SCHEMA: str({ default: 'meta_public' }),
+    DB_SCHEMAS: array({ default: 'meta_public,collections_public' }),
     IS_PUBLIC: bool({ default: true }),
     TRUST_PROXY: bool({ default: false }),
     USE_SIMPLE_INFLECTION: bool({ default: true }),

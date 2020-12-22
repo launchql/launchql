@@ -97,7 +97,7 @@ const write = async ({
     await preparePackage({
       author,
       outdir,
-      extensions: ['plpgsql', 'db_meta'],
+      extensions: ['plpgsql', 'db_meta', 'db_meta_modules'],
       name: metaExtensionName
     });
 
@@ -114,19 +114,6 @@ const write = async ({
         deploy: 'migrate/meta',
         content: `SET session_replication_role TO replica;
 -- using replica in case we are deploying triggers to collections_public
-
-GRANT SELECT ON collections_public.database TO administrator;
-GRANT SELECT ON collections_public.schema TO administrator;
-GRANT SELECT ON collections_public.table TO administrator;
-
-GRANT SELECT ON meta_public.domains TO administrator;
-GRANT SELECT ON meta_public.apis TO administrator;
-GRANT SELECT ON meta_public.apps TO administrator;
-GRANT SELECT ON meta_public.sites TO administrator;
-GRANT SELECT ON meta_public.api_modules TO administrator;
-GRANT SELECT ON meta_public.site_modules TO administrator;
-GRANT SELECT ON meta_public.site_themes TO administrator;
-GRANT SELECT ON meta_public.site_metadata TO administrator;
 
 DO $LQLMIGRATION$
   DECLARE

@@ -10,10 +10,19 @@ export const ApiQuery = gql`
         api {
           databaseId
           dbname
-          schemas
           roleName
           anonRole
           isPublic
+          schemaNamesFromExt: apiExtensions {
+            nodes {
+              schemaName
+            }
+          }
+          schemaNames: schemataByApiSchemaApiIdAndSchemaId {
+            nodes {
+              schemaName
+            }
+          }
           apiModules {
             nodes {
               name
