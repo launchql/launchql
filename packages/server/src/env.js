@@ -12,7 +12,7 @@ export default cleanEnv(
     PGPASSWORD: str({ default: 'password' }),
     PGDATABASE: str({ default: 'webinc-db' }),
     PGPORT: port({ default: 5432 }),
-    DB_SCHEMAS: array({ default: 'meta_public,collections_public' }),
+    META_SCHEMAS: array({ default: 'meta_public,collections_public' }),
     IS_PUBLIC: bool({ default: true }),
     TRUST_PROXY: bool({ default: false }),
     USE_SIMPLE_INFLECTION: bool({ default: true }),

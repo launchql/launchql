@@ -48,7 +48,7 @@ export const getApiConfig = async (req) => {
     // get Graphile Settings
     const settings = getGraphileSettings({
       simpleInflection: true,
-      schema: env.DB_SCHEMAS
+      schema: env.META_SCHEMAS
     });
 
     // get schema
