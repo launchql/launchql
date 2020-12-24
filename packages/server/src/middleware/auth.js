@@ -3,15 +3,12 @@ import { getRootPgPool } from '@launchql/server-utils';
 export const authenticate = async (req, res, next) => {
   const api = req.apiInfo.data.api;
   const pool = getRootPgPool(api.dbname);
-  const rls_module = api.apiModules.nodes.find(
-    (mod) => mod.name === 'rls_module'
-  );
 
-  if (!rls_module || !rls_module.data) return next();
+  const rlsModule = api.rlsModule;
 
-  const { authenticate, authenticate_schema } = rls_module.data;
+  if (!rlsModule) return next();
 
-  if (authenticate && authenticate_schema) {
+  if (rlsModule.authenticate && rlsModule.privateSchema.schemaName) {
     const { authorization = '' } = req.headers;
     const [authType, authToken] = authorization.split(' ');
     let token = {};
@@ -19,7 +16,7 @@ export const authenticate = async (req, res, next) => {
       let result = null;
       try {
         result = await pool.query(
-          `SELECT * FROM "${authenticate_schema}"."${authenticate}"($1)`,
+          `SELECT * FROM "${rlsModule.privateSchema.schemaName}"."${rlsModule.authenticate}"($1)`,
           [authToken]
         );
       } catch (e) {

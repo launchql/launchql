@@ -70,6 +70,8 @@ const config = {
     fields: {
       id: 'uuid',
       database_id: 'uuid',
+      site_id: 'uuid',
+      api_id: 'uuid',
       domain: 'text',
       subdomain: 'text'
     }
@@ -80,7 +82,6 @@ const config = {
     fields: {
       id: 'uuid',
       database_id: 'uuid',
-      domain_id: 'uuid',
       title: 'text',
       description: 'text',
       og_image: 'image',
@@ -96,7 +97,6 @@ const config = {
     fields: {
       id: 'uuid',
       database_id: 'uuid',
-      domain_id: 'uuid',
       name: 'text',
       dbname: 'text',
       is_public: 'boolean',
@@ -177,6 +177,7 @@ const config = {
     fields: {
       id: 'uuid',
       database_id: 'uuid',
+      api_id: 'uuid',
       schema_id: 'uuid',
       private_schema_id: 'uuid',
       tokens_table_id: 'uuid',

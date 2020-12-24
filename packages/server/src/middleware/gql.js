@@ -23,12 +23,60 @@ export const ApiQuery = gql`
               schemaName
             }
           }
+          rlsModule {
+            privateSchema {
+              schemaName
+            }
+            authenticate
+            currentRole
+            currentRoleId
+            currentGroupIds
+          }
+          # for now keep this for patches
           apiModules {
             nodes {
               name
               data
             }
           }
+        }
+      }
+    }
+  }
+`;
+
+export const ApiByNameQuery = gql`
+  query ApiByName($name: String!, $databaseId: UUID!) {
+    api: apiByDatabaseIdAndName(name: $name, databaseId: $databaseId) {
+      databaseId
+      dbname
+      roleName
+      anonRole
+      isPublic
+      schemaNamesFromExt: apiExtensions {
+        nodes {
+          schemaName
+        }
+      }
+      schemaNames: schemataByApiSchemaApiIdAndSchemaId {
+        nodes {
+          schemaName
+        }
+      }
+      rlsModule {
+        privateSchema {
+          schemaName
+        }
+        authenticate
+        currentRole
+        currentRoleId
+        currentGroupIds
+      }
+      # for now keep this for patches
+      apiModules {
+        nodes {
+          name
+          data
         }
       }
     }
