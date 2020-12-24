@@ -1,5 +1,5 @@
 import env from './env';
-import getSettings from './settings';
+import { getGraphileSettings } from '@launchql/graphile-settings';
 import pg from 'pg';
 import {
   createPostGraphileSchema,
@@ -9,24 +9,36 @@ import { graphql } from 'graphql';
 import MockReq from 'mock-req';
 import { print } from 'graphql/language/printer';
 
-export const GraphQLTest = ({ settings }) => {
+export const GraphQLTest = ({
+  dbname,
+  schemas,
+  authRole = 'authenticated'
+}) => {
   const getDbString = (db) =>
     `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
 
-  const options = getSettings(settings);
+  const options = {
+    ...getGraphileSettings({
+      simpleInflection: true,
+      oppositeBaseNames: false,
+      schema: schemas
+    }),
+    graphqlRoute: '/graphql',
+    graphiqlRoute: '/graphiql'
+  };
 
   pg.defaults.poolSize = 1;
 
   // This is the role that your normal PostGraphile connection string would use,
   // e.g. `postgres://POSTGRAPHILE_AUTHENTICATOR_ROLE:password@host/db`
-  const POSTGRAPHILE_AUTHENTICATOR_ROLE = 'authenticated';
+  const POSTGRAPHILE_AUTHENTICATOR_ROLE = authRole;
 
   // Contains the PostGraphile schema and rootPgPool
   let ctx;
 
   const setup = async () => {
     const rootPgPool = new pg.Pool({
-      connectionString: getDbString(settings.dbname)
+      connectionString: getDbString(dbname)
     });
 
     const schema = await createPostGraphileSchema(
