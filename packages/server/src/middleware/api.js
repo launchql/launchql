@@ -146,6 +146,7 @@ const queryServiceByApiName = async ({ key, client, databaseId, name }) => {
       data
     };
     svcCache.set(key, svc);
+    return svc;
   } else {
     return null;
   }
