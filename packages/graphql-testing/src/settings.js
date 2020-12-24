@@ -1,4 +1,4 @@
-import { getGraphileSettings } from '@launchql/server';
+import { getGraphileSettings } from '@launchql/graphile-settings';
 
 const env = require('./env');
 

@@ -41,14 +41,50 @@ export const getApiConfig = async (req) => {
 
   req.svc_key = key;
 
+  const isPublic = env.IS_PUBLIC;
+  const schemata = env.META_SCHEMAS;
+
   let svc;
+
+  // should we use Api-Id so it includes
+  // anonRole, etc?
+  if (!isPublic && req.get('X-Schemata') && req.get('X-Database-Id')) {
+    req.svc_key = 'schemata:' + req.get('X-Schemata');
+    svc = {
+      data: {
+        api: {
+          databaseId: req.get('X-Database-Id'),
+          isPublic: false,
+          dbname: env.PGDATABASE,
+          anonRole: 'administrator',
+          roleName: 'administrator',
+          schemaNamesFromExt: {
+            nodes: req
+              .get('X-Schemata')
+              .split(',')
+              .map((schema) => schema.trim())
+              .map((schemaName) => ({ schemaName }))
+          },
+          schemaNames: {
+            nodes: []
+          },
+          apiModules: {
+            nodes: []
+          }
+        }
+      }
+    };
+    svcCache.set(key, svc);
+    return svc;
+  }
+
   if (svcCache.has(key)) {
     svc = svcCache.get(key);
   } else {
     // get Graphile Settings
     const settings = getGraphileSettings({
       simpleInflection: true,
-      schema: env.META_SCHEMAS
+      schema: schemata
     });
 
     // get schema
@@ -56,8 +92,6 @@ export const getApiConfig = async (req) => {
 
     // initialize client
     const client = new GraphileQuery({ schema, pool: rootPgPool, settings });
-
-    const isPublic = env.IS_PUBLIC;
 
     const result = await client.query({
       role: 'administrator',
@@ -87,7 +121,6 @@ export const getApiConfig = async (req) => {
       }
 
       svc = {
-        client,
         data
       };
       svcCache.set(key, svc);
