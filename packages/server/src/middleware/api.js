@@ -188,7 +188,6 @@ export const getApiConfig = async (req) => {
           schemata: req.get('X-Schemata'),
           databaseId: req.get('X-Database-Id')
         });
-        return svc;
       } else if (req.get('X-Api-Name')) {
         // query for api!
         svc = await queryServiceByApiName({
