@@ -115,6 +115,7 @@ const queryServiceByDomainAndSubdomain = async ({
       data
     };
     svcCache.set(key, svc);
+    return svc;
   } else {
     return null;
   }
