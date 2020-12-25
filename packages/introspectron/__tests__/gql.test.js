@@ -1,17 +1,23 @@
-import { print } from 'graphql';
-import introQuery from '../__fixtures__/introQuery.json';
+// import introQuery from '../__fixtures__/introQuery.json';
+import introQueryDbe from '../__fixtures__/intro-query-dbe.json';
 import { parseGraphQuery } from '../src';
 
-let queries, mutations;
+// let queries, mutations;
+let queriesDbe, mutationsDbe;
 
 beforeAll(() => {
-  ({ queries, mutations } = parseGraphQuery(introQuery));
+  // const { queries, mutations } = parseGraphQuery(introQuery);
+  const { queries, mutations } = parseGraphQuery(introQueryDbe);
+  queriesDbe = queries;
+  mutationsDbe = mutations;
 });
-it('queries', () => {
-  expect(queries).toMatchSnapshot();
+
+it('queriesDbe', () => {
+  expect(queriesDbe).toMatchSnapshot();
 });
-it('mutations', () => {
-  expect(mutations).toMatchSnapshot();
+
+it('mutationsDbe', () => {
+  expect(mutationsDbe).toMatchSnapshot();
 });
 
 // it('write', () => {
