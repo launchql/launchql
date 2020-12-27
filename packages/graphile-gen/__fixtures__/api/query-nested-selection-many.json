@@ -1,0 +1,42 @@
+{
+  "actionItems": {
+    "qtype": "getMany",
+    "model": "ActionItem",
+    "selection": [
+      "id",
+      "name",
+      "description",
+      "type",
+      "itemOrder",
+      "isRequired",
+      "notificationText",
+      "embedCode",
+      "url",
+      "media",
+      "ownerId",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      {
+        "name": "userActionItems",
+        "qtype": "getMany",
+        "model": "UserActionItem",
+        "selection": [
+          "id",
+          "value",
+          "status",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "actionId",
+          "userActionId",
+          "actionItemId"
+        ]
+      }
+    ]
+  }
+}

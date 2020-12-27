@@ -189,57 +189,65 @@ export const parseGraphQuery = (introQuery) => {
 
   //   expect(mts).toMatchSnapshot();
 
-  const getObjectType = (type) => {
-    if (type.kind === 'OBJECT') return type.name;
-    if (type.ofType) return getObjectType(type.ofType);
+  const parseConnectionQuery = (query, nesting) => {
+    const objectType = getObjectType(query.type);
+    const Connection = HASH[objectType];
+    const nodes = Connection.fields.find((f) => f.name === 'nodes');
+    const edges = Connection.fields.find((f) => f.name === 'edges');
+
+    const model = getObjectType(nodes.type);
+    const context = { HASH, parseConnectionQuery, parseSingleQuery };
+
+    if (nesting === 0) {
+      return {
+        qtype: 'getMany',
+        model,
+        selection: parseSelectionScalar(context, model)
+      };
+    }
+
+    return {
+      qtype: 'getMany',
+      model,
+      selection: parseSelectionObject(context, model, 1)
+    };
+  };
+
+  const parseSingleQuery = (query, nesting) => {
+    const model = getObjectType(query.type);
+    const context = { HASH, parseConnectionQuery, parseSingleQuery };
+
+    if (nesting === 0) {
+      return {
+        qtype: 'getOne',
+        model,
+        properties: query.args.reduce((m2, v) => {
+          m2[v.name] = getInputForQueries(v.type);
+          return m2;
+        }, {}),
+        selection: parseSelectionScalar(context, model)
+      };
+    }
+
+    return {
+      model,
+      qtype: 'getOne',
+      properties: query.args.reduce((m2, v) => {
+        m2[v.name] = getInputForQueries(v.type);
+        return m2;
+      }, {}),
+      selection: parseSelectionObject(context, model, 1)
+    };
   };
 
   const queries = queriesRoot.fields.reduce((m, query) => {
     // m[query.name] = getInputForQueries(query.type);
 
     if (query.type.kind === 'OBJECT') {
-      const fields = query.args.map((a) => a.name);
-      if (
-        /Connection$/.test(query.type.name) &&
-        fields.includes('condition') &&
-        fields.includes('filter')
-      ) {
-        // queries via nodes (later edges)
-
-        const Connection = HASH[query.type.name];
-        const nodes = Connection.fields.find((f) => f.name === 'nodes');
-        const edges = Connection.fields.find((f) => f.name === 'edges');
-
-        // multiple getters
-        const model = getObjectType(nodes.type);
-        // don't automatically select objects...
-        const selectionFields = HASH[model].fields.filter(
-          (f) => f.type.kind !== 'OBJECT'
-        );
-        const selection = selectionFields.map((f) => f.name);
-        m[query.name] = {
-          qtype: 'getMany',
-          model,
-          selection
-        };
+      if (isConnectionQuery(query)) {
+        m[query.name] = parseConnectionQuery(query, 1);
       } else {
-        // single getters
-        const model = query.type.name;
-        // don't automatically select objects...
-        const selectionFields = HASH[model].fields.filter(
-          (f) => f.type.kind !== 'OBJECT'
-        );
-        const selection = selectionFields.map((f) => f.name);
-
-        m[query.name] = {
-          model,
-          qtype: 'getOne',
-          properties: query.args.reduce((m2, v) => {
-            m2[v.name] = getInputForQueries(v.type);
-            return m2;
-          }, {}),
-          selection
-        };
+        m[query.name] = parseSingleQuery(query, 1);
       }
     }
     return m;
@@ -250,3 +258,64 @@ export const parseGraphQuery = (introQuery) => {
     mutations
   };
 };
+
+// Parse selections for both scalar and object fields
+function parseSelectionObject(context, model, nesting) {
+  const { HASH, parseConnectionQuery, parseSingleQuery } = context;
+  throwIfInvalidContext(context);
+
+  const selectionFields = HASH[model].fields.filter(
+    (f) => f.type.kind !== 'OBJECT'
+  );
+
+  const selection = selectionFields.map((f) => {
+    if (f.type.ofType?.kind === 'OBJECT') {
+      if (isConnectionQuery(f)) {
+        return { name: f.name, ...parseConnectionQuery(f, nesting - 1) };
+      } else {
+        return { name: f.name, ...parseSingleQuery(f, nesting - 1) };
+      }
+    }
+    return f.name;
+  });
+
+  return selection;
+}
+
+// Parse selections for scalar types only, ignore all field selections
+// that have more nesting selection level
+function parseSelectionScalar(context, model) {
+  const { HASH } = context;
+  throwIfInvalidContext(context);
+
+  const selectionFields = HASH[model].fields.filter(
+    (f) => f.type.kind !== 'OBJECT' && !isConnectionQuery(f)
+  );
+
+  const selection = selectionFields.map((f) => f.name);
+
+  return selection;
+}
+
+function isConnectionQuery(query) {
+  const objectType = getObjectType(query.type);
+  const fields = query.args.map((a) => a.name);
+
+  return (
+    /Connection$/.test(objectType) &&
+    fields.includes('condition') &&
+    fields.includes('filter')
+  );
+}
+
+function getObjectType(type) {
+  if (type.kind === 'OBJECT') return type.name;
+  if (type.ofType) return getObjectType(type.ofType);
+}
+
+function throwIfInvalidContext(context) {
+  const { HASH, parseConnectionQuery, parseSingleQuery } = context;
+  if (!HASH || !parseConnectionQuery || !parseSingleQuery) {
+    throw new Error('parseSelection: context missing');
+  }
+}

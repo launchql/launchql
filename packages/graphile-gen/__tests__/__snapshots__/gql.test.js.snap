@@ -2822,3 +2822,245 @@ Object {
 ",
 }
 `;
+
+exports[`getMany(): works with nested selection 1`] = `
+"query getActionItemsQueryAll {
+  actionItems {totalCount, nodes {
+    id
+    name
+    description
+    type
+    itemOrder
+    isRequired
+    notificationText
+    embedCode
+    url
+    media
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    userActionItems {nodes {
+      id
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }}
+  }}
+}
+"
+`;
+
+exports[`getManyPaginatedNodes(): works with nested selection 1`] = `
+"query getActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
+  actionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+  }, nodes {
+    id
+    name
+    description
+    type
+    itemOrder
+    isRequired
+    notificationText
+    embedCode
+    url
+    media
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    userActionItems {nodes {
+      id
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }}
+  }}
+}
+"
+`;
+
+exports[`getOne(): works with nested selection 1`] = `
+"query getActionQuery($id: UUID!) {
+  action(id: $id) {
+    id
+    slug
+    photo
+    title
+    description
+    discoveryHeader
+    discoveryDescription
+    enableNotifications
+    enableNotificationsText
+    search
+    locationRadius
+    startDate
+    endDate
+    approved
+    rewardAmount
+    activityFeedText
+    callToAction
+    completedActionText
+    alreadyCompletedActionText
+    tags
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    ownerId
+    actionGoals {nodes {
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      goalId
+      ownerId
+    }}
+    actionResults {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      ownerId
+    }}
+    actionItems {nodes {
+      id
+      name
+      description
+      type
+      itemOrder
+      isRequired
+      notificationText
+      embedCode
+      url
+      media
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+    }}
+    userActions {nodes {
+      id
+      actionStarted
+      complete
+      verified
+      verifiedDate
+      userRating
+      rejected
+      rejectedReason
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      verifierId
+      actionId
+    }}
+    userActionResults {nodes {
+      id
+      value
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionResultId
+    }}
+    userActionItems {nodes {
+      id
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }}
+    userPassActions {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }}
+    userSavedActions {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }}
+    userViewedActions {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }}
+    userActionReactions {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userActionId
+      userId
+      reacterId
+      actionId
+    }}
+    searchRank
+    goals {nodes {
+      id
+      name
+      slug
+      shortName
+      icon
+      subHead
+      tags
+      search
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      searchRank
+    }}
+  }
+}
+"
+`;

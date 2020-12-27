@@ -63,7 +63,8 @@ export const getMany = ({ operationName, query }) => {
     true
   );
 
-  const selections = query.selection.map((field) => t.field({ name: field }));
+  const selections = getSelections(query);
+
   const opSel = [
     t.field({
       name: operationName,
@@ -105,7 +106,7 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = query.selection.map((field) => t.field({ name: field }));
+  const selections = getSelections(query);
 
   const ast = t.document({
     definitions: [
@@ -281,7 +282,7 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = query.selection.map((field) => t.field({ name: field }));
+  const selections = getSelections(query);
 
   const ast = t.document({
     definitions: [
@@ -451,7 +452,6 @@ export const getOrderByEnums = ({ operationName, query }) => {
   const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
 
   const OrderBy = `${Model}OrderBy`;
-  const selections = query.selection.map((field) => t.field({ name: field }));
 
   const ast = t.document({
     definitions: [
@@ -500,7 +500,6 @@ export const getFragment = ({ operationName, query }) => {
     true
   );
 
-  const selections = query.selection.map((field) => t.field({ name: field }));
   const ast = t.document({
     definitions: [
       t.fragmentDefinition({
@@ -558,7 +557,7 @@ export const getOne = ({ operationName, query }) => {
       });
     });
 
-  const selections = query.selection.map((field) => t.field({ name: field }));
+  const selections = getSelections(query);
   const opSel = [
     t.field({
       name: operationName,
@@ -927,3 +926,26 @@ export const generate = (gql) => {
     return m;
   }, {});
 };
+
+export function getSelections(query) {
+  return query.selection.map((field) => {
+    if (typeof field === 'object' && field !== null) {
+      return t.field({
+        name: field.name,
+        selectionSet: t.objectValue({
+          fields: [
+            t.field({
+              name: 'nodes',
+              selectionSet: t.selectionSet({
+                selections: field.selection.map((field) =>
+                  t.field({ name: field })
+                )
+              })
+            })
+          ]
+        })
+      });
+    }
+    return t.field({ name: field });
+  });
+}
