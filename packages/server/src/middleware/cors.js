@@ -1,12 +1,44 @@
 import corsPlugin from 'cors';
 
+const getUrlsFromDomains = (domains) => {
+  return domains.reduce((m, { subdomain, domain }) => {
+    let hostname;
+    if (subdomain) {
+      hostname = [subdomain, domain].join('.');
+    } else {
+      hostname = domain;
+    }
+
+    // TODO add only if in development
+    const protocol = domain === 'localhost' ? 'http://' : 'https://';
+
+    return [...m, protocol + hostname];
+  }, []);
+};
+
+const getSiteUrls = (sites) => {
+  let siteUrls = [];
+  if (sites.nodes) {
+    siteUrls = sites.nodes.reduce((m, site) => {
+      if (site.domains.nodes && site.domains.nodes.length) {
+        return [...m, ...getUrlsFromDomains(site.domains.nodes)];
+      }
+      return m;
+    }, []);
+  }
+  return siteUrls;
+};
+
 export const cors = async (req, res, next) => {
   const api = req.apiInfo.data.api;
+  const sites = req.apiInfo.data.api.database.sites;
   const corsModules = api.apiModules.nodes.filter((mod) => mod.name === 'cors');
+
+  const siteUrls = getSiteUrls(sites);
 
   const listOfDomains = corsModules.reduce((m, mod) => {
     return [...mod.data.urls, ...m];
-  }, []);
+  }, siteUrls);
 
   let corsOptions = { origin: false }; // disable CORS for this request
   const origin = req.get('origin');

@@ -32,7 +32,18 @@ export const ApiQuery = gql`
             currentRoleId
             currentGroupIds
           }
-          # for now keep this for patches
+          database {
+            sites {
+              nodes {
+                domains {
+                  nodes {
+                    subdomain
+                    domain
+                  }
+                }
+              }
+            }
+          } # for now keep this for patches
           apiModules {
             nodes {
               name
@@ -72,7 +83,18 @@ export const ApiByNameQuery = gql`
         currentRoleId
         currentGroupIds
       }
-      # for now keep this for patches
+      database {
+        sites {
+          nodes {
+            domains {
+              nodes {
+                subdomain
+                domain
+              }
+            }
+          }
+        }
+      } # for now keep this for patches
       apiModules {
         nodes {
           name
