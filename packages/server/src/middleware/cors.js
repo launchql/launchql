@@ -11,7 +11,7 @@ export const cors = async (req, res, next) => {
   let corsOptions = { origin: false }; // disable CORS for this request
   const origin = req.get('origin');
   if (origin) {
-    if (listOfDomains.indexOf(req.get('origin')) !== -1) {
+    if (listOfDomains.indexOf(origin) !== -1) {
       corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
     }
 
