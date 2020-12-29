@@ -1,5 +1,4 @@
 import {
-  cors,
   healthz,
   poweredBy,
   trustProxy,
@@ -12,6 +11,7 @@ import { middleware as parseDomains } from '@pyramation/url-domains';
 import express from 'express';
 import { authenticate } from './middleware/auth';
 import { graphile } from './middleware/graphile';
+import { cors } from './middleware/cors';
 import { api } from './middleware/api';
 import { flush, flushService } from './middleware/flush';
 // import useragent from 'express-useragent';
@@ -21,15 +21,13 @@ export default ({
   simpleInflection = env.USE_SIMPLE_INFLECTION,
   oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
   port = env.SERVER_PORT,
-  postgis = env.USE_POSTGIS,
-  origin
+  postgis = env.USE_POSTGIS
 } = {}) => {
   const app = new Server({
     simpleInflection,
     oppositeBaseNames,
     port,
-    postgis,
-    origin
+    postgis
   });
   app.addEventListener();
   app.listen();
@@ -47,7 +45,6 @@ class Server {
     oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
     port = env.SERVER_PORT,
     postgis = env.USE_POSTGIS,
-    origin,
     appendPlugins = [],
     overrideSettings = {},
     graphileBuildOptions = {}
@@ -56,8 +53,7 @@ class Server {
 
     const app = express();
 
-    healthz(app, origin);
-    cors(app, origin);
+    healthz(app);
     trustProxy(app, env);
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
@@ -68,6 +64,7 @@ class Server {
 
     // apis
     app.use(api);
+    app.use(cors);
     app.use(authenticate);
     app.use(
       graphile({
