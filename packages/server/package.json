@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server",
-  "version": "0.21.4",
+  "version": "0.21.5",
   "description": "graphile explorer module for multiple dbs and schemas",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/launchql/tree/master/packages/launchql#readme",
