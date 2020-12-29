@@ -243,11 +243,11 @@ export const exportMeta = async ({ dbname, database_id }) => {
   );
   sql.schema = await parsers.schema.parse(schema.rows);
 
-  //   const table = await pool.query(
-  //     `SELECT * FROM collections_public.table WHERE database_id = $1`,
-  //     [database_id]
-  //   );
-  //   sql.table = await parsers.table.parse(table.rows);
+  const table = await pool.query(
+    `SELECT * FROM collections_public.table WHERE database_id = $1`,
+    [database_id]
+  );
+  sql.table = await parsers.table.parse(table.rows);
 
   //   const field = await pool.query(
   //     `SELECT * FROM collections_public.field WHERE database_id = $1`,
