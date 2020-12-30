@@ -1,4 +1,5 @@
 import corsPlugin from 'cors';
+import { parseUrl } from '@pyramation/url-domains';
 
 const getUrlsFromDomains = (domains) => {
   return domains.reduce((m, { subdomain, domain }) => {
@@ -49,9 +50,8 @@ export const cors = async (req, res, next) => {
 
     // TODO add only if in development
     const url = new URL(origin);
-    const parts = url.hostname.split('.');
-    const last = parts[parts.length - 1];
-    if (last === 'localhost') {
+    const parsed = parseUrl(url);
+    if (parsed.domain === 'localhost') {
       corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
     }
   }

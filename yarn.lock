@@ -3123,10 +3123,10 @@
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-"@pyramation/url-domains@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@pyramation/url-domains/-/url-domains-0.0.4.tgz#d4cc4150ce0904ce4d2df6182a52a758059d44be"
-  integrity sha512-2vXsXhomdEdwqKnTgzbGMMIY4wofdOIxGI4D5mOetD2kjD8rsdYzfkPMlavqWkLy4cUFKLc7a+Hu0I3+mY7riw==
+"@pyramation/url-domains@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@pyramation/url-domains/-/url-domains-0.1.0.tgz#4e3799b882eec96da0af3ef0c4c481859b9c0aee"
+  integrity sha512-UW9KJSlgNPRMIwU3ryAtvVd3amJRPK1Y12ng988B2y8pHe2WWt/hoN9kOE6H5pcf12C1VtHQ3YZSrBeHABX1SA==
   dependencies:
     "@babel/runtime" "^7.4.2"
 

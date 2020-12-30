@@ -69,7 +69,7 @@
     "@launchql/graphile-settings": "^0.1.24",
     "@launchql/server-utils": "^0.1.6",
     "@pyramation/postgraphile": "4.9.0",
-    "@pyramation/url-domains": "0.0.4",
+    "@pyramation/url-domains": "0.1.0",
     "envalid": "6.0.2",
     "express": "4.17.1",
     "graphile-build": "4.9.0",
