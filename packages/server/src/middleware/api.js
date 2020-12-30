@@ -83,16 +83,16 @@ const getHardCodedSchemata = ({ schemata, databaseId, key }) => {
   return svc;
 };
 
-const getMetaSchema = ({ key }) => {
+const getMetaSchema = ({ key, databaseId }) => {
   const schemata = env.META_SCHEMAS;
   // hard-coded mostly for admin purposes
   const svc = {
     data: {
       api: {
-        // TODO make databaseId a global? or a root?
+        // TODO databaseId could be NULL!
         // is it even needed? it only is missing from the jwt.claims.database_id
         // potentially for queries, this is fine...
-        //databaseId,
+        databaseId,
         isPublic: false,
         dbname: env.PGDATABASE,
         anonRole: 'administrator',
@@ -234,7 +234,8 @@ export const getApiConfig = async (req) => {
     } else if (!isPublic) {
       if (req.get('X-Meta-Schema')) {
         svc = getMetaSchema({
-          key
+          key,
+          databaseId: req.get('X-Database-Id')
         });
       } else {
         svc = await queryServiceByDomainAndSubdomain({
