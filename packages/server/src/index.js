@@ -88,6 +88,10 @@ class Server {
   async flush(svcName) {
     // TODO we can probably do this now?
     // store in SVC the info!
+    // update getSvcKey to use
+    // databaseId: in front ?
+    // maybe then all keys that start with databaseId
+    // can be flushed?
     await flushService(svcName);
   }
   getPool() {
