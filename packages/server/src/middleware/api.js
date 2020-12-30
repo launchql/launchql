@@ -38,17 +38,17 @@ const getSvcKey = (req) => {
     .join('.');
 
   if (!isPublic) {
-    if (req.get('X-Database-Id')) {
-      if (req.get('X-Api-Name')) {
-        return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
-      }
-      if (req.get('X-Schemata')) {
-        return (
-          'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata')
-        );
-      }
-    } else if (req.get('X-Meta-Schema')) {
-      return 'metaschema:api';
+    if (req.get('X-Api-Name')) {
+      return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
+    }
+    if (req.get('X-Schemata')) {
+      return (
+        'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata')
+      );
+    }
+    // databaseId is not always present... however if it is! we don't want to cache a stale databaseId!
+    if (req.get('X-Meta-Schema')) {
+      return 'metaschema:api:' + req.get('X-Database-Id');
     }
   }
   return key;
@@ -198,7 +198,6 @@ export const getApiConfig = async (req) => {
   const schemata = env.META_SCHEMAS;
 
   let svc;
-
   if (svcCache.has(key)) {
     svc = svcCache.get(key);
   } else {
@@ -214,7 +213,7 @@ export const getApiConfig = async (req) => {
     // initialize client
     const client = new GraphileQuery({ schema, pool: rootPgPool, settings });
 
-    if (!isPublic && req.get('X-Database-Id')) {
+    if (!isPublic) {
       if (req.get('X-Schemata')) {
         // hard-coded mostly for admin purposes
         svc = getHardCodedSchemata({
@@ -230,9 +229,7 @@ export const getApiConfig = async (req) => {
           name: req.get('X-Api-Name'),
           databaseId: req.get('X-Database-Id')
         });
-      }
-    } else if (!isPublic) {
-      if (req.get('X-Meta-Schema')) {
+      } else if (req.get('X-Meta-Schema')) {
         svc = getMetaSchema({
           key,
           databaseId: req.get('X-Database-Id')

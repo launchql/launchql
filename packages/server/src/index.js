@@ -86,6 +86,8 @@ class Server {
     );
   }
   async flush(svcName) {
+    // TODO we can probably do this now?
+    // store in SVC the info!
     await flushService(svcName);
   }
   getPool() {
