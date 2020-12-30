@@ -32,16 +32,24 @@ const getSiteUrls = (sites) => {
 
 export const cors = async (req, res, next) => {
   const api = req.apiInfo.data.api;
-  const sites = req.apiInfo.data.api.database.sites;
   const corsModules = api.apiModules.nodes.filter((mod) => mod.name === 'cors');
 
+  let corsOptions = { origin: false }; // disable CORS for this request
+  if (!api.database?.sites) {
+    return corsPlugin({
+      ...corsOptions,
+      credentials: true,
+      optionsSuccessStatus: 200
+    })(req, res, next);
+  }
+
+  const sites = req.apiInfo.data.api.database.sites;
   const siteUrls = getSiteUrls(sites);
 
   const listOfDomains = corsModules.reduce((m, mod) => {
     return [...mod.data.urls, ...m];
   }, siteUrls);
 
-  let corsOptions = { origin: false }; // disable CORS for this request
   const origin = req.get('origin');
   if (origin) {
     if (listOfDomains.indexOf(origin) !== -1) {
@@ -56,10 +64,9 @@ export const cors = async (req, res, next) => {
     }
   }
 
-  const opts = {
+  return corsPlugin({
     ...corsOptions,
     credentials: true,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  };
-  return corsPlugin(opts)(req, res, next);
+  })(req, res, next);
 };

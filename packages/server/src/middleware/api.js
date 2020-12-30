@@ -37,14 +37,18 @@ const getSvcKey = (req) => {
     .concat(domain)
     .join('.');
 
-  if (!isPublic && req.get('X-Database-Id')) {
-    if (req.get('X-Api-Name')) {
-      return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
-    }
-    if (req.get('X-Schemata')) {
-      return (
-        'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata')
-      );
+  if (!isPublic) {
+    if (req.get('X-Database-Id')) {
+      if (req.get('X-Api-Name')) {
+        return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
+      }
+      if (req.get('X-Schemata')) {
+        return (
+          'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata')
+        );
+      }
+    } else if (req.get('X-Meta-Schema')) {
+      return 'metaschema:api';
     }
   }
   return key;
@@ -65,6 +69,36 @@ const getHardCodedSchemata = ({ schemata, databaseId, key }) => {
             .split(',')
             .map((schema) => schema.trim())
             .map((schemaName) => ({ schemaName }))
+        },
+        schemaNames: {
+          nodes: []
+        },
+        apiModules: {
+          nodes: []
+        }
+      }
+    }
+  };
+  svcCache.set(key, svc);
+  return svc;
+};
+
+const getMetaSchema = ({ key }) => {
+  const schemata = env.META_SCHEMAS;
+  // hard-coded mostly for admin purposes
+  const svc = {
+    data: {
+      api: {
+        // TODO make databaseId a global? or a root?
+        // is it even needed? it only is missing from the jwt.claims.database_id
+        // potentially for queries, this is fine...
+        //databaseId,
+        isPublic: false,
+        dbname: env.PGDATABASE,
+        anonRole: 'administrator',
+        roleName: 'administrator',
+        schemaNamesFromExt: {
+          nodes: schemata.map((schemaName) => ({ schemaName }))
         },
         schemaNames: {
           nodes: []
@@ -198,12 +232,18 @@ export const getApiConfig = async (req) => {
         });
       }
     } else if (!isPublic) {
-      svc = await queryServiceByDomainAndSubdomain({
-        key,
-        client,
-        domain,
-        subdomain
-      });
+      if (req.get('X-Meta-Schema')) {
+        svc = getMetaSchema({
+          key
+        });
+      } else {
+        svc = await queryServiceByDomainAndSubdomain({
+          key,
+          client,
+          domain,
+          subdomain
+        });
+      }
     } else {
       svc = await queryServiceByDomainAndSubdomain({
         key,

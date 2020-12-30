@@ -30,13 +30,6 @@ const questions = [
     type: 'number',
     alias: 'p',
     default: 5555
-  },
-  {
-    name: 'origin',
-    message: 'origin',
-    type: 'string',
-    alias: 'o',
-    default: 'http://localhost:3000'
   }
 ];
 
