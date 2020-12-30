@@ -17,16 +17,21 @@ export const flushService = async (databaseId) => {
   const api = new RegExp(`^api:${databaseId}:.*`)
   const schemata = new RegExp(`^schemata:${databaseId}:.*`)
   const meta = new RegExp(`^metaschema:api:${databaseId}`)
-  graphileCache.forEach((obj, k) => {
-    if (api.test(k) || schemata.test(k) || meta.test(k)) {
-      graphileCache.del(k);
-      svcCache.del(k);
-    } 
-  });
+
+  // for private svcs, check cache
+  if (!env.IS_PUBLIC) {
+    graphileCache.forEach((obj, k) => {
+      if (api.test(k) || schemata.test(k) || meta.test(k)) {
+        graphileCache.del(k);
+        svcCache.del(k);
+      } 
+    });
+  }
 
   let svc = await pgPool.query(
-    `SELECT * FROM meta_public.domains
-            WHERE database_id=$1`,
+    `SELECT *
+      FROM meta_public.domains
+      WHERE database_id=$1`,
     [databaseId]
   );
 
