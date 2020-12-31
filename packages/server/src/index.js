@@ -105,6 +105,8 @@ class Server {
     client.on('notification', (args) => {
       const { channel, payload } = args;
       if (channel === 'schema:update') {
+        // TODO remove this console after finishing services...
+        console.log('schema:update', payload);
         this.flush(payload);
       }
     });
