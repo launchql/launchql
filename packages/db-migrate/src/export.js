@@ -19,7 +19,8 @@ const config = {
     fields: {
       id: 'uuid',
       owner_id: 'uuid',
-      name: 'text'
+      name: 'text',
+      hash: 'uuid'
     }
   },
   database_extension: {
