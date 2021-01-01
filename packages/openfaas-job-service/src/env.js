@@ -18,8 +18,7 @@ export default cleanEnv(
     }),
     INTERNAL_GATEWAY_URL: url(),
     INTERNAL_JOBS_CALLBACK_URL: url(),
-    INTERNAL_JOBS_CALLBACK_PORT: port({ default: 12345 }),
-    INTERNAL_JOBS_API_PORT: port({ default: 23456 })
+    INTERNAL_JOBS_CALLBACK_PORT: port({ default: 12345 })
   },
   { dotEnvPath: null }
 );

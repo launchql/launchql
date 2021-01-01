@@ -61,7 +61,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@launchql/job-api-server": "^0.1.2",
     "@launchql/job-pg": "^0.2.2",
     "@launchql/job-scheduler": "^0.2.2",
     "@launchql/openfaas-job-server": "^0.2.2",
