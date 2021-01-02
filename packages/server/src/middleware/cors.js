@@ -43,7 +43,7 @@ export const cors = async (req, res, next) => {
     })(req, res, next);
   }
 
-  const sites = req.apiInfo.data.api.database.sites;
+  const sites = api.database.sites;
   const siteUrls = getSiteUrls(sites);
 
   const listOfDomains = corsModules.reduce((m, mod) => {

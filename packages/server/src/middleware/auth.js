@@ -26,8 +26,7 @@ export const authenticate = async (req, res, next) => {
               {
                 extensions: {
                   code: 'BAD_TOKEN_DEFINITION',
-                  message:
-                    process.env.NODE_ENV === 'production' ? '' : e.message
+                  message: e.message
                 }
               }
             ]
