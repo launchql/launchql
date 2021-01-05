@@ -932,6 +932,12 @@ export function getSelections(query) {
     if (typeof field === 'object' && field !== null) {
       return t.field({
         name: field.name,
+        args: [
+          t.argument({
+            name: 'first',
+            value: t.intValue({ value: 3 })
+          })
+        ],
         selectionSet: t.objectValue({
           fields: [
             t.field({
