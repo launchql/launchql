@@ -69,6 +69,11 @@ export const stringValue = ({ value }) => ({
   value
 });
 
+export const intValue = ({ value }) => ({
+  kind: 'IntValue',
+  value
+});
+
 export const fragmentDefinition = ({
   name,
   typeCondition,
