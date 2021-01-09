@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.8](https://github.com/pyramation/graphile-gen/compare/graphile-gen@0.3.7...graphile-gen@0.3.8) (2021-01-09)
+
+
+### Bug Fixes
+
+* **graphile-gen:** limit nodes selection to 3 items ([7f55b1d](https://github.com/pyramation/graphile-gen/commit/7f55b1d32454b895a047a9ffb7fe00d402c69365))
+
+
+
+
+
 ## [0.3.7](https://github.com/pyramation/graphile-gen/compare/graphile-gen@0.3.6...graphile-gen@0.3.7) (2020-12-27)
 
 
