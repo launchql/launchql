@@ -27,6 +27,7 @@ export const ApiQuery = gql`
             privateSchema {
               schemaName
             }
+            authenticateStrict
             authenticate
             currentRole
             currentRoleId
@@ -79,6 +80,7 @@ export const ApiByNameQuery = gql`
           schemaName
         }
         authenticate
+        authenticateStrict
         currentRole
         currentRoleId
         currentGroupIds

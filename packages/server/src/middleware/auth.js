@@ -1,4 +1,8 @@
 import { getRootPgPool } from '@launchql/server-utils';
+import env from '../env';
+import pgQueryContext from '@pyramation/pg-query-context';
+
+const strictAuth = env.STRICT_AUTH;
 
 export const authenticate = async (req, res, next) => {
   const api = req.apiInfo.data.api;
@@ -8,17 +12,27 @@ export const authenticate = async (req, res, next) => {
 
   if (!rlsModule) return next();
 
-  if (rlsModule.authenticate && rlsModule.privateSchema.schemaName) {
+  const authFn = strictAuth
+    ? rlsModule.authenticateStrict
+    : rlsModule.authenticate;
+
+  if (authFn && rlsModule.privateSchema.schemaName) {
     const { authorization = '' } = req.headers;
     const [authType, authToken] = authorization.split(' ');
     let token = {};
     if (authType.toLowerCase() === 'bearer' && authToken) {
       let result = null;
       try {
-        result = await pool.query(
-          `SELECT * FROM "${rlsModule.privateSchema.schemaName}"."${rlsModule.authenticate}"($1)`,
-          [authToken]
-        );
+        result = await pgQueryContext({
+          client: pool,
+          context: {
+            [`jwt.claims.origin`]: req.get('origin'),
+            [`jwt.claims.user_agent`]: req.get('User-Agent'),
+            [`jwt.claims.ip_address`]: req.clientIp
+          },
+          query: `SELECT * FROM "${rlsModule.privateSchema.schemaName}"."${authFn}"($1)`,
+          variables: [authToken]
+        });
       } catch (e) {
         return res.status(200).end(
           JSON.stringify({

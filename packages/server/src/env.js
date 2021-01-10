@@ -14,6 +14,7 @@ export default cleanEnv(
     PGPORT: port({ default: 5432 }),
     META_SCHEMAS: array({ default: 'meta_public,collections_public' }),
     IS_PUBLIC: bool({ default: true }),
+    STRICT_AUTH: bool({ default: true }),
     TRUST_PROXY: bool({ default: false }),
     USE_SIMPLE_INFLECTION: bool({ default: true }),
     USE_OPPOSITE_BASENAMES: bool({ default: false }),
