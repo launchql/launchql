@@ -77,6 +77,8 @@ const write = async ({
         'launchql-ext-jobs',
         'launchql-jwt-claims',
         'launchql-stamps',
+        'launchql-base32',
+        'launchql-totp',
         'launchql-ext-types',
         'launchql-ext-default-roles'
       ]

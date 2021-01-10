@@ -184,6 +184,7 @@ const config = {
       tokens_table_id: 'uuid',
       users_table_id: 'uuid',
       authenticate: 'text',
+      authenticate_strict: 'text',
       current_role: 'text',
       current_role_id: 'text',
       current_group_ids: 'text'
@@ -204,6 +205,9 @@ const config = {
       sign_in_function: 'text',
       sign_up_function: 'text',
       sign_out_function: 'text',
+      sign_in_one_time_token_function: 'text',
+      one_time_token_function: 'text',
+      extend_token_expires: 'text',
       set_password_function: 'text',
       reset_password_function: 'text',
       forgot_password_function: 'text',
