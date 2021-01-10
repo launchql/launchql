@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphql-testing",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "graphql-testing",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/graphql-testing#readme",
@@ -55,7 +55,7 @@
   "dependencies": {
     "@babel/runtime": "^7.12.1",
     "@launchql/db-testing": "^1.2.4",
-    "@launchql/server": "^0.22.2",
+    "@launchql/server": "^0.23.0",
     "envalid": "6.0.2",
     "graphql": "^14.0.2",
     "mock-req": "0.2.0",
