@@ -22,14 +22,23 @@ export const authenticate = async (req, res, next) => {
     let token = {};
     if (authType.toLowerCase() === 'bearer' && authToken) {
       let result = null;
+
+      const context = {
+        [`jwt.claims.ip_address`]: req.clientIp
+      };
+
+      // MARKED AS NOT DRY (look at middleware/graphile.js)
+      // NOTE: ONLY set if it's not null
+      if (req.get('origin')) {
+        context['jwt.claims.origin'] = req.get('origin');
+      }
+      if (req.get('User-Agent')) {
+        context['jwt.claims.user_agent'] = req.get('User-Agent');
+      }
       try {
         result = await pgQueryContext({
           client: pool,
-          context: {
-            [`jwt.claims.origin`]: req.get('origin'),
-            [`jwt.claims.user_agent`]: req.get('User-Agent'),
-            [`jwt.claims.ip_address`]: req.clientIp
-          },
+          context,
           query: `SELECT * FROM "${rlsModule.privateSchema.schemaName}"."${authFn}"($1)`,
           variables: [authToken]
         });

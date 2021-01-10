@@ -54,10 +54,16 @@ export const graphile = ({
     options.pgSettings = async function pgSettings(req) {
       const context = {
         [`jwt.claims.database_id`]: req.databaseId,
-        [`jwt.claims.origin`]: req.get('origin'),
-        [`jwt.claims.user_agent`]: req.get('User-Agent'),
         [`jwt.claims.ip_address`]: req.clientIp
       };
+
+      // NOTE: ONLY set if it's not null
+      if (req.get('origin')) {
+        context['jwt.claims.origin'] = req.get('origin');
+      }
+      if (req.get('User-Agent')) {
+        context['jwt.claims.user_agent'] = req.get('User-Agent');
+      }
       if (req?.token?.user_id) {
         return {
           role: roleName,
