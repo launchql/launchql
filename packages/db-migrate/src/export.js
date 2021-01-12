@@ -208,6 +208,8 @@ const config = {
       sign_in_one_time_token_function: 'text',
       one_time_token_function: 'text',
       extend_token_expires: 'text',
+      send_account_deletion_email_function: 'text',
+      delete_account_function: 'text',
       set_password_function: 'text',
       reset_password_function: 'text',
       forgot_password_function: 'text',
