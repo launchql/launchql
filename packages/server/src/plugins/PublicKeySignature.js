@@ -8,7 +8,7 @@ const PublicKeySignature = (pubkey_challenge) => {
   const {
     schema,
     crypto_network,
-    sign_up_unique_key,
+    sign_up_with_key,
     sign_in_request_challenge,
     sign_in_record_failure,
     sign_in_with_challenge
@@ -69,7 +69,7 @@ const PublicKeySignature = (pubkey_challenge) => {
             context: {
               role: 'anonymous'
             },
-            query: `SELECT * FROM "${schema}".${sign_up_unique_key}($1)`,
+            query: `SELECT * FROM "${schema}".${sign_up_with_key}($1)`,
             variables: [publicKey]
           });
 
