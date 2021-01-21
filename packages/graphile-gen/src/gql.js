@@ -243,7 +243,9 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
                     selectionSet: t.selectionSet({
                       selections: [
                         t.field({ name: 'hasNextPage' }),
-                        t.field({ name: 'hasPreviousPage' })
+                        t.field({ name: 'hasPreviousPage' }),
+                        t.field({ name: 'endCursor' }),
+                        t.field({ name: 'startCursor' })
                       ]
                     })
                   }),
@@ -419,7 +421,9 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
                     selectionSet: t.selectionSet({
                       selections: [
                         t.field({ name: 'hasNextPage' }),
-                        t.field({ name: 'hasPreviousPage' })
+                        t.field({ name: 'hasPreviousPage' }),
+                        t.field({ name: 'endCursor' }),
+                        t.field({ name: 'startCursor' })
                       ]
                     })
                   }),

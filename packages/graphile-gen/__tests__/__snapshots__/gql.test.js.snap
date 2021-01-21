@@ -566,6 +566,8 @@ Object {
   apiTokens(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -581,6 +583,8 @@ Object {
   apiTokens(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     userId
@@ -625,6 +629,8 @@ Object {
   articles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -646,6 +652,8 @@ Object {
   articles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     header
@@ -749,6 +757,8 @@ Object {
   campaignActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -786,6 +796,8 @@ Object {
   campaignActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -880,6 +892,8 @@ Object {
   campaigns(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -907,6 +921,8 @@ Object {
   campaigns(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -976,6 +992,8 @@ Object {
   completedActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -998,6 +1016,8 @@ Object {
   completedActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     dateCompleted
@@ -1074,6 +1094,8 @@ Object {
   images(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1103,6 +1125,8 @@ Object {
   images(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1177,6 +1201,8 @@ Object {
   initiativesPyraRecords(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1200,6 +1226,8 @@ Object {
   initiativesPyraRecords(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1264,6 +1292,8 @@ Object {
   merchants(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1289,6 +1319,8 @@ Object {
   merchants(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1360,6 +1392,8 @@ Object {
   partners(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1388,6 +1422,8 @@ Object {
   partners(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1456,6 +1492,8 @@ Object {
   permissions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1475,6 +1513,8 @@ Object {
   permissions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1528,6 +1568,8 @@ Object {
   products(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1550,6 +1592,8 @@ Object {
   products(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1611,6 +1655,8 @@ Object {
   services(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1635,6 +1681,8 @@ Object {
   services(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1699,6 +1747,8 @@ Object {
   shopifyAccounts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1722,6 +1772,8 @@ Object {
   shopifyAccounts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
@@ -1819,6 +1871,8 @@ Object {
   shopifyOrders(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1851,6 +1905,8 @@ Object {
   shopifyOrders(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     orderId
@@ -1934,6 +1990,8 @@ Object {
   shopifySecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -1950,6 +2008,8 @@ Object {
   shopifySecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     shopifyAccountId
@@ -2021,6 +2081,8 @@ Object {
   userEncryptedSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -2037,6 +2099,8 @@ Object {
   userEncryptedSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     userId
@@ -2096,6 +2160,8 @@ Object {
   userSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -2111,6 +2177,8 @@ Object {
   userSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     userId
@@ -2140,6 +2208,8 @@ Object {
   users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, edges {
     cursor
     node {
@@ -2156,6 +2226,8 @@ Object {
   users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     username
@@ -2865,6 +2937,8 @@ exports[`getManyPaginatedNodes(): works with nested selection 1`] = `
   actionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
     hasNextPage
     hasPreviousPage
+    endCursor
+    startCursor
   }, nodes {
     id
     name
