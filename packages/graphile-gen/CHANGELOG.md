@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.9](https://github.com/pyramation/graphile-gen/compare/graphile-gen@0.3.8...graphile-gen@0.3.9) (2021-01-21)
+
+
+### Bug Fixes
+
+* return cursors from paginated queries ([76715d0](https://github.com/pyramation/graphile-gen/commit/76715d0665d64ff0dceb4406671454a6c5fb91e5))
+
+
+
+
+
 ## [0.3.8](https://github.com/pyramation/graphile-gen/compare/graphile-gen@0.3.7...graphile-gen@0.3.8) (2021-01-09)
 
 
