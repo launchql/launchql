@@ -1,5 +1,5 @@
 import { print as gqlPrint } from 'graphql';
-import { getMany, getOne } from './ast';
+import { getMany, getOne, getAll } from './ast';
 import inflection from 'inflection';
 
 export class GraphileClient {
@@ -69,6 +69,30 @@ export class GraphileClient {
     const defn = this._meta[this._key];
 
     this._ast = getMany({
+      client: this,
+      queryName: this._queryName,
+      operationName: this._key,
+      query: defn,
+      fields: this._fields
+    });
+
+    return this;
+  }
+
+  all() {
+    this._op = 'getMany';
+    this._key = this._find();
+
+    this.queryName(
+      inflection.camelize(
+        ['get', inflection.underscore(this._key), 'query', 'all'].join('_'),
+        true
+      )
+    );
+
+    const defn = this._meta[this._key];
+
+    this._ast = getAll({
       client: this,
       queryName: this._queryName,
       operationName: this._key,

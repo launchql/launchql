@@ -3,6 +3,39 @@ import * as t from '@pyramation/graphql-ast';
 const objectToArray = (obj) =>
   Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
 
+export const getAll = ({ queryName, operationName, query, fields }) => {
+  const selections = getSelections(query, fields);
+
+  const opSel = [
+    t.field({
+      name: operationName,
+      selectionSet: t.objectValue({
+        fields: [
+          t.field({
+            name: 'totalCount'
+          }),
+          t.field({
+            name: 'nodes',
+            selectionSet: t.selectionSet({ selections })
+          })
+        ]
+      })
+    })
+  ];
+
+  const ast = t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'query',
+        name: queryName,
+        selectionSet: t.selectionSet({ selections: opSel })
+      })
+    ]
+  });
+
+  return ast;
+};
+
 export const getMany = ({
   client, // we can use props here to enable pagination, etc
   queryName,
