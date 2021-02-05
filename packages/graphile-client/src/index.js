@@ -1,5 +1,5 @@
 import { print as gqlPrint } from 'graphql';
-import { getMany, getOne, getAll, createOne } from './ast';
+import { getMany, getOne, getAll, createOne, patchOne, deleteOne } from './ast';
 import inflection from 'inflection';
 
 export class GraphileClient {
@@ -162,6 +162,56 @@ export class GraphileClient {
     const defn = this._meta[this._key];
 
     this._ast = createOne({
+      client: this,
+      operationName: this._key,
+      mutationName: this._queryName,
+      mutation: defn,
+      fields: this._fields
+    });
+
+    return this;
+  }
+
+  delete() {
+    this._op = 'mutation';
+    this._mutation = 'delete';
+    this._key = this._findMutation();
+
+    this.queryName(
+      inflection.camelize(
+        [inflection.underscore(this._key), 'mutation'].join('_'),
+        true
+      )
+    );
+
+    const defn = this._meta[this._key];
+
+    this._ast = deleteOne({
+      client: this,
+      operationName: this._key,
+      mutationName: this._queryName,
+      mutation: defn,
+      fields: this._fields
+    });
+
+    return this;
+  }
+
+  update() {
+    this._op = 'mutation';
+    this._mutation = 'patch';
+    this._key = this._findMutation();
+
+    this.queryName(
+      inflection.camelize(
+        [inflection.underscore(this._key), 'mutation'].join('_'),
+        true
+      )
+    );
+
+    const defn = this._meta[this._key];
+
+    this._ast = patchOne({
       client: this,
       operationName: this._key,
       mutationName: this._queryName,

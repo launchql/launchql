@@ -122,3 +122,33 @@ it('create', () => {
   expect(client._hash).toMatchSnapshot();
   expect(client._queryName).toMatchSnapshot();
 });
+it('delete', () => {
+  const client = new GraphileClient({ ...queries, ...mutations });
+  const result = client
+    .query('Action')
+    .select({
+      id: true,
+      name: true,
+      photo: true,
+      title: true
+    })
+    .delete()
+    .print();
+  expect(client._hash).toMatchSnapshot();
+  expect(client._queryName).toMatchSnapshot();
+});
+it('update', () => {
+  const client = new GraphileClient({ ...queries, ...mutations });
+  const result = client
+    .query('Action')
+    .select({
+      id: true,
+      name: true,
+      photo: true,
+      title: true
+    })
+    .update()
+    .print();
+  expect(client._hash).toMatchSnapshot();
+  expect(client._queryName).toMatchSnapshot();
+});

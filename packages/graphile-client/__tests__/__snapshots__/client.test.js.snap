@@ -36,6 +36,17 @@ exports[`create 1`] = `
 
 exports[`create 2`] = `"createActionMutation"`;
 
+exports[`delete 1`] = `
+"mutation deleteActionMutation($id: UUID!) {
+  deleteAction(input: {id: $id}) {
+    clientMutationId
+  }
+}
+"
+`;
+
+exports[`delete 2`] = `"deleteActionMutation"`;
+
 exports[`getAll 1`] = `
 "query getActionsQueryAll {
   actions {totalCount, nodes {
@@ -108,3 +119,39 @@ exports[`getOne 1`] = `
 `;
 
 exports[`getOne 2`] = `"getActionQuery"`;
+
+exports[`update 1`] = `
+"mutation updateActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID, $photoUpload: Upload) {
+  updateAction(input: {id: $id, patch: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+    action {
+      id
+      name
+      photo
+      title
+      description
+      locationRadius
+      url
+      timeRequired
+      startDate
+      endDate
+      approved
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      descriptionHeader
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      locationId
+      ownerId
+      photoUpload
+    }
+  }
+}
+"
+`;
+
+exports[`update 2`] = `"updateActionMutation"`;

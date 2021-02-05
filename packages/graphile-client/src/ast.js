@@ -414,6 +414,148 @@ export const createOne = ({ mutationName, operationName, mutation }) => {
   return ast;
 };
 
+export const patchOne = ({ mutationName, operationName, mutation }) => {
+  if (!mutation.properties?.input?.properties) {
+    console.log('no input field for mutation for' + mutationName);
+    return;
+  }
+
+  const modelName = inflection.camelize(
+    [plz.singular(mutation.model)].join('_'),
+    true
+  );
+
+  const allAttrs = objectToArray(
+    mutation.properties.input.properties['patch']?.properties || {}
+  );
+
+  const patchAttrs = allAttrs.filter(
+    (prop) => !NON_MUTABLE_PROPS.includes(prop.name)
+  );
+
+  const patchByAttrs = objectToArray(
+    mutation.properties.input.properties
+  ).filter((n) => n.name !== 'patch');
+
+  const patchers = patchByAttrs.map((p) => p.name);
+
+  const variableDefinitions = patchAttrs.map((field) => {
+    const { name: fieldName, type: fieldType, isArray } = field;
+    let type = t.namedType({ type: fieldType });
+    if (isArray) type = t.listType({ type });
+    if (patchers.includes(field.name)) type = t.nonNullType({ type });
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
+
+  const selectArgs = [
+    t.argument({
+      name: 'input',
+      value: t.objectValue({
+        fields: [
+          ...patchByAttrs.map((field) =>
+            t.objectField({
+              name: field.name,
+              value: t.variable({ name: field.name })
+            })
+          ),
+          t.objectField({
+            name: 'patch',
+            value: t.objectValue({
+              fields: patchAttrs
+                .filter((field) => !patchers.includes(field.name))
+                .map((field) =>
+                  t.objectField({
+                    name: field.name,
+                    value: t.variable({
+                      name: field.name
+                    })
+                  })
+                )
+            })
+          })
+        ]
+      })
+    })
+  ];
+
+  const selections = allAttrs.map((field) => t.field({ name: field.name }));
+  const ast = createGqlMutation({
+    operationName,
+    mutationName,
+    selectArgs,
+    selections,
+    variableDefinitions,
+    modelName
+  });
+
+  return ast;
+};
+
+export const deleteOne = ({ mutationName, operationName, mutation }) => {
+  if (!mutation.properties?.input?.properties) {
+    console.log('no input field for mutation for' + mutationName);
+    return;
+  }
+
+  const modelName = inflection.camelize(
+    [plz.singular(mutation.model)].join('_'),
+    true
+  );
+
+  const deleteAttrs = objectToArray(mutation.properties.input.properties);
+  const variableDefinitions = deleteAttrs.map((field) => {
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull
+    } = field;
+    let type = t.namedType({ type: fieldType });
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      // no need to check isArrayNotNull since we need this field for deletion
+      type = t.nonNullType({ type });
+    }
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
+
+  const selectArgs = [
+    t.argument({
+      name: 'input',
+      value: t.objectValue({
+        fields: deleteAttrs.map((f) =>
+          t.objectField({
+            name: f.name,
+            value: t.variable({ name: f.name })
+          })
+        )
+      })
+    })
+  ];
+
+  // so we can support column select grants plugin
+  const selections = [t.field({ name: 'clientMutationId' })];
+  const ast = createGqlMutation({
+    operationName,
+    mutationName,
+    selectArgs,
+    selections,
+    useModel: false,
+    variableDefinitions,
+    modelName
+  });
+
+  return ast;
+};
+
 export function getSelections(query, fields = []) {
   const useAll = fields.length === 0;
 
