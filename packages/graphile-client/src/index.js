@@ -14,6 +14,7 @@ export class GraphileClient {
     this._key = null;
     this._queryName = '';
     this._ast = null;
+    this._edges = false;
   }
 
   query(model) {
@@ -46,6 +47,11 @@ export class GraphileClient {
   select(select) {
     this.fields(Object.keys(select));
     this._select = select;
+    return this;
+  }
+
+  edges(useEdges) {
+    this._edges = useEdges;
     return this;
   }
 

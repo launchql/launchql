@@ -20,6 +20,29 @@ exports[`getMany 1`] = `
 
 exports[`getMany 2`] = `"getActionsQuery"`;
 
+exports[`getMany edges 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      photo
+      title
+      actionResults
+    }
+  }}
+}
+"
+`;
+
+exports[`getMany edges 2`] = `"getActionsQuery"`;
+
 exports[`getOne 1`] = `
 "query getActionQuery($id: UUID!) {
   action(id: $id) {

@@ -158,12 +158,25 @@ export const getMany = ({
                       ]
                     })
                   }),
-                  t.field({
-                    name: 'nodes',
-                    selectionSet: t.selectionSet({
-                      selections
-                    })
-                  })
+                  client._edges
+                    ? t.field({
+                        name: 'edges',
+                        selectionSet: t.selectionSet({
+                          selections: [
+                            t.field({ name: 'cursor' }),
+                            t.field({
+                              name: 'node',
+                              selectionSet: t.selectionSet({ selections })
+                            })
+                          ]
+                        })
+                      })
+                    : t.field({
+                        name: 'nodes',
+                        selectionSet: t.selectionSet({
+                          selections
+                        })
+                      })
                 ]
               })
             })
