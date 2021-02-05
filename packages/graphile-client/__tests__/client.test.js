@@ -5,7 +5,7 @@ import { GraphileClient } from '../src';
 it('getMany', () => {
   const client = new GraphileClient({ ...queries, ...mutations });
   const result = client
-    .model('Action')
+    .query('Action')
     .fields(['id', 'name', 'approved'])
     .getMany()
     .print();
@@ -16,7 +16,7 @@ it('getMany', () => {
 it('getOne', () => {
   const client = new GraphileClient({ ...queries, ...mutations });
   const result = client
-    .model('Action')
+    .query('Action')
     .fields(['id', 'name', 'approved'])
     .getOne()
     .print();

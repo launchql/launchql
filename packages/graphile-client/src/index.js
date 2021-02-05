@@ -9,7 +9,6 @@ export class GraphileClient {
   }
 
   clear() {
-    this.query = '';
     this._model = '';
     this._fields = [];
     this._key = null;
@@ -17,7 +16,7 @@ export class GraphileClient {
     this._ast = null;
   }
 
-  model(model) {
+  query(model) {
     this.clear();
     this._model = model;
     return this;
