@@ -59,7 +59,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
+    "@pyramation/graphql-ast": "0.2.0",
     "graphile-gen": "0.3.9",
-    "graphql": "^14.0.2"
+    "graphql": "^14.0.2",
+    "inflection": "1.12.0"
   }
 }

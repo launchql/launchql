@@ -1,0 +1,800 @@
+{
+  "actionItems": {
+    "qtype": "getMany",
+    "model": "ActionItem",
+    "selection": [
+      "id",
+      "name",
+      "description",
+      "link",
+      "type",
+      "itemOrder",
+      "requiredItem",
+      "notificationText",
+      "embedCode",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      "ownerId",
+      "userActionItems"
+    ]
+  },
+  "actionResults": {
+    "qtype": "getMany",
+    "model": "ActionResult",
+    "selection": [
+      "id",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      "ownerId",
+      "userActionResults"
+    ]
+  },
+  "actions": {
+    "qtype": "getMany",
+    "model": "Action",
+    "selection": [
+      "id",
+      "name",
+      "photo",
+      "title",
+      "description",
+      "locationRadius",
+      "url",
+      "timeRequired",
+      "startDate",
+      "endDate",
+      "approved",
+      "rewardAmount",
+      "activityFeedText",
+      "callToAction",
+      "completedActionText",
+      "descriptionHeader",
+      "tags",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "locationId",
+      "ownerId",
+      "actionResults",
+      "actionItems",
+      "userActions",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "goals": {
+    "qtype": "getMany",
+    "model": "Goal",
+    "selection": [
+      "id",
+      "name",
+      "shortName",
+      "icon",
+      "subHead",
+      "audio",
+      "audioDuration",
+      "explanationTitle",
+      "explanation",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "locations": {
+    "qtype": "getMany",
+    "model": "Location",
+    "selection": [
+      "id",
+      "geo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actions"
+    ]
+  },
+  "newsUpdates": {
+    "qtype": "getMany",
+    "model": "NewsUpdate",
+    "selection": [
+      "id",
+      "name",
+      "description",
+      "photo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "userActionItems": {
+    "qtype": "getMany",
+    "model": "UserActionItem",
+    "selection": [
+      "id",
+      "date",
+      "value",
+      "status",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "actionId",
+      "userActionId",
+      "actionItemId"
+    ]
+  },
+  "userActionResults": {
+    "qtype": "getMany",
+    "model": "UserActionResult",
+    "selection": [
+      "id",
+      "date",
+      "value",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "actionId",
+      "userActionId",
+      "actionResultId"
+    ]
+  },
+  "userActions": {
+    "qtype": "getMany",
+    "model": "UserAction",
+    "selection": [
+      "id",
+      "actionStarted",
+      "verified",
+      "verifiedDate",
+      "status",
+      "userRating",
+      "rejected",
+      "rejectedReason",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "verifierId",
+      "actionId",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "userCharacteristics": {
+    "qtype": "getMany",
+    "model": "UserCharacteristic",
+    "selection": [
+      "id",
+      "income",
+      "gender",
+      "race",
+      "age",
+      "dob",
+      "education",
+      "homeOwnership",
+      "treeHuggerLevel",
+      "freeTime",
+      "researchToDoer",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userConnections": {
+    "qtype": "getMany",
+    "model": "UserConnection",
+    "selection": [
+      "id",
+      "accepted",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "requesterId",
+      "responderId"
+    ]
+  },
+  "userContacts": {
+    "qtype": "getMany",
+    "model": "UserContact",
+    "selection": [
+      "id",
+      "vcf",
+      "fullName",
+      "emails",
+      "device",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userEmails": {
+    "qtype": "getMany",
+    "model": "UserEmail",
+    "selection": [
+      "id",
+      "userId",
+      "email",
+      "isVerified"
+    ]
+  },
+  "userProfiles": {
+    "qtype": "getMany",
+    "model": "UserProfile",
+    "selection": [
+      "id",
+      "profilePicture",
+      "bio",
+      "reputation",
+      "firstName",
+      "lastName",
+      "tags",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userSettings": {
+    "qtype": "getMany",
+    "model": "UserSetting",
+    "selection": [
+      "id",
+      "searchRadius",
+      "zip",
+      "geo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "users": {
+    "qtype": "getMany",
+    "model": "User",
+    "selection": [
+      "id",
+      "type",
+      "userEmails",
+      "userProfiles",
+      "userSettings",
+      "userCharacteristics",
+      "userContacts",
+      "userConnectionsByRequesterId",
+      "userConnectionsByResponderId",
+      "ownedActions",
+      "ownedActionResults",
+      "ownedActionItems",
+      "userActions",
+      "userActionsByVerifierId",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "actionItem": {
+    "model": "ActionItem",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "name",
+      "description",
+      "link",
+      "type",
+      "itemOrder",
+      "requiredItem",
+      "notificationText",
+      "embedCode",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      "ownerId",
+      "userActionItems"
+    ]
+  },
+  "actionResult": {
+    "model": "ActionResult",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actionId",
+      "ownerId",
+      "userActionResults"
+    ]
+  },
+  "action": {
+    "model": "Action",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "name",
+      "photo",
+      "title",
+      "description",
+      "locationRadius",
+      "url",
+      "timeRequired",
+      "startDate",
+      "endDate",
+      "approved",
+      "rewardAmount",
+      "activityFeedText",
+      "callToAction",
+      "completedActionText",
+      "descriptionHeader",
+      "tags",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "locationId",
+      "ownerId",
+      "actionResults",
+      "actionItems",
+      "userActions",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "goal": {
+    "model": "Goal",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "name",
+      "shortName",
+      "icon",
+      "subHead",
+      "audio",
+      "audioDuration",
+      "explanationTitle",
+      "explanation",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "location": {
+    "model": "Location",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "geo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "actions"
+    ]
+  },
+  "newsUpdate": {
+    "model": "NewsUpdate",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "name",
+      "description",
+      "photo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "userActionItem": {
+    "model": "UserActionItem",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "date",
+      "value",
+      "status",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "actionId",
+      "userActionId",
+      "actionItemId"
+    ]
+  },
+  "userActionResult": {
+    "model": "UserActionResult",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "date",
+      "value",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "actionId",
+      "userActionId",
+      "actionResultId"
+    ]
+  },
+  "userAction": {
+    "model": "UserAction",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "actionStarted",
+      "verified",
+      "verifiedDate",
+      "status",
+      "userRating",
+      "rejected",
+      "rejectedReason",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId",
+      "verifierId",
+      "actionId",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "userCharacteristic": {
+    "model": "UserCharacteristic",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "income",
+      "gender",
+      "race",
+      "age",
+      "dob",
+      "education",
+      "homeOwnership",
+      "treeHuggerLevel",
+      "freeTime",
+      "researchToDoer",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userCharacteristicByUserId": {
+    "model": "UserCharacteristic",
+    "qtype": "getOne",
+    "properties": {
+      "userId": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "income",
+      "gender",
+      "race",
+      "age",
+      "dob",
+      "education",
+      "homeOwnership",
+      "treeHuggerLevel",
+      "freeTime",
+      "researchToDoer",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userConnection": {
+    "model": "UserConnection",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "accepted",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "requesterId",
+      "responderId"
+    ]
+  },
+  "userContact": {
+    "model": "UserContact",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "vcf",
+      "fullName",
+      "emails",
+      "device",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userEmail": {
+    "model": "UserEmail",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "userId",
+      "email",
+      "isVerified"
+    ]
+  },
+  "userEmailByEmail": {
+    "model": "UserEmail",
+    "qtype": "getOne",
+    "properties": {
+      "email": {
+        "isNotNull": true,
+        "type": "LaunchqlInternalTypeEmail"
+      }
+    },
+    "selection": [
+      "id",
+      "userId",
+      "email",
+      "isVerified"
+    ]
+  },
+  "userProfile": {
+    "model": "UserProfile",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "profilePicture",
+      "bio",
+      "reputation",
+      "firstName",
+      "lastName",
+      "tags",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userProfileByUserId": {
+    "model": "UserProfile",
+    "qtype": "getOne",
+    "properties": {
+      "userId": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "profilePicture",
+      "bio",
+      "reputation",
+      "firstName",
+      "lastName",
+      "tags",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userSetting": {
+    "model": "UserSetting",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "searchRadius",
+      "zip",
+      "geo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "userSettingByUserId": {
+    "model": "UserSetting",
+    "qtype": "getOne",
+    "properties": {
+      "userId": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "searchRadius",
+      "zip",
+      "geo",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "userId"
+    ]
+  },
+  "user": {
+    "model": "User",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "type",
+      "userEmails",
+      "userProfiles",
+      "userSettings",
+      "userCharacteristics",
+      "userContacts",
+      "userConnectionsByRequesterId",
+      "userConnectionsByResponderId",
+      "ownedActions",
+      "ownedActionResults",
+      "ownedActionItems",
+      "userActions",
+      "userActionsByVerifierId",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "getCurrentUser": {
+    "model": "User",
+    "qtype": "getOne",
+    "properties": {},
+    "selection": [
+      "id",
+      "type",
+      "userEmails",
+      "userProfiles",
+      "userSettings",
+      "userCharacteristics",
+      "userContacts",
+      "userConnectionsByRequesterId",
+      "userConnectionsByResponderId",
+      "ownedActions",
+      "ownedActionResults",
+      "ownedActionItems",
+      "userActions",
+      "userActionsByVerifierId",
+      "userActionResults",
+      "userActionItems"
+    ]
+  },
+  "_meta": {
+    "model": "Metaschema",
+    "qtype": "getOne",
+    "properties": {},
+    "selection": [
+      "tables"
+    ]
+  }
+}

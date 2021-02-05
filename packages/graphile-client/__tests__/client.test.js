@@ -1,16 +1,25 @@
 import mutations from '../__fixtures__/api/mutations.json';
 import queries from '../__fixtures__/api/queries.json';
-import {GraphileClient} from '../src';
+import { GraphileClient } from '../src';
 
-it('generate', () => {
-  const gen = new GraphileClient({ ...queries, ...mutations });
-  
-  const hash = gen.model('Action')
-  .fields([
-    'id',
-    'name',
-    'approved'
-  ]).gen().hash;
+it('getMany', () => {
+  const client = new GraphileClient({ ...queries, ...mutations });
+  const result = client
+    .model('Action')
+    .fields(['id', 'name', 'approved'])
+    .getMany()
+    .print();
+  expect(client._hash).toMatchSnapshot();
+  expect(client._queryName).toMatchSnapshot();
+});
 
-  expect(hash).toMatchSnapshot();
+it('getOne', () => {
+  const client = new GraphileClient({ ...queries, ...mutations });
+  const result = client
+    .model('Action')
+    .fields(['id', 'name', 'approved'])
+    .getOne()
+    .print();
+  expect(client._hash).toMatchSnapshot();
+  expect(client._queryName).toMatchSnapshot();
 });

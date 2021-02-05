@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getMany 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    approved
+  }}
+}
+"
+`;
+
+exports[`getMany 2`] = `"getActionsQuery"`;
+
+exports[`getOne 1`] = `
+"query getActionQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionOrderBy!]) {
+  action(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    approved
+  }}
+}
+"
+`;
+
+exports[`getOne 2`] = `"getActionQuery"`;

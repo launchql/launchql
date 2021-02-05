@@ -1,33 +1,106 @@
-import { print } from 'graphql';
-import {generateGranular as generate } from 'graphile-gen';
+import { print as gqlPrint } from 'graphql';
+import { getMany } from './gql';
+import plz from 'pluralize';
+import inflection from 'inflection';
+import * as t from '@pyramation/graphql-ast';
 
 export class GraphileClient {
-  constructor (meta) {
-    this.meta = meta;
+  constructor(meta) {
+    this._meta = meta;
+    this.clear();
+  }
+
+  clear() {
     this.query = '';
-    this.model = '';
-    this.fields = [];
+    this._model = '';
+    this._fields = [];
+    this._key = null;
+    this._queryName = '';
+    this._ast = null;
   }
 
   model(model) {
-    this.model = model;
-    return this;
-  }
-  
-  fields(fields) {
-    this.fields = fields;
-    return this;
-  }
-  
-  gen() {
-    this.generate = generate({ ...this.meta }, this.model, this.fields);
-    this.hash = Object.keys(this.generate).reduce((m, key) => {
-      if (this.generate[key]?.ast) {
-        m[key] = print(this.generate[key].ast);
-      }
-      return m;
-    }, {});
+    this.clear();
+    this._model = model;
     return this;
   }
 
+  fields(fields) {
+    this._fields = fields;
+    return this;
+  }
+
+  _find() {
+    // based on the op, finds the relevant GQL query
+    const q = Object.keys(this._meta).reduce((m, v) => {
+      const defn = this._meta[v];
+      const matchModel = defn.model;
+      if (matchModel === this._model && defn.qtype === this._op) {
+        return v;
+      }
+      return m;
+    }, null);
+    if (!q) {
+      throw new Error('no query found for ' + this._model + ':' + this._op);
+    }
+    return q;
+  }
+
+  getMany() {
+    this._op = 'getMany';
+    this._key = this._find();
+
+    this.queryName(
+      inflection.camelize(
+        ['get', inflection.underscore(this._key), 'query'].join('_'),
+        true
+      )
+    );
+
+    const defn = this._meta[this._key];
+
+    this._ast = getMany({
+      client: this,
+      queryName: this._queryName,
+      operationName: this._key,
+      query: defn,
+      fields: this._fields
+    });
+
+    return this;
+  }
+
+  getOne() {
+    this._op = 'getOne';
+    this._key = this._find();
+
+    this.queryName(
+      inflection.camelize(
+        ['get', inflection.underscore(this._key), 'query'].join('_'),
+        true
+      )
+    );
+
+    const defn = this._meta[this._key];
+
+    this._ast = getMany({
+      client: this,
+      queryName: this._queryName,
+      operationName: this._key,
+      query: defn,
+      fields: this._fields
+    });
+
+    return this;
+  }
+
+  queryName(name) {
+    this._queryName = name;
+    return this;
+  }
+
+  print() {
+    this._hash = gqlPrint(this._ast);
+    return this;
+  }
 }
