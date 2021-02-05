@@ -1,8 +1,16 @@
-export default class GraphileClient {
+export class GraphileClient {
   constructor (meta) {
     this.meta = meta;
+    this.query = '';
   }
-  getMany () {
-    
+
+  model(model) {
+    this.model = model;
+    return this;
+  }
+  
+  getMany() {
+    this.query = 
+    return this;
   }
 }

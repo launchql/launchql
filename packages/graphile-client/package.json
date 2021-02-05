@@ -58,7 +58,8 @@
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2"
+    "@babel/runtime": "^7.4.2",
+    "graphile-gen": "0.3.9"
   },
   "gitHead": "579f9c938c29b4c40fc28fba3368e75968306820"
 }
