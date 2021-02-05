@@ -10,7 +10,9 @@ exports[`getMany 1`] = `
   }, nodes {
     id
     name
-    approved
+    photo
+    title
+    actionResults
   }}
 }
 "
@@ -23,7 +25,9 @@ exports[`getOne 1`] = `
   action(id: $id) {
     id
     name
-    approved
+    photo
+    title
+    actionResults
   }
 }
 "

@@ -6,7 +6,22 @@ it('getMany', () => {
   const client = new GraphileClient({ ...queries, ...mutations });
   const result = client
     .query('Action')
-    .fields(['id', 'name', 'approved'])
+    .select({
+      id: true,
+      name: true,
+      photo: true,
+      title: true,
+      actionResults: {
+        select: {
+          id: true
+        },
+        variables: {
+          first: 10,
+          last: 10,
+          before: null
+        }
+      }
+    })
     .getMany()
     .print();
   expect(client._hash).toMatchSnapshot();
@@ -17,7 +32,22 @@ it('getOne', () => {
   const client = new GraphileClient({ ...queries, ...mutations });
   const result = client
     .query('Action')
-    .fields(['id', 'name', 'approved'])
+    .select({
+      id: true,
+      name: true,
+      photo: true,
+      title: true,
+      actionResults: {
+        select: {
+          id: true
+        },
+        variables: {
+          first: 10,
+          last: 10,
+          before: null
+        }
+      }
+    })
     .getOne()
     .print();
   expect(client._hash).toMatchSnapshot();

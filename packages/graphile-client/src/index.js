@@ -43,6 +43,12 @@ export class GraphileClient {
     return q;
   }
 
+  select(select) {
+    this.fields(Object.keys(select));
+    this._select = select;
+    return this;
+  }
+
   getMany() {
     this._op = 'getMany';
     this._key = this._find();
