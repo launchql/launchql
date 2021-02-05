@@ -106,3 +106,19 @@ it('getAll', () => {
   expect(client._hash).toMatchSnapshot();
   expect(client._queryName).toMatchSnapshot();
 });
+
+it('create', () => {
+  const client = new GraphileClient({ ...queries, ...mutations });
+  const result = client
+    .query('Action')
+    .select({
+      id: true,
+      name: true,
+      photo: true,
+      title: true
+    })
+    .create()
+    .print();
+  expect(client._hash).toMatchSnapshot();
+  expect(client._queryName).toMatchSnapshot();
+});

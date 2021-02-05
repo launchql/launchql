@@ -1,5 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`create 1`] = `
+"mutation createActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID!, $photoUpload: Upload) {
+  createAction(input: {action: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+    action {
+      id
+      name
+      photo
+      title
+      description
+      locationRadius
+      url
+      timeRequired
+      startDate
+      endDate
+      approved
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      descriptionHeader
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      locationId
+      ownerId
+      photoUpload
+    }
+  }
+}
+"
+`;
+
+exports[`create 2`] = `"createActionMutation"`;
+
 exports[`getAll 1`] = `
 "query getActionsQueryAll {
   actions {totalCount, nodes {

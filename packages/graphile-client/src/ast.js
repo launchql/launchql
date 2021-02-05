@@ -1,7 +1,61 @@
 import * as t from '@pyramation/graphql-ast';
-
+import plz from 'pluralize';
+import inflection from 'inflection';
+const NON_MUTABLE_PROPS = [
+  'id',
+  'createdAt',
+  'createdBy',
+  'updatedAt',
+  'updatedBy'
+];
 const objectToArray = (obj) =>
   Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
+
+const createGqlMutation = ({
+  operationName,
+  mutationName,
+  selectArgs,
+  selections,
+  variableDefinitions,
+  modelName,
+  useModel = true
+}) => {
+  const opSel = !modelName
+    ? [
+        t.field({
+          name: operationName,
+          args: selectArgs,
+          selectionSet: t.selectionSet({ selections })
+        })
+      ]
+    : [
+        t.field({
+          name: operationName,
+          args: selectArgs,
+          selectionSet: t.selectionSet({
+            selections: useModel
+              ? [
+                  t.field({
+                    name: modelName,
+                    selectionSet: t.selectionSet({ selections })
+                  })
+                ]
+              : selections
+          })
+        })
+      ];
+
+  return t.document({
+    definitions: [
+      t.operationDefinition({
+        operation: 'mutation',
+        name: mutationName,
+        variableDefinitions,
+        selectionSet: t.selectionSet({ selections: opSel })
+      })
+    ]
+  });
+};
 
 export const getAll = ({ queryName, operationName, query, fields }) => {
   const selections = getSelections(query, fields);
@@ -282,6 +336,81 @@ export const getOne = ({
       })
     ]
   });
+  return ast;
+};
+
+export const createOne = ({ mutationName, operationName, mutation }) => {
+  if (!mutation.properties?.input?.properties) {
+    console.log('no input field for mutation for' + mutationName);
+    return;
+  }
+
+  const modelName = inflection.camelize(
+    [plz.singular(mutation.model)].join('_'),
+    true
+  );
+
+  const allAttrs = objectToArray(
+    mutation.properties.input.properties[modelName].properties
+  );
+
+  const attrs = allAttrs.filter(
+    (field) => !NON_MUTABLE_PROPS.includes(field.name)
+  );
+
+  const variableDefinitions = attrs.map((field) => {
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull
+    } = field;
+    let type = t.namedType({ type: fieldType });
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      if (isArrayNotNull) type = t.nonNullType({ type });
+    }
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
+
+  const selectArgs = [
+    t.argument({
+      name: 'input',
+      value: t.objectValue({
+        fields: [
+          t.objectField({
+            name: modelName,
+            value: t.objectValue({
+              fields: attrs.map((field) =>
+                t.objectField({
+                  name: field.name,
+                  value: t.variable({
+                    name: field.name
+                  })
+                })
+              )
+            })
+          })
+        ]
+      })
+    })
+  ];
+
+  const selections = allAttrs.map((field) => t.field({ name: field.name }));
+  const ast = createGqlMutation({
+    operationName,
+    mutationName,
+    selectArgs,
+    selections,
+    variableDefinitions,
+    modelName
+  });
+
   return ast;
 };
 
