@@ -1,8 +1,6 @@
 import { print as gqlPrint } from 'graphql';
-import { getMany } from './gql';
-import plz from 'pluralize';
+import { getMany, getOne } from './ast';
 import inflection from 'inflection';
-import * as t from '@pyramation/graphql-ast';
 
 export class GraphileClient {
   constructor(meta) {
@@ -83,7 +81,7 @@ export class GraphileClient {
 
     const defn = this._meta[this._key];
 
-    this._ast = getMany({
+    this._ast = getOne({
       client: this,
       queryName: this._queryName,
       operationName: this._key,

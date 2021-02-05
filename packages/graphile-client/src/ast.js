@@ -1,5 +1,3 @@
-import plz from 'pluralize';
-import inflection from 'inflection';
 import * as t from '@pyramation/graphql-ast';
 
 const objectToArray = (obj) =>
