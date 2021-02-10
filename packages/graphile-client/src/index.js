@@ -4,6 +4,8 @@ import inflection from 'inflection';
 import { validateMetaObject } from './meta-object';
 import { isObject } from 'lodash';
 
+export * as MetaObject from './meta-object';
+
 export class GraphileClient {
   constructor({ meta = {}, introspection }) {
     this._introspection = introspection;
