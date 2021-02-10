@@ -1,6 +1,6 @@
 {
   "name": "graphile-client",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Graphile Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-gen/tree/master/packages/graphile-client#readme",
@@ -59,9 +59,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@pyramation/graphql-ast": "0.2.0",
+    "@pyramation/graphql-ast": "^0.3.0",
     "ajv": "^7.0.4",
-    "graphile-gen": "0.3.9",
+    "graphile-gen": "^0.3.10",
     "graphql": "^14.0.2",
     "inflection": "1.12.0",
     "lodash": "^4.17.20",
