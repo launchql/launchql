@@ -1,6 +1,9 @@
 import * as t from '@pyramation/graphql-ast';
 import plz from 'pluralize';
 import inflection from 'inflection';
+import isArray from 'lodash/isArray';
+import isObject from 'lodash/isObject';
+
 const NON_MUTABLE_PROPS = [
   'id',
   'createdAt',
@@ -57,8 +60,8 @@ const createGqlMutation = ({
   });
 };
 
-export const getAll = ({ queryName, operationName, query, fields }) => {
-  const selections = getSelections(query, fields);
+export const getAll = ({ queryName, operationName, query, selection }) => {
+  const selections = getSelections(selection);
 
   const opSel = [
     t.field({
@@ -95,14 +98,14 @@ export const getMany = ({
   queryName,
   operationName,
   query,
-  fields
+  selection
 }) => {
   const Singular = query.model;
   const Plural = operationName.charAt(0).toUpperCase() + operationName.slice(1);
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = getSelections(query, fields);
+  const selections = getSelections(selection);
 
   const ast = t.document({
     definitions: [
@@ -281,7 +284,7 @@ export const getOne = ({
   queryName,
   operationName,
   query,
-  fields
+  selection
 }) => {
   const variableDefinitions = Object.keys(query.properties)
     .map((key) => ({ name: key, ...query.properties[key] }))
@@ -317,7 +320,8 @@ export const getOne = ({
       });
     });
 
-  const selections = getSelections(query, fields);
+  const selections = getSelections(selection);
+
   const opSel = [
     t.field({
       name: operationName,
@@ -339,7 +343,12 @@ export const getOne = ({
   return ast;
 };
 
-export const createOne = ({ mutationName, operationName, mutation }) => {
+export const createOne = ({
+  mutationName,
+  operationName,
+  mutation,
+  selection
+}) => {
   if (!mutation.properties?.input?.properties) {
     console.log('no input field for mutation for' + mutationName);
     return;
@@ -401,7 +410,10 @@ export const createOne = ({ mutationName, operationName, mutation }) => {
     })
   ];
 
-  const selections = allAttrs.map((field) => t.field({ name: field.name }));
+  const selections = selection
+    ? getSelections(selection)
+    : allAttrs.map((field) => t.field({ name: field.name }));
+
   const ast = createGqlMutation({
     operationName,
     mutationName,
@@ -414,7 +426,12 @@ export const createOne = ({ mutationName, operationName, mutation }) => {
   return ast;
 };
 
-export const patchOne = ({ mutationName, operationName, mutation }) => {
+export const patchOne = ({
+  mutationName,
+  operationName,
+  mutation,
+  selection
+}) => {
   if (!mutation.properties?.input?.properties) {
     console.log('no input field for mutation for' + mutationName);
     return;
@@ -481,7 +498,10 @@ export const patchOne = ({ mutationName, operationName, mutation }) => {
     })
   ];
 
-  const selections = allAttrs.map((field) => t.field({ name: field.name }));
+  const selections = selection
+    ? getSelections(selection)
+    : allAttrs.map((field) => t.field({ name: field.name }));
+
   const ast = createGqlMutation({
     operationName,
     mutationName,
@@ -556,36 +576,82 @@ export const deleteOne = ({ mutationName, operationName, mutation }) => {
   return ast;
 };
 
-export function getSelections(query, fields = []) {
-  const useAll = fields.length === 0;
-
-  return query.selection
+export function getSelections(selection = []) {
+  return selection
     .map((field) => {
-      if (!useAll && !fields.includes(field)) return null;
-      if (typeof field === 'object' && field !== null) {
+      if (typeof field === 'string') {
+        return t.field({ name: field });
+      }
+
+      if (isObject(field)) {
+        const { name, selection, variables } = field;
         return t.field({
-          name: field.name,
-          args: [
-            t.argument({
-              name: 'first',
-              value: t.intValue({ value: 3 })
-            })
-          ],
+          name,
+          args: Object.entries(variables).reduce((args, variable) => {
+            const [argName, argValue] = variable;
+            const argAst = t.argument({
+              name: argName,
+              value: getValueAst(argValue)
+            });
+            args = argAst ? [...args, argAst] : args;
+            return args;
+          }, []),
           selectionSet: t.objectValue({
             fields: [
               t.field({
                 name: 'nodes',
                 selectionSet: t.selectionSet({
-                  selections: field.selection.map((field) =>
-                    t.field({ name: field })
-                  )
+                  selections: selection.map((field) => t.field({ name: field }))
                 })
               })
             ]
           })
         });
       }
-      return t.field({ name: field });
+      return null;
     })
-    .filter((i) => Boolean(i));
+    .filter(Boolean);
+}
+
+/**
+ * Get argument AST from a value
+ * @param {*} value
+ * @returns {Object} AST for the argument
+ */
+function getValueAst(value) {
+  if (value == null) {
+    return t.nullValue();
+  }
+
+  if (typeof value === 'number') {
+    return t.intValue({ value });
+  }
+
+  if (typeof value === 'string') {
+    return t.stringValue({ value });
+  }
+
+  if (typeof value === 'boolean') {
+    return t.booleanValue({ value });
+  }
+
+  if (isArray(value)) {
+    return t.listValue({ values: value.map((v) => getValueAst(v)) });
+  }
+
+  if (isObject(value)) {
+    return t.objectValue({
+      fields: Object.entries(value).reduce((fields, entry) => {
+        const [objKey, objValue] = entry;
+        fields = [
+          ...fields,
+          t.objectField({
+            name: objKey,
+            value: getValueAst(objValue)
+          })
+        ];
+        return fields;
+      }, [])
+    });
+  }
 }

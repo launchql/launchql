@@ -84,6 +84,10 @@ export const listValue = ({ values }) => ({
   values
 });
 
+export const nullValue = () => ({
+  kind: 'NullValue'
+});
+
 export const fragmentDefinition = ({
   name,
   typeCondition,

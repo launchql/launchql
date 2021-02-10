@@ -1,154 +1,227 @@
 import mutations from '../__fixtures__/api/mutations.json';
 import queries from '../__fixtures__/api/queries.json';
+import metaObject from '../__fixtures__/api/meta-obj.json';
 import { GraphileClient } from '../src';
 
-it('getMany', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
-  const result = client
-    .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true,
-      actionResults: {
+describe('getMany', () => {
+  it('should select only scalar fields by default', () => {
+    const client = new GraphileClient({
+      meta: metaObject,
+      introspection: { ...queries, ...mutations }
+    });
+
+    const result = client.query('Action').getMany().print();
+
+    expect(result._hash).toMatchSnapshot();
+    expect(result._queryName).toMatchSnapshot();
+    // Because ownerId is a foreignKey, it won't be included
+    expect(result._hash.includes('ownerId')).toBe(false);
+  });
+
+  it('should whitelist selected fields', () => {
+    const client = new GraphileClient({
+      meta: metaObject,
+      introspection: { ...queries, ...mutations }
+    });
+
+    const result = client
+      .query('Action')
+      .getMany({
         select: {
-          id: true
-        },
-        variables: {
-          first: 10,
-          last: 10,
-          before: null
+          id: true,
+          name: true,
+          photo: true,
+          title: true,
+          actionResults: {
+            select: {
+              id: true,
+              actionId: true
+            },
+            variables: {
+              first: 10,
+              filter: {
+                name: {
+                  in: ['abc', 'def']
+                },
+                actionId: { equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e' }
+              }
+            }
+          }
         }
-      }
-    })
-    .getMany()
-    .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
+      })
+      .print();
+
+    expect(result._hash).toMatchSnapshot();
+    expect(result._queryName).toMatchSnapshot();
+  });
 });
 
 it('getMany edges', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
+  const client = new GraphileClient({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
   const result = client
     .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true,
-      actionResults: {
-        select: {
-          id: true
-        },
-        variables: {
-          first: 10,
-          last: 10,
-          before: null
+    .edges(true)
+    .getMany({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true,
+        actionResults: {
+          select: {
+            id: true,
+            actionId: true
+          },
+          variables: {
+            first: 10,
+            before: null,
+            filter: {
+              name: {
+                in: ['abc', 'def']
+              },
+              actionId: { equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e' }
+            }
+          }
         }
       }
     })
-    .edges(true)
-    .getMany()
     .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
 });
 
 it('getOne', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
+  const client = new GraphileClient({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
   const result = client
     .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true,
-      actionResults: {
-        select: {
-          id: true
-        },
-        variables: {
-          first: 10,
-          last: 10,
-          before: null
+    .getOne({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true,
+        actionResults: {
+          select: {
+            id: true,
+            actionId: true
+          },
+          variables: {
+            first: 10,
+            before: null,
+            filter: {
+              name: {
+                in: ['abc', 'def']
+              },
+              actionId: { equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e' }
+            }
+          }
         }
       }
     })
-    .getOne()
     .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
 });
 
 it('getAll', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
+  const client = new GraphileClient({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
   const result = client
     .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true,
-      actionResults: {
-        select: {
-          id: true
-        },
-        variables: {
-          first: 10,
-          last: 10,
-          before: null
+    .all({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true,
+        actionResults: {
+          select: {
+            id: true,
+            actionId: true
+          },
+          variables: {
+            first: 10,
+            before: null,
+            filter: {
+              name: {
+                in: ['abc', 'def']
+              },
+              actionId: { equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e' }
+            }
+          }
         }
       }
     })
-    .all()
+    .print();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
+it('create', () => {
+  const client = new GraphileClient({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+  const result = client
+    .query('Action')
+    .create({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true
+      }
+    })
     .print();
   expect(client._hash).toMatchSnapshot();
   expect(client._queryName).toMatchSnapshot();
 });
 
-it('create', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
-  const result = client
-    .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true
-    })
-    .create()
-    .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
-});
 it('delete', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
+  const client = new GraphileClient({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
   const result = client
     .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true
+    .delete({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true
+      }
     })
-    .delete()
     .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
 });
+
 it('update', () => {
-  const client = new GraphileClient({ ...queries, ...mutations });
+  const client = new GraphileClient({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
   const result = client
     .query('Action')
-    .select({
-      id: true,
-      name: true,
-      photo: true,
-      title: true
+    .update({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true
+      }
     })
-    .update()
     .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
 });
