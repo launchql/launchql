@@ -74,6 +74,16 @@ export const intValue = ({ value }) => ({
   value
 });
 
+export const booleanValue = ({ value }) => ({
+  kind: 'BooleanValue',
+  value
+});
+
+export const listValue = ({ values }) => ({
+  kind: 'ListValue',
+  values
+});
+
 export const fragmentDefinition = ({
   name,
   typeCondition,
