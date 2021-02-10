@@ -1,0 +1,181 @@
+{
+  "$id": "root",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "User",
+            "examples": [
+              "User"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": "id",
+                  "examples": [
+                    "id"
+                  ]
+                },
+                "type": {
+                  "type": "string",
+                  "default": "uuid",
+                  "examples": [
+                    "uuid"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "primaryConstraints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": "id",
+                  "examples": [
+                    "id"
+                  ]
+                },
+                "type": {
+                  "type": "string",
+                  "default": "uuid",
+                  "examples": [
+                    "uuid"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "uniqueConstraints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": "id",
+                  "examples": [
+                    "id"
+                  ]
+                },
+                "type": {
+                  "type": "string",
+                  "default": "uuid",
+                  "examples": [
+                    "uuid"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "foreignConstraints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "refTable": {
+                  "type": "string",
+                  "default": "User",
+                  "examples": [
+                    "User"
+                  ]
+                },
+                "fromKey": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "default": "user_id",
+                      "examples": [
+                        "user_id"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "default": "uuid",
+                      "examples": [
+                        "uuid"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "type"
+                  ],
+                  "additionalProperties": false
+                },
+                "toKey": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "default": "id",
+                      "examples": [
+                        "id"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "default": "uuid",
+                      "examples": [
+                        "uuid"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "type"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "refTable",
+                "fromKey",
+                "toKey"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name",
+          "fields"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "tables"
+  ],
+  "additionalProperties": false
+}

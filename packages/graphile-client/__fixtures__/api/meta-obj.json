@@ -1,0 +1,1902 @@
+{
+  "tables": [{
+    "name": "ActionGoal",
+    "fields": [{
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }, {
+      "name": "goalId",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "actionId",
+      "type": "uuid"
+    }, {
+      "name": "goalId",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Goal",
+      "fromKey": {
+        "name": "goalId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "ActionItem",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "description",
+      "type": "text"
+    }, {
+      "name": "type",
+      "type": "text"
+    }, {
+      "name": "itemOrder",
+      "type": "int4"
+    }, {
+      "name": "timeRequired",
+      "type": "interval"
+    }, {
+      "name": "isRequired",
+      "type": "bool"
+    }, {
+      "name": "notificationText",
+      "type": "text"
+    }, {
+      "name": "embedCode",
+      "type": "text"
+    }, {
+      "name": "url",
+      "type": "url"
+    }, {
+      "name": "media",
+      "type": "upload"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "ActionResult",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "Action",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "slug",
+      "type": "citext"
+    }, {
+      "name": "photo",
+      "type": "image"
+    }, {
+      "name": "title",
+      "type": "text"
+    }, {
+      "name": "url",
+      "type": "url"
+    }, {
+      "name": "description",
+      "type": "text"
+    }, {
+      "name": "discoveryHeader",
+      "type": "text"
+    }, {
+      "name": "discoveryDescription",
+      "type": "text"
+    }, {
+      "name": "enableNotifications",
+      "type": "bool"
+    }, {
+      "name": "enableNotificationsText",
+      "type": "text"
+    }, {
+      "name": "search",
+      "type": "tsvector"
+    }, {
+      "name": "location",
+      "type": "geometry"
+    }, {
+      "name": "locationRadius",
+      "type": "numeric"
+    }, {
+      "name": "timeRequired",
+      "type": "interval"
+    }, {
+      "name": "startDate",
+      "type": "timestamptz"
+    }, {
+      "name": "endDate",
+      "type": "timestamptz"
+    }, {
+      "name": "approved",
+      "type": "bool"
+    }, {
+      "name": "rewardAmount",
+      "type": "numeric"
+    }, {
+      "name": "activityFeedText",
+      "type": "text"
+    }, {
+      "name": "callToAction",
+      "type": "text"
+    }, {
+      "name": "completedActionText",
+      "type": "text"
+    }, {
+      "name": "alreadyCompletedActionText",
+      "type": "text"
+    }, {
+      "name": "tags",
+      "type": "citext"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "slug",
+      "type": "citext"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "ClaimedInvite",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "data",
+      "type": "jsonb"
+    }, {
+      "name": "senderId",
+      "type": "uuid"
+    }, {
+      "name": "receiverId",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "senderId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "receiverId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "ConnectedAccount",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }, {
+      "name": "service",
+      "type": "text"
+    }, {
+      "name": "identifier",
+      "type": "text"
+    }, {
+      "name": "details",
+      "type": "jsonb"
+    }, {
+      "name": "isVerified",
+      "type": "bool"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "service",
+      "type": "text"
+    }, {
+      "name": "identifier",
+      "type": "text"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "CryptoAddress",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }, {
+      "name": "address",
+      "type": "text"
+    }, {
+      "name": "isVerified",
+      "type": "bool"
+    }, {
+      "name": "isPrimary",
+      "type": "bool"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "address",
+      "type": "text"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "Email",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }, {
+      "name": "email",
+      "type": "email"
+    }, {
+      "name": "isVerified",
+      "type": "bool"
+    }, {
+      "name": "isPrimary",
+      "type": "bool"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "email",
+      "type": "email"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "GoalExplanation",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "audio",
+      "type": "attachment"
+    }, {
+      "name": "audioDuration",
+      "type": "interval"
+    }, {
+      "name": "explanationTitle",
+      "type": "text"
+    }, {
+      "name": "explanation",
+      "type": "text"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "goalId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "Goal",
+      "fromKey": {
+        "name": "goalId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "Goal",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "slug",
+      "type": "citext"
+    }, {
+      "name": "shortName",
+      "type": "text"
+    }, {
+      "name": "icon",
+      "type": "text"
+    }, {
+      "name": "subHead",
+      "type": "text"
+    }, {
+      "name": "tags",
+      "type": "citext"
+    }, {
+      "name": "search",
+      "type": "tsvector"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "name",
+      "type": "text"
+    }],
+    "foreignConstraints": []
+  }, {
+    "name": "Invite",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "email",
+      "type": "email"
+    }, {
+      "name": "senderId",
+      "type": "uuid"
+    }, {
+      "name": "inviteToken",
+      "type": "text"
+    }, {
+      "name": "inviteValid",
+      "type": "bool"
+    }, {
+      "name": "inviteLimit",
+      "type": "int4"
+    }, {
+      "name": "inviteCount",
+      "type": "int4"
+    }, {
+      "name": "multiple",
+      "type": "bool"
+    }, {
+      "name": "data",
+      "type": "jsonb"
+    }, {
+      "name": "expiresAt",
+      "type": "timestamptz"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "email",
+      "type": "email"
+    }, {
+      "name": "senderId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "senderId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "LevelRequirement",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "level",
+      "type": "text"
+    }, {
+      "name": "requiredCount",
+      "type": "int4"
+    }, {
+      "name": "priority",
+      "type": "int4"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "level",
+      "type": "text"
+    }],
+    "foreignConstraints": []
+  }, {
+    "name": "Level",
+    "fields": [{
+      "name": "name",
+      "type": "text"
+    }],
+    "primaryConstraints": [{
+      "name": "name",
+      "type": "text"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": []
+  }, {
+    "name": "MessageGroup",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "memberIds",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": []
+  }, {
+    "name": "Message",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "type",
+      "type": "text"
+    }, {
+      "name": "content",
+      "type": "jsonb"
+    }, {
+      "name": "upload",
+      "type": "upload"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "senderId",
+      "type": "uuid"
+    }, {
+      "name": "groupId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "senderId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "MessageGroup",
+      "fromKey": {
+        "name": "groupId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "NewsUpdate",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "description",
+      "type": "text"
+    }, {
+      "name": "link",
+      "type": "url"
+    }, {
+      "name": "publishedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "photo",
+      "type": "image"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": []
+  }, {
+    "name": "OrganizationProfile",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "profilePicture",
+      "type": "image"
+    }, {
+      "name": "description",
+      "type": "text"
+    }, {
+      "name": "website",
+      "type": "url"
+    }, {
+      "name": "reputation",
+      "type": "numeric"
+    }, {
+      "name": "tags",
+      "type": "citext"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "organizationId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "organizationId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "organizationId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "PhoneNumber",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }, {
+      "name": "cc",
+      "type": "text"
+    }, {
+      "name": "number",
+      "type": "text"
+    }, {
+      "name": "isVerified",
+      "type": "bool"
+    }, {
+      "name": "isPrimary",
+      "type": "bool"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "number",
+      "type": "text"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserAchievement",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "count",
+      "type": "int4"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }],
+    "foreignConstraints": []
+  }, {
+    "name": "UserActionItem",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "value",
+      "type": "jsonb"
+    }, {
+      "name": "status",
+      "type": "text"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }, {
+      "name": "userActionId",
+      "type": "uuid"
+    }, {
+      "name": "actionItemId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "userActionId",
+      "type": "uuid"
+    }, {
+      "name": "actionItemId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "UserAction",
+      "fromKey": {
+        "name": "userActionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "ActionItem",
+      "fromKey": {
+        "name": "actionItemId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserActionReaction",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userActionId",
+      "type": "uuid"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "reacterId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "UserAction",
+      "fromKey": {
+        "name": "userActionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "reacterId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserActionResult",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "value",
+      "type": "jsonb"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }, {
+      "name": "userActionId",
+      "type": "uuid"
+    }, {
+      "name": "actionResultId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "userActionId",
+      "type": "uuid"
+    }, {
+      "name": "actionResultId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "UserAction",
+      "fromKey": {
+        "name": "userActionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "ActionResult",
+      "fromKey": {
+        "name": "actionResultId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserAction",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "actionStarted",
+      "type": "timestamptz"
+    }, {
+      "name": "complete",
+      "type": "bool"
+    }, {
+      "name": "verified",
+      "type": "bool"
+    }, {
+      "name": "verifiedDate",
+      "type": "timestamptz"
+    }, {
+      "name": "userRating",
+      "type": "int4"
+    }, {
+      "name": "rejected",
+      "type": "bool"
+    }, {
+      "name": "rejectedReason",
+      "type": "text"
+    }, {
+      "name": "location",
+      "type": "geometry"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "verifierId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "verifierId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserCharacteristic",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "income",
+      "type": "numeric"
+    }, {
+      "name": "gender",
+      "type": "bpchar"
+    }, {
+      "name": "race",
+      "type": "text"
+    }, {
+      "name": "age",
+      "type": "int4"
+    }, {
+      "name": "dob",
+      "type": "date"
+    }, {
+      "name": "education",
+      "type": "text"
+    }, {
+      "name": "homeOwnership",
+      "type": "int2"
+    }, {
+      "name": "treeHuggerLevel",
+      "type": "int2"
+    }, {
+      "name": "diyLevel",
+      "type": "int2"
+    }, {
+      "name": "gardenerLevel",
+      "type": "int2"
+    }, {
+      "name": "freeTime",
+      "type": "int2"
+    }, {
+      "name": "researchToDoer",
+      "type": "int2"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserConnection",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "accepted",
+      "type": "bool"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "requesterId",
+      "type": "uuid"
+    }, {
+      "name": "responderId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "requesterId",
+      "type": "uuid"
+    }, {
+      "name": "responderId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "requesterId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "responderId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserContact",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "vcf",
+      "type": "jsonb"
+    }, {
+      "name": "fullName",
+      "type": "text"
+    }, {
+      "name": "emails",
+      "type": "email"
+    }, {
+      "name": "device",
+      "type": "text"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserMessage",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "type",
+      "type": "text"
+    }, {
+      "name": "content",
+      "type": "jsonb"
+    }, {
+      "name": "upload",
+      "type": "upload"
+    }, {
+      "name": "received",
+      "type": "bool"
+    }, {
+      "name": "receiverRead",
+      "type": "bool"
+    }, {
+      "name": "senderReaction",
+      "type": "text"
+    }, {
+      "name": "receiverReaction",
+      "type": "text"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "senderId",
+      "type": "uuid"
+    }, {
+      "name": "receiverId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "senderId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "User",
+      "fromKey": {
+        "name": "receiverId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserPassAction",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserProfile",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "profilePicture",
+      "type": "image"
+    }, {
+      "name": "bio",
+      "type": "text"
+    }, {
+      "name": "reputation",
+      "type": "numeric"
+    }, {
+      "name": "displayName",
+      "type": "text"
+    }, {
+      "name": "tags",
+      "type": "citext"
+    }, {
+      "name": "desired",
+      "type": "citext"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserSavedAction",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserSetting",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "firstName",
+      "type": "text"
+    }, {
+      "name": "lastName",
+      "type": "text"
+    }, {
+      "name": "searchRadius",
+      "type": "numeric"
+    }, {
+      "name": "zip",
+      "type": "int4"
+    }, {
+      "name": "location",
+      "type": "geometry"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "userId",
+      "type": "uuid"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "UserStep",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "name",
+      "type": "text"
+    }, {
+      "name": "count",
+      "type": "int4"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": []
+  }, {
+    "name": "UserViewedAction",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }, {
+      "name": "userId",
+      "type": "uuid"
+    }, {
+      "name": "actionId",
+      "type": "uuid"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "userId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }, {
+      "refTable": "Action",
+      "fromKey": {
+        "name": "actionId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }, {
+    "name": "User",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "type",
+      "type": "int4"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [],
+    "foreignConstraints": []
+  }, {
+    "name": "ZipCode",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "zip",
+      "type": "int4"
+    }, {
+      "name": "location",
+      "type": "geometry"
+    }, {
+      "name": "bbox",
+      "type": "geometry"
+    }, {
+      "name": "createdBy",
+      "type": "uuid"
+    }, {
+      "name": "updatedBy",
+      "type": "uuid"
+    }, {
+      "name": "createdAt",
+      "type": "timestamptz"
+    }, {
+      "name": "updatedAt",
+      "type": "timestamptz"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "zip",
+      "type": "int4"
+    }],
+    "foreignConstraints": []
+  }, {
+    "name": "AuthAccount",
+    "fields": [{
+      "name": "id",
+      "type": "uuid"
+    }, {
+      "name": "ownerId",
+      "type": "uuid"
+    }, {
+      "name": "service",
+      "type": "text"
+    }, {
+      "name": "identifier",
+      "type": "text"
+    }, {
+      "name": "details",
+      "type": "jsonb"
+    }, {
+      "name": "isVerified",
+      "type": "bool"
+    }],
+    "primaryConstraints": [{
+      "name": "id",
+      "type": "uuid"
+    }],
+    "uniqueConstraints": [{
+      "name": "service",
+      "type": "text"
+    }, {
+      "name": "identifier",
+      "type": "text"
+    }],
+    "foreignConstraints": [{
+      "refTable": "User",
+      "fromKey": {
+        "name": "ownerId",
+        "type": "uuid"
+      },
+      "toKey": {
+        "name": "id",
+        "type": "uuid"
+      }
+    }]
+  }]
+}

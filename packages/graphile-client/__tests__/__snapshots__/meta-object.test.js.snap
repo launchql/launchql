@@ -1,0 +1,2512 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`convertFromMetaSchema() matches snapshot 1`] = `
+Object {
+  "tables": Array [
+    Object {
+      "fields": Array [
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "goalId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "goalId",
+            "type": "uuid",
+          },
+          "refTable": "Goal",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "ActionGoal",
+      "primaryConstraints": Array [
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "goalId",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "description",
+          "type": "text",
+        },
+        Object {
+          "name": "type",
+          "type": "text",
+        },
+        Object {
+          "name": "itemOrder",
+          "type": "int4",
+        },
+        Object {
+          "name": "timeRequired",
+          "type": "interval",
+        },
+        Object {
+          "name": "isRequired",
+          "type": "bool",
+        },
+        Object {
+          "name": "notificationText",
+          "type": "text",
+        },
+        Object {
+          "name": "embedCode",
+          "type": "text",
+        },
+        Object {
+          "name": "url",
+          "type": "url",
+        },
+        Object {
+          "name": "media",
+          "type": "upload",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "ActionItem",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "ActionResult",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "slug",
+          "type": "citext",
+        },
+        Object {
+          "name": "photo",
+          "type": "image",
+        },
+        Object {
+          "name": "title",
+          "type": "text",
+        },
+        Object {
+          "name": "url",
+          "type": "url",
+        },
+        Object {
+          "name": "description",
+          "type": "text",
+        },
+        Object {
+          "name": "discoveryHeader",
+          "type": "text",
+        },
+        Object {
+          "name": "discoveryDescription",
+          "type": "text",
+        },
+        Object {
+          "name": "enableNotifications",
+          "type": "bool",
+        },
+        Object {
+          "name": "enableNotificationsText",
+          "type": "text",
+        },
+        Object {
+          "name": "search",
+          "type": "tsvector",
+        },
+        Object {
+          "name": "location",
+          "type": "geometry",
+        },
+        Object {
+          "name": "locationRadius",
+          "type": "numeric",
+        },
+        Object {
+          "name": "timeRequired",
+          "type": "interval",
+        },
+        Object {
+          "name": "startDate",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "endDate",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "approved",
+          "type": "bool",
+        },
+        Object {
+          "name": "rewardAmount",
+          "type": "numeric",
+        },
+        Object {
+          "name": "activityFeedText",
+          "type": "text",
+        },
+        Object {
+          "name": "callToAction",
+          "type": "text",
+        },
+        Object {
+          "name": "completedActionText",
+          "type": "text",
+        },
+        Object {
+          "name": "alreadyCompletedActionText",
+          "type": "text",
+        },
+        Object {
+          "name": "tags",
+          "type": "citext",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "Action",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "slug",
+          "type": "citext",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "data",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "senderId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "receiverId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "senderId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "receiverId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "ClaimedInvite",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "service",
+          "type": "text",
+        },
+        Object {
+          "name": "identifier",
+          "type": "text",
+        },
+        Object {
+          "name": "details",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "isVerified",
+          "type": "bool",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "ConnectedAccount",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "service",
+          "type": "text",
+        },
+        Object {
+          "name": "identifier",
+          "type": "text",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "address",
+          "type": "text",
+        },
+        Object {
+          "name": "isVerified",
+          "type": "bool",
+        },
+        Object {
+          "name": "isPrimary",
+          "type": "bool",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "CryptoAddress",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "address",
+          "type": "text",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "email",
+          "type": "email",
+        },
+        Object {
+          "name": "isVerified",
+          "type": "bool",
+        },
+        Object {
+          "name": "isPrimary",
+          "type": "bool",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "Email",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "email",
+          "type": "email",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "audio",
+          "type": "attachment",
+        },
+        Object {
+          "name": "audioDuration",
+          "type": "interval",
+        },
+        Object {
+          "name": "explanationTitle",
+          "type": "text",
+        },
+        Object {
+          "name": "explanation",
+          "type": "text",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "goalId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "goalId",
+            "type": "uuid",
+          },
+          "refTable": "Goal",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "GoalExplanation",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "slug",
+          "type": "citext",
+        },
+        Object {
+          "name": "shortName",
+          "type": "text",
+        },
+        Object {
+          "name": "icon",
+          "type": "text",
+        },
+        Object {
+          "name": "subHead",
+          "type": "text",
+        },
+        Object {
+          "name": "tags",
+          "type": "citext",
+        },
+        Object {
+          "name": "search",
+          "type": "tsvector",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "Goal",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "email",
+          "type": "email",
+        },
+        Object {
+          "name": "senderId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "inviteToken",
+          "type": "text",
+        },
+        Object {
+          "name": "inviteValid",
+          "type": "bool",
+        },
+        Object {
+          "name": "inviteLimit",
+          "type": "int4",
+        },
+        Object {
+          "name": "inviteCount",
+          "type": "int4",
+        },
+        Object {
+          "name": "multiple",
+          "type": "bool",
+        },
+        Object {
+          "name": "data",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "expiresAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "senderId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "Invite",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "email",
+          "type": "email",
+        },
+        Object {
+          "name": "senderId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "level",
+          "type": "text",
+        },
+        Object {
+          "name": "requiredCount",
+          "type": "int4",
+        },
+        Object {
+          "name": "priority",
+          "type": "int4",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "LevelRequirement",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "level",
+          "type": "text",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "Level",
+      "primaryConstraints": Array [
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "memberIds",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "MessageGroup",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "type",
+          "type": "text",
+        },
+        Object {
+          "name": "content",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "upload",
+          "type": "upload",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "senderId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "groupId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "senderId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "groupId",
+            "type": "uuid",
+          },
+          "refTable": "MessageGroup",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "Message",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "description",
+          "type": "text",
+        },
+        Object {
+          "name": "link",
+          "type": "url",
+        },
+        Object {
+          "name": "publishedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "photo",
+          "type": "image",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "NewsUpdate",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "profilePicture",
+          "type": "image",
+        },
+        Object {
+          "name": "description",
+          "type": "text",
+        },
+        Object {
+          "name": "website",
+          "type": "url",
+        },
+        Object {
+          "name": "reputation",
+          "type": "numeric",
+        },
+        Object {
+          "name": "tags",
+          "type": "citext",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "organizationId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "organizationId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "OrganizationProfile",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "organizationId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "cc",
+          "type": "text",
+        },
+        Object {
+          "name": "number",
+          "type": "text",
+        },
+        Object {
+          "name": "isVerified",
+          "type": "bool",
+        },
+        Object {
+          "name": "isPrimary",
+          "type": "bool",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "PhoneNumber",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "number",
+          "type": "text",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "count",
+          "type": "int4",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "UserAchievement",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "value",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "status",
+          "type": "text",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userActionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionItemId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "userActionId",
+            "type": "uuid",
+          },
+          "refTable": "UserAction",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionItemId",
+            "type": "uuid",
+          },
+          "refTable": "ActionItem",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserActionItem",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userActionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionItemId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userActionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "reacterId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userActionId",
+            "type": "uuid",
+          },
+          "refTable": "UserAction",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "reacterId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserActionReaction",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "value",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userActionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionResultId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "userActionId",
+            "type": "uuid",
+          },
+          "refTable": "UserAction",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionResultId",
+            "type": "uuid",
+          },
+          "refTable": "ActionResult",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserActionResult",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userActionId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionResultId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionStarted",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "complete",
+          "type": "bool",
+        },
+        Object {
+          "name": "verified",
+          "type": "bool",
+        },
+        Object {
+          "name": "verifiedDate",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userRating",
+          "type": "int4",
+        },
+        Object {
+          "name": "rejected",
+          "type": "bool",
+        },
+        Object {
+          "name": "rejectedReason",
+          "type": "text",
+        },
+        Object {
+          "name": "location",
+          "type": "geometry",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "verifierId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "verifierId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserAction",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "income",
+          "type": "numeric",
+        },
+        Object {
+          "name": "gender",
+          "type": "bpchar",
+        },
+        Object {
+          "name": "race",
+          "type": "text",
+        },
+        Object {
+          "name": "age",
+          "type": "int4",
+        },
+        Object {
+          "name": "dob",
+          "type": "date",
+        },
+        Object {
+          "name": "education",
+          "type": "text",
+        },
+        Object {
+          "name": "homeOwnership",
+          "type": "int2",
+        },
+        Object {
+          "name": "treeHuggerLevel",
+          "type": "int2",
+        },
+        Object {
+          "name": "diyLevel",
+          "type": "int2",
+        },
+        Object {
+          "name": "gardenerLevel",
+          "type": "int2",
+        },
+        Object {
+          "name": "freeTime",
+          "type": "int2",
+        },
+        Object {
+          "name": "researchToDoer",
+          "type": "int2",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserCharacteristic",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "accepted",
+          "type": "bool",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "requesterId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "responderId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "requesterId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "responderId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserConnection",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "requesterId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "responderId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "vcf",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "fullName",
+          "type": "text",
+        },
+        Object {
+          "name": "emails",
+          "type": "email",
+        },
+        Object {
+          "name": "device",
+          "type": "text",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserContact",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "type",
+          "type": "text",
+        },
+        Object {
+          "name": "content",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "upload",
+          "type": "upload",
+        },
+        Object {
+          "name": "received",
+          "type": "bool",
+        },
+        Object {
+          "name": "receiverRead",
+          "type": "bool",
+        },
+        Object {
+          "name": "senderReaction",
+          "type": "text",
+        },
+        Object {
+          "name": "receiverReaction",
+          "type": "text",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "senderId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "receiverId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "senderId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "receiverId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserMessage",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserPassAction",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "profilePicture",
+          "type": "image",
+        },
+        Object {
+          "name": "bio",
+          "type": "text",
+        },
+        Object {
+          "name": "reputation",
+          "type": "numeric",
+        },
+        Object {
+          "name": "displayName",
+          "type": "text",
+        },
+        Object {
+          "name": "tags",
+          "type": "citext",
+        },
+        Object {
+          "name": "desired",
+          "type": "citext",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserProfile",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserSavedAction",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "firstName",
+          "type": "text",
+        },
+        Object {
+          "name": "lastName",
+          "type": "text",
+        },
+        Object {
+          "name": "searchRadius",
+          "type": "numeric",
+        },
+        Object {
+          "name": "zip",
+          "type": "int4",
+        },
+        Object {
+          "name": "location",
+          "type": "geometry",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserSetting",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "name",
+          "type": "text",
+        },
+        Object {
+          "name": "count",
+          "type": "int4",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "UserStep",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "userId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "actionId",
+          "type": "uuid",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "userId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+        Object {
+          "fromKey": Object {
+            "name": "actionId",
+            "type": "uuid",
+          },
+          "refTable": "Action",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "UserViewedAction",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "type",
+          "type": "int4",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "User",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "zip",
+          "type": "int4",
+        },
+        Object {
+          "name": "location",
+          "type": "geometry",
+        },
+        Object {
+          "name": "bbox",
+          "type": "geometry",
+        },
+        Object {
+          "name": "createdBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "updatedBy",
+          "type": "uuid",
+        },
+        Object {
+          "name": "createdAt",
+          "type": "timestamptz",
+        },
+        Object {
+          "name": "updatedAt",
+          "type": "timestamptz",
+        },
+      ],
+      "foreignConstraints": Array [],
+      "name": "ZipCode",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "zip",
+          "type": "int4",
+        },
+      ],
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+        Object {
+          "name": "ownerId",
+          "type": "uuid",
+        },
+        Object {
+          "name": "service",
+          "type": "text",
+        },
+        Object {
+          "name": "identifier",
+          "type": "text",
+        },
+        Object {
+          "name": "details",
+          "type": "jsonb",
+        },
+        Object {
+          "name": "isVerified",
+          "type": "bool",
+        },
+      ],
+      "foreignConstraints": Array [
+        Object {
+          "fromKey": Object {
+            "name": "ownerId",
+            "type": "uuid",
+          },
+          "refTable": "User",
+          "toKey": Object {
+            "name": "id",
+            "type": "uuid",
+          },
+        },
+      ],
+      "name": "AuthAccount",
+      "primaryConstraints": Array [
+        Object {
+          "name": "id",
+          "type": "uuid",
+        },
+      ],
+      "uniqueConstraints": Array [
+        Object {
+          "name": "service",
+          "type": "text",
+        },
+        Object {
+          "name": "identifier",
+          "type": "text",
+        },
+      ],
+    },
+  ],
+}
+`;
