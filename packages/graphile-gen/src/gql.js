@@ -57,13 +57,13 @@ const createGqlMutation = ({
   });
 };
 
-export const getMany = ({ operationName, query }) => {
+export const getMany = ({ operationName, query, fields }) => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query', 'all'].join('_'),
     true
   );
 
-  const selections = getSelections(query);
+  const selections = getSelections(query, fields);
 
   const opSel = [
     t.field({
@@ -95,7 +95,7 @@ export const getMany = ({ operationName, query }) => {
   return { name: queryName, ast };
 };
 
-export const getManyPaginatedEdges = ({ operationName, query }) => {
+export const getManyPaginatedEdges = ({ operationName, query, fields }) => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'paginated'].join('_'),
     true
@@ -106,7 +106,7 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = getSelections(query);
+  const selections = getSelections(query, fields);
 
   const ast = t.document({
     definitions: [
@@ -273,7 +273,7 @@ export const getManyPaginatedEdges = ({ operationName, query }) => {
   return { name: queryName, ast };
 };
 
-export const getManyPaginatedNodes = ({ operationName, query }) => {
+export const getManyPaginatedNodes = ({ operationName, query, fields }) => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
     true
@@ -284,7 +284,7 @@ export const getManyPaginatedNodes = ({ operationName, query }) => {
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = getSelections(query);
+  const selections = getSelections(query, fields);
 
   const ast = t.document({
     definitions: [
@@ -521,7 +521,7 @@ export const getFragment = ({ operationName, query }) => {
   return { name: queryName, ast };
 };
 
-export const getOne = ({ operationName, query }) => {
+export const getOne = ({ operationName, query, fields }) => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
     true
@@ -561,7 +561,7 @@ export const getOne = ({ operationName, query }) => {
       });
     });
 
-  const selections = getSelections(query);
+  const selections = getSelections(query, fields);
   const opSel = [
     t.field({
       name: operationName,
@@ -931,31 +931,67 @@ export const generate = (gql) => {
   }, {});
 };
 
-export function getSelections(query) {
-  return query.selection.map((field) => {
-    if (typeof field === 'object' && field !== null) {
-      return t.field({
-        name: field.name,
-        args: [
-          t.argument({
-            name: 'first',
-            value: t.intValue({ value: 3 })
-          })
-        ],
-        selectionSet: t.objectValue({
-          fields: [
-            t.field({
-              name: 'nodes',
-              selectionSet: t.selectionSet({
-                selections: field.selection.map((field) =>
-                  t.field({ name: field })
-                )
-              })
-            })
-          ]
-        })
-      });
+export const generateGranular = (gql, model, fields) => {
+  return Object.keys(gql).reduce((m, v) => {
+    const defn = gql[v];
+    const matchModel = defn.model;
+
+    let name, ast;
+    if (defn.qtype === 'getMany') {
+      ({ name, ast } = getMany({ operationName: v, query: defn, fields }));
+      if (name && ast && model === matchModel) m[name] = { name, ast };
+
+      // kinda hacky to just include these here, clearly we need a new model...
+      ({ name, ast } = getManyPaginatedEdges({
+        operationName: v,
+        query: defn,
+        fields
+      }));
+      if (name && ast && model === matchModel) m[name] = { name, ast };
+      ({ name, ast } = getManyPaginatedNodes({
+        operationName: v,
+        query: defn,
+        fields
+      }));
+      if (name && ast && model === matchModel) m[name] = { name, ast };
+    } else if (defn.qtype === 'getOne') {
+      ({ name, ast } = getOne({ operationName: v, query: defn, fields }));
     }
-    return t.field({ name: field });
-  });
+    if (name && ast && model === matchModel) m[name] = { name, ast };
+    return m;
+  }, {});
+};
+
+export function getSelections(query, fields = []) {
+  const useAll = fields.length === 0;
+
+  return query.selection
+    .map((field) => {
+      if (!useAll && !fields.includes(field)) return null;
+      if (typeof field === 'object' && field !== null) {
+        return t.field({
+          name: field.name,
+          args: [
+            t.argument({
+              name: 'first',
+              value: t.intValue({ value: 3 })
+            })
+          ],
+          selectionSet: t.objectValue({
+            fields: [
+              t.field({
+                name: 'nodes',
+                selectionSet: t.selectionSet({
+                  selections: field.selection.map((field) =>
+                    t.field({ name: field })
+                  )
+                })
+              })
+            ]
+          })
+        });
+      }
+      return t.field({ name: field });
+    })
+    .filter((i) => Boolean(i));
 }
