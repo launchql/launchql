@@ -1,4 +1,4 @@
-import * as t from '@pyramation/graphql-ast';
+import * as t from 'gql-ast';
 import plz from 'pluralize';
 import inflection from 'inflection';
 import isArray from 'lodash/isArray';
