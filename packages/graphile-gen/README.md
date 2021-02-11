@@ -1,8 +1,6 @@
 # graphile-gen
 
-Generate the GraphQL mutations/queries for your PostGraphile projects
-
-* assumes using simple inflection
+Generate GraphQL mutations/queries
 
 ```sh
 npm install graphile-gen

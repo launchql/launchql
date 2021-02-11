@@ -1,8 +1,6 @@
 # launchql-client
 
-Generate the GraphQL mutations/queries for your PostGraphile projects
-
-* assumes using simple inflection
+Generate GraphQL mutations/queries
 
 ```sh
 npm install launchql-client
