@@ -6,7 +6,7 @@ import { isObject } from 'lodash';
 
 export * as MetaObject from './meta-object';
 
-export class GraphileClient {
+export class Client {
   constructor({ meta = {}, introspection }) {
     this._introspection = introspection;
     this._meta = meta;
@@ -16,7 +16,7 @@ export class GraphileClient {
     const validate = validateMetaObject(this._meta);
     if (typeof validate === 'object' && validate.errors) {
       throw new Error(
-        `GraphileClient: meta object is not in correct format ${validate.errors}`
+        `Client: meta object is not in correct format ${validate.errors}`
       );
     }
   }

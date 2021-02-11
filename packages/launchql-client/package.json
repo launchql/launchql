@@ -1,9 +1,9 @@
 {
-  "name": "graphile-client",
+  "name": "launchql-client",
   "version": "0.1.3",
   "description": "Graphile Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/graphile-gen/tree/master/packages/graphile-client#readme",
+  "homepage": "https://github.com/launchql/graphile-gen/tree/master/packages/launchql-client#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",

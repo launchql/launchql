@@ -1,11 +1,11 @@
 import mutations from '../__fixtures__/api/mutations.json';
 import queries from '../__fixtures__/api/queries.json';
 import metaObject from '../__fixtures__/api/meta-obj.json';
-import { GraphileClient } from '../src';
+import { Client } from '../src';
 
 describe('getMany', () => {
   it('should select only scalar fields by default', () => {
-    const client = new GraphileClient({
+    const client = new Client({
       meta: metaObject,
       introspection: { ...queries, ...mutations }
     });
@@ -19,7 +19,7 @@ describe('getMany', () => {
   });
 
   it('should whitelist selected fields', () => {
-    const client = new GraphileClient({
+    const client = new Client({
       meta: metaObject,
       introspection: { ...queries, ...mutations }
     });
@@ -57,7 +57,7 @@ describe('getMany', () => {
 });
 
 it('getMany edges', () => {
-  const client = new GraphileClient({
+  const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
@@ -94,7 +94,7 @@ it('getMany edges', () => {
 });
 
 it('getOne', () => {
-  const client = new GraphileClient({
+  const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
@@ -130,7 +130,7 @@ it('getOne', () => {
 });
 
 it('getAll', () => {
-  const client = new GraphileClient({
+  const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
@@ -167,7 +167,7 @@ it('getAll', () => {
 });
 
 it('create', () => {
-  const client = new GraphileClient({
+  const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
@@ -187,7 +187,7 @@ it('create', () => {
 });
 
 it('delete', () => {
-  const client = new GraphileClient({
+  const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
@@ -207,7 +207,7 @@ it('delete', () => {
 });
 
 it('update', () => {
-  const client = new GraphileClient({
+  const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });

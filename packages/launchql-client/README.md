@@ -1,19 +1,19 @@
-# graphile-client
+# launchql-client
 
 Generate the GraphQL mutations/queries for your PostGraphile projects
 
 * assumes using simple inflection
 
 ```sh
-npm install graphile-client
+npm install launchql-client
 ```
 
 ## Usage
 
 ```js
-import { GraphileClient } from 'graphile-client';
+import { Client } from 'launchql-client';
 
-const client = new GraphileClient({
+const client = new Client({
     introspection: { ...queries, ...mutations }
 });
 

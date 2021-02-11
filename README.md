@@ -45,19 +45,19 @@ which will output the entire API as an object with the mutations and queries as 
 }
 ```
 
-## Graphile Client
+## LaunchQL Client
 
 
 ```sh
-npm install graphile-client
+npm install launchql-client
 ```
 
 ### Usage
 
 ```js
-import { GraphileClient } from 'graphile-client';
+import { Client } from 'launchql-client';
 
-const client = new GraphileClient({
+const client = new Client({
     introspection: { ...queries, ...mutations }
 });
 
