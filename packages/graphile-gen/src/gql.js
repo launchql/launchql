@@ -1,6 +1,6 @@
 import plz from 'pluralize';
 import inflection from 'inflection';
-import * as t from '@pyramation/graphql-ast';
+import * as t from 'gql-ast';
 const NON_MUTABLE_PROPS = [
   'id',
   'createdAt',

@@ -1,9 +1,9 @@
 {
-  "name": "graphile-gen-sql",
-  "version": "0.3.3",
-  "description": "Generate queries and mutations for use with Graphile",
+  "name": "gql-ast",
+  "version": "0.1.0",
+  "description": "GraphQL ASTs",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/graphile-gen/tree/master/packages/graphile-gen-sql#readme",
+  "homepage": "https://github.com/pyramation/graphile-gen/tree/master/packages/gql-ast#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -53,16 +53,11 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "4.0.0",
-    "graphql": "^14.0.2",
     "jest": "^25.1.0",
-    "jest-in-case": "^1.0.2",
     "prettier": "^1.19.1",
     "regenerator-runtime": "^0.13.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
-    "@pyramation/graphql-ast": "^0.3.0",
-    "inflection": "^1.12.0",
-    "pluralize": "^8.0.0"
+    "@babel/runtime": "^7.4.2"
   }
 }

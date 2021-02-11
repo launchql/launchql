@@ -1,13 +1,13 @@
-# graphql-ast
+# gql-ast
 
 Super bare-bones GraphQL AST utils
 
 ```sh
-npm install @pyramation/graphql-ast
+npm install gql-ast
 ```
 
 ```js
-import * as t from '@pyramation/graphql-ast';
+import * as t from 'gql-ast';
 
 const ast = t.document({
   definitions: [
@@ -19,5 +19,4 @@ const ast = t.document({
     })
   ]
 });
-
 ```
