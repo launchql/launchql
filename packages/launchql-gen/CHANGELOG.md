@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.3.13 (2021-02-11)
+
+**Note:** Version bump only for package launchql-gen
+
+
+
+
+
 ## [0.3.12](https://github.com/launchql/launchql-gen/compare/launchql-gen@0.3.11...launchql-gen@0.3.12) (2021-02-11)
 
 **Note:** Version bump only for package launchql-gen

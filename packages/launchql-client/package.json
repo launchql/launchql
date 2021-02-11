@@ -1,6 +1,6 @@
 {
   "name": "launchql-client",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Graphile Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-gen/tree/master/packages/launchql-client#readme",
@@ -60,10 +60,10 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "ajv": "^7.0.4",
-    "gql-ast": "^0.1.2",
-    "launchql-gen": "^0.3.12",
+    "gql-ast": "^0.1.3",
     "graphql": "^14.0.2",
     "inflection": "1.12.0",
+    "launchql-gen": "^0.3.13",
     "lodash": "^4.17.20",
     "pluralize": "8.0.0"
   }
