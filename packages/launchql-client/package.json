@@ -1,6 +1,6 @@
 {
   "name": "launchql-client",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Graphile Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/graphile-gen/tree/master/packages/launchql-client#readme",
