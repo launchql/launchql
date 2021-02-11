@@ -13,7 +13,7 @@
   "registry": "https://registry.npmjs.org",
   "command": {
     "create": {
-      "homepage": "https://github.com/launchql/graphile-gen",
+      "homepage": "https://github.com/launchql/launchql-gen",
       "license": "SEE LICENSE IN LICENSE",
       "access": "restricted"
     },

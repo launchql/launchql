@@ -3,7 +3,7 @@
   "version": "0.1.4",
   "description": "Graphile Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/graphile-gen/tree/master/packages/launchql-client#readme",
+  "homepage": "https://github.com/launchql/launchql-gen/tree/master/packages/launchql-client#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
   "module": "module/index.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/graphile-gen"
+    "url": "https://github.com/launchql/launchql-gen"
   },
   "scripts": {
     "build:main": "cross-env BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
@@ -35,7 +35,7 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
   "bugs": {
-    "url": "https://github.com/launchql/graphile-gen/issues"
+    "url": "https://github.com/launchql/launchql-gen/issues"
   },
   "devDependencies": {
     "@babel/cli": "7.11.6",
@@ -61,7 +61,7 @@
     "@babel/runtime": "^7.4.2",
     "ajv": "^7.0.4",
     "gql-ast": "^0.1.2",
-    "graphile-gen": "^0.3.12",
+    "launchql-gen": "^0.3.12",
     "graphql": "^14.0.2",
     "inflection": "1.12.0",
     "lodash": "^4.17.20",

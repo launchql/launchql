@@ -1,5 +1,5 @@
 {
-  "name": "graphile-gen",
+  "name": "launchql-gen",
   "version": "0.0.1",
   "publishConfig": {
     "access": "restricted"
@@ -36,6 +36,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/graphile-gen"
+    "url": "https://github.com/launchql/launchql-gen"
   }
 }

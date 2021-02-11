@@ -1,11 +1,11 @@
-# graphile-gen
+# launchql-gen
 
 Generate GraphQL mutations/queries 
 
 ## Introspection
 
 ```sh
-npm install graphile-gen
+npm install launchql-gen
 ```
 
 ### Usage
@@ -13,7 +13,7 @@ npm install graphile-gen
 ```js
 import {
   generate
-} from 'graphile-gen';
+} from 'launchql-gen';
 import { print } from 'graphql/language';
 
 const gen = generate(resultOfIntrospectionQuery);

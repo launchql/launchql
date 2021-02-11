@@ -1,9 +1,9 @@
-# graphile-gen
+# launchql-gen
 
 Generate GraphQL mutations/queries
 
 ```sh
-npm install graphile-gen
+npm install launchql-gen
 ```
 
 ## introspecting via GraphQL
@@ -11,7 +11,7 @@ npm install graphile-gen
 ```js
 import {
   generate
-} from 'graphile-gen';
+} from 'launchql-gen';
 import { print } from 'graphql/language';
 
 const gen = generate(resultOfIntrospectionQuery);
