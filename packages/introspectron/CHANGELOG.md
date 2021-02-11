@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.3](https://github.com/launchql/graphile-gen/compare/introspectron@0.2.2...introspectron@0.2.3) (2021-02-11)
+
+**Note:** Version bump only for package introspectron
+
+
+
+
+
 ## [0.2.2](https://github.com/pyramation/graphile-gen/compare/introspectron@0.2.1...introspectron@0.2.2) (2020-12-27)
 
 

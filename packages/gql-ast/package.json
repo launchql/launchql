@@ -1,6 +1,6 @@
 {
   "name": "gql-ast",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "GraphQL ASTs",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/graphile-gen/tree/master/packages/gql-ast#readme",

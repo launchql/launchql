@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.12](https://github.com/launchql/graphile-gen/compare/graphile-gen@0.3.11...graphile-gen@0.3.12) (2021-02-11)
+
+**Note:** Version bump only for package graphile-gen
+
+
+
+
+
 ## [0.3.11](https://github.com/pyramation/graphile-gen/compare/graphile-gen@0.3.10...graphile-gen@0.3.11) (2021-02-11)
 
 **Note:** Version bump only for package graphile-gen

@@ -1,6 +1,6 @@
 {
   "name": "graphile-client",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Graphile Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/graphile-gen/tree/master/packages/graphile-client#readme",
@@ -60,8 +60,8 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2",
     "ajv": "^7.0.4",
-    "gql-ast": "^0.1.1",
-    "graphile-gen": "^0.3.11",
+    "gql-ast": "^0.1.2",
+    "graphile-gen": "^0.3.12",
     "graphql": "^14.0.2",
     "inflection": "1.12.0",
     "lodash": "^4.17.20",
