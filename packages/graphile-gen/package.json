@@ -1,6 +1,6 @@
 {
   "name": "graphile-gen",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-gen/tree/master/packages/graphile-gen#readme",
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "gql-ast": "^0.1.0",
+    "gql-ast": "^0.1.1",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
   }
