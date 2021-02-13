@@ -6290,7 +6290,7 @@ glob-to-regexp@^0.3.0:
   resolved "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
   integrity sha1-jFoUlNIGbFcMw7/kSWF1rMTVAqs=
 
-glob@7.1.6, glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4:
+glob@7.1.6, glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
   version "7.1.6"
   resolved "https://registry.npmjs.org/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
   integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
@@ -9412,6 +9412,11 @@ pg-connection-string@^2.0.0, pg-connection-string@^2.4.0:
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.4.0.tgz#c979922eb47832999a204da5dbe1ebf2341b6a10"
   integrity sha512-3iBXuv7XKvxeMrIgym7njT+HlZkwZqqGX4Bu9cci8xHZNT+Um1gWKqCsAzcC0d95rcKMU5WBg6YRUcHyV0HZKQ==
 
+pg-format@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/pg-format/-/pg-format-1.0.4.tgz#27734236c2ad3f4e5064915a59334e20040a828e"
+  integrity sha1-J3NCNsKtP05QZJFaWTNOIAQKgo4=
+
 pg-int8@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
@@ -11294,6 +11299,16 @@ tough-cookie@^3.0.1:
     ip-regex "^2.1.0"
     psl "^1.1.28"
     punycode "^2.1.1"
+
+tpsql@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/tpsql/-/tpsql-0.0.2.tgz#8f95de4af73a62101df8a946030665c076f71155"
+  integrity sha512-1FlkUcm21Tpvu40ZiJMh5jdZZreHE9qr40v45rucVTCnQCvRn8YWKeyipCrcI2dCS5e8WgRFfD/DceBKlla3mA==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    glob "^7.1.6"
+    mkdirp "^1.0.4"
+    pg-format "^1.0.4"
 
 tr46@^1.0.1:
   version "1.0.1"
