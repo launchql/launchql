@@ -11300,10 +11300,10 @@ tough-cookie@^3.0.1:
     psl "^1.1.28"
     punycode "^2.1.1"
 
-tpsql@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/tpsql/-/tpsql-0.0.2.tgz#8f95de4af73a62101df8a946030665c076f71155"
-  integrity sha512-1FlkUcm21Tpvu40ZiJMh5jdZZreHE9qr40v45rucVTCnQCvRn8YWKeyipCrcI2dCS5e8WgRFfD/DceBKlla3mA==
+tpsql@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/tpsql/-/tpsql-0.0.3.tgz#91bfd6e892ab7f62a0102975407291fc42126349"
+  integrity sha512-5NcNaNeDEvfMb/nrMKbR4w+0PyC4GhDAdMeoV2jRy9Qe5KT/f1mGRz2q5mJ7F2rhGspijxd+CTfAHDt4vZApZw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     glob "^7.1.6"
