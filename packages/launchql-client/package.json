@@ -23,8 +23,8 @@
     "url": "https://github.com/launchql/launchql-gen"
   },
   "scripts": {
-    "build:main": "cross-env BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
-    "build:module": "cross-env MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build:main": "cross-env BABEL_ENV=production babel src --out-dir main --delete-dir-on-start --copy-files",
+    "build:module": "cross-env MODULE=true babel src --out-dir module --delete-dir-on-start --copy-files",
     "build": "npm run build:module && npm run build:main",
     "prepare": "npm run build",
     "lint": "eslint src --fix",
