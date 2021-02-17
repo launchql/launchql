@@ -80,7 +80,6 @@ exports[`getMany should select only scalar fields by default 1`] = `
     startCursor
   }, nodes {
     id
-    name
     photo
     title
     description
@@ -94,18 +93,11 @@ exports[`getMany should select only scalar fields by default 1`] = `
     activityFeedText
     callToAction
     completedActionText
-    descriptionHeader
     tags
     createdBy
     updatedBy
     createdAt
     updatedAt
-    locationId
-    actionResults
-    actionItems
-    userActions
-    userActionResults
-    userActionItems
   }}
 }
 "

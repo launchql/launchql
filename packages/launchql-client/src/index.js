@@ -282,11 +282,16 @@ function pickScalarFields(defn, meta) {
   const model = defn.model;
   const modelMeta = meta.tables.find((t) => t.name === model);
 
+  const isReferenced = (fieldName) =>
+    !!modelMeta.foreignConstraints.find(
+      (constraint) => constraint.fromKey.name === fieldName
+    );
+
+  const isInTableSchema = (fieldName) =>
+    !!modelMeta.fields.find((field) => field.name === fieldName);
+
   return defn.selection.filter(
-    (fieldName) =>
-      !modelMeta.foreignConstraints.find(
-        (constraint) => constraint.fromKey.name === fieldName
-      )
+    (fieldName) => !isReferenced(fieldName) && isInTableSchema(fieldName)
   );
 }
 

@@ -14,8 +14,11 @@ describe('getMany', () => {
 
     expect(result._hash).toMatchSnapshot();
     expect(result._queryName).toMatchSnapshot();
-    // Because ownerId is a foreignKey, it won't be included
-    expect(result._hash.includes('ownerId')).toBe(false);
+    expect(
+      /(ownerId)|(userActions)|(userActionResults)|(userActionItems)/.test(
+        result._hash
+      )
+    ).toBe(false);
   });
 
   it('should whitelist selected fields', () => {
