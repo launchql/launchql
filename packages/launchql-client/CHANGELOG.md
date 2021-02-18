@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.6](https://github.com/launchql/launchql-gen/compare/launchql-client@0.1.5...launchql-client@0.1.6) (2021-02-18)
+
+
+### Bug Fixes
+
+* should filter out referenced fields ([94ac938](https://github.com/launchql/launchql-gen/commit/94ac938c5491292e7fc2b4a9211c36a83ae3f452))
+* use inline json import to avoid transpiling for package consumers ([a5bb81a](https://github.com/launchql/launchql-gen/commit/a5bb81a9621b274dc3a54a719d48bbc70ef885f0))
+
+
+
+
+
 ## [0.1.5](https://github.com/launchql/launchql-gen/compare/launchql-client@0.1.4...launchql-client@0.1.5) (2021-02-11)
 
 **Note:** Version bump only for package launchql-client
