@@ -5,9 +5,16 @@
     "access": "restricted"
   },
   "private": true,
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "build": "lerna run prepare --parallel",
     "bootstrap": "lerna bootstrap --use-workspaces",
+    "commit": "git-cz",
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn build",
+    "release": "lerna publish",
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "eslint --ignore-path .gitignore . --fix",
     "pretest": "yarn lint",
@@ -17,19 +24,34 @@
   "devDependencies": {
     "@babel/cli": "7.8.4",
     "@babel/core": "7.8.4",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
     "@pyramation/babel-preset-env": "0.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.3",
     "babel-jest": "^24.9.0",
+    "commitizen": "4.2.3",
+    "commitlint": "11.0.0",
+    "cz-conventional-changelog": "3.3.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "5.2.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react-hooks": "4.0.0",
     "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "4.0.0",
     "jest": "25.1.0",
     "lerna": "3.20.2",
     "prettier": "2.0.4"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "workspaces": [
     "packages/*"
