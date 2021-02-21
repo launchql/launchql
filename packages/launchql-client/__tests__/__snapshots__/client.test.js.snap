@@ -34,7 +34,7 @@ exports[`getAll 1`] = `
     name
     photo
     title
-    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {nodes {
+    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
       id
       actionId
     }}
@@ -59,7 +59,7 @@ exports[`getMany edges 1`] = `
       name
       photo
       title
-      actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {nodes {
+      actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
         id
         actionId
       }}
@@ -117,7 +117,7 @@ exports[`getMany should whitelist selected fields 1`] = `
     name
     photo
     title
-    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {nodes {
+    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
       id
       actionId
     }}
@@ -135,7 +135,7 @@ exports[`getOne 1`] = `
     name
     photo
     title
-    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {nodes {
+    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
       id
       actionId
     }}
@@ -145,6 +145,29 @@ exports[`getOne 1`] = `
 `;
 
 exports[`getOne 2`] = `"getActionQuery"`;
+
+exports[`should select totalCount in subfields by default 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    photo
+    title
+    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
+      id
+      actionId
+    }}
+  }}
+}
+"
+`;
+
+exports[`should select totalCount in subfields by default 2`] = `"getActionsQuery"`;
 
 exports[`update 1`] = `
 "mutation updateActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID, $photoUpload: Upload) {

@@ -599,6 +599,9 @@ export function getSelections(selection = []) {
           selectionSet: t.objectValue({
             fields: [
               t.field({
+                name: 'totalCount'
+              }),
+              t.field({
                 name: 'nodes',
                 selectionSet: t.selectionSet({
                   selections: selection.map((field) => t.field({ name: field }))
