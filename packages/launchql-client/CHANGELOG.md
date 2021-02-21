@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/launchql/launchql-gen/compare/launchql-client@0.1.7...launchql-client@0.2.0) (2021-02-21)
+
+
+### Features
+
+* select totalCount by default ([567ee78](https://github.com/launchql/launchql-gen/commit/567ee78e27170a9d78a88630380e1e3cfdde88c5))
+
+
+
+
+
 ## [0.1.7](https://github.com/launchql/launchql-gen/compare/launchql-client@0.1.5...launchql-client@0.1.7) (2021-02-18)
 
 
