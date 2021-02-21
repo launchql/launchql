@@ -59,6 +59,44 @@ describe('getMany', () => {
   });
 });
 
+it('should select totalCount in subfields by default', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        id: true,
+        name: true,
+        photo: true,
+        title: true,
+        actionResults: {
+          select: {
+            id: true,
+            actionId: true
+          },
+          variables: {
+            first: 10,
+            filter: {
+              name: {
+                in: ['abc', 'def']
+              },
+              actionId: { equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e' }
+            }
+          }
+        }
+      }
+    })
+    .print();
+
+  expect(/(totalCount)/.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
 it('getMany edges', () => {
   const client = new Client({
     meta: metaObject,
