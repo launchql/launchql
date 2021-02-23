@@ -1,4 +1,59 @@
 {
+  "createActionGoal": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "ActionGoal",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateActionGoalInput",
+        "properties": {
+          "actionGoal": {
+            "name": "actionGoal",
+            "isNotNull": true,
+            "properties": {
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "actionId": {
+                "name": "actionId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "goalId": {
+                "name": "goalId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "isNotNull": true,
+                "type": "UUID"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateActionGoalPayload",
+      "ofType": null
+    }
+  },
   "createActionItem": {
     "qtype": "mutation",
     "mutationType": "create",
@@ -24,10 +79,6 @@
                 "name": "description",
                 "type": "String"
               },
-              "link": {
-                "name": "link",
-                "type": "String"
-              },
               "type": {
                 "name": "type",
                 "type": "String"
@@ -36,8 +87,37 @@
                 "name": "itemOrder",
                 "type": "Int"
               },
-              "requiredItem": {
-                "name": "requiredItem",
+              "timeRequired": {
+                "name": "timeRequired",
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
+              },
+              "isRequired": {
+                "name": "isRequired",
                 "type": "Boolean"
               },
               "notificationText": {
@@ -47,6 +127,19 @@
               "embedCode": {
                 "name": "embedCode",
                 "type": "String"
+              },
+              "url": {
+                "name": "url",
+                "type": "String"
+              },
+              "media": {
+                "name": "media",
+                "type": "String"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "isNotNull": true,
+                "type": "UUID"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -69,10 +162,9 @@
                 "isNotNull": true,
                 "type": "UUID"
               },
-              "ownerId": {
-                "name": "ownerId",
-                "isNotNull": true,
-                "type": "UUID"
+              "mediaUpload": {
+                "name": "mediaUpload",
+                "type": "Upload"
               }
             }
           }
@@ -156,8 +248,8 @@
                 "name": "id",
                 "type": "UUID"
               },
-              "name": {
-                "name": "name",
+              "slug": {
+                "name": "slug",
                 "type": "String"
               },
               "photo": {
@@ -168,21 +260,70 @@
                 "name": "title",
                 "type": "String"
               },
+              "url": {
+                "name": "url",
+                "type": "String"
+              },
               "description": {
                 "name": "description",
                 "type": "String"
+              },
+              "discoveryHeader": {
+                "name": "discoveryHeader",
+                "type": "String"
+              },
+              "discoveryDescription": {
+                "name": "discoveryDescription",
+                "type": "String"
+              },
+              "enableNotifications": {
+                "name": "enableNotifications",
+                "type": "Boolean"
+              },
+              "enableNotificationsText": {
+                "name": "enableNotificationsText",
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
               },
               "locationRadius": {
                 "name": "locationRadius",
                 "type": "BigFloat"
               },
-              "url": {
-                "name": "url",
-                "type": "String"
-              },
               "timeRequired": {
                 "name": "timeRequired",
-                "type": "BigFloat"
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
               },
               "startDate": {
                 "name": "startDate",
@@ -212,8 +353,8 @@
                 "name": "completedActionText",
                 "type": "String"
               },
-              "descriptionHeader": {
-                "name": "descriptionHeader",
+              "alreadyCompletedActionText": {
+                "name": "alreadyCompletedActionText",
                 "type": "String"
               },
               "tags": {
@@ -237,10 +378,6 @@
                 "name": "updatedAt",
                 "type": "Datetime"
               },
-              "locationId": {
-                "name": "locationId",
-                "type": "UUID"
-              },
               "ownerId": {
                 "name": "ownerId",
                 "isNotNull": true,
@@ -261,38 +398,209 @@
       "ofType": null
     }
   },
-  "createGoal": {
+  "createClaimedInvite": {
     "qtype": "mutation",
     "mutationType": "create",
-    "model": "Goal",
+    "model": "ClaimedInvite",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "CreateGoalInput",
+        "type": "CreateClaimedInviteInput",
         "properties": {
-          "goal": {
-            "name": "goal",
+          "claimedInvite": {
+            "name": "claimedInvite",
             "isNotNull": true,
             "properties": {
               "id": {
                 "name": "id",
                 "type": "UUID"
               },
-              "name": {
-                "name": "name",
+              "data": {
+                "name": "data",
+                "type": "JSON"
+              },
+              "senderId": {
+                "name": "senderId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "receiverId": {
+                "name": "receiverId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateClaimedInvitePayload",
+      "ofType": null
+    }
+  },
+  "createConnectedAccount": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "ConnectedAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateConnectedAccountInput",
+        "properties": {
+          "connectedAccount": {
+            "name": "connectedAccount",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "service": {
+                "name": "service",
+                "isNotNull": true,
                 "type": "String"
               },
-              "shortName": {
-                "name": "shortName",
+              "identifier": {
+                "name": "identifier",
+                "isNotNull": true,
                 "type": "String"
               },
-              "icon": {
-                "name": "icon",
+              "details": {
+                "name": "details",
+                "isNotNull": true,
+                "type": "JSON"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateConnectedAccountPayload",
+      "ofType": null
+    }
+  },
+  "createCryptoAddress": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "CryptoAddress",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateCryptoAddressInput",
+        "properties": {
+          "cryptoAddress": {
+            "name": "cryptoAddress",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "address": {
+                "name": "address",
+                "isNotNull": true,
                 "type": "String"
               },
-              "subHead": {
-                "name": "subHead",
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateCryptoAddressPayload",
+      "ofType": null
+    }
+  },
+  "createEmail": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "Email",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateEmailInput",
+        "properties": {
+          "email": {
+            "name": "email",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "isNotNull": true,
                 "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateEmailPayload",
+      "ofType": null
+    }
+  },
+  "createGoalExplanation": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "GoalExplanation",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateGoalExplanationInput",
+        "properties": {
+          "goalExplanation": {
+            "name": "goalExplanation",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
               },
               "audio": {
                 "name": "audio",
@@ -300,7 +608,32 @@
               },
               "audioDuration": {
                 "name": "audioDuration",
-                "type": "BigFloat"
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
               },
               "explanationTitle": {
                 "name": "explanationTitle",
@@ -326,6 +659,11 @@
                 "name": "updatedAt",
                 "type": "Datetime"
               },
+              "goalId": {
+                "name": "goalId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
               "audioUpload": {
                 "name": "audioUpload",
                 "type": "Upload"
@@ -337,30 +675,55 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "CreateGoalPayload",
+      "name": "CreateGoalExplanationPayload",
       "ofType": null
     }
   },
-  "createLocation": {
+  "createGoal": {
     "qtype": "mutation",
     "mutationType": "create",
-    "model": "Location",
+    "model": "Goal",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "CreateLocationInput",
+        "type": "CreateGoalInput",
         "properties": {
-          "location": {
-            "name": "location",
+          "goal": {
+            "name": "goal",
             "isNotNull": true,
             "properties": {
               "id": {
                 "name": "id",
                 "type": "UUID"
               },
-              "geo": {
-                "name": "geo",
-                "type": "GeoJSON"
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "slug": {
+                "name": "slug",
+                "type": "String"
+              },
+              "shortName": {
+                "name": "shortName",
+                "type": "String"
+              },
+              "icon": {
+                "name": "icon",
+                "type": "String"
+              },
+              "subHead": {
+                "name": "subHead",
+                "type": "String"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -385,7 +748,273 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "CreateLocationPayload",
+      "name": "CreateGoalPayload",
+      "ofType": null
+    }
+  },
+  "createInvite": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateInviteInput",
+        "properties": {
+          "invite": {
+            "name": "invite",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "type": "String"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "inviteToken": {
+                "name": "inviteToken",
+                "type": "String"
+              },
+              "inviteValid": {
+                "name": "inviteValid",
+                "type": "Boolean"
+              },
+              "inviteLimit": {
+                "name": "inviteLimit",
+                "type": "Int"
+              },
+              "inviteCount": {
+                "name": "inviteCount",
+                "type": "Int"
+              },
+              "multiple": {
+                "name": "multiple",
+                "type": "Boolean"
+              },
+              "data": {
+                "name": "data",
+                "type": "JSON"
+              },
+              "expiresAt": {
+                "name": "expiresAt",
+                "type": "Datetime"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateInvitePayload",
+      "ofType": null
+    }
+  },
+  "createLevelRequirement": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "LevelRequirement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateLevelRequirementInput",
+        "properties": {
+          "levelRequirement": {
+            "name": "levelRequirement",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "level": {
+                "name": "level",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "requiredCount": {
+                "name": "requiredCount",
+                "type": "Int"
+              },
+              "priority": {
+                "name": "priority",
+                "type": "Int"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateLevelRequirementPayload",
+      "ofType": null
+    }
+  },
+  "createLevel": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "Level",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateLevelInput",
+        "properties": {
+          "level": {
+            "name": "level",
+            "isNotNull": true,
+            "properties": {
+              "name": {
+                "name": "name",
+                "isNotNull": true,
+                "type": "String"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateLevelPayload",
+      "ofType": null
+    }
+  },
+  "createMessageGroup": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "MessageGroup",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateMessageGroupInput",
+        "properties": {
+          "messageGroup": {
+            "name": "messageGroup",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "memberIds": {
+                "name": "memberIds",
+                "isArray": true,
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateMessageGroupPayload",
+      "ofType": null
+    }
+  },
+  "createMessage": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "Message",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateMessageInput",
+        "properties": {
+          "message": {
+            "name": "message",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "type": {
+                "name": "type",
+                "type": "String"
+              },
+              "content": {
+                "name": "content",
+                "type": "JSON"
+              },
+              "upload": {
+                "name": "upload",
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "senderId": {
+                "name": "senderId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "groupId": {
+                "name": "groupId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "uploadUpload": {
+                "name": "uploadUpload",
+                "type": "Upload"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateMessagePayload",
       "ofType": null
     }
   },
@@ -413,6 +1042,14 @@
               "description": {
                 "name": "description",
                 "type": "String"
+              },
+              "link": {
+                "name": "link",
+                "type": "String"
+              },
+              "publishedAt": {
+                "name": "publishedAt",
+                "type": "Datetime"
               },
               "photo": {
                 "name": "photo",
@@ -449,6 +1086,180 @@
       "ofType": null
     }
   },
+  "createOrganizationProfile": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "OrganizationProfile",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateOrganizationProfileInput",
+        "properties": {
+          "organizationProfile": {
+            "name": "organizationProfile",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "profilePicture": {
+                "name": "profilePicture",
+                "type": "JSON"
+              },
+              "description": {
+                "name": "description",
+                "type": "String"
+              },
+              "website": {
+                "name": "website",
+                "type": "String"
+              },
+              "reputation": {
+                "name": "reputation",
+                "type": "BigFloat"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "organizationId": {
+                "name": "organizationId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "profilePictureUpload": {
+                "name": "profilePictureUpload",
+                "type": "Upload"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateOrganizationProfilePayload",
+      "ofType": null
+    }
+  },
+  "createPhoneNumber": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "PhoneNumber",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreatePhoneNumberInput",
+        "properties": {
+          "phoneNumber": {
+            "name": "phoneNumber",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "cc": {
+                "name": "cc",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "number": {
+                "name": "number",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreatePhoneNumberPayload",
+      "ofType": null
+    }
+  },
+  "createUserAchievement": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "UserAchievement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateUserAchievementInput",
+        "properties": {
+          "userAchievement": {
+            "name": "userAchievement",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "userId": {
+                "name": "userId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "count": {
+                "name": "count",
+                "type": "Int"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateUserAchievementPayload",
+      "ofType": null
+    }
+  },
   "createUserActionItem": {
     "qtype": "mutation",
     "mutationType": "create",
@@ -465,10 +1276,6 @@
               "id": {
                 "name": "id",
                 "type": "UUID"
-              },
-              "date": {
-                "name": "date",
-                "type": "Datetime"
               },
               "value": {
                 "name": "value",
@@ -525,6 +1332,70 @@
       "ofType": null
     }
   },
+  "createUserActionReaction": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "UserActionReaction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateUserActionReactionInput",
+        "properties": {
+          "userActionReaction": {
+            "name": "userActionReaction",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "userActionId": {
+                "name": "userActionId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "userId": {
+                "name": "userId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "reacterId": {
+                "name": "reacterId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "actionId": {
+                "name": "actionId",
+                "isNotNull": true,
+                "type": "UUID"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateUserActionReactionPayload",
+      "ofType": null
+    }
+  },
   "createUserActionResult": {
     "qtype": "mutation",
     "mutationType": "create",
@@ -541,10 +1412,6 @@
               "id": {
                 "name": "id",
                 "type": "UUID"
-              },
-              "date": {
-                "name": "date",
-                "type": "Datetime"
               },
               "value": {
                 "name": "value",
@@ -618,6 +1485,10 @@
                 "name": "actionStarted",
                 "type": "Datetime"
               },
+              "complete": {
+                "name": "complete",
+                "type": "Boolean"
+              },
               "verified": {
                 "name": "verified",
                 "type": "Boolean"
@@ -625,10 +1496,6 @@
               "verifiedDate": {
                 "name": "verifiedDate",
                 "type": "Datetime"
-              },
-              "status": {
-                "name": "status",
-                "type": "String"
               },
               "userRating": {
                 "name": "userRating",
@@ -641,6 +1508,10 @@
               "rejectedReason": {
                 "name": "rejectedReason",
                 "type": "String"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -706,7 +1577,7 @@
               },
               "gender": {
                 "name": "gender",
-                "type": "Int"
+                "type": "String"
               },
               "race": {
                 "name": "race",
@@ -726,10 +1597,18 @@
               },
               "homeOwnership": {
                 "name": "homeOwnership",
-                "type": "String"
+                "type": "Int"
               },
               "treeHuggerLevel": {
                 "name": "treeHuggerLevel",
+                "type": "Int"
+              },
+              "diyLevel": {
+                "name": "diyLevel",
+                "type": "Int"
+              },
+              "gardenerLevel": {
+                "name": "gardenerLevel",
                 "type": "Int"
               },
               "freeTime": {
@@ -858,7 +1737,7 @@
               "emails": {
                 "name": "emails",
                 "isArray": true,
-                "type": "LaunchqlInternalTypeEmail"
+                "type": "String"
               },
               "device": {
                 "name": "device",
@@ -896,36 +1775,80 @@
       "ofType": null
     }
   },
-  "createUserEmail": {
+  "createUserMessage": {
     "qtype": "mutation",
     "mutationType": "create",
-    "model": "UserEmail",
+    "model": "UserMessage",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "CreateUserEmailInput",
+        "type": "CreateUserMessageInput",
         "properties": {
-          "userEmail": {
-            "name": "userEmail",
+          "userMessage": {
+            "name": "userMessage",
             "isNotNull": true,
             "properties": {
               "id": {
                 "name": "id",
                 "type": "UUID"
               },
-              "userId": {
-                "name": "userId",
+              "type": {
+                "name": "type",
+                "type": "String"
+              },
+              "content": {
+                "name": "content",
+                "type": "JSON"
+              },
+              "upload": {
+                "name": "upload",
+                "type": "String"
+              },
+              "received": {
+                "name": "received",
+                "type": "Boolean"
+              },
+              "receiverRead": {
+                "name": "receiverRead",
+                "type": "Boolean"
+              },
+              "senderReaction": {
+                "name": "senderReaction",
+                "type": "String"
+              },
+              "receiverReaction": {
+                "name": "receiverReaction",
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "senderId": {
+                "name": "senderId",
                 "isNotNull": true,
                 "type": "UUID"
               },
-              "email": {
-                "name": "email",
+              "receiverId": {
+                "name": "receiverId",
                 "isNotNull": true,
-                "type": "LaunchqlInternalTypeEmail"
+                "type": "UUID"
               },
-              "isVerified": {
-                "name": "isVerified",
-                "type": "Boolean"
+              "uploadUpload": {
+                "name": "uploadUpload",
+                "type": "Upload"
               }
             }
           }
@@ -934,7 +1857,61 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "CreateUserEmailPayload",
+      "name": "CreateUserMessagePayload",
+      "ofType": null
+    }
+  },
+  "createUserPassAction": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "UserPassAction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateUserPassActionInput",
+        "properties": {
+          "userPassAction": {
+            "name": "userPassAction",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "userId": {
+                "name": "userId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "actionId": {
+                "name": "actionId",
+                "isNotNull": true,
+                "type": "UUID"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateUserPassActionPayload",
       "ofType": null
     }
   },
@@ -967,16 +1944,17 @@
                 "name": "reputation",
                 "type": "BigFloat"
               },
-              "firstName": {
-                "name": "firstName",
-                "type": "String"
-              },
-              "lastName": {
-                "name": "lastName",
+              "displayName": {
+                "name": "displayName",
                 "type": "String"
               },
               "tags": {
                 "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "desired": {
+                "name": "desired",
                 "isArray": true,
                 "type": "String"
               },
@@ -1016,6 +1994,60 @@
       "ofType": null
     }
   },
+  "createUserSavedAction": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "UserSavedAction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateUserSavedActionInput",
+        "properties": {
+          "userSavedAction": {
+            "name": "userSavedAction",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "userId": {
+                "name": "userId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "actionId": {
+                "name": "actionId",
+                "isNotNull": true,
+                "type": "UUID"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateUserSavedActionPayload",
+      "ofType": null
+    }
+  },
   "createUserSetting": {
     "qtype": "mutation",
     "mutationType": "create",
@@ -1033,16 +2065,24 @@
                 "name": "id",
                 "type": "UUID"
               },
+              "firstName": {
+                "name": "firstName",
+                "type": "String"
+              },
+              "lastName": {
+                "name": "lastName",
+                "type": "String"
+              },
               "searchRadius": {
                 "name": "searchRadius",
                 "type": "BigFloat"
               },
               "zip": {
                 "name": "zip",
-                "type": "String"
+                "type": "Int"
               },
-              "geo": {
-                "name": "geo",
+              "location": {
+                "name": "location",
                 "type": "GeoJSON"
               },
               "createdBy": {
@@ -1074,6 +2114,106 @@
     "output": {
       "kind": "OBJECT",
       "name": "CreateUserSettingPayload",
+      "ofType": null
+    }
+  },
+  "createUserStep": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "UserStep",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateUserStepInput",
+        "properties": {
+          "userStep": {
+            "name": "userStep",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "userId": {
+                "name": "userId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "count": {
+                "name": "count",
+                "type": "Int"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateUserStepPayload",
+      "ofType": null
+    }
+  },
+  "createUserViewedAction": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "UserViewedAction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateUserViewedActionInput",
+        "properties": {
+          "userViewedAction": {
+            "name": "userViewedAction",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "userId": {
+                "name": "userId",
+                "isNotNull": true,
+                "type": "UUID"
+              },
+              "actionId": {
+                "name": "actionId",
+                "isNotNull": true,
+                "type": "UUID"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateUserViewedActionPayload",
       "ofType": null
     }
   },
@@ -1109,6 +2249,175 @@
       "ofType": null
     }
   },
+  "createZipCode": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "ZipCode",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateZipCodeInput",
+        "properties": {
+          "zipCode": {
+            "name": "zipCode",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "zip": {
+                "name": "zip",
+                "type": "Int"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
+              },
+              "bbox": {
+                "name": "bbox",
+                "type": "GeoJSON"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateZipCodePayload",
+      "ofType": null
+    }
+  },
+  "createAuthAccount": {
+    "qtype": "mutation",
+    "mutationType": "create",
+    "model": "AuthAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "CreateAuthAccountInput",
+        "properties": {
+          "authAccount": {
+            "name": "authAccount",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "service": {
+                "name": "service",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "identifier": {
+                "name": "identifier",
+                "isNotNull": true,
+                "type": "String"
+              },
+              "details": {
+                "name": "details",
+                "isNotNull": true,
+                "type": "JSON"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "CreateAuthAccountPayload",
+      "ofType": null
+    }
+  },
+  "updateActionGoal": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "ActionGoal",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateActionGoalInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "actionId": {
+                "name": "actionId",
+                "type": "UUID"
+              },
+              "goalId": {
+                "name": "goalId",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              }
+            }
+          },
+          "actionId": {
+            "name": "actionId",
+            "isNotNull": true,
+            "type": "UUID"
+          },
+          "goalId": {
+            "name": "goalId",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateActionGoalPayload",
+      "ofType": null
+    }
+  },
   "updateActionItem": {
     "qtype": "mutation",
     "mutationType": "patch",
@@ -1134,10 +2443,6 @@
                 "name": "description",
                 "type": "String"
               },
-              "link": {
-                "name": "link",
-                "type": "String"
-              },
               "type": {
                 "name": "type",
                 "type": "String"
@@ -1146,8 +2451,37 @@
                 "name": "itemOrder",
                 "type": "Int"
               },
-              "requiredItem": {
-                "name": "requiredItem",
+              "timeRequired": {
+                "name": "timeRequired",
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
+              },
+              "isRequired": {
+                "name": "isRequired",
                 "type": "Boolean"
               },
               "notificationText": {
@@ -1157,6 +2491,18 @@
               "embedCode": {
                 "name": "embedCode",
                 "type": "String"
+              },
+              "url": {
+                "name": "url",
+                "type": "String"
+              },
+              "media": {
+                "name": "media",
+                "type": "String"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -1178,9 +2524,9 @@
                 "name": "actionId",
                 "type": "UUID"
               },
-              "ownerId": {
-                "name": "ownerId",
-                "type": "UUID"
+              "mediaUpload": {
+                "name": "mediaUpload",
+                "type": "Upload"
               }
             }
           },
@@ -1272,8 +2618,8 @@
                 "name": "id",
                 "type": "UUID"
               },
-              "name": {
-                "name": "name",
+              "slug": {
+                "name": "slug",
                 "type": "String"
               },
               "photo": {
@@ -1284,21 +2630,70 @@
                 "name": "title",
                 "type": "String"
               },
+              "url": {
+                "name": "url",
+                "type": "String"
+              },
               "description": {
                 "name": "description",
                 "type": "String"
+              },
+              "discoveryHeader": {
+                "name": "discoveryHeader",
+                "type": "String"
+              },
+              "discoveryDescription": {
+                "name": "discoveryDescription",
+                "type": "String"
+              },
+              "enableNotifications": {
+                "name": "enableNotifications",
+                "type": "Boolean"
+              },
+              "enableNotificationsText": {
+                "name": "enableNotificationsText",
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
               },
               "locationRadius": {
                 "name": "locationRadius",
                 "type": "BigFloat"
               },
-              "url": {
-                "name": "url",
-                "type": "String"
-              },
               "timeRequired": {
                 "name": "timeRequired",
-                "type": "BigFloat"
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
               },
               "startDate": {
                 "name": "startDate",
@@ -1328,8 +2723,8 @@
                 "name": "completedActionText",
                 "type": "String"
               },
-              "descriptionHeader": {
-                "name": "descriptionHeader",
+              "alreadyCompletedActionText": {
+                "name": "alreadyCompletedActionText",
                 "type": "String"
               },
               "tags": {
@@ -1352,10 +2747,6 @@
               "updatedAt": {
                 "name": "updatedAt",
                 "type": "Datetime"
-              },
-              "locationId": {
-                "name": "locationId",
-                "type": "UUID"
               },
               "ownerId": {
                 "name": "ownerId",
@@ -1381,14 +2772,14 @@
       "ofType": null
     }
   },
-  "updateGoal": {
+  "updateActionBySlug": {
     "qtype": "mutation",
     "mutationType": "patch",
-    "model": "Goal",
+    "model": "Action",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "UpdateGoalInput",
+        "type": "UpdateActionBySlugInput",
         "properties": {
           "patch": {
             "name": "patch",
@@ -1398,21 +2789,532 @@
                 "name": "id",
                 "type": "UUID"
               },
-              "name": {
-                "name": "name",
+              "slug": {
+                "name": "slug",
                 "type": "String"
               },
-              "shortName": {
-                "name": "shortName",
+              "photo": {
+                "name": "photo",
+                "type": "JSON"
+              },
+              "title": {
+                "name": "title",
                 "type": "String"
               },
-              "icon": {
-                "name": "icon",
+              "url": {
+                "name": "url",
                 "type": "String"
               },
-              "subHead": {
-                "name": "subHead",
+              "description": {
+                "name": "description",
                 "type": "String"
+              },
+              "discoveryHeader": {
+                "name": "discoveryHeader",
+                "type": "String"
+              },
+              "discoveryDescription": {
+                "name": "discoveryDescription",
+                "type": "String"
+              },
+              "enableNotifications": {
+                "name": "enableNotifications",
+                "type": "Boolean"
+              },
+              "enableNotificationsText": {
+                "name": "enableNotificationsText",
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
+              },
+              "locationRadius": {
+                "name": "locationRadius",
+                "type": "BigFloat"
+              },
+              "timeRequired": {
+                "name": "timeRequired",
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
+              },
+              "startDate": {
+                "name": "startDate",
+                "type": "Datetime"
+              },
+              "endDate": {
+                "name": "endDate",
+                "type": "Datetime"
+              },
+              "approved": {
+                "name": "approved",
+                "type": "Boolean"
+              },
+              "rewardAmount": {
+                "name": "rewardAmount",
+                "type": "BigFloat"
+              },
+              "activityFeedText": {
+                "name": "activityFeedText",
+                "type": "String"
+              },
+              "callToAction": {
+                "name": "callToAction",
+                "type": "String"
+              },
+              "completedActionText": {
+                "name": "completedActionText",
+                "type": "String"
+              },
+              "alreadyCompletedActionText": {
+                "name": "alreadyCompletedActionText",
+                "type": "String"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "photoUpload": {
+                "name": "photoUpload",
+                "type": "Upload"
+              }
+            }
+          },
+          "slug": {
+            "name": "slug",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateActionPayload",
+      "ofType": null
+    }
+  },
+  "updateClaimedInvite": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "ClaimedInvite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateClaimedInviteInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "data": {
+                "name": "data",
+                "type": "JSON"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "receiverId": {
+                "name": "receiverId",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateClaimedInvitePayload",
+      "ofType": null
+    }
+  },
+  "updateConnectedAccount": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "ConnectedAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateConnectedAccountInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "service": {
+                "name": "service",
+                "type": "String"
+              },
+              "identifier": {
+                "name": "identifier",
+                "type": "String"
+              },
+              "details": {
+                "name": "details",
+                "type": "JSON"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateConnectedAccountPayload",
+      "ofType": null
+    }
+  },
+  "updateConnectedAccountByServiceAndIdentifier": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "ConnectedAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateConnectedAccountByServiceAndIdentifierInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "service": {
+                "name": "service",
+                "type": "String"
+              },
+              "identifier": {
+                "name": "identifier",
+                "type": "String"
+              },
+              "details": {
+                "name": "details",
+                "type": "JSON"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              }
+            }
+          },
+          "service": {
+            "name": "service",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "identifier": {
+            "name": "identifier",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateConnectedAccountPayload",
+      "ofType": null
+    }
+  },
+  "updateCryptoAddress": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "CryptoAddress",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateCryptoAddressInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "address": {
+                "name": "address",
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateCryptoAddressPayload",
+      "ofType": null
+    }
+  },
+  "updateCryptoAddressByAddress": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "CryptoAddress",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateCryptoAddressByAddressInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "address": {
+                "name": "address",
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          },
+          "address": {
+            "name": "address",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateCryptoAddressPayload",
+      "ofType": null
+    }
+  },
+  "updateEmail": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Email",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateEmailInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateEmailPayload",
+      "ofType": null
+    }
+  },
+  "updateEmailByEmail": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Email",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateEmailByEmailInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          },
+          "email": {
+            "name": "email",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateEmailPayload",
+      "ofType": null
+    }
+  },
+  "updateGoalExplanation": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "GoalExplanation",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateGoalExplanationInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
               },
               "audio": {
                 "name": "audio",
@@ -1420,7 +3322,32 @@
               },
               "audioDuration": {
                 "name": "audioDuration",
-                "type": "BigFloat"
+                "properties": {
+                  "seconds": {
+                    "name": "seconds",
+                    "type": "Float"
+                  },
+                  "minutes": {
+                    "name": "minutes",
+                    "type": "Int"
+                  },
+                  "hours": {
+                    "name": "hours",
+                    "type": "Int"
+                  },
+                  "days": {
+                    "name": "days",
+                    "type": "Int"
+                  },
+                  "months": {
+                    "name": "months",
+                    "type": "Int"
+                  },
+                  "years": {
+                    "name": "years",
+                    "type": "Int"
+                  }
+                }
               },
               "explanationTitle": {
                 "name": "explanationTitle",
@@ -1446,6 +3373,10 @@
                 "name": "updatedAt",
                 "type": "Datetime"
               },
+              "goalId": {
+                "name": "goalId",
+                "type": "UUID"
+              },
               "audioUpload": {
                 "name": "audioUpload",
                 "type": "Upload"
@@ -1462,18 +3393,18 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "UpdateGoalPayload",
+      "name": "UpdateGoalExplanationPayload",
       "ofType": null
     }
   },
-  "updateLocation": {
+  "updateGoal": {
     "qtype": "mutation",
     "mutationType": "patch",
-    "model": "Location",
+    "model": "Goal",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "UpdateLocationInput",
+        "type": "UpdateGoalInput",
         "properties": {
           "patch": {
             "name": "patch",
@@ -1483,9 +3414,34 @@
                 "name": "id",
                 "type": "UUID"
               },
-              "geo": {
-                "name": "geo",
-                "type": "GeoJSON"
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "slug": {
+                "name": "slug",
+                "type": "String"
+              },
+              "shortName": {
+                "name": "shortName",
+                "type": "String"
+              },
+              "icon": {
+                "name": "icon",
+                "type": "String"
+              },
+              "subHead": {
+                "name": "subHead",
+                "type": "String"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -1515,7 +3471,654 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "UpdateLocationPayload",
+      "name": "UpdateGoalPayload",
+      "ofType": null
+    }
+  },
+  "updateGoalByName": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Goal",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateGoalByNameInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "slug": {
+                "name": "slug",
+                "type": "String"
+              },
+              "shortName": {
+                "name": "shortName",
+                "type": "String"
+              },
+              "icon": {
+                "name": "icon",
+                "type": "String"
+              },
+              "subHead": {
+                "name": "subHead",
+                "type": "String"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateGoalPayload",
+      "ofType": null
+    }
+  },
+  "updateGoalBySlug": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Goal",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateGoalBySlugInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "slug": {
+                "name": "slug",
+                "type": "String"
+              },
+              "shortName": {
+                "name": "shortName",
+                "type": "String"
+              },
+              "icon": {
+                "name": "icon",
+                "type": "String"
+              },
+              "subHead": {
+                "name": "subHead",
+                "type": "String"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "search": {
+                "name": "search",
+                "type": "FullText"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "slug": {
+            "name": "slug",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateGoalPayload",
+      "ofType": null
+    }
+  },
+  "updateInvite": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateInviteInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "type": "String"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "inviteToken": {
+                "name": "inviteToken",
+                "type": "String"
+              },
+              "inviteValid": {
+                "name": "inviteValid",
+                "type": "Boolean"
+              },
+              "inviteLimit": {
+                "name": "inviteLimit",
+                "type": "Int"
+              },
+              "inviteCount": {
+                "name": "inviteCount",
+                "type": "Int"
+              },
+              "multiple": {
+                "name": "multiple",
+                "type": "Boolean"
+              },
+              "data": {
+                "name": "data",
+                "type": "JSON"
+              },
+              "expiresAt": {
+                "name": "expiresAt",
+                "type": "Datetime"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateInvitePayload",
+      "ofType": null
+    }
+  },
+  "updateInviteByEmailAndSenderId": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateInviteByEmailAndSenderIdInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "type": "String"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "inviteToken": {
+                "name": "inviteToken",
+                "type": "String"
+              },
+              "inviteValid": {
+                "name": "inviteValid",
+                "type": "Boolean"
+              },
+              "inviteLimit": {
+                "name": "inviteLimit",
+                "type": "Int"
+              },
+              "inviteCount": {
+                "name": "inviteCount",
+                "type": "Int"
+              },
+              "multiple": {
+                "name": "multiple",
+                "type": "Boolean"
+              },
+              "data": {
+                "name": "data",
+                "type": "JSON"
+              },
+              "expiresAt": {
+                "name": "expiresAt",
+                "type": "Datetime"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "email": {
+            "name": "email",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "senderId": {
+            "name": "senderId",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateInvitePayload",
+      "ofType": null
+    }
+  },
+  "updateInviteByInviteToken": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateInviteByInviteTokenInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "email": {
+                "name": "email",
+                "type": "String"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "inviteToken": {
+                "name": "inviteToken",
+                "type": "String"
+              },
+              "inviteValid": {
+                "name": "inviteValid",
+                "type": "Boolean"
+              },
+              "inviteLimit": {
+                "name": "inviteLimit",
+                "type": "Int"
+              },
+              "inviteCount": {
+                "name": "inviteCount",
+                "type": "Int"
+              },
+              "multiple": {
+                "name": "multiple",
+                "type": "Boolean"
+              },
+              "data": {
+                "name": "data",
+                "type": "JSON"
+              },
+              "expiresAt": {
+                "name": "expiresAt",
+                "type": "Datetime"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "inviteToken": {
+            "name": "inviteToken",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateInvitePayload",
+      "ofType": null
+    }
+  },
+  "updateLevelRequirement": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "LevelRequirement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateLevelRequirementInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "level": {
+                "name": "level",
+                "type": "String"
+              },
+              "requiredCount": {
+                "name": "requiredCount",
+                "type": "Int"
+              },
+              "priority": {
+                "name": "priority",
+                "type": "Int"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateLevelRequirementPayload",
+      "ofType": null
+    }
+  },
+  "updateLevelRequirementByNameAndLevel": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "LevelRequirement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateLevelRequirementByNameAndLevelInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "level": {
+                "name": "level",
+                "type": "String"
+              },
+              "requiredCount": {
+                "name": "requiredCount",
+                "type": "Int"
+              },
+              "priority": {
+                "name": "priority",
+                "type": "Int"
+              }
+            }
+          },
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "level": {
+            "name": "level",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateLevelRequirementPayload",
+      "ofType": null
+    }
+  },
+  "updateLevel": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Level",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateLevelInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "name": {
+                "name": "name",
+                "type": "String"
+              }
+            }
+          },
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateLevelPayload",
+      "ofType": null
+    }
+  },
+  "updateMessageGroup": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "MessageGroup",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateMessageGroupInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "memberIds": {
+                "name": "memberIds",
+                "isArray": true,
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateMessageGroupPayload",
+      "ofType": null
+    }
+  },
+  "updateMessage": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "Message",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateMessageInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "type": {
+                "name": "type",
+                "type": "String"
+              },
+              "content": {
+                "name": "content",
+                "type": "JSON"
+              },
+              "upload": {
+                "name": "upload",
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "groupId": {
+                "name": "groupId",
+                "type": "UUID"
+              },
+              "uploadUpload": {
+                "name": "uploadUpload",
+                "type": "Upload"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateMessagePayload",
       "ofType": null
     }
   },
@@ -1543,6 +4146,14 @@
               "description": {
                 "name": "description",
                 "type": "String"
+              },
+              "link": {
+                "name": "link",
+                "type": "String"
+              },
+              "publishedAt": {
+                "name": "publishedAt",
+                "type": "Datetime"
               },
               "photo": {
                 "name": "photo",
@@ -1584,6 +4195,297 @@
       "ofType": null
     }
   },
+  "updateOrganizationProfile": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "OrganizationProfile",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateOrganizationProfileInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "profilePicture": {
+                "name": "profilePicture",
+                "type": "JSON"
+              },
+              "description": {
+                "name": "description",
+                "type": "String"
+              },
+              "website": {
+                "name": "website",
+                "type": "String"
+              },
+              "reputation": {
+                "name": "reputation",
+                "type": "BigFloat"
+              },
+              "tags": {
+                "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "organizationId": {
+                "name": "organizationId",
+                "type": "UUID"
+              },
+              "profilePictureUpload": {
+                "name": "profilePictureUpload",
+                "type": "Upload"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateOrganizationProfilePayload",
+      "ofType": null
+    }
+  },
+  "updatePhoneNumber": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "PhoneNumber",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdatePhoneNumberInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "cc": {
+                "name": "cc",
+                "type": "String"
+              },
+              "number": {
+                "name": "number",
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdatePhoneNumberPayload",
+      "ofType": null
+    }
+  },
+  "updatePhoneNumberByNumber": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "PhoneNumber",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdatePhoneNumberByNumberInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "cc": {
+                "name": "cc",
+                "type": "String"
+              },
+              "number": {
+                "name": "number",
+                "type": "String"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              },
+              "isPrimary": {
+                "name": "isPrimary",
+                "type": "Boolean"
+              }
+            }
+          },
+          "number": {
+            "name": "number",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdatePhoneNumberPayload",
+      "ofType": null
+    }
+  },
+  "updateUserAchievement": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "UserAchievement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateUserAchievementInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "userId": {
+                "name": "userId",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "count": {
+                "name": "count",
+                "type": "Int"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateUserAchievementPayload",
+      "ofType": null
+    }
+  },
+  "updateUserAchievementByUserIdAndName": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "UserAchievement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateUserAchievementByUserIdAndNameInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "userId": {
+                "name": "userId",
+                "type": "UUID"
+              },
+              "name": {
+                "name": "name",
+                "type": "String"
+              },
+              "count": {
+                "name": "count",
+                "type": "Int"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "userId": {
+            "name": "userId",
+            "isNotNull": true,
+            "type": "UUID"
+          },
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateUserAchievementPayload",
+      "ofType": null
+    }
+  },
   "updateUserActionItem": {
     "qtype": "mutation",
     "mutationType": "patch",
@@ -1600,10 +4502,6 @@
               "id": {
                 "name": "id",
                 "type": "UUID"
-              },
-              "date": {
-                "name": "date",
-                "type": "Datetime"
               },
               "value": {
                 "name": "value",
@@ -1661,6 +4559,71 @@
       "ofType": null
     }
   },
+  "updateUserActionReaction": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "UserActionReaction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateUserActionReactionInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "userActionId": {
+                "name": "userActionId",
+                "type": "UUID"
+              },
+              "userId": {
+                "name": "userId",
+                "type": "UUID"
+              },
+              "reacterId": {
+                "name": "reacterId",
+                "type": "UUID"
+              },
+              "actionId": {
+                "name": "actionId",
+                "type": "UUID"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateUserActionReactionPayload",
+      "ofType": null
+    }
+  },
   "updateUserActionResult": {
     "qtype": "mutation",
     "mutationType": "patch",
@@ -1677,10 +4640,6 @@
               "id": {
                 "name": "id",
                 "type": "UUID"
-              },
-              "date": {
-                "name": "date",
-                "type": "Datetime"
               },
               "value": {
                 "name": "value",
@@ -1755,6 +4714,10 @@
                 "name": "actionStarted",
                 "type": "Datetime"
               },
+              "complete": {
+                "name": "complete",
+                "type": "Boolean"
+              },
               "verified": {
                 "name": "verified",
                 "type": "Boolean"
@@ -1762,10 +4725,6 @@
               "verifiedDate": {
                 "name": "verifiedDate",
                 "type": "Datetime"
-              },
-              "status": {
-                "name": "status",
-                "type": "String"
               },
               "userRating": {
                 "name": "userRating",
@@ -1778,6 +4737,10 @@
               "rejectedReason": {
                 "name": "rejectedReason",
                 "type": "String"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -1846,7 +4809,7 @@
               },
               "gender": {
                 "name": "gender",
-                "type": "Int"
+                "type": "String"
               },
               "race": {
                 "name": "race",
@@ -1866,10 +4829,18 @@
               },
               "homeOwnership": {
                 "name": "homeOwnership",
-                "type": "String"
+                "type": "Int"
               },
               "treeHuggerLevel": {
                 "name": "treeHuggerLevel",
+                "type": "Int"
+              },
+              "diyLevel": {
+                "name": "diyLevel",
+                "type": "Int"
+              },
+              "gardenerLevel": {
+                "name": "gardenerLevel",
                 "type": "Int"
               },
               "freeTime": {
@@ -1904,99 +4875,6 @@
           },
           "id": {
             "name": "id",
-            "isNotNull": true,
-            "type": "UUID"
-          }
-        }
-      }
-    },
-    "output": {
-      "kind": "OBJECT",
-      "name": "UpdateUserCharacteristicPayload",
-      "ofType": null
-    }
-  },
-  "updateUserCharacteristicByUserId": {
-    "qtype": "mutation",
-    "mutationType": "patch",
-    "model": "UserCharacteristic",
-    "properties": {
-      "input": {
-        "isNotNull": true,
-        "type": "UpdateUserCharacteristicByUserIdInput",
-        "properties": {
-          "patch": {
-            "name": "patch",
-            "isNotNull": true,
-            "properties": {
-              "id": {
-                "name": "id",
-                "type": "UUID"
-              },
-              "income": {
-                "name": "income",
-                "type": "BigFloat"
-              },
-              "gender": {
-                "name": "gender",
-                "type": "Int"
-              },
-              "race": {
-                "name": "race",
-                "type": "String"
-              },
-              "age": {
-                "name": "age",
-                "type": "Int"
-              },
-              "dob": {
-                "name": "dob",
-                "type": "Date"
-              },
-              "education": {
-                "name": "education",
-                "type": "String"
-              },
-              "homeOwnership": {
-                "name": "homeOwnership",
-                "type": "String"
-              },
-              "treeHuggerLevel": {
-                "name": "treeHuggerLevel",
-                "type": "Int"
-              },
-              "freeTime": {
-                "name": "freeTime",
-                "type": "Int"
-              },
-              "researchToDoer": {
-                "name": "researchToDoer",
-                "type": "Int"
-              },
-              "createdBy": {
-                "name": "createdBy",
-                "type": "UUID"
-              },
-              "updatedBy": {
-                "name": "updatedBy",
-                "type": "UUID"
-              },
-              "createdAt": {
-                "name": "createdAt",
-                "type": "Datetime"
-              },
-              "updatedAt": {
-                "name": "updatedAt",
-                "type": "Datetime"
-              },
-              "userId": {
-                "name": "userId",
-                "type": "UUID"
-              }
-            }
-          },
-          "userId": {
-            "name": "userId",
             "isNotNull": true,
             "type": "UUID"
           }
@@ -2098,7 +4976,7 @@
               "emails": {
                 "name": "emails",
                 "isArray": true,
-                "type": "LaunchqlInternalTypeEmail"
+                "type": "String"
               },
               "device": {
                 "name": "device",
@@ -2140,14 +5018,14 @@
       "ofType": null
     }
   },
-  "updateUserEmail": {
+  "updateUserMessage": {
     "qtype": "mutation",
     "mutationType": "patch",
-    "model": "UserEmail",
+    "model": "UserMessage",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "UpdateUserEmailInput",
+        "type": "UpdateUserMessageInput",
         "properties": {
           "patch": {
             "name": "patch",
@@ -2157,17 +5035,61 @@
                 "name": "id",
                 "type": "UUID"
               },
-              "userId": {
-                "name": "userId",
+              "type": {
+                "name": "type",
+                "type": "String"
+              },
+              "content": {
+                "name": "content",
+                "type": "JSON"
+              },
+              "upload": {
+                "name": "upload",
+                "type": "String"
+              },
+              "received": {
+                "name": "received",
+                "type": "Boolean"
+              },
+              "receiverRead": {
+                "name": "receiverRead",
+                "type": "Boolean"
+              },
+              "senderReaction": {
+                "name": "senderReaction",
+                "type": "String"
+              },
+              "receiverReaction": {
+                "name": "receiverReaction",
+                "type": "String"
+              },
+              "createdBy": {
+                "name": "createdBy",
                 "type": "UUID"
               },
-              "email": {
-                "name": "email",
-                "type": "LaunchqlInternalTypeEmail"
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
               },
-              "isVerified": {
-                "name": "isVerified",
-                "type": "Boolean"
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
+              "senderId": {
+                "name": "senderId",
+                "type": "UUID"
+              },
+              "receiverId": {
+                "name": "receiverId",
+                "type": "UUID"
+              },
+              "uploadUpload": {
+                "name": "uploadUpload",
+                "type": "Upload"
               }
             }
           },
@@ -2181,18 +5103,18 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "UpdateUserEmailPayload",
+      "name": "UpdateUserMessagePayload",
       "ofType": null
     }
   },
-  "updateUserEmailByEmail": {
+  "updateUserPassAction": {
     "qtype": "mutation",
     "mutationType": "patch",
-    "model": "UserEmail",
+    "model": "UserPassAction",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "UpdateUserEmailByEmailInput",
+        "type": "UpdateUserPassActionInput",
         "properties": {
           "patch": {
             "name": "patch",
@@ -2202,31 +5124,43 @@
                 "name": "id",
                 "type": "UUID"
               },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              },
               "userId": {
                 "name": "userId",
                 "type": "UUID"
               },
-              "email": {
-                "name": "email",
-                "type": "LaunchqlInternalTypeEmail"
-              },
-              "isVerified": {
-                "name": "isVerified",
-                "type": "Boolean"
+              "actionId": {
+                "name": "actionId",
+                "type": "UUID"
               }
             }
           },
-          "email": {
-            "name": "email",
+          "id": {
+            "name": "id",
             "isNotNull": true,
-            "type": "LaunchqlInternalTypeEmail"
+            "type": "UUID"
           }
         }
       }
     },
     "output": {
       "kind": "OBJECT",
-      "name": "UpdateUserEmailPayload",
+      "name": "UpdateUserPassActionPayload",
       "ofType": null
     }
   },
@@ -2259,16 +5193,17 @@
                 "name": "reputation",
                 "type": "BigFloat"
               },
-              "firstName": {
-                "name": "firstName",
-                "type": "String"
-              },
-              "lastName": {
-                "name": "lastName",
+              "displayName": {
+                "name": "displayName",
                 "type": "String"
               },
               "tags": {
                 "name": "tags",
+                "isArray": true,
+                "type": "String"
+              },
+              "desired": {
+                "name": "desired",
                 "isArray": true,
                 "type": "String"
               },
@@ -2312,14 +5247,14 @@
       "ofType": null
     }
   },
-  "updateUserProfileByUserId": {
+  "updateUserSavedAction": {
     "qtype": "mutation",
     "mutationType": "patch",
-    "model": "UserProfile",
+    "model": "UserSavedAction",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "UpdateUserProfileByUserIdInput",
+        "type": "UpdateUserSavedActionInput",
         "properties": {
           "patch": {
             "name": "patch",
@@ -2328,31 +5263,6 @@
               "id": {
                 "name": "id",
                 "type": "UUID"
-              },
-              "profilePicture": {
-                "name": "profilePicture",
-                "type": "JSON"
-              },
-              "bio": {
-                "name": "bio",
-                "type": "String"
-              },
-              "reputation": {
-                "name": "reputation",
-                "type": "BigFloat"
-              },
-              "firstName": {
-                "name": "firstName",
-                "type": "String"
-              },
-              "lastName": {
-                "name": "lastName",
-                "type": "String"
-              },
-              "tags": {
-                "name": "tags",
-                "isArray": true,
-                "type": "String"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -2374,14 +5284,14 @@
                 "name": "userId",
                 "type": "UUID"
               },
-              "profilePictureUpload": {
-                "name": "profilePictureUpload",
-                "type": "Upload"
+              "actionId": {
+                "name": "actionId",
+                "type": "UUID"
               }
             }
           },
-          "userId": {
-            "name": "userId",
+          "id": {
+            "name": "id",
             "isNotNull": true,
             "type": "UUID"
           }
@@ -2390,7 +5300,7 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "UpdateUserProfilePayload",
+      "name": "UpdateUserSavedActionPayload",
       "ofType": null
     }
   },
@@ -2411,16 +5321,24 @@
                 "name": "id",
                 "type": "UUID"
               },
+              "firstName": {
+                "name": "firstName",
+                "type": "String"
+              },
+              "lastName": {
+                "name": "lastName",
+                "type": "String"
+              },
               "searchRadius": {
                 "name": "searchRadius",
                 "type": "BigFloat"
               },
               "zip": {
                 "name": "zip",
-                "type": "String"
+                "type": "Int"
               },
-              "geo": {
-                "name": "geo",
+              "location": {
+                "name": "location",
                 "type": "GeoJSON"
               },
               "createdBy": {
@@ -2459,14 +5377,14 @@
       "ofType": null
     }
   },
-  "updateUserSettingByUserId": {
+  "updateUserStep": {
     "qtype": "mutation",
     "mutationType": "patch",
-    "model": "UserSetting",
+    "model": "UserStep",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "UpdateUserSettingByUserIdInput",
+        "type": "UpdateUserStepInput",
         "properties": {
           "patch": {
             "name": "patch",
@@ -2476,17 +5394,54 @@
                 "name": "id",
                 "type": "UUID"
               },
-              "searchRadius": {
-                "name": "searchRadius",
-                "type": "BigFloat"
+              "userId": {
+                "name": "userId",
+                "type": "UUID"
               },
-              "zip": {
-                "name": "zip",
+              "name": {
+                "name": "name",
                 "type": "String"
               },
-              "geo": {
-                "name": "geo",
-                "type": "GeoJSON"
+              "count": {
+                "name": "count",
+                "type": "Int"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateUserStepPayload",
+      "ofType": null
+    }
+  },
+  "updateUserViewedAction": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "UserViewedAction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateUserViewedActionInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
               },
               "createdBy": {
                 "name": "createdBy",
@@ -2507,11 +5462,15 @@
               "userId": {
                 "name": "userId",
                 "type": "UUID"
+              },
+              "actionId": {
+                "name": "actionId",
+                "type": "UUID"
               }
             }
           },
-          "userId": {
-            "name": "userId",
+          "id": {
+            "name": "id",
             "isNotNull": true,
             "type": "UUID"
           }
@@ -2520,7 +5479,7 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "UpdateUserSettingPayload",
+      "name": "UpdateUserViewedActionPayload",
       "ofType": null
     }
   },
@@ -2558,6 +5517,267 @@
     "output": {
       "kind": "OBJECT",
       "name": "UpdateUserPayload",
+      "ofType": null
+    }
+  },
+  "updateZipCode": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "ZipCode",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateZipCodeInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "zip": {
+                "name": "zip",
+                "type": "Int"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
+              },
+              "bbox": {
+                "name": "bbox",
+                "type": "GeoJSON"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateZipCodePayload",
+      "ofType": null
+    }
+  },
+  "updateZipCodeByZip": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "ZipCode",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateZipCodeByZipInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "zip": {
+                "name": "zip",
+                "type": "Int"
+              },
+              "location": {
+                "name": "location",
+                "type": "GeoJSON"
+              },
+              "bbox": {
+                "name": "bbox",
+                "type": "GeoJSON"
+              },
+              "createdBy": {
+                "name": "createdBy",
+                "type": "UUID"
+              },
+              "updatedBy": {
+                "name": "updatedBy",
+                "type": "UUID"
+              },
+              "createdAt": {
+                "name": "createdAt",
+                "type": "Datetime"
+              },
+              "updatedAt": {
+                "name": "updatedAt",
+                "type": "Datetime"
+              }
+            }
+          },
+          "zip": {
+            "name": "zip",
+            "isNotNull": true,
+            "type": "Int"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateZipCodePayload",
+      "ofType": null
+    }
+  },
+  "updateAuthAccount": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "AuthAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateAuthAccountInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "service": {
+                "name": "service",
+                "type": "String"
+              },
+              "identifier": {
+                "name": "identifier",
+                "type": "String"
+              },
+              "details": {
+                "name": "details",
+                "type": "JSON"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              }
+            }
+          },
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateAuthAccountPayload",
+      "ofType": null
+    }
+  },
+  "updateAuthAccountByServiceAndIdentifier": {
+    "qtype": "mutation",
+    "mutationType": "patch",
+    "model": "AuthAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpdateAuthAccountByServiceAndIdentifierInput",
+        "properties": {
+          "patch": {
+            "name": "patch",
+            "isNotNull": true,
+            "properties": {
+              "id": {
+                "name": "id",
+                "type": "UUID"
+              },
+              "ownerId": {
+                "name": "ownerId",
+                "type": "UUID"
+              },
+              "service": {
+                "name": "service",
+                "type": "String"
+              },
+              "identifier": {
+                "name": "identifier",
+                "type": "String"
+              },
+              "details": {
+                "name": "details",
+                "type": "JSON"
+              },
+              "isVerified": {
+                "name": "isVerified",
+                "type": "Boolean"
+              }
+            }
+          },
+          "service": {
+            "name": "service",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "identifier": {
+            "name": "identifier",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpdateAuthAccountPayload",
+      "ofType": null
+    }
+  },
+  "deleteActionGoal": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "ActionGoal",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteActionGoalInput",
+        "properties": {
+          "actionId": {
+            "name": "actionId",
+            "isNotNull": true,
+            "type": "UUID"
+          },
+          "goalId": {
+            "name": "goalId",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteActionGoalPayload",
       "ofType": null
     }
   },
@@ -2630,6 +5850,218 @@
       "ofType": null
     }
   },
+  "deleteActionBySlug": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Action",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteActionBySlugInput",
+        "properties": {
+          "slug": {
+            "name": "slug",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteActionPayload",
+      "ofType": null
+    }
+  },
+  "deleteClaimedInvite": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "ClaimedInvite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteClaimedInviteInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteClaimedInvitePayload",
+      "ofType": null
+    }
+  },
+  "deleteConnectedAccount": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "ConnectedAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteConnectedAccountInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteConnectedAccountPayload",
+      "ofType": null
+    }
+  },
+  "deleteConnectedAccountByServiceAndIdentifier": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "ConnectedAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteConnectedAccountByServiceAndIdentifierInput",
+        "properties": {
+          "service": {
+            "name": "service",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "identifier": {
+            "name": "identifier",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteConnectedAccountPayload",
+      "ofType": null
+    }
+  },
+  "deleteCryptoAddress": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "CryptoAddress",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteCryptoAddressInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteCryptoAddressPayload",
+      "ofType": null
+    }
+  },
+  "deleteCryptoAddressByAddress": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "CryptoAddress",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteCryptoAddressByAddressInput",
+        "properties": {
+          "address": {
+            "name": "address",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteCryptoAddressPayload",
+      "ofType": null
+    }
+  },
+  "deleteEmail": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Email",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteEmailInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteEmailPayload",
+      "ofType": null
+    }
+  },
+  "deleteEmailByEmail": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Email",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteEmailByEmailInput",
+        "properties": {
+          "email": {
+            "name": "email",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteEmailPayload",
+      "ofType": null
+    }
+  },
+  "deleteGoalExplanation": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "GoalExplanation",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteGoalExplanationInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteGoalExplanationPayload",
+      "ofType": null
+    }
+  },
   "deleteGoal": {
     "qtype": "mutation",
     "mutationType": "delete",
@@ -2653,14 +6085,60 @@
       "ofType": null
     }
   },
-  "deleteLocation": {
+  "deleteGoalByName": {
     "qtype": "mutation",
     "mutationType": "delete",
-    "model": "Location",
+    "model": "Goal",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "DeleteLocationInput",
+        "type": "DeleteGoalByNameInput",
+        "properties": {
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteGoalPayload",
+      "ofType": null
+    }
+  },
+  "deleteGoalBySlug": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Goal",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteGoalBySlugInput",
+        "properties": {
+          "slug": {
+            "name": "slug",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteGoalPayload",
+      "ofType": null
+    }
+  },
+  "deleteInvite": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteInviteInput",
         "properties": {
           "id": {
             "name": "id",
@@ -2672,7 +6150,178 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "DeleteLocationPayload",
+      "name": "DeleteInvitePayload",
+      "ofType": null
+    }
+  },
+  "deleteInviteByEmailAndSenderId": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteInviteByEmailAndSenderIdInput",
+        "properties": {
+          "email": {
+            "name": "email",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "senderId": {
+            "name": "senderId",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteInvitePayload",
+      "ofType": null
+    }
+  },
+  "deleteInviteByInviteToken": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Invite",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteInviteByInviteTokenInput",
+        "properties": {
+          "inviteToken": {
+            "name": "inviteToken",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteInvitePayload",
+      "ofType": null
+    }
+  },
+  "deleteLevelRequirement": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "LevelRequirement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteLevelRequirementInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteLevelRequirementPayload",
+      "ofType": null
+    }
+  },
+  "deleteLevelRequirementByNameAndLevel": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "LevelRequirement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteLevelRequirementByNameAndLevelInput",
+        "properties": {
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "level": {
+            "name": "level",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteLevelRequirementPayload",
+      "ofType": null
+    }
+  },
+  "deleteLevel": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Level",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteLevelInput",
+        "properties": {
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteLevelPayload",
+      "ofType": null
+    }
+  },
+  "deleteMessageGroup": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "MessageGroup",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteMessageGroupInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteMessageGroupPayload",
+      "ofType": null
+    }
+  },
+  "deleteMessage": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "Message",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteMessageInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteMessagePayload",
       "ofType": null
     }
   },
@@ -2699,6 +6348,126 @@
       "ofType": null
     }
   },
+  "deleteOrganizationProfile": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "OrganizationProfile",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteOrganizationProfileInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteOrganizationProfilePayload",
+      "ofType": null
+    }
+  },
+  "deletePhoneNumber": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "PhoneNumber",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeletePhoneNumberInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeletePhoneNumberPayload",
+      "ofType": null
+    }
+  },
+  "deletePhoneNumberByNumber": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "PhoneNumber",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeletePhoneNumberByNumberInput",
+        "properties": {
+          "number": {
+            "name": "number",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeletePhoneNumberPayload",
+      "ofType": null
+    }
+  },
+  "deleteUserAchievement": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "UserAchievement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteUserAchievementInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteUserAchievementPayload",
+      "ofType": null
+    }
+  },
+  "deleteUserAchievementByUserIdAndName": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "UserAchievement",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteUserAchievementByUserIdAndNameInput",
+        "properties": {
+          "userId": {
+            "name": "userId",
+            "isNotNull": true,
+            "type": "UUID"
+          },
+          "name": {
+            "name": "name",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteUserAchievementPayload",
+      "ofType": null
+    }
+  },
   "deleteUserActionItem": {
     "qtype": "mutation",
     "mutationType": "delete",
@@ -2719,6 +6488,29 @@
     "output": {
       "kind": "OBJECT",
       "name": "DeleteUserActionItemPayload",
+      "ofType": null
+    }
+  },
+  "deleteUserActionReaction": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "UserActionReaction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteUserActionReactionInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteUserActionReactionPayload",
       "ofType": null
     }
   },
@@ -2791,29 +6583,6 @@
       "ofType": null
     }
   },
-  "deleteUserCharacteristicByUserId": {
-    "qtype": "mutation",
-    "mutationType": "delete",
-    "model": "UserCharacteristic",
-    "properties": {
-      "input": {
-        "isNotNull": true,
-        "type": "DeleteUserCharacteristicByUserIdInput",
-        "properties": {
-          "userId": {
-            "name": "userId",
-            "isNotNull": true,
-            "type": "UUID"
-          }
-        }
-      }
-    },
-    "output": {
-      "kind": "OBJECT",
-      "name": "DeleteUserCharacteristicPayload",
-      "ofType": null
-    }
-  },
   "deleteUserConnection": {
     "qtype": "mutation",
     "mutationType": "delete",
@@ -2860,14 +6629,14 @@
       "ofType": null
     }
   },
-  "deleteUserEmail": {
+  "deleteUserMessage": {
     "qtype": "mutation",
     "mutationType": "delete",
-    "model": "UserEmail",
+    "model": "UserMessage",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "DeleteUserEmailInput",
+        "type": "DeleteUserMessageInput",
         "properties": {
           "id": {
             "name": "id",
@@ -2879,30 +6648,30 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "DeleteUserEmailPayload",
+      "name": "DeleteUserMessagePayload",
       "ofType": null
     }
   },
-  "deleteUserEmailByEmail": {
+  "deleteUserPassAction": {
     "qtype": "mutation",
     "mutationType": "delete",
-    "model": "UserEmail",
+    "model": "UserPassAction",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "DeleteUserEmailByEmailInput",
+        "type": "DeleteUserPassActionInput",
         "properties": {
-          "email": {
-            "name": "email",
+          "id": {
+            "name": "id",
             "isNotNull": true,
-            "type": "LaunchqlInternalTypeEmail"
+            "type": "UUID"
           }
         }
       }
     },
     "output": {
       "kind": "OBJECT",
-      "name": "DeleteUserEmailPayload",
+      "name": "DeleteUserPassActionPayload",
       "ofType": null
     }
   },
@@ -2929,17 +6698,17 @@
       "ofType": null
     }
   },
-  "deleteUserProfileByUserId": {
+  "deleteUserSavedAction": {
     "qtype": "mutation",
     "mutationType": "delete",
-    "model": "UserProfile",
+    "model": "UserSavedAction",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "DeleteUserProfileByUserIdInput",
+        "type": "DeleteUserSavedActionInput",
         "properties": {
-          "userId": {
-            "name": "userId",
+          "id": {
+            "name": "id",
             "isNotNull": true,
             "type": "UUID"
           }
@@ -2948,7 +6717,7 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "DeleteUserProfilePayload",
+      "name": "DeleteUserSavedActionPayload",
       "ofType": null
     }
   },
@@ -2975,17 +6744,17 @@
       "ofType": null
     }
   },
-  "deleteUserSettingByUserId": {
+  "deleteUserStep": {
     "qtype": "mutation",
     "mutationType": "delete",
-    "model": "UserSetting",
+    "model": "UserStep",
     "properties": {
       "input": {
         "isNotNull": true,
-        "type": "DeleteUserSettingByUserIdInput",
+        "type": "DeleteUserStepInput",
         "properties": {
-          "userId": {
-            "name": "userId",
+          "id": {
+            "name": "id",
             "isNotNull": true,
             "type": "UUID"
           }
@@ -2994,7 +6763,30 @@
     },
     "output": {
       "kind": "OBJECT",
-      "name": "DeleteUserSettingPayload",
+      "name": "DeleteUserStepPayload",
+      "ofType": null
+    }
+  },
+  "deleteUserViewedAction": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "UserViewedAction",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteUserViewedActionInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteUserViewedActionPayload",
       "ofType": null
     }
   },
@@ -3021,6 +6813,346 @@
       "ofType": null
     }
   },
+  "deleteZipCode": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "ZipCode",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteZipCodeInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteZipCodePayload",
+      "ofType": null
+    }
+  },
+  "deleteZipCodeByZip": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "ZipCode",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteZipCodeByZipInput",
+        "properties": {
+          "zip": {
+            "name": "zip",
+            "isNotNull": true,
+            "type": "Int"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteZipCodePayload",
+      "ofType": null
+    }
+  },
+  "deleteAuthAccount": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "AuthAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteAuthAccountInput",
+        "properties": {
+          "id": {
+            "name": "id",
+            "isNotNull": true,
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteAuthAccountPayload",
+      "ofType": null
+    }
+  },
+  "deleteAuthAccountByServiceAndIdentifier": {
+    "qtype": "mutation",
+    "mutationType": "delete",
+    "model": "AuthAccount",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "DeleteAuthAccountByServiceAndIdentifierInput",
+        "properties": {
+          "service": {
+            "name": "service",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "identifier": {
+            "name": "identifier",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "DeleteAuthAccountPayload",
+      "ofType": null
+    }
+  },
+  "submitInviteCode": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "SubmitInviteCodeInput",
+        "properties": {
+          "token": {
+            "name": "token",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "SubmitInviteCodePayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "upsertAchievement": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UpsertAchievementInput",
+        "properties": {
+          "vuserId": {
+            "name": "vuserId",
+            "type": "UUID"
+          },
+          "vname": {
+            "name": "vname",
+            "type": "String"
+          },
+          "vcount": {
+            "name": "vcount",
+            "type": "Int"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UpsertAchievementPayload",
+      "ofType": null
+    },
+    "outputs": []
+  },
+  "userCompletedStep": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UserCompletedStepInput",
+        "properties": {
+          "step": {
+            "name": "step",
+            "type": "String"
+          },
+          "userId": {
+            "name": "userId",
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UserCompletedStepPayload",
+      "ofType": null
+    },
+    "outputs": []
+  },
+  "userIncompletedStep": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UserIncompletedStepInput",
+        "properties": {
+          "step": {
+            "name": "step",
+            "type": "String"
+          },
+          "userId": {
+            "name": "userId",
+            "type": "UUID"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UserIncompletedStepPayload",
+      "ofType": null
+    },
+    "outputs": []
+  },
+  "uuidGenerateV4": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "UuidGenerateV4Input",
+        "properties": {}
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "UuidGenerateV4Payload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "uuid",
+        "type": {
+          "kind": "SCALAR",
+          "name": "UUID",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "confirmDeleteAccount": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "ConfirmDeleteAccountInput",
+        "properties": {
+          "userId": {
+            "name": "userId",
+            "type": "UUID"
+          },
+          "token": {
+            "name": "token",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "ConfirmDeleteAccountPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "extendTokenExpires": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "model": "ApiToken",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "ExtendTokenExpiresInput",
+        "properties": {
+          "amount": {
+            "name": "amount",
+            "properties": {
+              "seconds": {
+                "name": "seconds",
+                "type": "Float"
+              },
+              "minutes": {
+                "name": "minutes",
+                "type": "Int"
+              },
+              "hours": {
+                "name": "hours",
+                "type": "Int"
+              },
+              "days": {
+                "name": "days",
+                "type": "Int"
+              },
+              "months": {
+                "name": "months",
+                "type": "Int"
+              },
+              "years": {
+                "name": "years",
+                "type": "Int"
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "ExtendTokenExpiresPayload",
+      "ofType": null
+    }
+  },
+  "forgotPassword": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "ForgotPasswordInput",
+        "properties": {
+          "email": {
+            "name": "email",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "ForgotPasswordPayload",
+      "ofType": null
+    },
+    "outputs": []
+  },
   "login": {
     "qtype": "mutation",
     "mutationType": "other",
@@ -3039,6 +7171,10 @@
             "name": "password",
             "isNotNull": true,
             "type": "String"
+          },
+          "rememberMe": {
+            "name": "rememberMe",
+            "type": "Boolean"
           }
         }
       }
@@ -3048,6 +7184,92 @@
       "name": "LoginPayload",
       "ofType": null
     }
+  },
+  "loginOneTimeToken": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "model": "ApiToken",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "LoginOneTimeTokenInput",
+        "properties": {
+          "token": {
+            "name": "token",
+            "isNotNull": true,
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "LoginOneTimeTokenPayload",
+      "ofType": null
+    }
+  },
+  "logout": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "LogoutInput",
+        "properties": {}
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "LogoutPayload",
+      "ofType": null
+    },
+    "outputs": []
+  },
+  "oneTimeToken": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "OneTimeTokenInput",
+        "properties": {
+          "email": {
+            "name": "email",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "password": {
+            "name": "password",
+            "isNotNull": true,
+            "type": "String"
+          },
+          "origin": {
+            "name": "origin",
+            "isNotNull": true,
+            "type": "LaunchqlInternalTypeOrigin"
+          },
+          "rememberMe": {
+            "name": "rememberMe",
+            "type": "Boolean"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "OneTimeTokenPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "string",
+        "type": {
+          "kind": "SCALAR",
+          "name": "String",
+          "ofType": null
+        }
+      }
+    ]
   },
   "register": {
     "qtype": "mutation",
@@ -3065,6 +7287,10 @@
           "password": {
             "name": "password",
             "type": "String"
+          },
+          "rememberMe": {
+            "name": "rememberMe",
+            "type": "Boolean"
           }
         }
       }
@@ -3074,5 +7300,171 @@
       "name": "RegisterPayload",
       "ofType": null
     }
+  },
+  "resetPassword": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "ResetPasswordInput",
+        "properties": {
+          "roleId": {
+            "name": "roleId",
+            "type": "UUID"
+          },
+          "resetToken": {
+            "name": "resetToken",
+            "type": "String"
+          },
+          "newPassword": {
+            "name": "newPassword",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "ResetPasswordPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "sendAccountDeletionEmail": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "SendAccountDeletionEmailInput",
+        "properties": {}
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "SendAccountDeletionEmailPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "sendVerificationEmail": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "SendVerificationEmailInput",
+        "properties": {
+          "email": {
+            "name": "email",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "SendVerificationEmailPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "setPassword": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "SetPasswordInput",
+        "properties": {
+          "currentPassword": {
+            "name": "currentPassword",
+            "type": "String"
+          },
+          "newPassword": {
+            "name": "newPassword",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "SetPasswordPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
+  },
+  "verifyEmail": {
+    "qtype": "mutation",
+    "mutationType": "other",
+    "properties": {
+      "input": {
+        "isNotNull": true,
+        "type": "VerifyEmailInput",
+        "properties": {
+          "emailId": {
+            "name": "emailId",
+            "type": "UUID"
+          },
+          "token": {
+            "name": "token",
+            "type": "String"
+          }
+        }
+      }
+    },
+    "output": {
+      "kind": "OBJECT",
+      "name": "VerifyEmailPayload",
+      "ofType": null
+    },
+    "outputs": [
+      {
+        "name": "boolean",
+        "type": {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "ofType": null
+        }
+      }
+    ]
   }
 }
