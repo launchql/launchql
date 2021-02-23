@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`create 1`] = `
-"mutation createActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID!, $photoUpload: Upload) {
-  createAction(input: {action: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+"mutation createActionMutation($slug: String, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: [object Object], $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID!, $photoUpload: Upload) {
+  createAction(input: {action: {slug: $slug, photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
     action {
       id
-      name
       photo
       title
     }
@@ -17,27 +16,22 @@ exports[`create 1`] = `
 exports[`create 2`] = `"createActionMutation"`;
 
 exports[`delete 1`] = `
-"mutation deleteActionMutation($id: UUID!) {
-  deleteAction(input: {id: $id}) {
+"mutation deleteActionBySlugMutation($slug: String!) {
+  deleteActionBySlug(input: {slug: $slug}) {
     clientMutationId
   }
 }
 "
 `;
 
-exports[`delete 2`] = `"deleteActionMutation"`;
+exports[`delete 2`] = `"deleteActionBySlugMutation"`;
 
 exports[`getAll 1`] = `
 "query getActionsQueryAll {
   actions {totalCount, nodes {
     id
-    name
     photo
     title
-    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
-      id
-      actionId
-    }}
   }}
 }
 "
@@ -56,13 +50,8 @@ exports[`getMany edges 1`] = `
     cursor
     node {
       id
-      name
       photo
       title
-      actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
-        id
-        actionId
-      }}
     }
   }}
 }
@@ -80,12 +69,17 @@ exports[`getMany should select only scalar fields by default 1`] = `
     startCursor
   }, nodes {
     id
+    slug
     photo
     title
-    description
-    locationRadius
     url
-    timeRequired
+    description
+    discoveryHeader
+    discoveryDescription
+    enableNotifications
+    enableNotificationsText
+    search
+    locationRadius
     startDate
     endDate
     approved
@@ -93,6 +87,7 @@ exports[`getMany should select only scalar fields by default 1`] = `
     activityFeedText
     callToAction
     completedActionText
+    alreadyCompletedActionText
     tags
     createdBy
     updatedBy
@@ -114,13 +109,8 @@ exports[`getMany should whitelist selected fields 1`] = `
     startCursor
   }, nodes {
     id
-    name
     photo
     title
-    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
-      id
-      actionId
-    }}
   }}
 }
 "
@@ -132,19 +122,16 @@ exports[`getOne 1`] = `
 "query getActionQuery($id: UUID!) {
   action(id: $id) {
     id
-    name
     photo
     title
-    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
-      id
-      actionId
-    }}
   }
 }
 "
 `;
 
 exports[`getOne 2`] = `"getActionQuery"`;
+
+exports[`selects non-scalar custom types 1`] = `"getActionsQuery"`;
 
 exports[`should select totalCount in subfields by default 1`] = `
 "query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
@@ -155,13 +142,8 @@ exports[`should select totalCount in subfields by default 1`] = `
     startCursor
   }, nodes {
     id
-    name
     photo
     title
-    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
-      id
-      actionId
-    }}
   }}
 }
 "
@@ -170,11 +152,10 @@ exports[`should select totalCount in subfields by default 1`] = `
 exports[`should select totalCount in subfields by default 2`] = `"getActionsQuery"`;
 
 exports[`update 1`] = `
-"mutation updateActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID, $photoUpload: Upload) {
-  updateAction(input: {id: $id, patch: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+"mutation updateActionBySlugMutation($slug: String!, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: [object Object], $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID, $photoUpload: Upload) {
+  updateActionBySlug(input: {slug: $slug, patch: {photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
     action {
       id
-      name
       photo
       title
     }
@@ -183,4 +164,4 @@ exports[`update 1`] = `
 "
 `;
 
-exports[`update 2`] = `"updateActionMutation"`;
+exports[`update 2`] = `"updateActionBySlugMutation"`;

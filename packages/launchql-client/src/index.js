@@ -93,9 +93,9 @@ export class Client {
   }
 
   select(selection) {
-    // If selection not given, pick only scalar fields
     const defn = this._introspection[this._key];
 
+    // If selection not given, pick only scalar fields
     if (selection == null) {
       this._select = pickScalarFields(defn, this._meta);
       return this;
@@ -290,9 +290,15 @@ function pickScalarFields(defn, meta) {
   const isInTableSchema = (fieldName) =>
     !!modelMeta.fields.find((field) => field.name === fieldName);
 
-  return defn.selection.filter(
-    (fieldName) => !isReferenced(fieldName) && isInTableSchema(fieldName)
-  );
+  return defn.selection
+    .filter(
+      (fieldName) => !isReferenced(fieldName) && isInTableSchema(fieldName)
+    )
+    .map((fieldName) => ({
+      name: fieldName,
+      isObject: false,
+      fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
+    }));
 }
 
 /**
@@ -302,7 +308,9 @@ function pickScalarFields(defn, meta) {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickAllFields(selection, defn) {
+function pickAllFields(selection, defn, meta) {
+  const model = defn.model;
+  const modelMeta = meta.tables.find((t) => t.name === model);
   const selectionEntries = Object.entries(selection);
   let fields = [];
 
@@ -328,6 +336,7 @@ function pickAllFields(selection, defn) {
 
       const fieldSelection = {
         name: fieldName,
+        isObject: true,
         selection: subFields,
         variables: fieldOptions.variables
       };
@@ -339,7 +348,14 @@ function pickAllFields(selection, defn) {
       //   userId: true // [fieldName, fieldOptions]
       // }
       if (isWhiteListed(fieldOptions)) {
-        fields = [...fields, fieldName];
+        fields = [
+          ...fields,
+          {
+            name: fieldName,
+            isObject: false,
+            fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
+          }
+        ];
       }
     }
   }

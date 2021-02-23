@@ -97,6 +97,28 @@ it('should select totalCount in subfields by default', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
+it('selects non-scalar custom types', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        id: true,
+        name: true,
+        location: true, // non-scalar custom type
+        timeRequired: true // non-scalar custom type
+      }
+    })
+    .print();
+
+  expect(/(totalCount)/.test(result._hash)).toBe(true);
+  expect(result._queryName).toMatchSnapshot();
+});
+
 it('getMany edges', () => {
   const client = new Client({
     meta: metaObject,

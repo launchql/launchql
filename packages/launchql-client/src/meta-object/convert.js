@@ -42,6 +42,6 @@ function pickForeignConstraint(constraints) {
 function pickField(field) {
   return {
     name: field.name,
-    type: field.type.pgType
+    type: field.type
   };
 }

@@ -3,6 +3,7 @@ import plz from 'pluralize';
 import inflection from 'inflection';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
+import { getCustomAst } from './custom-ast';
 
 const NON_MUTABLE_PROPS = [
   'id',
@@ -578,13 +579,9 @@ export const deleteOne = ({ mutationName, operationName, mutation }) => {
 
 export function getSelections(selection = []) {
   return selection
-    .map((field) => {
-      if (typeof field === 'string') {
-        return t.field({ name: field });
-      }
-
-      if (isObject(field)) {
-        const { name, selection, variables } = field;
+    .map((selectionDefn) => {
+      if (selectionDefn.isObject) {
+        const { name, selection, variables } = selectionDefn;
         return t.field({
           name,
           args: Object.entries(variables).reduce((args, variable) => {
@@ -610,8 +607,13 @@ export function getSelections(selection = []) {
             ]
           })
         });
+      } else {
+        const { fieldDefn } = selectionDefn;
+        // Field is not found in model meta, do nothing
+        if (!fieldDefn) return null;
+
+        return getCustomAst(fieldDefn);
       }
-      return null;
     })
     .filter(Boolean);
 }
