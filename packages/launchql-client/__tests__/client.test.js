@@ -97,6 +97,48 @@ it('should select totalCount in subfields by default', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
+it('selects relation field', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        id: true,
+        slug: true,
+        photo: true,
+        title: true,
+        url: true,
+        goals: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            shortName: true,
+            icon: true,
+            subHead: true,
+            tags: true,
+            search: true,
+            createdBy: true,
+            updatedBy: true,
+            createdAt: true,
+            updatedAt: true
+          },
+          variables: {
+            first: 3
+          }
+        }
+      }
+    })
+    .print();
+
+  expect(/(goals)/.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+});
+
 it('selects non-scalar custom types', () => {
   const client = new Client({
     meta: metaObject,

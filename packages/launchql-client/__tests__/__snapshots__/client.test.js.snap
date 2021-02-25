@@ -32,6 +32,10 @@ exports[`getAll 1`] = `
     id
     photo
     title
+    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
+      id
+      actionId
+    }}
   }}
 }
 "
@@ -52,6 +56,10 @@ exports[`getMany edges 1`] = `
       id
       photo
       title
+      actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
+        id
+        actionId
+      }}
     }
   }}
 }
@@ -111,6 +119,10 @@ exports[`getMany should whitelist selected fields 1`] = `
     id
     photo
     title
+    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
+      id
+      actionId
+    }}
   }}
 }
 "
@@ -124,6 +136,10 @@ exports[`getOne 1`] = `
     id
     photo
     title
+    actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
+      id
+      actionId
+    }}
   }
 }
 "
@@ -132,6 +148,38 @@ exports[`getOne 1`] = `
 exports[`getOne 2`] = `"getActionQuery"`;
 
 exports[`selects non-scalar custom types 1`] = `"getActionsQuery"`;
+
+exports[`selects relation field 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    slug
+    photo
+    title
+    url
+    goals(first: 3) {totalCount, nodes {
+      id
+      name
+      slug
+      shortName
+      icon
+      subHead
+      tags
+      search
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }}
+  }}
+}
+"
+`;
 
 exports[`should select totalCount in subfields by default 1`] = `
 "query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
@@ -144,6 +192,10 @@ exports[`should select totalCount in subfields by default 1`] = `
     id
     photo
     title
+    actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
+      id
+      actionId
+    }}
   }}
 }
 "
