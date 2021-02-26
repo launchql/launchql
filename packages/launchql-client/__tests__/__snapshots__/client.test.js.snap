@@ -174,7 +174,7 @@ exports[`selects belongsTo relation field 1`] = `
     endCursor
     startCursor
   }, nodes {
-    owner(first: 3) {totalCount, nodes {
+    owner {totalCount, nodes {
       id
       type
     }}

@@ -581,7 +581,7 @@ export function getSelections(selection = []) {
   return selection
     .map((selectionDefn) => {
       if (selectionDefn.isObject) {
-        const { name, selection, variables } = selectionDefn;
+        const { name, selection, variables = {} } = selectionDefn;
         return t.field({
           name,
           args: Object.entries(variables).reduce((args, variable) => {

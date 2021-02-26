@@ -165,9 +165,6 @@ it('selects belongsTo relation field', () => {
           select: {
             id: true,
             type: true
-          },
-          variables: {
-            first: 3
           }
         }
       }
