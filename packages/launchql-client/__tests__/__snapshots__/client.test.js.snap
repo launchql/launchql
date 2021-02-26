@@ -174,10 +174,10 @@ exports[`selects belongsTo relation field 1`] = `
     endCursor
     startCursor
   }, nodes {
-    owner {totalCount, nodes {
+    owner {
       id
       type
-    }}
+    }
   }}
 }
 "

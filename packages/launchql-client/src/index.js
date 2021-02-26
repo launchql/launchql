@@ -282,6 +282,7 @@ function pickScalarFields(defn, meta) {
   const model = defn.model;
   const modelMeta = meta.tables.find((t) => t.name === model);
 
+  // TODO: see if there is a possibility of supertyping table (a key is both a foreign and primary key)
   // A relational field is a foreign key but not a primary key
   const isRelationalField = (fieldName) =>
     !modelMeta.primaryConstraints.find((field) => field.name === fieldName) &&
@@ -330,6 +331,12 @@ function pickAllFields(selection, defn, meta) {
     if (isObject(fieldOptions)) {
       if (!isFieldInDefinition(fieldName, defn, modelMeta)) continue;
 
+      const referencedForeignConstraint = modelMeta.foreignConstraints.find(
+        (constraint) =>
+          constraint.fromKey.name === fieldName ||
+          constraint.fromKey.alias === fieldName
+      );
+
       const subFields = Object.keys(fieldOptions.select).filter((subField) =>
         isWhiteListed(fieldOptions.select[subField])
       );
@@ -337,6 +344,7 @@ function pickAllFields(selection, defn, meta) {
       const fieldSelection = {
         name: fieldName,
         isObject: true,
+        isBelongTo: !!referencedForeignConstraint,
         selection: subFields,
         variables: fieldOptions.variables
       };

@@ -171,7 +171,8 @@ it('selects belongsTo relation field', () => {
     })
     .print();
 
-  expect(/(owner)|(id)|(type)/.test(result._hash)).toBe(true);
+  // Straight up select the sub fields
+  expect(/(owner)|(id)|(type)/gm.test(result._hash)).toBe(true);
   expect(result._hash).toMatchSnapshot();
 });
 

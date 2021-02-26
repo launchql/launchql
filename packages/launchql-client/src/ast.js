@@ -581,7 +581,7 @@ export function getSelections(selection = []) {
   return selection
     .map((selectionDefn) => {
       if (selectionDefn.isObject) {
-        const { name, selection, variables = {} } = selectionDefn;
+        const { name, selection, variables = {}, isBelongTo } = selectionDefn;
         return t.field({
           name,
           args: Object.entries(variables).reduce((args, variable) => {
@@ -593,19 +593,25 @@ export function getSelections(selection = []) {
             args = argAst ? [...args, argAst] : args;
             return args;
           }, []),
-          selectionSet: t.objectValue({
-            fields: [
-              t.field({
-                name: 'totalCount'
-              }),
-              t.field({
-                name: 'nodes',
-                selectionSet: t.selectionSet({
-                  selections: selection.map((field) => t.field({ name: field }))
-                })
+          selectionSet: isBelongTo
+            ? t.selectionSet({
+                selections: selection.map((field) => t.field({ name: field }))
               })
-            ]
-          })
+            : t.objectValue({
+                fields: [
+                  t.field({
+                    name: 'totalCount'
+                  }),
+                  t.field({
+                    name: 'nodes',
+                    selectionSet: t.selectionSet({
+                      selections: selection.map((field) =>
+                        t.field({ name: field })
+                      )
+                    })
+                  })
+                ]
+              })
         });
       } else {
         const { fieldDefn } = selectionDefn;
