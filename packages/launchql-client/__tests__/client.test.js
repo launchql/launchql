@@ -151,6 +151,33 @@ it('selects all scalar fields of junction table by default', () => {
   expect(result._hash).toMatchSnapshot();
 });
 
+it('selects belongsTo relation field', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        owner: {
+          select: {
+            id: true,
+            type: true
+          },
+          variables: {
+            first: 3
+          }
+        }
+      }
+    })
+    .print();
+
+  expect(/(owner)|(id)|(type)/.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+});
+
 it('selects non-scalar custom types', () => {
   const client = new Client({
     meta: metaObject,

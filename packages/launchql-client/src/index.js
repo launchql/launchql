@@ -328,7 +328,7 @@ function pickAllFields(selection, defn, meta) {
     //    { select: { id: true }, variables: { first: 100 } } // fieldOptions
     // }
     if (isObject(fieldOptions)) {
-      if (!isFieldInDefinition(fieldName, defn)) continue;
+      if (!isFieldInDefinition(fieldName, defn, modelMeta)) continue;
 
       const subFields = Object.keys(fieldOptions.select).filter((subField) =>
         isWhiteListed(fieldOptions.select[subField])
@@ -363,14 +363,23 @@ function pickAllFields(selection, defn, meta) {
   return fields;
 }
 
-function isFieldInDefinition(fieldName, defn) {
-  return defn.selection.some((selectionItem) => {
-    if (typeof selectionItem === 'string') {
-      return fieldName === selectionItem;
-    }
-    if (isObject(selectionItem)) {
-      return selectionItem.name === fieldName;
-    }
-    return false;
-  });
+function isFieldInDefinition(fieldName, defn, modelMeta) {
+  const isReferenced = !!modelMeta.foreignConstraints.find(
+    (constraint) =>
+      constraint.fromKey.name === fieldName ||
+      constraint.fromKey.alias === fieldName
+  );
+
+  return (
+    isReferenced ||
+    defn.selection.some((selectionItem) => {
+      if (typeof selectionItem === 'string') {
+        return fieldName === selectionItem;
+      }
+      if (isObject(selectionItem)) {
+        return selectionItem.name === fieldName;
+      }
+      return false;
+    })
+  );
 }

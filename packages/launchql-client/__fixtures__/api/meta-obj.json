@@ -128,7 +128,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -155,7 +156,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "goal"
           },
           "toKey": {
             "name": "id",
@@ -182,7 +184,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -460,7 +463,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -593,7 +597,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -620,7 +625,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -1024,7 +1030,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -1133,7 +1140,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "sender"
           },
           "toKey": {
             "name": "id",
@@ -1160,7 +1168,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "receiver"
           },
           "toKey": {
             "name": "id",
@@ -1306,7 +1315,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -1428,7 +1438,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -1550,7 +1561,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -1719,7 +1731,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "goal"
           },
           "toKey": {
             "name": "id",
@@ -2103,7 +2116,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "sender"
           },
           "toKey": {
             "name": "id",
@@ -2516,7 +2530,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "sender"
           },
           "toKey": {
             "name": "id",
@@ -2543,7 +2558,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "group"
           },
           "toKey": {
             "name": "id",
@@ -2890,7 +2906,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "organization"
           },
           "toKey": {
             "name": "id",
@@ -3024,7 +3041,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",
@@ -3348,7 +3366,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -3375,7 +3394,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -3402,7 +3422,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "userAction"
           },
           "toKey": {
             "name": "id",
@@ -3429,7 +3450,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "actionItem"
           },
           "toKey": {
             "name": "id",
@@ -3586,7 +3608,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "userAction"
           },
           "toKey": {
             "name": "id",
@@ -3613,7 +3636,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -3640,7 +3664,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "reacter"
           },
           "toKey": {
             "name": "id",
@@ -3667,7 +3692,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -3873,7 +3899,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -3900,7 +3927,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -3927,7 +3955,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "userAction"
           },
           "toKey": {
             "name": "id",
@@ -3954,7 +3983,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "actionResult"
           },
           "toKey": {
             "name": "id",
@@ -4201,7 +4231,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -4228,7 +4259,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "verifier"
           },
           "toKey": {
             "name": "id",
@@ -4255,7 +4287,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -4535,7 +4568,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -4705,7 +4739,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "requester"
           },
           "toKey": {
             "name": "id",
@@ -4732,7 +4767,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "responder"
           },
           "toKey": {
             "name": "id",
@@ -4901,7 +4937,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -5118,7 +5155,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "sender"
           },
           "toKey": {
             "name": "id",
@@ -5145,7 +5183,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "receiver"
           },
           "toKey": {
             "name": "id",
@@ -5303,7 +5342,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -5330,7 +5370,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -5536,7 +5577,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -5694,7 +5736,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -5721,7 +5764,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -5921,7 +5965,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -6135,7 +6180,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "user"
           },
           "toKey": {
             "name": "id",
@@ -6162,7 +6208,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "action"
           },
           "toKey": {
             "name": "id",
@@ -6495,7 +6542,8 @@
               "pgType": "uuid",
               "subtype": null,
               "typmod": null
-            }
+            },
+            "alias": "owner"
           },
           "toKey": {
             "name": "id",

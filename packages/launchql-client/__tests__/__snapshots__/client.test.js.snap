@@ -166,6 +166,23 @@ exports[`selects all scalar fields of junction table by default 1`] = `
 "
 `;
 
+exports[`selects belongsTo relation field 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    owner(first: 3) {totalCount, nodes {
+      id
+      type
+    }}
+  }}
+}
+"
+`;
+
 exports[`selects non-scalar custom types 1`] = `"getActionsQuery"`;
 
 exports[`selects relation field 1`] = `
