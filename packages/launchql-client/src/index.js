@@ -282,7 +282,9 @@ function pickScalarFields(defn, meta) {
   const model = defn.model;
   const modelMeta = meta.tables.find((t) => t.name === model);
 
-  const isReferenced = (fieldName) =>
+  // A relational field is a foreign key but not a primary key
+  const isRelationalField = (fieldName) =>
+    !modelMeta.primaryConstraints.find((field) => field.name === fieldName) &&
     !!modelMeta.foreignConstraints.find(
       (constraint) => constraint.fromKey.name === fieldName
     );
@@ -292,7 +294,7 @@ function pickScalarFields(defn, meta) {
 
   return defn.selection
     .filter(
-      (fieldName) => !isReferenced(fieldName) && isInTableSchema(fieldName)
+      (fieldName) => !isRelationalField(fieldName) && isInTableSchema(fieldName)
     )
     .map((fieldName) => ({
       name: fieldName,

@@ -147,6 +147,25 @@ exports[`getOne 1`] = `
 
 exports[`getOne 2`] = `"getActionQuery"`;
 
+exports[`selects all scalar fields of junction table by default 1`] = `
+"query getActionGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionGoalCondition, $filter: ActionGoalFilter, $orderBy: [ActionGoalsOrderBy!]) {
+  actionGoals(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    goalId
+  }}
+}
+"
+`;
+
 exports[`selects non-scalar custom types 1`] = `"getActionsQuery"`;
 
 exports[`selects relation field 1`] = `

@@ -139,6 +139,18 @@ it('selects relation field', () => {
   expect(result._hash).toMatchSnapshot();
 });
 
+it('selects all scalar fields of junction table by default', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client.query('ActionGoal').getMany().print();
+
+  expect(/(actionId)|(goalId)|(ownerId)/.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+});
+
 it('selects non-scalar custom types', () => {
   const client = new Client({
     meta: metaObject,
