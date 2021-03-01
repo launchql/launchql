@@ -341,14 +341,24 @@ it('create with custom selection', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
-it('delete', () => {
+it('update with default scalar selection', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+  const result = client.query('Action').update().print();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
+it('update with custom selection', () => {
   const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
   const result = client
     .query('Action')
-    .delete({
+    .update({
       select: {
         id: true,
         name: true,
@@ -357,18 +367,19 @@ it('delete', () => {
       }
     })
     .print();
+  expect(/(id)|(name)|(photo)|(title)/gm.test(result._hash)).toBe(true);
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });
 
-it('update', () => {
+it('delete', () => {
   const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
   const result = client
     .query('Action')
-    .update({
+    .delete({
       select: {
         id: true,
         name: true,

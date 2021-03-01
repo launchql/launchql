@@ -368,7 +368,7 @@ export const createOne = ({
     (field) => !NON_MUTABLE_PROPS.includes(field.name)
   );
 
-  const variableDefinitions = getVariablesAst(attrs);
+  const variableDefinitions = getCreateVariablesAst(attrs);
 
   const selectArgs = [
     t.argument({
@@ -439,16 +439,7 @@ export const patchOne = ({
 
   const patchers = patchByAttrs.map((p) => p.name);
 
-  const variableDefinitions = patchAttrs.map((field) => {
-    const { name: fieldName, type: fieldType, isArray } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isArray) type = t.listType({ type });
-    if (patchers.includes(field.name)) type = t.nonNullType({ type });
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  const variableDefinitions = getUpdateVariablesAst(patchAttrs, patchers);
 
   const selectArgs = [
     t.argument({
@@ -649,16 +640,16 @@ function getValueAst(value) {
   }
 }
 
+const CustomInputTypes = {
+  interval: 'IntervalInput'
+};
+
 /**
  * Get mutation variables AST from attributes array
  * @param {Array} attrs
  * @returns {Object} AST for the variables
  */
-function getVariablesAst(attrs) {
-  const CustomInputTypes = {
-    interval: 'IntervalInput'
-  };
-
+function getCreateVariablesAst(attrs) {
   return attrs.map((field) => {
     const {
       name: fieldName,
@@ -682,6 +673,39 @@ function getVariablesAst(attrs) {
       type = t.listType({ type });
       if (isArrayNotNull) type = t.nonNullType({ type });
     }
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
+}
+
+/**
+ * Get mutation variables AST from attributes array
+ * @param {Array} attrs
+ * @returns {Object} AST for the variables
+ */
+function getUpdateVariablesAst(attrs, patchers) {
+  return attrs.map((field) => {
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      properties
+    } = field;
+
+    let type;
+
+    if (properties == null) {
+      type = t.namedType({ type: fieldType });
+    } else if (isIntervalType(properties)) {
+      type = t.namedType({ type: CustomInputTypes.interval });
+    }
+
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) type = t.listType({ type });
+    if (patchers.includes(field.name)) type = t.nonNullType({ type });
     return t.variableDefinition({
       variable: t.variable({ name: fieldName }),
       type

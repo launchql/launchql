@@ -276,8 +276,8 @@ exports[`should select totalCount in subfields by default 1`] = `
 
 exports[`should select totalCount in subfields by default 2`] = `"getActionsQuery"`;
 
-exports[`update 1`] = `
-"mutation updateActionBySlugMutation($slug: String!, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: [object Object], $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID, $photoUpload: Upload) {
+exports[`update with custom selection 1`] = `
+"mutation updateActionBySlugMutation($slug: String!, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID, $photoUpload: Upload) {
   updateActionBySlug(input: {slug: $slug, patch: {photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
     action {
       id
@@ -289,4 +289,41 @@ exports[`update 1`] = `
 "
 `;
 
-exports[`update 2`] = `"updateActionBySlugMutation"`;
+exports[`update with custom selection 2`] = `"updateActionBySlugMutation"`;
+
+exports[`update with default scalar selection 1`] = `
+"mutation updateActionBySlugMutation($slug: String!, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID, $photoUpload: Upload) {
+  updateActionBySlug(input: {slug: $slug, patch: {photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+    action {
+      id
+      slug
+      photo
+      title
+      url
+      description
+      discoveryHeader
+      discoveryDescription
+      enableNotifications
+      enableNotificationsText
+      search
+      locationRadius
+      startDate
+      endDate
+      approved
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      alreadyCompletedActionText
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`update with default scalar selection 2`] = `"updateActionBySlugMutation"`;
