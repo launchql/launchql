@@ -43,3 +43,14 @@ export function intervalAst(name) {
 function toFieldArray(strArr) {
   return strArr.map((fieldName) => t.field({ name: fieldName }));
 }
+
+export function isIntervalType(obj) {
+  return [
+    'days',
+    'hours',
+    'minutes',
+    'months',
+    'seconds',
+    'years'
+  ].every((key) => obj.hasOwnProperty(key));
+}

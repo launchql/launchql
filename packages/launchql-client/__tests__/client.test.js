@@ -308,7 +308,18 @@ it('getAll', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
-it('create', () => {
+it('create with default scalar selection', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+  const result = client.query('Action').create().print();
+
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
+it('create with custom selection', () => {
   const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
@@ -324,8 +335,10 @@ it('create', () => {
       }
     })
     .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
+
+  expect(/(id)|(name)|(photo)|(title)/gm.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
 });
 
 it('delete', () => {

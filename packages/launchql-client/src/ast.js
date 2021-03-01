@@ -3,7 +3,7 @@ import plz from 'pluralize';
 import inflection from 'inflection';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
-import { getCustomAst } from './custom-ast';
+import { getCustomAst, isIntervalType } from './custom-ast';
 
 const NON_MUTABLE_PROPS = [
   'id',
@@ -368,25 +368,7 @@ export const createOne = ({
     (field) => !NON_MUTABLE_PROPS.includes(field.name)
   );
 
-  const variableDefinitions = attrs.map((field) => {
-    const {
-      name: fieldName,
-      type: fieldType,
-      isNotNull,
-      isArray,
-      isArrayNotNull
-    } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isNotNull) type = t.nonNullType({ type });
-    if (isArray) {
-      type = t.listType({ type });
-      if (isArrayNotNull) type = t.nonNullType({ type });
-    }
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  const variableDefinitions = getVariablesAst(attrs);
 
   const selectArgs = [
     t.argument({
@@ -665,4 +647,44 @@ function getValueAst(value) {
       }, [])
     });
   }
+}
+
+/**
+ * Get mutation variables AST from attributes array
+ * @param {Array} attrs
+ * @returns {Object} AST for the variables
+ */
+function getVariablesAst(attrs) {
+  const CustomInputTypes = {
+    interval: 'IntervalInput'
+  };
+
+  return attrs.map((field) => {
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull,
+      properties
+    } = field;
+
+    let type;
+
+    if (properties == null) {
+      type = t.namedType({ type: fieldType });
+    } else if (isIntervalType(properties)) {
+      type = t.namedType({ type: CustomInputTypes.interval });
+    }
+
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      if (isArrayNotNull) type = t.nonNullType({ type });
+    }
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
 }

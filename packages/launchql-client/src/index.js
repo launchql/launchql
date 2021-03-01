@@ -97,11 +97,16 @@ export class Client {
 
     // If selection not given, pick only scalar fields
     if (selection == null) {
-      this._select = pickScalarFields(defn, this._meta);
+      this._select = pickScalarFields(defn, this._introspection, this._meta);
       return this;
     }
 
-    this._select = pickAllFields(selection, defn, this._meta);
+    this._select = pickAllFields(
+      selection,
+      defn,
+      this._introspection,
+      this._meta
+    );
     return this;
   }
 
@@ -278,7 +283,7 @@ export class Client {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickScalarFields(defn, meta) {
+function pickScalarFields(defn, introspection, meta) {
   const model = defn.model;
   const modelMeta = meta.tables.find((t) => t.name === model);
 
@@ -293,15 +298,25 @@ function pickScalarFields(defn, meta) {
   const isInTableSchema = (fieldName) =>
     !!modelMeta.fields.find((field) => field.name === fieldName);
 
-  return defn.selection
-    .filter(
-      (fieldName) => !isRelationalField(fieldName) && isInTableSchema(fieldName)
-    )
-    .map((fieldName) => ({
-      name: fieldName,
-      isObject: false,
-      fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
-    }));
+  const pickFrom = (selection) =>
+    selection
+      .filter(
+        (fieldName) =>
+          !isRelationalField(fieldName) && isInTableSchema(fieldName)
+      )
+      .map((fieldName) => ({
+        name: fieldName,
+        isObject: false,
+        fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
+      }));
+
+  if (defn.qtype === 'mutation') {
+    const relatedQuery =
+      introspection[`${inflection.pluralize(defn.model)}`.toLowerCase()];
+    return pickFrom(relatedQuery.selection);
+  }
+
+  return pickFrom(defn.selection);
 }
 
 /**
@@ -311,7 +326,7 @@ function pickScalarFields(defn, meta) {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickAllFields(selection, defn, meta) {
+function pickAllFields(selection, defn, introspection, meta) {
   const model = defn.model;
   const modelMeta = meta.tables.find((t) => t.name === model);
   const selectionEntries = Object.entries(selection);
