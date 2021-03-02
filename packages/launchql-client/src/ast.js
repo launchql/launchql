@@ -5,13 +5,7 @@ import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 import { getCustomAst, isIntervalType } from './custom-ast';
 
-const NON_MUTABLE_PROPS = [
-  'id',
-  'createdAt',
-  'createdBy',
-  'updatedAt',
-  'updatedBy'
-];
+const NON_MUTABLE_PROPS = ['createdAt', 'createdBy', 'updatedAt', 'updatedBy'];
 const objectToArray = (obj) =>
   Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
 

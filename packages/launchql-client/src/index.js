@@ -12,6 +12,8 @@ export class Client {
     this._meta = meta;
     this.clear();
     this.initModelMap();
+    this.pickScalarFields = pickScalarFields.bind(this);
+    this.pickAllFields = pickAllFields.bind(this);
 
     const validate = validateMetaObject(this._meta);
     if (typeof validate === 'object' && validate.errors) {
@@ -73,23 +75,58 @@ export class Client {
   }
 
   _findMutation() {
-    // based on the op, finds the relevant GQL query
-    const q = Object.keys(this._introspection).reduce((m, v) => {
-      const defn = this._introspection[v];
-      if (
-        defn.model === this._model &&
-        defn.qtype === this._op &&
-        defn.qtype === 'mutation' &&
-        defn.mutationType === this._mutation
-      ) {
-        return v;
-      }
-      return m;
-    }, null);
-    if (!q) {
-      throw new Error('no mutation found for ' + this._model + ':' + this._op);
+    // For mutation, there can be many defns that match the operation being requested
+    // .ie: deleteAction, deleteActionBySlug, deleteActionByName
+    const matchingDefns = Object.keys(this._introspection).reduce(
+      (arr, mutationKey) => {
+        const defn = this._introspection[mutationKey];
+        if (
+          defn.model === this._model &&
+          defn.qtype === this._op &&
+          defn.qtype === 'mutation' &&
+          defn.mutationType === this._mutation
+        ) {
+          arr = [...arr, { defn, mutationKey }];
+        }
+        return arr;
+      },
+      []
+    );
+
+    if (!matchingDefns.length === 0) {
+      throw new Error(
+        'no mutation found for ' + this._model + ':' + this._mutation
+      );
     }
-    return q;
+
+    // We only need deleteAction from all of [deleteAction, deleteActionBySlug, deleteActionByName]
+    const getInputName = (mutationType) => {
+      switch (mutationType) {
+        case 'delete': {
+          return `Delete${inflection.capitalize(this._model)}Input`;
+        }
+        case 'create': {
+          return `Create${inflection.capitalize(this._model)}Input`;
+        }
+        case 'patch': {
+          return `Update${inflection.capitalize(this._model)}Input`;
+        }
+        default:
+          throw new Error('Unhandled mutation type' + mutationType);
+      }
+    };
+
+    const matchDefn = matchingDefns.find(
+      ({ defn }) => defn.properties.input.type === getInputName(this._mutation)
+    );
+
+    if (!matchDefn) {
+      throw new Error(
+        'no mutation found for ' + this._model + ':' + this._mutation
+      );
+    }
+
+    return matchDefn.mutationKey;
   }
 
   select(selection) {
@@ -97,16 +134,11 @@ export class Client {
 
     // If selection not given, pick only scalar fields
     if (selection == null) {
-      this._select = pickScalarFields(defn, this._introspection, this._meta);
+      this._select = this.pickScalarFields(defn);
       return this;
     }
 
-    this._select = pickAllFields(
-      selection,
-      defn,
-      this._introspection,
-      this._meta
-    );
+    this._select = this.pickAllFields(selection, defn);
     return this;
   }
 
@@ -283,9 +315,9 @@ export class Client {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickScalarFields(defn, introspection, meta) {
+function pickScalarFields(defn) {
   const model = defn.model;
-  const modelMeta = meta.tables.find((t) => t.name === model);
+  const modelMeta = this._meta.tables.find((t) => t.name === model);
 
   // TODO: see if there is a possibility of supertyping table (a key is both a foreign and primary key)
   // A relational field is a foreign key but not a primary key
@@ -311,8 +343,9 @@ function pickScalarFields(defn, introspection, meta) {
       }));
 
   if (defn.qtype === 'mutation') {
-    const relatedQuery =
-      introspection[`${inflection.pluralize(defn.model)}`.toLowerCase()];
+    const relatedQuery = this._introspection[
+      `${inflection.pluralize(defn.model)}`.toLowerCase()
+    ];
     return pickFrom(relatedQuery.selection);
   }
 
@@ -326,9 +359,9 @@ function pickScalarFields(defn, introspection, meta) {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickAllFields(selection, defn, introspection, meta) {
+function pickAllFields(selection, defn) {
   const model = defn.model;
-  const modelMeta = meta.tables.find((t) => t.name === model);
+  const modelMeta = this._meta.tables.find((t) => t.name === model);
   const selectionEntries = Object.entries(selection);
   let fields = [];
 
@@ -344,7 +377,9 @@ function pickAllFields(selection, defn, introspection, meta) {
     //    { select: { id: true }, variables: { first: 100 } } // fieldOptions
     // }
     if (isObject(fieldOptions)) {
-      if (!isFieldInDefinition(fieldName, defn, modelMeta)) continue;
+      if (!isFieldInDefinition(fieldName, defn, modelMeta, this)) {
+        continue;
+      }
 
       const referencedForeignConstraint = modelMeta.foreignConstraints.find(
         (constraint) =>

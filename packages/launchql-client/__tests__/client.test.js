@@ -377,17 +377,7 @@ it('delete', () => {
     meta: metaObject,
     introspection: { ...queries, ...mutations }
   });
-  const result = client
-    .query('Action')
-    .delete({
-      select: {
-        id: true,
-        name: true,
-        photo: true,
-        title: true
-      }
-    })
-    .print();
+  const result = client.query('Action').delete().print();
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });
