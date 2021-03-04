@@ -12,6 +12,8 @@ export class Client {
     this._meta = meta;
     this.clear();
     this.initModelMap();
+    this.pickScalarFields = pickScalarFields.bind(this);
+    this.pickAllFields = pickAllFields.bind(this);
 
     const validate = validateMetaObject(this._meta);
     if (typeof validate === 'object' && validate.errors) {
@@ -73,35 +75,70 @@ export class Client {
   }
 
   _findMutation() {
-    // based on the op, finds the relevant GQL query
-    const q = Object.keys(this._introspection).reduce((m, v) => {
-      const defn = this._introspection[v];
-      if (
-        defn.model === this._model &&
-        defn.qtype === this._op &&
-        defn.qtype === 'mutation' &&
-        defn.mutationType === this._mutation
-      ) {
-        return v;
-      }
-      return m;
-    }, null);
-    if (!q) {
-      throw new Error('no mutation found for ' + this._model + ':' + this._op);
+    // For mutation, there can be many defns that match the operation being requested
+    // .ie: deleteAction, deleteActionBySlug, deleteActionByName
+    const matchingDefns = Object.keys(this._introspection).reduce(
+      (arr, mutationKey) => {
+        const defn = this._introspection[mutationKey];
+        if (
+          defn.model === this._model &&
+          defn.qtype === this._op &&
+          defn.qtype === 'mutation' &&
+          defn.mutationType === this._mutation
+        ) {
+          arr = [...arr, { defn, mutationKey }];
+        }
+        return arr;
+      },
+      []
+    );
+
+    if (!matchingDefns.length === 0) {
+      throw new Error(
+        'no mutation found for ' + this._model + ':' + this._mutation
+      );
     }
-    return q;
+
+    // We only need deleteAction from all of [deleteAction, deleteActionBySlug, deleteActionByName]
+    const getInputName = (mutationType) => {
+      switch (mutationType) {
+        case 'delete': {
+          return `Delete${inflection.capitalize(this._model)}Input`;
+        }
+        case 'create': {
+          return `Create${inflection.capitalize(this._model)}Input`;
+        }
+        case 'patch': {
+          return `Update${inflection.capitalize(this._model)}Input`;
+        }
+        default:
+          throw new Error('Unhandled mutation type' + mutationType);
+      }
+    };
+
+    const matchDefn = matchingDefns.find(
+      ({ defn }) => defn.properties.input.type === getInputName(this._mutation)
+    );
+
+    if (!matchDefn) {
+      throw new Error(
+        'no mutation found for ' + this._model + ':' + this._mutation
+      );
+    }
+
+    return matchDefn.mutationKey;
   }
 
   select(selection) {
-    // If selection not given, pick only scalar fields
     const defn = this._introspection[this._key];
 
+    // If selection not given, pick only scalar fields
     if (selection == null) {
-      this._select = pickScalarFields(defn, this._meta);
+      this._select = this.pickScalarFields(defn);
       return this;
     }
 
-    this._select = pickAllFields(selection, defn, this._meta);
+    this._select = this.pickAllFields(selection, defn);
     return this;
   }
 
@@ -278,11 +315,14 @@ export class Client {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickScalarFields(defn, meta) {
+function pickScalarFields(defn) {
   const model = defn.model;
-  const modelMeta = meta.tables.find((t) => t.name === model);
+  const modelMeta = this._meta.tables.find((t) => t.name === model);
 
-  const isReferenced = (fieldName) =>
+  // TODO: see if there is a possibility of supertyping table (a key is both a foreign and primary key)
+  // A relational field is a foreign key but not a primary key
+  const isRelationalField = (fieldName) =>
+    !modelMeta.primaryConstraints.find((field) => field.name === fieldName) &&
     !!modelMeta.foreignConstraints.find(
       (constraint) => constraint.fromKey.name === fieldName
     );
@@ -290,9 +330,26 @@ function pickScalarFields(defn, meta) {
   const isInTableSchema = (fieldName) =>
     !!modelMeta.fields.find((field) => field.name === fieldName);
 
-  return defn.selection.filter(
-    (fieldName) => !isReferenced(fieldName) && isInTableSchema(fieldName)
-  );
+  const pickFrom = (selection) =>
+    selection
+      .filter(
+        (fieldName) =>
+          !isRelationalField(fieldName) && isInTableSchema(fieldName)
+      )
+      .map((fieldName) => ({
+        name: fieldName,
+        isObject: false,
+        fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
+      }));
+
+  if (defn.qtype === 'mutation') {
+    const relatedQuery = this._introspection[
+      `${inflection.pluralize(defn.model)}`.toLowerCase()
+    ];
+    return pickFrom(relatedQuery.selection);
+  }
+
+  return pickFrom(defn.selection);
 }
 
 /**
@@ -303,6 +360,8 @@ function pickScalarFields(defn, meta) {
  * @returns {Array}
  */
 function pickAllFields(selection, defn) {
+  const model = defn.model;
+  const modelMeta = this._meta.tables.find((t) => t.name === model);
   const selectionEntries = Object.entries(selection);
   let fields = [];
 
@@ -318,9 +377,15 @@ function pickAllFields(selection, defn) {
     //    { select: { id: true }, variables: { first: 100 } } // fieldOptions
     // }
     if (isObject(fieldOptions)) {
-      if (!defn.selection.includes(fieldName)) {
+      if (!isFieldInDefinition(fieldName, defn, modelMeta, this)) {
         continue;
       }
+
+      const referencedForeignConstraint = modelMeta.foreignConstraints.find(
+        (constraint) =>
+          constraint.fromKey.name === fieldName ||
+          constraint.fromKey.alias === fieldName
+      );
 
       const subFields = Object.keys(fieldOptions.select).filter((subField) =>
         isWhiteListed(fieldOptions.select[subField])
@@ -328,6 +393,8 @@ function pickAllFields(selection, defn) {
 
       const fieldSelection = {
         name: fieldName,
+        isObject: true,
+        isBelongTo: !!referencedForeignConstraint,
         selection: subFields,
         variables: fieldOptions.variables
       };
@@ -339,10 +406,38 @@ function pickAllFields(selection, defn) {
       //   userId: true // [fieldName, fieldOptions]
       // }
       if (isWhiteListed(fieldOptions)) {
-        fields = [...fields, fieldName];
+        fields = [
+          ...fields,
+          {
+            name: fieldName,
+            isObject: false,
+            fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
+          }
+        ];
       }
     }
   }
 
   return fields;
+}
+
+function isFieldInDefinition(fieldName, defn, modelMeta) {
+  const isReferenced = !!modelMeta.foreignConstraints.find(
+    (constraint) =>
+      constraint.fromKey.name === fieldName ||
+      constraint.fromKey.alias === fieldName
+  );
+
+  return (
+    isReferenced ||
+    defn.selection.some((selectionItem) => {
+      if (typeof selectionItem === 'string') {
+        return fieldName === selectionItem;
+      }
+      if (isObject(selectionItem)) {
+        return selectionItem.name === fieldName;
+      }
+      return false;
+    })
+  );
 }

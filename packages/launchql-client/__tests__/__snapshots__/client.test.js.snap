@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`create 1`] = `
-"mutation createActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID!, $photoUpload: Upload) {
-  createAction(input: {action: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+exports[`create with custom selection 1`] = `
+"mutation createActionMutation($id: UUID, $slug: String, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID!, $photoUpload: Upload) {
+  createAction(input: {action: {id: $id, slug: $slug, photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
     action {
       id
-      name
       photo
       title
     }
@@ -14,7 +13,44 @@ exports[`create 1`] = `
 "
 `;
 
-exports[`create 2`] = `"createActionMutation"`;
+exports[`create with custom selection 2`] = `"createActionMutation"`;
+
+exports[`create with default scalar selection 1`] = `
+"mutation createActionMutation($id: UUID, $slug: String, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID!, $photoUpload: Upload) {
+  createAction(input: {action: {id: $id, slug: $slug, photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+    action {
+      id
+      slug
+      photo
+      title
+      url
+      description
+      discoveryHeader
+      discoveryDescription
+      enableNotifications
+      enableNotificationsText
+      search
+      locationRadius
+      startDate
+      endDate
+      approved
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      alreadyCompletedActionText
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`create with default scalar selection 2`] = `"createActionMutation"`;
 
 exports[`delete 1`] = `
 "mutation deleteActionMutation($id: UUID!) {
@@ -31,7 +67,6 @@ exports[`getAll 1`] = `
 "query getActionsQueryAll {
   actions {totalCount, nodes {
     id
-    name
     photo
     title
     actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
@@ -56,7 +91,6 @@ exports[`getMany edges 1`] = `
     cursor
     node {
       id
-      name
       photo
       title
       actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
@@ -80,12 +114,17 @@ exports[`getMany should select only scalar fields by default 1`] = `
     startCursor
   }, nodes {
     id
+    slug
     photo
     title
-    description
-    locationRadius
     url
-    timeRequired
+    description
+    discoveryHeader
+    discoveryDescription
+    enableNotifications
+    enableNotificationsText
+    search
+    locationRadius
     startDate
     endDate
     approved
@@ -93,6 +132,7 @@ exports[`getMany should select only scalar fields by default 1`] = `
     activityFeedText
     callToAction
     completedActionText
+    alreadyCompletedActionText
     tags
     createdBy
     updatedBy
@@ -114,7 +154,6 @@ exports[`getMany should whitelist selected fields 1`] = `
     startCursor
   }, nodes {
     id
-    name
     photo
     title
     actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
@@ -132,7 +171,6 @@ exports[`getOne 1`] = `
 "query getActionQuery($id: UUID!) {
   action(id: $id) {
     id
-    name
     photo
     title
     actionResults(first: 10, before: null, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
@@ -146,6 +184,76 @@ exports[`getOne 1`] = `
 
 exports[`getOne 2`] = `"getActionQuery"`;
 
+exports[`selects all scalar fields of junction table by default 1`] = `
+"query getActionGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionGoalCondition, $filter: ActionGoalFilter, $orderBy: [ActionGoalsOrderBy!]) {
+  actionGoals(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    goalId
+  }}
+}
+"
+`;
+
+exports[`selects belongsTo relation field 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    owner {
+      id
+      type
+    }
+  }}
+}
+"
+`;
+
+exports[`selects non-scalar custom types 1`] = `"getActionsQuery"`;
+
+exports[`selects relation field 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    slug
+    photo
+    title
+    url
+    goals(first: 3) {totalCount, nodes {
+      id
+      name
+      slug
+      shortName
+      icon
+      subHead
+      tags
+      search
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }}
+  }}
+}
+"
+`;
+
 exports[`should select totalCount in subfields by default 1`] = `
 "query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
   actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
@@ -155,7 +263,6 @@ exports[`should select totalCount in subfields by default 1`] = `
     startCursor
   }, nodes {
     id
-    name
     photo
     title
     actionResults(first: 10, filter: {name: {in: [\\"abc\\", \\"def\\"]}, actionId: {equalTo: \\"dc310161-7a42-4b93-6a56-9fa48adcad7e\\"}}) {totalCount, nodes {
@@ -169,12 +276,11 @@ exports[`should select totalCount in subfields by default 1`] = `
 
 exports[`should select totalCount in subfields by default 2`] = `"getActionsQuery"`;
 
-exports[`update 1`] = `
-"mutation updateActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID, $photoUpload: Upload) {
-  updateAction(input: {id: $id, patch: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+exports[`update with custom selection 1`] = `
+"mutation updateActionMutation($id: UUID!, $slug: String, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID, $photoUpload: Upload) {
+  updateAction(input: {id: $id, patch: {slug: $slug, photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
     action {
       id
-      name
       photo
       title
     }
@@ -183,4 +289,41 @@ exports[`update 1`] = `
 "
 `;
 
-exports[`update 2`] = `"updateActionMutation"`;
+exports[`update with custom selection 2`] = `"updateActionMutation"`;
+
+exports[`update with default scalar selection 1`] = `
+"mutation updateActionMutation($id: UUID!, $slug: String, $photo: JSON, $title: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $tags: [String], $ownerId: UUID, $photoUpload: Upload) {
+  updateAction(input: {id: $id, patch: {slug: $slug, photo: $photo, title: $title, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, tags: $tags, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+    action {
+      id
+      slug
+      photo
+      title
+      url
+      description
+      discoveryHeader
+      discoveryDescription
+      enableNotifications
+      enableNotificationsText
+      search
+      locationRadius
+      startDate
+      endDate
+      approved
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      alreadyCompletedActionText
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`update with default scalar selection 2`] = `"updateActionMutation"`;

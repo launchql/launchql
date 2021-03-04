@@ -2,6 +2,36 @@
   "$id": "root",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
+  "definitions": {
+    "field": {
+      "type": "object",
+      "required": ["name", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": "id",
+          "examples": ["id"]
+        },
+        "type": {
+          "type": "object",
+          "required": ["pgType", "gqlType"],
+          "additionalProperties": true,
+          "properties": {
+            "gqlType": {
+              "type": ["string", "null"]
+            },
+            "pgType": {
+              "type": ["string", "null"]
+            },
+            "subtype": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      }
+    }
+  },
   "properties": {
     "tables": {
       "type": "array",
@@ -11,90 +41,19 @@
           "name": {
             "type": "string",
             "default": "User",
-            "examples": [
-              "User"
-            ]
+            "examples": ["User"]
           },
           "fields": {
             "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": "id",
-                  "examples": [
-                    "id"
-                  ]
-                },
-                "type": {
-                  "type": "string",
-                  "default": "uuid",
-                  "examples": [
-                    "uuid"
-                  ]
-                }
-              },
-              "required": [
-                "name",
-                "type"
-              ],
-              "additionalProperties": true
-            }
+            "items": { "$ref": "#/definitions/field" }
           },
           "primaryConstraints": {
             "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": "id",
-                  "examples": [
-                    "id"
-                  ]
-                },
-                "type": {
-                  "type": "string",
-                  "default": "uuid",
-                  "examples": [
-                    "uuid"
-                  ]
-                }
-              },
-              "required": [
-                "name",
-                "type"
-              ],
-              "additionalProperties": true
-            }
+            "items": { "$ref": "#/definitions/field" }
           },
           "uniqueConstraints": {
             "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": "id",
-                  "examples": [
-                    "id"
-                  ]
-                },
-                "type": {
-                  "type": "string",
-                  "default": "uuid",
-                  "examples": [
-                    "uuid"
-                  ]
-                }
-              },
-              "required": [
-                "name",
-                "type"
-              ],
-              "additionalProperties": true
-            }
+            "items": { "$ref": "#/definitions/field" }
           },
           "foreignConstraints": {
             "type": "array",
@@ -104,78 +63,21 @@
                 "refTable": {
                   "type": "string",
                   "default": "User",
-                  "examples": [
-                    "User"
-                  ]
+                  "examples": ["User"]
                 },
-                "fromKey": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "default": "user_id",
-                      "examples": [
-                        "user_id"
-                      ]
-                    },
-                    "type": {
-                      "type": "string",
-                      "default": "uuid",
-                      "examples": [
-                        "uuid"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "name",
-                    "type"
-                  ],
-                  "additionalProperties": false
-                },
-                "toKey": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "default": "id",
-                      "examples": [
-                        "id"
-                      ]
-                    },
-                    "type": {
-                      "type": "string",
-                      "default": "uuid",
-                      "examples": [
-                        "uuid"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "name",
-                    "type"
-                  ],
-                  "additionalProperties": false
-                }
+                "fromKey": { "$ref": "#/definitions/field" },
+                "toKey": { "$ref": "#/definitions/field" }
               },
-              "required": [
-                "refTable",
-                "fromKey",
-                "toKey"
-              ],
+              "required": ["refTable", "fromKey", "toKey"],
               "additionalProperties": false
             }
           }
         },
-        "required": [
-          "name",
-          "fields"
-        ],
+        "required": ["name", "fields"],
         "additionalProperties": false
       }
     }
   },
-  "required": [
-    "tables"
-  ],
+  "required": ["tables"],
   "additionalProperties": false
 }

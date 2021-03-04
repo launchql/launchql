@@ -3,14 +3,9 @@ import plz from 'pluralize';
 import inflection from 'inflection';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
+import { getCustomAst, isIntervalType } from './custom-ast';
 
-const NON_MUTABLE_PROPS = [
-  'id',
-  'createdAt',
-  'createdBy',
-  'updatedAt',
-  'updatedBy'
-];
+const NON_MUTABLE_PROPS = ['createdAt', 'createdBy', 'updatedAt', 'updatedBy'];
 const objectToArray = (obj) =>
   Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
 
@@ -367,25 +362,7 @@ export const createOne = ({
     (field) => !NON_MUTABLE_PROPS.includes(field.name)
   );
 
-  const variableDefinitions = attrs.map((field) => {
-    const {
-      name: fieldName,
-      type: fieldType,
-      isNotNull,
-      isArray,
-      isArrayNotNull
-    } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isNotNull) type = t.nonNullType({ type });
-    if (isArray) {
-      type = t.listType({ type });
-      if (isArrayNotNull) type = t.nonNullType({ type });
-    }
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  const variableDefinitions = getCreateVariablesAst(attrs);
 
   const selectArgs = [
     t.argument({
@@ -456,16 +433,7 @@ export const patchOne = ({
 
   const patchers = patchByAttrs.map((p) => p.name);
 
-  const variableDefinitions = patchAttrs.map((field) => {
-    const { name: fieldName, type: fieldType, isArray } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isArray) type = t.listType({ type });
-    if (patchers.includes(field.name)) type = t.nonNullType({ type });
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  const variableDefinitions = getUpdateVariablesAst(patchAttrs, patchers);
 
   const selectArgs = [
     t.argument({
@@ -578,13 +546,9 @@ export const deleteOne = ({ mutationName, operationName, mutation }) => {
 
 export function getSelections(selection = []) {
   return selection
-    .map((field) => {
-      if (typeof field === 'string') {
-        return t.field({ name: field });
-      }
-
-      if (isObject(field)) {
-        const { name, selection, variables } = field;
+    .map((selectionDefn) => {
+      if (selectionDefn.isObject) {
+        const { name, selection, variables = {}, isBelongTo } = selectionDefn;
         return t.field({
           name,
           args: Object.entries(variables).reduce((args, variable) => {
@@ -596,22 +560,33 @@ export function getSelections(selection = []) {
             args = argAst ? [...args, argAst] : args;
             return args;
           }, []),
-          selectionSet: t.objectValue({
-            fields: [
-              t.field({
-                name: 'totalCount'
-              }),
-              t.field({
-                name: 'nodes',
-                selectionSet: t.selectionSet({
-                  selections: selection.map((field) => t.field({ name: field }))
-                })
+          selectionSet: isBelongTo
+            ? t.selectionSet({
+                selections: selection.map((field) => t.field({ name: field }))
               })
-            ]
-          })
+            : t.objectValue({
+                fields: [
+                  t.field({
+                    name: 'totalCount'
+                  }),
+                  t.field({
+                    name: 'nodes',
+                    selectionSet: t.selectionSet({
+                      selections: selection.map((field) =>
+                        t.field({ name: field })
+                      )
+                    })
+                  })
+                ]
+              })
         });
+      } else {
+        const { fieldDefn } = selectionDefn;
+        // Field is not found in model meta, do nothing
+        if (!fieldDefn) return null;
+
+        return getCustomAst(fieldDefn);
       }
-      return null;
     })
     .filter(Boolean);
 }
@@ -657,4 +632,77 @@ function getValueAst(value) {
       }, [])
     });
   }
+}
+
+const CustomInputTypes = {
+  interval: 'IntervalInput'
+};
+
+/**
+ * Get mutation variables AST from attributes array
+ * @param {Array} attrs
+ * @returns {Object} AST for the variables
+ */
+function getCreateVariablesAst(attrs) {
+  return attrs.map((field) => {
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      isArrayNotNull,
+      properties
+    } = field;
+
+    let type;
+
+    if (properties == null) {
+      type = t.namedType({ type: fieldType });
+    } else if (isIntervalType(properties)) {
+      type = t.namedType({ type: CustomInputTypes.interval });
+    }
+
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) {
+      type = t.listType({ type });
+      if (isArrayNotNull) type = t.nonNullType({ type });
+    }
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
+}
+
+/**
+ * Get mutation variables AST from attributes array
+ * @param {Array} attrs
+ * @returns {Object} AST for the variables
+ */
+function getUpdateVariablesAst(attrs, patchers) {
+  return attrs.map((field) => {
+    const {
+      name: fieldName,
+      type: fieldType,
+      isNotNull,
+      isArray,
+      properties
+    } = field;
+
+    let type;
+
+    if (properties == null) {
+      type = t.namedType({ type: fieldType });
+    } else if (isIntervalType(properties)) {
+      type = t.namedType({ type: CustomInputTypes.interval });
+    }
+
+    if (isNotNull) type = t.nonNullType({ type });
+    if (isArray) type = t.listType({ type });
+    if (patchers.includes(field.name)) type = t.nonNullType({ type });
+    return t.variableDefinition({
+      variable: t.variable({ name: fieldName }),
+      type
+    });
+  });
 }

@@ -97,6 +97,107 @@ it('should select totalCount in subfields by default', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
+it('selects relation field', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        id: true,
+        slug: true,
+        photo: true,
+        title: true,
+        url: true,
+        goals: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            shortName: true,
+            icon: true,
+            subHead: true,
+            tags: true,
+            search: true,
+            createdBy: true,
+            updatedBy: true,
+            createdAt: true,
+            updatedAt: true
+          },
+          variables: {
+            first: 3
+          }
+        }
+      }
+    })
+    .print();
+
+  expect(/(goals)/.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+});
+
+it('selects all scalar fields of junction table by default', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client.query('ActionGoal').getMany().print();
+
+  expect(/(actionId)|(goalId)|(ownerId)/.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+});
+
+it('selects belongsTo relation field', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        owner: {
+          select: {
+            id: true,
+            type: true
+          }
+        }
+      }
+    })
+    .print();
+
+  // Straight up select the sub fields
+  expect(/(owner)|(id)|(type)/gm.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+});
+
+it('selects non-scalar custom types', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+
+  const result = client
+    .query('Action')
+    .getMany({
+      select: {
+        id: true,
+        name: true,
+        location: true, // non-scalar custom type
+        timeRequired: true // non-scalar custom type
+      }
+    })
+    .print();
+
+  expect(/(totalCount)/.test(result._hash)).toBe(true);
+  expect(result._queryName).toMatchSnapshot();
+});
+
 it('getMany edges', () => {
   const client = new Client({
     meta: metaObject,
@@ -207,7 +308,18 @@ it('getAll', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
-it('create', () => {
+it('create with default scalar selection', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+  const result = client.query('Action').create().print();
+
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
+it('create with custom selection', () => {
   const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
@@ -223,31 +335,23 @@ it('create', () => {
       }
     })
     .print();
-  expect(client._hash).toMatchSnapshot();
-  expect(client._queryName).toMatchSnapshot();
-});
 
-it('delete', () => {
-  const client = new Client({
-    meta: metaObject,
-    introspection: { ...queries, ...mutations }
-  });
-  const result = client
-    .query('Action')
-    .delete({
-      select: {
-        id: true,
-        name: true,
-        photo: true,
-        title: true
-      }
-    })
-    .print();
+  expect(/(id)|(name)|(photo)|(title)/gm.test(result._hash)).toBe(true);
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });
 
-it('update', () => {
+it('update with default scalar selection', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+  const result = client.query('Action').update().print();
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
+it('update with custom selection', () => {
   const client = new Client({
     meta: metaObject,
     introspection: { ...queries, ...mutations }
@@ -263,6 +367,17 @@ it('update', () => {
       }
     })
     .print();
+  expect(/(id)|(name)|(photo)|(title)/gm.test(result._hash)).toBe(true);
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+});
+
+it('delete', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection: { ...queries, ...mutations }
+  });
+  const result = client.query('Action').delete().print();
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });

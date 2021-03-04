@@ -13,7 +13,10 @@ export function convertFromMetaSchema(metaSchema) {
       fields: table.fields.map((f) => pickField(f)),
       primaryConstraints: pickArrayConstraint(table.primaryKeyConstraints),
       uniqueConstraints: pickArrayConstraint(table.uniqueConstraints),
-      foreignConstraints: pickForeignConstraint(table.foreignKeyConstraints)
+      foreignConstraints: pickForeignConstraint(
+        table.foreignKeyConstraints,
+        table.relations
+      )
     });
   }
 
@@ -26,15 +29,31 @@ function pickArrayConstraint(constraints) {
   return c.fields.map((field) => pickField(field));
 }
 
-function pickForeignConstraint(constraints) {
+function pickForeignConstraint(constraints, relations) {
   if (constraints.length === 0) return [];
+
+  const { belongsTo } = relations;
+
   return constraints.map((c) => {
     const { fields, refFields, refTable } = c;
 
+    const fromKey = pickField(fields[0]);
+    const toKey = pickField(refFields[0]);
+
+    const matchingBelongsTo = belongsTo.find((c) => {
+      const field = pickField(c.keys[0]);
+      return field.name === fromKey.name;
+    });
+
+    // Ex: 'ownerId' will have an alias of 'owner', which has further selection of 'User' type
+    if (matchingBelongsTo) {
+      fromKey.alias = matchingBelongsTo.fieldName;
+    }
+
     return {
       refTable: refTable.name,
-      fromKey: pickField(fields[0]),
-      toKey: pickField(refFields[0])
+      fromKey,
+      toKey
     };
   });
 }
@@ -42,6 +61,6 @@ function pickForeignConstraint(constraints) {
 function pickField(field) {
   return {
     name: field.name,
-    type: field.type.pgType
+    type: field.type
   };
 }
