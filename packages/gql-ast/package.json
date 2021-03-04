@@ -1,6 +1,6 @@
 {
   "name": "gql-ast",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "GraphQL ASTs",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-gen/tree/master/packages/gql-ast#readme",
@@ -62,5 +62,5 @@
   "dependencies": {
     "@babel/runtime": "^7.4.2"
   },
-  "gitHead": "3d079919fe9871bb29bda0562c5ba825d849ba7b"
+  "gitHead": "e64b0fc22e3bf5dd90f6b7a0d1bbcc3654d7a720"
 }

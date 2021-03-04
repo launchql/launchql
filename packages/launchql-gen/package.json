@@ -1,6 +1,6 @@
 {
   "name": "launchql-gen",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-gen/tree/master/packages/launchql-gen#readme",
@@ -63,9 +63,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "gql-ast": "^0.1.6",
+    "gql-ast": "^0.1.7",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
   },
-  "gitHead": "3d079919fe9871bb29bda0562c5ba825d849ba7b"
+  "gitHead": "e64b0fc22e3bf5dd90f6b7a0d1bbcc3654d7a720"
 }
