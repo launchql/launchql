@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.4](https://github.com/launchql/launchql/compare/@launchql/db-migrate@1.4.3...@launchql/db-migrate@1.4.4) (2021-03-14)
+
+**Note:** Version bump only for package @launchql/db-migrate
+
+
+
+
+
 ## [1.4.3](https://github.com/launchql/launchql/compare/@launchql/db-migrate@1.4.2...@launchql/db-migrate@1.4.3) (2021-01-12)
 
 **Note:** Version bump only for package @launchql/db-migrate
