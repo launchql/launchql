@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/launchql/launchql/compare/@launchql/cli@1.6.6...@launchql/cli@2.0.0) (2021-03-19)
+
+**Note:** Version bump only for package @launchql/cli
+
+
+
+
+
 ## [1.6.6](https://github.com/launchql/launchql/compare/@launchql/cli@1.6.5...@launchql/cli@1.6.6) (2021-03-14)
 
 **Note:** Version bump only for package @launchql/cli

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/launchql/launchql/compare/@launchql/db-transform@0.3.5...@launchql/db-transform@1.0.0) (2021-03-19)
+
+**Note:** Version bump only for package @launchql/db-transform
+
+
+
+
+
 ## [0.3.5](https://github.com/launchql/launchql/compare/@launchql/db-transform@0.3.4...@launchql/db-transform@0.3.5) (2020-11-04)
 
 **Note:** Version bump only for package @launchql/db-transform
