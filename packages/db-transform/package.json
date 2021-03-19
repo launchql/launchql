@@ -1,7 +1,7 @@
 {
   "name": "@launchql/db-transform",
   "version": "1.0.0",
-  "description": "transform",
+  "description": "lql transform",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-transform#readme",
   "license": "SEE LICENSE IN LICENSE",

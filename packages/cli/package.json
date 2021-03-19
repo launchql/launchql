@@ -1,7 +1,7 @@
 {
   "name": "@launchql/cli",
   "version": "2.0.0",
-  "description": "launchql cli",
+  "description": "LaunchQL cli",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db#readme",
   "license": "SEE LICENSE IN LICENSE",
