@@ -8,28 +8,30 @@ describe('transforms', () => {
     const expectResult = `SELECT * FROM amazing."table";`;
 
     const result = transform(input, {
-      schemaname: function(value) {
+      schemaname: function (value) {
         if (value === 'original') {
           return 'amazing';
         }
         return value;
-      },
+      }
     });
 
-    expect(cleanTree(parser.parse(result))).toEqual(cleanTree(parser.parse(expectResult)));
-
+    expect(cleanTree(parser.parse(result))).toEqual(
+      cleanTree(parser.parse(expectResult))
+    );
   });
   it('object', () => {
     const input = `SELECT * FROM original.table`;
     const expectResult = `SELECT * FROM amazing."table";`;
     const result = transform(input, {
       schemaname: {
-        original: 'amazing',
-      },
+        original: 'amazing'
+      }
     });
 
-    expect(cleanTree(parser.parse(result))).toEqual(cleanTree(parser.parse(expectResult)));
-
+    expect(cleanTree(parser.parse(result))).toEqual(
+      cleanTree(parser.parse(expectResult))
+    );
   });
   it('integration', () => {
     const input = `CREATE TABLE users_private.user_account (
@@ -43,17 +45,17 @@ describe('transforms', () => {
     	password_hash text NOT NULL
     );`;
 
-    const result = transform(input,
-      {
-        schemaname: {
-          users_private: 'customers',
-        },
-        relname: {
-          user_account: 'profile',
-        },
+    const result = transform(input, {
+      schemaname: {
+        users_private: 'customers'
+      },
+      relname: {
+        user_account: 'profile'
       }
-    );
+    });
 
-    expect(cleanTree(parser.parse(result))).toEqual(cleanTree(parser.parse(expectResult)));
+    expect(cleanTree(parser.parse(result))).toEqual(
+      cleanTree(parser.parse(expectResult))
+    );
   });
 });

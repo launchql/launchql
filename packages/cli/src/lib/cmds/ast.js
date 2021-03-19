@@ -1,6 +1,5 @@
 import { prompt } from 'inquirerer';
-import { resolve, join } from 'path';
-const parser = require('pgsql-parser');
+import { parse } from 'pgsql-parser';
 
 const fs = require('fs');
 
@@ -18,7 +17,7 @@ export default async (argv) => {
   const filepath = file.startsWith('/') ? file : process.cwd() + '/' + file;
   const contents = fs.readFileSync(filepath).toString();
   try {
-    const parsed = parser.parse(contents);
+    const parsed = parse(contents);
     console.log(JSON.stringify(parsed, null, 2));
   } catch (e) {
     console.log(e);

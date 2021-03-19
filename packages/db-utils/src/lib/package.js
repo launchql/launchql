@@ -1,6 +1,6 @@
 import { sqitchPath as path } from './paths';
 import { getExtensionName } from './extensions';
-const parser = require('pgsql-parser');
+import { parse, deparse } from 'pgsql-parser';
 import { resolve, resolveWithPlan } from './resolve';
 import { sync as mkdirp } from 'mkdirp';
 import { relative } from 'path';
@@ -30,19 +30,21 @@ export const packageModule = async ({
 
   // sql
   try {
-    const query = parser.parse(sql).reduce((m, stmt) => {
+    const parsed = parse(sql);
+    const stmts = parsed.stmts.reduce((m, s) => {
       if (extension) {
-        if (stmt.RawStmt.stmt.hasOwnProperty('TransactionStmt')) return m;
-        if (stmt.RawStmt.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
+        if (s.stmt.hasOwnProperty('TransactionStmt')) return m;
+        if (s.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
       }
-      return [...m, stmt];
+
+      return [...m, s];
     }, []);
     const topLine = extension
       ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
       : '';
-    const finalSql = parser.deparse(query);
-    const tree1 = query;
-    const tree2 = parser.parse(finalSql);
+    const finalSql = deparse({ stmts });
+    const tree1 = { version: parsed.version, stmts };
+    const tree2 = parse(finalSql);
     const results = {
       sql: `${topLine}${finalSql}`
     };
