@@ -31,19 +31,19 @@ export const packageModule = async ({
   // sql
   try {
     const parsed = parse(sql);
-    const stmts = parsed.stmts.reduce((m, s) => {
+    const stmts = parsed.reduce((m, node) => {
       if (extension) {
-        if (s.stmt.hasOwnProperty('TransactionStmt')) return m;
-        if (s.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
+        if (node.RawStmt.stmt.hasOwnProperty('TransactionStmt')) return m;
+        if (node.RawStmt.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
       }
 
-      return [...m, s];
+      return [...m, node];
     }, []);
     const topLine = extension
       ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
       : '';
-    const finalSql = deparse({ stmts });
-    const tree1 = { version: parsed.version, stmts };
+    const finalSql = deparse(stmts);
+    const tree1 = stmts;
     const tree2 = parse(finalSql);
     const results = {
       sql: `${topLine}${finalSql}`

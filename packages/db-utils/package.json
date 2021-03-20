@@ -65,7 +65,7 @@
     "node-walkup": "^1.1.1",
     "parse-package-name": "0.1.0",
     "pg": "^8.4.2",
-    "pgsql-parser": "13.0.2",
+    "pgsql-parser": "13.1.0",
     "rimraf": "^3.0.2",
     "semver": "^5.5.1",
     "shelljs": "^0.8.2"
