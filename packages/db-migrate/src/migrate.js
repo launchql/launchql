@@ -119,6 +119,9 @@ const write = async ({
         content: `SET session_replication_role TO replica;
 -- using replica in case we are deploying triggers to collections_public
 
+-- unaccent, postgis affected and require grants
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public to public;
+
 DO $LQLMIGRATION$
   DECLARE
   BEGIN
