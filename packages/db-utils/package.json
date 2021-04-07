@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-utils",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "lql utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-utils#readme",
@@ -57,7 +57,7 @@
     "@babel/runtime": "^7.12.1",
     "@launchql/db-env": "^0.1.4",
     "@launchql/db-template": "^1.0.2",
-    "@launchql/db-transform": "^1.1.1",
+    "@launchql/db-transform": "^1.1.2",
     "envalid": "6.0.2",
     "fuzzy": "0.1.3",
     "glob": "7.1.6",

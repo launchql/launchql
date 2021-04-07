@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-templates",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "templates",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db-templates#readme",
@@ -56,6 +56,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.1",
-    "@launchql/db-utils": "^2.1.1"
+    "@launchql/db-utils": "^2.1.2"
   }
 }
