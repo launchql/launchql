@@ -43,7 +43,11 @@ PgpWrapper.prototype.afterEach = async function () {
 PgpWrapper.prototype.setContext = function (ctx) {
   this.ctxStmts = Object.keys(ctx || {})
     .reduce((m, el) => {
-      m.push(`SELECT set_config('${el}', '${ctx[el]}', true);`);
+      if (ctx[el] === null) {
+        m.push(`SELECT set_config('${el}', NULL, true);`);
+      } else {
+        m.push(`SELECT set_config('${el}', '${ctx[el]}', true);`);
+      }
       return m;
     }, [])
     .join('\n');
