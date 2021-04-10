@@ -41,6 +41,15 @@ PgpWrapper.prototype.afterEach = async function () {
 };
 
 PgpWrapper.prototype.setContext = function (ctx) {
+  if (this._ctx) {
+    Object.keys(this._ctx).forEach((ctxKey) => {
+      if (!ctx.hasOwnProperty(ctxKey)) {
+        // delete old props when re-setting context...
+        ctx[ctxKey] = null;
+      }
+    });
+  }
+  this._ctx = ctx;
   this.ctxStmts = Object.keys(ctx || {})
     .reduce((m, el) => {
       if (ctx[el] === null) {
