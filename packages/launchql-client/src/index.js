@@ -342,6 +342,8 @@ function pickScalarFields(defn) {
         fieldDefn: modelMeta.fields.find((f) => f.name === fieldName)
       }));
 
+  // This is for inferring the sub-selection of a mutation query
+  // from a definition model .eg UserSetting, find its related queries in the introspection object, and pick its selection fields
   if (defn.qtype === 'mutation') {
     const relatedQuery = this._introspection[
       `${inflection.camelize(
