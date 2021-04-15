@@ -1,6 +1,6 @@
 {
   "name": "launchql-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "LaunchQL React",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-gen/tree/master/packages/launchql-react#readme",
@@ -72,7 +72,7 @@
     "graphql": "^14.0.2",
     "graphql-request": "3.3.0",
     "introspectron": "^0.2.2",
-    "launchql-client": "^0.3.5",
+    "launchql-client": "^0.3.6",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-query": "^3.5.11"

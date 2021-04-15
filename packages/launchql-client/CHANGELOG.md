@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.6](https://github.com/launchql/launchql-gen/compare/launchql-client@0.3.5...launchql-client@0.3.6) (2021-04-15)
+
+
+### Bug Fixes
+
+* mutation names ([d766b00](https://github.com/launchql/launchql-gen/commit/d766b000f2c64b2d72597df3ded45247e24d20a2))
+
+
+
+
+
 ## [0.3.5](https://github.com/launchql/launchql-gen/compare/launchql-client@0.3.4...launchql-client@0.3.5) (2021-03-27)
 
 **Note:** Version bump only for package launchql-client
