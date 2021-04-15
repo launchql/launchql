@@ -103,13 +103,13 @@ export class Client {
     const getInputName = (mutationType) => {
       switch (mutationType) {
         case 'delete': {
-          return `Delete${inflection.capitalize(this._model)}Input`;
+          return `Delete${inflection.camelize(this._model)}Input`;
         }
         case 'create': {
-          return `Create${inflection.capitalize(this._model)}Input`;
+          return `Create${inflection.camelize(this._model)}Input`;
         }
         case 'patch': {
-          return `Update${inflection.capitalize(this._model)}Input`;
+          return `Update${inflection.camelize(this._model)}Input`;
         }
         default:
           throw new Error('Unhandled mutation type' + mutationType);
@@ -344,7 +344,10 @@ function pickScalarFields(defn) {
 
   if (defn.qtype === 'mutation') {
     const relatedQuery = this._introspection[
-      `${inflection.pluralize(defn.model)}`.toLowerCase()
+      `${inflection.camelize(
+        inflection.pluralize(inflection.underscore(defn.model)),
+        true
+      )}`
     ];
     return pickFrom(relatedQuery.selection);
   }
