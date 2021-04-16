@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.24.0](https://github.com/pyramation/launchql/compare/@launchql/server@0.23.2...@launchql/server@0.24.0) (2021-04-16)
+
+**Note:** Version bump only for package @launchql/server
+
+
+
+
+
 ## [0.23.2](https://github.com/pyramation/launchql/compare/@launchql/server@0.23.1...@launchql/server@0.23.2) (2021-01-25)
 
 **Note:** Version bump only for package @launchql/server
