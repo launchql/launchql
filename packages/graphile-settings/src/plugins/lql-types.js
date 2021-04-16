@@ -1,7 +1,4 @@
 export default function (builder) {
-  // BUG: DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
-  // NOTE: this bug only happens for image, attachment, and upload since they are already overridden in another plugin, for now just don't rename those...
-
   builder.hook('build', (_, build) => {
     [
       //   {
@@ -9,6 +6,19 @@ export default function (builder) {
       //     namespaceName: 'public',
       //     type: 'JSON'
       //   },
+      //   {
+      //     name: 'image',
+      //     namespaceName: 'public',
+      //     type: 'JSON'
+      //   },
+      //   {
+      //     name: 'upload',
+      //     namespaceName: 'public',
+      //     type: 'String'
+      //   },
+      // BUG: DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+      // NOTE: this bug only happens for image, attachment, and upload since they are already overridden in another plugin, for now just don't rename those...
+
       {
         name: 'email',
         namespaceName: 'public',
@@ -19,11 +29,6 @@ export default function (builder) {
         namespaceName: 'public',
         type: 'String'
       },
-      //   {
-      //     name: 'image',
-      //     namespaceName: 'public',
-      //     type: 'JSON'
-      //   },
       {
         name: 'multiple_select',
         namespaceName: 'public',
@@ -34,11 +39,11 @@ export default function (builder) {
         namespaceName: 'public',
         type: 'JSON'
       },
-      //   {
-      //     name: 'upload',
-      //     namespaceName: 'public',
-      //     type: 'String'
-      //   },
+      {
+        name: 'origin',
+        namespaceName: 'public',
+        type: 'String'
+      },
       {
         name: 'url',
         namespaceName: 'public',
