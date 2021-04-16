@@ -70,6 +70,7 @@ export const getGraphileSettings = ({
     dynamicJson: true,
     disableGraphiql: false,
     enhanceGraphiql: true,
+    enableQueryBatching: true,
     graphiql: true,
     watch: false,
     port,
