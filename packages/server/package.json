@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "description": "graphile explorer module for multiple dbs and schemas",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/launchql/tree/master/packages/launchql#readme",
@@ -67,7 +67,7 @@
   "dependencies": {
     "@babel/runtime": "^7.12.1",
     "@launchql/graphile-query": "0.0.3",
-    "@launchql/graphile-settings": "^0.2.0",
+    "@launchql/graphile-settings": "^0.2.1",
     "@launchql/server-utils": "^0.2.0",
     "@pyramation/crypto-keys": "0.1.1",
     "@pyramation/crypto-networks": "0.1.0",
