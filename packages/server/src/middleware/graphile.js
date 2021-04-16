@@ -69,7 +69,6 @@ export const graphile = ({
           role: roleName,
           [`jwt.claims.token_id`]: req.token.id,
           [`jwt.claims.user_id`]: req.token.user_id,
-          [`jwt.claims.group_ids`]: '{' + req.token.user_id + '}',
           ...context
         };
       }
