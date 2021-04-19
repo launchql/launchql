@@ -31,7 +31,6 @@ export const ApiQuery = gql`
             authenticate
             currentRole
             currentRoleId
-            currentGroupIds
           }
           database {
             sites {
@@ -83,7 +82,6 @@ export const ApiByNameQuery = gql`
         authenticateStrict
         currentRole
         currentRoleId
-        currentGroupIds
       }
       database {
         sites {
