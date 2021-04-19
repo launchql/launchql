@@ -186,8 +186,7 @@ const config = {
       authenticate: 'text',
       authenticate_strict: 'text',
       current_role: 'text',
-      current_role_id: 'text',
-      current_group_ids: 'text'
+      current_role_id: 'text'
     }
   },
   user_auth_module: {
