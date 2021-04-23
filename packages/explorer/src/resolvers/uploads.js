@@ -87,13 +87,13 @@ export default async function resolveUpload(upload, _args, _context, info) {
   // Return metadata to save it to Postgres
   switch (typ) {
     case 'image':
-    case 'attachment':
+    case 'upload':
       return {
         filename,
         mime: contentType,
         url
       };
-    case 'upload':
+    case 'attachment':
     default:
       return url;
   }

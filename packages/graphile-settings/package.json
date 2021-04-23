@@ -19,8 +19,9 @@
     "access": "public"
   },
   "resolutions": {
-    "graphql": "14.x",
-    "pg-connection-string": "2.x"
+    "graphql": "15.5.0",
+    "pg-connection-string": "2.x",
+    "graphile-build": "4.11.0"
   },
   "repository": {
     "type": "git",
@@ -64,7 +65,7 @@
     "@pyramation/s3-streamer": "0.2.0",
     "@pyramation/upload-names": "0.1.0",
     "envalid": "6.0.2",
-    "graphile-build": "4.9.0",
+    "graphile-build": "4.11.0",
     "graphile-meta-schema": "0.2.5",
     "graphile-search-plugin": "0.1.2",
     "graphile-simple-inflector": "0.1.1",

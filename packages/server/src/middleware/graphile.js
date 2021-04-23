@@ -1,6 +1,6 @@
 import env from '../env';
 import { graphileCache, getRootPgPool } from '@launchql/server-utils';
-import { postgraphile } from '@pyramation/postgraphile';
+import { postgraphile } from 'postgraphile';
 import PublicKeySignature from '../plugins/PublicKeySignature';
 import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
 
