@@ -59,9 +59,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "@pyramation/postgraphile": "4.9.0",
-    "graphile-build": "4.9.0",
-    "graphile-utils": "4.9.2",
-    "graphql": "^14.0.2"
+    "postgraphile": "4.11.0",
+    "graphile-build": "4.11.0",
+    "graphile-utils": "4.11.2",
+    "graphql": "15.5.0"
   }
 }

@@ -1,7 +1,7 @@
 import {
   withPostGraphileContext,
   createPostGraphileSchema
-} from '@pyramation/postgraphile';
+} from 'postgraphile';
 import { graphql } from 'graphql';
 import { print } from 'graphql/language/printer';
 

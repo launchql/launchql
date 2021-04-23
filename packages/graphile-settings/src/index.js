@@ -42,13 +42,13 @@ export const getGraphileSettings = ({
         {
           name: 'upload',
           namespaceName: 'public',
-          type: 'String',
+          type: 'JSON',
           resolve: resolveUpload
         },
         {
           name: 'attachment',
           namespaceName: 'public',
-          type: 'JSON',
+          type: 'String',
           resolve: resolveUpload
         },
         {

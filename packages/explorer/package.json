@@ -25,8 +25,11 @@
     "lql-explorer": "dist/cjs/server.js"
   },
   "resolutions": {
-    "graphql": "14.x",
-    "pg-connection-string": "2.x"
+    "graphql": "15.5.0",
+    "pg-connection-string": "2.x",
+    "postgraphile": "4.11.0",
+    "graphile-build": "4.11.0",
+    "graphile-utils": "4.11.2"
   },
   "scripts": {
     "dist:cjs": "NODE_ENV=production BABEL_ENV=cjs babel src --out-dir ./dist/cjs --delete-dir-on-start",
@@ -68,12 +71,12 @@
     "@babel/runtime": "^7.12.1",
     "@launchql/graphile-settings": "^0.3.0",
     "@launchql/server-utils": "^0.2.0",
-    "@pyramation/postgraphile": "4.9.0",
+    "postgraphile": "4.11.0",
     "@pyramation/url-domains": "0.1.0",
     "envalid": "6.0.2",
     "express": "4.17.1",
-    "graphile-build": "4.9.0",
-    "graphile-utils": "4.9.2",
+    "graphile-build": "4.11.0",
+    "graphile-utils": "4.11.2",
     "graphql-upload": "11.0.0"
   }
 }

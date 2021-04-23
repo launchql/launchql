@@ -20,6 +20,16 @@ export default function (builder) {
       // NOTE: this bug only happens for image, attachment, and upload since they are already overridden in another plugin, for now just don't rename those...
 
       {
+        name: 'geolocation',
+        namespaceName: 'public',
+        type: 'GeoJSON'
+      },
+      {
+        name: 'geopolygon',
+        namespaceName: 'public',
+        type: 'GeoJSON'
+      },
+      {
         name: 'email',
         namespaceName: 'public',
         type: 'String'
