@@ -34,8 +34,6 @@ export default async function resolveUpload(upload, _args, _context, info) {
   const {
     uploadPlugin: { tags, type }
   } = info;
-  console.log({ tags });
-  console.log({ upload });
   const streamer = getUploader();
   const readStream = upload.createReadStream();
   const { filename, mimetype, encoding } = upload;
@@ -51,8 +49,6 @@ export default async function resolveUpload(upload, _args, _context, info) {
     bucket: env.BUCKET_NAME
   });
   const url = result.upload.Location;
-
-  console.log({ mimetype, vs: result });
 
   const {
     contentType,
@@ -82,18 +78,16 @@ export default async function resolveUpload(upload, _args, _context, info) {
     throw new Error(`UPLOAD_MIMETYPE ${mim.join(',')}`);
   }
 
-  console.log({ type });
-
   // Return metadata to save it to Postgres
   switch (typ) {
     case 'image':
-    case 'attachment':
+    case 'upload':
       return {
         filename,
         mime: contentType,
         url
       };
-    case 'upload':
+    case 'attachment':
     default:
       return url;
   }
