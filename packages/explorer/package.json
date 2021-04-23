@@ -1,6 +1,6 @@
 {
   "name": "@launchql/explorer",
-  "version": "0.15.0",
+  "version": "1.0.0",
   "description": "graphile explorer module for multiple dbs and schemas",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/launchql/tree/master/packages/launchql#readme",
@@ -69,14 +69,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.1",
-    "@launchql/graphile-settings": "^0.3.0",
+    "@launchql/graphile-settings": "^1.0.0",
     "@launchql/server-utils": "^0.2.0",
-    "postgraphile": "4.11.0",
     "@pyramation/url-domains": "0.1.0",
     "envalid": "6.0.2",
     "express": "4.17.1",
     "graphile-build": "4.11.0",
     "graphile-utils": "4.11.2",
-    "graphql-upload": "11.0.0"
+    "graphql-upload": "11.0.0",
+    "postgraphile": "4.11.0"
   }
 }
