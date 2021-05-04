@@ -1,5 +1,4 @@
-import mutations from '../__fixtures__/api/mutations.json';
-import queries from '../__fixtures__/api/queries.json';
+import introspection from '../__fixtures__/api/introspection.json';
 import metaObject from '../__fixtures__/api/meta-obj.json';
 import { Client } from '../src';
 
@@ -7,7 +6,7 @@ describe('getMany', () => {
   it('should select only scalar fields by default', () => {
     const client = new Client({
       meta: metaObject,
-      introspection: { ...queries, ...mutations }
+      introspection
     });
 
     const result = client.query('Action').getMany().print();
@@ -24,7 +23,7 @@ describe('getMany', () => {
   it('should whitelist selected fields', () => {
     const client = new Client({
       meta: metaObject,
-      introspection: { ...queries, ...mutations }
+      introspection
     });
 
     const result = client
@@ -62,7 +61,7 @@ describe('getMany', () => {
 it('should select totalCount in subfields by default', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
 
   const result = client
@@ -100,7 +99,7 @@ it('should select totalCount in subfields by default', () => {
 it('selects relation field', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
 
   const result = client
@@ -142,7 +141,7 @@ it('selects relation field', () => {
 it('selects all scalar fields of junction table by default', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
 
   const result = client.query('ActionGoal').getMany().print();
@@ -154,7 +153,7 @@ it('selects all scalar fields of junction table by default', () => {
 it('selects belongsTo relation field', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
 
   const result = client
@@ -179,7 +178,7 @@ it('selects belongsTo relation field', () => {
 it('selects non-scalar custom types', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
 
   const result = client
@@ -201,7 +200,7 @@ it('selects non-scalar custom types', () => {
 it('getMany edges', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client
     .query('Action')
@@ -238,7 +237,7 @@ it('getMany edges', () => {
 it('getOne', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client
     .query('Action')
@@ -274,7 +273,7 @@ it('getOne', () => {
 it('getAll', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
 
   const result = client
@@ -311,7 +310,7 @@ it('getAll', () => {
 it('create with default scalar selection', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client.query('Action').create().print();
 
@@ -322,7 +321,7 @@ it('create with default scalar selection', () => {
 it('create with custom selection', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client
     .query('Action')
@@ -344,7 +343,7 @@ it('create with custom selection', () => {
 it('update with default scalar selection', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client.query('Action').update().print();
   expect(result._hash).toMatchSnapshot();
@@ -354,7 +353,7 @@ it('update with default scalar selection', () => {
 it('update with custom selection', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client
     .query('Action')
@@ -375,9 +374,37 @@ it('update with custom selection', () => {
 it('delete', () => {
   const client = new Client({
     meta: metaObject,
-    introspection: { ...queries, ...mutations }
+    introspection
   });
   const result = client.query('Action').delete().print();
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
+});
+
+it.only('expands further selections of custom ast fields in nested selection', () => {
+  const client = new Client({
+    meta: metaObject,
+    introspection
+  });
+
+  const result = client
+    .query('ActionGoal')
+    .getMany({
+      select: {
+        action: {
+          select: {
+            id: true,
+            location: true, // custom ast
+            timeRequired: true // custom ast
+          }
+        }
+      }
+    })
+    .print();
+
+  console.log(result._hash);
+
+  expect(result._hash).toMatchSnapshot();
+  expect(result._queryName).toMatchSnapshot();
+  expect(/(x)|(y)/.test(result._hash)).toBe(true);
 });
