@@ -10,7 +10,10 @@
         "updatedAt",
         "ownerId",
         "actionId",
-        "goalId"
+        "goalId",
+        "owner",
+        "action",
+        "goal"
       ]
     },
     "actionItemTypes": {
@@ -67,11 +70,13 @@
         "description",
         "type",
         "itemOrder",
+        "timeRequired",
         "isRequired",
         "notificationText",
         "embedCode",
         "url",
         "media",
+        "location",
         "locationRadius",
         "rewardWeight",
         "createdBy",
@@ -81,6 +86,9 @@
         "itemTypeId",
         "ownerId",
         "actionId",
+        "itemType",
+        "owner",
+        "action",
         {
           "name": "userActionItems",
           "qtype": "getMany",
@@ -157,7 +165,9 @@
         "createdAt",
         "updatedAt",
         "ownerId",
-        "actionId"
+        "actionId",
+        "owner",
+        "action"
       ]
     },
     "actions": {
@@ -179,7 +189,9 @@
         "enableNotifications",
         "enableNotificationsText",
         "search",
+        "location",
         "locationRadius",
+        "timeRequired",
         "startDate",
         "endDate",
         "approved",
@@ -192,6 +204,7 @@
         "alreadyCompletedActionText",
         "selfVerifiable",
         "isRecurring",
+        "recurringInterval",
         "oncePerObject",
         "minimumGroupMembers",
         "limitedToLocation",
@@ -205,6 +218,11 @@
         "objectTypeId",
         "rewardId",
         "verifyRewardId",
+        "group",
+        "owner",
+        "objectType",
+        "reward",
+        "verifyReward",
         {
           "name": "actionGoals",
           "qtype": "getMany",
@@ -542,7 +560,8 @@
         "service",
         "identifier",
         "details",
-        "isVerified"
+        "isVerified",
+        "owner"
       ]
     },
     "cryptoAddresses": {
@@ -553,7 +572,8 @@
         "ownerId",
         "address",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "emails": {
@@ -564,7 +584,8 @@
         "ownerId",
         "email",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "goalExplanations": {
@@ -573,13 +594,15 @@
       "selection": [
         "id",
         "audio",
+        "audioDuration",
         "explanationTitle",
         "explanation",
         "createdBy",
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "goalId"
+        "goalId",
+        "goal"
       ]
     },
     "goals": {
@@ -707,6 +730,11 @@
         "groupId",
         "postId",
         "posterId",
+        "commenter",
+        "parent",
+        "group",
+        "post",
+        "poster",
         {
           "name": "groupPostCommentsByParentId",
           "qtype": "getMany",
@@ -744,7 +772,11 @@
         "updatedAt",
         "groupId",
         "posterId",
-        "postId"
+        "postId",
+        "reacter",
+        "group",
+        "poster",
+        "post"
       ]
     },
     "groupPosts": {
@@ -757,6 +789,7 @@
         "flagged",
         "image",
         "url",
+        "location",
         "data",
         "taggedUserIds",
         "createdBy",
@@ -764,6 +797,8 @@
         "createdAt",
         "updatedAt",
         "groupId",
+        "poster",
+        "group",
         {
           "name": "groupPostReactionsByPostId",
           "qtype": "getMany",
@@ -820,6 +855,7 @@
         "createdAt",
         "updatedAt",
         "ownerId",
+        "owner",
         {
           "name": "actions",
           "qtype": "getMany",
@@ -1028,12 +1064,16 @@
       "selection": [
         "id",
         "name",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
         "updatedAt",
         "ownerId",
-        "locationType"
+        "locationType",
+        "owner",
+        "locationTypeByLocationType"
       ]
     },
     "messageGroups": {
@@ -1081,7 +1121,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "groupId"
+        "groupId",
+        "sender",
+        "group"
       ]
     },
     "newsArticles": {
@@ -1112,7 +1154,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "notifications": {
@@ -1129,7 +1172,9 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "actor",
+        "recipient"
       ]
     },
     "objectAttributes": {
@@ -1138,6 +1183,7 @@
       "selection": [
         "id",
         "description",
+        "location",
         "text",
         "numeric",
         "image",
@@ -1149,7 +1195,11 @@
         "updatedAt",
         "valueId",
         "objectId",
-        "objectTypeAttributeId"
+        "objectTypeAttributeId",
+        "owner",
+        "value",
+        "object",
+        "objectTypeAttribute"
       ]
     },
     "objectTypeAttributes": {
@@ -1172,6 +1222,7 @@
         "createdAt",
         "updatedAt",
         "objectTypeId",
+        "objectType",
         {
           "name": "objectTypeValuesByAttrId",
           "qtype": "getMany",
@@ -1235,6 +1286,7 @@
         "photo",
         "icon",
         "type",
+        "location",
         "text",
         "numeric",
         "image",
@@ -1245,6 +1297,7 @@
         "createdAt",
         "updatedAt",
         "attrId",
+        "attr",
         {
           "name": "objectAttributesByValueId",
           "qtype": "getMany",
@@ -1423,6 +1476,8 @@
         "description",
         "photo",
         "media",
+        "location",
+        "bbox",
         "data",
         "ownerId",
         "createdBy",
@@ -1430,6 +1485,8 @@
         "createdAt",
         "updatedAt",
         "typeId",
+        "owner",
+        "type",
         {
           "name": "userActions",
           "qtype": "getMany",
@@ -1501,7 +1558,8 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "organizationId"
+        "organizationId",
+        "organization"
       ]
     },
     "phoneNumbers": {
@@ -1513,7 +1571,8 @@
         "cc",
         "number",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "postComments": {
@@ -1529,6 +1588,10 @@
         "updatedAt",
         "postId",
         "posterId",
+        "commenter",
+        "parent",
+        "post",
+        "poster",
         {
           "name": "postCommentsByParentId",
           "qtype": "getMany",
@@ -1563,7 +1626,10 @@
         "createdAt",
         "updatedAt",
         "postId",
-        "posterId"
+        "posterId",
+        "reacter",
+        "post",
+        "poster"
       ]
     },
     "posts": {
@@ -1576,12 +1642,14 @@
         "flagged",
         "image",
         "url",
+        "location",
         "data",
         "taggedUserIds",
         "createdBy",
         "updatedBy",
         "createdAt",
         "updatedAt",
+        "poster",
         {
           "name": "postReactions",
           "qtype": "getMany",
@@ -1635,7 +1703,10 @@
         "updatedAt",
         "actionId",
         "ownerId",
-        "requiredId"
+        "requiredId",
+        "action",
+        "owner",
+        "required"
       ]
     },
     "rewardLimits": {
@@ -1657,6 +1728,7 @@
         "createdAt",
         "updatedAt",
         "ownerId",
+        "owner",
         {
           "name": "actionsByRewardId",
           "qtype": "getMany",
@@ -1889,7 +1961,10 @@
         "updatedAt",
         "actionId",
         "ownerId",
-        "trackId"
+        "trackId",
+        "action",
+        "owner",
+        "track"
       ]
     },
     "tracks": {
@@ -1909,6 +1984,8 @@
         "updatedAt",
         "ownerId",
         "objectTypeId",
+        "owner",
+        "objectType",
         {
           "name": "trackActions",
           "qtype": "getMany",
@@ -1949,7 +2026,14 @@
         "actionId",
         "userActionId",
         "actionItemId",
-        "userActionItemId"
+        "userActionItemId",
+        "verifier",
+        "user",
+        "owner",
+        "action",
+        "userAction",
+        "actionItem",
+        "userActionItem"
       ]
     },
     "userActionItems": {
@@ -1960,6 +2044,8 @@
         "userId",
         "text",
         "media",
+        "location",
+        "bbox",
         "data",
         "complete",
         "verified",
@@ -1971,6 +2057,11 @@
         "actionId",
         "userActionId",
         "actionItemId",
+        "user",
+        "owner",
+        "action",
+        "userAction",
+        "actionItem",
         {
           "name": "userActionItemVerifications",
           "qtype": "getMany",
@@ -2014,7 +2105,11 @@
         "updatedAt",
         "userActionId",
         "userId",
-        "actionId"
+        "actionId",
+        "reacter",
+        "userAction",
+        "user",
+        "action"
       ]
     },
     "userActionVerifications": {
@@ -2033,7 +2128,11 @@
         "userId",
         "ownerId",
         "actionId",
-        "userActionId"
+        "userActionId",
+        "user",
+        "owner",
+        "action",
+        "userAction"
       ]
     },
     "userActions": {
@@ -2048,6 +2147,7 @@
         "verifiedDate",
         "userRating",
         "rejected",
+        "location",
         "createdBy",
         "updatedBy",
         "createdAt",
@@ -2055,6 +2155,10 @@
         "ownerId",
         "actionId",
         "objectId",
+        "user",
+        "owner",
+        "action",
+        "object",
         {
           "name": "userActionVerifications",
           "qtype": "getMany",
@@ -2165,6 +2269,7 @@
       "selection": [
         "id",
         "userId",
+        "location",
         "text",
         "numeric",
         "image",
@@ -2174,7 +2279,10 @@
         "createdAt",
         "updatedAt",
         "questionId",
-        "ownerId"
+        "ownerId",
+        "user",
+        "question",
+        "owner"
       ]
     },
     "userCharacteristics": {
@@ -2198,7 +2306,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userConnections": {
@@ -2212,7 +2321,9 @@
         "createdAt",
         "updatedAt",
         "requesterId",
-        "responderId"
+        "responderId",
+        "requester",
+        "responder"
       ]
     },
     "userContacts": {
@@ -2228,7 +2339,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userDevices": {
@@ -2245,7 +2357,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userLocations": {
@@ -2257,10 +2370,13 @@
         "name",
         "kind",
         "description",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userMessages": {
@@ -2280,7 +2396,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "receiverId"
+        "receiverId",
+        "sender",
+        "receiver"
       ]
     },
     "userPassActions": {
@@ -2293,7 +2411,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "actionId"
+        "actionId",
+        "user",
+        "action"
       ]
     },
     "userProfiles": {
@@ -2311,7 +2431,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userQuestions": {
@@ -2326,6 +2447,7 @@
         "createdAt",
         "updatedAt",
         "ownerId",
+        "owner",
         {
           "name": "userAnswersByQuestionId",
           "qtype": "getMany",
@@ -2361,7 +2483,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "actionId"
+        "actionId",
+        "user",
+        "action"
       ]
     },
     "userSettings": {
@@ -2374,10 +2498,12 @@
         "lastName",
         "searchRadius",
         "zip",
+        "location",
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userViewedActions": {
@@ -2390,7 +2516,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "actionId"
+        "actionId",
+        "user",
+        "action"
       ]
     },
     "users": {
@@ -2403,6 +2531,7 @@
         "profilePicture",
         "searchTsv",
         "type",
+        "roleTypeByType",
         {
           "name": "groupsByOwnerId",
           "qtype": "getMany",
@@ -2486,6 +2615,9 @@
             "owner"
           ]
         },
+        "userProfile",
+        "userSetting",
+        "userCharacteristic",
         {
           "name": "userContacts",
           "qtype": "getMany",
@@ -3060,6 +3192,7 @@
             "objectTypeAttribute"
           ]
         },
+        "organizationProfileByOrganizationId",
         {
           "name": "userPassActions",
           "qtype": "getMany",
@@ -3591,6 +3724,8 @@
       "selection": [
         "id",
         "zip",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
@@ -3606,7 +3741,8 @@
         "service",
         "identifier",
         "details",
-        "isVerified"
+        "isVerified",
+        "owner"
       ]
     },
     "actionGoal": {
@@ -3629,7 +3765,10 @@
         "updatedAt",
         "ownerId",
         "actionId",
-        "goalId"
+        "goalId",
+        "owner",
+        "action",
+        "goal"
       ]
     },
     "actionItemType": {
@@ -3698,11 +3837,13 @@
         "description",
         "type",
         "itemOrder",
+        "timeRequired",
         "isRequired",
         "notificationText",
         "embedCode",
         "url",
         "media",
+        "location",
         "locationRadius",
         "rewardWeight",
         "createdBy",
@@ -3712,6 +3853,9 @@
         "itemTypeId",
         "ownerId",
         "actionId",
+        "itemType",
+        "owner",
+        "action",
         {
           "name": "userActionItems",
           "qtype": "getMany",
@@ -3794,7 +3938,9 @@
         "createdAt",
         "updatedAt",
         "ownerId",
-        "actionId"
+        "actionId",
+        "owner",
+        "action"
       ]
     },
     "action": {
@@ -3822,7 +3968,9 @@
         "enableNotifications",
         "enableNotificationsText",
         "search",
+        "location",
         "locationRadius",
+        "timeRequired",
         "startDate",
         "endDate",
         "approved",
@@ -3835,6 +3983,7 @@
         "alreadyCompletedActionText",
         "selfVerifiable",
         "isRecurring",
+        "recurringInterval",
         "oncePerObject",
         "minimumGroupMembers",
         "limitedToLocation",
@@ -3848,6 +3997,11 @@
         "objectTypeId",
         "rewardId",
         "verifyRewardId",
+        "group",
+        "owner",
+        "objectType",
+        "reward",
+        "verifyReward",
         {
           "name": "actionGoals",
           "qtype": "getMany",
@@ -4201,7 +4355,9 @@
         "enableNotifications",
         "enableNotificationsText",
         "search",
+        "location",
         "locationRadius",
+        "timeRequired",
         "startDate",
         "endDate",
         "approved",
@@ -4214,6 +4370,7 @@
         "alreadyCompletedActionText",
         "selfVerifiable",
         "isRecurring",
+        "recurringInterval",
         "oncePerObject",
         "minimumGroupMembers",
         "limitedToLocation",
@@ -4227,6 +4384,11 @@
         "objectTypeId",
         "rewardId",
         "verifyRewardId",
+        "group",
+        "owner",
+        "objectType",
+        "reward",
+        "verifyReward",
         {
           "name": "actionGoals",
           "qtype": "getMany",
@@ -4570,7 +4732,8 @@
         "service",
         "identifier",
         "details",
-        "isVerified"
+        "isVerified",
+        "owner"
       ]
     },
     "connectedAccountByServiceAndIdentifier": {
@@ -4592,7 +4755,8 @@
         "service",
         "identifier",
         "details",
-        "isVerified"
+        "isVerified",
+        "owner"
       ]
     },
     "cryptoAddress": {
@@ -4609,7 +4773,8 @@
         "ownerId",
         "address",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "cryptoAddressByAddress": {
@@ -4626,7 +4791,8 @@
         "ownerId",
         "address",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "email": {
@@ -4643,7 +4809,8 @@
         "ownerId",
         "email",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "emailByEmail": {
@@ -4660,7 +4827,8 @@
         "ownerId",
         "email",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "goalExplanation": {
@@ -4675,13 +4843,15 @@
       "selection": [
         "id",
         "audio",
+        "audioDuration",
         "explanationTitle",
         "explanation",
         "createdBy",
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "goalId"
+        "goalId",
+        "goal"
       ]
     },
     "goal": {
@@ -5055,6 +5225,11 @@
         "groupId",
         "postId",
         "posterId",
+        "commenter",
+        "parent",
+        "group",
+        "post",
+        "poster",
         {
           "name": "groupPostCommentsByParentId",
           "qtype": "getMany",
@@ -5098,7 +5273,11 @@
         "updatedAt",
         "groupId",
         "posterId",
-        "postId"
+        "postId",
+        "reacter",
+        "group",
+        "poster",
+        "post"
       ]
     },
     "groupPost": {
@@ -5117,6 +5296,7 @@
         "flagged",
         "image",
         "url",
+        "location",
         "data",
         "taggedUserIds",
         "createdBy",
@@ -5124,6 +5304,8 @@
         "createdAt",
         "updatedAt",
         "groupId",
+        "poster",
+        "group",
         {
           "name": "groupPostReactionsByPostId",
           "qtype": "getMany",
@@ -5186,6 +5368,7 @@
         "createdAt",
         "updatedAt",
         "ownerId",
+        "owner",
         {
           "name": "actions",
           "qtype": "getMany",
@@ -5406,12 +5589,16 @@
       "selection": [
         "id",
         "name",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
         "updatedAt",
         "ownerId",
-        "locationType"
+        "locationType",
+        "owner",
+        "locationTypeByLocationType"
       ]
     },
     "messageGroup": {
@@ -5471,7 +5658,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "groupId"
+        "groupId",
+        "sender",
+        "group"
       ]
     },
     "newsArticle": {
@@ -5514,7 +5703,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "notification": {
@@ -5537,7 +5727,9 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "actor",
+        "recipient"
       ]
     },
     "objectAttribute": {
@@ -5552,6 +5744,7 @@
       "selection": [
         "id",
         "description",
+        "location",
         "text",
         "numeric",
         "image",
@@ -5563,7 +5756,11 @@
         "updatedAt",
         "valueId",
         "objectId",
-        "objectTypeAttributeId"
+        "objectTypeAttributeId",
+        "owner",
+        "value",
+        "object",
+        "objectTypeAttribute"
       ]
     },
     "objectTypeAttribute": {
@@ -5592,6 +5789,7 @@
         "createdAt",
         "updatedAt",
         "objectTypeId",
+        "objectType",
         {
           "name": "objectTypeValuesByAttrId",
           "qtype": "getMany",
@@ -5661,6 +5859,7 @@
         "photo",
         "icon",
         "type",
+        "location",
         "text",
         "numeric",
         "image",
@@ -5671,6 +5870,7 @@
         "createdAt",
         "updatedAt",
         "attrId",
+        "attr",
         {
           "name": "objectAttributesByValueId",
           "qtype": "getMany",
@@ -5861,6 +6061,8 @@
         "description",
         "photo",
         "media",
+        "location",
+        "bbox",
         "data",
         "ownerId",
         "createdBy",
@@ -5868,6 +6070,8 @@
         "createdAt",
         "updatedAt",
         "typeId",
+        "owner",
+        "type",
         {
           "name": "userActions",
           "qtype": "getMany",
@@ -5945,7 +6149,8 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "organizationId"
+        "organizationId",
+        "organization"
       ]
     },
     "phoneNumber": {
@@ -5963,7 +6168,8 @@
         "cc",
         "number",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "phoneNumberByNumber": {
@@ -5981,7 +6187,8 @@
         "cc",
         "number",
         "isVerified",
-        "isPrimary"
+        "isPrimary",
+        "owner"
       ]
     },
     "postComment": {
@@ -6003,6 +6210,10 @@
         "updatedAt",
         "postId",
         "posterId",
+        "commenter",
+        "parent",
+        "post",
+        "poster",
         {
           "name": "postCommentsByParentId",
           "qtype": "getMany",
@@ -6043,7 +6254,10 @@
         "createdAt",
         "updatedAt",
         "postId",
-        "posterId"
+        "posterId",
+        "reacter",
+        "post",
+        "poster"
       ]
     },
     "post": {
@@ -6062,12 +6276,14 @@
         "flagged",
         "image",
         "url",
+        "location",
         "data",
         "taggedUserIds",
         "createdBy",
         "updatedBy",
         "createdAt",
         "updatedAt",
+        "poster",
         {
           "name": "postReactions",
           "qtype": "getMany",
@@ -6127,7 +6343,10 @@
         "updatedAt",
         "actionId",
         "ownerId",
-        "requiredId"
+        "requiredId",
+        "action",
+        "owner",
+        "required"
       ]
     },
     "rewardLimit": {
@@ -6155,6 +6374,7 @@
         "createdAt",
         "updatedAt",
         "ownerId",
+        "owner",
         {
           "name": "actionsByRewardId",
           "qtype": "getMany",
@@ -6432,7 +6652,10 @@
         "updatedAt",
         "actionId",
         "ownerId",
-        "trackId"
+        "trackId",
+        "action",
+        "owner",
+        "track"
       ]
     },
     "track": {
@@ -6458,6 +6681,8 @@
         "updatedAt",
         "ownerId",
         "objectTypeId",
+        "owner",
+        "objectType",
         {
           "name": "trackActions",
           "qtype": "getMany",
@@ -6504,7 +6729,14 @@
         "actionId",
         "userActionId",
         "actionItemId",
-        "userActionItemId"
+        "userActionItemId",
+        "verifier",
+        "user",
+        "owner",
+        "action",
+        "userAction",
+        "actionItem",
+        "userActionItem"
       ]
     },
     "userActionItem": {
@@ -6521,6 +6753,8 @@
         "userId",
         "text",
         "media",
+        "location",
+        "bbox",
         "data",
         "complete",
         "verified",
@@ -6532,6 +6766,11 @@
         "actionId",
         "userActionId",
         "actionItemId",
+        "user",
+        "owner",
+        "action",
+        "userAction",
+        "actionItem",
         {
           "name": "userActionItemVerifications",
           "qtype": "getMany",
@@ -6581,7 +6820,11 @@
         "updatedAt",
         "userActionId",
         "userId",
-        "actionId"
+        "actionId",
+        "reacter",
+        "userAction",
+        "user",
+        "action"
       ]
     },
     "userActionVerification": {
@@ -6606,7 +6849,11 @@
         "userId",
         "ownerId",
         "actionId",
-        "userActionId"
+        "userActionId",
+        "user",
+        "owner",
+        "action",
+        "userAction"
       ]
     },
     "userAction": {
@@ -6627,6 +6874,7 @@
         "verifiedDate",
         "userRating",
         "rejected",
+        "location",
         "createdBy",
         "updatedBy",
         "createdAt",
@@ -6634,6 +6882,10 @@
         "ownerId",
         "actionId",
         "objectId",
+        "user",
+        "owner",
+        "action",
+        "object",
         {
           "name": "userActionVerifications",
           "qtype": "getMany",
@@ -6750,6 +7002,7 @@
       "selection": [
         "id",
         "userId",
+        "location",
         "text",
         "numeric",
         "image",
@@ -6759,7 +7012,10 @@
         "createdAt",
         "updatedAt",
         "questionId",
-        "ownerId"
+        "ownerId",
+        "user",
+        "question",
+        "owner"
       ]
     },
     "userCharacteristic": {
@@ -6789,7 +7045,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userConnection": {
@@ -6809,7 +7066,9 @@
         "createdAt",
         "updatedAt",
         "requesterId",
-        "responderId"
+        "responderId",
+        "requester",
+        "responder"
       ]
     },
     "userContact": {
@@ -6831,7 +7090,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userDevice": {
@@ -6854,7 +7114,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userLocation": {
@@ -6872,10 +7133,13 @@
         "name",
         "kind",
         "description",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userMessage": {
@@ -6901,7 +7165,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "receiverId"
+        "receiverId",
+        "sender",
+        "receiver"
       ]
     },
     "userPassAction": {
@@ -6920,7 +7186,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "actionId"
+        "actionId",
+        "user",
+        "action"
       ]
     },
     "userProfile": {
@@ -6944,7 +7212,8 @@
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userQuestion": {
@@ -6965,6 +7234,7 @@
         "createdAt",
         "updatedAt",
         "ownerId",
+        "owner",
         {
           "name": "userAnswersByQuestionId",
           "qtype": "getMany",
@@ -7006,7 +7276,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "actionId"
+        "actionId",
+        "user",
+        "action"
       ]
     },
     "userSetting": {
@@ -7025,10 +7297,12 @@
         "lastName",
         "searchRadius",
         "zip",
+        "location",
         "createdBy",
         "updatedBy",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "user"
       ]
     },
     "userViewedAction": {
@@ -7047,7 +7321,9 @@
         "updatedBy",
         "createdAt",
         "updatedAt",
-        "actionId"
+        "actionId",
+        "user",
+        "action"
       ]
     },
     "user": {
@@ -7066,6 +7342,7 @@
         "profilePicture",
         "searchTsv",
         "type",
+        "roleTypeByType",
         {
           "name": "groupsByOwnerId",
           "qtype": "getMany",
@@ -7149,6 +7426,9 @@
             "owner"
           ]
         },
+        "userProfile",
+        "userSetting",
+        "userCharacteristic",
         {
           "name": "userContacts",
           "qtype": "getMany",
@@ -7723,6 +8003,7 @@
             "objectTypeAttribute"
           ]
         },
+        "organizationProfileByOrganizationId",
         {
           "name": "userPassActions",
           "qtype": "getMany",
@@ -8264,6 +8545,7 @@
         "profilePicture",
         "searchTsv",
         "type",
+        "roleTypeByType",
         {
           "name": "groupsByOwnerId",
           "qtype": "getMany",
@@ -8347,6 +8629,9 @@
             "owner"
           ]
         },
+        "userProfile",
+        "userSetting",
+        "userCharacteristic",
         {
           "name": "userContacts",
           "qtype": "getMany",
@@ -8921,6 +9206,7 @@
             "objectTypeAttribute"
           ]
         },
+        "organizationProfileByOrganizationId",
         {
           "name": "userPassActions",
           "qtype": "getMany",
@@ -9458,6 +9744,8 @@
       "selection": [
         "id",
         "zip",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
@@ -9476,6 +9764,8 @@
       "selection": [
         "id",
         "zip",
+        "location",
+        "bbox",
         "createdBy",
         "updatedBy",
         "createdAt",
@@ -9497,7 +9787,8 @@
         "service",
         "identifier",
         "details",
-        "isVerified"
+        "isVerified",
+        "owner"
       ]
     },
     "authAccountByServiceAndIdentifier": {
@@ -9519,7 +9810,8 @@
         "service",
         "identifier",
         "details",
-        "isVerified"
+        "isVerified",
+        "owner"
       ]
     },
     "getCurrentUser": {
@@ -9533,6 +9825,7 @@
         "profilePicture",
         "searchTsv",
         "type",
+        "roleTypeByType",
         {
           "name": "groupsByOwnerId",
           "qtype": "getMany",
@@ -9616,6 +9909,9 @@
             "owner"
           ]
         },
+        "userProfile",
+        "userSetting",
+        "userCharacteristic",
         {
           "name": "userContacts",
           "qtype": "getMany",
@@ -10190,6 +10486,7 @@
             "objectTypeAttribute"
           ]
         },
+        "organizationProfileByOrganizationId",
         {
           "name": "userPassActions",
           "qtype": "getMany",
@@ -10719,25 +11016,27 @@
       "model": "Metaschema",
       "qtype": "getOne",
       "properties": {},
-      "selection": [{
-        "name": "tables",
-        "qtype": "getOne",
-        "model": "MetaschemaTable",
-        "properties": {},
-        "selection": [
-          "name",
-          "query",
-          "inflection",
-          "relations",
-          "fields",
-          "constraints",
-          "foreignKeyConstraints",
-          "primaryKeyConstraints",
-          "uniqueConstraints",
-          "checkConstraints",
-          "exclusionConstraints"
-        ]
-      }]
+      "selection": [
+        {
+          "name": "tables",
+          "qtype": "getOne",
+          "model": "MetaschemaTable",
+          "properties": {},
+          "selection": [
+            "name",
+            "query",
+            "inflection",
+            "relations",
+            "fields",
+            "constraints",
+            "foreignKeyConstraints",
+            "primaryKeyConstraints",
+            "uniqueConstraints",
+            "checkConstraints",
+            "exclusionConstraints"
+          ]
+        }
+      ]
     }
   },
   "mutations": {
@@ -21752,14 +22051,16 @@
         "name": "UuidGenerateV4Payload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "uuid",
-        "type": {
-          "kind": "SCALAR",
-          "name": "UUID",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "uuid",
+          "type": {
+            "kind": "SCALAR",
+            "name": "UUID",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "confirmDeleteAccount": {
       "qtype": "mutation",
@@ -21785,14 +22086,16 @@
         "name": "ConfirmDeleteAccountPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "boolean",
-        "type": {
-          "kind": "SCALAR",
-          "name": "Boolean",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "extendTokenExpires": {
       "qtype": "mutation",
@@ -21970,14 +22273,16 @@
         "name": "OneTimeTokenPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "string",
-        "type": {
-          "kind": "SCALAR",
-          "name": "String",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "string",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "register": {
       "qtype": "mutation",
@@ -22037,14 +22342,16 @@
         "name": "ResetPasswordPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "boolean",
-        "type": {
-          "kind": "SCALAR",
-          "name": "Boolean",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "sendAccountDeletionEmail": {
       "qtype": "mutation",
@@ -22061,14 +22368,16 @@
         "name": "SendAccountDeletionEmailPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "boolean",
-        "type": {
-          "kind": "SCALAR",
-          "name": "Boolean",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "sendVerificationEmail": {
       "qtype": "mutation",
@@ -22090,14 +22399,16 @@
         "name": "SendVerificationEmailPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "boolean",
-        "type": {
-          "kind": "SCALAR",
-          "name": "Boolean",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "setPassword": {
       "qtype": "mutation",
@@ -22123,14 +22434,16 @@
         "name": "SetPasswordPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "boolean",
-        "type": {
-          "kind": "SCALAR",
-          "name": "Boolean",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          }
         }
-      }]
+      ]
     },
     "verifyEmail": {
       "qtype": "mutation",
@@ -22156,14 +22469,16 @@
         "name": "VerifyEmailPayload",
         "ofType": null
       },
-      "outputs": [{
-        "name": "boolean",
-        "type": {
-          "kind": "SCALAR",
-          "name": "Boolean",
-          "ofType": null
+      "outputs": [
+        {
+          "name": "boolean",
+          "type": {
+            "kind": "SCALAR",
+            "name": "Boolean",
+            "ofType": null
+          }
         }
-      }]
+      ]
     }
   }
 }
