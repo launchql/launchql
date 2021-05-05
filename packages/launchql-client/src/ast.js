@@ -545,6 +545,14 @@ export const deleteOne = ({ mutationName, operationName, mutation }) => {
 };
 
 export function getSelections(selection = []) {
+  const selectionAst = (field) => {
+    return typeof field === 'string'
+      ? t.field({
+          name: field
+        })
+      : getCustomAst(field.fieldDefn);
+  };
+
   return selection
     .map((selectionDefn) => {
       if (selectionDefn.isObject) {
@@ -562,7 +570,7 @@ export function getSelections(selection = []) {
           }, []),
           selectionSet: isBelongTo
             ? t.selectionSet({
-                selections: selection.map((field) => t.field({ name: field }))
+                selections: selection.map((field) => selectionAst(field))
               })
             : t.objectValue({
                 fields: [
@@ -572,9 +580,7 @@ export function getSelections(selection = []) {
                   t.field({
                     name: 'nodes',
                     selectionSet: t.selectionSet({
-                      selections: selection.map((field) =>
-                        t.field({ name: field })
-                      )
+                      selections: selection.map((field) => selectionAst(field))
                     })
                   })
                 ]

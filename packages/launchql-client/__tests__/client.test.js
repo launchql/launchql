@@ -381,7 +381,7 @@ it('delete', () => {
   expect(result._queryName).toMatchSnapshot();
 });
 
-it.only('expands further selections of custom ast fields in nested selection', () => {
+it('expands further selections of custom ast fields in nested selection', () => {
   const client = new Client({
     meta: metaObject,
     introspection
@@ -402,9 +402,11 @@ it.only('expands further selections of custom ast fields in nested selection', (
     })
     .print();
 
-  console.log(result._hash);
-
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
-  expect(/(x)|(y)/.test(result._hash)).toBe(true);
+  expect(
+    /(geojson)|(days)|(hours)|(minutes)|(months)|(seconds)|(years)/.test(
+      result._hash
+    )
+  ).toBe(true);
 });
