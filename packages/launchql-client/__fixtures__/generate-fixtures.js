@@ -12,10 +12,18 @@ function generateIntrospectionFixture() {
   fs.readFile(inDir, { encoding: 'utf8' }, (err, data) => {
     if (err) return console.log(err);
     const introspection = intro.parseGraphQuery(JSON.parse(data));
-    fs.writeFile(outDir, JSON.stringify(introspection, null, 2), (err) => {
-      if (err) return console.log(err);
-      console.log('DONE');
-    });
+    fs.writeFile(
+      outDir,
+      JSON.stringify(
+        { ...introspection.queries, ...introspection.mutations },
+        null,
+        2
+      ),
+      (err) => {
+        if (err) return console.log(err);
+        console.log('DONE');
+      }
+    );
   });
 }
 
