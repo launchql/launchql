@@ -27,6 +27,7 @@
     "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
     "build": "npm run build:module && npm run build:main",
     "clean": "rimraf node_modules main module",
+    "debug": "node --inspect-brk ../../node_modules/jest/bin/jest.js --runInBand ./__tests__",
     "prepare": "npm run build",
     "lint": "eslint src --fix",
     "test": "jest",
