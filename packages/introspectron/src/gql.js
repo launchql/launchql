@@ -265,7 +265,7 @@ function parseSelectionObject(context, model, nesting) {
   throwIfInvalidContext(context);
 
   const selectionFields = HASH[model].fields.filter(
-    (f) => f.type.kind !== 'OBJECT'
+    (f) => !isPureObjectType(f.type)
   );
 
   const selection = selectionFields.map((f) => {
