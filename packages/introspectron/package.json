@@ -66,6 +66,5 @@
     "@babel/runtime": "^7.4.2",
     "graphql-tag": "2.11.0",
     "lodash": "4.17.20"
-  },
-  "gitHead": "1c7fe7c9f9b48771dc37cfb099f7eed535a3cd82"
+  }
 }
