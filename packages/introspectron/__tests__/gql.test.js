@@ -20,6 +20,12 @@ it('mutationsDbe', () => {
   expect(mutationsDbe).toMatchSnapshot();
 });
 
+it('includes custom scalar types', () => {
+  const actions = queriesDbe.actions;
+  expect(actions.selection.find((sel) => sel === 'location')).toBeTruthy();
+  expect(actions.selection.find((sel) => sel === 'timeRequired')).toBeTruthy();
+});
+
 // it('write', () => {
 //   require('fs').writeFileSync(
 //     __dirname + '/mutations.json',

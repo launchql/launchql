@@ -134,7 +134,7 @@ export class Client {
 
     // If selection not given, pick only scalar fields
     if (selection == null) {
-      this._select = this.pickScalarFields(defn);
+      this._select = this.pickScalarFields(null, defn);
       return this;
     }
 
@@ -315,26 +315,23 @@ export class Client {
  * @param {Object} meta Meta object containing info about table relations
  * @returns {Array}
  */
-function pickScalarFields(defn) {
+function pickScalarFields(selection, defn) {
   const model = defn.model;
   const modelMeta = this._meta.tables.find((t) => t.name === model);
-
-  // TODO: see if there is a possibility of supertyping table (a key is both a foreign and primary key)
-  // A relational field is a foreign key but not a primary key
-  const isRelationalField = (fieldName) =>
-    !modelMeta.primaryConstraints.find((field) => field.name === fieldName) &&
-    !!modelMeta.foreignConstraints.find(
-      (constraint) => constraint.fromKey.name === fieldName
-    );
 
   const isInTableSchema = (fieldName) =>
     !!modelMeta.fields.find((field) => field.name === fieldName);
 
-  const pickFrom = (selection) =>
-    selection
+  const pickFrom = (modelSelection) =>
+    modelSelection
+      .filter((fieldName) => {
+        // If not specified or not a valid selection list, allow all
+        if (selection == null || !Array.isArray(selection)) return true;
+        return selection.includes(fieldName);
+      })
       .filter(
         (fieldName) =>
-          !isRelationalField(fieldName) && isInTableSchema(fieldName)
+          !isRelationalField(fieldName, modelMeta) && isInTableSchema(fieldName)
       )
       .map((fieldName) => ({
         name: fieldName,
@@ -346,10 +343,7 @@ function pickScalarFields(defn) {
   // from a definition model .eg UserSetting, find its related queries in the introspection object, and pick its selection fields
   if (defn.qtype === 'mutation') {
     const relatedQuery = this._introspection[
-      `${inflection.camelize(
-        inflection.pluralize(inflection.underscore(defn.model)),
-        true
-      )}`
+      `${modelNameToGetMany(defn.model)}`
     ];
     return pickFrom(relatedQuery.selection);
   }
@@ -392,17 +386,38 @@ function pickAllFields(selection, defn) {
           constraint.fromKey.alias === fieldName
       );
 
-      const subFields = Object.keys(fieldOptions.select).filter((subField) =>
-        isWhiteListed(fieldOptions.select[subField])
-      );
+      const subFields = Object.keys(fieldOptions.select).filter((subField) => {
+        return (
+          !isRelationalField(subField, modelMeta) &&
+          isWhiteListed(fieldOptions.select[subField])
+        );
+      });
+
+      const isBelongTo = !!referencedForeignConstraint;
 
       const fieldSelection = {
         name: fieldName,
         isObject: true,
-        isBelongTo: !!referencedForeignConstraint,
+        isBelongTo,
         selection: subFields,
         variables: fieldOptions.variables
       };
+
+      // Need to further expand selection of object fields,
+      // but only non-graphql-builtin, non-relation fields
+      // .ie action { id location }
+      // location is non-scalar and non-relational, thus need to further expand into { x y ... }
+      if (isBelongTo) {
+        const getManyName = modelNameToGetMany(
+          referencedForeignConstraint.refTable
+        );
+        const refDefn = this._introspection[getManyName];
+        fieldSelection.selection = pickScalarFields.call(
+          this,
+          subFields,
+          refDefn
+        );
+      }
 
       fields = [...fields, fieldSelection];
     } else {
@@ -444,5 +459,25 @@ function isFieldInDefinition(fieldName, defn, modelMeta) {
       }
       return false;
     })
+  );
+}
+
+// TODO: see if there is a possibility of supertyping table (a key is both a foreign and primary key)
+// A relational field is a foreign key but not a primary key
+function isRelationalField(fieldName, modelMeta) {
+  return (
+    !modelMeta.primaryConstraints.find((field) => field.name === fieldName) &&
+    !!modelMeta.foreignConstraints.find(
+      (constraint) => constraint.fromKey.name === fieldName
+    )
+  );
+}
+
+// Get getMany op name from model
+// ie. UserSetting => userSettings
+function modelNameToGetMany(model) {
+  return inflection.camelize(
+    inflection.pluralize(inflection.underscore(model)),
+    true
   );
 }

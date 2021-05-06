@@ -1,9 +1,9 @@
 import * as t from 'gql-ast';
 
 export function getCustomAst(fieldDefn) {
-  const { subtype, pgType } = fieldDefn.type;
-  if (subtype === 'GeometryPoint' && pgType === 'geometry') {
-    return geometryPointAst(fieldDefn.name);
+  const { pgType } = fieldDefn.type;
+  if (pgType === 'geometry') {
+    return geometryAst(fieldDefn.name);
   }
 
   if (pgType === 'interval') {
@@ -15,11 +15,11 @@ export function getCustomAst(fieldDefn) {
   });
 }
 
-export function geometryPointAst(name) {
+export function geometryAst(name) {
   return t.field({
     name,
     selectionSet: t.selectionSet({
-      selections: toFieldArray(['geojson', 'srid', 'x', 'y'])
+      selections: toFieldArray(['geojson'])
     })
   });
 }

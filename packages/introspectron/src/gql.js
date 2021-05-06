@@ -265,7 +265,7 @@ function parseSelectionObject(context, model, nesting) {
   throwIfInvalidContext(context);
 
   const selectionFields = HASH[model].fields.filter(
-    (f) => f.type.kind !== 'OBJECT'
+    (f) => !isPureObjectType(f.type)
   );
 
   const selection = selectionFields.map((f) => {
@@ -289,7 +289,7 @@ function parseSelectionScalar(context, model) {
   throwIfInvalidContext(context);
 
   const selectionFields = HASH[model].fields.filter(
-    (f) => f.type.kind !== 'OBJECT' && !isConnectionQuery(f)
+    (f) => !isPureObjectType(f.type) && !isConnectionQuery(f)
   );
 
   const selection = selectionFields.map((f) => f.name);
@@ -306,6 +306,17 @@ function isConnectionQuery(query) {
     fields.includes('condition') &&
     fields.includes('filter')
   );
+}
+
+/**
+ * Check is a type is pure object type
+ * pure object type is different from custom types in the sense that
+ * it does not inherit from any type, custom types inherit from a parent type
+ * @param {Object} typeObj
+ * @returns {boolean}
+ */
+function isPureObjectType(typeObj) {
+  return typeObj.kind === 'OBJECT' && typeObj.name == null;
 }
 
 function getObjectType(type) {

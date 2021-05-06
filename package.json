@@ -12,6 +12,7 @@
     "postinstall": "yarn-deduplicate || exit 0",
     "build": "lerna run prepare --parallel",
     "bootstrap": "lerna bootstrap --use-workspaces",
+    "bootstrap:local": "lerna bootstrap --force-local && lerna link --force-local",
     "commit": "git-cz",
     "clean": "lerna run clean --stream --parallel && lerna exec \"rimraf node_modules\"",
     "prepare": "yarn build",
