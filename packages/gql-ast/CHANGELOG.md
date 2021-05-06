@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.10](https://github.com/launchql/launchql-gen/compare/gql-ast@0.1.9...gql-ast@0.1.10) (2021-05-06)
+
+**Note:** Version bump only for package gql-ast
+
+
+
+
+
 ## [0.1.9](https://github.com/launchql/launchql-gen/compare/gql-ast@0.1.8...gql-ast@0.1.9) (2021-05-06)
 
 **Note:** Version bump only for package gql-ast
