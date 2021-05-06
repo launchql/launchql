@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.7](https://github.com/launchql/launchql-gen/compare/launchql-client@0.3.6...launchql-client@0.3.7) (2021-05-06)
+
+
+### Bug Fixes
+
+* condition should rely on foreign constraint ([b2fea16](https://github.com/launchql/launchql-gen/commit/b2fea16707886aac655aaaed4b395651e3157f4b))
+* expand custom scalars in relation fields ([af5af40](https://github.com/launchql/launchql-gen/commit/af5af4056d08b8150ddb708f6aa1298f7ef877d8))
+* **introspectron:** selections should not filter custom scalar types ([1c60fd9](https://github.com/launchql/launchql-gen/commit/1c60fd9e663d8fc371de5869a40dd67fd4797672))
+
+
+
+
+
 ## [0.3.6](https://github.com/launchql/launchql-gen/compare/launchql-client@0.3.5...launchql-client@0.3.6) (2021-04-15)
 
 

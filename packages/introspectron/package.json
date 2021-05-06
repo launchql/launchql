@@ -1,6 +1,6 @@
 {
   "name": "introspectron",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "introspect your Postgres database and generate an SDK",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql-gen/tree/master/packages/introspectron#readme",

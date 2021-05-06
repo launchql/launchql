@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.9](https://github.com/launchql/launchql-gen/compare/introspectron@0.2.8...introspectron@0.2.9) (2021-05-06)
+
+
+### Bug Fixes
+
+* unfilter custom scalar ([5861299](https://github.com/launchql/launchql-gen/commit/5861299bf3fec34dd048250ecd365a99046db100))
+* **introspectron:** selections should not filter custom scalar types ([1c60fd9](https://github.com/launchql/launchql-gen/commit/1c60fd9e663d8fc371de5869a40dd67fd4797672))
+
+
+
+
+
 ## [0.2.8](https://github.com/launchql/launchql-gen/compare/introspectron@0.2.7...introspectron@0.2.8) (2021-03-04)
 
 **Note:** Version bump only for package introspectron
