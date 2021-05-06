@@ -286,7 +286,6 @@ exports[`selects belongsTo relation field 1`] = `
   }, nodes {
     owner {
       id
-      type
     }
   }}
 }

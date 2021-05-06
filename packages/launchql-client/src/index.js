@@ -407,7 +407,7 @@ function pickAllFields(selection, defn) {
       // but only non-graphql-builtin, non-relation fields
       // .ie action { id location }
       // location is non-scalar and non-relational, thus need to further expand into { x y ... }
-      if (fieldName === 'action') {
+      if (isBelongTo) {
         const getManyName = modelNameToGetMany(
           referencedForeignConstraint.refTable
         );
