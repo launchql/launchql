@@ -20,7 +20,7 @@ it('mutationsDbe', () => {
   expect(mutationsDbe).toMatchSnapshot();
 });
 
-it.only('includes custom scalar types', () => {
+it('includes custom scalar types', () => {
   const actions = queriesDbe.actions;
   expect(actions.selection.find((sel) => sel === 'location')).toBeTruthy();
   expect(actions.selection.find((sel) => sel === 'timeRequired')).toBeTruthy();
