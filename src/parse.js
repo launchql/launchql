@@ -9,7 +9,8 @@ import {
   wrapValue
 } from './utils';
 function isNumeric(str) {
-  if (typeof str != 'string') return false; // we only process strings!
+  if (typeof str === 'number') return true;
+  if (typeof str !== 'string') return false; // we only process strings!
   return (
     !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
     !isNaN(parseFloat(str))
