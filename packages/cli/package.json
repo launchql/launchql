@@ -83,7 +83,7 @@
     "mkdirp": "1.0.4",
     "node-walkup": "1.1.1",
     "pg-promise": "10.7.1",
-    "pgsql-parser": "13.1.5",
+    "pgsql-parser": "13.1.6",
     "shelljs": "0.8.4",
     "tpsql": "0.0.3"
   }
