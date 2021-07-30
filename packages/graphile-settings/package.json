@@ -19,7 +19,7 @@
     "access": "public"
   },
   "resolutions": {
-    "graphql": "15.5.0",
+    "graphql": "15.5.1",
     "pg-connection-string": "2.x",
     "graphile-build": "4.11.0"
   },

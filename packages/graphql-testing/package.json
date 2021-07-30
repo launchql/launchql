@@ -57,9 +57,8 @@
     "@launchql/db-testing": "^2.1.6",
     "@launchql/server": "^1.0.0",
     "envalid": "6.0.2",
-    "graphql": "15.5.0",
+    "graphql": "15.5.1",
     "mock-req": "0.2.0",
     "postgraphile": "4.11.0"
-  },
-  "gitHead": "41fab8194848708cbf6758f3933832395a89bae1"
+  }
 }

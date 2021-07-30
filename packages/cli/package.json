@@ -74,7 +74,7 @@
     "case": "1.6.3",
     "glob": "7.1.6",
     "graphile-gen": "^0.3.7",
-    "graphql": "15.5.0",
+    "graphql": "15.5.1",
     "graphql-request": "3.0.0",
     "inflection": "1.12.0",
     "inquirerer": "^0.1.3",
