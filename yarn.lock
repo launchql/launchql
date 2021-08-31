@@ -1229,10 +1229,10 @@
   resolved "https://registry.npmjs.org/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
   integrity sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==
 
-"@graphile-contrib/pg-many-to-many@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@graphile-contrib/pg-many-to-many/-/pg-many-to-many-1.0.0.tgz#93f12f9d68724523bef1c833ea24e9f646c257af"
-  integrity sha512-y8DiptnJBDW8mrI9btQi/q/nYVYxG92P5QGBsKW6WdYiSKLvrhnnnqm0Qi2VrWIiRVxj22v0NKRmvZ8c6EIiZg==
+"@graphile-contrib/pg-many-to-many@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@graphile-contrib/pg-many-to-many/-/pg-many-to-many-1.0.1.tgz#c6eb333c877938f7a4fda3da0ee95393b223bd08"
+  integrity sha512-gFk0OaiXtO2BGHy0QIeceBsCoq8IvjkPuCN58JR1EBOuEPduZ+siwB6/SUF70ErBUiT41+qNKgTOayQfo2tU0A==
 
 "@graphile/lru@4.11.0":
   version "4.11.0"
@@ -4220,10 +4220,10 @@ csv-parser@^2.3.3:
     minimist "^1.2.0"
     through2 "^3.0.1"
 
-csv-to-pg@0.6.2:
-  version "0.6.2"
-  resolved "https://registry.npmjs.org/csv-to-pg/-/csv-to-pg-0.6.2.tgz#45d3c92bd5d3576d7d11677cf318e647ebf0b848"
-  integrity sha512-myRXpbIXeAG8jrGYpzjSL6+qmsgrBCj9qcP0ua7Wo6wZnhEooonM+qsgBxuxfJ5Qoa5xPv0LM62aQCjjgOrItw==
+csv-to-pg@0.6.3:
+  version "0.6.3"
+  resolved "https://registry.npmjs.org/csv-to-pg/-/csv-to-pg-0.6.3.tgz#1ba9e4d90ff1cc2360a4e8de0f9aa097168afd56"
+  integrity sha512-mwvwhXSq6m3Is9QYGP1/dGomcSrTmNE/syPnAcwiQrOpde8EcCpyYE3jMtW3oLfuXxxVq36jaZpVKqAfOTdH3w==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@pyramation/prompt" "^0.0.1"
@@ -5452,19 +5452,7 @@ glob-to-regexp@^0.3.0:
   resolved "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
   integrity sha1-jFoUlNIGbFcMw7/kSWF1rMTVAqs=
 
-glob@7.1.6:
-  version "7.1.6"
-  resolved "https://registry.npmjs.org/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
-  integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^3.0.4"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
-glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
+glob@7.1.7, glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
   version "7.1.7"
   resolved "https://registry.npmjs.org/glob/-/glob-7.1.7.tgz#3b193e9233f01d42d0b3f78294bbeeb418f94a90"
   integrity sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==
@@ -5603,6 +5591,13 @@ graphql-tag@2.11.0:
   version "2.11.0"
   resolved "https://registry.npmjs.org/graphql-tag/-/graphql-tag-2.11.0.tgz#1deb53a01c46a7eb401d6cb59dec86fa1cccbffd"
   integrity sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA==
+
+graphql-tag@2.12.5:
+  version "2.12.5"
+  resolved "https://registry.npmjs.org/graphql-tag/-/graphql-tag-2.12.5.tgz#5cff974a67b417747d05c8d9f5f3cb4495d0db8f"
+  integrity sha512-5xNhP4063d16Pz3HBtKprutsPrmHZi5IdUGOWRxA2B6VF7BIRGOHZ5WQvDmJXZuPcBg7rYwaFxvQYjqkSdR3TQ==
+  dependencies:
+    tslib "^2.1.0"
 
 graphql-upload@11.0.0:
   version "11.0.0"
@@ -6132,10 +6127,10 @@ interpret@^1.0.0:
   resolved "https://registry.npmjs.org/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-introspectron@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmjs.org/introspectron/-/introspectron-0.2.1.tgz#84a8d6924caba4ff218e3370e76badbd0a1b5911"
-  integrity sha512-jf26ZbvLr0yxMftaKJHMZVjri9GzXjfx/XU+n4E6eDxqlGuvGxiofnLlSB7y3IDcMauPuMPIONT8msYP2uSp/Q==
+introspectron@0.2.12:
+  version "0.2.12"
+  resolved "https://registry.npmjs.org/introspectron/-/introspectron-0.2.12.tgz#6a0dba167fd67ca5629a7fe21640f2761e37305d"
+  integrity sha512-am1U5yiL9JRll6apzHaIMKXKh4fztoP0HxdCCVs8KXq7oRjZGoeGsHVDfqbFF/nxxdEJHWHoH0Hra477OhQKqQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
     graphql-tag "2.11.0"
@@ -8657,7 +8652,7 @@ pg-ast@^0.1.0:
   dependencies:
     "@babel/runtime" "^7.11.2"
 
-pg-connection-string@2.x, pg-connection-string@^2.0.0, pg-connection-string@^2.4.0, pg-connection-string@^2.5.0:
+pg-connection-string@^2.0.0, pg-connection-string@^2.5.0:
   version "2.5.0"
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.5.0.tgz#538cadd0f7e603fc09a12590f3b8a452c2c0cf34"
   integrity sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==
@@ -8677,7 +8672,7 @@ pg-minify@1.6.2:
   resolved "https://registry.npmjs.org/pg-minify/-/pg-minify-1.6.2.tgz#055acfe862cfca3ca0a529020846b0f308d68e70"
   integrity sha512-1KdmFGGTP6jplJoI8MfvRlfvMiyBivMRP7/ffh4a11RUFJ7kC2J0ZHlipoKiH/1hz+DVgceon9U2qbaHpPeyPg==
 
-pg-pool@^3.2.2, pg-pool@^3.4.1:
+pg-pool@^3.4.1:
   version "3.4.1"
   resolved "https://registry.npmjs.org/pg-pool/-/pg-pool-3.4.1.tgz#0e71ce2c67b442a5e862a9c182172c37eda71e9c"
   integrity sha512-TVHxR/gf3MeJRvchgNHxsYsTCHQ+4wm3VIHSS19z8NC0+gioEhq1okDY1sm/TYbfoP6JLFx01s0ShvZ3puP/iQ==
@@ -8692,7 +8687,7 @@ pg-promise@10.11.0:
     pg-minify "1.6.2"
     spex "3.2.0"
 
-pg-protocol@*, pg-protocol@^1.3.0, pg-protocol@^1.5.0:
+pg-protocol@*, pg-protocol@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.5.0.tgz#b5dd452257314565e2d54ab3c132adc46565a6a0"
   integrity sha512-muRttij7H8TqRNu/DxrAJQITO4Ac7RmX3Klyr/9mJEOBeIpgnF8f9jAfRz5d3XwQZl5qBjF9gLsUtMPJE0vezQ==
@@ -8722,19 +8717,6 @@ pg-types@^2.1.0, pg-types@^2.2.0:
     postgres-bytea "~1.0.0"
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
-
-pg@8.4.2:
-  version "8.4.2"
-  resolved "https://registry.npmjs.org/pg/-/pg-8.4.2.tgz#2aa58166a23391e91d56a7ea57c6d99931c0642a"
-  integrity sha512-E9FlUrrc7w3+sbRmL1CSw99vifACzB2TjhMM9J5w9D1LIg+6un0jKkpHS1EQf2CWhKhec2bhrBLVMmUBDbjPRQ==
-  dependencies:
-    buffer-writer "2.0.0"
-    packet-reader "1.0.0"
-    pg-connection-string "^2.4.0"
-    pg-pool "^3.2.2"
-    pg-protocol "^1.3.0"
-    pg-types "^2.1.0"
-    pgpass "1.x"
 
 pg@8.7.1, "pg@>=6.1.0 <9", pg@^8.7.1:
   version "8.7.1"
@@ -8896,12 +8878,7 @@ postgraphile-plugin-connection-filter-postgis@1.0.0-alpha.6:
   resolved "https://registry.npmjs.org/postgraphile-plugin-connection-filter-postgis/-/postgraphile-plugin-connection-filter-postgis-1.0.0-alpha.6.tgz#8865677b4622097a2411077ac8b172c42dda691c"
   integrity sha512-7smLSEsv5Pz38ejLi7wgkWblSlcugrki3WZh4UPNBDUqM3FHqgd+5HWejAmTawSPIMbe2y63YDwGDSlplEES8g==
 
-postgraphile-plugin-connection-filter@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/postgraphile-plugin-connection-filter/-/postgraphile-plugin-connection-filter-2.1.0.tgz#6ebe47b177b7b6de8b32f65973f85d42419018e9"
-  integrity sha512-/knSX5JFVVDrRrrblaU4KEGwobfvVfW3WvelfB4meewV/io17jl+lYWiiAX5O0b9PLGJfW5grIfia4dtJt72fg==
-
-postgraphile-plugin-connection-filter@^2.0.0:
+postgraphile-plugin-connection-filter@2.2.2, postgraphile-plugin-connection-filter@^2.0.0:
   version "2.2.2"
   resolved "https://registry.npmjs.org/postgraphile-plugin-connection-filter/-/postgraphile-plugin-connection-filter-2.2.2.tgz#c2444a01a4a6506f9e8a485f18b6cf5bcd17e43b"
   integrity sha512-/PkdMwaIfGM++C8G5QUAF1iosAVEyIbPaaYteCMgfNWjW215SP9+8L+ewfi6Dm9Weaf+qKnNERWx7xlY8kuWOw==
@@ -8975,12 +8952,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-2.1.2.tgz#3050700dae2e4c8b67c4c3f666cdb8af405e1ce5"
-  integrity sha512-16c7K+x4qVlJg9rEbXl7HEGmQyZlG4R9AgP+oHKRMsMsuk8s+ATStlf1NpDqyBI1HpVyfjLOeMhH2LvuNvV5Vg==
-
-prettier@^2.0.5, prettier@^2.1.2:
+prettier@2.3.2, prettier@^2.0.5, prettier@^2.1.2:
   version "2.3.2"
   resolved "https://registry.npmjs.org/prettier/-/prettier-2.3.2.tgz#ef280a05ec253712e486233db5c6f23441e7342d"
   integrity sha512-lnJzDfJ66zkMy58OL5/NY5zp70S7Nz6KqcKkXYzn2tMVrNxvbqaBpg7H3qHaLxCJ5lNMsGuM8+ohS7cZrthdLQ==

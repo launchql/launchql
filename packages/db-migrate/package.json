@@ -57,7 +57,7 @@
     "@launchql/db-utils": "^2.1.4",
     "@launchql/server-utils": "^0.2.0",
     "case": "^1.6.3",
-    "csv-to-pg": "0.6.2",
+    "csv-to-pg": "0.6.3",
     "envalid": "^6.0.2",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.0",
