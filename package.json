@@ -17,8 +17,8 @@
     "launchql:server": "lerna run --stream --scope @launchql/server dev"
   },
   "devDependencies": {
-    "@babel/cli": "7.12.1",
-    "@babel/core": "7.12.3",
+    "@babel/cli": "7.14.8",
+    "@babel/core": "7.15.0",
     "@pyramation/babel-preset-env": "0.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
@@ -28,7 +28,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "25.1.0",
     "lerna": "3.22.1",
-    "prettier": "2.1.2"
+    "prettier": "2.3.2"
   },
   "workspaces": [
     "packages/*"
