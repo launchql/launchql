@@ -68,6 +68,6 @@
     "graphql-tag": "^2.12.5",
     "mock-req": "0.2.0",
     "pg": "^8.7.1",
-    "postgraphile": "^4.11.0"
+    "postgraphile": "4.12.3"
   }
 }
