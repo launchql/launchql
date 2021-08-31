@@ -1,6 +1,6 @@
 {
   "name": "@launchql/db-migrate",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "db migrate",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/db-migrate#readme",
@@ -54,8 +54,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.3",
-    "@launchql/db-utils": "^2.1.4",
-    "@launchql/server-utils": "^0.2.0",
+    "@launchql/db-utils": "^2.2.0",
+    "@launchql/server-utils": "^0.3.0",
     "case": "^1.6.3",
     "csv-to-pg": "0.6.3",
     "envalid": "^6.0.2",
