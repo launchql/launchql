@@ -144,7 +144,7 @@ export const getUpdateStmt = (name, vars, where, casts = {}) => {
         c++;
         return `${key}=${getParameter(c, c - 1, castVals)}`;
       })
-      .join(',')}
+      .join(' AND ')}
   `;
 };
 
