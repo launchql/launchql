@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "LaunchQL cli",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql/tree/master/packages/launchql-db#readme",
@@ -68,8 +68,8 @@
     "@launchql/db-testing": "^2.2.1",
     "@launchql/db-transform": "^1.2.0",
     "@launchql/db-utils": "^2.2.0",
-    "@launchql/explorer": "^1.1.0",
-    "@launchql/server": "^1.1.0",
+    "@launchql/explorer": "^1.1.1",
+    "@launchql/server": "^1.1.1",
     "@pyramation/prompt": "0.0.1",
     "case": "1.6.3",
     "glob": "7.1.7",
