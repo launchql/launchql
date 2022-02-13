@@ -2652,6 +2652,11 @@ abbrev@1:
   resolved "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
+accept-language-parser@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/accept-language-parser/-/accept-language-parser-1.5.0.tgz#8877c54040a8dcb59e0a07d9c1fde42298334791"
+  integrity sha1-iHfFQECo3LWeCgfZwf3kIpgzR5E=
+
 accepts@~1.3.7:
   version "1.3.7"
   resolved "https://registry.npmjs.org/accepts/-/accepts-1.3.7.tgz#531bc726517a3b2b41f850021c6cc15eaab507cd"
@@ -4267,6 +4272,11 @@ data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+dataloader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/dataloader/-/dataloader-2.0.0.tgz#41eaf123db115987e21ca93c005cd7753c55fe6f"
+  integrity sha512-YzhyDAwA4TaQIhM5go+vCLmU0UikghC/t9DTQYZR2M/UvZ1MdOhPezSDZcjj9uqQJOMqjLcpWtyW2iNINdlatQ==
+
 dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npmjs.org/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
@@ -5516,7 +5526,7 @@ graphile-build-pg@4.12.1, graphile-build-pg@^4.2.0:
     lru-cache ">=4 <5"
     pg-sql2 "4.12.1"
 
-graphile-build@4.12.0:
+graphile-build@4.12.0, graphile-build@^4.9.0:
   version "4.12.0"
   resolved "https://registry.npmjs.org/graphile-build/-/graphile-build-4.12.0.tgz#726bdb1338f13b30cdec35ee3b0c9af8aa7f7dab"
   integrity sha512-P4urOvOf4C8uzuuCq8BjFb+qffQvWUnZamrEyRC/0BfKKPkZhQ/HYqe9M7JkwiH8uFekHaTXDBrdR+OPoZEdhw==
@@ -5540,6 +5550,18 @@ graphile-gen@^0.3.7:
     gql-ast "^0.1.2"
     inflection "^1.12.0"
     pluralize "^8.0.0"
+
+graphile-i18n@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/graphile-i18n/-/graphile-i18n-0.0.1.tgz#85b57d098ec10996a7afbbd96739847432ebc53e"
+  integrity sha512-lNSjHVeIXfIP/TYb3EQg35otRIQrlwhRo9lPRwZy4IGO8UT0VT1FHz6q7CfozLTe+B14JlJUSn9RP8zL3zdxcg==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    accept-language-parser "^1.5.0"
+    dataloader "^2.0.0"
+    envalid "^6.0.2"
+    graphile-build "^4.9.0"
+    graphile-utils "^4.9.0"
 
 graphile-meta-schema@0.2.5:
   version "0.2.5"
@@ -8652,7 +8674,7 @@ pg-ast@^0.1.0:
   dependencies:
     "@babel/runtime" "^7.11.2"
 
-pg-connection-string@^2.0.0, pg-connection-string@^2.5.0:
+pg-connection-string@2.x, pg-connection-string@^2.0.0, pg-connection-string@^2.5.0:
   version "2.5.0"
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.5.0.tgz#538cadd0f7e603fc09a12590f3b8a452c2c0cf34"
   integrity sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==

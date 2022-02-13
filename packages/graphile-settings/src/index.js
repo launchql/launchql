@@ -5,6 +5,10 @@ import PgMetaschema from 'graphile-meta-schema';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
 import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
+import {
+  LangPlugin,
+  additionalGraphQLContextFromRequest as langAdditional
+} from 'graphile-i18n';
 import PgPostgis from '@pyramation/postgis';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
@@ -23,6 +27,7 @@ export const getGraphileSettings = ({
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
 
   plugins.push(LqlTypesPlugin);
+  plugins.push(LangPlugin);
   plugins.push(PostGraphileUploadFieldPlugin);
   plugins.push(PgMetaschema);
   plugins.push(PgManyToMany);
@@ -87,7 +92,12 @@ export const getGraphileSettings = ({
       return false;
     },
     additionalGraphQLContextFromRequest(req, res) {
-      return { req, res, env };
+      return {
+        ...langAdditional(req, res),
+        req,
+        res,
+        env
+      };
     }
   };
 };
