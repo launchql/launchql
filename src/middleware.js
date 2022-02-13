@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 import langParser from 'accept-language-parser';
-import { ACCEPTED_LANGUAGES } from './env';
+import env from './env';
 
 const escapeIdentifier = (str) => `"${str.replace(/"/g, '""')}"`;
 
@@ -52,7 +52,7 @@ export const makeLanguageDataLoaderForTable = (_req) => {
 
 export const additionalGraphQLContextFromRequest = (req, res) => {
   const language = langParser.pick(
-    ACCEPTED_LANGUAGES,
+    env.ACCEPTED_LANGUAGES,
     req.get('accept-language')
   );
 
