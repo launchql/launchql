@@ -66,7 +66,7 @@
     "@pyramation/upload-names": "0.1.0",
     "envalid": "6.0.2",
     "graphile-build": "4.12.0",
-    "graphile-i18n": "0.0.1",
+    "graphile-i18n": "0.0.2",
     "graphile-meta-schema": "0.2.5",
     "graphile-search-plugin": "0.1.2",
     "graphile-simple-inflector": "0.1.1",
