@@ -18,12 +18,15 @@ export const LangPlugin = (builder, options) => {
     );
     const tablesWithLanguageTablesIdInfo = introspection.class
       .filter((table) => table.tags.hasOwnProperty('i18n'))
-      .map((table) => {
-        return {
-          identifier: table.primaryKeyConstraint.keyAttributes[0].name,
-          idType: table.primaryKeyConstraint.keyAttributes[0].type.name
-        };
-      });
+      .reduce((m, table) => {
+        if (table.primaryKeyConstraint?.keyAttributes?.[0]) {
+          m[table.tags.i18n] = {
+            identifier: table.primaryKeyConstraint.keyAttributes[0].name,
+            idType: table.primaryKeyConstraint.keyAttributes[0].type.name
+          };
+        }
+        return m;
+      }, {});
     const languageVariationTables = tablesWithLanguageTables.map((table) =>
       introspection.class.find(
         (t) =>
@@ -36,11 +39,11 @@ export const LangPlugin = (builder, options) => {
     tablesWithLanguageTables.forEach((table, i) => {
       i18nTables[table.tags.i18n] = {
         table: table.name,
-        key: null, // action_id
+        key: null, // fk_id
         connection: inflection.connection(inflection.tableType(table)),
         attrs: {},
         fields: {},
-        keyInfo: tablesWithLanguageTablesIdInfo[i]
+        keyInfo: tablesWithLanguageTablesIdInfo[table.tags.i18n]
       };
       tables[table.name] = table.tags.i18n;
     });
@@ -50,20 +53,22 @@ export const LangPlugin = (builder, options) => {
         .filter((c) => c.type === 'f')
         .filter((c) => c.foreignClass.name === i18nTables[table.name].table);
 
-      if (foreignConstraintsThatMatter.length !== 1)
-        throw new Error(
-          'lang table only supports one foreign key to parent table'
-        );
+      if (foreignConstraintsThatMatter.length !== 1) {
+        // not sure why, but sometimes a version of the table appears in the introspection that doesn't have keys...
+        return;
+      }
 
-      if (foreignConstraintsThatMatter[0].keyAttributes.length !== 1)
-        throw new Error(
-          'lang table only supports one non compound foreign key to parent table'
-        );
+      if (foreignConstraintsThatMatter[0].keyAttributes.length !== 1) {
+        // not sure why, but sometimes a version of the table appears in the introspection that doesn't have keys...
+        return;
+      }
 
       i18nTables[table.name].key =
         foreignConstraintsThatMatter[0].keyAttributes[0].name;
 
       const { identifier, idType } = i18nTables[table.name].keyInfo;
+
+      if (!identifier) return;
 
       table.attributes.forEach((attr) => {
         if ([langPluginLanguageCodeColumn, identifier].includes(attr.name))

@@ -1,8 +1,8 @@
 {
   "name": "graphile-i18n",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Graphile i18n plugin",
-  "author": "true <true>",
+  "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-i18n#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "main/index.js",
