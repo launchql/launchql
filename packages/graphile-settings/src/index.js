@@ -27,7 +27,6 @@ export const getGraphileSettings = ({
   const plugins = [ConnectionFilterPlugin, FulltextFilterPlugin];
 
   plugins.push(LqlTypesPlugin);
-  plugins.push(LangPlugin);
   plugins.push(PostGraphileUploadFieldPlugin);
   plugins.push(PgMetaschema);
   plugins.push(PgManyToMany);
@@ -40,6 +39,8 @@ export const getGraphileSettings = ({
   if (simpleInflection) {
     plugins.push(PgSimpleInflector);
   }
+
+  plugins.push(LangPlugin);
 
   return {
     graphileBuildOptions: {
