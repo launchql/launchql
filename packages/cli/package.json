@@ -84,7 +84,7 @@
     "node-walkup": "1.1.1",
     "pg-promise": "10.11.0",
     "pgsql-parser": "13.1.6",
-    "shelljs": "0.8.4",
+    "shelljs": "0.8.5",
     "tpsql": "0.0.3"
   }
 }
