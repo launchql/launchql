@@ -1,6 +1,7 @@
 import { Client } from 'pg';
 
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';
+import { IntrospectionResult, IntrospectionResultObject, IntrospectionResultQuery } from './types';
 
 // Setup PostgreSQL Client
 const client = new Client({
@@ -38,14 +39,13 @@ const getServerVersionAndIntrospect = async () => {
     const includeExtensions = false;
 
     // Execute the introspection query
-    const introspectionResult = await client.query(introspectionQuery, [
+    const introspectionResult: IntrospectionResultQuery = await client.query(introspectionQuery, [
       namespacesToIntrospect,
       includeExtensions,
     ]);
 
     console.log('Introspection Result:', introspectionResult.rows.map(o=>o.object.kind));
     console.log('Introspection Result:', introspectionResult.rows.map(o=>o.object.name));
-    console.log('Introspection Result:', introspectionResult.rows.map(o=>o.object.namespaceName));
     console.log('Introspection Result:', introspectionResult.rows[0]);
 
   } catch (error) {
