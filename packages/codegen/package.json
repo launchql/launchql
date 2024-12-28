@@ -32,6 +32,9 @@
   },
   "keywords": [],
   "dependencies": {
+    "@babel/generator": "^7.26.3",
+    "@babel/types": "^7.26.3",
+    "babel-types": "^6.26.0",
     "pg": "^8.13.1"
   },
   "devDependencies": {

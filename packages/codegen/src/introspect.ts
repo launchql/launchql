@@ -3,12 +3,11 @@ import { Client } from 'pg';
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';
 import { DatabaseObject } from './types';
 
-// Define the interface for options
 export interface GetIntrospectionRowsOptions {
   connectionString: string; // Database connection string
-  introspectionOptions: IntrospectionOptions;
-  namespacesToIntrospect: string[];
-  includeExtensions?: boolean;
+  introspectionOptions: IntrospectionOptions; // Options for introspection
+  namespacesToIntrospect: string[]; // Namespaces to include
+  includeExtensions?: boolean; // Whether to include extensions, defaults to false
 }
 
 export const getIntrospectionRows = async (
@@ -33,16 +32,19 @@ export const getIntrospectionRows = async (
     // Generate the introspection query
     const introspectionQuery = makeIntrospectionQuery(serverVersionNum, introspectionOptions);
 
-    // Execute the introspection query and return rows
-    const { rows } = await client.query(introspectionQuery, [
+    // Execute the introspection query
+    const queryResult = await client.query(introspectionQuery, [
       namespacesToIntrospect,
       includeExtensions,
     ]);
 
+    // Map the result rows to the `DatabaseObject` type
+    const rows: DatabaseObject[] = queryResult.rows.map((result) => result.object);
+
     return rows;
   } catch (error) {
     console.error('Error during introspection:', error);
-    throw error; // Re-throw the error to the caller
+    throw error;
   } finally {
     await client.end();
   }
