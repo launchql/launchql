@@ -1,7 +1,7 @@
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 
-import { DatabaseObject } from './types';
+import { DatabaseObject } from '../types';
 
 type CodegenOptions = {
   includeTimestamps: boolean; // Add `type Timestamp = string` if true
