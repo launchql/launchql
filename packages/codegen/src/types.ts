@@ -127,7 +127,7 @@ export type Index = {
   description: string | null;
 };
 
-export type IntrospectionResultObject =
+export type DatabaseObject =
   | Namespace
   | Procedure
   | Class
@@ -138,9 +138,9 @@ export type IntrospectionResultObject =
   | Index;
 
 export type IntrospectionResult = {
-  object: IntrospectionResultObject;
+  object: DatabaseObject;
 };
 
-export type IntrospectionResultQuery = {
+export type IntrospectionQueryResult = {
   rows: IntrospectionResult[]
 };
