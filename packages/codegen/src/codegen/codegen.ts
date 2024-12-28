@@ -43,11 +43,14 @@ export const generateCodeTree = (
 
   schemaFiles['schemas/_common.ts'] = commonTypes;
 
-  // Organize interfaces by schema (namespace)
+  // Organize interfaces and classes by schema (namespace)
   databaseObjects.forEach((obj) => {
     if (obj.kind === 'class' && obj.classKind === 'r') {
       const schemaName = obj.namespaceName;
       const interfaceFields: t.TSPropertySignature[] = [];
+      const classFields: t.ClassProperty[] = [];
+      const constructorParams: t.ObjectProperty[] = [];
+      const constructorBody: t.Statement[] = [];
       const usedTypes: Set<string> = new Set();
 
       // Find attributes for the table
@@ -61,16 +64,41 @@ export const generateCodeTree = (
             usedTypes.add(postgresType); // Track UUID or Timestamp if used
           }
 
+          // Add field to interface
           interfaceFields.push(
             t.tsPropertySignature(
               t.identifier(attr.name),
               t.tsTypeAnnotation(fieldType)
             )
           );
+
+          // Add field to class
+          classFields.push(
+            t.classProperty(
+              t.identifier(attr.name),
+              undefined,
+              t.tsTypeAnnotation(fieldType)
+            )
+          );
+
+          // Add to constructor initialization
+          constructorParams.push(
+            t.objectProperty(t.identifier(attr.name), t.identifier(attr.name))
+          );
+
+          constructorBody.push(
+            t.expressionStatement(
+              t.assignmentExpression(
+                '=',
+                t.memberExpression(t.thisExpression(), t.identifier(attr.name)),
+                t.memberExpression(t.identifier('data'), t.identifier(attr.name))
+              )
+            )
+          );
         }
       });
 
-      // Create and export the interface
+      // Create the interface
       const interfaceDeclaration = t.exportNamedDeclaration(
         t.tsInterfaceDeclaration(
           t.identifier(obj.name),
@@ -80,7 +108,33 @@ export const generateCodeTree = (
         )
       );
 
-      // Add the exported interface and imports to the appropriate schema file
+      // Create the class
+      // Create the class
+      const data = t.identifier('data');
+      data.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(obj.name)));
+
+      const classImplements = t.tsExpressionWithTypeArguments(t.identifier(obj.name)); // Create implements separately
+
+      const classDeclaration = t.exportNamedDeclaration(
+        t.classDeclaration(
+          t.identifier(obj.name),
+          null,
+          t.classBody([
+            ...classFields,
+            t.classMethod(
+              'constructor',
+              t.identifier('constructor'),
+              [data],
+              t.blockStatement(constructorBody)
+            ),
+          ])
+        )
+      );
+
+      // Babel doesn't support `implements` in arguments, so we add it manually
+      (classDeclaration.declaration as t.ClassDeclaration).implements = [classImplements];
+
+      // Add to the appropriate schema file
       if (!schemaFiles[`schemas/${schemaName}.ts`]) {
         schemaFiles[`schemas/${schemaName}.ts`] = [];
       }
@@ -120,7 +174,7 @@ export const generateCodeTree = (
         }
       }
 
-      schemaFiles[`schemas/${schemaName}.ts`].push(interfaceDeclaration);
+      schemaFiles[`schemas/${schemaName}.ts`].push(interfaceDeclaration, classDeclaration);
     }
   });
 
