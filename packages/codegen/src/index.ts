@@ -2,6 +2,7 @@ import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect'
 
 (async () => {
   const options: GetIntrospectionRowsOptions = {
+    connectionString: 'postgresql://postgres:password@localhost:5432/mydb',
     introspectionOptions: {
       pgLegacyFunctionsOnly: false,
       pgIgnoreRBAC: true,

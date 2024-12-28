@@ -3,32 +3,25 @@ import { Client } from 'pg';
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';
 import { DatabaseObject } from './types';
 
-// Setup PostgreSQL Client
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'mydb',
-  password: 'password',
-  port: 5432,
-});
-
 // Define the interface for options
 export interface GetIntrospectionRowsOptions {
+  connectionString: string; // Database connection string
   introspectionOptions: IntrospectionOptions;
   namespacesToIntrospect: string[];
   includeExtensions?: boolean;
-  databaseName?: string; // Optional property if you'd like flexibility for different databases
 }
 
 export const getIntrospectionRows = async (
   options: GetIntrospectionRowsOptions
 ): Promise<DatabaseObject[]> => {
   const {
+    connectionString,
     introspectionOptions,
     namespacesToIntrospect,
     includeExtensions = false,
-    databaseName = 'mydb', // Default database name
   } = options;
+
+  const client = new Client({ connectionString });
 
   try {
     await client.connect();
