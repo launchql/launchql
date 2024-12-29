@@ -4,12 +4,11 @@ type WhereCondition = {
   value: any;
 };
 
+type ValueType = 'string' | 'number' | 'boolean' | 'null';
+
 const RESERVED_KEYWORDS = new Set([
-  // Add reserved SQL keywords here (e.g., SELECT, FROM, WHERE, etc.)
   'SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'TABLE', 'USER',
 ]);
-
-type ValueType = 'string' | 'number' | 'boolean' | 'null';
 
 export class QueryBuilder {
   private schemaName: string | null = null;
@@ -17,7 +16,11 @@ export class QueryBuilder {
   private columns: string[] = [];
   private values: Record<string, any> = {};
   private whereConditions: WhereCondition[] = [];
+  private joins: { type: string; schema: string | null; table: string; on: string }[] = [];
+  private groupByColumns: string[] = [];
+  private orderByColumns: { column: string; direction: 'ASC' | 'DESC' }[] = [];
   private limitValue: number | null = null;
+  private parameters: any[] = [];
   private valueTypes: Record<string, ValueType> = {};
 
   schema(schema: string): this {
@@ -51,6 +54,22 @@ export class QueryBuilder {
 
   where(column: string, operator: string, value: any): this {
     this.whereConditions.push({ column, operator, value });
+    this.parameters.push(value);
+    return this;
+  }
+
+  join(type: 'INNER' | 'LEFT' | 'RIGHT' | 'FULL', table: string, on: string, schema: string | null = null): this {
+    this.joins.push({ type, schema, table, on });
+    return this;
+  }
+
+  groupBy(columns: string[]): this {
+    this.groupByColumns.push(...columns);
+    return this;
+  }
+
+  orderBy(column: string, direction: 'ASC' | 'DESC' = 'ASC'): this {
+    this.orderByColumns.push({ column, direction });
     return this;
   }
 
@@ -69,60 +88,101 @@ export class QueryBuilder {
       throw new Error('Table name is not specified.');
     }
 
+    let query;
     if (this.columns.length > 0) {
-      return this.buildSelectQuery();
+      query = this.buildSelectQuery();
     } else if (Object.keys(this.values).length > 0 && this.whereConditions.length > 0) {
-      return this.buildUpdateQuery();
+      query = this.buildUpdateQuery();
     } else if (Object.keys(this.values).length > 0) {
-      return this.buildInsertQuery();
+      query = this.buildInsertQuery();
     } else {
-      return this.buildDeleteQuery();
+      query = this.buildDeleteQuery();
     }
+
+    return query;
   }
 
   private buildSelectQuery(): string {
     const columns = this.columns.map((col) => this.escapeIdentifier(col)).join(', ');
+    const joins = this.buildJoinClause();
     const whereClause = this.buildWhereClause();
+    const groupByClause = this.buildGroupByClause();
+    const orderByClause = this.buildOrderByClause();
     const limitClause = this.limitValue !== null ? ` LIMIT ${this.limitValue}` : '';
-    return `SELECT ${columns} FROM ${this.escapeIdentifier(this.tableName!)}${whereClause}${limitClause};`;
+    const fullyQualifiedTable = this.getFullyQualifiedTable();
+
+    return `SELECT ${columns} FROM ${fullyQualifiedTable}${joins}${whereClause}${groupByClause}${orderByClause}${limitClause};`;
   }
 
   private buildInsertQuery(): string {
     const columns = Object.keys(this.values).map((col) => this.escapeIdentifier(col)).join(', ');
     const values = Object.entries(this.values)
-      .map(([key, value]) => this.formatValue(key, value))
+      .map(([key, value]) => this.formatValue(key, value)) // Use formatValue here
       .join(', ');
-    return `INSERT INTO ${this.escapeIdentifier(this.tableName!)} (${columns}) VALUES (${values});`;
+    const fullyQualifiedTable = this.getFullyQualifiedTable();
+  
+    return `INSERT INTO ${fullyQualifiedTable} (${columns}) VALUES (${values});`;
   }
-
+  
   private buildUpdateQuery(): string {
     const setClause = Object.entries(this.values)
-      .map(([key, value]) => `${this.escapeIdentifier(key)} = ${this.formatValue(key, value)}`)
+      .map(([key, value]) => `${this.escapeIdentifier(key)} = ${this.formatValue(key, value)}`) // Use formatValue here
       .join(', ');
     const whereClause = this.buildWhereClause();
-    return `UPDATE ${this.escapeIdentifier(this.tableName!)} SET ${setClause}${whereClause};`;
+    const fullyQualifiedTable = this.getFullyQualifiedTable();
+  
+    return `UPDATE ${fullyQualifiedTable} SET ${setClause}${whereClause};`;
   }
-
+  
   private buildDeleteQuery(): string {
     const fullyQualifiedTable = this.getFullyQualifiedTable();
     const whereClause = this.buildWhereClause();
     return `DELETE FROM ${fullyQualifiedTable}${whereClause};`;
   }
 
+  private buildJoinClause(): string {
+    return this.joins
+      .map(({ type, schema, table, on }) => {
+        const fullyQualifiedJoinTable = schema
+          ? `${this.escapeIdentifier(schema)}.${this.escapeIdentifier(table)}`
+          : this.escapeIdentifier(table);
+        return ` ${type} JOIN ${fullyQualifiedJoinTable} ON ${on}`;
+      })
+      .join('');
+  }
+
   private buildWhereClause(): string {
     if (this.whereConditions.length === 0) {
       return '';
     }
-
+  
     const conditions = this.whereConditions
       .map(
         ({ column, operator, value }) =>
           `${this.escapeIdentifier(column)} ${operator} ${this.formatValue(column, value)}`
       )
       .join(' AND ');
-
+  
     return ` WHERE ${conditions}`;
   }
+  
+  private buildGroupByClause(): string {
+    if (this.groupByColumns.length === 0) {
+      return '';
+    }
+    const groupBy = this.groupByColumns.map((col) => this.escapeIdentifier(col)).join(', ');
+    return ` GROUP BY ${groupBy}`;
+  }
+  
+  private buildOrderByClause(): string {
+    if (this.orderByColumns.length === 0) {
+      return '';
+    }
+    const orderBy = this.orderByColumns
+      .map(({ column, direction }) => `${this.escapeIdentifier(column)} ${direction}`)
+      .join(', ');
+    return ` ORDER BY ${orderBy}`;
+  }  
 
   private escapeIdentifier(identifier: string): string {
     if (this.needsQuoting(identifier)) {

@@ -112,4 +112,55 @@ describe('QueryBuilder', () => {
       'Table name is not specified.'
     );
   });
+
+  it('should build an INSERT query with inline values', () => {
+    const query = new QueryBuilder()
+      .table('users')
+      .insert({ name: 'Alice', age: 25, is_active: true })
+      .build();
+  
+    expect(query).toBe(
+      `INSERT INTO users (name, age, is_active) VALUES ('Alice', 25, true);`
+    );
+  });
+
+  it('should build a SELECT query with GROUP BY', () => {
+    const query = new QueryBuilder()
+      .table('orders')
+      .select(['customer_id', 'total'])
+      .groupBy(['customer_id'])
+      .build();
+  
+    expect(query).toBe(
+      `SELECT customer_id, total FROM orders GROUP BY customer_id;`
+    );
+  });
+
+  it('should build a SELECT query with ORDER BY', () => {
+    const query = new QueryBuilder()
+      .table('products')
+      .select(['id', 'name', 'price'])
+      .orderBy('price', 'DESC')
+      .orderBy('name', 'ASC')
+      .build();
+  
+    expect(query).toBe(
+      `SELECT id, name, price FROM products ORDER BY price DESC, name ASC;`
+    );
+  });
+  
+
+  xit('should build a SELECT query with JOIN', () => {
+    const query = new QueryBuilder()
+      .table('orders')
+      .select(['orders.id', 'customers.name'])
+      .join('INNER', 'customers', 'orders.customer_id = customers.id')
+      .build();
+  
+    expect(query).toBe(
+      `SELECT orders.id, customers.name FROM orders INNER JOIN customers ON orders.customer_id = customers.id;`
+    );
+  });
+  
+  
 });
