@@ -12,7 +12,7 @@ const RESERVED_KEYWORDS = new Set([
 
 export class QueryBuilder {
   private schemaName: string | null = null;
-  private tableName: string | null = null;
+  private entityName: string | null = null;
   private columns: string[] = [];
   private values: Record<string, any> = {};
   private whereConditions: WhereCondition[] = [];
@@ -22,6 +22,7 @@ export class QueryBuilder {
   private limitValue: number | null = null;
   private parameters: any[] = [];
   private valueTypes: Record<string, ValueType> = {};
+  private isProcedureCall: boolean = false;
 
   schema(schema: string): this {
     this.schemaName = schema;
@@ -29,7 +30,7 @@ export class QueryBuilder {
   }
 
   table(name: string): this {
-    this.tableName = name;
+    this.entityName = name;
     return this;
   }
 
@@ -52,6 +53,31 @@ export class QueryBuilder {
     return this;
   }
 
+  call(procedure: string, args: any[] | Record<string, any> = []): this {
+    this.isProcedureCall = true; // Mark as a procedure call
+    const escapedProcedure = this.escapeIdentifier(procedure);
+    const escapedSchema = this.schemaName ? `${this.escapeIdentifier(this.schemaName)}.` : '';
+  
+    let argsClause = '()';
+  
+    if (Array.isArray(args)) {
+      // Handle array of arguments
+      const formattedArgs = args.map((arg) => this.formatValue('', arg)).join(', ');
+      argsClause = args.length > 0 ? `(${formattedArgs})` : '()';
+    } else if (typeof args === 'object' && args !== null) {
+      // Handle keyed object for named parameters
+      const formattedArgs = Object.entries(args)
+        .map(([key, value]) => `${this.escapeIdentifier(key)} := ${this.formatValue(key, value)}`)
+        .join(', ');
+      argsClause = Object.keys(args).length > 0 ? `(${formattedArgs})` : '()';
+    }
+  
+    this.entityName = `${escapedSchema}${escapedProcedure}${argsClause}`;
+  
+    return this;
+  }
+  
+  
   where(column: string, operator: string, value: any): this {
     this.whereConditions.push({ column, operator, value });
     this.parameters.push(value);
@@ -84,12 +110,15 @@ export class QueryBuilder {
   }
 
   build(): string {
-    if (!this.tableName) {
-      throw new Error('Table name is not specified.');
+    if (!this.entityName) {
+      throw new Error('Table name or procedure name is not specified.');
     }
-
+  
     let query;
-    if (this.columns.length > 0) {
+  
+    if (this.isProcedureCall) {
+      query = this.buildProcedureCall();
+    } else if (this.columns.length > 0) {
       query = this.buildSelectQuery();
     } else if (Object.keys(this.values).length > 0 && this.whereConditions.length > 0) {
       query = this.buildUpdateQuery();
@@ -98,9 +127,10 @@ export class QueryBuilder {
     } else {
       query = this.buildDeleteQuery();
     }
-
+  
     return query;
   }
+  
 
   private buildSelectQuery(): string {
     const columns = this.columns.map((col) => this.escapeIdentifier(col)).join(', ');
@@ -114,6 +144,23 @@ export class QueryBuilder {
     return `SELECT ${columns} FROM ${fullyQualifiedTable}${joins}${whereClause}${groupByClause}${orderByClause}${limitClause};`;
   }
 
+  private buildProcedureCall(): string {
+    if (!this.entityName) {
+      throw new Error('Procedure name is not specified.');
+    }
+  
+    const procedureCall = this.entityName;
+    const columns = this.columns.map((col) => this.escapeIdentifier(col)).join(', ');
+  
+    if (this.columns.length > 0) {
+      // If specific columns are selected
+      return `SELECT ${columns} FROM ${procedureCall};`;
+    }
+  
+    // Default: SELECT procedure()
+    return `SELECT ${procedureCall};`;
+  }
+  
   private buildInsertQuery(): string {
     const columns = Object.keys(this.values).map((col) => this.escapeIdentifier(col)).join(', ');
     const values = Object.entries(this.values)
@@ -230,7 +277,7 @@ export class QueryBuilder {
 
   private getFullyQualifiedTable(): string {
     const escapedSchema = this.schemaName ? this.escapeIdentifier(this.schemaName) : null;
-    const escapedTable = this.escapeIdentifier(this.tableName!);
+    const escapedTable = this.escapeIdentifier(this.entityName!);
 
     if (escapedSchema) {
       return `${escapedSchema}.${escapedTable}`;

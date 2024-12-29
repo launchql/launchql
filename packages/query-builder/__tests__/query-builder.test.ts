@@ -109,7 +109,7 @@ describe('QueryBuilder', () => {
   it('should throw an error if no table is specified', () => {
     const builder = new QueryBuilder();
     expect(() => builder.select(['id']).build()).toThrowError(
-      'Table name is not specified.'
+      'Table name or procedure name is not specified.'
     );
   });
 
@@ -159,6 +159,64 @@ describe('QueryBuilder', () => {
   
     expect(query).toBe(
       `SELECT orders.id, customers.name FROM orders INNER JOIN customers ON orders.customer_id = customers.id;`
+    );
+  });
+
+  it('should build a query to call a procedure without return values', () => {
+    const query = new QueryBuilder()
+      .call('my_procedure', [1, 'test', true])
+      .build();
+  
+    expect(query).toBe(`SELECT my_procedure(1, 'test', true);`);
+  });
+    
+  it('should build a query to call a procedure with specific return columns', () => {
+    const query = new QueryBuilder()
+      .select(['result', 'status'])
+      .call('my_procedure', [42])
+      .build();
+  
+    expect(query).toBe(`SELECT result, status FROM my_procedure(42);`);
+  });
+  
+  it('should build a query to call a function without arguments', () => {
+    const query = new QueryBuilder()
+      .call('my_function')
+      .build();
+  
+    expect(query).toBe(`SELECT my_function();`);
+  });
+
+  it('should build a query to call a procedure with named parameters', () => {
+    const query = new QueryBuilder()
+      .call('my_procedure', { id: 42, status: 'active', is_admin: true })
+      .build();
+  
+    expect(query).toBe(
+      `SELECT my_procedure(id := 42, status := 'active', is_admin := true);`
+    );
+  });
+
+  it('should build a query to call a procedure with specific return values and named parameters', () => {
+    const query = new QueryBuilder()
+      .select(['result', 'status'])
+      .call('my_procedure', { id: 42, is_active: true })
+      .build();
+  
+    expect(query).toBe(
+      `SELECT result, status FROM my_procedure(id := 42, is_active := true);`
+    );
+  });
+  
+  it('with schema should build a query to call a procedure with specific return values and named parameters', () => {
+    const query = new QueryBuilder()
+      .schema('schema')
+      .select(['result', 'status'])
+      .call('my_procedure', { id: 42, is_active: true })
+      .build();
+  
+    expect(query).toBe(
+      `SELECT result, status FROM schema.my_procedure(id := 42, is_active := true);`
     );
   });
   
