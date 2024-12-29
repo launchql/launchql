@@ -91,6 +91,21 @@ describe('QueryBuilder', () => {
     );
   });
 
+  it('should work with complex schema names', () => {
+    const builder = new QueryBuilder();
+    const query = builder
+      .schema('schema-name')
+      .table('inventory')
+      .delete()
+      .where('product_id', '=', '1234')
+      .where('warehouse_id', '=', '5678')
+      .build();
+
+    expect(query).toBe(
+      "DELETE FROM \"schema-name\".inventory WHERE product_id = '1234' AND warehouse_id = '5678';"
+    );
+  });
+
   it('should throw an error if no table is specified', () => {
     const builder = new QueryBuilder();
     expect(() => builder.select(['id']).build()).toThrowError(

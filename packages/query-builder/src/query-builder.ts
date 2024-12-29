@@ -12,12 +12,18 @@ const RESERVED_KEYWORDS = new Set([
 type ValueType = 'string' | 'number' | 'boolean' | 'null';
 
 export class QueryBuilder {
+  private schemaName: string | null = null;
   private tableName: string | null = null;
   private columns: string[] = [];
   private values: Record<string, any> = {};
   private whereConditions: WhereCondition[] = [];
   private limitValue: number | null = null;
   private valueTypes: Record<string, ValueType> = {};
+
+  schema(schema: string): this {
+    this.schemaName = schema;
+    return this;
+  }
 
   table(name: string): this {
     this.tableName = name;
@@ -98,8 +104,9 @@ export class QueryBuilder {
   }
 
   private buildDeleteQuery(): string {
+    const fullyQualifiedTable = this.getFullyQualifiedTable();
     const whereClause = this.buildWhereClause();
-    return `DELETE FROM ${this.escapeIdentifier(this.tableName!)}${whereClause};`;
+    return `DELETE FROM ${fullyQualifiedTable}${whereClause};`;
   }
 
   private buildWhereClause(): string {
@@ -159,5 +166,15 @@ export class QueryBuilder {
     } else {
       throw new Error(`Unsupported value type: ${typeof value}`);
     }
+  }
+
+  private getFullyQualifiedTable(): string {
+    const escapedSchema = this.schemaName ? this.escapeIdentifier(this.schemaName) : null;
+    const escapedTable = this.escapeIdentifier(this.tableName!);
+
+    if (escapedSchema) {
+      return `${escapedSchema}.${escapedTable}`;
+    }
+    return escapedTable;
   }
 }
