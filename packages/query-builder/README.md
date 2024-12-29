@@ -1,57 +1,198 @@
-# query-builder
+# QueryBuilder
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
-    query builder
-</p>
+A robust TypeScript-based SQL query builder that supports dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure/function calls. Designed with flexibility and ease of use in mind, it handles advanced SQL features like `JOIN`, `GROUP BY`, `ORDER BY`, and schema-qualified queries.
 
-## install
+## Features
 
-```sh
-npm install query-builder
-```
-## Table of contents
+- Build SQL queries dynamically for:
+  - **SELECT**
+  - **INSERT**
+  - **UPDATE**
+  - **DELETE**
+  - **Stored procedure calls**
+- Support for:
+  - **Dynamic WHERE clauses**
+  - **JOINs** with schema handling
+  - **GROUP BY**, **ORDER BY**, and **LIMIT**
+  - **Schema-qualified entities**
+  - **Positional and named parameters** for procedure calls
+- SQL-safe identifier and value escaping.
+- Type-safe value formatting based on `string`, `number`, `boolean`, or `null`.
 
-- [query-builder](#query-builder)
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
+## Installation
 
-## Developing
-
-When first cloning the repo:
-
-```sh
-yarn
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
-```
-
-Or if you want to make your dev process smoother, you can run:
+Install via npm:
 
 ```sh
-yarn
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+npm install @launchql/query-builder
 ```
 
-## Related
+## Getting Started
 
-Checkout these related projects:
+### Import the Library
 
-* [@cosmology/telescope](https://github.com/cosmology-tech/telescope) Your Frontend Companion for Building with TypeScript with Cosmos SDK Modules.
-* [@cosmwasm/ts-codegen](https://github.com/CosmWasm/ts-codegen) Convert your CosmWasm smart contracts into dev-friendly TypeScript classes.
-* [chain-registry](https://github.com/cosmology-tech/chain-registry) Everything from token symbols, logos, and IBC denominations for all assets you want to support in your application.
-* [cosmos-kit](https://github.com/cosmology-tech/cosmos-kit) Experience the convenience of connecting with a variety of web3 wallets through a single, streamlined interface.
-* [create-cosmos-app](https://github.com/cosmology-tech/create-cosmos-app) Set up a modern Cosmos app by running one command.
-* [interchain-ui](https://github.com/cosmology-tech/interchain-ui) The Interchain Design System, empowering developers with a flexible, easy-to-use UI kit.
-* [starship](https://github.com/cosmology-tech/starship) Unified Testing and Development for the Interchain.
+```ts
+import { QueryBuilder } from '@launchql/query-builder';
+```
 
-## Credits
+## Usage
 
-🛠 Built by Cosmology — if you like our tools, please consider delegating to [our validator ⚛️](https://cosmology.zone/validator)
+### SELECT Query
 
+```ts
+const query = new QueryBuilder()
+  .table('users')
+  .select(['id', 'name', 'email'])
+  .where('age', '>', 18)
+  .limit(10)
+  .build();
+
+console.log(query);
+// Output: SELECT id, name, email FROM users WHERE age > 18 LIMIT 10;
+```
+
+---
+
+### INSERT Query
+
+```ts
+const query = new QueryBuilder()
+  .table('users')
+  .insert({ name: 'John', email: 'john@example.com', age: 30 })
+  .build();
+
+console.log(query);
+// Output: INSERT INTO users (name, email, age) VALUES ('John', 'john@example.com', 30);
+```
+
+---
+
+### UPDATE Query
+
+```ts
+const query = new QueryBuilder()
+  .table('users')
+  .update({ name: 'John Doe' })
+  .where('id', '=', '1')
+  .build();
+
+console.log(query);
+// Output: UPDATE users SET name = 'John Doe' WHERE id = '1';
+```
+
+---
+
+### DELETE Query
+
+```ts
+const query = new QueryBuilder()
+  .table('users')
+  .delete()
+  .where('id', '=', '1')
+  .build();
+
+console.log(query);
+// Output: DELETE FROM users WHERE id = '1';
+```
+
+---
+
+### Procedure Call (Positional Parameters)
+
+```ts
+const query = new QueryBuilder()
+  .call('my_procedure', [1, 'test', true])
+  .build();
+
+console.log(query);
+// Output: SELECT my_procedure(1, 'test', true);
+```
+
+---
+
+### Procedure Call (Named Parameters)
+
+```ts
+const query = new QueryBuilder()
+  .call('my_procedure', { id: 42, status: 'active', is_admin: true })
+  .build();
+
+console.log(query);
+// Output: SELECT my_procedure(id := 42, status := 'active', is_admin := true);
+```
+
+### Procedure Call with Schema
+
+```ts
+const query = new QueryBuilder()
+  .schema('public')
+  .call('my_procedure', { id: 42, is_active: true })
+  .build();
+
+console.log(query);
+// Output: SELECT public.my_procedure(id := 42, is_active := true);
+```
+
+### JOIN Query
+
+```ts
+const query = new QueryBuilder()
+  .table('orders')
+  .select(['orders.id', 'customers.name'])
+  .join('INNER', 'customers', 'orders.customer_id = customers.id')
+  .build();
+
+console.log(query);
+// Output: SELECT orders.id, customers.name FROM orders INNER JOIN customers ON orders.customer_id = customers.id;
+```
+
+### GROUP BY Query
+
+```ts
+const query = new QueryBuilder()
+  .table('orders')
+  .select(['customer_id', 'SUM(total) AS total_sum'])
+  .groupBy(['customer_id'])
+  .build();
+
+console.log(query);
+// Output: SELECT customer_id, SUM(total) AS total_sum FROM orders GROUP BY customer_id;
+```
+
+### ORDER BY Query
+
+```ts
+const query = new QueryBuilder()
+  .table('products')
+  .select(['id', 'name', 'price'])
+  .orderBy('price', 'DESC')
+  .orderBy('name', 'ASC')
+  .build();
+
+console.log(query);
+// Output: SELECT id, name, price FROM products ORDER BY price DESC, name ASC;
+```
+
+## Error Handling
+
+### No Table or Procedure Specified
+
+If no table or procedure is specified, `build()` will throw an error:
+
+```ts
+const query = new QueryBuilder();
+query.select(['id']).build(); // Throws Error
+
+// Error: Table name or procedure name is not specified.
+```
+
+## Running Tests
+
+Tests are written in Jest. Run the test suite with:
+
+```sh
+npm test:watch
+```
 
 ## Disclaimer
 
