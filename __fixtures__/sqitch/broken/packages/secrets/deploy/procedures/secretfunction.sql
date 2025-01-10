@@ -1,4 +1,5 @@
 -- Deploy not_secrets:procedures/secretfunction to pg
+-- BROKEN BECAUSE it's not_secrets, see ^^^
 
 BEGIN;
 
