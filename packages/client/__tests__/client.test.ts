@@ -5,19 +5,13 @@ import { Database } from '../src';
 
 const db = new Database();
 
-afterAll(() => {
-  db.shutdown();
+afterAll(async () => {
+  await db.shutdown();
 });
 
-it('getClient', (done) => {
-  db.withTransaction(async (client: PoolClient) => {
-    try {
-      const result = await client.query('SELECT 1');
-      expect(result.rows.length).toBe(1);
-      done();
-    } catch (error) {
-      console.error('Error executing query:', error);
-      done(error); 
-    }
+it('getClient', async () => {
+  await db.withTransaction(async (client: PoolClient) => {
+    const result = await client.query('SELECT 1');
+    expect(result.rows.length).toBe(1);
   });
 });
