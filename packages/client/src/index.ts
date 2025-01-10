@@ -1,5 +1,6 @@
 import { Pool, PoolClient } from 'pg';
 
+import env from './env';
 export class Database {
   private static instance: Database;
   private pool: Pool;
@@ -10,18 +11,26 @@ export class Database {
     }
 
     // Lazy load `env` to prevent early crashes
-    const env = require('./env').default; // Use `require` instead of `import`
+    // const env = require('./env'); // Use `require` instead of `import`
 
+    console.log('DATABASE_URL:', env.DATABASE_URL); // Debug
     const pgPoolConfig = {
       connectionString: env.DATABASE_URL,
     };
+  
     this.pool = new Pool(pgPoolConfig);
-
+  
+    // Handle pool errors
+    this.pool.on('error', (err) => {
+      console.error('Unexpected error on idle client', err); // Debug
+      process.exit(-1);
+    });
+  
     // Ensure the pool is closed on process termination
     process.on('SIGTERM', async () => {
       await this.shutdown();
     });
-
+  
     Database.instance = this;
     return this;
   }
