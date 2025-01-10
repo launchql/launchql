@@ -1,0 +1,7 @@
+%syntax-version=1.0.0
+  %project=another
+  %uri=another
+
+  
+schemas/myschema/schema 2018-09-26T20:26:53Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # add schemas/myschema/schema
+@0.0.1 2018-09-26T20:27:35Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # tag 0.0.1

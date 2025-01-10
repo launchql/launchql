@@ -1,0 +1,8 @@
+# another extension
+comment = 'another extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/another'
+requires = 'plpgsql'
+relocatable = false
+superuser = false
+  

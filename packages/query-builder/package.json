@@ -1,8 +1,8 @@
 {
   "name": "@launchql/query-builder",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "query builder",
+  "description": "PostgreSQL Query Builder",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

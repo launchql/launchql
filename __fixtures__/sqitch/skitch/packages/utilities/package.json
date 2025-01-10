@@ -1,0 +1,26 @@
+{
+  "name": "pg-utilities",
+  "version": "0.0.1",
+  "description": "PostgreSQL utilities",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "private": true,
+  "scripts": {
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 launchql-templatedb && jest --watch"
+  },
+  "devDependencies": {
+    "@types/jest": "21.1.0",
+    "@types/node": "8.0.0",
+    "babel-cli": "6.24.1",
+    "babel-jest": "20.0.3",
+    "babel-preset-react-app": "3.0.0",
+    "dotenv": "5.0.1",
+    "jest": "20.0.4"
+  },
+  "dependencies": {
+    "pg": "6.4.0",
+    "pg-promise": "6.10.3",
+    "@launchql/db-testing": "latest",
+    "uuid": "3.1.0"
+  }
+}
