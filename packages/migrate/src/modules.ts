@@ -40,13 +40,13 @@ const parseControlFile = (filePath: string, basePath: string): Module => {
 /**
  * List all modules by parsing .control files in the provided directory.
  */
-export const listModules = (basePath: string): ModuleMap => {
-  const moduleFiles = glob(`${basePath}/**/*.control`).filter(
+export const listModules = (workspaceDir: string): ModuleMap => {
+  const moduleFiles = glob(`${workspaceDir}/**/*.control`).filter(
     (file: string) => !/node_modules/.test(file)
   );
 
   return moduleFiles.reduce<ModuleMap>((acc: ModuleMap, file: string) => {
-    const module = parseControlFile(file, basePath);
+    const module = parseControlFile(file, workspaceDir);
     acc[basename(file).split('.control')[0]] = module;
     return acc;
   }, {});
