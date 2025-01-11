@@ -2,8 +2,6 @@ import { join } from 'path';
 
 import { getPlan } from '../src/plans';
 import { FIXTURES_PATH } from '../test-utils';
-import { getDeps } from '../src/deps';
-import { getExtensionName } from '../src/extensions';
 
 const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/launchql');
 

@@ -34,6 +34,8 @@
     "@types/glob": "^8.1.0",
     "@types/rimraf": "^4.0.5",
     "glob": "^11.0.1",
+    "mkdirp": "^3.0.1",
+    "pgsql-parser": "^13.16.0",
     "rimraf": "^6.0.1"
   }
 }
