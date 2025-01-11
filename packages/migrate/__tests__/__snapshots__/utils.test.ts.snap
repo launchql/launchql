@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sqitch modules should create dependencies for cross-project requires with changes 1`] = `
+{
+  "native": [
+    "plpgsql",
+    "uuid-ossp",
+  ],
+  "sqitch": [
+    {
+      "latest": "procedures/generate_secret",
+      "name": "totp",
+      "version": "0.0.1",
+    },
+    {
+      "latest": "procedures/verify_view",
+      "name": "pg-verify",
+      "version": "0.0.1",
+    },
+  ],
+}
+`;
+
+exports[`sqitch modules should get modules 1`] = `
+{
+  "pg-utilities": {
+    "path": "packages/utilities",
+    "requires": [
+      "plpgsql",
+    ],
+    "version": "0.0.1",
+  },
+  "pg-verify": {
+    "path": "packages/verify",
+    "requires": [
+      "plpgsql",
+      "uuid-ossp",
+      "pg-utilities",
+    ],
+    "version": "0.0.1",
+  },
+  "secrets": {
+    "path": "packages/secrets",
+    "requires": [
+      "plpgsql",
+      "uuid-ossp",
+      "totp",
+      "pg-verify",
+    ],
+    "version": "0.0.1",
+  },
+  "totp": {
+    "path": "packages/totp",
+    "requires": [
+      "plpgsql",
+      "uuid-ossp",
+      "pgcrypto",
+      "pg-verify",
+    ],
+    "version": "0.0.1",
+  },
+  "utils": {
+    "path": "packages/utils",
+    "requires": [
+      "plpgsql",
+      "uuid-ossp",
+      "totp",
+      "pg-verify",
+    ],
+    "version": "0.0.1",
+  },
+}
+`;
