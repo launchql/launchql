@@ -1,0 +1,424 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mimetypes good files 1`] = `
+{
+  ".gitignore": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  ".travis.yml": {
+    "contentType": "text/yaml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "LICENSE": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "ai.ai": {
+    "contentType": "application/pdf",
+    "magic": {
+      "charset": "iso-8859-1",
+      "type": "application/pdf",
+    },
+  },
+  "apng.png": {
+    "contentType": "image/png",
+    "magic": {
+      "charset": "binary",
+      "type": "image/png",
+    },
+  },
+  "bmp.bmp": {
+    "contentType": "image/x-ms-bmp",
+    "magic": {
+      "charset": "binary",
+      "type": "image/x-ms-bmp",
+    },
+  },
+  "build.js": {
+    "contentType": "application/javascript",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "build.js.map": {
+    "contentType": "application/json",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "css.css": {
+    "contentType": "text/css",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "csv.csv": {
+    "contentType": "text/csv",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "docs.js": {
+    "contentType": "application/javascript",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "docs.jsx": {
+    "contentType": "text/jsx",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "docx.docx": {
+    "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "magic": {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+  },
+  "dwg.dwg": {
+    "contentType": "image/vnd.dwg",
+    "magic": {
+      "charset": "binary",
+      "type": "image/vnd.dwg",
+    },
+  },
+  "dxf.dxf": {
+    "contentType": "image/vnd.dxf",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "emf.emf": {
+    "contentType": "image/emf",
+    "magic": {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "epub.epub": {
+    "contentType": "application/epub+zip",
+    "magic": {
+      "charset": "binary",
+      "type": "application/epub+zip",
+    },
+  },
+  "font.otf": {
+    "contentType": "application/x-font-opentype",
+    "magic": {
+      "charset": "binary",
+      "type": "application/vnd.ms-opentype",
+    },
+  },
+  "font.ttf": {
+    "contentType": "application/x-font-ttf",
+    "magic": {
+      "charset": "binary",
+      "type": "application/font-sfnt",
+    },
+  },
+  "font.woff": {
+    "contentType": "application/font-woff",
+    "magic": {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "font.woff2": {
+    "contentType": "application/font-woff2",
+    "magic": {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "gif-w-alpha.gif": {
+    "contentType": "image/gif",
+    "magic": {
+      "charset": "binary",
+      "type": "image/gif",
+    },
+  },
+  "gif.gif": {
+    "contentType": "image/gif",
+    "magic": {
+      "charset": "binary",
+      "type": "image/gif",
+    },
+  },
+  "jpg.jpg": {
+    "contentType": "image/jpeg",
+    "magic": {
+      "charset": "binary",
+      "type": "image/jpeg",
+    },
+  },
+  "json.json": {
+    "contentType": "application/json",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "less.less": {
+    "contentType": "text/less",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "lock.lock": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "md.md": {
+    "contentType": "text/markdown",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "mp4.mp4": {
+    "contentType": "video/mp4",
+    "magic": {
+      "charset": "binary",
+      "type": "video/mp4",
+    },
+  },
+  "ods.ods": {
+    "contentType": "application/vnd.oasis.opendocument.spreadsheet",
+    "magic": {
+      "charset": "binary",
+      "type": "application/vnd.oasis.opendocument.spreadsheet",
+    },
+  },
+  "odt.odt": {
+    "contentType": "application/vnd.oasis.opendocument.text",
+    "magic": {
+      "charset": "binary",
+      "type": "application/vnd.oasis.opendocument.text",
+    },
+  },
+  "pct.pct": {
+    "contentType": "image/x-pict",
+    "magic": {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "pdf.pdf": {
+    "contentType": "application/pdf",
+    "magic": {
+      "charset": "binary",
+      "type": "application/pdf",
+    },
+  },
+  "png-w-alpha.png": {
+    "contentType": "image/png",
+    "magic": {
+      "charset": "binary",
+      "type": "image/png",
+    },
+  },
+  "psd.psd": {
+    "contentType": "image/vnd.adobe.photoshop",
+    "magic": {
+      "charset": "binary",
+      "type": "image/vnd.adobe.photoshop",
+    },
+  },
+  "scss.scss": {
+    "contentType": "text/x-scss",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "shellscript": {
+    "contentType": "text/x-shellscript",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/x-shellscript",
+    },
+  },
+  "sql.sql": {
+    "contentType": "application/x-sql",
+    "magic": {
+      "charset": "utf-8",
+      "type": "text/plain",
+    },
+  },
+  "svg-with-alpha-and-text.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+  },
+  "svg.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+  },
+  "svgo.yaml": {
+    "contentType": "text/yaml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "swf.swf": {
+    "contentType": "application/x-shockwave-flash",
+    "magic": {
+      "charset": "binary",
+      "type": "application/x-shockwave-flash",
+    },
+  },
+  "tga.tga": {
+    "contentType": "image/x-tga",
+    "magic": {
+      "charset": "binary",
+      "type": "image/x-tga",
+    },
+  },
+  "tif.tif": {
+    "contentType": "image/tiff",
+    "magic": {
+      "charset": "binary",
+      "type": "image/tiff",
+    },
+  },
+  "todo-0.1.0.tgz": {
+    "contentType": "application/x-gzip",
+    "magic": {
+      "charset": "binary",
+      "type": "application/x-gzip",
+    },
+  },
+  "tsv.tsv": {
+    "contentType": "text/tab-separated-values",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "txt.txt": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "typescript.ts": {
+    "contentType": "text/x-typescript",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "typescript.tsx": {
+    "contentType": "text/x-typescript",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "wmf.wmf": {
+    "contentType": "image/wmf",
+    "magic": {
+      "charset": "binary",
+      "type": "application/octet-stream",
+    },
+  },
+  "xlsx.xlsx": {
+    "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "magic": {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+  },
+  "zip.zip": {
+    "contentType": "application/zip",
+    "magic": {
+      "charset": "binary",
+      "type": "application/zip",
+    },
+  },
+}
+`;
+
+exports[`mimetypes malicious files 1`] = `
+{
+  "html-as-jpg.jpg": {
+    "contentType": "text/html",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/html",
+    },
+  },
+  "image-as-html.html": {
+    "contentType": "image/jpeg",
+    "magic": {
+      "charset": "binary",
+      "type": "image/jpeg",
+    },
+  },
+  "js-as-image.jpg": {
+    "contentType": "image/jpeg",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "js-as-svg.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+  "svg-with-script-tag-guya.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "image/svg+xml",
+    },
+  },
+  "svg-with-script-tag.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "image/svg",
+    },
+  },
+  "xml-as-xvg.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/plain",
+    },
+  },
+}
+`;

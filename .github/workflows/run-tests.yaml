@@ -4,35 +4,38 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Label of the container job
   container-job:
-    # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
-    # Docker Hub image that `container-job` executes in
-    # container: node:latest
-    # container: pyramation/node-gyp
     container: node:20.12.0-alpine
 
-    # Service containers to run with `container-job`
     services:
-      # Label used to access the service container
-      postgres:
-        # Docker Hub image
+      pg_db:
         image: pyramation/postgis
-        # Provide the password for postgres
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          # Maps tcp port 5432 on service container to the host
           - 5432:5432
 
+      minio_cdn:
+        image: minio/minio:edge-cicd
+        env:
+          MINIO_ROOT_USER: minioadmin
+          MINIO_ROOT_PASSWORD: minioadmin
+        ports:
+          - 9000:9000
+          - 9001:9001
+        options: >-
+          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -51,8 +54,9 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: pg_db
           POSTGRES_PORT: 5432
+          DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
 
       - name: launchql/orm
         run: cd ./packages/orm && yarn test
@@ -65,3 +69,27 @@ jobs:
 
       - name: launchql/codegen
         run: cd ./packages/codegen && yarn test
+
+      - name: launchql/content-type-stream
+        run: cd ./packages/content-type-stream && yarn test
+
+      - name: launchql/s3-streamer
+        run: cd ./packages/s3-streamer && yarn test
+        env:
+          MINIO_ENDPOINT: http://minio_cdn:9000
+          AWS_ACCESS_KEY: minioadmin
+          AWS_SECRET_KEY: minioadmin
+          AWS_REGION: us-east-1
+          BUCKET_NAME: test-bucket
+
+      - name: launchql/stream-to-s3
+        run: cd ./packages/stream-to-s3 && yarn test
+        env:
+          MINIO_ENDPOINT: http://minio_cdn:9000
+          AWS_ACCESS_KEY: minioadmin
+          AWS_SECRET_KEY: minioadmin
+          AWS_REGION: us-east-1
+          BUCKET_NAME: test-bucket
+          
+      - name: launchql/upload-names
+        run: cd ./packages/upload-names && yarn test

@@ -1,25 +1,31 @@
-process.env.DATABASE_URL = 'postgres://postgres:password@localhost:5432/postgres';
-jest.setTimeout(30000); // Set timeout to 30 seconds for this test file
-
+process.env.DATABASE_URL = process.env.DATABASE_URL ?? 'postgres://postgres:password@localhost:5432/postgres';
 import { PoolClient } from 'pg';
-
 import { Database } from '../src';
 
-const db = new Database();
+let client: Database;
 
-afterAll(() => {
-  db.shutdown();
+beforeAll(() => {
+  client = new Database();
 });
 
-it('getClient', (done) => {
-  db.withTransaction(async (client: PoolClient) => {
-    try {
+afterAll(async () => {
+  await client.shutdown();
+});
+
+it('getClient', async () => {
+  try {
+    await client.withTransaction(async (client: PoolClient) => {
       const result = await client.query('SELECT 1');
-      expect(result.rows.length).toBe(1);
-      done();
-    } catch (error) {
-      console.error('Error executing query:', error);
-      done(error); 
+      expect(result.rows[0]['?column?'] || result.rows[0].count).toBe(1);
+    });
+  } catch (e) {
+    if (e instanceof AggregateError) {
+      for (const err of e.errors) {
+        console.error('AggregateError item:', err);
+      }
+    } else {
+      console.error('Test failure:', e);
     }
-  });
+    throw e;
+  }
 });
