@@ -34,7 +34,7 @@ jobs:
           --health-retries 5
         ports:
           - 9000:9000
-        command: server /data
+        args: server /data
 
     steps:
       - name: checkout
