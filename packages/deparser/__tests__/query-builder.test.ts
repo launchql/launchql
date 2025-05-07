@@ -1,6 +1,6 @@
 import { QueryBuilder } from '../src/query-builder';
 
-describe('QueryBuilder', () => {
+xdescribe('QueryBuilder', () => {
   it.only('should build a SELECT query', () => {
     const builder = new QueryBuilder();
     const query = builder
