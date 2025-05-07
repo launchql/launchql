@@ -17,9 +17,15 @@ export const env = cleanEnv(process.env, {
   TRUST_PROXY: bool({ default: false }),
   PORT: port({ default: 3000 }),
   // is this PORT?
-  SERVER_PORT: port({ default: 5000 }),
+  SERVER_PORT: port({ default: 3333 }),
   USE_SIMPLE_INFLECTION: bool({ default: true }),
   USE_OPPOSITE_BASENAMES: bool({ default: true }),
   USE_POSTGIS: bool({ default: true }),
+
+  AWS_REGION: str({ default: 'aws_region' }),
+  AWS_SECRET_KEY: str({ default: 'aws_secret' }),
+  AWS_ACCESS_KEY: str({ default: 'aws_secret' }),
+  MINIO_ENDPOINT: str({ default: 'minio' }),
+  BUCKET_NAME: str({ default: 'bucket' }),
 
 });

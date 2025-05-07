@@ -15,7 +15,7 @@ import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import PgSearch from 'graphile-search-plugin';
 import LqlTypesPlugin from '../plugins/types';
-// import resolveUpload from './resolvers/uploads';
+import resolveUpload from '../resolvers/upload';
 
 interface GraphileSettingsInput {
   host?: string;

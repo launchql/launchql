@@ -1,6 +1,6 @@
-import Streamer from '@pyramation/s3-streamer';
-import uploadNames from '@pyramation/upload-names';
-import { env } from '../env';
+// TODO get real uploads working 
+
+import uploadNames from '../for-npm/upload-names';
 import type { ReadStream } from 'fs';
 
 interface Upload {
@@ -15,48 +15,6 @@ interface UploadPluginInfo {
     tags: Record<string, string>;
     type?: string;
   };
-}
-
-interface UploadResult {
-  upload: {
-    Location: string;
-  };
-  contentType: string;
-  magic: {
-    charset: string;
-  };
-}
-
-function ensureVar(v: unknown, name: string): asserts v {
-  if (!v) throw new Error(`REQUIRES env var: ${name}`);
-}
-
-let streamer: Streamer;
-
-function getUploader(): Streamer {
-  if (streamer) return streamer;
-
-  const {
-    BUCKET_NAME,
-    AWS_REGION,
-    AWS_SECRET_KEY,
-    AWS_ACCESS_KEY,
-    MINIO_ENDPOINT
-  } = env;
-
-  ensureVar(BUCKET_NAME, 'BUCKET_NAME');
-  ensureVar(AWS_ACCESS_KEY, 'AWS_ACCESS_KEY');
-  ensureVar(AWS_SECRET_KEY, 'AWS_SECRET_KEY');
-
-  streamer = new Streamer({
-    defaultBucket: BUCKET_NAME,
-    AWS_REGION,
-    AWS_SECRET_KEY,
-    AWS_ACCESS_KEY,
-    MINIO_ENDPOINT
-  });
-
-  return streamer;
 }
 
 export default async function resolveUpload(
@@ -76,25 +34,15 @@ export default async function resolveUpload(
     uploadPlugin: { tags, type }
   } = info;
 
-  const streamer = getUploader();
-  const readStream = upload.createReadStream();
-  const { filename, mimetype, encoding } = upload;
+  const { filename, mimetype } = upload;
 
   const rand =
     Math.random().toString(36).substring(2, 7) +
     Math.random().toString(36).substring(2, 7);
 
   const key = rand + '-' + uploadNames(filename);
+  const url = `https://mock-bucket.local/${key}`;
 
-  const result: UploadResult = await streamer.upload({
-    readStream,
-    filename,
-    key,
-    bucket: env.BUCKET_NAME
-  });
-
-  const contentType = result.contentType || mimetype;
-  const url = result.upload.Location;
   const typ = type || tags.type;
 
   const mimetypes = tags.mime
@@ -103,11 +51,11 @@ export default async function resolveUpload(
     ? ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml']
     : [];
 
-  const allowed = !mimetypes.length || mimetypes.includes(contentType);
+  const allowed = !mimetypes.length || mimetypes.includes(mimetype);
 
   if (!allowed) {
     throw new Error(
-      `Upload rejected: MIME type "${contentType}" is not allowed. Expected one of: ${mimetypes.join(', ')}.`
+      `Upload rejected: MIME type "${mimetype}" is not allowed. Expected one of: ${mimetypes.join(', ')}.`
     );
   }
 
@@ -116,7 +64,7 @@ export default async function resolveUpload(
     case 'upload':
       return {
         filename,
-        mime: contentType,
+        mime: mimetype,
         url
       };
     case 'attachment':

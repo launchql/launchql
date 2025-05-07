@@ -31,7 +31,7 @@ export const graphile =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Placeholder: Replace with your actual dynamic logic
-      const dbname: string = (req as any).api?.dbname || 'launchql-db';
+      const dbname: string = (req as any).api?.dbname || 'example_db';
       const anonRole: string = (req as any).api?.anonRole || 'anonymous';
       const roleName: string = (req as any).api?.roleName || 'app_user';
       const key: string = (req as any).svc_key || dbname;
@@ -50,9 +50,10 @@ export const graphile =
       }
 
       if (graphileCache.has(key)) {
-        console.log('NOT IMPL IN 2.0');
-        // const { handler } = graphileCache.get(key)!;
-        // return handler(req, res, next);
+        // @ts-ignore
+        const { handler } = graphileCache.get(key)!;
+        console.log(handler);
+        return handler(req, res, next);
       }
 
       const options = getSettings({
@@ -85,7 +86,8 @@ export const graphile =
 
         if ((req as any).token?.user_id) {
           return {
-            role: roleName,
+            // TEMPORARY PUT THIS BACK!
+            // role: roleName,
             'jwt.claims.token_id': (req as any).token.id,
             'jwt.claims.user_id': (req as any).token.user_id,
             ...context
@@ -93,7 +95,8 @@ export const graphile =
         }
 
         return {
-          role: anonRole,
+        // TEMPORARY PUT THIS BACK!
+        //   role: anonRole,
           ...context
         };
       };

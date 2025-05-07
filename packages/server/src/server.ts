@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 // import { graphqlUploadExpress } from 'graphql-upload';
-import { middleware as parseDomains } from './for-npm/url-domains'
+// import { middleware as parseDomains } from '../for-npm/url-domains'
 import requestIp from 'request-ip';
 
 import { env } from './env';
@@ -58,11 +58,11 @@ export class Server {
     // Base middleware
     healthz(app);
     // @ts-ignore
-    trustProxy(app, env);
+    // trustProxy(app, env);
     app.use(poweredBy('launchql'));
     // app.use(graphqlUploadExpress());
-    app.use(parseDomains());
-    app.use(requestIp.mw());
+    // app.use(parseDomains());
+    // app.use(requestIp.mw());
     
     // App-specific middleware
     // app.use(api);
