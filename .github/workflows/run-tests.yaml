@@ -23,19 +23,19 @@ jobs:
           - 5432:5432
 
       minio:
-        image: minio/minio
+        image: minio/minio:edge-cicd
         env:
-          MINIO_ACCESS_KEY: minioadmin
-          MINIO_SECRET_KEY: minioadmin
+          MINIO_ROOT_USER: minioadmin
+          MINIO_ROOT_PASSWORD: minioadmin
+        ports:
+          - 9000:9000
+          - 9001:9001
         options: >-
-          --health-cmd "curl -f http://localhost:9000/minio/health/ready || exit 1"
+          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 9000:9000
-        args: server /data
-
+    
     steps:
       - name: checkout
         uses: actions/checkout@v4
