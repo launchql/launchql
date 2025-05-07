@@ -9,7 +9,7 @@ jobs:
     container: node:20.12.0-alpine
 
     services:
-      postgres:
+      pg_db:
         image: pyramation/postgis
         env:
           POSTGRES_USER: postgres
@@ -22,7 +22,7 @@ jobs:
         ports:
           - 5432:5432
 
-      minio:
+      minio_cdn:
         image: minio/minio:edge-cicd
         env:
           MINIO_ROOT_USER: minioadmin
@@ -54,9 +54,10 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: pg_db
           POSTGRES_PORT: 5432
-          MINIO_ENDPOINT: http://localhost:9000
+          DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
+          MINIO_ENDPOINT: http://minio_cdn:9000
           MINIO_ACCESS_KEY: minioadmin
           MINIO_SECRET_KEY: minioadmin
 

@@ -1,4 +1,4 @@
-process.env.DATABASE_URL = 'postgres://postgres:password@localhost:5432/postgres';
+process.env.DATABASE_URL = process.env.DATABASE_URL ?? 'postgres://postgres:password@localhost:5432/postgres';
 import { PoolClient } from 'pg';
 import { Database } from '../src';
 
