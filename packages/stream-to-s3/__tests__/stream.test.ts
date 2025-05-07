@@ -64,6 +64,13 @@ describe('uploads', () => {
       // @ts-ignore
       res[key] = results;
     }
+    
+    Object.keys(res).map((k)=>{
+      // CI/CD matching
+      // @ts-ignore
+      res[k].upload.Location = res[k].upload.Location.replace(/localhost:9000/g, 'minio_cdn:9000');
+    })
+
     expect(res).toMatchSnapshot();
   });
 });
