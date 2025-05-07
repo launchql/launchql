@@ -2,21 +2,33 @@ import dotenv from 'dotenv';
 import { sync as glob } from 'glob';
 import { createReadStream } from 'fs';
 import { basename } from 'path';
-
+import S3 from 'aws-sdk/clients/s3';
 import { Streamer, getClient, upload } from '../src';
 import { cleanEnv, str, url } from 'envalid';
 import type { AsyncUploadResult } from '../src/utils';
+import { createS3Bucket } from '@launchql/s3-utils';
 
 // Manually load the dotenv file
 dotenv.config({ path: __dirname + '/../../../.env.minio.env' });
 
-const minioEnv = cleanEnv(process.env, {
-  BUCKET_NAME: str(),
+const testEnv = cleanEnv(process.env, {
+  BUCKET_NAME: str({ default: 'test-bucket' }),
+  AWS_ACCESS_KEY: str({ default: 'minioadmin' }),
   AWS_REGION: str({ default: 'us-east-1' }),
-  AWS_SECRET_KEY: str(),
-  AWS_ACCESS_KEY: str(),
+  AWS_SECRET_KEY: str({ default: 'minioadmin' }),
   MINIO_ENDPOINT: url({ default: undefined })
 });
+
+// Initialize S3 client
+const s3Client = new S3({
+  accessKeyId: testEnv.AWS_ACCESS_KEY,
+  secretAccessKey: testEnv.AWS_SECRET_KEY,
+  region: testEnv.AWS_REGION,
+  endpoint: testEnv.MINIO_ENDPOINT,
+  s3ForcePathStyle: true,
+  signatureVersion: 'v4'
+});
+
 
 const {
   BUCKET_NAME,
@@ -24,9 +36,17 @@ const {
   AWS_SECRET_KEY,
   AWS_ACCESS_KEY,
   MINIO_ENDPOINT
-} = minioEnv;
+} = testEnv;
 
 jest.setTimeout(3000000);
+
+// Create bucket before tests
+beforeAll(async () => {
+  process.env.IS_MINIO = 'true'; // Ensure MinIO behavior in createS3Bucket
+  const result = await createS3Bucket(s3Client, testEnv.BUCKET_NAME);
+  if (!result.success) throw new Error('Failed to create test S3 bucket');
+});
+
 
 const files = []
   .concat(glob(__dirname + '/../../../__fixtures__/kitchen-sink/**'))

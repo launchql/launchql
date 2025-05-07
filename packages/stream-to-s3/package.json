@@ -30,6 +30,9 @@
     "test:watch": "jest --watch"
   },
   "keywords": [],
+  "devDependencies": {
+    "@launchql/s3-utils": "0.0.1"
+  },
   "dependencies": {
     "aws-sdk": "^2.1692.0",
     "envalid": "^8.0.0",
