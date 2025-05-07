@@ -13,8 +13,19 @@ afterAll(async () => {
 });
 
 it('getClient', async () => {
-  await client.withTransaction(async (client: PoolClient) => {
-    const result = await client.query('SELECT 1');
-    expect(result.rows[0]['?column?'] || result.rows[0].count).toBe(1);
-  });
+  try {
+    await client.withTransaction(async (client: PoolClient) => {
+      const result = await client.query('SELECT 1');
+      expect(result.rows[0]['?column?'] || result.rows[0].count).toBe(1);
+    });
+  } catch (e) {
+    if (e instanceof AggregateError) {
+      for (const err of e.errors) {
+        console.error('AggregateError item:', err);
+      }
+    } else {
+      console.error('Test failure:', e);
+    }
+    throw e;
+  }
 });
