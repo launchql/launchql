@@ -33,17 +33,31 @@
   },
   "keywords": [],
   "dependencies": {
+    "@graphile-contrib/pg-many-to-many": "^1.0.2",
+    "@pyramation/postgis": "^0.1.1",
+    "@pyramation/postgraphile-plugin-fulltext-filter": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",
     "express": "^5.1.0",
+    "graphile-build": "^4.14.1",
+    "graphile-i18n": "^0.0.3",
+    "graphile-meta-schema": "^0.2.5",
+    "graphile-search-plugin": "^0.1.2",
+    "graphile-simple-inflector": "^0.1.1",
+    "graphql-upload": "^17.0.0",
     "lru-cache": "^11.1.0",
     "pg": "^8.15.6",
-    "postgraphile": "^4.14.1"
+    "postgraphile": "^4.14.1",
+    "postgraphile-derived-upload-field": "^0.0.6",
+    "postgraphile-plugin-connection-filter": "^2.3.0",
+    "postgraphile-plugin-connection-filter-postgis": "^1.0.0-alpha.6",
+    "request-ip": "^3.3.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/request-ip": "^0.0.41",
     "@types/rimraf": "^4.0.5",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"

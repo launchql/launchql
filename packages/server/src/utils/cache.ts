@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { LRUCache } from 'lru-cache';
 
 const ONE_HOUR_IN_MS = 1000 * 60 * 60;

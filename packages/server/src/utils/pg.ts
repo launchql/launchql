@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { env } from '../env';
 import pg from 'pg';
 import { pgCache } from '../utils/cache';
