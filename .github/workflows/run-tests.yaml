@@ -57,9 +57,6 @@ jobs:
           POSTGRES_HOST: pg_db
           POSTGRES_PORT: 5432
           DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
-          MINIO_ENDPOINT: http://minio_cdn:9000
-          MINIO_ACCESS_KEY: minioadmin
-          MINIO_SECRET_KEY: minioadmin
 
       - name: launchql/orm
         run: cd ./packages/orm && yarn test
@@ -78,9 +75,21 @@ jobs:
 
       - name: launchql/s3-streamer
         run: cd ./packages/s3-streamer && yarn test
+        env:
+          MINIO_ENDPOINT: http://minio_cdn:9000
+          AWS_ACCESS_KEY: minioadmin
+          AWS_SECRET_KEY: minioadmin
+          AWS_REGION: us-east-1
+          BUCKET_NAME: test-bucket
 
       - name: launchql/stream-to-s3
         run: cd ./packages/stream-to-s3 && yarn test
-
+        env:
+          MINIO_ENDPOINT: http://minio_cdn:9000
+          AWS_ACCESS_KEY: minioadmin
+          AWS_SECRET_KEY: minioadmin
+          AWS_REGION: us-east-1
+          BUCKET_NAME: test-bucket
+          
       - name: launchql/upload-names
         run: cd ./packages/upload-names && yarn test
