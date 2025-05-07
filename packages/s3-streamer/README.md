@@ -1,64 +1,86 @@
 # s3-streamer
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
-    stream files to s3
-</p>
-
-## install
-
 ```sh
-npm install s3-streamer
-```
-## Table of contents
-
-- [s3-streamer](#s3-streamer)
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
-
-## Developing
-
-When first cloning the repo:
-
-```sh
-yarn
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
+npm install @launchql/s3-streamer
 ```
 
-Or if you want to make your dev process smoother, you can run:
+Stream uploads to s3
 
-```sh
-yarn
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+```js
+import Streamer from '@launchql/s3-streamer';
+const streamer = new Streamer(opts)
+const readStream = createReadStream(filename);
+const results = await streamer.upload({
+    readStream,
+    filename,
+    bucket,
+    key
+});
 ```
 
-## Interchain JavaScript Stack 
+and get detailed payload results
 
-A unified toolkit for building applications and smart contracts in the Interchain ecosystem ⚛️
+```js
+{ upload:
+{ ETag: '"952fd44d14cee87882239b707231609d"',
+    Location: 'http://localhost:9000/launchql/db1/assets/.gitignore',
+    key: 'db1/assets/.gitignore',
+    Key: 'db1/assets/.gitignore',
+    Bucket: 'launchql' },
+magic: { type: 'text/plain', charset: 'us-ascii' },
+contentType: 'text/plain',
+contents:
+{ uuid: '278aee01-1404-5725-8f0e-7044c9c16397',
+    sha: '7d65523f2a5afb69d76824dd1dfa62a34faa3197',
+    etag: '952fd44d14cee87882239b707231609d' } }
+```
 
-| Category              | Tools                                                                                                                  | Description                                                                                           |
-|----------------------|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| **Chain Information**   | [**Chain Registry**](https://github.com/hyperweb-io/chain-registry), [**Utils**](https://www.npmjs.com/package/@chain-registry/utils), [**Client**](https://www.npmjs.com/package/@chain-registry/client) | Everything from token symbols, logos, and IBC denominations for all assets you want to support in your application. |
-| **Wallet Connectors**| [**Interchain Kit**](https://github.com/hyperweb-io/interchain-kit)<sup>beta</sup>, [**Cosmos Kit**](https://github.com/hyperweb.io/cosmos-kit) | Experience the convenience of connecting with a variety of web3 wallets through a single, streamlined interface. |
-| **Signing Clients**          | [**InterchainJS**](https://github.com/hyperweb-io/interchainjs)<sup>beta</sup>, [**CosmJS**](https://github.com/cosmos/cosmjs) | A single, universal signing interface for any network |
-| **SDK Clients**              | [**Telescope**](https://github.com/hyperweb.io/telescope)                                                          | Your Frontend Companion for Building with TypeScript with Cosmos SDK Modules. |
-| **Starter Kits**     | [**Create Interchain App**](https://github.com/hyperweb-io/create-interchain-app)<sup>beta</sup>, [**Create Cosmos App**](https://github.com/hyperweb.io/create-cosmos-app) | Set up a modern Interchain app by running one command. |
-| **UI Kits**          | [**Interchain UI**](https://github.com/hyperweb.io/interchain-ui)                                                   | The Interchain Design System, empowering developers with a flexible, easy-to-use UI kit. |
-| **Testing Frameworks**          | [**Starship**](https://github.com/hyperweb.io/starship)                                                             | Unified Testing and Development for the Interchain. |
-| **TypeScript Smart Contracts** | [**Create Hyperweb App**](https://github.com/hyperweb-io/create-hyperweb-app)                              | Build and deploy full-stack blockchain applications with TypeScript |
-| **CosmWasm Contracts** | [**CosmWasm TS Codegen**](https://github.com/CosmWasm/ts-codegen)                                                   | Convert your CosmWasm smart contracts into dev-friendly TypeScript classes. |
+## functional utils
 
-## Credits
+If you don't want to use the `Streamer` class you can use the utils directly:
 
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
+```js
+import { getClient, upload } from '@launchql/s3-streamer';
+const client = getClient(opts)
+const readStream = createReadStream(filename);
+const results = await upload({
+    client,
+    readStream,
+    filename,
+    bucket,
+    key
+});
+```
 
+## variables
 
-## Disclaimer
+### production
 
-AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+```js
+    const streamer = new Streamer({
+      defaultBucket: BUCKET_NAME,
+      AWS_REGION,
+      AWS_SECRET_KEY,
+      AWS_ACCESS_KEY,
+      MINIO_ENDPOINT
+    });
+```
 
-No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
+### using minio
+
+```js
+    const streamer = new Streamer({
+      defaultBucket: BUCKET_NAME,
+      AWS_REGION,
+      AWS_SECRET_KEY,
+      AWS_ACCESS_KEY,
+      MINIO_ENDPOINT
+    });
+```
+
+values:
+
+`MINIO_ENDPOINT`=http://localhost:9000
+`AWS_ACCESS_KEY`=minio-access
+`AWS_SECRET_KEY`=minio-secret
+
