@@ -4,8 +4,8 @@ services:
     container_name: postgres
     image: pyramation/postgis
     environment:
-      - "POSTGRES_USER=postgres"
-      - "POSTGRES_PASSWORD=password"
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
     ports:
       - "5432:5432"
     expose:
@@ -13,3 +13,15 @@ services:
     # volumes:
     #   - ./packages:/sql-extensions
     #   - ./node_modules:/sql-modules
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    command: server /data

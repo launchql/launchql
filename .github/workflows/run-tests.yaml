@@ -71,3 +71,15 @@ jobs:
 
       - name: launchql/codegen
         run: cd ./packages/codegen && yarn test
+
+      - name: launchql/content-type-stream
+        run: cd ./packages/content-type-stream && yarn test
+
+      - name: launchql/s3-streamer
+        run: cd ./packages/s3-streamer && yarn test
+
+      - name: launchql/stream-to-s3
+        run: cd ./packages/stream-to-s3 && yarn test
+
+      - name: launchql/upload-names
+        run: cd ./packages/upload-names && yarn test
