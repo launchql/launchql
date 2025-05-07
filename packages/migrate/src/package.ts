@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import { relative } from 'path';
-import { deparse,parse } from 'pgsql-parser';
+import { deparse, parse } from 'pgsql-parser';
 import { sync as rimraf } from 'rimraf';
 
 import { getExtensionName } from './extensions';
