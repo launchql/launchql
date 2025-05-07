@@ -1,17 +1,20 @@
+import dotenv from 'dotenv';
+
 import { sync as glob } from 'glob';
 import { createReadStream } from 'fs';
 import { basename } from 'path';
 
 import asyncUpload from '../src';
-import { env } from '../src/env';
-import { cleanEnv, str } from 'envalid';
+import { cleanEnv, str, url } from 'envalid';
 
-const testEnv = cleanEnv(
-  env,
-  {
-    BUCKET_NAME: str()
-  }
-);
+export const testEnv = cleanEnv(process.env, {
+  AWS_REGION: str({ default: 'us-east-1' }),
+  AWS_SECRET_KEY: str({ default: 'minioadmin' }),
+  AWS_ACCESS_KEY: str({ default: 'minioadmin' }),
+  MINIO_ENDPOINT: url({ default: undefined }),
+  BUCKET_NAME: str({ default: 'test-bucket' })
+});
+
 
 jest.setTimeout(3000000);
 const files = []
