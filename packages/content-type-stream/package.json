@@ -1,0 +1,39 @@
+{
+  "name": "@launchql/content-type-stream",
+  "version": "0.0.1",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "detect content-types via streams",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "buffer-peek-stream": "1.1.0",
+    "etag-hash": "1.0.1",
+    "mime": "2.4.6",
+    "@launchql/mmmagic": "0.5.3",
+    "uuid-hash": "1.0.2"
+  }
+}
