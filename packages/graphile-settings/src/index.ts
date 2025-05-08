@@ -16,6 +16,7 @@ import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import PgSearch from 'graphile-search-plugin';
 import LqlTypesPlugin from './plugins/types';
 import resolveUpload from './resolvers/upload';
+import { PostGraphileOptions } from 'postgraphile';
 
 interface GraphileSettingsInput {
   host?: string;
@@ -33,7 +34,7 @@ export const getGraphileSettings = ({
   simpleInflection = true,
   oppositeBaseNames = false,
   postgis = true
-}: GraphileSettingsInput) => {
+}: GraphileSettingsInput): PostGraphileOptions => {
   const plugins: Plugin[] = [
     ConnectionFilterPlugin,
     FulltextFilterPlugin,

@@ -1,0 +1,52 @@
+{
+  "name": "@launchql/explorer",
+  "version": "0.0.1",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "LaunchQL Explorer",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "dev": "ts-node src/index.ts",
+    "dev:watch": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@launchql/graphile-settings": "^1.2.0",
+    "@launchql/server-utils": "^0.4.0",
+    "@launchql/url-domains": "^0.1.0",
+    "@launchql/upload-names": "^0.1.0",
+    "envalid": "^8.0.0",
+    "express": "^5.1.0",
+    "graphile-build": "^4.14.1",
+    "graphql-upload": "^17.0.0",
+    "postgraphile": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/graphql-upload": "^17.0.0",
+    "@types/express": "^5.0.1",
+    "@types/rimraf": "^4.0.5",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  }
+}

@@ -20,6 +20,7 @@ export const middleware = ({
 } = {}) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const parsed = parseReq(req);
+    console.log(parsed);
     req.urlDomains = {
       [hostname]: parsed.hostname,
       [subdomains]: parsed.subdomains,

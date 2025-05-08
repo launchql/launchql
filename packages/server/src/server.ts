@@ -71,7 +71,19 @@ class Server {
     trustProxy(app, env);
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
-    app.use(parseDomains() as RequestHandler);
+
+    // app.use(parseDomains() as RequestHandler);
+    
+    app.use((req, res, next) => {
+      // TypeScript will complain, so you can either cast req to any...
+      (req as any).urlDomains = {
+        hostname: 'localhost',
+        subdomains: ['api'],
+        domain: 'localhost'
+      };
+    
+      next();
+    });
     
     app.use(requestIp.mw());
     

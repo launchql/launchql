@@ -40,6 +40,10 @@ if (process.env.NODE_ENV !== 'production') {
 
 export const env = cleanEnv(process.env, {
   META_SCHEMAS: array({ default: ['meta_public', 'collections_public'] }),
+  SCHEMAS: str({ default: 'dashboard' }),
+
+
+  
   IS_PUBLIC: bool({ default: true }),
   STRICT_AUTH: bool({ default: true }),
 
@@ -51,7 +55,6 @@ export const env = cleanEnv(process.env, {
   PGPORT: port({ default: 5432 }),
   DATABASE_URL: str(),
   NODE_ENV: str({ choices: ['development', 'production', 'test'] }),
-  SCHEMAS: str({ default: 'public' }),
   SERVER_HOST: str({ default: 'localhost' }),
   TRUST_PROXY: bool({ default: false }),
   PORT: port({ default: 3000 }),
