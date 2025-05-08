@@ -1,0 +1,65 @@
+{
+  "_from": "@launchql/ext-default-roles@^0.4.6",
+  "_id": "@launchql/ext-default-roles@0.4.6",
+  "_inBundle": false,
+  "_integrity": "sha512-GHXClm+/7a1MGriYmb75N9nPCz82LY4yklZ2ybT1kO+hd/3ZTBmuTcWox5H5hjA77FGblIFq73kOBjSwbefaHw==",
+  "_location": "/@launchql/ext-default-roles",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@launchql/ext-default-roles@^0.4.6",
+    "name": "@launchql/ext-default-roles",
+    "escapedName": "@launchql%2fext-default-roles",
+    "scope": "@launchql",
+    "rawSpec": "^0.4.6",
+    "saveSpec": null,
+    "fetchSpec": "^0.4.6"
+  },
+  "_requiredBy": [
+    "/@launchql/ext-jobs",
+    "/@pyramation/launchql-meta-schema"
+  ],
+  "_resolved": "https://registry.npmjs.org/@launchql/ext-default-roles/-/ext-default-roles-0.4.6.tgz",
+  "_shasum": "321d42bf534f77001f048f6a1b07f6e94722d0a8",
+  "_spec": "@launchql/ext-default-roles@^0.4.6",
+  "_where": "/private/var/folders/kn/177lldss4n9fwn0gh5q5wfn00000gn/T/ny4sag54vjfki5oa3m947/extensions/node_modules/@pyramation/launchql-meta-schema",
+  "author": {
+    "name": "Dan Lynch",
+    "email": "pyramation@gmail.com"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "default roles",
+  "devDependencies": {
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/runtime": "^7.4.2",
+    "@launchql/cli": "1.3.5",
+    "@launchql/db-testing": "latest",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "26.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "26.1.0",
+    "prettier": "2.0.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "gitHead": "7e686ca8bfee944da876b6cfd2c32e71da244537",
+  "name": "@launchql/ext-default-roles",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "lql package",
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "version": "0.4.6"
+}

@@ -1,0 +1,8 @@
+# launchql-utils extension
+comment = 'launchql-utils extension'
+default_version = '0.4.6'
+module_pathname = '$libdir/launchql-utils'
+requires = 'plpgsql'
+relocatable = false
+superuser = false
+  

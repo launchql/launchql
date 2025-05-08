@@ -1,0 +1,77 @@
+{
+  "_from": "@pyramation/launchql-meta-schema@^0.7.22",
+  "_id": "@pyramation/launchql-meta-schema@0.7.22",
+  "_inBundle": false,
+  "_integrity": "sha512-Xg1qDCEECx+0jspZtXGTZEggalaWkRjTd157GnLARLLvNsLevE6KDjA4gSBXeeqjz7mWmfmTkCot3z6Nm0D6Xw==",
+  "_location": "/@pyramation/launchql-meta-schema",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@pyramation/launchql-meta-schema@^0.7.22",
+    "name": "@pyramation/launchql-meta-schema",
+    "escapedName": "@pyramation%2flaunchql-meta-schema",
+    "scope": "@pyramation",
+    "rawSpec": "^0.7.22",
+    "saveSpec": null,
+    "fetchSpec": "^0.7.22"
+  },
+  "_requiredBy": [
+    "/@pyramation/launchql-meta-modules"
+  ],
+  "_resolved": "https://registry.npmjs.org/@pyramation/launchql-meta-schema/-/launchql-meta-schema-0.7.22.tgz",
+  "_shasum": "81dd1b37422327fbdc6c90299f25e81c80345b30",
+  "_spec": "@pyramation/launchql-meta-schema@^0.7.22",
+  "_where": "/private/var/folders/kn/177lldss4n9fwn0gh5q5wfn00000gn/T/ny4sag54vjfki5oa3m947/extensions/node_modules/@pyramation/launchql-meta-modules",
+  "author": {
+    "name": "Web, Inc.",
+    "email": "pyramation@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@launchql/ext-default-roles": "^0.4.6",
+    "@launchql/ext-defaults": "^0.4.6",
+    "@launchql/ext-jobs": "^0.4.6",
+    "@launchql/ext-jwt-claims": "^0.4.6",
+    "@launchql/ext-stamps": "^0.4.6",
+    "@launchql/ext-types": "^0.4.6",
+    "@launchql/ext-uuid": "^0.4.6",
+    "@launchql/ext-verify": "^0.4.6",
+    "@launchql/geo-types": "^0.4.6",
+    "@launchql/inflection": "^0.4.6",
+    "@launchql/totp": "^0.4.6",
+    "@launchql/utils": "^0.4.6"
+  },
+  "deprecated": false,
+  "description": "db meta",
+  "devDependencies": {
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/runtime": "^7.4.2",
+    "@launchql/db-testing": "^1.2.4",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "26.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "26.1.0",
+    "prettier": "2.0.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "gitHead": "233838884ade5eb869b8040ad091fea52323833a",
+  "name": "@pyramation/launchql-meta-schema",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "prepare": "lql package",
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "version": "0.7.22"
+}

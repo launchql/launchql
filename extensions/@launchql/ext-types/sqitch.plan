@@ -1,0 +1,14 @@
+%syntax-version=1.0.0
+%project=launchql-ext-types
+%uri=launchql-ext-types
+  
+schemas/public/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/schema
+schemas/public/domains/attachment [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/attachment
+schemas/public/domains/email [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/email
+schemas/public/domains/hostname [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/hostname
+schemas/public/domains/image [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/image
+schemas/public/domains/multiple_select [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/multiple_select
+schemas/public/domains/origin [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/origin
+schemas/public/domains/single_select [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/single_select
+schemas/public/domains/upload [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/upload
+schemas/public/domains/url [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/url

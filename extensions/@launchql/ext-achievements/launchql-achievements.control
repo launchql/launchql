@@ -1,0 +1,8 @@
+# launchql-achievements extension
+comment = 'launchql-achievements extension'
+default_version = '0.1.5'
+module_pathname = '$libdir/launchql-achievements'
+requires = 'plpgsql,uuid-ossp,launchql-jwt-claims'
+relocatable = false
+superuser = false
+  

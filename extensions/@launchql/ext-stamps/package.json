@@ -1,0 +1,66 @@
+{
+  "_from": "@launchql/ext-stamps@^0.4.6",
+  "_id": "@launchql/ext-stamps@0.4.6",
+  "_inBundle": false,
+  "_integrity": "sha512-0a+z7vFpzY3RIx8uYiZjFUqsHhvSYHhAIWP5XtxA9oopNhggFTzXNk5f+D43Eq05GkuimROpo86TqF55K7Ofxg==",
+  "_location": "/@launchql/ext-stamps",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@launchql/ext-stamps@^0.4.6",
+    "name": "@launchql/ext-stamps",
+    "escapedName": "@launchql%2fext-stamps",
+    "scope": "@launchql",
+    "rawSpec": "^0.4.6",
+    "saveSpec": null,
+    "fetchSpec": "^0.4.6"
+  },
+  "_requiredBy": [
+    "/@pyramation/launchql-meta-schema"
+  ],
+  "_resolved": "https://registry.npmjs.org/@launchql/ext-stamps/-/ext-stamps-0.4.6.tgz",
+  "_shasum": "7d11d90c660a77905999f29e24234f0f78ca2429",
+  "_spec": "@launchql/ext-stamps@^0.4.6",
+  "_where": "/private/var/folders/kn/177lldss4n9fwn0gh5q5wfn00000gn/T/ny4sag54vjfki5oa3m947/extensions/node_modules/@pyramation/launchql-meta-schema",
+  "author": {
+    "name": "Web, Inc.",
+    "email": "pyramation@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@launchql/ext-jwt-claims": "^0.4.6"
+  },
+  "deprecated": false,
+  "description": "stamps",
+  "devDependencies": {
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/runtime": "^7.4.2",
+    "@launchql/db-testing": "latest",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "26.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "26.1.0",
+    "prettier": "2.0.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "gitHead": "7e686ca8bfee944da876b6cfd2c32e71da244537",
+  "name": "@launchql/ext-stamps",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "lql package",
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "version": "0.4.6"
+}

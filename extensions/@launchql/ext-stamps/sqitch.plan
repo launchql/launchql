@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+%project=launchql-stamps
+%uri=launchql-stamps
+  
+schemas/stamps/schema 2020-12-18T04:55:26Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/stamps/schema
+schemas/stamps/procedures/utils [schemas/stamps/schema] 2020-12-18T04:57:09Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/stamps/procedures/utils

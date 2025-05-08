@@ -1,0 +1,68 @@
+{
+  "_from": "@launchql/ext-jobs@^0.4.6",
+  "_id": "@launchql/ext-jobs@0.4.6",
+  "_inBundle": false,
+  "_integrity": "sha512-t/uTqddC+wYj6qzFr3ICz6GyyqR74IuJ9mNX+4XNVy4X4qNBdYVclvDPaUPSe/gfUTjr6kH6KChC93vyrIu4dg==",
+  "_location": "/@launchql/ext-jobs",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@launchql/ext-jobs@^0.4.6",
+    "name": "@launchql/ext-jobs",
+    "escapedName": "@launchql%2fext-jobs",
+    "scope": "@launchql",
+    "rawSpec": "^0.4.6",
+    "saveSpec": null,
+    "fetchSpec": "^0.4.6"
+  },
+  "_requiredBy": [
+    "/@pyramation/launchql-meta-schema"
+  ],
+  "_resolved": "https://registry.npmjs.org/@launchql/ext-jobs/-/ext-jobs-0.4.6.tgz",
+  "_shasum": "59bc056df74d610bf3cd45b183c8ec472a4e2a38",
+  "_spec": "@launchql/ext-jobs@^0.4.6",
+  "_where": "/private/var/folders/kn/177lldss4n9fwn0gh5q5wfn00000gn/T/ny4sag54vjfki5oa3m947/extensions/node_modules/@pyramation/launchql-meta-schema",
+  "author": {
+    "name": "Dan Lynch",
+    "email": "pyramation@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@launchql/ext-default-roles": "^0.4.6",
+    "@launchql/ext-jwt-claims": "^0.4.6"
+  },
+  "deprecated": false,
+  "description": "jobs",
+  "devDependencies": {
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/runtime": "^7.4.2",
+    "@launchql/cli": "1.3.5",
+    "@launchql/db-testing": "latest",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "26.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "26.1.0",
+    "prettier": "2.0.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "gitHead": "7e686ca8bfee944da876b6cfd2c32e71da244537",
+  "name": "@launchql/ext-jobs",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "lql package",
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "version": "0.4.6"
+}

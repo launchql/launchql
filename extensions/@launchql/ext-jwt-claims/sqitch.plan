@@ -1,0 +1,18 @@
+%syntax-version=1.0.0
+%project=launchql-jwt-claims
+%uri=launchql-jwt-claims
+  
+schemas/ctx/schema [launchql-ext-types:schemas/public/domains/url] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/ctx/schema
+schemas/ctx/procedures/ip_address [schemas/ctx/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/ctx/procedures/ip_address
+schemas/ctx/procedures/origin [schemas/ctx/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/ctx/procedures/origin
+schemas/ctx/procedures/user_agent [schemas/ctx/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/ctx/procedures/user_agent
+schemas/ctx/procedures/user_id [schemas/ctx/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/ctx/procedures/user_id
+schemas/jwt_private/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_private/schema
+schemas/jwt_private/procedures/current_database_id [schemas/jwt_private/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_private/procedures/current_database_id
+schemas/jwt_private/procedures/current_token_id [schemas/jwt_private/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_private/procedures/current_token_id
+schemas/jwt_public/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_public/schema
+schemas/jwt_public/procedures/current_ip_address [schemas/jwt_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_public/procedures/current_ip_address
+schemas/jwt_public/procedures/current_origin [schemas/jwt_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_public/procedures/current_origin
+schemas/jwt_public/procedures/current_user_agent [schemas/jwt_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_public/procedures/current_user_agent
+schemas/jwt_public/procedures/current_user_id [schemas/jwt_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/jwt_public/procedures/current_user_id
+schemas/ctx/procedures/security_definer [schemas/ctx/schema] 2021-04-20T04:04:08Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/ctx/procedures/security_definer

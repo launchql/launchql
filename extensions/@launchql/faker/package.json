@@ -1,0 +1,69 @@
+{
+  "_from": "@launchql/faker@",
+  "_id": "@launchql/faker@0.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-idx8O2M1LShZlNqJhl0Vnz4OvEEx5kJrVjL9NBbnshWk5zvqwQYnYWm71UqT/tKnWU28E22AsReFlc6zNq8XCA==",
+  "_location": "/@launchql/faker",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@launchql/faker@",
+    "name": "@launchql/faker",
+    "escapedName": "@launchql%2ffaker",
+    "scope": "@launchql",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@launchql/faker/-/faker-0.1.0.tgz",
+  "_shasum": "ee4da92435cbbe6ae7ffb83253428a2da5ad3bcc",
+  "_spec": "@launchql/faker@",
+  "_where": "/private/var/folders/kn/177lldss4n9fwn0gh5q5wfn00000gn/T/0jngdibxsi5mb7vfu9ojfe",
+  "author": {
+    "name": "Web, Inc.",
+    "email": "pyramation@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@launchql/ext-types": "^0.1.0"
+  },
+  "deprecated": false,
+  "description": "create fake data in PostgreSQL",
+  "devDependencies": {
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/runtime": "^7.4.2",
+    "@launchql/cli": "1.3.5",
+    "@launchql/db-testing": "latest",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "26.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "26.1.0",
+    "pg-query-string": "0.1.7",
+    "prettier": "2.0.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "gitHead": "3445405950e15adf8c6910f86591e042cfe28de5",
+  "name": "@launchql/faker",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "lql package",
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "version": "0.1.0"
+}

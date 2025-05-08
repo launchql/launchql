@@ -1,0 +1,68 @@
+{
+  "_from": "@launchql/ext-jwt-claims@^0.4.6",
+  "_id": "@launchql/ext-jwt-claims@0.4.6",
+  "_inBundle": false,
+  "_integrity": "sha512-FKpxGxorrxpCG9V+EcCHdl+0rtg/qjCfarRvzsD5JhF19UAeFWmK3+hZ/fhTGG1ujnLzI+DlFGQ9LwmfreghoA==",
+  "_location": "/@launchql/ext-jwt-claims",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@launchql/ext-jwt-claims@^0.4.6",
+    "name": "@launchql/ext-jwt-claims",
+    "escapedName": "@launchql%2fext-jwt-claims",
+    "scope": "@launchql",
+    "rawSpec": "^0.4.6",
+    "saveSpec": null,
+    "fetchSpec": "^0.4.6"
+  },
+  "_requiredBy": [
+    "/@launchql/ext-jobs",
+    "/@launchql/ext-stamps",
+    "/@pyramation/launchql-meta-schema"
+  ],
+  "_resolved": "https://registry.npmjs.org/@launchql/ext-jwt-claims/-/ext-jwt-claims-0.4.6.tgz",
+  "_shasum": "4f2740714368364ab79e1a77b12dac8a85f39bbe",
+  "_spec": "@launchql/ext-jwt-claims@^0.4.6",
+  "_where": "/private/var/folders/kn/177lldss4n9fwn0gh5q5wfn00000gn/T/ny4sag54vjfki5oa3m947/extensions/node_modules/@pyramation/launchql-meta-schema",
+  "author": {
+    "name": "Web, Inc.",
+    "email": "pyramation@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@launchql/ext-types": "^0.4.6"
+  },
+  "deprecated": false,
+  "description": "ext-jwt-claims",
+  "devDependencies": {
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/runtime": "^7.4.2",
+    "@launchql/db-testing": "latest",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "26.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "26.1.0",
+    "prettier": "2.0.5",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "gitHead": "7e686ca8bfee944da876b6cfd2c32e71da244537",
+  "name": "@launchql/ext-jwt-claims",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "lql package",
+    "test": "FAST_TEST=1 launchql-templatedb && jest",
+    "test:watch": "FAST_TEST=1 jest --watch"
+  },
+  "version": "0.4.6"
+}

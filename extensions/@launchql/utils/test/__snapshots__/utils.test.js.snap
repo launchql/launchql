@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bitmask less 1`] = `
+Object {
+  "bitmask_pad": "01",
+}
+`;
+
+exports[`bitmask more 1`] = `
+Object {
+  "bitmask_pad": "00000000000000000101",
+}
+`;
+
+exports[`less 1`] = `
+Object {
+  "mask_pad": "01",
+}
+`;
+
+exports[`more 1`] = `
+Object {
+  "mask_pad": "00000000000000000101",
+}
+`;

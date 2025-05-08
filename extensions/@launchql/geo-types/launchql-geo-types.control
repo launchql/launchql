@@ -1,0 +1,8 @@
+# launchql-geo-types extension
+comment = 'launchql-geo-types extension'
+default_version = '0.4.6'
+module_pathname = '$libdir/launchql-geo-types'
+requires = 'plpgsql,citext,postgis,launchql-ext-types'
+relocatable = false
+superuser = false
+  
