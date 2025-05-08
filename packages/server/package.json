@@ -6,7 +6,7 @@
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql-2.0",
+  "homepage": "https://github.com/launchql/launchql",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql-2.0"
+    "url": "https://github.com/launchql/launchql"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql-2.0/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
