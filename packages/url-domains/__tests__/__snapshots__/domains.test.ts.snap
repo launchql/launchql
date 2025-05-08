@@ -20,9 +20,11 @@ exports[`parses URLs admin.basecrypt.com:8888 1`] = `
 
 exports[`parses URLs admin.localhost:8888 1`] = `
 {
-  "domain": "admin.localhost",
+  "domain": "localhost",
   "hostname": "admin.localhost",
-  "subdomains": [],
+  "subdomains": [
+    "admin",
+  ],
 }
 `;
 
@@ -39,10 +41,11 @@ exports[`parses URLs admin.web.basecrypt.com:8888 1`] = `
 
 exports[`parses URLs coolio.webby.localhost:8888 1`] = `
 {
-  "domain": "webby.localhost",
+  "domain": "localhost",
   "hostname": "coolio.webby.localhost",
   "subdomains": [
     "coolio",
+    "webby",
   ],
 }
 `;
@@ -57,9 +60,11 @@ exports[`parses URLs localhost:8888 1`] = `
 
 exports[`parses URLs www.admin.localhost:8888 1`] = `
 {
-  "domain": "admin.localhost",
+  "domain": "localhost",
   "hostname": "www.admin.localhost",
-  "subdomains": [],
+  "subdomains": [
+    "admin",
+  ],
 }
 `;
 
@@ -103,9 +108,11 @@ exports[`parses reqs admin.localhost:8888 1`] = `
   "originalUrl": "/",
   "protocol": "http",
   "urlDomains": {
-    "domain": "admin.localhost",
+    "domain": "localhost",
     "hostname": "admin.localhost",
-    "subdomains": [],
+    "subdomains": [
+      "admin",
+    ],
   },
 }
 `;
@@ -136,10 +143,11 @@ exports[`parses reqs coolio.webby.localhost:8888 1`] = `
   "originalUrl": "/graphiql?yo=1",
   "protocol": "http",
   "urlDomains": {
-    "domain": "webby.localhost",
+    "domain": "localhost",
     "hostname": "coolio.webby.localhost",
     "subdomains": [
       "coolio",
+      "webby",
     ],
   },
 }
@@ -168,9 +176,11 @@ exports[`parses reqs www.admin.localhost:8888 1`] = `
   "originalUrl": "/",
   "protocol": "http",
   "urlDomains": {
-    "domain": "admin.localhost",
+    "domain": "localhost",
     "hostname": "www.admin.localhost",
-    "subdomains": [],
+    "subdomains": [
+      "admin",
+    ],
   },
 }
 `;

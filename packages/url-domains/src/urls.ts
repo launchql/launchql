@@ -1,4 +1,4 @@
-const ipRegExp = /^(?:\d{1,3}\.){3}\d{1,3}$/;
+const ipRegExp = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 
 export const parseUrl = (input: string | URL) => {
   const url = typeof input === 'string' ? new URL(input) : input;
@@ -11,6 +11,9 @@ export const parseUrl = (input: string | URL) => {
   if (hostname === 'localhost') {
     domain = 'localhost';
     subdomains = [];
+  } else if (hostname.endsWith('.localhost')) {
+    domain = 'localhost';
+    subdomains = parts.slice(0, -1); // everything before 'localhost'
   } else if (ipRegExp.test(hostname)) {
     domain = hostname;
     subdomains = [];
