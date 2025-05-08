@@ -4,7 +4,6 @@ import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile } from 'postgraphile';
 import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
 
-
 // import { PostGraphileOptions } from 'postgraphile';
 
 interface GraphileOptions {

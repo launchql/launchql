@@ -67,29 +67,13 @@ class Server {
     const app = express();
 
     healthz(app);
-    // @ts-ignore
-    trustProxy(app, env);
+    trustProxy(app, env as any);
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
-
-    // app.use(parseDomains() as RequestHandler);
-    
-    app.use((req, res, next) => {
-      // TypeScript will complain, so you can either cast req to any...
-      (req as any).urlDomains = {
-        hostname: 'localhost',
-        subdomains: ['api'],
-        domain: 'localhost'
-      };
-    
-      next();
-    });
-    
+    app.use(parseDomains() as RequestHandler);
     app.use(requestIp.mw());
-    
     app.use(api);
-    // @ts-ignore
-    app.use(cors);
+    app.use(cors as any);
     app.use(authenticate);
     app.use(
       graphile({
