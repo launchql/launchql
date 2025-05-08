@@ -59,12 +59,7 @@ export default ({
     const pgPool = getRootPgPool(dbname);
     const obj = {
       pgPoolKey: dbname,
-      // @ts-ignore
-      // TODO WHY schema not on options???
-      // TODO WHY schema not on options???
-      // TODO WHY schema not on options???
-      // TODO WHY schema not on options???
-      handler: postgraphile(pgPool, opts.schema as string | string[], opts)
+      handler: postgraphile(pgPool, schemaname, opts)
     };
 
     graphileCache.set(key, obj);
