@@ -1,3 +1,1 @@
-import app from './server';
-
-app();
+export * from './server';
