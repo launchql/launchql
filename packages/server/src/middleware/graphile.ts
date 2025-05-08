@@ -4,6 +4,7 @@ import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
 import type { Plugin } from 'graphile-build';
+import PublicKeySignature from '../plugins/PublicKeySignature';
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -65,6 +66,7 @@ export const graphile = ({
   graphileBuildOptions = {},
   overrideSettings = {}
 }: GraphileMiddlewareOptions): RequestHandler => {
+  // @ts-ignore
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const api = req.apiInfo.data.api;
@@ -99,10 +101,10 @@ export const graphile = ({
         options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data));
       }
 
-      if (appendPlugins.length) {
-        [].push.apply(options.appendPlugins, appendPlugins);
-      }
+      options.appendPlugins = options.appendPlugins ?? [];
+      options.appendPlugins.push(...appendPlugins);
 
+      // @ts-ignore
       options.pgSettings = async function pgSettings(req: Request) {
         const context: Record<string, any> = {
           [`jwt.claims.database_id`]: req.databaseId,
@@ -146,6 +148,7 @@ export const graphile = ({
 
       graphileCache.set(key, {
         pgPool,
+        pgPoolKey: dbname,
         handler
       });
 

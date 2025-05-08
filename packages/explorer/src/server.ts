@@ -51,11 +51,12 @@ export default ({
     };
 
     const pgPool = getRootPgPool(dbname);
+    const handler = postgraphile(pgPool, schemaname, opts)
     const obj = {
+      pgPool,
       pgPoolKey: dbname,
-      handler: postgraphile(pgPool, schemaname, opts)
+      handler
     };
-
     graphileCache.set(key, obj);
     return obj;
   };

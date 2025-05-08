@@ -128,10 +128,6 @@ const queryServiceByDomainAndSubdomain = async ({
   subdomain: string;
 }): Promise<any> => {
 
-  console.log(ApiQuery);
-  console.log('queryServiceByDomainAndSubdomain');
-  console.log({ domain, subdomain });
-
   const result = await client.query({
     role: 'administrator',
     query: ApiQuery,
@@ -197,12 +193,6 @@ export const getApiConfig = async (req: any): Promise<any> => {
   req.svc_key = key;
 
   const schemata = env.META_SCHEMAS;
-
-  console.log('DB', env.PGDATABASE);
-  console.log('HI', {subdomain, domain});
-  console.log(req.urlDomains);
-
-
 
   let svc;
   if (svcCache.has(key)) {

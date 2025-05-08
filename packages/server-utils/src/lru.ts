@@ -25,6 +25,7 @@ const end = (pool: any) => {
 };
 
 export interface GraphileCache {
+  pgPool: pg.Pool;
   pgPoolKey: string;
   handler: HttpRequestHandler;
 }
