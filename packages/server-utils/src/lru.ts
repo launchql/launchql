@@ -1,5 +1,7 @@
-// @ts-nocheck
 import { LRUCache } from 'lru-cache';
+
+import pg from 'pg';
+import { HttpRequestHandler } from 'postgraphile';
 
 const ONE_HOUR_IN_MS = 1000 * 60 * 60;
 const ONE_DAY = ONE_HOUR_IN_MS * 24;
@@ -22,10 +24,15 @@ const end = (pool: any) => {
   }
 };
 
+export interface GraphileCache {
+  pgPoolKey: string;
+  handler: HttpRequestHandler;
+}
+
 // --- Graphile Cache ---
-export const graphileCache = new LRUCache({
+export const graphileCache = new LRUCache<string, GraphileCache>({
   max: 15,
-  dispose: (key, obj: any) => {
+  dispose: (obj: GraphileCache, key: string) => {
     console.log(`disposing PostGraphile[${key}]`);
   },
   updateAgeOnGet: true,
@@ -33,11 +40,11 @@ export const graphileCache = new LRUCache({
 });
 
 // --- Postgres Pool Cache ---
-export const pgCache = new LRUCache({
+export const pgCache = new LRUCache<string, pg.Pool>({
   max: 10,
-  dispose: (key, pgPool: any) => {
+  dispose: (pgPool: pg.Pool, key: string) => {
     console.log(`disposing pg ${key}`);
-    graphileCache.forEach((obj: any, k) => {
+    graphileCache.forEach((obj: GraphileCache, k: string) => {
       if (obj.pgPoolKey === key) {
         graphileCache.delete(k);
       }
@@ -51,7 +58,7 @@ export const pgCache = new LRUCache({
 // --- Generic Service Cache ---
 export const svcCache = new LRUCache({
   max: 25,
-  dispose: (key, svc: any) => {
+  dispose: (svc: any, key: any) => {
     console.log(`disposing service[${key}]`);
   },
   updateAgeOnGet: true,
@@ -63,6 +70,7 @@ const once = <T extends (...args: any[]) => any>(fn: T, context?: any) => {
   let result: ReturnType<T>;
   return function (...args: Parameters<T>) {
     if (fn) {
+      // @ts-ignore
       result = fn.apply(context || this, args);
       fn = null!;
     }

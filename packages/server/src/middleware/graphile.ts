@@ -1,120 +1,148 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { env } from '../env';
 import { graphileCache, getRootPgPool } from '@launchql/server-utils';
-import { postgraphile } from 'postgraphile';
+import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
+import type { Plugin } from 'graphile-build';
 
-// import { PostGraphileOptions } from 'postgraphile';
+declare module 'express-serve-static-core' {
+  interface Request {
+    apiInfo: {
+      data: {
+        api: {
+          dbname: string;
+          anonRole: string;
+          roleName: string;
+          schemaNames: {
+            nodes: { schemaName: string }[];
+          };
+          schemaNamesFromExt: {
+            nodes: { schemaName: string }[];
+          };
+          apiModules: {
+            nodes: {
+              name: string;
+              data?: any;
+            }[];
+          };
+          rlsModule?: {
+            authenticate?: string;
+            authenticateStrict?: string;
+            privateSchema: {
+              schemaName: string;
+            };
+          };
+        };
+      };
+    };
+    svc_key: string;
+    clientIp?: string;
+    databaseId?: string;
+    token?: {
+      id: string;
+      user_id: string;
+      [key: string]: any;
+    };
+  }
+}
 
-interface GraphileOptions {
+interface GraphileMiddlewareOptions {
   simpleInflection?: boolean;
   oppositeBaseNames?: boolean;
   port?: number;
   postgis?: boolean;
-  appendPlugins?: any[];
-  graphileBuildOptions?: Record<string, any>;
-  overrideSettings?: Record<string, any>;
+  appendPlugins?: Plugin[];
+  graphileBuildOptions?: PostGraphileOptions['graphileBuildOptions'];
+  overrideSettings?: Partial<PostGraphileOptions>;
 }
 
-export const graphile =
-  ({
-    simpleInflection = true,
-    oppositeBaseNames = false,
-    port,
-    postgis = true,
-    appendPlugins = [],
-    graphileBuildOptions = {},
-    overrideSettings = {}
-  }: GraphileOptions) =>
-
-  async (req: Request, res: Response, next: NextFunction) => {
+export const graphile = ({
+  simpleInflection,
+  oppositeBaseNames,
+  port,
+  postgis,
+  appendPlugins = [],
+  graphileBuildOptions = {},
+  overrideSettings = {}
+}: GraphileMiddlewareOptions): RequestHandler => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Placeholder: Replace with your actual dynamic logic
-      const dbname: string = (req as any).api?.dbname || 'dashboard';
-      const anonRole: string = 'anonymous';
-      const roleName: string = 'app_user';
-      const key: string = (req as any).svc_key || dbname;
+      const api = req.apiInfo.data.api;
+      const key = req.svc_key;
+      const { dbname } = api;
+      const { anonRole, roleName } = api;
 
-      const schemas = ['dashboard_public'];
-      console.log('hard coding schemas....');
-
-      if (!schemas.length) {
-        return res.status(500).send('No schemas provided');
-      }
+      const { schemaNamesFromExt, schemaNames } = api;
+      const schemas = []
+        .concat(schemaNamesFromExt.nodes.map(({ schemaName }: any) => schemaName))
+        .concat(schemaNames.nodes.map(({ schemaName }: any) => schemaName));
 
       if (graphileCache.has(key)) {
-        // @ts-ignore
-        const { handler } = graphileCache.get(key)!;
-        console.log(handler);
+        const { handler } = graphileCache.get(key)!
         return handler(req, res, next);
       }
 
       const options = getSettings({
         host: env.SERVER_HOST,
-        port,
         schema: schemas,
+        port,
         simpleInflection,
         oppositeBaseNames,
         postgis
       });
 
-      if (appendPlugins.length) {
-        options.appendPlugins!.push(...appendPlugins);
+      const pubkey_challenge = api.apiModules.nodes.find(
+        (mod: any) => mod.name === 'pubkey_challenge'
+      );
+
+      if (pubkey_challenge && pubkey_challenge.data) {
+        options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data));
       }
 
-      // @ts-ignore
+      if (appendPlugins.length) {
+        [].push.apply(options.appendPlugins, appendPlugins);
+      }
+
       options.pgSettings = async function pgSettings(req: Request) {
-        const context: Record<string, string> = {
-          'jwt.claims.database_id': (req as any).databaseId || '',
-          'jwt.claims.ip_address': (req as any).clientIp || ''
+        const context: Record<string, any> = {
+          [`jwt.claims.database_id`]: req.databaseId,
+          [`jwt.claims.ip_address`]: req.clientIp
         };
 
         if (req.get('origin')) {
-          context['jwt.claims.origin'] = req.get('origin')!;
+          context['jwt.claims.origin'] = req.get('origin');
         }
-
         if (req.get('User-Agent')) {
-          context['jwt.claims.user_agent'] = req.get('User-Agent')!;
+          context['jwt.claims.user_agent'] = req.get('User-Agent');
         }
 
-        console.log(context);
-
-        if ((req as any).token?.user_id) {
-          console.log('FOUND TOKEN', (req as any).token)
+        if (req?.token?.user_id) {
           return {
             role: roleName,
-            'jwt.claims.token_id': (req as any).token.id,
-            'jwt.claims.user_id': (req as any).token.user_id,
+            [`jwt.claims.token_id`]: req.token.id,
+            [`jwt.claims.user_id`]: req.token.user_id,
             ...context
           };
         }
 
-        console.log('ANON', context)
-
-        return {
-          role: anonRole,
-          ...context
-        };
+        return { role: anonRole, ...context };
       };
 
-      // @ts-ignore
       options.graphqlRoute = '/graphql';
-      // @ts-ignore
       options.graphiqlRoute = '/graphiql';
+
       options.graphileBuildOptions = {
         ...options.graphileBuildOptions,
         ...graphileBuildOptions
       };
 
-      const finalOptions = {
+      const opts: PostGraphileOptions = {
         ...options,
         ...overrideSettings
       };
 
       const pgPool = getRootPgPool(dbname);
-
-      // @ts-ignore
-      const handler = postgraphile(pgPool, schemas, finalOptions);
+      const handler = postgraphile(pgPool, schemas, opts);
 
       graphileCache.set(key, {
         pgPool,
@@ -123,7 +151,7 @@ export const graphile =
 
       return handler(req, res, next);
     } catch (e: any) {
-      console.error('PostGraphile init failed:', e);
       return res.status(500).send(e.message);
     }
   };
+};

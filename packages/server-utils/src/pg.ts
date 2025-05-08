@@ -8,7 +8,7 @@ export const getDbString = (db: string): string =>
 export const getRootPgPool = (dbname: string): pg.Pool => {
   if (pgCache.has(dbname)) {
     const cached = pgCache.get(dbname);
-    if (cached) return cached as pg.Pool;
+    if (cached) return cached;
   }
 
   const pgPool = new pg.Pool({

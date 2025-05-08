@@ -7,14 +7,13 @@ import {
   getRootPgPool,
   cors,
   healthz,
-  poweredBy
+  poweredBy,
+  GraphileCache
 } from '@launchql/server-utils';
 
 import { printSchemas, printDatabases } from './render';
 import { env } from './env';
 import { getGraphileSettings } from './settings';
-
-import { HttpRequestHandler } from 'postgraphile'
 
 interface ServerOptions {
   simpleInflection?: boolean;
@@ -24,11 +23,6 @@ interface ServerOptions {
   origin?: string;
 }
 
-interface InstanceObjType {
-  pgPoolKey: string;
-  handler: HttpRequestHandler;
-}
-
 export default ({
   simpleInflection = env.USE_SIMPLE_INFLECTION,
   oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
@@ -36,11 +30,11 @@ export default ({
   postgis = env.USE_POSTGIS,
   origin
 }: ServerOptions = {}): Express => {
-  const getGraphileInstanceObj = (dbname: string, schemaname: string): InstanceObjType => {
+  const getGraphileInstanceObj = (dbname: string, schemaname: string): GraphileCache => {
     const key = `${dbname}.${schemaname}`;
 
     if (graphileCache.has(key)) {
-      return graphileCache.get(key) as InstanceObjType;
+      return graphileCache.get(key);
     }
 
     const opts: PostGraphileOptions = {

@@ -6,7 +6,6 @@ import pgQueryContext from '@launchql/pg-query-context';
 const strictAuth = env.STRICT_AUTH;
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  // @ts-ignore
   const api = req.apiInfo.data.api;
   const pool = getRootPgPool(api.dbname);
 
