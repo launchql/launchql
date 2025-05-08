@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/migrate",
-  "version": "2.0.0",
+  "name": "@launchql/cli",
+  "version": "0.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "PostgreSQL Migration Tools",
+  "description": "LaunchQL CLI",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -25,18 +25,24 @@
     "prepare": "npm run build",
     "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "dev": "ts-node ./src/index.ts",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.12.7",
+    "@types/shelljs": "^0.8.16",
+    "ts-node": "^10.9.2"
+  },
   "dependencies": {
-    "@types/glob": "^8.1.0",
-    "@types/rimraf": "^4.0.5",
+    "@launchql/migrate": "^2.0.0",
     "chalk": "^4.1.0",
-    "glob": "^11.0.1",
-    "mkdirp": "^3.0.1",
-    "pgsql-parser": "^13.16.0",
-    "rimraf": "^6.0.1"
+    "deepmerge": "^4.3.1",
+    "inquirerer": "^1.9.0",
+    "js-yaml": "^4.1.0",
+    "minimist": "^1.2.8",
+    "shelljs": "^0.9.2"
   }
 }
