@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/upload-names",
-  "version": "0.1.0",
+  "name": "@launchql/server-utils",
+  "version": "0.4.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "upload names",
+  "description": "server utils",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,8 +29,19 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "envalid": "^8.0.0",
+    "express": "^5.1.0",
+    "lru-cache": "^11.1.0",
+    "pg": "^8.15.6"
+  },
   "devDependencies": {
-    "glob": "^11.0.2"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/pg": "^8.11.10",
+    "@types/rimraf": "^4.0.5",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
   }
 }

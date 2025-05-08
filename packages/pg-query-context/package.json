@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/upload-names",
+  "name": "@launchql/pg-query-context",
   "version": "0.1.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "upload names",
+  "description": "pg query context",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,8 +29,10 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "dependencies": {
+    "pg": "^8.15.6"
+  },
   "devDependencies": {
-    "glob": "^11.0.2"
+    "@types/pg": "^8.11.10"
   }
 }

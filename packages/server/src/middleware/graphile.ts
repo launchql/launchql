@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { env } from '../env';
-import { graphileCache } from '../utils/cache';
-import { getRootPgPool } from '../utils/pg';
+import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile } from 'postgraphile';
-import { getGraphileSettings as getSettings } from '../settings/graphile';
+import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
+
 
 // import { PostGraphileOptions } from 'postgraphile';
 
@@ -31,19 +31,13 @@ export const graphile =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Placeholder: Replace with your actual dynamic logic
-      const dbname: string = (req as any).api?.dbname || 'example_db';
-      const anonRole: string = (req as any).api?.anonRole || 'anonymous';
-      const roleName: string = (req as any).api?.roleName || 'app_user';
+      const dbname: string = (req as any).api?.dbname || 'dashboard';
+      const anonRole: string = 'anonymous';
+      const roleName: string = 'app_user';
       const key: string = (req as any).svc_key || dbname;
 
-      const schemaNamesFromExt = (req as any).api?.schemaNamesFromExt?.nodes ?? [];
-      const schemaNames = (req as any).api?.schemaNames?.nodes ?? [];
-
-      const schemas = ['npm_count', 'github'];
+      const schemas = ['dashboard_public'];
       console.log('hard coding schemas....');
-    //   const schemas = [...schemaNamesFromExt, ...schemaNames].map(
-    //     (n: { schemaName: string }) => n.schemaName
-    //   );
 
       if (!schemas.length) {
         return res.status(500).send('No schemas provided');
@@ -84,19 +78,22 @@ export const graphile =
           context['jwt.claims.user_agent'] = req.get('User-Agent')!;
         }
 
+        console.log(context);
+
         if ((req as any).token?.user_id) {
+          console.log('FOUND TOKEN', (req as any).token)
           return {
-            // TEMPORARY PUT THIS BACK!
-            // role: roleName,
+            role: roleName,
             'jwt.claims.token_id': (req as any).token.id,
             'jwt.claims.user_id': (req as any).token.user_id,
             ...context
           };
         }
 
+        console.log('ANON', context)
+
         return {
-        // TEMPORARY PUT THIS BACK!
-        //   role: anonRole,
+          role: anonRole,
           ...context
         };
       };

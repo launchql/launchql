@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/upload-names",
+  "name": "@launchql/url-domains",
   "version": "0.1.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "upload names",
+  "description": "url domains",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,8 +29,5 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
-  "devDependencies": {
-    "glob": "^11.0.2"
-  }
+  "keywords": []
 }

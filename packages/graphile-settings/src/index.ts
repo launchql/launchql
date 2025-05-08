@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { env } from '../env';
+import { env } from './env';
 import { NodePlugin, Plugin } from 'graphile-build';
 import PgSimpleInflector from 'graphile-simple-inflector';
 import PgMetaschema from 'graphile-meta-schema';
@@ -14,8 +14,8 @@ import PgPostgis from '@pyramation/postgis';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import PgSearch from 'graphile-search-plugin';
-import LqlTypesPlugin from '../plugins/types';
-import resolveUpload from '../resolvers/upload';
+import LqlTypesPlugin from './plugins/types';
+import resolveUpload from './resolvers/upload';
 
 interface GraphileSettingsInput {
   host?: string;

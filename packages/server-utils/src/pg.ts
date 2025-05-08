@@ -1,8 +1,6 @@
-// @ts-nocheck
-
-import { env } from '../env';
+import { env } from './env';
 import pg from 'pg';
-import { pgCache } from '../utils/cache';
+import { pgCache } from './lru';
 
 export const getDbString = (db: string): string =>
   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;

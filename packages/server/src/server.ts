@@ -1,33 +1,21 @@
-import express, { Express } from 'express';
-// import { graphqlUploadExpress } from 'graphql-upload';
-// import { middleware as parseDomains } from '../for-npm/url-domains'
-import requestIp from 'request-ip';
-
-import { env } from './env';
-// import { authenticate } from './middleware/auth';
-import { graphile } from './middleware/graphile';
-import { cors } from './middleware/cors';
-// import { api } from './middleware/api';
-// import { flush, flushService } from './middleware/flush';
-
-import {
-  getRootPgPool
-} from './utils/pg';
-
 import {
   healthz,
-} from './middleware/healthz';
-
-import {
   poweredBy,
   trustProxy,
-} from './middleware/headers';
+  getRootPgPool
+} from '@launchql/server-utils';
 
-// const middleware = {
-//   authenticate,
-//   graphile,
-//   api
-// };
+import { env } from './env';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
+import { middleware as parseDomains } from '@launchql/url-domains';
+import express, { Express, RequestHandler } from 'express';
+import { authenticate } from './middleware/auth';
+import { graphile } from './middleware/graphile';
+import { cors } from './middleware/cors';
+import { api } from './middleware/api';
+import { flush, flushService } from './middleware/flush';
+import requestIp from 'request-ip';
+import { Pool, PoolClient } from 'pg';
 
 interface ServerOptions {
   simpleInflection?: boolean;
@@ -39,9 +27,31 @@ interface ServerOptions {
   graphileBuildOptions?: Record<string, any>;
 }
 
-export class Server {
-  app: Express;
-  port: number;
+export default ({
+  simpleInflection = env.USE_SIMPLE_INFLECTION,
+  oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
+  port = env.SERVER_PORT,
+  postgis = env.USE_POSTGIS
+}: ServerOptions = {}) => {
+  const app = new Server({
+    simpleInflection,
+    oppositeBaseNames,
+    port,
+    postgis
+  });
+  app.addEventListener();
+  app.listen();
+};
+
+// const middleware = {
+//   authenticate,
+//   graphile,
+//   api
+// };
+
+class Server {
+  private app: Express;
+  private port: number;
 
   constructor({
     simpleInflection = env.USE_SIMPLE_INFLECTION,
@@ -52,25 +62,24 @@ export class Server {
     overrideSettings = {},
     graphileBuildOptions = {}
   }: ServerOptions = {}) {
-    this.port = port;
+    this.port = port!;
+
     const app = express();
 
-    // Base middleware
     healthz(app);
     // @ts-ignore
-    // trustProxy(app, env);
+    trustProxy(app, env);
     app.use(poweredBy('launchql'));
-    // app.use(graphqlUploadExpress());
-    // app.use(parseDomains());
-    // app.use(requestIp.mw());
+    app.use(graphqlUploadExpress());
+    app.use(parseDomains() as RequestHandler);
     
-    // App-specific middleware
-    // app.use(api);
+    app.use(requestIp.mw());
+    
+    app.use(api);
     // @ts-ignore
-    // app.use(cors);
-    // app.use(authenticate);
+    app.use(cors);
+    app.use(authenticate);
     app.use(
-      // @ts-ignore
       graphile({
         simpleInflection,
         oppositeBaseNames,
@@ -81,26 +90,21 @@ export class Server {
         graphileBuildOptions
       })
     );
-    // app.use(flush);
-
+    app.use(flush);
     this.app = app;
   }
 
   listen(): void {
-    this.app.listen(this.port, env.SERVER_HOST, () => {
-      this.log(`✅ Listening at http://${env.SERVER_HOST}:${this.port}`);
-    });
+    this.app.listen(this.port, env.SERVER_HOST, () =>
+      this.log(`listening at http://${env.SERVER_HOST}:${this.port}`)
+    );
   }
 
   async flush(databaseId: string): Promise<void> {
-    try {
-      // await flushService(databaseId);
-    } catch (err) {
-      this.error(`Failed to flush for DB ${databaseId}:`, err);
-    }
+    await flushService(databaseId);
   }
 
-  getPool() {
+  getPool(): Pool {
     return getRootPgPool(env.PGDATABASE);
   }
 
@@ -109,45 +113,40 @@ export class Server {
     pgPool.connect(this.listenForChanges.bind(this));
   }
 
-  listenForChanges(err: Error | null, client: any, release: () => void): void {
+  listenForChanges(err: Error | null, client: PoolClient, release: () => void): void {
     if (err) {
-      this.error('❌ Error connecting to pg_notify listener:', err);
+      this.error('Error connecting with notify listener', err);
       setTimeout(() => this.addEventListener(), 5000);
       return;
     }
 
-    client.on('notification', (msg: { channel: string; payload?: string }) => {
-      const { channel, payload } = msg;
+    client.on('notification', (args: { channel: string; payload?: string }) => {
+      const { channel, payload } = args;
       if (channel === 'schema:update' && payload) {
-        this.log(`🔁 schema:update → ${payload}`);
+        console.log('schema:update', payload);
         this.flush(payload);
       }
     });
 
     client.query('LISTEN "schema:update"');
 
-    client.on('error', (e: Error) => {
-      this.error('❌ pg_notify client error:', e);
+    client.on('error', (e) => {
+      this.error('Error with database notify listener', e);
       release();
       this.addEventListener();
     });
 
-    this.log('🔊 Listening for schema:update events...');
+    this.log('connected and listening for changes...');
   }
 
-  log(...args: any[]): void {
-    console.log('[Server]', ...args);
+  log(text: string): void {
+    console.log(text);
   }
 
-  error(...args: any[]): void {
-    console.error('[Server Error]', ...args);
+  error(text: string, err?: unknown): void {
+    console.error(text, err);
   }
 }
 
-export default (options?: ServerOptions) => {
-  const app = new Server(options);
-  app.addEventListener();
-  app.listen();
-};
-
-// export { middleware };
+// export { middleware, Server };
+export { Server };

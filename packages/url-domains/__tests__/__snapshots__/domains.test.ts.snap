@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parses URLs 127.0.0.1:8888 1`] = `
+{
+  "domain": "127.0.0.1",
+  "hostname": "127.0.0.1",
+  "subdomains": [],
+}
+`;
+
+exports[`parses URLs admin.basecrypt.com:8888 1`] = `
+{
+  "domain": "basecrypt.com",
+  "hostname": "admin.basecrypt.com",
+  "subdomains": [
+    "admin",
+  ],
+}
+`;
+
+exports[`parses URLs admin.localhost:8888 1`] = `
+{
+  "domain": "admin.localhost",
+  "hostname": "admin.localhost",
+  "subdomains": [],
+}
+`;
+
+exports[`parses URLs admin.web.basecrypt.com:8888 1`] = `
+{
+  "domain": "basecrypt.com",
+  "hostname": "admin.web.basecrypt.com",
+  "subdomains": [
+    "admin",
+    "web",
+  ],
+}
+`;
+
+exports[`parses URLs coolio.webby.localhost:8888 1`] = `
+{
+  "domain": "webby.localhost",
+  "hostname": "coolio.webby.localhost",
+  "subdomains": [
+    "coolio",
+  ],
+}
+`;
+
+exports[`parses URLs localhost:8888 1`] = `
+{
+  "domain": "localhost",
+  "hostname": "localhost",
+  "subdomains": [],
+}
+`;
+
+exports[`parses URLs www.admin.localhost:8888 1`] = `
+{
+  "domain": "admin.localhost",
+  "hostname": "www.admin.localhost",
+  "subdomains": [],
+}
+`;
+
+exports[`parses reqs 127.0.0.1:8888 1`] = `
+{
+  "get": [Function],
+  "host": "127.0.0.1:8888",
+  "name": "127.0.0.1:8888",
+  "originalUrl": "/graphiql?yo=1",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "127.0.0.1",
+    "hostname": "127.0.0.1",
+    "subdomains": [],
+  },
+}
+`;
+
+exports[`parses reqs admin.basecrypt.com:8888 1`] = `
+{
+  "get": [Function],
+  "host": "admin.basecrypt.com:8888",
+  "name": "admin.basecrypt.com:8888",
+  "originalUrl": "/",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "basecrypt.com",
+    "hostname": "admin.basecrypt.com",
+    "subdomains": [
+      "admin",
+    ],
+  },
+}
+`;
+
+exports[`parses reqs admin.localhost:8888 1`] = `
+{
+  "get": [Function],
+  "host": "admin.localhost:8888",
+  "name": "admin.localhost:8888",
+  "originalUrl": "/",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "admin.localhost",
+    "hostname": "admin.localhost",
+    "subdomains": [],
+  },
+}
+`;
+
+exports[`parses reqs admin.web.basecrypt.com:8888 1`] = `
+{
+  "get": [Function],
+  "host": "admin.web.basecrypt.com:8888",
+  "name": "admin.web.basecrypt.com:8888",
+  "originalUrl": "/",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "basecrypt.com",
+    "hostname": "admin.web.basecrypt.com",
+    "subdomains": [
+      "admin",
+      "web",
+    ],
+  },
+}
+`;
+
+exports[`parses reqs coolio.webby.localhost:8888 1`] = `
+{
+  "get": [Function],
+  "host": "coolio.webby.localhost:8888",
+  "name": "coolio.webby.localhost:8888",
+  "originalUrl": "/graphiql?yo=1",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "webby.localhost",
+    "hostname": "coolio.webby.localhost",
+    "subdomains": [
+      "coolio",
+    ],
+  },
+}
+`;
+
+exports[`parses reqs localhost:8888 1`] = `
+{
+  "get": [Function],
+  "host": "localhost:8888",
+  "name": "localhost:8888",
+  "originalUrl": "/",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "localhost",
+    "hostname": "localhost",
+    "subdomains": [],
+  },
+}
+`;
+
+exports[`parses reqs www.admin.localhost:8888 1`] = `
+{
+  "get": [Function],
+  "host": "www.admin.localhost:8888",
+  "name": "www.admin.localhost:8888",
+  "originalUrl": "/",
+  "protocol": "http",
+  "urlDomains": {
+    "domain": "admin.localhost",
+    "hostname": "www.admin.localhost",
+    "subdomains": [],
+  },
+}
+`;

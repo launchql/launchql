@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/upload-names",
-  "version": "0.1.0",
+  "name": "@launchql/graphile-query",
+  "version": "1.2.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "upload names",
+  "description": "graphile query",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,8 +29,9 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
-  "devDependencies": {
-    "glob": "^11.0.2"
+  "dependencies": {
+    "postgraphile": "^4.14.1",
+    "graphql": "15.10.1",
+    "pg": "^8.15.6"
   }
 }

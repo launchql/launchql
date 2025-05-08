@@ -1,12 +1,12 @@
 {
-  "name": "@launchql/server",
-  "version": "2.0.0",
+  "name": "@launchql/graphile-settings",
+  "version": "1.2.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "LaunchQL Server",
+  "description": "graphile settings",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql-2.0",
+  "homepage": "https://github.com/launchql/launchql",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql-2.0"
+    "url": "https://github.com/launchql/launchql"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql-2.0/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
@@ -25,14 +25,10 @@
     "prepare": "npm run build",
     "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
-    "dev": "ts-node src/index.ts",
-    "simple": "ts-node src/simple-server.ts",
-    "dev:watch": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
     "@pyramation/postgis": "^0.1.1",
@@ -40,9 +36,6 @@
     "@launchql/graphile-settings": "^1.2.0",
     "@launchql/graphile-query": "^1.2.0",
     "@launchql/upload-names": "^0.1.0",
-    "@launchql/server-utils": "^0.4.0",
-    "@launchql/url-domains": "^0.1.0",
-    "@launchql/pg-query-context": "^0.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",
@@ -52,7 +45,6 @@
     "graphile-meta-schema": "^0.2.5",
     "graphile-search-plugin": "^0.1.2",
     "graphile-simple-inflector": "^0.1.1",
-    "graphql-upload": "^17.0.0",
     "graphql-tag": "2.12.6",
     "lru-cache": "^11.1.0",
     "pg": "^8.15.6",
@@ -64,7 +56,6 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/graphql-upload": "^17.0.0",
     "@types/express": "^5.0.1",
     "@types/pg": "^8.11.10",
     "@types/request-ip": "^0.0.41",

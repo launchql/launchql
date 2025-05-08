@@ -1,6 +1,4 @@
-// TODO get real uploads working 
-
-import uploadNames from '../for-npm/upload-names';
+import uploadNames from '@launchql/upload-names';
 import type { ReadStream } from 'fs';
 
 interface Upload {
