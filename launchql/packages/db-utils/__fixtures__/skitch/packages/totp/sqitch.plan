@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+  %project=totp
+  %uri=totp
+
+  
+procedures/generate_secret 2018-09-21T00:46:43Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # add procedures/generate_secret

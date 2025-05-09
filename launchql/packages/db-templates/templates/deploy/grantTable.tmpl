@@ -1,0 +1,16 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+-- TODO make sure to require any policies on this table!
+
+GRANT [% actions.join(', ') %] ON TABLE [% schema %].[% table %] TO [% role.join(', ') %];
+
+COMMIT;

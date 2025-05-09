@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+DROP FUNCTION [% schema %].[% procedure %];
+
+COMMIT;

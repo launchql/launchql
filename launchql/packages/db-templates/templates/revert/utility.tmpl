@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+DROP FUNCTION public.[% procedure %];
+
+COMMIT;

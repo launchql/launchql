@@ -1,0 +1,21 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+CREATE FUNCTION [% procedure %](
+  -- args here
+) returns void as $$
+
+$$
+LANGUAGE '[% lang %]' [% stability %];
+
+COMMENT ON FUNCTION [% procedure %] IS 'Your comment here';
+
+COMMIT;

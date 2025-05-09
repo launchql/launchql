@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+REVOKE [% actions.join(', ') %] ON TABLE [% schema %].[% table %] FROM [% role.join(', ') %];
+
+COMMIT;

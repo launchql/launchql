@@ -1,0 +1,9 @@
+%syntax-version=1.0.0
+  %project=totp
+  %uri=totp
+
+
+procedures/generate_secret 2018-09-21T00:46:43Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # add procedures/generate_secret
+@0.0.1 2018-09-26T20:03:33Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # tag 0.0.1
+
+some/change 2018-09-26T20:14:27Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # a new change

@@ -1,0 +1,8 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+ALTER TABLE [% schema %].[% table %]
+    DROP CONSTRAINT fk_[% schema %]_[% table %]_[% column %];
+
+COMMIT;

@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+REVOKE [% role %] FROM [% grantee %];
+
+COMMIT;

@@ -1,0 +1,11 @@
+-- Verify [% change %] on pg
+
+BEGIN;
+
+[% FOREACH user IN role -%]
+  [% FOREACH privilege IN actions -%]
+SELECT has_table_privilege('[% user %]', '[% schema %].[% table %]', '[% privilege %]');
+  [% END -%]
+[% END -%]
+
+ROLLBACK;

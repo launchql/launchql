@@ -1,0 +1,20 @@
+%syntax-version=1.0.0
+  %project=pg-verify
+  %uri=pg-verify
+
+  
+procedures/verify_constraint [pg-utilities:procedures/tg_update_timestamps] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_constraint
+procedures/verify_domain 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_domain
+procedures/verify_extension 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_extension
+procedures/verify_function 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_function
+procedures/verify_index 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_index
+procedures/verify_membership 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_membership
+procedures/verify_policy 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_policy
+procedures/verify_role 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_role
+procedures/verify_schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_schema
+procedures/verify_security 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_security
+procedures/verify_table_grant 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_table_grant
+procedures/verify_table 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_table
+procedures/verify_trigger 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_trigger
+procedures/verify_type 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_type
+procedures/verify_view 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_view
