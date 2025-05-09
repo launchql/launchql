@@ -1,7 +1,0 @@
-Shadowbox.loadSkin('classic', 'shadowsrc/skin');
-Shadowbox.loadLanguage('en', 'shadowsrc/lang');
-Shadowbox.loadPlayer(['flv', 'html', 'iframe', 'img', 'qt', 'swf', 'wmp'], 'shadowsrc/player');
-
-window.onload = function(){
-    Shadowbox.init();
-};
