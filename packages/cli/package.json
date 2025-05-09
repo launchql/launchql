@@ -40,6 +40,7 @@
     "@launchql/migrate": "^2.0.0",
     "@launchql/explorer": "^2.0.0",
     "@launchql/server": "^2.0.0",
+    "@launchql/types": "^2.0.0",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1",
     "inquirerer": "^1.9.1",

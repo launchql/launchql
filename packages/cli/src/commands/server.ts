@@ -1,6 +1,7 @@
-import { LaunchQLServer as server, ServerOptions } from '@launchql/server';
+import { LaunchQLServer as server } from '@launchql/server';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import chalk from 'chalk';
+import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 
 const questions: Question[] = [
   {
@@ -36,7 +37,8 @@ const questions: Question[] = [
     type: 'number',
     // alias: 'p',
     required: false,
-    default: 5555
+    default: 5555,
+    useDefault: true
   },
 //   {
 //     name: 'origin',
@@ -63,12 +65,16 @@ export default async (
     simpleInflection
   } = await prompter.prompt(argv, questions);
 
-  const options: ServerOptions = {
-    oppositeBaseNames,
-    port,
-    postgis,
-    simpleInflection
-  };
+  const options: LaunchQLOptions = getEnvOptions({
+    features: {
+      oppositeBaseNames,
+      simpleInflection,
+      postgis
+    },
+    server: {
+      port
+    }
+  });
 
   console.log(chalk.green('\n✅ Selected Configuration:'));
   for (const [key, value] of Object.entries(options)) {
