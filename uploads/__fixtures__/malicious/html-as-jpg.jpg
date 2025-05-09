@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<META NAME="keywords" CONTENT="Dan Lynch">
+<META NAME="description" CONTENT="Dan Lynch's website">
+<META NAME="abstract" CONTENT="Dan Lynch">
+<META NAME="author" CONTENT="Dan Lynch">
+<META NAME="robots" CONTENT="FOLLOW,INDEX">
+<title>Dan Lynch</title>
+
+<script type="text/javascript" src="shadowsrc/adapter/shadowbox-base.js"></script>
+<script type="text/javascript" src="shadowsrc/shadowbox.js"></script>
+<script type="text/javascript">
+
+Shadowbox.loadSkin('classic', 'shadowsrc/skin');
+Shadowbox.loadLanguage('en', 'shadowsrc/lang');
+Shadowbox.loadPlayer(['flv', 'html', 'iframe', 'img', 'qt', 'swf', 'wmp'], 'shadowsrc/player');
+
+window.onload = function(){
+    Shadowbox.init();
+};
+
+</script>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <div id="content">
+
+
+        <div id="header">
+            <h1><a name="top">Web Sites</a> </h1>
+        </div>
+
+	<a href="https://www.mathapedia.com">Mathapedia</a><br>
+	<a href="http://www.3Daet.com">3Daet</a><br>
+	<a href="http://www.vim3d.com">Vim3D</a><br>
+
+	<br><br>
+
+        <h3>some useful LaTeX programs...</h3>
+
+<br>
+<a href="unitvectors.php">Vectors</a>
+<br>
+<a href="matrix.php">Matrices</a>
+<br>
+<a href="plots.php">Plots</a>
+<br>
+<a href="realtimemath.html">RealTime Math!</a>
+<br>
+<br>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>
