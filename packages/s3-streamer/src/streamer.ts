@@ -4,11 +4,11 @@ import getS3 from './s3';
 import { upload as streamUpload, type AsyncUploadResult } from './utils';
 
 interface StreamerOptions {
-  AWS_REGION?: string;
-  AWS_SECRET_KEY?: string;
-  AWS_ACCESS_KEY?: string;
-  MINIO_ENDPOINT?: string;
-  defaultBucket?: string;
+  awsRegion: string;
+  awsSecretKey: string;
+  awsAccessKey: string;
+  minioEndpoint?: string;
+  defaultBucket: string;
 }
 
 interface UploadParams {
@@ -23,17 +23,17 @@ export class Streamer {
   private defaultBucket?: string;
 
   constructor({
-    AWS_REGION = 'us-east-1',
-    AWS_SECRET_KEY,
-    AWS_ACCESS_KEY,
-    MINIO_ENDPOINT,
+    awsRegion,
+    awsSecretKey,
+    awsAccessKey,
+    minioEndpoint,
     defaultBucket
-  }: StreamerOptions = {}) {
+  }: StreamerOptions) {
     this.s3 = getS3({
-      AWS_REGION,
-      AWS_SECRET_KEY,
-      AWS_ACCESS_KEY,
-      MINIO_ENDPOINT
+      awsRegion,
+      awsSecretKey,
+      awsAccessKey,
+      minioEndpoint
     });
     this.defaultBucket = defaultBucket;
   }

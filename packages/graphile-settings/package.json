@@ -36,6 +36,7 @@
     "@launchql/graphile-settings": "^1.2.0",
     "@launchql/graphile-query": "^1.2.0",
     "@launchql/upload-names": "^0.1.0",
+    "@launchql/types": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",

@@ -1,20 +1,32 @@
-import { env } from './env';
 import pg from 'pg';
 import { pgCache } from './lru';
 
-export const getDbString = (db: string): string =>
-  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${db}`;
+import { PostgresOptions } from '@launchql/types';
 
-export const getRootPgPool = (dbname: string): pg.Pool => {
-  if (pgCache.has(dbname)) {
-    const cached = pgCache.get(dbname);
+export const getDbString = (
+  user: string,
+  password: string,
+  host: string,
+  port: string | number,
+  database: string
+): string =>
+  `postgres://${user}:${password}@${host}:${port}/${database}`;
+
+export const getRootPgPool = ({
+  user,
+  password,
+  host,
+  port,
+  database,
+}: PostgresOptions): pg.Pool => {
+  if (pgCache.has(database)) {
+    const cached = pgCache.get(database);
     if (cached) return cached;
   }
 
-  const pgPool = new pg.Pool({
-    connectionString: getDbString(dbname),
-  });
+  const connectionString = getDbString(user, password, host, port, database);
+  const pgPool = new pg.Pool({ connectionString });
 
-  pgCache.set(dbname, pgPool);
+  pgCache.set(database, pgPool);
   return pgPool;
 };

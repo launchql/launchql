@@ -43,6 +43,7 @@
     "@launchql/server-utils": "^0.4.0",
     "@launchql/url-domains": "^0.1.0",
     "@launchql/pg-query-context": "^0.1.0",
+    "@launchql/types": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",

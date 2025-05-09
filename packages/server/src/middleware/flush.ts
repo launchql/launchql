@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { graphileCache, svcCache, getRootPgPool } from '@launchql/server-utils';
-import { env } from '../env';
+import { LaunchQLOptions } from '@launchql/types';
 
 export const flush = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.url === '/flush') {
@@ -13,15 +13,15 @@ export const flush = async (req: Request, res: Response, next: NextFunction): Pr
   return next();
 };
 
-export const flushService = async (databaseId: string): Promise<void> => {
-  const pgPool = getRootPgPool(env.PGDATABASE);
+export const flushService = async (opts: LaunchQLOptions, databaseId: string): Promise<void> => {
+  const pgPool = getRootPgPool(opts.pg);
   console.log('flushing db ' + databaseId);
 
   const api = new RegExp(`^api:${databaseId}:.*`);
   const schemata = new RegExp(`^schemata:${databaseId}:.*`);
   const meta = new RegExp(`^metaschema:api:${databaseId}`);
 
-  if (!env.IS_PUBLIC) {
+  if (!opts.graphile.isPublic) {
     graphileCache.forEach((_, k: string) => {
       if (api.test(k) || schemata.test(k) || meta.test(k)) {
         graphileCache.delete(k);

@@ -80,15 +80,6 @@ jobs:
           AWS_SECRET_KEY: minioadmin
           AWS_REGION: us-east-1
           BUCKET_NAME: test-bucket
-
-      - name: launchql/stream-to-s3
-        run: cd ./packages/stream-to-s3 && yarn test
-        env:
-          MINIO_ENDPOINT: http://minio_cdn:9000
-          AWS_ACCESS_KEY: minioadmin
-          AWS_SECRET_KEY: minioadmin
-          AWS_REGION: us-east-1
-          BUCKET_NAME: test-bucket
           
       - name: launchql/upload-names
         run: cd ./packages/upload-names && yarn test

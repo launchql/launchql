@@ -2,61 +2,45 @@ import { getGraphileSettings } from '@launchql/graphile-settings';
 import { GraphileQuery, getSchema } from '@launchql/graphile-query';
 import { ApiQuery, ApiByNameQuery } from './gql';
 import { svcCache, getRootPgPool } from '@launchql/server-utils';
-import { env } from '../env';
 import errorPage404 from '../errors/404';
 import errorPage50x from '../errors/50x';
-
-const isPublic = env.IS_PUBLIC;
+import { LaunchQLOptions } from '@launchql/types';
+import { Response, NextFunction } from 'express';
 
 export const getSubdomain = (reqDomains: string[]): string | null => {
   const names = reqDomains.filter((name) => !['www'].includes(name));
   return !names.length ? null : names.join('.');
 };
 
-export const api = async (req: any, res: any, next: any): Promise<any> => {
-  try {
-    const svc = await getApiConfig(req);
-    if (!svc) {
-      return res.status(404).send(errorPage404);
+export const createApiMiddleware = (opts: LaunchQLOptions) => {
+  return async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const svc = await getApiConfig(opts, req);
+      if (!svc) {
+        res.status(404).send(errorPage404);
+        return;
+      }
+      req.apiInfo = svc;
+      req.databaseId = svc.data.api.databaseId;
+      next();
+    } catch (e: any) {
+      if (e.message.match(/does not exist/)) {
+        res.status(404).send(errorPage404);
+      } else {
+        console.error(e);
+        res.status(500).send(errorPage50x);
+      }
     }
-    req.apiInfo = svc;
-    req.databaseId = svc.data.api.databaseId;
-  } catch (e: any) {
-    if (e.message.match(/does not exist/)) {
-      return res.status(404).send(errorPage404);
-    }
-    console.error(e);
-    return res.status(500).send(errorPage50x);
-  }
-  return next();
-};
-
-const getSvcKey = (req: any): string => {
-  const domain = req.urlDomains.domain;
-  const key = req.urlDomains.subdomains
-    .filter((name: string) => !['www'].includes(name))
-    .concat(domain)
-    .join('.');
-
-  if (!isPublic) {
-    if (req.get('X-Api-Name')) {
-      return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
-    }
-    if (req.get('X-Schemata')) {
-      return 'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata');
-    }
-    if (req.get('X-Meta-Schema')) {
-      return 'metaschema:api:' + req.get('X-Database-Id');
-    }
-  }
-  return key;
+  };
 };
 
 const getHardCodedSchemata = ({
+  opts,
   schemata,
   databaseId,
   key
 }: {
+  opts: LaunchQLOptions,
   schemata: string;
   databaseId: string;
   key: string;
@@ -66,7 +50,7 @@ const getHardCodedSchemata = ({
       api: {
         databaseId,
         isPublic: false,
-        dbname: env.PGDATABASE,
+        dbname: opts.pg.database,
         anonRole: 'administrator',
         roleName: 'administrator',
         schemaNamesFromExt: {
@@ -87,19 +71,21 @@ const getHardCodedSchemata = ({
 };
 
 const getMetaSchema = ({
+  opts,
   key,
   databaseId
 }: {
+  opts: LaunchQLOptions,
   key: string;
   databaseId: string;
 }): any => {
-  const schemata = env.META_SCHEMAS;
+  const schemata = opts.graphile.metaSchemas;
   const svc = {
     data: {
       api: {
         databaseId,
         isPublic: false,
-        dbname: env.PGDATABASE,
+        dbname: opts.pg.database,
         anonRole: 'administrator',
         roleName: 'administrator',
         schemaNamesFromExt: {
@@ -117,11 +103,13 @@ const getMetaSchema = ({
 };
 
 const queryServiceByDomainAndSubdomain = async ({
+  opts,
   key,
   client,
   domain,
   subdomain
 }: {
+  opts: LaunchQLOptions,
   key: string;
   client: any;
   domain: string;
@@ -144,7 +132,7 @@ const queryServiceByDomainAndSubdomain = async ({
   const nodes = result?.data?.domains?.nodes;
   if (nodes?.length) {
     const data = nodes[0];
-    if (!data.api || data.api.isPublic !== isPublic) return null;
+    if (!data.api || data.api.isPublic !== opts.graphile.isPublic) return null;
     const svc = { data };
     svcCache.set(key, svc);
     return svc;
@@ -153,11 +141,13 @@ const queryServiceByDomainAndSubdomain = async ({
 };
 
 const queryServiceByApiName = async ({
+  opts,
   key,
   client,
   databaseId,
   name
 }: {
+  opts: LaunchQLOptions,
   key: string;
   client: any;
   databaseId: string;
@@ -175,7 +165,7 @@ const queryServiceByApiName = async ({
   }
 
   const data = result?.data;
-  if (data?.api && data.api.isPublic === isPublic) {
+  if (data?.api && data.api.isPublic === opts.graphile.isPublic) {
     const svc = { data };
     svcCache.set(key, svc);
     return svc;
@@ -183,24 +173,45 @@ const queryServiceByApiName = async ({
   return null;
 };
 
-export const getApiConfig = async (req: any): Promise<any> => {
-  const rootPgPool = getRootPgPool(env.PGDATABASE);
+const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
+  const domain = req.urlDomains.domain;
+  const key = req.urlDomains.subdomains
+    .filter((name: string) => !['www'].includes(name))
+    .concat(domain)
+    .join('.');
 
+  if (!opts.graphile.isPublic) {
+    if (req.get('X-Api-Name')) {
+      return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
+    }
+    if (req.get('X-Schemata')) {
+      return 'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata');
+    }
+    if (req.get('X-Meta-Schema')) {
+      return 'metaschema:api:' + req.get('X-Database-Id');
+    }
+  }
+  return key;
+};
+
+export const getApiConfig = async (opts: LaunchQLOptions, req: any): Promise<any> => {
+  const rootPgPool = getRootPgPool(opts.pg);
   const subdomain = getSubdomain(req.urlDomains.subdomains);
   const domain = req.urlDomains.domain;
 
-  const key = getSvcKey(req);
+  const key = getSvcKey(opts, req);
   req.svc_key = key;
 
-  const schemata = env.META_SCHEMAS;
+  const schemata = opts.graphile.metaSchemas
 
   let svc;
   if (svcCache.has(key)) {
     svc = svcCache.get(key);
   } else {
     const settings = getGraphileSettings({
-      simpleInflection: true,
-      schema: schemata
+      graphile: {
+        schema: schemata
+      }
     });
 
     console.log('remove THESE ignores!!!');
@@ -209,15 +220,17 @@ export const getApiConfig = async (req: any): Promise<any> => {
     // @ts-ignore
     const client = new GraphileQuery({ schema, pool: rootPgPool, settings });
 
-    if (!isPublic) {
+    if (!opts.graphile.isPublic) {
       if (req.get('X-Schemata')) {
         svc = getHardCodedSchemata({
+          opts,
           key,
           schemata: req.get('X-Schemata'),
           databaseId: req.get('X-Database-Id')
         });
       } else if (req.get('X-Api-Name')) {
         svc = await queryServiceByApiName({
+          opts,
           key,
           client,
           name: req.get('X-Api-Name'),
@@ -225,11 +238,13 @@ export const getApiConfig = async (req: any): Promise<any> => {
         });
       } else if (req.get('X-Meta-Schema')) {
         svc = getMetaSchema({
+          opts,
           key,
           databaseId: req.get('X-Database-Id')
         });
       } else {
         svc = await queryServiceByDomainAndSubdomain({
+          opts,
           key,
           client,
           domain,
@@ -238,6 +253,7 @@ export const getApiConfig = async (req: any): Promise<any> => {
       }
     } else {
       svc = await queryServiceByDomainAndSubdomain({
+        opts,
         key,
         client,
         domain,

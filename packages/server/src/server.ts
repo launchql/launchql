@@ -5,69 +5,39 @@ import {
   getRootPgPool
 } from '@launchql/server-utils';
 
-import { env } from './env';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
-import { authenticate } from './middleware/auth';
+import { createAuthenticateMiddleware } from './middleware/auth';
 import { graphile } from './middleware/graphile';
 import { cors } from './middleware/cors';
-import { api } from './middleware/api';
+import { createApiMiddleware } from './middleware/api';
 import { flush, flushService } from './middleware/flush';
 import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
 
-export interface ServerOptions {
-  simpleInflection?: boolean;
-  oppositeBaseNames?: boolean;
-  port?: number;
-  postgis?: boolean;
-  appendPlugins?: any[];
-  overrideSettings?: Record<string, any>;
-  graphileBuildOptions?: Record<string, any>;
-}
+import { LaunchQLOptions } from '@launchql/types';
+import { getMergedOptions } from '@launchql/types';
 
-export const LaunchQLServer = ({
-  simpleInflection = env.USE_SIMPLE_INFLECTION,
-  oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
-  port = env.SERVER_PORT,
-  postgis = env.USE_POSTGIS
-}: ServerOptions = {}) => {
-  const app = new Server({
-    simpleInflection,
-    oppositeBaseNames,
-    port,
-    postgis
-  });
+export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
+  const app = new Server(getMergedOptions(rawOpts));
   app.addEventListener();
   app.listen();
 };
 
-// const middleware = {
-//   authenticate,
-//   graphile,
-//   api
-// };
-
 class Server {
   private app: Express;
-  private port: number;
+  private opts: LaunchQLOptions;
 
-  constructor({
-    simpleInflection = env.USE_SIMPLE_INFLECTION,
-    oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
-    port = env.SERVER_PORT,
-    postgis = env.USE_POSTGIS,
-    appendPlugins = [],
-    overrideSettings = {},
-    graphileBuildOptions = {}
-  }: ServerOptions = {}) {
-    this.port = port!;
+  constructor(opts: LaunchQLOptions) {
+    this.opts = opts;
 
     const app = express();
+    const api = createApiMiddleware(opts);
+    const authenticate = createAuthenticateMiddleware(opts);
 
     healthz(app);
-    trustProxy(app, env as any);
+    trustProxy(app, opts.server.trustProxy);
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
@@ -75,33 +45,25 @@ class Server {
     app.use(api);
     app.use(cors as any);
     app.use(authenticate);
-    app.use(
-      graphile({
-        simpleInflection,
-        oppositeBaseNames,
-        port,
-        postgis,
-        appendPlugins,
-        overrideSettings,
-        graphileBuildOptions
-      })
-    );
+    app.use(graphile(opts));
     app.use(flush);
+
     this.app = app;
   }
 
   listen(): void {
-    this.app.listen(this.port, env.SERVER_HOST, () =>
-      this.log(`listening at http://${env.SERVER_HOST}:${this.port}`)
+    const { server } = this.opts;
+    this.app.listen(server?.port, server?.host, () =>
+      this.log(`listening at http://${server?.host}:${server?.port}`)
     );
   }
 
   async flush(databaseId: string): Promise<void> {
-    await flushService(databaseId);
+    await flushService(this.opts, databaseId);
   }
 
   getPool(): Pool {
-    return getRootPgPool(env.PGDATABASE);
+    return getRootPgPool(this.opts.pg);
   }
 
   addEventListener(): void {
@@ -116,8 +78,7 @@ class Server {
       return;
     }
 
-    client.on('notification', (args: { channel: string; payload?: string }) => {
-      const { channel, payload } = args;
+    client.on('notification', ({ channel, payload }) => {
       if (channel === 'schema:update' && payload) {
         console.log('schema:update', payload);
         this.flush(payload);
@@ -144,5 +105,4 @@ class Server {
   }
 }
 
-// export { middleware, Server };
 export { Server };

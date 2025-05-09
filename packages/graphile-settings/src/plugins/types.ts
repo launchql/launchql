@@ -3,7 +3,7 @@ import { Plugin } from 'graphile-build';
 // formerly lql-types.js
 
 const CustomPgTypeMappingsPlugin: Plugin = builder => {
-  builder.hook('build', (build, context) => {
+  builder.hook('build', (build, _context) => {
     const customMappings = [
       { name: 'geolocation', namespaceName: 'public', type: 'GeoJSON' },
       { name: 'geopolygon', namespaceName: 'public', type: 'GeoJSON' },

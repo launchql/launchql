@@ -1,4 +1,3 @@
-import { env } from './env';
 import { NodePlugin, Plugin } from 'graphile-build';
 // @ts-ignore
 import PgSimpleInflector from 'graphile-simple-inflector';
@@ -21,26 +20,32 @@ import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 // @ts-ignore
 import PgSearch from 'graphile-search-plugin';
 import LqlTypesPlugin from './plugins/types';
-import resolveUpload from './resolvers/upload';
+import { Uploader } from './resolvers/upload';
 import { PostGraphileOptions } from 'postgraphile';
+import { LaunchQLOptions } from '@launchql/types';
+import { getMergedOptions } from '@launchql/types';
 
-interface GraphileSettingsInput {
-  host?: string;
-  port?: number;
-  schema: string | string[];
-  simpleInflection?: boolean;
-  oppositeBaseNames?: boolean;
-  postgis?: boolean;
-}
+export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptions => {
+  const opts = getMergedOptions(rawOpts);
 
-export const getGraphileSettings = ({
-  host,
-  port,
-  schema,
-  simpleInflection = true,
-  oppositeBaseNames = false,
-  postgis = true
-}: GraphileSettingsInput): PostGraphileOptions => {
+  const {
+    server,
+    graphile,
+    features,
+    cdn
+  } = opts;
+
+  // Instantiate uploader with merged cdn opts
+  const uploader = new Uploader({
+    bucketName: cdn.bucketName!,
+    awsRegion: cdn.awsRegion!,
+    awsAccessKey: cdn.awsAccessKey!,
+    awsSecretKey: cdn.awsSecretKey!,
+    minioEndpoint: cdn.minioEndpoint
+  });
+
+  const resolveUpload = uploader.resolveUpload.bind(uploader);
+
   const plugins: Plugin[] = [
     ConnectionFilterPlugin,
     FulltextFilterPlugin,
@@ -51,11 +56,11 @@ export const getGraphileSettings = ({
     PgSearch
   ];
 
-  if (postgis) {
+  if (features?.postgis) {
     plugins.push(PgPostgis, PgPostgisFilter);
   }
 
-  if (simpleInflection) {
+  if (features?.simpleInflection) {
     plugins.push(PgSimpleInflector);
   }
 
@@ -87,7 +92,7 @@ export const getGraphileSettings = ({
           resolve: resolveUpload
         }
       ],
-      pgSimplifyOppositeBaseNames: oppositeBaseNames,
+      pgSimplifyOppositeBaseNames: features?.oppositeBaseNames,
       connectionFilterComputedColumns: false
     },
     appendPlugins: plugins,
@@ -98,9 +103,9 @@ export const getGraphileSettings = ({
     enableQueryBatching: true,
     graphiql: true,
     watch: false,
-    port,
-    host,
-    schema,
+    port: server?.port,
+    host: server?.host,
+    schema: graphile?.schema,
     ignoreRBAC: false,
     legacyRelations: 'omit',
     showErrorStack: false,
@@ -109,14 +114,13 @@ export const getGraphileSettings = ({
     disableQueryLog: false,
     includeExtensionResources: true,
     setofFunctionsContainNulls: false,
-    retryOnInitFail: async (error: Error) => {
+    retryOnInitFail: async (_error: Error) => {
       return false;
     },
     additionalGraphQLContextFromRequest: (req, res) => ({
       ...langAdditional(req, res),
       req,
-      res,
-      env
+      res
     })
   };
 };

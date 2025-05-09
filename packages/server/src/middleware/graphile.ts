@@ -1,71 +1,12 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { env } from '../env';
 import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
-import type { Plugin } from 'graphile-build';
 import PublicKeySignature from '../plugins/PublicKeySignature';
+import { LaunchQLOptions } from '@launchql/types';
 
-declare module 'express-serve-static-core' {
-  interface Request {
-    apiInfo: {
-      data: {
-        api: {
-          dbname: string;
-          anonRole: string;
-          roleName: string;
-          schemaNames: {
-            nodes: { schemaName: string }[];
-          };
-          schemaNamesFromExt: {
-            nodes: { schemaName: string }[];
-          };
-          apiModules: {
-            nodes: {
-              name: string;
-              data?: any;
-            }[];
-          };
-          rlsModule?: {
-            authenticate?: string;
-            authenticateStrict?: string;
-            privateSchema: {
-              schemaName: string;
-            };
-          };
-        };
-      };
-    };
-    svc_key: string;
-    clientIp?: string;
-    databaseId?: string;
-    token?: {
-      id: string;
-      user_id: string;
-      [key: string]: any;
-    };
-  }
-}
+export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
 
-interface GraphileMiddlewareOptions {
-  simpleInflection?: boolean;
-  oppositeBaseNames?: boolean;
-  port?: number;
-  postgis?: boolean;
-  appendPlugins?: Plugin[];
-  graphileBuildOptions?: PostGraphileOptions['graphileBuildOptions'];
-  overrideSettings?: Partial<PostGraphileOptions>;
-}
-
-export const graphile = ({
-  simpleInflection,
-  oppositeBaseNames,
-  port,
-  postgis,
-  appendPlugins = [],
-  graphileBuildOptions = {},
-  overrideSettings = {}
-}: GraphileMiddlewareOptions): RequestHandler => {
   // @ts-ignore
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -85,12 +26,11 @@ export const graphile = ({
       }
 
       const options = getSettings({
-        host: env.SERVER_HOST,
-        schema: schemas,
-        port,
-        simpleInflection,
-        oppositeBaseNames,
-        postgis
+        ...lOpts,
+        graphile: {
+          ...lOpts.graphile,
+          schema: schemas
+        }
       });
 
       const pubkey_challenge = api.apiModules.nodes.find(
@@ -102,7 +42,7 @@ export const graphile = ({
       }
 
       options.appendPlugins = options.appendPlugins ?? [];
-      options.appendPlugins.push(...appendPlugins);
+      options.appendPlugins.push(...lOpts.graphile.appendPlugins);
 
       // @ts-ignore
       options.pgSettings = async function pgSettings(req: Request) {
@@ -135,15 +75,18 @@ export const graphile = ({
 
       options.graphileBuildOptions = {
         ...options.graphileBuildOptions,
-        ...graphileBuildOptions
+        ...lOpts.graphile.graphileBuildOptions
       };
 
       const opts: PostGraphileOptions = {
         ...options,
-        ...overrideSettings
+        ...lOpts.graphile.overrideSettings
       };
 
-      const pgPool = getRootPgPool(dbname);
+      const pgPool = getRootPgPool({
+        ...lOpts.pg,
+        database: dbname
+      });
       const handler = postgraphile(pgPool, schemas, opts);
 
       graphileCache.set(key, {

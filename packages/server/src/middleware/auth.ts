@@ -1,77 +1,81 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { getRootPgPool } from '@launchql/server-utils';
-import { env } from '../env';
 import pgQueryContext from '@launchql/pg-query-context';
+import { LaunchQLOptions } from '@launchql/types';
 
-const strictAuth = env.STRICT_AUTH;
+export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHandler => {
 
-export const authenticate = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const api = req.apiInfo.data.api;
-  const pool = getRootPgPool(api.dbname);
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const api = req.apiInfo?.data?.api;
+    if (!api) {
+      res.status(500).send('Missing API info');
+      return;
+    }
 
-  const rlsModule = api.rlsModule;
+    const pool = getRootPgPool({
+      ...opts.pg,
+      database: api.dbname
+    });
+    const rlsModule = api.rlsModule;
 
-  if (!rlsModule) return next();
+    if (!rlsModule) return next();
 
-  const authFn = strictAuth
-    ? rlsModule.authenticateStrict
-    : rlsModule.authenticate;
+    const authFn = opts.server.strictAuth
+      ? rlsModule.authenticateStrict
+      : rlsModule.authenticate;
 
-  if (authFn && rlsModule.privateSchema.schemaName) {
-    const { authorization = '' } = req.headers;
-    const [authType, authToken] = authorization.split(' ');
-    let token: any = {};
+    if (authFn && rlsModule.privateSchema.schemaName) {
+      const { authorization = '' } = req.headers;
+      const [authType, authToken] = authorization.split(' ');
+      let token: any = {};
 
-    if (authType?.toLowerCase?.() === 'bearer' && authToken) {
-      let result: any = null;
+      if (authType?.toLowerCase() === 'bearer' && authToken) {
+        const context: Record<string, any> = {
+          'jwt.claims.ip_address': req.clientIp,
+        };
 
-      const context: Record<string, any> = {
-        [`jwt.claims.ip_address`]: req.clientIp
-      };
+        if (req.get('origin')) {
+          context['jwt.claims.origin'] = req.get('origin');
+        }
+        if (req.get('User-Agent')) {
+          context['jwt.claims.user_agent'] = req.get('User-Agent');
+        }
 
-      if (req.get('origin')) {
-        context['jwt.claims.origin'] = req.get('origin');
-      }
-      if (req.get('User-Agent')) {
-        context['jwt.claims.user_agent'] = req.get('User-Agent');
-      }
+        try {
+          const result = await pgQueryContext({
+            client: pool,
+            context,
+            query: `SELECT * FROM "${rlsModule.privateSchema.schemaName}"."${authFn}"($1)`,
+            variables: [authToken],
+          });
 
-      try {
-        result = await pgQueryContext({
-          client: pool,
-          context,
-          query: `SELECT * FROM "${rlsModule.privateSchema.schemaName}"."${authFn}"($1)`,
-          variables: [authToken]
-        });
-      } catch (e: any) {
-        return res.status(200).end(
-          JSON.stringify({
+          if (result?.rowCount === 0) {
+            res.status(200).json({
+              errors: [{ extensions: { code: 'UNAUTHENTICATED' } }],
+            });
+            return;
+          }
+
+          token = result.rows[0];
+        } catch (e: any) {
+          res.status(200).json({
             errors: [
               {
                 extensions: {
                   code: 'BAD_TOKEN_DEFINITION',
-                  message: e.message
-                }
-              }
-            ]
-          })
-        );
+                  message: e.message,
+                },
+              },
+            ],
+          });
+          return;
+        }
       }
 
-      if (result?.rowCount === 0) {
-        return res.status(200).end(
-          JSON.stringify({
-            errors: [{ extensions: { code: 'UNAUTHENTICATED' } }]
-          })
-        );
-      } else {
-        token = result.rows[0];
-      }
+      // @ts-ignore - augment req with `token`
+      req.token = token;
     }
 
-    // @ts-ignore
-    req.token = token;
-  }
-
-  return next();
+    next();
+  };
 };

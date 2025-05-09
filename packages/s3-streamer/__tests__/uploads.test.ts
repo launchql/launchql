@@ -61,10 +61,10 @@ describe('uploads', () => {
   it('upload files via class', async () => {
     const streamer = new Streamer({
       defaultBucket: BUCKET_NAME,
-      AWS_REGION,
-      AWS_SECRET_KEY,
-      AWS_ACCESS_KEY,
-      MINIO_ENDPOINT
+      awsRegion: AWS_REGION,
+      awsSecretKey: AWS_SECRET_KEY,
+      awsAccessKey: AWS_ACCESS_KEY,
+      minioEndpoint: MINIO_ENDPOINT
     });
 
     const res: Record<string, AsyncUploadResult> = {};
@@ -89,10 +89,10 @@ describe('uploads', () => {
 
   it('upload files via functions', async () => {
     const client = getClient({
-      AWS_REGION,
-      AWS_SECRET_KEY,
-      AWS_ACCESS_KEY,
-      MINIO_ENDPOINT
+      awsRegion: AWS_REGION,
+      awsSecretKey: AWS_SECRET_KEY,
+      awsAccessKey: AWS_ACCESS_KEY,
+      minioEndpoint: MINIO_ENDPOINT
     });
 
     const res: Record<string, AsyncUploadResult> = {};

@@ -16,8 +16,8 @@ export const poweredBy = (name: string) => {
   };
 };
 
-export const trustProxy = (app: Express, env: { TRUST_PROXY?: string }): void => {
-  if (env.TRUST_PROXY) {
+export const trustProxy = (app: Express, trustProxy?: boolean): void => {
+  if (trustProxy) {
     app.set('trust proxy', (ip: string) => {
       return true;
     });
