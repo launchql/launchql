@@ -1,7 +1,0 @@
--- Revert [% change %] from pg
-
-BEGIN;
-
-REVOKE ALL ON ALL TABLES IN SCHEMA [% schema %] from [% role %];
-
-COMMIT;

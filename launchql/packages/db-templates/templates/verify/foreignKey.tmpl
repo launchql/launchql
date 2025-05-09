@@ -1,7 +1,0 @@
--- Verify [% change %]  on pg
-
-BEGIN;
-
-SELECT verify_constraint('[% schema %].[% table %]', 'fk_[% schema %]_[% table %]_[% column %]');
-
-ROLLBACK;

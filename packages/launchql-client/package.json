@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/graphile-query",
+  "name": "launchql-client",
   "version": "2.0.0",
+  "description": "LaunchQL Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "graphile query",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -30,8 +30,11 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "postgraphile": "^4.14.1",
+    "ajv": "^7.0.4",
+    "gql-ast": "^2.0.0",
     "graphql": "15.5.2",
-    "pg": "^8.15.6"
+    "inflection": "1.12.0",
+    "lodash": "^4.17.20",
+    "pluralize": "8.0.0"
   }
 }

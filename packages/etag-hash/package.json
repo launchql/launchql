@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/graphile-query",
+  "name": "etag-hash",
   "version": "2.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "graphile query",
+  "description": "Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,9 +29,12 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "postgraphile": "^4.14.1",
-    "graphql": "15.5.2",
-    "pg": "^8.15.6"
-  }
+  "keywords": [
+    "hash",
+    "crypto",
+    "s3",
+    "minio",
+    "etag",
+    "md5"
+  ]
 }

@@ -1,7 +1,0 @@
--- Revert [% change %] from pg
-
-BEGIN;
-
-REVOKE EXECUTE ON [% schema %].[% procedure %] FROM [% role %];
-
-COMMIT;

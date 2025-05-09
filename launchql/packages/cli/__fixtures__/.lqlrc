@@ -1,5 +1,0 @@
-LQL_CONTEXT=localdev
-DEFAULT_DATABASE=my-db
-#comment=sdf
-ACCESS_TOKEN=hello-token
-GRAPHQL_URL=http://collections_public.webinc-db.localhost:5555/graphql

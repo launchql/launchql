@@ -1,8 +1,0 @@
--- Revert [% change %] from pg
-
-BEGIN;
-
-ALTER TABLE [% schema %].[% table %]
-    DROP COLUMN [% column %];
-
-COMMIT;
