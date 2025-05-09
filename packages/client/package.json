@@ -32,7 +32,6 @@
   "keywords": [],
   "dependencies": {
     "@types/pg": "^8.11.10",
-    "envalid": "^8.0.0",
     "pg": "^8.13.1"
   }
 }

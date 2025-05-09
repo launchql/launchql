@@ -52,11 +52,7 @@ jobs:
       - name: launchql/client
         run: cd ./packages/client && yarn test
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_HOST: pg_db
-          POSTGRES_PORT: 5432
-          DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
+          TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
 
       - name: launchql/orm
         run: cd ./packages/orm && yarn test

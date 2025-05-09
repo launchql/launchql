@@ -1,11 +1,12 @@
-process.env.DATABASE_URL = process.env.DATABASE_URL ?? 'postgres://postgres:password@localhost:5432/postgres';
 import { PoolClient } from 'pg';
 import { Database } from '../src';
 
 let client: Database;
 
+const databaseUrl = process.env.TEST_DATABASE_URL || 'postgres://postgres:password@localhost:5432/postgres';
+
 beforeAll(() => {
-  client = new Database();
+  client = new Database(databaseUrl);
 });
 
 afterAll(async () => {
