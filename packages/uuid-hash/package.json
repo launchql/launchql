@@ -1,8 +1,8 @@
 {
-  "name": "etag-hash",
-  "version": "0.0.1",
+  "name": "uuid-hash",
+  "version": "2.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "etag hash",
+  "description": "Es6 class that generates RFC-compliant UUID v5.",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,5 +29,10 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "keywords": [
+    "hash",
+    "crypto",
+    "uuidv5",
+    "uuid"
+  ]
 }

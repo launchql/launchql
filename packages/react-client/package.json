@@ -1,7 +1,7 @@
 {
-  "name": "launchql-react",
-  "version": "0.0.7",
-  "description": "LaunchQL React",
+  "name": "@launchql/react-client",
+  "version": "2.0.0",
+  "description": "LaunchQL React Client",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
   "module": "esm/index.js",
@@ -29,21 +29,12 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "devDependencies": {
-    "@testing-library/jest-dom": "5.11.10",
-    "@testing-library/react": "11.2.5"
-  },
   "dependencies": {
+    "ajv": "^7.0.4",
+    "gql-ast": "^2.0.0",
     "graphql": "15.5.2",
-    "graphql-request": "3.3.0",
-    "introspectron": "^0.2.12",
-    "launchql-client": "^0.3.9",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-query": "^3.5.11"
-  },
-  "peerDependencies": {
-    "react": ">=16",
-    "react-dom": ">=16"
-  },
+    "inflection": "1.12.0",
+    "lodash": "^4.17.20",
+    "pluralize": "8.0.0"
+  }
 }
