@@ -1,0 +1,226 @@
+{
+  "action": {
+    "model": "Action",
+    "qtype": "getOne",
+    "properties": {
+      "id": {
+        "isNotNull": true,
+        "type": "UUID"
+      }
+    },
+    "selection": [
+      "id",
+      "slug",
+      "photo",
+      "title",
+      "description",
+      "discoveryHeader",
+      "discoveryDescription",
+      "enableNotifications",
+      "enableNotificationsText",
+      "search",
+      "locationRadius",
+      "startDate",
+      "endDate",
+      "approved",
+      "rewardAmount",
+      "activityFeedText",
+      "callToAction",
+      "completedActionText",
+      "alreadyCompletedActionText",
+      "tags",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt",
+      "ownerId",
+      {
+        "name": "actionGoals",
+        "qtype": "getMany",
+        "model": "ActionGoal",
+        "selection": [
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "actionId",
+          "goalId",
+          "ownerId"
+        ]
+      },
+      {
+        "name": "actionResults",
+        "qtype": "getMany",
+        "model": "ActionResult",
+        "selection": [
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "actionId",
+          "ownerId"
+        ]
+      },
+      {
+        "name": "actionItems",
+        "qtype": "getMany",
+        "model": "ActionItem",
+        "selection": [
+          "id",
+          "name",
+          "description",
+          "type",
+          "itemOrder",
+          "isRequired",
+          "notificationText",
+          "embedCode",
+          "url",
+          "media",
+          "ownerId",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "actionId"
+        ]
+      },
+      {
+        "name": "userActions",
+        "qtype": "getMany",
+        "model": "UserAction",
+        "selection": [
+          "id",
+          "actionStarted",
+          "complete",
+          "verified",
+          "verifiedDate",
+          "userRating",
+          "rejected",
+          "rejectedReason",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "verifierId",
+          "actionId"
+        ]
+      },
+      {
+        "name": "userActionResults",
+        "qtype": "getMany",
+        "model": "UserActionResult",
+        "selection": [
+          "id",
+          "value",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "actionId",
+          "userActionId",
+          "actionResultId"
+        ]
+      },
+      {
+        "name": "userActionItems",
+        "qtype": "getMany",
+        "model": "UserActionItem",
+        "selection": [
+          "id",
+          "value",
+          "status",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "actionId",
+          "userActionId",
+          "actionItemId"
+        ]
+      },
+      {
+        "name": "userPassActions",
+        "qtype": "getMany",
+        "model": "UserPassAction",
+        "selection": [
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "actionId"
+        ]
+      },
+      {
+        "name": "userSavedActions",
+        "qtype": "getMany",
+        "model": "UserSavedAction",
+        "selection": [
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "actionId"
+        ]
+      },
+      {
+        "name": "userViewedActions",
+        "qtype": "getMany",
+        "model": "UserViewedAction",
+        "selection": [
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "actionId"
+        ]
+      },
+      {
+        "name": "userActionReactions",
+        "qtype": "getMany",
+        "model": "UserActionReaction",
+        "selection": [
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "userActionId",
+          "userId",
+          "reacterId",
+          "actionId"
+        ]
+      },
+      "searchRank",
+      {
+        "name": "goals",
+        "qtype": "getMany",
+        "model": "Goal",
+        "selection": [
+          "id",
+          "name",
+          "slug",
+          "shortName",
+          "icon",
+          "subHead",
+          "tags",
+          "search",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "searchRank"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,3140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate 1`] = `
+Object {
+  "apiTokenFragment": "fragment apiTokenFragment on ApiToken {
+  id
+  userId
+  accessToken
+  accessTokenExpiresAt
+}
+",
+  "articleFragment": "fragment articleFragment on Article {
+  id
+  header
+  url
+  image
+  datePublished
+  ownerId
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+}
+",
+  "campaignActionFragment": "fragment campaignActionFragment on CampaignAction {
+  id
+  name
+  description
+  rewardUnit
+  rewardAmount
+  totalBitcoinLimit
+  actionWeeklyLimit
+  actionDailyLimit
+  userTotalLimit
+  userWeeklyLimit
+  userDailyLimit
+  startDate
+  endDate
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  campaignId
+  partnerId
+  thumbnailId
+  campaign
+  partner
+  thumbnail
+  completedActionsByActionId
+  services
+  initiativesPyraRecordsByActionId
+}
+",
+  "campaignFragment": "fragment campaignFragment on Campaign {
+  id
+  name
+  description
+  startDate
+  endDate
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  partnerId
+  logoId
+  backgroundImageId
+  partner
+  logo
+  backgroundImage
+  campaignActions
+}
+",
+  "completedActionFragment": "fragment completedActionFragment on CompletedAction {
+  id
+  dateCompleted
+  txid
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  userId
+  actionId
+  user
+  action
+}
+",
+  "createApiTokenMutation": "mutation createApiTokenMutation($userId: UUID!, $accessToken: String, $accessTokenExpiresAt: Datetime) {
+  createApiToken(input: {apiToken: {userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
+      id
+      userId
+      accessToken
+      accessTokenExpiresAt
+    }
+  }
+}
+",
+  "createArticleMutation": "mutation createArticleMutation($header: String, $url: String, $image: String, $datePublished: Datetime, $ownerId: UUID!) {
+  createArticle(input: {article: {header: $header, url: $url, image: $image, datePublished: $datePublished, ownerId: $ownerId}}) {
+    article {
+      id
+      header
+      url
+      image
+      datePublished
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "createCampaignActionMutation": "mutation createCampaignActionMutation($name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $campaignId: UUID!, $partnerId: UUID!, $thumbnailId: UUID) {
+  createCampaignAction(input: {campaignAction: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+    campaignAction {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitcoinLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+    }
+  }
+}
+",
+  "createCampaignMutation": "mutation createCampaignMutation($name: String, $description: String, $startDate: Datetime, $endDate: Datetime, $partnerId: UUID!, $logoId: UUID, $backgroundImageId: UUID) {
+  createCampaign(input: {campaign: {name: $name, description: $description, startDate: $startDate, endDate: $endDate, partnerId: $partnerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    campaign {
+      id
+      name
+      description
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "createCompletedActionMutation": "mutation createCompletedActionMutation($dateCompleted: Datetime, $txid: String, $userId: UUID!, $actionId: UUID!) {
+  createCompletedAction(input: {completedAction: {dateCompleted: $dateCompleted, txid: $txid, userId: $userId, actionId: $actionId}}) {
+    completedAction {
+      id
+      dateCompleted
+      txid
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }
+  }
+}
+",
+  "createImageMutation": "mutation createImageMutation($name: String, $url: String, $versions: JSON, $versions2: JSON, $versions3: JSON!) {
+  createImage(input: {image: {name: $name, url: $url, versions: $versions, versions2: $versions2, versions3: $versions3}}) {
+    image {
+      id
+      name
+      url
+      versions
+      versions2
+      versions3
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "createInitiativesPyraRecordMutation": "mutation createInitiativesPyraRecordMutation($name: String, $email: String, $bitcoinAddress: String, $date: Datetime, $actionsCompleted: Int, $actionId: UUID!) {
+  createInitiativesPyraRecord(input: {initiativesPyraRecord: {name: $name, email: $email, bitcoinAddress: $bitcoinAddress, date: $date, actionsCompleted: $actionsCompleted, actionId: $actionId}}) {
+    initiativesPyraRecord {
+      id
+      name
+      email
+      bitcoinAddress
+      date
+      actionsCompleted
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+    }
+  }
+}
+",
+  "createMerchantMutation": "mutation createMerchantMutation($name: String, $bitcoinAddress: String, $description: String, $ownerId: UUID!, $logoId: UUID, $backgroundImageId: UUID) {
+  createMerchant(input: {merchant: {name: $name, bitcoinAddress: $bitcoinAddress, description: $description, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    merchant {
+      id
+      name
+      bitcoinAddress
+      description
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "createPartnerMutation": "mutation createPartnerMutation($name: String, $description: String, $bitcoinAddress: String, $ownerId: UUID!, $logoId: UUID, $backgroundImageId: UUID) {
+  createPartner(input: {partner: {name: $name, description: $description, bitcoinAddress: $bitcoinAddress, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    partner {
+      id
+      name
+      description
+      bitcoinAddress
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "createPermissionMutation": "mutation createPermissionMutation($name: String, $userId: UUID!) {
+  createPermission(input: {permission: {name: $name, userId: $userId}}) {
+    permission {
+      id
+      name
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
+}
+",
+  "createProductMutation": "mutation createProductMutation($name: String, $url: String, $merchantId: UUID!, $iconId: UUID) {
+  createProduct(input: {product: {name: $name, url: $url, merchantId: $merchantId, iconId: $iconId}}) {
+    product {
+      id
+      name
+      url
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      merchantId
+      iconId
+    }
+  }
+}
+",
+  "createServiceMutation": "mutation createServiceMutation($name: String, $description: String, $type: String, $data: JSON, $campaignActionId: UUID, $iconId: UUID) {
+  createService(input: {service: {name: $name, description: $description, type: $type, data: $data, campaignActionId: $campaignActionId, iconId: $iconId}}) {
+    service {
+      id
+      name
+      description
+      type
+      data
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignActionId
+      iconId
+    }
+  }
+}
+",
+  "createShopifyAccountMutation": "mutation createShopifyAccountMutation($name: String, $shopLink: String, $partnerId: UUID!, $iconId: UUID) {
+  createShopifyAccount(input: {shopifyAccount: {name: $name, shopLink: $shopLink, partnerId: $partnerId, iconId: $iconId}}) {
+    shopifyAccount {
+      id
+      name
+      shopLink
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      iconId
+    }
+  }
+}
+",
+  "createShopifyOrderMutation": "mutation createShopifyOrderMutation($orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID!, $shopifyAccountId: UUID!) {
+  createShopifyOrder(input: {shopifyOrder: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
+    shopifyOrder {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+    }
+  }
+}
+",
+  "createShopifySecretMutation": "mutation createShopifySecretMutation($shopifyAccountId: UUID!, $name: String!, $value: String, $enc: String) {
+  createShopifySecret(input: {shopifySecret: {shopifyAccountId: $shopifyAccountId, name: $name, value: $value, enc: $enc}}) {
+    shopifySecret {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "createUserEncryptedSecretMutation": "mutation createUserEncryptedSecretMutation($userId: UUID!, $name: String!, $value: String, $enc: String) {
+  createUserEncryptedSecret(input: {userEncryptedSecret: {userId: $userId, name: $name, value: $value, enc: $enc}}) {
+    userEncryptedSecret {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "createUserMutation": "mutation createUserMutation($username: String, $bitcoinAddress: String) {
+  createUser(input: {user: {username: $username, bitcoinAddress: $bitcoinAddress}}) {
+    user {
+      id
+      username
+      bitcoinAddress
+    }
+  }
+}
+",
+  "createUserSecretMutation": "mutation createUserSecretMutation($userId: UUID!, $name: String!, $value: String) {
+  createUserSecret(input: {userSecret: {userId: $userId, name: $name, value: $value}}) {
+    userSecret {
+      id
+      userId
+      name
+      value
+    }
+  }
+}
+",
+  "deleteApiTokenByAccessTokenMutation": "mutation deleteApiTokenByAccessTokenMutation($accessToken: String!) {
+  deleteApiTokenByAccessToken(input: {accessToken: $accessToken}) {
+    clientMutationId
+  }
+}
+",
+  "deleteApiTokenMutation": "mutation deleteApiTokenMutation($id: UUID!) {
+  deleteApiToken(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteArticleMutation": "mutation deleteArticleMutation($id: UUID!) {
+  deleteArticle(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteCampaignActionByNameMutation": "mutation deleteCampaignActionByNameMutation($name: String!) {
+  deleteCampaignActionByName(input: {name: $name}) {
+    clientMutationId
+  }
+}
+",
+  "deleteCampaignActionMutation": "mutation deleteCampaignActionMutation($id: UUID!) {
+  deleteCampaignAction(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteCampaignMutation": "mutation deleteCampaignMutation($id: UUID!) {
+  deleteCampaign(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteCompletedActionMutation": "mutation deleteCompletedActionMutation($id: UUID!) {
+  deleteCompletedAction(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteImageMutation": "mutation deleteImageMutation($id: UUID!) {
+  deleteImage(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteInitiativesPyraRecordMutation": "mutation deleteInitiativesPyraRecordMutation($id: UUID!) {
+  deleteInitiativesPyraRecord(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteMerchantMutation": "mutation deleteMerchantMutation($id: UUID!) {
+  deleteMerchant(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deletePartnerMutation": "mutation deletePartnerMutation($id: UUID!) {
+  deletePartner(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deletePermissionMutation": "mutation deletePermissionMutation($id: UUID!) {
+  deletePermission(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteProductMutation": "mutation deleteProductMutation($id: UUID!) {
+  deleteProduct(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteServiceMutation": "mutation deleteServiceMutation($id: UUID!) {
+  deleteService(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteShopifyAccountMutation": "mutation deleteShopifyAccountMutation($id: UUID!) {
+  deleteShopifyAccount(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation": "mutation deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($orderId: Int!, $email: String!, $shopifyAccountId: UUID!) {
+  deleteShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId}) {
+    clientMutationId
+  }
+}
+",
+  "deleteShopifyOrderMutation": "mutation deleteShopifyOrderMutation($id: UUID!) {
+  deleteShopifyOrder(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteShopifySecretByShopifyAccountIdAndNameMutation": "mutation deleteShopifySecretByShopifyAccountIdAndNameMutation($shopifyAccountId: UUID!, $name: String!) {
+  deleteShopifySecretByShopifyAccountIdAndName(input: {shopifyAccountId: $shopifyAccountId, name: $name}) {
+    clientMutationId
+  }
+}
+",
+  "deleteShopifySecretMutation": "mutation deleteShopifySecretMutation($id: UUID!) {
+  deleteShopifySecret(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserByBitcoinAddressMutation": "mutation deleteUserByBitcoinAddressMutation($bitcoinAddress: String!) {
+  deleteUserByBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserByUsernameMutation": "mutation deleteUserByUsernameMutation($username: String!) {
+  deleteUserByUsername(input: {username: $username}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserEncryptedSecretByUserIdAndNameMutation": "mutation deleteUserEncryptedSecretByUserIdAndNameMutation($userId: UUID!, $name: String!) {
+  deleteUserEncryptedSecretByUserIdAndName(input: {userId: $userId, name: $name}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserEncryptedSecretMutation": "mutation deleteUserEncryptedSecretMutation($id: UUID!) {
+  deleteUserEncryptedSecret(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserMutation": "mutation deleteUserMutation($id: UUID!) {
+  deleteUser(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserSecretByUserIdAndNameMutation": "mutation deleteUserSecretByUserIdAndNameMutation($userId: UUID!, $name: String!) {
+  deleteUserSecretByUserIdAndName(input: {userId: $userId, name: $name}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserSecretMutation": "mutation deleteUserSecretMutation($id: UUID!) {
+  deleteUserSecret(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "getApiTokenByAccessTokenQuery": "query getApiTokenByAccessTokenQuery($accessToken: String!) {
+  apiTokenByAccessToken(accessToken: $accessToken) {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }
+}
+",
+  "getApiTokenQuery": "query getApiTokenQuery($id: UUID!) {
+  apiToken(id: $id) {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }
+}
+",
+  "getApiTokensOrderByEnums": "query getApiTokensOrderByEnums {
+  __type(name: \\"ApiTokensOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getApiTokensPaginated": "query getApiTokensPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ApiTokenCondition, $filter: ApiTokenFilter, $orderBy: [ApiTokensOrderBy!]) {
+  apiTokens(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      userId
+      accessToken
+      accessTokenExpiresAt
+    }
+  }}
+}
+",
+  "getApiTokensQuery": "query getApiTokensQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ApiTokenCondition, $filter: ApiTokenFilter, $orderBy: [ApiTokensOrderBy!]) {
+  apiTokens(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }}
+}
+",
+  "getApiTokensQueryAll": "query getApiTokensQueryAll {
+  apiTokens {totalCount, nodes {
+    id
+    userId
+    accessToken
+    accessTokenExpiresAt
+  }}
+}
+",
+  "getArticleQuery": "query getArticleQuery($id: UUID!) {
+  article(id: $id) {
+    id
+    header
+    url
+    image
+    datePublished
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }
+}
+",
+  "getArticlesOrderByEnums": "query getArticlesOrderByEnums {
+  __type(name: \\"ArticlesOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getArticlesPaginated": "query getArticlesPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ArticleCondition, $filter: ArticleFilter, $orderBy: [ArticlesOrderBy!]) {
+  articles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      header
+      url
+      image
+      datePublished
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }}
+}
+",
+  "getArticlesQuery": "query getArticlesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ArticleCondition, $filter: ArticleFilter, $orderBy: [ArticlesOrderBy!]) {
+  articles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    header
+    url
+    image
+    datePublished
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }}
+}
+",
+  "getArticlesQueryAll": "query getArticlesQueryAll {
+  articles {totalCount, nodes {
+    id
+    header
+    url
+    image
+    datePublished
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }}
+}
+",
+  "getCampaignActionByNameQuery": "query getCampaignActionByNameQuery($name: String!) {
+  campaignActionByName(name: $name) {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitcoinLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesPyraRecordsByActionId
+  }
+}
+",
+  "getCampaignActionQuery": "query getCampaignActionQuery($id: UUID!) {
+  campaignAction(id: $id) {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitcoinLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesPyraRecordsByActionId
+  }
+}
+",
+  "getCampaignActionsOrderByEnums": "query getCampaignActionsOrderByEnums {
+  __type(name: \\"CampaignActionsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getCampaignActionsPaginated": "query getCampaignActionsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: CampaignActionCondition, $filter: CampaignActionFilter, $orderBy: [CampaignActionsOrderBy!]) {
+  campaignActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitcoinLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+      campaign
+      partner
+      thumbnail
+      completedActionsByActionId
+      services
+      initiativesPyraRecordsByActionId
+    }
+  }}
+}
+",
+  "getCampaignActionsQuery": "query getCampaignActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: CampaignActionCondition, $filter: CampaignActionFilter, $orderBy: [CampaignActionsOrderBy!]) {
+  campaignActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitcoinLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesPyraRecordsByActionId
+  }}
+}
+",
+  "getCampaignActionsQueryAll": "query getCampaignActionsQueryAll {
+  campaignActions {totalCount, nodes {
+    id
+    name
+    description
+    rewardUnit
+    rewardAmount
+    totalBitcoinLimit
+    actionWeeklyLimit
+    actionDailyLimit
+    userTotalLimit
+    userWeeklyLimit
+    userDailyLimit
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignId
+    partnerId
+    thumbnailId
+    campaign
+    partner
+    thumbnail
+    completedActionsByActionId
+    services
+    initiativesPyraRecordsByActionId
+  }}
+}
+",
+  "getCampaignQuery": "query getCampaignQuery($id: UUID!) {
+  campaign(id: $id) {
+    id
+    name
+    description
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    logoId
+    backgroundImageId
+    partner
+    logo
+    backgroundImage
+    campaignActions
+  }
+}
+",
+  "getCampaignsOrderByEnums": "query getCampaignsOrderByEnums {
+  __type(name: \\"CampaignsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getCampaignsPaginated": "query getCampaignsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: CampaignCondition, $filter: CampaignFilter, $orderBy: [CampaignsOrderBy!]) {
+  campaigns(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      description
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      logoId
+      backgroundImageId
+      partner
+      logo
+      backgroundImage
+      campaignActions
+    }
+  }}
+}
+",
+  "getCampaignsQuery": "query getCampaignsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: CampaignCondition, $filter: CampaignFilter, $orderBy: [CampaignsOrderBy!]) {
+  campaigns(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    description
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    logoId
+    backgroundImageId
+    partner
+    logo
+    backgroundImage
+    campaignActions
+  }}
+}
+",
+  "getCampaignsQueryAll": "query getCampaignsQueryAll {
+  campaigns {totalCount, nodes {
+    id
+    name
+    description
+    startDate
+    endDate
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    logoId
+    backgroundImageId
+    partner
+    logo
+    backgroundImage
+    campaignActions
+  }}
+}
+",
+  "getCompletedActionQuery": "query getCompletedActionQuery($id: UUID!) {
+  completedAction(id: $id) {
+    id
+    dateCompleted
+    txid
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    actionId
+    user
+    action
+  }
+}
+",
+  "getCompletedActionsOrderByEnums": "query getCompletedActionsOrderByEnums {
+  __type(name: \\"CompletedActionsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getCompletedActionsPaginated": "query getCompletedActionsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: CompletedActionCondition, $filter: CompletedActionFilter, $orderBy: [CompletedActionsOrderBy!]) {
+  completedActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      dateCompleted
+      txid
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      user
+      action
+    }
+  }}
+}
+",
+  "getCompletedActionsQuery": "query getCompletedActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: CompletedActionCondition, $filter: CompletedActionFilter, $orderBy: [CompletedActionsOrderBy!]) {
+  completedActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    dateCompleted
+    txid
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    actionId
+    user
+    action
+  }}
+}
+",
+  "getCompletedActionsQueryAll": "query getCompletedActionsQueryAll {
+  completedActions {totalCount, nodes {
+    id
+    dateCompleted
+    txid
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    actionId
+    user
+    action
+  }}
+}
+",
+  "getGetCurrentUserQuery": "query getGetCurrentUserQuery {
+  getCurrentUser {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "getImageQuery": "query getImageQuery($id: UUID!) {
+  image(id: $id) {
+    id
+    name
+    url
+    versions
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnersByLogoId
+    partnersByBackgroundImageId
+    campaignsByLogoId
+    campaignsByBackgroundImageId
+    campaignActionsByThumbnailId
+    servicesByIconId
+    merchantsByLogoId
+    merchantsByBackgroundImageId
+    productsByIconId
+    shopifyAccountsByIconId
+  }
+}
+",
+  "getImagesOrderByEnums": "query getImagesOrderByEnums {
+  __type(name: \\"ImagesOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getImagesPaginated": "query getImagesPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ImageCondition, $filter: ImageFilter, $orderBy: [ImagesOrderBy!]) {
+  images(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      url
+      versions
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnersByLogoId
+      partnersByBackgroundImageId
+      campaignsByLogoId
+      campaignsByBackgroundImageId
+      campaignActionsByThumbnailId
+      servicesByIconId
+      merchantsByLogoId
+      merchantsByBackgroundImageId
+      productsByIconId
+      shopifyAccountsByIconId
+    }
+  }}
+}
+",
+  "getImagesQuery": "query getImagesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ImageCondition, $filter: ImageFilter, $orderBy: [ImagesOrderBy!]) {
+  images(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    url
+    versions
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnersByLogoId
+    partnersByBackgroundImageId
+    campaignsByLogoId
+    campaignsByBackgroundImageId
+    campaignActionsByThumbnailId
+    servicesByIconId
+    merchantsByLogoId
+    merchantsByBackgroundImageId
+    productsByIconId
+    shopifyAccountsByIconId
+  }}
+}
+",
+  "getImagesQueryAll": "query getImagesQueryAll {
+  images {totalCount, nodes {
+    id
+    name
+    url
+    versions
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnersByLogoId
+    partnersByBackgroundImageId
+    campaignsByLogoId
+    campaignsByBackgroundImageId
+    campaignActionsByThumbnailId
+    servicesByIconId
+    merchantsByLogoId
+    merchantsByBackgroundImageId
+    productsByIconId
+    shopifyAccountsByIconId
+  }}
+}
+",
+  "getInitiativesPyraRecordQuery": "query getInitiativesPyraRecordQuery($id: UUID!) {
+  initiativesPyraRecord(id: $id) {
+    id
+    name
+    email
+    bitcoinAddress
+    date
+    actionsCompleted
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    action
+  }
+}
+",
+  "getInitiativesPyraRecordsOrderByEnums": "query getInitiativesPyraRecordsOrderByEnums {
+  __type(name: \\"InitiativesPyraRecordsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getInitiativesPyraRecordsPaginated": "query getInitiativesPyraRecordsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: InitiativesPyraRecordCondition, $filter: InitiativesPyraRecordFilter, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
+  initiativesPyraRecords(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      email
+      bitcoinAddress
+      date
+      actionsCompleted
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      action
+    }
+  }}
+}
+",
+  "getInitiativesPyraRecordsQuery": "query getInitiativesPyraRecordsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: InitiativesPyraRecordCondition, $filter: InitiativesPyraRecordFilter, $orderBy: [InitiativesPyraRecordsOrderBy!]) {
+  initiativesPyraRecords(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    email
+    bitcoinAddress
+    date
+    actionsCompleted
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    action
+  }}
+}
+",
+  "getInitiativesPyraRecordsQueryAll": "query getInitiativesPyraRecordsQueryAll {
+  initiativesPyraRecords {totalCount, nodes {
+    id
+    name
+    email
+    bitcoinAddress
+    date
+    actionsCompleted
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    action
+  }}
+}
+",
+  "getMerchantQuery": "query getMerchantQuery($id: UUID!) {
+  merchant(id: $id) {
+    id
+    name
+    bitcoinAddress
+    description
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    products
+  }
+}
+",
+  "getMerchantsOrderByEnums": "query getMerchantsOrderByEnums {
+  __type(name: \\"MerchantsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getMerchantsPaginated": "query getMerchantsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: MerchantCondition, $filter: MerchantFilter, $orderBy: [MerchantsOrderBy!]) {
+  merchants(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      bitcoinAddress
+      description
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+      logo
+      backgroundImage
+      products
+    }
+  }}
+}
+",
+  "getMerchantsQuery": "query getMerchantsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: MerchantCondition, $filter: MerchantFilter, $orderBy: [MerchantsOrderBy!]) {
+  merchants(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    bitcoinAddress
+    description
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    products
+  }}
+}
+",
+  "getMerchantsQueryAll": "query getMerchantsQueryAll {
+  merchants {totalCount, nodes {
+    id
+    name
+    bitcoinAddress
+    description
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    products
+  }}
+}
+",
+  "getPartnerQuery": "query getPartnerQuery($id: UUID!) {
+  partner(id: $id) {
+    id
+    name
+    description
+    bitcoinAddress
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    campaigns
+    campaignActions
+    shopifyAccounts
+    shopifyOrders
+  }
+}
+",
+  "getPartnersOrderByEnums": "query getPartnersOrderByEnums {
+  __type(name: \\"PartnersOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getPartnersPaginated": "query getPartnersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: PartnerCondition, $filter: PartnerFilter, $orderBy: [PartnersOrderBy!]) {
+  partners(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      description
+      bitcoinAddress
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+      logo
+      backgroundImage
+      campaigns
+      campaignActions
+      shopifyAccounts
+      shopifyOrders
+    }
+  }}
+}
+",
+  "getPartnersQuery": "query getPartnersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: PartnerCondition, $filter: PartnerFilter, $orderBy: [PartnersOrderBy!]) {
+  partners(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    description
+    bitcoinAddress
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    campaigns
+    campaignActions
+    shopifyAccounts
+    shopifyOrders
+  }}
+}
+",
+  "getPartnersQueryAll": "query getPartnersQueryAll {
+  partners {totalCount, nodes {
+    id
+    name
+    description
+    bitcoinAddress
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    logoId
+    backgroundImageId
+    logo
+    backgroundImage
+    campaigns
+    campaignActions
+    shopifyAccounts
+    shopifyOrders
+  }}
+}
+",
+  "getPermissionQuery": "query getPermissionQuery($id: UUID!) {
+  permission(id: $id) {
+    id
+    name
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    user
+  }
+}
+",
+  "getPermissionsOrderByEnums": "query getPermissionsOrderByEnums {
+  __type(name: \\"PermissionsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getPermissionsPaginated": "query getPermissionsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: PermissionCondition, $filter: PermissionFilter, $orderBy: [PermissionsOrderBy!]) {
+  permissions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      user
+    }
+  }}
+}
+",
+  "getPermissionsQuery": "query getPermissionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: PermissionCondition, $filter: PermissionFilter, $orderBy: [PermissionsOrderBy!]) {
+  permissions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    user
+  }}
+}
+",
+  "getPermissionsQueryAll": "query getPermissionsQueryAll {
+  permissions {totalCount, nodes {
+    id
+    name
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    userId
+    user
+  }}
+}
+",
+  "getProductQuery": "query getProductQuery($id: UUID!) {
+  product(id: $id) {
+    id
+    name
+    url
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    merchantId
+    iconId
+    merchant
+    icon
+  }
+}
+",
+  "getProductsOrderByEnums": "query getProductsOrderByEnums {
+  __type(name: \\"ProductsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getProductsPaginated": "query getProductsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ProductCondition, $filter: ProductFilter, $orderBy: [ProductsOrderBy!]) {
+  products(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      url
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      merchantId
+      iconId
+      merchant
+      icon
+    }
+  }}
+}
+",
+  "getProductsQuery": "query getProductsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ProductCondition, $filter: ProductFilter, $orderBy: [ProductsOrderBy!]) {
+  products(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    url
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    merchantId
+    iconId
+    merchant
+    icon
+  }}
+}
+",
+  "getProductsQueryAll": "query getProductsQueryAll {
+  products {totalCount, nodes {
+    id
+    name
+    url
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    merchantId
+    iconId
+    merchant
+    icon
+  }}
+}
+",
+  "getServiceQuery": "query getServiceQuery($id: UUID!) {
+  service(id: $id) {
+    id
+    name
+    description
+    type
+    data
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignActionId
+    iconId
+    campaignAction
+    icon
+  }
+}
+",
+  "getServicesOrderByEnums": "query getServicesOrderByEnums {
+  __type(name: \\"ServicesOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getServicesPaginated": "query getServicesPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ServiceCondition, $filter: ServiceFilter, $orderBy: [ServicesOrderBy!]) {
+  services(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      description
+      type
+      data
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignActionId
+      iconId
+      campaignAction
+      icon
+    }
+  }}
+}
+",
+  "getServicesQuery": "query getServicesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ServiceCondition, $filter: ServiceFilter, $orderBy: [ServicesOrderBy!]) {
+  services(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    description
+    type
+    data
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignActionId
+    iconId
+    campaignAction
+    icon
+  }}
+}
+",
+  "getServicesQueryAll": "query getServicesQueryAll {
+  services {totalCount, nodes {
+    id
+    name
+    description
+    type
+    data
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    campaignActionId
+    iconId
+    campaignAction
+    icon
+  }}
+}
+",
+  "getShopifyAccountQuery": "query getShopifyAccountQuery($id: UUID!) {
+  shopifyAccount(id: $id) {
+    id
+    name
+    shopLink
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    iconId
+    partner
+    icon
+    shopifyOrders
+  }
+}
+",
+  "getShopifyAccountsOrderByEnums": "query getShopifyAccountsOrderByEnums {
+  __type(name: \\"ShopifyAccountsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getShopifyAccountsPaginated": "query getShopifyAccountsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ShopifyAccountCondition, $filter: ShopifyAccountFilter, $orderBy: [ShopifyAccountsOrderBy!]) {
+  shopifyAccounts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      name
+      shopLink
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      iconId
+      partner
+      icon
+      shopifyOrders
+    }
+  }}
+}
+",
+  "getShopifyAccountsQuery": "query getShopifyAccountsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ShopifyAccountCondition, $filter: ShopifyAccountFilter, $orderBy: [ShopifyAccountsOrderBy!]) {
+  shopifyAccounts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    shopLink
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    iconId
+    partner
+    icon
+    shopifyOrders
+  }}
+}
+",
+  "getShopifyAccountsQueryAll": "query getShopifyAccountsQueryAll {
+  shopifyAccounts {totalCount, nodes {
+    id
+    name
+    shopLink
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    iconId
+    partner
+    icon
+    shopifyOrders
+  }}
+}
+",
+  "getShopifyOrderByOrderIdAndEmailAndShopifyAccountIdQuery": "query getShopifyOrderByOrderIdAndEmailAndShopifyAccountIdQuery($orderId: Int!, $email: String!, $shopifyAccountId: UUID!) {
+  shopifyOrderByOrderIdAndEmailAndShopifyAccountId(orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId) {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }
+}
+",
+  "getShopifyOrderQuery": "query getShopifyOrderQuery($id: UUID!) {
+  shopifyOrder(id: $id) {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }
+}
+",
+  "getShopifyOrdersOrderByEnums": "query getShopifyOrdersOrderByEnums {
+  __type(name: \\"ShopifyOrdersOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getShopifyOrdersPaginated": "query getShopifyOrdersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ShopifyOrderCondition, $filter: ShopifyOrderFilter, $orderBy: [ShopifyOrdersOrderBy!]) {
+  shopifyOrders(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+      partner
+      shopifyAccount
+    }
+  }}
+}
+",
+  "getShopifyOrdersQuery": "query getShopifyOrdersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ShopifyOrderCondition, $filter: ShopifyOrderFilter, $orderBy: [ShopifyOrdersOrderBy!]) {
+  shopifyOrders(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }}
+}
+",
+  "getShopifyOrdersQueryAll": "query getShopifyOrdersQueryAll {
+  shopifyOrders {totalCount, nodes {
+    id
+    orderId
+    email
+    orderStatus
+    financialStatus
+    subtotalPrice
+    orderCreatedAt
+    orderClosedAt
+    bitcoinUpdatedAt
+    bitcoinRebate
+    bitcoinAddress
+    paidDate
+    transactionId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    partnerId
+    shopifyAccountId
+    partner
+    shopifyAccount
+  }}
+}
+",
+  "getShopifySecretByShopifyAccountIdAndNameQuery": "query getShopifySecretByShopifyAccountIdAndNameQuery($shopifyAccountId: UUID!, $name: String!) {
+  shopifySecretByShopifyAccountIdAndName(shopifyAccountId: $shopifyAccountId, name: $name) {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }
+}
+",
+  "getShopifySecretQuery": "query getShopifySecretQuery($id: UUID!) {
+  shopifySecret(id: $id) {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }
+}
+",
+  "getShopifySecretsOrderByEnums": "query getShopifySecretsOrderByEnums {
+  __type(name: \\"ShopifySecretsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getShopifySecretsPaginated": "query getShopifySecretsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ShopifySecretCondition, $filter: ShopifySecretFilter, $orderBy: [ShopifySecretsOrderBy!]) {
+  shopifySecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }}
+}
+",
+  "getShopifySecretsQuery": "query getShopifySecretsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ShopifySecretCondition, $filter: ShopifySecretFilter, $orderBy: [ShopifySecretsOrderBy!]) {
+  shopifySecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }}
+}
+",
+  "getShopifySecretsQueryAll": "query getShopifySecretsQueryAll {
+  shopifySecrets {totalCount, nodes {
+    id
+    shopifyAccountId
+    name
+    value
+    enc
+  }}
+}
+",
+  "getUserByBitcoinAddressQuery": "query getUserByBitcoinAddressQuery($bitcoinAddress: String!) {
+  userByBitcoinAddress(bitcoinAddress: $bitcoinAddress) {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "getUserByUsernameQuery": "query getUserByUsernameQuery($username: String!) {
+  userByUsername(username: $username) {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "getUserEncryptedSecretByUserIdAndNameQuery": "query getUserEncryptedSecretByUserIdAndNameQuery($userId: UUID!, $name: String!) {
+  userEncryptedSecretByUserIdAndName(userId: $userId, name: $name) {
+    id
+    userId
+    name
+    value
+    enc
+  }
+}
+",
+  "getUserEncryptedSecretQuery": "query getUserEncryptedSecretQuery($id: UUID!) {
+  userEncryptedSecret(id: $id) {
+    id
+    userId
+    name
+    value
+    enc
+  }
+}
+",
+  "getUserEncryptedSecretsOrderByEnums": "query getUserEncryptedSecretsOrderByEnums {
+  __type(name: \\"UserEncryptedSecretsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getUserEncryptedSecretsPaginated": "query getUserEncryptedSecretsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserEncryptedSecretCondition, $filter: UserEncryptedSecretFilter, $orderBy: [UserEncryptedSecretsOrderBy!]) {
+  userEncryptedSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }}
+}
+",
+  "getUserEncryptedSecretsQuery": "query getUserEncryptedSecretsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserEncryptedSecretCondition, $filter: UserEncryptedSecretFilter, $orderBy: [UserEncryptedSecretsOrderBy!]) {
+  userEncryptedSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    userId
+    name
+    value
+    enc
+  }}
+}
+",
+  "getUserEncryptedSecretsQueryAll": "query getUserEncryptedSecretsQueryAll {
+  userEncryptedSecrets {totalCount, nodes {
+    id
+    userId
+    name
+    value
+    enc
+  }}
+}
+",
+  "getUserQuery": "query getUserQuery($id: UUID!) {
+  user(id: $id) {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }
+}
+",
+  "getUserSecretByUserIdAndNameQuery": "query getUserSecretByUserIdAndNameQuery($userId: UUID!, $name: String!) {
+  userSecretByUserIdAndName(userId: $userId, name: $name) {
+    id
+    userId
+    name
+    value
+  }
+}
+",
+  "getUserSecretQuery": "query getUserSecretQuery($id: UUID!) {
+  userSecret(id: $id) {
+    id
+    userId
+    name
+    value
+  }
+}
+",
+  "getUserSecretsOrderByEnums": "query getUserSecretsOrderByEnums {
+  __type(name: \\"UserSecretsOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getUserSecretsPaginated": "query getUserSecretsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserSecretCondition, $filter: UserSecretFilter, $orderBy: [UserSecretsOrderBy!]) {
+  userSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      userId
+      name
+      value
+    }
+  }}
+}
+",
+  "getUserSecretsQuery": "query getUserSecretsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserSecretCondition, $filter: UserSecretFilter, $orderBy: [UserSecretsOrderBy!]) {
+  userSecrets(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    userId
+    name
+    value
+  }}
+}
+",
+  "getUserSecretsQueryAll": "query getUserSecretsQueryAll {
+  userSecrets {totalCount, nodes {
+    id
+    userId
+    name
+    value
+  }}
+}
+",
+  "getUsersOrderByEnums": "query getUsersOrderByEnums {
+  __type(name: \\"UsersOrderBy\\") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getUsersPaginated": "query getUsersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      username
+      bitcoinAddress
+      permissions
+      completedActions
+    }
+  }}
+}
+",
+  "getUsersQuery": "query getUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }}
+}
+",
+  "getUsersQueryAll": "query getUsersQueryAll {
+  users {totalCount, nodes {
+    id
+    username
+    bitcoinAddress
+    permissions
+    completedActions
+  }}
+}
+",
+  "imageFragment": "fragment imageFragment on Image {
+  id
+  name
+  url
+  versions
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  partnersByLogoId
+  partnersByBackgroundImageId
+  campaignsByLogoId
+  campaignsByBackgroundImageId
+  campaignActionsByThumbnailId
+  servicesByIconId
+  merchantsByLogoId
+  merchantsByBackgroundImageId
+  productsByIconId
+  shopifyAccountsByIconId
+}
+",
+  "initiativesPyraRecordFragment": "fragment initiativesPyraRecordFragment on InitiativesPyraRecord {
+  id
+  name
+  email
+  bitcoinAddress
+  date
+  actionsCompleted
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  actionId
+  action
+}
+",
+  "merchantFragment": "fragment merchantFragment on Merchant {
+  id
+  name
+  bitcoinAddress
+  description
+  ownerId
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  logoId
+  backgroundImageId
+  logo
+  backgroundImage
+  products
+}
+",
+  "partnerFragment": "fragment partnerFragment on Partner {
+  id
+  name
+  description
+  bitcoinAddress
+  ownerId
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  logoId
+  backgroundImageId
+  logo
+  backgroundImage
+  campaigns
+  campaignActions
+  shopifyAccounts
+  shopifyOrders
+}
+",
+  "permissionFragment": "fragment permissionFragment on Permission {
+  id
+  name
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  userId
+  user
+}
+",
+  "productFragment": "fragment productFragment on Product {
+  id
+  name
+  url
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  merchantId
+  iconId
+  merchant
+  icon
+}
+",
+  "serviceFragment": "fragment serviceFragment on Service {
+  id
+  name
+  description
+  type
+  data
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  campaignActionId
+  iconId
+  campaignAction
+  icon
+}
+",
+  "shopifyAccountFragment": "fragment shopifyAccountFragment on ShopifyAccount {
+  id
+  name
+  shopLink
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  partnerId
+  iconId
+  partner
+  icon
+  shopifyOrders
+}
+",
+  "shopifyOrderFragment": "fragment shopifyOrderFragment on ShopifyOrder {
+  id
+  orderId
+  email
+  orderStatus
+  financialStatus
+  subtotalPrice
+  orderCreatedAt
+  orderClosedAt
+  bitcoinUpdatedAt
+  bitcoinRebate
+  bitcoinAddress
+  paidDate
+  transactionId
+  createdBy
+  updatedBy
+  createdAt
+  updatedAt
+  partnerId
+  shopifyAccountId
+  partner
+  shopifyAccount
+}
+",
+  "shopifySecretFragment": "fragment shopifySecretFragment on ShopifySecret {
+  id
+  shopifyAccountId
+  name
+  value
+  enc
+}
+",
+  "shopifySecretsUpsertMutation": "mutation shopifySecretsUpsertMutation($vShopifyAccountId: UUID!, $secretName: String!, $secretValue: String!, $fieldEncoding: String!) {
+  shopifySecretsUpsert(input: {vShopifyAccountId: $vShopifyAccountId, secretName: $secretName, secretValue: $secretValue, fieldEncoding: $fieldEncoding}) {
+    boolean
+  }
+}
+",
+  "signInRecordFailureMutation": "mutation signInRecordFailureMutation($bitcoinAddress: String!) {
+  signInRecordFailure(input: {bitcoinAddress: $bitcoinAddress}) {
+    clientMutationId
+  }
+}
+",
+  "signInRequestChallengeMutation": "mutation signInRequestChallengeMutation($bitcoinAddress: String!) {
+  signInRequestChallenge(input: {bitcoinAddress: $bitcoinAddress}) {
+    string
+  }
+}
+",
+  "signInWithChallengeMutation": "mutation signInWithChallengeMutation($bitcoinAddress: String!, $specialValue: String!) {
+  signInWithChallenge(input: {bitcoinAddress: $bitcoinAddress, specialValue: $specialValue}) {
+    clientMutationId
+  }
+}
+",
+  "signUpWithBitcoinAddressMutation": "mutation signUpWithBitcoinAddressMutation($bitcoinAddress: String!) {
+  signUpWithBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress}) {
+    clientMutationId
+  }
+}
+",
+  "updateApiTokenByAccessTokenMutation": "mutation updateApiTokenByAccessTokenMutation($userId: UUID, $accessToken: String!, $accessTokenExpiresAt: Datetime) {
+  updateApiTokenByAccessToken(input: {accessToken: $accessToken, patch: {userId: $userId, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
+      id
+      userId
+      accessToken
+      accessTokenExpiresAt
+    }
+  }
+}
+",
+  "updateApiTokenMutation": "mutation updateApiTokenMutation($userId: UUID, $accessToken: String, $accessTokenExpiresAt: Datetime) {
+  updateApiToken(input: {id: $id, patch: {userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}) {
+    apiToken {
+      id
+      userId
+      accessToken
+      accessTokenExpiresAt
+    }
+  }
+}
+",
+  "updateArticleMutation": "mutation updateArticleMutation($header: String, $url: String, $image: String, $datePublished: Datetime, $ownerId: UUID) {
+  updateArticle(input: {id: $id, patch: {header: $header, url: $url, image: $image, datePublished: $datePublished, ownerId: $ownerId}}) {
+    article {
+      id
+      header
+      url
+      image
+      datePublished
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "updateCampaignActionByNameMutation": "mutation updateCampaignActionByNameMutation($name: String!, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  updateCampaignActionByName(input: {name: $name, patch: {description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+    campaignAction {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitcoinLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+    }
+  }
+}
+",
+  "updateCampaignActionMutation": "mutation updateCampaignActionMutation($name: String, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  updateCampaignAction(input: {id: $id, patch: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}) {
+    campaignAction {
+      id
+      name
+      description
+      rewardUnit
+      rewardAmount
+      totalBitcoinLimit
+      actionWeeklyLimit
+      actionDailyLimit
+      userTotalLimit
+      userWeeklyLimit
+      userDailyLimit
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignId
+      partnerId
+      thumbnailId
+    }
+  }
+}
+",
+  "updateCampaignMutation": "mutation updateCampaignMutation($name: String, $description: String, $startDate: Datetime, $endDate: Datetime, $partnerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  updateCampaign(input: {id: $id, patch: {name: $name, description: $description, startDate: $startDate, endDate: $endDate, partnerId: $partnerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    campaign {
+      id
+      name
+      description
+      startDate
+      endDate
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "updateCompletedActionMutation": "mutation updateCompletedActionMutation($dateCompleted: Datetime, $txid: String, $userId: UUID, $actionId: UUID) {
+  updateCompletedAction(input: {id: $id, patch: {dateCompleted: $dateCompleted, txid: $txid, userId: $userId, actionId: $actionId}}) {
+    completedAction {
+      id
+      dateCompleted
+      txid
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }
+  }
+}
+",
+  "updateImageMutation": "mutation updateImageMutation($name: String, $url: String, $versions: JSON) {
+  updateImage(input: {id: $id, patch: {name: $name, url: $url, versions: $versions}}) {
+    image {
+      id
+      name
+      url
+      versions
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+",
+  "updateInitiativesPyraRecordMutation": "mutation updateInitiativesPyraRecordMutation($name: String, $email: String, $bitcoinAddress: String, $date: Datetime, $actionsCompleted: Int, $actionId: UUID) {
+  updateInitiativesPyraRecord(input: {id: $id, patch: {name: $name, email: $email, bitcoinAddress: $bitcoinAddress, date: $date, actionsCompleted: $actionsCompleted, actionId: $actionId}}) {
+    initiativesPyraRecord {
+      id
+      name
+      email
+      bitcoinAddress
+      date
+      actionsCompleted
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+    }
+  }
+}
+",
+  "updateMerchantMutation": "mutation updateMerchantMutation($name: String, $bitcoinAddress: String, $description: String, $ownerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  updateMerchant(input: {id: $id, patch: {name: $name, bitcoinAddress: $bitcoinAddress, description: $description, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    merchant {
+      id
+      name
+      bitcoinAddress
+      description
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "updatePartnerMutation": "mutation updatePartnerMutation($name: String, $description: String, $bitcoinAddress: String, $ownerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  updatePartner(input: {id: $id, patch: {name: $name, description: $description, bitcoinAddress: $bitcoinAddress, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}) {
+    partner {
+      id
+      name
+      description
+      bitcoinAddress
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      logoId
+      backgroundImageId
+    }
+  }
+}
+",
+  "updatePermissionMutation": "mutation updatePermissionMutation($name: String, $userId: UUID) {
+  updatePermission(input: {id: $id, patch: {name: $name, userId: $userId}}) {
+    permission {
+      id
+      name
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
+}
+",
+  "updateProductMutation": "mutation updateProductMutation($name: String, $url: String, $merchantId: UUID, $iconId: UUID) {
+  updateProduct(input: {id: $id, patch: {name: $name, url: $url, merchantId: $merchantId, iconId: $iconId}}) {
+    product {
+      id
+      name
+      url
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      merchantId
+      iconId
+    }
+  }
+}
+",
+  "updateServiceMutation": "mutation updateServiceMutation($name: String, $description: String, $type: String, $data: JSON, $campaignActionId: UUID, $iconId: UUID) {
+  updateService(input: {id: $id, patch: {name: $name, description: $description, type: $type, data: $data, campaignActionId: $campaignActionId, iconId: $iconId}}) {
+    service {
+      id
+      name
+      description
+      type
+      data
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      campaignActionId
+      iconId
+    }
+  }
+}
+",
+  "updateShopifyAccountMutation": "mutation updateShopifyAccountMutation($name: String, $shopLink: String, $partnerId: UUID, $iconId: UUID) {
+  updateShopifyAccount(input: {id: $id, patch: {name: $name, shopLink: $shopLink, partnerId: $partnerId, iconId: $iconId}}) {
+    shopifyAccount {
+      id
+      name
+      shopLink
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      iconId
+    }
+  }
+}
+",
+  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation": "mutation updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($orderId: Int!, $email: String!, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID, $shopifyAccountId: UUID!) {
+  updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId(input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId, patch: {orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, partnerId: $partnerId}}) {
+    shopifyOrder {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+    }
+  }
+}
+",
+  "updateShopifyOrderMutation": "mutation updateShopifyOrderMutation($orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID, $shopifyAccountId: UUID) {
+  updateShopifyOrder(input: {id: $id, patch: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}) {
+    shopifyOrder {
+      id
+      orderId
+      email
+      orderStatus
+      financialStatus
+      subtotalPrice
+      orderCreatedAt
+      orderClosedAt
+      bitcoinUpdatedAt
+      bitcoinRebate
+      bitcoinAddress
+      paidDate
+      transactionId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      partnerId
+      shopifyAccountId
+    }
+  }
+}
+",
+  "updateShopifySecretByShopifyAccountIdAndNameMutation": "mutation updateShopifySecretByShopifyAccountIdAndNameMutation($shopifyAccountId: UUID!, $name: String!, $value: String, $enc: String) {
+  updateShopifySecretByShopifyAccountIdAndName(input: {shopifyAccountId: $shopifyAccountId, name: $name, patch: {value: $value, enc: $enc}}) {
+    shopifySecret {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateShopifySecretMutation": "mutation updateShopifySecretMutation($shopifyAccountId: UUID, $name: String, $value: String, $enc: String) {
+  updateShopifySecret(input: {id: $id, patch: {shopifyAccountId: $shopifyAccountId, name: $name, value: $value, enc: $enc}}) {
+    shopifySecret {
+      id
+      shopifyAccountId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateUserByBitcoinAddressMutation": "mutation updateUserByBitcoinAddressMutation($username: String, $bitcoinAddress: String!) {
+  updateUserByBitcoinAddress(input: {bitcoinAddress: $bitcoinAddress, patch: {username: $username}}) {
+    user {
+      id
+      username
+      bitcoinAddress
+    }
+  }
+}
+",
+  "updateUserByUsernameMutation": "mutation updateUserByUsernameMutation($username: String!, $bitcoinAddress: String) {
+  updateUserByUsername(input: {username: $username, patch: {bitcoinAddress: $bitcoinAddress}}) {
+    user {
+      id
+      username
+      bitcoinAddress
+    }
+  }
+}
+",
+  "updateUserEncryptedSecretByUserIdAndNameMutation": "mutation updateUserEncryptedSecretByUserIdAndNameMutation($userId: UUID!, $name: String!, $value: String, $enc: String) {
+  updateUserEncryptedSecretByUserIdAndName(input: {userId: $userId, name: $name, patch: {value: $value, enc: $enc}}) {
+    userEncryptedSecret {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateUserEncryptedSecretMutation": "mutation updateUserEncryptedSecretMutation($userId: UUID, $name: String, $value: String, $enc: String) {
+  updateUserEncryptedSecret(input: {id: $id, patch: {userId: $userId, name: $name, value: $value, enc: $enc}}) {
+    userEncryptedSecret {
+      id
+      userId
+      name
+      value
+      enc
+    }
+  }
+}
+",
+  "updateUserMutation": "mutation updateUserMutation($username: String, $bitcoinAddress: String) {
+  updateUser(input: {id: $id, patch: {username: $username, bitcoinAddress: $bitcoinAddress}}) {
+    user {
+      id
+      username
+      bitcoinAddress
+    }
+  }
+}
+",
+  "updateUserSecretByUserIdAndNameMutation": "mutation updateUserSecretByUserIdAndNameMutation($userId: UUID!, $name: String!, $value: String) {
+  updateUserSecretByUserIdAndName(input: {userId: $userId, name: $name, patch: {value: $value}}) {
+    userSecret {
+      id
+      userId
+      name
+      value
+    }
+  }
+}
+",
+  "updateUserSecretMutation": "mutation updateUserSecretMutation($userId: UUID, $name: String, $value: String) {
+  updateUserSecret(input: {id: $id, patch: {userId: $userId, name: $name, value: $value}}) {
+    userSecret {
+      id
+      userId
+      name
+      value
+    }
+  }
+}
+",
+  "userEncryptedSecretFragment": "fragment userEncryptedSecretFragment on UserEncryptedSecret {
+  id
+  userId
+  name
+  value
+  enc
+}
+",
+  "userEncryptedSecretsUpsertMutation": "mutation userEncryptedSecretsUpsertMutation($vUserId: UUID!, $secretName: String!, $secretValue: String!, $fieldEncoding: String!) {
+  userEncryptedSecretsUpsert(input: {vUserId: $vUserId, secretName: $secretName, secretValue: $secretValue, fieldEncoding: $fieldEncoding}) {
+    boolean
+  }
+}
+",
+  "userFragment": "fragment userFragment on User {
+  id
+  username
+  bitcoinAddress
+  permissions
+  completedActions
+}
+",
+  "userSecretFragment": "fragment userSecretFragment on UserSecret {
+  id
+  userId
+  name
+  value
+}
+",
+  "uuidGenerateSeededUuidMutation": "mutation uuidGenerateSeededUuidMutation($seed: String!) {
+  uuidGenerateSeededUuid(input: {seed: $seed}) {
+    uuid
+  }
+}
+",
+  "uuidGenerateV4Mutation": "mutation uuidGenerateV4Mutation {
+  uuidGenerateV4 {
+    uuid
+  }
+}
+",
+}
+`;
+
+exports[`getMany(): works with nested selection 1`] = `
+"query getActionItemsQueryAll {
+  actionItems {totalCount, nodes {
+    id
+    name
+    description
+    type
+    itemOrder
+    isRequired
+    notificationText
+    embedCode
+    url
+    media
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    userActionItems(first: 3) {nodes {
+      id
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }}
+  }}
+}
+"
+`;
+
+exports[`getManyPaginatedNodes(): works with nested selection 1`] = `
+"query getActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
+  actionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    name
+    description
+    type
+    itemOrder
+    isRequired
+    notificationText
+    embedCode
+    url
+    media
+    ownerId
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    userActionItems(first: 3) {nodes {
+      id
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }}
+  }}
+}
+"
+`;
+
+exports[`getOne(): works with nested selection 1`] = `
+"query getActionQuery($id: UUID!) {
+  action(id: $id) {
+    id
+    slug
+    photo
+    title
+    description
+    discoveryHeader
+    discoveryDescription
+    enableNotifications
+    enableNotificationsText
+    search
+    locationRadius
+    startDate
+    endDate
+    approved
+    rewardAmount
+    activityFeedText
+    callToAction
+    completedActionText
+    alreadyCompletedActionText
+    tags
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    ownerId
+    actionGoals(first: 3) {nodes {
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      goalId
+      ownerId
+    }}
+    actionResults(first: 3) {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      ownerId
+    }}
+    actionItems(first: 3) {nodes {
+      id
+      name
+      description
+      type
+      itemOrder
+      isRequired
+      notificationText
+      embedCode
+      url
+      media
+      ownerId
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+    }}
+    userActions(first: 3) {nodes {
+      id
+      actionStarted
+      complete
+      verified
+      verifiedDate
+      userRating
+      rejected
+      rejectedReason
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      verifierId
+      actionId
+    }}
+    userActionResults(first: 3) {nodes {
+      id
+      value
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionResultId
+    }}
+    userActionItems(first: 3) {nodes {
+      id
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }}
+    userPassActions(first: 3) {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }}
+    userSavedActions(first: 3) {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }}
+    userViewedActions(first: 3) {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+    }}
+    userActionReactions(first: 3) {nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userActionId
+      userId
+      reacterId
+      actionId
+    }}
+    searchRank
+    goals(first: 3) {nodes {
+      id
+      name
+      slug
+      shortName
+      icon
+      subHead
+      tags
+      search
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      searchRank
+    }}
+  }
+}
+"
+`;
