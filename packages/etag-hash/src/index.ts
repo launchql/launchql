@@ -1,14 +1,19 @@
-var createHash = require('crypto').createHash;
+import { createHash as createCryptoHash, Hash as NodeHash } from 'crypto';
 
-class ETagHash {
-  constructor(partSizeInMb = 5) {
+export class ETagHash {
+  private partSizeInBytes: number;
+  private sums: NodeHash[];
+  private part: number;
+  private bytes: number;
+
+  constructor(partSizeInMb: number = 5) {
     this.partSizeInBytes = partSizeInMb * 1024 * 1024;
-    this.sums = [createHash('md5')];
+    this.sums = [createCryptoHash('md5')];
     this.part = 0;
     this.bytes = 0;
   }
 
-  update(chunk) {
+  update(chunk: Buffer): this {
     const len = chunk.length;
 
     if (this.bytes + len < this.partSizeInBytes) {
@@ -16,23 +21,23 @@ class ETagHash {
       this.bytes += len;
     } else {
       const bytesNeeded = this.partSizeInBytes - this.bytes;
-      this.sums[this.part].update(chunk.slice(0, bytesNeeded));
+      this.sums[this.part].update(chunk.subarray(0, bytesNeeded));
       this.part++;
-      this.sums.push(createHash('md5'));
+      this.sums.push(createCryptoHash('md5'));
       this.bytes = len - bytesNeeded;
-      this.sums[this.part].update(chunk.slice(bytesNeeded, len));
+      this.sums[this.part].update(chunk.subarray(bytesNeeded));
     }
 
     return this;
   }
 
-  digest() {
+  digest(): string {
     if (!this.part) {
       return this.sums[0].digest('hex');
     }
 
-    const checksum = this.sums.map(s => s.digest('hex')).join('');
-    const final = createHash('md5')
+    const checksum = this.sums.map((s) => s.digest('hex')).join('');
+    const final = createCryptoHash('md5')
       .update(Buffer.from(checksum, 'hex'))
       .digest('hex');
 
@@ -40,7 +45,6 @@ class ETagHash {
   }
 }
 
-module.exports = ETagHash;
-module.exports.createHash = (...args) => {
+export const createHash = (...args: ConstructorParameters<typeof ETagHash>): ETagHash => {
   return new ETagHash(...args);
 };

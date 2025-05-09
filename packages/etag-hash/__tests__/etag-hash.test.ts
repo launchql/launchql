@@ -1,24 +1,26 @@
-const etag = require('../src');
+import { createHash } from '../src';
 
 describe('ETag', () => {
   it('ETag hash', async () => {
-    const res = {};
+    const res: Record<string, string> = {};
     const strings = ['Hello World', 'Another String'];
-    for (var i = 0; i < strings.length; i++) {
+
+    for (let i = 0; i < strings.length; i++) {
       const str = strings[i];
-      res[str] = etag
-        .createHash()
-        .update(str)
+      res[str] = createHash()
+        .update(Buffer.from(str, 'utf8'))
         .digest();
     }
+
     expect(res).toMatchSnapshot();
   });
+
   it('Large ETag hash', async () => {
-    const hash = etag.createHash();
+    const hash = createHash();
 
     const SZ = 5 * 1024 * 1024;
     for (let i = 0; i < SZ; i++) {
-      hash.update(i + '');
+      hash.update(Buffer.from(String(i), 'utf8'));
     }
 
     const res = hash.digest();

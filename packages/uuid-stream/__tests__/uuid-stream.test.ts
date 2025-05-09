@@ -1,18 +1,20 @@
-const UuidStream = require('../src');
-const createHash = require('crypto').createHash;
+import { createHash } from 'crypto';
+import { Readable, ReadableOptions } from 'stream';
+import UuidStream from '../src';
 
-const getUuid = stream => {
+const getUuid = (stream: NodeJS.ReadableStream): Promise<string | null> => {
   return new Promise((resolve, reject) => {
     const sum = createHash('md5');
-    let result = null;
+    let result: string | null = null;
+
     stream
-      .on('error', e => {
+      .on('error', (e: Error) => {
         reject(e);
       })
-      .on('uuid', data => {
+      .on('uuid', (data: Buffer | string) => {
         result = data.toString();
       })
-      .on('data', data => {
+      .on('data', (data: Buffer | string) => {
         sum.update(data);
       })
       .on('finish', () => {
@@ -22,28 +24,30 @@ const getUuid = stream => {
   });
 };
 
-const Readable = require('stream').Readable;
 class StringStream extends Readable {
-  constructor (string) {
-    super();
+  constructor(private string: string, opts?: ReadableOptions) {
+    super(opts);
     this.push(string);
     this.push(null);
   }
-  _read() {
-    return {};
+
+  _read(): void {
+    // no-op
   }
 }
 
 describe('UUID v5', () => {
   it('uuids from streams', async () => {
-    const res = {};
+    const res: Record<string, string | null> = {};
     const strings = ['Hello World', 'Another String'];
-    for (var i = 0; i < strings.length; i++) {
+
+    for (let i = 0; i < strings.length; i++) {
       const str = strings[i];
       const s = new StringStream(str);
       const stream = new UuidStream();
       res[str] = await getUuid(s.pipe(stream));
     }
+
     expect(res).toMatchSnapshot();
   });
 });
