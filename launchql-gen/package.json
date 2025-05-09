@@ -1,0 +1,68 @@
+{
+  "name": "launchql-gen",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "private": true,
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "postinstall": "yarn-deduplicate || exit 0",
+    "build": "lerna run prepare --parallel",
+    "bootstrap": "lerna bootstrap --use-workspaces",
+    "bootstrap:local": "lerna bootstrap --force-local && lerna link --force-local",
+    "commit": "git-cz",
+    "clean": "lerna run clean --stream --parallel && lerna exec \"rimraf node_modules\"",
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn build",
+    "release": "lerna publish",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --ignore-path .gitignore . --fix",
+    "pretest": "yarn lint",
+    "test:watch": "jest --watch",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.4",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "@pyramation/babel-preset-env": "0.1.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "^24.9.0",
+    "commitizen": "4.2.3",
+    "commitlint": "11.0.0",
+    "cz-conventional-changelog": "3.3.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react-app": "5.2.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "4.0.0",
+    "jest": "25.1.0",
+    "lerna": "3.20.2",
+    "prettier": "2.0.4",
+    "rimraf": "3.0.2",
+    "yarn-deduplicate": "3.1.0"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql-gen"
+  }
+}
