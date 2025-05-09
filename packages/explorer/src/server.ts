@@ -15,7 +15,7 @@ import { printSchemas, printDatabases } from './render';
 import { env } from './env';
 import { getGraphileSettings } from './settings';
 
-interface ServerOptions {
+export interface ExplorerOptions {
   simpleInflection?: boolean;
   oppositeBaseNames?: boolean;
   port?: number;
@@ -23,13 +23,13 @@ interface ServerOptions {
   origin?: string;
 }
 
-export default ({
+export const LaunchQLExplorer = ({
   simpleInflection = env.USE_SIMPLE_INFLECTION,
   oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
   port = env.SERVER_PORT,
   postgis = env.USE_POSTGIS,
   origin
-}: ServerOptions = {}): Express => {
+}: ExplorerOptions = {}): Express => {
   const getGraphileInstanceObj = (dbname: string, schemaname: string): GraphileCache => {
     const key = `${dbname}.${schemaname}`;
 

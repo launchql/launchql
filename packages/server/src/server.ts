@@ -17,7 +17,7 @@ import { flush, flushService } from './middleware/flush';
 import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
 
-interface ServerOptions {
+export interface ServerOptions {
   simpleInflection?: boolean;
   oppositeBaseNames?: boolean;
   port?: number;
@@ -27,7 +27,7 @@ interface ServerOptions {
   graphileBuildOptions?: Record<string, any>;
 }
 
-export default ({
+export const LaunchQLServer = ({
   simpleInflection = env.USE_SIMPLE_INFLECTION,
   oppositeBaseNames = env.USE_OPPOSITE_BASENAMES,
   port = env.SERVER_PORT,

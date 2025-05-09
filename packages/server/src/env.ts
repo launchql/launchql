@@ -20,9 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 export const env = cleanEnv(process.env, {
   META_SCHEMAS: array({ default: ['meta_public', 'collections_public'] }),
-  SCHEMAS: str({ default: 'dashboard' }),
-
-
+  SCHEMAS: str({ default: 'collections_public' }),
 
   IS_PUBLIC: bool({ default: true }),
   STRICT_AUTH: bool({ default: true }),

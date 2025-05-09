@@ -3,7 +3,10 @@ import { ParsedArgs } from 'minimist';
 
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
+
 import deploy from './commands/deploy';
+import server from './commands/server';
+import explorer from './commands/explorer';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -22,6 +25,12 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
     switch (command) {
         case 'deploy':
             await deploy(newArgv, prompter, options);
+            break;
+        case 'server':
+            await server(newArgv, prompter, options);
+            break;
+        case 'explorer':
+            await explorer(newArgv, prompter, options);
             break;
         default:
             console.error(`Unknown command: ${command}`);

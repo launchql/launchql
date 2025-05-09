@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import server from './server';
+import { LaunchQLExplorer as server } from './server';
 
 server();

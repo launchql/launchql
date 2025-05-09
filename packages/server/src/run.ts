@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import server from './server';
+import { LaunchQLServer as server } from './server';
 
 server();
