@@ -1,8 +1,8 @@
 {
-  "name": "etag-hash",
-  "version": "0.0.1",
+  "name": "launchql-react",
+  "version": "0.0.7",
+  "description": "LaunchQL React",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "etag hash",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,5 +29,21 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.11.10",
+    "@testing-library/react": "11.2.5"
+  },
+  "dependencies": {
+    "graphql": "15.5.2",
+    "graphql-request": "3.3.0",
+    "introspectron": "^0.2.12",
+    "launchql-client": "^0.3.9",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-query": "^3.5.11"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
+  },
 }
