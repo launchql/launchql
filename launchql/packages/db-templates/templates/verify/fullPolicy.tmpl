@@ -1,0 +1,20 @@
+-- Verify [% change %]  on pg
+
+BEGIN;
+
+SELECT verify_policy ('can_select_[% table %]', '[% schema %].[% table %]');
+SELECT verify_policy ('can_insert_[% table %]', '[% schema %].[% table %]');
+SELECT verify_policy ('can_update_[% table %]', '[% schema %].[% table %]');
+SELECT verify_policy ('can_delete_[% table %]', '[% schema %].[% table %]');
+
+SELECT verify_function ('[% schema | replace('_public', '_private') %].[% table %]_policy_fn');
+
+
+[% FOREACH user IN grant -%]
+SELECT has_table_privilege('[% user %]', '[% schema %].[% table %]', 'INSERT');
+SELECT has_table_privilege('[% user %]', '[% schema %].[% table %]', 'SELECT');
+SELECT has_table_privilege('[% user %]', '[% schema %].[% table %]', 'UPDATE');
+SELECT has_table_privilege('[% user %]', '[% schema %].[% table %]', 'DELETE');
+[% END -%]
+
+ROLLBACK;

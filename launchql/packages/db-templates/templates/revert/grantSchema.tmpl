@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+REVOKE USAGE ON SCHEMA [% schema %] FROM [% role %];
+
+COMMIT;

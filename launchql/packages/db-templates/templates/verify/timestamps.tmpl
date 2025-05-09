@@ -1,0 +1,9 @@
+-- Verify [% change %]  on pg
+
+BEGIN;
+
+SELECT created_at FROM [% schema %].[% table %] LIMIT 1;
+SELECT updated_at FROM [% schema %].[% table %] LIMIT 1;
+SELECT verify_trigger ('[% schema %].update_[% schema %]_[% table %]_modtime');
+
+ROLLBACK;

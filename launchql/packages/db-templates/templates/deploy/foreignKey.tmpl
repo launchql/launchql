@@ -1,0 +1,26 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+[% IF shardcolumn %]
+ALTER TABLE [% schema %].[% table %]
+    ADD CONSTRAINT fk_[% schema %]_[% table %]_[% column %]
+    FOREIGN KEY ([% column %], [% shardcolumn %])
+    REFERENCES [% refschema %].[% reftable %] ([% refcolumn %], [% shardcolumn %])
+    [% cascade %];
+[% ELSE %]
+ALTER TABLE [% schema %].[% table %]
+    ADD CONSTRAINT fk_[% schema %]_[% table %]_[% column %]
+    FOREIGN KEY ([% column %])
+    REFERENCES [% refschema %].[% reftable %] ([% refcolumn %])
+    [% cascade %];
+[% END %]
+
+COMMIT;

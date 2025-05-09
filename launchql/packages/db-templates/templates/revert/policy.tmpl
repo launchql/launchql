@@ -1,0 +1,11 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+[% IF grant.size %]
+REVOKE [% action.join(', ') %] ON TABLE [% schema %].[% table %] FROM [% grant.join(', ') %];
+[% END %]
+
+DROP POLICY [% policy %] ON [% schema %].[% table %];
+
+COMMIT;

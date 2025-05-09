@@ -1,0 +1,7 @@
+-- Revert [% change %] from pg
+
+BEGIN;
+
+DROP ROLE [% role %];
+
+COMMIT;

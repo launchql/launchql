@@ -1,0 +1,7 @@
+-- Deploy [% change %] to pg
+
+BEGIN;
+
+CREATE EXTENSION IF NOT EXISTS "[% extension %]" CASCADE;
+
+COMMIT;

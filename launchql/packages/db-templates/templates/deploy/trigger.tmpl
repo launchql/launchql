@@ -1,0 +1,39 @@
+-- Deploy [% change %] to pg
+
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+[% IF procedure %]
+
+CREATE FUNCTION [% schema | replace('_public', '_private') %].tg_[% triggername %]()
+RETURNS TRIGGER AS $$
+BEGIN
+ -- code here
+ RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql' VOLATILE; -- TODO VOLATILE or IMMUTABLE or STABLE?
+
+CREATE TRIGGER [% triggername %]
+[% when %] [% op.join(' OR ') %] ON [% schema %].[% table %]
+FOR EACH ROW
+WHEN (NEW.data IS DISTINCT FROM OLD.data)
+EXECUTE PROCEDURE [% schema | replace('_public', '_private') %].tg_[% triggername %] ();
+
+[% ELSE %]
+
+CREATE TRIGGER [% triggername %]
+[% when %] [% op.join(' OR ') %] ON [% schema %].[% table %]
+FOR EACH ROW
+WHEN (NEW.data IS DISTINCT FROM OLD.data)
+EXECUTE PROCEDURE [% schema | replace('_public', '_private') %].tg_[% triggername %] ();
+
+[% END %]
+
+COMMIT;
