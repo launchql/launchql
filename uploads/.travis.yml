@@ -1,0 +1,47 @@
+language: node_js
+notifications:
+  email: false
+cache:
+  yarn: true
+  directories:
+    - node_modules
+os:
+  - linux
+node_js:
+  - "10"
+  - "12"
+services:
+  - docker
+env:
+  global:
+    - MINIO_ACCESS_KEY=minio-access
+    - MINIO_SECRET_KEY=minio-secret
+    - AWS_ACCESS_KEY=minio-access
+    - AWS_SECRET_KEY=minio-secret
+    - MINIO_ENDPOINT=http://localhost:9000
+    - BUCKET_NAME=launchql
+  matrix:
+    - PACKAGE=packages/content-type-stream
+    - PACKAGE=packages/s3-streamer
+    # - PACKAGE=packages/s3-utils # no tests
+    - PACKAGE=packages/stream-to-s3
+    - PACKAGE=packages/upload-names
+before_install:
+  # start minio
+  - docker run -p 9000:9000 -e "MINIO_ACCESS_KEY=minio-access" -e "MINIO_SECRET_KEY=minio-secret" --name minio -d minio/minio server /data
+  - sleep 10
+
+  # pull minio client
+  - wget https://dl.min.io/client/mc/release/linux-amd64/mc && chmod +x mc
+  # set alias
+  - ./mc alias set local-minio http://localhost:9000 minio-access minio-secret
+  #  make bucket
+  - ./mc mb local-minio/launchql
+  # set policy
+  - ./mc policy set download local-minio/launchql
+script:
+  - yarn
+  - yarn bootstrap
+  - yarn build
+  - cd $PACKAGE
+  - yarn test -u #minio hashes wtf
