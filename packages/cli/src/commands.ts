@@ -7,6 +7,8 @@ import { extractFirst, usageText } from './utils';
 import deploy from './commands/deploy';
 import server from './commands/server';
 import explorer from './commands/explorer';
+import verify from './commands/verify';
+import revert from './commands/revert';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -25,6 +27,12 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
     switch (command) {
         case 'deploy':
             await deploy(newArgv, prompter, options);
+            break;
+        case 'verify':
+            await verify(newArgv, prompter, options);
+            break;
+        case 'revert':
+            await revert(newArgv, prompter, options);
             break;
         case 'server':
             await server(newArgv, prompter, options);

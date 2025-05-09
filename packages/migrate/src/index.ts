@@ -8,3 +8,5 @@ export * from './resolve';
 export * from './transform';
 export * from './utils';
 export * from './deploy';
+export * from './revert';
+export * from './verify';
