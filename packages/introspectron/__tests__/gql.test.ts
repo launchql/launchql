@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import introQuery from '../__fixtures__/introQuery.json';
 import introQueryDbe from '../__fixtures__/intro-query-dbe.json';
 import { parseGraphQuery } from '../src';

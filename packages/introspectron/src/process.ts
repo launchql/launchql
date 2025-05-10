@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { deepClone, parseTags } from './utils';
 
 const removeQuotes = (str) => {

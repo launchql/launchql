@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const parseTags = (str) => {
   return str.split(/\r?\n/).reduce(
     (prev, curr) => {

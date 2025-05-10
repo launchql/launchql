@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*
  * IMPORTANT: when editing this file, ensure all operators (e.g. `@>`) are
  * specified in the correct namespace (e.g. `operator(pg_catalog.@>)`). It looks

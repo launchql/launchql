@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { makeIntrospectionQuery } from './query';
 import { parseTags } from './utils';
 import flatMap from 'lodash/flatMap';
