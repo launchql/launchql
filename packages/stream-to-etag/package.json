@@ -1,0 +1,39 @@
+{
+  "name": "stream-to-etag",
+  "version": "2.0.0",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "Calculates Etag/S3 MD5 sum given a readable stream. Uses the same algorithm that S3 uses to calculate the ETag.",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "s3",
+    "etag"
+  ],
+  "dependencies": {
+    "etag-hash": "^2.0.0"
+  }
+}

@@ -63,8 +63,23 @@ jobs:
       - name: launchql/url-domains
         run: cd ./packages/url-domains && yarn test
 
+      - name: launchql/uuid-hash
+        run: cd ./packages/uuid-hash && yarn test
+
+      - name: launchql/uuid-stream
+        run: cd ./packages/uuid-stream && yarn test
+
       - name: launchql/query-builder
         run: cd ./packages/query-builder && yarn test
+
+      - name: launchql/introspectron
+        run: cd ./packages/introspectron && yarn test
+
+      - name: launchql/react-client
+        run: cd ./packages/react-client && yarn test
+
+      - name: launchql/launchql-gen
+        run: cd ./packages/launchql-gen && yarn test
 
       - name: launchql/codegen
         run: cd ./packages/codegen && yarn test

@@ -1,0 +1,507 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create with custom selection 1`] = `
+"mutation createActionMutation($id: UUID, $slug: String, $photo: JSON, $shareImage: JSON, $title: String, $titleObjectTemplate: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $notificationText: String, $notificationObjectTemplate: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $published: Boolean, $isPrivate: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $selfVerifiable: Boolean, $isRecurring: Boolean, $recurringInterval: IntervalInput, $oncePerObject: Boolean, $minimumGroupMembers: Int, $limitedToLocation: Boolean, $tags: [String], $groupId: UUID, $ownerId: UUID!, $objectTypeId: Int, $rewardId: UUID, $verifyRewardId: UUID, $photoUpload: Upload, $shareImageUpload: Upload) {
+  createAction(
+    input: {action: {id: $id, slug: $slug, photo: $photo, shareImage: $shareImage, title: $title, titleObjectTemplate: $titleObjectTemplate, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, notificationText: $notificationText, notificationObjectTemplate: $notificationObjectTemplate, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, published: $published, isPrivate: $isPrivate, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, selfVerifiable: $selfVerifiable, isRecurring: $isRecurring, recurringInterval: $recurringInterval, oncePerObject: $oncePerObject, minimumGroupMembers: $minimumGroupMembers, limitedToLocation: $limitedToLocation, tags: $tags, groupId: $groupId, ownerId: $ownerId, objectTypeId: $objectTypeId, rewardId: $rewardId, verifyRewardId: $verifyRewardId, photoUpload: $photoUpload, shareImageUpload: $shareImageUpload}}
+  ) {
+    action {
+      id
+      photo
+      title
+    }
+  }
+}
+"
+`;
+
+exports[`create with custom selection 2`] = `"createActionMutation"`;
+
+exports[`create with default scalar selection 1`] = `
+"mutation createActionMutation($id: UUID, $slug: String, $photo: JSON, $shareImage: JSON, $title: String, $titleObjectTemplate: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $notificationText: String, $notificationObjectTemplate: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $published: Boolean, $isPrivate: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $selfVerifiable: Boolean, $isRecurring: Boolean, $recurringInterval: IntervalInput, $oncePerObject: Boolean, $minimumGroupMembers: Int, $limitedToLocation: Boolean, $tags: [String], $groupId: UUID, $ownerId: UUID!, $objectTypeId: Int, $rewardId: UUID, $verifyRewardId: UUID, $photoUpload: Upload, $shareImageUpload: Upload) {
+  createAction(
+    input: {action: {id: $id, slug: $slug, photo: $photo, shareImage: $shareImage, title: $title, titleObjectTemplate: $titleObjectTemplate, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, notificationText: $notificationText, notificationObjectTemplate: $notificationObjectTemplate, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, published: $published, isPrivate: $isPrivate, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, selfVerifiable: $selfVerifiable, isRecurring: $isRecurring, recurringInterval: $recurringInterval, oncePerObject: $oncePerObject, minimumGroupMembers: $minimumGroupMembers, limitedToLocation: $limitedToLocation, tags: $tags, groupId: $groupId, ownerId: $ownerId, objectTypeId: $objectTypeId, rewardId: $rewardId, verifyRewardId: $verifyRewardId, photoUpload: $photoUpload, shareImageUpload: $shareImageUpload}}
+  ) {
+    action {
+      id
+      slug
+      photo
+      shareImage
+      title
+      titleObjectTemplate
+      url
+      description
+      discoveryHeader
+      discoveryDescription
+      notificationText
+      notificationObjectTemplate
+      enableNotifications
+      enableNotificationsText
+      search
+      location {
+        geojson
+      }
+      locationRadius
+      timeRequired {
+        days
+        hours
+        minutes
+        months
+        seconds
+        years
+      }
+      startDate
+      endDate
+      approved
+      published
+      isPrivate
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      alreadyCompletedActionText
+      selfVerifiable
+      isRecurring
+      recurringInterval {
+        days
+        hours
+        minutes
+        months
+        seconds
+        years
+      }
+      oncePerObject
+      minimumGroupMembers
+      limitedToLocation
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`create with default scalar selection 2`] = `"createActionMutation"`;
+
+exports[`delete 1`] = `
+"mutation deleteActionMutation($id: UUID!) {
+  deleteAction(input: {id: $id}) {
+    clientMutationId
+  }
+}
+"
+`;
+
+exports[`delete 2`] = `"deleteActionMutation"`;
+
+exports[`expands further selections of custom ast fields in nested selection 1`] = `
+"query getActionGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionGoalCondition, $filter: ActionGoalFilter, $orderBy: [ActionGoalsOrderBy!]) {
+  actionGoals(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    action {
+      id
+      location {
+        geojson
+      }
+      timeRequired {
+        days
+        hours
+        minutes
+        months
+        seconds
+        years
+      }
+    }
+  }}
+}
+"
+`;
+
+exports[`expands further selections of custom ast fields in nested selection 2`] = `"getActionGoalsQuery"`;
+
+exports[`getAll 1`] = `
+"query getActionsQueryAll {
+  actions {totalCount, nodes {
+    id
+    photo
+    title
+  }}
+}
+"
+`;
+
+exports[`getAll 2`] = `"getActionsQueryAll"`;
+
+exports[`getMany edges 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, edges {
+    cursor
+    node {
+      id
+      photo
+      title
+    }
+  }}
+}
+"
+`;
+
+exports[`getMany edges 2`] = `"getActionsQuery"`;
+
+exports[`getMany should select only scalar fields by default 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    slug
+    photo
+    shareImage
+    title
+    titleObjectTemplate
+    url
+    description
+    discoveryHeader
+    discoveryDescription
+    notificationText
+    notificationObjectTemplate
+    enableNotifications
+    enableNotificationsText
+    search
+    location {
+      geojson
+    }
+    locationRadius
+    timeRequired {
+      days
+      hours
+      minutes
+      months
+      seconds
+      years
+    }
+    startDate
+    endDate
+    approved
+    published
+    isPrivate
+    rewardAmount
+    activityFeedText
+    callToAction
+    completedActionText
+    alreadyCompletedActionText
+    selfVerifiable
+    isRecurring
+    recurringInterval {
+      days
+      hours
+      minutes
+      months
+      seconds
+      years
+    }
+    oncePerObject
+    minimumGroupMembers
+    limitedToLocation
+    tags
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+  }}
+}
+"
+`;
+
+exports[`getMany should select only scalar fields by default 2`] = `"getActionsQuery"`;
+
+exports[`getMany should whitelist selected fields 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    photo
+    title
+  }}
+}
+"
+`;
+
+exports[`getMany should whitelist selected fields 2`] = `"getActionsQuery"`;
+
+exports[`getOne 1`] = `
+"query getActionQuery($id: UUID!) {
+  action(id: $id) {
+    id
+    photo
+    title
+  }
+}
+"
+`;
+
+exports[`getOne 2`] = `"getActionQuery"`;
+
+exports[`selects all scalar fields of junction table by default 1`] = `
+"query getActionGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionGoalCondition, $filter: ActionGoalFilter, $orderBy: [ActionGoalsOrderBy!]) {
+  actionGoals(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    actionId
+    goalId
+  }}
+}
+"
+`;
+
+exports[`selects belongsTo relation field 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    owner {
+      id
+    }
+  }}
+}
+"
+`;
+
+exports[`selects non-scalar custom types 1`] = `"getActionsQuery"`;
+
+exports[`selects relation field 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    slug
+    photo
+    title
+    url
+    goals(first: 3) {totalCount, nodes {
+      id
+      name
+      slug
+      shortName
+      icon
+      subHead
+      tags
+      search
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }}
+  }}
+}
+"
+`;
+
+exports[`should select totalCount in subfields by default 1`] = `
+"query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {totalCount, pageInfo {
+    hasNextPage
+    hasPreviousPage
+    endCursor
+    startCursor
+  }, nodes {
+    id
+    photo
+    title
+  }}
+}
+"
+`;
+
+exports[`should select totalCount in subfields by default 2`] = `"getActionsQuery"`;
+
+exports[`update with custom selection 1`] = `
+"mutation updateActionMutation($id: UUID!, $slug: String, $photo: JSON, $shareImage: JSON, $title: String, $titleObjectTemplate: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $notificationText: String, $notificationObjectTemplate: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $published: Boolean, $isPrivate: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $selfVerifiable: Boolean, $isRecurring: Boolean, $recurringInterval: IntervalInput, $oncePerObject: Boolean, $minimumGroupMembers: Int, $limitedToLocation: Boolean, $tags: [String], $groupId: UUID, $ownerId: UUID, $objectTypeId: Int, $rewardId: UUID, $verifyRewardId: UUID, $photoUpload: Upload, $shareImageUpload: Upload) {
+  updateAction(
+    input: {id: $id, patch: {slug: $slug, photo: $photo, shareImage: $shareImage, title: $title, titleObjectTemplate: $titleObjectTemplate, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, notificationText: $notificationText, notificationObjectTemplate: $notificationObjectTemplate, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, published: $published, isPrivate: $isPrivate, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, selfVerifiable: $selfVerifiable, isRecurring: $isRecurring, recurringInterval: $recurringInterval, oncePerObject: $oncePerObject, minimumGroupMembers: $minimumGroupMembers, limitedToLocation: $limitedToLocation, tags: $tags, groupId: $groupId, ownerId: $ownerId, objectTypeId: $objectTypeId, rewardId: $rewardId, verifyRewardId: $verifyRewardId, photoUpload: $photoUpload, shareImageUpload: $shareImageUpload}}
+  ) {
+    action {
+      id
+      photo
+      title
+    }
+  }
+}
+"
+`;
+
+exports[`update with custom selection 2`] = `"updateActionMutation"`;
+
+exports[`update with default scalar selection 1`] = `
+"mutation updateActionMutation($id: UUID!, $slug: String, $photo: JSON, $shareImage: JSON, $title: String, $titleObjectTemplate: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $notificationText: String, $notificationObjectTemplate: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $published: Boolean, $isPrivate: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $selfVerifiable: Boolean, $isRecurring: Boolean, $recurringInterval: IntervalInput, $oncePerObject: Boolean, $minimumGroupMembers: Int, $limitedToLocation: Boolean, $tags: [String], $groupId: UUID, $ownerId: UUID, $objectTypeId: Int, $rewardId: UUID, $verifyRewardId: UUID, $photoUpload: Upload, $shareImageUpload: Upload) {
+  updateAction(
+    input: {id: $id, patch: {slug: $slug, photo: $photo, shareImage: $shareImage, title: $title, titleObjectTemplate: $titleObjectTemplate, url: $url, description: $description, discoveryHeader: $discoveryHeader, discoveryDescription: $discoveryDescription, notificationText: $notificationText, notificationObjectTemplate: $notificationObjectTemplate, enableNotifications: $enableNotifications, enableNotificationsText: $enableNotificationsText, search: $search, location: $location, locationRadius: $locationRadius, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, published: $published, isPrivate: $isPrivate, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, alreadyCompletedActionText: $alreadyCompletedActionText, selfVerifiable: $selfVerifiable, isRecurring: $isRecurring, recurringInterval: $recurringInterval, oncePerObject: $oncePerObject, minimumGroupMembers: $minimumGroupMembers, limitedToLocation: $limitedToLocation, tags: $tags, groupId: $groupId, ownerId: $ownerId, objectTypeId: $objectTypeId, rewardId: $rewardId, verifyRewardId: $verifyRewardId, photoUpload: $photoUpload, shareImageUpload: $shareImageUpload}}
+  ) {
+    action {
+      id
+      slug
+      photo
+      shareImage
+      title
+      titleObjectTemplate
+      url
+      description
+      discoveryHeader
+      discoveryDescription
+      notificationText
+      notificationObjectTemplate
+      enableNotifications
+      enableNotificationsText
+      search
+      location {
+        geojson
+      }
+      locationRadius
+      timeRequired {
+        days
+        hours
+        minutes
+        months
+        seconds
+        years
+      }
+      startDate
+      endDate
+      approved
+      published
+      isPrivate
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      alreadyCompletedActionText
+      selfVerifiable
+      isRecurring
+      recurringInterval {
+        days
+        hours
+        minutes
+        months
+        seconds
+        years
+      }
+      oncePerObject
+      minimumGroupMembers
+      limitedToLocation
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`update with default scalar selection 2`] = `"updateActionMutation"`;

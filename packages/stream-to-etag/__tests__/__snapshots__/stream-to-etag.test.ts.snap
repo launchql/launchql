@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`etags calculates etags properly 1`] = `
+{
+  "/deadman.jpg": "c61f004b66f96e5d1bcd05fc71ac900c-2",
+  "/pct.pct": "630620c4f931bd94573cafe460ad4af6",
+  "/pdf.pdf": "b9aa628349df6cc1c99919fe4a12216c",
+  "/scss.scss": "cd8759ad9f9530b6f852675d1db3235a",
+}
+`;

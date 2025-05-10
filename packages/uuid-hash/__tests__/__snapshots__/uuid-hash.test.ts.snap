@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UUID v5 uuid v5 hash 1`] = `
+{
+  "Another String": "6683e2b8-dbf7-5927-bdf0-22520ace81b1",
+  "Hello World": "7bf3746c-6273-5e2d-8174-be6c0a78c192",
+  "uuid": "e8613ca4-b17d-5979-82ea-86c1373c4ffc",
+}
+`;
+
+exports[`UUID v5 uuid v5 hash w custom namespace 1`] = `
+{
+  "Another String": "1afb8e5d-2c55-5c54-b596-741f19965158",
+  "Hello World": "a17fe188-1546-54ac-8e87-6a58931ea342",
+  "uuid": "2107d0c4-2b6c-5583-90f4-ee0b303c3a58",
+}
+`;

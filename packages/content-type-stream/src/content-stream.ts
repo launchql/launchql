@@ -2,9 +2,8 @@
 import crypto from 'crypto';
 import stream from 'stream';
 
-// TODO move these into this monorepo
-import uuid from 'uuid-hash';
-import etag from 'etag-hash';
+import * as uuid from 'uuid-hash';
+import * as etag from 'etag-hash';
 
 export class ContentStream extends stream.Transform {
   constructor() {

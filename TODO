@@ -1,0 +1,3 @@
+- [ ] remove travis
+- [ ] it('getOne(): handles missing selection gracefully' NOT PASSING
+- [ ] @launchql/react tests
