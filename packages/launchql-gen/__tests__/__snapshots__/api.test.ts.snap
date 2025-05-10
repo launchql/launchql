@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`generate 1`] = `
-Object {
+{
   "actionFragment": "fragment actionFragment on Action {
   id
   name
@@ -64,7 +64,9 @@ Object {
 }
 ",
   "createActionItemMutation": "mutation createActionItemMutation($name: String, $description: String, $link: String, $type: String, $itemOrder: Int, $requiredItem: Boolean, $notificationText: String, $embedCode: String, $actionId: UUID!, $ownerId: UUID!) {
-  createActionItem(input: {actionItem: {name: $name, description: $description, link: $link, type: $type, itemOrder: $itemOrder, requiredItem: $requiredItem, notificationText: $notificationText, embedCode: $embedCode, actionId: $actionId, ownerId: $ownerId}}) {
+  createActionItem(
+    input: {actionItem: {name: $name, description: $description, link: $link, type: $type, itemOrder: $itemOrder, requiredItem: $requiredItem, notificationText: $notificationText, embedCode: $embedCode, actionId: $actionId, ownerId: $ownerId}}
+  ) {
     actionItem {
       id
       name
@@ -86,7 +88,9 @@ Object {
 }
 ",
   "createActionMutation": "mutation createActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID!, $photoUpload: Upload) {
-  createAction(input: {action: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+  createAction(
+    input: {action: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}
+  ) {
     action {
       id
       name
@@ -117,7 +121,9 @@ Object {
 }
 ",
   "createActionResultMutation": "mutation createActionResultMutation($actionId: UUID!, $ownerId: UUID!) {
-  createActionResult(input: {actionResult: {actionId: $actionId, ownerId: $ownerId}}) {
+  createActionResult(
+    input: {actionResult: {actionId: $actionId, ownerId: $ownerId}}
+  ) {
     actionResult {
       id
       createdBy
@@ -131,7 +137,9 @@ Object {
 }
 ",
   "createGoalMutation": "mutation createGoalMutation($name: String, $shortName: String, $icon: String, $subHead: String, $audio: JSON, $audioDuration: BigFloat, $explanationTitle: String, $explanation: String, $audioUpload: Upload) {
-  createGoal(input: {goal: {name: $name, shortName: $shortName, icon: $icon, subHead: $subHead, audio: $audio, audioDuration: $audioDuration, explanationTitle: $explanationTitle, explanation: $explanation, audioUpload: $audioUpload}}) {
+  createGoal(
+    input: {goal: {name: $name, shortName: $shortName, icon: $icon, subHead: $subHead, audio: $audio, audioDuration: $audioDuration, explanationTitle: $explanationTitle, explanation: $explanation, audioUpload: $audioUpload}}
+  ) {
     goal {
       id
       name
@@ -165,7 +173,9 @@ Object {
 }
 ",
   "createNewsUpdateMutation": "mutation createNewsUpdateMutation($name: String, $description: String, $photo: JSON, $photoUpload: Upload) {
-  createNewsUpdate(input: {newsUpdate: {name: $name, description: $description, photo: $photo, photoUpload: $photoUpload}}) {
+  createNewsUpdate(
+    input: {newsUpdate: {name: $name, description: $description, photo: $photo, photoUpload: $photoUpload}}
+  ) {
     newsUpdate {
       id
       name
@@ -181,7 +191,9 @@ Object {
 }
 ",
   "createUserActionItemMutation": "mutation createUserActionItemMutation($date: Datetime, $value: JSON, $status: String, $userId: UUID!, $actionId: UUID!, $userActionId: UUID!, $actionItemId: UUID!) {
-  createUserActionItem(input: {userActionItem: {date: $date, value: $value, status: $status, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionItemId: $actionItemId}}) {
+  createUserActionItem(
+    input: {userActionItem: {date: $date, value: $value, status: $status, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionItemId: $actionItemId}}
+  ) {
     userActionItem {
       id
       date
@@ -200,7 +212,9 @@ Object {
 }
 ",
   "createUserActionMutation": "mutation createUserActionMutation($actionStarted: Datetime, $verified: Boolean, $verifiedDate: Datetime, $status: String, $userRating: Int, $rejected: Boolean, $rejectedReason: String, $userId: UUID!, $verifierId: UUID, $actionId: UUID!) {
-  createUserAction(input: {userAction: {actionStarted: $actionStarted, verified: $verified, verifiedDate: $verifiedDate, status: $status, userRating: $userRating, rejected: $rejected, rejectedReason: $rejectedReason, userId: $userId, verifierId: $verifierId, actionId: $actionId}}) {
+  createUserAction(
+    input: {userAction: {actionStarted: $actionStarted, verified: $verified, verifiedDate: $verifiedDate, status: $status, userRating: $userRating, rejected: $rejected, rejectedReason: $rejectedReason, userId: $userId, verifierId: $verifierId, actionId: $actionId}}
+  ) {
     userAction {
       id
       actionStarted
@@ -222,7 +236,9 @@ Object {
 }
 ",
   "createUserActionResultMutation": "mutation createUserActionResultMutation($date: Datetime, $value: JSON, $userId: UUID!, $actionId: UUID!, $userActionId: UUID!, $actionResultId: UUID!) {
-  createUserActionResult(input: {userActionResult: {date: $date, value: $value, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionResultId: $actionResultId}}) {
+  createUserActionResult(
+    input: {userActionResult: {date: $date, value: $value, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionResultId: $actionResultId}}
+  ) {
     userActionResult {
       id
       date
@@ -240,7 +256,9 @@ Object {
 }
 ",
   "createUserCharacteristicMutation": "mutation createUserCharacteristicMutation($income: BigFloat, $gender: Int, $race: String, $age: Int, $dob: Date, $education: String, $homeOwnership: String, $treeHuggerLevel: Int, $freeTime: Int, $researchToDoer: Int, $userId: UUID!) {
-  createUserCharacteristic(input: {userCharacteristic: {income: $income, gender: $gender, race: $race, age: $age, dob: $dob, education: $education, homeOwnership: $homeOwnership, treeHuggerLevel: $treeHuggerLevel, freeTime: $freeTime, researchToDoer: $researchToDoer, userId: $userId}}) {
+  createUserCharacteristic(
+    input: {userCharacteristic: {income: $income, gender: $gender, race: $race, age: $age, dob: $dob, education: $education, homeOwnership: $homeOwnership, treeHuggerLevel: $treeHuggerLevel, freeTime: $freeTime, researchToDoer: $researchToDoer, userId: $userId}}
+  ) {
     userCharacteristic {
       id
       income
@@ -263,7 +281,9 @@ Object {
 }
 ",
   "createUserConnectionMutation": "mutation createUserConnectionMutation($accepted: Boolean, $requesterId: UUID!, $responderId: UUID!) {
-  createUserConnection(input: {userConnection: {accepted: $accepted, requesterId: $requesterId, responderId: $responderId}}) {
+  createUserConnection(
+    input: {userConnection: {accepted: $accepted, requesterId: $requesterId, responderId: $responderId}}
+  ) {
     userConnection {
       id
       accepted
@@ -278,7 +298,9 @@ Object {
 }
 ",
   "createUserContactMutation": "mutation createUserContactMutation($vcf: JSON, $fullName: String, $emails: [LaunchqlInternalTypeEmail], $device: String, $userId: UUID!) {
-  createUserContact(input: {userContact: {vcf: $vcf, fullName: $fullName, emails: $emails, device: $device, userId: $userId}}) {
+  createUserContact(
+    input: {userContact: {vcf: $vcf, fullName: $fullName, emails: $emails, device: $device, userId: $userId}}
+  ) {
     userContact {
       id
       vcf
@@ -295,7 +317,9 @@ Object {
 }
 ",
   "createUserEmailMutation": "mutation createUserEmailMutation($userId: UUID!, $email: LaunchqlInternalTypeEmail!, $isVerified: Boolean) {
-  createUserEmail(input: {userEmail: {userId: $userId, email: $email, isVerified: $isVerified}}) {
+  createUserEmail(
+    input: {userEmail: {userId: $userId, email: $email, isVerified: $isVerified}}
+  ) {
     userEmail {
       id
       userId
@@ -315,7 +339,9 @@ Object {
 }
 ",
   "createUserProfileMutation": "mutation createUserProfileMutation($profilePicture: JSON, $bio: String, $reputation: BigFloat, $firstName: String, $lastName: String, $tags: [String], $userId: UUID!, $profilePictureUpload: Upload) {
-  createUserProfile(input: {userProfile: {profilePicture: $profilePicture, bio: $bio, reputation: $reputation, firstName: $firstName, lastName: $lastName, tags: $tags, userId: $userId, profilePictureUpload: $profilePictureUpload}}) {
+  createUserProfile(
+    input: {userProfile: {profilePicture: $profilePicture, bio: $bio, reputation: $reputation, firstName: $firstName, lastName: $lastName, tags: $tags, userId: $userId, profilePictureUpload: $profilePictureUpload}}
+  ) {
     userProfile {
       id
       profilePicture
@@ -335,7 +361,9 @@ Object {
 }
 ",
   "createUserSettingMutation": "mutation createUserSettingMutation($searchRadius: BigFloat, $zip: String, $geo: GeoJSON, $userId: UUID!) {
-  createUserSetting(input: {userSetting: {searchRadius: $searchRadius, zip: $zip, geo: $geo, userId: $userId}}) {
+  createUserSetting(
+    input: {userSetting: {searchRadius: $searchRadius, zip: $zip, geo: $geo, userId: $userId}}
+  ) {
     userSetting {
       id
       searchRadius
@@ -492,7 +520,7 @@ Object {
 }
 ",
   "getActionItemsOrderByEnums": "query getActionItemsOrderByEnums {
-  __type(name: \\"ActionItemsOrderBy\\") {
+  __type(name: "ActionItemsOrderBy") {
     enumValues {
       name
     }
@@ -500,14 +528,66 @@ Object {
 }
 ",
   "getActionItemsPaginated": "query getActionItemsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
-  actionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  actionItems(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        link
+        type
+        itemOrder
+        requiredItem
+        notificationText
+        embedCode
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        actionId
+        ownerId
+        userActionItems
+      }
+    }
+  }
+}
+",
+  "getActionItemsQuery": "query getActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
+  actionItems(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       name
       description
@@ -525,54 +605,31 @@ Object {
       ownerId
       userActionItems
     }
-  }}
-}
-",
-  "getActionItemsQuery": "query getActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
-  actionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    name
-    description
-    link
-    type
-    itemOrder
-    requiredItem
-    notificationText
-    embedCode
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    actionId
-    ownerId
-    userActionItems
-  }}
+  }
 }
 ",
   "getActionItemsQueryAll": "query getActionItemsQueryAll {
-  actionItems {totalCount, nodes {
-    id
-    name
-    description
-    link
-    type
-    itemOrder
-    requiredItem
-    notificationText
-    embedCode
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    actionId
-    ownerId
-    userActionItems
-  }}
+  actionItems {
+    totalCount
+    nodes {
+      id
+      name
+      description
+      link
+      type
+      itemOrder
+      requiredItem
+      notificationText
+      embedCode
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      ownerId
+      userActionItems
+    }
+  }
 }
 ",
   "getActionQuery": "query getActionQuery($id: UUID!) {
@@ -622,7 +679,7 @@ Object {
 }
 ",
   "getActionResultsOrderByEnums": "query getActionResultsOrderByEnums {
-  __type(name: \\"ActionResultsOrderBy\\") {
+  __type(name: "ActionResultsOrderBy") {
     enumValues {
       name
     }
@@ -630,14 +687,58 @@ Object {
 }
 ",
   "getActionResultsPaginated": "query getActionResultsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ActionResultCondition, $filter: ActionResultFilter, $orderBy: [ActionResultsOrderBy!]) {
-  actionResults(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  actionResults(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        actionId
+        ownerId
+        userActionResults
+      }
+    }
+  }
+}
+",
+  "getActionResultsQuery": "query getActionResultsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionResultCondition, $filter: ActionResultFilter, $orderBy: [ActionResultsOrderBy!]) {
+  actionResults(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       createdBy
       updatedBy
@@ -647,42 +748,27 @@ Object {
       ownerId
       userActionResults
     }
-  }}
-}
-",
-  "getActionResultsQuery": "query getActionResultsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionResultCondition, $filter: ActionResultFilter, $orderBy: [ActionResultsOrderBy!]) {
-  actionResults(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    actionId
-    ownerId
-    userActionResults
-  }}
+  }
 }
 ",
   "getActionResultsQueryAll": "query getActionResultsQueryAll {
-  actionResults {totalCount, nodes {
-    id
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    actionId
-    ownerId
-    userActionResults
-  }}
+  actionResults {
+    totalCount
+    nodes {
+      id
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actionId
+      ownerId
+      userActionResults
+    }
+  }
 }
 ",
   "getActionsOrderByEnums": "query getActionsOrderByEnums {
-  __type(name: \\"ActionsOrderBy\\") {
+  __type(name: "ActionsOrderBy") {
     enumValues {
       name
     }
@@ -690,14 +776,78 @@ Object {
 }
 ",
   "getActionsPaginated": "query getActionsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
-  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        photo
+        title
+        description
+        locationRadius
+        url
+        timeRequired
+        startDate
+        endDate
+        approved
+        rewardAmount
+        activityFeedText
+        callToAction
+        completedActionText
+        descriptionHeader
+        tags
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        locationId
+        ownerId
+        actionResults
+        actionItems
+        userActions
+        userActionResults
+        userActionItems
+      }
+    }
+  }
+}
+",
+  "getActionsQuery": "query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
+  actions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       name
       photo
@@ -727,78 +877,43 @@ Object {
       userActionResults
       userActionItems
     }
-  }}
-}
-",
-  "getActionsQuery": "query getActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionCondition, $filter: ActionFilter, $orderBy: [ActionsOrderBy!]) {
-  actions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    name
-    photo
-    title
-    description
-    locationRadius
-    url
-    timeRequired
-    startDate
-    endDate
-    approved
-    rewardAmount
-    activityFeedText
-    callToAction
-    completedActionText
-    descriptionHeader
-    tags
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    locationId
-    ownerId
-    actionResults
-    actionItems
-    userActions
-    userActionResults
-    userActionItems
-  }}
+  }
 }
 ",
   "getActionsQueryAll": "query getActionsQueryAll {
-  actions {totalCount, nodes {
-    id
-    name
-    photo
-    title
-    description
-    locationRadius
-    url
-    timeRequired
-    startDate
-    endDate
-    approved
-    rewardAmount
-    activityFeedText
-    callToAction
-    completedActionText
-    descriptionHeader
-    tags
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    locationId
-    ownerId
-    actionResults
-    actionItems
-    userActions
-    userActionResults
-    userActionItems
-  }}
+  actions {
+    totalCount
+    nodes {
+      id
+      name
+      photo
+      title
+      description
+      locationRadius
+      url
+      timeRequired
+      startDate
+      endDate
+      approved
+      rewardAmount
+      activityFeedText
+      callToAction
+      completedActionText
+      descriptionHeader
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      locationId
+      ownerId
+      actionResults
+      actionItems
+      userActions
+      userActionResults
+      userActionItems
+    }
+  }
 }
 ",
   "getGetCurrentUserQuery": "query getGetCurrentUserQuery {
@@ -841,7 +956,7 @@ Object {
 }
 ",
   "getGoalsOrderByEnums": "query getGoalsOrderByEnums {
-  __type(name: \\"GoalsOrderBy\\") {
+  __type(name: "GoalsOrderBy") {
     enumValues {
       name
     }
@@ -849,14 +964,63 @@ Object {
 }
 ",
   "getGoalsPaginated": "query getGoalsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: GoalCondition, $filter: GoalFilter, $orderBy: [GoalsOrderBy!]) {
-  goals(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  goals(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        shortName
+        icon
+        subHead
+        audio
+        audioDuration
+        explanationTitle
+        explanation
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}
+",
+  "getGoalsQuery": "query getGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: GoalCondition, $filter: GoalFilter, $orderBy: [GoalsOrderBy!]) {
+  goals(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       name
       shortName
@@ -871,48 +1035,28 @@ Object {
       createdAt
       updatedAt
     }
-  }}
-}
-",
-  "getGoalsQuery": "query getGoalsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: GoalCondition, $filter: GoalFilter, $orderBy: [GoalsOrderBy!]) {
-  goals(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    name
-    shortName
-    icon
-    subHead
-    audio
-    audioDuration
-    explanationTitle
-    explanation
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-  }}
+  }
 }
 ",
   "getGoalsQueryAll": "query getGoalsQueryAll {
-  goals {totalCount, nodes {
-    id
-    name
-    shortName
-    icon
-    subHead
-    audio
-    audioDuration
-    explanationTitle
-    explanation
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-  }}
+  goals {
+    totalCount
+    nodes {
+      id
+      name
+      shortName
+      icon
+      subHead
+      audio
+      audioDuration
+      explanationTitle
+      explanation
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
 }
 ",
   "getLocationQuery": "query getLocationQuery($id: UUID!) {
@@ -928,7 +1072,7 @@ Object {
 }
 ",
   "getLocationsOrderByEnums": "query getLocationsOrderByEnums {
-  __type(name: \\"LocationsOrderBy\\") {
+  __type(name: "LocationsOrderBy") {
     enumValues {
       name
     }
@@ -936,14 +1080,57 @@ Object {
 }
 ",
   "getLocationsPaginated": "query getLocationsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: LocationCondition, $filter: LocationFilter, $orderBy: [LocationsOrderBy!]) {
-  locations(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  locations(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        geo
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        actions
+      }
+    }
+  }
+}
+",
+  "getLocationsQuery": "query getLocationsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: LocationCondition, $filter: LocationFilter, $orderBy: [LocationsOrderBy!]) {
+  locations(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       geo
       createdBy
@@ -952,36 +1139,22 @@ Object {
       updatedAt
       actions
     }
-  }}
-}
-",
-  "getLocationsQuery": "query getLocationsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: LocationCondition, $filter: LocationFilter, $orderBy: [LocationsOrderBy!]) {
-  locations(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    geo
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    actions
-  }}
+  }
 }
 ",
   "getLocationsQueryAll": "query getLocationsQueryAll {
-  locations {totalCount, nodes {
-    id
-    geo
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    actions
-  }}
+  locations {
+    totalCount
+    nodes {
+      id
+      geo
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      actions
+    }
+  }
 }
 ",
   "getMetaQuery": "query getMetaQuery {
@@ -1004,7 +1177,7 @@ Object {
 }
 ",
   "getNewsUpdatesOrderByEnums": "query getNewsUpdatesOrderByEnums {
-  __type(name: \\"NewsUpdatesOrderBy\\") {
+  __type(name: "NewsUpdatesOrderBy") {
     enumValues {
       name
     }
@@ -1012,14 +1185,58 @@ Object {
 }
 ",
   "getNewsUpdatesPaginated": "query getNewsUpdatesPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: NewsUpdateCondition, $filter: NewsUpdateFilter, $orderBy: [NewsUpdatesOrderBy!]) {
-  newsUpdates(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  newsUpdates(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        photo
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}
+",
+  "getNewsUpdatesQuery": "query getNewsUpdatesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: NewsUpdateCondition, $filter: NewsUpdateFilter, $orderBy: [NewsUpdatesOrderBy!]) {
+  newsUpdates(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       name
       description
@@ -1029,38 +1246,23 @@ Object {
       createdAt
       updatedAt
     }
-  }}
-}
-",
-  "getNewsUpdatesQuery": "query getNewsUpdatesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: NewsUpdateCondition, $filter: NewsUpdateFilter, $orderBy: [NewsUpdatesOrderBy!]) {
-  newsUpdates(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    name
-    description
-    photo
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-  }}
+  }
 }
 ",
   "getNewsUpdatesQueryAll": "query getNewsUpdatesQueryAll {
-  newsUpdates {totalCount, nodes {
-    id
-    name
-    description
-    photo
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-  }}
+  newsUpdates {
+    totalCount
+    nodes {
+      id
+      name
+      description
+      photo
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
+  }
 }
 ",
   "getUserActionItemQuery": "query getUserActionItemQuery($id: UUID!) {
@@ -1081,7 +1283,7 @@ Object {
 }
 ",
   "getUserActionItemsOrderByEnums": "query getUserActionItemsOrderByEnums {
-  __type(name: \\"UserActionItemsOrderBy\\") {
+  __type(name: "UserActionItemsOrderBy") {
     enumValues {
       name
     }
@@ -1089,14 +1291,62 @@ Object {
 }
 ",
   "getUserActionItemsPaginated": "query getUserActionItemsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserActionItemCondition, $filter: UserActionItemFilter, $orderBy: [UserActionItemsOrderBy!]) {
-  userActionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userActionItems(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        date
+        value
+        status
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+        actionId
+        userActionId
+        actionItemId
+      }
+    }
+  }
+}
+",
+  "getUserActionItemsQuery": "query getUserActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionItemCondition, $filter: UserActionItemFilter, $orderBy: [UserActionItemsOrderBy!]) {
+  userActionItems(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       date
       value
@@ -1110,46 +1360,27 @@ Object {
       userActionId
       actionItemId
     }
-  }}
-}
-",
-  "getUserActionItemsQuery": "query getUserActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionItemCondition, $filter: UserActionItemFilter, $orderBy: [UserActionItemsOrderBy!]) {
-  userActionItems(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    date
-    value
-    status
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-    actionId
-    userActionId
-    actionItemId
-  }}
+  }
 }
 ",
   "getUserActionItemsQueryAll": "query getUserActionItemsQueryAll {
-  userActionItems {totalCount, nodes {
-    id
-    date
-    value
-    status
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-    actionId
-    userActionId
-    actionItemId
-  }}
+  userActionItems {
+    totalCount
+    nodes {
+      id
+      date
+      value
+      status
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionItemId
+    }
+  }
 }
 ",
   "getUserActionQuery": "query getUserActionQuery($id: UUID!) {
@@ -1191,7 +1422,7 @@ Object {
 }
 ",
   "getUserActionResultsOrderByEnums": "query getUserActionResultsOrderByEnums {
-  __type(name: \\"UserActionResultsOrderBy\\") {
+  __type(name: "UserActionResultsOrderBy") {
     enumValues {
       name
     }
@@ -1199,14 +1430,61 @@ Object {
 }
 ",
   "getUserActionResultsPaginated": "query getUserActionResultsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserActionResultCondition, $filter: UserActionResultFilter, $orderBy: [UserActionResultsOrderBy!]) {
-  userActionResults(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userActionResults(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        date
+        value
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+        actionId
+        userActionId
+        actionResultId
+      }
+    }
+  }
+}
+",
+  "getUserActionResultsQuery": "query getUserActionResultsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionResultCondition, $filter: UserActionResultFilter, $orderBy: [UserActionResultsOrderBy!]) {
+  userActionResults(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       date
       value
@@ -1219,48 +1497,30 @@ Object {
       userActionId
       actionResultId
     }
-  }}
-}
-",
-  "getUserActionResultsQuery": "query getUserActionResultsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionResultCondition, $filter: UserActionResultFilter, $orderBy: [UserActionResultsOrderBy!]) {
-  userActionResults(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    date
-    value
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-    actionId
-    userActionId
-    actionResultId
-  }}
+  }
 }
 ",
   "getUserActionResultsQueryAll": "query getUserActionResultsQueryAll {
-  userActionResults {totalCount, nodes {
-    id
-    date
-    value
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-    actionId
-    userActionId
-    actionResultId
-  }}
+  userActionResults {
+    totalCount
+    nodes {
+      id
+      date
+      value
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      actionId
+      userActionId
+      actionResultId
+    }
+  }
 }
 ",
   "getUserActionsOrderByEnums": "query getUserActionsOrderByEnums {
-  __type(name: \\"UserActionsOrderBy\\") {
+  __type(name: "UserActionsOrderBy") {
     enumValues {
       name
     }
@@ -1268,14 +1528,67 @@ Object {
 }
 ",
   "getUserActionsPaginated": "query getUserActionsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserActionCondition, $filter: UserActionFilter, $orderBy: [UserActionsOrderBy!]) {
-  userActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userActions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        actionStarted
+        verified
+        verifiedDate
+        status
+        userRating
+        rejected
+        rejectedReason
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+        verifierId
+        actionId
+        userActionResults
+        userActionItems
+      }
+    }
+  }
+}
+",
+  "getUserActionsQuery": "query getUserActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionCondition, $filter: UserActionFilter, $orderBy: [UserActionsOrderBy!]) {
+  userActions(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       actionStarted
       verified
@@ -1294,56 +1607,32 @@ Object {
       userActionResults
       userActionItems
     }
-  }}
-}
-",
-  "getUserActionsQuery": "query getUserActionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserActionCondition, $filter: UserActionFilter, $orderBy: [UserActionsOrderBy!]) {
-  userActions(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    actionStarted
-    verified
-    verifiedDate
-    status
-    userRating
-    rejected
-    rejectedReason
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-    verifierId
-    actionId
-    userActionResults
-    userActionItems
-  }}
+  }
 }
 ",
   "getUserActionsQueryAll": "query getUserActionsQueryAll {
-  userActions {totalCount, nodes {
-    id
-    actionStarted
-    verified
-    verifiedDate
-    status
-    userRating
-    rejected
-    rejectedReason
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-    verifierId
-    actionId
-    userActionResults
-    userActionItems
-  }}
+  userActions {
+    totalCount
+    nodes {
+      id
+      actionStarted
+      verified
+      verifiedDate
+      status
+      userRating
+      rejected
+      rejectedReason
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      verifierId
+      actionId
+      userActionResults
+      userActionItems
+    }
+  }
 }
 ",
   "getUserCharacteristicByUserIdQuery": "query getUserCharacteristicByUserIdQuery($userId: UUID!) {
@@ -1389,7 +1678,7 @@ Object {
 }
 ",
   "getUserCharacteristicsOrderByEnums": "query getUserCharacteristicsOrderByEnums {
-  __type(name: \\"UserCharacteristicsOrderBy\\") {
+  __type(name: "UserCharacteristicsOrderBy") {
     enumValues {
       name
     }
@@ -1397,14 +1686,66 @@ Object {
 }
 ",
   "getUserCharacteristicsPaginated": "query getUserCharacteristicsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserCharacteristicCondition, $filter: UserCharacteristicFilter, $orderBy: [UserCharacteristicsOrderBy!]) {
-  userCharacteristics(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userCharacteristics(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        income
+        gender
+        race
+        age
+        dob
+        education
+        homeOwnership
+        treeHuggerLevel
+        freeTime
+        researchToDoer
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+      }
+    }
+  }
+}
+",
+  "getUserCharacteristicsQuery": "query getUserCharacteristicsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCharacteristicCondition, $filter: UserCharacteristicFilter, $orderBy: [UserCharacteristicsOrderBy!]) {
+  userCharacteristics(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       income
       gender
@@ -1422,54 +1763,31 @@ Object {
       updatedAt
       userId
     }
-  }}
-}
-",
-  "getUserCharacteristicsQuery": "query getUserCharacteristicsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCharacteristicCondition, $filter: UserCharacteristicFilter, $orderBy: [UserCharacteristicsOrderBy!]) {
-  userCharacteristics(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    income
-    gender
-    race
-    age
-    dob
-    education
-    homeOwnership
-    treeHuggerLevel
-    freeTime
-    researchToDoer
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  }
 }
 ",
   "getUserCharacteristicsQueryAll": "query getUserCharacteristicsQueryAll {
-  userCharacteristics {totalCount, nodes {
-    id
-    income
-    gender
-    race
-    age
-    dob
-    education
-    homeOwnership
-    treeHuggerLevel
-    freeTime
-    researchToDoer
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  userCharacteristics {
+    totalCount
+    nodes {
+      id
+      income
+      gender
+      race
+      age
+      dob
+      education
+      homeOwnership
+      treeHuggerLevel
+      freeTime
+      researchToDoer
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
 }
 ",
   "getUserConnectionQuery": "query getUserConnectionQuery($id: UUID!) {
@@ -1486,7 +1804,7 @@ Object {
 }
 ",
   "getUserConnectionsOrderByEnums": "query getUserConnectionsOrderByEnums {
-  __type(name: \\"UserConnectionsOrderBy\\") {
+  __type(name: "UserConnectionsOrderBy") {
     enumValues {
       name
     }
@@ -1494,14 +1812,58 @@ Object {
 }
 ",
   "getUserConnectionsPaginated": "query getUserConnectionsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserConnectionCondition, $filter: UserConnectionFilter, $orderBy: [UserConnectionsOrderBy!]) {
-  userConnections(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userConnections(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        accepted
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        requesterId
+        responderId
+      }
+    }
+  }
+}
+",
+  "getUserConnectionsQuery": "query getUserConnectionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserConnectionCondition, $filter: UserConnectionFilter, $orderBy: [UserConnectionsOrderBy!]) {
+  userConnections(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       accepted
       createdBy
@@ -1511,38 +1873,23 @@ Object {
       requesterId
       responderId
     }
-  }}
-}
-",
-  "getUserConnectionsQuery": "query getUserConnectionsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserConnectionCondition, $filter: UserConnectionFilter, $orderBy: [UserConnectionsOrderBy!]) {
-  userConnections(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    accepted
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    requesterId
-    responderId
-  }}
+  }
 }
 ",
   "getUserConnectionsQueryAll": "query getUserConnectionsQueryAll {
-  userConnections {totalCount, nodes {
-    id
-    accepted
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    requesterId
-    responderId
-  }}
+  userConnections {
+    totalCount
+    nodes {
+      id
+      accepted
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      requesterId
+      responderId
+    }
+  }
 }
 ",
   "getUserContactQuery": "query getUserContactQuery($id: UUID!) {
@@ -1561,7 +1908,7 @@ Object {
 }
 ",
   "getUserContactsOrderByEnums": "query getUserContactsOrderByEnums {
-  __type(name: \\"UserContactsOrderBy\\") {
+  __type(name: "UserContactsOrderBy") {
     enumValues {
       name
     }
@@ -1569,14 +1916,60 @@ Object {
 }
 ",
   "getUserContactsPaginated": "query getUserContactsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserContactCondition, $filter: UserContactFilter, $orderBy: [UserContactsOrderBy!]) {
-  userContacts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userContacts(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        vcf
+        fullName
+        emails
+        device
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+      }
+    }
+  }
+}
+",
+  "getUserContactsQuery": "query getUserContactsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserContactCondition, $filter: UserContactFilter, $orderBy: [UserContactsOrderBy!]) {
+  userContacts(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       vcf
       fullName
@@ -1588,42 +1981,25 @@ Object {
       updatedAt
       userId
     }
-  }}
-}
-",
-  "getUserContactsQuery": "query getUserContactsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserContactCondition, $filter: UserContactFilter, $orderBy: [UserContactsOrderBy!]) {
-  userContacts(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    vcf
-    fullName
-    emails
-    device
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  }
 }
 ",
   "getUserContactsQueryAll": "query getUserContactsQueryAll {
-  userContacts {totalCount, nodes {
-    id
-    vcf
-    fullName
-    emails
-    device
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  userContacts {
+    totalCount
+    nodes {
+      id
+      vcf
+      fullName
+      emails
+      device
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
 }
 ",
   "getUserEmailByEmailQuery": "query getUserEmailByEmailQuery($email: LaunchqlInternalTypeEmail!) {
@@ -1645,7 +2021,7 @@ Object {
 }
 ",
   "getUserEmailsOrderByEnums": "query getUserEmailsOrderByEnums {
-  __type(name: \\"UserEmailsOrderBy\\") {
+  __type(name: "UserEmailsOrderBy") {
     enumValues {
       name
     }
@@ -1653,43 +2029,72 @@ Object {
 }
 ",
   "getUserEmailsPaginated": "query getUserEmailsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserEmailCondition, $filter: UserEmailFilter, $orderBy: [UserEmailsOrderBy!]) {
-  userEmails(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userEmails(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        userId
+        email
+        isVerified
+      }
+    }
+  }
+}
+",
+  "getUserEmailsQuery": "query getUserEmailsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserEmailCondition, $filter: UserEmailFilter, $orderBy: [UserEmailsOrderBy!]) {
+  userEmails(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       userId
       email
       isVerified
     }
-  }}
-}
-",
-  "getUserEmailsQuery": "query getUserEmailsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserEmailCondition, $filter: UserEmailFilter, $orderBy: [UserEmailsOrderBy!]) {
-  userEmails(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    userId
-    email
-    isVerified
-  }}
+  }
 }
 ",
   "getUserEmailsQueryAll": "query getUserEmailsQueryAll {
-  userEmails {totalCount, nodes {
-    id
-    userId
-    email
-    isVerified
-  }}
+  userEmails {
+    totalCount
+    nodes {
+      id
+      userId
+      email
+      isVerified
+    }
+  }
 }
 ",
   "getUserProfileByUserIdQuery": "query getUserProfileByUserIdQuery($userId: UUID!) {
@@ -1727,7 +2132,7 @@ Object {
 }
 ",
   "getUserProfilesOrderByEnums": "query getUserProfilesOrderByEnums {
-  __type(name: \\"UserProfilesOrderBy\\") {
+  __type(name: "UserProfilesOrderBy") {
     enumValues {
       name
     }
@@ -1735,14 +2140,62 @@ Object {
 }
 ",
   "getUserProfilesPaginated": "query getUserProfilesPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserProfileCondition, $filter: UserProfileFilter, $orderBy: [UserProfilesOrderBy!]) {
-  userProfiles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userProfiles(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        profilePicture
+        bio
+        reputation
+        firstName
+        lastName
+        tags
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+      }
+    }
+  }
+}
+",
+  "getUserProfilesQuery": "query getUserProfilesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserProfileCondition, $filter: UserProfileFilter, $orderBy: [UserProfilesOrderBy!]) {
+  userProfiles(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       profilePicture
       bio
@@ -1756,46 +2209,27 @@ Object {
       updatedAt
       userId
     }
-  }}
-}
-",
-  "getUserProfilesQuery": "query getUserProfilesQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserProfileCondition, $filter: UserProfileFilter, $orderBy: [UserProfilesOrderBy!]) {
-  userProfiles(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    profilePicture
-    bio
-    reputation
-    firstName
-    lastName
-    tags
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  }
 }
 ",
   "getUserProfilesQueryAll": "query getUserProfilesQueryAll {
-  userProfiles {totalCount, nodes {
-    id
-    profilePicture
-    bio
-    reputation
-    firstName
-    lastName
-    tags
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  userProfiles {
+    totalCount
+    nodes {
+      id
+      profilePicture
+      bio
+      reputation
+      firstName
+      lastName
+      tags
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
 }
 ",
   "getUserQuery": "query getUserQuery($id: UUID!) {
@@ -1848,7 +2282,7 @@ Object {
 }
 ",
   "getUserSettingsOrderByEnums": "query getUserSettingsOrderByEnums {
-  __type(name: \\"UserSettingsOrderBy\\") {
+  __type(name: "UserSettingsOrderBy") {
     enumValues {
       name
     }
@@ -1856,14 +2290,59 @@ Object {
 }
 ",
   "getUserSettingsPaginated": "query getUserSettingsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserSettingCondition, $filter: UserSettingFilter, $orderBy: [UserSettingsOrderBy!]) {
-  userSettings(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  userSettings(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        searchRadius
+        zip
+        geo
+        createdBy
+        updatedBy
+        createdAt
+        updatedAt
+        userId
+      }
+    }
+  }
+}
+",
+  "getUserSettingsQuery": "query getUserSettingsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserSettingCondition, $filter: UserSettingFilter, $orderBy: [UserSettingsOrderBy!]) {
+  userSettings(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       searchRadius
       zip
@@ -1874,44 +2353,28 @@ Object {
       updatedAt
       userId
     }
-  }}
-}
-",
-  "getUserSettingsQuery": "query getUserSettingsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserSettingCondition, $filter: UserSettingFilter, $orderBy: [UserSettingsOrderBy!]) {
-  userSettings(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    searchRadius
-    zip
-    geo
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  }
 }
 ",
   "getUserSettingsQueryAll": "query getUserSettingsQueryAll {
-  userSettings {totalCount, nodes {
-    id
-    searchRadius
-    zip
-    geo
-    createdBy
-    updatedBy
-    createdAt
-    updatedAt
-    userId
-  }}
+  userSettings {
+    totalCount
+    nodes {
+      id
+      searchRadius
+      zip
+      geo
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+  }
 }
 ",
   "getUsersOrderByEnums": "query getUsersOrderByEnums {
-  __type(name: \\"UsersOrderBy\\") {
+  __type(name: "UsersOrderBy") {
     enumValues {
       name
     }
@@ -1919,14 +2382,66 @@ Object {
 }
 ",
   "getUsersPaginated": "query getUsersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
-  users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, edges {
-    cursor
-    node {
+  users(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        type
+        userEmails
+        userProfiles
+        userSettings
+        userCharacteristics
+        userContacts
+        userConnectionsByRequesterId
+        userConnectionsByResponderId
+        ownedActions
+        ownedActionResults
+        ownedActionItems
+        userActions
+        userActionsByVerifierId
+        userActionResults
+        userActionItems
+      }
+    }
+  }
+}
+",
+  "getUsersQuery": "query getUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
       id
       type
       userEmails
@@ -1944,54 +2459,31 @@ Object {
       userActionResults
       userActionItems
     }
-  }}
-}
-",
-  "getUsersQuery": "query getUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
-  users(first: $first, last: $last, offset: $offset, after: $after, before: $before, condition: $condition, filter: $filter, orderBy: $orderBy) {totalCount, pageInfo {
-    hasNextPage
-    hasPreviousPage
-    endCursor
-    startCursor
-  }, nodes {
-    id
-    type
-    userEmails
-    userProfiles
-    userSettings
-    userCharacteristics
-    userContacts
-    userConnectionsByRequesterId
-    userConnectionsByResponderId
-    ownedActions
-    ownedActionResults
-    ownedActionItems
-    userActions
-    userActionsByVerifierId
-    userActionResults
-    userActionItems
-  }}
+  }
 }
 ",
   "getUsersQueryAll": "query getUsersQueryAll {
-  users {totalCount, nodes {
-    id
-    type
-    userEmails
-    userProfiles
-    userSettings
-    userCharacteristics
-    userContacts
-    userConnectionsByRequesterId
-    userConnectionsByResponderId
-    ownedActions
-    ownedActionResults
-    ownedActionItems
-    userActions
-    userActionsByVerifierId
-    userActionResults
-    userActionItems
-  }}
+  users {
+    totalCount
+    nodes {
+      id
+      type
+      userEmails
+      userProfiles
+      userSettings
+      userCharacteristics
+      userContacts
+      userConnectionsByRequesterId
+      userConnectionsByResponderId
+      ownedActions
+      ownedActionResults
+      ownedActionItems
+      userActions
+      userActionsByVerifierId
+      userActionResults
+      userActionItems
+    }
+  }
 }
 ",
   "goalFragment": "fragment goalFragment on Goal {
@@ -2044,7 +2536,9 @@ Object {
 }
 ",
   "updateActionItemMutation": "mutation updateActionItemMutation($name: String, $description: String, $link: String, $type: String, $itemOrder: Int, $requiredItem: Boolean, $notificationText: String, $embedCode: String, $actionId: UUID, $ownerId: UUID) {
-  updateActionItem(input: {id: $id, patch: {name: $name, description: $description, link: $link, type: $type, itemOrder: $itemOrder, requiredItem: $requiredItem, notificationText: $notificationText, embedCode: $embedCode, actionId: $actionId, ownerId: $ownerId}}) {
+  updateActionItem(
+    input: {id: $id, patch: {name: $name, description: $description, link: $link, type: $type, itemOrder: $itemOrder, requiredItem: $requiredItem, notificationText: $notificationText, embedCode: $embedCode, actionId: $actionId, ownerId: $ownerId}}
+  ) {
     actionItem {
       id
       name
@@ -2066,7 +2560,9 @@ Object {
 }
 ",
   "updateActionMutation": "mutation updateActionMutation($name: String, $photo: JSON, $title: String, $description: String, $locationRadius: BigFloat, $url: String, $timeRequired: BigFloat, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $descriptionHeader: String, $tags: [String], $locationId: UUID, $ownerId: UUID, $photoUpload: Upload) {
-  updateAction(input: {id: $id, patch: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}) {
+  updateAction(
+    input: {id: $id, patch: {name: $name, photo: $photo, title: $title, description: $description, locationRadius: $locationRadius, url: $url, timeRequired: $timeRequired, startDate: $startDate, endDate: $endDate, approved: $approved, rewardAmount: $rewardAmount, activityFeedText: $activityFeedText, callToAction: $callToAction, completedActionText: $completedActionText, descriptionHeader: $descriptionHeader, tags: $tags, locationId: $locationId, ownerId: $ownerId, photoUpload: $photoUpload}}
+  ) {
     action {
       id
       name
@@ -2097,7 +2593,9 @@ Object {
 }
 ",
   "updateActionResultMutation": "mutation updateActionResultMutation($actionId: UUID, $ownerId: UUID) {
-  updateActionResult(input: {id: $id, patch: {actionId: $actionId, ownerId: $ownerId}}) {
+  updateActionResult(
+    input: {id: $id, patch: {actionId: $actionId, ownerId: $ownerId}}
+  ) {
     actionResult {
       id
       createdBy
@@ -2111,7 +2609,9 @@ Object {
 }
 ",
   "updateGoalMutation": "mutation updateGoalMutation($name: String, $shortName: String, $icon: String, $subHead: String, $audio: JSON, $audioDuration: BigFloat, $explanationTitle: String, $explanation: String, $audioUpload: Upload) {
-  updateGoal(input: {id: $id, patch: {name: $name, shortName: $shortName, icon: $icon, subHead: $subHead, audio: $audio, audioDuration: $audioDuration, explanationTitle: $explanationTitle, explanation: $explanation, audioUpload: $audioUpload}}) {
+  updateGoal(
+    input: {id: $id, patch: {name: $name, shortName: $shortName, icon: $icon, subHead: $subHead, audio: $audio, audioDuration: $audioDuration, explanationTitle: $explanationTitle, explanation: $explanation, audioUpload: $audioUpload}}
+  ) {
     goal {
       id
       name
@@ -2145,7 +2645,9 @@ Object {
 }
 ",
   "updateNewsUpdateMutation": "mutation updateNewsUpdateMutation($name: String, $description: String, $photo: JSON, $photoUpload: Upload) {
-  updateNewsUpdate(input: {id: $id, patch: {name: $name, description: $description, photo: $photo, photoUpload: $photoUpload}}) {
+  updateNewsUpdate(
+    input: {id: $id, patch: {name: $name, description: $description, photo: $photo, photoUpload: $photoUpload}}
+  ) {
     newsUpdate {
       id
       name
@@ -2161,7 +2663,9 @@ Object {
 }
 ",
   "updateUserActionItemMutation": "mutation updateUserActionItemMutation($date: Datetime, $value: JSON, $status: String, $userId: UUID, $actionId: UUID, $userActionId: UUID, $actionItemId: UUID) {
-  updateUserActionItem(input: {id: $id, patch: {date: $date, value: $value, status: $status, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionItemId: $actionItemId}}) {
+  updateUserActionItem(
+    input: {id: $id, patch: {date: $date, value: $value, status: $status, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionItemId: $actionItemId}}
+  ) {
     userActionItem {
       id
       date
@@ -2180,7 +2684,9 @@ Object {
 }
 ",
   "updateUserActionMutation": "mutation updateUserActionMutation($actionStarted: Datetime, $verified: Boolean, $verifiedDate: Datetime, $status: String, $userRating: Int, $rejected: Boolean, $rejectedReason: String, $userId: UUID, $verifierId: UUID, $actionId: UUID) {
-  updateUserAction(input: {id: $id, patch: {actionStarted: $actionStarted, verified: $verified, verifiedDate: $verifiedDate, status: $status, userRating: $userRating, rejected: $rejected, rejectedReason: $rejectedReason, userId: $userId, verifierId: $verifierId, actionId: $actionId}}) {
+  updateUserAction(
+    input: {id: $id, patch: {actionStarted: $actionStarted, verified: $verified, verifiedDate: $verifiedDate, status: $status, userRating: $userRating, rejected: $rejected, rejectedReason: $rejectedReason, userId: $userId, verifierId: $verifierId, actionId: $actionId}}
+  ) {
     userAction {
       id
       actionStarted
@@ -2202,7 +2708,9 @@ Object {
 }
 ",
   "updateUserActionResultMutation": "mutation updateUserActionResultMutation($date: Datetime, $value: JSON, $userId: UUID, $actionId: UUID, $userActionId: UUID, $actionResultId: UUID) {
-  updateUserActionResult(input: {id: $id, patch: {date: $date, value: $value, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionResultId: $actionResultId}}) {
+  updateUserActionResult(
+    input: {id: $id, patch: {date: $date, value: $value, userId: $userId, actionId: $actionId, userActionId: $userActionId, actionResultId: $actionResultId}}
+  ) {
     userActionResult {
       id
       date
@@ -2220,7 +2728,9 @@ Object {
 }
 ",
   "updateUserCharacteristicByUserIdMutation": "mutation updateUserCharacteristicByUserIdMutation($income: BigFloat, $gender: Int, $race: String, $age: Int, $dob: Date, $education: String, $homeOwnership: String, $treeHuggerLevel: Int, $freeTime: Int, $researchToDoer: Int, $userId: UUID!) {
-  updateUserCharacteristicByUserId(input: {userId: $userId, patch: {income: $income, gender: $gender, race: $race, age: $age, dob: $dob, education: $education, homeOwnership: $homeOwnership, treeHuggerLevel: $treeHuggerLevel, freeTime: $freeTime, researchToDoer: $researchToDoer}}) {
+  updateUserCharacteristicByUserId(
+    input: {userId: $userId, patch: {income: $income, gender: $gender, race: $race, age: $age, dob: $dob, education: $education, homeOwnership: $homeOwnership, treeHuggerLevel: $treeHuggerLevel, freeTime: $freeTime, researchToDoer: $researchToDoer}}
+  ) {
     userCharacteristic {
       id
       income
@@ -2243,7 +2753,9 @@ Object {
 }
 ",
   "updateUserCharacteristicMutation": "mutation updateUserCharacteristicMutation($income: BigFloat, $gender: Int, $race: String, $age: Int, $dob: Date, $education: String, $homeOwnership: String, $treeHuggerLevel: Int, $freeTime: Int, $researchToDoer: Int, $userId: UUID) {
-  updateUserCharacteristic(input: {id: $id, patch: {income: $income, gender: $gender, race: $race, age: $age, dob: $dob, education: $education, homeOwnership: $homeOwnership, treeHuggerLevel: $treeHuggerLevel, freeTime: $freeTime, researchToDoer: $researchToDoer, userId: $userId}}) {
+  updateUserCharacteristic(
+    input: {id: $id, patch: {income: $income, gender: $gender, race: $race, age: $age, dob: $dob, education: $education, homeOwnership: $homeOwnership, treeHuggerLevel: $treeHuggerLevel, freeTime: $freeTime, researchToDoer: $researchToDoer, userId: $userId}}
+  ) {
     userCharacteristic {
       id
       income
@@ -2266,7 +2778,9 @@ Object {
 }
 ",
   "updateUserConnectionMutation": "mutation updateUserConnectionMutation($accepted: Boolean, $requesterId: UUID, $responderId: UUID) {
-  updateUserConnection(input: {id: $id, patch: {accepted: $accepted, requesterId: $requesterId, responderId: $responderId}}) {
+  updateUserConnection(
+    input: {id: $id, patch: {accepted: $accepted, requesterId: $requesterId, responderId: $responderId}}
+  ) {
     userConnection {
       id
       accepted
@@ -2281,7 +2795,9 @@ Object {
 }
 ",
   "updateUserContactMutation": "mutation updateUserContactMutation($vcf: JSON, $fullName: String, $emails: [LaunchqlInternalTypeEmail], $device: String, $userId: UUID) {
-  updateUserContact(input: {id: $id, patch: {vcf: $vcf, fullName: $fullName, emails: $emails, device: $device, userId: $userId}}) {
+  updateUserContact(
+    input: {id: $id, patch: {vcf: $vcf, fullName: $fullName, emails: $emails, device: $device, userId: $userId}}
+  ) {
     userContact {
       id
       vcf
@@ -2298,7 +2814,9 @@ Object {
 }
 ",
   "updateUserEmailByEmailMutation": "mutation updateUserEmailByEmailMutation($userId: UUID, $email: LaunchqlInternalTypeEmail!, $isVerified: Boolean) {
-  updateUserEmailByEmail(input: {email: $email, patch: {userId: $userId, isVerified: $isVerified}}) {
+  updateUserEmailByEmail(
+    input: {email: $email, patch: {userId: $userId, isVerified: $isVerified}}
+  ) {
     userEmail {
       id
       userId
@@ -2309,7 +2827,9 @@ Object {
 }
 ",
   "updateUserEmailMutation": "mutation updateUserEmailMutation($userId: UUID, $email: LaunchqlInternalTypeEmail, $isVerified: Boolean) {
-  updateUserEmail(input: {id: $id, patch: {userId: $userId, email: $email, isVerified: $isVerified}}) {
+  updateUserEmail(
+    input: {id: $id, patch: {userId: $userId, email: $email, isVerified: $isVerified}}
+  ) {
     userEmail {
       id
       userId
@@ -2329,7 +2849,9 @@ Object {
 }
 ",
   "updateUserProfileByUserIdMutation": "mutation updateUserProfileByUserIdMutation($profilePicture: JSON, $bio: String, $reputation: BigFloat, $firstName: String, $lastName: String, $tags: [String], $userId: UUID!, $profilePictureUpload: Upload) {
-  updateUserProfileByUserId(input: {userId: $userId, patch: {profilePicture: $profilePicture, bio: $bio, reputation: $reputation, firstName: $firstName, lastName: $lastName, tags: $tags, profilePictureUpload: $profilePictureUpload}}) {
+  updateUserProfileByUserId(
+    input: {userId: $userId, patch: {profilePicture: $profilePicture, bio: $bio, reputation: $reputation, firstName: $firstName, lastName: $lastName, tags: $tags, profilePictureUpload: $profilePictureUpload}}
+  ) {
     userProfile {
       id
       profilePicture
@@ -2349,7 +2871,9 @@ Object {
 }
 ",
   "updateUserProfileMutation": "mutation updateUserProfileMutation($profilePicture: JSON, $bio: String, $reputation: BigFloat, $firstName: String, $lastName: String, $tags: [String], $userId: UUID, $profilePictureUpload: Upload) {
-  updateUserProfile(input: {id: $id, patch: {profilePicture: $profilePicture, bio: $bio, reputation: $reputation, firstName: $firstName, lastName: $lastName, tags: $tags, userId: $userId, profilePictureUpload: $profilePictureUpload}}) {
+  updateUserProfile(
+    input: {id: $id, patch: {profilePicture: $profilePicture, bio: $bio, reputation: $reputation, firstName: $firstName, lastName: $lastName, tags: $tags, userId: $userId, profilePictureUpload: $profilePictureUpload}}
+  ) {
     userProfile {
       id
       profilePicture
@@ -2369,7 +2893,9 @@ Object {
 }
 ",
   "updateUserSettingByUserIdMutation": "mutation updateUserSettingByUserIdMutation($searchRadius: BigFloat, $zip: String, $geo: GeoJSON, $userId: UUID!) {
-  updateUserSettingByUserId(input: {userId: $userId, patch: {searchRadius: $searchRadius, zip: $zip, geo: $geo}}) {
+  updateUserSettingByUserId(
+    input: {userId: $userId, patch: {searchRadius: $searchRadius, zip: $zip, geo: $geo}}
+  ) {
     userSetting {
       id
       searchRadius
@@ -2385,7 +2911,9 @@ Object {
 }
 ",
   "updateUserSettingMutation": "mutation updateUserSettingMutation($searchRadius: BigFloat, $zip: String, $geo: GeoJSON, $userId: UUID) {
-  updateUserSetting(input: {id: $id, patch: {searchRadius: $searchRadius, zip: $zip, geo: $geo, userId: $userId}}) {
+  updateUserSetting(
+    input: {id: $id, patch: {searchRadius: $searchRadius, zip: $zip, geo: $geo, userId: $userId}}
+  ) {
     userSetting {
       id
       searchRadius

@@ -1,32 +1,57 @@
 import plz from 'pluralize';
+// @ts-ignore
 import inflection from 'inflection';
+
+// TODO: use inflection for all the things
+// const { singularize } = require('inflection');
+
 import * as t from 'gql-ast';
+import {
+  ArgumentNode,
+  DocumentNode,
+  FieldNode,
+  TypeNode,
+  VariableDefinitionNode,
+} from 'graphql';
+
 const NON_MUTABLE_PROPS = [
   'id',
   'createdAt',
   'createdBy',
   'updatedAt',
-  'updatedBy'
+  'updatedBy',
 ];
-const objectToArray = (obj) =>
+
+const objectToArray = (obj: Record<string, any>): { name: string; [key: string]: any }[] =>
   Object.keys(obj).map((k) => ({ name: k, ...obj[k] }));
 
-const createGqlMutation = ({
+interface CreateGqlMutationArgs {
+  operationName: string;
+  mutationName: string;
+  selectArgs: ArgumentNode[];
+  selections: FieldNode[];
+  variableDefinitions: VariableDefinitionNode[];
+  modelName?: string;
+  useModel?: boolean;
+}
+
+export const createGqlMutation = ({
   operationName,
   mutationName,
   selectArgs,
-  selections,
   variableDefinitions,
   modelName,
-  useModel = true
-}) => {
-  const opSel = !modelName
+  selections,
+  useModel = true,
+}: CreateGqlMutationArgs): DocumentNode => {
+
+  const opSel: FieldNode[] = !modelName
     ? [
         t.field({
           name: operationName,
           args: selectArgs,
-          selectionSet: t.selectionSet({ selections })
-        })
+          selectionSet: t.selectionSet({ selections }),
+        }),
       ]
     : [
         t.field({
@@ -37,12 +62,12 @@ const createGqlMutation = ({
               ? [
                   t.field({
                     name: modelName,
-                    selectionSet: t.selectionSet({ selections })
-                  })
+                    selectionSet: t.selectionSet({ selections }),
+                  }),
                 ]
-              : selections
-          })
-        })
+              : selections,
+          }),
+        }),
       ];
 
   return t.document({
@@ -51,51 +76,79 @@ const createGqlMutation = ({
         operation: 'mutation',
         name: mutationName,
         variableDefinitions,
-        selectionSet: t.selectionSet({ selections: opSel })
-      })
-    ]
+        selectionSet: t.selectionSet({ selections: opSel }),
+      }),
+    ],
   });
 };
 
-export const getMany = ({ operationName, query, fields }) => {
+export interface GetManyArgs {
+  operationName: string;
+  query: any; // You can type this more specifically if you know its structure
+  fields: string[];
+}
+
+export interface GetManyResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const getMany = ({
+  operationName,
+  query,
+  fields,
+}: GetManyArgs): GetManyResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query', 'all'].join('_'),
     true
   );
 
-  const selections = getSelections(query, fields);
+  const selections: FieldNode[] = getSelections(query, fields);
 
-  const opSel = [
+  const opSel: FieldNode[] = [
     t.field({
       name: operationName,
-      selectionSet: t.objectValue({
-        fields: [
-          t.field({
-            name: 'totalCount'
-          }),
+      selectionSet: t.selectionSet({
+        selections: [
+          t.field({ name: 'totalCount' }),
           t.field({
             name: 'nodes',
-            selectionSet: t.selectionSet({ selections })
-          })
-        ]
-      })
-    })
+            selectionSet: t.selectionSet({ selections }),
+          }),
+        ],
+      }),
+    }),
   ];
 
-  const ast = t.document({
+  const ast: DocumentNode = t.document({
     definitions: [
       t.operationDefinition({
         operation: 'query',
         name: queryName,
-        selectionSet: t.selectionSet({ selections: opSel })
-      })
-    ]
+        selectionSet: t.selectionSet({ selections: opSel }),
+      }),
+    ],
   });
 
   return { name: queryName, ast };
 };
 
-export const getManyPaginatedEdges = ({ operationName, query, fields }) => {
+export interface GetManyPaginatedEdgesArgs {
+  operationName: string;
+  query: GqlField;
+  fields: string[];
+}
+
+export interface GetManyPaginatedEdgesResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const getManyPaginatedEdges = ({
+  operationName,
+  query,
+  fields,
+}: GetManyPaginatedEdgesArgs): GetManyPaginatedEdgesResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'paginated'].join('_'),
     true
@@ -106,138 +159,71 @@ export const getManyPaginatedEdges = ({ operationName, query, fields }) => {
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = getSelections(query, fields);
 
-  const ast = t.document({
+  const selections: FieldNode[] = getSelections(query, fields);
+
+  const variableDefinitions: VariableDefinitionNode[] = [
+    'first',
+    'last',
+    'offset',
+    'after',
+    'before',
+  ].map((name) =>
+    t.variableDefinition({
+      variable: t.variable({ name }),
+      type: t.namedType({ type: name === 'after' || name === 'before' ? 'Cursor' : 'Int' }),
+    })
+  );
+
+  variableDefinitions.push(
+    t.variableDefinition({
+      variable: t.variable({ name: 'condition' }),
+      type: t.namedType({ type: Condition }),
+    }),
+    t.variableDefinition({
+      variable: t.variable({ name: 'filter' }),
+      type: t.namedType({ type: Filter }),
+    }),
+    t.variableDefinition({
+      variable: t.variable({ name: 'orderBy' }),
+      type: t.listType({
+        type: t.nonNullType({
+          type: t.namedType({ type: OrderBy }),
+        }),
+      }),
+    })
+  );
+
+  const args = [
+    'first',
+    'last',
+    'offset',
+    'after',
+    'before',
+    'condition',
+    'filter',
+    'orderBy',
+  ].map((name) =>
+    t.argument({
+      name,
+      value: t.variable({ name }),
+    })
+  );
+
+  const ast: DocumentNode = t.document({
     definitions: [
       t.operationDefinition({
         operation: 'query',
         name: queryName,
-        variableDefinitions: [
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'first'
-            }),
-            type: t.namedType({
-              type: 'Int'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'last'
-            }),
-            type: t.namedType({
-              type: 'Int'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'offset'
-            }),
-            type: t.namedType({
-              type: 'Int'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'after'
-            }),
-            type: t.namedType({
-              type: 'Cursor'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'before'
-            }),
-            type: t.namedType({
-              type: 'Cursor'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'condition'
-            }),
-            type: t.namedType({
-              type: Condition
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'filter'
-            }),
-            type: t.namedType({
-              type: Filter
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'orderBy'
-            }),
-            type: t.listType({
-              type: t.nonNullType({ type: t.namedType({ type: OrderBy }) })
-            })
-          })
-        ],
+        variableDefinitions,
         selectionSet: t.selectionSet({
           selections: [
             t.field({
               name: operationName,
-              args: [
-                t.argument({
-                  name: 'first',
-                  value: t.variable({
-                    name: 'first'
-                  })
-                }),
-                t.argument({
-                  name: 'last',
-                  value: t.variable({
-                    name: 'last'
-                  })
-                }),
-                t.argument({
-                  name: 'offset',
-                  value: t.variable({
-                    name: 'offset'
-                  })
-                }),
-                t.argument({
-                  name: 'after',
-                  value: t.variable({
-                    name: 'after'
-                  })
-                }),
-                t.argument({
-                  name: 'before',
-                  value: t.variable({
-                    name: 'before'
-                  })
-                }),
-                t.argument({
-                  name: 'condition',
-                  value: t.variable({
-                    name: 'condition'
-                  })
-                }),
-                t.argument({
-                  name: 'filter',
-                  value: t.variable({
-                    name: 'filter'
-                  })
-                }),
-                t.argument({
-                  name: 'orderBy',
-                  value: t.variable({
-                    name: 'orderBy'
-                  })
-                })
-              ],
-              selectionSet: t.objectValue({
-                fields: [
-                  t.field({
-                    name: 'totalCount'
-                  }),
+              args,
+              selectionSet: t.selectionSet({
+                selections: [
+                  t.field({ name: 'totalCount' }),
                   t.field({
                     name: 'pageInfo',
                     selectionSet: t.selectionSet({
@@ -245,9 +231,9 @@ export const getManyPaginatedEdges = ({ operationName, query, fields }) => {
                         t.field({ name: 'hasNextPage' }),
                         t.field({ name: 'hasPreviousPage' }),
                         t.field({ name: 'endCursor' }),
-                        t.field({ name: 'startCursor' })
-                      ]
-                    })
+                        t.field({ name: 'startCursor' }),
+                      ],
+                    }),
                   }),
                   t.field({
                     name: 'edges',
@@ -256,24 +242,39 @@ export const getManyPaginatedEdges = ({ operationName, query, fields }) => {
                         t.field({ name: 'cursor' }),
                         t.field({
                           name: 'node',
-                          selectionSet: t.selectionSet({ selections })
-                        })
-                      ]
-                    })
-                  })
-                ]
-              })
-            })
-          ]
-        })
-      })
-    ]
+                          selectionSet: t.selectionSet({ selections }),
+                        }),
+                      ],
+                    }),
+                  }),
+                ],
+              }),
+            }),
+          ],
+        }),
+      }),
+    ],
   });
 
   return { name: queryName, ast };
 };
 
-export const getManyPaginatedNodes = ({ operationName, query, fields }) => {
+export interface GetManyPaginatedNodesArgs {
+  operationName: string;
+  query: GqlField;
+  fields: string[];
+}
+
+export interface GetManyPaginatedNodesResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const getManyPaginatedNodes = ({
+  operationName,
+  query,
+  fields,
+}: GetManyPaginatedNodesArgs): GetManyPaginatedNodesResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
     true
@@ -284,138 +285,71 @@ export const getManyPaginatedNodes = ({ operationName, query, fields }) => {
   const Condition = `${Singular}Condition`;
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
-  const selections = getSelections(query, fields);
 
-  const ast = t.document({
+  const selections: FieldNode[] = getSelections(query, fields);
+
+  const variableDefinitions: VariableDefinitionNode[] = [
+    'first',
+    'last',
+    'after',
+    'before',
+    'offset',
+  ].map((name) =>
+    t.variableDefinition({
+      variable: t.variable({ name }),
+      type: t.namedType({ type: name === 'after' || name === 'before' ? 'Cursor' : 'Int' }),
+    })
+  );
+
+  variableDefinitions.push(
+    t.variableDefinition({
+      variable: t.variable({ name: 'condition' }),
+      type: t.namedType({ type: Condition }),
+    }),
+    t.variableDefinition({
+      variable: t.variable({ name: 'filter' }),
+      type: t.namedType({ type: Filter }),
+    }),
+    t.variableDefinition({
+      variable: t.variable({ name: 'orderBy' }),
+      type: t.listType({
+        type: t.nonNullType({
+          type: t.namedType({ type: OrderBy }),
+        }),
+      }),
+    })
+  );
+
+  const args: ArgumentNode[] = [
+    'first',
+    'last',
+    'offset',
+    'after',
+    'before',
+    'condition',
+    'filter',
+    'orderBy',
+  ].map((name) =>
+    t.argument({
+      name,
+      value: t.variable({ name }),
+    })
+  );
+
+  const ast: DocumentNode = t.document({
     definitions: [
       t.operationDefinition({
         operation: 'query',
         name: queryName,
-        variableDefinitions: [
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'first'
-            }),
-            type: t.namedType({
-              type: 'Int'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'last'
-            }),
-            type: t.namedType({
-              type: 'Int'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'after'
-            }),
-            type: t.namedType({
-              type: 'Cursor'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'before'
-            }),
-            type: t.namedType({
-              type: 'Cursor'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'offset'
-            }),
-            type: t.namedType({
-              type: 'Int'
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'condition'
-            }),
-            type: t.namedType({
-              type: Condition
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'filter'
-            }),
-            type: t.namedType({
-              type: Filter
-            })
-          }),
-          t.variableDefinition({
-            variable: t.variable({
-              name: 'orderBy'
-            }),
-            type: t.listType({
-              type: t.nonNullType({ type: t.namedType({ type: OrderBy }) })
-            })
-          })
-        ],
+        variableDefinitions,
         selectionSet: t.selectionSet({
           selections: [
             t.field({
               name: operationName,
-              args: [
-                t.argument({
-                  name: 'first',
-                  value: t.variable({
-                    name: 'first'
-                  })
-                }),
-                t.argument({
-                  name: 'last',
-                  value: t.variable({
-                    name: 'last'
-                  })
-                }),
-                t.argument({
-                  name: 'offset',
-                  value: t.variable({
-                    name: 'offset'
-                  })
-                }),
-                t.argument({
-                  name: 'after',
-                  value: t.variable({
-                    name: 'after'
-                  })
-                }),
-                t.argument({
-                  name: 'before',
-                  value: t.variable({
-                    name: 'before'
-                  })
-                }),
-                t.argument({
-                  name: 'condition',
-                  value: t.variable({
-                    name: 'condition'
-                  })
-                }),
-                t.argument({
-                  name: 'filter',
-                  value: t.variable({
-                    name: 'filter'
-                  })
-                }),
-                t.argument({
-                  name: 'orderBy',
-                  value: t.variable({
-                    name: 'orderBy'
-                  })
-                })
-              ],
-              selectionSet: t.objectValue({
-                fields: [
-                  t.field({
-                    name: 'totalCount'
-                  }),
+              args,
+              selectionSet: t.selectionSet({
+                selections: [
+                  t.field({ name: 'totalCount' }),
                   t.field({
                     name: 'pageInfo',
                     selectionSet: t.selectionSet({
@@ -423,41 +357,51 @@ export const getManyPaginatedNodes = ({ operationName, query, fields }) => {
                         t.field({ name: 'hasNextPage' }),
                         t.field({ name: 'hasPreviousPage' }),
                         t.field({ name: 'endCursor' }),
-                        t.field({ name: 'startCursor' })
-                      ]
-                    })
+                        t.field({ name: 'startCursor' }),
+                      ],
+                    }),
                   }),
                   t.field({
                     name: 'nodes',
-                    selectionSet: t.selectionSet({
-                      selections
-                    })
-                  })
-                ]
-              })
-            })
-          ]
-        })
-      })
-    ]
+                    selectionSet: t.selectionSet({ selections }),
+                  }),
+                ],
+              }),
+            }),
+          ],
+        }),
+      }),
+    ],
   });
 
   return { name: queryName, ast };
 };
 
-export const getOrderByEnums = ({ operationName, query }) => {
+export interface GetOrderByEnumsArgs {
+  operationName: string;
+  query: {
+    model: string;
+  };
+}
+
+export interface GetOrderByEnumsResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const getOrderByEnums = ({
+  operationName,
+  query,
+}: GetOrderByEnumsArgs): GetOrderByEnumsResult => {
   const queryName = inflection.camelize(
-    ['get', inflection.underscore(operationName), 'Order', 'By', 'Enums'].join(
-      '_'
-    ),
+    ['get', inflection.underscore(operationName), 'Order', 'By', 'Enums'].join('_'),
     true
   );
 
   const Model = operationName.charAt(0).toUpperCase() + operationName.slice(1);
-
   const OrderBy = `${Model}OrderBy`;
 
-  const ast = t.document({
+  const ast: DocumentNode = t.document({
     definitions: [
       t.operationDefinition({
         operation: 'query',
@@ -469,128 +413,177 @@ export const getOrderByEnums = ({ operationName, query }) => {
               args: [
                 t.argument({
                   name: 'name',
-                  value: t.stringValue({
-                    value: OrderBy
-                  })
-                })
+                  value: t.stringValue({ value: OrderBy }),
+                }),
               ],
               selectionSet: t.selectionSet({
                 selections: [
                   t.field({
                     name: 'enumValues',
                     selectionSet: t.selectionSet({
-                      selections: [
-                        t.field({
-                          name: 'name'
-                        })
-                      ]
-                    })
-                  })
-                ]
-              })
-            })
-          ]
-        })
-      })
-    ]
+                      selections: [t.field({ name: 'name' })],
+                    }),
+                  }),
+                ],
+              }),
+            }),
+          ],
+        }),
+      }),
+    ],
   });
 
   return { name: queryName, ast };
 };
 
-export const getFragment = ({ operationName, query }) => {
+export interface GetFragmentArgs {
+  operationName: string;
+  query: {
+    model: string;
+    selection: string[];
+  };
+}
+
+export interface GetFragmentResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const getFragment = ({
+  operationName,
+  query,
+}: GetFragmentArgs): GetFragmentResult => {
   const queryName = inflection.camelize(
     [inflection.underscore(query.model), 'Fragment'].join('_'),
     true
   );
 
-  const ast = t.document({
+  const selections: FieldNode[] = query.selection.map((field) =>
+    t.field({ name: field })
+  );
+
+  const ast: DocumentNode = t.document({
     definitions: [
       t.fragmentDefinition({
         name: queryName,
         typeCondition: t.namedType({
-          type: query.model
+          type: query.model,
         }),
         selectionSet: t.selectionSet({
-          selections: query.selection.map((field) => t.field({ name: field }))
-        })
-      })
-    ]
+          selections,
+        }),
+      }),
+    ],
   });
 
   return { name: queryName, ast };
 };
 
-export const getOne = ({ operationName, query, fields }) => {
+export interface FieldProperty {
+  name: string;
+  type: string;
+  isNotNull?: boolean;
+  isArray?: boolean;
+  isArrayNotNull?: boolean;
+}
+
+export interface GetOneArgs {
+  operationName: string;
+  query: GqlField;
+  fields: string[];
+}
+
+export interface GetOneResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const getOne = ({
+  operationName,
+  query,
+  fields,
+}: GetOneArgs): GetOneResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
     true
   );
 
-  const variableDefinitions = Object.keys(query.properties)
-    .map((key) => ({ name: key, ...query.properties[key] }))
+  const variableDefinitions: VariableDefinitionNode[] = objectToArray(query.properties)
     .filter((field) => field.isNotNull)
-    .map((field) => {
-      const {
-        name: fieldName,
-        type: fieldType,
-        isNotNull,
-        isArray,
-        isArrayNotNull
-      } = field;
-      let type = t.namedType({ type: fieldType });
-      if (isNotNull) type = t.nonNullType({ type });
-      if (isArray) {
-        type = t.listType({ type });
-        if (isArrayNotNull) type = t.nonNullType({ type });
+    .map(({ name, type, isNotNull, isArray, isArrayNotNull }) => {
+      let gqlType = t.namedType({ type }) as any;
+
+      if (isNotNull) {
+        gqlType = t.nonNullType({ type: gqlType });
       }
+
+      if (isArray) {
+        gqlType = t.listType({ type: gqlType });
+        if (isArrayNotNull) {
+          gqlType = t.nonNullType({ type: gqlType });
+        }
+      }
+
       return t.variableDefinition({
-        variable: t.variable({ name: fieldName }),
-        type
+        variable: t.variable({ name }),
+        type: gqlType,
       });
     });
 
-  const props = objectToArray(query.properties);
-
-  const selectArgs = props
+  const selectArgs: ArgumentNode[] = objectToArray(query.properties)
     .filter((field) => field.isNotNull)
-    .map((field) => {
-      return t.argument({
+    .map((field) =>
+      t.argument({
         name: field.name,
-        value: t.variable({ name: field.name })
-      });
-    });
+        value: t.variable({ name: field.name }),
+      })
+    );
 
-  const selections = getSelections(query, fields);
-  const opSel = [
+  const selections: FieldNode[] = getSelections(query, fields);
+
+  const opSel: FieldNode[] = [
     t.field({
       name: operationName,
       args: selectArgs,
-      selectionSet: t.selectionSet({ selections })
-    })
+      selectionSet: t.selectionSet({ selections }),
+    }),
   ];
 
-  const ast = t.document({
+  const ast: DocumentNode = t.document({
     definitions: [
       t.operationDefinition({
         operation: 'query',
         name: queryName,
         variableDefinitions,
-        selectionSet: t.selectionSet({ selections: opSel })
-      })
-    ]
+        selectionSet: t.selectionSet({ selections: opSel }),
+      }),
+    ],
   });
+
   return { name: queryName, ast };
 };
 
-export const createOne = ({ operationName, mutation }) => {
+export interface CreateOneArgs {
+  operationName: string;
+  mutation: MutationSpec;
+}
+
+export interface CreateOneResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const createOne = ({
+  operationName,
+  mutation,
+}: CreateOneArgs): CreateOneResult | undefined => {
   const mutationName = inflection.camelize(
     [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
   if (!mutation.properties?.input?.properties) {
-    console.log('no input field for mutation for' + mutationName);
+    console.log('no input field for mutation for ' + mutationName);
     return;
   }
 
@@ -607,27 +600,29 @@ export const createOne = ({ operationName, mutation }) => {
     (field) => !NON_MUTABLE_PROPS.includes(field.name)
   );
 
-  const variableDefinitions = attrs.map((field) => {
-    const {
-      name: fieldName,
-      type: fieldType,
-      isNotNull,
-      isArray,
-      isArrayNotNull
-    } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isNotNull) type = t.nonNullType({ type });
-    if (isArray) {
-      type = t.listType({ type });
-      if (isArrayNotNull) type = t.nonNullType({ type });
-    }
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  const variableDefinitions: VariableDefinitionNode[] = attrs.map(
+    ({ name, type, isNotNull, isArray, isArrayNotNull }) => {
+      let gqlType: TypeNode = t.namedType({ type });
 
-  const selectArgs = [
+      if (isNotNull) {
+        gqlType = t.nonNullType({ type: gqlType });
+      }
+
+      if (isArray) {
+        gqlType = t.listType({ type: gqlType });
+        if (isArrayNotNull) {
+          gqlType = t.nonNullType({ type: gqlType });
+        }
+      }
+
+      return t.variableDefinition({
+        variable: t.variable({ name }),
+        type: gqlType,
+      });
+    }
+  );
+
+  const selectArgs: ArgumentNode[] = [
     t.argument({
       name: 'input',
       value: t.objectValue({
@@ -638,39 +633,71 @@ export const createOne = ({ operationName, mutation }) => {
               fields: attrs.map((field) =>
                 t.objectField({
                   name: field.name,
-                  value: t.variable({
-                    name: field.name
-                  })
+                  value: t.variable({ name: field.name }),
                 })
-              )
-            })
-          })
-        ]
-      })
-    })
+              ),
+            }),
+          }),
+        ],
+      }),
+    }),
   ];
 
-  const selections = allAttrs.map((field) => t.field({ name: field.name }));
-  const ast = createGqlMutation({
+  const selections: FieldNode[] = allAttrs.map((field) =>
+    t.field({ name: field.name })
+  );
+
+  const ast: DocumentNode = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
     selections,
     variableDefinitions,
-    modelName
+    modelName,
   });
 
   return { name: mutationName, ast };
 };
 
-export const patchOne = ({ operationName, mutation }) => {
+interface MutationOutput {
+  name: string;
+  type: {
+    kind: string; // typically "SCALAR", "OBJECT", etc. from GraphQL introspection
+  };
+}
+
+export interface MutationSpec {
+  model: string;
+  properties: {
+    input?: {
+      properties?: Record<string, any>;
+    };
+  };
+  outputs?: MutationOutput[]; // ✅ Add this line
+
+}
+
+export interface PatchOneArgs {
+  operationName: string;
+  mutation: MutationSpec;
+}
+
+export interface PatchOneResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const patchOne = ({
+  operationName,
+  mutation,
+}: PatchOneArgs): PatchOneResult | undefined => {
   const mutationName = inflection.camelize(
     [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
   if (!mutation.properties?.input?.properties) {
-    console.log('no input field for mutation for' + mutationName);
+    console.log('no input field for mutation for ' + mutationName);
     return;
   }
 
@@ -679,11 +706,13 @@ export const patchOne = ({ operationName, mutation }) => {
     true
   );
 
-  const allAttrs = objectToArray(
+  // @ts-ignore
+  const allAttrs: FieldNode[] = objectToArray(
     mutation.properties.input.properties['patch']?.properties || {}
   );
 
   const patchAttrs = allAttrs.filter(
+    // @ts-ignore
     (prop) => !NON_MUTABLE_PROPS.includes(prop.name)
   );
 
@@ -693,18 +722,29 @@ export const patchOne = ({ operationName, mutation }) => {
 
   const patchers = patchByAttrs.map((p) => p.name);
 
-  const variableDefinitions = patchAttrs.map((field) => {
-    const { name: fieldName, type: fieldType, isArray } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isArray) type = t.listType({ type });
-    if (patchers.includes(field.name)) type = t.nonNullType({ type });
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  const variableDefinitions: VariableDefinitionNode[] = patchAttrs.map(
+    // @ts-ignore
+    ({ name, type, isArray }) => {
+      let gqlType: TypeNode = t.namedType({ type });
 
-  const selectArgs = [
+      if (isArray) {
+        gqlType = t.listType({ type: gqlType });
+      }
+
+      // @ts-ignore
+      if (patchers.includes(name)) {
+        gqlType = t.nonNullType({ type: gqlType });
+      }
+
+      return t.variableDefinition({
+        // @ts-ignore
+        variable: t.variable({ name }),
+        type: gqlType,
+      });
+    }
+  );
+
+  const selectArgs: ArgumentNode[] = [
     t.argument({
       name: 'input',
       value: t.objectValue({
@@ -712,50 +752,69 @@ export const patchOne = ({ operationName, mutation }) => {
           ...patchByAttrs.map((field) =>
             t.objectField({
               name: field.name,
-              value: t.variable({ name: field.name })
+              value: t.variable({ name: field.name }),
             })
           ),
           t.objectField({
             name: 'patch',
             value: t.objectValue({
               fields: patchAttrs
+              // @ts-ignore
                 .filter((field) => !patchers.includes(field.name))
                 .map((field) =>
                   t.objectField({
+                    // @ts-ignore
                     name: field.name,
-                    value: t.variable({
-                      name: field.name
-                    })
+                    // @ts-ignore
+                    value: t.variable({ name: field.name }),
                   })
-                )
-            })
-          })
-        ]
-      })
-    })
+                ),
+            }),
+          }),
+        ],
+      }),
+    }),
   ];
 
-  const selections = allAttrs.map((field) => t.field({ name: field.name }));
-  const ast = createGqlMutation({
+  const selections: FieldNode[] = allAttrs.map((field) =>
+    // @ts-ignore
+    t.field({ name: field.name })
+  );
+
+  const ast: DocumentNode = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
     selections,
     variableDefinitions,
-    modelName
+    modelName,
   });
 
   return { name: mutationName, ast };
 };
 
-export const deleteOne = ({ operationName, mutation }) => {
+
+export interface DeleteOneArgs {
+  operationName: string;
+  mutation: MutationSpec;
+}
+
+export interface DeleteOneResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const deleteOne = ({
+  operationName,
+  mutation,
+}: DeleteOneArgs): DeleteOneResult | undefined => {
   const mutationName = inflection.camelize(
     [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
   if (!mutation.properties?.input?.properties) {
-    console.log('no input field for mutation for' + mutationName);
+    console.log('no input field for mutation for ' + mutationName);
     return;
   }
 
@@ -764,94 +823,112 @@ export const deleteOne = ({ operationName, mutation }) => {
     true
   );
 
-  const deleteAttrs = objectToArray(mutation.properties.input.properties);
-  const variableDefinitions = deleteAttrs.map((field) => {
-    const {
-      name: fieldName,
-      type: fieldType,
-      isNotNull,
-      isArray,
-      isArrayNotNull
-    } = field;
-    let type = t.namedType({ type: fieldType });
-    if (isNotNull) type = t.nonNullType({ type });
-    if (isArray) {
-      type = t.listType({ type });
-      // no need to check isArrayNotNull since we need this field for deletion
-      type = t.nonNullType({ type });
-    }
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  // @ts-ignore
+  const deleteAttrs: FieldProperty[] = objectToArray(
+    mutation.properties.input.properties
+  );
 
-  const selectArgs = [
+  const variableDefinitions: VariableDefinitionNode[] = deleteAttrs.map(
+    ({ name, type, isNotNull, isArray }) => {
+      let gqlType: TypeNode = t.namedType({ type });
+
+      if (isNotNull) {
+        gqlType = t.nonNullType({ type: gqlType });
+      }
+
+      if (isArray) {
+        gqlType = t.listType({ type: gqlType });
+        // Always non-null list for deletion fields
+        gqlType = t.nonNullType({ type: gqlType });
+      }
+
+      return t.variableDefinition({
+        variable: t.variable({ name }),
+        type: gqlType,
+      });
+    }
+  );
+
+  const selectArgs: ArgumentNode[] = [
     t.argument({
       name: 'input',
       value: t.objectValue({
         fields: deleteAttrs.map((f) =>
           t.objectField({
             name: f.name,
-            value: t.variable({ name: f.name })
+            value: t.variable({ name: f.name }),
           })
-        )
-      })
-    })
+        ),
+      }),
+    }),
   ];
 
-  // so we can support column select grants plugin
-  const selections = [t.field({ name: 'clientMutationId' })];
-  const ast = createGqlMutation({
+  const selections: FieldNode[] = [t.field({ name: 'clientMutationId' })];
+
+  const ast: DocumentNode = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
     selections,
-    useModel: false,
     variableDefinitions,
-    modelName
+    modelName,
+    useModel: false,
   });
 
   return { name: mutationName, ast };
 };
 
-export const createMutation = ({ operationName, mutation }) => {
+export interface CreateMutationArgs {
+  operationName: string;
+  mutation: MutationSpec;
+}
+
+export interface CreateMutationResult {
+  name: string;
+  ast: DocumentNode;
+}
+
+export const createMutation = ({
+  operationName,
+  mutation,
+}: CreateMutationArgs): CreateMutationResult | undefined => {
   const mutationName = inflection.camelize(
     [inflection.underscore(operationName), 'mutation'].join('_'),
     true
   );
 
   if (!mutation.properties?.input?.properties) {
-    console.log('no input field for mutation for' + mutationName);
+    console.log('no input field for mutation for ' + mutationName);
     return;
   }
 
-  const otherAttrs = objectToArray(mutation.properties.input.properties);
+  // @ts-ignore
+  const otherAttrs: FieldProperty[] = objectToArray(
+    mutation.properties.input.properties
+  );
 
-  const variableDefinitions = otherAttrs.map((field) => {
-    const {
-      name: fieldName,
-      type: fieldType,
-      isNotNull,
-      isArray,
-      isArrayNotNull
-    } = field;
-    let type = t.namedType({ type: fieldType });
-    // if (isNotNull) type = t.nonNullType({ type });
-    // for some reason "other mutations" didn't have NON_NULL types
-    // in the introspection query, so for now just making it required
-    type = t.nonNullType({ type });
-    if (isArray) {
-      type = t.listType({ type });
-      if (isArrayNotNull) type = t.nonNullType({ type });
+  const variableDefinitions: VariableDefinitionNode[] = otherAttrs.map(
+    ({ name, type, isArray, isArrayNotNull }) => {
+      let gqlType: TypeNode = t.namedType({ type });
+
+      // Force as non-nullable for mutation reliability (as per your comment)
+      gqlType = t.nonNullType({ type: gqlType });
+
+      if (isArray) {
+        gqlType = t.listType({ type: gqlType });
+        if (isArrayNotNull) {
+          gqlType = t.nonNullType({ type: gqlType });
+        }
+      }
+
+      return t.variableDefinition({
+        variable: t.variable({ name }),
+        type: gqlType,
+      });
     }
-    return t.variableDefinition({
-      variable: t.variable({ name: fieldName }),
-      type
-    });
-  });
+  );
 
-  const selectArgs =
+  const selectArgs: ArgumentNode[] =
     otherAttrs.length > 0
       ? [
           t.argument({
@@ -860,138 +937,211 @@ export const createMutation = ({ operationName, mutation }) => {
               fields: otherAttrs.map((f) =>
                 t.objectField({
                   name: f.name,
-                  value: t.variable({ name: f.name })
+                  value: t.variable({ name: f.name }),
                 })
-              )
-            })
-          })
+              ),
+            }),
+          }),
         ]
       : [];
 
-  const outputs =
+  const outputFields: string[] =
     mutation.outputs
       ?.filter((field) => field.type.kind === 'SCALAR')
       .map((f) => f.name) || [];
 
-  if (outputs.length === 0) outputs.push('clientMutationId');
+  if (outputFields.length === 0) {
+    outputFields.push('clientMutationId');
+  }
 
-  const selections = outputs.map((o) => t.field({ name: o }));
+  const selections: FieldNode[] = outputFields.map((o) => t.field({ name: o }));
 
-  const ast = createGqlMutation({
+  const ast: DocumentNode = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
     selections,
-    variableDefinitions
+    variableDefinitions,
   });
 
   return { name: mutationName, ast };
 };
 
-export const generate = (gql) => {
-  return Object.keys(gql).reduce((m, v) => {
-    const defn = gql[v];
-    let name, ast;
+type QType = 'mutation' | 'getOne' | 'getMany';
+type MutationType = 'create' | 'patch' | 'delete' | string;
+
+interface FlatField {
+  name: string;
+  selection: string[];
+}
+
+interface GqlField {
+  qtype: QType;
+  mutationType?: MutationType;
+  model?: string;
+  properties?: Record<string, Omit<FieldProperty, 'name'>>;
+  outputs?: {
+    name: string;
+    type: {
+      kind: string;
+    };
+  }[];
+  selection?: QueryField[]
+}
+
+type QueryField = string | FlatField;
+
+interface GqlMap {
+  [operationName: string]: GqlField;
+}
+
+interface AstMapEntry {
+  name: string;
+  ast: DocumentNode;
+}
+
+interface AstMap {
+  [key: string]: AstMapEntry;
+}
+
+export const generate = (gql: GqlMap): AstMap => {
+  return Object.keys(gql).reduce<AstMap>((m, operationName) => {
+    const defn = gql[operationName];
+    let name: string | undefined;
+    let ast: DocumentNode | undefined;
+
     if (defn.qtype === 'mutation') {
       if (defn.mutationType === 'create') {
-        ({ name, ast } = createOne({ operationName: v, mutation: defn }));
+        ({ name, ast } = createOne({ operationName, mutation: defn as MutationSpec }) ?? {});
       } else if (defn.mutationType === 'patch') {
-        ({ name, ast } = patchOne({ operationName: v, mutation: defn }));
+        ({ name, ast } = patchOne({ operationName, mutation: defn as MutationSpec }) ?? {});
       } else if (defn.mutationType === 'delete') {
-        ({ name, ast } = deleteOne({ operationName: v, mutation: defn }));
+        ({ name, ast } = deleteOne({ operationName, mutation: defn as MutationSpec }) ?? {});
       } else {
-        ({ name, ast } = createMutation({ operationName: v, mutation: defn }));
+        ({ name, ast } = createMutation({ operationName, mutation: defn as MutationSpec }) ?? {});
       }
     } else if (defn.qtype === 'getMany') {
-      ({ name, ast } = getMany({ operationName: v, query: defn }));
-      if (name && ast) m[name] = { name, ast };
-
-      // kinda hacky to just include these here, clearly we need a new model...
-      ({ name, ast } = getManyPaginatedEdges({
-        operationName: v,
-        query: defn
-      }));
-      if (name && ast) m[name] = { name, ast };
-      ({ name, ast } = getManyPaginatedNodes({
-        operationName: v,
-        query: defn
-      }));
-      if (name && ast) m[name] = { name, ast };
-      ({ name, ast } = getOrderByEnums({ operationName: v, query: defn }));
-      if (name && ast) m[name] = { name, ast };
-      ({ name, ast } = getFragment({ operationName: v, query: defn }));
-      if (name && ast) m[name] = { name, ast };
+      // getMany + related
+      [
+        getMany,
+        getManyPaginatedEdges,
+        getManyPaginatedNodes,
+        getOrderByEnums,
+        getFragment
+      ].forEach(fn => {
+        // @ts-ignore
+        const result = fn({ operationName, query: defn });
+        if (result?.name && result?.ast) {
+          m[result.name] = result;
+        }
+      });
     } else if (defn.qtype === 'getOne') {
-      ({ name, ast } = getOne({ operationName: v, query: defn }));
+      // @ts-ignore
+      ({ name, ast } = getOne({ operationName, query: defn }) ?? {});
     } else {
-      console.warn('what is ' + v);
+      console.warn('Unknown qtype for key: ' + operationName);
     }
-    if (name && ast) m[name] = { name, ast };
+
+    if (name && ast) {
+      m[name] = { name, ast };
+    }
+
     return m;
   }, {});
 };
 
-export const generateGranular = (gql, model, fields) => {
-  return Object.keys(gql).reduce((m, v) => {
-    const defn = gql[v];
+export const generateGranular = (
+  gql: GqlMap,
+  model: string,
+  fields: string[]
+): AstMap => {
+  return Object.keys(gql).reduce<AstMap>((m, operationName) => {
+    const defn = gql[operationName];
     const matchModel = defn.model;
 
-    let name, ast;
-    if (defn.qtype === 'getMany') {
-      ({ name, ast } = getMany({ operationName: v, query: defn, fields }));
-      if (name && ast && model === matchModel) m[name] = { name, ast };
+    let name: string | undefined;
+    let ast: DocumentNode | undefined;
 
-      // kinda hacky to just include these here, clearly we need a new model...
-      ({ name, ast } = getManyPaginatedEdges({
-        operationName: v,
+    if (defn.qtype === 'getMany') {
+      const many = getMany({ operationName, query: defn, fields });
+      if (many?.name && many?.ast && model === matchModel) {
+        m[many.name] = many;
+      }
+
+      const paginatedEdges = getManyPaginatedEdges({
+        operationName,
         query: defn,
-        fields
-      }));
-      if (name && ast && model === matchModel) m[name] = { name, ast };
-      ({ name, ast } = getManyPaginatedNodes({
-        operationName: v,
+        fields,
+      });
+      if (paginatedEdges?.name && paginatedEdges?.ast && model === matchModel) {
+        m[paginatedEdges.name] = paginatedEdges;
+      }
+
+      const paginatedNodes = getManyPaginatedNodes({
+        operationName,
         query: defn,
-        fields
-      }));
-      if (name && ast && model === matchModel) m[name] = { name, ast };
+        fields,
+      });
+      if (paginatedNodes?.name && paginatedNodes?.ast && model === matchModel) {
+        m[paginatedNodes.name] = paginatedNodes;
+      }
     } else if (defn.qtype === 'getOne') {
-      ({ name, ast } = getOne({ operationName: v, query: defn, fields }));
+      const one = getOne({ operationName, query: defn, fields });
+      if (one?.name && one?.ast && model === matchModel) {
+        m[one.name] = one;
+      }
     }
-    if (name && ast && model === matchModel) m[name] = { name, ast };
+
     return m;
   }, {});
 };
 
-export function getSelections(query, fields = []) {
+
+export function getSelections(
+  query: GqlField,
+  fields: string[] = []
+): FieldNode[] {
   const useAll = fields.length === 0;
 
   return query.selection
     .map((field) => {
-      if (!useAll && !fields.includes(field)) return null;
-      if (typeof field === 'object' && field !== null) {
+      if (typeof field === 'string') {
+        if (!useAll && !fields.includes(field)) return null;
+        return t.field({ name: field });
+      }
+
+      if (
+        typeof field === 'object' &&
+        field !== null &&
+        'name' in field &&
+        'selection' in field &&
+        Array.isArray(field.selection)
+      ) {
+        if (!useAll && !fields.includes(field.name)) return null;
+
         return t.field({
           name: field.name,
           args: [
             t.argument({
               name: 'first',
-              value: t.intValue({ value: 3 })
-            })
+              // @ts-ignore
+              value: t.intValue({ value: 3 }),
+            }),
           ],
-          selectionSet: t.objectValue({
-            fields: [
+          selectionSet: t.selectionSet({
+            selections: [
               t.field({
                 name: 'nodes',
                 selectionSet: t.selectionSet({
-                  selections: field.selection.map((field) =>
-                    t.field({ name: field })
-                  )
-                })
-              })
-            ]
-          })
+                  selections: field.selection.map((f) => t.field({ name: f })),
+                }),
+              }),
+            ],
+          }),
         });
       }
-      return t.field({ name: field });
+
+      return null;
     })
-    .filter((i) => Boolean(i));
+    .filter((i): i is FieldNode => Boolean(i));
 }

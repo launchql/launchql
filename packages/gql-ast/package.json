@@ -29,5 +29,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "dependencies": {
+    "graphql": "15.5.2"
+  }
 }

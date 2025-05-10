@@ -1,1 +1,2 @@
 - [ ] remove travis
+- [ ] it('getOne(): handles missing selection gracefully' NOT PASSING

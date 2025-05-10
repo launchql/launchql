@@ -5,6 +5,7 @@ import mutations from '../__fixtures__/api/mutations.json';
 import queries from '../__fixtures__/api/queries.json';
 
 it('generate', () => {
+  // @ts-ignore
   const gen = generate({ ...queries, ...mutations }, 'Action', [
     'id',
     'name',
@@ -13,6 +14,7 @@ it('generate', () => {
 
   const output = Object.keys(gen).reduce((m, key) => {
     if (gen[key]?.ast) {
+      // @ts-ignore
       m[key] = print(gen[key].ast);
     }
     return m;

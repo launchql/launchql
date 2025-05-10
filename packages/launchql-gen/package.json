@@ -29,6 +29,9 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "devDependencies": {
+    "@types/pluralize": "0.0.33"
+  },
   "dependencies": {
     "gql-ast": "^2.0.0",
     "inflection": "^1.12.0",

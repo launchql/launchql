@@ -75,6 +75,9 @@ jobs:
       - name: launchql/query-builder
         run: cd ./packages/query-builder && yarn test
 
+      - name: launchql/launchql-gen
+        run: cd ./packages/launchql-gen && yarn test
+
       - name: launchql/codegen
         run: cd ./packages/codegen && yarn test
 
