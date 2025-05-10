@@ -1,7 +1,7 @@
 # @launchql/graphile-query
 
 <p align="center" width="100%">
-  <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
+  <img height="120" src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" />
 </p>
 
 <p align="center" width="100%">
