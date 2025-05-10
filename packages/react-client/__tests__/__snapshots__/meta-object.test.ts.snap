@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`convertFromMetaSchema() matches snapshot 1`] = `
-Object {
-  "tables": Array [
-    Object {
-      "fields": Array [
-        Object {
+{
+  "tables": [
+    {
+      "fields": [
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -17,9 +17,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -29,9 +29,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -41,9 +41,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -53,9 +53,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -65,9 +65,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "goalId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -77,9 +77,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -90,12 +90,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -106,9 +106,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -119,11 +119,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "goal",
             "name": "goalId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -134,9 +134,9 @@ Object {
             },
           },
           "refTable": "Goal",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -147,11 +147,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -162,9 +162,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -177,10 +177,10 @@ Object {
         },
       ],
       "name": "ActionGoal",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -190,9 +190,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "goalId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -203,13 +203,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -219,9 +219,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -231,9 +231,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "description",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -243,9 +243,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "type",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -255,9 +255,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "itemOrder",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -267,9 +267,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "timeRequired",
-          "type": Object {
+          "type": {
             "gqlType": "Interval",
             "isArray": false,
             "modifier": null,
@@ -279,9 +279,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isRequired",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -291,9 +291,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "notificationText",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -303,9 +303,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "embedCode",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -315,9 +315,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "url",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -327,9 +327,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "media",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -339,9 +339,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -351,9 +351,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -363,9 +363,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -375,9 +375,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -387,9 +387,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -399,9 +399,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -412,12 +412,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -428,9 +428,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -443,10 +443,10 @@ Object {
         },
       ],
       "name": "ActionItem",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -457,10 +457,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -470,9 +470,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -484,11 +484,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -498,9 +498,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -510,9 +510,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -522,9 +522,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -534,9 +534,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -546,9 +546,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -558,9 +558,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -571,12 +571,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -587,9 +587,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -600,11 +600,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -615,9 +615,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -630,10 +630,10 @@ Object {
         },
       ],
       "name": "ActionResult",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -644,13 +644,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -660,9 +660,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "slug",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -672,9 +672,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "photo",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -684,9 +684,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "title",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -696,9 +696,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "url",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -708,9 +708,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "description",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -720,9 +720,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "discoveryHeader",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -732,9 +732,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "discoveryDescription",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -744,9 +744,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "enableNotifications",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -756,9 +756,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "enableNotificationsText",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -768,9 +768,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "search",
-          "type": Object {
+          "type": {
             "gqlType": "FullText",
             "isArray": false,
             "modifier": null,
@@ -780,16 +780,16 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "location",
-          "type": Object {
+          "type": {
             "gqlType": "GeoJSON",
             "isArray": false,
             "modifier": 1107460,
             "pgAlias": "geometry",
             "pgType": "geometry",
             "subtype": "GeometryPoint",
-            "typmod": Object {
+            "typmod": {
               "gisType": "Point",
               "hasM": false,
               "hasZ": false,
@@ -798,9 +798,9 @@ Object {
             },
           },
         },
-        Object {
+        {
           "name": "locationRadius",
-          "type": Object {
+          "type": {
             "gqlType": "BigFloat",
             "isArray": false,
             "modifier": null,
@@ -810,9 +810,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "timeRequired",
-          "type": Object {
+          "type": {
             "gqlType": "Interval",
             "isArray": false,
             "modifier": null,
@@ -822,9 +822,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "startDate",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -834,9 +834,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "endDate",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -846,9 +846,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "approved",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -858,9 +858,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "rewardAmount",
-          "type": Object {
+          "type": {
             "gqlType": "BigFloat",
             "isArray": false,
             "modifier": null,
@@ -870,9 +870,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "activityFeedText",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -882,9 +882,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "callToAction",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -894,9 +894,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "completedActionText",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -906,9 +906,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "alreadyCompletedActionText",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -918,9 +918,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "tags",
-          "type": Object {
+          "type": {
             "gqlType": "[String]",
             "isArray": true,
             "modifier": null,
@@ -930,9 +930,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -942,9 +942,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -954,9 +954,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -966,9 +966,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -978,9 +978,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -991,12 +991,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1007,9 +1007,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1022,10 +1022,10 @@ Object {
         },
       ],
       "name": "Action",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1036,10 +1036,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "slug",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1051,11 +1051,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1065,9 +1065,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "data",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -1077,9 +1077,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "senderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1089,9 +1089,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "receiverId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1101,9 +1101,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -1114,12 +1114,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "sender",
             "name": "senderId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1130,9 +1130,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1143,11 +1143,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "receiver",
             "name": "receiverId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1158,9 +1158,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1173,10 +1173,10 @@ Object {
         },
       ],
       "name": "ClaimedInvite",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1187,13 +1187,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1203,9 +1203,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1215,9 +1215,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "service",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1227,9 +1227,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "identifier",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1239,9 +1239,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "details",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -1251,9 +1251,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isVerified",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -1264,12 +1264,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1280,9 +1280,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1295,10 +1295,10 @@ Object {
         },
       ],
       "name": "ConnectedAccount",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1309,10 +1309,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "service",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1322,9 +1322,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "identifier",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1336,11 +1336,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1350,9 +1350,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1362,9 +1362,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "address",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1374,9 +1374,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isVerified",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -1386,9 +1386,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isPrimary",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -1399,12 +1399,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1415,9 +1415,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1430,10 +1430,10 @@ Object {
         },
       ],
       "name": "CryptoAddress",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1444,10 +1444,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "address",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1459,11 +1459,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1473,9 +1473,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1485,9 +1485,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "email",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1497,9 +1497,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isVerified",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -1509,9 +1509,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isPrimary",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -1522,12 +1522,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1538,9 +1538,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1553,10 +1553,10 @@ Object {
         },
       ],
       "name": "Email",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1567,10 +1567,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "email",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1582,11 +1582,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1596,9 +1596,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "audio",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -1608,9 +1608,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "audioDuration",
-          "type": Object {
+          "type": {
             "gqlType": "Interval",
             "isArray": false,
             "modifier": null,
@@ -1620,9 +1620,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "explanationTitle",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1632,9 +1632,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "explanation",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1644,9 +1644,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1656,9 +1656,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1668,9 +1668,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -1680,9 +1680,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -1692,9 +1692,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "goalId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1705,12 +1705,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "goal",
             "name": "goalId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1721,9 +1721,9 @@ Object {
             },
           },
           "refTable": "Goal",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -1736,10 +1736,10 @@ Object {
         },
       ],
       "name": "GoalExplanation",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1750,13 +1750,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1766,9 +1766,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1778,9 +1778,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "slug",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1790,9 +1790,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "shortName",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1802,9 +1802,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "icon",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1814,9 +1814,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "subHead",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1826,9 +1826,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "tags",
-          "type": Object {
+          "type": {
             "gqlType": "[String]",
             "isArray": true,
             "modifier": null,
@@ -1838,9 +1838,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "search",
-          "type": Object {
+          "type": {
             "gqlType": "FullText",
             "isArray": false,
             "modifier": null,
@@ -1850,9 +1850,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1862,9 +1862,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1874,9 +1874,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -1886,9 +1886,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -1899,12 +1899,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "Goal",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1915,10 +1915,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1930,11 +1930,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1944,9 +1944,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "email",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1956,9 +1956,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "senderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -1968,9 +1968,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "inviteToken",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -1980,9 +1980,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "inviteValid",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -1992,9 +1992,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "inviteLimit",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -2004,9 +2004,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "inviteCount",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -2016,9 +2016,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "multiple",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -2028,9 +2028,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "data",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -2040,9 +2040,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "expiresAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2052,9 +2052,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2065,12 +2065,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "sender",
             "name": "senderId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2081,9 +2081,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2096,10 +2096,10 @@ Object {
         },
       ],
       "name": "Invite",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2110,10 +2110,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "email",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2123,9 +2123,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "senderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2137,11 +2137,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2151,9 +2151,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2163,9 +2163,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "level",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2175,9 +2175,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "requiredCount",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -2187,9 +2187,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "priority",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -2200,12 +2200,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "LevelRequirement",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2216,10 +2216,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2229,9 +2229,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "level",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2243,11 +2243,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2258,12 +2258,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "Level",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2274,13 +2274,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2290,9 +2290,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2302,9 +2302,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "memberIds",
-          "type": Object {
+          "type": {
             "gqlType": "[UUID]",
             "isArray": true,
             "modifier": null,
@@ -2314,9 +2314,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2326,9 +2326,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2338,9 +2338,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2350,9 +2350,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2363,12 +2363,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "MessageGroup",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2379,13 +2379,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2395,9 +2395,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "type",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2407,9 +2407,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "content",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -2419,9 +2419,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "upload",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2431,9 +2431,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2443,9 +2443,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2455,9 +2455,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2467,9 +2467,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2479,9 +2479,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "senderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2491,9 +2491,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "groupId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2504,12 +2504,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "sender",
             "name": "senderId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2520,9 +2520,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2533,11 +2533,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "group",
             "name": "groupId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2548,9 +2548,9 @@ Object {
             },
           },
           "refTable": "MessageGroup",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2563,10 +2563,10 @@ Object {
         },
       ],
       "name": "Message",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2577,13 +2577,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2593,9 +2593,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2605,9 +2605,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "description",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2617,9 +2617,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "link",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2629,9 +2629,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "publishedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2641,9 +2641,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "photo",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -2653,9 +2653,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2665,9 +2665,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2677,9 +2677,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2689,9 +2689,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2702,12 +2702,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "NewsUpdate",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2718,13 +2718,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2734,9 +2734,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2746,9 +2746,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "profilePicture",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -2758,9 +2758,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "description",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2770,9 +2770,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "website",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2782,9 +2782,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "reputation",
-          "type": Object {
+          "type": {
             "gqlType": "BigFloat",
             "isArray": false,
             "modifier": null,
@@ -2794,9 +2794,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "tags",
-          "type": Object {
+          "type": {
             "gqlType": "[String]",
             "isArray": true,
             "modifier": null,
@@ -2806,9 +2806,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2818,9 +2818,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2830,9 +2830,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2842,9 +2842,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -2854,9 +2854,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "organizationId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2867,12 +2867,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "organization",
             "name": "organizationId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2883,9 +2883,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -2898,10 +2898,10 @@ Object {
         },
       ],
       "name": "OrganizationProfile",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2912,10 +2912,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "organizationId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2927,11 +2927,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2941,9 +2941,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -2953,9 +2953,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "cc",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2965,9 +2965,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "number",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -2977,9 +2977,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isVerified",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -2989,9 +2989,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isPrimary",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -3002,12 +3002,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3018,9 +3018,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3033,10 +3033,10 @@ Object {
         },
       ],
       "name": "PhoneNumber",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3047,10 +3047,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "number",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -3062,11 +3062,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3076,9 +3076,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3088,9 +3088,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -3100,9 +3100,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "count",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -3112,9 +3112,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3125,12 +3125,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "UserAchievement",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3141,10 +3141,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3154,9 +3154,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -3168,11 +3168,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3182,9 +3182,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "value",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -3194,9 +3194,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "status",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -3206,9 +3206,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3218,9 +3218,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3230,9 +3230,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3242,9 +3242,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3254,9 +3254,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3266,9 +3266,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3278,9 +3278,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userActionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3290,9 +3290,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionItemId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3303,12 +3303,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3319,9 +3319,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3332,11 +3332,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3347,9 +3347,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3360,11 +3360,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "userAction",
             "name": "userActionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3375,9 +3375,9 @@ Object {
             },
           },
           "refTable": "UserAction",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3388,11 +3388,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "actionItem",
             "name": "actionItemId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3403,9 +3403,9 @@ Object {
             },
           },
           "refTable": "ActionItem",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3418,10 +3418,10 @@ Object {
         },
       ],
       "name": "UserActionItem",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3432,10 +3432,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3445,9 +3445,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userActionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3457,9 +3457,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionItemId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3471,11 +3471,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3485,9 +3485,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3497,9 +3497,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3509,9 +3509,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3521,9 +3521,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3533,9 +3533,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userActionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3545,9 +3545,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3557,9 +3557,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "reacterId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3569,9 +3569,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3582,12 +3582,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "userAction",
             "name": "userActionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3598,9 +3598,9 @@ Object {
             },
           },
           "refTable": "UserAction",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3611,11 +3611,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3626,9 +3626,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3639,11 +3639,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "reacter",
             "name": "reacterId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3654,9 +3654,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3667,11 +3667,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3682,9 +3682,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3697,10 +3697,10 @@ Object {
         },
       ],
       "name": "UserActionReaction",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3711,13 +3711,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3727,9 +3727,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "value",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -3739,9 +3739,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3751,9 +3751,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3763,9 +3763,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3775,9 +3775,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -3787,9 +3787,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3799,9 +3799,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3811,9 +3811,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userActionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3823,9 +3823,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionResultId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3836,12 +3836,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3852,9 +3852,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3865,11 +3865,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3880,9 +3880,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3893,11 +3893,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "userAction",
             "name": "userActionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3908,9 +3908,9 @@ Object {
             },
           },
           "refTable": "UserAction",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3921,11 +3921,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "actionResult",
             "name": "actionResultId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3936,9 +3936,9 @@ Object {
             },
           },
           "refTable": "ActionResult",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -3951,10 +3951,10 @@ Object {
         },
       ],
       "name": "UserActionResult",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3965,10 +3965,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3978,9 +3978,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userActionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -3990,9 +3990,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionResultId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4004,11 +4004,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4018,9 +4018,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionStarted",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4030,9 +4030,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "complete",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -4042,9 +4042,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "verified",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -4054,9 +4054,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "verifiedDate",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4066,9 +4066,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userRating",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4078,9 +4078,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "rejected",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -4090,9 +4090,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "rejectedReason",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -4102,16 +4102,16 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "location",
-          "type": Object {
+          "type": {
             "gqlType": "GeoJSON",
             "isArray": false,
             "modifier": 1107460,
             "pgAlias": "geometry",
             "pgType": "geometry",
             "subtype": "GeometryPoint",
-            "typmod": Object {
+            "typmod": {
               "gisType": "Point",
               "hasM": false,
               "hasZ": false,
@@ -4120,9 +4120,9 @@ Object {
             },
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4132,9 +4132,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4144,9 +4144,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4156,9 +4156,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4168,9 +4168,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4180,9 +4180,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "verifierId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4192,9 +4192,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4205,12 +4205,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4221,9 +4221,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4234,11 +4234,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "verifier",
             "name": "verifierId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4249,9 +4249,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4262,11 +4262,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4277,9 +4277,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4292,10 +4292,10 @@ Object {
         },
       ],
       "name": "UserAction",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4306,13 +4306,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4322,9 +4322,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "income",
-          "type": Object {
+          "type": {
             "gqlType": "BigFloat",
             "isArray": false,
             "modifier": null,
@@ -4334,23 +4334,23 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "gender",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": 5,
             "pgAlias": "char",
             "pgType": "bpchar",
             "subtype": null,
-            "typmod": Object {
+            "typmod": {
               "modifier": 5,
             },
           },
         },
-        Object {
+        {
           "name": "race",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -4360,9 +4360,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "age",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4372,9 +4372,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "dob",
-          "type": Object {
+          "type": {
             "gqlType": "Date",
             "isArray": false,
             "modifier": null,
@@ -4384,9 +4384,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "education",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -4396,9 +4396,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "homeOwnership",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4408,9 +4408,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "treeHuggerLevel",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4420,9 +4420,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "diyLevel",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4432,9 +4432,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "gardenerLevel",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4444,9 +4444,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "freeTime",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4456,9 +4456,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "researchToDoer",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -4468,9 +4468,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4480,9 +4480,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4492,9 +4492,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4504,9 +4504,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4516,9 +4516,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4529,12 +4529,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4545,9 +4545,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4560,10 +4560,10 @@ Object {
         },
       ],
       "name": "UserCharacteristic",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4574,10 +4574,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4589,11 +4589,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4603,9 +4603,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "accepted",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -4615,9 +4615,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4627,9 +4627,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4639,9 +4639,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4651,9 +4651,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4663,9 +4663,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "requesterId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4675,9 +4675,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "responderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4688,12 +4688,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "requester",
             "name": "requesterId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4704,9 +4704,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4717,11 +4717,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "responder",
             "name": "responderId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4732,9 +4732,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4747,10 +4747,10 @@ Object {
         },
       ],
       "name": "UserConnection",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4761,10 +4761,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "requesterId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4774,9 +4774,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "responderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4788,11 +4788,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4802,9 +4802,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "vcf",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -4814,9 +4814,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "fullName",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -4826,9 +4826,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "emails",
-          "type": Object {
+          "type": {
             "gqlType": "[String]",
             "isArray": true,
             "modifier": null,
@@ -4838,9 +4838,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "device",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -4850,9 +4850,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4862,9 +4862,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4874,9 +4874,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4886,9 +4886,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -4898,9 +4898,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4911,12 +4911,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4927,9 +4927,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -4942,10 +4942,10 @@ Object {
         },
       ],
       "name": "UserContact",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4956,13 +4956,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -4972,9 +4972,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "type",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -4984,9 +4984,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "content",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -4996,9 +4996,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "upload",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5008,9 +5008,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "received",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -5020,9 +5020,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "receiverRead",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -5032,9 +5032,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "senderReaction",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5044,9 +5044,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "receiverReaction",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5056,9 +5056,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5068,9 +5068,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5080,9 +5080,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5092,9 +5092,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5104,9 +5104,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "senderId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5116,9 +5116,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "receiverId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5129,12 +5129,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "sender",
             "name": "senderId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5145,9 +5145,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5158,11 +5158,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "receiver",
             "name": "receiverId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5173,9 +5173,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5188,10 +5188,10 @@ Object {
         },
       ],
       "name": "UserMessage",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5202,13 +5202,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5218,9 +5218,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5230,9 +5230,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5242,9 +5242,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5254,9 +5254,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5266,9 +5266,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5278,9 +5278,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5291,12 +5291,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5307,9 +5307,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5320,11 +5320,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5335,9 +5335,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5350,10 +5350,10 @@ Object {
         },
       ],
       "name": "UserPassAction",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5364,10 +5364,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5377,9 +5377,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5391,11 +5391,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5405,9 +5405,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "profilePicture",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -5417,9 +5417,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "bio",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5429,9 +5429,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "reputation",
-          "type": Object {
+          "type": {
             "gqlType": "BigFloat",
             "isArray": false,
             "modifier": null,
@@ -5441,9 +5441,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "displayName",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5453,9 +5453,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "tags",
-          "type": Object {
+          "type": {
             "gqlType": "[String]",
             "isArray": true,
             "modifier": null,
@@ -5465,9 +5465,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "desired",
-          "type": Object {
+          "type": {
             "gqlType": "[String]",
             "isArray": true,
             "modifier": null,
@@ -5477,9 +5477,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5489,9 +5489,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5501,9 +5501,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5513,9 +5513,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5525,9 +5525,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5538,12 +5538,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5554,9 +5554,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5569,10 +5569,10 @@ Object {
         },
       ],
       "name": "UserProfile",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5583,10 +5583,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5598,11 +5598,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5612,9 +5612,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5624,9 +5624,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5636,9 +5636,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5648,9 +5648,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5660,9 +5660,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5672,9 +5672,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5685,12 +5685,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5701,9 +5701,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5714,11 +5714,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5729,9 +5729,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5744,10 +5744,10 @@ Object {
         },
       ],
       "name": "UserSavedAction",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5758,10 +5758,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5771,9 +5771,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5785,11 +5785,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5799,9 +5799,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "firstName",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5811,9 +5811,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "lastName",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -5823,9 +5823,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "searchRadius",
-          "type": Object {
+          "type": {
             "gqlType": "BigFloat",
             "isArray": false,
             "modifier": null,
@@ -5835,9 +5835,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "zip",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -5847,16 +5847,16 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "location",
-          "type": Object {
+          "type": {
             "gqlType": "GeoJSON",
             "isArray": false,
             "modifier": 1107460,
             "pgAlias": "geometry",
             "pgType": "geometry",
             "subtype": "GeometryPoint",
-            "typmod": Object {
+            "typmod": {
               "gisType": "Point",
               "hasM": false,
               "hasZ": false,
@@ -5865,9 +5865,9 @@ Object {
             },
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5877,9 +5877,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5889,9 +5889,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5901,9 +5901,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -5913,9 +5913,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5926,12 +5926,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5942,9 +5942,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -5957,10 +5957,10 @@ Object {
         },
       ],
       "name": "UserSetting",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5971,10 +5971,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -5986,11 +5986,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6000,9 +6000,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6012,9 +6012,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "name",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -6024,9 +6024,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "count",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -6036,9 +6036,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -6049,12 +6049,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "UserStep",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6065,13 +6065,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6081,9 +6081,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6093,9 +6093,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6105,9 +6105,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -6117,9 +6117,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -6129,9 +6129,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "userId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6141,9 +6141,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "actionId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6154,12 +6154,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "user",
             "name": "userId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -6170,9 +6170,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -6183,11 +6183,11 @@ Object {
             },
           },
         },
-        Object {
-          "fromKey": Object {
+        {
+          "fromKey": {
             "alias": "action",
             "name": "actionId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -6198,9 +6198,9 @@ Object {
             },
           },
           "refTable": "Action",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -6213,10 +6213,10 @@ Object {
         },
       ],
       "name": "UserViewedAction",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6227,13 +6227,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6243,9 +6243,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "type",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -6256,12 +6256,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "User",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6272,13 +6272,13 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [],
+      "uniqueConstraints": [],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6288,9 +6288,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "zip",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -6300,16 +6300,16 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "location",
-          "type": Object {
+          "type": {
             "gqlType": "GeoJSON",
             "isArray": false,
             "modifier": 1107460,
             "pgAlias": "geometry",
             "pgType": "geometry",
             "subtype": "GeometryPoint",
-            "typmod": Object {
+            "typmod": {
               "gisType": "Point",
               "hasM": false,
               "hasZ": false,
@@ -6318,16 +6318,16 @@ Object {
             },
           },
         },
-        Object {
+        {
           "name": "bbox",
-          "type": Object {
+          "type": {
             "gqlType": "GeoJSON",
             "isArray": false,
             "modifier": 1107468,
             "pgAlias": "geometry",
             "pgType": "geometry",
             "subtype": "GeometryPolygon",
-            "typmod": Object {
+            "typmod": {
               "gisType": "Polygon",
               "hasM": false,
               "hasZ": false,
@@ -6336,9 +6336,9 @@ Object {
             },
           },
         },
-        Object {
+        {
           "name": "createdBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6348,9 +6348,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedBy",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6360,9 +6360,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "createdAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -6372,9 +6372,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "updatedAt",
-          "type": Object {
+          "type": {
             "gqlType": "Datetime",
             "isArray": false,
             "modifier": null,
@@ -6385,12 +6385,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [],
+      "foreignConstraints": [],
       "name": "ZipCode",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6401,10 +6401,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "zip",
-          "type": Object {
+          "type": {
             "gqlType": "Int",
             "isArray": false,
             "modifier": null,
@@ -6416,11 +6416,11 @@ Object {
         },
       ],
     },
-    Object {
-      "fields": Array [
-        Object {
+    {
+      "fields": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6430,9 +6430,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "ownerId",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6442,9 +6442,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "service",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -6454,9 +6454,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "identifier",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -6466,9 +6466,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "details",
-          "type": Object {
+          "type": {
             "gqlType": "JSON",
             "isArray": false,
             "modifier": null,
@@ -6478,9 +6478,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "isVerified",
-          "type": Object {
+          "type": {
             "gqlType": "Boolean",
             "isArray": false,
             "modifier": null,
@@ -6491,12 +6491,12 @@ Object {
           },
         },
       ],
-      "foreignConstraints": Array [
-        Object {
-          "fromKey": Object {
+      "foreignConstraints": [
+        {
+          "fromKey": {
             "alias": "owner",
             "name": "ownerId",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -6507,9 +6507,9 @@ Object {
             },
           },
           "refTable": "User",
-          "toKey": Object {
+          "toKey": {
             "name": "id",
-            "type": Object {
+            "type": {
               "gqlType": "UUID",
               "isArray": false,
               "modifier": null,
@@ -6522,10 +6522,10 @@ Object {
         },
       ],
       "name": "AuthAccount",
-      "primaryConstraints": Array [
-        Object {
+      "primaryConstraints": [
+        {
           "name": "id",
-          "type": Object {
+          "type": {
             "gqlType": "UUID",
             "isArray": false,
             "modifier": null,
@@ -6536,10 +6536,10 @@ Object {
           },
         },
       ],
-      "uniqueConstraints": Array [
-        Object {
+      "uniqueConstraints": [
+        {
           "name": "service",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,
@@ -6549,9 +6549,9 @@ Object {
             "typmod": null,
           },
         },
-        Object {
+        {
           "name": "identifier",
-          "type": Object {
+          "type": {
             "gqlType": "String",
             "isArray": false,
             "modifier": null,

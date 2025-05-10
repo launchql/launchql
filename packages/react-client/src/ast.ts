@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as t from 'gql-ast';
 import plz from 'pluralize';
 import inflection from 'inflection';

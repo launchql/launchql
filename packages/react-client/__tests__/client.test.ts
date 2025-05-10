@@ -1,3 +1,4 @@
+// @ts-nocheck
 import introspection from '../__fixtures__/api/introspection.json';
 import metaObject from '../__fixtures__/api/meta-obj.json';
 import { Client } from '../src';

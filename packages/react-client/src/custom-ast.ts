@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as t from 'gql-ast';
 
 export function getCustomAst(fieldDefn) {

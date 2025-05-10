@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export function convertFromMetaSchema(metaSchema) {
   const {
     _meta: { tables }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { print as gqlPrint } from 'graphql';
 import { getMany, getOne, getAll, createOne, patchOne, deleteOne } from './ast';
 import inflection from 'inflection';
