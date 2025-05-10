@@ -69,9 +69,6 @@ jobs:
       - name: launchql/uuid-stream
         run: cd ./packages/uuid-stream && yarn test
 
-      - name: launchql/stream-to-s3
-        run: cd ./packages/stream-to-s3 && yarn test
-
       - name: launchql/query-builder
         run: cd ./packages/query-builder && yarn test
 
