@@ -1,7 +1,7 @@
 # @launchql/cli
 
 <p align="center" width="100%">
-  <img height="120" src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" />
+  <img height="200" src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" />
 </p>
 
 <p align="center" width="100%">
