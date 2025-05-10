@@ -1,4 +1,4 @@
-# launchql-client
+# @launchql/react-client
 
 <p align="center" width="100%">
   <img height="120" src="https://github.com/launchql/pgsql-parser/assets/545047/6440fa7d-918b-4a3b-8d1b-755d85de8bea" />
@@ -9,19 +9,19 @@
     <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/launchql-client"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%2Flaunchql-client%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/@launchql/react-client"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%react-client%2Fpackage.json"/></a>
 </p>
 
 Generate GraphQL mutations/queries
 
 ```sh
-npm install launchql-client
+npm install @launchql/react-client
 ```
 
 ## Usage
 
 ```js
-import { Client } from 'launchql-client';
+import { Client } from '@launchql/react-client';
 
 const client = new Client({
     introspection: { ...queries, ...mutations }

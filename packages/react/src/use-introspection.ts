@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
+// @ts-ignore
 import { IntrospectionQuery, parseGraphQuery } from 'introspectron';
 import noop from 'lodash/noop';
 import { useGraphqlClient } from './use-graphql-client';
 
 export function useIntrospection(options = {}) {
+  // @ts-ignore
   const { headers, onSuccess = noop, onError = noop, ...restOptions } = options;
   const graphqlClient = useGraphqlClient();
 

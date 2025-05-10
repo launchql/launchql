@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const intro = require('introspectron');
-const client = require('launchql-client');
+const client = require('@launchql/react-client');
 
 function generateIntrospectionFixture() {
   const inDir = path.resolve(

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo, useContext } from 'react';
 import { GraphQLClient } from 'graphql-request';
 import { getLqlContext } from './context';

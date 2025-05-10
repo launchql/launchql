@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Client as LqlClient, MetaObject } from 'launchql-client';
+import { Client as LqlClient, MetaObject } from '@launchql/react-client';
 import { useIntrospection } from './use-introspection';
 import { useSchemaMeta } from './use-schema-meta';
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 jest.setTimeout(20000);
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';

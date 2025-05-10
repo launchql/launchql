@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from 'react';
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
