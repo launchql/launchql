@@ -1,7 +1,7 @@
 - [ ] remove travis
 - [ ] it('getOne(): handles missing selection gracefully' NOT PASSING
 - [ ] @launchql/react tests
-- [ ] pg-ast should use pg-proto-parser's types
+- [ ] pg-ast should use pg-proto-parser's types (@pgsql/utils in pgsql-parser monorepo?)
 - [ ] csv-to-pg should use enum strings for ops, and types too
 - [ ] csv-to-pg should use inqurirer
 - [ ] get this PR from launchql-gen https://github.com/launchql/launchql-gen/pull/19
