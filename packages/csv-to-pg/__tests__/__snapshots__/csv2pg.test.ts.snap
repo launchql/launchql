@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Insert Many (delimeter) 1`] = `"INSERT INTO "my-schema"."my-table" ( zip, bbox, location ) VALUES (90272, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.587533 34.024999, -118.587533 34.13165, -118.495177 34.13165, -118.495177 34.024999, -118.587533 34.024999)')), 4326), st_setsrid(st_makepoint((-118.542228), 34.078725), 4326)), (90011, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.274021 33.986062, -118.274021 34.030991, -118.242772 34.030991, -118.242772 33.986062, -118.274021 33.986062)')), 4326), st_setsrid(st_makepoint((-118.25867), 34.00707), 4326));"`;
+
+exports[`Insert Many (headers) 1`] = `"INSERT INTO "my-schema"."my-table" ( zip, bbox, location ) VALUES (90272, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.587533 34.024999, -118.587533 34.13165, -118.495177 34.13165, -118.495177 34.024999, -118.587533 34.024999)')), 4326), st_setsrid(st_makepoint((-118.542228), 34.078725), 4326)), (90011, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.274021 33.986062, -118.274021 34.030991, -118.242772 34.030991, -118.242772 33.986062, -118.274021 33.986062)')), 4326), st_setsrid(st_makepoint((-118.25867), 34.00707), 4326));"`;
+
+exports[`Insert Many 1`] = `"INSERT INTO "my-schema"."my-table" ( zip, bbox, location ) VALUES (90272, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.587533 34.024999, -118.587533 34.13165, -118.495177 34.13165, -118.495177 34.024999, -118.587533 34.024999)')), 4326), st_setsrid(st_makepoint((-118.542228), 34.078725), 4326)), (90011, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.274021 33.986062, -118.274021 34.030991, -118.242772 34.030991, -118.242772 33.986062, -118.274021 33.986062)')), 4326), st_setsrid(st_makepoint((-118.25867), 34.00707), 4326)), (90014, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.274021 33.986062, -118.274021 34.030991, -118.242772 34.030991, -118.242772 33.986062, -118.274021 33.986062)')), 4326), NULL);"`;
+
+exports[`Insert Many Conflict 1`] = `"INSERT INTO "my-schema"."my-table" ( zip, bbox, location ) VALUES (90272, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.587533 34.024999, -118.587533 34.13165, -118.495177 34.13165, -118.495177 34.024999, -118.587533 34.024999)')), 4326), st_setsrid(st_makepoint((-118.542228), 34.078725), 4326)), (90011, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.274021 33.986062, -118.274021 34.030991, -118.242772 34.030991, -118.242772 33.986062, -118.274021 33.986062)')), 4326), st_setsrid(st_makepoint((-118.25867), 34.00707), 4326)), (90014, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.274021 33.986062, -118.274021 34.030991, -118.242772 34.030991, -118.242772 33.986062, -118.274021 33.986062)')), 4326), NULL) ON CONFLICT ( zip ) DO UPDATE  SET bbox = excluded.bbox,location = excluded.location;"`;
+
+exports[`Insert Many Parse 1`] = `"INSERT INTO "my-schema"."my-table" ( username, profile_pic ) VALUES ('pyramation', '{"url":"https://images.com/246x246.png","mime":"image/png"}'::jsonb), ('brazil', '{"url":"https://images.com/246x246.png","mime":"image/png"}'::jsonb), ('skate', '{"url":"https://images.com/246x246.png","mime":"image/png"}'::jsonb);"`;
+
+exports[`Insert One 1`] = `"INSERT INTO "my-schema"."my-table" ( zip, bbox, location ) VALUES (90272, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.587533 34.024999, -118.587533 34.13165, -118.495177 34.13165, -118.495177 34.024999, -118.587533 34.024999)')), 4326), st_setsrid(st_makepoint((-118.542228), 34.078725), 4326));"`;
+
+exports[`Insert One Conflict 1`] = `"INSERT INTO "my-schema"."my-table" ( zip, bbox, location ) VALUES (90272, st_setsrid(st_makepolygon(st_geomfromtext('LINESTRING(-118.587533 34.024999, -118.587533 34.13165, -118.495177 34.13165, -118.495177 34.024999, -118.587533 34.024999)')), 4326)::castme, st_setsrid(st_makepoint((-118.542228), 34.078725), 4326)) ON CONFLICT ( zip ) DO UPDATE  SET bbox = excluded.bbox,location = excluded.location;"`;
+
+exports[`noschema case: 1 1`] = `"INSERT INTO public."my-table" ( lng, lat ) VALUES (inflection.slugify((-118.542228)), 34.078725);"`;
+
+exports[`noschema case: 2 1`] = `"INSERT INTO public."my-table" ( lng, lat ) VALUES (modules.round((-118.542228))::real, 34.078725);"`;
+
+exports[`noschema case: 3 1`] = `"INSERT INTO public."my-table" ( lng, lat ) VALUES (myfunc('anything', (-118.542228), 2), 34.078725);"`;
+
+exports[`related citext 1`] = `"INSERT INTO "my-schema"."my-table" ( zip_id, lng, lat ) VALUES ((SELECT id FROM schemaa.tablea WHERE slug = '90272'), (-118.542228), 34.078725);"`;
+
+exports[`related float 1`] = `"INSERT INTO "my-schema"."my-table" ( zip_id, lng, lat ) VALUES ((SELECT id FROM schemaa.tablea WHERE slug = 90272), (-118.542228), 34.078725);"`;
+
+exports[`related int 1`] = `"INSERT INTO "my-schema"."my-table" ( zip_id, lng, lat ) VALUES ((SELECT id FROM schemaa.tablea WHERE slug = 90272), (-118.542228), 34.078725);"`;
+
+exports[`related int 2`] = `"INSERT INTO "my-schema"."my-table" ( zip_id, lng, lat ) VALUES ((SELECT id FROM schemaa.tablea WHERE slug = mymath.round(90272)), (-118.542228), 34.078725);"`;
+
+exports[`related text 1`] = `"INSERT INTO "my-schema"."my-table" ( zip_id, lng, lat ) VALUES ((SELECT id FROM schemaa.tablea WHERE slug = '90272'), (-118.542228), 34.078725);"`;
+
+exports[`related text 2`] = `"INSERT INTO "my-schema"."my-table" ( zip_id, lng, lat ) VALUES ((SELECT id FROM schemaa.tablea WHERE slug = inflection.slugify('90272'))::uuid, (-118.542228), 34.078725);"`;
+
+exports[`wraps case: 1 1`] = `"INSERT INTO "my-schema"."my-table" ( lng, lat ) VALUES (inflection.slugify((-118.542228)), 34.078725);"`;
+
+exports[`wraps case: 2 1`] = `"INSERT INTO "my-schema"."my-table" ( lng, lat ) VALUES (modules.round((-118.542228))::real, 34.078725);"`;
+
+exports[`wraps case: 3 1`] = `"INSERT INTO "my-schema"."my-table" ( lng, lat ) VALUES (myfunc('anything', (-118.542228), 2), 34.078725);"`;
