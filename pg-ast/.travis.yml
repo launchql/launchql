@@ -1,0 +1,17 @@
+os:
+  - linux
+language: node_js
+node_js:
+  - "12"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+notifications:
+  email: false
+
+before_install:
+  - yarn install
+
+script:
+  - yarn test
