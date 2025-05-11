@@ -1,3 +1,6 @@
 - [ ] remove travis
 - [ ] it('getOne(): handles missing selection gracefully' NOT PASSING
 - [ ] @launchql/react tests
+- [ ] pg-ast should use pg-proto-parser's types
+- [ ] csv-to-pg should use enum strings for ops, and types too
+- [ ] csv-to-pg should use inqurirer
