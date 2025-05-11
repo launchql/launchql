@@ -33,6 +33,7 @@
   "dependencies": {
     "@types/glob": "^8.1.0",
     "@types/rimraf": "^4.0.5",
+    "case": "^1.6.3",
     "chalk": "^4.1.0",
     "glob": "^11.0.1",
     "mkdirp": "^3.0.1",
