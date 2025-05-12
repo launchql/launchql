@@ -1,6 +1,7 @@
 // Auto-generated template module
 
-export const tsconfig_json = (vars: Record<string, any>) => {
+export default [
+(vars: Record<string, any>) => {
   const relPath = `tsconfig.json`;
   const content = `{
   "compilerOptions": {
@@ -20,9 +21,9 @@ export const tsconfig_json = (vars: Record<string, any>) => {
 }
 `;
   return { relPath, content };
-};
+},
 
-export const package_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `package.json`;
   const content = `{
   "name": "${vars.MODULENAME}",
@@ -70,9 +71,9 @@ export const package_json = (vars: Record<string, any>) => {
   }
 }`;
   return { relPath, content };
-};
+},
 
-export const lerna_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `lerna.json`;
   const content = `{
   "lerna": "6",
@@ -99,9 +100,9 @@ export const lerna_json = (vars: Record<string, any>) => {
   }
 }`;
   return { relPath, content };
-};
+},
 
-export const README_md = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `README.md`;
   const content = `# ${vars.MODULENAME}
 
@@ -169,9 +170,9 @@ AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
 `;
   return { relPath, content };
-};
+},
 
-export const LICENSE = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `LICENSE`;
   const content = `The MIT License (MIT)
 
@@ -196,9 +197,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `;
   return { relPath, content };
-};
+},
 
-export const questions_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `.questions.json`;
   const content = `[
   {
@@ -223,9 +224,9 @@ export const questions_json = (vars: Record<string, any>) => {
   }
 ]`;
   return { relPath, content };
-};
+},
 
-export const prettierrc_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `.prettierrc.json`;
   const content = `{
   "trailingComma": "es5",
@@ -235,9 +236,9 @@ export const prettierrc_json = (vars: Record<string, any>) => {
   "singleQuote": false
 }`;
   return { relPath, content };
-};
+},
 
-export const gitignore = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `.gitignore`;
   const content = `**/node_modules/
 **/.DS_Store
@@ -245,9 +246,9 @@ export const gitignore = (vars: Record<string, any>) => {
 **/yarn-error.log
 lerna-debug.log`;
   return { relPath, content };
-};
+},
 
-export const eslintrc_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `.eslintrc.json`;
   const content = `{
   "env": {
@@ -313,16 +314,5 @@ export const eslintrc_json = (vars: Record<string, any>) => {
   }
 }`;
   return { relPath, content };
-};
-
-export default {
-  tsconfig_json,
-  package_json,
-  lerna_json,
-  README_md,
-  LICENSE,
-  questions_json,
-  prettierrc_json,
-  gitignore,
-  eslintrc_json
-};
+}
+];

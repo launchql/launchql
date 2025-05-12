@@ -1,6 +1,7 @@
 // Auto-generated template module
 
-export const tsconfig_json = (vars: Record<string, any>) => {
+export default [
+(vars: Record<string, any>) => {
   const relPath = `tsconfig.json`;
   const content = `{
   "extends": "../../tsconfig.json",
@@ -13,9 +14,9 @@ export const tsconfig_json = (vars: Record<string, any>) => {
 }
 `;
   return { relPath, content };
-};
+},
 
-export const tsconfig_esm_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `tsconfig.esm.json`;
   const content = `{
   "extends": "./tsconfig.json",
@@ -28,9 +29,9 @@ export const tsconfig_esm_json = (vars: Record<string, any>) => {
 }
 `;
   return { relPath, content };
-};
+},
 
-export const package_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `package.json`;
   const content = `{
   "name": "${vars.PACKAGE_IDENTIFIER}",
@@ -66,9 +67,9 @@ export const package_json = (vars: Record<string, any>) => {
   "keywords": []
 }`;
   return { relPath, content };
-};
+},
 
-export const jest_config_js = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `jest.config.js`;
   const content = `/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
@@ -90,9 +91,9 @@ module.exports = {
 };
 `;
   return { relPath, content };
-};
+},
 
-export const README_md = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `README.md`;
   const content = `# ${vars.MODULENAME}
 
@@ -160,25 +161,25 @@ AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
 `;
   return { relPath, content };
-};
+},
 
-export const src_index_ts = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `src/index.ts`;
   const content = `export default () => {
 
 };`;
   return { relPath, content };
-};
+},
 
-export const tests_first_test_ts = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `__tests__/first.test.ts`;
   const content = `it('works', () => {
     console.log('hello test world!');
 })`;
   return { relPath, content };
-};
+},
 
-export const questions_json = (vars: Record<string, any>) => {
+(vars: Record<string, any>) => {
   const relPath = `.questions.json`;
   const content = `[
   {
@@ -223,15 +224,5 @@ export const questions_json = (vars: Record<string, any>) => {
   }
 ]`;
   return { relPath, content };
-};
-
-export default {
-  tsconfig_json,
-  tsconfig_esm_json,
-  package_json,
-  jest_config_js,
-  README_md,
-  src_index_ts,
-  tests_first_test_ts,
-  questions_json
-};
+}
+];

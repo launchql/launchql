@@ -25,8 +25,8 @@
     "prepare": "npm run build",
     "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
-    "generate": "ts-node src/generate.ts",
-    "makeTemplates": "ts-node src/makeTemplates.ts",
+    "generate": "ts-node scripts/generate.ts",
+    "makeTemplates": "ts-node scripts/makeTemplates.ts",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
