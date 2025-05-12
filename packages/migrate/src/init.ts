@@ -13,7 +13,7 @@ import { writeFileSync } from 'fs';
 import { makePlan } from './plans';
 import { sluggify } from './utils';
 
-const srcPath = dirname(require.resolve('@launchql/db-template'));
+// const srcPath = dirname(require.resolve('@launchql/db-template'));
 
 interface PackageOptions {
   name: string;
@@ -131,8 +131,8 @@ yarn.lock
 
 export const initSkitch = async (): Promise<void> => {
   const dir = process.cwd();
-  shell.cp('-r', `${srcPath}/template/*`, `${dir}/`);
-  shell.cp('-r', `${srcPath}/template/.*`, `${dir}/`);
+  // shell.cp('-r', `${srcPath}/template/*`, `${dir}/`);
+  // shell.cp('-r', `${srcPath}/template/.*`, `${dir}/`);
 
   const name = sluggify(basename(process.cwd()));
   const pkg = {

@@ -1,5 +1,5 @@
 - [ ] remove travis
-- [ ] it('getOne(): handles missing selection gracefully' NOT PASSING
+- [ ] 'getOne(): handles missing selection gracefully' NOT PASSING
 - [ ] @launchql/react tests
 - [ ] pg-ast should use pg-proto-parser's types (@pgsql/utils in pgsql-parser monorepo?)
 - [ ] csv-to-pg should use enum strings for ops, and types too
