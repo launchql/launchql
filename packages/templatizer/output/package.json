@@ -1,23 +1,23 @@
 {
-  "name": "@launchql/migrate",
-  "version": "2.0.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "PostgreSQL Migration Tools",
+  "name": "undefined",
+  "version": "0.0.1",
+  "author": "undefined <undefined>",
+  "description": "undefined",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/undefined/undefined",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
-    "access": "public",
+    "access": "undefined",
     "directory": "dist"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/undefined/undefined"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/undefined/undefined/issues"
   },
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
@@ -29,17 +29,5 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
-  "devDependencies": {
-    "@types/glob": "^8.1.0",
-    "@types/rimraf": "^4.0.5"
-  },
-  "dependencies": {
-    "case": "^1.6.3",
-    "chalk": "^4.1.0",
-    "glob": "^11.0.2",
-    "mkdirp": "^3.0.1",
-    "pgsql-parser": "^13.16.0",
-    "rimraf": "^6.0.1"
-  }
+  "keywords": []
 }
