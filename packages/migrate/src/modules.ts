@@ -2,13 +2,13 @@ import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { basename, dirname, relative } from 'path';
 
-interface Module {
+export interface Module {
   path: string;
   requires: string[];
   version: string;
 }
 
-type ModuleMap = Record<string, Module>;
+export type ModuleMap = Record<string, Module>;
 
 /**
  * Parse a .control file and extract its metadata.
