@@ -11,15 +11,6 @@ export default async (
   _options: CLIOptions
 ) => {
   const questions: Question[] = [
-    // @ts-ignore
-    {
-      type: 'text',
-      name: 'cwd',
-      message: chalk.cyan('Working directory'),
-      required: false,
-      default: false,
-      useDefault: true
-    },
     {
       type: 'text',
       name: 'database',

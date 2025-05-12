@@ -10,6 +10,7 @@ import explorer from './commands/explorer';
 import verify from './commands/verify';
 import revert from './commands/revert';
 import init from './commands/init';
+import extension from './commands/extension';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -25,7 +26,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         process.exit(0);
     }
 
-    let { cwd } = await prompter.prompt(argv, [
+    await prompter.prompt(argv, [
         {
             type: 'text',
             name: 'cwd',
@@ -35,8 +36,6 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
             useDefault: true
         }
     ]);
-
-    console.log({argv});
 
     switch (command) {
         case 'deploy':
@@ -56,6 +55,9 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
             break;
         case 'explorer':
             await explorer(newArgv, prompter, options);
+            break;
+        case 'extension':
+            await extension(newArgv, prompter, options);
             break;
         default:
             console.error(`Unknown command: ${command}`);

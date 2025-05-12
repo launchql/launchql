@@ -36,3 +36,16 @@ export const getWorkspacePath = async (cwd: string): Promise<string> => {
 
   return workspacePath;
 };
+
+export const getModulePath = async (cwd: string): Promise<string> => {
+  let pkgPath: string;
+
+  try {
+    pkgPath = await sqitchPath(cwd);
+  } catch (err) {
+    console.error('Error: You must be in a LaunchQL module. You can initialize one with the `init` command.');
+    process.exit(1);
+  }
+
+  return pkgPath;
+};
