@@ -1,4 +1,4 @@
-name: Run Tests
+name: LaunchQL tests 🚀
 
 on:
   push:
@@ -7,24 +7,61 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-tests:
+  container-job:
     runs-on: ubuntu-latest
+    container: node:20.12.0-alpine
 
+    services:
+      pg_db:
+        image: pyramation/postgis
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      minio_cdn:
+        image: minio/minio:edge-cicd
+        env:
+          MINIO_ROOT_USER: minioadmin
+          MINIO_ROOT_PASSWORD: minioadmin
+        ports:
+          - 9000:9000
+          - 9001:9001
+        options: >-
+          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
     steps:
-      - name: Checkout Repository 🛎️
+      - name: checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
+      - name: deps
+        run: apk update && apk add bash git python3-dev make g++
 
-      - name: Install Dependencies
-        run: yarn install
+      - name: deps
+        run: yarn
 
-      - name: Build Project
+      - name: build
         run: yarn build
 
-      - name: Run Parser Tests
-        run: yarn workspace modulename test
-        working-directory: packages/modulefolder
+      - name: launchql/client
+        run: cd ./packages/client && yarn test
+        env:
+          TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
+
+      - name: launchql/s3-streamer
+        run: cd ./packages/s3-streamer && yarn test
+        env:
+          MINIO_ENDPOINT: http://minio_cdn:9000
+          AWS_ACCESS_KEY: minioadmin
+          AWS_SECRET_KEY: minioadmin
+          AWS_REGION: us-east-1
+          BUCKET_NAME: test-bucket

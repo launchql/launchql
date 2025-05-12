@@ -1,7 +1,7 @@
 # __MODULENAME__
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
+  <img src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" width="250"><br />
     __MODULEDESC__
 </p>
 

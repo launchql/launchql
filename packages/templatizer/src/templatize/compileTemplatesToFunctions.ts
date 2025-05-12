@@ -23,11 +23,13 @@ function replaceDoubleUnderscoreVars(str: string): string {
   return str.replace(/__([A-Z0-9_]+)__/g, (_, varName) => `\${vars.${varName}}`);
 }
 
+const IGNORE = ['.DS_Store'];
+
 export function compileTemplatesToFunctions(srcDir: string): CompiledTemplate[] {
   const fileSet = new Set<string>([
     ...globSync('**/*', { cwd: srcDir, nodir: true }),
     ...globSync('**/.*', { cwd: srcDir, nodir: true }),
-  ]);
+  ].filter(a=>!IGNORE.includes(a)));
 
   return Array.from(fileSet).map((rawRelPath) => {
     const fullPath = path.join(srcDir, rawRelPath);

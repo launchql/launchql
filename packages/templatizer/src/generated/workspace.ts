@@ -103,11 +103,44 @@ export default [
 },
 
 (vars: Record<string, any>) => {
+  const relPath = `docker-compose.yml`;
+  const content = `services:
+  postgres:
+    container_name: postgres
+    image: pyramation/postgis
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    volumes:
+      - ./bin:/sql-bin
+      - ./packages:/sql-packages
+      - ./extensions:/sql-extensions
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    command: server /data
+`;
+  return { relPath, content };
+},
+
+(vars: Record<string, any>) => {
   const relPath = `README.md`;
   const content = `# ${vars.MODULENAME}
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
+  <img src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" width="250"><br />
     ${vars.MODULEDESC}
 </p>
 
@@ -142,22 +175,6 @@ yarn
 yarn build:dev
 \`\`\`
 
-## Interchain JavaScript Stack 
-
-A unified toolkit for building applications and smart contracts in the Interchain ecosystem ⚛️
-
-| Category              | Tools                                                                                                                  | Description                                                                                           |
-|----------------------|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| **Chain Information**   | [**Chain Registry**](https://github.com/hyperweb-io/chain-registry), [**Utils**](https://www.npmjs.com/package/@chain-registry/utils), [**Client**](https://www.npmjs.com/package/@chain-registry/client) | Everything from token symbols, logos, and IBC denominations for all assets you want to support in your application. |
-| **Wallet Connectors**| [**Interchain Kit**](https://github.com/hyperweb-io/interchain-kit)<sup>beta</sup>, [**Cosmos Kit**](https://github.com/hyperweb.io/cosmos-kit) | Experience the convenience of connecting with a variety of web3 wallets through a single, streamlined interface. |
-| **Signing Clients**          | [**InterchainJS**](https://github.com/hyperweb-io/interchainjs)<sup>beta</sup>, [**CosmJS**](https://github.com/cosmos/cosmjs) | A single, universal signing interface for any network |
-| **SDK Clients**              | [**Telescope**](https://github.com/hyperweb.io/telescope)                                                          | Your Frontend Companion for Building with TypeScript with Cosmos SDK Modules. |
-| **Starter Kits**     | [**Create Interchain App**](https://github.com/hyperweb-io/create-interchain-app)<sup>beta</sup>, [**Create Cosmos App**](https://github.com/hyperweb.io/create-cosmos-app) | Set up a modern Interchain app by running one command. |
-| **UI Kits**          | [**Interchain UI**](https://github.com/hyperweb.io/interchain-ui)                                                   | The Interchain Design System, empowering developers with a flexible, easy-to-use UI kit. |
-| **Testing Frameworks**          | [**Starship**](https://github.com/hyperweb.io/starship)                                                             | Unified Testing and Development for the Interchain. |
-| **TypeScript Smart Contracts** | [**Create Hyperweb App**](https://github.com/hyperweb-io/create-hyperweb-app)                              | Build and deploy full-stack blockchain applications with TypeScript |
-| **CosmWasm Contracts** | [**CosmWasm TS Codegen**](https://github.com/CosmWasm/ts-codegen)                                                   | Convert your CosmWasm smart contracts into dev-friendly TypeScript classes. |
-
 ## Credits
 
 🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
@@ -168,6 +185,24 @@ A unified toolkit for building applications and smart contracts in the Interchai
 AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
+`;
+  return { relPath, content };
+},
+
+(vars: Record<string, any>) => {
+  const relPath = `Makefile`;
+  const content = `
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down -v
+
+ssh:
+	docker exec -it postgres /bin/bash
+
+install:
+	docker exec postgres /sql-bin/install.sh
 `;
   return { relPath, content };
 },
@@ -196,6 +231,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `;
+  return { relPath, content };
+},
+
+(vars: Record<string, any>) => {
+  const relPath = `bin/install.sh`;
+  const content = `#!/usr/bin/env bash
+
+function installit {
+  DIR=$(pwd)
+
+  if [ -d "$1" ]
+  then
+    echo "SQL Module Directory $1 exists."
+    echo $1
+    cd $1
+
+    for x in $(find ./ -type f -name "sqitch.plan")
+    do
+      orig=$(pwd)
+      dir=$(dirname $x)
+      cd $dir
+      make install
+      cd $orig
+    done
+    cd $DIR
+  else
+    echo "Error: SQL MODULE Directory $1 does not exist, don't worry, moving on."
+  fi
+
+}
+
+installit /sql-extensions
+installit /sql-packages`;
   return { relPath, content };
 },
 
