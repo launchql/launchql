@@ -12,9 +12,6 @@ const PROJECT_FILES = {
  * @returns A promise that resolves to the directory path containing `sqitch.conf`.
  */
 export const sqitchPath = async (cwd: string = process.cwd()): Promise<string> => {
-  if (process.env.SQITCH_PATH) {
-    return process.env.SQITCH_PATH;
-  }
   return walkUp(cwd, PROJECT_FILES.SQITCH);
 };
 
@@ -24,8 +21,18 @@ export const sqitchPath = async (cwd: string = process.cwd()): Promise<string> =
  * @returns A promise that resolves to the directory path containing `launchql.json`.
  */
 export const launchqlPath = async (cwd: string = process.cwd()): Promise<string> => {
-  if (process.env.LAUNCHQL_PATH) {
-    return process.env.LAUNCHQL_PATH;
-  }
   return walkUp(cwd, PROJECT_FILES.LAUNCHQL);
+};
+
+export const getWorkspacePath = async (cwd: string): Promise<string> => {
+  let workspacePath: string;
+
+  try {
+    workspacePath = await launchqlPath(cwd);
+  } catch (err) {
+    console.error('Error: You must be in a LaunchQL workspace. You can initialize one with the `--workspace` option.');
+    process.exit(1);
+  }
+
+  return workspacePath;
 };

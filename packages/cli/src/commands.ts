@@ -9,6 +9,7 @@ import server from './commands/server';
 import explorer from './commands/explorer';
 import verify from './commands/verify';
 import revert from './commands/revert';
+import init from './commands/init';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -24,6 +25,19 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         process.exit(0);
     }
 
+    let { cwd } = await prompter.prompt(argv, [
+        {
+            type: 'text',
+            name: 'cwd',
+            message: 'Working directory',
+            required: false,
+            default: process.cwd(),
+            useDefault: true
+        }
+    ]);
+
+    console.log({argv});
+
     switch (command) {
         case 'deploy':
             await deploy(newArgv, prompter, options);
@@ -33,6 +47,9 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
             break;
         case 'revert':
             await revert(newArgv, prompter, options);
+            break;
+        case 'init':
+            await init(newArgv, prompter, options);
             break;
         case 'server':
             await server(newArgv, prompter, options);
