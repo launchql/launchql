@@ -1,9 +1,10 @@
 
 import { writeRenderedTemplates } from '../src/templatize/generateFromCompiled';
 
-import templates from '../src/generated/module';
+import moduleTemplate from '../src/generated/module';
+import workspaceTemplate from '../src/generated/workspace';
 
-writeRenderedTemplates(templates, './output-module', {
+const vars = {
   PACKAGE_IDENTIFIER: 'my-package',
   ACCESS: 'public',
   MODULEDESC: 'module description',
@@ -12,12 +13,7 @@ writeRenderedTemplates(templates, './output-module', {
   USEREMAIL: 'my@email.com',
   USERFULLNAME: 'Dan Lynch',
   USERNAME: 'pyramation'
-});
+};
 
-writeRenderedTemplates(templates, './output-workspace', {
-  MODULEDESC: 'module description',
-  MODULENAME: 'my-module',
-  USEREMAIL: 'my@gmail.com',
-  USERFULLNAME: 'Dan Lynch',
-  USERNAME: 'pyramation'
-});
+writeRenderedTemplates(moduleTemplate, './output-module', vars);
+writeRenderedTemplates(workspaceTemplate, './output-workspace', vars);
