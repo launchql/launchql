@@ -12,7 +12,7 @@ export default async (
         // @ts-ignore
         {
             type: 'text',
-            name: 'dir',
+            name: 'cwd',
             message: chalk.cyan('Working directory'),
             required: false,
             default: false,
@@ -26,15 +26,15 @@ export default async (
         }
     ];
 
-    let { database, recursive, dir } = await prompter.prompt(argv, questions);
+    let { database, recursive, cwd } = await prompter.prompt(argv, questions);
 
-    if (!dir) {
-        dir = process.cwd();
-        console.log(chalk.gray(`Using current directory: ${dir}`));
+    if (!cwd) {
+        cwd = process.cwd();
+        console.log(chalk.gray(`Using current directory: ${cwd}`));
     }
 
     if (recursive) {
-        const modules = await listModules(dir);
+        const modules = await listModules(cwd);
         const mods = Object.keys(modules);
 
         if (!mods.length) {
@@ -54,7 +54,7 @@ export default async (
         ]);
 
         console.log(chalk.green(`Verifying project ${chalk.bold(project)} on database ${chalk.bold(database)}...`));
-        await verify(project, database, dir);
+        await verify(project, database, cwd);
         console.log(chalk.green('Verify complete.'));
     } else {
         console.log(chalk.green(`Running ${chalk.bold(`sqitch verify db:pg:${database}`)}...`));

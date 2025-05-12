@@ -14,7 +14,7 @@ export default async (
     // @ts-ignore
     {
       type: 'text',
-      name: 'dir',
+      name: 'cwd',
       message: chalk.cyan('Working directory'),
       required: false,
       default: false,
@@ -34,16 +34,16 @@ export default async (
     }
   ];
 
-  let { database, yes, recursive, createdb, dir } = await prompter.prompt(argv, questions);
+  let { database, yes, recursive, createdb, cwd } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     console.log(chalk.gray('Operation cancelled.'));
     return;
   }
 
-  if (!dir) {
-    dir = process.cwd();
-    console.log(chalk.gray(`Using current directory: ${dir}`));
+  if (!cwd) {
+    cwd = process.cwd();
+    console.log(chalk.gray(`Using current directory: ${cwd}`));
   }
 
   if (createdb) {
@@ -52,7 +52,7 @@ export default async (
   }
 
   if (recursive) {
-    const modules = await listModules(dir);
+    const modules = await listModules(cwd);
     const mods = Object.keys(modules);
 
     if (!mods.length) {
@@ -72,7 +72,7 @@ export default async (
     ]);
 
     console.log(chalk.green(`Deploying project ${chalk.bold(project)} to database ${chalk.bold(database)}...`));
-    await deploy(project, database, dir);
+    await deploy(project, database, cwd);
     console.log(chalk.green('Deployment complete.'));
   } else {
     console.log(chalk.green(`Running ${chalk.bold(`sqitch deploy db:pg:${database}`)}...`));
