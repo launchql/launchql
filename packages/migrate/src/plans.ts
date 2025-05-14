@@ -22,6 +22,8 @@ interface ExtensionRequirement {
  * @param options - Options for generating the plan.
  * @returns A string representing the Sqitch plan.
  */
+
+// @deprecate (using class now)
 export const makePlan = async (workspaceDir: string, packageDir: string, options: PlanOptions): Promise<string> => {
   const { name, uri, projects } = options;
   if (!name) {
