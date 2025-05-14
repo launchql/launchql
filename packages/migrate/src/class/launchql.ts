@@ -178,7 +178,7 @@ export class LaunchQLProject {
     return getInstalledExtensions(info.controlFile);
   }
 
-  writeModuleMetadataFiles(modules: string[]): void {
+  setModuleDependencies(modules: string[]): void {
     this.ensureModule();
     writeExtensions(this.cwd, modules);
   }

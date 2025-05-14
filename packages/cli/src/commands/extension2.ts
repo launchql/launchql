@@ -36,5 +36,5 @@ export default async (
     .filter(opt => opt.selected)
     .map(opt => opt.name);
 
-  project.writeModuleMetadataFiles(selected);
+  project.setModuleDependencies(selected);
 };

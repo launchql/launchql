@@ -126,4 +126,37 @@ describe('LaunchQLProject', () => {
 
     expect(() => project.getModuleInfo()).toThrow('Not inside a module');
   });
+
+  it('gets latest change only from sqitch plan', async () => {
+    const cwd = fixture('launchql');
+    const project = new LaunchQLProject(cwd);
+    await project.init();
+    const modules = project.getModuleMap();
+    const name = Object.keys(modules)[0];
+    const change = project.getLatestChange(name);
+    expect(typeof change).toBe('string');
+    expect(change.length).toBeGreaterThan(0);
+  });
+
+  it('gets dependency changes with versions for internal modules', async () => {
+    const cwd = fixture('launchql');
+    const project = new LaunchQLProject(cwd);
+    await project.init();
+    const name = Object.keys(project.getModuleMap())[0];
+    const result = await project.getModuleDependencyChanges(name);
+    expect(result).toHaveProperty('native');
+    expect(result).toHaveProperty('modules');
+    expect(Array.isArray(result.modules)).toBe(true);
+  });
+
+  it('returns a list of available modules in workspace', async () => {
+    const cwd = fixture('launchql');
+    const project = new LaunchQLProject(cwd);
+    await project.init();
+    const modules = project.getAvailableModules();
+    expect(Array.isArray(modules)).toBe(true);
+    expect(modules.length).toBeGreaterThan(0);
+  });
+  
+
 });
