@@ -1,6 +1,5 @@
 import path from 'path';
-import mkdirp from 'mkdirp';
-import rimraf from 'rimraf';
+import { mkdirSync, rmSync } from 'fs';
 import { sync as glob } from 'glob';
 // import { init } from '@launchql/db-utils';
 import Case from 'case';
@@ -38,7 +37,7 @@ export const preparePackage = async ({
 }: PreparePackageOptions): Promise<void> => {
   const curDir = process.cwd();
   const sqitchDir = path.resolve(path.join(outdir, name));
-  mkdirp.sync(sqitchDir);
+  mkdirSync(sqitchDir, { recursive: true });
   process.chdir(sqitchDir);
 
   const plan = glob(path.join(sqitchDir, 'sqitch.plan'));
@@ -51,9 +50,9 @@ export const preparePackage = async ({
     //   extensions
     // });
   } else {
-    rimraf.sync(path.resolve(sqitchDir, 'deploy'));
-    rimraf.sync(path.resolve(sqitchDir, 'revert'));
-    rimraf.sync(path.resolve(sqitchDir, 'verify'));
+    rmSync(path.resolve(sqitchDir, 'deploy'), { recursive: true, force: true });
+    rmSync(path.resolve(sqitchDir, 'revert'), { recursive: true, force: true });
+    rmSync(path.resolve(sqitchDir, 'verify'), { recursive: true, force: true });
   }
 
   process.chdir(curDir);

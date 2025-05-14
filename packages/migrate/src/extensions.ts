@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs';
+import { ModuleMap } from './modules';
 
-interface ExtensionInfo {
+export interface ExtensionInfo {
   extname: string;
   packageDir: string;
   version: string;
@@ -13,7 +14,7 @@ interface ExtensionInfo {
  * Get the list of available extensions, including predefined core extensions.
  */
 export const getAvailableExtensions = (
-  modules: Record<string, unknown>
+  modules: ModuleMap
 ): string[] => {
   const coreExtensions = [
     'address_standardizer',

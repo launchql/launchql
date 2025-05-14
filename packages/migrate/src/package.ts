@@ -1,8 +1,6 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { sync as mkdirp } from 'mkdirp';
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 import { relative } from 'path';
 import { deparse, parse } from 'pgsql-parser';
-import { sync as rimraf } from 'rimraf';
 
 import { getExtensionName } from './extensions';
 import { resolve, resolveWithPlan } from './resolve';
@@ -115,8 +113,8 @@ export const writePackage = async ({
 
   const outPath = extension ? `${packageDir}/sql` : `${packageDir}/out`;
 
-  rimraf(outPath);
-  mkdirp(outPath);
+  rmSync(outPath, { recursive: true, force: true });
+  mkdirSync(outPath, { recursive: true });
 
   if (extension) {
     // Update control file

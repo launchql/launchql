@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import * as mkdirp from 'mkdirp';
 import { CompiledTemplate } from './compileTemplatesToFunctions';
 
 export function writeCompiledTemplatesToFile(
@@ -9,7 +8,7 @@ export function writeCompiledTemplatesToFile(
   outFile: string
 ) {
   const dir = path.dirname(outFile);
-  mkdirp.sync(dir);
+  fs.mkdirSync(dir, { recursive: true });
 
   const header = `// Auto-generated template module\n\n`;
 

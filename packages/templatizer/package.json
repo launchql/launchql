@@ -1,6 +1,6 @@
 {
   "name": "@launchql/templatizer",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "make templates",
   "main": "index.js",
@@ -32,7 +32,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/node": "8.0.0",
+    "@types/node": "^20.12.7",
     "@types/glob": "^8.1.0",
     "@types/rimraf": "^4.0.5",
     "ts-node": "^10.9.2"
@@ -41,7 +41,6 @@
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "glob": "^11.0.2",
-    "mkdirp": "^3.0.1",
     "rimraf": "^6.0.1"
   }
 }

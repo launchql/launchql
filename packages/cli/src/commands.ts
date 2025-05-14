@@ -9,6 +9,8 @@ import server from './commands/server';
 import explorer from './commands/explorer';
 import verify from './commands/verify';
 import revert from './commands/revert';
+import init from './commands/init';
+import extension from './commands/extension';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -24,6 +26,17 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         process.exit(0);
     }
 
+    await prompter.prompt(argv, [
+        {
+            type: 'text',
+            name: 'cwd',
+            message: 'Working directory',
+            required: false,
+            default: process.cwd(),
+            useDefault: true
+        }
+    ]);
+
     switch (command) {
         case 'deploy':
             await deploy(newArgv, prompter, options);
@@ -34,11 +47,18 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         case 'revert':
             await revert(newArgv, prompter, options);
             break;
+        case 'init':
+            await init(newArgv, prompter, options);
+            break;
         case 'server':
             await server(newArgv, prompter, options);
             break;
         case 'explorer':
             await explorer(newArgv, prompter, options);
+            break;
+        case 'extension':
+            await extension(newArgv, prompter, options);
+            break;
             break;
         default:
             console.error(`Unknown command: ${command}`);

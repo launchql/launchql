@@ -1,6 +1,5 @@
-import fs from 'fs';
+import { mkdirSync, writeFileSync } from 'fs';
 import path from 'path';
-import * as mkdirp from 'mkdirp';
 
 type Func = (vars: Record<string, any>) => { relPath: string, content: string };
 
@@ -12,7 +11,7 @@ export function writeRenderedTemplates(
     templates.forEach(tmpl => {
         const output = tmpl(vars);
         const outPath = path.join(outDir, output.relPath);
-        mkdirp.sync(path.dirname(outPath));
-        fs.writeFileSync(outPath, output.content);
+        mkdirSync(path.dirname(outPath), { recursive: true });
+        writeFileSync(outPath, output.content);
     })
 }

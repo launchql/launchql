@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import mkdirp from 'mkdirp';
 
 export interface SqitchRow {
   deploy: string;
@@ -34,7 +33,7 @@ const writeDeploy = (row: SqitchRow, opts: WriteOptions): void => {
   const prefix = path.join(opts.outdir, opts.name, 'deploy');
   const actualDir = path.resolve(prefix, dir);
   const actualFile = path.resolve(prefix, `${deploy}.sql`);
-  mkdirp.sync(actualDir);
+  fs.mkdirSync(actualDir, { recursive: true });
   const content = `-- Deploy: ${deploy} to pg
 -- made with <3 @ launchql.com
 
@@ -57,7 +56,7 @@ const writeVerify = (row: SqitchRow, opts: WriteOptions): void => {
   const prefix = path.join(opts.outdir, opts.name, 'verify');
   const actualDir = path.resolve(prefix, dir);
   const actualFile = path.resolve(prefix, `${deploy}.sql`);
-  mkdirp.sync(actualDir);
+  fs.mkdirSync(actualDir, { recursive: true });
   const content = opts.replacer(`-- Verify: ${deploy} on pg
 
 BEGIN;
@@ -74,7 +73,7 @@ const writeRevert = (row: SqitchRow, opts: WriteOptions): void => {
   const prefix = path.join(opts.outdir, opts.name, 'revert');
   const actualDir = path.resolve(prefix, dir);
   const actualFile = path.resolve(prefix, `${deploy}.sql`);
-  mkdirp.sync(actualDir);
+  fs.mkdirSync(actualDir, { recursive: true });
   const content = `-- Revert: ${deploy} from pg
 
 BEGIN;
@@ -87,7 +86,7 @@ COMMIT;
 
 export const writeSqitchPlan = (rows: SqitchRow[], opts: WriteOptions): void => {
   const dir = path.resolve(path.join(opts.outdir, opts.name));
-  mkdirp.sync(dir);
+  fs.mkdirSync(dir, { recursive: true });
 
   const date = (): string => '2017-08-11T08:11:51Z'; // stubbed timestamp
 

@@ -14,6 +14,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "clean": "lerna run clean",
     "build": "lerna run build --stream",

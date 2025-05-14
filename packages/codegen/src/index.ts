@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import rimraf from 'rimraf';
 
 import { generateCodeTree } from './codegen/codegen';
 import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect';
@@ -21,7 +20,7 @@ import { DatabaseObject } from './types';
 
   try {
     // Clean the output directory
-    await rimraf(outputDirectory);
+    await fs.rm(outputDirectory, { recursive: true, force: true });
     console.log(`Cleaned output directory: ${outputDirectory}`);
 
     // Fetch introspection rows

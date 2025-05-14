@@ -6,7 +6,7 @@
 - [ ] csv-to-pg should use inqurirer
 - [ ] get this PR from launchql-gen https://github.com/launchql/launchql-gen/pull/19
 - [ ] Docker in workflow needs extensions directories
-
+- [ ] LaunchQL class for the project structures — control files, modules, paths, etc. 
 
 
 Good next steps:
