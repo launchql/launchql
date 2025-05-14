@@ -12,6 +12,8 @@ import revert from './commands/revert';
 import init from './commands/init';
 import extension from './commands/extension';
 import plan from './commands/plan';
+import _export from './commands/export';
+import _package from './commands/package';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -63,6 +65,11 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         case 'plan':
             await plan(newArgv, prompter, options);
             break;
+        case 'package':
+            await _package(newArgv, prompter, options);
+            break;
+        case 'export':
+            await _export(newArgv, prompter, options);
             break;
         default:
             console.error(`Unknown command: ${command}`);

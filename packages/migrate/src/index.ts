@@ -9,5 +9,7 @@ export * from './transform';
 export * from './utils';
 export * from './deploy';
 export * from './revert';
+export * from './export-meta';
+export * from './export-migrations';
 export * from './verify';
 export * from './class/launchql';

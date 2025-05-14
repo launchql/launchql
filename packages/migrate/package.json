@@ -35,6 +35,7 @@
     "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
+    "@launchql/templatizer": "^2.0.0",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "glob": "^11.0.2",

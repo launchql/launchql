@@ -11,7 +11,7 @@ const PROJECT_FILES = {
  * @param cwd - Current working directory.
  * @returns A promise that resolves to the directory path containing `sqitch.conf`.
  */
-export const sqitchPath = async (cwd: string = process.cwd()): Promise<string> => {
+export const sqitchPath = (cwd: string = process.cwd()): string => {
   return walkUp(cwd, PROJECT_FILES.SQITCH);
 };
 
@@ -20,15 +20,15 @@ export const sqitchPath = async (cwd: string = process.cwd()): Promise<string> =
  * @param cwd - Current working directory.
  * @returns A promise that resolves to the directory path containing `launchql.json`.
  */
-export const launchqlPath = async (cwd: string = process.cwd()): Promise<string> => {
+export const launchqlPath = (cwd: string = process.cwd()): string => {
   return walkUp(cwd, PROJECT_FILES.LAUNCHQL);
 };
 
-export const getWorkspacePath = async (cwd: string): Promise<string> => {
+export const getWorkspacePath = (cwd: string): string => {
   let workspacePath: string;
 
   try {
-    workspacePath = await launchqlPath(cwd);
+    workspacePath = launchqlPath(cwd);
   } catch (err) {
     console.error('Error: You must be in a LaunchQL workspace. You can initialize one with the `--workspace` option.');
     process.exit(1);
@@ -37,11 +37,11 @@ export const getWorkspacePath = async (cwd: string): Promise<string> => {
   return workspacePath;
 };
 
-export const getModulePath = async (cwd: string): Promise<string> => {
+export const getModulePath = (cwd: string): string => {
   let pkgPath: string;
 
   try {
-    pkgPath = await sqitchPath(cwd);
+    pkgPath = sqitchPath(cwd);
   } catch (err) {
     console.error('Error: You must be in a LaunchQL module. You can initialize one with the `init` command.');
     process.exit(1);

@@ -61,7 +61,6 @@ describe('extension', () => {
 
     // Step 2b: Snapshot initial control file and module dependencies
     const initialProject = new LaunchQLProject(modulePath);
-    await initialProject.init();
 
     expect(initialProject.getModuleControlFile()).toMatchSnapshot('initial - control file');
     expect(initialProject.getModuleDependencies('my-module')).toMatchSnapshot('initial - module dependencies');
@@ -91,7 +90,6 @@ describe('extension', () => {
 
     // Step 4: Re-init project and validate changes
     const updatedProject = new LaunchQLProject(modulePath);
-    await updatedProject.init();
 
     expect(updatedProject.getModuleControlFile()).toMatchSnapshot('updated - control file');
     expect(updatedProject.getModuleDependencies('my-module')).toMatchSnapshot('updated - module dependencies');

@@ -1,10 +1,16 @@
-import { exportMeta } from './export';
+import path from 'path';
+import { mkdirSync, rmSync } from 'fs';
+import { sync as glob } from 'glob';
+import Case from 'case';
+
+import { exportMeta } from './export-meta';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLOptions } from '@launchql/types';
-import { preparePackage, makeReplacer } from './package-utils';
 import { SqitchRow, writeSqitchFiles, writeSqitchPlan } from './sqitch';
+import { LaunchQLProject } from './class/launchql';
 
-interface WriteOptions {
+interface ExportMigrationsToDiskOptions {
+    project: LaunchQLProject;
     options: LaunchQLOptions;
     database: string;
     databaseId: string;
@@ -15,7 +21,8 @@ interface WriteOptions {
     metaExtensionName: string;
 }
 
-interface MigrateOptions {
+interface ExportOptions {
+    project: LaunchQLProject;
     options: LaunchQLOptions;
     dbInfo: {
         dbname: string;
@@ -28,7 +35,8 @@ interface MigrateOptions {
     metaExtensionName: string;
 }
 
-export const write = async ({
+const exportMigrationsToDisk = async ({
+    project,
     options,
     database,
     databaseId,
@@ -37,7 +45,7 @@ export const write = async ({
     schema_names,
     extensionName,
     metaExtensionName
-}: WriteOptions): Promise<void> => {
+}: ExportMigrationsToDiskOptions): Promise<void> => {
     outdir = outdir + '/';
 
     const pgPool = getRootPgPool({
@@ -88,6 +96,7 @@ export const write = async ({
 
     if (results?.rows?.length > 0) {
         await preparePackage({
+            project,
             author,
             outdir,
             name,
@@ -125,6 +134,7 @@ export const write = async ({
         meta = replacer(meta);
 
         await preparePackage({
+            project,
             author,
             outdir,
             extensions: ['plpgsql', 'db_meta', 'db_meta_modules'],
@@ -181,7 +191,8 @@ SET session_replication_role TO DEFAULT;
     pgPool.end();
 };
 
-export const migrate = async ({
+export const exportMigrations = async ({
+    project,
     options,
     dbInfo,
     author,
@@ -189,10 +200,11 @@ export const migrate = async ({
     schema_names,
     extensionName,
     metaExtensionName
-}: MigrateOptions): Promise<void> => {
+}: ExportOptions): Promise<void> => {
     for (let v = 0; v < dbInfo.database_ids.length; v++) {
         const databaseId = dbInfo.database_ids[v];
-        await write({
+        await exportMigrationsToDisk({
+            project,
             options,
             extensionName,
             metaExtensionName,
@@ -203,4 +215,85 @@ export const migrate = async ({
             outdir
         });
     }
+};
+
+
+interface PreparePackageOptions {
+  project: LaunchQLProject;
+  author: string;
+  outdir: string;
+  name: string;
+  extensions: string[];
+}
+
+interface Schema {
+  name: string;
+  schema_name: string;
+}
+
+interface MakeReplacerOptions {
+  schemas: Schema[];
+  name: string;
+}
+
+interface ReplacerResult {
+  replacer: (str: string, n?: number) => string;
+  replace: [RegExp, string][];
+}
+
+/**
+ * Creates a Sqitch package directory or resets the deploy/revert/verify directories if it exists.
+ */
+const preparePackage = async ({
+  project,
+  author,
+  outdir,
+  name,
+  extensions
+}: PreparePackageOptions): Promise<void> => {
+  const curDir = process.cwd();
+  const sqitchDir = path.resolve(path.join(outdir, name));
+  mkdirSync(sqitchDir, { recursive: true });
+  process.chdir(sqitchDir);
+
+  const plan = glob(path.join(sqitchDir, 'sqitch.plan'));
+  if (!plan.length) {
+    project.initModule({
+        name,
+        description: name,
+        author,
+        extensions,
+    });
+  } else {
+    rmSync(path.resolve(sqitchDir, 'deploy'), { recursive: true, force: true });
+    rmSync(path.resolve(sqitchDir, 'revert'), { recursive: true, force: true });
+    rmSync(path.resolve(sqitchDir, 'verify'), { recursive: true, force: true });
+  }
+
+  process.chdir(curDir);
+};
+
+/**
+ * Generates a function for replacing schema names and extension names in strings.
+ */
+const makeReplacer = ({ schemas, name }: MakeReplacerOptions): ReplacerResult => {
+  const replacements: [string, string] = ['launchql-extension-name', name];
+  const schemaReplacers: [string, string][] = schemas.map((schema) => [
+    schema.schema_name,
+    Case.snake(`${name}_${schema.name}`)
+  ]);
+
+  const replace: [RegExp, string][] = [...schemaReplacers, replacements].map(
+    ([from, to]) => [new RegExp(from, 'g'), to]
+  );
+
+  const replacer = (str: string, n = 0): string => {
+    if (!str) return '';
+    if (replace[n] && replace[n].length === 2) {
+      return replacer(str.replace(replace[n][0], replace[n][1]), n + 1);
+    }
+    return str;
+  };
+
+  return { replacer, replace };
 };

@@ -1,42 +1,37 @@
-import { readFileSync } from 'fs';
-import { CLIOptions, Inquirerer } from 'inquirerer';
-import yaml from 'js-yaml';
-import { ParsedArgs } from 'minimist';
+import { CLIOptions, Inquirerer, Question } from 'inquirerer';
+import { LaunchQLProject, writePackage } from '@launchql/migrate';
+import chalk from 'chalk';
 
-export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, _options: CLIOptions) => {
-    const command: string = argv._?.[0];
-    
-    argv = await prompter.prompt(argv, [
-        // use false, TODO: add optional flag on questions allowSkip: boolean
-        // @ts-ignore
-        {
-            type: 'text',
-            name: 'config',
-            message: 'path to the config',
-            required: false,
-            default: false,
-            useDefault: true
-        },
-        {
-            type: 'text',
-            name: 'inFile',
-            message: 'Provide the path the meta yaml file',
-            required: true
-        },
-        {
-            type: 'text',
-            name: 'outFile',
-            message: 'Provide the path the output yaml file',
-            required: true
-        }
-    ]);
-
-    let context: any = {};
-
-    if (argv.config) {
-        const ctxContent = readFileSync(argv.config, 'utf-8');
-        context = yaml.load(ctxContent) as any;
+export default async (
+  argv: Partial<Record<string, any>>,
+  prompter: Inquirerer,
+  _options: CLIOptions
+) => {
+  const questions: Question[] = [
+    {
+      type: 'confirm',
+      name: 'plan',
+      default: true,
+      useDefault: true,
+      required: true
     }
+  ];
 
-    return argv;
+  let { cwd, plan } = await prompter.prompt(argv, questions);
+
+  const project = new LaunchQLProject(cwd);
+
+  project.ensureModule();
+
+  const info = project.getModuleInfo();
+  info.version
+
+  await writePackage({
+    version: info.version,
+    extension: true,
+    usePlan: plan,
+    packageDir: project.modulePath
+  });
+
+  return argv;
 };

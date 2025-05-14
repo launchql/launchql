@@ -16,7 +16,6 @@ const cleanText = (text: string): string =>
 
 const getModuleProject = async (name: string): Promise<LaunchQLProject> => {
   const workspace = new LaunchQLProject(fixture(['launchql']));
-  await workspace.init();
 
   const moduleMap = workspace.getModuleMap();
   const meta = moduleMap[name];
@@ -24,7 +23,6 @@ const getModuleProject = async (name: string): Promise<LaunchQLProject> => {
 
   const modPath = fixture(['launchql', meta.path]);
   const mod = new LaunchQLProject(modPath);
-  await mod.init();
   return mod;
 };
 

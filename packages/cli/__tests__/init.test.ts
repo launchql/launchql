@@ -83,7 +83,6 @@ describe('init', () => {
     );
 
     const lql = new LaunchQLProject(moduleDir);
-    await lql.init();
 
     expect(lql.getModuleControlFile()).toMatchSnapshot();
   });
