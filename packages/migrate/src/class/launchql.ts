@@ -3,6 +3,12 @@ import path from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
 import { getDeps } from '../deps';
+import chalk from 'chalk';
+
+import {
+  writeRenderedTemplates,
+  moduleTemplate
+} from '@launchql/templatizer';
 
 import {
   listModules,
@@ -21,12 +27,18 @@ import {
   getInstalledExtensions,
   ExtensionInfo,
 } from '../extensions';
+import { exec, execSync } from 'child_process';
 
 export enum ProjectContext {
   Outside = 'outside',
   Workspace = 'workspace-root',
   Module = 'module',
   ModuleInsideWorkspace = 'module-in-workspace',
+}
+
+export interface InitModuleOptions {
+  MODULENAME: string;
+  extensions: string[];
 }
 
 export class LaunchQLProject {
@@ -82,9 +94,41 @@ export class LaunchQLProject {
     return dirs.map(dir => path.resolve(dir));
   }
 
+  private isInsideAllowedDirs(cwd: string): boolean {
+    return this.allowedDirs.some(dir => cwd.startsWith(dir));
+  }
+
+  private createModuleDirectory(modName: string): string {
+    this.ensureWorkspace();
+
+    const isRoot = path.resolve(this.workspacePath!) === path.resolve(this.cwd);
+    let targetPath: string;
+
+    if (isRoot) {
+      const packagesDir = path.join(this.cwd, 'packages');
+      fs.mkdirSync(packagesDir, { recursive: true });
+      targetPath = path.join(packagesDir, modName);
+    } else {
+
+      if (!this.isInsideAllowedDirs(this.cwd)) {
+        console.error(chalk.red(`Error: You must be inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
+        process.exit(1);
+      }
+
+      targetPath = path.join(this.cwd, modName);
+    }
+
+    fs.mkdirSync(targetPath, { recursive: true });
+    return targetPath;
+  }
+
   private ensureModule(): void {
     if (!this.modulePath) throw new Error('Not inside a module');
-  }
+  }  
+
+  private ensureWorkspace(): void {
+    if (!this.workspacePath) throw new Error('Not inside a workspace');
+  }  
 
   getContext(): ProjectContext {
     if (this.modulePath && this.workspacePath) {
@@ -107,10 +151,6 @@ export class LaunchQLProject {
       this.getContext() === ProjectContext.Module ||
       this.getContext() === ProjectContext.ModuleInsideWorkspace
     );
-  }
-
-  isInAllowedDir(): boolean {
-    return this.allowedDirs.some(dir => this.cwd.startsWith(dir));
   }
 
   getWorkspacePath(): string | undefined {
@@ -182,6 +222,29 @@ export class LaunchQLProject {
   setModuleDependencies(modules: string[]): void {
     this.ensureModule();
     writeExtensions(this.cwd, modules);
+  }
+
+  private initSqitchModule(modName: string, targetPath: string): void {
+    const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}`;
+    writeFileSync(path.join(targetPath, 'sqitch.plan'), plan);
+  }
+
+  initModule(modName: string, vars: InitModuleOptions): void {
+    this.ensureWorkspace();
+
+    const targetPath = this.createModuleDirectory(modName);
+    const cur = process.cwd();
+    process.chdir(targetPath);
+
+    writeRenderedTemplates(moduleTemplate, targetPath, vars);  
+
+    execSync(`sqitch init ${modName} --engine pg`, { stdio: 'inherit' });
+
+    this.initSqitchModule(modName, targetPath);
+  
+    writeExtensions(targetPath, vars.extensions);
+
+    process.chdir(cur);
   }
 
   // ──────────────── Dependency Analysis ────────────────

@@ -16,6 +16,6 @@ Good next steps:
 3. Get boilerplate (lql init) working 
 4. Get testing framework working (this will be HUGE) 
 
-
+** remove shelljs
 
 **** MOVE postgraphile-<plugin>s over
