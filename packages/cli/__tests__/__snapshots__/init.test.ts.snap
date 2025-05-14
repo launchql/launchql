@@ -45,6 +45,17 @@ exports[`init initializes with --workspace: workspace - transformResults 1`] = `
 
 exports[`init initializes with --workspace: workspace - writeResults 1`] = `[]`;
 
+exports[`init initializes without --workspace 1`] = `
+"# my-module extension
+comment = 'my-module extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/my-module'
+requires = 'citext,plpgsql'
+relocatable = false
+superuser = false
+  "
+`;
+
 exports[`init initializes without --workspace: module-only - argv 1`] = `
 {
   "MODULENAME": "my-module",

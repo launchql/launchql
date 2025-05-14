@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { commands } from '../src/commands';
 import { ParsedArgs } from 'minimist';
+import { LaunchQLProject } from '@launchql/migrate';
 
 const beforeEachSetup = setupTests();
 
@@ -67,17 +68,24 @@ describe('init', () => {
   });
 
   it('initializes without --workspace', async () => {
-    const moduleDir = path.join(tempDir, 'my-workspace');
+    const workspaceDir = path.join(tempDir, 'my-workspace');
+    const moduleDir = path.join(workspaceDir, 'packages', 'my-module');
 
     await runInitTest(
       {
         _: ['init'],
-        cwd: moduleDir,
+        cwd: workspaceDir,
         name: 'my-module',
         MODULENAME: 'my-module',
         extensions: ['plpgsql', 'citext']
       },
       'module-only'
     );
+
+    const lql = new LaunchQLProject(moduleDir);
+    await lql.init();
+
+    expect(lql.getModuleControlFile()).toMatchSnapshot();
   });
+
 });
