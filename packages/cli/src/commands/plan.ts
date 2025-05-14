@@ -24,13 +24,9 @@ export default async (
     throw new Error('This command must be run inside a LaunchQL module.');
   }
 
-  const info = project.getModuleInfo();
-  const plan = await project.generateModulePlan({
+  project.writeModulePlan({
     projects: true
-  });
-
-  console.log(info);
-  console.log(plan);
-
+  })
+  
   return argv;
 };

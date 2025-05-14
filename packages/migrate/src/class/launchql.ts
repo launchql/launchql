@@ -121,11 +121,11 @@ export class LaunchQLProject {
     return targetPath;
   }
 
-  private ensureModule(): void {
+  ensureModule(): void {
     if (!this.modulePath) throw new Error('Not inside a module');
   }  
 
-  private ensureWorkspace(): void {
+  ensureWorkspace(): void {
     if (!this.workspacePath) throw new Error('Not inside a workspace');
   }  
 

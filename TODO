@@ -18,4 +18,6 @@ Good next steps:
 
 ** remove shelljs
 
-**** MOVE postgraphile-<plugin>s over (import HIST)
+** MOVE postgraphile-<plugin>s over (import HIST)
+
+** some-schema during package requires some_schema instead to work

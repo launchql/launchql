@@ -17,9 +17,7 @@ export default async (
   const cwd = argv.cwd ?? process.cwd();
   const project = new LaunchQLProject(cwd);
 
-  if (!project.isInWorkspace()) {
-    throw new Error('You must run this command inside a LaunchQL workspace.');
-  }
+  project.ensureWorkspace();
 
   const options = getEnvOptions(); 
   const { pg } = options;
