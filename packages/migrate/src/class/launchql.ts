@@ -1,7 +1,8 @@
-import fs from 'fs';
+import fs, { writeFileSync } from 'fs';
 import path from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
+import { getDeps } from '../deps';
 
 import {
   listModules,
@@ -209,4 +210,90 @@ export class LaunchQLProject {
     const { native, sqitch } = await getExtensionsAndModulesChanges(moduleName, modules, this.workspacePath!);
     return { native, modules: sqitch };
   }
+
+  // ──────────────── Plans ────────────────
+
+  getModulePlan (): string {
+    this.ensureModule();
+    const planPath = path.join(this.getModulePath()!, 'sqitch.plan');
+    return fs.readFileSync(planPath, 'utf8');
+  }
+
+  getModuleControlFile(): string {
+    this.ensureModule();
+    const info = this.getModuleInfo();
+    return fs.readFileSync(info.controlFile, 'utf8');
+  }
+
+  getModuleMakefile(): string {
+    this.ensureModule();
+    const info = this.getModuleInfo();
+    return fs.readFileSync(info.Makefile, 'utf8');
+  }
+
+  getModuleSQL(): string {
+    this.ensureModule();
+    const info = this.getModuleInfo();
+    return fs.readFileSync(info.sqlFile, 'utf8');
+  }
+
+  async generateModulePlan(options: { uri?: string; projects?: boolean }): Promise<string> {
+    this.ensureModule();
+    const info = this.getModuleInfo();
+    const moduleName = info.extname;
+
+    const now =
+      process.env.NODE_ENV === 'test'
+        ? '2017-08-11T08:11:51Z'
+        : new Date().toISOString();
+
+    const planfile: string[] = [
+      `%syntax-version=1.0.0`,
+      `%project=${moduleName}`,
+      `%uri=${options.uri || moduleName}`
+    ];
+
+    const { resolved, deps } = await getDeps(this.cwd, moduleName);
+
+    if (options.projects && this.workspacePath) {
+      const depData = await this.getModuleDependencyChanges(moduleName);
+      const external = depData.modules.map((m) => `${m.name}:${m.latest}`);
+
+      const key = `/deploy/${resolved[0]}.sql`;
+      deps[key] ||= [];
+      deps[key].push(...external);
+    }
+
+    const makeKey = (sqlmod: string) => `/deploy/${sqlmod}.sql`;
+
+    resolved.forEach((res) => {
+      if (/:/.test(res)) return;
+
+      const dependencies = deps[makeKey(res)];
+      if (dependencies?.length) {
+        planfile.push(
+          `${res} [${dependencies.join(
+            ' '
+          )}] ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
+        );
+      } else {
+        planfile.push(`${res} ${now} launchql <launchql@5b0c196eeb62> # add ${res}`);
+      }
+    });
+
+    return planfile.join('\n');
+  }
+
+  async writeModulePlan(
+    options: { uri?: string; projects?: boolean }
+  ): Promise<void> {
+    this.ensureModule();
+    const name = this.getModuleName();
+    const plan = await this.generateModulePlan(options);
+    const moduleMap = this.getModuleMap();
+    const mod = moduleMap[name];
+    const planPath = path.join(this.workspacePath!, mod.path, 'sqitch.plan');
+    writeFileSync(planPath, plan);
+  }
+
 }

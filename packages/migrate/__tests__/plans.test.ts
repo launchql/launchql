@@ -3,6 +3,8 @@ import { join } from 'path';
 import { getPlan } from '../src/plans';
 import { FIXTURES_PATH } from '../test-utils';
 
+// @deprecate THIS test and plan methods
+
 const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/launchql');
 
 /**

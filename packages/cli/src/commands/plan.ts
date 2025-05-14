@@ -1,35 +1,37 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { getExtensionInfo, getModulePath, getWorkspacePath, makePlan } from '@launchql/migrate';
+import { LaunchQLProject } from '@launchql/migrate';
 import chalk from 'chalk';
 
 export default async (
-    argv: Partial<Record<string, any>>,
-    prompter: Inquirerer,
-    _options: CLIOptions
+  argv: Partial<Record<string, any>>,
+  prompter: Inquirerer,
+  _options: CLIOptions
 ) => {
-    const questions: Question[] = [
+  const questions: Question[] = [
+    // optionally add CLI prompt questions here later
+  ];
 
-    ];
+  let { cwd } = await prompter.prompt(argv, questions);
 
-    let { cwd } = await prompter.prompt(argv, questions);
+  if (!cwd) {
+    cwd = process.cwd();
+    console.log(chalk.gray(`Using current directory: ${cwd}`));
+  }
 
-    if (!cwd) {
-        cwd = process.cwd();
-        console.log(chalk.gray(`Using current directory: ${cwd}`));
-    }
+  const project = new LaunchQLProject(cwd);
+  await project.init();
 
-    const workspacePath = await getWorkspacePath(cwd);
-    const modulePath = await getModulePath(cwd);
-    const info = await getExtensionInfo(modulePath);
+  if (!project.isInModule()) {
+    throw new Error('This command must be run inside a LaunchQL module.');
+  }
 
-    // apparently this is literally super dumb and simple?
-    const plan = await makePlan(workspacePath, modulePath, {
-        name: info.extname,
-        projects: true,
-        uri: info.extname
-    });
+  const info = project.getModuleInfo();
+  const plan = await project.generateModulePlan({
+    projects: true
+  });
 
-    console.log(plan);
+  console.log(info);
+  console.log(plan);
 
-    return argv;
+  return argv;
 };

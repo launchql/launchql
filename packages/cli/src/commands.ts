@@ -11,6 +11,7 @@ import verify from './commands/verify';
 import revert from './commands/revert';
 import init from './commands/init';
 import extension from './commands/extension';
+import plan from './commands/plan';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -58,6 +59,9 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
             break;
         case 'extension':
             await extension(newArgv, prompter, options);
+            break;
+        case 'plan':
+            await plan(newArgv, prompter, options);
             break;
             break;
         default:
