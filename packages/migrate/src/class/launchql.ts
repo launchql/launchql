@@ -224,27 +224,22 @@ export class LaunchQLProject {
     writeExtensions(this.cwd, modules);
   }
 
-  private initSqitchModule(modName: string, targetPath: string): void {
+  private initModuleSqitch(modName: string, targetPath: string): void {
+    const cur = process.cwd();
+    process.chdir(targetPath);
+    execSync(`sqitch init ${modName} --engine pg`, { stdio: 'inherit' });
     const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}`;
     writeFileSync(path.join(targetPath, 'sqitch.plan'), plan);
+    process.chdir(cur);
   }
 
   initModule(modName: string, vars: InitModuleOptions): void {
     this.ensureWorkspace();
 
     const targetPath = this.createModuleDirectory(modName);
-    const cur = process.cwd();
-    process.chdir(targetPath);
-
     writeRenderedTemplates(moduleTemplate, targetPath, vars);  
-
-    execSync(`sqitch init ${modName} --engine pg`, { stdio: 'inherit' });
-
-    this.initSqitchModule(modName, targetPath);
-  
+    this.initModuleSqitch(modName, targetPath);
     writeExtensions(targetPath, vars.extensions);
-
-    process.chdir(cur);
   }
 
   // ──────────────── Dependency Analysis ────────────────
