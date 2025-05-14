@@ -37,7 +37,9 @@ export enum ProjectContext {
 }
 
 export interface InitModuleOptions {
-  MODULENAME: string;
+  name: string;
+  description: string;
+  author: string;
   extensions: string[];
 }
 
@@ -53,29 +55,26 @@ export class LaunchQLProject {
 
   constructor(cwd: string = process.cwd()) {
     this.cwd = path.resolve(cwd);
-  }
-
-  async init(): Promise<void> {
-    this.workspacePath = await this.resolveLaunchqlPath();
-    this.modulePath = await this.resolveSqitchPath();
+    this.workspacePath = this.resolveLaunchqlPath();
+    this.modulePath = this.resolveSqitchPath();
 
     if (this.workspacePath) {
       this.config = this.loadConfig();
       this.allowedDirs = this.loadAllowedDirs();
     }
   }
-
-  private async resolveLaunchqlPath(): Promise<string | undefined> {
+  
+  private resolveLaunchqlPath(): string | undefined {
     try {
-      return await walkUp(this.cwd, 'launchql.json');
+      return walkUp(this.cwd, 'launchql.json');
     } catch {
       return undefined;
     }
   }
 
-  private async resolveSqitchPath(): Promise<string | undefined> {
+  private resolveSqitchPath(): string | undefined {
     try {
-      return await walkUp(this.cwd, 'sqitch.conf');
+      return walkUp(this.cwd, 'sqitch.conf');
     } catch {
       return undefined;
     }
@@ -94,7 +93,7 @@ export class LaunchQLProject {
     return dirs.map(dir => path.resolve(dir));
   }
 
-  private isInsideAllowedDirs(cwd: string): boolean {
+  isInsideAllowedDirs(cwd: string): boolean {
     return this.allowedDirs.some(dir => cwd.startsWith(dir));
   }
 
@@ -176,7 +175,6 @@ export class LaunchQLProject {
 
     for (const dir of dirs) {
       const proj = new LaunchQLProject(dir);
-      await proj.init();
       if (proj.isInModule()) {
         results.push(proj);
       }
@@ -233,13 +231,12 @@ export class LaunchQLProject {
     process.chdir(cur);
   }
 
-  initModule(modName: string, vars: InitModuleOptions): void {
+  initModule(options: InitModuleOptions): void {
     this.ensureWorkspace();
-
-    const targetPath = this.createModuleDirectory(modName);
-    writeRenderedTemplates(moduleTemplate, targetPath, vars);  
-    this.initModuleSqitch(modName, targetPath);
-    writeExtensions(targetPath, vars.extensions);
+    const targetPath = this.createModuleDirectory(options.name);
+    writeRenderedTemplates(moduleTemplate, targetPath, options);  
+    this.initModuleSqitch(options.name, targetPath);
+    writeExtensions(targetPath, options.extensions);
   }
 
   // ──────────────── Dependency Analysis ────────────────

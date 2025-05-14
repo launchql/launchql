@@ -67,14 +67,13 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
   const { cwd = process.cwd() } = argv;
 
   const project = new LaunchQLProject(cwd);
-  await project.init();
 
   if (!project.workspacePath) {
     console.error(chalk.red('Error: Not inside a LaunchQL workspace.'));
     process.exit(1);
   }
 
-  if (!project.isInAllowedDir() && !project.isInWorkspace()) {
+  if (!project.isInsideAllowedDirs(cwd) && !project.isInWorkspace()) {
     console.error(chalk.red(`Error: You must be inside one of the workspace packages.`));
     process.exit(1);
   }
@@ -106,9 +105,10 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
     .map((opt: OptionValue) => opt.name);
 
 
-    project.initModule(modName, {
+    project.initModule({
       ...argv,
       ...answers,
+      name: modName, 
       // @ts-ignore
     USERFULLNAME: username,
     USEREMAIL: email,

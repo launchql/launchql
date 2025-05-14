@@ -19,7 +19,6 @@ export default async (
   }
 
   const project = new LaunchQLProject(cwd);
-  await project.init();
 
   if (!project.isInModule()) {
     throw new Error('This command must be run inside a LaunchQL module.');

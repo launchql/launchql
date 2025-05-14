@@ -20,7 +20,6 @@ afterEach(() => {
 
 const getModuleProject = async (name: string): Promise<LaunchQLProject> => {
   const workspace = new LaunchQLProject(tempRoot);
-  await workspace.init();
 
   const moduleMap = workspace.getModuleMap();
   const meta = moduleMap[name];
@@ -28,7 +27,6 @@ const getModuleProject = async (name: string): Promise<LaunchQLProject> => {
 
   const modPath = path.join(tempRoot, meta.path);
   const mod = new LaunchQLProject(modPath);
-  await mod.init();
   return mod;
 };
 

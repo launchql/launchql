@@ -6,7 +6,7 @@
 - [ ] csv-to-pg should use inqurirer
 - [ ] get this PR from launchql-gen https://github.com/launchql/launchql-gen/pull/19
 - [ ] Docker in workflow needs extensions directories
-- [ ] LaunchQL class for the project structures — control files, modules, paths, etc. 
+- [x] LaunchQL class for the project structures — control files, modules, paths, etc. 
 - [ ] mod.setModuleDependencies(['some-native-module', 'pg-utilities']); allows for circular refs
 - [ ] when deploy/**/some.sql requires a project, not detected by moduleDependencies, potentially write a method to extract these
 
@@ -18,4 +18,4 @@ Good next steps:
 
 ** remove shelljs
 
-**** MOVE postgraphile-<plugin>s over
+**** MOVE postgraphile-<plugin>s over (import HIST)

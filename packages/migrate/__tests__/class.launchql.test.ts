@@ -8,7 +8,6 @@ describe('LaunchQLProject', () => {
   it('detects workspace root context correctly', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     expect(project.getContext()).toBe(ProjectContext.Workspace);
     expect(project.isInWorkspace()).toBe(true);
@@ -18,7 +17,6 @@ describe('LaunchQLProject', () => {
   it('detects module inside workspace correctly', async () => {
     const cwd = path.join(fixture('launchql'), 'packages', 'secrets');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     expect(project.getContext()).toBe(ProjectContext.ModuleInsideWorkspace);
     expect(project.isInWorkspace()).toBe(false);
@@ -28,7 +26,6 @@ describe('LaunchQLProject', () => {
   it('detects standalone module context', async () => {
     const cwd = path.join(fixture('resolve'), 'basic');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     expect(project.getContext()).toBe(ProjectContext.Module);
     expect(project.isInModule()).toBe(true);
@@ -38,7 +35,6 @@ describe('LaunchQLProject', () => {
   it('returns modules within workspace', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const modules = await project.getModules();
     expect(Array.isArray(modules)).toBe(true);
@@ -51,7 +47,6 @@ describe('LaunchQLProject', () => {
   it('resolves module name from sqitch plan', async () => {
     const cwd = path.join(fixture('launchql'), 'packages', 'secrets');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const name = project.getModuleName();
     expect(typeof name).toBe('string');
@@ -61,7 +56,6 @@ describe('LaunchQLProject', () => {
   it('resolves module info with version and paths', async () => {
     const cwd = path.join(fixture('launchql'), 'packages', 'secrets');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const info = project.getModuleInfo();
     expect(info.extname).toBeTruthy();
@@ -73,7 +67,6 @@ describe('LaunchQLProject', () => {
   it('gets required modules from control file', async () => {
     const cwd = path.join(fixture('launchql'), 'packages', 'secrets');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const deps = project.getRequiredModules();
     expect(Array.isArray(deps)).toBe(true);
@@ -83,7 +76,6 @@ describe('LaunchQLProject', () => {
   it('gets latest change and version for a workspace module', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const modules = project.getModuleMap();
     const modName = Object.keys(modules)[0];
@@ -97,7 +89,6 @@ describe('LaunchQLProject', () => {
   it('gets native and internal module dependencies', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const modules = project.getModuleMap();
     const modName = Object.keys(modules)[0];
@@ -110,7 +101,6 @@ describe('LaunchQLProject', () => {
   it('clears internal caches correctly', async () => {
     const cwd = path.join(fixture('launchql'), 'packages', 'secrets');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     const firstCall = project.getModuleInfo();
     project.clearCache();
@@ -122,7 +112,6 @@ describe('LaunchQLProject', () => {
   it('throws on module info if not in module', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
 
     expect(() => project.getModuleInfo()).toThrow('Not inside a module');
   });
@@ -130,7 +119,6 @@ describe('LaunchQLProject', () => {
   it('gets latest change only from sqitch plan', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
     const modules = project.getModuleMap();
     const name = Object.keys(modules)[0];
     const change = project.getLatestChange(name);
@@ -141,7 +129,6 @@ describe('LaunchQLProject', () => {
   it('gets dependency changes with versions for internal modules', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
     const name = Object.keys(project.getModuleMap())[0];
     const result = await project.getModuleDependencyChanges(name);
     expect(result).toHaveProperty('native');
@@ -152,7 +139,6 @@ describe('LaunchQLProject', () => {
   it('returns a list of available modules in workspace', async () => {
     const cwd = fixture('launchql');
     const project = new LaunchQLProject(cwd);
-    await project.init();
     const modules = project.getAvailableModules();
     expect(Array.isArray(modules)).toBe(true);
     expect(modules.length).toBeGreaterThan(0);

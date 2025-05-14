@@ -14,7 +14,6 @@ it('writes module metadata files without modifying fixture', async () => {
   fs.cpSync(src, dst, { recursive: true }); // copy module to temp dir
 
   const project = new LaunchQLProject(dst);
-  await project.init();
 
   expect(() =>
     project.setModuleDependencies(['plpgsql', 'uuid-ossp', 'airpage', 'launchql', 'cosmology'])
