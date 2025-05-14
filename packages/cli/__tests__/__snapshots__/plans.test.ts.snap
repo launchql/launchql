@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`extension updates module with \`extension\` and \`package\` commands in copied fixture workspace: extension-update - files 1`] = `
+[
+  "deploy/procedures/secretfunction.sql",
+  "Makefile",
+  "package.json",
+  "revert/procedures/secretfunction.sql",
+  "secrets.control",
+  "sqitch.conf",
+  "sqitch.plan",
+  "sql/secrets--0.0.1.sql",
+  "verify/procedures/secretfunction.sql",
+]
+`;
+
+exports[`extension updates module with \`extension\` and \`package\` commands in copied fixture workspace: extension-update - sql 1`] = `
+"\\echo Use "CREATE EXTENSION secrets" to load this file. \\quit
+CREATE FUNCTION secretfunction (  ) RETURNS text AS $EOFCODE$
+  select * from generate_secret();
+$EOFCODE$ LANGUAGE sql STABLE;"
+`;
+
+exports[`extension updates module with \`extension\` and \`package\` commands in copied fixture workspace: initial - control file 1`] = `
+"# secrets extension
+comment = 'skitch project'
+default_version = '0.0.1'
+module_pathname = '$libdir/utils'
+requires = 'plpgsql,uuid-ossp,totp,pg-verify'
+relocatable = false
+superuser = false
+"
+`;
+
+exports[`extension updates module with \`extension\` and \`package\` commands in copied fixture workspace: initial - module dependencies 1`] = `
+{
+  "modules": [
+    "totp",
+    "pg-verify",
+  ],
+  "native": [
+    "plpgsql",
+    "uuid-ossp",
+  ],
+}
+`;
+
+exports[`extension updates module with \`extension\` and \`package\` commands in copied fixture workspace: initial - required modules 1`] = `
+[
+  "plpgsql",
+  "uuid-ossp",
+  "totp",
+  "pg-verify",
+]
+`;
