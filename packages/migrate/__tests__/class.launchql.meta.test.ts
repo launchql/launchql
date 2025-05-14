@@ -17,7 +17,7 @@ it('writes module metadata files without modifying fixture', async () => {
   await project.init();
 
   expect(() =>
-    project.setModuleDependencies(['plpgsql', 'uuid-ossp'])
+    project.setModuleDependencies(['plpgsql', 'uuid-ossp', 'airpage', 'launchql', 'cosmology'])
   ).not.toThrow();
 
   const controlFile = fs.readFileSync(
@@ -26,7 +26,7 @@ it('writes module metadata files without modifying fixture', async () => {
   );
   const makefile = fs.readFileSync(path.join(dst, 'Makefile'), 'utf8');
 
-  expect(controlFile).toContain('requires = \'plpgsql,uuid-ossp\'');
+  expect(controlFile).toContain('requires = \'plpgsql,uuid-ossp,airpage,launchql,cosmology\'');
   expect(makefile).toContain('EXTENSION = secrets');
 
   fs.rmSync(tempRoot, { recursive: true, force: true }); // cleanup
