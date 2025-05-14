@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init prompts user and correctly processes delayed input 1`] = `
+{
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "name": "myproject",
+  "workspace": true,
+}
+`;
+
+exports[`init prompts user and correctly processes delayed input 2`] = `
+{
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "name": "myproject",
+  "workspace": true,
+}
+`;
+
+exports[`init prompts user and correctly processes delayed input 3`] = `[]`;
+
+exports[`init prompts user and correctly processes delayed input 4`] = `[]`;
+
+exports[`init prompts user and correctly processes delayed input 5`] = `
+[
+  "myproject/.eslintrc.json",
+  "myproject/.gitignore",
+  "myproject/.prettierrc.json",
+  "myproject/.questions.json",
+  "myproject/bin/install.sh",
+  "myproject/bootstrap-roles.sql",
+  "myproject/docker-compose.yml",
+  "myproject/launchql.json",
+  "myproject/lerna.json",
+  "myproject/LICENSE",
+  "myproject/Makefile",
+  "myproject/package.json",
+  "myproject/README.md",
+  "myproject/tsconfig.json",
+]
+`;

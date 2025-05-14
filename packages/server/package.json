@@ -51,7 +51,7 @@
     "graphile-meta-schema": "^0.2.5",
     "graphile-search-plugin": "^0.1.2",
     "graphile-simple-inflector": "^0.1.1",
-    "graphql-upload": "^17.0.0",
+    "graphql-upload": "^15.0.2",
     "graphql-tag": "2.12.6",
     "lru-cache": "^11.1.0",
     "pg": "^8.15.6",
@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/graphql-upload": "^17.0.0",
+    "@types/graphql-upload": "^15.0.2",
     "@types/express": "^5.0.1",
     "@types/pg": "^8.11.10",
     "@types/request-ip": "^0.0.41",
