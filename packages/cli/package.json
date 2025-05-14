@@ -47,7 +47,6 @@
     "inquirerer": "^2.0.2",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
-    "mkdirp": "^3.0.1",
     "shelljs": "^0.9.2"
   }
 }

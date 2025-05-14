@@ -1,7 +1,7 @@
 import { Inquirerer, Question } from 'inquirerer';
 import chalk from 'chalk';
-import * as mkdirp from 'mkdirp';
 import path from 'path';
+import { mkdirSync } from 'fs';
 import { 
   writeRenderedTemplates,
   workspaceTemplate
@@ -22,7 +22,7 @@ export default async function runWorkspaceSetup(argv: Partial<Record<string, any
   const { cwd } = argv;
   const targetPath = path.join(cwd!, sluggify(answers.name));
 
-  mkdirp.sync(targetPath);
+  mkdirSync(targetPath, { recursive: true });
   console.log(chalk.green(`Created workspace directory: ${targetPath}`));
 
   writeRenderedTemplates(workspaceTemplate, targetPath, { ...argv, ...answers });

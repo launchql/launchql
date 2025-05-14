@@ -1,8 +1,7 @@
 import { Inquirerer, Question } from 'inquirerer';
 import chalk from 'chalk';
-import * as mkdirp from 'mkdirp';
 import path from 'path';
-import fs, { writeFileSync } from 'fs';
+import fs, { writeFileSync, mkdirSync } from 'fs';
 import glob from 'glob';
 import { 
   writeRenderedTemplates,
@@ -112,13 +111,13 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
 
   if (isAtWorkspaceRoot) {
     const packagesDir = path.join(cwd, 'packages');
-    mkdirp.sync(packagesDir);
+    mkdirSync(packagesDir, { recursive: true });
     targetPath = path.join(packagesDir, modName);
-    mkdirp.sync(targetPath);
+    mkdirSync(targetPath, { recursive: true });
     console.log(chalk.green(`Created module in workspace packages/: ${targetPath}`));
   } else {
     targetPath = path.join(cwd, modName);
-    mkdirp.sync(targetPath);
+    mkdirSync(targetPath, { recursive: true });
     console.log(chalk.green(`Created module: ${targetPath}`));
   }
 
