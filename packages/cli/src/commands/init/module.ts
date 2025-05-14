@@ -1,4 +1,4 @@
-import { Inquirerer, Question } from 'inquirerer';
+import { Inquirerer, OptionValue, Question } from 'inquirerer';
 import chalk from 'chalk';
 import path from 'path';
 import fs, { writeFileSync, mkdirSync } from 'fs';
@@ -7,7 +7,7 @@ import {
   writeRenderedTemplates,
   moduleTemplate
 } from '@launchql/templatizer';
-import { getAvailableExtensions, getExtensionInfo, getWorkspacePath, listModules, makePlan, sluggify, writeExtensionControlFile, writeExtensionMakefile } from '@launchql/migrate';
+import { getAvailableExtensions, getExtensionInfo, getWorkspacePath, listModules, makePlan, sluggify, writeExtensionControlFile, writeExtensionMakefile, writeExtensions } from '@launchql/migrate';
 import { exec } from 'shelljs';
 
 function isInsideAllowedDirs(cwd: string, allowedDirs: string[]): boolean {
@@ -96,6 +96,7 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
         message: 'which extensions?',
         options: availExtensions,
         type: 'checkbox',
+        allowCustomOptions: true,
         // default: ['plpgsql'],
         // default: [{
         //      name: 'plpgsql',
@@ -135,19 +136,29 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
 
   writeFileSync(`${targetPath}/sqitch.plan`, plan);
 
-  const info = await getExtensionInfo(targetPath);
+  // const info = await getExtensionInfo(targetPath);
 
-  await writeExtensionMakefile(
-    info.Makefile,
-    modName,
-    '0.0.1'
-  );
-  await writeExtensionControlFile(
-    info.controlFile,
-    modName,
-    answers.extensions.map((a:any)=>a.name),
-    '0.0.1'
-  );
+  // console.log({ansers: answers.extensions})
+  // console.log(answers, argv);
+  
+  const mods = answers.extensions.filter((a: OptionValue)=>a.selected).map((a: OptionValue)=>a.name);
+  const mods2 = argv.extensions.filter((a: OptionValue)=>a.selected).map((a: OptionValue)=>a.value);
+  // console.log({mods2, ext: argv.extensions});
+  
+  // console.log({mods});
+  writeExtensions(targetPath, mods);
+
+  // await writeExtensionMakefile(
+  //   info.Makefile,
+  //   modName,
+  //   '0.0.1'
+  // );
+  // await writeExtensionControlFile(
+  //   info.controlFile,
+  //   modName,
+  //   answers.extensions.filter((a: OptionValue)=>a.selected).map((a: OptionValue)=>a.name),
+  //   '0.0.1'
+  // );
 
   process.chdir(cur);
   return { ...argv, ...answers };

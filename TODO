@@ -15,3 +15,7 @@ Good next steps:
 2. Get export working 
 3. Get boilerplate (lql init) working 
 4. Get testing framework working (this will be HUGE) 
+
+
+
+**** MOVE postgraphile-<plugin>s over

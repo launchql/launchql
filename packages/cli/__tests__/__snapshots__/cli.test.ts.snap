@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Inquirerer prompts user and correctly processes delayed input 1`] = `
+{
+  "autocompleteField": "firry third option",
+}
+`;
+
+exports[`Inquirerer prompts user and correctly processes delayed input 2`] = `
+{
+  "autocompleteField": "firry third option",
+}
+`;
+
+exports[`Inquirerer prompts user and correctly processes delayed input 3`] = `
+[
+  "",
+  "autocompleteField?
+Argument<SPACE>--autocompleteField<SPACE>type<SPACE>[autocomplete]
+><SPACE>Your<SPACE>input:
+$<SPACE>
+",
+  "><SPACE>first<SPACE>option
+",
+  "<SPACE><SPACE>firry<SPACE>second<SPACE>option
+",
+  "<SPACE><SPACE>firry<SPACE>third<SPACE>option
+",
+  "",
+  "autocompleteField?
+Argument<SPACE>--autocompleteField<SPACE>type<SPACE>[autocomplete]
+><SPACE>Your<SPACE>input:
+$<SPACE>
+",
+  "<SPACE><SPACE>first<SPACE>option
+",
+  "><SPACE>firry<SPACE>second<SPACE>option
+",
+  "<SPACE><SPACE>firry<SPACE>third<SPACE>option
+",
+  "",
+  "autocompleteField?
+Argument<SPACE>--autocompleteField<SPACE>type<SPACE>[autocomplete]
+><SPACE>Your<SPACE>input:
+$<SPACE>
+",
+  "<SPACE><SPACE>first<SPACE>option
+",
+  "<SPACE><SPACE>firry<SPACE>second<SPACE>option
+",
+  "><SPACE>firry<SPACE>third<SPACE>option
+",
+]
+`;
+
+exports[`Inquirerer prompts user and correctly processes delayed input 4`] = `
+[
+  "",
+  "",
+  "<ENTER>",
+]
+`;
