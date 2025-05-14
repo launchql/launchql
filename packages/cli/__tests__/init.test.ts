@@ -55,7 +55,7 @@ describe('init', () => {
     expect(relativeFiles).toMatchSnapshot(`${label} - files`);
   };
 
-  it('initializes with --workspace', async () => {
+  it('initializes workspace', async () => {
     await runInitTest(
       {
         _: ['init'],
@@ -67,7 +67,7 @@ describe('init', () => {
     );
   });
 
-  it('initializes without --workspace', async () => {
+  it('initialize module', async () => {
     const workspaceDir = path.join(tempDir, 'my-workspace');
     const moduleDir = path.join(workspaceDir, 'packages', 'my-module');
 
