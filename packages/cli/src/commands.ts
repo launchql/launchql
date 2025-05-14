@@ -11,6 +11,7 @@ import verify from './commands/verify';
 import revert from './commands/revert';
 import init from './commands/init';
 import extension from './commands/extension';
+import extension2 from './commands/extension2';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -58,6 +59,9 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
             break;
         case 'extension':
             await extension(newArgv, prompter, options);
+            break;
+        case 'extension2':
+            await extension2(newArgv, prompter, options);
             break;
         default:
             console.error(`Unknown command: ${command}`);

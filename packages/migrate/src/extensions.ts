@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { ModuleMap } from './modules';
 
-interface ExtensionInfo {
+export interface ExtensionInfo {
   extname: string;
   packageDir: string;
   version: string;
