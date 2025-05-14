@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`extension runs \`extension\` command after workspace and module setup: extension-update - files 1`] = `
+[
+  "__tests__/first.test.ts",
+  ".questions.json",
+  "jest.config.js",
+  "Makefile",
+  "my-module.control",
+  "package.json",
+  "README.md",
+  "sqitch.conf",
+  "sqitch.plan",
+  "src/index.ts",
+  "tsconfig.esm.json",
+  "tsconfig.json",
+]
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: extension-update - result 1`] = `
+{
+  "_": [
+    "extension",
+  ],
+  "cwd": "<CWD>",
+  "extensions": [
+    "plpgsql",
+    "module-c",
+  ],
+}
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: initial - control file 1`] = `
+"# my-module extension
+comment = 'my-module extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/my-module'
+requires = 'mod-1,mod2'
+relocatable = false
+superuser = false
+  "
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: initial - module dependencies 1`] = `
+{
+  "modules": [],
+  "native": [
+    "mod-1",
+    "mod2",
+  ],
+}
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: initial - required modules 1`] = `
+[
+  "mod-1",
+  "mod2",
+]
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: updated - control file 1`] = `
+"# my-module extension
+comment = 'my-module extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/my-module'
+requires = 'plpgsql,module-c'
+relocatable = false
+superuser = false
+  "
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: updated - module dependencies 1`] = `
+{
+  "modules": [],
+  "native": [
+    "plpgsql",
+    "module-c",
+  ],
+}
+`;
+
+exports[`extension runs \`extension\` command after workspace and module setup: updated - required modules 1`] = `
+[
+  "plpgsql",
+  "module-c",
+]
+`;

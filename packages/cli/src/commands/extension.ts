@@ -23,16 +23,17 @@ export default async (
 
   const questions: Question[] = [
     {
-      name: 'modules',
+      name: 'extensions',
       message: 'Which modules does this one depend on?',
       type: 'checkbox',
+      allowCustomOptions: true,
       options: filtered,
       default: installed
     }
   ];
 
   const answers = await prompter.prompt(argv, questions);
-  const selected = (answers.modules as OptionValue[])
+  const selected = (answers.extensions as OptionValue[])
     .filter(opt => opt.selected)
     .map(opt => opt.name);
 
