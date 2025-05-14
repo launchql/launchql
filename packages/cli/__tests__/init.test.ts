@@ -1,59 +1,83 @@
-import { Inquirerer, Question, InquirererOptions } from 'inquirerer';
-import { KEY_SEQUENCES, setupTests, TestEnvironment } from '../test-utils';
+import { Inquirerer, InquirererOptions } from 'inquirerer';
+import { setupTests, TestEnvironment } from '../test-utils';
 import * as os from 'os';
 import * as path from 'path';
 import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { commands } from '../src/commands';
-import { options } from '../src';
 import { ParsedArgs } from 'minimist';
 
 const beforeEachSetup = setupTests();
 
 describe('init', () => {
-    let environment: TestEnvironment;
-    let tempDir: string;
+  let environment: TestEnvironment;
+  let tempDir: string;
 
-    beforeEach(() => {
-        environment = beforeEachSetup();
-        tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-init-test-'));
+  beforeAll(() => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-init-test-'));
+  });
+
+  afterAll(() => {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  beforeEach(() => {
+    environment = beforeEachSetup();
+  });
+
+  const runInitTest = async (argv: ParsedArgs, label: string) => {
+    const { mockInput, mockOutput, writeResults, transformResults } = environment;
+
+    const prompter = new Inquirerer({
+      input: mockInput,
+      output: mockOutput,
+      noTty: true
     });
 
-    it('prompts user and correctly processes delayed input', async () => {
-        const { mockInput, mockOutput, writeResults, transformResults } = environment;
+    // @ts-ignore
+    const result = await commands(argv, prompter, {});
 
-        const inqOpts: InquirererOptions = {
-            input: mockInput,
-            output: mockOutput,
-            noTty: true
-        };
-
-        const prompter = new Inquirerer(inqOpts);
-
-        const argv: ParsedArgs = {
-            _: ['init'],
-            cwd: tempDir,
-            name: 'myproject',
-            workspace: true,
-        };
-
-        // @ts-ignore
-        const result = await commands(argv, prompter, { });
-
-        const absoluteFiles = glob('**/*', {
-            cwd: tempDir,
-            dot: true,
-            nodir: true,
-            absolute: true
-        });
-
-        const relativeFiles = absoluteFiles.map(file => path.relative(tempDir, file));
-
-        argv.cwd = '<CWD>';
-        expect(argv).toMatchSnapshot();
-        expect(result).toMatchSnapshot();
-        expect(writeResults).toMatchSnapshot();
-        expect(transformResults).toMatchSnapshot();
-        expect(relativeFiles).toMatchSnapshot(); // snapshot file list, cleaned
+    const absoluteFiles = glob('**/*', {
+      cwd: argv.cwd,
+      dot: true,
+      nodir: true,
+      absolute: true
     });
+
+    const relativeFiles = absoluteFiles.map(file => path.relative(argv.cwd, file));
+    argv.cwd = '<CWD>';
+
+    expect(argv).toMatchSnapshot(`${label} - argv`);
+    expect(result).toMatchSnapshot(`${label} - result`);
+    expect(writeResults).toMatchSnapshot(`${label} - writeResults`);
+    expect(transformResults).toMatchSnapshot(`${label} - transformResults`);
+    expect(relativeFiles).toMatchSnapshot(`${label} - files`);
+  };
+
+  it('initializes with --workspace', async () => {
+    await runInitTest(
+      {
+        _: ['init'],
+        cwd: tempDir,
+        name: 'my-workspace',
+        workspace: true
+      },
+      'workspace'
+    );
+  });
+
+  it('initializes without --workspace', async () => {
+    const moduleDir = path.join(tempDir, 'my-workspace');
+
+    await runInitTest(
+      {
+        _: ['init'],
+        cwd: moduleDir,
+        name: 'my-module',
+        MODULENAME: 'my-module',
+        extensions: ['plpgsql', 'citext']
+      },
+      'module-only'
+    );
+  });
 });

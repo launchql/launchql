@@ -1,46 +1,111 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`init prompts user and correctly processes delayed input 1`] = `
+exports[`init initializes with --workspace: workspace - argv 1`] = `
 {
   "_": [
     "init",
   ],
   "cwd": "<CWD>",
-  "name": "myproject",
+  "name": "my-workspace",
   "workspace": true,
 }
 `;
 
-exports[`init prompts user and correctly processes delayed input 2`] = `
-{
-  "_": [
-    "init",
-  ],
-  "cwd": "<CWD>",
-  "name": "myproject",
-  "workspace": true,
-}
-`;
-
-exports[`init prompts user and correctly processes delayed input 3`] = `[]`;
-
-exports[`init prompts user and correctly processes delayed input 4`] = `[]`;
-
-exports[`init prompts user and correctly processes delayed input 5`] = `
+exports[`init initializes with --workspace: workspace - files 1`] = `
 [
-  "myproject/.eslintrc.json",
-  "myproject/.gitignore",
-  "myproject/.prettierrc.json",
-  "myproject/.questions.json",
-  "myproject/bin/install.sh",
-  "myproject/bootstrap-roles.sql",
-  "myproject/docker-compose.yml",
-  "myproject/launchql.json",
-  "myproject/lerna.json",
-  "myproject/LICENSE",
-  "myproject/Makefile",
-  "myproject/package.json",
-  "myproject/README.md",
-  "myproject/tsconfig.json",
+  "my-workspace/.eslintrc.json",
+  "my-workspace/.gitignore",
+  "my-workspace/.prettierrc.json",
+  "my-workspace/.questions.json",
+  "my-workspace/bin/install.sh",
+  "my-workspace/bootstrap-roles.sql",
+  "my-workspace/docker-compose.yml",
+  "my-workspace/launchql.json",
+  "my-workspace/lerna.json",
+  "my-workspace/LICENSE",
+  "my-workspace/Makefile",
+  "my-workspace/package.json",
+  "my-workspace/README.md",
+  "my-workspace/tsconfig.json",
 ]
 `;
+
+exports[`init initializes with --workspace: workspace - result 1`] = `
+{
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "name": "my-workspace",
+  "workspace": true,
+}
+`;
+
+exports[`init initializes with --workspace: workspace - transformResults 1`] = `[]`;
+
+exports[`init initializes with --workspace: workspace - writeResults 1`] = `[]`;
+
+exports[`init initializes without --workspace: module-only - argv 1`] = `
+{
+  "MODULENAME": "my-module",
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "extensions": [
+    "plpgsql",
+    "citext",
+  ],
+  "name": "my-module",
+}
+`;
+
+exports[`init initializes without --workspace: module-only - files 1`] = `
+[
+  ".eslintrc.json",
+  ".gitignore",
+  ".prettierrc.json",
+  ".questions.json",
+  "bin/install.sh",
+  "bootstrap-roles.sql",
+  "docker-compose.yml",
+  "launchql.json",
+  "lerna.json",
+  "LICENSE",
+  "Makefile",
+  "package.json",
+  "packages/my-module/__tests__/first.test.ts",
+  "packages/my-module/.questions.json",
+  "packages/my-module/jest.config.js",
+  "packages/my-module/Makefile",
+  "packages/my-module/my-module.control",
+  "packages/my-module/package.json",
+  "packages/my-module/README.md",
+  "packages/my-module/sqitch.conf",
+  "packages/my-module/sqitch.plan",
+  "packages/my-module/src/index.ts",
+  "packages/my-module/tsconfig.esm.json",
+  "packages/my-module/tsconfig.json",
+  "README.md",
+  "tsconfig.json",
+]
+`;
+
+exports[`init initializes without --workspace: module-only - result 1`] = `
+{
+  "MODULENAME": "my-module",
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "extensions": [
+    "plpgsql",
+    "citext",
+  ],
+  "name": "my-module",
+}
+`;
+
+exports[`init initializes without --workspace: module-only - transformResults 1`] = `[]`;
+
+exports[`init initializes without --workspace: module-only - writeResults 1`] = `[]`;
