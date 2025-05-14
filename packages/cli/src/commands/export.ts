@@ -1,5 +1,5 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
-import { LaunchQLProject, migrate } from '@launchql/migrate';
+import { LaunchQLProject, exportMigrations } from '@launchql/migrate';
 import { getEnvOptions } from '@launchql/types';
 import chalk from 'chalk';
 import { resolve } from 'path';
@@ -52,7 +52,6 @@ export default async (
     database: dbname
   });
 
-
   const dbsResult = await selectedDb.query(`
     SELECT id, name FROM collections_public.database;
   `);
@@ -74,8 +73,6 @@ export default async (
       dbsResult.rows.find(db => db.name === did.name)!.id
     )
   };
-
-  console.log(dbInfo);
 
   const { author, extensionName, metaExtensionName } = await prompter.prompt(argv, [
     {
@@ -117,7 +114,8 @@ export default async (
     }
   ]);
 
-  await migrate({
+  await exportMigrations({
+    project,
     options,
     dbInfo,
     author,
