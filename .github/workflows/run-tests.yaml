@@ -40,10 +40,10 @@ jobs:
       # - name: Install Git
       #   run: apk add --no-cache git
 
-      # - name: Configure Git (for tests)
-      #   run: |
-      #     git config --global user.name "CI Test User"
-      #     git config --global user.email "ci@example.com"
+      - name: Configure Git (for tests)
+        run: |
+          git config --global user.name "CI Test User"
+          git config --global user.email "ci@example.com"
 
       # - name: Install Sqitch on Alpine
       #   run: |
