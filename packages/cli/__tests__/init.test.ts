@@ -10,7 +10,7 @@ import { LaunchQLProject } from '@launchql/migrate';
 
 const beforeEachSetup = setupTests();
 
-describe('init', () => {
+describe('cmds:init', () => {
   let environment: TestEnvironment;
   let tempDir: string;
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`init initialize module 1`] = `
+exports[`cmds:init initialize module 1`] = `
 "# my-module extension
 comment = 'my-module extension'
 default_version = '0.0.1'
@@ -11,7 +11,7 @@ superuser = false
   "
 `;
 
-exports[`init initialize module: module-only - argv 1`] = `
+exports[`cmds:init initialize module: module-only - argv 1`] = `
 {
   "MODULENAME": "my-module",
   "_": [
@@ -26,7 +26,7 @@ exports[`init initialize module: module-only - argv 1`] = `
 }
 `;
 
-exports[`init initialize module: module-only - files 1`] = `
+exports[`cmds:init initialize module: module-only - files 1`] = `
 [
   ".eslintrc.json",
   ".gitignore",
@@ -57,7 +57,7 @@ exports[`init initialize module: module-only - files 1`] = `
 ]
 `;
 
-exports[`init initialize module: module-only - result 1`] = `
+exports[`cmds:init initialize module: module-only - result 1`] = `
 {
   "MODULENAME": "my-module",
   "_": [
@@ -72,11 +72,11 @@ exports[`init initialize module: module-only - result 1`] = `
 }
 `;
 
-exports[`init initialize module: module-only - transformResults 1`] = `[]`;
+exports[`cmds:init initialize module: module-only - transformResults 1`] = `[]`;
 
-exports[`init initialize module: module-only - writeResults 1`] = `[]`;
+exports[`cmds:init initialize module: module-only - writeResults 1`] = `[]`;
 
-exports[`init initializes workspace: workspace - argv 1`] = `
+exports[`cmds:init initializes workspace: workspace - argv 1`] = `
 {
   "_": [
     "init",
@@ -87,7 +87,7 @@ exports[`init initializes workspace: workspace - argv 1`] = `
 }
 `;
 
-exports[`init initializes workspace: workspace - files 1`] = `
+exports[`cmds:init initializes workspace: workspace - files 1`] = `
 [
   "my-workspace/.eslintrc.json",
   "my-workspace/.gitignore",
@@ -106,7 +106,7 @@ exports[`init initializes workspace: workspace - files 1`] = `
 ]
 `;
 
-exports[`init initializes workspace: workspace - result 1`] = `
+exports[`cmds:init initializes workspace: workspace - result 1`] = `
 {
   "_": [
     "init",
@@ -117,6 +117,6 @@ exports[`init initializes workspace: workspace - result 1`] = `
 }
 `;
 
-exports[`init initializes workspace: workspace - transformResults 1`] = `[]`;
+exports[`cmds:init initializes workspace: workspace - transformResults 1`] = `[]`;
 
-exports[`init initializes workspace: workspace - writeResults 1`] = `[]`;
+exports[`cmds:init initializes workspace: workspace - writeResults 1`] = `[]`;

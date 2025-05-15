@@ -13,7 +13,7 @@ const fixture = (name: string) =>
 
 const beforeEachSetup = setupTests();
 
-describe('extension', () => {
+describe('cmds:package', () => {
   let environment: TestEnvironment;
   let tempDir: string;
 

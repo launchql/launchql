@@ -12,8 +12,8 @@
 
 Good next steps:
 1. Get a demo script of creating some tables w the meta api 
-2. Get export working 
-3. Get boilerplate (lql init) working 
+X 2. Get export working 
+X 3. Get boilerplate (lql init) working 
 4. Get testing framework working (this will be HUGE) 
 
 ** remove shelljs
