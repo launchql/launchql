@@ -39,9 +39,9 @@ jobs:
     steps:
 
       - name: Configure Git (for tests)
-            run: |
-              git config --global user.name "CI Test User"
-              git config --global user.email "ci@example.com"
+        run: |
+          git config --global user.name "CI Test User"
+          git config --global user.email "ci@example.com"
 
       # - name: Install Sqitch on Alpine
       #   run: |
