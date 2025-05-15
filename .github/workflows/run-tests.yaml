@@ -49,6 +49,12 @@ jobs:
       - name: build
         run: yarn build
 
+      - name: launchql/migrate
+        run: cd ./packages/migrate && yarn test
+
+      - name: launchql/cli
+        run: cd ./packages/cli && yarn test
+
       - name: launchql/client
         run: cd ./packages/client && yarn test
         env:
