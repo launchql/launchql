@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`extension runs \`extension\` command after workspace and module setup: extension-update - files 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: extension-update - files 1`] = `
 [
   "__tests__/first.test.ts",
   ".questions.json",
@@ -17,7 +17,7 @@ exports[`extension runs \`extension\` command after workspace and module setup: 
 ]
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: extension-update - result 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: extension-update - result 1`] = `
 {
   "_": [
     "extension",
@@ -30,7 +30,7 @@ exports[`extension runs \`extension\` command after workspace and module setup: 
 }
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: initial - control file 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: initial - control file 1`] = `
 "# my-module extension
 comment = 'my-module extension'
 default_version = '0.0.1'
@@ -41,7 +41,7 @@ superuser = false
   "
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: initial - module dependencies 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: initial - module dependencies 1`] = `
 {
   "modules": [],
   "native": [
@@ -51,14 +51,14 @@ exports[`extension runs \`extension\` command after workspace and module setup: 
 }
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: initial - required modules 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: initial - required modules 1`] = `
 [
   "mod-1",
   "mod2",
 ]
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: updated - control file 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: updated - control file 1`] = `
 "# my-module extension
 comment = 'my-module extension'
 default_version = '0.0.1'
@@ -69,7 +69,7 @@ superuser = false
   "
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: updated - module dependencies 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: updated - module dependencies 1`] = `
 {
   "modules": [],
   "native": [
@@ -79,7 +79,7 @@ exports[`extension runs \`extension\` command after workspace and module setup: 
 }
 `;
 
-exports[`extension runs \`extension\` command after workspace and module setup: updated - required modules 1`] = `
+exports[`cmds:extension runs \`extension\` command after workspace and module setup: updated - required modules 1`] = `
 [
   "plpgsql",
   "module-c",
