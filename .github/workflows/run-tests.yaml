@@ -37,6 +37,8 @@ jobs:
           --health-retries 5
     
     steps:
+      - name: Install Git
+        run: apk add --no-cache git
 
       - name: Configure Git (for tests)
         run: |
