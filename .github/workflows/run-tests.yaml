@@ -6,7 +6,7 @@ on:
 jobs:
   container-job:
     runs-on: ubuntu-latest
-    container: node:20.12.0-alpine
+    container: pyramation/node-sqitch:20.12.0
 
     services:
       pg_db:
@@ -37,22 +37,22 @@ jobs:
           --health-retries 5
     
     steps:
-      - name: Install Git
-        run: apk add --no-cache git
+      # - name: Install Git
+      #   run: apk add --no-cache git
 
-      - name: Configure Git (for tests)
-        run: |
-          git config --global user.name "CI Test User"
-          git config --global user.email "ci@example.com"
+      # - name: Configure Git (for tests)
+      #   run: |
+      #     git config --global user.name "CI Test User"
+      #     git config --global user.email "ci@example.com"
 
-      - name: Install Sqitch on Alpine
-        run: |
-          apk add --no-cache curl make perl perl-utils perl-dev build-base \
-            libpq libpq-dev postgresql-dev \
-            perl-dbd-pg perl-dbi perl-dbd-sqlite \
-            cpanminus
+      # - name: Install Sqitch on Alpine
+      #   run: |
+      #     apk add --no-cache curl make perl perl-utils perl-dev build-base \
+      #       libpq libpq-dev postgresql-dev \
+      #       perl-dbd-pg perl-dbi perl-dbd-sqlite \
+      #       cpanminus
 
-          cpanm --notest --quiet App::Sqitch
+      #     cpanm --notest --quiet App::Sqitch
 
       - name: checkout
         uses: actions/checkout@v4
