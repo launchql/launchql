@@ -14,6 +14,7 @@ import extension from './commands/extension';
 import plan from './commands/plan';
 import _export from './commands/export';
 import _package from './commands/package';
+import kill from './commands/kill';
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
     if (argv.version || argv.v) {
@@ -70,6 +71,9 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
             break;
         case 'export':
             await _export(newArgv, prompter, options);
+            break;
+        case 'kill':
+            await kill(newArgv, prompter, options);
             break;
         default:
             console.error(`Unknown command: ${command}`);
