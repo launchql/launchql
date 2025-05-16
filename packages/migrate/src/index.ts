@@ -7,6 +7,7 @@ export * from './resolve';
 export * from './transform';
 export * from './utils';
 export * from './deploy';
+export * from './deploy-fast';
 export * from './revert';
 export * from './export-meta';
 export * from './export-migrations';

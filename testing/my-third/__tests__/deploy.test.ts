@@ -1,7 +1,7 @@
 import { deploy, LaunchQLProject } from '@launchql/migrate';
 import { resolve } from 'path';
-import { LaunchQLOptions, getEnvOptions } from '@launchql/types';
-import { randomInt } from 'crypto';
+import { getEnvOptions } from '@launchql/types';
+import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 
 it('LaunchQL', async () => {
@@ -13,7 +13,7 @@ it('LaunchQL', async () => {
 
     const opts = getEnvOptions({
         pg: {
-            database: 'db-'+randomInt(1000)
+            database: 'db-'+randomUUID()
         }
     })
     execSync(`createdb ${opts.pg.database}`);

@@ -33,13 +33,13 @@ interface WritePackageOptions extends PackageModuleOptions {
  * @param packageDir - The base directory of the package.
  * @returns An object containing the SQL script and optional diff information.
  */
-export const packageModule = async (
+export const packageModule = (
   packageDir: string,
   { usePlan = true, extension = true }: PackageModuleOptions = {}
-): Promise<{ sql: string; diff?: boolean; tree1?: string; tree2?: string }> => {
+): { sql: string; diff?: boolean; tree1?: string; tree2?: string } => {
   const resolveFn = usePlan ? resolveWithPlan : resolve;
-  const sql = await resolveFn(packageDir);
-  const extname = await getExtensionName(packageDir);
+  const sql = resolveFn(packageDir);
+  const extname = getExtensionName(packageDir);
   
   try {
     const parsed = parse(sql);
