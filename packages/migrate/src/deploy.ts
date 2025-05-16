@@ -1,10 +1,6 @@
-import * as shell from 'shelljs';
 import { resolve } from 'path';
-import pg from 'pg';
 import chalk from 'chalk';
 
-import { listModules } from './modules';
-import { extDeps } from './deps';
 import { LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
@@ -23,10 +19,6 @@ interface Extensions {
   resolved: string[];
   external: string[];
 }
-
-const shellPath = process.platform === 'win32'
-  ? true
-  : (require('fs').existsSync('/bin/bash') ? '/bin/bash' : '/bin/sh');
 
 export const deploy = async (
   opts: LaunchQLOptions,
