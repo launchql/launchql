@@ -15,6 +15,10 @@ interface ExtensionRequirement {
   latest: string;
 }
 
+export function sqitchTimestamp(date: Date = new Date()): string {
+  return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
 /**
  * Generate a Sqitch plan file for a package directory.
  * 
@@ -30,7 +34,7 @@ export const makePlan = async (workspaceDir: string, packageDir: string, options
     throw new Error('Plans require a project name.');
   }
 
-  const now = process.env.NODE_ENV === 'test' ? '2017-08-11T08:11:51Z' : new Date().toISOString();
+  const now = process.env.NODE_ENV === 'test' ? '2017-08-11T08:11:51Z' : sqitchTimestamp(new Date())
   const planfile: string[] = [];
 
   planfile.push(`%syntax-version=1.0.0
