@@ -1,6 +1,6 @@
 {
   "name": "@launchql/query",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "LaunchQL Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ajv": "^7.0.4",
-    "gql-ast": "^2.0.0",
+    "gql-ast": "^2.0.1",
     "graphql": "15.5.2",
     "inflection": "1.12.0",
     "pluralize": "8.0.0"

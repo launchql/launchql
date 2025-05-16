@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphile-query",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile query",
   "main": "index.js",
@@ -30,8 +30,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "postgraphile": "^4.14.1",
     "graphql": "15.5.2",
-    "pg": "^8.15.6"
+    "pg": "^8.15.6",
+    "postgraphile": "^4.14.1"
   }
 }
