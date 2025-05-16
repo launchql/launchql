@@ -7,7 +7,7 @@ import { isObject } from 'lodash';
 
 export * as MetaObject from './meta-object';
 
-export class Client {
+export class QueryBuilder {
   constructor({ meta = {}, introspection }) {
     this._introspection = introspection;
     this._meta = meta;
@@ -19,7 +19,7 @@ export class Client {
     const validate = validateMetaObject(this._meta);
     if (typeof validate === 'object' && validate.errors) {
       throw new Error(
-        `Client: meta object is not in correct format ${validate.errors}`
+        `QueryBuilder: meta object is not in correct format ${validate.errors}`
       );
     }
   }
@@ -163,7 +163,7 @@ export class Client {
 
     this.select(select);
     this._ast = getMany({
-      client: this,
+      builder: this,
       queryName: this._queryName,
       operationName: this._key,
       query: defn,
@@ -188,7 +188,7 @@ export class Client {
 
     this.select(select);
     this._ast = getAll({
-      client: this,
+      builder: this,
       queryName: this._queryName,
       operationName: this._key,
       query: defn,
@@ -212,7 +212,7 @@ export class Client {
     const defn = this._introspection[this._key];
     this.select(select);
     this._ast = getOne({
-      client: this,
+      builder: this,
       queryName: this._queryName,
       operationName: this._key,
       query: defn,
@@ -237,7 +237,7 @@ export class Client {
     const defn = this._introspection[this._key];
     this.select(select);
     this._ast = createOne({
-      client: this,
+      builder: this,
       operationName: this._key,
       mutationName: this._queryName,
       mutation: defn,
@@ -263,7 +263,7 @@ export class Client {
 
     this.select(select);
     this._ast = deleteOne({
-      client: this,
+      builder: this,
       operationName: this._key,
       mutationName: this._queryName,
       mutation: defn,
@@ -289,7 +289,7 @@ export class Client {
 
     this.select(select);
     this._ast = patchOne({
-      client: this,
+      builder: this,
       operationName: this._key,
       mutationName: this._queryName,
       mutation: defn,

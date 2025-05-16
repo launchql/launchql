@@ -91,7 +91,7 @@ export const getAll = ({ queryName, operationName, query, selection }) => {
 };
 
 export const getMany = ({
-  client, // we can use props here to enable pagination, etc
+  builder, // we can use props here to enable pagination, etc
   queryName,
   operationName,
   query,
@@ -245,7 +245,7 @@ export const getMany = ({
                       ]
                     })
                   }),
-                  client._edges
+                  builder._edges
                     ? t.field({
                         name: 'edges',
                         selectionSet: t.selectionSet({
@@ -277,7 +277,7 @@ export const getMany = ({
 };
 
 export const getOne = ({
-  client, // we can use props here to enable pagination, etc
+  builder, // we can use props here to enable pagination, etc
   queryName,
   operationName,
   query,
