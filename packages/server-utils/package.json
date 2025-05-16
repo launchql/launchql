@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "server utils",
   "main": "index.js",
@@ -30,7 +30,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "^2.0.2",
+    "@launchql/types": "^2.0.3",
     "cors": "^2.8.5",
     "envalid": "^8.0.0",
     "express": "^5.1.0",
