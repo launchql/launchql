@@ -30,13 +30,13 @@ npm install @launchql/query
 ## Usage
 
 ```ts
-import { Client } from '@launchql/query';
+import { QueryBuilder } from '@launchql/query';
 
-const client = new Client({
+const builder = new QueryBuilder({
   introspection: { ...queries, ...mutations } // provide your GraphQL schema metadata
 });
 
-const result = client
+const result = builder
   .query('Action')
   .edges(true)
   .getMany({

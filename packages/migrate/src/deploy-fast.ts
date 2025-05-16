@@ -79,7 +79,7 @@ export const deployFast = async (
   }
 
   log(chalk.green(`\n✅ Deployment complete for module: ${chalk.bold(name)}\n`));
-  await pgPool.end();
+//   await pgPool.end();
 
   return extensions;
 };
