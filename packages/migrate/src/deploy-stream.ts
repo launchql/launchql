@@ -1,5 +1,5 @@
-// FASTER than deploy-stream
-// Time:        1.056 s
+// SLOWER than deploy-fast
+// Time:        1.193 s, estimated 2 s
 import { resolve } from 'path';
 import chalk from 'chalk';
 
@@ -7,6 +7,7 @@ import { LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
+import { streamSql } from './stream-sql';
 
 interface Extensions {
   resolved: string[];
@@ -22,7 +23,7 @@ interface DeployFastOptions {
   verbose?: boolean;
 }
 
-export const deployFast = async (
+export const deployStream = async (
   options: DeployFastOptions
 ): Promise<Extensions> => {
   const {
@@ -71,7 +72,14 @@ export const deployFast = async (
         log(chalk.gray(`→ Command: sqitch deploy db:pg:${database}`));
         log(chalk.gray(`> ${pkg.sql}`));
 
-        await pgPool.query(pkg.sql);
+        // await pgPool.query(pkg.sql);
+        await streamSql({
+            database,
+            host: opts.pg.host,
+            user: opts.pg.user,
+            password: opts.pg.password,
+            port: opts.pg.port
+        }, pkg.sql)
       }
     } catch (err) {
       error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));

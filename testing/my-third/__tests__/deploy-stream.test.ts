@@ -1,4 +1,4 @@
-import { deployFast, LaunchQLProject } from '@launchql/migrate';
+import { deployStream, LaunchQLProject } from '@launchql/migrate';
 import { resolve } from 'path';
 import { getEnvOptions } from '@launchql/types';
 import { randomUUID } from 'crypto';
@@ -14,7 +14,7 @@ it('LaunchQL', async () => {
         }
     })
     execSync(`createdb ${opts.pg.database}`);
-    await deployFast({
+    await deployStream({
         opts, 
         name: 'my-third', 
         database: opts.pg.database, 
@@ -23,7 +23,6 @@ it('LaunchQL', async () => {
         verbose: false
     });
 
-        const pgPool = getRootPgPool({ ...opts.pg, database: db });
-        await pgPool.end();
-    
+    const pgPool = getRootPgPool({ ...opts.pg, database: db });
+    await pgPool.end();
 });
