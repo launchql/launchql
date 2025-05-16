@@ -1,6 +1,6 @@
 {
   "name": "@launchql/upload-names",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "upload names",
   "main": "index.js",
