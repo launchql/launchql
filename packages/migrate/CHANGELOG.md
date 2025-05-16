@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.11](https://github.com/launchql/launchql/compare/@launchql/migrate@2.0.10...@launchql/migrate@2.0.11) (2025-05-16)
+
+**Note:** Version bump only for package @launchql/migrate
+
+
+
+
+
 ## [2.0.10](https://github.com/launchql/launchql/compare/@launchql/migrate@2.0.9...@launchql/migrate@2.0.10) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/migrate
