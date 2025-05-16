@@ -13,10 +13,20 @@ function generateBluesAndViolets(start = 200, end = 300, steps = 10) {
   return Array.from({ length: steps }, (_, i) => start + i * stepSize);
 }
 
-const rainbowHues =  generateBluesAndViolets();
+function formatPendingLine(pendingLine: string) {
+  const color = nextRainbowColor();
+
+  const match = pendingLine.match(/^(\+)\s+(.+?)(\.+)\s+(ok)$/);
+  if (!match) return pendingLine; // fallback
+
+  const [, plus, path, , ok] = match;
+  return `${color(plus)} ${path} ${chalk.bold.green('ok')}`;
+}
+
+let hueIndex = 30;
+const rainbowHues = [30, 60, 120, 180, 240, 275, 300]
 // const rainbowHues = [200, 220, 240, 260, 275, 290, 300, 290, 275, 260, 240, 220];
 // const rainbowHues = [30, 60, 120, 180, 240, 275, 300]; // no red (0)
-let hueIndex = 0;
 
 function nextRainbowColor() {
   const color = chalk.hsv(rainbowHues[hueIndex % rainbowHues.length], 100, 100);
@@ -128,8 +138,7 @@ export const deploy = async (
           // Handle second line (ok / not ok)
           if (pendingPlusLine) {
             if (/^ok$/i.test(cleanLine)) {
-              const color = nextRainbowColor();
-              console.log(color(`${pendingPlusLine} ok`));
+              console.log(formatPendingLine(`${pendingPlusLine} ok`));
               pendingPlusLine = null;
               return;
             } else if (/^not ok$/i.test(cleanLine)) {
