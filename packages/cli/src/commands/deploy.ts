@@ -2,7 +2,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { exec } from 'shelljs';
 import chalk from 'chalk';
-
+import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { listModules, deploy } from '@launchql/migrate';
 
 export default async (
@@ -63,7 +63,14 @@ export default async (
     ]);
 
     console.log(chalk.green(`Deploying project ${chalk.bold(project)} to database ${chalk.bold(database)}...`));
-    await deploy(project, database, cwd);
+
+    const options: LaunchQLOptions = getEnvOptions({
+      pg: {
+        database
+      }
+    });
+  
+    await deploy(options, project, database, cwd);
     console.log(chalk.green('Deployment complete.'));
   } else {
     console.log(chalk.green(`Running ${chalk.bold(`sqitch deploy db:pg:${database}`)}...`));

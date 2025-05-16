@@ -2,7 +2,7 @@
 comment = 'my-second extension'
 default_version = '0.0.1'
 module_pathname = '$libdir/my-second'
-requires = 'citext,plpgsql'
+requires = 'citext,plpgsql,pgcrypto,my-first'
 relocatable = false
 superuser = false
   

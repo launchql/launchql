@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getModuleExtensions 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+  ],
+}
+`;
+
+exports[`getModuleExtensions 2nd 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+    "my-second",
+  ],
+}
+`;
+
+exports[`getModuleExtensions 3rd 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+    "my-second",
+    "my-third",
+  ],
+}
+`;
+
+exports[`getModuleExtensions 3rd 2`] = `
+{
+  "modules": [
+    "my-second",
+  ],
+  "native": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+}
+`;
