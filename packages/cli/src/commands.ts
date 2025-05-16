@@ -22,14 +22,14 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         process.exit(0);
     }
 
-    const { first: command, newArgv } = extractFirst(argv);
+    let { first: command, newArgv } = extractFirst(argv);
 
     if (argv.help || argv.h || command === 'help' || !command) {
         console.log(usageText);
         process.exit(0);
     }
 
-    argv = await prompter.prompt(argv, [
+    newArgv = await prompter.prompt(newArgv, [
         {
             type: 'text',
             name: 'cwd',
