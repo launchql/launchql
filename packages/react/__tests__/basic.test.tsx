@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {
   LqlProvider,
   useGraphqlClient,
-  useLaunchqlClient,
+  useLaunchqlQuery,
   useTableRowsPaginated
 } from '../src';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -33,7 +33,7 @@ it('works', async () => {
 
 const Component = () => {
   const graphqlClient = useGraphqlClient();
-  const lqlClient = useLaunchqlClient();
+  const lqlClient = useLaunchqlQuery();
   return <div>Yolo</div>;
 };
 

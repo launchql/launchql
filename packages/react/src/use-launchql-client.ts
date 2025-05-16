@@ -1,15 +1,15 @@
 import { useMemo } from 'react';
-import { Client as LqlClient, MetaObject } from '@launchql/query';
+import { QueryBuilder, MetaObject } from '@launchql/query';
 import { useIntrospection } from './use-introspection';
 import { useSchemaMeta } from './use-schema-meta';
 
-export function useLaunchqlClient() {
+export function useLaunchqlQuery() {
   const introspection = useIntrospection();
   const meta = useSchemaMeta();
 
   return useMemo(() => {
     if (!meta.data || !introspection.data) return null;
-    return new LqlClient({
+    return new QueryBuilder({
       meta: MetaObject.convertFromMetaSchema({ _meta: meta.data }),
       introspection: introspection.data
     });

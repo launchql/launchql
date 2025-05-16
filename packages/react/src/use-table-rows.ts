@@ -7,7 +7,7 @@ import {
   useQueryClient
 } from 'react-query';
 import { useGraphqlClient } from './use-graphql-client';
-import { useLaunchqlClient } from './use-launchql-client';
+import { useLaunchqlQuery } from './use-launchql-client';
 const noop = () => {};
 
 export function useTableRowsPaginated(options = {}) {
@@ -28,7 +28,7 @@ export function useTableRowsPaginated(options = {}) {
   } = options;
 
   const graphqlClient = useGraphqlClient();
-  const lqlClient = useLaunchqlClient();
+  const lqlClient = useLaunchqlQuery();
 
   const graphqlQuery = useMemo(() => {
     if (!lqlClient) return null;
@@ -109,7 +109,7 @@ export function useTableRowsInfinite(options = {}) {
   } = options;
 
   const graphqlClient = useGraphqlClient();
-  const lqlClient = useLaunchqlClient();
+  const lqlClient = useLaunchqlQuery();
 
   const graphqlQuery = useMemo(() => {
     if (!lqlClient) return null;
@@ -163,7 +163,7 @@ export function useCreateTableRow(options = {}) {
 
   const queryClient = useQueryClient();
   const graphqlClient = useGraphqlClient();
-  const lqlClient = useLaunchqlClient();
+  const lqlClient = useLaunchqlQuery();
 
   const graphqlMutation = useMemo(() => {
     if (!lqlClient) return null;
@@ -201,7 +201,7 @@ export function useDeleteTableRow(options = {}) {
 
   const queryClient = useQueryClient();
   const graphqlClient = useGraphqlClient();
-  const lqlClient = useLaunchqlClient();
+  const lqlClient = useLaunchqlQuery();
 
   const graphqlMutation = useMemo(() => {
     if (!lqlClient) return null;
