@@ -18,6 +18,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@launchql/migrate": "^2.0.11"
+    "@launchql/migrate": "^2.0.11",
+    "@launchql/types": "^2.0.4"
   }
 }
