@@ -17,5 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "devDependencies": {
+    "@launchql/migrate": "^2.0.11"
+  }
 }
