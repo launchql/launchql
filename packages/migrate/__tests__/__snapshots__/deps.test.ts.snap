@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sqitch package dependencies [simple/1st] 1`] = `
+{
+  "deps": {
+    "/deploy/schema_myapp.sql": [],
+    "/deploy/table_products.sql": [
+      "my-first:schema_myapp",
+      "my-first:table_users",
+    ],
+    "/deploy/table_users.sql": [
+      "my-first:schema_myapp",
+    ],
+  },
+  "external": [],
+  "resolved": [
+    "schema_myapp",
+    "table_users",
+    "schema_myapp",
+    "schema_myapp",
+    "table_users",
+    "table_products",
+  ],
+}
+`;
+
+exports[`sqitch package dependencies [simple/2nd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+  },
+  "external": [],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
+
+exports[`sqitch package dependencies [simple/3nd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_schema.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_table.sql": [
+      "my-third:create_schema",
+    ],
+    "my-second:create_table": [],
+  },
+  "external": [
+    "my-second:create_table",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+  ],
+}
+`;
+
+exports[`sqitch package dependencies [utils] 1`] = `
+{
+  "deps": {
+    "/deploy/procedures/myfunction.sql": [],
+  },
+  "external": [],
+  "resolved": [
+    "procedures/myfunction",
+  ],
+}
+`;

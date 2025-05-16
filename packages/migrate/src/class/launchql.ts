@@ -27,7 +27,25 @@ import {
   getInstalledExtensions,
   ExtensionInfo,
 } from '../extensions';
-import { exec, execSync } from 'child_process';
+import { execSync } from 'child_process';
+
+function getUTCTimestamp(d: Date = new Date()): string {
+  return (
+    d.getUTCFullYear() +
+    '-' + String(d.getUTCMonth() + 1).padStart(2, '0') +
+    '-' + String(d.getUTCDate()).padStart(2, '0') +
+    'T' + String(d.getUTCHours()).padStart(2, '0') +
+    ':' + String(d.getUTCMinutes()).padStart(2, '0') +
+    ':' + String(d.getUTCSeconds()).padStart(2, '0') +
+    'Z'
+  );
+}
+
+const getNow = () =>
+process.env.NODE_ENV === 'test'
+  ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
+  : getUTCTimestamp(new Date());
+
 
 export enum ProjectContext {
   Outside = 'outside',
@@ -63,7 +81,7 @@ export class LaunchQLProject {
       this.allowedDirs = this.loadAllowedDirs();
     }
   }
-  
+
   private resolveLaunchqlPath(): string | undefined {
     try {
       return walkUp(this.cwd, 'launchql.json');
@@ -123,11 +141,11 @@ export class LaunchQLProject {
 
   ensureModule(): void {
     if (!this.modulePath) throw new Error('Not inside a module');
-  }  
+  }
 
   ensureWorkspace(): void {
     if (!this.workspacePath) throw new Error('Not inside a workspace');
-  }  
+  }
 
   getContext(): ProjectContext {
     if (this.modulePath && this.workspacePath) {
@@ -234,7 +252,7 @@ export class LaunchQLProject {
   initModule(options: InitModuleOptions): void {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
-    writeRenderedTemplates(moduleTemplate, targetPath, options);  
+    writeRenderedTemplates(moduleTemplate, targetPath, options);
     this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
   }
@@ -268,7 +286,7 @@ export class LaunchQLProject {
 
   // ──────────────── Plans ────────────────
 
-  getModulePlan (): string {
+  getModulePlan(): string {
     this.ensureModule();
     const planPath = path.join(this.getModulePath()!, 'sqitch.plan');
     return fs.readFileSync(planPath, 'utf8');
@@ -297,10 +315,7 @@ export class LaunchQLProject {
     const info = this.getModuleInfo();
     const moduleName = info.extname;
 
-    const now =
-      process.env.NODE_ENV === 'test'
-        ? '2017-08-11T08:11:51Z'
-        : new Date().toISOString();
+    const now = getNow();
 
     const planfile: string[] = [
       `%syntax-version=1.0.0`,
@@ -308,37 +323,140 @@ export class LaunchQLProject {
       `%uri=${options.uri || moduleName}`
     ];
 
-    const { resolved, deps } = await getDeps(this.cwd, moduleName);
-
+    // Get raw dependencies and resolved list
+    let { resolved, deps } = await getDeps(this.cwd, moduleName);
+    
+    // Helper to extract module name from a change reference
+    const getModuleName = (change: string): string | null => {
+      const colonIndex = change.indexOf(':');
+      return colonIndex > 0 ? change.substring(0, colonIndex) : null;
+    };
+    
+    // Helper to determine if a change is truly from an external project
+    const isExternalChange = (change: string): boolean => {
+      const changeModule = getModuleName(change);
+      return changeModule !== null && changeModule !== moduleName;
+    };
+    
+    // Helper to normalize change name (remove project prefix)
+    const normalizeChangeName = (change: string): string => {
+      return change.includes(':') ? change.split(':').pop() : change;
+    };
+    
+    // Clean up the resolved list to handle both formats
+    const uniqueChangeNames = new Set<string>();
+    const normalizedResolved: any[] = [];
+    
+    // First, add local changes without prefixes
+    resolved.forEach(change => {
+      const normalized = normalizeChangeName(change);
+      
+      // Skip if we've already added this change
+      if (uniqueChangeNames.has(normalized)) return;
+      
+      // Skip truly external changes - they should only be in dependencies
+      if (isExternalChange(change)) return;
+      
+      uniqueChangeNames.add(normalized);
+      normalizedResolved.push(normalized);
+    });
+    
+    // Clean up the deps object
+    const normalizedDeps: any = {};
+    
+    // Process each deps entry
+    Object.keys(deps).forEach(key => {
+      // Normalize the key - strip "/deploy/" and ".sql" if present
+      let normalizedKey = key;
+      if (normalizedKey.startsWith('/deploy/')) {
+        normalizedKey = normalizedKey.substring(8); // Remove "/deploy/"
+      }
+      if (normalizedKey.endsWith('.sql')) {
+        normalizedKey = normalizedKey.substring(0, normalizedKey.length - 4); // Remove ".sql"
+      }
+      
+      // Skip keys for truly external changes - we only want local changes as keys
+      if (isExternalChange(normalizedKey)) return;
+      
+      // Normalize the key for all changes, removing any same-project prefix
+      const cleanKey = normalizeChangeName(normalizedKey);
+      
+      // Build the standard key format for our normalized deps
+      const standardKey = `/deploy/${cleanKey}.sql`;
+      
+      // Initialize the dependencies array for this key if it doesn't exist
+      normalizedDeps[standardKey] = normalizedDeps[standardKey] || [];
+      
+      // Add dependencies, handling both formats
+      const dependencies = deps[key] || [];
+      dependencies.forEach(dep => {
+        // For truly external dependencies, keep the full reference
+        if (isExternalChange(dep)) {
+          if (!normalizedDeps[standardKey].includes(dep)) {
+            normalizedDeps[standardKey].push(dep);
+          }
+        } else {
+          // For same-project dependencies, normalize by removing prefix
+          const normalizedDep = normalizeChangeName(dep);
+          if (!normalizedDeps[standardKey].includes(normalizedDep)) {
+            normalizedDeps[standardKey].push(normalizedDep);
+          }
+        }
+      });
+    });
+    
+    // Update with normalized versions
+    resolved = normalizedResolved;
+    deps = normalizedDeps;
+    
+    // Process external dependencies if needed
     if (options.projects && this.workspacePath) {
       const depData = await this.getModuleDependencyChanges(moduleName);
       const external = depData.modules.map((m) => `${m.name}:${m.latest}`);
-
-      const key = `/deploy/${resolved[0]}.sql`;
-      deps[key] ||= [];
-      deps[key].push(...external);
+      
+      // Add external dependencies to the first change if there is one
+      if (resolved.length > 0) {
+        const firstKey = `/deploy/${resolved[0]}.sql`;
+        deps[firstKey] = deps[firstKey] || [];
+        
+        // Only add external deps that don't already exist
+        external.forEach(ext => {
+          if (!deps[firstKey].includes(ext)) {
+            deps[firstKey].push(ext);
+          }
+        });
+      }
     }
 
-    const makeKey = (sqlmod: string) => `/deploy/${sqlmod}.sql`;
-
-    resolved.forEach((res) => {
-      if (/:/.test(res)) return;
-
-      const dependencies = deps[makeKey(res)];
-      if (dependencies?.length) {
+    // For debugging - log the cleaned structures
+    // console.log("CLEAN DEPS GRAPH", JSON.stringify(deps, null, 2));
+    // console.log("CLEAN RES GRAPH", JSON.stringify(resolved, null, 2));
+    
+    // Generate the plan with the cleaned structures
+    resolved.forEach(res => {
+      const key = `/deploy/${res}.sql`;
+      const dependencies = deps[key] || [];
+      
+      // Filter out dependencies that match the current change name
+      // This prevents listing a change as dependent on itself
+      const filteredDeps = dependencies.filter(dep => 
+        normalizeChangeName(dep) !== res
+      );
+      
+      if (filteredDeps.length > 0) {
         planfile.push(
-          `${res} [${dependencies.join(
-            ' '
-          )}] ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
+          `${res} [${filteredDeps.join(' ')}] ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
         );
       } else {
-        planfile.push(`${res} ${now} launchql <launchql@5b0c196eeb62> # add ${res}`);
+        planfile.push(
+          `${res} ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
+        );
       }
     });
 
     return planfile.join('\n');
-  }
-
+}
+  
   async writeModulePlan(
     options: { uri?: string; projects?: boolean }
   ): Promise<void> {

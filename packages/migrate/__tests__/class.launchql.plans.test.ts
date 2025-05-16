@@ -14,21 +14,21 @@ const cleanText = (text: string): string =>
     .filter((line) => line.length > 0)
     .join('\n');
 
-const getModuleProject = async (name: string): Promise<LaunchQLProject> => {
-  const workspace = new LaunchQLProject(fixture(['launchql']));
+const getModuleProject = async (wrksps: string, name: string): Promise<LaunchQLProject> => {
+  const workspace = new LaunchQLProject(fixture([wrksps]));
 
   const moduleMap = workspace.getModuleMap();
   const meta = moduleMap[name];
   if (!meta) throw new Error(`Module ${name} not found in workspace`);
 
-  const modPath = fixture(['launchql', meta.path]);
+  const modPath = fixture([wrksps, meta.path]);
   const mod = new LaunchQLProject(modPath);
   return mod;
 };
 
 describe('sqitch modules', () => {
   it('should be able to create a plan', async () => {
-    const mod = await getModuleProject('totp');
+    const mod = await getModuleProject('launchql', 'totp');
     const plan = await mod.generateModulePlan({ projects: false });
     expect(cleanText(plan)).toEqual(
       cleanText(`
@@ -40,20 +40,20 @@ procedures/generate_secret 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62>
   });
 
   it('should be able to create a plan with cross-project requires already in', async () => {
-    const mod = await getModuleProject('utils');
-    const plan = await mod.generateModulePlan({ projects: false });
-    expect(cleanText(plan)).toEqual(
+    const mod = await getModuleProject('launchql', 'utils');
+    const plan = await mod.generateModulePlan({ projects: true });
+    expect(cleanText(plan)).toMatchSnapshot();
+    expect(plan).toEqual(
       cleanText(`
 %syntax-version=1.0.0
 %project=utils
 %uri=utils
-projects/totp/procedures/generate_secret [totp:procedures/generate_secret] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add projects/totp/procedures/generate_secret
-procedures/myfunction 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add procedures/myfunction`)
+procedures/myfunction [totp:procedures/generate_secret pg-verify:procedures/verify_view] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add procedures/myfunction`)
     );
   });
 
   it('should create a plan without options for projects and lose dependencies', async () => {
-    const mod = await getModuleProject('secrets');
+    const mod = await getModuleProject('launchql', 'secrets');
     const plan = await mod.generateModulePlan({ projects: false });
     expect(cleanText(plan)).toEqual(
       cleanText(`
@@ -66,7 +66,7 @@ procedures/secretfunction 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> 
   });
 
   it('should create a plan that references projects', async () => {
-    const mod = await getModuleProject('secrets');
+    const mod = await getModuleProject('launchql', 'secrets');
     const plan = await mod.generateModulePlan({ projects: true });
     expect(cleanText(plan)).toEqual(
       cleanText(`
@@ -79,7 +79,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
   });
 
   it('can create a module plan using workspace.generateModulePlan()', async () => {
-    const mod = await getModuleProject('totp');
+    const mod = await getModuleProject('launchql', 'totp');
     const plan = await mod.generateModulePlan({ projects: false });
   
     expect(cleanText(plan)).toContain('%project=totp');
@@ -88,7 +88,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
   });
 
   it('can create a module plan using workspace.generateModulePlan() w/projects', async () => {
-    const mod = await getModuleProject('totp');
+    const mod = await getModuleProject('launchql', 'totp');
     const plan = await mod.generateModulePlan({ projects: true });
   
     expect(cleanText(plan)).toContain('%project=totp');
@@ -97,18 +97,24 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
   });
 
   it('ensures plan includes all resolved deploy steps', async () => {
-    const mod = await getModuleProject('secrets');
+    const mod = await getModuleProject('launchql', 'secrets');
     const plan = await mod.generateModulePlan({ projects: false });
     expect(plan).toMatch(/add procedures\/secretfunction/);
     expect(cleanText(plan)).toMatchSnapshot();
   });
   
   it('ensures plan includes all resolved deploy steps w/projects', async () => {
-    const mod = await getModuleProject('secrets');
+    const mod = await getModuleProject('launchql', 'secrets');
     const plan = await mod.generateModulePlan({ projects: true });
     expect(plan).toMatch(/add procedures\/secretfunction/);
     expect(cleanText(plan)).toMatchSnapshot();
   });
-  
+
+  it('ensures simple plan', async () => {
+    const mod = await getModuleProject('simple', 'my-first');
+    const plan = await mod.generateModulePlan({ projects: true });
+    // expect(plan).toMatch(/add procedures\/secretfunction/);
+    expect(plan).toMatchSnapshot();
+  });
   
 });

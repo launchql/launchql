@@ -4,31 +4,43 @@ import { extDeps, getDeps } from '../src/deps';
 import { listModules } from '../src/modules';
 import { FIXTURES_PATH } from '../test-utils';
 
-const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/launchql');
+const fixture = (...subPaths: string[]) => join(FIXTURES_PATH, ...subPaths);
 
-it('sqitch package dependencies', async () => {
+it('sqitch package dependencies [utils]', async () => {
   const res = await getDeps(
-    `${PROJECT_PATH}/packages/utils`,
+    fixture('sqitch', 'launchql', 'packages', 'utils'),
     'utils'
   );
-  expect(res).toEqual({
-    deps: {
-      '/deploy/procedures/myfunction.sql': [],
-      '/deploy/projects/totp/procedures/generate_secret.sql': [
-        'totp:procedures/generate_secret'
-      ],
-      'totp:procedures/generate_secret': []
-    },
-    external: ['totp:procedures/generate_secret'],
-    resolved: [
-      'totp:procedures/generate_secret',
-      'projects/totp/procedures/generate_secret',
-      'procedures/myfunction'
-    ]
-  });
+  expect(res).toMatchSnapshot();
 });
+
+it('sqitch package dependencies [simple/1st]', async () => {
+  const res = await getDeps(
+    fixture('sqitch', 'simple', 'packages', 'my-first'),
+    'my-first'
+  );
+  expect(res).toMatchSnapshot();
+});
+
+it('sqitch package dependencies [simple/2nd]', async () => {
+  const res = await getDeps(
+    fixture('sqitch', 'simple', 'packages', 'my-second'),
+    'my-second'
+  );
+  expect(res).toMatchSnapshot();
+});
+
+it('sqitch package dependencies [simple/3nd]', async () => {
+  const res = await getDeps(
+    fixture('sqitch', 'simple', 'packages', 'my-third'),
+    'my-third'
+  );
+  expect(res).toMatchSnapshot();
+});
+
 it('launchql project extensions dependencies', async () => {
-  const modules = listModules(PROJECT_PATH);
+  const modules = listModules(fixture('sqitch', 'launchql'));
+
   const utils = await extDeps('utils', modules);
   expect(utils).toEqual({
     external: ['plpgsql', 'uuid-ossp', 'pgcrypto'],
@@ -42,6 +54,7 @@ it('launchql project extensions dependencies', async () => {
       'utils'
     ]
   });
+
   const secrets = await extDeps('secrets', modules);
   expect(secrets).toEqual({
     external: ['plpgsql', 'uuid-ossp', 'pgcrypto'],
@@ -55,6 +68,7 @@ it('launchql project extensions dependencies', async () => {
       'secrets'
     ]
   });
+
   const totp = await extDeps('totp', modules);
   expect(totp).toEqual({
     external: ['plpgsql', 'uuid-ossp', 'pgcrypto'],
