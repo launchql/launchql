@@ -9,7 +9,7 @@
     <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/@launchql/react-client"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%react-client%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/@launchql/query"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%query%2Fpackage.json"/></a>
 </p>
 
 > Fluent GraphQL query and mutation builder for PostGraphile-based schemas.

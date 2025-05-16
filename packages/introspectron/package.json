@@ -30,7 +30,6 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "graphql-tag": "2.12.5",
-    "lodash": "4.17.20"
+    "graphql-tag": "2.12.5"
   }
 }

@@ -3,9 +3,9 @@
 import * as t from 'gql-ast';
 import plz from 'pluralize';
 import inflection from 'inflection';
-import isArray from 'lodash/isArray';
-import isObject from 'lodash/isObject';
 import { getCustomAst, isIntervalType } from './custom-ast';
+
+const isObject = val => val !== null && typeof val === 'object';
 
 const NON_MUTABLE_PROPS = ['createdAt', 'createdBy', 'updatedAt', 'updatedBy'];
 const objectToArray = (obj) =>
@@ -621,7 +621,7 @@ function getValueAst(value) {
     return t.booleanValue({ value });
   }
 
-  if (isArray(value)) {
+  if (Array.isArray(value)) {
     return t.listValue({ values: value.map((v) => getValueAst(v)) });
   }
 

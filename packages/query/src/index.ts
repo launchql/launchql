@@ -3,9 +3,9 @@ import { print as gqlPrint } from 'graphql';
 import { getMany, getOne, getAll, createOne, patchOne, deleteOne } from './ast';
 import inflection from 'inflection';
 import { validateMetaObject } from './meta-object';
-import { isObject } from 'lodash';
-
 export * as MetaObject from './meta-object';
+
+const isObject = val => val !== null && typeof val === 'object';
 
 export class QueryBuilder {
   constructor({ meta = {}, introspection }) {

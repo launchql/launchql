@@ -34,7 +34,6 @@
     "gql-ast": "^2.0.0",
     "graphql": "15.5.2",
     "inflection": "1.12.0",
-    "lodash": "^4.17.20",
     "pluralize": "8.0.0"
   }
 }

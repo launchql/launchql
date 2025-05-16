@@ -78,14 +78,14 @@ jobs:
       - name: launchql/uuid-stream
         run: cd ./packages/uuid-stream && yarn test
 
-      - name: launchql/query-builder
-        run: cd ./packages/query-builder && yarn test
-
       - name: launchql/introspectron
         run: cd ./packages/introspectron && yarn test
 
-      - name: launchql/react-client
-        run: cd ./packages/react-client && yarn test
+      - name: launchql/query-builder
+        run: cd ./packages/query-builder && yarn test
+
+      - name: launchql/query
+        run: cd ./packages/query && yarn test
 
       - name: launchql/launchql-gen
         run: cd ./packages/launchql-gen && yarn test

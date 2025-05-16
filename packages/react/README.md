@@ -1,4 +1,4 @@
-# launchql-react
+# @launchql/react
 
 <p align="center" width="100%">
   <img height="250" src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" />
@@ -9,5 +9,5 @@
     <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/launchql-react"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%2Flaunchql-react%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/@launchql/react"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%2Freact%2Fpackage.json"/></a>
 </p>
