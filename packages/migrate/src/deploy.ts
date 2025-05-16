@@ -4,9 +4,18 @@ import chalk from 'chalk';
 import { LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
-import { spawnSync } from 'child_process';
+import { spawn } from 'child_process';
 
-const rainbowHues = [30, 60, 120, 180, 240, 275, 300]; // no red (0)
+let pendingPlusLine: string | null = null;
+
+function generateBluesAndViolets(start = 200, end = 300, steps = 10) {
+  const stepSize = (end - start) / steps;
+  return Array.from({ length: steps }, (_, i) => start + i * stepSize);
+}
+
+const rainbowHues =  generateBluesAndViolets();
+// const rainbowHues = [200, 220, 240, 260, 275, 290, 300, 290, 275, 260, 240, 220];
+// const rainbowHues = [30, 60, 120, 180, 240, 275, 300]; // no red (0)
 let hueIndex = 0;
 
 function nextRainbowColor() {
@@ -60,58 +69,103 @@ export const deploy = async (
         console.log(chalk.gray(`→ Path: ${modulePath}`));
         console.log(chalk.gray(`→ Command: sqitch deploy db:pg:${database}`));
 
-        const result = spawnSync('sqitch', ['deploy', `db:pg:${database}`], {
+        const child = spawn('sqitch', ['deploy', `db:pg:${database}`], {
           cwd: modulePath,
-          env: {
-            ...process.env
-          },
-          encoding: 'utf-8',
-          stdio: ['inherit', 'pipe', 'pipe'] // only stdout/stderr are captured
+          env: { ...process.env }
         });
+        
+        const exitCode: number = await new Promise((resolve, reject) => {
+          child.stdout.setEncoding('utf-8');
+          child.stderr.setEncoding('utf-8');
+        
+          child.stdout.on('data', (chunk: string) => {
+            chunk.split('\n').forEach(printLine);
+          });
+        
+          child.stderr.on('data', (chunk: string) => {
+            chunk.split('\n').forEach(line => {
+              if (/error/i.test(line)) {
+                console.log(chalk.red(`❌ ${line}`));
+              } else {
+                console.log(chalk.gray(line));
+              }
+            });
+          });
+        
+          child.on('close', resolve);
+          child.on('error', reject);
+        });
+        
+        // function printLine(line: string) {
+        //   const trimmed = line.trim();
+
+        //   if (/^Adding registry tables to db:pg:/i.test(trimmed)) {
+        //     console.log(chalk.bold.yellow(`🗂️  ${trimmed}`));
+        //   } else if (/^Deploying changes to db:pg:/i.test(trimmed)) {
+        //     console.log(chalk.bold.blue(`🚀 ${trimmed}`));
+        //   } else if (/^\+\s+.*\.\.\.*\s+ok$/i.test(trimmed)) {
+        //     // successful deploy step
+        //     const color = nextRainbowColor();
+        //     console.log(color(trimmed));
+        //   } else if (/^\+\s+.*\.\.\.*\s+not ok$/i.test(trimmed)) {
+        //     // failed deploy step
+        //     console.log(chalk.bold.red(`${trimmed}`));
+        //   } else if (/^-\s+.*\.\.\.*\s+ok$/i.test(trimmed)) {
+        //     // revert step success
+        //     console.log(chalk.bold.magenta(`${trimmed}`));
+        //   } else if (/warning/i.test(trimmed)) {
+        //     console.log(chalk.yellow(`⚠️  ${trimmed}`));
+        //   } else if (trimmed.length > 0) {
+        //     console.log(trimmed);
+        //   }
+        // }
+
+        
 
         function printLine(line: string) {
-          const trimmed = line.trim();
-
-          if (/^Adding registry tables to db:pg:/i.test(trimmed)) {
-            console.log(chalk.bold.yellow(`🗂️  ${trimmed}`));
-          } else if (/^Deploying changes to db:pg:/i.test(trimmed)) {
-            console.log(chalk.bold.blue(`🚀 ${trimmed}`));
-          } else if (/^\+\s+.*\.\.\.*\s+ok$/i.test(trimmed)) {
-            // successful deploy step
-            const color = nextRainbowColor();
-            console.log(color(trimmed));
-          } else if (/^\+\s+.*\.\.\.*\s+not ok$/i.test(trimmed)) {
-            // failed deploy step
-            console.log(chalk.bold.red(`${trimmed}`));
-          } else if (/^-\s+.*\.\.\.*\s+ok$/i.test(trimmed)) {
-            // revert step success
-            console.log(chalk.bold.magenta(`${trimmed}`));
-          } else if (/warning/i.test(trimmed)) {
-            console.log(chalk.yellow(`⚠️  ${trimmed}`));
-          } else if (trimmed.length > 0) {
-            console.log(trimmed);
-          }
-        }
-
-        // Print stdout
-        if (result.stdout) {
-          for (const line of result.stdout.split('\n')) {
-            printLine(line);
-          }
-        }
-
-        // Print all stderr lines
-        if (result.stderr) {
-          for (const line of result.stderr.split('\n')) {
-            if (/error/i.test(line)) {
-              console.log(chalk.red(`❌ ${line}`));
+          const cleanLine = line.replace(/\u001b\[.*?m/g, '').replace(/\r/g, '').trim();
+        
+          // Handle second line (ok / not ok)
+          if (pendingPlusLine) {
+            if (/^ok$/i.test(cleanLine)) {
+              const color = nextRainbowColor();
+              console.log(color(`${pendingPlusLine} ok`));
+              pendingPlusLine = null;
+              return;
+            } else if (/^not ok$/i.test(cleanLine)) {
+              console.log(chalk.bold.red(`${pendingPlusLine} not ok`));
+              pendingPlusLine = null;
+              return;
             } else {
-              console.log(chalk.gray(line));
+              // Unexpected follow-up — print both separately
+              console.log(pendingPlusLine);
+              pendingPlusLine = null;
+              // fall through and process this new line normally
             }
           }
+        
+          // Buffer `+` lines
+          if (/^\+\s+.+/.test(cleanLine)) {
+            pendingPlusLine = cleanLine;
+            return;
+          }
+        
+          // Handle known special lines
+          if (/^Adding registry tables to db:pg:/i.test(cleanLine)) {
+            console.log(chalk.bold.yellow(`🗂️  ${line.trim()}`));
+          } else if (/^Deploying changes to db:pg:/i.test(cleanLine)) {
+            console.log(chalk.bold.blue(`🚀 ${line.trim()}`));
+          } else if (/^-\s+.*$/.test(cleanLine)) {
+            console.log(chalk.bold.magenta(`${line.trim()}`));
+          } else if (/warning/i.test(cleanLine)) {
+            console.log(chalk.yellow(`⚠️  ${line.trim()}`));
+          } else if (cleanLine.length > 0) {
+            console.log(line.trim());
+          }
         }
+        
 
-        if (result.status !== 0) {
+        if (exitCode !== 0) {
           console.log(chalk.red(`❌ Deployment failed for module ${chalk.bold(extension)}`));
           throw new Error('deploy failed');
         }
