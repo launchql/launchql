@@ -3,9 +3,9 @@
 import * as t from 'gql-ast';
 import plz from 'pluralize';
 import inflection from 'inflection';
-import isArray from 'lodash/isArray';
-import isObject from 'lodash/isObject';
 import { getCustomAst, isIntervalType } from './custom-ast';
+
+const isObject = val => val !== null && typeof val === 'object';
 
 const NON_MUTABLE_PROPS = ['createdAt', 'createdBy', 'updatedAt', 'updatedBy'];
 const objectToArray = (obj) =>
@@ -91,7 +91,7 @@ export const getAll = ({ queryName, operationName, query, selection }) => {
 };
 
 export const getMany = ({
-  client, // we can use props here to enable pagination, etc
+  builder, // we can use props here to enable pagination, etc
   queryName,
   operationName,
   query,
@@ -245,7 +245,7 @@ export const getMany = ({
                       ]
                     })
                   }),
-                  client._edges
+                  builder._edges
                     ? t.field({
                         name: 'edges',
                         selectionSet: t.selectionSet({
@@ -277,7 +277,7 @@ export const getMany = ({
 };
 
 export const getOne = ({
-  client, // we can use props here to enable pagination, etc
+  builder, // we can use props here to enable pagination, etc
   queryName,
   operationName,
   query,
@@ -621,7 +621,7 @@ function getValueAst(value) {
     return t.booleanValue({ value });
   }
 
-  if (isArray(value)) {
+  if (Array.isArray(value)) {
     return t.listValue({ values: value.map((v) => getValueAst(v)) });
   }
 

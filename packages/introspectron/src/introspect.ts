@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { makeIntrospectionQuery } from './query';
 import { parseTags } from './utils';
-import flatMap from 'lodash/flatMap';
 
 export const introspect = async (
   pgClient,
@@ -66,8 +65,7 @@ export const introspect = async (
     });
   });
 
-  const extensionConfigurationClassIds = flatMap(
-    result.extension,
+  const extensionConfigurationClassIds = result.extension.flatMap(
     (e) => e.configurationClassIds
   );
   result.class.forEach((klass) => {

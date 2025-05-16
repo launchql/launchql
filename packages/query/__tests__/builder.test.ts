@@ -1,16 +1,16 @@
 // @ts-nocheck
 import introspection from '../__fixtures__/api/introspection.json';
 import metaObject from '../__fixtures__/api/meta-obj.json';
-import { Client } from '../src';
+import { QueryBuilder } from '../src';
 
 describe('getMany', () => {
   it('should select only scalar fields by default', () => {
-    const client = new Client({
+    const builder = new QueryBuilder({
       meta: metaObject,
       introspection
     });
 
-    const result = client.query('Action').getMany().print();
+    const result = builder.query('Action').getMany().print();
 
     expect(result._hash).toMatchSnapshot();
     expect(result._queryName).toMatchSnapshot();
@@ -22,12 +22,12 @@ describe('getMany', () => {
   });
 
   it('should whitelist selected fields', () => {
-    const client = new Client({
+    const builder = new QueryBuilder({
       meta: metaObject,
       introspection
     });
 
-    const result = client
+    const result = builder
       .query('Action')
       .getMany({
         select: {
@@ -60,12 +60,12 @@ describe('getMany', () => {
 });
 
 it('should select totalCount in subfields by default', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client
+  const result = builder
     .query('Action')
     .getMany({
       select: {
@@ -98,12 +98,12 @@ it('should select totalCount in subfields by default', () => {
 });
 
 it('selects relation field', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client
+  const result = builder
     .query('Action')
     .getMany({
       select: {
@@ -140,24 +140,24 @@ it('selects relation field', () => {
 });
 
 it('selects all scalar fields of junction table by default', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client.query('ActionGoal').getMany().print();
+  const result = builder.query('ActionGoal').getMany().print();
 
   expect(/(actionId)|(goalId)|(ownerId)/.test(result._hash)).toBe(true);
   expect(result._hash).toMatchSnapshot();
 });
 
 it('selects belongsTo relation field', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client
+  const result = builder
     .query('Action')
     .getMany({
       select: {
@@ -177,12 +177,12 @@ it('selects belongsTo relation field', () => {
 });
 
 it('selects non-scalar custom types', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client
+  const result = builder
     .query('Action')
     .getMany({
       select: {
@@ -199,11 +199,11 @@ it('selects non-scalar custom types', () => {
 });
 
 it('getMany edges', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client
+  const result = builder
     .query('Action')
     .edges(true)
     .getMany({
@@ -236,11 +236,11 @@ it('getMany edges', () => {
 });
 
 it('getOne', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client
+  const result = builder
     .query('Action')
     .getOne({
       select: {
@@ -272,12 +272,12 @@ it('getOne', () => {
 });
 
 it('getAll', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client
+  const result = builder
     .query('Action')
     .all({
       select: {
@@ -309,22 +309,22 @@ it('getAll', () => {
 });
 
 it('create with default scalar selection', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client.query('Action').create().print();
+  const result = builder.query('Action').create().print();
 
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });
 
 it('create with custom selection', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client
+  const result = builder
     .query('Action')
     .create({
       select: {
@@ -342,21 +342,21 @@ it('create with custom selection', () => {
 });
 
 it('update with default scalar selection', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client.query('Action').update().print();
+  const result = builder.query('Action').update().print();
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });
 
 it('update with custom selection', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client
+  const result = builder
     .query('Action')
     .update({
       select: {
@@ -373,22 +373,22 @@ it('update with custom selection', () => {
 });
 
 it('delete', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
-  const result = client.query('Action').delete().print();
+  const result = builder.query('Action').delete().print();
   expect(result._hash).toMatchSnapshot();
   expect(result._queryName).toMatchSnapshot();
 });
 
 it('expands further selections of custom ast fields in nested selection', () => {
-  const client = new Client({
+  const builder = new QueryBuilder({
     meta: metaObject,
     introspection
   });
 
-  const result = client
+  const result = builder
     .query('ActionGoal')
     .getMany({
       select: {

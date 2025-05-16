@@ -1,4 +1,4 @@
-# @launchql/react-client
+# `@launchql/query`
 
 <p align="center" width="100%">
   <img height="250" src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" />
@@ -9,57 +9,68 @@
     <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/@launchql/react-client"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%react-client%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/@launchql/query"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%query%2Fpackage.json"/></a>
 </p>
 
-Generate GraphQL mutations/queries
+> Fluent GraphQL query and mutation builder for PostGraphile-based schemas.
+
+## Installation
 
 ```sh
-npm install @launchql/react-client
+npm install @launchql/query
 ```
+
+## Why Use `@launchql/query`?
+
+* ⚡ Build complex, nested GraphQL queries fluently
+* ✅ Schema-aware via introspection (PostGraphile optimized)
+* 🧠 Prevents common query syntax issues
+* 🧩 Designed for composability and clean syntax
 
 ## Usage
 
-```js
-import { Client } from '@launchql/react-client';
+```ts
+import { Client } from '@launchql/query';
 
 const client = new Client({
-    introspection: { ...queries, ...mutations }
+  introspection: { ...queries, ...mutations } // provide your GraphQL schema metadata
 });
 
- const result = client
-    .query('Action')
-    .edges(true)
-    .getMany({
-      select: {
-        id: true,
-        name: true,
-        photo: true,
-        title: true,
-        actionResults: {
-          select: {
-            id: true,
-            actionId: true
-          },
-          variables: {
-            first: 10,
-            before: null,
-            filter: {
-              name: {
-                in: ['abc', 'def']
-              },
-              actionId: { equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e' }
+const result = client
+  .query('Action')
+  .edges(true)
+  .getMany({
+    select: {
+      id: true,
+      name: true,
+      photo: true,
+      title: true,
+      actionResults: {
+        select: {
+          id: true,
+          actionId: true
+        },
+        variables: {
+          first: 10,
+          before: null,
+          filter: {
+            name: {
+              in: ['abc', 'def']
+            },
+            actionId: {
+              equalTo: 'dc310161-7a42-4b93-6a56-9fa48adcad7e'
             }
           }
         }
       }
-    })
-    .print();
+    }
+  })
+  .print();
 ```
 
-# output
+## Output
 
-```gql
+```graphql
 query getActionsQuery(
   $first: Int
   $last: Int

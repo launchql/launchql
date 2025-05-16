@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const intro = require('introspectron');
-const client = require('@launchql/react-client');
+const builder = require('@launchql/query');
 
 function generateIntrospectionFixture() {
   const inDir = path.resolve(
@@ -35,7 +35,7 @@ function generateMetaObjectFixture() {
   const outDir = path.resolve(__dirname, './api/meta-obj.json');
   fs.readFile(inDir, { encoding: 'utf8' }, (err, data) => {
     if (err) return console.log(err);
-    const converted = client.MetaObject.convertFromMetaSchema(JSON.parse(data));
+    const converted = builder.MetaObject.convertFromMetaSchema(JSON.parse(data));
     fs.writeFile(outDir, JSON.stringify(converted), (err) => {
       if (err) return console.log(err);
       console.log('DONE');

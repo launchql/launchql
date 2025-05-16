@@ -28,17 +28,15 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/react-client": "^2.0.0",
+    "@launchql/query": "^2.0.0",
     "graphql-request": "^7.1.2",
     "introspectron": "^2.0.0",
-    "lodash": "4.17.20",
     "react-dom": "^19.1.0",
     "react-query": "^3.39.3",
     "react": "^19.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.3",
-    "@types/lodash": "^4.17.16",
     "@testing-library/jest-dom": "5.11.10",
     "@testing-library/react": "11.2.5"
   }
