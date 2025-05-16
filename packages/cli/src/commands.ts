@@ -29,7 +29,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
         process.exit(0);
     }
 
-    await prompter.prompt(argv, [
+    argv = await prompter.prompt(argv, [
         {
             type: 'text',
             name: 'cwd',
