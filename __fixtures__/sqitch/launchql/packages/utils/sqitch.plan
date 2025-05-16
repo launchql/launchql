@@ -3,5 +3,4 @@
   %uri=utils
 
 
-procedures/myfunction 2018-09-21T00:46:29Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # add procedures/myfunction
-projects/totp/procedures/generate_secret [totp:procedures/generate_secret] 2018-09-21T02:13:20Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # adding project totp
+procedures/myfunction [totp:procedures/generate_secret] 2018-09-21T00:46:29Z Dan Lynch <dlynch@Dans-MacBook-Pro.local> # add procedures/myfunction

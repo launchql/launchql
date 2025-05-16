@@ -14,9 +14,7 @@ it('should validate LaunchQL package dependencies', async () => {
     failed = true;
 
     if (e instanceof Error) {
-      expect(e.message).toBe(
-        `referencing bad project name inside of deploy file\n-- Deploy not_secrets:procedures/secretfunction to pg`
-      );
+      expect(e.message).toMatchSnapshot();;
     } else {
       throw new Error('Caught an unexpected non-error exception');
     }

@@ -30,15 +30,29 @@ export const getDeps = async (
     unresolved.push(sqlmodule);
     let edges = deps[makeKey(sqlmodule)];
     
-    if (!edges) {
-      if (/:/.test(sqlmodule)) {
-        external.push(sqlmodule);
-        edges = deps[sqlmodule] = [];
+    if (/:/.test(sqlmodule)) {
+      // Has a prefix — could be internal or external
+      const [project, localKey] = sqlmodule.split(':', 2);
+      if (project === extname) {
+        // Internal reference to current project
+        sqlmodule = localKey;
+        edges = deps[makeKey(localKey)];
+        if (!edges) {
+          throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+        }
       } else {
-        throw new Error(`no module ${sqlmodule}`);
+        // External reference — always OK, even if not in deps yet
+        external.push(sqlmodule);
+        deps[sqlmodule] = [];
+        return;
+      }
+    } else {
+      // No prefix — must be internal
+      if (!edges) {
+        throw new Error(`Internal module not found: ${sqlmodule}`);
       }
     }
-
+        
     for (const dep of edges) {
       if (!resolved.includes(dep)) {
         if (unresolved.includes(dep)) {
@@ -61,6 +75,7 @@ export const getDeps = async (
     const lines = data.split('\n');
     const key = '/' + relative(packageDir, file);
     deps[key] = [];
+    // console.log(key, data);
 
     for (const line of lines) {
       // Handle requires statements
@@ -77,18 +92,29 @@ export const getDeps = async (
       if (/:/.test(line)) {
         m2 = line.match(/^-- Deploy ([^:]*):([\w\/]+) to pg/);
         if (m2) {
+          const actualProject = m2[1];
           keyToTest = m2[2];
-          if (extname !== m2[1]) {
+        
+          if (extname !== actualProject) {
             throw new Error(
-              'referencing bad project name inside of deploy file\n' + line
+              `Mismatched project name in deploy file:
+          Expected project: ${extname}
+          Found in line   : ${actualProject}
+          Line            : ${line}`
             );
           }
-          if (key !== makeKey(keyToTest)) {
+        
+          const expectedKey = makeKey(keyToTest);
+          if (key !== expectedKey) {
             throw new Error(
-              'deployment script in wrong place or is named wrong internally\n' + line
+              `Deployment script path or internal name mismatch:
+          Expected key    : ${key}
+          Found in line   : ${expectedKey}
+          Line            : ${line}`
             );
           }
         }
+
       } else {
         m2 = line.match(/^-- Deploy (.*) to pg/);
         if (m2) {

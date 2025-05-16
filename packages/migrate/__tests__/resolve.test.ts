@@ -33,7 +33,7 @@ describe('resolve tests', () => {
       await resolve(join(PROJECT_PATH, 'error-case'));
     } catch (e: unknown) {
       if (e instanceof Error) {
-        expect(e.message).toBe('no module schemas/myschema/somethingdoesntexist');
+        expect(e.message).toBe('Internal module not found: schemas/myschema/somethingdoesntexist');
         failed = true;
       } else {
         throw new Error('Caught an unexpected non-error exception');

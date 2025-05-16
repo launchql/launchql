@@ -1,0 +1,33 @@
+{
+  "name": "my-first",
+  "version": "0.0.1",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "undefined",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/undefined/undefined",
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "undefined",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/undefined/undefined"
+  },
+  "bugs": {
+    "url": "https://github.com/undefined/undefined/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": []
+}
