@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "@launchql/templatizer": "^2.0.4",
+    "@launchql/types": "^2.0.4",
+    "@launchql/server-utils": "^2.0.4",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "csv-to-pg": "^2.0.4",
