@@ -14,10 +14,10 @@ interface DependencyResult {
 
 const makeKey = (sqlmodule: string): string => `/deploy/${sqlmodule}.sql`;
 
-export const getDeps = async (
+export const getDeps = (
   packageDir: string,
   extname: string
-): Promise<DependencyResult> => {
+): DependencyResult => {
   const external: string[] = [];
   const deps: DependencyGraph = {};
 
@@ -152,10 +152,10 @@ export const getDeps = async (
   return { external, resolved, deps };
 };
 
-export const extDeps = async (
+export const extDeps = (
   name: string,
   modules: Record<string, { requires: string[] }>
-): Promise<{ external: string[]; resolved: string[] }> => {
+): { external: string[]; resolved: string[] } => {
   if (!modules[name]) {
     throw new Error(`module ${name} does not exist!`);
   }

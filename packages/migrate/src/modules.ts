@@ -122,22 +122,21 @@ export const getExtensionsAndModules = (
 /**
  * Get extensions and modules with their latest changes and versions.
  */
-export const getExtensionsAndModulesChanges = async (
+export const getExtensionsAndModulesChanges = (
   sqlmodule: string,
   modules: ModuleMap,
   basePath: string
-): Promise<{
+): {
   native: string[];
   sqitch: { name: string; latest: string; version: string }[];
-}> => {
+} => {
   const { native, sqitch } = getExtensionsAndModules(sqlmodule, modules);
 
-  const sqitchWithDetails = await Promise.all(
-    sqitch.map(async (mod) => {
+  const sqitchWithDetails = 
+    sqitch.map( (mod) => {
       const { change, version } = latestChangeAndVersion(mod, modules, basePath);
       return { name: mod, latest: change, version };
-    })
-  );
+    });
 
   return { native, sqitch: sqitchWithDetails };
 };

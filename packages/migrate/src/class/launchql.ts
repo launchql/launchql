@@ -2,7 +2,7 @@ import fs, { writeFileSync } from 'fs';
 import path from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
-import { getDeps } from '../deps';
+import { extDeps, getDeps } from '../deps';
 import chalk from 'chalk';
 
 import {
@@ -269,18 +269,25 @@ export class LaunchQLProject {
     return latestChangeAndVersion(moduleName, modules, this.workspacePath!);
   }
 
+  getModuleExtensions(): { resolved: string[]; external: string[] } {
+    this.ensureModule();
+    const moduleName = this.getModuleName();
+    const moduleMap = this.getModuleMap();
+    return extDeps(moduleName, moduleMap);
+  }
+
   getModuleDependencies(moduleName: string): { native: string[]; modules: string[] } {
     const modules = this.getModuleMap();
     const { native, sqitch } = getExtensionsAndModules(moduleName, modules);
     return { native, modules: sqitch };
   }
 
-  async getModuleDependencyChanges(moduleName: string): Promise<{
+  getModuleDependencyChanges(moduleName: string): {
     native: string[];
     modules: { name: string; latest: string; version: string }[];
-  }> {
+  } {
     const modules = this.getModuleMap();
-    const { native, sqitch } = await getExtensionsAndModulesChanges(moduleName, modules, this.workspacePath!);
+    const { native, sqitch } = getExtensionsAndModulesChanges(moduleName, modules, this.workspacePath!);
     return { native, modules: sqitch };
   }
 
@@ -310,7 +317,7 @@ export class LaunchQLProject {
     return fs.readFileSync(info.sqlFile, 'utf8');
   }
 
-  async generateModulePlan(options: { uri?: string; projects?: boolean }): Promise<string> {
+  generateModulePlan(options: { uri?: string; projects?: boolean }): string {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
@@ -324,7 +331,7 @@ export class LaunchQLProject {
     ];
 
     // Get raw dependencies and resolved list
-    let { resolved, deps } = await getDeps(this.cwd, moduleName);
+    let { resolved, deps } = getDeps(this.cwd, moduleName);
     
     // Helper to extract module name from a change reference
     const getModuleName = (change: string): string | null => {
@@ -411,7 +418,7 @@ export class LaunchQLProject {
     
     // Process external dependencies if needed
     if (options.projects && this.workspacePath) {
-      const depData = await this.getModuleDependencyChanges(moduleName);
+      const depData = this.getModuleDependencyChanges(moduleName);
       const external = depData.modules.map((m) => `${m.name}:${m.latest}`);
       
       // Add external dependencies to the first change if there is one
@@ -457,12 +464,12 @@ export class LaunchQLProject {
     return planfile.join('\n');
 }
   
-  async writeModulePlan(
+  writeModulePlan(
     options: { uri?: string; projects?: boolean }
-  ): Promise<void> {
+  ): void {
     this.ensureModule();
     const name = this.getModuleName();
-    const plan = await this.generateModulePlan(options);
+    const plan = this.generateModulePlan(options);
     const moduleMap = this.getModuleMap();
     const mod = moduleMap[name];
     const planPath = path.join(this.workspacePath!, mod.path, 'sqitch.plan');
