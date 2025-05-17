@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import { getMergedOptions, LaunchQLOptions, PgConfig } from './launchql';
+import { getMergedOptions, launchqlDefaults, LaunchQLOptions, PgConfig } from './launchql';
 
 const parseEnvNumber = (val?: string): number | undefined => {
     const num = Number(val);
@@ -22,7 +22,8 @@ export const getEnvOptions = (overrides: LaunchQLOptions = {}): LaunchQLOptions 
 
 export const getPgEnvOptions = (overrides: Partial<PgConfig> = {}): PgConfig => {
     const envOpts = getPgEnvVars();
-    const options = deepmerge(envOpts, overrides);
+    const defaults = deepmerge(launchqlDefaults, envOpts);
+    const options = deepmerge(defaults, overrides);
     // if you need to sanitize...
     return options;
 };
