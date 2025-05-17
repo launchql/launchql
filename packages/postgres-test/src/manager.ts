@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import chalk from 'chalk';
 import { DbAdmin } from './admin';
 import { PgConfig } from '@launchql/types';
-import { PgTestClient } from './client';
+import { PgTestClient } from './test-client';
 
 const SYS_EVENTS = ['SIGTERM'];
 

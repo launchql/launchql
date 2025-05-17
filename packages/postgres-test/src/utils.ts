@@ -4,7 +4,7 @@ import { connect, close } from './legacy-connect';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { getEnvOptions } from '@launchql/types';
 import { randomUUID } from 'crypto';
-import { PgTestClient } from './client';
+import { PgTestClient } from './test-client';
 import { DbAdmin } from './admin';
 
 export interface TestOptions {

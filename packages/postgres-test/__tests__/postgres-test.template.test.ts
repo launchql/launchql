@@ -5,7 +5,7 @@ import {
   getConnection,
   Connection
 } from '../src';
-import { PgTestClient } from '../src/client';
+import { PgTestClient } from '../src/test-client';
 import { DbAdmin } from '../src/admin';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);

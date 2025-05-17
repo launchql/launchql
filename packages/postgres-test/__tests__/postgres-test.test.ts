@@ -5,7 +5,7 @@ import {
   Connection
 } from '../src';
 import { randomUUID } from 'crypto';
-import { PgTestClient } from '../src/client';
+import { PgTestClient } from '../src/test-client';
 
 const TEST_DB_BASE = `postgres_test_${randomUUID()}`; 
 

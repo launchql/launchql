@@ -1,5 +1,5 @@
 import { getConnections } from '../src/connect';
-import { PgTestClient } from '../src/client';
+import { PgTestClient } from '../src/test-client';
 
 let conn: PgTestClient;
 let db: PgTestClient;

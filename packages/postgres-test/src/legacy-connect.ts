@@ -1,4 +1,4 @@
-import { PgTestClient } from './client';
+import { PgTestClient } from './test-client';
 import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
