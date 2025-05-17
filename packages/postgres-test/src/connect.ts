@@ -2,7 +2,6 @@ import { randomUUID } from 'crypto';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { PgTestConnector } from './manager';
 import { DbAdmin } from './admin';
-import { getTestConnection } from './utils'; // adjust as needed
 
 let manager: PgTestConnector;
 export const getConnections = async () => {
