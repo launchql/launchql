@@ -1,4 +1,4 @@
-# postgres-test
+# pg-spec
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
@@ -8,11 +8,11 @@
 ## install
 
 ```sh
-npm install postgres-test
+npm install pg-spec
 ```
 ## Table of contents
 
-- [postgres-test](#postgres-test)
+- [pg-spec](#pg-spec)
   - [Install](#install)
   - [Table of contents](#table-of-contents)
 - [Developing](#developing)
