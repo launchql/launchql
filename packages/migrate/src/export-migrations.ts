@@ -5,7 +5,7 @@ import Case from 'case';
 
 import { exportMeta } from './export-meta';
 import { getRootPgPool } from '@launchql/server-utils';
-import { getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@launchql/types';
 import { SqitchRow, writeSqitchFiles, writeSqitchPlan } from './sqitch';
 import { LaunchQLProject } from './class/launchql';
 

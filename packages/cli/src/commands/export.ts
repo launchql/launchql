@@ -1,7 +1,6 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { LaunchQLProject, exportMigrations } from '@launchql/migrate';
-import { getEnvOptions, getPgEnvOptions } from '@launchql/types';
-import chalk from 'chalk';
+import { getEnvOptions } from '@launchql/types';
 import { resolve } from 'path';
 import { execSync } from 'child_process';
 import { getRootPgPool } from '@launchql/server-utils';

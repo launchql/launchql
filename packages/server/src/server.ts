@@ -16,7 +16,7 @@ import { flush, flushService } from './middleware/flush';
 import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
 
-import { LaunchQLOptions, getMergedOptions, getPgEnvOptions } from '@launchql/types';
+import { LaunchQLOptions, getMergedOptions } from '@launchql/types';
 
 export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
   const app = new Server(getMergedOptions(rawOpts));

@@ -1,5 +1,4 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
-import { getPgEnvOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import chalk from 'chalk';
 
