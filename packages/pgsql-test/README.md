@@ -1,4 +1,4 @@
-# pg-spec
+# pgsql-test
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
@@ -8,11 +8,11 @@
 ## install
 
 ```sh
-npm install pg-spec
+npm install pgsql-test
 ```
 ## Table of contents
 
-- [pg-spec](#pg-spec)
+- [pgsql-test](#pgsql-test)
   - [Install](#install)
   - [Table of contents](#table-of-contents)
 - [Developing](#developing)

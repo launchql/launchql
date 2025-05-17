@@ -1,5 +1,5 @@
 {
-  "name": "pg-spec",
+  "name": "pgsql-test",
   "version": "0.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Testing in TypeScript",

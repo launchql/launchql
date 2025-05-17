@@ -75,9 +75,9 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: password
 
-      - name: pg-spec
+      - name: pgsql-test
         run: |
-          cd ./packages/pg-spec
+          cd ./packages/pgsql-test
           yarn test
         env:
           PGHOST: pg_db
