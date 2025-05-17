@@ -1,6 +1,6 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { LaunchQLProject, exportMigrations } from '@launchql/migrate';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions, getPgEnvOptions } from '@launchql/types';
 import chalk from 'chalk';
 import { resolve } from 'path';
 import { execSync } from 'child_process';
@@ -20,12 +20,10 @@ export default async (
   project.ensureWorkspace();
 
   const options = getEnvOptions(); 
-  const { pg } = options;
 
-  const db = await getRootPgPool({
-    ...pg,
+  const db = await getRootPgPool(getPgEnvOptions({
     database: 'postgres'
-  });
+  }));
 
   const databasesResult = await db.query(`
     SELECT datname FROM pg_catalog.pg_database
@@ -45,10 +43,9 @@ export default async (
   ]));
 
   const dbname = databases.filter(d=>d.selected).map(d=>d.value)[0];
-  const selectedDb = await getRootPgPool({
-    ...pg,
+  const selectedDb = await getRootPgPool(getPgEnvOptions({
     database: dbname
-  });
+  }));
 
   const dbsResult = await selectedDb.query(`
     SELECT id, name FROM collections_public.database;
