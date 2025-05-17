@@ -1,6 +1,7 @@
 import { execSync } from 'child_process';
 import { PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
+import { streamSql as stream } from './stream';
 
 export class DbAdmin {
   constructor(
@@ -42,10 +43,9 @@ export class DbAdmin {
     this.safeDropDb(dbName ?? this.config.database);
   }
 
-  dropTemplate(dbName?: string): void {
-    const db = dbName ?? this.config.database;
-    this.run(`psql -c "UPDATE pg_database SET datistemplate='false' WHERE datname='${db}';"`);
-    this.drop(db);
+  dropTemplate(dbName: string): void {
+    this.run(`psql -c "UPDATE pg_database SET datistemplate='false' WHERE datname='${dbName}';"`);
+    this.drop(dbName);
   }
 
   create(dbName?: string): void {
@@ -85,19 +85,25 @@ export class DbAdmin {
     this.safeDropDb(template);
   }
 
-  createRole(role: string, password: string, dbName?: string): void {
+  async createRole(role: string, password: string, dbName?: string): Promise<void> {
     const db = dbName ?? this.config.database;
-    this.run(`psql -d "${db}" -c "CREATE ROLE ${role} WITH LOGIN PASSWORD '${password}';"`);
+    const sql = `CREATE ROLE ${role} WITH LOGIN PASSWORD '${password}';`;
+    await this.streamSql(sql, db);
   }
-
-  grantConnect(role: string, dbName?: string): void {
+  
+  async grantRole(role: string, user: string, dbName?: string): Promise<void> {
     const db = dbName ?? this.config.database;
-    this.run(`psql -d "${db}" -c "GRANT CONNECT ON DATABASE ${db} TO ${role};"`);
+    const sql = `GRANT ${role} TO ${user};`;
+    await this.streamSql(sql, db);
   }
-
-  createUserRole(user: string, password: string, dbName?: string): void {
+  
+  async grantConnect(role: string, dbName?: string): Promise<void> {
     const db = dbName ?? this.config.database;
-
+    const sql = `GRANT CONNECT ON DATABASE "${db}" TO ${role};`;
+    await this.streamSql(sql, db);
+  }
+  
+  async createUserRole(user: string, password: string, dbName: string): Promise<void> {
     const sql = `
   DO $$
   BEGIN
@@ -109,15 +115,21 @@ export class DbAdmin {
   END $$;
     `.trim();
 
-    this.run(`psql -d "${db}" -c "${sql.replace(/\n/g, ' ')}"`);
+    this.streamSql(sql, dbName);
   }
-
 
   loadSql(file: string, dbName: string): void {
     if (!existsSync(file)) {
       throw new Error(`Missing SQL file: ${file}`);
     }
     this.run(`psql -f ${file} ${dbName}`);
+  }
+
+  async streamSql(sql: string, dbName: string): Promise<void> {
+    await stream({
+      ...this.config,
+      database: dbName
+    }, sql);
   }
 
 }

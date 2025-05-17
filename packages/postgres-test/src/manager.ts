@@ -107,7 +107,9 @@ export class PgTestConnector {
     await Promise.all(
       Array.from(this.seenDbConfigs.values()).map(async (config) => {
         try {
-          const admin = new DbAdmin(config, this.verbose);
+          // somehow an "admin" db had app_user creds?
+          const admin = new DbAdmin({...config, user: 'postgres', password: 'password'}, this.verbose);
+          // console.log(config);
           admin.drop();
           this.log(chalk.yellow(`🧨 Dropped database: ${chalk.white(config.database)}`));
         } catch (err) {

@@ -1,6 +1,6 @@
 import { Client, Pool } from 'pg';
 // import { createdb, dropdb, templatedb, installExt, grantConnect } from './db';
-import { connect, close } from './connection';
+import { connect, close } from './legacy-connect';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { getEnvOptions } from '@launchql/types';
 import { randomUUID } from 'crypto';
@@ -53,9 +53,6 @@ export function getTestConnection(database: string, user: string, password: stri
     user,
     password
   })
-  console.log(config);
-  console.log(config);
-  console.log(config);
   return connect(config);
 }
 
@@ -75,6 +72,8 @@ export const getConnections = async () => {
 
   const admin = new DbAdmin(config);
 
+  admin.create(config.database);
+
   const db = await getConnection({ });
   
   admin.createUserRole(app_user, app_password, config.database);
@@ -85,17 +84,9 @@ export const getConnections = async () => {
     role: 'anonymous'
   });
 
-  // const res = await conn.query(`SELECT 1`);
-
   const teardown = async () => {
     await closeConnections({ db, conn });
   };
 
   return { db, conn, teardown };
 };
-
-
-// export async function grantConnect(db: any, user: string): Promise<void> {
-//   await db.query(`GRANT CONNECT ON DATABASE "${db.database}" TO ${user};`);
-// }
-
