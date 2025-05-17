@@ -2,7 +2,6 @@ import { getPgEnvOptions, PgConfig } from '@launchql/types';
 
 import {
   getConnection,
-  closeConnection,
   Connection
 } from '../src';
 import { randomUUID } from 'crypto';
@@ -22,7 +21,7 @@ describe('Postgres Test Framework', () => {
   let db: PgTestClient;
 
   afterEach(() => {
-    if (db) closeConnection(db);
+    // if (db) closeConnection(db);
   });
 
   it('creates a test DB with hot mode (FAST_TEST)', () => {

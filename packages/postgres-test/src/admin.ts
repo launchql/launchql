@@ -6,7 +6,7 @@ export class DbAdmin {
   constructor(
     private config: PgConfig,
     private verbose: boolean = false
-  ) {}
+  ) { }
 
   private getEnv(): Record<string, string> {
     return {
@@ -81,7 +81,7 @@ export class DbAdmin {
   cleanupTemplate(template: string): void {
     try {
       this.run(`psql -c "UPDATE pg_database SET datistemplate = false WHERE datname = '${template}'"`);
-    } catch {}
+    } catch { }
     this.safeDropDb(template);
   }
 
@@ -95,11 +95,29 @@ export class DbAdmin {
     this.run(`psql -d "${db}" -c "GRANT CONNECT ON DATABASE ${db} TO ${role};"`);
   }
 
+  createUserRole(user: string, password: string, dbName?: string): void {
+    const db = dbName ?? this.config.database;
+
+    const sql = `
+  DO $$
+  BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${user}') THEN
+      CREATE ROLE ${user} LOGIN PASSWORD '${password}';
+      GRANT anonymous TO ${user};
+      GRANT authenticated TO ${user};
+    END IF;
+  END $$;
+    `.trim();
+
+    this.run(`psql -d "${db}" -c "${sql.replace(/\n/g, ' ')}"`);
+  }
+
+
   loadSql(file: string, dbName: string): void {
     if (!existsSync(file)) {
       throw new Error(`Missing SQL file: ${file}`);
     }
     this.run(`psql -f ${file} ${dbName}`);
   }
-  
+
 }

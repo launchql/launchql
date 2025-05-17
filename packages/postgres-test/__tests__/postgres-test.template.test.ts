@@ -3,7 +3,6 @@ import path from 'path';
 
 import {
   getConnection,
-  closeConnection,
   Connection
 } from '../src';
 import { PgTestClient } from '../src/client';
@@ -43,7 +42,7 @@ describe('Template Database Test', () => {
   let db: PgTestClient;
 
   afterEach(() => {
-    if (db) closeConnection(db);
+    // if (db) closeConnection(db);
   });
 
   it('creates a test DB from a template', () => {

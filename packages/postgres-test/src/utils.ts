@@ -39,7 +39,6 @@ export function getConnection(configOpts: TestOptions, database?: string): PgTes
     admin.installExtensions(opts.extensions);
   } else if (opts.template) {
     admin.createFromTemplate(opts.template, config.database);
-    // admin.createFromTemplate(config.database, opts.template);
   } else {
     admin.create(config.database);
     admin.installExtensions(opts.extensions);
@@ -48,62 +47,45 @@ export function getConnection(configOpts: TestOptions, database?: string): PgTes
   return connect(config);
 }
 
-export function closeConnection(db: PgTestClient): void {
-  // db.kill();
-}
-
-export function connectTest(database: string, user: string, password: string): PgTestClient {
-  const envOpts = getEnvOptions();
-  const config: PgConfig = {
-    port: envOpts.pg.port,
-    host: envOpts.pg.host,
+export function getTestConnection(database: string, user: string, password: string): PgTestClient {
+  const config = getPgEnvOptions({
     database,
     user,
     password
-  };
+  })
+  console.log(config);
+  console.log(config);
+  console.log(config);
   return connect(config);
-}
-
-export async function createUserRole(db: PgTestClient, user: string, password: string): Promise<void> {
-  await db.query(`
-    DO $$
-    BEGIN
-    IF NOT EXISTS (
-      SELECT 1 FROM pg_roles WHERE rolname = '${user}'
-    ) THEN
-      CREATE ROLE ${user} LOGIN PASSWORD '${password}';
-      GRANT anonymous TO ${user};
-      GRANT authenticated TO ${user};
-    END IF;
-    END $$;
-  `);
 }
 
 export function closeConnections({ db, conn }: { db: PgTestClient; conn: PgTestClient }): void {
   conn.close();
-  closeConnection(db);
+  // closeConnection(db);
 }
 
 export const getConnections = async () => {
   
   const config = getPgEnvOptions({
     database: `db-${randomUUID()}`
-  })
+  });
+
+  const app_user = 'app_user';
+  const app_password = 'app_password';
 
   const admin = new DbAdmin(config);
 
-  const db = await getConnection({
-
-  });
+  const db = await getConnection({ });
   
-  await createUserRole(db, 'app_user', 'app_password');
-  admin.grantConnect('app_user', config.database);
-  // await grantConnect(config, 'app_user');
+  admin.createUserRole(app_user, app_password, config.database);
+  admin.grantConnect(app_user, config.database);
 
-  const conn = await connectTest(config.database, 'app_user', 'app_password');
+  const conn = await getTestConnection(config.database, app_user, app_password);
   conn.setContext({
     role: 'anonymous'
   });
+
+  // const res = await conn.query(`SELECT 1`);
 
   const teardown = async () => {
     await closeConnections({ db, conn });
