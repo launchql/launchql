@@ -1,73 +1,45 @@
 {
   "name": "graphile-test",
-  "version": "0.2.1",
-  "description": "PostGraphile Testing",
+  "version": "2.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/graphile-test#readme",
+  "description": "PostGraphile Testing",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "main/index.js",
-  "module": "module/index.js",
-  "directories": {
-    "lib": "src",
-    "test": "__tests__"
-  },
-  "files": [
-    "main",
-    "module"
-  ],
-  "scripts": {
-    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
-    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
-    "build": "npm run build:module && npm run build:main",
-    "prepublish": "npm run build",
-    "lint": "eslint src --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
-  },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pyramation/graphile-test"
+    "url": "https://github.com/launchql/launchql"
   },
-  "keywords": [
-    "postgraphile",
-    "graphile",
-    "postgres",
-    "graphql",
-    "testing"
-  ],
   "bugs": {
-    "url": "https://github.com/pyramation/graphile-test/issues"
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@babel/cli": "7.14.8",
-    "@babel/core": "7.15.0",
-    "@babel/plugin-proposal-class-properties": "7.14.5",
-    "@babel/plugin-proposal-export-default-from": "7.14.5",
-    "@babel/plugin-proposal-object-rest-spread": "7.14.7",
-    "@babel/plugin-transform-runtime": "7.15.0",
-    "@babel/preset-env": "7.15.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "25.1.0",
-    "eslint": "6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.5.0",
-    "jest-in-case": "^1.0.2",
-    "prettier": "^1.19.1",
-    "regenerator-runtime": "^0.13.9"
+    "@types/pg": "^8.11.10",
+    "graphql-tag": "2.12.6"
   },
   "dependencies": {
-    "@babel/runtime": "^7.15.3",
-    "envalid": "^6.0.2",
-    "graphql": "15.5.2",
-    "graphql-tag": "^2.12.5",
-    "mock-req": "0.2.0",
-    "pg": "^8.7.1",
-    "postgraphile": "4.12.3"
+    "@launchql/graphile-settings": "^2.0.4",
+    "@launchql/types": "^2.0.4",
+    "graphql": "^15.5.2",
+    "mock-req": "^0.2.0",
+    "pg": "^8.15.6",
+    "postgraphile": "^4.14.1"
   }
+  
 }
