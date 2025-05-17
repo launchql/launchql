@@ -1,5 +1,5 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
-import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import chalk from 'chalk';
 
@@ -8,13 +8,10 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  const options = getEnvOptions();
-  const { pg } = options;
 
-  const db = await getRootPgPool({
-    ...pg,
+  const db = await getRootPgPool(getPgEnvOptions({
     database: 'postgres'
-  });
+  }));
 
   const databasesResult = await db.query(`
     SELECT datname FROM pg_catalog.pg_database
