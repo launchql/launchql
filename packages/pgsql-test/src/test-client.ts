@@ -54,24 +54,16 @@ export class PgTestClient {
 
   setContext(ctx: Record<string, string | null>): void {
     this.ctxStmts = Object.entries(ctx)
-      .map(([key, val]) =>
-        val === null
-          ? `SELECT set_config('${key}', NULL, true);`
-          : `SELECT set_config('${key}', '${val}', true);`
-      )
-      .join('\n');
-  }
-
-  private async runCtxQuery<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
-    if (this.ctxStmts) {
-      await this.client.query(this.ctxStmts);
-    }
-    const result = await this.client.query<T>(query, values);
-    return result;
+    .map(([key, val]) =>
+      val === null
+    ? `SELECT set_config('${key}', NULL, true);`
+    : `SELECT set_config('${key}', '${val}', true);`
+  )
+  .join('\n');
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
-    const result = await this.runCtxQuery(query, values);
+    const result = await this.query(query, values);
     return result.rows;
   }
 
@@ -99,15 +91,19 @@ export class PgTestClient {
   }
 
   async none(query: string, values?: any[]): Promise<void> {
-    await this.runCtxQuery(query, values);
+    await this.query(query, values);
   }
 
   async result(query: string, values?: any[]): Promise<import('pg').QueryResult> {
-    return this.runCtxQuery(query, values);
+    return this.query(query, values);
   }
 
   async query<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
-    return this.client.query<T>(query, values);
-  }
+    if (this.ctxStmts) {
+      await this.client.query(this.ctxStmts);
+    }
+    const result = await this.client.query<T>(query, values);
+    return result;
+  }  
 
 }

@@ -40,8 +40,7 @@ npm install pgsql-test
 ### Basic Example
 
 ```ts
-import { getConnections } from 'pgsql-test';
-import { PgTestClient } from 'pgsql-test/client';
+import { PgTestClient, getConnections } from 'pgsql-test';
 
 let conn: PgTestClient;
 let db: PgTestClient;

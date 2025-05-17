@@ -7,26 +7,6 @@ let teardown: () => Promise<void>;
 
 beforeAll(async () => {
   ({ conn, db, teardown } = await getConnections());
-
-  // Setup schema + seed ONCE globally
-  await db.query(`
-    CREATE TABLE users (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL
-    );
-    CREATE TABLE posts (
-      id SERIAL PRIMARY KEY,
-      user_id INT NOT NULL REFERENCES users(id),
-      content TEXT NOT NULL
-    );
-  `);
-
-  await db.query(`
-    INSERT INTO users (name) VALUES ('Alice'), ('Bob');
-    INSERT INTO posts (user_id, content) VALUES
-      (1, 'Hello world!'),
-      (2, 'Graphile is cool!');
-  `);
 });
 
 afterAll(async () => {
@@ -35,47 +15,39 @@ afterAll(async () => {
 
 describe('anonymous', () => {
   beforeEach(async () => {
-    await db.beforeEach();  // this starts tx + savepoint
+    await conn.beforeEach();
   });
 
   afterEach(async () => {
-    await db.afterEach();   // this rolls back and commits
-  });
-
-  it('inserts a user but rollback leaves baseline intact', async () => {
-    await db.query(`INSERT INTO users (name) VALUES ('Carol')`);
-    const res = await db.query('SELECT COUNT(*) FROM users');
-    expect(res.rows[0].count).toBe('3');
-  });
-
-  it('should still have 2 users after rollback', async () => {
-    const res = await db.query('SELECT COUNT(*) FROM users');
-    expect(res.rows[0].count).toBe('2');
+    await conn.afterEach();
   });
 
   it('runs under anonymous context', async () => {
     const result = await conn.query('SELECT current_setting(\'role\', true) AS role');
-    console.log(JSON.stringify({result}, null, 2))
-    console.error(JSON.stringify({result}, null, 2))
-    // expect(result.rows[0].role).toBe('anonymous');
+    expect(result.rows[0].role).toBe('anonymous');
   });
 });
 
 describe('authenticated', () => {
   beforeEach(async () => {
     conn.setContext({
-      role: 'authenticated'
+      role: 'authenticated',
+      'jwt.claims.user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+      'jwt.claims.ip_address': '127.0.0.1',
+      'jwt.claims.database_id': 'jwt.database_id',
+      'jwt.claims.user_id': 'jwt.user_id'
     });
-    await conn.beforeEach();  // required for rollback later
+    await conn.beforeEach();
   });
 
   afterEach(async () => {
-    await conn.afterEach();   // now safe to rollback
+    await conn.afterEach();
   });
 
   it('runs under authenticated context', async () => {
-    const result = await conn.query('SELECT current_setting(\'role\', true) AS role');
-    // expect(result.rows[0].role).toBe('authenticated');
-    console.error('why no JWT')
+    const role = await conn.query('SELECT current_setting(\'role\', true) AS role');
+    expect(role.rows[0].role).toBe('authenticated');
+    const ip = await conn.query('SELECT current_setting(\'jwt.claims.ip_address\', true) AS role');
+    expect(ip.rows[0].role).toBe('127.0.0.1');
   });
 });
