@@ -22,7 +22,7 @@ export const getEnvOptions = (overrides: LaunchQLOptions = {}): LaunchQLOptions 
 
 export const getPgEnvOptions = (overrides: Partial<PgConfig> = {}): PgConfig => {
     const envOpts = getPgEnvVars();
-    const defaults = deepmerge(launchqlDefaults, envOpts);
+    const defaults = deepmerge(launchqlDefaults.pg, envOpts);
     const options = deepmerge(defaults, overrides);
     // if you need to sanitize...
     return options;
