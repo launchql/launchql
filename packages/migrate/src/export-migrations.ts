@@ -5,154 +5,154 @@ import Case from 'case';
 
 import { exportMeta } from './export-meta';
 import { getRootPgPool } from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
+import { getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { SqitchRow, writeSqitchFiles, writeSqitchPlan } from './sqitch';
 import { LaunchQLProject } from './class/launchql';
 
 interface ExportMigrationsToDiskOptions {
-    project: LaunchQLProject;
-    options: LaunchQLOptions;
-    database: string;
-    databaseId: string;
-    author: string;
-    outdir: string;
-    schema_names: string[];
-    extensionName?: string;
-    metaExtensionName: string;
+  project: LaunchQLProject;
+  options: LaunchQLOptions;
+  database: string;
+  databaseId: string;
+  author: string;
+  outdir: string;
+  schema_names: string[];
+  extensionName?: string;
+  metaExtensionName: string;
 }
 
 interface ExportOptions {
-    project: LaunchQLProject;
-    options: LaunchQLOptions;
-    dbInfo: {
-        dbname: string;
-        database_ids: string[];
-    };
-    author: string;
-    outdir: string;
-    schema_names: string[];
-    extensionName?: string;
-    metaExtensionName: string;
+  project: LaunchQLProject;
+  options: LaunchQLOptions;
+  dbInfo: {
+    dbname: string;
+    database_ids: string[];
+  };
+  author: string;
+  outdir: string;
+  schema_names: string[];
+  extensionName?: string;
+  metaExtensionName: string;
 }
 
 const exportMigrationsToDisk = async ({
-    project,
-    options,
-    database,
-    databaseId,
-    author,
-    outdir,
-    schema_names,
-    extensionName,
-    metaExtensionName
+  project,
+  options,
+  database,
+  databaseId,
+  author,
+  outdir,
+  schema_names,
+  extensionName,
+  metaExtensionName
 }: ExportMigrationsToDiskOptions): Promise<void> => {
-    outdir = outdir + '/';
+  outdir = outdir + '/';
 
-    const pgPool = getRootPgPool({
-        ...options.pg,
-        database
+  const pgPool = getRootPgPool({
+    ...options.pg,
+    database
+  });
+
+  const db = await pgPool.query(
+    `select * from collections_public.database where id=$1`,
+    [databaseId]
+  );
+
+  const schemas = await pgPool.query(
+    `select * from collections_public.schema where database_id=$1`,
+    [databaseId]
+  );
+
+  if (!db?.rows?.length) {
+    console.log('NO DATABASES.');
+    return;
+  }
+
+  if (!schemas?.rows?.length) {
+    console.log('NO SCHEMAS.');
+    return;
+  }
+
+  const name = extensionName || db.rows[0].name;
+
+  const { replace, replacer } = makeReplacer({
+    schemas: schemas.rows.filter((schema: any) =>
+      schema_names.includes(schema.schema_name)
+    ),
+    name
+  });
+
+  const results = await pgPool.query(
+    `select * from db_migrate.sql_actions order by id`
+  );
+
+  const opts = {
+    name,
+    replace,
+    replacer,
+    outdir,
+    author
+  };
+
+  if (results?.rows?.length > 0) {
+    await preparePackage({
+      project,
+      author,
+      outdir,
+      name,
+      extensions: [
+        'plpgsql',
+        'uuid-ossp',
+        'citext',
+        'pgcrypto',
+        'btree_gist',
+        'postgis',
+        'hstore',
+        'db_meta',
+        'launchql-inflection',
+        'launchql-uuid',
+        'launchql-utils',
+        'launchql-ext-jobs',
+        'launchql-jwt-claims',
+        'launchql-stamps',
+        'launchql-base32',
+        'launchql-totp',
+        'launchql-ext-types',
+        'launchql-ext-default-roles'
+      ]
     });
 
-    const db = await pgPool.query(
-        `select * from collections_public.database where id=$1`,
-        [databaseId]
-    );
+    writeSqitchPlan(results.rows, opts);
+    writeSqitchFiles(results.rows, opts);
 
-    const schemas = await pgPool.query(
-        `select * from collections_public.schema where database_id=$1`,
-        [databaseId]
-    );
-
-    if (!db?.rows?.length) {
-        console.log('NO DATABASES.');
-        return;
-    }
-
-    if (!schemas?.rows?.length) {
-        console.log('NO SCHEMAS.');
-        return;
-    }
-
-    const name = extensionName || db.rows[0].name;
-
-    const { replace, replacer } = makeReplacer({
-        schemas: schemas.rows.filter((schema: any) =>
-            schema_names.includes(schema.schema_name)
-        ),
-        name
+    let meta = await exportMeta({
+      opts: options,
+      dbname: database,
+      database_id: databaseId
     });
 
-    const results = await pgPool.query(
-        `select * from db_migrate.sql_actions order by id`
-    );
+    meta = replacer(meta);
 
-    const opts = {
-        name,
-        replace,
-        replacer,
-        outdir,
-        author
-    };
+    await preparePackage({
+      project,
+      author,
+      outdir,
+      extensions: ['plpgsql', 'db_meta', 'db_meta_modules'],
+      name: metaExtensionName
+    });
 
-    if (results?.rows?.length > 0) {
-        await preparePackage({
-            project,
-            author,
-            outdir,
-            name,
-            extensions: [
-                'plpgsql',
-                'uuid-ossp',
-                'citext',
-                'pgcrypto',
-                'btree_gist',
-                'postgis',
-                'hstore',
-                'db_meta',
-                'launchql-inflection',
-                'launchql-uuid',
-                'launchql-utils',
-                'launchql-ext-jobs',
-                'launchql-jwt-claims',
-                'launchql-stamps',
-                'launchql-base32',
-                'launchql-totp',
-                'launchql-ext-types',
-                'launchql-ext-default-roles'
-            ]
-        });
+    const metaReplacer = makeReplacer({
+      schemas: schemas.rows.filter((schema: any) =>
+        schema_names.includes(schema.schema_name)
+      ),
+      name: metaExtensionName
+    });
 
-        writeSqitchPlan(results.rows, opts);
-        writeSqitchFiles(results.rows, opts);
-
-        let meta = await exportMeta({
-            opts: options,
-            dbname: database,
-            database_id: databaseId
-        });
-
-        meta = replacer(meta);
-
-        await preparePackage({
-            project,
-            author,
-            outdir,
-            extensions: ['plpgsql', 'db_meta', 'db_meta_modules'],
-            name: metaExtensionName
-        });
-
-        const metaReplacer = makeReplacer({
-            schemas: schemas.rows.filter((schema: any) =>
-                schema_names.includes(schema.schema_name)
-            ),
-            name: metaExtensionName
-        });
-
-        const metaPackage: SqitchRow[] = [
-            {
-                deps: [],
-                deploy: 'migrate/meta',
-                content: `SET session_replication_role TO replica;
+    const metaPackage: SqitchRow[] = [
+      {
+        deps: [],
+        deploy: 'migrate/meta',
+        content: `SET session_replication_role TO replica;
 -- using replica in case we are deploying triggers to collections_public
 
 -- unaccent, postgis affected and require grants
@@ -178,43 +178,43 @@ UPDATE meta_public.sites
 
 SET session_replication_role TO DEFAULT;
 `
-            }
-        ];
+      }
+    ];
 
-        opts.replacer = metaReplacer.replacer;
-        opts.name = metaExtensionName;
+    opts.replacer = metaReplacer.replacer;
+    opts.name = metaExtensionName;
 
-        writeSqitchPlan(metaPackage, opts);
-        writeSqitchFiles(metaPackage, opts);
-    }
+    writeSqitchPlan(metaPackage, opts);
+    writeSqitchFiles(metaPackage, opts);
+  }
 
-    pgPool.end();
+  pgPool.end();
 };
 
 export const exportMigrations = async ({
-    project,
-    options,
-    dbInfo,
-    author,
-    outdir,
-    schema_names,
-    extensionName,
-    metaExtensionName
+  project,
+  options,
+  dbInfo,
+  author,
+  outdir,
+  schema_names,
+  extensionName,
+  metaExtensionName
 }: ExportOptions): Promise<void> => {
-    for (let v = 0; v < dbInfo.database_ids.length; v++) {
-        const databaseId = dbInfo.database_ids[v];
-        await exportMigrationsToDisk({
-            project,
-            options,
-            extensionName,
-            metaExtensionName,
-            database: dbInfo.dbname,
-            databaseId,
-            schema_names,
-            author,
-            outdir
-        });
-    }
+  for (let v = 0; v < dbInfo.database_ids.length; v++) {
+    const databaseId = dbInfo.database_ids[v];
+    await exportMigrationsToDisk({
+      project,
+      options,
+      extensionName,
+      metaExtensionName,
+      database: dbInfo.dbname,
+      databaseId,
+      schema_names,
+      author,
+      outdir
+    });
+  }
 };
 
 
@@ -259,10 +259,10 @@ const preparePackage = async ({
   const plan = glob(path.join(sqitchDir, 'sqitch.plan'));
   if (!plan.length) {
     project.initModule({
-        name,
-        description: name,
-        author,
-        extensions,
+      name,
+      description: name,
+      author,
+      extensions,
     });
   } else {
     rmSync(path.resolve(sqitchDir, 'deploy'), { recursive: true, force: true });

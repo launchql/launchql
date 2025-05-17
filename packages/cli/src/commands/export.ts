@@ -21,9 +21,9 @@ export default async (
 
   const options = getEnvOptions(); 
 
-  const db = await getRootPgPool(getPgEnvOptions({
+  const db = await getRootPgPool({
     database: 'postgres'
-  }));
+  });
 
   const databasesResult = await db.query(`
     SELECT datname FROM pg_catalog.pg_database
@@ -43,9 +43,9 @@ export default async (
   ]));
 
   const dbname = databases.filter(d=>d.selected).map(d=>d.value)[0];
-  const selectedDb = await getRootPgPool(getPgEnvOptions({
+  const selectedDb = await getRootPgPool({
     database: dbname
-  }));
+  });
 
   const dbsResult = await selectedDb.query(`
     SELECT id, name FROM collections_public.database;

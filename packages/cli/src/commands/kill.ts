@@ -9,9 +9,9 @@ export default async (
   _options: CLIOptions
 ) => {
 
-  const db = await getRootPgPool(getPgEnvOptions({
+  const db = await getRootPgPool({
     database: 'postgres'
-  }));
+  });
 
   const databasesResult = await db.query(`
     SELECT datname FROM pg_catalog.pg_database
