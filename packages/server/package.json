@@ -44,7 +44,6 @@
     "@pyramation/postgis": "^0.1.1",
     "@pyramation/postgraphile-plugin-fulltext-filter": "^2.0.0",
     "cors": "^2.8.5",
-    "envalid": "^8.0.0",
     "express": "^5.1.0",
     "graphile-build": "^4.14.1",
     "graphile-i18n": "^0.0.3",

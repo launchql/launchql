@@ -32,7 +32,6 @@
   "dependencies": {
     "@launchql/types": "^2.0.4",
     "cors": "^2.8.5",
-    "envalid": "^8.0.0",
     "express": "^5.1.0",
     "lru-cache": "^11.1.0",
     "pg": "^8.15.6",
