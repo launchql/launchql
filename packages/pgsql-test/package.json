@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@launchql/types": "^2.0.4",
+    "@launchql/migrate": "^2.0.11",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1"
   }

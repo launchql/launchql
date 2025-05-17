@@ -19,6 +19,7 @@ const usedDbNames: string[] = [];
 const testResults: { name: string; time: number }[] = [];
 
 let start: number;
+let totalStart: number;
 
 function setupTemplateDatabase(): void {
   const templateConfig = getPgEnvOptions({
@@ -36,6 +37,7 @@ function setupTemplateDatabase(): void {
 }
 
 beforeAll(() => {
+  totalStart = Date.now();
   setupTemplateDatabase();
 });
 
@@ -55,6 +57,7 @@ afterEach(async () => {
 });
 
 afterAll(() => {
+  const totalTime = Date.now() - totalStart;
   const uniqueNames = new Set(usedDbNames);
   const avg = testResults.reduce((sum, r) => sum + r.time, 0) / testResults.length;
 
@@ -65,7 +68,8 @@ afterAll(() => {
     `✅ Unique DBs: ${uniqueNames.size === usedDbNames.length}`,
     `⏱️ Test Timings:`,
     ...testResults.map(({ name, time }) => `  • ${name}: ${time}ms`),
-    `🏁 Average Test Time: ${avg.toFixed(2)}ms`
+    `🏁 Average Test Time: ${avg.toFixed(2)}ms`,
+    `🕒 Total Test Time: ${totalTime}ms`
   ];
 
   console.log('\n' + summaryLines.join('\n') + '\n');

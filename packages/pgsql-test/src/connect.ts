@@ -1,7 +1,8 @@
-import { randomUUID } from 'crypto';
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
-import { PgTestConnector } from './manager';
 import { DbAdmin } from './admin';
+import { getEnvOptions, getPgEnvOptions, PgConfig } from '@launchql/types';
+import { deploy, deployFast, LaunchQLProject } from '@launchql/migrate';
+import { PgTestConnector } from './manager';
+import { randomUUID } from 'crypto';
 import deepmerge from 'deepmerge';
 
 let manager: PgTestConnector;
@@ -11,6 +12,8 @@ export interface TestConnectionOptions {
   template?: string;
   prefix?: string;
   extensions?: string[];
+  cwd?: string;
+  deployFast?: boolean;
   connection?: {
     user?: string;
     password?: string;
@@ -21,6 +24,8 @@ export interface TestConnectionOptions {
 const defaultTestConnOpts: Partial<TestConnectionOptions> = {
   prefix: 'db-',
   extensions: [],
+  cwd: process.cwd(),
+  deployFast: true,
   connection: {
     user: 'app_user',
     password: 'app_password',
@@ -41,18 +46,43 @@ export const getConnections = async (
 
   const admin = new DbAdmin(config);
 
-  // Create the test database
-  if (process.env.TEST_DB) {
-    config.database = process.env.TEST_DB;
-  } else if (connOpts.hot) {
+  const proj = new LaunchQLProject(connOpts.cwd);
+  if (proj.isInModule()) {
     admin.create(config.database);
     admin.installExtensions(connOpts.extensions);
-  } else if (connOpts.template) {
-    admin.createFromTemplate(connOpts.template, config.database);
+    const opts = getEnvOptions({
+      pg: config
+    })
+    if (connOpts.deployFast) {
+      await deployFast({
+        opts,
+        name: proj.getModuleName(),
+        database: config.database,
+        dir: proj.modulePath,
+        usePlan: true,
+        verbose: false
+      })
+    } else {
+      await deploy(opts, proj.getModuleName(), config.database, proj.modulePath);
+    }
   } else {
-    admin.create(config.database);
-    admin.installExtensions(connOpts.extensions);
+
+    // Create the test database
+    if (process.env.TEST_DB) {
+      config.database = process.env.TEST_DB;
+    } else if (connOpts.hot) {
+      admin.create(config.database);
+      admin.installExtensions(connOpts.extensions);
+    } else if (connOpts.template) {
+      admin.createFromTemplate(connOpts.template, config.database);
+    } else {
+      admin.create(config.database);
+      admin.installExtensions(connOpts.extensions);
+    }
+
   }
+
+
 
   // Main admin client (optional unless needed elsewhere)
   manager = PgTestConnector.getInstance();
@@ -68,7 +98,7 @@ export const getConnections = async (
     user: connOpts.connection.user,
     password: connOpts.connection.password
   })
-//   const conn = await getTestConnection(config.database, app_user, app_password);
+  //   const conn = await getTestConnection(config.database, app_user, app_password);
   db.setContext({ role: 'anonymous' });
 
   const teardown = async () => {

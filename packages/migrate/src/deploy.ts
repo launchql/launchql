@@ -91,6 +91,6 @@ export const deploy = async (
   }
 
   console.log(chalk.green(`\n✅ Deployment complete for ${chalk.bold(name)}.\n`));
-  await pgPool.end();
+  // await pgPool.end();
   return extensions;
 };

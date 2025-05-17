@@ -1,5 +1,4 @@
 import path from 'path';
-import { getPgEnvOptions } from '@launchql/types';
 
 import { PgTestClient } from '../src/test-client';
 import { DbAdmin } from '../src/admin';
@@ -14,8 +13,11 @@ const usedDbNames: string[] = [];
 const testResults: { name: string; time: number }[] = [];
 
 let start: number;
+let totalStart: number;
 
 beforeAll(async () => {
+  totalStart = Date.now();
+
   ({ pg, teardown } = await getConnections());
 
   const admin = new DbAdmin(pg.config);
@@ -41,6 +43,7 @@ afterEach(async () => {
 afterAll(async () => {
   await teardown();
 
+  const totalTime = Date.now() - totalStart;
   const avg =
     testResults.reduce((sum, r) => sum + r.time, 0) / testResults.length;
 
@@ -49,7 +52,8 @@ afterAll(async () => {
     `📂 DB Used: ${usedDbNames[0]}`,
     `⏱️ Test Timings:`,
     ...testResults.map(({ name, time }) => `  • ${name}: ${time}ms`),
-    `🏁 Average Test Time: ${avg.toFixed(2)}ms`
+    `🏁 Average Test Time: ${avg.toFixed(2)}ms`,
+    `🕒 Total Test Time: ${totalTime}ms`
   ];
 
   console.log('\n' + summaryLines.join('\n') + '\n');
