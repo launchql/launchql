@@ -40,7 +40,7 @@ CREATE ROLE authenticated;
 import { GraphQLTest, snapshot } from 'graphile-test';
 import { MyGraphQLQuery } from '../src/queries';
 
-const dbname = 'test_database';
+const dbname = 'graphile_test_db';
 const schemas = ['app_public'];
 
 const { setup, teardown, graphQL } = GraphQLTest({
@@ -71,8 +71,8 @@ it('query', async () => {
 Before running tests, prepare your database:
 
 ```sh
-createdb test_database
-psql -f sql/test.sql test_database
+createdb graphile_test_db
+psql -f sql/test.sql graphile_test_db
 ```
 
 ---

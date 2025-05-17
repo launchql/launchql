@@ -1,7 +1,7 @@
 import { GraphQLTest, snapshot } from '../src';
 import { IntrospectionQuery } from '../test-utils/queries';
 
-const dbname = 'test_database';
+const dbname = 'graphile_test_db';
 const schemas = ['app_public']
 
 const { setup, teardown, graphQL } = GraphQLTest(

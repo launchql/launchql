@@ -66,9 +66,9 @@ jobs:
       - name: graphile-test
         run: |
           cd ./packages/graphile-test
-          createdb test_database
-          psql -f sql/roles.sql test_database
-          psql -f sql/test.sql test_database
+          createdb graphile_test_db
+          psql -f sql/test.sql graphile_test_db
+          psql -f sql/roles.sql graphile_test_db
           yarn test
         env:
           PGHOST: pg_db
