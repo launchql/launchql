@@ -75,6 +75,15 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: password
 
+      - name: postgres-test
+        run: |
+          cd ./packages/postgres-test
+          yarn test
+        env:
+          PGHOST: pg_db
+          PGUSER: postgres
+          PGPASSWORD: password
+
       - name: launchql/orm
         run: cd ./packages/orm && yarn test
 
