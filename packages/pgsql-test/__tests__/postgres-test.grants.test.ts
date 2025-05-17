@@ -1,53 +1,49 @@
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
-
-import {
-  getConnection,
-  Connection,
-} from '../src';
 import { randomUUID } from 'crypto';
-import { PgTestClient } from '../src/test-client';
-import { DbAdmin } from '../src/admin';
 import { resolve } from 'path';
+import { PgTestClient } from '../src/test-client';
+import { PgConfig } from '@launchql/types';
+import { DbAdmin } from '../src/admin';
+import { getConnections } from '../src/connect';
+import { PgTestConnector } from '../src/manager';
 
-const sql = (file: string) => resolve(__dirname, '../sql', file);
+let db: PgTestClient;
+let pg: PgTestClient;
+let teardown: () => Promise<void>;
 
-const TEST_DB_BASE = `postgres_test_${randomUUID()}`; 
+const TEST_DB_NAME = `postgres_test_${randomUUID()}`;
+const sqlPath = (file: string) => resolve(__dirname, '../sql', file);
 
-function setupBaseDB(config: PgConfig): void {
+/**
+ * Optionally load seed SQL into the base template before forking connections.
+ */
+function setupBaseDatabase(config: PgConfig) {
   const admin = new DbAdmin(config);
-  admin.create(config.database)
-  admin.loadSql(sql('test.sql'), config.database);
-  admin.loadSql(sql('roles.sql'), config.database);
-  admin.drop(config.database);
+  admin.loadSql(sqlPath('roles.sql'), config.database);
+  admin.loadSql(sqlPath('test.sql'), config.database);
 }
 
-const config = getPgEnvOptions({
-    database: TEST_DB_BASE
+beforeAll(async () => {
+  // Create test DB and clients
+  ({ db, pg, teardown } = await getConnections({
+    database: TEST_DB_NAME
+  }));
+
+  // Optionally preload schema/data before tests
+  setupBaseDatabase(pg.config);
 });
 
-beforeAll(() => {
-  setupBaseDB(config);
+afterAll(async () => {
+  await teardown(); // closes manager and drops DB if needed
 });
 
-afterAll(() => {
-  Connection.getManager().closeAll();
-});
-
-
-describe('Postgres Test Framework', () => {
-  let db: PgTestClient;
-
-  afterEach(() => {
-    // if (db) closeConnection(db);
+describe('Database Setup', () => {
+  it('has valid connection (pg)', async () => {
+    const result = await pg.query('SELECT 1 AS ok');
+    expect(result.rows[0].ok).toBe(1);
   });
 
-  it('creates a test DB with hot mode (FAST_TEST)', () => {
-    db = getConnection({ hot: true, extensions: ['uuid-ossp'] });
-    expect(db).toBeDefined();
-  });
-
-  it('creates a test DB from scratch (default)', () => {
-    db = getConnection({});
-    expect(db).toBeDefined();
+  it('has valid connection (db)', async () => {
+    const result = await db.query('SELECT 2 AS ok');
+    expect(result.rows[0].ok).toBe(2);
   });
 });

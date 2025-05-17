@@ -1,52 +1,60 @@
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import path from 'path';
+import { randomUUID } from 'crypto';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 
-import {
-  getConnection,
-  Connection
-} from '../src';
 import { PgTestClient } from '../src/test-client';
 import { DbAdmin } from '../src/admin';
+import { getConnections } from '../src/connect';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
-const TEMPLATE_NAME = 'test_template';
-const TEST_DB_BASE = 'postgres_test_db_template';
+let db: PgTestClient;
+let pg: PgTestClient;
+let teardown: () => Promise<void>;
 
-function setupTemplateDB(config: PgConfig, template: string): void {
-  const admin = new DbAdmin(config);
+const TEMPLATE_NAME = 'test_template';
+const SEED_DB_TO_CREATE_TEMPLATE = `postgres_test_${randomUUID()}`;
+
+/**
+ * Load SQL and create a reusable template database.
+ */
+function setupTemplateDatabase(): void {
+  const templateConfig = getPgEnvOptions({
+    database: SEED_DB_TO_CREATE_TEMPLATE
+  });
+
+  const admin = new DbAdmin(templateConfig);
   try {
-    admin.drop(config.database);
-  } catch {}
-  admin.create(config.database);
-  admin.loadSql(sql('test.sql'), config.database);
-  admin.loadSql(sql('roles.sql'), config.database);
-  admin.cleanupTemplate(template);
-  admin.createTemplateFromBase(config.database, template);
-  admin.drop(config.database);
+    admin.drop(SEED_DB_TO_CREATE_TEMPLATE);
+  } catch { }
+  admin.create(SEED_DB_TO_CREATE_TEMPLATE);
+
+  // Load schema/data into base DB
+  admin.loadSql(sql('test.sql'), SEED_DB_TO_CREATE_TEMPLATE);
+  admin.loadSql(sql('roles.sql'), SEED_DB_TO_CREATE_TEMPLATE);
+  admin.cleanupTemplate(TEMPLATE_NAME);
+  admin.createTemplateFromBase(SEED_DB_TO_CREATE_TEMPLATE, TEMPLATE_NAME);
+  admin.drop(SEED_DB_TO_CREATE_TEMPLATE);
 }
 
-const config = getPgEnvOptions({
-    database: TEST_DB_BASE
+beforeAll(async () => {
+  // Step 1: Spin up a base DB client to set up the template
+  setupTemplateDatabase();
+
+  // // Step 2: Spin up a new DB from that template for test use
+  ({ db, pg, teardown } = await getConnections({}, {
+    template: TEMPLATE_NAME
+  }));
+
 });
 
-beforeAll(() => {
-  setupTemplateDB(config, TEMPLATE_NAME);
-});
-
-afterAll(() => {
-  Connection.getManager().closeAll();
+afterAll(async () => {
+  await teardown(); // Cleans up all connections via PgTestConnector
 });
 
 describe('Template Database Test', () => {
-  let db: PgTestClient;
-
-  afterEach(() => {
-    // if (db) closeConnection(db);
-  });
-
-  it('creates a test DB from a template', () => {
-    db = getConnection({ template: TEMPLATE_NAME });
-    expect(db).toBeDefined();
+  it('uses a database created from the template', async () => {
+    const res = await db.query('SELECT 1 AS ok');
+    expect(res.rows[0].ok).toBe(1);
   });
 });
