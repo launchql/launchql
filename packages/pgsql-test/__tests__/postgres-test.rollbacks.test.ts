@@ -1,5 +1,4 @@
 import path from 'path';
-import { randomUUID } from 'crypto';
 import { getPgEnvOptions } from '@launchql/types';
 
 import { PgTestClient } from '../src/test-client';
@@ -8,61 +7,46 @@ import { getConnections } from '../src/connect';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
-let db: PgTestClient;
 let pg: PgTestClient;
 let teardown: () => Promise<void>;
-
-const TEMPLATE_NAME = 'test_template';
-const SEED_DB_TO_CREATE_TEMPLATE = `postgres_test_${randomUUID()}`;
 
 const usedDbNames: string[] = [];
 const testResults: { name: string; time: number }[] = [];
 
 let start: number;
 
-function setupTemplateDatabase(): void {
-  const templateConfig = getPgEnvOptions({
-    database: SEED_DB_TO_CREATE_TEMPLATE
-  });
+beforeAll(async () => {
+  ({ pg, teardown } = await getConnections());
 
-  const admin = new DbAdmin(templateConfig);
-  admin.cleanupTemplate(TEMPLATE_NAME);
-  admin.createSeededTemplate(TEMPLATE_NAME, {
-    seed: (db, dbName) => {
-      db.loadSql(sql('test.sql'), dbName);
-      db.loadSql(sql('roles.sql'), dbName);
-    }
-  });
-}
+  const admin = new DbAdmin(pg.config);
+  admin.loadSql(sql('test.sql'), pg.config.database);
+  admin.loadSql(sql('roles.sql'), pg.config.database);
 
-beforeAll(() => {
-  setupTemplateDatabase();
+  usedDbNames.push(pg.config.database);
 });
 
 beforeEach(async () => {
-  ({ db, pg, teardown } = await getConnections({}, {
-    template: TEMPLATE_NAME
-  }));
-  usedDbNames.push(db?.config?.database ?? '(unknown)');
+  await pg.beforeEach();
   start = Date.now();
 });
 
 afterEach(async () => {
-  await teardown();
   const elapsed = Date.now() - start;
   const name = expect.getState().currentTestName ?? 'unknown';
   testResults.push({ name, time: elapsed });
+
+  await pg.afterEach();
 });
 
-afterAll(() => {
-  const uniqueNames = new Set(usedDbNames);
-  const avg = testResults.reduce((sum, r) => sum + r.time, 0) / testResults.length;
+afterAll(async () => {
+  await teardown();
+
+  const avg =
+    testResults.reduce((sum, r) => sum + r.time, 0) / testResults.length;
 
   const summaryLines = [
-    `🧪 Template DB Benchmark`,
-    `📦 Total DBs Created: ${usedDbNames.length}`,
-    `📂 Template Used: ${TEMPLATE_NAME}`,
-    `✅ Unique DBs: ${uniqueNames.size === usedDbNames.length}`,
+    `🧪 Rollback DB Benchmark`,
+    `📂 DB Used: ${usedDbNames[0]}`,
     `⏱️ Test Timings:`,
     ...testResults.map(({ name, time }) => `  • ${name}: ${time}ms`),
     `🏁 Average Test Time: ${avg.toFixed(2)}ms`
@@ -71,7 +55,7 @@ afterAll(() => {
   console.log('\n' + summaryLines.join('\n') + '\n');
 });
 
-describe('Template DB Benchmark', () => {
+describe('Rollback DB Benchmark', () => {
   it('inserts Alice', async () => {
     await pg.query(`INSERT INTO app_public.users (username) VALUES ('alice')`);
     const res = await pg.query(`SELECT COUNT(*) FROM app_public.users`);
