@@ -1,0 +1,37 @@
+os:
+  - linux
+language: node_js
+node_js:
+  - "10"
+  - "12"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+notifications:
+  email: false
+services:
+  - docker
+env:
+  global:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=password
+    - PGPORT=7777
+    - PGDATABASE=test_database
+    - SCHEMA=app_meta
+    - PGHOST=localhost
+    - PGPASSWORD=password
+    - PGUSER=postgres
+
+before_install:
+  - yarn install
+  - docker run -d -p 7777:5432 --name postgres pyramation/postgres
+  - sleep 3
+  - while ! docker exec -it postgres pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
+  - createdb test_database
+  - psql -f sql/roles.sql test_database
+  - psql -f sql/test.sql test_database
+
+script:
+  - yarn install
+  - yarn test
