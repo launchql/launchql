@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { PgConfig } from '@launchql/types';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
 import { streamSql as stream } from './stream';
 import { randomUUID } from 'crypto';
@@ -41,7 +41,9 @@ export class DbAdmin {
   constructor(
     private config: PgConfig,
     private verbose: boolean = false
-  ) { }
+  ) { 
+    this.config = getPgEnvOptions(config);
+  }
 
   private getEnv(): Record<string, string> {
     return {
