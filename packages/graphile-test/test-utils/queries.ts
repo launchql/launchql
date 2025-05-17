@@ -1,4 +1,4 @@
-import { gql } from '../src';
+import gql from 'graphql-tag';
 
 export const IntrospectionQuery = gql`
   query IntrospectionQuery {

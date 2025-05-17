@@ -63,6 +63,18 @@ jobs:
         env:
           TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
 
+      - name: graphile-test
+        run: |
+          cd ./packages/graphile-test
+          createdb test_database
+          psql -f sql/roles.sql test_database
+          psql -f sql/test.sql test_database
+          yarn test
+        env:
+          PGHOST: pg_db
+          PGUSER: postgres
+          PGPASSWORD: password
+
       - name: launchql/orm
         run: cd ./packages/orm && yarn test
 
