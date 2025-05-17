@@ -8,7 +8,6 @@ import deepmerge from 'deepmerge';
 let manager: PgTestConnector;
 
 export interface TestConnectionOptions {
-  hot?: boolean;
   template?: string;
   prefix?: string;
   extensions?: string[];
@@ -70,9 +69,6 @@ export const getConnections = async (
     // Create the test database
     if (process.env.TEST_DB) {
       config.database = process.env.TEST_DB;
-    } else if (connOpts.hot) {
-      admin.create(config.database);
-      admin.installExtensions(connOpts.extensions);
     } else if (connOpts.template) {
       admin.createFromTemplate(connOpts.template, config.database);
     } else {
