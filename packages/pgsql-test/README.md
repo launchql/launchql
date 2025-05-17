@@ -1,61 +1,137 @@
 # pgsql-test
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
-    PostgreSQL Testing in TypeScript
+<p align="center" width="100%">
+  <img height="250" src="https://github.com/user-attachments/assets/d0456af5-b6e9-422e-a45d-2574d5be490f" />
 </p>
 
-## install
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+  <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT">
+    <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
+  </a>
+  <a href="https://www.npmjs.com/package/pgsql-test">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%2Fpgsql-test%2Fpackage.json"/>
+  </a>
+</p>
+
+## Install
 
 ```sh
 npm install pgsql-test
 ```
-## Table of contents
+---
 
-- [pgsql-test](#pgsql-test)
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
+## Features
 
-## Developing
+* 🧪 Auto-generated test databases with `UUID` suffix
+* 🔄 Per-test isolation using transactions and savepoints
+* 🛡️ Role-based context for RLS testing
+* 🧹 Easy teardown and cleanup
+* 🧰 Designed for `Jest`, `Mocha`, or any async test runner
 
-When first cloning the repo:
+---
 
-```sh
-yarn
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
+## How to Use
+
+`pgsql-test` provides an isolated PostgreSQL testing environment with per-test transaction rollback, ideal for integration tests involving SQL, roles, or GraphQL (e.g., with PostGraphile).
+
+### Basic Example
+
+```ts
+import { getConnections } from 'pgsql-test';
+import { PgTestClient } from 'pgsql-test/client';
+
+let conn: PgTestClient;
+let db: PgTestClient;
+let teardown: () => Promise<void>;
+
+beforeAll(async () => {
+  ({ conn, db, teardown } = await getConnections());
+
+  await db.query(`
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL
+    );
+    CREATE TABLE posts (
+      id SERIAL PRIMARY KEY,
+      user_id INT NOT NULL REFERENCES users(id),
+      content TEXT NOT NULL
+    );
+  `);
+
+  await db.query(`
+    INSERT INTO users (name) VALUES ('Alice'), ('Bob');
+    INSERT INTO posts (user_id, content) VALUES
+      (1, 'Hello world!'),
+      (2, 'Graphile is cool!');
+  `);
+});
+
+afterAll(async () => {
+  await teardown();
+});
+
+beforeEach(async () => {
+  await db.beforeEach(); // Starts transaction + SAVEPOINT
+});
+
+afterEach(async () => {
+  await db.afterEach(); // Rolls back to SAVEPOINT
+});
+
+test('user count starts at 2', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM users');
+  expect(res.rows[0].count).toBe('2');
+});
 ```
 
-Or if you want to make your dev process smoother, you can run:
+---
 
-```sh
-yarn
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+## Role-Based Contexts
+
+You can simulate different PostgreSQL roles for RLS and permission testing.
+
+```ts
+describe('authenticated role', () => {
+  beforeEach(async () => {
+    conn.setContext({ role: 'authenticated' });
+    await conn.beforeEach();
+  });
+
+  afterEach(async () => {
+    await conn.afterEach();
+  });
+
+  it('runs as authenticated', async () => {
+    const result = await conn.query(`SELECT current_setting('role', true) AS role`);
+    expect(result.rows[0].role).toBe('authenticated');
+  });
+});
 ```
 
-## Interchain JavaScript Stack 
+---
 
-A unified toolkit for building applications and smart contracts in the Interchain ecosystem ⚛️
+## Environment Overrides
 
-| Category              | Tools                                                                                                                  | Description                                                                                           |
-|----------------------|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| **Chain Information**   | [**Chain Registry**](https://github.com/hyperweb-io/chain-registry), [**Utils**](https://www.npmjs.com/package/@chain-registry/utils), [**Client**](https://www.npmjs.com/package/@chain-registry/client) | Everything from token symbols, logos, and IBC denominations for all assets you want to support in your application. |
-| **Wallet Connectors**| [**Interchain Kit**](https://github.com/hyperweb-io/interchain-kit)<sup>beta</sup>, [**Cosmos Kit**](https://github.com/hyperweb.io/cosmos-kit) | Experience the convenience of connecting with a variety of web3 wallets through a single, streamlined interface. |
-| **Signing Clients**          | [**InterchainJS**](https://github.com/hyperweb-io/interchainjs)<sup>beta</sup>, [**CosmJS**](https://github.com/cosmos/cosmjs) | A single, universal signing interface for any network |
-| **SDK Clients**              | [**Telescope**](https://github.com/hyperweb.io/telescope)                                                          | Your Frontend Companion for Building with TypeScript with Cosmos SDK Modules. |
-| **Starter Kits**     | [**Create Interchain App**](https://github.com/hyperweb-io/create-interchain-app)<sup>beta</sup>, [**Create Cosmos App**](https://github.com/hyperweb.io/create-cosmos-app) | Set up a modern Interchain app by running one command. |
-| **UI Kits**          | [**Interchain UI**](https://github.com/hyperweb.io/interchain-ui)                                                   | The Interchain Design System, empowering developers with a flexible, easy-to-use UI kit. |
-| **Testing Frameworks**          | [**Starship**](https://github.com/hyperweb.io/starship)                                                             | Unified Testing and Development for the Interchain. |
-| **TypeScript Smart Contracts** | [**Create Hyperweb App**](https://github.com/hyperweb-io/create-hyperweb-app)                              | Build and deploy full-stack blockchain applications with TypeScript |
-| **CosmWasm Contracts** | [**CosmWasm TS Codegen**](https://github.com/CosmWasm/ts-codegen)                                                   | Convert your CosmWasm smart contracts into dev-friendly TypeScript classes. |
+`pgsql-test` respects the following env vars for DB connectivity:
 
-## Credits
+* `PGHOST`
+* `PGPORT`
+* `PGUSER`
+* `PGPASSWORD`
 
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
+Override them in your test runner or CI config:
 
+```yaml
+env:
+  PGHOST: localhost
+  PGPORT: 5432
+  PGUSER: postgres
+  PGPASSWORD: password
+```
 
 ## Disclaimer
 
