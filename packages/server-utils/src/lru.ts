@@ -1,5 +1,4 @@
 import { LRUCache } from 'lru-cache';
-
 import pg from 'pg';
 import { HttpRequestHandler } from 'postgraphile';
 
@@ -10,19 +9,7 @@ const ONE_YEAR = ONE_DAY * 366;
 // Kubernetes sends only SIGTERM on pod shutdown
 const SYS_EVENTS = ['SIGTERM'];
 
-const end = (pool: any) => {
-  try {
-    if (pool.ended || pool.ending) {
-      console.error(
-        'Avoid calling end() — pool is already ended or ending.'
-      );
-      return;
-    }
-    pool.end();
-  } catch (e) {
-    process.stderr.write(String(e));
-  }
-};
+type PgPoolKey = string;
 
 export interface GraphileCache {
   pgPool: pg.Pool;
@@ -30,62 +17,145 @@ export interface GraphileCache {
   handler: HttpRequestHandler;
 }
 
+//
+// --- Service Cache ---
+//
+export const svcCache = new LRUCache<string, any>({
+  max: 25,
+  ttl: ONE_YEAR,
+  updateAgeOnGet: true,
+  dispose: (svc, key) => {
+    console.log(`🗑️ Disposing service[${key}]`);
+  }
+});
+
+//
 // --- Graphile Cache ---
+//
 export const graphileCache = new LRUCache<string, GraphileCache>({
   max: 15,
-  dispose: (obj: GraphileCache, key: string) => {
-    console.log(`disposing PostGraphile[${key}]`);
-  },
-  updateAgeOnGet: true,
   ttl: ONE_YEAR,
+  updateAgeOnGet: true,
+  dispose: (obj, key) => {
+    console.log(`🗑️ Disposing PostGraphile[${key}]`);
+  }
 });
 
-// --- Postgres Pool Cache ---
-export const pgCache = new LRUCache<string, pg.Pool>({
-  max: 10,
-  dispose: (pgPool: pg.Pool, key: string) => {
-    console.log(`disposing pg ${key}`);
-    graphileCache.forEach((obj: GraphileCache, k: string) => {
-      if (obj.pgPoolKey === key) {
-        graphileCache.delete(k);
+//
+// --- PgPoolCacheManager ---
+//
+export class PgPoolCacheManager {
+  private cleanupTasks: Promise<void>[] = [];
+
+  private readonly pgCache = new LRUCache<PgPoolKey, pg.Pool>({
+    max: 10,
+    ttl: ONE_YEAR,
+    updateAgeOnGet: true,
+    dispose: (pool, key, reason) => {
+      console.log(`🧹 Disposing pg pool [${key}] (${reason})`);
+      this.cleanGraphileDependencies(key);
+      this.deferDispose(pool, key);
+    },
+  });
+
+  constructor(private readonly graphileCache: LRUCache<string, GraphileCache>) {}
+
+  get(key: PgPoolKey): pg.Pool | undefined {
+    return this.pgCache.get(key);
+  }
+
+  has(key: PgPoolKey): pg.Pool | boolean {
+    return this.pgCache.has(key);
+  }
+
+  set(key: PgPoolKey, pool: pg.Pool): void {
+    this.pgCache.set(key, pool);
+  }
+
+  delete(key: PgPoolKey): void {
+    const pool = this.pgCache.get(key);
+    const existed = this.pgCache.delete(key);
+    if (!existed && pool) {
+      this.cleanGraphileDependencies(key);
+      this.deferDispose(pool, key);
+    }
+  }
+
+  clear(): void {
+    const entries = [...this.pgCache.entries()];
+    this.pgCache.clear();
+    for (const [key, pool] of entries) {
+      this.cleanGraphileDependencies(key);
+      this.deferDispose(pool, key);
+    }
+  }
+
+  async waitForDisposals(): Promise<void> {
+    await Promise.allSettled(this.cleanupTasks);
+  }
+
+  private cleanGraphileDependencies(pgPoolKey: string): void {
+    this.graphileCache.forEach((entry, k) => {
+      if (entry.pgPoolKey === pgPoolKey) {
+        console.log(`🧽 Removing graphileCache[${k}] due to pgPool[${pgPoolKey}]`);
+        this.graphileCache.delete(k);
       }
     });
-    end(pgPool);
-  },
-  updateAgeOnGet: true,
-  ttl: ONE_YEAR,
-});
+  }
 
-// --- Generic Service Cache ---
-export const svcCache = new LRUCache({
-  max: 25,
-  dispose: (svc: any, key: any) => {
-    console.log(`disposing service[${key}]`);
-  },
-  updateAgeOnGet: true,
-  ttl: ONE_YEAR,
-});
+  private deferDispose(pool: pg.Pool, key: string): void {
+    setImmediate(() => {
+      const task = (async () => {
+        try {
+          if (!pool.ended && !pool.ending) {
+            await pool.end();
+            console.log(`✅ pg.Pool ${key} ended.`);
+          }
+        } catch (err) {
+          console.error(`❌ Error ending pg.Pool ${key}:`, err);
+        }
+      })();
+      this.cleanupTasks.push(task);
+    });
+  }
+}
 
+//
+// --- Instantiate the pgCache manager ---
+//
+export const pgCache = new PgPoolCacheManager(graphileCache);
+
+//
 // --- Graceful Shutdown ---
-const once = <T extends (...args: any[]) => any>(fn: T, context?: any) => {
+//
+const once = <T extends (...args: any[]) => any>(fn: T): T => {
+  let called = false;
   let result: ReturnType<T>;
-  return function (...args: Parameters<T>) {
-    if (fn) {
-      // @ts-ignore
-      result = fn.apply(context || this, args);
-      fn = null!;
+  return ((...args: Parameters<T>) => {
+    if (!called) {
+      called = true;
+      result = fn(...args);
     }
     return result;
-  };
+  }) as T;
 };
 
-const close = once(() => {
-  console.log('closing server utils...');
+const close = once(async () => {
+  console.log('🛑 Closing all server caches...');
+  svcCache.clear();
   graphileCache.clear();
   pgCache.clear();
-  svcCache.clear();
+  await pgCache.waitForDisposals();
+  console.log('✅ All caches disposed.');
 });
 
 SYS_EVENTS.forEach((event) => {
-  process.on(event, close);
+  process.on(event, () => {
+    console.log(`📦 Received ${event}`);
+    close();
+  });
 });
+
+export const teardownPgPools = async () => {
+  await close();
+}

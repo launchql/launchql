@@ -1,6 +1,6 @@
+import { getSpawnEnvWithPg } from '@launchql/types';
 import { spawn } from 'child_process';
 import { Readable } from 'stream';
-import { env } from 'process';
 
 interface PgConfig {
   user: string;
@@ -39,16 +39,8 @@ export async function streamSql(config: PgConfig, sql: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     const sqlStream = stringToStream(sql);
 
-    // TODO set env vars!
     const proc = spawn('psql', args, {
-      env: {
-        ...env,
-        PGUSER: config.user,
-        PGHOST: config.host,
-        PGDATABASE: config.database,
-        PGPASSWORD: config.password,
-        // PGPORT: config.port
-      }
+      env: getSpawnEnvWithPg(config)
     });
 
     sqlStream.pipe(proc.stdin);

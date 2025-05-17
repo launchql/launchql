@@ -4,6 +4,7 @@ import { deploy, deployFast, LaunchQLProject } from '@launchql/migrate';
 import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 import deepmerge from 'deepmerge';
+import { teardownPgPools } from '@launchql/server-utils';
 
 let manager: PgTestConnector;
 
@@ -98,6 +99,7 @@ export const getConnections = async (
   db.setContext({ role: 'anonymous' });
 
   const teardown = async () => {
+    await teardownPgPools();
     await manager.closeAll();
   };
 
