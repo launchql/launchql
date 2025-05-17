@@ -1,0 +1,96 @@
+import { execSync } from 'child_process';
+import { PgConfig } from './types';
+
+export class DbAdmin {
+  constructor(
+    private config: PgConfig,
+    private verbose: boolean = false
+  ) {}
+
+  private getEnv(): Record<string, string> {
+    return {
+      PGHOST: this.config.host,
+      PGPORT: String(this.config.port),
+      PGUSER: this.config.user,
+      PGPASSWORD: this.config.password,
+    };
+  }
+
+  private run(command: string): void {
+    execSync(command, {
+      stdio: this.verbose ? 'inherit' : 'pipe',
+      env: {
+        ...process.env,
+        ...this.getEnv(),
+      },
+    });
+  }
+
+  private safeDropDb(name: string): void {
+    try {
+      this.run(`dropdb "${name}"`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (!message.includes('does not exist')) {
+        console.warn(`⚠️  Could not drop database ${name}: ${message}`);
+      }
+    }
+  }
+
+  drop(dbName?: string): void {
+    this.safeDropDb(dbName ?? this.config.database);
+  }
+
+  dropTemplate(dbName?: string): void {
+    const db = dbName ?? this.config.database;
+    this.run(`psql -c "UPDATE pg_database SET datistemplate='false' WHERE datname='${db}';"`);
+    this.drop(db);
+  }
+
+  create(dbName?: string): void {
+    const db = dbName ?? this.config.database;
+    this.run(`createdb -U ${this.config.user} -h ${this.config.host} -p ${this.config.port} "${db}"`);
+  }
+
+  createFromTemplate(template: string, dbName?: string): void {
+    const db = dbName ?? this.config.database;
+    this.run(`createdb -U ${this.config.user} -h ${this.config.host} -p ${this.config.port} -e "${db}" -T "${template}"`);
+  }
+
+  installExtensions(extensions: string[] | string, dbName?: string): void {
+    const db = dbName ?? this.config.database;
+    const extList = typeof extensions === 'string' ? extensions.split(',') : extensions;
+
+    for (const extension of extList) {
+      this.run(`psql --dbname "${db}" -c 'CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;'`);
+    }
+  }
+
+  connectionString(dbName?: string): string {
+    const { user, password, host, port } = this.config;
+    const db = dbName ?? this.config.database;
+    return `postgres://${user}:${password}@${host}:${port}/${db}`;
+  }
+
+  createTemplateFromBase(base: string, template: string): void {
+    this.run(`createdb -T "${base}" "${template}"`);
+    this.run(`psql -c "UPDATE pg_database SET datistemplate = true WHERE datname = '${template}';"`);
+  }
+
+  cleanupTemplate(template: string): void {
+    try {
+      this.run(`psql -c "UPDATE pg_database SET datistemplate = false WHERE datname = '${template}'"`);
+    } catch {}
+    this.safeDropDb(template);
+  }
+
+  createRole(role: string, password: string, dbName?: string): void {
+    const db = dbName ?? this.config.database;
+    this.run(`psql -d "${db}" -c "CREATE ROLE ${role} WITH LOGIN PASSWORD '${password}';"`);
+  }
+
+  grantConnect(role: string, dbName?: string): void {
+    const db = dbName ?? this.config.database;
+    this.run(`psql -d "${db}" -c "GRANT CONNECT ON DATABASE ${db} TO ${role};"`);
+  }
+}
