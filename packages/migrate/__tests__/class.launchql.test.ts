@@ -1,8 +1,20 @@
+import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import { cpSync, rmSync } from 'fs';
 import { LaunchQLProject, ProjectContext } from '../src/class/launchql';
 
-const fixture = (name: string) =>
-  path.resolve(__dirname, '../../..', '__fixtures__', 'sqitch', name);
+const ORIGINAL_FIXTURE_DIR = path.resolve(__dirname, '../../..', '__fixtures__', 'sqitch');
+const TEMP_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-test-'));
+const TEMP_FIXTURE_DIR = path.join(TEMP_DIR, 'sqitch');
+
+cpSync(ORIGINAL_FIXTURE_DIR, TEMP_FIXTURE_DIR, { recursive: true });
+
+afterAll(() => {
+  rmSync(TEMP_DIR, { recursive: true, force: true });
+});
+
+const fixture = (name: string) => path.join(TEMP_FIXTURE_DIR, name);
 
 describe('LaunchQLProject', () => {
   it('detects workspace root context correctly', async () => {
