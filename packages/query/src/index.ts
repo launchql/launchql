@@ -16,11 +16,9 @@ export class QueryBuilder {
     this.pickScalarFields = pickScalarFields.bind(this);
     this.pickAllFields = pickAllFields.bind(this);
 
-    const validate = validateMetaObject(this._meta);
-    if (typeof validate === 'object' && validate.errors) {
-      throw new Error(
-        `QueryBuilder: meta object is not in correct format ${validate.errors}`
-      );
+    const result = validateMetaObject(this._meta);
+    if (typeof result === 'object' && result.errors) {
+      throw new Error(`QueryBuilder: meta object is invalid:\n${result.message}`);
     }
   }
 

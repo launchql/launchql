@@ -10,13 +10,13 @@ import { getExtensionName } from './extensions';
  * @param scriptType - The type of script to resolve (`deploy` or `revert`).
  * @returns A single concatenated SQL script as a string.
  */
-export const resolve = async (
+export const resolve = (
   pkgDir: string = process.cwd(),
   scriptType: 'deploy' | 'revert' = 'deploy'
-): Promise<string> => {
+): string => {
   const sqlfile: string[] = [];
   const name = getExtensionName(pkgDir);
-  const { resolved, external } = await getDeps(pkgDir, name);
+  const { resolved, external } = getDeps(pkgDir, name);
 
   const scripts = scriptType === 'revert' ? [...resolved].reverse() : resolved;
 
@@ -37,10 +37,10 @@ export const resolve = async (
  * @param scriptType - The type of script to resolve (`deploy` or `revert`).
  * @returns A single concatenated SQL script as a string.
  */
-export const resolveWithPlan = async (
+export const resolveWithPlan = (
   pkgDir: string = process.cwd(),
   scriptType: 'deploy' | 'revert' = 'deploy'
-): Promise<string> => {
+): string => {
   const sqlfile: string[] = [];
   const plan = readFileSync(`${pkgDir}/sqitch.plan`, 'utf-8');
 
