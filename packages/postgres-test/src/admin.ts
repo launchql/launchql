@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
-import { PgConfig } from './types';
+import { PgConfig } from '@launchql/types';
+import { existsSync } from 'fs';
 
 export class DbAdmin {
   constructor(
@@ -93,4 +94,12 @@ export class DbAdmin {
     const db = dbName ?? this.config.database;
     this.run(`psql -d "${db}" -c "GRANT CONNECT ON DATABASE ${db} TO ${role};"`);
   }
+
+  loadSql(file: string, dbName: string): void {
+    if (!existsSync(file)) {
+      throw new Error(`Missing SQL file: ${file}`);
+    }
+    this.run(`psql -f ${file} ${dbName}`);
+  }
+  
 }

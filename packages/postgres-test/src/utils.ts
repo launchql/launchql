@@ -1,10 +1,11 @@
 import { Client, Pool } from 'pg';
-import { createdb, dropdb, templatedb, installExt, grantConnect } from './db';
+// import { createdb, dropdb, templatedb, installExt, grantConnect } from './db';
 import { connect, close } from './connection';
-import { PgConfig } from './types';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { getEnvOptions } from '@launchql/types';
 import { randomUUID } from 'crypto';
-import { PgWrapper } from './wrapper';
+import { PgTestClient } from './client';
+import { DbAdmin } from './admin';
 
 export interface TestOptions {
   hot?: boolean;
@@ -21,39 +22,37 @@ export function getOpts(configOpts: TestOptions = {}): TestOptions {
   };
 }
 
-export function getConnection(configOpts: TestOptions, database?: string): PgWrapper {
-  const envOpts = getEnvOptions();
+export function getConnection(configOpts: TestOptions, database?: string): PgTestClient {
   const opts = getOpts(configOpts);
   const dbName = database || `${opts.prefix}-${Date.now()}`;
 
-  const config: PgConfig = {
-    database: dbName,
-    user: envOpts.pg.user,
-    password: envOpts.pg.password,
-    port: envOpts.pg.port,
-    host: envOpts.pg.host
-  };
+  const config = getPgEnvOptions({
+    database: dbName
+  });
+
+  const admin = new DbAdmin(config);
 
   if (process.env.TEST_DB) {
     config.database = process.env.TEST_DB;
   } else if (opts.hot) {
-    createdb(config);
-    installExt(config, opts.extensions);
+    admin.create(config.database);
+    admin.installExtensions(opts.extensions);
   } else if (opts.template) {
-    templatedb({ ...config, template: opts.template });
+    admin.createFromTemplate(opts.template, config.database);
+    // admin.createFromTemplate(config.database, opts.template);
   } else {
-    createdb(config);
-    installExt(config, opts.extensions);
+    admin.create(config.database);
+    admin.installExtensions(opts.extensions);
   }
 
   return connect(config);
 }
 
-export function closeConnection(db: PgWrapper): void {
-  db.kill();
+export function closeConnection(db: PgTestClient): void {
+  // db.kill();
 }
 
-export function connectTest(database: string, user: string, password: string): PgWrapper {
+export function connectTest(database: string, user: string, password: string): PgTestClient {
   const envOpts = getEnvOptions();
   const config: PgConfig = {
     port: envOpts.pg.port,
@@ -65,7 +64,7 @@ export function connectTest(database: string, user: string, password: string): P
   return connect(config);
 }
 
-export async function createUserRole(db: PgWrapper, user: string, password: string): Promise<void> {
+export async function createUserRole(db: PgTestClient, user: string, password: string): Promise<void> {
   await db.query(`
     DO $$
     BEGIN
@@ -80,34 +79,28 @@ export async function createUserRole(db: PgWrapper, user: string, password: stri
   `);
 }
 
-export function closeConnections({ db, conn }: { db: PgWrapper; conn: PgWrapper }): void {
+export function closeConnections({ db, conn }: { db: PgTestClient; conn: PgTestClient }): void {
   conn.close();
   closeConnection(db);
 }
 
 export const getConnections = async () => {
-  const opts = getEnvOptions({
-    pg: {
-      database: `db-${randomUUID()}` 
-    }
-  });
   
-  const config: PgConfig = {
-    user: opts.pg.user,
-    port: opts.pg.port,
-    password: opts.pg.password,
-    host: opts.pg.host,
-    database: opts.pg.database
-  };
+  const config = getPgEnvOptions({
+    database: `db-${randomUUID()}`
+  })
+
+  const admin = new DbAdmin(config);
 
   const db = await getConnection({
 
   });
   
   await createUserRole(db, 'app_user', 'app_password');
-  await grantConnect(config, 'app_user');
+  admin.grantConnect('app_user', config.database);
+  // await grantConnect(config, 'app_user');
 
-  const conn = await connectTest(opts.pg.database, 'app_user', 'app_password');
+  const conn = await connectTest(config.database, 'app_user', 'app_password');
   conn.setContext({
     role: 'anonymous'
   });

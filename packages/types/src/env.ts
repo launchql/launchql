@@ -1,4 +1,5 @@
-import { getMergedOptions, LaunchQLOptions } from './launchql';
+import deepmerge from 'deepmerge';
+import { getMergedOptions, LaunchQLOptions, PgConfig } from './launchql';
 
 const parseEnvNumber = (val?: string): number | undefined => {
     const num = Number(val);
@@ -19,8 +20,14 @@ export const getEnvOptions = (overrides: LaunchQLOptions = {}): LaunchQLOptions 
         });
 };
 
+export const getPgEnvOptions = (overrides: Partial<PgConfig> = {}): PgConfig => {
+    const envOpts = getPgEnvVars();
+    const options = deepmerge(envOpts, overrides);
+    // if you need to sanitize...
+    return options;
+};
 
-export const getEnvVars = (): LaunchQLOptions => {
+const getEnvVars = (): LaunchQLOptions => {
     const {
         PORT,
         SERVER_HOST,
@@ -72,5 +79,23 @@ export const getEnvVars = (): LaunchQLOptions => {
             ...(AWS_SECRET_KEY && { awsSecretKey: AWS_SECRET_KEY }),
             ...(MINIO_ENDPOINT && { minioEndpoint: MINIO_ENDPOINT }),
         }
+    };
+};
+
+const getPgEnvVars = (): PgConfig => {
+    const {
+        PGHOST,
+        PGPORT,
+        PGUSER,
+        PGPASSWORD,
+        PGDATABASE
+    } = process.env;
+
+    return {
+        ...(PGHOST && { host: PGHOST }),
+        ...(PGPORT && { port: parseEnvNumber(PGPORT) }),
+        ...(PGUSER && { user: PGUSER }),
+        ...(PGPASSWORD && { password: PGPASSWORD }),
+        ...(PGDATABASE && { database: PGDATABASE }),
     };
 };

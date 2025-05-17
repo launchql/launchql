@@ -1,13 +1,11 @@
 import { Client, QueryResult } from 'pg';
-import { PgConfig } from './types';
-import { dropdb } from './db';
+import { PgConfig } from '@launchql/types';
 
-export class PgWrapper {
+export class PgTestClient {
   public config: PgConfig;
   private client: Client;
   private ctxStmts: string = '';
   private _ended: boolean = false;
-  private _dropped: boolean = false;
 
   constructor(config: PgConfig) {
     this.config = config;
@@ -25,20 +23,6 @@ export class PgWrapper {
     if (!this._ended) {
       this._ended = true;
       this.client.end();
-    }
-  }
-
-  kill(): void {
-    this.close();
-    if (!this._dropped && !process.env.TEST_DB) {
-      this.drop();
-    }
-  }
-
-  drop(): void {
-    if (!this._dropped) {
-      this._dropped = true;
-      dropdb(this.config);
     }
   }
 
@@ -125,5 +109,5 @@ export class PgWrapper {
   async query<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
     return this.client.query<T>(query, values);
   }
-  
+
 }

@@ -1,31 +1,25 @@
-import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 
 import {
   getConnection,
   closeConnection,
-  PgConfig,
+  Connection
 } from '../src';
 import { randomUUID } from 'crypto';
-import { PgWrapper } from '../src/wrapper';
+import { PgTestClient } from '../src/client';
 
 const TEST_DB_BASE = `postgres_test_${randomUUID()}`; 
 
-const opts = getEnvOptions({
-  pg: {
+const config = getPgEnvOptions({
     database: TEST_DB_BASE
-  }
 });
 
-const config: PgConfig = {
-  user: opts.pg.user,
-  port: opts.pg.port,
-  password: opts.pg.password,
-  host: opts.pg.host,
-  database: TEST_DB_BASE
-};
+afterAll(() => {
+  Connection.getManager().closeAll();
+});
 
 describe('Postgres Test Framework', () => {
-  let db: PgWrapper;
+  let db: PgTestClient;
 
   afterEach(() => {
     if (db) closeConnection(db);

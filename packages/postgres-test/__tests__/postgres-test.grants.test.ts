@@ -1,46 +1,42 @@
-
-import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 
 import {
   getConnection,
   closeConnection,
-  dropdb,
-  createdb,
-  PgConfig,
+  Connection,
 } from '../src';
-import { runSQLFile } from '../test-utils';
 import { randomUUID } from 'crypto';
-import { PgWrapper } from '../src/wrapper';
+import { PgTestClient } from '../src/client';
+import { DbAdmin } from '../src/admin';
+import { resolve } from 'path';
+
+const sql = (file: string) => resolve(__dirname, '../sql', file);
 
 const TEST_DB_BASE = `postgres_test_${randomUUID()}`; 
 
 function setupBaseDB(config: PgConfig): void {
-  createdb(config);
-  runSQLFile('test.sql', config.database);
-  runSQLFile('roles.sql', config.database);
-  dropdb(config);
+  const admin = new DbAdmin(config);
+  admin.create(config.database)
+  admin.loadSql(sql('test.sql'), config.database);
+  admin.loadSql(sql('roles.sql'), config.database);
+  admin.drop(config.database);
 }
 
-const opts = getEnvOptions({
-  pg: {
+const config = getPgEnvOptions({
     database: TEST_DB_BASE
-  }
 });
-
-const config: PgConfig = {
-  user: opts.pg.user,
-  port: opts.pg.port,
-  password: opts.pg.password,
-  host: opts.pg.host,
-  database: TEST_DB_BASE
-};
 
 beforeAll(() => {
   setupBaseDB(config);
 });
 
+afterAll(() => {
+  Connection.getManager().closeAll();
+});
+
+
 describe('Postgres Test Framework', () => {
-  let db: PgWrapper;
+  let db: PgTestClient;
 
   afterEach(() => {
     if (db) closeConnection(db);

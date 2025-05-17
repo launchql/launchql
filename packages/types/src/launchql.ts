@@ -43,17 +43,16 @@ declare module 'express-serve-static-core' {
     }
 }
 
-
-export interface PostgresOptions {
-    host?: string;
-    port?: number;
-    user?: string;
-    password?: string;
-    database?: string;
+export interface PgConfig {
+    host: string;
+    port: number;
+    user: string;
+    password: string;
+    database: string;
 }
 
 export interface LaunchQLOptions {
-    pg?: PostgresOptions;
+    pg?: Partial<PgConfig>;
     graphile?: {
         isPublic?: boolean;
         schema?: string | string[];
@@ -119,8 +118,6 @@ export const launchqlDefaults: LaunchQLOptions = {
         awsSecretKey: 'minioadmin'
     }
 };
-
-
 
 export const getMergedOptions = (options: LaunchQLOptions): LaunchQLOptions => {
     options = deepmerge(launchqlDefaults, options ?? {});

@@ -1,66 +1,46 @@
-import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import path from 'path';
-import fs from 'fs';
 
 import {
   getConnection,
   closeConnection,
-  dropdb,
-  PgConfig,
-  run,
-  createTemplateFromBase,
-  cleanupTemplateDatabase
+  Connection
 } from '../src';
-import { PgWrapper } from '../src/wrapper';
+import { PgTestClient } from '../src/client';
+import { DbAdmin } from '../src/admin';
+
+const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
 const TEMPLATE_NAME = 'test_template';
 const TEST_DB_BASE = 'postgres_test_db_template';
 
-function runSQLFile(file: string, database: string): void {
-  const filePath = path.resolve(__dirname, '../sql', file);
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`Missing SQL file: ${filePath}`);
-  }
-  run(`psql -f ${filePath} ${database}`);
-}
-
 function setupTemplateDB(config: PgConfig, template: string): void {
+  const admin = new DbAdmin(config);
   try {
-    dropdb(config);
+    admin.drop(config.database);
   } catch {}
-  run(`createdb ${config.database}`);
-  runSQLFile('test.sql', config.database);
-  runSQLFile('roles.sql', config.database);
-  cleanupTemplateDatabase(config, template);
-  createTemplateFromBase(config, config.database, template);
+  admin.create(config.database);
+  admin.loadSql(sql('test.sql'), config.database);
+  admin.loadSql(sql('roles.sql'), config.database);
+  admin.cleanupTemplate(template);
+  admin.createTemplateFromBase(config.database, template);
+  admin.drop(config.database);
 }
 
-const opts = getEnvOptions({
-  pg: {
+const config = getPgEnvOptions({
     database: TEST_DB_BASE
-  }
 });
 
-const config: PgConfig = {
-  user: opts.pg.user,
-  port: opts.pg.port,
-  password: opts.pg.password,
-  host: opts.pg.host,
-  database: TEST_DB_BASE
-};
-
 beforeAll(() => {
-  setupTemplateDB({
-    user: opts.pg.user,
-    port: opts.pg.port,
-    password: opts.pg.password,
-    host: opts.pg.host,
-    database: TEST_DB_BASE
-  }, TEMPLATE_NAME);
+  setupTemplateDB(config, TEMPLATE_NAME);
+});
+
+afterAll(() => {
+  Connection.getManager().closeAll();
 });
 
 describe('Template Database Test', () => {
-  let db: PgWrapper;
+  let db: PgTestClient;
 
   afterEach(() => {
     if (db) closeConnection(db);

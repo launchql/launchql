@@ -1,7 +1,7 @@
 import pg from 'pg';
 import { pgCache } from './lru';
 
-import { PostgresOptions } from '@launchql/types';
+import { PgConfig } from '@launchql/types';
 
 export const getDbString = (
   user: string,
@@ -18,7 +18,7 @@ export const getRootPgPool = ({
   host,
   port,
   database,
-}: PostgresOptions): pg.Pool => {
+}: PgConfig): pg.Pool => {
   if (pgCache.has(database)) {
     const cached = pgCache.get(database);
     if (cached) return cached;
