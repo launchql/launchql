@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.0.17",
+  "version": "4.0.18",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -41,10 +41,10 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@launchql/explorer": "^2.0.5",
-    "@launchql/migrate": "^2.0.12",
-    "@launchql/server": "^2.0.5",
-    "@launchql/server-utils": "^2.0.5",
+    "@launchql/explorer": "^2.0.6",
+    "@launchql/migrate": "^2.0.13",
+    "@launchql/server": "^2.0.6",
+    "@launchql/server-utils": "^2.0.6",
     "@launchql/templatizer": "^2.0.4",
     "@launchql/types": "^2.0.5",
     "chalk": "^4.1.0",

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphile-settings",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile settings",
   "main": "index.js",
@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
-    "@launchql/graphile-query": "^2.0.4",
-    "@launchql/graphile-settings": "^2.0.5",
+    "@launchql/graphile-query": "^2.0.5",
+    "@launchql/graphile-settings": "^2.0.6",
     "@launchql/types": "^2.0.5",
     "@launchql/upload-names": "^2.0.4",
     "@pyramation/postgis": "^0.1.1",
