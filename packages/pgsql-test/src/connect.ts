@@ -9,6 +9,7 @@ import { teardownPgPools } from '@launchql/server-utils';
 let manager: PgTestConnector;
 
 export interface TestConnectionOptions {
+  rootDb?: string;
   template?: string;
   prefix?: string;
   extensions?: string[];
@@ -22,6 +23,7 @@ export interface TestConnectionOptions {
 }
 
 const defaultTestConnOpts: Partial<TestConnectionOptions> = {
+  rootDb: process.env.PGROOTDATABASE || 'postgres',
   prefix: 'db-',
   extensions: [],
   cwd: process.cwd(),
@@ -31,32 +33,37 @@ const defaultTestConnOpts: Partial<TestConnectionOptions> = {
     password: 'app_password',
     role: 'anonymous'
   }
+}
 
+const getRootAdmin = (config: PgConfig, connOpts: TestConnectionOptions) => {
+  const opts = getPgEnvOptions();
+  opts.database = connOpts.rootDb;
+  const admin = new DbAdmin(opts);
+  return admin;
 }
 
 export const getConnections = async (
   _pgConfig: Partial<PgConfig> = {},
   _opts: TestConnectionOptions = {}
 ) => {
+
   const connOpts = deepmerge(defaultTestConnOpts, _opts);
   const config: PgConfig = getPgEnvOptions({
     database: `${connOpts.prefix}${randomUUID()}`,
     ..._pgConfig
   });
 
+  const root = getRootAdmin(config, connOpts);
+  await root.createUserRole(
+    connOpts.connection.user,
+    connOpts.connection.password,
+    connOpts.rootDb
+  );
+
   const admin = new DbAdmin(config);
-
-  const grantUser = () => {
-    // Set up test role
-    admin.createUserRole(connOpts.connection.user, connOpts.connection.password, config.database);
-    admin.grantConnect(connOpts.connection.user, config.database);
-
-  };
-
   const proj = new LaunchQLProject(connOpts.cwd);
   if (proj.isInModule()) {
     admin.create(config.database);
-    grantUser();
     admin.installExtensions(connOpts.extensions);
     const opts = getEnvOptions({
       pg: config
@@ -74,7 +81,6 @@ export const getConnections = async (
       await deploy(opts, proj.getModuleName(), config.database, proj.modulePath);
     }
   } else {
-
     // Create the test database
     if (process.env.TEST_DB) {
       config.database = process.env.TEST_DB;
@@ -82,11 +88,12 @@ export const getConnections = async (
       admin.createFromTemplate(connOpts.template, config.database);
     } else {
       admin.create(config.database);
-      grantUser();
       admin.installExtensions(connOpts.extensions);
     }
 
   }
+
+  await admin.grantConnect(connOpts.connection.user, config.database);
 
   // Main admin client (optional unless needed elsewhere)
   manager = PgTestConnector.getInstance();
@@ -96,8 +103,7 @@ export const getConnections = async (
     ...config,
     user: connOpts.connection.user,
     password: connOpts.connection.password
-  })
-  //   const conn = await getTestConnection(config.database, app_user, app_password);
+  });
   db.setContext({ role: 'anonymous' });
 
   const teardown = async () => {

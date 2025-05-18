@@ -2,7 +2,6 @@ import { execSync } from 'child_process';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
 import { streamSql as stream } from './stream';
-import { randomUUID } from 'crypto';
 
 export interface SeedAdapter {
   seed(db: DbAdmin, dbName: string): Promise<void> | void;
@@ -35,7 +34,6 @@ export function compositeSeedAdapter(adapters: SeedAdapter[]): SeedAdapter {
     }
   };
 }
-
 
 export class DbAdmin {
   constructor(
@@ -119,12 +117,6 @@ export class DbAdmin {
       this.run(`psql -c "UPDATE pg_database SET datistemplate = false WHERE datname = '${template}'"`);
     } catch { }
     this.safeDropDb(template);
-  }
-
-  async createRole(role: string, password: string, dbName?: string): Promise<void> {
-    const db = dbName ?? this.config.database;
-    const sql = `CREATE ROLE ${role} WITH LOGIN PASSWORD '${password}';`;
-    await this.streamSql(sql, db);
   }
   
   async grantRole(role: string, user: string, dbName?: string): Promise<void> {
