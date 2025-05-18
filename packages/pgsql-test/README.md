@@ -16,7 +16,6 @@
   </a>
 </p>
 
-
 `pgsql-test` gives you instant, isolated PostgreSQL databases for each test — with automatic transaction rollbacks, context switching, and clean seeding. Forget flaky tests and brittle environments. Write real SQL. Get real coverage. Stay fast.
 
 ## Install
@@ -52,6 +51,7 @@ Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is b
 6. [Usage Examples](#usage-examples)
    * [Basic Setup](#-basic-setup)
    * [Role-Based Context](#-role-based-context)
+   * [Seeding System](#-seeding-system)
    * [SQL File Seeding](#-sql-file-seeding)
    * [Programmatic Seeding](#-programmatic-seeding)
    * [CSV Seeding](#️-csv-seeding)
@@ -224,6 +224,27 @@ This approach enables testing various access patterns:
 
 > **Note:** While this interface helps simulate RBAC for testing, your production server should manage user/role claims via secure authentication tokens, typically by setting values like `current_setting('jwt.claims.user_id')` through proper authentication middleware.
 
+### 🌱 Seeding System
+
+The second argument to `getConnections()` is an optional array of `SeedAdapter` objects:
+
+```ts
+const { db, teardown } = await getConnections(getConnectionOptions, seedAdapters);
+```
+
+This array lets you fully customize how your test database is seeded. You can compose multiple strategies:
+
+* [`seed.sqlfile()`](#-sql-file-seeding) – Execute raw `.sql` files from disk
+* [`seed.fn()`](#-programmatic-seeding) – Run JavaScript/TypeScript logic to programmatically insert data
+* [`seed.csv()`](#️-csv-seeding) – Load tabular data from CSV files
+* [`seed.json()`](#️-json-seeding) – Use in-memory objects as seed data
+* [`seed.sqitch()`](#️-sqitch-seeding) – Deploy a Sqitch-compatible migration project
+* [`seed.launchql()`](#-launchql-seeding) – Apply a LaunchQL module using `deployFast()` (compatible with sqitch)
+
+> ✨ **Default Behavior:** If no `SeedAdapter[]` is passed, LaunchQL seeding is assumed. This makes `pgsql-test` zero-config for LaunchQL-based projects.
+
+This composable system allows you to mix-and-match data setup strategies for flexible, realistic, and fast database tests.
+
 ### 🔌 SQL File Seeding
 
 Use `.sql` files to set up your database state before tests:
@@ -391,19 +412,28 @@ beforeAll(async () => {
     seed.sqitch(cwd)
   ]));
 });
-
-it('runs a schema query', async () => {
-  const res = await db.query('SELECT COUNT(*) FROM myapp.users');
-  expect(+res.rows[0].count).toBeGreaterThanOrEqual(0);
-});
 ```
 
 This works for any Sqitch-compatible module, now accelerated by LaunchQL's deployment tooling.
 
 ## 🚀 LaunchQL Seeding
 
-For LaunchQL modules with precompiled `sqitch.plan`, use `seed.launchql(cwd)` to apply a schema quickly with `deployFast()`:
-For maximum performance with precompiled LaunchQL modules, use `seed.launchql(cwd)` to apply a schema at lightning speed with our TypeScript-powered `deployFast()`:
+If your project uses LaunchQL modules with a precompiled `sqitch.plan`, you can use `pgsql-test` with **zero configuration**. Just call `getConnections()` — and it *just works*:
+
+```ts
+import { getConnections } from 'pgsql-test';
+
+let db, teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections()); // 🚀 LaunchQL deployFast() is used automatically - up to 10x faster than traditional Sqitch!
+});
+```
+
+This works out of the box because `pgsql-test` uses the high-speed `deployFast()` function by default, applying any compiled LaunchQL schema located in the current working directory (`process.cwd()`).
+
+If you want to specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
+
 
 ```ts
 import path from 'path';
@@ -416,15 +446,7 @@ beforeAll(async () => {
     seed.launchql(cwd) // uses deployFast() - up to 10x faster than traditional Sqitch!
   ]));
 });
-
-it('creates user records', async () => {
-  await db.query(`INSERT INTO myapp.users (username, email) VALUES ('testuser', 'test@example.com')`);
-  const res = await db.query(`SELECT COUNT(*) FROM myapp.users`);
-  expect(+res.rows[0].count).toBeGreaterThan(0);
-});
 ```
-
-This is the fastest way to bring up a ready-to-query schema from a compiled LaunchQL module - perfect for both development and CI environments.
 
 ## Why LaunchQL's Approach?
 
