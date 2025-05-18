@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/server-utils",
-  "version": "2.0.4",
+  "name": "pgsql-test",
+  "version": "0.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "server utils",
+  "description": "PostgreSQL Testing in TypeScript",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -31,18 +31,9 @@
   },
   "dependencies": {
     "@launchql/types": "^2.0.4",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "lru-cache": "^11.1.0",
-    "pg": "^8.15.6",
-    "postgraphile": "^4.14.1"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.1",
-    "@types/pg": "^8.11.10",
-    "@types/rimraf": "^4.0.5",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2"
+    "@launchql/server-utils": "^2.0.4",
+    "@launchql/migrate": "^2.0.11",
+    "chalk": "^4.1.0",
+    "deepmerge": "^4.3.1"
   }
 }

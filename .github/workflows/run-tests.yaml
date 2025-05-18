@@ -52,6 +52,15 @@ jobs:
       - name: build
         run: yarn build
 
+      - name: seed app_user
+        run: |
+          psql -f ./bootstrap-roles.sql postgres
+        env:
+          PGHOST: pg_db
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: password
+
       - name: launchql/migrate
         run: cd ./packages/migrate && yarn test
 
@@ -72,6 +81,17 @@ jobs:
           yarn test
         env:
           PGHOST: pg_db
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: password
+
+      - name: pgsql-test
+        run: |
+          cd ./packages/pgsql-test
+          yarn test
+        env:
+          PGHOST: pg_db
+          PGPORT: 5432
           PGUSER: postgres
           PGPASSWORD: password
 

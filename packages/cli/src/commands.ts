@@ -16,6 +16,7 @@ import plan from './commands/plan';
 import _export from './commands/export';
 import _package from './commands/package';
 import kill from './commands/kill';
+import { teardownPgPools } from '@launchql/server-utils';
 
 // Command map
 const commandMap: Record<string, Function> = {
@@ -82,5 +83,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
 
   await commandFn(newArgv, prompter, options);
   prompter.close();
+
+  await teardownPgPools();
   return argv;
 };

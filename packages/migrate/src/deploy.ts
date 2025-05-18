@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import chalk from 'chalk';
 
-import { LaunchQLOptions } from '@launchql/types';
+import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { spawn } from 'child_process';
@@ -53,7 +53,7 @@ export const deploy = async (
 
         const child = spawn('sqitch', ['deploy', `db:pg:${database}`], {
           cwd: modulePath,
-          env: { ...process.env }
+          env: getSpawnEnvWithPg(opts.pg)
         });
         
         const exitCode: number = await new Promise((resolve, reject) => {
@@ -91,6 +91,6 @@ export const deploy = async (
   }
 
   console.log(chalk.green(`\n✅ Deployment complete for ${chalk.bold(name)}.\n`));
-  await pgPool.end();
+  // await pgPool.end();
   return extensions;
 };
