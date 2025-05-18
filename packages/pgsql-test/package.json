@@ -1,6 +1,6 @@
 {
   "name": "pgsql-test",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Testing in TypeScript",
   "main": "index.js",
