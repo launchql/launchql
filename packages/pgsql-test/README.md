@@ -16,29 +16,14 @@
   </a>
 </p>
 
+
+`pgsql-test` provides an isolated PostgreSQL testing environment with per-test transaction rollback, ideal for integration tests involving SQL, roles, simulations, and complex migrations. With automatic rollbacks and isolated contexts, it eliminates test interference while delivering tight feedback loops for happier developers. We made database testing simple so you can focus on writing good tests instead of fighting your environment.
+
 ## Install
 
 ```sh
 npm install pgsql-test
 ```
-
-## Table of Contents
-
-1. [Install](#install)
-2. [Features](#features)
-3. [How to Use](#how-to-use)
-4. [Quick Start](#quick-start)
-5. [getConnections() Overview](#getconnections-overview)
-6. [PgTestClient API Overview](#pgtestclient-api-overview)
-7. [Usage Examples](#usage-examples)
-   * [Basic Setup](#basic-setup)
-   * [Role-Based Context](#role-based-context)
-   * [SQL File Seeding](#sql-file-seeding)
-   * [Programmatic Seeding](#programmatic-seeding)
-   * [Composed Seeding](#composed-seeding)
-8. [Environment Overrides](#environment-overrides)
-9. [Disclaimer](#disclaimer)
-
 
 ## Features
 
@@ -51,9 +36,23 @@ npm install pgsql-test
 * 📦 Built for tools like `sqitch`, supporting full schema initialization workflows
 * 🧰 Designed for `Jest`, `Mocha`, or any async test runner
 
-## How to Use
 
-`pgsql-test` provides an isolated PostgreSQL testing environment with per-test transaction rollback, ideal for integration tests involving SQL, roles, or GraphQL (e.g., with PostGraphile).
+## Table of Contents
+
+1. [Install](#install)
+2. [Features](#features)
+3. [Quick Start](#quick-start)
+4. [getConnections() Overview](#getconnections-overview)
+5. [PgTestClient API Overview](#pgtestclient-api-overview)
+6. [Usage Examples](#usage-examples)
+   * [Basic Setup](#basic-setup)
+   * [Role-Based Context](#role-based-context)
+   * [SQL File Seeding](#sql-file-seeding)
+   * [Programmatic Seeding](#programmatic-seeding)
+   * [Composed Seeding](#composed-seeding)
+7. [Environment Overrides](#environment-overrides)
+8. [Disclaimer](#disclaimer)
+
 
 ## ✨ Quick Start
 
