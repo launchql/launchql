@@ -52,6 +52,8 @@ npm install pgsql-test
    * [Composed Seeding](#-composed-seeding)
    * [CSV Seeding](#️-csv-seeding)
    * [JSON Seeding](#️-json-seeding)
+   * [Sqitch Seeding](#️-sqitch-seeding)
+   * [LaunchQL Seeding](#-launchql-seeding)
 7. [Environment Overrides](#environment-overrides)
 8. [Disclaimer](#disclaimer)
 
@@ -285,7 +287,7 @@ it('has loaded rows', async () => {
 
 You can seed tables using in-memory JSON objects. This is useful when you want fast, inline fixtures without managing external files.
 
-````ts
+```ts
 import { getConnections, seed } from 'pgsql-test';
 
 let db;
@@ -335,7 +337,6 @@ it('has loaded rows', async () => {
   expect(+res.rows[0].count).toBeGreaterThan(0);
 });
 ```
-
 
 ## 🏗️ Sqitch Seeding
 
