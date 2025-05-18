@@ -18,19 +18,29 @@ import _package from './commands/package';
 import kill from './commands/kill';
 import { teardownPgPools } from '@launchql/server-utils';
 
-// Command map
+const withPgTeardown = (fn: Function) => async (...args: any[]) => {
+  try {
+    await fn(...args);
+  } finally {
+    await teardownPgPools();
+  }
+};
+
+const pgt = withPgTeardown;
 const commandMap: Record<string, Function> = {
-  deploy,
+  deploy: pgt(deploy),
+  verify: pgt(verify),
+  revert: pgt(revert),
+  init: pgt(init),
+  extension: pgt(extension),
+  plan: pgt(plan),
+  export: pgt(_export),
+  package: pgt(_package),
+  kill: pgt(kill),
+
+  // These manage their own connection lifecycles
   server,
-  explorer,
-  verify,
-  revert,
-  init,
-  extension,
-  plan,
-  export: _export,
-  package: _package,
-  kill
+  explorer
 };
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
@@ -84,6 +94,5 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   await commandFn(newArgv, prompter, options);
   prompter.close();
 
-  await teardownPgPools();
   return argv;
 };
