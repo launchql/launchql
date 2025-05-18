@@ -1,6 +1,6 @@
 {
   "name": "csv-to-pg",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "csv to pg statements",
   "main": "index.js",
@@ -37,7 +37,7 @@
     "@pyramation/prompt": "^0.0.1",
     "csv-parser": "^2.3.3",
     "js-yaml": "^3.14.0",
-    "pg-ast": "^2.0.5",
+    "pg-ast": "^2.0.6",
     "pgsql-deparser": "^1.2.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/s3-streamer",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "stream files to s3",
   "main": "index.js",
@@ -30,13 +30,13 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@launchql/s3-utils": "^2.1.0",
+    "@launchql/s3-utils": "^2.1.1",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0"
   },
   "dependencies": {
-    "@launchql/content-type-stream": "^2.1.0",
-    "@launchql/types": "^2.1.0",
+    "@launchql/content-type-stream": "^2.1.1",
+    "@launchql/types": "^2.1.1",
     "aws-sdk": "^2.1692.0"
   }
 }
