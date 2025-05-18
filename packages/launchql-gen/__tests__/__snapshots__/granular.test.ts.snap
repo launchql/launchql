@@ -78,3 +78,74 @@ exports[`generate 1`] = `
 ",
 }
 `;
+
+exports[`generate w count info 1`] = `
+{
+  "getActionItemQuery": "query getActionItemQuery($id: UUID!) {
+  actionItem(id: $id) {
+    userActionItems
+  }
+}
+",
+  "getActionItemsPaginated": "query getActionItemsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
+  actionItems(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        userActionItems
+      }
+    }
+  }
+}
+",
+  "getActionItemsQuery": "query getActionItemsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActionItemCondition, $filter: ActionItemFilter, $orderBy: [ActionItemsOrderBy!]) {
+  actionItems(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      userActionItems
+    }
+  }
+}
+",
+  "getActionItemsQueryAll": "query getActionItemsQueryAll {
+  actionItems {
+    totalCount
+    nodes {
+      userActionItems
+    }
+  }
+}
+",
+}
+`;

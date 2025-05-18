@@ -86,6 +86,7 @@ export interface GetManyArgs {
   operationName: string;
   query: any; // You can type this more specifically if you know its structure
   fields: string[];
+  paginated?: Record<string, { first?: number; offset?: number }>;
 }
 
 export interface GetManyResult {
@@ -97,13 +98,14 @@ export const getMany = ({
   operationName,
   query,
   fields,
+  paginated
 }: GetManyArgs): GetManyResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query', 'all'].join('_'),
     true
   );
 
-  const selections: FieldNode[] = getSelections(query, fields);
+  const selections: FieldNode[] = getSelections(query, fields, paginated);
 
   const opSel: FieldNode[] = [
     t.field({
@@ -137,6 +139,7 @@ export interface GetManyPaginatedEdgesArgs {
   operationName: string;
   query: GqlField;
   fields: string[];
+  paginated?: Record<string, { first?: number; offset?: number }>;
 }
 
 export interface GetManyPaginatedEdgesResult {
@@ -148,6 +151,7 @@ export const getManyPaginatedEdges = ({
   operationName,
   query,
   fields,
+  paginated
 }: GetManyPaginatedEdgesArgs): GetManyPaginatedEdgesResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'paginated'].join('_'),
@@ -160,7 +164,7 @@ export const getManyPaginatedEdges = ({
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
 
-  const selections: FieldNode[] = getSelections(query, fields);
+  const selections: FieldNode[] = getSelections(query, fields, paginated);
 
   const variableDefinitions: VariableDefinitionNode[] = [
     'first',
@@ -263,6 +267,7 @@ export interface GetManyPaginatedNodesArgs {
   operationName: string;
   query: GqlField;
   fields: string[];
+  paginated?: Record<string, { first?: number; offset?: number }>;
 }
 
 export interface GetManyPaginatedNodesResult {
@@ -274,6 +279,7 @@ export const getManyPaginatedNodes = ({
   operationName,
   query,
   fields,
+  paginated
 }: GetManyPaginatedNodesArgs): GetManyPaginatedNodesResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
@@ -286,7 +292,7 @@ export const getManyPaginatedNodes = ({
   const Filter = `${Singular}Filter`;
   const OrderBy = `${Plural}OrderBy`;
 
-  const selections: FieldNode[] = getSelections(query, fields);
+  const selections: FieldNode[] = getSelections(query, fields, paginated);
 
   const variableDefinitions: VariableDefinitionNode[] = [
     'first',
@@ -491,6 +497,7 @@ export interface GetOneArgs {
   operationName: string;
   query: GqlField;
   fields: string[];
+  paginated?: Record<string, { first?: number; offset?: number }>;
 }
 
 export interface GetOneResult {
@@ -502,6 +509,7 @@ export const getOne = ({
   operationName,
   query,
   fields,
+  paginated
 }: GetOneArgs): GetOneResult => {
   const queryName = inflection.camelize(
     ['get', inflection.underscore(operationName), 'query'].join('_'),
@@ -539,7 +547,7 @@ export const getOne = ({
       })
     );
 
-  const selections: FieldNode[] = getSelections(query, fields);
+  const selections: FieldNode[] = getSelections(query, fields, paginated);
 
   const opSel: FieldNode[] = [
     t.field({
@@ -1096,10 +1104,10 @@ export const generateGranular = (
   }, {});
 };
 
-
 export function getSelections(
   query: GqlField,
-  fields: string[] = []
+  fields: string[] = [],
+  paginated: Record<string, { first?: number; offset?: number }> = {}
 ): FieldNode[] {
   const useAll = fields.length === 0;
 
@@ -1119,14 +1127,15 @@ export function getSelections(
       ) {
         if (!useAll && !fields.includes(field.name)) return null;
 
+        const pageObj = paginated[field.name] || {};
+        const first = pageObj.first ?? 3;
+        const offset = pageObj.offset ?? 0;
+
         return t.field({
           name: field.name,
           args: [
-            t.argument({
-              name: 'first',
-              // @ts-ignore
-              value: t.intValue({ value: 3 }),
-            }),
+            t.argument({ name: 'first', value: t.intValue({ value: String(first) }) }),
+            t.argument({ name: 'offset', value: t.intValue({ value: String(offset) }) }),
           ],
           selectionSet: t.selectionSet({
             selections: [
