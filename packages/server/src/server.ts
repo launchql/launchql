@@ -16,10 +16,10 @@ import { flush, flushService } from './middleware/flush';
 import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
 
-import { LaunchQLOptions, getMergedOptions } from '@launchql/types';
+import { LaunchQLOptions, getEnvOptions } from '@launchql/types';
 
 export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
-  const app = new Server(getMergedOptions(rawOpts));
+  const app = new Server(getEnvOptions(rawOpts));
   app.addEventListener();
   app.listen();
 };

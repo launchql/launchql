@@ -13,10 +13,10 @@ import {
 import { printSchemas, printDatabases } from './render';
 import { getGraphileSettings } from './settings';
 import { getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
-import { getMergedOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/types';
 
 export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
-  const opts = getMergedOptions(rawOpts);
+  const opts = getEnvOptions(rawOpts);
 
   const {
     pg,
