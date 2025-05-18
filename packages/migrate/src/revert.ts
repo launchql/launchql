@@ -1,10 +1,10 @@
-import * as shell from 'shelljs';
 import { resolve } from 'path';
-import pg from 'pg';
+import { spawn } from 'child_process';
 import chalk from 'chalk';
 
-import { listModules } from './modules';
-import { extDeps } from './deps';
+import { LaunchQLProject } from './class/launchql';
+import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { getRootPgPool } from '@launchql/server-utils';
 
 interface Extensions {
   resolved: string[];
@@ -12,12 +12,15 @@ interface Extensions {
 }
 
 export const revert = async (
+  opts: LaunchQLOptions,
   name: string,
   database: string,
   dir: string
 ): Promise<Extensions> => {
+  const mod = new LaunchQLProject(dir);
+
   console.log(chalk.cyan(`\n🔍 Gathering modules from ${chalk.bold(dir)}...`));
-  const modules = await listModules(dir);
+  const modules = mod.getModuleMap();
 
   if (!modules[name]) {
     console.log(chalk.red(`❌ Module "${name}" not found in modules list.`));
@@ -25,15 +28,15 @@ export const revert = async (
   }
 
   console.log(chalk.cyan(`📦 Resolving dependencies for ${chalk.bold(name)}...`));
-  const extensions: Extensions = await extDeps(name, modules);
+  const extensions: Extensions = mod.getModuleExtensions(name);
 
-  const pgPool = new pg.Pool({
-    connectionString: `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${database}`,
+  const pgPool = getRootPgPool({
+    ...opts.pg,
+    database
   });
 
   console.log(chalk.green(`\n🧹 Starting revert process on database ${chalk.bold(database)}...`));
 
-  // Reverse the dependency list
   const reversedExtensions = [...extensions.resolved].reverse();
 
   for (const extension of reversedExtensions) {
@@ -44,17 +47,37 @@ export const revert = async (
         console.log(chalk.gray(`> ${msg}`));
         await pgPool.query(msg);
       } else {
-        const modulePath = resolve(dir, modules[extension].path);
+        const modulePath = resolve(mod.workspacePath, modules[extension].path);
         console.log(chalk.magenta(`\n📂 Reverting local module: ${chalk.bold(extension)}`));
         console.log(chalk.gray(`→ Path: ${modulePath}`));
         console.log(chalk.gray(`→ Command: sqitch revert db:pg:${database} -y`));
 
-        const cmd = shell.exec(`sqitch revert db:pg:${database} -y`, {
+        const child = spawn('sqitch', ['revert', `db:pg:${database}`, '-y'], {
           cwd: modulePath,
-          env: process.env,
+          env: getSpawnEnvWithPg(opts.pg),
         });
 
-        if (cmd.code !== 0) {
+        const exitCode: number = await new Promise((resolve, reject) => {
+          child.stdout.setEncoding('utf-8');
+          child.stderr.setEncoding('utf-8');
+
+          child.stderr.on('data', (chunk: Buffer | string) => {
+            const text = chunk.toString();
+            if (/error/i.test(text)) {
+              console.error(chalk.red(text));
+            } else if (/warning/i.test(text)) {
+              console.warn(chalk.yellow(text));
+            } else {
+              console.error(text);
+            }
+          });
+
+          child.stdout.pipe(process.stdout);
+          child.on('close', resolve);
+          child.on('error', reject);
+        });
+
+        if (exitCode !== 0) {
           console.log(chalk.red(`❌ Revert failed for module ${chalk.bold(extension)}`));
           throw new Error('revert failed');
         }
@@ -67,6 +90,5 @@ export const revert = async (
   }
 
   console.log(chalk.green(`\n✅ Revert complete for ${chalk.bold(name)}.\n`));
-  await pgPool.end();
   return extensions;
 };
