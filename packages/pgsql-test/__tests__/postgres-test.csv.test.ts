@@ -11,7 +11,7 @@ let pg: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ pg, teardown } = await getConnections({}, seed.compose([
+  ({ pg, teardown } = await getConnections({}, [
     // 1. Create schema with SERIAL primary keys
     seed.fn(async ({ pg }) => {
       await pg.query(`
@@ -40,7 +40,7 @@ beforeAll(async () => {
       await pg.query(`SELECT setval(pg_get_serial_sequence('custom.users', 'id'), (SELECT MAX(id) FROM custom.users));`);
       await pg.query(`SELECT setval(pg_get_serial_sequence('custom.posts', 'id'), (SELECT MAX(id) FROM custom.posts));`);
     })
-  ])));
+  ]));
 });
 
 afterAll(async () => {

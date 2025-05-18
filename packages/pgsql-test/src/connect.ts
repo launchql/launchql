@@ -11,6 +11,7 @@ import { randomUUID } from 'crypto';
 import { teardownPgPools } from '@launchql/server-utils';
 import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
+import { seed } from './seed';
 
 let manager: PgTestConnector;
 
@@ -50,7 +51,7 @@ export interface GetConnectionResult {
 
 export const getConnections = async (
   cn: GetConnectionOpts = {},
-  seedAdapter?: SeedAdapter
+  seedAdapters: SeedAdapter[] = []
 ): Promise<GetConnectionResult> => {
 
   cn = getConnOopts(cn);
@@ -82,13 +83,13 @@ export const getConnections = async (
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
 
-  if (seedAdapter) {
-    await seedAdapter.seed({
+  if (seedAdapters.length) {
+    await seed.compose(seedAdapters).seed({
       connect: connOpts,
       admin,
       config: config,
       pg: manager.getClient(config)
-    });
+    })
   }
 
 

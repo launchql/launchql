@@ -17,9 +17,9 @@ beforeAll(async () => {
     totalStart = Date.now();
 
     const cwd = resolve(__dirname + '/../../../__fixtures__/sqitch/simple/packages/my-third');
-    ({ pg, teardown } = await getConnections({}, seed.compose([
+    ({ pg, teardown } = await getConnections({}, [
         seed.launchql(cwd)
-    ])));
+    ]));
 
     usedDbNames.push(pg.config.database);
 });

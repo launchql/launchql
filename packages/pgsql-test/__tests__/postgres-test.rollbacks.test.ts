@@ -19,12 +19,12 @@ let totalStart: number;
 beforeAll(async () => {
   totalStart = Date.now();
 
-  ({ pg, teardown } = await getConnections({}, seed.compose([
+  ({ pg, teardown } = await getConnections({}, [
     seed.sqlfile([
       sql('test.sql'),
       sql('roles.sql')
     ])
-  ])));
+  ]));
 
   usedDbNames.push(pg.config.database);
 });
