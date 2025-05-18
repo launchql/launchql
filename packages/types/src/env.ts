@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import { getMergedOptions, launchqlDefaults, LaunchQLOptions, PgConfig } from './launchql';
+import { launchqlDefaults, LaunchQLOptions, PgConfig, TestConnectionOptions } from './launchql';
 
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);
@@ -13,11 +13,10 @@ const parseEnvBoolean = (val?: string): boolean | undefined => {
 
 export const getEnvOptions = (overrides: LaunchQLOptions = {}): LaunchQLOptions => {
   const envOpts = getEnvVars();
-  return getMergedOptions
-    ({
-      ...envOpts,
-      ...overrides,
-    });
+  const defaults = deepmerge(launchqlDefaults, envOpts);
+  const options = deepmerge(defaults, overrides);
+  // if you need to sanitize...
+  return options;
 };
 
 export const getPgEnvOptions = (overrides: Partial<PgConfig> = {}): PgConfig => {
@@ -28,8 +27,17 @@ export const getPgEnvOptions = (overrides: Partial<PgConfig> = {}): PgConfig => 
   return options;
 };
 
+export const getConnEnvOptions = (overrides: Partial<TestConnectionOptions> = {}): TestConnectionOptions => {
+  const opts = getEnvOptions({
+    db: overrides
+  });
+  return opts.db;
+};
+
 const getEnvVars = (): LaunchQLOptions => {
   const {
+    PGROOTDATABASE,
+
     PORT,
     SERVER_HOST,
     SERVER_TRUST_PROXY,
@@ -54,6 +62,9 @@ const getEnvVars = (): LaunchQLOptions => {
   } = process.env;
 
   return {
+    db: {
+      ...(PGROOTDATABASE && { rootDb: PGROOTDATABASE }),
+    },
     server: {
       ...(PORT && { port: parseEnvNumber(PORT) }),
       ...(SERVER_HOST && { host: SERVER_HOST }),

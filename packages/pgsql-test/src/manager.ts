@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import chalk from 'chalk';
 import { DbAdmin } from './admin';
-import { PgConfig } from '@launchql/types';
+import { getConnEnvOptions, getPgEnvOptions, PgConfig } from '@launchql/types';
 import { PgTestClient } from './test-client';
 
 const SYS_EVENTS = ['SIGTERM'];
@@ -57,10 +57,6 @@ export class PgTestConnector {
     return `${config.host}:${config.port}/${config.database}`;
   }
 
-  getAdmin(config: PgConfig): DbAdmin {
-    return new DbAdmin(config, this.verbose);
-  }
-
   getPool(config: PgConfig): Pool {
     const key = this.poolKey(config);
     if (!this.pgPools.has(key)) {
@@ -108,7 +104,11 @@ export class PgTestConnector {
       Array.from(this.seenDbConfigs.values()).map(async (config) => {
         try {
           // somehow an "admin" db had app_user creds?
-          const admin = new DbAdmin({...config, user: 'postgres', password: 'password'}, this.verbose);
+          const rootPg = getPgEnvOptions();
+          const admin = new DbAdmin(
+            {...config, user: rootPg.user, password: rootPg.password},
+            this.verbose
+          );
           // console.log(config);
           admin.drop();
           this.log(chalk.yellow(`🧨 Dropped database: ${chalk.white(config.database)}`));
@@ -128,6 +128,7 @@ export class PgTestConnector {
 
   drop(config: PgConfig): void {
     const key = this.dbKey(config);
+    // for drop, no need for conn opts
     const admin = new DbAdmin(config, this.verbose);
     admin.drop();
     this.log(chalk.red(`🧨 Dropped database: ${chalk.white(config.database)}`));

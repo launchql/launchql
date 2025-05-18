@@ -1,43 +1,23 @@
 import { DbAdmin } from './admin';
-import { getEnvOptions, getPgEnvOptions, PgConfig } from '@launchql/types';
+import { 
+  getEnvOptions,
+  getPgEnvOptions,
+  TestConnectionOptions,
+  PgConfig,
+  getConnEnvOptions
+} from '@launchql/types';
 import { deploy, deployFast, LaunchQLProject } from '@launchql/migrate';
 import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
-import deepmerge from 'deepmerge';
+
 import { teardownPgPools } from '@launchql/server-utils';
 
 let manager: PgTestConnector;
 
-export interface TestConnectionOptions {
-  rootDb?: string;
-  template?: string;
-  prefix?: string;
-  extensions?: string[];
-  cwd?: string;
-  deployFast?: boolean;
-  connection?: {
-    user?: string;
-    password?: string;
-    role?: string;
-  }
-}
-
-const defaultTestConnOpts: Partial<TestConnectionOptions> = {
-  rootDb: process.env.PGROOTDATABASE || 'postgres',
-  prefix: 'db-',
-  extensions: [],
-  cwd: process.cwd(),
-  deployFast: true,
-  connection: {
-    user: 'app_user',
-    password: 'app_password',
-    role: 'anonymous'
-  }
-}
-
-const getRootAdmin = (config: PgConfig, connOpts: TestConnectionOptions) => {
-  const opts = getPgEnvOptions();
-  opts.database = connOpts.rootDb;
+export const getPgRootAdmin = (connOpts: TestConnectionOptions={}) => {
+  const opts = getPgEnvOptions({
+    database: connOpts.rootDb
+  });
   const admin = new DbAdmin(opts);
   return admin;
 }
@@ -47,13 +27,13 @@ export const getConnections = async (
   _opts: TestConnectionOptions = {}
 ) => {
 
-  const connOpts = deepmerge(defaultTestConnOpts, _opts);
+  const connOpts = getConnEnvOptions(_opts);
   const config: PgConfig = getPgEnvOptions({
     database: `${connOpts.prefix}${randomUUID()}`,
     ..._pgConfig
   });
 
-  const root = getRootAdmin(config, connOpts);
+  const root = getPgRootAdmin(connOpts);
   await root.createUserRole(
     connOpts.connection.user,
     connOpts.connection.password,

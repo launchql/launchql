@@ -51,7 +51,22 @@ export interface PgConfig {
     database: string;
 }
 
+export interface TestConnectionOptions {
+    rootDb?: string;
+    template?: string;
+    prefix?: string;
+    extensions?: string[];
+    cwd?: string;
+    deployFast?: boolean;
+    connection?: {
+      user?: string;
+      password?: string;
+      role?: string;
+    }
+  }
+
 export interface LaunchQLOptions {
+    db?: Partial<TestConnectionOptions>;
     pg?: Partial<PgConfig>;
     graphile?: {
         isPublic?: boolean;
@@ -84,6 +99,18 @@ export interface LaunchQLOptions {
 
 
 export const launchqlDefaults: LaunchQLOptions = {
+    db: {
+        rootDb: 'postgres',
+        prefix: 'db-',
+        extensions: [],
+        cwd: process.cwd(),
+        deployFast: true,
+        connection: {
+            user: 'app_user',
+            password: 'app_password',
+            role: 'anonymous'
+        }
+    },
     pg: {
         host: 'localhost',
         port: 5432,
@@ -117,10 +144,4 @@ export const launchqlDefaults: LaunchQLOptions = {
         awsAccessKey: 'minioadmin',
         awsSecretKey: 'minioadmin'
     }
-};
-
-export const getMergedOptions = (options: LaunchQLOptions): LaunchQLOptions => {
-    options = deepmerge(launchqlDefaults, options ?? {});
-    // if you need to sanitize...
-    return options;
 };
