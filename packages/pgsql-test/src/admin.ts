@@ -135,7 +135,8 @@ export class DbAdmin {
     await adapter.seed({
       admin: this,
       config: this.config,
-      pg: null // sorry!
+      pg: null, // sorry!
+      connect: null, // sorry!
     });
     this.cleanupTemplate(templateName);
     this.createTemplateFromBase(seedDb, templateName);
