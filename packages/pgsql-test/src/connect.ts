@@ -46,9 +46,17 @@ export const getConnections = async (
 
   const admin = new DbAdmin(config);
 
+  const grantUser = () => {
+    // Set up test role
+    admin.createUserRole(connOpts.connection.user, connOpts.connection.password, config.database);
+    admin.grantConnect(connOpts.connection.user, config.database);
+
+  };
+
   const proj = new LaunchQLProject(connOpts.cwd);
   if (proj.isInModule()) {
     admin.create(config.database);
+    grantUser();
     admin.installExtensions(connOpts.extensions);
     const opts = getEnvOptions({
       pg: config
@@ -74,21 +82,15 @@ export const getConnections = async (
       admin.createFromTemplate(connOpts.template, config.database);
     } else {
       admin.create(config.database);
+      grantUser();
       admin.installExtensions(connOpts.extensions);
     }
 
   }
 
-
-
   // Main admin client (optional unless needed elsewhere)
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
-
-  // Set up test role
-  admin.createUserRole(connOpts.connection.user, connOpts.connection.password, config.database);
-  admin.grantConnect(connOpts.connection.user, config.database);
-
   // App user connection
   const db = manager.getClient({
     ...config,

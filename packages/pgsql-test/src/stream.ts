@@ -32,7 +32,6 @@ export async function streamSql(config: PgConfig, sql: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     const sqlStream = stringToStream(sql);
 
-    // TODO set env vars!
     const proc = spawn('psql', args, {
       env: getSpawnEnvWithPg(config)
     });

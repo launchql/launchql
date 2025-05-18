@@ -140,13 +140,13 @@ const once = <T extends (...args: any[]) => any>(fn: T): T => {
   }) as T;
 };
 
-const close = once(async () => {
-  console.log('🛑 Closing all server caches...');
+const close = once(async (verbose: boolean = false) => {
+  if (verbose) console.log('🛑 Closing all server caches...');
   svcCache.clear();
   graphileCache.clear();
   pgCache.clear();
   await pgCache.waitForDisposals();
-  console.log('✅ All caches disposed.');
+  if (verbose) console.log('✅ All caches disposed.');
 });
 
 SYS_EVENTS.forEach((event) => {
@@ -156,6 +156,6 @@ SYS_EVENTS.forEach((event) => {
   });
 });
 
-export const teardownPgPools = async () => {
-  await close();
+export const teardownPgPools = async (verbose: boolean = false) => {
+  await close(verbose);
 }
