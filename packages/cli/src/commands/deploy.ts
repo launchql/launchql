@@ -61,15 +61,13 @@ export default async (
         required: true
       }
     ]);
-
+    
     console.log(chalk.green(`Deploying project ${chalk.bold(project)} to database ${chalk.bold(database)}...`));
-
     const options: LaunchQLOptions = getEnvOptions({
       pg: {
         database
       }
     });
-  
     await deploy(options, project, database, cwd);
     console.log(chalk.green('Deployment complete.'));
   } else {

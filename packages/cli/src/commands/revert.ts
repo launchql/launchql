@@ -2,6 +2,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { exec } from 'shelljs';
 import { listModules, revert } from '@launchql/migrate';
 import chalk from 'chalk';
+import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 
 export default async (
     argv: Partial<Record<string, any>>,
@@ -9,15 +10,6 @@ export default async (
     _options: CLIOptions
 ) => {
     const questions: Question[] = [
-        // @ts-ignore
-        {
-            type: 'text',
-            name: 'cwd',
-            message: chalk.cyan('Working directory'),
-            required: false,
-            default: false,
-            useDefault: true
-        },
         {
             name: 'database',
             message: chalk.cyan('Database name'),
@@ -65,7 +57,13 @@ export default async (
         ]);
 
         console.log(chalk.green(`Reverting project ${chalk.bold(project)} on database ${chalk.bold(database)}...`));
-        await revert(project, database, cwd);
+        const options: LaunchQLOptions = getEnvOptions({
+            pg: {
+                database
+            }
+        });
+
+        await revert(options, project, database, cwd);
         console.log(chalk.green('Revert complete.'));
     } else {
         console.log(chalk.green(`Running ${chalk.bold(`sqitch revert db:pg:${database} -y`)}...`));
