@@ -47,7 +47,7 @@ Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is b
 1. [Install](#install)
 2. [Features](#features)
 3. [Quick Start](#-quick-start)
-4. [getConnections() Overview](#getconnections-overview)
+4. [`getConnections()` Overview](#getconnections-overview)
 5. [PgTestClient API Overview](#pgtestclient-api-overview)
 6. [Usage Examples](#usage-examples)
    * [Basic Setup](#-basic-setup)
@@ -58,7 +58,7 @@ Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is b
    * [JSON Seeding](#️-json-seeding)
    * [Sqitch Seeding](#️-sqitch-seeding)
    * [LaunchQL Seeding](#-launchql-seeding)
-7. [Environment Overrides](#environment-overrides)
+7. [`getConnections() Options` ](#getconnections-options)
 8. [Disclaimer](#disclaimer)
 
 
@@ -379,23 +379,51 @@ LaunchQL provides the best of both worlds:
 
 By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
 
-## Environment Overrides
+## `getConnections` Options
 
-`pgsql-test` respects the following env vars for DB connectivity:
+This table documents the available options for the `getConnections` function. The options are passed as a combination of `pg` and `db` configuration objects.
 
-* `PGHOST`
-* `PGPORT`
-* `PGUSER`
-* `PGPASSWORD`
+### `db` Options (PgTestConnectionOptions)
 
-Override them in your test runner or CI config:
+| Option                   | Type       | Default          | Description                                                                 |
+| ------------------------ | ---------- | ---------------- | --------------------------------------------------------------------------- |
+| `db.extensions`          | `string[]` | `[]`             | Array of PostgreSQL extensions to include in the test database              |
+| `db.cwd`                 | `string`   | `process.cwd()`  | Working directory used for LaunchQL/Sqitch projects                         |
+| `db.connection.user`     | `string`   | `'app_user'`     | User for simulating RLS via `setContext()`                                  |
+| `db.connection.password` | `string`   | `'app_password'` | Password for RLS test user                                                  |
+| `db.connection.role`     | `string`   | `'anonymous'`    | Default role used during `setContext()`                                     |
+| `db.template`            | `string`   | `undefined`      | Template database used for faster test DB creation                          |
+| `db.rootDb`              | `string`   | `'postgres'`     | Root database used for administrative operations (e.g., creating databases) |
+| `db.prefix`              | `string`   | `'db-'`          | Prefix used when generating test database names                             |
 
-```yaml
-env:
-  PGHOST: localhost
-  PGPORT: 5432
-  PGUSER: postgres
-  PGPASSWORD: password
+### `pg` Options (PgConfig)
+
+Environment variables will override these options when available:
+
+* `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`
+
+| Option        | Type     | Default       | Description                                     |
+| ------------- | -------- | ------------- | ----------------------------------------------- |
+| `pg.user`     | `string` | `'postgres'`  | Superuser for PostgreSQL                        |
+| `pg.password` | `string` | `'password'`  | Password for the PostgreSQL superuser           |
+| `pg.host`     | `string` | `'localhost'` | Hostname for PostgreSQL                         |
+| `pg.port`     | `number` | `5423`        | Port for PostgreSQL                             |
+| `pg.database` | `string` | `'postgres'`  | Default database used when connecting initially |
+
+### Usage
+
+```ts
+const { conn, db, teardown } = await getConnections({
+  pg: { user: 'postgres', password: 'secret' },
+  db: {
+    extensions: ['uuid-ossp'],
+    cwd: '/path/to/project',
+    connection: { user: 'test_user', password: 'secret', role: 'authenticated' },
+    template: 'test_template',
+    prefix: 'test_',
+    rootDb: 'postgres'
+  }
+});
 ```
 
 ## Disclaimer

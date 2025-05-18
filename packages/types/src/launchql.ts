@@ -51,13 +51,12 @@ export interface PgConfig {
     database: string;
 }
 
-export interface TestConnectionOptions {
+export interface PgTestConnectionOptions {
     rootDb?: string;
     template?: string;
     prefix?: string;
     extensions?: string[];
     cwd?: string;
-    deployFast?: boolean;
     connection?: {
       user?: string;
       password?: string;
@@ -66,7 +65,7 @@ export interface TestConnectionOptions {
   }
 
 export interface LaunchQLOptions {
-    db?: Partial<TestConnectionOptions>;
+    db?: Partial<PgTestConnectionOptions>;
     pg?: Partial<PgConfig>;
     graphile?: {
         isPublic?: boolean;
@@ -104,7 +103,6 @@ export const launchqlDefaults: LaunchQLOptions = {
         prefix: 'db-',
         extensions: [],
         cwd: process.cwd(),
-        deployFast: true,
         connection: {
             user: 'app_user',
             password: 'app_password',

@@ -1,9 +1,9 @@
-import { PgConfig, TestConnectionOptions } from "@launchql/types";
+import { PgConfig, PgTestConnectionOptions } from "@launchql/types";
 import { DbAdmin } from "../admin";
 import { PgTestClient } from "../test-client";
 
 export interface SeedContext {
-  connect: TestConnectionOptions;
+  connect: PgTestConnectionOptions;
   admin: DbAdmin;
   config: PgConfig;
   pg: PgTestClient;

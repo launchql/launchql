@@ -1,7 +1,7 @@
 import { DbAdmin } from './admin';
 import {
   getPgEnvOptions,
-  TestConnectionOptions,
+  PgTestConnectionOptions,
   PgConfig,
   getConnEnvOptions
 } from '@launchql/types';
@@ -15,7 +15,7 @@ import { seed } from './seed';
 
 let manager: PgTestConnector;
 
-export const getPgRootAdmin = (connOpts: TestConnectionOptions = {}) => {
+export const getPgRootAdmin = (connOpts: PgTestConnectionOptions = {}) => {
   const opts = getPgEnvOptions({
     database: connOpts.rootDb
   });
@@ -25,7 +25,7 @@ export const getPgRootAdmin = (connOpts: TestConnectionOptions = {}) => {
 
 export interface GetConnectionOpts {
   pg?: Partial<PgConfig>;
-  db?: Partial<TestConnectionOptions>;
+  db?: Partial<PgTestConnectionOptions>;
 }
 
 const getConnOopts = (cn: GetConnectionOpts = {}) => {
@@ -50,13 +50,13 @@ export interface GetConnectionResult {
 
 export const getConnections = async (
   cn: GetConnectionOpts = {},
-  seedAdapters: SeedAdapter[] = []
+  seedAdapters: SeedAdapter[] = [ seed.launchql() ]
 ): Promise<GetConnectionResult> => {
 
   cn = getConnOopts(cn);
 
   const config: PgConfig = cn.pg as PgConfig;
-  const connOpts: TestConnectionOptions = cn.db;
+  const connOpts: PgTestConnectionOptions = cn.db;
 
   const root = getPgRootAdmin(connOpts);
   await root.createUserRole(
