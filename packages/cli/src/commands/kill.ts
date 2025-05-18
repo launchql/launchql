@@ -18,6 +18,11 @@ export default async (
       AND datname !~ '^pg_';
   `);
 
+  if (!databasesResult.rows.length) {
+    console.log(chalk.gray('ℹ️  No databases found to process. Exiting.'));
+    return;
+  }
+
   let databases: OptionValue[];
   ({ databases } = await prompter.prompt(argv, [
     {
