@@ -1,6 +1,6 @@
 {
   "name": "@launchql/codegen",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Codegen",
   "main": "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/graphile-query",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile query",
   "main": "index.js",

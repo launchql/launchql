@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.0.19",
+  "version": "4.0.20",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -41,12 +41,12 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@launchql/explorer": "^2.0.7",
-    "@launchql/migrate": "^2.0.14",
-    "@launchql/server": "^2.0.7",
-    "@launchql/server-utils": "^2.0.7",
-    "@launchql/templatizer": "^2.0.4",
-    "@launchql/types": "^2.0.6",
+    "@launchql/explorer": "^2.0.8",
+    "@launchql/migrate": "^2.0.15",
+    "@launchql/server": "^2.0.8",
+    "@launchql/server-utils": "^2.0.8",
+    "@launchql/templatizer": "^2.0.5",
+    "@launchql/types": "^2.0.7",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1",
     "inquirerer": "^2.0.6",
