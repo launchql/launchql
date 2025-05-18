@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/launchql/launchql/compare/@launchql/url-domains@2.0.5...@launchql/url-domains@2.1.0) (2025-05-18)
+
+**Note:** Version bump only for package @launchql/url-domains
+
+
+
+
+
 ## [2.0.5](https://github.com/launchql/launchql/compare/@launchql/url-domains@2.0.4...@launchql/url-domains@2.0.5) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/url-domains

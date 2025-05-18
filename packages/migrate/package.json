@@ -1,6 +1,6 @@
 {
   "name": "@launchql/migrate",
-  "version": "2.0.15",
+  "version": "2.1.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Migration Tools",
   "main": "index.js",
@@ -35,9 +35,9 @@
     "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
-    "@launchql/server-utils": "^2.0.8",
-    "@launchql/templatizer": "^2.0.5",
-    "@launchql/types": "^2.0.7",
+    "@launchql/server-utils": "^2.1.0",
+    "@launchql/templatizer": "^2.1.0",
+    "@launchql/types": "^2.1.0",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "csv-to-pg": "^2.0.5",
