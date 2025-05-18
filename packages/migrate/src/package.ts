@@ -39,6 +39,12 @@ export const packageModule = (
 ): { sql: string; diff?: boolean; tree1?: string; tree2?: string } => {
   const resolveFn = usePlan ? resolveWithPlan : resolve;
   const sql = resolveFn(packageDir);
+
+  if (!sql?.trim()) {
+    console.warn(`⚠️ No SQL generated for module at ${packageDir}. Skipping.`);
+    return { sql: '' };
+  }
+
   const extname = getExtensionName(packageDir);
   
   try {
