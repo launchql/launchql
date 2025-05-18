@@ -5,14 +5,14 @@
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-  <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT">
+  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/pgsql-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%2Fpgsql-test%2Fpackage.json"/>
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fpgsql-test%2Fpackage.json"/>
   </a>
 </p>
 

@@ -42,7 +42,7 @@ export default [
   "module": "esm/index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/${vars.USERNAME}/${vars.REPONAME}",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "${vars.ACCESS}",
     "directory": "dist"

@@ -13,7 +13,7 @@
   "command": {
     "create": {
       "homepage": "https://github.com/launchql/launchql",
-      "license": "SEE LICENSE IN LICENSE",
+      "license": "MIT",
       "access": "restricted"
     },
     "publish": {

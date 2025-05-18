@@ -6,7 +6,7 @@
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",

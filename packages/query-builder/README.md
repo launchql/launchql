@@ -5,11 +5,11 @@
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql-2.0/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://github.com/launchql/launchql-2.0/blob/main/LICENSE-MIT"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/@launchql/query-builder"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql-2.0?filename=packages%2Fquery-builder%2Fpackage.json"/></a>
+   <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+   <a href="https://www.npmjs.com/package/@launchql/query-builder"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fquery-builder%2Fpackage.json"/></a>
 </p>
 
 A robust TypeScript-based SQL query builder that supports dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure/function calls. Designed with flexibility and ease of use in mind, it handles advanced SQL features like `JOIN`, `GROUP BY`, `ORDER BY`, and schema-qualified queries.
