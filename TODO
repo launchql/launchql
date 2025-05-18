@@ -1,35 +1,55 @@
-- [ ] remove travis
-- [ ] 'getOne(): handles missing selection gracefully' NOT PASSING
-- [ ] @launchql/react tests
-- [ ] pg-ast should use pg-proto-parser's types (@pgsql/utils in pgsql-parser monorepo?)
-- [ ] csv-to-pg should use enum strings for ops, and types too
-- [ ] csv-to-pg should use inqurirer
-- [ ] get this PR from launchql-gen https://github.com/launchql/launchql-gen/pull/19
-- [ ] Docker in workflow needs extensions directories
-- [x] LaunchQL class for the project structures — control files, modules, paths, etc. 
-- [ ] mod.setModuleDependencies(['some-native-module', 'pg-utilities']); allows for circular refs
-- [ ] when deploy/**/some.sql requires a project, not detected by moduleDependencies, potentially write a method to extract these
+TODO
 
-Good next steps:
-1. Get a demo script of creating some tables w the meta api 
-X 2. Get export working 
-X 3. Get boilerplate (lql init) working 
-4. Get testing framework working (this will be HUGE) 
+CI / Workflow
+-------------
+- [x] Remove Travis CI
+- [ ] Fix Docker workflow to include extensions directories
 
-** remove shelljs
+Testing & Stability
+-------------------
+- [ ] Fix 'getOne(): handles missing selection gracefully' test (currently failing)
+- [ ] Add tests for @launchql/react
+- [x] Get testing framework working (this will be huge)
 
-** MOVE postgraphile-<plugin>s over (import HIST)
+Package Cleanup
+---------------
+- [ ] Remove shelljs
+- [ ] Remove deployFast option
+- [ ] Add keywords to package.json files in all packages
 
-** some-schema during package requires some_schema instead to work
+CSV-to-PG Improvements
+----------------------
+- [ ] Use enum strings for operation types
+- [ ] Add proper TypeScript types
+- [ ] Integrate inquirer for interactive prompts
 
+Module System
+-------------
+- [ ] Fix mod.setModuleDependencies(['some-native-module', 'pg-utilities']) — currently allows circular references
+- [ ] Detect project dependencies from deploy/**/some.sql if not declared via moduleDependencies
 
+Naming & Typing
+---------------
+- [ ] pg-ast should adopt pg-proto-parser's types (from @pgsql/utils in pgsql-parser monorepo)
+      pg-ast is a much better name — use it!
 
+Migration & History
+-------------------
+- [ ] Get this PR from launchql-gen: https://github.com/launchql/launchql-gen/pull/19
+- [ ] Move postgraphile-* plugins over (preserve import history)
+- [ ] Import original LaunchQL history (preserve git log)
 
+Misc
+----
+- [ ] Fix issue where `some-schema` must be renamed to `some_schema` during packaging to work
 
+Good Next Steps
+---------------
+- [x] Demo script using meta API to create tables
+- [x] Get export working
+- [x] Get boilerplate (`lql init`) working
+- [ ] Get testing framework finalized
+
+Other
+---------
 https://www.npmjs.com/package/pg-copy-streams-binary
-
-remove deployFast option
-
-keywords in packages
-
-import original LaunchQL history
