@@ -2,7 +2,7 @@ import path from 'path';
 
 import { PgTestClient } from '../src/test-client';
 import { getConnections } from '../src/connect';
-import { seed } from '../src/seed/types';
+import { seed } from '../src/seed';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
