@@ -17,6 +17,38 @@ export interface GraphileCache {
   handler: HttpRequestHandler;
 }
 
+// Wrapper for pg.Pool to track disposal state
+class ManagedPgPool {
+  public isDisposed = false;
+  private disposePromise: Promise<void> | null = null;
+
+  constructor(public readonly pool: pg.Pool, public readonly key: string) {}
+
+  async dispose(): Promise<void> {
+    if (this.isDisposed) {
+      return this.disposePromise;
+    }
+
+    this.isDisposed = true;
+    this.disposePromise = (async () => {
+      try {
+        if (!this.pool.ended) {
+          await this.pool.end();
+          console.log(`✅ pg.Pool ${this.key} ended.`);
+        } else {
+          console.log(`☑️ pg.Pool ${this.key} ALREADY ended.`);
+        }
+      } catch (err) {
+        console.error(`❌ Error ending pg.Pool ${this.key}:`, err);
+        // Re-throw to ensure Promise.allSettled captures the error
+        throw err;
+      }
+    })();
+
+    return this.disposePromise;
+  }
+}
+
 //
 // --- Service Cache ---
 //
@@ -46,52 +78,71 @@ export const graphileCache = new LRUCache<string, GraphileCache>({
 //
 export class PgPoolCacheManager {
   private cleanupTasks: Promise<void>[] = [];
+  private closed = false;
 
-  private readonly pgCache = new LRUCache<PgPoolKey, pg.Pool>({
+  private readonly pgCache = new LRUCache<PgPoolKey, ManagedPgPool>({
     max: 10,
     ttl: ONE_YEAR,
     updateAgeOnGet: true,
-    dispose: (pool, key, reason) => {
+    dispose: (managedPool, key, reason) => {
       console.log(`🧹 Disposing pg pool [${key}] (${reason})`);
       this.cleanGraphileDependencies(key);
-      this.deferDispose(pool, key);
+      this.disposePool(managedPool);
     },
   });
 
   constructor(private readonly graphileCache: LRUCache<string, GraphileCache>) {}
 
   get(key: PgPoolKey): pg.Pool | undefined {
-    return this.pgCache.get(key);
+    const managedPool = this.pgCache.get(key);
+    return managedPool?.pool;
   }
 
-  has(key: PgPoolKey): pg.Pool | boolean {
+  has(key: PgPoolKey): boolean {
     return this.pgCache.has(key);
   }
 
   set(key: PgPoolKey, pool: pg.Pool): void {
-    this.pgCache.set(key, pool);
+    if (this.closed) {
+      throw new Error('Cannot add to cache after it has been closed');
+    }
+    this.pgCache.set(key, new ManagedPgPool(pool, key));
   }
 
   delete(key: PgPoolKey): void {
-    const pool = this.pgCache.get(key);
+    const managedPool = this.pgCache.get(key);
     const existed = this.pgCache.delete(key);
-    if (!existed && pool) {
+    if (!existed && managedPool) {
       this.cleanGraphileDependencies(key);
-      this.deferDispose(pool, key);
+      this.disposePool(managedPool);
     }
   }
 
   clear(): void {
     const entries = [...this.pgCache.entries()];
     this.pgCache.clear();
-    for (const [key, pool] of entries) {
+    for (const [key, managedPool] of entries) {
       this.cleanGraphileDependencies(key);
-      this.deferDispose(pool, key);
+      this.disposePool(managedPool);
     }
   }
 
+  async close(): Promise<void> {
+    if (this.closed) return;
+    
+    this.closed = true;
+    this.clear();
+    await this.waitForDisposals();
+  }
+
   async waitForDisposals(): Promise<void> {
-    await Promise.allSettled(this.cleanupTasks);
+    if (this.cleanupTasks.length === 0) return;
+    
+    const tasks = [...this.cleanupTasks];
+    // Clear the array before awaiting to avoid potential race conditions
+    this.cleanupTasks = [];
+    
+    await Promise.allSettled(tasks);
   }
 
   private cleanGraphileDependencies(pgPoolKey: string): void {
@@ -103,20 +154,11 @@ export class PgPoolCacheManager {
     });
   }
 
-  private deferDispose(pool: pg.Pool, key: string): void {
-    setImmediate(() => {
-      const task = (async () => {
-        try {
-          if (!pool.ended && !pool.ending) {
-            await pool.end();
-            console.log(`✅ pg.Pool ${key} ended.`);
-          }
-        } catch (err) {
-          console.error(`❌ Error ending pg.Pool ${key}:`, err);
-        }
-      })();
-      this.cleanupTasks.push(task);
-    });
+  private disposePool(managedPool: ManagedPgPool): void {
+    if (managedPool.isDisposed) return;
+    
+    const task = managedPool.dispose();
+    this.cleanupTasks.push(task);
   }
 }
 
@@ -128,34 +170,30 @@ export const pgCache = new PgPoolCacheManager(graphileCache);
 //
 // --- Graceful Shutdown ---
 //
-const once = <T extends (...args: any[]) => any>(fn: T): T => {
-  let called = false;
-  let result: ReturnType<T>;
-  return ((...args: Parameters<T>) => {
-    if (!called) {
-      called = true;
-      result = fn(...args);
-    }
-    return result;
-  }) as T;
-};
+const closePromise: { promise: Promise<void> | null } = { promise: null };
 
-const close = once(async (verbose: boolean = false) => {
-  if (verbose) console.log('🛑 Closing all server caches...');
-  svcCache.clear();
-  graphileCache.clear();
-  pgCache.clear();
-  await pgCache.waitForDisposals();
-  if (verbose) console.log('✅ All caches disposed.');
-});
+export const close = async (verbose: boolean = false): Promise<void> => {
+  if (closePromise.promise) return closePromise.promise;
+  
+  closePromise.promise = (async () => {
+    if (verbose) console.log('🛑 Closing all server caches...');
+    svcCache.clear();
+    graphileCache.clear();
+    await pgCache.close();
+    if (verbose) console.log('✅ All caches disposed.');
+  })();
+  
+  return closePromise.promise;
+};
 
 SYS_EVENTS.forEach((event) => {
   process.on(event, () => {
     console.log(`📦 Received ${event}`);
+    // Don't await - we want to start the shutdown process immediately
     close();
   });
 });
 
-export const teardownPgPools = async (verbose: boolean = false) => {
-  await close(verbose);
-}
+export const teardownPgPools = async (verbose: boolean = false): Promise<void> => {
+  return close(verbose);
+};

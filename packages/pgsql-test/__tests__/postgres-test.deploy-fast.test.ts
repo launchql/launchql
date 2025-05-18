@@ -3,7 +3,6 @@ import path, { resolve } from 'path';
 import { PgTestClient } from '../src/test-client';
 import { DbAdmin } from '../src/admin';
 import { getConnections } from '../src/connect';
-import { getRootPgPool } from '@launchql/server-utils';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
@@ -44,11 +43,6 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
-
-    // clear this DB first! so teardown() doesn't choke...a
-    const pgPool = getRootPgPool({ ...pg.config, database: pg.config.database });
-    await pgPool.end();
-
     await teardown();
 
     const avg =
