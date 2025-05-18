@@ -3,7 +3,7 @@ import chalk from 'chalk';
 
 import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
-import { LaunchQLProject } from './class/launchql';
+import { LaunchQLProject } from '../class/launchql';
 import { spawn } from 'child_process';
 
 interface Extensions {
@@ -91,6 +91,5 @@ export const deploy = async (
   }
 
   console.log(chalk.green(`\n✅ Deployment complete for ${chalk.bold(name)}.\n`));
-  // await pgPool.end();
   return extensions;
 };

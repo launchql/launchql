@@ -2,6 +2,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { exec } from 'shelljs';
 import { listModules, verify } from '@launchql/migrate';
 import chalk from 'chalk';
+import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 
 export default async (
     argv: Partial<Record<string, any>>,
@@ -9,15 +10,6 @@ export default async (
     _options: CLIOptions
 ) => {
     const questions: Question[] = [
-        // @ts-ignore
-        {
-            type: 'text',
-            name: 'cwd',
-            message: chalk.cyan('Working directory'),
-            required: false,
-            default: false,
-            useDefault: true
-        },
         {
             name: 'database',
             message: chalk.cyan('Database name'),
@@ -53,8 +45,14 @@ export default async (
             }
         ]);
 
+        const options: LaunchQLOptions = getEnvOptions({
+            pg: {
+                database
+            }
+        });
+
         console.log(chalk.green(`Verifying project ${chalk.bold(project)} on database ${chalk.bold(database)}...`));
-        await verify(project, database, cwd);
+        await verify(options, project, database, cwd);
         console.log(chalk.green('Verify complete.'));
     } else {
         console.log(chalk.green(`Running ${chalk.bold(`sqitch verify db:pg:${database}`)}...`));
