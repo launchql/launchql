@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { spawn } from 'child_process';
 import chalk from 'chalk';
 
-import { LaunchQLProject } from './class/launchql';
+import { LaunchQLProject } from '../class/launchql';
 import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 
@@ -28,7 +28,7 @@ export const revert = async (
   }
 
   console.log(chalk.cyan(`📦 Resolving dependencies for ${chalk.bold(name)}...`));
-  const extensions: Extensions = mod.getModuleExtensions(name);
+  const extensions: Extensions = mod.getModuleExtensions();
 
   const pgPool = getRootPgPool({
     ...opts.pg,
