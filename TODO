@@ -37,7 +37,7 @@ Migration & History
 -------------------
 - [ ] Get this PR from launchql-gen: https://github.com/launchql/launchql-gen/pull/19
 - [ ] Move postgraphile-* plugins over (preserve import history)
-- [ ] Import original LaunchQL history (preserve git log)
+- [x] Import original LaunchQL history (preserve git log) (3c31d9b64d266a7dca2595f5aeddc22954bc76a6)
 
 Misc
 ----
