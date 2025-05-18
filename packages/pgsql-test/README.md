@@ -79,6 +79,16 @@ afterAll(() => teardown());
 
 ## `getConnections()` Overview
 
+```ts
+import { getConnections } from 'pgsql-test';
+
+// Complete object destructuring
+const { pg, db, admin, teardown, manager } = await getConnections();
+
+// Most common pattern
+const { db, teardown } = await getConnections();
+```
+
 The `getConnections()` helper sets up a fresh PostgreSQL test database and returns a structured object with:
 
 * `pg`: a `PgTestClient` connected as the root or superuser — useful for administrative setup or introspection
@@ -96,6 +106,19 @@ The `PgTestClient` returned by `getConnections()` is a fully-featured wrapper ar
 * A clean, high-level API for integration testing PostgreSQL systems
 
 ## `PgTestClient` API Overview
+
+```ts
+let pg: PgTestClient;
+let teardown: () => Promise<void>;
+
+beforeAll(async () => {
+  ({ pg, teardown } = await getConnections());
+});
+
+beforeEach(() => pg.beforeEach());
+afterEach(() => pg.afterEach());
+afterAll(() => teardown());
+```
 
 The `PgTestClient` returned by `getConnections()` wraps a `pg.Client` and provides convenient helpers for query execution, test isolation, and context switching.
 
