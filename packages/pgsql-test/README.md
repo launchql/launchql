@@ -51,6 +51,7 @@ npm install pgsql-test
    * [Programmatic Seeding](#-programmatic-seeding)
    * [Composed Seeding](#-composed-seeding)
    * [CSV Seeding](#️-csv-seeding)
+   * [JSON Seeding](#️-json-seeding)
 7. [Environment Overrides](#environment-overrides)
 8. [Disclaimer](#disclaimer)
 
@@ -276,6 +277,61 @@ afterAll(() => teardown());
 
 it('has loaded rows', async () => {
   const res = await db.query('SELECT COUNT(*) FROM users');
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
+
+## 🗃️ JSON Seeding
+
+You can seed tables using in-memory JSON objects. This is useful when you want fast, inline fixtures without managing external files.
+
+````ts
+import { getConnections, seed } from 'pgsql-test';
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.compose([
+    // Create schema
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        CREATE SCHEMA custom;
+        CREATE TABLE custom.users (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL
+        );
+
+        CREATE TABLE custom.posts (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES custom.users(id),
+          content TEXT NOT NULL
+        );
+      `);
+    }),
+    // Seed with in-memory JSON
+    seed.json({
+      'custom.users': [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' }
+      ],
+      'custom.posts': [
+        { id: 1, user_id: 1, content: 'Hello world!' },
+        { id: 2, user_id: 2, content: 'Graphile is cool!' }
+      ]
+    }),
+    // Fix SERIAL sequences
+    seed.fn(async ({ pg }) => {
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.users', 'id'), (SELECT MAX(id) FROM custom.users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.posts', 'id'), (SELECT MAX(id) FROM custom.posts));`);
+    })
+  ])));
+});
+
+afterAll(() => teardown());
+
+it('has loaded rows', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM custom.users');
   expect(+res.rows[0].count).toBeGreaterThan(0);
 });
 ```
