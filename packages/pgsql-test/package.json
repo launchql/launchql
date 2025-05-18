@@ -1,6 +1,6 @@
 {
   "name": "pgsql-test",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Testing in TypeScript",
   "main": "index.js",
@@ -30,9 +30,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "^2.0.4",
-    "@launchql/server-utils": "^2.0.4",
-    "@launchql/migrate": "^2.0.11",
+    "@launchql/migrate": "^2.0.12",
+    "@launchql/server-utils": "^2.0.5",
+    "@launchql/types": "^2.0.5",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1"
   }
