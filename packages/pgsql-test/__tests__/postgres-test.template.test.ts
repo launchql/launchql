@@ -29,9 +29,9 @@ function setupTemplateDatabase(): void {
   const admin = new DbAdmin(templateConfig);
   admin.cleanupTemplate(TEMPLATE_NAME);
   admin.createSeededTemplate(TEMPLATE_NAME, {
-    seed: (db, dbName) => {
-      db.loadSql(sql('test.sql'), dbName);
-      db.loadSql(sql('roles.sql'), dbName);
+    seed: (ctx) => {
+      ctx.admin.loadSql(sql('test.sql'), ctx.config.database);
+      ctx.admin.loadSql(sql('roles.sql'), ctx.config.database);
     }
   });
 }
@@ -42,8 +42,10 @@ beforeAll(() => {
 });
 
 beforeEach(async () => {
-  ({ db, pg, teardown } = await getConnections({}, {
-    template: TEMPLATE_NAME
+  ({ db, pg, teardown } = await getConnections({
+    db: {
+      template: TEMPLATE_NAME
+    }
   }));
   usedDbNames.push(db?.config?.database ?? '(unknown)');
   start = Date.now();

@@ -25,7 +25,9 @@ function setupBaseDatabase(config: PgConfig) {
 beforeAll(async () => {
   // Create test DB and clients
   ({ db, pg, teardown } = await getConnections({
-    database: TEST_DB_NAME
+    pg: {
+      database: TEST_DB_NAME
+    }
   }));
 
   // Optionally preload schema/data before tests

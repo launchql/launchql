@@ -1,5 +1,5 @@
 import { DbAdmin } from './admin';
-import { 
+import {
   getEnvOptions,
   getPgEnvOptions,
   TestConnectionOptions,
@@ -11,10 +11,12 @@ import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 
 import { teardownPgPools } from '@launchql/server-utils';
+import { SeedAdapter } from './seed';
+import { PgTestClient } from './test-client';
 
 let manager: PgTestConnector;
 
-export const getPgRootAdmin = (connOpts: TestConnectionOptions={}) => {
+export const getPgRootAdmin = (connOpts: TestConnectionOptions = {}) => {
   const opts = getPgEnvOptions({
     database: connOpts.rootDb
   });
@@ -22,16 +24,41 @@ export const getPgRootAdmin = (connOpts: TestConnectionOptions={}) => {
   return admin;
 }
 
-export const getConnections = async (
-  _pgConfig: Partial<PgConfig> = {},
-  _opts: TestConnectionOptions = {}
-) => {
+export interface GetConnectionOpts {
+  pg?: Partial<PgConfig>;
+  db?: Partial<TestConnectionOptions>;
+}
 
-  const connOpts = getConnEnvOptions(_opts);
+const getConnOopts = (cn: GetConnectionOpts = {}) => {
+  const connect = getConnEnvOptions(cn.db);
   const config: PgConfig = getPgEnvOptions({
-    database: `${connOpts.prefix}${randomUUID()}`,
-    ..._pgConfig
+    database: `${connect.prefix}${randomUUID()}`,
+    ...cn.pg
   });
+  return {
+    pg: config,
+    db: connect
+  }
+
+}
+
+export interface GetConnectionResult {
+  pg: PgTestClient;
+  db: PgTestClient;
+  admin: DbAdmin;
+  teardown: () => Promise<void>
+  manager: PgTestConnector
+}
+
+export const getConnections = async (
+  cn: GetConnectionOpts = {},
+  seedAdapter?: SeedAdapter
+): Promise<GetConnectionResult> => {
+
+  cn = getConnOopts(cn);
+
+  const config: PgConfig = cn.pg as PgConfig;
+  const connOpts: TestConnectionOptions = cn.db;
 
   const root = getPgRootAdmin(connOpts);
   await root.createUserRole(
@@ -40,7 +67,7 @@ export const getConnections = async (
     connOpts.rootDb
   );
 
-  const admin = new DbAdmin(config);
+  const admin = new DbAdmin(config as PgConfig);
   const proj = new LaunchQLProject(connOpts.cwd);
   if (proj.isInModule()) {
     admin.create(config.database);
@@ -70,7 +97,6 @@ export const getConnections = async (
       admin.create(config.database);
       admin.installExtensions(connOpts.extensions);
     }
-
   }
 
   await admin.grantConnect(connOpts.connection.user, config.database);
@@ -78,6 +104,16 @@ export const getConnections = async (
   // Main admin client (optional unless needed elsewhere)
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
+
+  if (seedAdapter) {
+    await seedAdapter.seed({
+      admin,
+      config: config,
+      pg: manager.getClient(config)
+    });
+  }
+
+
   // App user connection
   const db = manager.getClient({
     ...config,
@@ -91,5 +127,5 @@ export const getConnections = async (
     await manager.closeAll();
   };
 
-  return { pg, db, teardown, manager };
+  return { pg, db, teardown, manager, admin };
 };

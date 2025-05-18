@@ -2,38 +2,7 @@ import { execSync } from 'child_process';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
 import { streamSql as stream } from './stream';
-
-export interface SeedAdapter {
-  seed(db: DbAdmin, dbName: string): Promise<void> | void;
-}
-
-export function sqlFileSeedAdapter(files: string[]): SeedAdapter {
-  return {
-    seed(db, dbName) {
-      for (const file of files) {
-        db.loadSql(file, dbName);
-      }
-    }
-  };
-}
-
-export function programmaticSeedAdapter(
-  fn: (db: DbAdmin, dbName: string) => Promise<void>
-): SeedAdapter {
-  return {
-    seed: fn
-  };
-}
-
-export function compositeSeedAdapter(adapters: SeedAdapter[]): SeedAdapter {
-  return {
-    async seed(db, dbName) {
-      for (const adapter of adapters) {
-        await adapter.seed(db, dbName);
-      }
-    }
-  };
-}
+import { SeedAdapter } from './seed';
 
 export class DbAdmin {
   constructor(
@@ -163,7 +132,11 @@ export class DbAdmin {
   async createSeededTemplate(templateName: string, adapter: SeedAdapter): Promise<void> {
     const seedDb = this.config.database;
     this.create(seedDb);
-    await adapter.seed(this, seedDb);
+    await adapter.seed({
+      admin: this,
+      config: this.config,
+      pg: null // sorry!
+    });
     this.cleanupTemplate(templateName);
     this.createTemplateFromBase(seedDb, templateName);
     this.drop(seedDb);

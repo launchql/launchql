@@ -21,65 +21,119 @@
 ```sh
 npm install pgsql-test
 ```
----
+
+## Table of Contents
+
+1. [Install](#install)
+2. [Features](#features)
+3. [How to Use](#how-to-use)
+4. [Quick Start](#quick-start)
+5. [getConnections() Overview](#getconnections-overview)
+6. [PgTestClient API Overview](#pgtestclient-api-overview)
+7. [Usage Examples](#usage-examples)
+   * [Basic Setup](#basic-setup)
+   * [Role-Based Context](#role-based-context)
+   * [SQL File Seeding](#sql-file-seeding)
+   * [Programmatic Seeding](#programmatic-seeding)
+   * [Composed Seeding](#composed-seeding)
+8. [Environment Overrides](#environment-overrides)
+9. [Disclaimer](#disclaimer)
+
 
 ## Features
 
-* 🧪 Auto-generated test databases with `UUID` suffix
+* ⚡ Quick-start setup with `getConnections()`
+* 🧹 Easy teardown and cleanup
 * 🔄 Per-test isolation using transactions and savepoints
 * 🛡️ Role-based context for RLS testing
-* 🧹 Easy teardown and cleanup
+* 🌱 Flexible seed support via `.sql` files and programmatic functions
+* 🧪 Auto-generated test databases with `UUID` suffix
+* 📦 Built for tools like `sqitch`, supporting full schema initialization workflows
 * 🧰 Designed for `Jest`, `Mocha`, or any async test runner
-
----
 
 ## How to Use
 
 `pgsql-test` provides an isolated PostgreSQL testing environment with per-test transaction rollback, ideal for integration tests involving SQL, roles, or GraphQL (e.g., with PostGraphile).
 
-### Basic Example
+## ✨ Quick Start
 
 ```ts
-import { PgTestClient, getConnections } from 'pgsql-test';
+import { getConnections } from 'pgsql-test';
 
-let conn: PgTestClient;
-let db: PgTestClient;
-let teardown: () => Promise<void>;
+let db, teardown;
 
 beforeAll(async () => {
-  ({ conn, db, teardown } = await getConnections());
+  ({ db, teardown } = await getConnections());
+  await db.query(`SELECT 1`); // ✅ Ready to run queries
+});
+
+afterAll(() => teardown());
+```
+
+## `getConnections()` Overview
+
+The `getConnections()` helper sets up a fresh PostgreSQL test database and returns a structured object with:
+
+* `pg`: a `PgTestClient` connected as the root or superuser — useful for administrative setup or introspection
+* `db`: a `PgTestClient` connected as the app-level user — used for running tests with RLS and granted permissions
+* `admin`: a `DbAdmin` utility for managing database state, extensions, roles, and templates
+* `teardown()`: a function that shuts down the test environment and database pool
+* `manager`: a shared connection pool manager (`PgTestConnector`) behind both clients
+
+Together, these allow fast, isolated, role-aware test environments with per-test rollback and full control over setup and teardown.
+
+The `PgTestClient` returned by `getConnections()` is a fully-featured wrapper around `pg.Pool`. It provides:
+
+* Automatic transaction and savepoint management for test isolation
+* Easy switching of role-based contexts for RLS testing
+* A clean, high-level API for integration testing PostgreSQL systems
+
+## `PgTestClient` API Overview
+
+The `PgTestClient` returned by `getConnections()` wraps a `pg.Client` and provides convenient helpers for query execution, test isolation, and context switching.
+
+### Common Methods
+
+* `query(sql, values?)` – Run a raw SQL query and get the `QueryResult`
+* `beforeEach()` – Begins a transaction and sets a savepoint (called at the start of each test)
+* `afterEach()` – Rolls back to the savepoint and commits the outer transaction (cleans up test state)
+* `setContext({ key: value })` – Sets PostgreSQL config variables (like `role`) to simulate RLS contexts
+* `any`, `one`, `oneOrNone`, `many`, `manyOrNone`, `none`, `result` – Typed query helpers for specific result expectations
+
+These methods make it easier to build expressive and isolated integration tests with strong typing and error handling.
+
+The `PgTestClient` returned by `getConnections()` is a fully-featured wrapper around `pg.Pool`. It provides:
+
+* Automatic transaction and savepoint management for test isolation
+* Easy switching of role-based contexts for RLS testing
+* A clean, high-level API for integration testing PostgreSQL systems
+
+## Usage Examples
+
+### ⚡ Basic Setup
+
+```ts
+import { getConnections } from 'pgsql-test';
+
+let db; // A fully wrapped PgTestClient using pg.Pool with savepoint-based rollback per test
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections());
 
   await db.query(`
-    CREATE TABLE users (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL
-    );
-    CREATE TABLE posts (
-      id SERIAL PRIMARY KEY,
-      user_id INT NOT NULL REFERENCES users(id),
-      content TEXT NOT NULL
-    );
-  `);
+    CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT);
+    CREATE TABLE posts (id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id), content TEXT);
 
-  await db.query(`
     INSERT INTO users (name) VALUES ('Alice'), ('Bob');
-    INSERT INTO posts (user_id, content) VALUES
-      (1, 'Hello world!'),
-      (2, 'Graphile is cool!');
+    INSERT INTO posts (user_id, content) VALUES (1, 'Hello world!'), (2, 'Graphile is cool!');
   `);
 });
 
-afterAll(async () => {
-  await teardown();
-});
+afterAll(() => teardown());
 
-beforeEach(async () => {
-  await db.beforeEach(); // Starts transaction + SAVEPOINT
-});
-
-afterEach(async () => {
-  await db.afterEach(); // Rolls back to SAVEPOINT
-});
+beforeEach(() => db.beforeEach());
+afterEach(() => db.afterEach());
 
 test('user count starts at 2', async () => {
   const res = await db.query('SELECT COUNT(*) FROM users');
@@ -87,31 +141,99 @@ test('user count starts at 2', async () => {
 });
 ```
 
----
-
-## Role-Based Contexts
-
-You can simulate different PostgreSQL roles for RLS and permission testing.
+### 🔐 Role-Based Context
 
 ```ts
 describe('authenticated role', () => {
   beforeEach(async () => {
-    conn.setContext({ role: 'authenticated' });
-    await conn.beforeEach();
+    db.setContext({ role: 'authenticated' });
+    await db.beforeEach();
   });
 
-  afterEach(async () => {
-    await conn.afterEach();
-  });
+  afterEach(() => db.afterEach());
 
   it('runs as authenticated', async () => {
-    const result = await conn.query(`SELECT current_setting('role', true) AS role`);
-    expect(result.rows[0].role).toBe('authenticated');
+    const res = await db.query(`SELECT current_setting('role', true) AS role`);
+    expect(res.rows[0].role).toBe('authenticated');
   });
 });
 ```
 
+### 🔌 SQL File Seeding
+
+Use `.sql` files to set up your database state before tests:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
+
+const sql = (f: string) => path.join(__dirname, 'sql', f);
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.sqlfile([
+    sql('schema.sql'),
+    sql('fixtures.sql')
+  ])));
+});
+
+afterAll(async () => {
+  await teardown();
+});
+```
+
+### 🧠 Programmatic Seeding
+
+Use JavaScript functions to insert seed data:
+
+```ts
+import { getConnections, seed } from 'pgsql-test';
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.fn(async ({ pg }) => {
+    await pg.query(`
+      INSERT INTO users (name) VALUES ('Seeded User');
+    `);
+  })));
+});
+```
+
+### 🧬 Composed Seeding
+
+Combine multiple seeders with `seed.compose()`:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
+
+const sql = (f: string) => path.join(__dirname, 'sql', f);
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.compose([
+    seed.sqlfile([
+      sql('schema.sql'),
+      sql('roles.sql')
+    ]),
+    seed.fn(async ({ pg }) => {
+      await pg.query(`INSERT INTO users (name) VALUES ('Composed');`);
+    })
+  ])));
+});
+```
+
 ---
+
+These examples show how flexible `pgsql-test` is for composing repeatable and transactional test database environments.
+
+
 
 ## Environment Overrides
 

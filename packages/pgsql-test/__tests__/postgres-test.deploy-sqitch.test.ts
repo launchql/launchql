@@ -19,9 +19,11 @@ let totalStart: number;
 beforeAll(async () => {
     totalStart = Date.now();
 
-    ({ pg, teardown } = await getConnections({}, {
-        deployFast: false,
-        cwd: resolve(__dirname + '/../../../__fixtures__/sqitch/simple/packages/my-third')
+    ({ pg, teardown } = await getConnections({
+        db: {
+            deployFast: false,
+            cwd: resolve(__dirname + '/../../../__fixtures__/sqitch/simple/packages/my-third')
+        }
     }));
 
     const admin = new DbAdmin(pg.config);

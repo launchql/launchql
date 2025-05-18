@@ -1,8 +1,8 @@
 import path from 'path';
 
 import { PgTestClient } from '../src/test-client';
-import { DbAdmin } from '../src/admin';
 import { getConnections } from '../src/connect';
+import { seed } from '../src/seed';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
@@ -15,14 +15,16 @@ const testResults: { name: string; time: number }[] = [];
 let start: number;
 let totalStart: number;
 
+
 beforeAll(async () => {
   totalStart = Date.now();
 
-  ({ pg, teardown } = await getConnections());
-
-  const admin = new DbAdmin(pg.config);
-  admin.loadSql(sql('test.sql'), pg.config.database);
-  admin.loadSql(sql('roles.sql'), pg.config.database);
+  ({ pg, teardown } = await getConnections({}, seed.compose([
+    seed.sqlfile([
+      sql('test.sql'),
+      sql('roles.sql')
+    ])
+  ])));
 
   usedDbNames.push(pg.config.database);
 });
