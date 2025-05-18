@@ -31,7 +31,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "@types/pg": "^8.11.10",
-    "pg": "^8.13.1"
+    "@types/pg": "^8.15.2",
+    "pg": "^8.16.0"
   }
 }

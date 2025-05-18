@@ -30,9 +30,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "pg": "^8.15.6"
+    "pg": "^8.16.0"
   },
   "devDependencies": {
-    "@types/pg": "^8.11.10"
+    "@types/pg": "^8.15.2"
   }
 }

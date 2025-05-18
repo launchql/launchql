@@ -21,3 +21,9 @@ X 3. Get boilerplate (lql init) working
 ** MOVE postgraphile-<plugin>s over (import HIST)
 
 ** some-schema during package requires some_schema instead to work
+
+
+
+
+
+https://www.npmjs.com/package/pg-copy-streams-binary

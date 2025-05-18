@@ -1,18 +1,17 @@
 import { DbAdmin } from './admin';
 import {
-  getEnvOptions,
   getPgEnvOptions,
   TestConnectionOptions,
   PgConfig,
   getConnEnvOptions
 } from '@launchql/types';
-import { deploy, deployFast, LaunchQLProject } from '@launchql/migrate';
 import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 
 import { teardownPgPools } from '@launchql/server-utils';
-import { SeedAdapter } from './seed';
+import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
+import { seed } from './seed';
 
 let manager: PgTestConnector;
 
@@ -52,7 +51,7 @@ export interface GetConnectionResult {
 
 export const getConnections = async (
   cn: GetConnectionOpts = {},
-  seedAdapter?: SeedAdapter
+  seedAdapters: SeedAdapter[] = []
 ): Promise<GetConnectionResult> => {
 
   cn = getConnOopts(cn);
@@ -68,35 +67,14 @@ export const getConnections = async (
   );
 
   const admin = new DbAdmin(config as PgConfig);
-  const proj = new LaunchQLProject(connOpts.cwd);
-  if (proj.isInModule()) {
+  
+  if (process.env.TEST_DB) {
+    config.database = process.env.TEST_DB;
+  } else if (connOpts.template) {
+    admin.createFromTemplate(connOpts.template, config.database);
+  } else {
     admin.create(config.database);
     admin.installExtensions(connOpts.extensions);
-    const opts = getEnvOptions({
-      pg: config
-    })
-    if (connOpts.deployFast) {
-      await deployFast({
-        opts,
-        name: proj.getModuleName(),
-        database: config.database,
-        dir: proj.modulePath,
-        usePlan: true,
-        verbose: false
-      })
-    } else {
-      await deploy(opts, proj.getModuleName(), config.database, proj.modulePath);
-    }
-  } else {
-    // Create the test database
-    if (process.env.TEST_DB) {
-      config.database = process.env.TEST_DB;
-    } else if (connOpts.template) {
-      admin.createFromTemplate(connOpts.template, config.database);
-    } else {
-      admin.create(config.database);
-      admin.installExtensions(connOpts.extensions);
-    }
   }
 
   await admin.grantConnect(connOpts.connection.user, config.database);
@@ -105,12 +83,13 @@ export const getConnections = async (
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
 
-  if (seedAdapter) {
-    await seedAdapter.seed({
+  if (seedAdapters.length) {
+    await seed.compose(seedAdapters).seed({
+      connect: connOpts,
       admin,
       config: config,
       pg: manager.getClient(config)
-    });
+    })
   }
 
 

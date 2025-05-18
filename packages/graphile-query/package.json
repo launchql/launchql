@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "graphql": "15.5.2",
-    "pg": "^8.15.6",
+    "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
   }
 }

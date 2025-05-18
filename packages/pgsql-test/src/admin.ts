@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
 import { streamSql as stream } from './stream';
-import { SeedAdapter } from './seed';
+import { SeedAdapter } from './seed/types';
 
 export class DbAdmin {
   constructor(
@@ -135,7 +135,8 @@ export class DbAdmin {
     await adapter.seed({
       admin: this,
       config: this.config,
-      pg: null // sorry!
+      pg: null, // sorry!
+      connect: null, // sorry!
     });
     this.cleanupTemplate(templateName);
     this.createTemplateFromBase(seedDb, templateName);

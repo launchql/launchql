@@ -17,7 +17,7 @@
 </p>
 
 
-`pgsql-test` provides an isolated PostgreSQL testing environment with per-test transaction rollback, ideal for integration tests involving SQL, roles, simulations, and complex migrations. With automatic rollbacks and isolated contexts, it eliminates test interference while delivering tight feedback loops for happier developers. We made database testing simple so you can focus on writing good tests instead of fighting your environment.
+`pgsql-test` gives you instant, isolated PostgreSQL databases for each test — with automatic transaction rollbacks, context switching, and clean seeding. Forget flaky tests and brittle environments. Write real SQL. Get real coverage. Stay fast.
 
 ## Install
 
@@ -27,29 +27,37 @@ npm install pgsql-test
 
 ## Features
 
-* ⚡ Quick-start setup with `getConnections()`
-* 🧹 Easy teardown and cleanup
-* 🔄 Per-test isolation using transactions and savepoints
-* 🛡️ Role-based context for RLS testing
-* 🌱 Flexible seed support via `.sql` files and programmatic functions
-* 🧪 Auto-generated test databases with `UUID` suffix
-* 📦 Built for tools like `sqitch`, supporting full schema initialization workflows
-* 🧰 Designed for `Jest`, `Mocha`, or any async test runner
+* ⚡ **Instant test DBs** — each one seeded, isolated, and UUID-named
+* 🔄 **Per-test rollback** — every test runs in its own transaction or savepoint
+* 🛡️ **RLS-friendly** — test with role-based auth via `.setContext()`
+* 🌱 **Flexible seeding** — run `.sql` files, programmatic seeds, or even load fixtures
+* 🧪 **Compatible with any async runner** — works with `Jest`, `Mocha`, etc.
+* 🧹 **Auto teardown** — no residue, no reboots, just clean exits
+
+### LaunchQL migrations
+
+Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is built to pair seamlessly with our TypeScript-based [Sqitch](https://sqitch.org/) engine rewrite:
+
+* 🚀 **Lightning-fast migrations** — powered by LaunchQL’s native deployer (10x faster than legacy Sqitch)
+* 🔧 **Composable test scaffolds** — integrate with full LaunchQL stacks or use standalone
 
 
 ## Table of Contents
 
 1. [Install](#install)
 2. [Features](#features)
-3. [Quick Start](#quick-start)
+3. [Quick Start](#-quick-start)
 4. [getConnections() Overview](#getconnections-overview)
 5. [PgTestClient API Overview](#pgtestclient-api-overview)
 6. [Usage Examples](#usage-examples)
-   * [Basic Setup](#basic-setup)
-   * [Role-Based Context](#role-based-context)
-   * [SQL File Seeding](#sql-file-seeding)
-   * [Programmatic Seeding](#programmatic-seeding)
-   * [Composed Seeding](#composed-seeding)
+   * [Basic Setup](#-basic-setup)
+   * [Role-Based Context](#-role-based-context)
+   * [SQL File Seeding](#-sql-file-seeding)
+   * [Programmatic Seeding](#-programmatic-seeding)
+   * [CSV Seeding](#️-csv-seeding)
+   * [JSON Seeding](#️-json-seeding)
+   * [Sqitch Seeding](#️-sqitch-seeding)
+   * [LaunchQL Seeding](#-launchql-seeding)
 7. [Environment Overrides](#environment-overrides)
 8. [Disclaimer](#disclaimer)
 
@@ -202,37 +210,174 @@ beforeAll(async () => {
 });
 ```
 
-### 🧬 Composed Seeding
+## 🗃️ CSV Seeding
 
-Combine multiple seeders with `seed.compose()`:
+You can load tables from CSV files using `seed.csv({ ... })`. CSV headers must match the table column names exactly. This is useful for loading stable fixture data for integration tests or CI environments.
 
 ```ts
 import path from 'path';
 import { getConnections, seed } from 'pgsql-test';
 
-const sql = (f: string) => path.join(__dirname, 'sql', f);
+const csv = (file: string) => path.resolve(__dirname, '../csv', file);
 
 let db;
 let teardown;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections({}, seed.compose([
-    seed.sqlfile([
-      sql('schema.sql'),
-      sql('roles.sql')
-    ]),
+  ({ db, teardown } = await getConnections({}, [
+    // Create schema
     seed.fn(async ({ pg }) => {
-      await pg.query(`INSERT INTO users (name) VALUES ('Composed');`);
+      await pg.query(`
+        CREATE TABLE users (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL
+        );
+
+        CREATE TABLE posts (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id),
+          content TEXT NOT NULL
+        );
+      `);
+    }),
+    // Load from CSV
+    seed.csv({
+      users: csv('users.csv'),
+      posts: csv('posts.csv')
+    }),
+    // Adjust SERIAL sequences to avoid conflicts
+    seed.fn(async ({ pg }) => {
+      await pg.query(`SELECT setval(pg_get_serial_sequence('users', 'id'), (SELECT MAX(id) FROM users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('posts', 'id'), (SELECT MAX(id) FROM posts));`);
     })
-  ])));
+  ]));
+});
+
+afterAll(() => teardown());
+
+it('has loaded rows', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM users');
+  expect(+res.rows[0].count).toBeGreaterThan(0);
 });
 ```
 
----
+## 🗃️ JSON Seeding
 
-These examples show how flexible `pgsql-test` is for composing repeatable and transactional test database environments.
+You can seed tables using in-memory JSON objects. This is useful when you want fast, inline fixtures without managing external files.
 
+```ts
+import { getConnections, seed } from 'pgsql-test';
 
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    // Create schema
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        CREATE SCHEMA custom;
+        CREATE TABLE custom.users (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL
+        );
+
+        CREATE TABLE custom.posts (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES custom.users(id),
+          content TEXT NOT NULL
+        );
+      `);
+    }),
+    // Seed with in-memory JSON
+    seed.json({
+      'custom.users': [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' }
+      ],
+      'custom.posts': [
+        { id: 1, user_id: 1, content: 'Hello world!' },
+        { id: 2, user_id: 2, content: 'Graphile is cool!' }
+      ]
+    }),
+    // Fix SERIAL sequences
+    seed.fn(async ({ pg }) => {
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.users', 'id'), (SELECT MAX(id) FROM custom.users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.posts', 'id'), (SELECT MAX(id) FROM custom.posts));`);
+    })
+  ]));
+});
+
+afterAll(() => teardown());
+
+it('has loaded rows', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM custom.users');
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
+
+## 🏗️ Sqitch Seeding
+
+*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance [TypeScript-based deploy engine.](#-launchql-seeding) that we encourage using for sqitch projects*
+
+You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
+
+const cwd = path.resolve(__dirname, '../path/to/sqitch');
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    seed.sqitch(cwd)
+  ]));
+});
+
+it('runs a schema query', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM myapp.users');
+  expect(+res.rows[0].count).toBeGreaterThanOrEqual(0);
+});
+```
+
+This works for any Sqitch-compatible module, now accelerated by LaunchQL's deployment tooling.
+
+## 🚀 LaunchQL Seeding
+
+For LaunchQL modules with precompiled `sqitch.plan`, use `seed.launchql(cwd)` to apply a schema quickly with `deployFast()`:
+For maximum performance with precompiled LaunchQL modules, use `seed.launchql(cwd)` to apply a schema at lightning speed with our TypeScript-powered `deployFast()`:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
+
+const cwd = path.resolve(__dirname, '../path/to/launchql');
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    seed.launchql(cwd) // uses deployFast() - up to 10x faster than traditional Sqitch!
+  ]));
+});
+
+it('creates user records', async () => {
+  await db.query(`INSERT INTO myapp.users (username, email) VALUES ('testuser', 'test@example.com')`);
+  const res = await db.query(`SELECT COUNT(*) FROM myapp.users`);
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
+
+This is the fastest way to bring up a ready-to-query schema from a compiled LaunchQL module - perfect for both development and CI environments.
+
+## Why LaunchQL's Approach?
+
+LaunchQL provides the best of both worlds:
+
+1. **Sqitch Compatibility**: Keep your familiar Sqitch syntax and migration approach
+2. **TypeScript Performance**: Our TS-rewritten deployment engine delivers up to 10x faster schema deployments
+3. **Developer Experience**: Tight feedback loops with near-instant schema setup for tests
+4. **CI Optimization**: Dramatically reduced test suite run times with optimized deployment
+
+By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
 
 ## Environment Overrides
 

@@ -29,10 +29,16 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "devDependencies": {
+    "@types/pg": "^8.15.2",
+    "@types/pg-copy-streams": "^1.2.5"
+  },
   "dependencies": {
     "@launchql/migrate": "^2.0.12",
     "@launchql/server-utils": "^2.0.5",
     "@launchql/types": "^2.0.5",
+    "pg": "^8.16.0",
+    "pg-copy-streams": "^6.0.6",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1"
   }

@@ -1,11 +1,9 @@
-import path, { resolve } from 'path';
+import { resolve } from 'path';
 
 import { PgTestClient } from '../src/test-client';
-import { DbAdmin } from '../src/admin';
 import { getConnections } from '../src/connect';
 import { getRootPgPool } from '@launchql/server-utils';
-
-const sql = (file: string) => path.resolve(__dirname, '../sql', file);
+import { seed } from '../src';
 
 let pg: PgTestClient;
 let teardown: () => Promise<void>;
@@ -18,17 +16,10 @@ let totalStart: number;
 
 beforeAll(async () => {
     totalStart = Date.now();
-
-    ({ pg, teardown } = await getConnections({
-        db: {
-            deployFast: false,
-            cwd: resolve(__dirname + '/../../../__fixtures__/sqitch/simple/packages/my-third')
-        }
-    }));
-
-    const admin = new DbAdmin(pg.config);
-    admin.loadSql(sql('test.sql'), pg.config.database);
-    admin.loadSql(sql('roles.sql'), pg.config.database);
+    const cwd = resolve(__dirname + '/../../../__fixtures__/sqitch/simple/packages/my-third');
+    ({ pg, teardown } = await getConnections({}, [
+        seed.sqitch(cwd)
+    ]));
 
     usedDbNames.push(pg.config.database);
 });
@@ -71,21 +62,22 @@ afterAll(async () => {
     console.log('\n' + summaryLines.join('\n') + '\n');
 });
 
-describe('LaunchQL Deploy (sqitch) DB Benchmark', () => {
+describe('Sqitch DB Benchmark', () => {
     it('inserts Alice', async () => {
-        await pg.query(`INSERT INTO app_public.users (username) VALUES ('alice')`);
-        const res = await pg.query(`SELECT COUNT(*) FROM app_public.users`);
-        expect(res.rows[0].count).toBe('1');
+      await pg.query(`INSERT INTO myapp.users (username, email) VALUES ('alice', 'alice@example.com')`);
+      const res = await pg.query(`SELECT COUNT(*) FROM myapp.users`);
+      expect(res.rows[0].count).toBe('1');
     });
-
+  
     it('starts clean without Alice', async () => {
-        const res = await pg.query(`SELECT * FROM app_public.users WHERE username = 'alice'`);
-        expect(res.rows).toHaveLength(0);
+      const res = await pg.query(`SELECT * FROM myapp.users WHERE username = 'alice'`);
+      expect(res.rows).toHaveLength(0);
     });
-
-    it('inserts Bob, settings should be empty', async () => {
-        await pg.query(`INSERT INTO app_public.users (username) VALUES ('bob')`);
-        const settings = await pg.query(`SELECT * FROM app_public.user_settings`);
-        expect(settings.rows).toHaveLength(0);
+  
+    it('inserts Bob with email', async () => {
+      await pg.query(`INSERT INTO myapp.users (username, email) VALUES ('bob', 'bob@example.com')`);
+      const res = await pg.query(`SELECT * FROM myapp.users WHERE username = 'bob'`);
+      expect(res.rows[0].email).toBe('bob@example.com');
     });
-});
+  });
+  
