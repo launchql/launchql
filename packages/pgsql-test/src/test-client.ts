@@ -3,7 +3,7 @@ import { PgConfig } from '@launchql/types';
 
 export class PgTestClient {
   public config: PgConfig;
-  private client: Client;
+  public client: Client;
   private ctxStmts: string = '';
   private _ended: boolean = false;
 

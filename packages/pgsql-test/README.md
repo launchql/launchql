@@ -41,15 +41,16 @@ npm install pgsql-test
 
 1. [Install](#install)
 2. [Features](#features)
-3. [Quick Start](#quick-start)
+3. [Quick Start](#-quick-start)
 4. [getConnections() Overview](#getconnections-overview)
 5. [PgTestClient API Overview](#pgtestclient-api-overview)
 6. [Usage Examples](#usage-examples)
-   * [Basic Setup](#basic-setup)
-   * [Role-Based Context](#role-based-context)
-   * [SQL File Seeding](#sql-file-seeding)
-   * [Programmatic Seeding](#programmatic-seeding)
-   * [Composed Seeding](#composed-seeding)
+   * [Basic Setup](#-basic-setup)
+   * [Role-Based Context](#-role-based-context)
+   * [SQL File Seeding](#-sql-file-seeding)
+   * [Programmatic Seeding](#-programmatic-seeding)
+   * [Composed Seeding](#-composed-seeding)
+   * [CSV Seeding](#️-csv-seeding)
 7. [Environment Overrides](#environment-overrides)
 8. [Disclaimer](#disclaimer)
 
@@ -228,11 +229,56 @@ beforeAll(async () => {
 });
 ```
 
----
+## 🗃️ CSV Seeding
 
-These examples show how flexible `pgsql-test` is for composing repeatable and transactional test database environments.
+You can load tables from CSV files using `seed.csv({ ... })`. CSV headers must match the table column names exactly. This is useful for loading stable fixture data for integration tests or CI environments.
 
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
 
+const csv = (file: string) => path.resolve(__dirname, '../csv', file);
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.compose([
+    // Create schema
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        CREATE TABLE users (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL
+        );
+
+        CREATE TABLE posts (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id),
+          content TEXT NOT NULL
+        );
+      `);
+    }),
+    // Load from CSV
+    seed.csv({
+      users: csv('users.csv'),
+      posts: csv('posts.csv')
+    }),
+    // Adjust SERIAL sequences to avoid conflicts
+    seed.fn(async ({ pg }) => {
+      await pg.query(`SELECT setval(pg_get_serial_sequence('users', 'id'), (SELECT MAX(id) FROM users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('posts', 'id'), (SELECT MAX(id) FROM posts));`);
+    })
+  ])));
+});
+
+afterAll(() => teardown());
+
+it('has loaded rows', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM users');
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
 
 ## Environment Overrides
 

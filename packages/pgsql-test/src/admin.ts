@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
 import { streamSql as stream } from './stream';
-import { SeedAdapter } from './seed';
+import { SeedAdapter } from './seed/types';
 
 export class DbAdmin {
   constructor(

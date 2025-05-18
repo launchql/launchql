@@ -11,7 +11,7 @@ import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 
 import { teardownPgPools } from '@launchql/server-utils';
-import { SeedAdapter } from './seed';
+import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
 
 let manager: PgTestConnector;
