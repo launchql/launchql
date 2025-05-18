@@ -1,12 +1,9 @@
-import path, { resolve } from 'path';
+import { resolve } from 'path';
 
 import { PgTestClient } from '../src/test-client';
-import { DbAdmin } from '../src/admin';
 import { getConnections } from '../src/connect';
 import { getRootPgPool } from '@launchql/server-utils';
 import { seed } from '../src';
-
-const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 
 let pg: PgTestClient;
 let teardown: () => Promise<void>;

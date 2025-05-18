@@ -1,12 +1,10 @@
 import { DbAdmin } from './admin';
 import {
-  getEnvOptions,
   getPgEnvOptions,
   TestConnectionOptions,
   PgConfig,
   getConnEnvOptions
 } from '@launchql/types';
-import { deploy, deployFast, LaunchQLProject } from '@launchql/migrate';
 import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 

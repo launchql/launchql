@@ -336,6 +336,57 @@ it('has loaded rows', async () => {
 });
 ```
 
+
+## 🏗️ Sqitch Seeding
+
+You can seed your test database using a local Sqitch project (e.g., containing `sqitch.conf`) by passing a custom working directory:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
+
+const cwd = path.resolve(__dirname, '../path/to/sqitch');
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.compose([
+    seed.sqitch(cwd) // deploys the module at provided cwd
+  ])));
+});
+
+it('runs a schema query', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM myapp.users');
+  expect(+res.rows[0].count).toBeGreaterThanOrEqual(0);
+});
+```
+
+This works for any Sqitch-compatible module using LaunchQL’s deployment tooling.
+
+## 🚀 LaunchQL Seeding
+
+For LaunchQL modules with precompiled `sqitch.plan`, use `seed.launchql(cwd)` to apply a schema quickly with `deployFast()`:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'pgsql-test';
+
+const cwd = path.resolve(__dirname, '../path/to/launchql');
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, seed.compose([
+    seed.launchql(cwd) // uses deployFast() under the hood
+  ])));
+});
+
+it('creates user records', async () => {
+  await db.query(`INSERT INTO myapp.users (username, email) VALUES ('testuser', 'test@example.com')`);
+  const res = await db.query(`SELECT COUNT(*) FROM myapp.users`);
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
+
+This is the fastest way to bring up a ready-to-query schema from a compiled LaunchQL module.
+
+
 ## Environment Overrides
 
 `pgsql-test` respects the following env vars for DB connectivity:
