@@ -150,6 +150,25 @@ test('user count starts at 2', async () => {
 
 ### 🔐 Role-Based Context
 
+
+The `pgsql-test` framework provides powerful tools to simulate authentication contexts during tests, which is particularly useful when testing Row-Level Security (RLS) policies.
+
+#### Setting Test Context
+
+Use `setContext()` to simulate different user roles and JWT claims:
+
+```ts
+db.setContext({
+  role: 'authenticated',
+  'jwt.claims.user_id': '123',
+  'jwt.claims.org_id': 'acme'
+});
+```
+
+This applies the settings using `SET LOCAL` statements, ensuring they persist only for the current transaction and maintain proper isolation between tests.
+
+#### Testing Role-Based Access
+
 ```ts
 describe('authenticated role', () => {
   beforeEach(async () => {
@@ -165,6 +184,22 @@ describe('authenticated role', () => {
   });
 });
 ```
+
+#### Database Connection Options
+
+For non-superuser testing, use the connection options described in the [options](#getconnections-options) section. The `db.connection` property allows you to customize the non-privileged user account for your tests.
+
+Use `setContext()` to simulate Role-Based Access Control (RBAC) during tests. This is useful when testing Row-Level Security (RLS) policies. Your actual server should manage role/user claims via secure tokens (e.g., setting `current_setting('jwt.claims.user_id')`), but this interface helps emulate those behaviors in test environments.
+
+#### Common Testing Scenarios
+
+This approach enables testing various access patterns:
+- Authenticated vs. anonymous user access
+- Per-user data filtering
+- Admin privilege bypass behavior
+- Custom claim-based restrictions (organization membership, admin status)
+
+> **Note:** While this interface helps simulate RBAC for testing, your production server should manage user/role claims via secure authentication tokens, typically by setting values like `current_setting('jwt.claims.user_id')` through proper authentication middleware.
 
 ### 🔌 SQL File Seeding
 
