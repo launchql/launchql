@@ -38,7 +38,6 @@ const getConnOopts = (cn: GetConnectionOpts = {}) => {
     pg: config,
     db: connect
   }
-
 }
 
 export interface GetConnectionResult {
@@ -91,7 +90,6 @@ export const getConnections = async (
       pg: manager.getClient(config)
     })
   }
-
 
   // App user connection
   const db = manager.getClient({
