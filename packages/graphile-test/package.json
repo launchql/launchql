@@ -30,7 +30,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/pg": "^8.11.10",
+    "@types/pg": "^8.15.2",
     "graphql-tag": "2.12.6"
   },
   "dependencies": {
@@ -38,7 +38,7 @@
     "@launchql/types": "^2.0.5",
     "graphql": "^15.5.2",
     "mock-req": "^0.2.0",
-    "pg": "^8.15.6",
+    "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
   }
 }

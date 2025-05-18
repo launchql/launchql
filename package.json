@@ -50,8 +50,8 @@
     "typescript": "^5.1.6"
   },
   "resolutions": {
-    "pg": "^8.15.6",
-    "@types/pg": "^8.11.10",
+    "pg": "^8.16.0",
+    "@types/pg": "^8.15.2",
     "graphql": "15.5.2"
   }
 }

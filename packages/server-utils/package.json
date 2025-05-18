@@ -34,13 +34,13 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "lru-cache": "^11.1.0",
-    "pg": "^8.15.6",
+    "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
-    "@types/pg": "^8.11.10",
+    "@types/pg": "^8.15.2",
     "@types/rimraf": "^4.0.5",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
