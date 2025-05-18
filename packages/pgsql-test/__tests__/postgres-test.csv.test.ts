@@ -15,14 +15,15 @@ beforeAll(async () => {
     // 1. Create schema with SERIAL primary keys
     seed.fn(async ({ pg }) => {
       await pg.query(`
-        CREATE TABLE users (
+        CREATE SCHEMA custom;
+        CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
           name TEXT NOT NULL
         );
 
-        CREATE TABLE posts (
+        CREATE TABLE custom.posts (
           id SERIAL PRIMARY KEY,
-          user_id INT REFERENCES users(id),
+          user_id INT REFERENCES custom.users(id),
           content TEXT NOT NULL
         );
       `);
@@ -30,14 +31,14 @@ beforeAll(async () => {
 
     // 2. Seed from CSV using COPY FROM STDIN
     seed.csv({
-      users: csv('users.csv'),
-      posts: csv('posts.csv')
+      'custom.users': csv('users.csv'),
+      'custom.posts': csv('posts.csv')
     }),
 
     // 3. Fix SERIAL sequences to match the highest used ID
     seed.fn(async ({ pg }) => {
-      await pg.query(`SELECT setval(pg_get_serial_sequence('users', 'id'), (SELECT MAX(id) FROM users));`);
-      await pg.query(`SELECT setval(pg_get_serial_sequence('posts', 'id'), (SELECT MAX(id) FROM posts));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.users', 'id'), (SELECT MAX(id) FROM custom.users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.posts', 'id'), (SELECT MAX(id) FROM custom.posts));`);
     })
   ])));
 });
@@ -49,16 +50,16 @@ afterAll(async () => {
 it('csv in/out', async () => {
   // 4. Insert new data without specifying IDs (uses SERIAL)
   await pg.query(`
-    INSERT INTO users (name) VALUES ('Carol');
-    INSERT INTO posts (user_id, content) VALUES (3, 'Carol''s first post');
+    INSERT INTO custom.users (name) VALUES ('Carol');
+    INSERT INTO custom.posts (user_id, content) VALUES (3, 'Carol''s first post');
   `);
 
   // 5. Validate full contents
   const res = await pg.query(`
-    SELECT users.name, posts.content
-    FROM posts
-    JOIN users ON users.id = posts.user_id
-    ORDER BY users.id
+    SELECT custom.users.name, custom.posts.content
+    FROM custom.posts
+    JOIN custom.users ON custom.users.id = custom.posts.user_id
+    ORDER BY custom.users.id
   `);
 
   expect(res.rows).toEqual([
@@ -72,8 +73,8 @@ it('csv in/out', async () => {
   fs.mkdirSync(outDir, { recursive: true });
 
   // 7. Export updated tables to CSV
-  await exportTableToCsv(pg, 'users', path.join(outDir, 'users.csv'));
-  await exportTableToCsv(pg, 'posts', path.join(outDir, 'posts.csv'));
+  await exportTableToCsv(pg, 'custom.users', path.join(outDir, 'users.csv'));
+  await exportTableToCsv(pg, 'custom.posts', path.join(outDir, 'posts.csv'));
 
   console.log(`📤 Exported users and posts to ${outDir}`);
 });
