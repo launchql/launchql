@@ -1,6 +1,6 @@
 {
   "name": "@launchql/pg-query-context",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pg query context",
   "main": "index.js",

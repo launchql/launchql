@@ -1,6 +1,6 @@
 {
   "name": "etag-stream",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "A Transform stream that calculates Etag/S3 MD5 sum. Uses the same algorithm that S3 uses to calculate the ETag.",
   "main": "index.js",
@@ -34,6 +34,6 @@
     "etag"
   ],
   "dependencies": {
-    "etag-hash": "^2.1.2"
+    "etag-hash": "^2.1.3"
   }
 }
