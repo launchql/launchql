@@ -15,9 +15,6 @@
 
 **LaunchQL** is a full-stack framework for building secure, role-aware, GraphQL-based backends using PostgreSQL. It emphasizes modularity, reusability, and developer ergonomics for teams building production-grade applications on top of a strongly typed SQL core.
 
-This is a **complete rewrite** of the original LaunchQL stack, which began development circa **2016–2020**. 
-
-
 ## ⚠️ Under Construction
 
 Expect breaking changes, shifting APIs, and fast iteration as we build toward a stable release.
