@@ -75,6 +75,7 @@ export const deployFast = async (
       }
     } catch (err) {
       error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));
+      console.error(err);
       await pgPool.end();
       process.exit(1);
     }
