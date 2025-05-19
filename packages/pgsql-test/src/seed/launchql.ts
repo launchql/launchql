@@ -16,7 +16,6 @@ export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
           database: ctx.config.database,
           dir: proj.modulePath,
           usePlan: true,
-          verbose: false,
           cache
         });
     }
