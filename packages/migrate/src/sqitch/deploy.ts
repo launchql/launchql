@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import chalk from 'chalk';
 
-import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from '../class/launchql';
 import { spawn } from 'child_process';
@@ -79,14 +79,14 @@ export const deploy = async (
 
         if (exitCode !== 0) {
           console.log(chalk.red(`❌ Deployment failed for module ${chalk.bold(extension)}`));
-          throw new Error('deploy failed');
+          throw errors.DEPLOYMENT_FAILED({ module: extension });
         }
 
       }
-    } catch (e) {
-      console.log(chalk.red(`\n🛑 Error during deployment: ${e instanceof Error ? e.message : e}`));
-      await pgPool.end();
-      process.exit(1);
+    } catch (err) {
+      console.log(chalk.red(`\n🛑 Error during deployment: ${err instanceof Error ? err.message : err}`));
+      console.error(err);
+      throw errors.DEPLOYMENT_FAILED({ module: extension });
     }
   }
 

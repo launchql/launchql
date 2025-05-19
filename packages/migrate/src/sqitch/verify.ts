@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import pg from 'pg';
 import chalk from 'chalk';
 
-import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { LaunchQLProject } from '../class/launchql';
 import { getRootPgPool } from '@launchql/server-utils';
 
@@ -78,13 +78,13 @@ export const verify = async (
 
         if (exitCode !== 0) {
           console.log(chalk.red(`❌ Verification failed for module ${chalk.bold(extension)}`));
-          throw new Error('verify failed');
+          throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
         }
       }
     } catch (e) {
       console.log(chalk.red(`\n🛑 Error during verification: ${e instanceof Error ? e.message : e}`));
-      await pgPool.end();
-      process.exit(1);
+      console.error(e);
+      throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
     }
   }
 

@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import chalk from 'chalk';
 
 import { LaunchQLProject } from '../class/launchql';
-import { getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 
 interface Extensions {
@@ -79,13 +79,13 @@ export const revert = async (
 
         if (exitCode !== 0) {
           console.log(chalk.red(`❌ Revert failed for module ${chalk.bold(extension)}`));
-          throw new Error('revert failed');
+          throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
         }
       }
     } catch (e) {
       console.log(chalk.red(`\n🛑 Error during revert: ${e instanceof Error ? e.message : e}`));
-      await pgPool.end();
-      process.exit(1);
+      console.error(e);
+      throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
     }
   }
 

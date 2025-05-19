@@ -3,7 +3,7 @@
 import { resolve } from 'path';
 import chalk from 'chalk';
 
-import { LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
@@ -83,13 +83,12 @@ export const deployStream = async (
       }
     } catch (err) {
       error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));
-      await pgPool.end();
-      process.exit(1);
+      console.error(err);
+      throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
     }
   }
 
   log(chalk.green(`\n✅ Deployment complete for module: ${chalk.bold(name)}\n`));
-//   await pgPool.end();
 
   return extensions;
 };
