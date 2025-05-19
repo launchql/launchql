@@ -1,14 +1,17 @@
 import { execSync } from 'child_process';
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { existsSync } from 'fs';
+import { getPgEnvOptions, PgConfig } from '@launchql/types';
 import { streamSql as stream } from './stream';
 import { SeedAdapter } from './seed/types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('db-admin');
 
 export class DbAdmin {
   constructor(
     private config: PgConfig,
     private verbose: boolean = false
-  ) { 
+  ) {
     this.config = getPgEnvOptions(config);
   }
 
@@ -17,27 +20,33 @@ export class DbAdmin {
       PGHOST: this.config.host,
       PGPORT: String(this.config.port),
       PGUSER: this.config.user,
-      PGPASSWORD: this.config.password,
+      PGPASSWORD: this.config.password
     };
   }
 
   private run(command: string): void {
-    execSync(command, {
-      stdio: this.verbose ? 'inherit' : 'pipe',
-      env: {
-        ...process.env,
-        ...this.getEnv(),
-      },
-    });
+    try {
+      execSync(command, {
+        stdio: this.verbose ? 'inherit' : 'pipe',
+        env: {
+          ...process.env,
+          ...this.getEnv()
+        }
+      });
+      if (this.verbose) log.success(`Executed: ${command}`);
+    } catch (err: any) {
+      log.error(`Command failed: ${command}`);
+      if (this.verbose) log.error(err.message);
+      throw err;
+    }
   }
 
   private safeDropDb(name: string): void {
     try {
       this.run(`dropdb "${name}"`);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      if (!message.includes('does not exist')) {
-        console.warn(`⚠️  Could not drop database ${name}: ${message}`);
+    } catch (err: any) {
+      if (!err.message.includes('does not exist')) {
+        log.warn(`Could not drop database ${name}: ${err.message}`);
       }
     }
   }
@@ -84,35 +93,37 @@ export class DbAdmin {
   cleanupTemplate(template: string): void {
     try {
       this.run(`psql -c "UPDATE pg_database SET datistemplate = false WHERE datname = '${template}'"`);
-    } catch { }
+    } catch {
+      log.warn(`Skipping failed UPDATE of datistemplate for ${template}`);
+    }
     this.safeDropDb(template);
   }
-  
+
   async grantRole(role: string, user: string, dbName?: string): Promise<void> {
     const db = dbName ?? this.config.database;
     const sql = `GRANT ${role} TO ${user};`;
     await this.streamSql(sql, db);
   }
-  
+
   async grantConnect(role: string, dbName?: string): Promise<void> {
     const db = dbName ?? this.config.database;
     const sql = `GRANT CONNECT ON DATABASE "${db}" TO ${role};`;
     await this.streamSql(sql, db);
   }
-  
+
   async createUserRole(user: string, password: string, dbName: string): Promise<void> {
     const sql = `
-  DO $$
-  BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${user}') THEN
-      CREATE ROLE ${user} LOGIN PASSWORD '${password}';
-      GRANT anonymous TO ${user};
-      GRANT authenticated TO ${user};
-    END IF;
-  END $$;
+      DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${user}') THEN
+          CREATE ROLE ${user} LOGIN PASSWORD '${password}';
+          GRANT anonymous TO ${user};
+          GRANT authenticated TO ${user};
+        END IF;
+      END $$;
     `.trim();
 
-    this.streamSql(sql, dbName);
+    await this.streamSql(sql, dbName);
   }
 
   loadSql(file: string, dbName: string): void {
@@ -123,24 +134,28 @@ export class DbAdmin {
   }
 
   async streamSql(sql: string, dbName: string): Promise<void> {
-    await stream({
-      ...this.config,
-      database: dbName
-    }, sql);
-  }  
+    await stream(
+      {
+        ...this.config,
+        database: dbName
+      },
+      sql
+    );
+  }
 
   async createSeededTemplate(templateName: string, adapter: SeedAdapter): Promise<void> {
     const seedDb = this.config.database;
     this.create(seedDb);
+
     await adapter.seed({
       admin: this,
       config: this.config,
-      pg: null, // sorry!
-      connect: null, // sorry!
+      pg: null, // placeholder for PgTestClient
+      connect: null // placeholder for connection factory
     });
+
     this.cleanupTemplate(templateName);
     this.createTemplateFromBase(seedDb, templateName);
     this.drop(seedDb);
   }
-  
 }

@@ -1,10 +1,9 @@
 // FASTER than deploy-stream
 // Time:        1.056 s
 import { resolve } from 'path';
-import chalk from 'chalk';
 
 import { LaunchQLOptions, PgConfig, errors } from '@launchql/types';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool, Logger } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
 
@@ -34,7 +33,6 @@ const getCacheKey = (
   return `${host ?? 'localhost'}:${port ?? 5432}:${user ?? 'user'}:${database}:${name}`;
 };
 
-
 export const deployFast = async (
   options: DeployFastOptions
 ): Promise<Extensions> => {
@@ -48,70 +46,64 @@ export const deployFast = async (
     cache = false
   } = options;
 
-  const log = (...args: any[]) => verbose && console.log(...args);
-  const error = (...args: any[]) => verbose && console.error(...args);
+  const log = new Logger('deploy-fast');
+  if (!verbose) log.silent = true;
 
   const projectRoot = new LaunchQLProject(dir);
   const modules = projectRoot.getModuleMap();
 
-  log(chalk.cyan(`\n🔍 Gathering modules from ${chalk.bold(dir)}...`));
+  log.info(`🔍 Gathering modules from ${dir}...`);
 
   if (!modules[name]) {
-    error(chalk.red(`❌ Module "${name}" not found.`));
+    log.error(`❌ Module "${name}" not found.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  log(chalk.cyan(`📦 Resolving dependencies for ${chalk.bold(name)}...`));
+  log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = projectRoot.getModuleExtensions();
 
   const pgPool = getRootPgPool({ ...opts.pg, database });
 
-  log(chalk.green(`\n🚀 Deploying to database: ${chalk.bold(database)}\n`));
+  log.success(`🚀 Deploying to database: ${database}`);
 
   for (const extension of extensions.resolved) {
     try {
       if (extensions.external.includes(extension)) {
         const query = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
-        log(chalk.blue(`📥 Installing external extension: ${chalk.bold(extension)}`));
-        log(chalk.gray(`> ${query}`));
+        log.info(`📥 Installing external extension: ${extension}`);
+        log.debug(`> ${query}`);
         await pgPool.query(query);
       } else {
         const modulePath = resolve(projectRoot.workspacePath, modules[extension].path);
         const localProject = new LaunchQLProject(modulePath);
 
-        // Cache logic
         const cacheKey = getCacheKey(opts.pg, extension, database);
         if (cache && deployFastCache[cacheKey]) {
-          log(chalk.yellow(`⚡ Using cached pkg for ${chalk.bold(extension)}.`));
+          log.warn(`⚡ Using cached pkg for ${extension}.`);
           await pgPool.query(deployFastCache[cacheKey].sql);
           continue;
         }
-        // End Cache logic
-        
-        // Deploy packaged module
+
         const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
-        
-        log(chalk.magenta(`📂 Deploying local module: ${chalk.bold(extension)}`));
-        log(chalk.gray(`→ Path: ${modulePath}`));
-        log(chalk.gray(`→ Command: sqitch deploy db:pg:${database}`));
-        log(chalk.gray(`> ${pkg.sql}`));
-        
+
+        log.info(`📂 Deploying local module: ${extension}`);
+        log.debug(`→ Path: ${modulePath}`);
+        log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+        log.debug(`> ${pkg.sql}`);
+
         await pgPool.query(pkg.sql);
-        // END Deploy packaged module
-        
+
         if (cache) {
           deployFastCache[cacheKey] = pkg;
         }
-
       }
     } catch (err) {
-      error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));
-      console.error(err);
+      log.error(`🛑 Deployment error: ${err instanceof Error ? err.message : err}`);
+      console.error(err); // Preserve stack trace
       throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
     }
   }
 
-  log(chalk.green(`\n✅ Deployment complete for module: ${chalk.bold(name)}\n`));
-
+  log.success(`✅ Deployment complete for module: ${name}`);
   return extensions;
 };

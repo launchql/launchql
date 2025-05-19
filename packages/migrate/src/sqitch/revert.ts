@@ -1,15 +1,16 @@
 import { resolve } from 'path';
 import { spawn } from 'child_process';
-import chalk from 'chalk';
 
 import { LaunchQLProject } from '../class/launchql';
 import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool, Logger } from '@launchql/server-utils';
 
 interface Extensions {
   resolved: string[];
   external: string[];
 }
+
+const log = new Logger('revert');
 
 export const revert = async (
   opts: LaunchQLOptions,
@@ -19,15 +20,15 @@ export const revert = async (
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
-  console.log(chalk.cyan(`\n🔍 Gathering modules from ${chalk.bold(dir)}...`));
+  log.info(`🔍 Gathering modules from ${dir}...`);
   const modules = mod.getModuleMap();
 
   if (!modules[name]) {
-    console.log(chalk.red(`❌ Module "${name}" not found in modules list.`));
+    log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  console.log(chalk.cyan(`📦 Resolving dependencies for ${chalk.bold(name)}...`));
+  log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
   const pgPool = getRootPgPool({
@@ -35,7 +36,7 @@ export const revert = async (
     database
   });
 
-  console.log(chalk.green(`\n🧹 Starting revert process on database ${chalk.bold(database)}...`));
+  log.success(`🧹 Starting revert process on database ${database}...`);
 
   const reversedExtensions = [...extensions.resolved].reverse();
 
@@ -43,14 +44,14 @@ export const revert = async (
     try {
       if (extensions.external.includes(extension)) {
         const msg = `DROP EXTENSION IF EXISTS "${extension}" CASCADE;`;
-        console.log(chalk.yellow(`\n⚠️ Dropping external extension: ${chalk.bold(extension)}`));
-        console.log(chalk.gray(`> ${msg}`));
+        log.warn(`⚠️ Dropping external extension: ${extension}`);
+        log.debug(`> ${msg}`);
         await pgPool.query(msg);
       } else {
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
-        console.log(chalk.magenta(`\n📂 Reverting local module: ${chalk.bold(extension)}`));
-        console.log(chalk.gray(`→ Path: ${modulePath}`));
-        console.log(chalk.gray(`→ Command: sqitch revert db:pg:${database} -y`));
+        log.info(`📂 Reverting local module: ${extension}`);
+        log.debug(`→ Path: ${modulePath}`);
+        log.debug(`→ Command: sqitch revert db:pg:${database} -y`);
 
         const child = spawn('sqitch', ['revert', `db:pg:${database}`, '-y'], {
           cwd: modulePath,
@@ -64,11 +65,11 @@ export const revert = async (
           child.stderr.on('data', (chunk: Buffer | string) => {
             const text = chunk.toString();
             if (/error/i.test(text)) {
-              console.error(chalk.red(text));
+              log.error(text);
             } else if (/warning/i.test(text)) {
-              console.warn(chalk.yellow(text));
+              log.warn(text);
             } else {
-              console.error(text);
+              log.error(text); // non-warning stderr output
             }
           });
 
@@ -78,17 +79,17 @@ export const revert = async (
         });
 
         if (exitCode !== 0) {
-          console.log(chalk.red(`❌ Revert failed for module ${chalk.bold(extension)}`));
+          log.error(`❌ Revert failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
         }
       }
     } catch (e) {
-      console.log(chalk.red(`\n🛑 Error during revert: ${e instanceof Error ? e.message : e}`));
-      console.error(e);
+      log.error(`🛑 Error during revert: ${e instanceof Error ? e.message : e}`);
+      console.error(e); // optional raw stack trace
       throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
     }
   }
 
-  console.log(chalk.green(`\n✅ Revert complete for ${chalk.bold(name)}.\n`));
+  log.success(`✅ Revert complete for ${name}.`);
   return extensions;
 };

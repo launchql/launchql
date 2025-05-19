@@ -1,26 +1,29 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { exec } from 'shelljs';
-import chalk from 'chalk';
+
 import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { listModules, deploy } from '@launchql/migrate';
+import { Logger } from '@launchql/server-utils';
 
 export default async (
   argv: Partial<ParsedArgs>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  const log = new Logger('cli');
+
   const questions: Question[] = [
     {
       type: 'text',
       name: 'database',
-      message: chalk.cyan('Database name'),
+      message: 'Database name',
       required: true
     },
     {
       name: 'yes',
       type: 'confirm',
-      message: chalk.yellow('Are you sure you want to proceed?'),
+      message: 'Are you sure you want to proceed?',
       required: true
     }
   ];
@@ -28,17 +31,17 @@ export default async (
   let { database, yes, recursive, createdb, cwd } = await prompter.prompt(argv, questions);
 
   if (!yes) {
-    console.log(chalk.gray('Operation cancelled.'));
+    log.info('Operation cancelled.');
     return;
   }
 
   if (!cwd) {
     cwd = process.cwd();
-    console.log(chalk.gray(`Using current directory: ${cwd}`));
+    log.debug(`Using current directory: ${cwd}`);
   }
 
   if (createdb) {
-    console.log(chalk.blue(`Creating database ${chalk.bold(database)}...`));
+    log.info(`Creating database ${database}...`);
     exec(`createdb ${database}`);
   }
 
@@ -47,7 +50,7 @@ export default async (
     const mods = Object.keys(modules);
 
     if (!mods.length) {
-      console.log(chalk.red('No modules found in the specified directory.'));
+      log.error('No modules found in the specified directory.');
       prompter.close();
       throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
     }
@@ -56,24 +59,25 @@ export default async (
       {
         type: 'autocomplete',
         name: 'project',
-        message: chalk.cyan('Choose a project to deploy'),
+        message: 'Choose a project to deploy',
         options: mods,
         required: true
       }
     ]);
-    
-    console.log(chalk.green(`Deploying project ${chalk.bold(project)} to database ${chalk.bold(database)}...`));
+
+    log.success(`Deploying project ${project} to database ${database}...`);
     const options: LaunchQLOptions = getEnvOptions({
       pg: {
         database
       }
     });
+
     await deploy(options, project, database, cwd);
-    console.log(chalk.green('Deployment complete.'));
+    log.success('Deployment complete.');
   } else {
-    console.log(chalk.green(`Running ${chalk.bold(`sqitch deploy db:pg:${database}`)}...`));
+    log.info(`Running: sqitch deploy db:pg:${database}`);
     exec(`sqitch deploy db:pg:${database}`);
-    console.log(chalk.green('Deployment complete.'));
+    log.success('Deployment complete.');
   }
 
   return argv;

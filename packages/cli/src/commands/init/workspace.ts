@@ -1,14 +1,17 @@
 import { Inquirerer, Question } from 'inquirerer';
-import chalk from 'chalk';
 import path from 'path';
 import { mkdirSync } from 'fs';
-import { 
-  writeRenderedTemplates,
-  workspaceTemplate
-} from '@launchql/templatizer';
-import { sluggify } from '@launchql/migrate';
 
-export default async function runWorkspaceSetup(argv: Partial<Record<string, any>>, prompter: Inquirerer) {
+import { writeRenderedTemplates, workspaceTemplate } from '@launchql/templatizer';
+import { sluggify } from '@launchql/migrate';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('workspace-init');
+
+export default async function runWorkspaceSetup(
+  argv: Partial<Record<string, any>>,
+  prompter: Inquirerer
+) {
   const workspaceQuestions: Question[] = [
     {
       name: 'name',
@@ -23,8 +26,10 @@ export default async function runWorkspaceSetup(argv: Partial<Record<string, any
   const targetPath = path.join(cwd!, sluggify(answers.name));
 
   mkdirSync(targetPath, { recursive: true });
-  console.log(chalk.green(`Created workspace directory: ${targetPath}`));
+  log.success(`Created workspace directory: ${targetPath}`);
 
   writeRenderedTemplates(workspaceTemplate, targetPath, { ...argv, ...answers });
+  log.success('Workspace templates rendered.');
+
   return { ...argv, ...answers, cwd: targetPath };
 }
