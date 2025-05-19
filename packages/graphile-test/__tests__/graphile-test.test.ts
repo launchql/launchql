@@ -1,5 +1,10 @@
+process.env.LOG_SCOPE='graphile-test';
+
+// process.env FIRST!
+
 import { GraphQLTest, snapshot } from '../src';
 import { IntrospectionQuery } from '../test-utils/queries';
+
 
 const dbname = 'graphile_test_db';
 const schemas = ['app_public']
@@ -20,8 +25,7 @@ afterAll(async () => {
 });
 
 it('works', async () => {
-    // @ts-ignore
-  await graphQL(async query => {
+  await graphQL(async (query: any) => {
     const data = await query(IntrospectionQuery);
     expect(snapshot(data)).toMatchSnapshot();
   });
