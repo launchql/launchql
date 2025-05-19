@@ -130,7 +130,14 @@ export const GraphQLTest = ({ dbname, schemas, authRole = 'authenticated' }: Gra
     );
   };
 
-  const graphQLQuery = async (...args: any[]): Promise<any> => {
+// Overload signatures
+async function graphQLQuery(Query: string | DocumentNode): Promise<any>;
+async function graphQLQuery(Query: string | DocumentNode, commit: boolean): Promise<any>;
+async function graphQLQuery(Query: string | DocumentNode, vars: Record<string, any>): Promise<any>;
+async function graphQLQuery(Query: string | DocumentNode, vars: Record<string, any>, commit: boolean): Promise<any>;
+async function graphQLQuery(reqOptions: Record<string, any>, Query: string | DocumentNode, vars: Record<string, any>): Promise<any>;
+async function graphQLQuery(reqOptions: Record<string, any>, Query: string | DocumentNode, vars: Record<string, any>, commit: boolean): Promise<any>;
+async function graphQLQuery(...args: any[]): Promise<any> {
     if (!ctx) throw new Error('Context is not initialized. Did you run setup()?');
 
     let reqOptions: Record<string, any> = {};
