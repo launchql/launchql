@@ -1,16 +1,17 @@
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 import pg from 'pg';
-import chalk from 'chalk';
 
 import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { LaunchQLProject } from '../class/launchql';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool, Logger } from '@launchql/server-utils';
 
 interface Extensions {
   resolved: string[];
   external: string[];
 }
+
+const log = new Logger('verify');
 
 export const verify = async (
   opts: LaunchQLOptions,
@@ -20,15 +21,15 @@ export const verify = async (
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
-  console.log(chalk.cyan(`\n🔍 Gathering modules from ${chalk.bold(dir)}...`));
+  log.info(`🔍 Gathering modules from ${dir}...`);
   const modules = mod.getModuleMap();
 
   if (!modules[name]) {
-    console.log(chalk.red(`❌ Module "${name}" not found in modules list.`));
+    log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  console.log(chalk.cyan(`📦 Resolving dependencies for ${chalk.bold(name)}...`));
+  log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
   const pgPool = getRootPgPool({
@@ -36,20 +37,20 @@ export const verify = async (
     database
   });
 
-  console.log(chalk.green(`\n🔎 Verifying deployment of ${chalk.bold(name)} on database ${chalk.bold(database)}...`));
+  log.success(`🔎 Verifying deployment of ${name} on database ${database}...`);
 
   for (const extension of extensions.resolved) {
     try {
       if (extensions.external.includes(extension)) {
         const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
-        console.log(chalk.blue(`\n🔍 Verifying external extension: ${chalk.bold(extension)}`));
-        console.log(chalk.gray(`> ${query}`));
+        log.info(`🔍 Verifying external extension: ${extension}`);
+        log.debug(`> ${query}`);
         await pgPool.query(query, [extension]);
       } else {
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
-        console.log(chalk.magenta(`\n📂 Verifying local module: ${chalk.bold(extension)}`));
-        console.log(chalk.gray(`→ Path: ${modulePath}`));
-        console.log(chalk.gray(`→ Command: sqitch verify db:pg:${database}`));
+        log.info(`📂 Verifying local module: ${extension}`);
+        log.debug(`→ Path: ${modulePath}`);
+        log.debug(`→ Command: sqitch verify db:pg:${database}`);
 
         const child = spawn('sqitch', ['verify', `db:pg:${database}`], {
           cwd: modulePath,
@@ -63,11 +64,11 @@ export const verify = async (
           child.stderr.on('data', (chunk: Buffer | string) => {
             const text = chunk.toString();
             if (/error/i.test(text)) {
-              console.error(chalk.red(text));
+              log.error(text);
             } else if (/warning/i.test(text)) {
-              console.warn(chalk.yellow(text));
+              log.warn(text);
             } else {
-              console.error(text);
+              log.error(text); // stderr fallback
             }
           });
 
@@ -77,17 +78,17 @@ export const verify = async (
         });
 
         if (exitCode !== 0) {
-          console.log(chalk.red(`❌ Verification failed for module ${chalk.bold(extension)}`));
+          log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
         }
       }
     } catch (e) {
-      console.log(chalk.red(`\n🛑 Error during verification: ${e instanceof Error ? e.message : e}`));
+      log.error(`🛑 Error during verification: ${e instanceof Error ? e.message : e}`);
       console.error(e);
       throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
     }
   }
 
-  console.log(chalk.green(`\n✅ Verification complete for ${chalk.bold(name)}.\n`));
+  log.success(`✅ Verification complete for ${name}.`);
   return extensions;
 };

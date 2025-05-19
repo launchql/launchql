@@ -4,6 +4,9 @@ import path from 'path';
 import { generateCodeTree } from './codegen/codegen';
 import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect';
 import { DatabaseObject } from './types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('codegen');
 
 (async () => {
   const options: GetIntrospectionRowsOptions = {
@@ -21,11 +24,11 @@ import { DatabaseObject } from './types';
   try {
     // Clean the output directory
     await fs.rm(outputDirectory, { recursive: true, force: true });
-    console.log(`Cleaned output directory: ${outputDirectory}`);
+    log.info(`Cleaned output directory: ${outputDirectory}`);
 
     // Fetch introspection rows
     const rows: DatabaseObject[] = await getIntrospectionRows(options);
-    console.log('Introspection Rows Fetched:', rows);
+    log.info('Introspection Rows Fetched:', rows);
 
     // Generate TypeScript code
     const codegenOptions = {
@@ -34,14 +37,14 @@ import { DatabaseObject } from './types';
     };
     const generatedCode = generateCodeTree(rows, codegenOptions);
 
-    console.log('Generated TypeScript Code Tree:', generatedCode);
+    log.info('Generated TypeScript Code Tree:', generatedCode);
 
     // Write the generated code to files
     await writeGeneratedFiles(outputDirectory, generatedCode);
 
-    console.log(`Generated files written to ${outputDirectory}`);
+    log.info(`Generated files written to ${outputDirectory}`);
   } catch (error) {
-    console.error('Failed to fetch introspection rows or generate code:', error);
+    log.error('Failed to fetch introspection rows or generate code:', error);
   }
 })();
 
@@ -71,7 +74,7 @@ const writeGeneratedFiles = async (
       await fs.writeFile(fullPath, content, 'utf8');
     }
   } catch (error) {
-    console.error(`Failed to write files to ${outputDir}:`, error);
+    log.error(`Failed to write files to ${outputDir}:`, error);
     throw error;
   }
 };

@@ -1,6 +1,8 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { LaunchQLProject } from '@launchql/migrate';
-import chalk from 'chalk';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('plan');
 
 export default async (
   argv: Partial<Record<string, any>>,
@@ -15,7 +17,7 @@ export default async (
 
   if (!cwd) {
     cwd = process.cwd();
-    console.log(chalk.gray(`Using current directory: ${cwd}`));
+    log.info(`Using current directory: ${cwd}`);
   }
 
   const project = new LaunchQLProject(cwd);

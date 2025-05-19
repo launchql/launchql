@@ -1,68 +1,16 @@
-  // const moduleQuestions: Question[] = [
-  //   // {
-  //   //   name: 'USERFULLNAME',
-  //   //   message: 'Enter author full name',
-  //   //   required: true,
-  //   //   default: username,
-  //   //   useDefault: true,
-  //   //   type: 'text',
-  //   // },
-  //   // {
-  //   //   name: 'USEREMAIL',
-  //   //   message: 'Enter author email',
-  //   //   required: true,
-  //   //   default: email,
-  //   //   useDefault: true,
-  //   //   type: 'text',
-  //   // },
-  //   {
-  //     name: 'MODULENAME',
-  //     message: 'Enter the module name',
-  //     required: true,
-  //     type: 'text',
-  //   },
-  //   // {
-  //   //   name: 'REPONAME',
-  //   //   message: 'Enter the repository name',
-  //   //   required: true,
-  //   //   type: 'text',
-  //   // },
-  //   // {
-  //   //   name: 'USERNAME',
-  //   //   message: 'Enter your GitHub username',
-  //   //   required: true,
-  //   //   type: 'text',
-  //   // },
-  //   // {
-  //   //   name: 'ACCESS',
-  //   //   message: 'Module access?',
-  //   //   required: true,
-  //   //   type: 'autocomplete',
-  //   //   options: ['public', 'restricted'],
-  //   // },
-  //   {
-  //       name: 'extensions',
-  //       message: 'which extensions?',
-  //       options: availExtensions,
-  //       type: 'checkbox',
-  //       allowCustomOptions: true,
-  //       // default: ['plpgsql'],
-  //       // default: [{
-  //       //      name: 'plpgsql',
-  //       //      value: 'plpgsql'
-  //       // }],
-  //       required: true
-  //     },
-  // ];
-
-
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
-import chalk from 'chalk';
-import { LaunchQLProject, sluggify } from '@launchql/migrate';
 import { execSync } from 'child_process';
-import { errors } from '@launchql/types';
 
-export default async function runModuleSetup(argv: Partial<Record<string, any>>, prompter: Inquirerer) {
+import { LaunchQLProject, sluggify } from '@launchql/migrate';
+import { errors } from '@launchql/types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('module-init');
+
+export default async function runModuleSetup(
+  argv: Partial<Record<string, any>>,
+  prompter: Inquirerer
+) {
   const username = execSync('git config --global user.name', { encoding: 'utf8' }).trim();
   const email = execSync('git config --global user.email', { encoding: 'utf8' }).trim();
   const { cwd = process.cwd() } = argv;
@@ -70,12 +18,12 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
   const project = new LaunchQLProject(cwd);
 
   if (!project.workspacePath) {
-    console.error(chalk.red('Error: Not inside a LaunchQL workspace.'));
+    log.error('Not inside a LaunchQL workspace.');
     throw errors.NOT_IN_WORKSPACE({});
   }
 
   if (!project.isInsideAllowedDirs(cwd) && !project.isInWorkspace()) {
-    console.error(chalk.red(`Error: You must be inside one of the workspace packages.`));
+    log.error('You must be inside one of the workspace packages.');
     throw errors.NOT_IN_WORKSPACE_MODULE({});
   }
 
@@ -105,16 +53,16 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
     .filter((opt: OptionValue) => opt.selected)
     .map((opt: OptionValue) => opt.name);
 
-
-    project.initModule({
-      ...argv,
-      ...answers,
-      name: modName, 
-      // @ts-ignore
+  project.initModule({
+    ...argv,
+    ...answers,
+    name: modName,
+    // @ts-ignore
     USERFULLNAME: username,
     USEREMAIL: email,
     extensions
-  })
+  });
 
+  log.success(`Initialized module: ${modName}`);
   return { ...argv, ...answers };
 }

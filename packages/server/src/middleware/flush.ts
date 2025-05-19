@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { graphileCache, svcCache, getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLOptions } from '@launchql/types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('flush');
 
 export const flush = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.url === '/flush') {
@@ -15,7 +18,7 @@ export const flush = async (req: Request, res: Response, next: NextFunction): Pr
 
 export const flushService = async (opts: LaunchQLOptions, databaseId: string): Promise<void> => {
   const pgPool = getRootPgPool(opts.pg);
-  console.log('flushing db ' + databaseId);
+  log.info('flushing db ' + databaseId);
 
   const api = new RegExp(`^api:${databaseId}:.*`);
   const schemata = new RegExp(`^schemata:${databaseId}:.*`);

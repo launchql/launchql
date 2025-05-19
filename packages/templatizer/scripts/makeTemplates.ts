@@ -4,7 +4,6 @@ import { compileTemplatesToFunctions } from '../src/templatize/compileTemplatesT
 import { writeCompiledTemplatesToFile } from '../src/templatize/writeCompiledTemplatesToFile';
 
 const workspaceDir = resolve(__dirname + '/../../../boilerplates/workspace');
-console.log(workspaceDir)
 const compiled1 = compileTemplatesToFunctions(workspaceDir);
 writeCompiledTemplatesToFile(workspaceDir, compiled1, './src/generated/workspace.ts');
 

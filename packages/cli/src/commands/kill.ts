@@ -1,13 +1,13 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
-import { getRootPgPool } from '@launchql/server-utils';
-import chalk from 'chalk';
+import { getRootPgPool, Logger } from '@launchql/server-utils';
+
+const log = new Logger('db-kill');
 
 export default async (
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-
   const db = await getRootPgPool({
     database: 'postgres'
   });
@@ -19,7 +19,7 @@ export default async (
   `);
 
   if (!databasesResult.rows.length) {
-    console.log(chalk.gray('ℹ️  No databases found to process. Exiting.'));
+    log.info('ℹ️  No databases found to process. Exiting.');
     return;
   }
 
@@ -46,7 +46,7 @@ export default async (
   ]);
 
   if (!yes) {
-    console.log(chalk.gray('❌ Aborted. No actions were taken.'));
+    log.info('❌ Aborted. No actions were taken.');
     return;
   }
 
@@ -60,21 +60,20 @@ export default async (
       [dbname]
     );
 
-    console.log(chalk.yellow(`💀 Terminated ${killResult.rowCount} connection(s) to "${dbname}".`));
+    log.warn(`💀 Terminated ${killResult.rowCount} connection(s) to "${dbname}".`);
 
     if (argv.drop === false) {
-      console.log(chalk.gray(`⚠️  Skipping DROP for "${dbname}" due to --no-drop flag.`));
+      log.info(`⚠️  Skipping DROP for "${dbname}" due to --no-drop flag.`);
       continue;
     }
 
     try {
       await db.query(`DROP DATABASE "${dbname}";`);
-      console.log(chalk.green(`🗑️  Dropped database "${dbname}" successfully.`));
-    } catch (err) {
-        // @ts-ignore
-      console.error(chalk.red(`❌ Failed to drop "${dbname}": ${err.message}`));
+      log.success(`🗑️  Dropped database "${dbname}" successfully.`);
+    } catch (err: any) {
+      log.error(`❌ Failed to drop "${dbname}": ${err.message}`);
     }
   }
 
-  console.log(chalk.green('\n✅ Done processing databases.\n'));
+  log.success('✅ Done processing databases.');
 };

@@ -1,41 +1,39 @@
 import { LaunchQLServer as server } from '@launchql/server';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import chalk from 'chalk';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('server');
 
 const questions: Question[] = [
   {
     name: 'simpleInflection',
-    message: chalk.cyan('Use simple inflection?'),
+    message: 'Use simple inflection?',
     type: 'confirm',
-    // alias: 's',
     required: false,
     default: true,
     useDefault: true
   },
   {
     name: 'oppositeBaseNames',
-    message: chalk.cyan('Use opposite base names?'),
+    message: 'Use opposite base names?',
     type: 'confirm',
-    // alias: 'b', 
     required: false,
     default: false,
     useDefault: true
   },
   {
     name: 'postgis',
-    message: chalk.cyan('Enable PostGIS extension?'),
+    message: 'Enable PostGIS extension?',
     type: 'confirm',
-    // alias: 'g',
     required: false,
     default: true,
     useDefault: true
   },
   {
     name: 'port',
-    message: chalk.cyan('Development server port'),
+    message: 'Development server port',
     type: 'number',
-    // alias: 'p',
     required: false,
     default: 5555,
     useDefault: true
@@ -56,7 +54,7 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  console.log(chalk.gray('\n🔧 LaunchQL Server Configuration:\n'));
+  log.info('\n🔧 LaunchQL Server Configuration:\n');
 
   const {
     oppositeBaseNames,
@@ -76,11 +74,11 @@ export default async (
     }
   });
 
-  console.log(chalk.green('\n✅ Selected Configuration:'));
+  log.success('\n✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {
-    console.log(`${chalk.yellow(`  ${key}`)}: ${chalk.white(String(value))}`);
+    log.debug(`${key}: ${JSON.stringify(value)}`);
   }
 
-  console.log(chalk.gray('\n🚀 Launching Server...\n'));
+  log.success('\n🚀 Launching Server...\n');
   server(options);
 };

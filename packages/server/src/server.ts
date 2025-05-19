@@ -17,6 +17,9 @@ import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
 
 import { LaunchQLOptions, getEnvOptions } from '@launchql/types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('server');
 
 export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
   const app = new Server(getEnvOptions(rawOpts));
@@ -53,7 +56,7 @@ class Server {
   listen(): void {
     const { server } = this.opts;
     this.app.listen(server?.port, server?.host, () =>
-      this.log(`listening at http://${server?.host}:${server?.port}`)
+      log.info(`listening at http://${server?.host}:${server?.port}`)
     );
   }
 
@@ -79,7 +82,7 @@ class Server {
 
     client.on('notification', ({ channel, payload }) => {
       if (channel === 'schema:update' && payload) {
-        console.log('schema:update', payload);
+        log.info('schema:update', payload);
         this.flush(payload);
       }
     });
@@ -96,11 +99,11 @@ class Server {
   }
 
   log(text: string): void {
-    console.log(text);
+    log.info(text);
   }
 
   error(text: string, err?: unknown): void {
-    console.error(text, err);
+    log.error(text, err);
   }
 }
 

@@ -1,10 +1,7 @@
-// SLOWER than deploy-fast
-// Time:        1.193 s, estimated 2 s
 import { resolve } from 'path';
-import chalk from 'chalk';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool, Logger } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
 import { streamSql } from './stream-sql';
@@ -35,60 +32,58 @@ export const deployStream = async (
     verbose = true
   } = options;
 
-  const log = (...args: any[]) => verbose && console.log(...args);
-  const error = (...args: any[]) => verbose && console.error(...args);
+  const log = new Logger('deploy-stream');
+  if (!verbose) log.silent = true;
 
   const projectRoot = new LaunchQLProject(dir);
   const modules = projectRoot.getModuleMap();
 
-  log(chalk.cyan(`\n🔍 Gathering modules from ${chalk.bold(dir)}...`));
+  log.info(`🔍 Gathering modules from ${dir}...`);
 
   if (!modules[name]) {
-    error(chalk.red(`❌ Module "${name}" not found.`));
+    log.error(`❌ Module "${name}" not found.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  log(chalk.cyan(`📦 Resolving dependencies for ${chalk.bold(name)}...`));
+  log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = projectRoot.getModuleExtensions();
 
   const pgPool = getRootPgPool({ ...opts.pg, database });
 
-  log(chalk.green(`\n🚀 Deploying to database: ${chalk.bold(database)}\n`));
+  log.success(`🚀 Deploying to database: ${database}`);
 
   for (const extension of extensions.resolved) {
     try {
       if (extensions.external.includes(extension)) {
         const query = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
-        log(chalk.blue(`📥 Installing external extension: ${chalk.bold(extension)}`));
-        log(chalk.gray(`> ${query}`));
+        log.info(`📥 Installing external extension: ${extension}`);
+        log.debug(`> ${query}`);
         await pgPool.query(query);
       } else {
         const modulePath = resolve(projectRoot.workspacePath, modules[extension].path);
         const localProject = new LaunchQLProject(modulePath);
         const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
 
-        log(chalk.magenta(`📂 Deploying local module: ${chalk.bold(extension)}`));
-        log(chalk.gray(`→ Path: ${modulePath}`));
-        log(chalk.gray(`→ Command: sqitch deploy db:pg:${database}`));
-        log(chalk.gray(`> ${pkg.sql}`));
+        log.info(`📂 Deploying local module: ${extension}`);
+        log.debug(`→ Path: ${modulePath}`);
+        log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+        log.debug(`> ${pkg.sql}`);
 
-        // await pgPool.query(pkg.sql);
         await streamSql({
-            database,
-            host: opts.pg.host,
-            user: opts.pg.user,
-            password: opts.pg.password,
-            port: opts.pg.port
-        }, pkg.sql)
+          database,
+          host: opts.pg.host,
+          user: opts.pg.user,
+          password: opts.pg.password,
+          port: opts.pg.port
+        }, pkg.sql);
       }
     } catch (err) {
-      error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));
-      console.error(err);
+      log.error(`🛑 Deployment error: ${err instanceof Error ? err.message : err}`);
+      console.error(err); // keep stack trace
       throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
     }
   }
 
-  log(chalk.green(`\n✅ Deployment complete for module: ${chalk.bold(name)}\n`));
-
+  log.success(`✅ Deployment complete for module: ${name}`);
   return extensions;
 };
