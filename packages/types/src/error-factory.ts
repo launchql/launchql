@@ -17,6 +17,12 @@ export const makeError = <T extends ErrorContext>(
 };
 
 export const errors = {
+  NOT_FOUND: makeError(
+    'NOT_FOUND',
+    () => `Not found.`,
+    404
+  ),
+
   MODULE_NOT_FOUND: makeError(
     'MODULE_NOT_FOUND',
     ({ name }) => `Module "${name}" not found.`,
@@ -43,7 +49,13 @@ export const errors = {
 
   NOT_IN_WORKSPACE: makeError(
     'NOT_IN_WORKSPACE',
-    () => `You must be in a LaunchQL workspace. Initialize with --workspace`,
+    () => `You must be in a LaunchQL workspace. Initialize with --workspace.`,
+    400
+  ),
+
+  NOT_IN_WORKSPACE_MODULE: makeError(
+    'NOT_IN_WORKSPACE_MODULE',
+    () => `Error: You must be inside one of the workspace packages.`,
     400
   ),
 

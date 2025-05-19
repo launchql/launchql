@@ -2,7 +2,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { exec } from 'shelljs';
 import { listModules, revert } from '@launchql/migrate';
 import chalk from 'chalk';
-import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
 
 export default async (
     argv: Partial<Record<string, any>>,
@@ -43,7 +43,7 @@ export default async (
         if (!mods.length) {
             console.log(chalk.red('No modules found to revert.'));
             prompter.close();
-            process.exit(1);
+            throw errors.NOT_FOUND({}, 'No modules found to revert.');
         }
 
         const { project } = await prompter.prompt(argv, [

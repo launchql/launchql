@@ -60,6 +60,7 @@ import { Inquirerer, OptionValue, Question } from 'inquirerer';
 import chalk from 'chalk';
 import { LaunchQLProject, sluggify } from '@launchql/migrate';
 import { execSync } from 'child_process';
+import { errors } from '@launchql/types';
 
 export default async function runModuleSetup(argv: Partial<Record<string, any>>, prompter: Inquirerer) {
   const username = execSync('git config --global user.name', { encoding: 'utf8' }).trim();
@@ -70,12 +71,12 @@ export default async function runModuleSetup(argv: Partial<Record<string, any>>,
 
   if (!project.workspacePath) {
     console.error(chalk.red('Error: Not inside a LaunchQL workspace.'));
-    process.exit(1);
+    throw errors.NOT_IN_WORKSPACE({});
   }
 
   if (!project.isInsideAllowedDirs(cwd) && !project.isInWorkspace()) {
     console.error(chalk.red(`Error: You must be inside one of the workspace packages.`));
-    process.exit(1);
+    throw errors.NOT_IN_WORKSPACE_MODULE({});
   }
 
   const availExtensions = project.getAvailableModules();

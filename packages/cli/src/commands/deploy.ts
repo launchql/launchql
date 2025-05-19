@@ -2,7 +2,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { exec } from 'shelljs';
 import chalk from 'chalk';
-import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { listModules, deploy } from '@launchql/migrate';
 
 export default async (
@@ -49,7 +49,7 @@ export default async (
     if (!mods.length) {
       console.log(chalk.red('No modules found in the specified directory.'));
       prompter.close();
-      process.exit(1);
+      throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
     }
 
     const { project } = await prompter.prompt(argv, [
