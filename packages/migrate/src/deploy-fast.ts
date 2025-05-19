@@ -3,7 +3,7 @@
 import { resolve } from 'path';
 import chalk from 'chalk';
 
-import { LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions, PgConfig } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
@@ -20,7 +20,20 @@ interface DeployFastOptions {
   dir: string;
   usePlan: boolean;
   verbose?: boolean;
+  cache?: boolean;
 }
+
+const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
+
+const getCacheKey = (
+  pg: Partial<PgConfig> | undefined,
+  name: string,
+  database: string
+): string => {
+  const { host, port, user } = pg ?? {};
+  return `${host ?? 'localhost'}:${port ?? 5432}:${user ?? 'user'}:${database}:${name}`;
+};
+
 
 export const deployFast = async (
   options: DeployFastOptions
@@ -31,7 +44,8 @@ export const deployFast = async (
     database,
     opts,
     usePlan,
-    verbose = true
+    verbose = true,
+    cache = false
   } = options;
 
   const log = (...args: any[]) => verbose && console.log(...args);
@@ -64,25 +78,43 @@ export const deployFast = async (
       } else {
         const modulePath = resolve(projectRoot.workspacePath, modules[extension].path);
         const localProject = new LaunchQLProject(modulePath);
-        const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
 
+        // Cache logic
+        const cacheKey = getCacheKey(opts.pg, extension, database);
+        if (cache && deployFastCache[cacheKey]) {
+          log(chalk.yellow(`⚡ Using cached pkg for ${chalk.bold(extension)}.`));
+          await pgPool.query(deployFastCache[cacheKey].sql);
+          continue;
+        }
+        // End Cache logic
+        
+        // Deploy packaged module
+        const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
+        
         log(chalk.magenta(`📂 Deploying local module: ${chalk.bold(extension)}`));
         log(chalk.gray(`→ Path: ${modulePath}`));
         log(chalk.gray(`→ Command: sqitch deploy db:pg:${database}`));
         log(chalk.gray(`> ${pkg.sql}`));
-
+        
         await pgPool.query(pkg.sql);
+        // END Deploy packaged module
+        
+        if (cache) {
+          deployFastCache[cacheKey] = pkg;
+        }
+
       }
     } catch (err) {
       error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));
       console.error(err);
       await pgPool.end();
+
+      // can we signal catch this?
       process.exit(1);
     }
   }
 
   log(chalk.green(`\n✅ Deployment complete for module: ${chalk.bold(name)}\n`));
-//   await pgPool.end();
 
   return extensions;
 };
