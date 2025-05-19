@@ -1,6 +1,6 @@
 {
   "name": "@launchql/migrate",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Migration Tools",
   "main": "index.js",
