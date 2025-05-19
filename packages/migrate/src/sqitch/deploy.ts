@@ -79,14 +79,14 @@ export const deploy = async (
 
         if (exitCode !== 0) {
           console.log(chalk.red(`❌ Deployment failed for module ${chalk.bold(extension)}`));
-          throw errors.DEPLOYMENT_FAILED({ module: extension });
+          throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
         }
 
       }
     } catch (err) {
       console.log(chalk.red(`\n🛑 Error during deployment: ${err instanceof Error ? err.message : err}`));
       console.error(err);
-      throw errors.DEPLOYMENT_FAILED({ module: extension });
+      throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
     }
   }
 
