@@ -2,7 +2,7 @@ import { SeedAdapter, SeedContext } from './types';
 import { getEnvOptions } from '@launchql/types';
 import { LaunchQLProject, deployFast } from '@launchql/migrate';
 
-export function launchql(cwd?: string): SeedAdapter {
+export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
   return {
     async seed(ctx: SeedContext) {
       const proj = new LaunchQLProject(cwd ?? ctx.connect.cwd);
@@ -16,7 +16,8 @@ export function launchql(cwd?: string): SeedAdapter {
           database: ctx.config.database,
           dir: proj.modulePath,
           usePlan: true,
-          verbose: false
+          verbose: false,
+          cache
         });
     }
   };

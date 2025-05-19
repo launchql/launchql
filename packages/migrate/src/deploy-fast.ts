@@ -3,7 +3,7 @@
 import { resolve } from 'path';
 import chalk from 'chalk';
 
-import { LaunchQLOptions, PgConfig } from '@launchql/types';
+import { LaunchQLOptions, PgConfig, errors } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
@@ -107,10 +107,7 @@ export const deployFast = async (
     } catch (err) {
       error(chalk.red(`\n🛑 Deployment error: ${err instanceof Error ? err.message : err}`));
       console.error(err);
-      await pgPool.end();
-
-      // can we signal catch this?
-      process.exit(1);
+      throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
     }
   }
 
