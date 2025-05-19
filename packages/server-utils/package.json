@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "server utils",
   "main": "index.js",
@@ -31,12 +31,12 @@
   },
   "dependencies": {
     "@launchql/types": "^2.1.5",
+    "chalk": "^4.1.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
-    "postgraphile": "^4.14.1",
-    "chalk": "^4.1.0"
+    "postgraphile": "^4.14.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
