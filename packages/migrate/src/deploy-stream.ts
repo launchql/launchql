@@ -17,7 +17,6 @@ interface DeployFastOptions {
   database: string;
   dir: string;
   usePlan: boolean;
-  verbose?: boolean;
 }
 
 export const deployStream = async (
@@ -28,12 +27,10 @@ export const deployStream = async (
     name,
     database,
     opts,
-    usePlan,
-    verbose = true
+    usePlan
   } = options;
 
   const log = new Logger('deploy-stream');
-  if (!verbose) log.silent = true;
 
   const projectRoot = new LaunchQLProject(dir);
   const modules = projectRoot.getModuleMap();

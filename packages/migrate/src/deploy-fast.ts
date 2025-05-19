@@ -18,7 +18,6 @@ interface DeployFastOptions {
   database: string;
   dir: string;
   usePlan: boolean;
-  verbose?: boolean;
   cache?: boolean;
 }
 
@@ -42,12 +41,10 @@ export const deployFast = async (
     database,
     opts,
     usePlan,
-    verbose = true,
     cache = false
   } = options;
 
   const log = new Logger('deploy-fast');
-  if (!verbose) log.silent = true;
 
   const projectRoot = new LaunchQLProject(dir);
   const modules = projectRoot.getModuleMap();
