@@ -1,7 +1,7 @@
 import { LRUCache } from 'lru-cache';
 import pg from 'pg';
 import { HttpRequestHandler } from 'postgraphile';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from './logger';
 
 const log = new Logger('pg-cache');
 
