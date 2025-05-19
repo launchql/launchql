@@ -77,7 +77,7 @@ export class PgTestConnector {
   }
 
   async closeAll(): Promise<void> {
-    log.info('\n🧹 Closing all PgTestClients...');
+    log.info('🧹 Closing all PgTestClients...');
     await Promise.all(
       Array.from(this.clients).map(async (client) => {
         try {
@@ -90,14 +90,14 @@ export class PgTestConnector {
     );
     this.clients.clear();
 
-    log.info('\n🧯 Disposing pg pools...');
+    log.info('🧯 Disposing pg pools...');
     for (const [key, pool] of this.pgPools.entries()) {
       log.debug(`🧯 Disposing pg pool [${key}]`);
       end(pool);
     }
     this.pgPools.clear();
 
-    log.info('\n🗑️ Dropping seen databases...');
+    log.info('🗑️ Dropping seen databases...');
     await Promise.all(
       Array.from(this.seenDbConfigs.values()).map(async (config) => {
         try {
@@ -115,7 +115,7 @@ export class PgTestConnector {
     );
     this.seenDbConfigs.clear();
 
-    log.success('\n✅ All PgTestClients closed, pools disposed, databases dropped.');
+    log.success('✅ All PgTestClients closed, pools disposed, databases dropped.');
   }
 
   close(): void {

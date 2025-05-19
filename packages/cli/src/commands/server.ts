@@ -54,7 +54,7 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  log.info('\n🔧 LaunchQL Server Configuration:\n');
+  log.info('🔧 LaunchQL Server Configuration:\n');
 
   const {
     oppositeBaseNames,
@@ -74,11 +74,11 @@ export default async (
     }
   });
 
-  log.success('\n✅ Selected Configuration:');
+  log.success('✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {
     log.debug(`${key}: ${JSON.stringify(value)}`);
   }
 
-  log.success('\n🚀 Launching Server...\n');
+  log.success('🚀 Launching Server...\n');
   server(options);
 };

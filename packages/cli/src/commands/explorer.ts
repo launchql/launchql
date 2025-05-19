@@ -53,7 +53,7 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  log.info('\n🔧 LaunchQL Explorer Configuration:\n');
+  log.info('🔧 LaunchQL Explorer Configuration:\n');
 
   const {
     oppositeBaseNames,
@@ -75,11 +75,11 @@ export default async (
     }
   });
 
-  log.success('\n✅ Selected Configuration:');
+  log.success('✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {
     log.debug(`${key}: ${JSON.stringify(value)}`);
   }
 
-  log.success('\n🚀 Launching Explorer...\n');
+  log.success('🚀 Launching Explorer...\n');
   explorer(options);
 };
