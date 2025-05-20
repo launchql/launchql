@@ -6,10 +6,11 @@ import {
   PostGraphileOptions
 } from 'postgraphile';
 import { graphql, GraphQLSchema, DocumentNode } from 'graphql';
+import { print } from 'graphql/language/printer';
 // @ts-ignore
 import MockReq from 'mock-req';
-import { print } from 'graphql/language/printer';
 import { getEnvOptions } from '@launchql/types';
+import { GraphQLTestContext } from './connect';
 
 const opt = getEnvOptions();
 
@@ -21,22 +22,25 @@ export interface GraphQLTestOptions {
 
 type PgSettings = Record<string, string>;
 
-type QueryFunction = (
+type QueryFunction<T = unknown> = (
   query: string | DocumentNode,
-  variables?: Record<string, any>
-) => Promise<any>;
+  variables?: Record<string, unknown>
+) => Promise<T>;
 
-type CheckerFunction = (query: QueryFunction, client: PoolClient) => Promise<any>;
+type CheckerFunction<T = unknown> = (
+  query: QueryFunction<T>,
+  client: PoolClient
+) => Promise<T>;
 
-export const GraphQLTest = ({ dbname, schemas, authRole = 'authenticated' }: GraphQLTestOptions) => {
+export const GraphQLTest = ({ dbname, schemas, authRole = 'authenticated' }: GraphQLTestOptions): GraphQLTestContext => {
   const getDbString = (db: string): string =>
     `postgres://${opt.pg.user}:${opt.pg.password}@${opt.pg.host}:${opt.pg.port}/${db}`;
 
   const options: PostGraphileOptions = {
     ...getGraphileSettings({
-        graphile: {
-            schema: schemas
-        }
+      graphile: {
+        schema: schemas
+      }
     }),
     graphqlRoute: '/graphql',
     graphiqlRoute: '/graphiql'
@@ -58,13 +62,12 @@ export const GraphQLTest = ({ dbname, schemas, authRole = 'authenticated' }: Gra
     });
 
     const schema = await createPostGraphileSchema(rootPgPool, schemas, options);
-
     ctx = { rootPgPool, options, schema };
   };
 
   const teardown = async () => {
+    if (!ctx) return;
     try {
-      if (!ctx) return;
       const { rootPgPool } = ctx;
       ctx = null;
       await rootPgPool.end();
@@ -73,71 +76,82 @@ export const GraphQLTest = ({ dbname, schemas, authRole = 'authenticated' }: Gra
     }
   };
 
-  const graphQL = async (...args: any[]): Promise<any> => {
+  const graphQL = async <T>(fn: (query: QueryFunction<T>) => Promise<T>): Promise<T> => {
     if (!ctx) throw new Error('Context is not initialized. Did you run setup()?');
-
-    let reqOptions: Record<string, any> = {};
-    let checker: CheckerFunction;
-
-    if (args.length === 1) {
-      checker = args[0];
-    } else if (args.length === 2) {
-      reqOptions = args[0];
-      checker = args[1];
-    } else {
-      throw new Error('Invalid arguments supplied to graphQL');
-    }
-
+  
     const { schema, rootPgPool, options } = ctx;
+  
     const req = new MockReq({
       url: options.graphqlRoute || '/graphql',
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
-      },
-      ...reqOptions
+      }
     });
-
+  
     const pgSettingsGenerator = options.pgSettings;
-
     // @ts-ignore
     const pgSettings: PgSettings =
       typeof pgSettingsGenerator === 'function' ? await pgSettingsGenerator(req) : pgSettingsGenerator || {};
+  
 
+    // @ts-ignore
     return await withPostGraphileContext(
       { ...options, pgPool: rootPgPool, pgSettings },
       async (context) => {
-        const replacementPgClient = await rootPgPool.connect();
-        await replacementPgClient.query('begin');
-        await replacementPgClient.query("select set_config('role', $1, true)", [POSTGRAPHILE_AUTHENTICATOR_ROLE]);
-
+        const pgClient = await rootPgPool.connect();
+        await pgClient.query('begin');
+        await pgClient.query("select set_config('role', $1, true)", [POSTGRAPHILE_AUTHENTICATOR_ROLE]);
+  
         for (const [key, value] of Object.entries(pgSettings)) {
-          await replacementPgClient.query("select set_config($1, $2, true)", [key, String(value)]);
+          await pgClient.query("select set_config($1, $2, true)", [key, String(value)]);
         }
-
+  
         try {
-          const query: QueryFunction = async (q, variables) => {
-            if (typeof q !== 'string') q = print(q);
-            return await graphql(schema, q, null, { ...context, pgClient: replacementPgClient }, variables);
+          const query: QueryFunction<T> = async (q, variables) => {
+            const printed = typeof q === 'string' ? q : print(q);
+            const result = await graphql(
+              schema,
+              printed,
+              null,
+              { ...context, pgClient },
+              variables
+            );
+            return result as T;
           };
-          return await checker(query, replacementPgClient);
+  
+          return await fn(query);
         } finally {
-          await replacementPgClient.query('rollback');
-          replacementPgClient.release();
+          await pgClient.query('rollback');
+          pgClient.release();
         }
       }
     );
   };
+  
 
-// Overload signatures
-async function graphQLQuery(Query: string | DocumentNode): Promise<any>;
-async function graphQLQuery(Query: string | DocumentNode, commit: boolean): Promise<any>;
-async function graphQLQuery(Query: string | DocumentNode, vars: Record<string, any>): Promise<any>;
-async function graphQLQuery(Query: string | DocumentNode, vars: Record<string, any>, commit: boolean): Promise<any>;
-async function graphQLQuery(reqOptions: Record<string, any>, Query: string | DocumentNode, vars: Record<string, any>): Promise<any>;
-async function graphQLQuery(reqOptions: Record<string, any>, Query: string | DocumentNode, vars: Record<string, any>, commit: boolean): Promise<any>;
-async function graphQLQuery(...args: any[]): Promise<any> {
+  // === Overloads for graphQLQuery ===
+  async function graphQLQuery<T = any>(query: string | DocumentNode): Promise<T>;
+  async function graphQLQuery<T = any>(query: string | DocumentNode, commit: boolean): Promise<T>;
+  async function graphQLQuery<T = any>(query: string | DocumentNode, vars: Record<string, any>): Promise<T>;
+  async function graphQLQuery<T = any>(
+    query: string | DocumentNode,
+    vars: Record<string, any>,
+    commit: boolean
+  ): Promise<T>;
+  async function graphQLQuery<T = any>(
+    reqOptions: Record<string, any>,
+    query: string | DocumentNode,
+    vars: Record<string, any>
+  ): Promise<T>;
+  async function graphQLQuery<T = any>(
+    reqOptions: Record<string, any>,
+    query: string | DocumentNode,
+    vars: Record<string, any>,
+    commit: boolean
+  ): Promise<T>;
+  async function graphQLQuery<T = any>(...args: any[]): Promise<T> {
     if (!ctx) throw new Error('Context is not initialized. Did you run setup()?');
 
     let reqOptions: Record<string, any> = {};
@@ -190,31 +204,40 @@ async function graphQLQuery(...args: any[]): Promise<any> {
     const pgSettings: PgSettings =
       typeof pgSettingsGenerator === 'function' ? await pgSettingsGenerator(req) : pgSettingsGenerator || {};
 
+    // @ts-ignore
     return await withPostGraphileContext(
       { ...options, pgPool: rootPgPool, pgSettings },
       async (context) => {
-        const replacementPgClient = await rootPgPool.connect();
-        await replacementPgClient.query('begin');
-        await replacementPgClient.query("select set_config('role', $1, true)", [POSTGRAPHILE_AUTHENTICATOR_ROLE]);
+        const pgClient = await rootPgPool.connect();
+        await pgClient.query('begin');
+        await pgClient.query("select set_config('role', $1, true)", [POSTGRAPHILE_AUTHENTICATOR_ROLE]);
 
         for (const [key, value] of Object.entries(pgSettings)) {
-          await replacementPgClient.query("select set_config($1, $2, true)", [key, String(value)]);
+          await pgClient.query("select set_config($1, $2, true)", [key, String(value)]);
         }
 
         try {
-          if (typeof Query !== 'string') Query = print(Query);
-          return await graphql(schema, Query, null, { ...context, pgClient: replacementPgClient }, vars);
+          const queryString = typeof Query === 'string' ? Query : print(Query);
+          const result = await graphql(
+            schema,
+            queryString,
+            null,
+            { ...context, pgClient },
+            vars
+          );
+          return result as T;
         } finally {
-          await replacementPgClient.query(commit ? 'commit' : 'rollback');
-          replacementPgClient.release();
+          await pgClient.query(commit ? 'commit' : 'rollback');
+          pgClient.release();
         }
       }
     );
-  };
+  }
 
   return {
     setup,
     teardown,
+    // @ts-ignore
     graphQL,
     graphQLQuery,
     // @ts-ignore

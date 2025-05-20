@@ -3,16 +3,24 @@ import { GraphQLTest } from './graphile-test';
 import type { GetConnectionResult } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import type { SeedAdapter } from 'pgsql-test/seed/types';
+import { DocumentNode } from 'graphql';
 
 export interface GraphQLQueryFn {
-  (query: string, variables?: Record<string, any>): Promise<any>;
+  <T = unknown>(
+    query: string | DocumentNode,
+    variables?: Record<string, unknown>
+  ): Promise<T>;
 }
 
 export interface GraphQLTestContext {
   setup: () => Promise<void>;
   teardown: () => Promise<void>;
-  graphQL: (fn: (query: GraphQLQueryFn) => Promise<void>) => Promise<void>;
-  graphQLQuery: (...args: any[]) => Promise<any>;
+  graphQL: <T = void>(
+    fn: (query: GraphQLQueryFn) => Promise<T>
+  ) => Promise<T>;
+  graphQLQuery: <T = unknown>(
+    ...args: any[]
+  ) => Promise<T>;
 }
 
 export interface GraphQLTestOptions {
@@ -49,7 +57,7 @@ export const getConnections = async (
     dbname: db.client.database,
     schemas: input.schemas,
     authRole: input.authRole
-  });
+  }) as GraphQLTestContext;
 
   await gqlContext.setup();
 

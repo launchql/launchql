@@ -2,7 +2,7 @@
 process.env.LOG_SCOPE='graphile-test';
 // process.env FIRST!
 
-import { getConnections } from '../src/connect';
+import { getConnections, GraphQLTestContext } from '../src/connect';
 import { IntrospectionQuery } from '../test-utils/queries';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
@@ -12,7 +12,7 @@ const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let graphQL: any;
+let graphQL: GraphQLTestContext["graphQL"];
 
 beforeAll(async () => {
   ({ graphQL, teardown } = await getConnections({
@@ -30,9 +30,8 @@ afterAll(async () => {
 });
 
 it('introspection works', async () => {
-  await graphQL(async (query: any) => {
+  await graphQL(async (query) => {
     const data = await query(IntrospectionQuery);
-    // console.log(JSON.stringify(data));
     expect(snapshot(data)).toMatchSnapshot();
   });
 });
