@@ -1,6 +1,6 @@
 {
   "name": "@launchql/content-type-stream",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "detect content-types via streams",
   "main": "index.js",
@@ -32,9 +32,13 @@
   "dependencies": {
     "@launchql/mmmagic": "0.5.3",
     "buffer-peek-stream": "1.1.0",
-    "etag-hash": "^2.1.3",
+    "etag-hash": "^2.1.4",
     "mime": "2.4.6",
     "uuid-hash": "^2.1.3"
   },
-  "keywords": ["content-type", "stream", "middleware"]
+  "keywords": [
+    "content-type",
+    "stream",
+    "middleware"
+  ]
 }

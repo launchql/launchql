@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.1.15",
+  "version": "4.1.16",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -41,12 +41,12 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@launchql/explorer": "^2.1.8",
-    "@launchql/migrate": "^2.1.12",
-    "@launchql/server": "^2.1.10",
-    "@launchql/server-utils": "^2.1.7",
+    "@launchql/explorer": "^2.1.9",
+    "@launchql/migrate": "^2.1.13",
+    "@launchql/server": "^2.1.11",
+    "@launchql/server-utils": "^2.1.8",
     "@launchql/templatizer": "^2.1.4",
-    "@launchql/types": "^2.1.5",
+    "@launchql/types": "^2.1.6",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1",
     "inquirerer": "^2.0.6",
@@ -57,5 +57,15 @@
   "resolutions": {
     "graphql": "15.5.2"
   },
-  "keywords": ["cli", "command-line", "tool", "launchql", "utilities", "pg", "pgsql", "postgres", "graphile"]
+  "keywords": [
+    "cli",
+    "command-line",
+    "tool",
+    "launchql",
+    "utilities",
+    "pg",
+    "pgsql",
+    "postgres",
+    "graphile"
+  ]
 }

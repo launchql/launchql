@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/launchql/launchql/compare/@launchql/query@2.1.3...@launchql/query@2.1.4) (2025-05-20)
+
+**Note:** Version bump only for package @launchql/query
+
+
+
+
+
 ## [2.1.3](https://github.com/launchql/launchql/compare/@launchql/query@2.1.2...@launchql/query@2.1.3) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/query

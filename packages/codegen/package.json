@@ -1,6 +1,6 @@
 {
   "name": "@launchql/codegen",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Codegen",
   "main": "index.js",
@@ -30,7 +30,13 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": ["codegen", "graphql", "typescript", "launchql", "generator"],
+  "keywords": [
+    "codegen",
+    "graphql",
+    "typescript",
+    "launchql",
+    "generator"
+  ],
   "dependencies": {
     "@babel/generator": "^7.26.3",
     "@babel/types": "^7.26.3",

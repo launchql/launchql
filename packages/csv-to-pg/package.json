@@ -1,6 +1,6 @@
 {
   "name": "csv-to-pg",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "csv to pg statements",
   "main": "index.js",
@@ -32,7 +32,12 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": ["csv", "postgresql", "pg", "launchql"],
+  "keywords": [
+    "csv",
+    "postgresql",
+    "pg",
+    "launchql"
+  ],
   "dependencies": {
     "@pyramation/prompt": "^0.0.1",
     "csv-parser": "^2.3.3",

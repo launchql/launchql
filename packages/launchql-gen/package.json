@@ -1,6 +1,6 @@
 {
   "name": "launchql-gen",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
@@ -33,9 +33,15 @@
     "@types/pluralize": "0.0.33"
   },
   "dependencies": {
-    "gql-ast": "^2.1.3",
+    "gql-ast": "^2.1.4",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
   },
-  "keywords": ["graphql", "codegen", "generator", "graphile", "launchql"]
+  "keywords": [
+    "graphql",
+    "codegen",
+    "generator",
+    "graphile",
+    "launchql"
+  ]
 }
