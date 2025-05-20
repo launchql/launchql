@@ -38,7 +38,7 @@ npm install graphile-test
 ## ✨ Quick Start
 
 ```ts
-import { getConnections } from 'graphile-test';
+import { getConnections, seed } from 'graphile-test';
 
 let db, query, teardown;
 
@@ -47,7 +47,7 @@ beforeAll(async () => {
     schemas: ['app_public'],
     authRole: 'authenticated'
   }, [
-    seed.sqlfile(['./sql/test.sql', './sql/grants.sql'])
+    seed.sqlfile(['../sql/test.sql', '../sql/grants.sql'])
   ]));
 });
 
@@ -79,6 +79,8 @@ Supports:
 * `beforeEach()` / `afterEach()` – for savepoint transaction handling
 * `setContext({...})` – sets Postgres config (e.g., `role`, `myapp.user_id`)
 
+**See full `PgTestClient` API docs**: [pgsql-test → PgTestClient API Overview](https://www.npmjs.com/package/pgsql-test#pgtestclient-api-overview)
+
 ## 🧪 Example Tests
 
 ### GraphQL mutation + snapshot
@@ -86,15 +88,6 @@ Supports:
 ```ts
 const res = await query(MY_MUTATION, { input: { ... } });
 expect(snapshot(res)).toMatchSnapshot();
-```
-
-### Introspection testing
-
-```ts
-import { IntrospectionQuery } from './queries';
-
-const res = await query(IntrospectionQuery);
-expect(snapshot(res)).toMatchSnapshot('introspection');
 ```
 
 ### RLS testing with role switch
@@ -107,7 +100,7 @@ expect(res.errors[0].message).toMatch(/permission denied/);
 
 ## 🧱 Under the Hood
 
-`graphile-test` wraps and extends `pgsql-test` with GraphQL helpers like `query()` and introspection snapshot tools. You can drop into raw SQL testing anytime via `pg.client.query()`.
+`graphile-test` wraps and extends `pgsql-test` with GraphQL helpers like `query()` and introspection snapshot tools. You can drop into raw SQL testing anytime via `pg.client.query()` (superuser) or `db.client.query()` (RLS user).
 
 ## ✅ Best Practices
 
