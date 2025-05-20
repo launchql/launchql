@@ -1,3 +1,5 @@
+process.env.LOG_SCOPE = 'pgsql-test';
+
 import { getConnections } from '../src/connect';
 import { PgTestClient } from '../src/test-client';
 

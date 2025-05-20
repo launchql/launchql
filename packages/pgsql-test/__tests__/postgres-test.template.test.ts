@@ -1,3 +1,4 @@
+process.env.LOG_SCOPE = 'pgsql-test';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { getPgEnvOptions } from '@launchql/types';
