@@ -59,6 +59,7 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
 
             const pgConn = input.useRoot ? conn.pg : conn.db;
             const pgClient = pgConn.client;
+            // IS THIS BAD TO HAVE ROLE HERE 
             await setContextOnClient(pgClient, pgSettings, authRole);
             await pgConn.ctxQuery();
 
@@ -74,7 +75,7 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
     );
 };
 
-
+// IS THIS BAD TO HAVE ROLE HERE 
 export async function setContextOnClient(
   pgClient: Client,
   pgSettings: Record<string, string>,

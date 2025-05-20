@@ -7,48 +7,50 @@ import { join } from 'path';
 import gql from 'graphql-tag';
 import type { GraphQLQueryFn } from '../src/connect';
 import type { PgTestClient } from 'pgsql-test/test-client';
+import { logDbSessionInfo } from '../test-utils/utils';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
 let query: GraphQLQueryFn;
-let pg: PgTestClient;
+let db: PgTestClient;
 
 beforeAll(async () => {
   const connections = await getConnections(
     {
-      useRoot: true,
       schemas,
-      authRole: 'postgres'
+      authRole: 'authenticated'
     },
     [
       seed.sqlfile([
-        sql('test.sql')
+        sql('test.sql'),
+        sql('lock-down.sql')
       ])
     ]
   );
 
-  ({ query, pg, teardown } = connections);
+  ({ db, query, teardown } = connections);
 });
 
-beforeEach(() => pg.beforeEach());
+beforeEach(() => db.beforeEach());
 
-beforeEach(() => {
-  pg.setContext({
+beforeEach(async () => {
+  db.setContext({
     role: 'authenticated',
-    'myapp.user_id': '999' // or leave blank if irrelevant
+    'myapp.user_id': '123'
   });
 });
 
-afterEach(() => pg.afterEach());
+afterEach(() => db.afterEach());
 
 afterAll(async () => {
   await teardown();
 });
 
-// ✅ Fully updated version of the legacy test
+// ✅ Basic mutation and query test
 it('creates a user and fetches it', async () => {
+  await logDbSessionInfo(db);
   const CREATE_USER = gql`
     mutation CreateUser($input: CreateUserInput!) {
       createUser(input: $input) {
@@ -73,7 +75,6 @@ it('creates a user and fetches it', async () => {
 
   const newUsername = 'testuser1';
 
-  // Step 1: Run the mutation
   const createRes = await query(CREATE_USER, {
     input: {
       user: {
@@ -84,10 +85,10 @@ it('creates a user and fetches it', async () => {
 
   expect(snapshot(createRes)).toMatchSnapshot('createUser');
 
-  // Step 2: Run the follow-up query
   const fetchRes: any = await query(GET_USERS);
 
   expect(
     fetchRes.data.users.nodes.some((u: any) => u.username === newUsername)
   ).toBe(true);
 });
+

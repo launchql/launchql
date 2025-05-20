@@ -7,6 +7,7 @@ import { join } from 'path';
 import gql from 'graphql-tag';
 import type { GraphQLQueryFn } from '../src/connect';
 import type { PgTestClient } from 'pgsql-test/test-client';
+import { logDbSessionInfo } from '../test-utils/utils';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -51,6 +52,7 @@ afterAll(async () => {
 });
 
 it('handles duplicate insert via internal PostGraphile savepoint', async () => {
+  await logDbSessionInfo(db);
   const CREATE_USER = gql`
     mutation CreateUser($input: CreateUserInput!) {
       createUser(input: $input) {

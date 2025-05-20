@@ -7,6 +7,7 @@ import { join } from 'path';
 import gql from 'graphql-tag';
 import type { GraphQLQueryFn } from '../src/connect';
 import type { PgTestClient } from 'pgsql-test/test-client';
+import { logDbSessionInfo } from '../test-utils/utils';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -49,6 +50,7 @@ afterAll(async () => {
 
 // ✅ Basic mutation and query test
 it('creates a user and fetches it', async () => {
+  await logDbSessionInfo(db);
   const CREATE_USER = gql`
     mutation CreateUser($input: CreateUserInput!) {
       createUser(input: $input) {
