@@ -1,9 +1,7 @@
-import path from 'path';
-import fs from 'fs';
+process.env.LOG_SCOPE = 'pgsql-test';
 import { PgTestClient } from '../src/test-client';
 import { getConnections } from '../src/connect';
 import { seed } from '../src';
-import { exportTableToCsv } from '../src/seed/csv';
 
 let pg: PgTestClient;
 let teardown: () => Promise<void>;

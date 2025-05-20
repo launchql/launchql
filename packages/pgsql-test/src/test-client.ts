@@ -99,11 +99,16 @@ export class PgTestClient {
   }
 
   async query<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
+    await this.ctxQuery();
+    const result = await this.client.query<T>(query, values);
+    return result;
+  }  
+
+  // exposing so we can use for graphile-test
+  async ctxQuery(): Promise<void> {
     if (this.ctxStmts) {
       await this.client.query(this.ctxStmts);
     }
-    const result = await this.client.query<T>(query, values);
-    return result;
   }  
 
 }

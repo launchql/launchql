@@ -1,5 +1,5 @@
+process.env.LOG_SCOPE = 'pgsql-test';
 import { resolve } from 'path';
-
 import { PgTestClient } from '../src/test-client';
 import { getConnections } from '../src/connect';
 import { getRootPgPool } from '@launchql/server-utils';

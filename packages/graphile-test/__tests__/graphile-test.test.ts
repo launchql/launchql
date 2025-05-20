@@ -1,28 +1,45 @@
-import { GraphQLTest, snapshot } from '../src';
+process.env.LOG_SCOPE = 'graphile-test';
+
+import { getConnections } from '../src/connect';
 import { IntrospectionQuery } from '../test-utils/queries';
+import { join } from 'path';
+import { logDbSessionInfo } from '../test-utils/utils';
+import { seed } from 'pgsql-test';
+import { snapshot } from '../src';
+import type { GraphQLQueryFn } from '../src/connect';
+import type { PgTestClient } from 'pgsql-test/test-client';
 
-const dbname = 'graphile_test_db';
-const schemas = ['app_public']
+const schemas = ['app_public'];
+const sql = (f: string) => join(__dirname, '/../sql', f);
 
-const { setup, teardown, graphQL } = GraphQLTest(
-  {
-    schemas,
-    dbname,
-    authRole: 'postgres'
-  }
-);
+let teardown: () => Promise<void>;
+let query: GraphQLQueryFn;
+let db: PgTestClient;
 
 beforeAll(async () => {
-  await setup();
+  const connections = await getConnections({
+    useRoot: true,
+    schemas,
+    authRole: 'postgres'
+  },
+    [
+      seed.sqlfile([
+        sql('test.sql')
+      ])
+    ]);
+
+  ({ query, db, teardown } = connections);
 });
+
+beforeEach(() => db.beforeEach());
+afterEach(() => db.afterEach());
+
 afterAll(async () => {
   await teardown();
 });
 
-it('works', async () => {
-    // @ts-ignore
-  await graphQL(async query => {
-    const data = await query(IntrospectionQuery);
-    expect(snapshot(data)).toMatchSnapshot();
-  });
+it('introspection query snapshot', async () => {
+  await logDbSessionInfo(db);
+  const res = await query(IntrospectionQuery);
+  expect(snapshot(res)).toMatchSnapshot('introspection');
 });

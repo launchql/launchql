@@ -259,10 +259,12 @@ let db;
 let teardown;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections({}, seed.sqlfile([
-    sql('schema.sql'),
-    sql('fixtures.sql')
-  ])));
+  ({ db, teardown } = await getConnections({}, [
+      seed.sqlfile([
+        sql('schema.sql'),
+        sql('fixtures.sql')
+      ])
+  ]));
 });
 
 afterAll(async () => {
@@ -281,11 +283,13 @@ let db;
 let teardown;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections({}, seed.fn(async ({ pg }) => {
-    await pg.query(`
-      INSERT INTO users (name) VALUES ('Seeded User');
-    `);
-  })));
+  ({ db, teardown } = await getConnections({}, [
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        INSERT INTO users (name) VALUES ('Seeded User');
+      `);
+    })
+  ]));
 });
 ```
 

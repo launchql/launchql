@@ -1,10 +1,10 @@
+process.env.LOG_SCOPE = 'pgsql-test';
 import { randomUUID } from 'crypto';
 import { resolve } from 'path';
 import { PgTestClient } from '../src/test-client';
 import { PgConfig } from '@launchql/types';
 import { DbAdmin } from '../src/admin';
 import { getConnections } from '../src/connect';
-import { PgTestConnector } from '../src/manager';
 
 let db: PgTestClient;
 let pg: PgTestClient;
