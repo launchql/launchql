@@ -25,7 +25,7 @@ beforeAll(async () => {
     [
       seed.sqlfile([
         sql('test.sql'),
-        sql('lock-down.sql')
+        sql('grants.sql')
       ])
     ]
   );

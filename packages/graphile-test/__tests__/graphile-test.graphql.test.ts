@@ -3,7 +3,7 @@ process.env.LOG_SCOPE = 'graphile-test';
 import { getConnections } from '../src/connect';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import gql from 'graphql-tag';
 import type { GraphQLQueryFn } from '../src/connect';
 import type { PgTestClient } from 'pgsql-test/test-client';
@@ -25,9 +25,9 @@ beforeAll(async () => {
     [
       seed.sqlfile([
         sql('test.sql'),
-        sql('lock-down.sql')
+        sql('grants.sql')
       ])
-    ]
+    ],
   );
 
   ({ db, query, teardown } = connections);
@@ -37,8 +37,7 @@ beforeEach(() => db.beforeEach());
 
 beforeEach(async () => {
   db.setContext({
-    role: 'authenticated',
-    'myapp.user_id': '123'
+    role: 'authenticated'
   });
 });
 
@@ -84,6 +83,7 @@ it('creates a user and fetches it', async () => {
   });
 
   expect(snapshot(createRes)).toMatchSnapshot('createUser');
+
 
   const fetchRes: any = await query(GET_USERS);
 
