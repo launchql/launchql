@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Server",
   "main": "index.js",
@@ -34,10 +34,10 @@
   "keywords": [],
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
-    "@launchql/graphile-query": "^2.1.3",
-    "@launchql/graphile-settings": "^2.1.5",
+    "@launchql/graphile-query": "^2.1.4",
+    "@launchql/graphile-settings": "^2.1.6",
     "@launchql/pg-query-context": "^2.1.3",
-    "@launchql/server-utils": "^2.1.6",
+    "@launchql/server-utils": "^2.1.7",
     "@launchql/types": "^2.1.5",
     "@launchql/upload-names": "^2.1.3",
     "@launchql/url-domains": "^2.1.3",

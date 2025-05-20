@@ -1,6 +1,6 @@
 {
   "name": "pgsql-test",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pgsql-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests — giving developers realistic test coverage without external state pollution",
   "main": "index.js",
@@ -59,8 +59,8 @@
     "@types/pg-copy-streams": "^1.2.5"
   },
   "dependencies": {
-    "@launchql/migrate": "^2.1.11",
-    "@launchql/server-utils": "^2.1.6",
+    "@launchql/migrate": "^2.1.12",
+    "@launchql/server-utils": "^2.1.7",
     "@launchql/types": "^2.1.5",
     "chalk": "^4.1.0",
     "deepmerge": "^4.3.1",
