@@ -31,5 +31,6 @@
   },
   "dependencies": {
     "graphql-tag": "2.12.5"
-  }
+  },
+  "keywords": ["graphql", "introspection", "schema", "graphile", "launchql"]
 }

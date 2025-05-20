@@ -40,5 +40,6 @@
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
-  }
+  },
+  "keywords": ["testing", "graphql", "graphile", "launchql", "test"]
 }

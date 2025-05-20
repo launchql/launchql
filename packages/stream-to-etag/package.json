@@ -31,6 +31,8 @@
   },
   "keywords": [
     "s3",
+    "hash",
+    "upload",
     "etag"
   ],
   "dependencies": {

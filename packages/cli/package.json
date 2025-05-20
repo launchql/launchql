@@ -56,5 +56,6 @@
   },
   "resolutions": {
     "graphql": "15.5.2"
-  }
+  },
+  "keywords": ["cli", "command-line", "tool", "launchql", "utilities", "pg", "pgsql", "postgres", "graphile"]
 }

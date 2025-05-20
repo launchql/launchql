@@ -31,7 +31,8 @@
   },
   "keywords": [
     "s3",
-    "etag"
+    "etag",
+    "stream"
   ],
   "dependencies": {
     "etag-hash": "^2.1.3"

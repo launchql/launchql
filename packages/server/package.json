@@ -31,7 +31,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "keywords": ["server", "graphql", "express", "launchql", "backend"],
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
     "@launchql/server-utils": "^2.1.7",

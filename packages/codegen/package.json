@@ -30,7 +30,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "keywords": ["codegen", "graphql", "typescript", "launchql", "generator"],
   "dependencies": {
     "@babel/generator": "^7.26.3",
     "@babel/types": "^7.26.3",

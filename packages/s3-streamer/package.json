@@ -1,3 +1,4 @@
+
 {
   "name": "@launchql/s3-streamer",
   "version": "2.1.5",
@@ -38,5 +39,6 @@
     "@launchql/content-type-stream": "^2.1.3",
     "@launchql/types": "^2.1.5",
     "aws-sdk": "^2.1692.0"
-  }
+  },
+  "keywords": ["s3", "stream", "upload", "aws", "minio", "launchql"]
 }

@@ -2,7 +2,7 @@
   "name": "@launchql/server-utils",
   "version": "2.1.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "server utils",
+  "description": "LaunchQL server utils",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -45,5 +45,6 @@
     "@types/rimraf": "^4.0.5",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
-  }
+  },
+  "keywords": ["server", "utilities", "express", "launchql", "helpers"]
 }

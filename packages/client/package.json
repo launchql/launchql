@@ -29,9 +29,11 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "keywords": ["client", "graphql", "launchql", "frontend", "api"],
+  "devDependencies": {
+    "@types/pg": "^8.15.2"
+  },
   "dependencies": {
-    "@types/pg": "^8.15.2",
     "pg": "^8.16.0"
   }
 }

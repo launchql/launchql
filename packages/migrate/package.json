@@ -29,7 +29,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "keywords": ["database", "migration", "postgresql", "launchql", "schema", "sqitch"],
   "devDependencies": {
     "@types/glob": "^8.1.0",
     "@types/rimraf": "^4.0.5"

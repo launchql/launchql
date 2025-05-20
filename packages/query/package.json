@@ -35,5 +35,6 @@
     "graphql": "15.5.2",
     "inflection": "1.12.0",
     "pluralize": "8.0.0"
-  }
+  },
+  "keywords": ["query", "builder", "graphql", "launchql", "database"]
 }

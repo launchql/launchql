@@ -32,7 +32,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": [],
+  "keywords": ["csv", "postgresql", "pg", "launchql"],
   "dependencies": {
     "@pyramation/prompt": "^0.0.1",
     "csv-parser": "^2.3.3",

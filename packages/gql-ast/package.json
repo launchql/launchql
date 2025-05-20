@@ -31,5 +31,6 @@
   },
   "dependencies": {
     "graphql": "15.5.2"
-  }
+  },
+  "keywords": ["graphql", "ast", "parser", "launchql", "schema"]
 }

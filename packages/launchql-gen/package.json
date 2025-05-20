@@ -36,5 +36,6 @@
     "gql-ast": "^2.1.3",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
-  }
+  },
+  "keywords": ["graphql", "codegen", "generator", "graphile", "launchql"]
 }

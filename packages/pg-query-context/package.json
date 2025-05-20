@@ -34,5 +34,6 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.2"
-  }
+  },
+  "keywords": ["postgresql", "query", "context", "pg", "graphile"]
 }
