@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
-import { getGraphileSettings as getSettings } from '@launchql/graphile-settings';
+import { getGraphileSettings as getSettings } from 'graphile-settings';
 import PublicKeySignature from '../plugins/PublicKeySignature';
 import { LaunchQLOptions } from '@launchql/types';
 

@@ -1,5 +1,5 @@
-import { getGraphileSettings } from '@launchql/graphile-settings';
-import { GraphileQuery, getSchema } from '@launchql/graphile-query';
+import { getGraphileSettings } from 'graphile-settings';
+import { GraphileQuery, getSchema } from 'graphile-query';
 import { ApiQuery, ApiByNameQuery } from './gql';
 import { svcCache, getRootPgPool } from '@launchql/server-utils';
 import errorPage404 from '../errors/404';

@@ -35,7 +35,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/graphile-settings": "^2.1.6",
+    "graphile-settings": "^2.1.6",
     "@launchql/s3-streamer": "^2.1.5",
     "@launchql/server-utils": "^2.1.7",
     "@launchql/types": "^2.1.5",

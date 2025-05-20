@@ -4,7 +4,7 @@ import type { GraphQLTestContext } from './types';
 import { runGraphQLInContext } from './context';
 import { GraphQLQueryOptions } from './types';
 import { createPostGraphileSchema, PostGraphileOptions } from 'postgraphile';
-import { getGraphileSettings } from '@launchql/graphile-settings';
+import { getGraphileSettings } from 'graphile-settings';
 import { GetConnectionsInput } from './connect';
 import { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
 

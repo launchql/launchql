@@ -1,5 +1,5 @@
 {
-  "name": "@launchql/graphile-query",
+  "name": "graphile-query",
   "version": "2.1.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile query",
