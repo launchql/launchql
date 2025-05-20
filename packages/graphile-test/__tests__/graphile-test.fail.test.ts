@@ -1,10 +1,8 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
 import { getConnections } from '../src/connect';
-import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
-import gql from 'graphql-tag';
 import type { GraphQLQueryFn } from '../src/connect';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import { logDbSessionInfo } from '../test-utils/utils';
@@ -13,7 +11,6 @@ const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let query: GraphQLQueryFn;
 let pg: PgTestClient;
 let db: PgTestClient;
 
@@ -31,7 +28,7 @@ beforeAll(async () => {
     ]
   );
 
-  ({ pg, db, query, teardown } = connections);
+  ({ pg, db, teardown } = connections);
 });
 
 // 🔒 These are commented out intentionally for this test.

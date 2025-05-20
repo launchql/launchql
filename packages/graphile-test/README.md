@@ -16,70 +16,105 @@
   </a>
 </p>
 
-## Install
+`graphile-test` builds on top of [`pgsql-test`](https://github.com/launchql/launchql/tree/main/packages/pgsql-test) to provide robust GraphQL testing utilities for PostGraphile-based projects.
 
-```sh
+It provides a seamless setup for isolated, seeded, role-aware Postgres databases and injects GraphQL helpers for snapshot testing, role context, and mutation/query assertions.
+
+## 🚀 Features
+
+* 🔁 **Per-test rollback** via savepoints for isolation
+* 🔐 **RLS-aware context injection** (`setContext`)
+* 🧪 **GraphQL integration testing** with `query()` and snapshot support
+* 📦 **Seed support** for `.sql`, JSON, CSV, LaunchQL, or Sqitch
+* 📊 **Introspection query snapshotting**
+* 🔧 **Raw SQL fallback** via `pg.client.query`
+
+## 📦 Install
+
+```bash
 npm install graphile-test
 ```
 
-## How to Use
-
-### 1. Create Required Postgres Role
-
-```sql
-CREATE ROLE authenticated;
-```
-
-### 2. Write a Test
+## ✨ Quick Start
 
 ```ts
-import { GraphQLTest, snapshot } from 'graphile-test';
-import { MyGraphQLQuery } from '../src/queries';
+import { getConnections } from 'graphile-test';
 
-const dbname = 'graphile_test_db';
-const schemas = ['app_public'];
-
-const { setup, teardown, graphQL } = GraphQLTest({
-  dbname,
-  schemas,
-  authRole: 'postgres',
-});
+let db, query, teardown;
 
 beforeAll(async () => {
-  await setup();
-});
-afterAll(async () => {
-  await teardown();
+  ({ db, query, teardown } = await getConnections({
+    schemas: ['app_public'],
+    authRole: 'authenticated'
+  }, [
+    seed.sqlfile(['./sql/test.sql', './sql/grants.sql'])
+  ]));
 });
 
-it('query', async () => {
-  await graphQL(async query => {
-    const data = await query(MyGraphQLQuery);
-    expect(snapshot(data)).toMatchSnapshot();
-  });
+beforeEach(() => db.beforeEach());
+afterEach(() => db.afterEach());
+afterAll(() => teardown());
+
+it('runs a GraphQL mutation', async () => {
+  const res = await query(`mutation { ... }`);
+  expect(res.errors).toBeUndefined();
 });
 ```
 
-## Testing Setup
+## 📘 API
 
-Before running tests, prepare your database:
+### `getConnections(options, seeders)`
 
-```sh
-createdb graphile_test_db
-psql -f sql/test.sql graphile_test_db
+Returns an object with:
+
+* `query` – A GraphQL executor function: `query(gqlDoc, variables?)`
+* `db`, `pg` – `PgTestClient` instances
+* `teardown()` – Clean up temp DBs
+
+### `PgTestClient`
+
+Supports:
+
+* `query`, `any`, `one`, etc. (via `pg-promise`-like helpers)
+* `beforeEach()` / `afterEach()` – for savepoint transaction handling
+* `setContext({...})` – sets Postgres config (e.g., `role`, `myapp.user_id`)
+
+## 🧪 Example Tests
+
+### GraphQL mutation + snapshot
+
+```ts
+const res = await query(MY_MUTATION, { input: { ... } });
+expect(snapshot(res)).toMatchSnapshot();
 ```
 
-## Environment Variables
+### Introspection testing
 
-You can override the default Postgres connection settings by setting the following environment variables:
+```ts
+import { IntrospectionQuery } from './queries';
 
-```sh
-export PGUSER=your_pg_user
-export PGHOST=your_pg_host
-export PGPORT=your_pg_port
+const res = await query(IntrospectionQuery);
+expect(snapshot(res)).toMatchSnapshot('introspection');
 ```
 
-Once set, these will be automatically picked up by `graphile-test` when establishing connections.
+### RLS testing with role switch
+
+```ts
+db.setContext({ role: 'anonymous' });
+const res = await query(MY_PROTECTED_QUERY);
+expect(res.errors[0].message).toMatch(/permission denied/);
+```
+
+## 🧱 Under the Hood
+
+`graphile-test` wraps and extends `pgsql-test` with GraphQL helpers like `query()` and introspection snapshot tools. You can drop into raw SQL testing anytime via `pg.client.query()`.
+
+## ✅ Best Practices
+
+* Use `db.setContext({ role, user_id })` to simulate authentication.
+* Always wrap tests with `beforeEach` / `afterEach`.
+* Use `snapshot()` to track GraphQL result changes.
+* Use `useRoot: true` to test schema visibility without RLS.
 
 ## Related LaunchQL Tooling
 
