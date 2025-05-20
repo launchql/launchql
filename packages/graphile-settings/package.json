@@ -1,6 +1,6 @@
 {
   "name": "graphile-settings",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile settings",
   "main": "index.js",
@@ -42,7 +42,7 @@
     "graphile-meta-schema": "^0.2.5",
     "graphile-query": "^2.1.5",
     "graphile-search-plugin": "^0.1.2",
-    "graphile-settings": "^2.1.7",
+    "graphile-settings": "^2.1.8",
     "graphile-simple-inflector": "^0.1.1",
     "graphql-tag": "2.12.6",
     "lru-cache": "^11.1.0",
