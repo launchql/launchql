@@ -1,6 +1,6 @@
 // import Networks from '@pyramation/crypto-networks';
 // import { verifyMessage } from '@pyramation/crypto-keys';
-import pgQueryWithContext from '@launchql/pg-query-context';
+import pgQueryWithContext from 'pg-query-context';
 import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
 import type { Plugin } from 'graphile-build';
 import type { Request } from 'express';
