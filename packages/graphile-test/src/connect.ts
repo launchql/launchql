@@ -1,35 +1,18 @@
 import { getConnections as getPgConnections } from 'pgsql-test';
 import { GraphQLTest } from './graphile-test';
-import type { GetConnectionResult } from 'pgsql-test';
+import type { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import type { SeedAdapter } from 'pgsql-test/seed/types';
-import { DocumentNode } from 'graphql';
+import type { DocumentNode, ExecutionResult } from 'graphql';
 
-export interface GraphQLQueryFn {
-  <T = unknown>(
-    query: string | DocumentNode,
-    variables?: Record<string, unknown>
-  ): Promise<T>;
-}
-
-export interface GraphQLTestContext {
-  setup: () => Promise<void>;
-  teardown: () => Promise<void>;
-  graphQL: <T = void>(
-    fn: (query: GraphQLQueryFn) => Promise<T>
-  ) => Promise<T>;
-  graphQLQuery: <T = unknown>(
-    ...args: any[]
-  ) => Promise<T>;
-}
-
-export interface GraphQLTestOptions {
-  dbname: string;
-  schemas: string[];
-  authRole?: string;
-}
-
+export type GraphQLQueryFn<T = ExecutionResult> = (
+  query: string | DocumentNode,
+  variables?: Record<string, any>,
+  commit?: boolean,
+  reqOptions?: Record<string, any>
+) => Promise<T>;
 export interface GetConnectionsInput {
+  useRoot?: boolean;
   schemas: string[];
   authRole?: string;
 }
@@ -38,27 +21,20 @@ export interface GetConnectionsInput {
  * Combines PostgreSQL test setup with GraphQL test context
  */
 export const getConnections = async (
-  input: GetConnectionsInput,
+  input: GetConnectionsInput & GetConnectionOpts,
   seedAdapters?: SeedAdapter[]
 ): Promise<{
   pg: PgTestClient;
   db: PgTestClient;
   teardown: () => Promise<void>;
-  graphQL: GraphQLTestContext['graphQL'];
-  graphQLQuery: GraphQLTestContext['graphQLQuery'];
+  query: GraphQLQueryFn;
 }> => {
-  const {
-    pg,
-    db,
-    teardown: dbTeardown
-  }: GetConnectionResult = await getPgConnections({}, seedAdapters);
+  
+  const conn: GetConnectionResult = await getPgConnections(input, seedAdapters);
+  const { pg, db, teardown: dbTeardown } = conn;
 
-  const gqlContext: GraphQLTestContext = GraphQLTest({
-    dbname: db.client.database,
-    schemas: input.schemas,
-    authRole: input.authRole
-  }) as GraphQLTestContext;
-
+  const gqlContext = GraphQLTest(input, conn);
+  
   await gqlContext.setup();
 
   const teardown = async () => {
@@ -66,31 +42,13 @@ export const getConnections = async (
     await dbTeardown();
   };
 
+  const query: GraphQLQueryFn = (query, variables, commit, reqOptions) =>
+    gqlContext.query({ query, variables, commit, reqOptions });
+
   return {
     pg,
     db,
     teardown,
-    graphQL: gqlContext.graphQL,
-    graphQLQuery: gqlContext.graphQLQuery
-  };
-};
-
-/**
- * Provides only the GraphQL testing utilities with setup/teardown
- */
-export const getQuery = async (
-  input: GraphQLTestOptions
-): Promise<{
-  teardown: () => Promise<void>;
-  graphQL: GraphQLTestContext['graphQL'];
-  graphQLQuery: GraphQLTestContext['graphQLQuery'];
-}> => {
-  const gqlContext: GraphQLTestContext = GraphQLTest(input);
-  await gqlContext.setup();
-
-  return {
-    teardown: gqlContext.teardown,
-    graphQL: gqlContext.graphQL,
-    graphQLQuery: gqlContext.graphQLQuery
+    query
   };
 };
