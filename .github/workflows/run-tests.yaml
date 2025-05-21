@@ -127,8 +127,8 @@ jobs:
       - name: launchql/csv-to-pg
         run: cd ./packages/csv-to-pg && yarn test
 
-      - name: launchql/codegen
-        run: cd ./packages/codegen && yarn test
+      - name: launchql-gen
+        run: cd ./packages/launchql-gen && yarn test
 
       - name: launchql/content-type-stream
         run: cd ./packages/content-type-stream && yarn test
