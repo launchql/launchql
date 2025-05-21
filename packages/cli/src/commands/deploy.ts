@@ -1,16 +1,25 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { exec } from 'shelljs';
 
-import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
-import { listModules, deploy } from '@launchql/migrate';
+import {
+  errors,
+  getEnvOptions,
+  getPgEnvOptions,
+  getSpawnEnvWithPg,
+  LaunchQLOptions
+} from '@launchql/types';
+
+import { deploy, deployFast } from '@launchql/migrate';
 import { Logger } from '@launchql/server-utils';
+import { execSync } from 'child_process';
+import { LaunchQLProject } from '@launchql/migrate';
 
 export default async (
   argv: Partial<ParsedArgs>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  const pgEnv = getPgEnvOptions();
   const log = new Logger('cli');
 
   const questions: Question[] = [
@@ -35,48 +44,71 @@ export default async (
     return;
   }
 
-  if (!cwd) {
-    cwd = process.cwd();
-    log.debug(`Using current directory: ${cwd}`);
-  }
+  cwd = cwd || process.cwd();
+  log.debug(`Using current directory: ${cwd}`);
+
+  const project = new LaunchQLProject(cwd);
 
   if (createdb) {
     log.info(`Creating database ${database}...`);
-    exec(`createdb ${database}`);
+    execSync(`createdb ${database}`, {
+      env: getSpawnEnvWithPg(pgEnv)
+    });
   }
 
-  if (recursive) {
-    const modules = await listModules(cwd);
-    const mods = Object.keys(modules);
+  const options: LaunchQLOptions = getEnvOptions({
+    pg: {
+      database
+    }
+  });
 
-    if (!mods.length) {
+  if (recursive) {
+    const modules = await project.getModules();
+    const moduleNames = modules.map(mod => mod.getModuleName());
+
+    if (!moduleNames.length) {
       log.error('No modules found in the specified directory.');
       prompter.close();
       throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
     }
 
-    const { project } = await prompter.prompt(argv, [
+    const { project: selectedProject } = await prompter.prompt(argv, [
       {
         type: 'autocomplete',
         name: 'project',
         message: 'Choose a project to deploy',
-        options: mods,
+        options: moduleNames,
         required: true
       }
     ]);
 
-    log.success(`Deploying project ${project} to database ${database}...`);
-    const options: LaunchQLOptions = getEnvOptions({
-      pg: {
-        database
-      }
-    });
+    const selected = modules.find(mod => mod.getModuleName() === selectedProject);
+    if (!selected) {
+      throw new Error(`Module ${selectedProject} not found`);
+    }
 
-    await deploy(options, project, database, cwd);
+    const dir = selected.getModulePath()!;
+    log.success(`Deploying project ${selectedProject} from ${dir} to database ${database}...`);
+
+    if (argv.fast) {
+      await deployFast({
+        opts: options,
+        database,
+        dir,
+        name: selectedProject,
+        usePlan: true,
+        cache: false
+      });
+    } else {
+      await deploy(options, selectedProject, database, dir);
+    }
+
     log.success('Deployment complete.');
   } else {
     log.info(`Running: sqitch deploy db:pg:${database}`);
-    exec(`sqitch deploy db:pg:${database}`);
+    execSync(`sqitch deploy db:pg:${database}`, {
+      env: getSpawnEnvWithPg(pgEnv)
+    });
     log.success('Deployment complete.');
   }
 
