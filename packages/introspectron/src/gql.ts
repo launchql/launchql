@@ -1,18 +1,43 @@
 // @ts-nocheck
-export const parseGraphQuery = (introQuery) => {
+import {
+  IntrospectionDirective,
+  IntrospectionEnumValue,
+  IntrospectionField,
+  IntrospectionInputValue,
+  IntrospectionQueryResult,
+  IntrospectionType,
+  IntrospectionTypeRef
+} from './gql-types';
+
+interface ParseContext {
+  isNotNull?: boolean;
+  isArray?: boolean;
+  isArrayNotNull?: boolean;
+  properties?: Record<string, any>;
+  type?: string | null;
+  name?: string;
+}
+
+interface SelectionContext {
+  HASH: Record<string, IntrospectionType>;
+  parseConnectionQuery: typeof parseConnectionQuery;
+  parseSingleQuery: typeof parseSingleQuery;
+}
+
+export const parseGraphQuery = (introQuery: IntrospectionQueryResult) => {
   const types = introQuery.__schema.types;
-  const HASH = types.reduce((m, v) => {
+  const HASH: Record<string, IntrospectionType> = types.reduce((m, v) => {
     m[v.name] = v;
     return m;
-  }, {});
+  }, {} as Record<string, IntrospectionType>);
 
-  const queriesRoot = types.find((t) => t.name === 'Query');
-  const mutationsRoot = types.find((t) => t.name === 'Mutation');
+  const queriesRoot = types.find((t) => t.name === 'Query')!;
+  const mutationsRoot = types.find((t) => t.name === 'Mutation')!;
 
-  const getInputForQueries = (input, context = {}) => {
+  const getInputForQueries = (input: IntrospectionTypeRef, context: ParseContext = {}): ParseContext => {
     if (input.kind === 'NON_NULL') {
       context.isNotNull = true;
-      return getInputForQueries(input.ofType, context);
+      return getInputForQueries(input.ofType!, context);
     }
 
     if (input.kind === 'LIST') {
@@ -21,50 +46,46 @@ export const parseGraphQuery = (introQuery) => {
         context.isArrayNotNull = true;
         delete context.isNotNull;
       }
-      return getInputForQueries(input.ofType, context);
+      return getInputForQueries(input.ofType!, context);
     }
 
     if (input.kind === 'INPUT_OBJECT') {
       if (input.name && HASH.hasOwnProperty(input.name)) {
         const schema = HASH[input.name];
-        context.properties = schema.inputFields
-          .map((field) => {
-            return {
-              name: field.name,
-              type: field.type
-            };
-          })
-          .reduce((m3, v) => {
-            m3[v.name] = v;
-            return m3;
-          }, {});
+        context.properties = schema.inputFields!.map((field) => {
+          return {
+            name: field.name,
+            type: field.type
+          };
+        }).reduce((m3, v) => {
+          m3[v.name] = v;
+          return m3;
+        }, {} as Record<string, any>);
       }
     } else if (input.kind === 'OBJECT') {
       if (input.name && HASH.hasOwnProperty(input.name)) {
         const schema = HASH[input.name];
-        context.properties = schema.fields
-          .map((field) => {
-            return {
-              name: field.name,
-              type: field.type
-            };
-          })
-          .reduce((m3, v) => {
-            m3[v.name] = v;
-            return m3;
-          }, {});
+        context.properties = schema.fields!.map((field) => {
+          return {
+            name: field.name,
+            type: field.type
+          };
+        }).reduce((m3, v) => {
+          m3[v.name] = v;
+          return m3;
+        }, {} as Record<string, any>);
       }
     } else {
-      context.type = input.name;
+      context.type = input.name ?? null;
     }
 
     return context;
   };
 
-  const getInputForMutations = (input, context = {}) => {
+  const getInputForMutations = (input: IntrospectionTypeRef, context: ParseContext = {}): ParseContext => {
     if (input.kind === 'NON_NULL') {
       context.isNotNull = true;
-      return getInputForMutations(input.ofType, context);
+      return getInputForMutations(input.ofType!, context);
     }
 
     if (input.kind === 'LIST') {
@@ -73,50 +94,46 @@ export const parseGraphQuery = (introQuery) => {
         context.isArrayNotNull = true;
         delete context.isNotNull;
       }
-      return getInputForMutations(input.ofType, context);
+      return getInputForMutations(input.ofType!, context);
     }
 
     if (input.kind === 'INPUT_OBJECT') {
       if (input.name && HASH.hasOwnProperty(input.name)) {
         const schema = HASH[input.name];
-        context.properties = schema.inputFields
-          .map((field) => {
-            return getInputForMutations(field.type, { name: field.name });
-          })
-          .reduce((m3, v) => {
-            m3[v.name] = v;
-            return m3;
-          }, {});
+        context.properties = schema.inputFields!.map((field) => {
+          return getInputForMutations(field.type, { name: field.name });
+        }).reduce((m3, v) => {
+          m3[v.name!] = v;
+          return m3;
+        }, {} as Record<string, any>);
       }
     } else if (input.kind === 'OBJECT') {
       if (input.name && HASH.hasOwnProperty(input.name)) {
         const schema = HASH[input.name];
-        context.properties = schema.fields
-          .map((field) => {
-            return {
-              name: field.name,
-              type: field.type
-            };
-          })
-          .reduce((m3, v) => {
-            m3[v.name] = v;
-            return m3;
-          }, {});
+        context.properties = schema.fields!.map((field) => {
+          return {
+            name: field.name,
+            type: field.type
+          };
+        }).reduce((m3, v) => {
+          m3[v.name] = v;
+          return m3;
+        }, {} as Record<string, any>);
       }
     } else {
-      context.type = input.name;
+      context.type = input.name ?? null;
     }
 
     return context;
   };
 
-  const mutations = mutationsRoot.fields.reduce((m, mutation) => {
+  const mutations = mutationsRoot.fields!.reduce((m, mutation) => {
     let mutationType = 'other';
-    if (/^Create/.test(mutation.type.name)) {
+    if (/^Create/.test(mutation.type.name!)) {
       mutationType = 'create';
-    } else if (/^Update/.test(mutation.type.name)) {
+    } else if (/^Update/.test(mutation.type.name!)) {
       mutationType = 'patch';
-    } else if (/^Delete/.test(mutation.type.name)) {
+    } else if (/^Delete/.test(mutation.type.name!)) {
       mutationType = 'delete';
     }
 
@@ -125,16 +142,14 @@ export const parseGraphQuery = (introQuery) => {
       const isNotNull = arg.type?.kind === 'NON_NULL';
       if (type && HASH.hasOwnProperty(type)) {
         const schema = HASH[type];
-        const fields = schema.inputFields.filter(
+        const fields = schema.inputFields!.filter(
           (a) => a.name !== 'clientMutationId'
         );
 
-        const properties = fields
-          .map((a) => getInputForMutations(a.type, { name: a.name }))
-          .reduce((m3, v) => {
-            m3[v.name] = v;
-            return m3;
-          }, {});
+        const properties = fields.map((a) => getInputForMutations(a.type, { name: a.name })).reduce((m3, v) => {
+          m3[v.name!] = v;
+          return m3;
+        }, {} as Record<string, any>);
         m2[arg.name] = {
           isNotNull,
           type,
@@ -144,18 +159,15 @@ export const parseGraphQuery = (introQuery) => {
         console.warn('whats wrong with ' + arg);
       }
       return m2;
-    }, {});
+    }, {} as Record<string, any>);
 
-    const getModelTypes = (type) => {
-      return type.fields
-        .filter((t) => t.type.kind === 'OBJECT')
-        .filter((t) => t.type.name !== 'Query')
-        .map((f) => ({ name: f.name, type: f.type }));
+    const getModelTypes = (type: IntrospectionType) => {
+      return type.fields!.filter((t) => t.type.kind === 'OBJECT').filter((t) => t.type.name !== 'Query').map((f) => ({ name: f.name, type: f.type }));
     };
-    const models = getModelTypes(HASH[mutation.type.name]);
+
+    const models = getModelTypes(HASH[mutation.type.name!]);
     if (models.length > 0) {
-      // TODO this is probably brittle
-      const model = models[0].type.name;
+      const model = models[0].type.name!;
       m[mutation.name] = {
         qtype: 'mutation',
         mutationType,
@@ -164,16 +176,11 @@ export const parseGraphQuery = (introQuery) => {
         output: mutation.type
       };
     } else {
-      // no return args, probably void functions
-
-      let t;
-      let outputFields = [];
+      let t: IntrospectionType | undefined;
+      let outputFields: any[] = [];
       if (mutation.type.kind === 'OBJECT') {
-        t = HASH[mutation.type.name];
-        outputFields = t.fields
-          .map((f) => ({ name: f.name, type: f.type }))
-          .filter((f) => f.name !== 'clientMutationId')
-          .filter((f) => f.type.name !== 'Query');
+        t = HASH[mutation.type.name!];
+        outputFields = t.fields!.map((f) => ({ name: f.name, type: f.type })).filter((f) => f.name !== 'clientMutationId').filter((f) => f.type.name !== 'Query');
       }
 
       m[mutation.name] = {
@@ -186,18 +193,15 @@ export const parseGraphQuery = (introQuery) => {
     }
 
     return m;
-  }, {});
+  }, {} as Record<string, any>);
 
-  //   expect(mts).toMatchSnapshot();
-
-  const parseConnectionQuery = (query, nesting) => {
-    const objectType = getObjectType(query.type);
+  const parseConnectionQuery = (query: IntrospectionField, nesting: number) => {
+    const objectType = getObjectType(query.type)!;
     const Connection = HASH[objectType];
-    const nodes = Connection.fields.find((f) => f.name === 'nodes');
-    const edges = Connection.fields.find((f) => f.name === 'edges');
-
-    const model = getObjectType(nodes.type);
-    const context = { HASH, parseConnectionQuery, parseSingleQuery };
+    const nodes = Connection.fields!.find((f) => f.name === 'nodes')!;
+    const edges = Connection.fields!.find((f) => f.name === 'edges');
+    const model = getObjectType(nodes.type)!;
+    const context: SelectionContext = { HASH, parseConnectionQuery, parseSingleQuery };
 
     if (nesting === 0) {
       return {
@@ -214,9 +218,9 @@ export const parseGraphQuery = (introQuery) => {
     };
   };
 
-  const parseSingleQuery = (query, nesting) => {
-    const model = getObjectType(query.type);
-    const context = { HASH, parseConnectionQuery, parseSingleQuery };
+  const parseSingleQuery = (query: IntrospectionField, nesting: number) => {
+    const model = getObjectType(query.type)!;
+    const context: SelectionContext = { HASH, parseConnectionQuery, parseSingleQuery };
 
     if (nesting === 0) {
       return {
@@ -225,7 +229,7 @@ export const parseGraphQuery = (introQuery) => {
         properties: query.args.reduce((m2, v) => {
           m2[v.name] = getInputForQueries(v.type);
           return m2;
-        }, {}),
+        }, {} as Record<string, any>),
         selection: parseSelectionScalar(context, model)
       };
     }
@@ -236,14 +240,12 @@ export const parseGraphQuery = (introQuery) => {
       properties: query.args.reduce((m2, v) => {
         m2[v.name] = getInputForQueries(v.type);
         return m2;
-      }, {}),
+      }, {} as Record<string, any>),
       selection: parseSelectionObject(context, model, 1)
     };
   };
 
-  const queries = queriesRoot.fields.reduce((m, query) => {
-    // m[query.name] = getInputForQueries(query.type);
-
+  const queries = queriesRoot.fields!.reduce((m, query) => {
     if (query.type.kind === 'OBJECT') {
       if (isConnectionQuery(query)) {
         m[query.name] = parseConnectionQuery(query, 1);
@@ -252,7 +254,7 @@ export const parseGraphQuery = (introQuery) => {
       }
     }
     return m;
-  }, {});
+  }, {} as Record<string, any>);
 
   return {
     queries,
@@ -260,16 +262,13 @@ export const parseGraphQuery = (introQuery) => {
   };
 };
 
-// Parse selections for both scalar and object fields
-function parseSelectionObject(context, model, nesting) {
+function parseSelectionObject(context: SelectionContext, model: string, nesting: number): any[] {
   const { HASH, parseConnectionQuery, parseSingleQuery } = context;
   throwIfInvalidContext(context);
 
-  const selectionFields = HASH[model].fields.filter(
-    (f) => !isPureObjectType(f.type)
-  );
+  const selectionFields = HASH[model].fields!.filter((f) => !isPureObjectType(f.type));
 
-  const selection = selectionFields.map((f) => {
+  return selectionFields.map((f) => {
     if (f.type.ofType?.kind === 'OBJECT') {
       if (isConnectionQuery(f)) {
         return { name: f.name, ...parseConnectionQuery(f, nesting - 1) };
@@ -279,53 +278,41 @@ function parseSelectionObject(context, model, nesting) {
     }
     return f.name;
   });
-
-  return selection;
 }
 
-// Parse selections for scalar types only, ignore all field selections
-// that have more nesting selection level
-function parseSelectionScalar(context, model) {
+function parseSelectionScalar(context: SelectionContext, model: string): string[] {
   const { HASH } = context;
   throwIfInvalidContext(context);
 
-  const selectionFields = HASH[model].fields.filter(
+  const selectionFields = HASH[model].fields!.filter(
     (f) => !isPureObjectType(f.type) && !isConnectionQuery(f)
   );
 
-  const selection = selectionFields.map((f) => f.name);
-
-  return selection;
+  return selectionFields.map((f) => f.name);
 }
 
-function isConnectionQuery(query) {
+function isConnectionQuery(query: { type: IntrospectionTypeRef; args: IntrospectionInputValue[] }): boolean {
   const objectType = getObjectType(query.type);
   const fields = query.args.map((a) => a.name);
 
   return (
-    /Connection$/.test(objectType) &&
+    /Connection$/.test(objectType || '') &&
     fields.includes('condition') &&
     fields.includes('filter')
   );
 }
 
-/**
- * Check is a type is pure object type
- * pure object type is different from custom types in the sense that
- * it does not inherit from any type, custom types inherit from a parent type
- * @param {Object} typeObj
- * @returns {boolean}
- */
-function isPureObjectType(typeObj) {
+function isPureObjectType(typeObj: IntrospectionTypeRef): boolean {
   return typeObj.kind === 'OBJECT' && typeObj.name == null;
 }
 
-function getObjectType(type) {
-  if (type.kind === 'OBJECT') return type.name;
+function getObjectType(type: IntrospectionTypeRef): string | undefined {
+  if (type.kind === 'OBJECT') return type.name || undefined;
   if (type.ofType) return getObjectType(type.ofType);
+  return undefined;
 }
 
-function throwIfInvalidContext(context) {
+function throwIfInvalidContext(context: SelectionContext): void {
   const { HASH, parseConnectionQuery, parseSingleQuery } = context;
   if (!HASH || !parseConnectionQuery || !parseSingleQuery) {
     throw new Error('parseSelection: context missing');
