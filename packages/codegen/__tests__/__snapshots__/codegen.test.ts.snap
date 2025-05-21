@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generates _common.ts with UUID and Timestamp types 1`] = `
+"export type Timestamp = string;
+export type UUID = string;"
+`;
+
+exports[`generates an index.ts that exports schema namespace 1`] = `
+"import * as pg_catalog from "./schemas/pg_catalog";
+export { pg_catalog };
+import * as information_schema from "./schemas/information_schema";
+export { information_schema };
+import * as codegen_test from "./schemas/codegen_test";
+export { codegen_test };"
+`;
+
+exports[`generates interfaces and classes for tables 1`] = `
+"import { UUID, Timestamp } from "./_common";
+export interface Posts {
+  id: UUID;
+  user_id: number;
+  title: string;
+  body: string | null;
+  published: boolean | null;
+  published_at: Timestamp | null;
+}
+export class Posts implements Posts {
+  id: UUID;
+  user_id: number;
+  title: string;
+  body: string | null;
+  published: boolean | null;
+  published_at: Timestamp | null;
+  constructor(data: Posts) {
+    this.id = data.id;
+    this.user_id = data.user_id;
+    this.title = data.title;
+    this.body = data.body;
+    this.published = data.published;
+    this.published_at = data.published_at;
+  }
+}
+export interface Users {
+  id: number;
+  username: any;
+  email: any | null;
+  created_at: Timestamp;
+}
+export class Users implements Users {
+  id: number;
+  username: any;
+  email: any | null;
+  created_at: Timestamp;
+  constructor(data: Users) {
+    this.id = data.id;
+    this.username = data.username;
+    this.email = data.email;
+    this.created_at = data.created_at;
+  }
+}"
+`;

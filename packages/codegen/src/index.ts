@@ -5,12 +5,18 @@ import { generateCodeTree } from './codegen/codegen';
 import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect';
 import { DatabaseObject } from './types';
 import { Logger } from '@launchql/server-utils';
+import { getPgEnvOptions } from '@launchql/types';
+import { getRootPgPool } from '@launchql/server-utils';
+import { Client } from 'pg';
 
 const log = new Logger('codegen');
 
 (async () => {
+  const env = getPgEnvOptions();
+  const pool = getRootPgPool(env);
   const options: GetIntrospectionRowsOptions = {
-    connectionString: 'postgresql://postgres:password@localhost:5432/mydb',
+    // @ts-ignore
+    client: pool as Client, // hope this is ok?
     introspectionOptions: {
       pgLegacyFunctionsOnly: false,
       pgIgnoreRBAC: true,

@@ -4,8 +4,8 @@ import * as t from '@babel/types';
 import { DatabaseObject } from '../types';
 
 type CodegenOptions = {
-  includeTimestamps: boolean; // Add `type Timestamp = string` if true
-  includeUUID: boolean; // Add `type UUID = string` if true
+  includeTimestamps: boolean;
+  includeUUID: boolean;
 };
 
 export const generateCodeTree = (
@@ -13,77 +13,49 @@ export const generateCodeTree = (
   options: CodegenOptions
 ): Record<string, string> => {
   const { includeTimestamps, includeUUID } = options;
-
   const schemaFiles: Record<string, t.Statement[]> = {};
 
-  // Add common types to "schemas/_common.ts"
+  // Common types
   const commonTypes: t.Statement[] = [];
   if (includeTimestamps) {
     commonTypes.push(
       t.exportNamedDeclaration(
-        t.tsTypeAliasDeclaration(
-          t.identifier('Timestamp'),
-          null,
-          t.tsStringKeyword()
-        )
+        t.tsTypeAliasDeclaration(t.identifier('Timestamp'), null, t.tsStringKeyword())
       )
     );
   }
   if (includeUUID) {
     commonTypes.push(
       t.exportNamedDeclaration(
-        t.tsTypeAliasDeclaration(
-          t.identifier('UUID'),
-          null,
-          t.tsStringKeyword()
-        )
+        t.tsTypeAliasDeclaration(t.identifier('UUID'), null, t.tsStringKeyword())
       )
     );
   }
-
   schemaFiles['schemas/_common.ts'] = commonTypes;
 
-  // Organize interfaces and classes by schema (namespace)
+  // Classes & Interfaces per schema
   databaseObjects.forEach((obj) => {
     if (obj.kind === 'class' && obj.classKind === 'r') {
       const schemaName = obj.namespaceName;
+      const pascalName = toPascalCase(obj.name);
+
       const interfaceFields: t.TSPropertySignature[] = [];
       const classFields: t.ClassProperty[] = [];
-      const constructorParams: t.ObjectProperty[] = [];
       const constructorBody: t.Statement[] = [];
       const usedTypes: Set<string> = new Set();
 
-      // Find attributes for the table
       databaseObjects.forEach((attr) => {
         if (attr.kind === 'attribute' && attr.classId === obj.id) {
           const fieldType = mapPostgresTypeToTSType(attr.typeId, attr.isNotNull);
-
-          // Check for UUID or Timestamp usage using the Postgres typeId
           const postgresType = mapPostgresTypeToIdentifier(attr.typeId);
-          if (postgresType) {
-            usedTypes.add(postgresType); // Track UUID or Timestamp if used
-          }
+          if (postgresType) usedTypes.add(postgresType);
 
-          // Add field to interface
           interfaceFields.push(
-            t.tsPropertySignature(
-              t.identifier(attr.name),
-              t.tsTypeAnnotation(fieldType)
-            )
+            t.tsPropertySignature(t.identifier(attr.name), t.tsTypeAnnotation(fieldType))
           );
 
-          // Add field to class
           classFields.push(
-            t.classProperty(
-              t.identifier(attr.name),
-              undefined,
-              t.tsTypeAnnotation(fieldType)
-            )
-          );
-
-          // Add to constructor initialization
-          constructorParams.push(
-            t.objectProperty(t.identifier(attr.name), t.identifier(attr.name))
+            t.classProperty(t.identifier(attr.name), undefined, t.tsTypeAnnotation(fieldType))
           );
 
           constructorBody.push(
@@ -98,57 +70,41 @@ export const generateCodeTree = (
         }
       });
 
-      // Create the interface
       const interfaceDeclaration = t.exportNamedDeclaration(
         t.tsInterfaceDeclaration(
-          t.identifier(obj.name),
+          t.identifier(pascalName),
           null,
           [],
           t.tsInterfaceBody(interfaceFields)
         )
       );
 
-      // Create the class
-      // Create the class
       const data = t.identifier('data');
-      data.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(obj.name)));
+      data.typeAnnotation = t.tsTypeAnnotation(t.tsTypeReference(t.identifier(pascalName)));
 
-      const classImplements = t.tsExpressionWithTypeArguments(t.identifier(obj.name)); // Create implements separately
-
+      const classImplements = t.tsExpressionWithTypeArguments(t.identifier(pascalName));
       const classDeclaration = t.exportNamedDeclaration(
         t.classDeclaration(
-          t.identifier(obj.name),
+          t.identifier(pascalName),
           null,
           t.classBody([
             ...classFields,
-            t.classMethod(
-              'constructor',
-              t.identifier('constructor'),
-              [data],
-              t.blockStatement(constructorBody)
-            ),
+            t.classMethod('constructor', t.identifier('constructor'), [data], t.blockStatement(constructorBody))
           ])
         )
       );
-
-      // Babel doesn't support `implements` in arguments, so we add it manually
       (classDeclaration.declaration as t.ClassDeclaration).implements = [classImplements];
 
-      // Add to the appropriate schema file
-      if (!schemaFiles[`schemas/${schemaName}.ts`]) {
-        schemaFiles[`schemas/${schemaName}.ts`] = [];
-      }
+      const filePath = `schemas/${schemaName}.ts`;
+      if (!schemaFiles[filePath]) schemaFiles[filePath] = [];
 
-      // Add imports for UUID and Timestamp from _common, if needed
       if (usedTypes.size > 0) {
-        const existingImports = schemaFiles[`schemas/${schemaName}.ts`].find(
-          (statement) =>
-            t.isImportDeclaration(statement) &&
-            statement.source.value === './_common'
+        const existingImports = schemaFiles[filePath].find(
+          (s) => t.isImportDeclaration(s) && s.source.value === './_common'
         ) as t.ImportDeclaration;
 
         if (!existingImports) {
-          schemaFiles[`schemas/${schemaName}.ts`].unshift(
+          schemaFiles[filePath].unshift(
             t.importDeclaration(
               Array.from(usedTypes).map((type) =>
                 t.importSpecifier(t.identifier(type), t.identifier(type))
@@ -157,15 +113,9 @@ export const generateCodeTree = (
             )
           );
         } else {
-          // Add any missing import specifiers to the existing import statement
-          const existingSpecifiers = new Set(
-            existingImports.specifiers.map(
-              (specifier) => (specifier.local as t.Identifier).name
-            )
-          );
-
+          const current = new Set(existingImports.specifiers.map((s) => (s.local as t.Identifier).name));
           Array.from(usedTypes).forEach((type) => {
-            if (!existingSpecifiers.has(type)) {
+            if (!current.has(type)) {
               existingImports.specifiers.push(
                 t.importSpecifier(t.identifier(type), t.identifier(type))
               );
@@ -174,61 +124,50 @@ export const generateCodeTree = (
         }
       }
 
-      schemaFiles[`schemas/${schemaName}.ts`].push(interfaceDeclaration, classDeclaration);
+      schemaFiles[filePath].push(interfaceDeclaration, classDeclaration);
     }
   });
 
-  // Generate `index.ts` file with exports
+  // index.ts exports
   const indexFileStatements: t.Statement[] = [];
-
   Object.keys(schemaFiles).forEach((filePath) => {
     const schemaName = filePath.replace('schemas/', '').replace('.ts', '');
-
-    if (schemaName === '_common') {
-      // Do not export _common from index.ts
-      return;
-    }
+    if (schemaName === '_common') return;
 
     if (schemaName === 'public') {
-      // Export public schema types directly
       indexFileStatements.push(
         t.exportAllDeclaration(t.stringLiteral(`./${filePath.replace('.ts', '')}`))
       );
     } else {
-      // Import and re-export with a namespace for other schemas
       indexFileStatements.push(
         t.importDeclaration(
           [t.importNamespaceSpecifier(t.identifier(schemaName))],
           t.stringLiteral(`./${filePath.replace('.ts', '')}`)
         ),
-        t.exportNamedDeclaration(
-          null,
-          [t.exportSpecifier(t.identifier(schemaName), t.identifier(schemaName))]
-        )
+        t.exportNamedDeclaration(null, [
+          t.exportSpecifier(t.identifier(schemaName), t.identifier(schemaName))
+        ])
       );
     }
   });
 
-  // Compile all files into a tree
   const fileTree: Record<string, string> = {};
-
   Object.entries(schemaFiles).forEach(([filePath, statements]) => {
-    const program = t.program(statements);
-    fileTree[filePath] = generate(program).code;
+    fileTree[filePath] = generate(t.program(statements)).code;
   });
 
-  // Generate the `index.ts` file
-  const indexProgram = t.program(indexFileStatements);
-  fileTree['index.ts'] = generate(indexProgram).code;
-
+  fileTree['index.ts'] = generate(t.program(indexFileStatements)).code;
   return fileTree;
 };
 
-// Map Postgres type OIDs to TypeScript types
+const toPascalCase = (str: string): string =>
+  str
+    .replace(/[_-](\w)/g, (_, c) => c.toUpperCase())
+    .replace(/^\w/, (c) => c.toUpperCase());
+
 const mapPostgresTypeToTSType = (typeId: string, isNotNull: boolean): t.TSType => {
   const optionalType = (type: t.TSType): t.TSType =>
     isNotNull ? type : t.tsUnionType([type, t.tsNullKeyword()]);
-
   switch (typeId) {
   case '20': // BIGINT
   case '21': // SMALLINT

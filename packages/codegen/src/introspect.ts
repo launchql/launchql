@@ -2,9 +2,11 @@ import { Client } from 'pg';
 
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';
 import { DatabaseObject } from './types';
+import { Logger } from '@launchql/server-utils';
+const log = new Logger('codegen');
 
 export interface GetIntrospectionRowsOptions {
-  connectionString: string; // Database connection string
+  client: Client; // Database connection
   introspectionOptions: IntrospectionOptions; // Options for introspection
   namespacesToIntrospect: string[]; // Namespaces to include
   includeExtensions?: boolean; // Whether to include extensions, defaults to false
@@ -14,17 +16,13 @@ export const getIntrospectionRows = async (
   options: GetIntrospectionRowsOptions
 ): Promise<DatabaseObject[]> => {
   const {
-    connectionString,
+    client,
     introspectionOptions,
     namespacesToIntrospect,
     includeExtensions = false,
   } = options;
 
-  const client = new Client({ connectionString });
-
   try {
-    await client.connect();
-
     // Query for server version in integer format
     const res = await client.query('SHOW server_version_num');
     const serverVersionNum = parseInt(res.rows[0].server_version_num, 10);
@@ -43,10 +41,8 @@ export const getIntrospectionRows = async (
 
     return rows;
   } catch (error) {
-    console.error('Error during introspection:', error);
+    log.error('Error during introspection:', error);
     throw error;
-  } finally {
-    await client.end();
   }
 };
 
