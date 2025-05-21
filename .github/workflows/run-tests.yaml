@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     container: pyramation/node-sqitch:20.12.0
 
+    env:
+      PGHOST: pg_db
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: password
+
     services:
       pg_db:
         image: pyramation/postgis
@@ -79,21 +85,11 @@ jobs:
           psql -f sql/test.sql graphile_test_db
           psql -f sql/roles.sql graphile_test_db
           yarn test
-        env:
-          PGHOST: pg_db
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: password
 
       - name: pgsql-test
         run: |
           cd ./packages/pgsql-test
           yarn test
-        env:
-          PGHOST: pg_db
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: password
 
       - name: launchql/orm
         run: cd ./packages/orm && yarn test
