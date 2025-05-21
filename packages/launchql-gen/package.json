@@ -30,10 +30,11 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "introspectron": "^2.1.5",
+    "graphile-test": "^2.1.10",
     "@types/pluralize": "0.0.33"
   },
   "dependencies": {
-    "graphile-test": "^2.1.10",
     "gql-ast": "^2.1.4",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"

@@ -991,7 +991,7 @@ interface GqlField {
 
 type QueryField = string | FlatField;
 
-interface GqlMap {
+export interface GqlMap {
   [operationName: string]: GqlField;
 }
 

@@ -1,26 +1,61 @@
-process.env.LOG_SCOPE='launchql-codegen';
+process.env.LOG_SCOPE = 'launchql-codegen';
 
-import { getConnections, seed } from 'graphile-test';
+import { getConnections, GraphQLQueryFn, seed } from 'graphile-test';
+import { IntrospectionQuery, IntrospectionQueryResult, parseGraphQuery } from 'introspectron';
+import { print } from 'graphql';
+
 import { join } from 'path';
-import type { PgTestClient } from 'pgsql-test/test-client';
+import { generate, GqlMap } from '../src';
+import { generateFromIntrospection } from '../test-utils/generate-from-introspection';
 
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let pg: PgTestClient;
+let query: GraphQLQueryFn;
+let introspection: IntrospectionQueryResult;
 
 beforeAll(async () => {
-  ({ pg, teardown } = await getConnections({
-    schemas: ['codegen_test']
-  },
-    [
-      seed.sqlfile([sql('test.sql')])
-    ]
+  ({ query, teardown } = await getConnections(
+    {
+      schemas: ['launchql_gen']
+    },
+    [seed.sqlfile([sql('test.sql')])]
   ));
 });
 
 afterAll(() => teardown());
 
-it('put tests here', async () => {
+beforeAll(async () => {
+  const res = await query(IntrospectionQuery);
 
+  if (res.errors) {
+    console.error(res.errors);
+    throw new Error('GraphQL introspection query failed');
+  }
+
+  introspection = res.data as IntrospectionQueryResult;
+});
+
+it('generates output', () => {
+
+  const { queries, mutations } = parseGraphQuery(introspection);
+  const gqlMap: GqlMap = { ...queries, ...mutations };
+  const gen = generate(gqlMap);
+  const output = Object.keys(gen).reduce<Record<string, string>>((acc, key) => {
+    const entry = gen[key];
+    if (entry?.ast) {
+      // @ts-ignore
+      acc[key] = print(entry.ast);
+    }
+    return acc;
+  }, {});
+
+  expect(output).toMatchSnapshot();
+
+});
+
+it('helper method', () => {
+  expect(introspection).toBeDefined();
+  const output = generateFromIntrospection(introspection);
+  expect(output).toMatchSnapshot();
 });
