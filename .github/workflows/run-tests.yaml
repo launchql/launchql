@@ -125,6 +125,9 @@ jobs:
       - name: launchql/pg-ast
         run: cd ./packages/pg-ast && yarn test
 
+      - name: launchql/pg-codegen
+        run: cd ./packages/pg-codegen && yarn test
+
       - name: launchql/csv-to-pg
         run: cd ./packages/csv-to-pg && yarn test
 
