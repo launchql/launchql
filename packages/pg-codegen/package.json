@@ -1,5 +1,5 @@
 {
-  "name": "@launchql/codegen",
+  "name": "pg-codegen",
   "version": "2.1.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Codegen",
@@ -32,7 +32,7 @@
   },
   "keywords": [
     "codegen",
-    "graphql",
+    "PostgreSQL",
     "typescript",
     "launchql",
     "generator"
