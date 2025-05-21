@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@launchql/types": "^2.1.6",
-    "graphile-settings": "^2.1.9",
+    "graphile-settings": "^2.1.10",
     "graphql": "^15.5.2",
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",

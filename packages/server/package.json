@@ -53,7 +53,7 @@
     "graphile-meta-schema": "^0.2.5",
     "graphile-query": "^2.1.6",
     "graphile-search-plugin": "^0.1.2",
-    "graphile-settings": "^2.1.9",
+    "graphile-settings": "^2.1.10",
     "graphile-simple-inflector": "^0.1.1",
     "graphql-tag": "2.12.6",
     "graphql-upload": "^15.0.2",
