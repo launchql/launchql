@@ -1,6 +1,6 @@
 {
   "name": "graphile-test",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile Testing",
   "main": "index.js",
