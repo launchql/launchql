@@ -1,6 +1,6 @@
 process.env.LOG_SCOPE = 'introspectron';
 
-import { getConnections, GraphQLQueryFn, GraphQLQueryFnPos, seed } from 'graphile-test';
+import { getConnections, GraphQLQueryFn, seed } from 'graphile-test';
 import { join } from 'path';
 import { IntrospectionQuery } from '../src';
 import type { IntrospectionQueryResult, IntrospectionField, IntrospectionInputValue } from '../src/gql-types';
@@ -8,7 +8,7 @@ import type { IntrospectionQueryResult, IntrospectionField, IntrospectionInputVa
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let query: GraphQLQueryFnPos;
+let query: GraphQLQueryFn;
 
 beforeAll(async () => {
   ({ query, teardown } = await getConnections(
