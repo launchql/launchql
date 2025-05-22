@@ -4,7 +4,7 @@ import { getConnections } from '../src/connect';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
-import type { GraphQLQueryFn } from '../src/connect';
+import type { GraphQLQueryFn } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
 
 const schemas = ['app_public'];

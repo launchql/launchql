@@ -4,7 +4,7 @@ import { withPostGraphileContext, PostGraphileOptions } from 'postgraphile';
 import MockReq from 'mock-req';
 import type { Client, Pool } from 'pg';
 import { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
-import { GetConnectionsInput } from './connect';
+import { GetConnectionsInput } from './types';
 
 interface PgSettings {
     [key: string]: string;

@@ -1,13 +1,13 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { getConnections } from '../src/connect';
 import { IntrospectionQuery } from '../test-utils/queries';
 import { join } from 'path';
 import { logDbSessionInfo } from '../test-utils/utils';
 import { seed } from 'pgsql-test';
 import { snapshot } from '../src';
-import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/connect';
+import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
+import { getConnectionsPositional as getConnections } from '../src/get-connections';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -28,7 +28,7 @@ beforeAll(async () => {
       ])
     ]);
 
-  ({ queryPositional: query, db, teardown } = connections);
+  ({ query, db, teardown } = connections);
 });
 
 beforeEach(() => db.beforeEach());

@@ -1,11 +1,11 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { getConnections } from '../src/connect';
+import { getConnectionsPositional as getConnections } from '../src/get-connections';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
 import gql from 'graphql-tag';
-import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/connect';
+import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import { logDbSessionInfo } from '../test-utils/utils';
 
@@ -30,7 +30,7 @@ beforeAll(async () => {
     ]
   );
 
-  ({ db, queryPositional: query, teardown } = connections);
+  ({ db, query, teardown } = connections);
 });
 
 beforeEach(() => db.beforeEach());
