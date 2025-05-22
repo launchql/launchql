@@ -52,8 +52,8 @@ const questions: Question[] = [
     type: 'text',
     required: false,
     default: 'public',
-    useDefault: true,
-    when: (answers: any) => !answers.useMetaApi
+    useDefault: true
+    // when: (answers: any) => !answers.useMetaApi
   }
 //   {
 //     name: 'origin',
@@ -99,7 +99,7 @@ export default async (
   if (!useMetaApi && schemas) {
     options.graphile = {
       ...options.graphile,
-      schema: schemas.split(',').map(s => s.trim())
+      schema: schemas.split(',').map((s: string) => s.trim())
     };
   }
 

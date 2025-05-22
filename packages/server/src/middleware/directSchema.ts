@@ -25,8 +25,8 @@ export const createDirectSchemaMiddleware = (opts: LaunchQLOptions) => {
             schemaNamesFromExt: {
               nodes: schemaArray.map(schemaName => ({ schemaName }))
             },
-            schemaNames: { nodes: [] },
-            apiModules: { nodes: [] }
+            schemaNames: { nodes: [] as Array<{ schemaName: string }> },
+            apiModules: { nodes: [] as Array<any> }
           }
         }
       };

@@ -64,7 +64,7 @@ const getHardCodedSchemata = ({
       api: {
         databaseId,
         isPublic: false,
-        dbname: opts.pg.database,
+        dbname: opts.pg?.database || 'postgres',
         anonRole: 'administrator',
         roleName: 'administrator',
         schemaNamesFromExt: {
@@ -99,7 +99,7 @@ const getMetaSchema = ({
       api: {
         databaseId,
         isPublic: false,
-        dbname: opts.pg.database,
+        dbname: opts.pg?.database || 'postgres',
         anonRole: 'administrator',
         roleName: 'administrator',
         schemaNamesFromExt: {
