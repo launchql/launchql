@@ -34,6 +34,7 @@
     "codegen",
     "PostgreSQL",
     "typescript",
+    "pg",
     "launchql",
     "generator"
   ],
