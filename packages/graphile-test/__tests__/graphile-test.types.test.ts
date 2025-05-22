@@ -3,7 +3,7 @@ process.env.LOG_SCOPE = 'graphile-test';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
-import type { GraphQLQueryFn } from '../src/types';
+import type { GraphQLQueryFnObj } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import { getConnectionsObject } from '../src/get-connections';
 
@@ -11,7 +11,7 @@ const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let query: GraphQLQueryFn;
+let query: GraphQLQueryFnObj;
 let db: PgTestClient;
 
 beforeAll(async () => {

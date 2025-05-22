@@ -5,7 +5,7 @@ import { join } from 'path';
 import { logDbSessionInfo } from '../test-utils/utils';
 import { seed } from 'pgsql-test';
 import { snapshot } from '../src';
-import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/types';
+import type { GraphQLQueryFn } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import { getConnections } from '../src/get-connections';
 
@@ -13,7 +13,7 @@ const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let query: GraphQLQueryFnPos;
+let query: GraphQLQueryFn;
 let db: PgTestClient;
 
 beforeAll(async () => {

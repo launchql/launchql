@@ -5,7 +5,7 @@ import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
 import gql from 'graphql-tag';
-import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/types';
+import type { GraphQLQueryFn } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import { logDbSessionInfo } from '../test-utils/utils';
 
@@ -13,7 +13,7 @@ const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let query: GraphQLQueryFnPos;
+let query: GraphQLQueryFn;
 let pg: PgTestClient;
 let db: PgTestClient;
 

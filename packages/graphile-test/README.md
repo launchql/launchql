@@ -144,7 +144,6 @@ For specific testing needs, additional connection functions are available:
 
 ### Error Handling Variants
 - `getConnectionsUnwrapped()` – Automatically throws on GraphQL errors, returns data directly
-- `getConnectionsWithRetry()` – Retries failed queries automatically
 
 ### Debugging Variants  
 - `getConnectionsWithLogging()` – Logs all queries and responses

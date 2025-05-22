@@ -32,22 +32,22 @@ export interface GraphQLResponse<T> {
   errors?: readonly GraphQLError[];
 }
 
-export type GraphQLQueryFn = <TResult = any, TVariables = Record<string, any>>(
+export type GraphQLQueryFnObj = <TResult = any, TVariables = Record<string, any>>(
   opts: GraphQLQueryOptions<TVariables>
 ) => Promise<GraphQLResponse<TResult>>;
 
-export type GraphQLQueryFnPos = <TResult = any, TVariables = Record<string, any>>(
+export type GraphQLQueryFn = <TResult = any, TVariables = Record<string, any>>(
   query: string | DocumentNode,
   variables?: TVariables,
   commit?: boolean,
   reqOptions?: Record<string, any>
 ) => Promise<GraphQLResponse<TResult>>;
 
-export type GraphQLQueryUnwrappedFn = <TResult = any, TVariables = Record<string, any>>(
+export type GraphQLQueryUnwrappedFnObj = <TResult = any, TVariables = Record<string, any>>(
   opts: GraphQLQueryOptions<TVariables>
 ) => Promise<TResult>;
 
-export type GraphQLQueryUnwrappedFnPos = <TResult = any, TVariables = Record<string, any>>(
+export type GraphQLQueryUnwrappedFn = <TResult = any, TVariables = Record<string, any>>(
   query: string | DocumentNode,
   variables?: TVariables,
   commit?: boolean,
