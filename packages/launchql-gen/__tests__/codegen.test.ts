@@ -6,7 +6,7 @@ import { print } from 'graphql';
 
 import { join } from 'path';
 import { generate, GqlMap } from '../src';
-import { generateFromIntrospection } from '../test-utils/generate-from-introspection';
+import { generateKeyedObjFromIntrospection } from '../test-utils/generate-from-introspection';
 
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
@@ -56,6 +56,6 @@ it('generates output', () => {
 
 it('helper method', () => {
   expect(introspection).toBeDefined();
-  const output = generateFromIntrospection(introspection);
+  const output = generateKeyedObjFromIntrospection(introspection);
   expect(output).toMatchSnapshot();
 });
