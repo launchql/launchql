@@ -76,7 +76,7 @@ it('creates a user and returns typed result', async () => {
     };
 
     // Using positional API: query, variables, commit, reqOptions
-    const result = await query<CreateUserResult>(createUserMutation, variables);
+    const result = await query<CreateUserResult, CreateUserVariables>(createUserMutation, variables);
 
     // Assertions - much cleaner since result is already unwrapped!
     expect(result).toBeDefined();
