@@ -15,6 +15,20 @@ export const getSubdomain = (reqDomains: string[]): string | null => {
 export const createApiMiddleware = (opts: LaunchQLOptions) => {
   return async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
+      if (req.get('X-Schemata')) {
+        const svc = getHardCodedSchemata({
+          opts,
+          schemata: req.get('X-Schemata'),
+          databaseId: req.get('X-Database-Id') || 'default',
+          key: `schemata:${req.get('X-Database-Id') || 'default'}:${req.get('X-Schemata')}`
+        });
+        req.apiInfo = svc;
+        req.databaseId = svc.data.api.databaseId;
+        req.svc_key = `schemata:${req.get('X-Database-Id') || 'default'}:${req.get('X-Schemata')}`;
+        next();
+        return;
+      }
+      
       const svc = await getApiConfig(opts, req);
       if (!svc) {
         res.status(404).send(errorPage404);

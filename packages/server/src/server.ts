@@ -12,6 +12,7 @@ import { createAuthenticateMiddleware } from './middleware/auth';
 import { graphile } from './middleware/graphile';
 import { cors } from './middleware/cors';
 import { createApiMiddleware } from './middleware/api';
+import { createDirectSchemaMiddleware } from './middleware/directSchema';
 import { flush, flushService } from './middleware/flush';
 import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
@@ -30,27 +31,67 @@ export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
 class Server {
   private app: Express;
   private opts: LaunchQLOptions;
+  private middlewareRegistry: Map<string, any>;
 
   constructor(opts: LaunchQLOptions) {
     this.opts = opts;
-
+    this.middlewareRegistry = new Map();
+    
     const app = express();
-    const api = createApiMiddleware(opts);
-    const authenticate = createAuthenticateMiddleware(opts);
-
+    
     healthz(app);
-    trustProxy(app, opts.server.trustProxy);
+    trustProxy(app, opts.server?.trustProxy);
     app.use(poweredBy('launchql'));
     app.use(graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
     app.use(requestIp.mw());
-    app.use(api);
-    app.use(cors as any);
-    app.use(authenticate);
-    app.use(graphile(opts));
-    app.use(flush);
-
+    
+    this.registerMiddleware(app);
+    
     this.app = app;
+  }
+  
+  private registerMiddleware(app: Express): void {
+    const middlewareOpts = this.opts.server?.middleware || {};
+    
+    if (middlewareOpts.useMetaApi !== false) {
+      const api = createApiMiddleware(this.opts);
+      app.use(api);
+      this.middlewareRegistry.set('api', api);
+    } else {
+      const directSchema = createDirectSchemaMiddleware(this.opts);
+      app.use(directSchema);
+      this.middlewareRegistry.set('directSchema', directSchema);
+    }
+    
+    if (middlewareOpts.useCors !== false) {
+      app.use(cors as any);
+      this.middlewareRegistry.set('cors', cors);
+    }
+    
+    if (middlewareOpts.useAuth !== false) {
+      const authenticate = createAuthenticateMiddleware(this.opts);
+      app.use(authenticate);
+      this.middlewareRegistry.set('auth', authenticate);
+    }
+    
+    if (middlewareOpts.useGraphile !== false) {
+      const graphileMiddleware = graphile(this.opts);
+      app.use(graphileMiddleware);
+      this.middlewareRegistry.set('graphile', graphileMiddleware);
+    }
+    
+    if (middlewareOpts.useFlush !== false) {
+      app.use(flush);
+      this.middlewareRegistry.set('flush', flush);
+    }
+    
+    if (Array.isArray(middlewareOpts.customMiddleware)) {
+      middlewareOpts.customMiddleware.forEach((middleware, index) => {
+        app.use(middleware);
+        this.middlewareRegistry.set(`custom-${index}`, middleware);
+      });
+    }
   }
 
   listen(): void {
