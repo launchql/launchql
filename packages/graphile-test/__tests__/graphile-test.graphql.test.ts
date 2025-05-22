@@ -1,6 +1,6 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { getConnectionsPositional as getConnections } from '../src/get-connections';
+import { getConnections } from '../src/get-connections';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join, resolve } from 'path';

@@ -1,11 +1,11 @@
 process.env.LOG_SCOPE = 'graphile-test';
-
-import { getConnections } from '../src/connect';
+;
 import { seed } from 'pgsql-test';
 import { join } from 'path';
 import type { GraphQLQueryFn } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import { logDbSessionInfo } from '../test-utils/utils';
+import { getConnections } from '../src/get-connections';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);

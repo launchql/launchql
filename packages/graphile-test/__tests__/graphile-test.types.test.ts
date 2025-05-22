@@ -1,11 +1,11 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { getConnections } from '../src/connect';
 import { snapshot } from '../src';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
 import type { GraphQLQueryFn } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
+import { getConnectionsObject } from '../src/get-connections';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -15,7 +15,7 @@ let query: GraphQLQueryFn;
 let db: PgTestClient;
 
 beforeAll(async () => {
-    const connections = await getConnections(
+    const connections = await getConnectionsObject(
         {
             schemas,
             authRole: 'authenticated'

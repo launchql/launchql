@@ -7,7 +7,7 @@ import { seed } from 'pgsql-test';
 import { snapshot } from '../src';
 import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/types';
 import type { PgTestClient } from 'pgsql-test/test-client';
-import { getConnectionsPositional as getConnections } from '../src/get-connections';
+import { getConnections } from '../src/get-connections';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);

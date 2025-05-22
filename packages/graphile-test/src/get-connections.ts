@@ -10,14 +10,9 @@ import type {
   GraphQLQueryFnPos,
   GraphQLQueryUnwrappedFn,
   GraphQLQueryUnwrappedFnPos,
-  GraphQLResponse
+  GraphQLResponse,
+  GetConnectionsInput
 } from './types';
-
-export interface GetConnectionsInput {
-  useRoot?: boolean;
-  schemas: string[];
-  authRole?: string;
-}
 
 // Core unwrapping utility
 const unwrap = <T>(res: GraphQLResponse<T>): T => {
@@ -60,13 +55,163 @@ const createConnectionsBase = async (
 };
 
 // ============================================================================
-// REGULAR QUERY VERSIONS
+// POSITIONAL QUERY VERSIONS (DEFAULT/PREFERRED)
 // ============================================================================
 
 /**
- * Creates connections with raw GraphQL responses
+ * Creates connections with raw GraphQL responses (positional API)
  */
 export const getConnections = async (
+  input: GetConnectionsInput & GetConnectionOpts,
+  seedAdapters?: SeedAdapter[]
+): Promise<{
+  pg: PgTestClient;
+  db: PgTestClient;
+  teardown: () => Promise<void>;
+  query: GraphQLQueryFnPos;
+}> => {
+  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
+
+  return {
+    pg,
+    db,
+    teardown,
+    query: baseQueryPositional
+  };
+};
+
+/**
+ * Creates connections with unwrapped GraphQL responses (positional API, throws on errors)
+ */
+export const getConnectionsUnwrapped = async (
+  input: GetConnectionsInput & GetConnectionOpts,
+  seedAdapters?: SeedAdapter[]
+): Promise<{
+  pg: PgTestClient;
+  db: PgTestClient;
+  teardown: () => Promise<void>;
+  query: GraphQLQueryUnwrappedFnPos;
+}> => {
+  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
+
+  const query: GraphQLQueryUnwrappedFnPos = async (query, variables, commit, reqOptions) =>
+    unwrap(await baseQueryPositional(query, variables, commit, reqOptions));
+
+  return {
+    pg,
+    db,
+    teardown,
+    query
+  };
+};
+
+/**
+ * Creates connections with logging for GraphQL queries (positional API)
+ */
+export const getConnectionsWithLogging = async (
+  input: GetConnectionsInput & GetConnectionOpts,
+  seedAdapters?: SeedAdapter[]
+): Promise<{
+  pg: PgTestClient;
+  db: PgTestClient;
+  teardown: () => Promise<void>;
+  query: GraphQLQueryFnPos;
+}> => {
+  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
+
+  const query: GraphQLQueryFnPos = async (query, variables, commit, reqOptions) => {
+    console.log('Executing GraphQL query:', query);
+    const result = await baseQueryPositional(query, variables, commit, reqOptions);
+    console.log('GraphQL result:', result);
+    return result;
+  };
+
+  return {
+    pg,
+    db,
+    teardown,
+    query
+  };
+};
+
+/**
+ * Creates connections with timing for GraphQL queries (positional API)
+ */
+export const getConnectionsWithTiming = async (
+  input: GetConnectionsInput & GetConnectionOpts,
+  seedAdapters?: SeedAdapter[]
+): Promise<{
+  pg: PgTestClient;
+  db: PgTestClient;
+  teardown: () => Promise<void>;
+  query: GraphQLQueryFnPos;
+}> => {
+  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
+
+  const query: GraphQLQueryFnPos = async (query, variables, commit, reqOptions) => {
+    const start = Date.now();
+    const result = await baseQueryPositional(query, variables, commit, reqOptions);
+    const duration = Date.now() - start;
+    console.log(`GraphQL query took ${duration}ms`);
+    return result;
+  };
+
+  return {
+    pg,
+    db,
+    teardown,
+    query
+  };
+};
+
+/**
+ * Creates connections with retry logic for GraphQL queries (positional API)
+ */
+export const getConnectionsWithRetry = async (
+  input: GetConnectionsInput & GetConnectionOpts,
+  seedAdapters?: SeedAdapter[],
+  maxRetries: number = 3
+): Promise<{
+  pg: PgTestClient;
+  db: PgTestClient;
+  teardown: () => Promise<void>;
+  query: GraphQLQueryFnPos;
+}> => {
+  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
+
+  const query: GraphQLQueryFnPos = async (query, variables, commit, reqOptions) => {
+    let lastError: Error | null = null;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await baseQueryPositional(query, variables, commit, reqOptions);
+      } catch (error) {
+        lastError = error as Error;
+        if (attempt === maxRetries) break;
+        console.log(`GraphQL query attempt ${attempt} failed, retrying...`);
+        await new Promise(resolve => setTimeout(resolve, 100 * attempt)); // exponential backoff
+      }
+    }
+    
+    throw lastError;
+  };
+
+  return {
+    pg,
+    db,
+    teardown,
+    query
+  };
+};
+
+// ============================================================================
+// OBJECT-BASED QUERY VERSIONS (EXPLICIT)
+// ============================================================================
+
+/**
+ * Creates connections with raw GraphQL responses (object-based API)
+ */
+export const getConnectionsObject = async (
   input: GetConnectionsInput & GetConnectionOpts,
   seedAdapters?: SeedAdapter[]
 ): Promise<{
@@ -86,9 +231,9 @@ export const getConnections = async (
 };
 
 /**
- * Creates connections with unwrapped GraphQL responses (throws on errors)
+ * Creates connections with unwrapped GraphQL responses (object-based API, throws on errors)
  */
-export const getConnectionsUnwrapped = async (
+export const getConnectionsObjectUnwrapped = async (
   input: GetConnectionsInput & GetConnectionOpts,
   seedAdapters?: SeedAdapter[]
 ): Promise<{
@@ -110,9 +255,9 @@ export const getConnectionsUnwrapped = async (
 };
 
 /**
- * Creates connections with logging for GraphQL queries
+ * Creates connections with logging for GraphQL queries (object-based API)
  */
-export const getConnectionsWithLogging = async (
+export const getConnectionsObjectWithLogging = async (
   input: GetConnectionsInput & GetConnectionOpts,
   seedAdapters?: SeedAdapter[]
 ): Promise<{
@@ -139,9 +284,9 @@ export const getConnectionsWithLogging = async (
 };
 
 /**
- * Creates connections with timing for GraphQL queries
+ * Creates connections with timing for GraphQL queries (object-based API)
  */
-export const getConnectionsWithTiming = async (
+export const getConnectionsObjectWithTiming = async (
   input: GetConnectionsInput & GetConnectionOpts,
   seedAdapters?: SeedAdapter[]
 ): Promise<{
@@ -168,120 +313,10 @@ export const getConnectionsWithTiming = async (
   };
 };
 
-// ============================================================================
-// POSITIONAL QUERY VERSIONS
-// ============================================================================
-
 /**
- * Creates connections with raw GraphQL responses (positional API)
+ * Creates connections with retry logic for GraphQL queries (object-based API)
  */
-export const getConnectionsPositional = async (
-  input: GetConnectionsInput & GetConnectionOpts,
-  seedAdapters?: SeedAdapter[]
-): Promise<{
-  pg: PgTestClient;
-  db: PgTestClient;
-  teardown: () => Promise<void>;
-  query: GraphQLQueryFnPos;
-}> => {
-  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
-
-  return {
-    pg,
-    db,
-    teardown,
-    query: baseQueryPositional
-  };
-};
-
-/**
- * Creates connections with unwrapped GraphQL responses (positional API, throws on errors)
- */
-export const getConnectionsPositionalUnwrapped = async (
-  input: GetConnectionsInput & GetConnectionOpts,
-  seedAdapters?: SeedAdapter[]
-): Promise<{
-  pg: PgTestClient;
-  db: PgTestClient;
-  teardown: () => Promise<void>;
-  query: GraphQLQueryUnwrappedFnPos;
-}> => {
-  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
-
-  const query: GraphQLQueryUnwrappedFnPos = async (query, variables, commit, reqOptions) =>
-    unwrap(await baseQueryPositional(query, variables, commit, reqOptions));
-
-  return {
-    pg,
-    db,
-    teardown,
-    query
-  };
-};
-
-/**
- * Creates connections with logging for GraphQL queries (positional API)
- */
-export const getConnectionsPositionalWithLogging = async (
-  input: GetConnectionsInput & GetConnectionOpts,
-  seedAdapters?: SeedAdapter[]
-): Promise<{
-  pg: PgTestClient;
-  db: PgTestClient;
-  teardown: () => Promise<void>;
-  query: GraphQLQueryFnPos;
-}> => {
-  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
-
-  const query: GraphQLQueryFnPos = async (query, variables, commit, reqOptions) => {
-    console.log('Executing positional GraphQL query:', query);
-    const result = await baseQueryPositional(query, variables, commit, reqOptions);
-    console.log('GraphQL result:', result);
-    return result;
-  };
-
-  return {
-    pg,
-    db,
-    teardown,
-    query
-  };
-};
-
-/**
- * Creates connections with timing for GraphQL queries (positional API)
- */
-export const getConnectionsPositionalWithTiming = async (
-  input: GetConnectionsInput & GetConnectionOpts,
-  seedAdapters?: SeedAdapter[]
-): Promise<{
-  pg: PgTestClient;
-  db: PgTestClient;
-  teardown: () => Promise<void>;
-  query: GraphQLQueryFnPos;
-}> => {
-  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
-
-  const query: GraphQLQueryFnPos = async (query, variables, commit, reqOptions) => {
-    const start = Date.now();
-    const result = await baseQueryPositional(query, variables, commit, reqOptions);
-    const duration = Date.now() - start;
-    console.log(`Positional GraphQL query took ${duration}ms`);
-    return result;
-  };
-
-  return {
-    pg,
-    db,
-    teardown,
-    query
-  };
-};
-
-/**
- * Creates connections with retry logic for GraphQL queries (positional API)
- */
-export const getConnectionsPositionalWithRetry = async (
+export const getConnectionsObjectWithRetry = async (
   input: GetConnectionsInput & GetConnectionOpts,
   seedAdapters?: SeedAdapter[],
   maxRetries: number = 3
@@ -289,20 +324,20 @@ export const getConnectionsPositionalWithRetry = async (
   pg: PgTestClient;
   db: PgTestClient;
   teardown: () => Promise<void>;
-  query: GraphQLQueryFnPos;
+  query: GraphQLQueryFn;
 }> => {
-  const { pg, db, teardown, baseQueryPositional } = await createConnectionsBase(input, seedAdapters);
+  const { pg, db, teardown, baseQuery } = await createConnectionsBase(input, seedAdapters);
 
-  const query: GraphQLQueryFnPos = async (query, variables, commit, reqOptions) => {
+  const query: GraphQLQueryFn = async (opts) => {
     let lastError: Error | null = null;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        return await baseQueryPositional(query, variables, commit, reqOptions);
+        return await baseQuery(opts);
       } catch (error) {
         lastError = error as Error;
         if (attempt === maxRetries) break;
-        console.log(`Positional GraphQL query attempt ${attempt} failed, retrying...`);
+        console.log(`GraphQL query attempt ${attempt} failed, retrying...`);
         await new Promise(resolve => setTimeout(resolve, 100 * attempt)); // exponential backoff
       }
     }
