@@ -1,6 +1,6 @@
 {
   "name": "@launchql/codegen",
-  "version": "2.5.4",
+  "version": "2.5.5",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@types/pluralize": "0.0.33",
-    "graphile-test": "^2.1.11",
-    "introspectron": "^2.2.2"
+    "graphile-test": "^2.1.12",
+    "introspectron": "^2.2.3"
   },
   "dependencies": {
     "gql-ast": "^2.1.4",
