@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`creates a user and returns typed result: create-user 1`] = `
+{
+  "data": {
+    "createUser": {
+      "user": {
+        "id": "[ID]",
+        "username": "alice",
+      },
+    },
+  },
+}
+`;

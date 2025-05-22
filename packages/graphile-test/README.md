@@ -56,7 +56,7 @@ afterEach(() => db.afterEach());
 afterAll(() => teardown());
 
 it('runs a GraphQL mutation', async () => {
-  const res = await query(`mutation { ... }`);
+  const res = await query({ query: `mutation { ... }` });
   expect(res.errors).toBeUndefined();
 });
 ```
@@ -68,6 +68,7 @@ it('runs a GraphQL mutation', async () => {
 Returns an object with:
 
 * `query` – A GraphQL executor function: `query(gqlDoc, variables?)`
+* `queryPositional(query, variables?)` – Positional-call sugar
 * `db`, `pg` – `PgTestClient` instances
 * `teardown()` – Clean up temp DBs
 
@@ -86,7 +87,7 @@ Supports:
 ### GraphQL mutation + snapshot
 
 ```ts
-const res = await query(MY_MUTATION, { input: { ... } });
+const res = await query({ query: MY_MUTATION, variables: { input: { ... } } });
 expect(snapshot(res)).toMatchSnapshot();
 ```
 
@@ -94,8 +95,52 @@ expect(snapshot(res)).toMatchSnapshot();
 
 ```ts
 db.setContext({ role: 'anonymous' });
-const res = await query(MY_PROTECTED_QUERY);
+const res = await query({ query: MY_PROTECTED_QUERY });
 expect(res.errors[0].message).toMatch(/permission denied/);
+```
+
+
+## 🧾 Typing Example
+
+You can type GraphQL query results and variables for full static safety:
+
+```ts
+interface CreateUserVariables {
+  input: {
+    user: {
+      username: string;
+    };
+  };
+}
+
+interface CreateUserResult {
+  createUser: {
+    user: {
+      id: number;
+      username: string;
+    };
+  };
+}
+
+const res = await query<CreateUserResult, CreateUserVariables>({
+  query: gql`
+    mutation CreateUser($input: CreateUserInput!) {
+      createUser(input: $input) {
+        user {
+          id
+          username
+        }
+      }
+    }
+  `,
+  variables: {
+    input: {
+      user: { username: 'alice' }
+    }
+  }
+});
+
+expect(res.createUser.user.username).toBe('alice');
 ```
 
 ## 🧱 Under the Hood

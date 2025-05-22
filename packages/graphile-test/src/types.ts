@@ -1,8 +1,8 @@
 import { DocumentNode, ExecutionResult } from 'graphql';
 
-export interface GraphQLQueryOptions {
+export interface GraphQLQueryOptions<TVariables = Record<string, any>> {
   query: string | DocumentNode;
-  variables?: Record<string, any>;
+  variables?: TVariables;
   commit?: boolean;
   reqOptions?: Record<string, any>;
 }
@@ -10,5 +10,7 @@ export interface GraphQLQueryOptions {
 export interface GraphQLTestContext {
   setup: () => Promise<void>;
   teardown: () => Promise<void>;
-  query: <T = ExecutionResult>(opts: GraphQLQueryOptions) => Promise<T>;
+  query: <TResult = any, TVariables = Record<string, any>>(
+    opts: GraphQLQueryOptions<TVariables>
+  ) => Promise<TResult>;
 }

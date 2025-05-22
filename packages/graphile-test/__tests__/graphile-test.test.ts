@@ -6,14 +6,14 @@ import { join } from 'path';
 import { logDbSessionInfo } from '../test-utils/utils';
 import { seed } from 'pgsql-test';
 import { snapshot } from '../src';
-import type { GraphQLQueryFn } from '../src/connect';
+import type { GraphQLQueryFn, GraphQLQueryFnPos } from '../src/connect';
 import type { PgTestClient } from 'pgsql-test/test-client';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
 
 let teardown: () => Promise<void>;
-let query: GraphQLQueryFn;
+let query: GraphQLQueryFnPos;
 let db: PgTestClient;
 
 beforeAll(async () => {
@@ -28,15 +28,12 @@ beforeAll(async () => {
       ])
     ]);
 
-  ({ query, db, teardown } = connections);
+  ({ queryPositional: query, db, teardown } = connections);
 });
 
 beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
-
-afterAll(async () => {
-  await teardown();
-});
+afterAll(() => teardown());
 
 it('introspection query snapshot', async () => {
   await logDbSessionInfo(db);

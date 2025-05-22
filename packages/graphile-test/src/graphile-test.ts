@@ -1,8 +1,7 @@
 import type { GraphQLSchema } from 'graphql';
-import type { GraphQLTestContext } from './types';
+import type { GraphQLTestContext, GraphQLQueryOptions } from './types';
 
 import { runGraphQLInContext } from './context';
-import { GraphQLQueryOptions } from './types';
 import { createPostGraphileSchema, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings } from 'graphile-settings';
 import { GetConnectionsInput } from './connect';
@@ -12,7 +11,6 @@ export const GraphQLTest = (
   input: GetConnectionsInput & GetConnectionOpts,
   conn: GetConnectionResult
 ): GraphQLTestContext => {
-
   const {
     schemas,
     authRole
@@ -22,19 +20,18 @@ export const GraphQLTest = (
   let options: PostGraphileOptions;
 
   const pgPool = conn.manager.getPool(conn.pg.config);
+
   const setup = async () => {
     options = getGraphileSettings({ graphile: { schema: schemas } });
-    schema = await createPostGraphileSchema(
-      pgPool,
-      schemas,
-      options
-    );
+    schema = await createPostGraphileSchema(pgPool, schemas, options);
   };
 
-  const teardown = async () => { };
+  const teardown = async () => { /* optional cleanup */ };
 
-  const query = async <T = any>(opts: GraphQLQueryOptions): Promise<T> => {
-    return await runGraphQLInContext<T>({
+  const query = async <TResult = any, TVariables = Record<string, any>>(
+    opts: GraphQLQueryOptions<TVariables>
+  ): Promise<TResult> => {
+    return await runGraphQLInContext<TResult>({
       input,
       schema,
       options,
