@@ -124,18 +124,20 @@ interface CreateUserResult {
   };
 }
 
-const res = await query<CreateUserResult>(`
-  mutation CreateUser($input: CreateUserInput!) {
-    createUser(input: $input) {
-      user {
-        id
-        username
+const res = await query<CreateUserResult, CreateUserVariables>(`
+    mutation CreateUser($input: CreateUserInput!) {
+      createUser(input: $input) {
+        user {
+          id
+          username
+        }
       }
     }
-  }
-`, { input: { user: { username: 'alice' } } });
+  `,
+  { input: { user: { username: 'alice' } } }
+);
 
-expect(res.data.createUser.user.username).toBe('alice');
+expect(res.data?.createUser.user.username).toBe('alice');
 ```
 
 ## 🔧 Advanced Connection Options
