@@ -1,4 +1,4 @@
-process.env.LOG_SCOPE='codegen';
+process.env.LOG_SCOPE='pg-codegen';
 
 import { getConnections, seed } from 'pgsql-test';
 import { join } from 'path';

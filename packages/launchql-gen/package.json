@@ -1,5 +1,5 @@
 {
-  "name": "launchql-gen",
+  "name": "@launchql/codegen",
   "version": "2.1.4",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
@@ -30,6 +30,8 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "introspectron": "^2.1.5",
+    "graphile-test": "^2.1.10",
     "@types/pluralize": "0.0.33"
   },
   "dependencies": {

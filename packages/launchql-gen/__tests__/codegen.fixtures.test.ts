@@ -1,6 +1,5 @@
 import { print } from 'graphql';
 import {
-  generate,
   getManyPaginatedNodes,
   getMany,
   getOne
@@ -10,6 +9,7 @@ import mutations from '../__fixtures__/mutations.json';
 import queries from '../__fixtures__/queries.json';
 import queryNestedSelectionMany from '../__fixtures__/api/query-nested-selection-many.json';
 import queryNestedSelectionOne from '../__fixtures__/api/query-nested-selection-one.json';
+import { generateKeyedObjFromGqlMap } from '../test-utils/generate-from-introspection';
 
 // Type helper (optional but recommended for strong typing on selection fields)
 interface FlatField {
@@ -29,15 +29,7 @@ interface NestedSelectionQuery {
 describe('GraphQL Code Generation', () => {
   it('generate(): full AST map snapshot', () => {
     // @ts-ignore
-    const gen = generate({ ...queries, ...mutations });
-
-    const output = Object.keys(gen).reduce<Record<string, string>>((acc, key) => {
-      if (gen[key]?.ast) {
-        acc[key] = print(gen[key].ast);
-      }
-      return acc;
-    }, {});
-
+    const output = generateKeyedObjFromGqlMap({ ...queries, ...mutations })
     expect(output).toMatchSnapshot('full generate() output');
   });
 

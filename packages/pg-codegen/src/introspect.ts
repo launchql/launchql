@@ -3,7 +3,7 @@ import { Client } from 'pg';
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';
 import { DatabaseObject } from './types';
 import { Logger } from '@launchql/server-utils';
-const log = new Logger('codegen');
+const log = new Logger('pg-codegen');
 
 export interface GetIntrospectionRowsOptions {
   client: Client; // Database connection

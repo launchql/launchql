@@ -9,7 +9,7 @@ import { getPgEnvOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { Client } from 'pg';
 
-const log = new Logger('codegen');
+const log = new Logger('pg-codegen');
 
 (async () => {
   const env = getPgEnvOptions();

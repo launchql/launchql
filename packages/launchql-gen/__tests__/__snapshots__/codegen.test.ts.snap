@@ -1,0 +1,915 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generates output 1`] = `
+{
+  "activeUserFragment": "fragment activeUserFragment on ActiveUser {
+  id
+  username
+}
+",
+  "createActiveUserMutation": "mutation createActiveUserMutation($username: String) {
+  createActiveUser(input: {activeUser: {username: $username}}) {
+    activeUser {
+      id
+      username
+    }
+  }
+}
+",
+  "createPostMutation": "mutation createPostMutation($userId: Int!, $title: String!, $body: String, $published: Boolean, $publishedAt: Datetime) {
+  createPost(
+    input: {post: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
+  ) {
+    post {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+    }
+  }
+}
+",
+  "createUserMutation": "mutation createUserMutation($username: String!, $email: String) {
+  createUser(input: {user: {username: $username, email: $email}}) {
+    user {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+}
+",
+  "deletePostMutation": "mutation deletePostMutation($id: UUID!) {
+  deletePost(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserByUsernameMutation": "mutation deleteUserByUsernameMutation($username: String!) {
+  deleteUserByUsername(input: {username: $username}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserMutation": "mutation deleteUserMutation($id: Int!) {
+  deleteUser(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "getActiveUsersOrderByEnums": "query getActiveUsersOrderByEnums {
+  __type(name: "ActiveUsersOrderBy") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getActiveUsersPaginated": "query getActiveUsersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ActiveUserCondition, $filter: ActiveUserFilter, $orderBy: [ActiveUsersOrderBy!]) {
+  activeUsers(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        username
+      }
+    }
+  }
+}
+",
+  "getActiveUsersQuery": "query getActiveUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActiveUserCondition, $filter: ActiveUserFilter, $orderBy: [ActiveUsersOrderBy!]) {
+  activeUsers(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      id
+      username
+    }
+  }
+}
+",
+  "getActiveUsersQueryAll": "query getActiveUsersQueryAll {
+  activeUsers {
+    totalCount
+    nodes {
+      id
+      username
+    }
+  }
+}
+",
+  "getMetaQuery": "query getMetaQuery {
+  _meta {
+    tables(first: 3) {
+      nodes {
+        name
+        query
+        inflection
+        relations
+        fields
+        constraints
+        foreignKeyConstraints
+        primaryKeyConstraints
+        uniqueConstraints
+        checkConstraints
+        exclusionConstraints
+      }
+    }
+  }
+}
+",
+  "getPostQuery": "query getPostQuery($id: UUID!) {
+  post(id: $id) {
+    id
+    userId
+    title
+    body
+    published
+    publishedAt
+    user
+  }
+}
+",
+  "getPostsOrderByEnums": "query getPostsOrderByEnums {
+  __type(name: "PostsOrderBy") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getPostsPaginated": "query getPostsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: PostCondition, $filter: PostFilter, $orderBy: [PostsOrderBy!]) {
+  posts(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+        user
+      }
+    }
+  }
+}
+",
+  "getPostsQuery": "query getPostsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: PostCondition, $filter: PostFilter, $orderBy: [PostsOrderBy!]) {
+  posts(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+      user
+    }
+  }
+}
+",
+  "getPostsQueryAll": "query getPostsQueryAll {
+  posts {
+    totalCount
+    nodes {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+      user
+    }
+  }
+}
+",
+  "getUserByUsernameQuery": "query getUserByUsernameQuery($username: String!) {
+  userByUsername(username: $username) {
+    id
+    username
+    email
+    createdAt
+    posts(first: 3) {
+      nodes {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+        user
+      }
+    }
+  }
+}
+",
+  "getUserQuery": "query getUserQuery($id: Int!) {
+  user(id: $id) {
+    id
+    username
+    email
+    createdAt
+    posts(first: 3) {
+      nodes {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+        user
+      }
+    }
+  }
+}
+",
+  "getUsersOrderByEnums": "query getUsersOrderByEnums {
+  __type(name: "UsersOrderBy") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getUsersPaginated": "query getUsersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        username
+        email
+        createdAt
+        posts(first: 3) {
+          nodes {
+            id
+            userId
+            title
+            body
+            published
+            publishedAt
+            user
+          }
+        }
+      }
+    }
+  }
+}
+",
+  "getUsersQuery": "query getUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      id
+      username
+      email
+      createdAt
+      posts(first: 3) {
+        nodes {
+          id
+          userId
+          title
+          body
+          published
+          publishedAt
+          user
+        }
+      }
+    }
+  }
+}
+",
+  "getUsersQueryAll": "query getUsersQueryAll {
+  users {
+    totalCount
+    nodes {
+      id
+      username
+      email
+      createdAt
+      posts(first: 3) {
+        nodes {
+          id
+          userId
+          title
+          body
+          published
+          publishedAt
+          user
+        }
+      }
+    }
+  }
+}
+",
+  "postFragment": "fragment postFragment on Post {
+  id
+  userId
+  title
+  body
+  published
+  publishedAt
+  user
+}
+",
+  "updatePostMutation": "mutation updatePostMutation($userId: Int, $title: String, $body: String, $published: Boolean, $publishedAt: Datetime) {
+  updatePost(
+    input: {id: $id, patch: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
+  ) {
+    post {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+    }
+  }
+}
+",
+  "updateUserByUsernameMutation": "mutation updateUserByUsernameMutation($username: String!, $email: String) {
+  updateUserByUsername(input: {username: $username, patch: {email: $email}}) {
+    user {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+}
+",
+  "updateUserMutation": "mutation updateUserMutation($username: String, $email: String) {
+  updateUser(input: {id: $id, patch: {username: $username, email: $email}}) {
+    user {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+}
+",
+  "userFragment": "fragment userFragment on User {
+  id
+  username
+  email
+  createdAt
+  [object Object]
+}
+",
+}
+`;
+
+exports[`helper method 1`] = `
+{
+  "activeUserFragment": "fragment activeUserFragment on ActiveUser {
+  id
+  username
+}
+",
+  "createActiveUserMutation": "mutation createActiveUserMutation($username: String) {
+  createActiveUser(input: {activeUser: {username: $username}}) {
+    activeUser {
+      id
+      username
+    }
+  }
+}
+",
+  "createPostMutation": "mutation createPostMutation($userId: Int!, $title: String!, $body: String, $published: Boolean, $publishedAt: Datetime) {
+  createPost(
+    input: {post: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
+  ) {
+    post {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+    }
+  }
+}
+",
+  "createUserMutation": "mutation createUserMutation($username: String!, $email: String) {
+  createUser(input: {user: {username: $username, email: $email}}) {
+    user {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+}
+",
+  "deletePostMutation": "mutation deletePostMutation($id: UUID!) {
+  deletePost(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserByUsernameMutation": "mutation deleteUserByUsernameMutation($username: String!) {
+  deleteUserByUsername(input: {username: $username}) {
+    clientMutationId
+  }
+}
+",
+  "deleteUserMutation": "mutation deleteUserMutation($id: Int!) {
+  deleteUser(input: {id: $id}) {
+    clientMutationId
+  }
+}
+",
+  "getActiveUsersOrderByEnums": "query getActiveUsersOrderByEnums {
+  __type(name: "ActiveUsersOrderBy") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getActiveUsersPaginated": "query getActiveUsersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: ActiveUserCondition, $filter: ActiveUserFilter, $orderBy: [ActiveUsersOrderBy!]) {
+  activeUsers(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        username
+      }
+    }
+  }
+}
+",
+  "getActiveUsersQuery": "query getActiveUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: ActiveUserCondition, $filter: ActiveUserFilter, $orderBy: [ActiveUsersOrderBy!]) {
+  activeUsers(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      id
+      username
+    }
+  }
+}
+",
+  "getActiveUsersQueryAll": "query getActiveUsersQueryAll {
+  activeUsers {
+    totalCount
+    nodes {
+      id
+      username
+    }
+  }
+}
+",
+  "getMetaQuery": "query getMetaQuery {
+  _meta {
+    tables(first: 3) {
+      nodes {
+        name
+        query
+        inflection
+        relations
+        fields
+        constraints
+        foreignKeyConstraints
+        primaryKeyConstraints
+        uniqueConstraints
+        checkConstraints
+        exclusionConstraints
+      }
+    }
+  }
+}
+",
+  "getPostQuery": "query getPostQuery($id: UUID!) {
+  post(id: $id) {
+    id
+    userId
+    title
+    body
+    published
+    publishedAt
+    user
+  }
+}
+",
+  "getPostsOrderByEnums": "query getPostsOrderByEnums {
+  __type(name: "PostsOrderBy") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getPostsPaginated": "query getPostsPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: PostCondition, $filter: PostFilter, $orderBy: [PostsOrderBy!]) {
+  posts(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+        user
+      }
+    }
+  }
+}
+",
+  "getPostsQuery": "query getPostsQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: PostCondition, $filter: PostFilter, $orderBy: [PostsOrderBy!]) {
+  posts(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+      user
+    }
+  }
+}
+",
+  "getPostsQueryAll": "query getPostsQueryAll {
+  posts {
+    totalCount
+    nodes {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+      user
+    }
+  }
+}
+",
+  "getUserByUsernameQuery": "query getUserByUsernameQuery($username: String!) {
+  userByUsername(username: $username) {
+    id
+    username
+    email
+    createdAt
+    posts(first: 3) {
+      nodes {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+        user
+      }
+    }
+  }
+}
+",
+  "getUserQuery": "query getUserQuery($id: Int!) {
+  user(id: $id) {
+    id
+    username
+    email
+    createdAt
+    posts(first: 3) {
+      nodes {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+        user
+      }
+    }
+  }
+}
+",
+  "getUsersOrderByEnums": "query getUsersOrderByEnums {
+  __type(name: "UsersOrderBy") {
+    enumValues {
+      name
+    }
+  }
+}
+",
+  "getUsersPaginated": "query getUsersPaginated($first: Int, $last: Int, $offset: Int, $after: Cursor, $before: Cursor, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        username
+        email
+        createdAt
+        posts(first: 3) {
+          nodes {
+            id
+            userId
+            title
+            body
+            published
+            publishedAt
+            user
+          }
+        }
+      }
+    }
+  }
+}
+",
+  "getUsersQuery": "query getUsersQuery($first: Int, $last: Int, $after: Cursor, $before: Cursor, $offset: Int, $condition: UserCondition, $filter: UserFilter, $orderBy: [UsersOrderBy!]) {
+  users(
+    first: $first
+    last: $last
+    offset: $offset
+    after: $after
+    before: $before
+    condition: $condition
+    filter: $filter
+    orderBy: $orderBy
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      endCursor
+      startCursor
+    }
+    nodes {
+      id
+      username
+      email
+      createdAt
+      posts(first: 3) {
+        nodes {
+          id
+          userId
+          title
+          body
+          published
+          publishedAt
+          user
+        }
+      }
+    }
+  }
+}
+",
+  "getUsersQueryAll": "query getUsersQueryAll {
+  users {
+    totalCount
+    nodes {
+      id
+      username
+      email
+      createdAt
+      posts(first: 3) {
+        nodes {
+          id
+          userId
+          title
+          body
+          published
+          publishedAt
+          user
+        }
+      }
+    }
+  }
+}
+",
+  "postFragment": "fragment postFragment on Post {
+  id
+  userId
+  title
+  body
+  published
+  publishedAt
+  user
+}
+",
+  "updatePostMutation": "mutation updatePostMutation($userId: Int, $title: String, $body: String, $published: Boolean, $publishedAt: Datetime) {
+  updatePost(
+    input: {id: $id, patch: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
+  ) {
+    post {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+    }
+  }
+}
+",
+  "updateUserByUsernameMutation": "mutation updateUserByUsernameMutation($username: String!, $email: String) {
+  updateUserByUsername(input: {username: $username, patch: {email: $email}}) {
+    user {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+}
+",
+  "updateUserMutation": "mutation updateUserMutation($username: String, $email: String) {
+  updateUser(input: {id: $id, patch: {username: $username, email: $email}}) {
+    user {
+      id
+      username
+      email
+      createdAt
+    }
+  }
+}
+",
+  "userFragment": "fragment userFragment on User {
+  id
+  username
+  email
+  createdAt
+  [object Object]
+}
+",
+}
+`;

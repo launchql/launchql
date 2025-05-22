@@ -29,6 +29,10 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "devDependencies": {
+    "pgsql-test": "^2.1.14",
+    "graphile-test": "^2.1.10"
+  },
   "dependencies": {
     "graphql-tag": "2.12.6"
   },
