@@ -24,7 +24,7 @@ afterAll(() => teardown());
 let introspection: IntrospectionQueryResult;
 
 beforeEach(async () => {
-  const res = await query(IntrospectionQuery);
+  const res = await query<IntrospectionQueryResult>(IntrospectionQuery);
 
   if (res.errors) {
     console.error(res.errors);

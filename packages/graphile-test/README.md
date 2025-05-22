@@ -56,8 +56,8 @@ afterEach(() => db.afterEach());
 afterAll(() => teardown());
 
 it('runs a GraphQL mutation', async () => {
-  const res = await query(`mutation { ... }`);
-  expect(res.errors).toBeUndefined();
+  const res = await query(`mutation { ... }`, { input: { ... } });
+  expect(res.data.createUser.username).toBe('alice');
 });
 ```
 
@@ -67,9 +67,15 @@ it('runs a GraphQL mutation', async () => {
 
 Returns an object with:
 
-* `query` – A GraphQL executor function: `query(gqlDoc, variables?)`
+* `query(gqlString, variables?)` – A GraphQL executor function with positional arguments
 * `db`, `pg` – `PgTestClient` instances
 * `teardown()` – Clean up temp DBs
+
+**Basic Usage:**
+```ts
+const result = await query(`mutation { ... }`, { input: { ... } });
+expect(result.data.createUser.username).toBe('alice');
+```
 
 ### `PgTestClient`
 
@@ -86,16 +92,89 @@ Supports:
 ### GraphQL mutation + snapshot
 
 ```ts
-const res = await query(MY_MUTATION, { input: { ... } });
-expect(snapshot(res)).toMatchSnapshot();
+const res = await query(`mutation { ... }`, { input: { ... } });
+expect(snapshot(res.data)).toMatchSnapshot();
 ```
 
 ### RLS testing with role switch
 
 ```ts
 db.setContext({ role: 'anonymous' });
-const res = await query(MY_PROTECTED_QUERY);
+const res = await query(`query { ... }`);
 expect(res.errors[0].message).toMatch(/permission denied/);
+```
+
+### Typed queries for better safety
+
+```ts
+interface CreateUserVariables {
+  input: {
+    user: {
+      username: string;
+    };
+  };
+}
+
+interface CreateUserResult {
+  createUser: {
+    user: {
+      id: number;
+      username: string;
+    };
+  };
+}
+
+const res = await query<CreateUserResult>(`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      user {
+        id
+        username
+      }
+    }
+  }
+`, { input: { user: { username: 'alice' } } });
+
+expect(res.data.createUser.user.username).toBe('alice');
+```
+
+## 🔧 Advanced Connection Options
+
+For specific testing needs, additional connection functions are available:
+
+### Error Handling Variants
+- `getConnectionsUnwrapped()` – Automatically throws on GraphQL errors, returns data directly
+
+### Debugging Variants  
+- `getConnectionsWithLogging()` – Logs all queries and responses
+- `getConnectionsWithTiming()` – Times query execution
+
+### Object-Based API
+- `getConnectionsObject()` – Uses `query({ query: "...", variables: {} })` syntax
+- `getConnectionsObjectUnwrapped()` – Object-based with automatic error throwing
+
+**Unwrapped Example (cleaner assertions):**
+```ts
+import { getConnectionsUnwrapped } from 'graphile-test';
+
+const { query } = await getConnectionsUnwrapped(config);
+
+// Throws automatically on GraphQL errors, returns data directly
+const result = await query(`mutation { ... }`, { input: { ... } });
+expect(result.createUser.username).toBe('alice'); // No .data needed!
+```
+
+**Object-Based Example:**
+```ts
+import { getConnectionsObject } from 'graphile-test';
+
+const { query } = await getConnectionsObject(config);
+
+const result = await query({ 
+  query: `mutation { ... }`, 
+  variables: { input: { ... } } 
+});
+expect(result.data.createUser.username).toBe('alice');
 ```
 
 ## 🧱 Under the Hood
@@ -108,6 +187,8 @@ expect(res.errors[0].message).toMatch(/permission denied/);
 * Always wrap tests with `beforeEach` / `afterEach`.
 * Use `snapshot()` to track GraphQL result changes.
 * Use `useRoot: true` to test schema visibility without RLS.
+* Start with `getConnections()` for most use cases.
+* Consider `getConnectionsUnwrapped()` for cleaner test assertions.
 
 ## Related LaunchQL Tooling
 
