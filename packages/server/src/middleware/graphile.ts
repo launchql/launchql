@@ -14,11 +14,21 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
       const key = req.svc_key;
       const { dbname } = api;
       const { anonRole, roleName } = api;
-
-      const { schemaNamesFromExt, schemaNames } = api;
-      const schemas = []
-        .concat(schemaNamesFromExt.nodes.map(({ schemaName }: any) => schemaName))
-        .concat(schemaNames.nodes.map(({ schemaName }: any) => schemaName));
+      
+      let schemas = [];
+      
+      if (api.schemaNamesFromExt && api.schemaNamesFromExt.nodes) {
+        schemas = schemas.concat(api.schemaNamesFromExt.nodes.map(({ schemaName }: any) => schemaName));
+      }
+      
+      if (api.schemaNames && api.schemaNames.nodes) {
+        schemas = schemas.concat(api.schemaNames.nodes.map(({ schemaName }: any) => schemaName));
+      }
+      
+      if (schemas.length === 0 && lOpts.graphile?.schema) {
+        const directSchemas = lOpts.graphile.schema;
+        schemas = Array.isArray(directSchemas) ? directSchemas : [directSchemas];
+      }
 
       if (graphileCache.has(key)) {
         const { handler } = graphileCache.get(key)!

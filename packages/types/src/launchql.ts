@@ -81,6 +81,14 @@ export interface LaunchQLOptions {
         trustProxy?: boolean;
         origin?: string;
         strictAuth?: boolean;
+        middleware?: {
+            useMetaApi?: boolean;
+            useAuth?: boolean;
+            useCors?: boolean;
+            useGraphile?: boolean;
+            useFlush?: boolean;
+            customMiddleware?: any[];
+        };
     };
     features?: {
         simpleInflection?: boolean;
@@ -130,6 +138,14 @@ export const launchqlDefaults: LaunchQLOptions = {
         port: 3000,
         trustProxy: false,
         strictAuth: false,
+        middleware: {
+            useMetaApi: true,
+            useAuth: true,
+            useCors: true,
+            useGraphile: true,
+            useFlush: true,
+            customMiddleware: []
+        }
     },
     features: {
         simpleInflection: true,
