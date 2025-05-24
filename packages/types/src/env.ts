@@ -132,3 +132,11 @@ export function getSpawnEnvWithPg(
     ...toPgEnvVars(config)
   };
 }
+
+type NodeEnv = 'development' | 'production' | 'test';
+
+export const getNodeEnv = (): NodeEnv => {
+  const env = process.env.NODE_ENV?.toLowerCase();
+  if (env === 'production' || env === 'test') return env;
+  return 'development';
+};

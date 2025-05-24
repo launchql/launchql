@@ -104,3 +104,25 @@ export const ApiByNameQuery = gql`
     }
   }
 `;
+
+export const ListOfAllDomainsOfDb = gql`
+  query ListApisByDatabaseId {
+    apis {
+      nodes {
+        id
+        databaseId
+        name
+        dbname
+        roleName
+        anonRole
+        isPublic
+        domains {
+          nodes {
+            domain
+            subdomain
+          }
+        }
+      }
+    }
+  }
+`;
