@@ -1,11 +1,21 @@
 import { getGraphileSettings } from 'graphile-settings';
 import { GraphileQuery, getSchema } from 'graphile-query';
-import { ApiQuery, ApiByNameQuery } from './gql';
+import { ApiQuery, ApiByNameQuery, ListOfAllDomainsOfDb } from './gql';
 import { svcCache, getRootPgPool } from '@launchql/server-utils';
-import errorPage404 from '../errors/404';
+import { getNodeEnv } from '@launchql/types';
+import errorPage404Message from '../errors/404-message';
 import errorPage50x from '../errors/50x';
 import { LaunchQLOptions } from '@launchql/types';
-import { Response, NextFunction } from 'express';
+import { Response, Request, NextFunction } from 'express';
+import { Pool } from 'pg';
+
+const getPortFromRequest = (req: Request): string | null => {
+  const host = req.headers.host;
+  if (!host) return null;
+
+  const parts = host.split(':');
+  return parts.length === 2 ? `:${parts[1]}` : null;
+};
 
 export const getSubdomain = (reqDomains: string[]): string | null => {
   const names = reqDomains.filter((name) => !['www'].includes(name));
@@ -16,16 +26,22 @@ export const createApiMiddleware = (opts: LaunchQLOptions) => {
   return async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
       const svc = await getApiConfig(opts, req);
-      if (!svc) {
-        res.status(404).send(errorPage404);
+
+      if (svc?.errorHtml) {
+        res.status(404).send(errorPage404Message('API not found', svc.errorHtml));
+        return;
+      } else if (!svc) {
+        res.status(404).send(errorPage404Message('API service not found for the given domain/subdomain.'));
         return;
       }
       req.apiInfo = svc;
       req.databaseId = svc.data.api.databaseId;
       next();
     } catch (e: any) {
-      if (e.message.match(/does not exist/)) {
-        res.status(404).send(errorPage404);
+      if (e.code === 'NO_VALID_SCHEMAS') {
+        res.status(404).send(errorPage404Message(e.message));
+      } else if (e.message.match(/does not exist/)) {
+        res.status(404).send(errorPage404Message('The resource you’re looking for does not exist.'));
       } else {
         console.error(e);
         res.status(500).send(errorPage50x);
@@ -115,14 +131,11 @@ const queryServiceByDomainAndSubdomain = async ({
   domain: string;
   subdomain: string;
 }): Promise<any> => {
-
   const result = await client.query({
     role: 'administrator',
     query: ApiQuery,
     variables: { domain, subdomain }
   });
-
-  console.log(JSON.stringify(result, null, 2));
 
   if (result.errors?.length) {
     console.error(result.errors);
@@ -137,6 +150,7 @@ const queryServiceByDomainAndSubdomain = async ({
     svcCache.set(key, svc);
     return svc;
   }
+
   return null;
 };
 
@@ -194,27 +208,43 @@ const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
   return key;
 };
 
-export const getApiConfig = async (opts: LaunchQLOptions, req: any): Promise<any> => {
+const validateSchemata = async (pool: Pool, schemata: string[]): Promise<string[]> => {
+  const result = await pool.query(
+    `SELECT schema_name FROM information_schema.schemata WHERE schema_name = ANY($1::text[])`,
+    [schemata]
+  );
+  return result.rows.map(row => row.schema_name);
+};
+
+export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise<any> => {
   const rootPgPool = getRootPgPool(opts.pg);
+  // @ts-ignore
   const subdomain = getSubdomain(req.urlDomains.subdomains);
-  const domain = req.urlDomains.domain;
+  const domain: string = req.urlDomains.domain as string;
 
   const key = getSvcKey(opts, req);
   req.svc_key = key;
-
-  const schemata = opts.graphile.metaSchemas
 
   let svc;
   if (svcCache.has(key)) {
     svc = svcCache.get(key);
   } else {
+    const allSchemata = opts.graphile.metaSchemas || [];
+    const validatedSchemata = await validateSchemata(rootPgPool, allSchemata);
+
+    if (validatedSchemata.length === 0) {
+      const message = `No valid schemas found for domain: ${domain}, subdomain: ${subdomain}`;
+      const error: any = new Error(message);
+      error.code = 'NO_VALID_SCHEMAS';
+      throw error;
+    }
+
     const settings = getGraphileSettings({
       graphile: {
-        schema: schemata
+        schema: validatedSchemata
       }
     });
 
-    console.log('remove THESE ignores!!!');
     // @ts-ignore
     const schema = await getSchema(rootPgPool, settings);
     // @ts-ignore
@@ -259,6 +289,57 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: any): Promise<any
         domain,
         subdomain
       });
+
+      if (!svc) {
+        if (getNodeEnv() === 'development') {
+
+          // TODO ONLY DO THIS IN DEV MODE
+          const fallbackResult = await client.query({
+            role: 'administrator',
+            // @ts-ignore
+            query: ListOfAllDomainsOfDb,
+            // variables: { databaseId }
+          });
+
+          if (!fallbackResult.errors?.length && fallbackResult.data?.apis?.nodes?.length) {
+            const port = getPortFromRequest(req);
+
+            const allDomains = fallbackResult.data.apis.nodes.flatMap((api: any) =>
+              api.domains.nodes.map((d: any) => ({
+                domain: d.domain,
+                subdomain: d.subdomain,
+                href: d.subdomain
+                  ? `http://${d.subdomain}.${d.domain}${port}/graphiql`
+                  : `http://${d.domain}${port}/graphiql`
+              }))
+
+            );
+
+            const linksHtml = allDomains.length
+              ? `<ul class="mt-4 pl-5 list-disc space-y-1">` +
+              allDomains
+                .map(
+                  (d: any) =>
+                    `<li><a href="${d.href}" class="text-brand hover:underline">${d.href}</a></li>`
+                )
+                .join('') +
+              `</ul>`
+              : `<p class="text-gray-600">No APIs are currently registered for this database.</p>`;
+
+            const errorHtml = `
+          <p class="text-sm text-gray-700">Try some of these:</p>
+          <div class="mt-4">
+            ${linksHtml}
+          </div>
+        `.trim();
+
+            return {
+              errorHtml
+            };
+          }
+        }
+      }
+
     }
   }
   return svc;
