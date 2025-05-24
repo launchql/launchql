@@ -1,7 +1,7 @@
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
 import { execSync } from 'child_process';
 
-import { LaunchQLProject, sluggify } from '@launchql/migrate';
+import { LaunchQLProject, sluggify } from '@launchql/core';
 import { errors } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
 

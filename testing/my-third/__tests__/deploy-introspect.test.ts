@@ -1,4 +1,4 @@
-import { deployFast, LaunchQLProject } from '@launchql/migrate';
+import { deployFast, LaunchQLProject } from '@launchql/core';
 import { getEnvOptions } from '@launchql/types';
 import { getRootPgPool } from '@launchql/server-utils';
 import { randomUUID } from 'crypto';

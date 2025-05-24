@@ -60,7 +60,7 @@
     "@types/pg-copy-streams": "^1.2.5"
   },
   "dependencies": {
-    "@launchql/migrate": "^2.1.14",
+    "@launchql/core": "^2.1.14",
     "@launchql/server-utils": "^2.1.9",
     "@launchql/types": "^2.1.7",
     "chalk": "^4.1.0",

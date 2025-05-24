@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { commands } from '../src/commands';
 import { ParsedArgs } from 'minimist';
-import { LaunchQLProject } from '@launchql/migrate';
+import { LaunchQLProject } from '@launchql/core';
 
 const beforeEachSetup = setupTests();
 

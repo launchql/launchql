@@ -1,5 +1,5 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { LaunchQLProject } from '@launchql/migrate';
+import { LaunchQLProject } from '@launchql/core';
 import { Logger } from '@launchql/server-utils';
 
 const log = new Logger('plan');

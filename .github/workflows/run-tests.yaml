@@ -67,8 +67,8 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: password
 
-      - name: launchql/migrate
-        run: cd ./packages/migrate && yarn test
+      - name: launchql/core
+        run: cd ./packages/core && yarn test
 
       - name: launchql/cli
         run: cd ./packages/cli && yarn test
