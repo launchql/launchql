@@ -1,7 +1,7 @@
 import { LaunchQLServer as server } from '@launchql/server';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { getRootPgPool, Logger } from '@launchql/server-utils';
 
 const log = new Logger('server');
 
@@ -37,16 +37,7 @@ const questions: Question[] = [
     required: false,
     default: 5555,
     useDefault: true
-  },
-//   {
-//     name: 'origin',
-//     message: chalk.cyan('CORS origin URL'),
-//     type: 'text',
-//     // alias: 'o',
-//     required: false,
-//     default: 'http://localhost:3000',
-//     useDefault: true
-//   }
+  }
 ];
 
 export default async (
@@ -56,6 +47,32 @@ export default async (
 ) => {
   log.info('🔧 LaunchQL Server Configuration:\n');
 
+  let selectedDb: string | undefined = process.env.PGDATABASE;
+
+  if (!selectedDb) {
+    const db = await getRootPgPool({ database: 'postgres' });
+    const result = await db.query(`
+      SELECT datname FROM pg_database
+      WHERE datistemplate = false AND datname NOT IN ('postgres')
+        AND datname !~ '^pg_'
+      ORDER BY datname;
+    `);
+
+    const dbChoices = result.rows.map(row => row.datname);
+    const { database } = await prompter.prompt(argv, [
+      {
+        type: 'autocomplete',
+        name: 'database',
+        message: 'Select the database to use',
+        options: dbChoices,
+        required: true
+      }
+    ]);
+
+    selectedDb = database;
+    log.info(`📌 Using database: "${selectedDb}"`);
+  }
+
   const {
     oppositeBaseNames,
     port,
@@ -64,6 +81,7 @@ export default async (
   } = await prompter.prompt(argv, questions);
 
   const options: LaunchQLOptions = getEnvOptions({
+    pg: { database: selectedDb },
     features: {
       oppositeBaseNames,
       simpleInflection,
