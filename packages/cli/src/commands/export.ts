@@ -1,5 +1,5 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
-import { LaunchQLProject, exportMigrations } from '@launchql/migrate';
+import { LaunchQLProject, exportMigrations } from '@launchql/core';
 import { getEnvOptions } from '@launchql/types';
 import { resolve } from 'path';
 import { execSync } from 'child_process';

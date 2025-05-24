@@ -1,5 +1,5 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { LaunchQLProject, writePackage } from '@launchql/migrate';
+import { LaunchQLProject, writePackage } from '@launchql/core';
 import chalk from 'chalk';
 
 export default async (

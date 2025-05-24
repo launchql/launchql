@@ -9,10 +9,10 @@ import {
   LaunchQLOptions
 } from '@launchql/types';
 
-import { deploy, deployFast } from '@launchql/migrate';
+import { deploy, deployFast } from '@launchql/core';
 import { Logger } from '@launchql/server-utils';
 import { execSync } from 'child_process';
-import { LaunchQLProject } from '@launchql/migrate';
+import { LaunchQLProject } from '@launchql/core';
 
 export default async (
   argv: Partial<ParsedArgs>,

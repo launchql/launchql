@@ -1,4 +1,4 @@
-import { deployStream, LaunchQLProject } from '@launchql/migrate';
+import { deployStream, LaunchQLProject } from '@launchql/core';
 import { resolve } from 'path';
 import { getEnvOptions } from '@launchql/types';
 import { randomUUID } from 'crypto';

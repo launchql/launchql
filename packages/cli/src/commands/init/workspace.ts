@@ -3,7 +3,7 @@ import path from 'path';
 import { mkdirSync } from 'fs';
 
 import { writeRenderedTemplates, workspaceTemplate } from '@launchql/templatizer';
-import { sluggify } from '@launchql/migrate';
+import { sluggify } from '@launchql/core';
 import { Logger } from '@launchql/server-utils';
 
 const log = new Logger('workspace-init');

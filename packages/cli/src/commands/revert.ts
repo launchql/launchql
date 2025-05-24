@@ -1,6 +1,6 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { exec } from 'shelljs';
-import { listModules, revert } from '@launchql/migrate';
+import { listModules, revert } from '@launchql/core';
 import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
 

@@ -1,6 +1,6 @@
 import { SeedAdapter, SeedContext } from './types';
 import { getEnvOptions } from '@launchql/types';
-import { LaunchQLProject, deploy } from '@launchql/migrate';
+import { LaunchQLProject, deploy } from '@launchql/core';
 
 export function sqitch(cwd?: string): SeedAdapter {
   return {
