@@ -1,17 +1,11 @@
 import fs from 'fs';
-import os from 'os';
 import path from 'path';
 import { LaunchQLProject } from '../src/class/launchql';
-
-const fixture = (name: string) =>
-  path.resolve(__dirname, '../../..', '__fixtures__', 'sqitch', name);
+import { TestFixture } from '../test-utils';
 
 it('writes module metadata files without modifying fixture', async () => {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-test-'));
-  const src = path.join(fixture('launchql'), 'packages', 'secrets');
-  const dst = path.join(tempRoot, 'secrets');
-
-  fs.cpSync(src, dst, { recursive: true }); // copy module to temp dir
+  const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
+  const dst = fixture.tempFixtureDir;
 
   const project = new LaunchQLProject(dst);
 
@@ -25,8 +19,10 @@ it('writes module metadata files without modifying fixture', async () => {
   );
   const makefile = fs.readFileSync(path.join(dst, 'Makefile'), 'utf8');
 
-  expect(controlFile).toContain('requires = \'plpgsql,uuid-ossp,airpage,launchql,cosmology\'');
+  expect(controlFile).toContain(
+    "requires = 'plpgsql,uuid-ossp,airpage,launchql,cosmology'"
+  );
   expect(makefile).toContain('EXTENSION = secrets');
 
-  fs.rmSync(tempRoot, { recursive: true, force: true }); // cleanup
+  fixture.cleanup();
 });

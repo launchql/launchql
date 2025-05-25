@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import { spawn } from 'child_process';
-import pg from 'pg';
 
 import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { LaunchQLProject } from '../class/launchql';

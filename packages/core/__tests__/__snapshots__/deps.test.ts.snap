@@ -46,7 +46,7 @@ exports[`sqitch package dependencies [simple/2nd] 1`] = `
 }
 `;
 
-exports[`sqitch package dependencies [simple/3nd] 1`] = `
+exports[`sqitch package dependencies [simple/3rd] 1`] = `
 {
   "deps": {
     "/deploy/create_schema.sql": [

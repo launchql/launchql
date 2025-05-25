@@ -1,6 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getModuleExtensions 1`] = `
+exports[`getModuleDependencies for my-third 1`] = `
+{
+  "modules": [
+    "my-second",
+  ],
+  "native": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+}
+`;
+
+exports[`getModuleExtensions for my-first 1`] = `
 {
   "external": [
     "citext",
@@ -16,7 +29,7 @@ exports[`getModuleExtensions 1`] = `
 }
 `;
 
-exports[`getModuleExtensions 2nd 1`] = `
+exports[`getModuleExtensions for my-second 1`] = `
 {
   "external": [
     "citext",
@@ -33,7 +46,7 @@ exports[`getModuleExtensions 2nd 1`] = `
 }
 `;
 
-exports[`getModuleExtensions 3rd 1`] = `
+exports[`getModuleExtensions for my-third 1`] = `
 {
   "external": [
     "citext",
@@ -47,19 +60,6 @@ exports[`getModuleExtensions 3rd 1`] = `
     "my-first",
     "my-second",
     "my-third",
-  ],
-}
-`;
-
-exports[`getModuleExtensions 3rd 2`] = `
-{
-  "modules": [
-    "my-second",
-  ],
-  "native": [
-    "citext",
-    "plpgsql",
-    "pgcrypto",
   ],
 }
 `;

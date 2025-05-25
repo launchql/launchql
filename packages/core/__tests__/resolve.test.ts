@@ -1,9 +1,15 @@
-import { join } from 'path';
-
 import { resolve, resolveWithPlan } from '../src/resolve';
-import { FIXTURES_PATH } from '../test-utils';
+import { TestFixture } from '../test-utils';
 
-const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/resolve');
+let baseFixture: TestFixture;
+
+beforeAll(() => {
+  baseFixture = new TestFixture('sqitch', 'resolve');
+});
+
+afterAll(() => {
+  baseFixture.cleanup();
+});
 
 const expectResult = `-- Deploy schemas/myschema/schema to pg
 
@@ -30,7 +36,7 @@ describe('resolve tests', () => {
     let failed = false;
 
     try {
-      await resolve(join(PROJECT_PATH, 'error-case'));
+      await resolve(baseFixture.getFixturePath('error-case'));
     } catch (e: unknown) {
       if (e instanceof Error) {
         expect(e.message).toBe('Internal module not found: schemas/myschema/somethingdoesntexist');
@@ -47,7 +53,7 @@ describe('resolve tests', () => {
     let failed = false;
 
     try {
-      await resolve(join(PROJECT_PATH, 'circular'));
+      await resolve(baseFixture.getFixturePath('circular'));
     } catch (e: unknown) {
       if (e instanceof Error) {
         expect(e.message).toBe(
@@ -66,7 +72,7 @@ describe('resolve tests', () => {
     let failed = false;
 
     try {
-      await resolve(join(PROJECT_PATH, 'invalid'));
+      await resolve(baseFixture.getFixturePath('invalid'));
     } catch (e: unknown) {
       if (e instanceof Error) {
         expect(e.message).toBe(
@@ -83,7 +89,7 @@ describe('resolve tests', () => {
   });
 
   it('resolves SQL in proper order', async () => {
-    const sql = await resolve(join(PROJECT_PATH, 'basic'));
+    const sql = await resolve(baseFixture.getFixturePath('basic'));
     expect(sql).toBeTruthy();
     expect(sql.trim()).toBe(expectResult);
   });
@@ -91,7 +97,7 @@ describe('resolve tests', () => {
   it('resolves SQL in proper order using cwd()', async () => {
     const originalDir = process.cwd();
     try {
-      process.chdir(join(PROJECT_PATH, 'basic'));
+      process.chdir(baseFixture.getFixturePath('basic'));
       const sql = await resolve();
       expect(sql).toBeTruthy();
       expect(sql.trim()).toBe(expectResult);
@@ -103,7 +109,7 @@ describe('resolve tests', () => {
   it('resolves SQL in plan order', async () => {
     const originalDir = process.cwd();
     try {
-      process.chdir(join(PROJECT_PATH, 'basic'));
+      process.chdir(baseFixture.getFixturePath('basic'));
       const sql = await resolveWithPlan();
       expect(sql).toBeTruthy();
       expect(sql.trim()).toBe(expectResult);

@@ -1,38 +1,19 @@
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
 import { LaunchQLProject } from '../src/class/launchql';
+import { TestFixture } from '../test-utils';
 
-const FIXTURE_ROOT = path.resolve(__dirname, '../../..', '__fixtures__', 'sqitch', 'launchql');
-
-let tempRoot: string;
+let fixture: TestFixture;
 
 beforeEach(() => {
-  tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-test-'));
-  fs.cpSync(FIXTURE_ROOT, tempRoot, { recursive: true });
+  fixture = new TestFixture('sqitch', 'launchql');
 });
 
 afterEach(() => {
-  if (tempRoot && fs.existsSync(tempRoot)) {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
+  fixture.cleanup();
 });
-
-const getModuleProject = async (name: string): Promise<LaunchQLProject> => {
-  const workspace = new LaunchQLProject(tempRoot);
-
-  const moduleMap = workspace.getModuleMap();
-  const meta = moduleMap[name];
-  if (!meta) throw new Error(`Module ${name} not found in workspace`);
-
-  const modPath = path.join(tempRoot, meta.path);
-  const mod = new LaunchQLProject(modPath);
-  return mod;
-};
 
 describe('LaunchQLProject.writeModulePlan', () => {
   it('writes a clean plan to disk for a module (no projects)', async () => {
-    const mod = await getModuleProject('secrets');
+    const mod = fixture.getModuleProject(['.'], 'secrets');
     await mod.writeModulePlan({ projects: false });
 
     const plan = mod.getModulePlan();
@@ -40,7 +21,7 @@ describe('LaunchQLProject.writeModulePlan', () => {
   });
 
   it('writes a clean plan to disk for a module (with projects)', async () => {
-    const mod = await getModuleProject('secrets');
+    const mod = fixture.getModuleProject(['.'], 'secrets');
     await mod.writeModulePlan({ projects: true });
 
     const plan = mod.getModulePlan();
@@ -48,7 +29,7 @@ describe('LaunchQLProject.writeModulePlan', () => {
   });
 
   it('writes a plan for a dependency-heavy module (totp)', async () => {
-    const mod = await getModuleProject('totp');
+    const mod = fixture.getModuleProject(['.'], 'totp');
     await mod.writeModulePlan({ projects: true });
 
     const plan = mod.getModulePlan();
@@ -57,27 +38,20 @@ describe('LaunchQLProject.writeModulePlan', () => {
   });
 
   it('writes a plan with project references (utils)', async () => {
-    const mod = await getModuleProject('pg-verify');
+    const mod = fixture.getModuleProject(['.'], 'pg-verify');
 
     mod.setModuleDependencies(['some-native-module', 'pg-utilities']);
-
     await mod.writeModulePlan({ projects: true });
 
-    const plan = mod.getModulePlan();
-    const required = mod.getRequiredModules();
-    const deps = mod.getModuleDependencies('pg-verify');
-    const make = mod.getModuleMakefile();
-    const ctrl = mod.getModuleControlFile();
+    const result = {
+      plan: mod.getModulePlan(),
+      required: mod.getRequiredModules(),
+      deps: mod.getModuleDependencies('pg-verify'),
+      make: mod.getModuleMakefile(),
+      ctrl: mod.getModuleControlFile()
+    };
 
-    expect({
-        plan,
-        required,
-        deps,
-        make,
-        ctrl
-    }).toMatchSnapshot();
-
-    expect(plan).toContain('[pg-utilities:procedures/tg_update_timestamps]');
-    expect(plan).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
+    expect(result.plan).toContain('[pg-utilities:procedures/tg_update_timestamps]');
   });
 });

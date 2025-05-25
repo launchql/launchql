@@ -1,35 +1,20 @@
-import path from 'path';
-import { LaunchQLProject } from '../src/class/launchql';
+import { cleanText, TestFixture } from '../test-utils';
 
-const fixture = (p: string[]) =>
-  path.resolve(__dirname, '../../..', '__fixtures__', 'sqitch', ...p);
+let fixture: TestFixture;
 
-/**
- * Cleans up text by trimming lines, removing empty lines, and joining them.
- */
-const cleanText = (text: string): string =>
-  text
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
-    .join('\n');
+beforeAll(() => {
+  fixture = new TestFixture('sqitch');
+});
 
-const getModuleProject = (wrksps: string, name: string): LaunchQLProject => {
-  const workspace = new LaunchQLProject(fixture([wrksps]));
-
-  const moduleMap = workspace.getModuleMap();
-  const meta = moduleMap[name];
-  if (!meta) throw new Error(`Module ${name} not found in workspace`);
-
-  const modPath = fixture([wrksps, meta.path]);
-  const mod = new LaunchQLProject(modPath);
-  return mod;
-};
+afterAll(() => {
+  fixture.cleanup();
+});
 
 describe('sqitch modules', () => {
   it('should be able to create a plan', async () => {
-    const mod = getModuleProject('launchql', 'totp');
+    const mod = fixture.getModuleProject(['launchql'], 'totp');
     const plan = mod.generateModulePlan({ projects: false });
+
     expect(cleanText(plan)).toEqual(
       cleanText(`
 %syntax-version=1.0.0
@@ -40,8 +25,9 @@ procedures/generate_secret 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62>
   });
 
   it('should be able to create a plan with cross-project requires already in', async () => {
-    const mod = getModuleProject('launchql', 'utils');
+    const mod = fixture.getModuleProject(['launchql'], 'utils');
     const plan = mod.generateModulePlan({ projects: true });
+
     expect(cleanText(plan)).toMatchSnapshot();
     expect(plan).toEqual(
       cleanText(`
@@ -53,8 +39,9 @@ procedures/myfunction [totp:procedures/generate_secret pg-verify:procedures/veri
   });
 
   it('should create a plan without options for projects and lose dependencies', async () => {
-    const mod = getModuleProject('launchql', 'secrets');
+    const mod = fixture.getModuleProject(['launchql'], 'secrets');
     const plan = mod.generateModulePlan({ projects: false });
+
     expect(cleanText(plan)).toEqual(
       cleanText(`
 %syntax-version=1.0.0
@@ -66,8 +53,9 @@ procedures/secretfunction 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> 
   });
 
   it('should create a plan that references projects', async () => {
-    const mod = getModuleProject('launchql', 'secrets');
+    const mod = fixture.getModuleProject(['launchql'], 'secrets');
     const plan = mod.generateModulePlan({ projects: true });
+
     expect(cleanText(plan)).toEqual(
       cleanText(`
 %syntax-version=1.0.0
@@ -79,42 +67,43 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
   });
 
   it('can create a module plan using workspace.generateModulePlan()', async () => {
-    const mod = getModuleProject('launchql', 'totp');
+    const mod = fixture.getModuleProject(['launchql'], 'totp');
     const plan = mod.generateModulePlan({ projects: false });
-  
+
     expect(cleanText(plan)).toContain('%project=totp');
     expect(cleanText(plan)).toContain('procedures/generate_secret');
     expect(cleanText(plan)).toMatchSnapshot();
   });
 
   it('can create a module plan using workspace.generateModulePlan() w/projects', async () => {
-    const mod = getModuleProject('launchql', 'totp');
+    const mod = fixture.getModuleProject(['launchql'], 'totp');
     const plan = mod.generateModulePlan({ projects: true });
-  
+
     expect(cleanText(plan)).toContain('%project=totp');
     expect(cleanText(plan)).toContain('procedures/generate_secret');
     expect(cleanText(plan)).toMatchSnapshot();
   });
 
   it('ensures plan includes all resolved deploy steps', async () => {
-    const mod = getModuleProject('launchql', 'secrets');
+    const mod = fixture.getModuleProject(['launchql'], 'secrets');
     const plan = mod.generateModulePlan({ projects: false });
+
     expect(plan).toMatch(/add procedures\/secretfunction/);
     expect(cleanText(plan)).toMatchSnapshot();
   });
-  
+
   it('ensures plan includes all resolved deploy steps w/projects', async () => {
-    const mod = getModuleProject('launchql', 'secrets');
+    const mod = fixture.getModuleProject(['launchql'], 'secrets');
     const plan = mod.generateModulePlan({ projects: true });
+
     expect(plan).toMatch(/add procedures\/secretfunction/);
     expect(cleanText(plan)).toMatchSnapshot();
   });
 
   it('ensures simple plan', async () => {
-    const mod = getModuleProject('simple', 'my-first');
+    const mod = fixture.getModuleProject(['simple'], 'my-first');
     const plan = mod.generateModulePlan({ projects: true });
-    // expect(plan).toMatch(/add procedures\/secretfunction/);
+
     expect(plan).toMatchSnapshot();
   });
-  
 });

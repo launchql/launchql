@@ -1,14 +1,20 @@
-import { join } from 'path';
-
-import { extDeps, getDeps } from '../src/deps';
+import { TestFixture } from '../test-utils';
+import { getDeps, extDeps } from '../src/deps';
 import { listModules } from '../src/modules';
-import { FIXTURES_PATH } from '../test-utils';
 
-const fixture = (...subPaths: string[]) => join(FIXTURES_PATH, ...subPaths);
+let fixture: TestFixture;
+
+beforeAll(() => {
+  fixture = new TestFixture('sqitch');
+});
+
+afterAll(() => {
+  fixture.cleanup();
+});
 
 it('sqitch package dependencies [utils]', async () => {
   const res = await getDeps(
-    fixture('sqitch', 'launchql', 'packages', 'utils'),
+    fixture.getFixturePath('launchql', 'packages', 'utils'),
     'utils'
   );
   expect(res).toMatchSnapshot();
@@ -16,7 +22,7 @@ it('sqitch package dependencies [utils]', async () => {
 
 it('sqitch package dependencies [simple/1st]', async () => {
   const res = await getDeps(
-    fixture('sqitch', 'simple', 'packages', 'my-first'),
+    fixture.getFixturePath('simple', 'packages', 'my-first'),
     'my-first'
   );
   expect(res).toMatchSnapshot();
@@ -24,22 +30,22 @@ it('sqitch package dependencies [simple/1st]', async () => {
 
 it('sqitch package dependencies [simple/2nd]', async () => {
   const res = await getDeps(
-    fixture('sqitch', 'simple', 'packages', 'my-second'),
+    fixture.getFixturePath('simple', 'packages', 'my-second'),
     'my-second'
   );
   expect(res).toMatchSnapshot();
 });
 
-it('sqitch package dependencies [simple/3nd]', async () => {
+it('sqitch package dependencies [simple/3rd]', async () => {
   const res = await getDeps(
-    fixture('sqitch', 'simple', 'packages', 'my-third'),
+    fixture.getFixturePath('simple', 'packages', 'my-third'),
     'my-third'
   );
   expect(res).toMatchSnapshot();
 });
 
 it('launchql project extensions dependencies', async () => {
-  const modules = listModules(fixture('sqitch', 'launchql'));
+  const modules = listModules(fixture.getFixturePath('launchql'));
 
   const utils = await extDeps('utils', modules);
   expect(utils).toEqual({
