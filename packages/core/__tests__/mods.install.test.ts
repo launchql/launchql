@@ -25,7 +25,6 @@ describe('installModule()', () => {
             'extensions/@launchql/base32'
         );
 
-
         const files = glob.sync('**/*', {
             cwd: extDir,
             nodir: true
@@ -39,6 +38,9 @@ describe('installModule()', () => {
         );
         expect(pkgJson.dependencies).toBeDefined();
         expect(pkgJson.dependencies['@launchql/base32']).toBe('0.4.6');
+
+        const controlFileContent = mod.getModuleControlFile();
+        expect(controlFileContent).toMatchSnapshot();
     });
 
     it('throws if package.json does not exist in module', async () => {

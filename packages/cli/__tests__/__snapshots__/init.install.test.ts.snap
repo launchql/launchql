@@ -70,6 +70,17 @@ exports[`cmds:install - with initialized workspace and module installs a module 
 ]
 `;
 
+exports[`cmds:install - with initialized workspace and module installs a module package 3`] = `
+"# my-module extension
+comment = 'my-module extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/my-module'
+requires = 'launchql-base32,plpgsql,uuid-ossp'
+relocatable = false
+superuser = false
+  "
+`;
+
 exports[`cmds:install - with initialized workspace and module installs two modules 1`] = `
 {
   "author": "Dan Lynch <pyramation@gmail.com>",
@@ -108,4 +119,15 @@ exports[`cmds:install - with initialized workspace and module installs two modul
   "types": "index.d.ts",
   "version": "0.0.1",
 }
+`;
+
+exports[`cmds:install - with initialized workspace and module installs two modules 2`] = `
+"# my-module extension
+comment = 'my-module extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/my-module'
+requires = 'launchql-base32,launchql-utils,plpgsql,uuid-ossp'
+relocatable = false
+superuser = false
+  "
 `;

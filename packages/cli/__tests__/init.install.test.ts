@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { LaunchQLProject } from '@launchql/core';
 import { TestFixture } from '../test-utils';
 import * as glob from 'glob';
+import { LaunchQLProject } from '@launchql/core';
 
 function getExpectedFiles(pkg: string, version: string): string[] {
   const parts = pkg.split('/');
@@ -88,6 +88,11 @@ describe('cmds:install - with initialized workspace and module', () => {
     const relativeFiles = installedFiles.map(f => path.relative(moduleDir, f));
     expect(relativeFiles).toMatchSnapshot();
     expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg, version)));
+
+    // Snapshot control file
+    const mod = new LaunchQLProject(moduleDir);
+    const controlFile = mod.getModuleControlFile();
+    expect(controlFile).toMatchSnapshot();
   });
 
   it('installs two modules', async () => {
@@ -126,5 +131,10 @@ describe('cmds:install - with initialized workspace and module', () => {
     for (const pkg of pkgs) {
       expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg.name, pkg.version)));
     }
+
+    // Snapshot control file after both installs
+    const mod = new LaunchQLProject(moduleDir);
+    const controlFile = mod.getModuleControlFile();
+    expect(controlFile).toMatchSnapshot();
   });
 });

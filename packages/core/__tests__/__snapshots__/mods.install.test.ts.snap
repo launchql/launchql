@@ -26,3 +26,14 @@ exports[`installModule() installs a package and updates package.json dependencie
   "verify/schemas/base32/schema.sql",
 ]
 `;
+
+exports[`installModule() installs a package and updates package.json dependencies 2`] = `
+"# totp extension
+comment = 'totp extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/totp'
+requires = 'launchql-base32,pgcrypto,plpgsql,uuid-ossp'
+relocatable = false
+superuser = false
+  "
+`;
