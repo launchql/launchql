@@ -13,6 +13,7 @@ import revert from './commands/revert';
 import init from './commands/init';
 import extension from './commands/extension';
 import plan from './commands/plan';
+import install from './commands/install';
 import _export from './commands/export';
 import _package from './commands/package';
 import kill from './commands/kill';
@@ -37,6 +38,7 @@ const commandMap: Record<string, Function> = {
   export: pgt(_export),
   package: pgt(_package),
   kill: pgt(kill),
+  install: pgt(install),
 
   // These manage their own connection lifecycles
   server,

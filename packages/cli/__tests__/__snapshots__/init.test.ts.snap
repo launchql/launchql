@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cmds:init initialize module 1`] = `
+exports[`cmds:init initializes module 1`] = `
 "# my-module extension
 comment = 'my-module extension'
 default_version = '0.0.1'
@@ -11,7 +11,7 @@ superuser = false
   "
 `;
 
-exports[`cmds:init initialize module: module-only - argv 1`] = `
+exports[`cmds:init initializes module: module-only - argv 1`] = `
 {
   "MODULENAME": "my-module",
   "_": [
@@ -26,7 +26,7 @@ exports[`cmds:init initialize module: module-only - argv 1`] = `
 }
 `;
 
-exports[`cmds:init initialize module: module-only - files 1`] = `
+exports[`cmds:init initializes module: module-only - files 1`] = `
 [
   ".eslintrc.json",
   ".gitignore",
@@ -57,7 +57,7 @@ exports[`cmds:init initialize module: module-only - files 1`] = `
 ]
 `;
 
-exports[`cmds:init initialize module: module-only - result 1`] = `
+exports[`cmds:init initializes module: module-only - result 1`] = `
 {
   "MODULENAME": "my-module",
   "_": [
@@ -72,9 +72,9 @@ exports[`cmds:init initialize module: module-only - result 1`] = `
 }
 `;
 
-exports[`cmds:init initialize module: module-only - transformResults 1`] = `[]`;
+exports[`cmds:init initializes module: module-only - transformResults 1`] = `[]`;
 
-exports[`cmds:init initialize module: module-only - writeResults 1`] = `[]`;
+exports[`cmds:init initializes module: module-only - writeResults 1`] = `[]`;
 
 exports[`cmds:init initializes workspace: workspace - argv 1`] = `
 {

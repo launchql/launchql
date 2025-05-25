@@ -1,9 +1,12 @@
 import fs, { writeFileSync } from 'fs';
-import path from 'path';
+import path, { dirname, join, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
 import { extDeps, getDeps } from '../deps';
 import chalk from 'chalk';
+import { parse } from 'parse-package-name';
+import os from 'os';
+import { Logger } from '@launchql/server-utils';
 
 import {
   writeRenderedTemplates,
@@ -29,6 +32,8 @@ import {
 } from '../extensions';
 import { execSync } from 'child_process';
 
+const logger = new Logger('launchql');
+
 function getUTCTimestamp(d: Date = new Date()): string {
   return (
     d.getUTCFullYear() +
@@ -41,10 +46,14 @@ function getUTCTimestamp(d: Date = new Date()): string {
   );
 }
 
+function sortObjectByKey<T extends Record<string, any>>(obj: T): T {
+  return Object.fromEntries(Object.entries(obj).sort(([a], [b]) => a.localeCompare(b))) as T;
+}
+
 const getNow = () =>
-process.env.NODE_ENV === 'test'
-  ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
-  : getUTCTimestamp(new Date());
+  process.env.NODE_ENV === 'test'
+    ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
+    : getUTCTimestamp(new Date());
 
 
 export enum ProjectContext {
@@ -332,45 +341,45 @@ export class LaunchQLProject {
 
     // Get raw dependencies and resolved list
     let { resolved, deps } = getDeps(this.cwd, moduleName);
-    
+
     // Helper to extract module name from a change reference
     const getModuleName = (change: string): string | null => {
       const colonIndex = change.indexOf(':');
       return colonIndex > 0 ? change.substring(0, colonIndex) : null;
     };
-    
+
     // Helper to determine if a change is truly from an external project
     const isExternalChange = (change: string): boolean => {
       const changeModule = getModuleName(change);
       return changeModule !== null && changeModule !== moduleName;
     };
-    
+
     // Helper to normalize change name (remove project prefix)
     const normalizeChangeName = (change: string): string => {
       return change.includes(':') ? change.split(':').pop() : change;
     };
-    
+
     // Clean up the resolved list to handle both formats
     const uniqueChangeNames = new Set<string>();
     const normalizedResolved: any[] = [];
-    
+
     // First, add local changes without prefixes
     resolved.forEach(change => {
       const normalized = normalizeChangeName(change);
-      
+
       // Skip if we've already added this change
       if (uniqueChangeNames.has(normalized)) return;
-      
+
       // Skip truly external changes - they should only be in dependencies
       if (isExternalChange(change)) return;
-      
+
       uniqueChangeNames.add(normalized);
       normalizedResolved.push(normalized);
     });
-    
+
     // Clean up the deps object
     const normalizedDeps: any = {};
-    
+
     // Process each deps entry
     Object.keys(deps).forEach(key => {
       // Normalize the key - strip "/deploy/" and ".sql" if present
@@ -381,19 +390,19 @@ export class LaunchQLProject {
       if (normalizedKey.endsWith('.sql')) {
         normalizedKey = normalizedKey.substring(0, normalizedKey.length - 4); // Remove ".sql"
       }
-      
+
       // Skip keys for truly external changes - we only want local changes as keys
       if (isExternalChange(normalizedKey)) return;
-      
+
       // Normalize the key for all changes, removing any same-project prefix
       const cleanKey = normalizeChangeName(normalizedKey);
-      
+
       // Build the standard key format for our normalized deps
       const standardKey = `/deploy/${cleanKey}.sql`;
-      
+
       // Initialize the dependencies array for this key if it doesn't exist
       normalizedDeps[standardKey] = normalizedDeps[standardKey] || [];
-      
+
       // Add dependencies, handling both formats
       const dependencies = deps[key] || [];
       dependencies.forEach(dep => {
@@ -411,21 +420,21 @@ export class LaunchQLProject {
         }
       });
     });
-    
+
     // Update with normalized versions
     resolved = normalizedResolved;
     deps = normalizedDeps;
-    
+
     // Process external dependencies if needed
     if (options.projects && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
       const external = depData.modules.map((m) => `${m.name}:${m.latest}`);
-      
+
       // Add external dependencies to the first change if there is one
       if (resolved.length > 0) {
         const firstKey = `/deploy/${resolved[0]}.sql`;
         deps[firstKey] = deps[firstKey] || [];
-        
+
         // Only add external deps that don't already exist
         external.forEach(ext => {
           if (!deps[firstKey].includes(ext)) {
@@ -438,18 +447,18 @@ export class LaunchQLProject {
     // For debugging - log the cleaned structures
     // console.log("CLEAN DEPS GRAPH", JSON.stringify(deps, null, 2));
     // console.log("CLEAN RES GRAPH", JSON.stringify(resolved, null, 2));
-    
+
     // Generate the plan with the cleaned structures
     resolved.forEach(res => {
       const key = `/deploy/${res}.sql`;
       const dependencies = deps[key] || [];
-      
+
       // Filter out dependencies that match the current change name
       // This prevents listing a change as dependent on itself
-      const filteredDeps = dependencies.filter(dep => 
+      const filteredDeps = dependencies.filter(dep =>
         normalizeChangeName(dep) !== res
       );
-      
+
       if (filteredDeps.length > 0) {
         planfile.push(
           `${res} [${filteredDeps.join(' ')}] ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
@@ -462,8 +471,8 @@ export class LaunchQLProject {
     });
 
     return planfile.join('\n');
-}
-  
+  }
+
   writeModulePlan(
     options: { uri?: string; projects?: boolean }
   ): void {
@@ -474,6 +483,136 @@ export class LaunchQLProject {
     const mod = moduleMap[name];
     const planPath = path.join(this.workspacePath!, mod.path, 'sqitch.plan');
     writeFileSync(planPath, plan);
+  }
+
+  // ──────────────── Packaging and npm ────────────────
+
+  publishToDist(distFolder: string = 'dist'): void {
+    this.ensureModule();
+
+    const modPath = this.modulePath!; // use modulePath, not cwd
+    const name = this.getModuleName();
+    const controlFile = `${name}.control`;
+    const fullDist = path.join(modPath, distFolder);
+
+    if (fs.existsSync(fullDist)) {
+      fs.rmSync(fullDist, { recursive: true, force: true });
+    }
+
+    fs.mkdirSync(fullDist, { recursive: true });
+
+    const folders = ['deploy', 'revert', 'sql', 'verify'];
+    const files = ['Makefile', 'package.json', 'sqitch.conf', 'sqitch.plan', controlFile];
+
+
+    // Add README file regardless of casing
+    const readmeFile = fs.readdirSync(modPath).find(f => /^readme\.md$/i.test(f));
+    if (readmeFile) {
+      files.push(readmeFile); // Include it in the list of files to copy
+    }
+
+    for (const folder of folders) {
+      const src = path.join(modPath, folder);
+      if (fs.existsSync(src)) {
+        fs.cpSync(src, path.join(fullDist, folder), { recursive: true });
+      }
+    }
+
+    for (const file of files) {
+      const src = path.join(modPath, file);
+      if (!fs.existsSync(src)) {
+        throw new Error(`Missing required file: ${file}`);
+      }
+      fs.cpSync(src, path.join(fullDist, file));
+    }
+  }
+
+  /**
+    * Installs an extension npm package into the local skitch extensions directory,
+    * and automatically adds it to the current module’s package.json dependencies.
+    */
+
+
+  async installModules(...pkgstrs: string[]): Promise<void> {
+    this.ensureWorkspace();
+    this.ensureModule();
+  
+    const originalDir = process.cwd();
+    const skitchExtDir = path.join(this.workspacePath!, 'extensions');
+    const pkgJsonPath = path.join(this.modulePath!, 'package.json');
+  
+    if (!fs.existsSync(pkgJsonPath)) {
+      throw new Error(`No package.json found at module path: ${this.modulePath}`);
+    }
+  
+    const pkgData = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+    pkgData.dependencies = pkgData.dependencies || {};
+  
+    const newlyAdded: string[] = [];
+  
+    for (const pkgstr of pkgstrs) {
+      const { name } = parse(pkgstr);
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lql-install-'));
+  
+      try {
+        process.chdir(tempDir);
+        execSync(`npm install ${pkgstr} --production --prefix ./extensions`, {
+          stdio: 'inherit'
+        });
+  
+        const matches = glob.sync('./extensions/**/sqitch.conf');
+        const installs = matches.map((conf) => {
+          const fullConf = resolve(conf);
+          const extDir = dirname(fullConf);
+          const relativeDir = extDir.split('node_modules/')[1];
+          const dstDir = path.join(skitchExtDir, relativeDir);
+          return { src: extDir, dst: dstDir, pkg: relativeDir };
+        });
+  
+        for (const { src, dst, pkg } of installs) {
+          if (fs.existsSync(dst)) {
+            fs.rmSync(dst, { recursive: true, force: true });
+          }
+  
+          fs.mkdirSync(path.dirname(dst), { recursive: true });
+          execSync(`mv "${src}" "${dst}"`);
+          logger.success(`✔ installed ${pkg}`);
+  
+          const pkgJsonFile = path.join(dst, 'package.json');
+          if (!fs.existsSync(pkgJsonFile)) {
+            throw new Error(`Missing package.json in installed extension: ${dst}`);
+          }
+  
+          const { version } = JSON.parse(fs.readFileSync(pkgJsonFile, 'utf-8'));
+          pkgData.dependencies[name] = `${version}`;
+  
+          const extensionName = getExtensionName(dst);
+          newlyAdded.push(extensionName);
+        }
+  
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+        process.chdir(originalDir);
+      }
+    }
+  
+    const { dependencies, devDependencies, ...rest } = pkgData;
+    const finalPkgData: Record<string, any> = { ...rest };
+  
+    if (dependencies) {
+      finalPkgData.dependencies = sortObjectByKey(dependencies);
+    }
+    if (devDependencies) {
+      finalPkgData.devDependencies = sortObjectByKey(devDependencies);
+    }
+  
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(finalPkgData, null, 2));
+    logger.success(`📦 Updated package.json with: ${pkgstrs.join(', ')}`);
+  
+    // ─── Update .control file with actual extension names ──────────────
+    const currentDeps = this.getRequiredModules();
+    const updatedDeps = Array.from(new Set([...currentDeps, ...newlyAdded])).sort();
+    writeExtensions(this.modulePath!, updatedDeps);
   }
 
 }

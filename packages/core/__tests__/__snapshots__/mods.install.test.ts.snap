@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`installModule() installs a package and updates package.json dependencies 1`] = `
+[
+  "LICENSE",
+  "Makefile",
+  "deploy/schemas/base32/procedures/decode.sql",
+  "deploy/schemas/base32/procedures/encode.sql",
+  "deploy/schemas/base32/schema.sql",
+  "launchql-base32.control",
+  "package.json",
+  "readme.md",
+  "revert/schemas/base32/procedures/decode.sql",
+  "revert/schemas/base32/procedures/encode.sql",
+  "revert/schemas/base32/schema.sql",
+  "sqitch.conf",
+  "sqitch.plan",
+  "sql/launchql-base32--0.4.6.sql",
+  "test/__snapshots__/base32.decode.test.js.snap",
+  "test/__snapshots__/base32.encode.test.js.snap",
+  "test/base32.decode.test.js",
+  "test/base32.encode.test.js",
+  "test/utils/index.js",
+  "verify/schemas/base32/procedures/decode.sql",
+  "verify/schemas/base32/procedures/encode.sql",
+  "verify/schemas/base32/schema.sql",
+]
+`;
+
+exports[`installModule() installs a package and updates package.json dependencies 2`] = `
+"# totp extension
+comment = 'totp extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/totp'
+requires = 'launchql-base32,pgcrypto,plpgsql,uuid-ossp'
+relocatable = false
+superuser = false
+  "
+`;

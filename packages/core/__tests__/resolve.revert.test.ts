@@ -1,9 +1,15 @@
-import { join } from 'path';
-
+import { TestFixture } from '../test-utils';
 import { resolve } from '../src/resolve';
-import { FIXTURES_PATH } from '../test-utils';
 
-const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/resolve/basic');
+let fixture: TestFixture;
+
+beforeAll(() => {
+  fixture = new TestFixture('sqitch', 'resolve', 'basic');
+});
+
+afterAll(() => {
+  fixture.cleanup();
+});
 
 const expectResult = `-- Revert schemas/myschema/tables/sometable/table to pg
 begin;
@@ -17,10 +23,7 @@ commit;`;
 
 describe('resolve', () => {
   it('resolves sql in proper order', async () => {
-    const sql = await resolve(
-      PROJECT_PATH,
-      'revert'
-    );
+    const sql = await resolve(fixture.tempFixtureDir, 'revert');
     expect(sql).toBeTruthy();
     expect(sql.trim()).toEqual(expectResult);
   });

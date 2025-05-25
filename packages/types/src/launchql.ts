@@ -1,7 +1,6 @@
-import deepmerge from "deepmerge";
 import { PostGraphileOptions } from 'postgraphile';
 import type { Plugin } from 'graphile-build';
-
+import { execSync } from 'child_process';
 declare module 'express-serve-static-core' {
     interface Request {
         apiInfo: {
@@ -143,3 +142,30 @@ export const launchqlDefaults: LaunchQLOptions = {
         awsSecretKey: 'minioadmin'
     }
 };
+
+export function getGitConfigInfo(): { username: string; email: string } {
+  const isTestEnv =
+    process.env.NODE_ENV === 'test' ||
+    process.env.NODE_ENV === 'testing' || // fallback
+    process.env.GITHUB_ACTIONS === 'true'; // GitHub Actions
+
+  if (isTestEnv) {
+    return {
+      username: 'CI Test User',
+      email: 'ci@example.com'
+    };
+  }
+
+  try {
+    const username = execSync('git config --global user.name', {
+      encoding: 'utf8'
+    }).trim();
+    const email = execSync('git config --global user.email', {
+      encoding: 'utf8'
+    }).trim();
+
+    return { username, email };
+  } catch {
+    throw new Error('Failed to retrieve global git config. Ensure git is configured.');
+  }
+}

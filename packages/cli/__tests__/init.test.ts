@@ -1,8 +1,6 @@
-import { Inquirerer, InquirererOptions } from 'inquirerer';
-import { setupTests, TestEnvironment } from '../test-utils';
-import * as os from 'os';
+import { Inquirerer } from 'inquirerer';
+import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
 import * as path from 'path';
-import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { commands } from '../src/commands';
 import { ParsedArgs } from 'minimist';
@@ -12,18 +10,18 @@ const beforeEachSetup = setupTests();
 
 describe('cmds:init', () => {
   let environment: TestEnvironment;
-  let tempDir: string;
+  let fixture: TestFixture;
 
   beforeAll(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-init-test-'));
-  });
-
-  afterAll(() => {
-    fs.rmSync(tempDir, { recursive: true, force: true });
+    fixture = new TestFixture();
   });
 
   beforeEach(() => {
     environment = beforeEachSetup();
+  });
+
+  afterAll(() => {
+    fixture.cleanup();
   });
 
   const runInitTest = async (argv: ParsedArgs, label: string) => {
@@ -59,7 +57,7 @@ describe('cmds:init', () => {
     await runInitTest(
       {
         _: ['init'],
-        cwd: tempDir,
+        cwd: fixture.tempDir,
         name: 'my-workspace',
         workspace: true
       },
@@ -67,10 +65,10 @@ describe('cmds:init', () => {
     );
   });
 
-  it('initialize module', async () => {
-    const workspaceDir = path.join(tempDir, 'my-workspace');
+  it('initializes module', async () => {
+    const workspaceDir = path.join(fixture.tempDir, 'my-workspace');
     const moduleDir = path.join(workspaceDir, 'packages', 'my-module');
-
+    console.log({workspaceDir, moduleDir})
     await runInitTest(
       {
         _: ['init'],
@@ -83,8 +81,6 @@ describe('cmds:init', () => {
     );
 
     const lql = new LaunchQLProject(moduleDir);
-
     expect(lql.getModuleControlFile()).toMatchSnapshot();
   });
-
 });
