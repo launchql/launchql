@@ -72,7 +72,6 @@ export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHand
         }
       }
 
-      // @ts-ignore - augment req with `token`
       req.token = token;
     }
 
