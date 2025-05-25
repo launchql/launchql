@@ -1,30 +1,25 @@
-import { Inquirerer, InquirererOptions } from 'inquirerer';
-import { setupTests, TestEnvironment } from '../test-utils';
-import * as os from 'os';
+import { Inquirerer } from 'inquirerer';
+import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
+import { commands } from '../src/commands';
+import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 import * as fs from 'fs';
 import { sync as glob } from 'glob';
-import { commands } from '../src/commands';
-import { ParsedArgs } from 'minimist';
 import { LaunchQLProject } from '@launchql/core';
 
 const beforeEachSetup = setupTests();
 
 describe('cmds:extension', () => {
   let environment: TestEnvironment;
-  let tempDir: string;
-
-  beforeAll(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-init-test-'));
-  });
-
-  afterAll(() => {
-    // Uncomment to inspect output: console.log(tempDir);
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  });
+  let fixture: TestFixture;
 
   beforeEach(() => {
     environment = beforeEachSetup();
+    fixture = new TestFixture(); // empty fixture
+  });
+
+  afterEach(() => {
+    fixture.cleanup();
   });
 
   const runCommand = async (argv: ParsedArgs) => {
@@ -39,13 +34,13 @@ describe('cmds:extension', () => {
   };
 
   it('runs `extension` command after workspace and module setup', async () => {
-    const workspacePath = path.join(tempDir, 'my-workspace');
+    const workspacePath = fixture.fixturePath('my-workspace');
     const modulePath = path.join(workspacePath, 'packages', 'my-module');
 
     // Step 1: Initialize workspace
     await runCommand({
       _: ['init'],
-      cwd: tempDir,
+      cwd: fixture.tempDir,
       name: 'my-workspace',
       workspace: true
     });

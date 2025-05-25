@@ -1,40 +1,24 @@
-import { CLIOptions, Inquirerer, OptionValue, Question } from 'inquirerer';
+import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { LaunchQLProject } from '@launchql/core';
 
 export default async (
-  argv: Partial<ParsedArgs>,
-  prompter: Inquirerer,
-  _options: CLIOptions
+    argv: Partial<ParsedArgs>,
+    prompter: Inquirerer,
+    _options: CLIOptions
 ) => {
-  const { cwd = process.cwd() } = argv;
+    const { cwd = process.cwd() } = argv;
 
-  const project = new LaunchQLProject(cwd);
+    const project = new LaunchQLProject(cwd);
 
-  if (!project.isInModule()) {
-    throw new Error('You must run this command inside a LaunchQL module.');
-  }
-
-  const info = project.getModuleInfo();
-  const installed = project.getRequiredModules();
-  const available = project.getAvailableModules();
-  const filtered = available.filter(name => name !== info.extname);
-
-  const questions: Question[] = [
-    {
-      name: 'extensions',
-      message: 'Which modules does this one depend on?',
-      type: 'checkbox',
-      allowCustomOptions: true,
-      options: filtered,
-      default: installed
+    if (!project.isInModule()) {
+        throw new Error('You must run this command inside a LaunchQL module.');
     }
-  ];
 
-  const answers = await prompter.prompt(argv, questions);
-  const selected = (answers.extensions as OptionValue[])
-    .filter(opt => opt.selected)
-    .map(opt => opt.name);
+    if (argv._.length === 0) {
+        throw new Error('You must provide a package name to install, e.g. `@launchql/base32`');
+    }
 
-  project.setModuleDependencies(selected);
+    await project.installModules(...argv._);
+
 };

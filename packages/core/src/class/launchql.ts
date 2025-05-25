@@ -46,6 +46,10 @@ function getUTCTimestamp(d: Date = new Date()): string {
   );
 }
 
+function sortObjectByKey<T extends Record<string, any>>(obj: T): T {
+  return Object.fromEntries(Object.entries(obj).sort(([a], [b]) => a.localeCompare(b))) as T;
+}
+
 const getNow = () =>
   process.env.NODE_ENV === 'test'
     ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
@@ -527,56 +531,77 @@ export class LaunchQLProject {
     * Installs an extension npm package into the local skitch extensions directory,
     * and automatically adds it to the current module’s package.json dependencies.
     */
-  async installModule(pkgstr: string): Promise<void> {
+
+  async installModules(...pkgstrs: string[]): Promise<void> {
     this.ensureWorkspace();
     this.ensureModule();
 
-    const { name, version } = parse(pkgstr);
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lql-install-'));
-    const skitchExtDir = join(this.workspacePath!, 'extensions');
     const originalDir = process.cwd();
+    const skitchExtDir = path.join(this.workspacePath!, 'extensions');
+    const pkgJsonPath = path.join(this.modulePath!, 'package.json');
 
-    try {
-      process.chdir(tempDir);
-      execSync(`npm install ${name}@${version} --production --prefix ./extensions`, {
-        stdio: 'inherit'
-      });
-
-      const matches = glob.sync('./extensions/**/sqitch.conf');
-      const installs = matches.map((conf) => {
-        const fullConf = resolve(conf);
-        const extDir = dirname(fullConf);
-        const relativeDir = extDir.split('node_modules/')[1];
-        const dstDir = path.join(skitchExtDir, relativeDir);
-        return { src: extDir, dst: dstDir, pkg: relativeDir };
-      });
-
-      for (const { src, dst, pkg } of installs) {
-        if (fs.existsSync(dst)) {
-          fs.rmSync(dst, { recursive: true, force: true });
-        }
-        fs.mkdirSync(path.dirname(dst), { recursive: true });
-        execSync(`mv "${src}" "${dst}"`);
-        logger.success(`✔ installed ${pkg}`);
-      }
-
-      // Add to current module's package.json
-      const pkgJsonPath = path.join(this.modulePath!, 'package.json');
-      if (!fs.existsSync(pkgJsonPath)) {
-        throw new Error(`No package.json found at module path: ${this.modulePath}`);
-      }
-
-      const pkgData = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
-      pkgData.dependencies = pkgData.dependencies || {};
-      pkgData.dependencies[name] = version || 'latest';
-
-      fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgData, null, 2));
-      logger.success(`📦 Added ${name}@${version} to dependencies in package.json`);
-
-    } finally {
-      fs.rmSync(tempDir, { recursive: true, force: true });
-      process.chdir(originalDir);
+    if (!fs.existsSync(pkgJsonPath)) {
+      throw new Error(`No package.json found at module path: ${this.modulePath}`);
     }
+
+    const pkgData = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+    pkgData.dependencies = pkgData.dependencies || {};
+
+    for (const pkgstr of pkgstrs) {
+      const { name } = parse(pkgstr);
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lql-install-'));
+
+      try {
+        process.chdir(tempDir);
+        execSync(`npm install ${pkgstr} --production --prefix ./extensions`, {
+          stdio: 'inherit'
+        });
+
+        const matches = glob.sync('./extensions/**/sqitch.conf');
+        const installs = matches.map((conf) => {
+          const fullConf = resolve(conf);
+          const extDir = dirname(fullConf);
+          const relativeDir = extDir.split('node_modules/')[1];
+          const dstDir = path.join(skitchExtDir, relativeDir);
+          return { src: extDir, dst: dstDir, pkg: relativeDir };
+        });
+
+        for (const { src, dst, pkg } of installs) {
+          if (fs.existsSync(dst)) {
+            fs.rmSync(dst, { recursive: true, force: true });
+          }
+
+          fs.mkdirSync(path.dirname(dst), { recursive: true });
+          execSync(`mv "${src}" "${dst}"`);
+          logger.success(`✔ installed ${pkg}`);
+
+          const pkgJsonFile = path.join(dst, 'package.json');
+          if (!fs.existsSync(pkgJsonFile)) {
+            throw new Error(`Missing package.json in installed extension: ${dst}`);
+          }
+
+          const { version } = JSON.parse(fs.readFileSync(pkgJsonFile, 'utf-8'));
+          pkgData.dependencies[name] = `${version}`;
+        }
+
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+        process.chdir(originalDir);
+      }
+    }
+
+    // Sort dependencies and devDependencies like npm
+    if (pkgData.dependencies) {
+      pkgData.dependencies = sortObjectByKey(pkgData.dependencies);
+    }
+    if (pkgData.devDependencies) {
+      pkgData.devDependencies = sortObjectByKey(pkgData.devDependencies);
+    }
+
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgData, null, 2));
+    logger.success(`📦 Updated package.json with: ${pkgstrs.join(', ')}`);
   }
+
+
 
 }

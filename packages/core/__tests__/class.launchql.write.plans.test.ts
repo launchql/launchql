@@ -1,4 +1,3 @@
-import { LaunchQLProject } from '../src/class/launchql';
 import { TestFixture } from '../test-utils';
 
 let fixture: TestFixture;

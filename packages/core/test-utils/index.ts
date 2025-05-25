@@ -10,21 +10,6 @@ export const FIXTURES_PATH = path.resolve(__dirname, '../../../__fixtures__');
 export const getFixturePath = (...paths: string[]) =>
   path.join(FIXTURES_PATH, ...paths);
 
-export function createTempFixture(...paths: string[]) {
-  const originalFixtureDir = getFixturePath(...paths);
-  const tempDir = mkdtempSync(path.join(os.tmpdir(), 'launchql-test-'));
-  const tempFixtureDir = path.join(tempDir, ...paths);
-
-  cpSync(originalFixtureDir, tempFixtureDir, { recursive: true });
-
-  return {
-    tempDir,
-    tempFixtureDir,
-    getFixturePath: (...paths: string[]) => path.join(...[tempFixtureDir, ...paths]),
-    cleanup: () => rmSync(tempDir, { recursive: true, force: true })
-  };
-}
-
 export const cleanText = (text: string): string =>
   text
     .split('\n')
