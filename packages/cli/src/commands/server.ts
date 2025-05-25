@@ -37,7 +37,32 @@ const questions: Question[] = [
     required: false,
     default: 5555,
     useDefault: true
+  },
+  {
+    name: 'useMetaApi',
+    message: 'Use Meta API for schema discovery?',
+    type: 'confirm',
+    required: false,
+    default: true,
+    useDefault: true
+  },
+  {
+    name: 'schemas',
+    message: 'Schemas to expose (comma-separated, only if not using Meta API)',
+    type: 'text',
+    required: false,
+    dependsOn: ['useMetaApi'],
+    when: (answers: any) => !answers.useMetaApi
   }
+//   {
+//     name: 'origin',
+//     message: chalk.cyan('CORS origin URL'),
+//     type: 'text',
+//     // alias: 'o',
+//     required: false,
+//     default: 'http://localhost:3000',
+//     useDefault: true
+//   }
 ];
 
 export default async (
@@ -77,7 +102,9 @@ export default async (
     oppositeBaseNames,
     port,
     postgis,
-    simpleInflection
+    simpleInflection,
+    useMetaApi,
+    schemas
   } = await prompter.prompt(argv, questions);
 
   const options: LaunchQLOptions = getEnvOptions({
@@ -88,9 +115,19 @@ export default async (
       postgis
     },
     server: {
-      port
+      port,
+      middleware: {
+        useMetaApi
+      }
     }
   });
+  
+  if (!useMetaApi && schemas) {
+    options.graphile = {
+      ...options.graphile,
+      schema: schemas.split(',').map((s: string) => s.trim())
+    };
+  }
 
   log.success('✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {

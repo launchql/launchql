@@ -14,11 +14,22 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
       const key = req.svc_key;
       const { dbname } = api;
       const { anonRole, roleName } = api;
-
-      const { schemaNamesFromExt, schemaNames } = api;
-      const schemas = []
-        .concat(schemaNamesFromExt.nodes.map(({ schemaName }: any) => schemaName))
-        .concat(schemaNames.nodes.map(({ schemaName }: any) => schemaName));
+      
+      let schemas = [] as Array<{ schemaName: string }>
+      
+      if (api.schemaNamesFromExt && api.schemaNamesFromExt.nodes) {
+        schemas = schemas.concat(api.schemaNamesFromExt.nodes.map(({ schemaName }: any) => schemaName));
+      }
+      
+      if (api.schemaNames && api.schemaNames.nodes) {
+        schemas = schemas.concat(api.schemaNames.nodes.map(({ schemaName }: any) => schemaName));
+      }
+      
+      if (schemas.length === 0 && lOpts.graphile?.schema) {
+        const directSchemas = lOpts.graphile.schema;
+        // @ts-ignore
+        schemas = Array.isArray(directSchemas) ? directSchemas : [directSchemas];
+      }
 
       if (graphileCache.has(key)) {
         const { handler } = graphileCache.get(key)!
@@ -29,6 +40,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
         ...lOpts,
         graphile: {
           ...lOpts.graphile,
+          // @ts-ignore
           schema: schemas
         }
       });
@@ -87,6 +99,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
         ...lOpts.pg,
         database: dbname
       });
+      // @ts-ignore
       const handler = postgraphile(pgPool, schemas, opts);
 
       graphileCache.set(key, {
