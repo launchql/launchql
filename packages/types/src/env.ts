@@ -43,6 +43,12 @@ const getEnvVars = (): LaunchQLOptions => {
     SERVER_TRUST_PROXY,
     SERVER_ORIGIN,
     SERVER_STRICT_AUTH,
+    
+    SERVER_MIDDLEWARE_USE_META_API,
+    SERVER_MIDDLEWARE_USE_AUTH,
+    SERVER_MIDDLEWARE_USE_CORS,
+    SERVER_MIDDLEWARE_USE_GRAPHILE,
+    SERVER_MIDDLEWARE_USE_FLUSH,
 
     PGHOST,
     PGPORT,
@@ -71,6 +77,23 @@ const getEnvVars = (): LaunchQLOptions => {
       ...(SERVER_TRUST_PROXY && { trustProxy: parseEnvBoolean(SERVER_TRUST_PROXY) }),
       ...(SERVER_ORIGIN && { origin: SERVER_ORIGIN }),
       ...(SERVER_STRICT_AUTH && { strictAuth: parseEnvBoolean(SERVER_STRICT_AUTH) }),
+      middleware: {
+        ...(SERVER_MIDDLEWARE_USE_META_API !== undefined && { 
+          useMetaApi: parseEnvBoolean(SERVER_MIDDLEWARE_USE_META_API) 
+        }),
+        ...(SERVER_MIDDLEWARE_USE_AUTH !== undefined && { 
+          useAuth: parseEnvBoolean(SERVER_MIDDLEWARE_USE_AUTH) 
+        }),
+        ...(SERVER_MIDDLEWARE_USE_CORS !== undefined && { 
+          useCors: parseEnvBoolean(SERVER_MIDDLEWARE_USE_CORS) 
+        }),
+        ...(SERVER_MIDDLEWARE_USE_GRAPHILE !== undefined && { 
+          useGraphile: parseEnvBoolean(SERVER_MIDDLEWARE_USE_GRAPHILE) 
+        }),
+        ...(SERVER_MIDDLEWARE_USE_FLUSH !== undefined && { 
+          useFlush: parseEnvBoolean(SERVER_MIDDLEWARE_USE_FLUSH) 
+        }),
+      },
     },
     pg: {
       ...(PGHOST && { host: PGHOST }),
