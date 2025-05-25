@@ -80,6 +80,14 @@ export interface LaunchQLOptions {
         trustProxy?: boolean;
         origin?: string;
         strictAuth?: boolean;
+        middleware?: {
+            useMetaApi?: boolean;
+            useAuth?: boolean;
+            useCors?: boolean;
+            useGraphile?: boolean;
+            useFlush?: boolean;
+            customMiddleware?: any[];
+        };
     };
     features?: {
         simpleInflection?: boolean;
@@ -118,8 +126,7 @@ export const launchqlDefaults: LaunchQLOptions = {
     graphile: {
         isPublic: true,
         schema: ['public'],
-        // TODO how to handle metaSchemas...?
-        metaSchemas: ['collections_public', 'meta_public'],
+        metaSchemas: ['meta_public'],
         appendPlugins: [],
         overrideSettings: {},
         graphileBuildOptions: {},
@@ -129,6 +136,14 @@ export const launchqlDefaults: LaunchQLOptions = {
         port: 3000,
         trustProxy: false,
         strictAuth: false,
+        middleware: {
+            useMetaApi: true,
+            useAuth: true,
+            useCors: true,
+            useGraphile: true,
+            useFlush: true,
+            customMiddleware: []
+        }
     },
     features: {
         simpleInflection: true,

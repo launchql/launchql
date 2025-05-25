@@ -1,4 +1,4 @@
-export default `
+export default (code: string) => `
 <html lang="en">
 
 <head>
@@ -205,6 +205,7 @@ export default `
                 <div class="textc">
                     <h1>Uh Oh!</h1>
                     <p>We’re really sorry about that. Please contact support of the issue persists.</p>
+                    <p>code: ${code}</p>
                 </div>
             </div>
         </article>
