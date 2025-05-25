@@ -32,15 +32,11 @@ describe('installModule()', () => {
         });
 
         expect(files.sort()).toMatchSnapshot();
-
-        // ✅ Extension directory was copied
         expect(fs.existsSync(path.join(extDir, 'sqitch.conf'))).toBe(true);
 
-        // // ✅ package.json was updated
         const pkgJson = JSON.parse(
             fs.readFileSync(path.join(mod.getModulePath()!, 'package.json'), 'utf-8')
         );
-
         expect(pkgJson.dependencies).toBeDefined();
         expect(pkgJson.dependencies['@launchql/base32']).toBe('0.4.6');
     });

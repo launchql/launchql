@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cmds:install - with initialized workspace and module installs a module package 1`] = `
+{
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/undefined/undefined/issues",
+  },
+  "dependencies": {
+    "@launchql/base32": "0.4.6",
+  },
+  "description": "undefined",
+  "homepage": "https://github.com/undefined/undefined",
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "name": "undefined",
+  "publishConfig": {
+    "access": "undefined",
+    "directory": "dist",
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/undefined/undefined",
+  },
+  "scripts": {
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "clean": "rimraf dist/**",
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "lint": "eslint . --fix",
+    "prepare": "npm run build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+  },
+  "types": "index.d.ts",
+  "version": "0.0.1",
+}
+`;
+
+exports[`cmds:install - with initialized workspace and module installs a module package 2`] = `
+[
+  "../../extensions/@launchql/base32/.babelrc",
+  "../../extensions/@launchql/base32/.editorconfig",
+  "../../extensions/@launchql/base32/.eslintignore",
+  "../../extensions/@launchql/base32/.eslintrc.js",
+  "../../extensions/@launchql/base32/deploy/schemas/base32/procedures/decode.sql",
+  "../../extensions/@launchql/base32/deploy/schemas/base32/procedures/encode.sql",
+  "../../extensions/@launchql/base32/deploy/schemas/base32/schema.sql",
+  "../../extensions/@launchql/base32/launchql-base32.control",
+  "../../extensions/@launchql/base32/LICENSE",
+  "../../extensions/@launchql/base32/Makefile",
+  "../../extensions/@launchql/base32/package.json",
+  "../../extensions/@launchql/base32/readme.md",
+  "../../extensions/@launchql/base32/revert/schemas/base32/procedures/decode.sql",
+  "../../extensions/@launchql/base32/revert/schemas/base32/procedures/encode.sql",
+  "../../extensions/@launchql/base32/revert/schemas/base32/schema.sql",
+  "../../extensions/@launchql/base32/sqitch.conf",
+  "../../extensions/@launchql/base32/sqitch.plan",
+  "../../extensions/@launchql/base32/sql/launchql-base32--0.4.6.sql",
+  "../../extensions/@launchql/base32/test/__snapshots__/base32.decode.test.js.snap",
+  "../../extensions/@launchql/base32/test/__snapshots__/base32.encode.test.js.snap",
+  "../../extensions/@launchql/base32/test/base32.decode.test.js",
+  "../../extensions/@launchql/base32/test/base32.encode.test.js",
+  "../../extensions/@launchql/base32/test/utils/index.js",
+  "../../extensions/@launchql/base32/verify/schemas/base32/procedures/decode.sql",
+  "../../extensions/@launchql/base32/verify/schemas/base32/procedures/encode.sql",
+  "../../extensions/@launchql/base32/verify/schemas/base32/schema.sql",
+]
+`;
+
+exports[`cmds:install - with initialized workspace and module installs two modules 1`] = `
+{
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/undefined/undefined/issues",
+  },
+  "dependencies": {
+    "@launchql/base32": "0.4.6",
+    "@launchql/utils": "0.4.6",
+  },
+  "description": "undefined",
+  "homepage": "https://github.com/undefined/undefined",
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "name": "undefined",
+  "publishConfig": {
+    "access": "undefined",
+    "directory": "dist",
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/undefined/undefined",
+  },
+  "scripts": {
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "clean": "rimraf dist/**",
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "lint": "eslint . --fix",
+    "prepare": "npm run build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+  },
+  "types": "index.d.ts",
+  "version": "0.0.1",
+}
+`;

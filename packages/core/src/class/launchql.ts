@@ -590,15 +590,17 @@ export class LaunchQLProject {
       }
     }
 
-    // Sort dependencies and devDependencies like npm
-    if (pkgData.dependencies) {
-      pkgData.dependencies = sortObjectByKey(pkgData.dependencies);
+    const { dependencies, devDependencies, ...rest } = pkgData;
+    const finalPkgData: Record<string, any> = { ...rest };
+    
+    if (dependencies) {
+      finalPkgData.dependencies = sortObjectByKey(dependencies);
     }
-    if (pkgData.devDependencies) {
-      pkgData.devDependencies = sortObjectByKey(pkgData.devDependencies);
+    if (devDependencies) {
+      finalPkgData.devDependencies = sortObjectByKey(devDependencies);
     }
-
-    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgData, null, 2));
+    
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(finalPkgData, null, 2));
     logger.success(`📦 Updated package.json with: ${pkgstrs.join(', ')}`);
   }
 

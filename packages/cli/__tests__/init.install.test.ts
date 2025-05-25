@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 import { LaunchQLProject } from '@launchql/core';
 import { TestFixture } from '../test-utils';
@@ -29,7 +30,6 @@ function getExpectedFiles(pkg: string, version: string): string[] {
     expect.stringMatching(new RegExp(f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   );
 }
-
 
 describe('cmds:install - with initialized workspace and module', () => {
   let fixture: TestFixture;
@@ -75,6 +75,9 @@ describe('cmds:install - with initialized workspace and module', () => {
       cwd: moduleDir
     });
 
+    const pkgJson = JSON.parse(fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8'));
+    expect(pkgJson).toMatchSnapshot();
+
     const installedFiles = glob.sync('**/*', {
       cwd: path.join(workspaceDir, 'extensions'),
       dot: true,
@@ -83,8 +86,7 @@ describe('cmds:install - with initialized workspace and module', () => {
     });
 
     const relativeFiles = installedFiles.map(f => path.relative(moduleDir, f));
-    console.log(relativeFiles);
-
+    expect(relativeFiles).toMatchSnapshot();
     expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg, version)));
   });
 
@@ -108,6 +110,9 @@ describe('cmds:install - with initialized workspace and module', () => {
       });
     }
 
+    const pkgJson = JSON.parse(fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8'));
+    expect(pkgJson).toMatchSnapshot();
+
     const extPath = path.join(workspaceDir, 'extensions');
     const installedFiles = glob.sync('**/*', {
       cwd: extPath,
@@ -122,5 +127,4 @@ describe('cmds:install - with initialized workspace and module', () => {
       expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg.name, pkg.version)));
     }
   });
-
 });
