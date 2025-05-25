@@ -1,8 +1,6 @@
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
-import { execSync } from 'child_process';
-
 import { LaunchQLProject, sluggify } from '@launchql/core';
-import { errors } from '@launchql/types';
+import { errors, getGitConfigInfo } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
 
 const log = new Logger('module-init');
@@ -11,8 +9,7 @@ export default async function runModuleSetup(
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer
 ) {
-  const username = execSync('git config --global user.name', { encoding: 'utf8' }).trim();
-  const email = execSync('git config --global user.email', { encoding: 'utf8' }).trim();
+  const { email, username } = getGitConfigInfo();
   const { cwd = process.cwd() } = argv;
 
   const project = new LaunchQLProject(cwd);

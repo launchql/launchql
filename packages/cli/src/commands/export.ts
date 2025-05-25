@@ -1,8 +1,7 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { LaunchQLProject, exportMigrations } from '@launchql/core';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions, getGitConfigInfo } from '@launchql/types';
 import { resolve } from 'path';
-import { execSync } from 'child_process';
 import { getRootPgPool } from '@launchql/server-utils';
 
 export default async (
@@ -10,9 +9,7 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  const username = execSync('git config --global user.name', { encoding: 'utf8' }).trim();
-  const email = execSync('git config --global user.email', { encoding: 'utf8' }).trim();
-
+  const { email, username } = getGitConfigInfo();
   const cwd = argv.cwd ?? process.cwd();
   const project = new LaunchQLProject(cwd);
 
