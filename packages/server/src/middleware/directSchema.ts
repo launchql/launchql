@@ -38,7 +38,7 @@ export const createDirectSchemaMiddleware = (opts: LaunchQLOptions) => {
       next();
     } catch (e: any) {
       console.error(e);
-      res.status(500).send(errorPage50x);
+      res.status(500).send(errorPage50x('directSchema'));
       return;
     }
   };
