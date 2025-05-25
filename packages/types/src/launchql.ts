@@ -126,7 +126,8 @@ export const launchqlDefaults: LaunchQLOptions = {
     graphile: {
         isPublic: true,
         schema: ['public'],
-        metaSchemas: ['meta_public'],
+        // meta has a ref to databaseId, hence the connection here...
+        metaSchemas: ['collections_public', 'meta_public'],
         appendPlugins: [],
         overrideSettings: {},
         graphileBuildOptions: {},
