@@ -1,11 +1,11 @@
 import { LaunchQLServer as server } from '@launchql/server';
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
+import { CLIOptions, Inquirerer, OptionValue, Question } from 'inquirerer';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
 
 const log = new Logger('server');
 
-const questions: Question[] = [
+const initialQuestions: Question[] = [
   {
     name: 'simpleInflection',
     message: 'Use simple inflection?',
@@ -36,6 +36,14 @@ const questions: Question[] = [
     type: 'number',
     required: false,
     default: 5555,
+    useDefault: true
+  },
+  {
+    name: 'useMetaApi',
+    message: 'Use Meta API for schema discovery?',
+    type: 'confirm',
+    required: false,
+    default: true,
     useDefault: true
   }
 ];
@@ -72,13 +80,14 @@ export default async (
     selectedDb = database;
     log.info(`📌 Using database: "${selectedDb}"`);
   }
-
+  
   const {
     oppositeBaseNames,
     port,
     postgis,
-    simpleInflection
-  } = await prompter.prompt(argv, questions);
+    simpleInflection,
+    useMetaApi
+  } = await prompter.prompt(argv, initialQuestions);
 
   const options: LaunchQLOptions = getEnvOptions({
     pg: { database: selectedDb },
@@ -88,9 +97,71 @@ export default async (
       postgis
     },
     server: {
-      port
+      port,
+      middleware: {
+        useMetaApi
+      }
     }
   });
+
+  let selectedSchemas: string[] = [];
+
+  if (!useMetaApi) {
+    const appDb = await getRootPgPool({ database: selectedDb });
+    const result = await appDb.query(`
+      SELECT nspname AS schema_name
+      FROM pg_namespace
+      WHERE nspname NOT LIKE 'pg_%'
+        AND nspname != 'information_schema'
+      ORDER BY nspname;
+    `);
+
+    const availableSchemas = result.rows.map(row => row.schema_name);
+
+    const { schemas } = await prompter.prompt(argv, [
+      {
+        name: 'schemas',
+        message: 'Select schemas to expose',
+        type: 'checkbox',
+        options: availableSchemas,
+        required: true
+      }
+    ]);
+
+    selectedSchemas = schemas.filter((s:OptionValue)=>s.selected).map((s:OptionValue)=>s.value);
+
+    /// roles
+
+    const { anonRole, roleName } = await prompter.prompt(argv, [
+      {
+        name: 'anonRole',
+        message: 'Select anonymous role',
+        type: 'autocomplete',
+        options: ['postgres', 'anonymous', 'authenticated'],
+        default: 'anonymous',
+        required: true
+      },
+      {
+        name: 'roleName',
+        message: 'Select default role',
+        type: 'autocomplete',
+        options: ['postgres', 'anonymous', 'authenticated'],
+        default: 'authenticated',
+        required: true
+      }
+    ]);
+
+    options.graphile.anonRole = anonRole;
+    options.graphile.roleName = roleName;
+
+  }
+
+  if (!useMetaApi && selectedSchemas.length > 0) {
+    options.graphile = {
+      ...options.graphile,
+      schema: selectedSchemas
+    };
+  }
 
   log.success('✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {

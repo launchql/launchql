@@ -73,6 +73,10 @@ export interface LaunchQLOptions {
         appendPlugins?: Plugin[];
         graphileBuildOptions?: PostGraphileOptions['graphileBuildOptions'];
         overrideSettings?: Partial<PostGraphileOptions>;
+        // Only used when useMetaApi is false
+        anonRole?: string;
+        // Only used when useMetaApi is false
+        roleName?: string;
     };
     server?: {
         host?: string;
@@ -80,6 +84,14 @@ export interface LaunchQLOptions {
         trustProxy?: boolean;
         origin?: string;
         strictAuth?: boolean;
+        middleware?: {
+            useMetaApi?: boolean;
+            useAuth?: boolean;
+            useCors?: boolean;
+            useGraphile?: boolean;
+            useFlush?: boolean;
+            customMiddleware?: any[];
+        };
     };
     features?: {
         simpleInflection?: boolean;
@@ -115,20 +127,33 @@ export const launchqlDefaults: LaunchQLOptions = {
         password: 'password',
         database: 'postgres',
     },
+    // TODO these should all be subset of postgraphile options since we do spread these when we call getSettings() in server
     graphile: {
         isPublic: true,
-        schema: ['public'],
-        // TODO how to handle metaSchemas...?
+        schema: [],
+        // meta has a ref to databaseId, hence the connection here...
         metaSchemas: ['collections_public', 'meta_public'],
         appendPlugins: [],
         overrideSettings: {},
         graphileBuildOptions: {},
+        // Only used when useMetaApi is false
+        anonRole: 'anonymous',
+        // Only used when useMetaApi is false
+        roleName: 'authenticated',        
     },
     server: {
         host: 'localhost',
         port: 3000,
         trustProxy: false,
         strictAuth: false,
+        middleware: {
+            useMetaApi: true,
+            useAuth: true,
+            useCors: true,
+            useGraphile: true,
+            useFlush: true,
+            customMiddleware: []
+        }
     },
     features: {
         simpleInflection: true,

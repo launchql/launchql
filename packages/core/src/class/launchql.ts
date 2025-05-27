@@ -71,7 +71,7 @@ export interface InitModuleOptions {
 }
 
 export class LaunchQLProject {
-  public readonly cwd: string;
+  public cwd: string;
   public workspacePath?: string;
   public modulePath?: string;
   public config?: any;
@@ -81,7 +81,11 @@ export class LaunchQLProject {
   private _moduleInfo?: ExtensionInfo;
 
   constructor(cwd: string = process.cwd()) {
-    this.cwd = path.resolve(cwd);
+    this.resetCwd(cwd);
+  }
+
+  resetCwd(cwd: string) {
+    this.cwd = cwd;
     this.workspacePath = this.resolveLaunchqlPath();
     this.modulePath = this.resolveSqitchPath();
 

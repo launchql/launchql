@@ -44,7 +44,7 @@ export const createApiMiddleware = (opts: LaunchQLOptions) => {
         res.status(404).send(errorPage404Message('The resource you’re looking for does not exist.'));
       } else {
         console.error(e);
-        res.status(500).send(errorPage50x);
+        res.status(500).send(errorPage50x('API Error'));
       }
     }
   };
@@ -75,10 +75,8 @@ const getHardCodedSchemata = ({
             .map((schema) => schema.trim())
             .map((schemaName) => ({ schemaName }))
         },
-        // @ts-ignore
-        schemaNames: { nodes: [] },
-        // @ts-ignore
-        apiModules: { nodes: [] }
+        schemaNames: { nodes: [] as Array<{ schemaName: string }> },
+        apiModules: { nodes: [] as Array<any> }
       }
     }
   };
@@ -107,10 +105,8 @@ const getMetaSchema = ({
         schemaNamesFromExt: {
           nodes: schemata.map((schemaName: string) => ({ schemaName }))
         },
-        // @ts-ignore
-        schemaNames: { nodes: [] },
-        // @ts-ignore
-        apiModules: { nodes: [] }
+        schemaNames: { nodes: [] as Array<{ schemaName: string }> },
+        apiModules: { nodes: [] as Array<any> }
       }
     }
   };
