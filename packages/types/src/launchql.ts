@@ -1,6 +1,28 @@
 import { PostGraphileOptions } from 'postgraphile';
 import type { Plugin } from 'graphile-build';
 import { execSync } from 'child_process';
+export interface CorsModuleData {
+    urls: string[];
+}
+
+export interface PublicKeyChallengeData {
+    schema: string;
+    crypto_network: string;
+    sign_up_with_key: string;
+    sign_in_request_challenge: string;
+    sign_in_record_failure: string;
+    sign_in_with_challenge: string;
+}
+
+export interface GenericModuleData {
+    [key: string]: any;
+}
+
+export type ApiModule = 
+    | { name: 'cors'; data: CorsModuleData }
+    | { name: 'pubkey_challenge'; data: PublicKeyChallengeData }
+    | { name: string; data?: GenericModuleData };
+
 declare module 'express-serve-static-core' {
     interface Request {
         api: {
@@ -8,10 +30,7 @@ declare module 'express-serve-static-core' {
             anonRole: string;
             roleName: string;
             schema: string[];  // Pre-processed schema names
-            apiModules: {
-                name: string;
-                data?: any;
-            }[];
+            apiModules: ApiModule[];
             rlsModule?: {
                 authenticate?: string;
                 authenticateStrict?: string;
@@ -19,18 +38,9 @@ declare module 'express-serve-static-core' {
                     schemaName: string;
                 };
             };
-            database?: {
-                sites?: {
-                    nodes?: any[];
-                };
-            };
+            domains?: string[];  // Simplified from database.sites.nodes
             databaseId?: string;
             isPublic?: boolean;
-        };
-        apiInfo?: {
-            data: {
-                api: any;
-            };
         };
         svc_key: string;
         clientIp?: string;

@@ -17,6 +17,21 @@ const transformServiceToApi = (svc: any): any => {
   const schemaNames = api.schemaNamesFromExt?.nodes?.map((n: any) => n.schemaName) || [];
   const additionalSchemas = api.schemaNames?.nodes?.map((n: any) => n.schemaName) || [];
   
+  let domains: string[] = [];
+  if (api.database?.sites?.nodes) {
+    domains = api.database.sites.nodes.reduce((acc: string[], site: any) => {
+      if (site.domains?.nodes && site.domains.nodes.length) {
+        const siteUrls = site.domains.nodes.map((domain: any) => {
+          const hostname = domain.subdomain ? `${domain.subdomain}.${domain.domain}` : domain.domain;
+          const protocol = domain.domain === 'localhost' ? 'http://' : 'https://';
+          return protocol + hostname;
+        });
+        return [...acc, ...siteUrls];
+      }
+      return acc;
+    }, []);
+  }
+  
   return {
     dbname: api.dbname,
     anonRole: api.anonRole,
@@ -24,7 +39,7 @@ const transformServiceToApi = (svc: any): any => {
     schema: [...schemaNames, ...additionalSchemas],
     apiModules: api.apiModules?.nodes || [],
     rlsModule: api.rlsModule,
-    database: api.database,
+    domains,
     databaseId: api.databaseId,
     isPublic: api.isPublic
   };
@@ -55,9 +70,9 @@ export const createApiMiddleware = (opts: LaunchQLOptions) => {
         res.status(404).send(errorPage404Message('API service not found for the given domain/subdomain.'));
         return;
       }
-      req.api = transformServiceToApi(svc);
-      req.apiInfo = svc; // Keep for backward compatibility
-      req.databaseId = svc.data.api.databaseId;
+      const api = transformServiceToApi(svc);
+      req.api = api;
+      req.databaseId = api.databaseId;
       next();
     } catch (e: any) {
       if (e.code === 'NO_VALID_SCHEMAS') {
