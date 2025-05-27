@@ -117,8 +117,7 @@ export const launchqlDefaults: LaunchQLOptions = {
     },
     graphile: {
         isPublic: true,
-        schema: ['public'],
-        // TODO how to handle metaSchemas...?
+        schema: [],
         metaSchemas: ['collections_public', 'meta_public'],
         appendPlugins: [],
         overrideSettings: {},

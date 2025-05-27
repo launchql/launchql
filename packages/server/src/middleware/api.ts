@@ -75,10 +75,8 @@ const getHardCodedSchemata = ({
             .map((schema) => schema.trim())
             .map((schemaName) => ({ schemaName }))
         },
-        // @ts-ignore
-        schemaNames: { nodes: [] },
-        // @ts-ignore
-        apiModules: { nodes: [] }
+        schemaNames: { nodes: [] as Array<{ schemaName: string }> },
+        apiModules: { nodes: [] as Array<any> }
       }
     }
   };
@@ -107,10 +105,8 @@ const getMetaSchema = ({
         schemaNamesFromExt: {
           nodes: schemata.map((schemaName: string) => ({ schemaName }))
         },
-        // @ts-ignore
-        schemaNames: { nodes: [] },
-        // @ts-ignore
-        apiModules: { nodes: [] }
+        schemaNames: { nodes: [] as Array<{ schemaName: string }> },
+        apiModules: { nodes: [] as Array<any> }
       }
     }
   };

@@ -14,6 +14,7 @@ export default async (
   const project = new LaunchQLProject(cwd);
 
   project.ensureWorkspace();
+  project.resetCwd(project.workspacePath);
 
   const options = getEnvOptions(); 
 
@@ -105,13 +106,15 @@ export default async (
     }
   ]);
 
+  const outdir = resolve(project.workspacePath, 'packages/');
+  
   await exportMigrations({
     project,
     options,
     dbInfo,
     author,
     schema_names,
-    outdir: resolve(project.workspacePath, 'packages/'),
+    outdir,
     extensionName,
     metaExtensionName
   });
