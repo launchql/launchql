@@ -39,7 +39,7 @@ const transformServiceToApi = (svc: Service): ApiStructure => {
     anonRole: api.anonRole,
     roleName: api.roleName,
     schema: [...schemaNames, ...additionalSchemas],
-    apiModules: api.apiModules?.nodes || [],
+    apiModules: api.apiModules || [],
     rlsModule: api.rlsModule,
     domains,
     databaseId: api.databaseId,
@@ -115,7 +115,7 @@ const getHardCodedSchemata = ({
             .map((schemaName) => ({ schemaName }))
         },
         schemaNames: { nodes: [] as Array<{ schemaName: string }> },
-        apiModules: { nodes: [] as Array<any> }
+        apiModules: [] as Array<any>
       }
     }
   };
@@ -145,7 +145,7 @@ const getMetaSchema = ({
           nodes: schemata.map((schemaName: string) => ({ schemaName }))
         },
         schemaNames: { nodes: [] as Array<{ schemaName: string }> },
-        apiModules: { nodes: [] as Array<any> }
+        apiModules: [] as Array<any>
       }
     }
   };

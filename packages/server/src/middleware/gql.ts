@@ -45,10 +45,8 @@ export const ApiQuery = gql`
             }
           } # for now keep this for patches
           apiModules {
-            nodes {
-              name
-              data
-            }
+            name
+            data
           }
         }
       }
@@ -96,10 +94,8 @@ export const ApiByNameQuery = gql`
         }
       } # for now keep this for patches
       apiModules {
-        nodes {
-          name
-          data
-        }
+        name
+        data
       }
     }
   }

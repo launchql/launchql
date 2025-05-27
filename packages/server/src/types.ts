@@ -90,14 +90,6 @@ export interface Database {
     sites: SiteNodes;
 }
 
-export interface ApiModuleNode {
-    name: string;
-    data?: any;
-}
-
-export interface ApiModuleNodes {
-    nodes: ApiModuleNode[];
-}
 
 export interface OldApiStructure {
     dbname: string;
@@ -105,7 +97,7 @@ export interface OldApiStructure {
     roleName: string;
     schemaNames: SchemaNodes;
     schemaNamesFromExt: SchemaNodes;
-    apiModules: ApiModuleNodes;
+    apiModules: ApiModule[];
     rlsModule?: RlsModule;
     database?: Database;
     databaseId?: string;
