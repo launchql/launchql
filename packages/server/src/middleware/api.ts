@@ -12,16 +12,18 @@ import { Pool } from 'pg';
 /**
  * Transforms the old service structure to the new api structure
  */
-const transformServiceToApi = (svc: any): any => {
+import { Service, ApiStructure, SchemaNode, Domain, Site } from '@launchql/types';
+
+const transformServiceToApi = (svc: Service): ApiStructure => {
   const api = svc.data.api;
-  const schemaNames = api.schemaNamesFromExt?.nodes?.map((n: any) => n.schemaName) || [];
-  const additionalSchemas = api.schemaNames?.nodes?.map((n: any) => n.schemaName) || [];
+  const schemaNames = api.schemaNamesFromExt?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
+  const additionalSchemas = api.schemaNames?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
   
   let domains: string[] = [];
   if (api.database?.sites?.nodes) {
-    domains = api.database.sites.nodes.reduce((acc: string[], site: any) => {
+    domains = api.database.sites.nodes.reduce((acc: string[], site: Site) => {
       if (site.domains?.nodes && site.domains.nodes.length) {
-        const siteUrls = site.domains.nodes.map((domain: any) => {
+        const siteUrls = site.domains.nodes.map((domain: Domain) => {
           const hostname = domain.subdomain ? `${domain.subdomain}.${domain.domain}` : domain.domain;
           const protocol = domain.domain === 'localhost' ? 'http://' : 'https://';
           return protocol + hostname;
@@ -246,7 +248,7 @@ const validateSchemata = async (pool: Pool, schemata: string[]): Promise<string[
     `SELECT schema_name FROM information_schema.schemata WHERE schema_name = ANY($1::text[])`,
     [schemata]
   );
-  return result.rows.map(row => row.schema_name);
+  return result.rows.map((row: { schema_name: string }) => row.schema_name);
 };
 
 export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise<any> => {
