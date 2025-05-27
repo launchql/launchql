@@ -23,8 +23,8 @@ export const createDirectSchemaMiddleware = (opts: LaunchQLOptions) => {
             dbname: opts.pg.database,
 
             // TODO: allow these to be passed in when useMetaApi is off...
-            anonRole: 'postgres',
-            roleName: 'postgres',
+            anonRole: opts.graphile.anonRole,
+            roleName: opts.graphile.roleName,
             schemaNamesFromExt: {
               nodes: schemaArray.map(schemaName => ({ schemaName }))
             },

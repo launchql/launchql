@@ -80,7 +80,7 @@ export default async (
     selectedDb = database;
     log.info(`📌 Using database: "${selectedDb}"`);
   }
-
+  
   const {
     oppositeBaseNames,
     port,
@@ -88,6 +88,21 @@ export default async (
     simpleInflection,
     useMetaApi
   } = await prompter.prompt(argv, initialQuestions);
+
+  const options: LaunchQLOptions = getEnvOptions({
+    pg: { database: selectedDb },
+    features: {
+      oppositeBaseNames,
+      simpleInflection,
+      postgis
+    },
+    server: {
+      port,
+      middleware: {
+        useMetaApi
+      }
+    }
+  });
 
   let selectedSchemas: string[] = [];
 
@@ -114,22 +129,32 @@ export default async (
     ]);
 
     selectedSchemas = schemas.filter((s:OptionValue)=>s.selected).map((s:OptionValue)=>s.value);
-  }
 
-  const options: LaunchQLOptions = getEnvOptions({
-    pg: { database: selectedDb },
-    features: {
-      oppositeBaseNames,
-      simpleInflection,
-      postgis
-    },
-    server: {
-      port,
-      middleware: {
-        useMetaApi
+    /// roles
+
+    const { anonRole, roleName } = await prompter.prompt(argv, [
+      {
+        name: 'anonRole',
+        message: 'Select anonymous role',
+        type: 'autocomplete',
+        options: ['postgres', 'anonymous', 'authenticated'],
+        default: 'anonymous',
+        required: true
+      },
+      {
+        name: 'roleName',
+        message: 'Select default role',
+        type: 'autocomplete',
+        options: ['postgres', 'anonymous', 'authenticated'],
+        default: 'authenticated',
+        required: true
       }
-    }
-  });
+    ]);
+
+    options.graphile.anonRole = anonRole;
+    options.graphile.roleName = roleName;
+
+  }
 
   if (!useMetaApi && selectedSchemas.length > 0) {
     options.graphile = {
