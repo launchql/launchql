@@ -12,7 +12,7 @@ import { Pool } from 'pg';
 /**
  * Transforms the old service structure to the new api structure
  */
-import { Service, ApiStructure, SchemaNode, Domain, Site } from '@launchql/types';
+import { Service, ApiStructure, SchemaNode, Domain, Site } from '../types';
 
 const transformServiceToApi = (svc: Service): ApiStructure => {
   const api = svc.data.api;
