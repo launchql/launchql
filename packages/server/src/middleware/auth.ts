@@ -6,7 +6,7 @@ import { LaunchQLOptions } from '@launchql/types';
 export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHandler => {
 
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const api = req.apiInfo?.data?.api;
+    const api = req.api;
     if (!api) {
       res.status(500).send('Missing API info');
       return;
