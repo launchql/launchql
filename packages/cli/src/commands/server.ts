@@ -1,11 +1,11 @@
 import { LaunchQLServer as server } from '@launchql/server';
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
+import { CLIOptions, Inquirerer, OptionValue, Question } from 'inquirerer';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
 
 const log = new Logger('server');
 
-const questions: Question[] = [
+const initialQuestions: Question[] = [
   {
     name: 'simpleInflection',
     message: 'Use simple inflection?',
@@ -45,24 +45,7 @@ const questions: Question[] = [
     required: false,
     default: true,
     useDefault: true
-  },
-  {
-    name: 'schemas',
-    message: 'Schemas to expose (comma-separated, only if not using Meta API)',
-    type: 'text',
-    required: false,
-    dependsOn: ['useMetaApi'],
-    when: (answers: any) => !answers.useMetaApi
   }
-//   {
-//     name: 'origin',
-//     message: chalk.cyan('CORS origin URL'),
-//     type: 'text',
-//     // alias: 'o',
-//     required: false,
-//     default: 'http://localhost:3000',
-//     useDefault: true
-//   }
 ];
 
 export default async (
@@ -103,9 +86,35 @@ export default async (
     port,
     postgis,
     simpleInflection,
-    useMetaApi,
-    schemas
-  } = await prompter.prompt(argv, questions);
+    useMetaApi
+  } = await prompter.prompt(argv, initialQuestions);
+
+  let selectedSchemas: string[] = [];
+
+  if (!useMetaApi) {
+    const appDb = await getRootPgPool({ database: selectedDb });
+    const result = await appDb.query(`
+      SELECT nspname AS schema_name
+      FROM pg_namespace
+      WHERE nspname NOT LIKE 'pg_%'
+        AND nspname != 'information_schema'
+      ORDER BY nspname;
+    `);
+
+    const availableSchemas = result.rows.map(row => row.schema_name);
+
+    const { schemas } = await prompter.prompt(argv, [
+      {
+        name: 'schemas',
+        message: 'Select schemas to expose',
+        type: 'checkbox',
+        options: availableSchemas,
+        required: true
+      }
+    ]);
+
+    selectedSchemas = schemas.filter((s:OptionValue)=>s.selected).map((s:OptionValue)=>s.value);
+  }
 
   const options: LaunchQLOptions = getEnvOptions({
     pg: { database: selectedDb },
@@ -121,11 +130,11 @@ export default async (
       }
     }
   });
-  
-  if (!useMetaApi && schemas) {
+
+  if (!useMetaApi && selectedSchemas.length > 0) {
     options.graphile = {
       ...options.graphile,
-      schema: schemas.split(',').map((s: string) => s.trim())
+      schema: selectedSchemas
     };
   }
 

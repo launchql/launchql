@@ -14,14 +14,17 @@ export const createDirectSchemaMiddleware = (opts: LaunchQLOptions) => {
         return;
       }
       
+      // let's just pass this in from the CLI when it's needed
       const svc = {
         data: {
           api: {
             databaseId: 'direct-schema',
             isPublic: opts.graphile.isPublic,
             dbname: opts.pg.database,
-            anonRole: 'anonymous',
-            roleName: 'administrator',
+
+            // TODO: allow these to be passed in when useMetaApi is off...
+            anonRole: 'postgres',
+            roleName: 'postgres',
             schemaNamesFromExt: {
               nodes: schemaArray.map(schemaName => ({ schemaName }))
             },
