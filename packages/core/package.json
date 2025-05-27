@@ -1,6 +1,6 @@
 {
   "name": "@launchql/core",
-  "version": "2.1.16",
+  "version": "2.1.17",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Package and Migration Tools",
   "main": "index.js",
@@ -42,9 +42,9 @@
     "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
-    "@launchql/server-utils": "^2.1.10",
+    "@launchql/server-utils": "^2.1.11",
     "@launchql/templatizer": "^2.1.4",
-    "@launchql/types": "^2.1.8",
+    "@launchql/types": "^2.1.9",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "csv-to-pg": "^2.0.9",
