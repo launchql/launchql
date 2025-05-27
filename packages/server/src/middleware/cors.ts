@@ -1,7 +1,7 @@
 import corsPlugin from 'cors';
 import { parseUrl } from '@launchql/url-domains';
 import { Request, Response, NextFunction } from 'express';
-import { CorsModuleData } from '@launchql/types';
+import { CorsModuleData } from '../types';
 
 export const cors = async (req: Request, res: Response, next: NextFunction) => {
   const api = req.api;

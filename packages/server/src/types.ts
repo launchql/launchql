@@ -1,4 +1,65 @@
-import { ApiModule, RlsModule } from '@launchql/types';
+import { PostGraphileOptions } from 'postgraphile';
+import type { Plugin } from 'graphile-build';
+
+export interface CorsModuleData {
+    urls: string[];
+}
+
+export interface PublicKeyChallengeData {
+    schema: string;
+    crypto_network: string;
+    sign_up_with_key: string;
+    sign_in_request_challenge: string;
+    sign_in_record_failure: string;
+    sign_in_with_challenge: string;
+}
+
+export interface GenericModuleData {
+    [key: string]: any;
+}
+
+export type ApiModule = 
+    | { name: 'cors'; data: CorsModuleData }
+    | { name: 'pubkey_challenge'; data: PublicKeyChallengeData }
+    | { name: string; data?: GenericModuleData };
+
+export interface RlsModule {
+    authenticate?: string;
+    authenticateStrict?: string;
+    privateSchema: {
+        schemaName: string;
+    };
+}
+
+declare module 'express-serve-static-core' {
+    interface Request {
+        api: {
+            dbname: string;
+            anonRole: string;
+            roleName: string;
+            schema: string[];  // Pre-processed schema names
+            apiModules: ApiModule[];
+            rlsModule?: {
+                authenticate?: string;
+                authenticateStrict?: string;
+                privateSchema: {
+                    schemaName: string;
+                };
+            };
+            domains?: string[];  // Simplified from database.sites.nodes
+            databaseId?: string;
+            isPublic?: boolean;
+        };
+        svc_key: string;
+        clientIp?: string;
+        databaseId?: string;
+        token?: {
+            id: string;
+            user_id: string;
+            [key: string]: any;
+        };
+    }
+}
 
 export interface SchemaNode {
     schemaName: string;
