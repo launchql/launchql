@@ -60,9 +60,9 @@ const getSiteUrls = (sites: Sites): string[] => {
   return siteUrls;
 };
 
-export const cors = async (req: Request & { apiInfo: ApiInfo }, res: Response, next: NextFunction) => {
-  const api = req.apiInfo.data.api;
-  const corsModules = api.apiModules.nodes.filter((mod) => mod.name === 'cors');
+export const cors = async (req: Request, res: Response, next: NextFunction) => {
+  const api = req.api;
+  const corsModules = api.apiModules.filter((mod: any) => mod.name === 'cors');
 
   let corsOptions = { origin: false as boolean | string | RegExp | (string | RegExp)[] }; // default: disabled
   if (!api.database?.sites) {
@@ -76,7 +76,7 @@ export const cors = async (req: Request & { apiInfo: ApiInfo }, res: Response, n
   const sites = api.database.sites;
   const siteUrls = getSiteUrls(sites);
 
-  const listOfDomains = corsModules.reduce<string[]>((m, mod) => {
+  const listOfDomains = corsModules.reduce<string[]>((m: string[], mod: any) => {
     return [...mod.data.urls, ...m];
   }, siteUrls);
 

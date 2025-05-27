@@ -9,6 +9,27 @@ import { LaunchQLOptions } from '@launchql/types';
 import { Response, Request, NextFunction } from 'express';
 import { Pool } from 'pg';
 
+/**
+ * Transforms the old service structure to the new api structure
+ */
+const transformServiceToApi = (svc: any): any => {
+  const api = svc.data.api;
+  const schemaNames = api.schemaNamesFromExt?.nodes?.map((n: any) => n.schemaName) || [];
+  const additionalSchemas = api.schemaNames?.nodes?.map((n: any) => n.schemaName) || [];
+  
+  return {
+    dbname: api.dbname,
+    anonRole: api.anonRole,
+    roleName: api.roleName,
+    schema: [...schemaNames, ...additionalSchemas],
+    apiModules: api.apiModules?.nodes || [],
+    rlsModule: api.rlsModule,
+    database: api.database,
+    databaseId: api.databaseId,
+    isPublic: api.isPublic
+  };
+};
+
 const getPortFromRequest = (req: Request): string | null => {
   const host = req.headers.host;
   if (!host) return null;
@@ -34,7 +55,8 @@ export const createApiMiddleware = (opts: LaunchQLOptions) => {
         res.status(404).send(errorPage404Message('API service not found for the given domain/subdomain.'));
         return;
       }
-      req.apiInfo = svc;
+      req.api = transformServiceToApi(svc);
+      req.apiInfo = svc; // Keep for backward compatibility
       req.databaseId = svc.data.api.databaseId;
       next();
     } catch (e: any) {
