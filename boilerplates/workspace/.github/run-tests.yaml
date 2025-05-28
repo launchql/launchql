@@ -9,11 +9,11 @@ on:
 jobs:
   container-job:
     runs-on: ubuntu-latest
-    container: node:20.12.0-alpine
+    container: pyramation/node-sqitch-pgvector:20.12.0
 
     services:
       pg_db:
-        image: pyramation/postgis
+        image: pyramation/node-sqitch-pgvector:20.12.0
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
