@@ -118,7 +118,7 @@ export default [
   const content = `services:
   postgres:
     container_name: postgres
-    image: pyramation/postgis
+    image: pyramation/pgvector:13.3-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
