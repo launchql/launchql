@@ -6,7 +6,7 @@ on:
 jobs:
   container-job:
     runs-on: ubuntu-latest
-    container: pyramation/node-sqitch:20.12.0
+    container: pyramation/node-sqitch-pgvector:20.12.0
 
     env:
       PGHOST: pg_db
