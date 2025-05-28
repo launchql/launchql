@@ -1,0 +1,4 @@
+%syntax-version=1.0.0
+%project=my-ollama
+%uri=my-ollama
+migration 2025-05-28T22:38:25Z System Administrator <root@Hyperwebs-MacBook-Pro.local> # adding migration
