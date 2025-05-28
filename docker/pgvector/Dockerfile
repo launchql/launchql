@@ -10,5 +10,3 @@ RUN apk add --no-cache --virtual .build-deps \
     && make && make install \
     && cd .. && rm -rf pgvector \
     && apk del .build-deps
-
-ENTRYPOINT ["/bin/sh"]
