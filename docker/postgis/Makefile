@@ -1,9 +1,9 @@
-IMAGE := pyramation/node-sqitch
-TAG := 20.12.0
+IMAGE := pyramation/postgis
+TAG := 13.3-alpine
 PLATFORMS := linux/amd64,linux/arm64
-CONTAINER_NAME := node-sqitch
+CONTAINER_NAME := postgis
 
-.PHONY: build push tag-latest ssh cleanup clean-images
+.PHONY: build push ssh cleanup clean-images
 
 build:
 	docker buildx build \
@@ -12,16 +12,12 @@ build:
 		--output=type=docker \
 		.
 
-push: tag-latest
+push:
 	docker buildx build \
 		--platform $(PLATFORMS) \
 		-t $(IMAGE):$(TAG) \
-		-t $(IMAGE):latest \
 		--push \
 		.
-
-tag-latest:
-	docker tag $(IMAGE):$(TAG) $(IMAGE):latest
 
 ssh:
 	docker run --platform=linux/arm64 -it $(IMAGE):$(TAG) sh
@@ -35,5 +31,5 @@ cleanup:
 clean-images:
 	@if docker images | grep $(IMAGE); then \
 		echo "Removing Docker images for $(IMAGE)..."; \
-		docker rmi $(IMAGE):$(TAG) $(IMAGE):latest || true; \
+		docker rmi $(IMAGE):$(TAG) || true; \
 	fi

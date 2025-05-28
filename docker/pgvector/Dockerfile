@@ -1,6 +1,4 @@
-# pgvector/Dockerfile
-
-FROM pyramation/node-sqitch:20.12.0
+FROM pyramation/postgis:13.3-alpine
 
 # Install PGVector extension
 RUN apk add --no-cache --virtual .build-deps \

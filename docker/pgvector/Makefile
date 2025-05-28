@@ -1,9 +1,7 @@
-# docker/pgvector/Makefile
-
-IMAGE := pyramation/node-sqitch-pgvector
-TAG := 20.12.0
+IMAGE := pyramation/pgvector
+TAG := 13.3-alpine
 PLATFORMS := linux/amd64,linux/arm64
-CONTAINER_NAME := node-sqitch-pgvector
+CONTAINER_NAME := pgvector
 
 .PHONY: build push ssh cleanup clean-images
 
