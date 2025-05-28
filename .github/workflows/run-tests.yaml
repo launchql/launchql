@@ -16,7 +16,7 @@ jobs:
 
     services:
       pg_db:
-        image: pyramation/postgis
+        image: pyramation/pgvector:13.3-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
