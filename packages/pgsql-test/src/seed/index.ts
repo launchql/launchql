@@ -4,6 +4,7 @@ import { json } from './json';
 import { sqitch } from './sqitch';
 import { launchql } from './launchql';
 export * from './types';
+export * from './csv';
 
 export const seed = {
   launchql,
