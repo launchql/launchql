@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.17](https://github.com/launchql/launchql/compare/@launchql/server@2.1.16...@launchql/server@2.1.17) (2025-05-29)
+
+**Note:** Version bump only for package @launchql/server
+
+
+
+
+
 ## [2.1.16](https://github.com/launchql/launchql/compare/@launchql/server@2.1.15...@launchql/server@2.1.16) (2025-05-27)
 
 **Note:** Version bump only for package @launchql/server

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.19](https://github.com/launchql/launchql/compare/pgsql-test@2.1.18...pgsql-test@2.1.19) (2025-05-29)
+
+**Note:** Version bump only for package pgsql-test
+
+
+
+
+
 ## [2.1.18](https://github.com/launchql/launchql/compare/pgsql-test@2.1.17...pgsql-test@2.1.18) (2025-05-27)
 
 **Note:** Version bump only for package pgsql-test
