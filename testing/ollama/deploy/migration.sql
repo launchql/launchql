@@ -2,9 +2,6 @@
 
 BEGIN;
 
--- Enable pgvector
-CREATE EXTENSION IF NOT EXISTS vector;
-
 -- Create schema if missing
 CREATE SCHEMA IF NOT EXISTS intelligence;
 

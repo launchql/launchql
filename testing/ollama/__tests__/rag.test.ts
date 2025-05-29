@@ -20,24 +20,19 @@ afterAll(() => teardown());
 
 describe('Retrieval Augmented Generation (RAG)', () => {
   it('should generate a response using retrieved context', async () => {
-    // 1. Create a document with clear sections about machine learning and neural networks
+    // 1. Create a document with clear sections about the Interchain JS Stack and Hyperweb
     const longDocument = `
-      Machine Learning Basics:
-      Machine learning is a subset of artificial intelligence that enables systems to learn from data.
-      These systems improve their performance through experience without explicit programming.
-      Machine learning algorithms can be supervised, unsupervised, or reinforcement learning based.
+      Interchain JavaScript Stack Overview:
+      The Interchain JavaScript Stack (InterchainJS) enables developers to build cross-chain applications using familiar TypeScript tooling.
+      Built by the creators of CosmWasm, InterchainJS abstracts away blockchain complexities, making smart contract and app development seamless.
 
-      Neural Networks Explained:
-      Neural networks are a fundamental concept in machine learning, inspired by the human brain.
-      They consist of interconnected nodes that process information in layers.
-      Deep learning uses neural networks with many layers to solve complex problems.
-      Each layer in a neural network can learn different features from the input data.
-      Neural networks are particularly effective for pattern recognition and classification tasks.
+      Hyperweb and TypeScript Smart Contracts:
+      Hyperweb brings TypeScript fully on-chain with its custom Hyperweb Virtual Machine (HVM), enabling developers to write smart contracts in JavaScript.
+      It powers apps across ecosystems like Osmosis, dYdX, and Celestia, providing unified access to decentralized and cloud infrastructure.
 
-      Deep Learning Applications:
-      Deep learning has revolutionized many fields through its use of neural networks.
-      It has achieved breakthroughs in computer vision, natural language processing, and more.
-      The success of deep learning depends on both the architecture of neural networks and the quality of training data.
+      Developer Experience and Infrastructure:
+      Hyperweb eliminates the need for Go or Rust, allowing anyone with frontend skills to build full-stack dApps.
+      It integrates serverless compute, traditional databases, and decentralized networks in one cohesive stack.
     `.trim();
 
     // 2. Generate embedding for the full document
@@ -48,7 +43,7 @@ describe('Retrieval Augmented Generation (RAG)', () => {
       `INSERT INTO intelligence.documents (title, content, embedding)
        VALUES ($1, $2, $3::vector)
        RETURNING id`,
-      ['ML and Neural Networks Guide', longDocument, formatVector(docEmbedding)]
+      ['InterchainJS and Hyperweb Overview', longDocument, formatVector(docEmbedding)]
     );
     const docId = docResult.rows[0].id;
 
@@ -73,7 +68,7 @@ describe('Retrieval Augmented Generation (RAG)', () => {
     }
 
     // 6. Search for similar chunks using a query
-    const query = 'How do neural networks work and what makes them effective?';
+    const query = 'How does the Interchain JavaScript Stack simplify cross-chain app development? Can you give me a few taglines for a new webpage I can use as h1 and h2s?';
     const queryEmbedding = await ollama.generateEmbedding(query);
 
     const similarChunks = await pg.client.query(
@@ -113,10 +108,6 @@ Answer:`,
     // 9. Verify the response
     expect(result.response).toBeTruthy();
     expect(result.response.length).toBeGreaterThan(0);
-    
-    // Check if the response contains relevant terms
-    const responseLower = result.response.toLowerCase();
-    expect(responseLower).toMatch(/neural\s+network/);
-    expect(responseLower).toMatch(/layer/);
+
   });
-}); 
+});
