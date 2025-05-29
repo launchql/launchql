@@ -11,13 +11,24 @@ let ollama: OllamaClient;
 
 const formatVector = (embedding: number[]): string => `[${embedding.join(',')}]`;
 
+// Log collection
+const logs: string[] = [];
+const addLog = (service: string, action: string, duration: number) => {
+  logs.push(`[${service.toUpperCase()}] ${action}: ${duration.toFixed(2)}ms`);
+};
+
 // Helper function to measure time
 const measureTime = async <T>(service: 'ollama' | 'postgres' | 'other', action: string, fn: () => Promise<T>): Promise<T> => {
   const start = performance.now();
   const result = await fn();
   const end = performance.now();
-  console.log(`[${service.toUpperCase()}] ${action}: ${(end - start).toFixed(2)}ms`);
+  addLog(service, action, end - start);
   return result;
+};
+
+// Helper to add summary logs
+const addSummary = (title: string, value: string) => {
+  logs.push(`[SUMMARY] ${title}: ${value}`);
 };
 
 beforeAll(async () => {
@@ -65,6 +76,7 @@ describe('Retrieval Augmented Generation (RAG)', () => {
     const docId = docResult.rows[0].id;
 
     // 4. Create chunks
+    // can this be done off-db?
     await measureTime(
       'postgres',
       'create_document_chunks',
@@ -85,7 +97,6 @@ describe('Retrieval Augmented Generation (RAG)', () => {
     );
 
     // Process chunks
-    console.log(`\n[PROCESSING] Starting chunk embeddings for ${chunks.rows.length} chunks`);
     let totalChunkTime = 0;
     for (const [index, chunk] of chunks.rows.entries()) {
       const chunkStart = performance.now();
@@ -108,8 +119,6 @@ describe('Retrieval Augmented Generation (RAG)', () => {
       const chunkEnd = performance.now();
       totalChunkTime += chunkEnd - chunkStart;
     }
-    console.log(`[SUMMARY] Total chunk processing time: ${totalChunkTime.toFixed(2)}ms`);
-    console.log(`[SUMMARY] Average time per chunk: ${(totalChunkTime / chunks.rows.length).toFixed(2)}ms`);
 
     // 6. Search for similar chunks using a query
     const query = 'How does the Interchain JavaScript Stack simplify cross-chain app development? Can you give me a few taglines for a new webpage I can use as h1 and h2s?';
@@ -158,6 +167,30 @@ Answer:`,
       }).then(res => res.json())
     );
 
+    // Add summaries at the end
+    logs.push(''); // Add blank line before summary
+    logs.push('Summary:');
+    logs.push('========');
+
+    // Calculate service totals
+    const serviceTotals = logs.reduce((acc, log) => {
+      if (log.startsWith('[OLLAMA]')) {
+        acc.ollama += parseFloat(log.split(': ')[1]);
+      } else if (log.startsWith('[POSTGRES]')) {
+        acc.postgres += parseFloat(log.split(': ')[1]);
+      }
+      return acc;
+    }, { ollama: 0, postgres: 0 });
+
+    addSummary('Total Ollama time', `${serviceTotals.ollama.toFixed(2)}ms`);
+    addSummary('Total Postgres time', `${serviceTotals.postgres.toFixed(2)}ms`);
+    addSummary('Total chunk processing time', `${totalChunkTime.toFixed(2)}ms`);
+    addSummary('Average time per chunk', `${(totalChunkTime / chunks.rows.length).toFixed(2)}ms`);
+
+    // Log everything at once
+    console.log('\nPerformance Log:');
+    console.log('===============');
+    console.log(logs.join('\n'));
     console.log('\n[RAG] Response:');
     console.log(response.response);
 
