@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings as getSettings } from 'graphile-settings';
-import PublicKeySignature from '../plugins/PublicKeySignature';
+import PublicKeySignature, { PublicKeyChallengeConfig } from '../plugins/PublicKeySignature';
 import { LaunchQLOptions } from '@launchql/types';
 
 export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
@@ -10,15 +10,9 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
   // @ts-ignore
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const api = req.apiInfo.data.api;
+      const api = req.api;
       const key = req.svc_key;
-      const { dbname } = api;
-      const { anonRole, roleName } = api;
-
-      const { schemaNamesFromExt, schemaNames } = api;
-      const schemas = []
-        .concat(schemaNamesFromExt.nodes.map(({ schemaName }: any) => schemaName))
-        .concat(schemaNames.nodes.map(({ schemaName }: any) => schemaName));
+      const { dbname, anonRole, roleName, schema } = api;
 
       if (graphileCache.has(key)) {
         const { handler } = graphileCache.get(key)!
@@ -29,16 +23,16 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
         ...lOpts,
         graphile: {
           ...lOpts.graphile,
-          schema: schemas
+          schema: schema
         }
       });
 
-      const pubkey_challenge = api.apiModules.nodes.find(
+      const pubkey_challenge = api.apiModules.find(
         (mod: any) => mod.name === 'pubkey_challenge'
       );
 
       if (pubkey_challenge && pubkey_challenge.data) {
-        options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data));
+        options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data as PublicKeyChallengeConfig));
       }
 
       options.appendPlugins = options.appendPlugins ?? [];
@@ -87,7 +81,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
         ...lOpts.pg,
         database: dbname
       });
-      const handler = postgraphile(pgPool, schemas, opts);
+      const handler = postgraphile(pgPool, schema, opts);
 
       graphileCache.set(key, {
         pgPool,

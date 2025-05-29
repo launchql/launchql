@@ -1,46 +1,6 @@
 import { PostGraphileOptions } from 'postgraphile';
 import type { Plugin } from 'graphile-build';
 import { execSync } from 'child_process';
-declare module 'express-serve-static-core' {
-    interface Request {
-        apiInfo: {
-            data: {
-                api: {
-                    dbname: string;
-                    anonRole: string;
-                    roleName: string;
-                    schemaNames: {
-                        nodes: { schemaName: string }[];
-                    };
-                    schemaNamesFromExt: {
-                        nodes: { schemaName: string }[];
-                    };
-                    apiModules: {
-                        nodes: {
-                            name: string;
-                            data?: any;
-                        }[];
-                    };
-                    rlsModule?: {
-                        authenticate?: string;
-                        authenticateStrict?: string;
-                        privateSchema: {
-                            schemaName: string;
-                        };
-                    };
-                };
-            };
-        };
-        svc_key: string;
-        clientIp?: string;
-        databaseId?: string;
-        token?: {
-            id: string;
-            user_id: string;
-            [key: string]: any;
-        };
-    }
-}
 
 export interface PgConfig {
     host: string;

@@ -9,6 +9,47 @@ import { LaunchQLOptions } from '@launchql/types';
 import { Response, Request, NextFunction } from 'express';
 import { Pool } from 'pg';
 
+/**
+ * Transforms the old service structure to the new api structure
+ */
+import { Service, ApiStructure, SchemaNode, Domain, Site } from '../types';
+
+const transformServiceToApi = (svc: Service): ApiStructure => {
+  const api = svc.data.api;
+  const schemaNames = api.schemaNamesFromExt?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
+  const additionalSchemas = api.schemaNames?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
+  
+  let domains: string[] = [];
+  if (api.database?.sites?.nodes) {
+    domains = api.database.sites.nodes.reduce((acc: string[], site: Site) => {
+      if (site.domains?.nodes && site.domains.nodes.length) {
+        const siteUrls = site.domains.nodes.map((domain: Domain) => {
+          const hostname = domain.subdomain ? `${domain.subdomain}.${domain.domain}` : domain.domain;
+          const protocol = domain.domain === 'localhost' ? 'http://' : 'https://';
+          return protocol + hostname;
+        });
+        return [...acc, ...siteUrls];
+      }
+      return acc;
+    }, []);
+  }
+  
+  return {
+    dbname: api.dbname,
+    anonRole: api.anonRole,
+    roleName: api.roleName,
+    schema: [...schemaNames, ...additionalSchemas],
+    apiModules: api.apiModules?.nodes?.map(node => ({
+      name: node.name,
+      data: node.data
+    })) || [],
+    rlsModule: api.rlsModule,
+    domains,
+    databaseId: api.databaseId,
+    isPublic: api.isPublic
+  };
+};
+
 const getPortFromRequest = (req: Request): string | null => {
   const host = req.headers.host;
   if (!host) return null;
@@ -34,14 +75,15 @@ export const createApiMiddleware = (opts: LaunchQLOptions) => {
         res.status(404).send(errorPage404Message('API service not found for the given domain/subdomain.'));
         return;
       }
-      req.apiInfo = svc;
-      req.databaseId = svc.data.api.databaseId;
+      const api = transformServiceToApi(svc);
+      req.api = api;
+      req.databaseId = api.databaseId;
       next();
     } catch (e: any) {
       if (e.code === 'NO_VALID_SCHEMAS') {
         res.status(404).send(errorPage404Message(e.message));
       } else if (e.message.match(/does not exist/)) {
-        res.status(404).send(errorPage404Message('The resource you’re looking for does not exist.'));
+        res.status(404).send(errorPage404Message('The resource you\'re looking for does not exist.'));
       } else {
         console.error(e);
         res.status(500).send(errorPage50x);
@@ -76,7 +118,7 @@ const getHardCodedSchemata = ({
             .map((schemaName) => ({ schemaName }))
         },
         schemaNames: { nodes: [] as Array<{ schemaName: string }> },
-        apiModules: { nodes: [] as Array<any> }
+        apiModules: [] as Array<any>
       }
     }
   };
@@ -106,7 +148,7 @@ const getMetaSchema = ({
           nodes: schemata.map((schemaName: string) => ({ schemaName }))
         },
         schemaNames: { nodes: [] as Array<{ schemaName: string }> },
-        apiModules: { nodes: [] as Array<any> }
+        apiModules: [] as Array<any>
       }
     }
   };
@@ -209,7 +251,7 @@ const validateSchemata = async (pool: Pool, schemata: string[]): Promise<string[
     `SELECT schema_name FROM information_schema.schemata WHERE schema_name = ANY($1::text[])`,
     [schemata]
   );
-  return result.rows.map(row => row.schema_name);
+  return result.rows.map((row: { schema_name: string }) => row.schema_name);
 };
 
 export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise<any> => {
