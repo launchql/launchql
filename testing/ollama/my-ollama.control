@@ -1,0 +1,8 @@
+# my-ollama extension
+comment = 'my-ollama extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/my-ollama'
+requires = 'citext,plpgsql,pgcrypto,vector'
+relocatable = false
+superuser = false
+  
