@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { graphileCache, getRootPgPool } from '@launchql/server-utils';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings as getSettings } from 'graphile-settings';
-import PublicKeySignature from '../plugins/PublicKeySignature';
+import PublicKeySignature, { PublicKeyChallengeConfig } from '../plugins/PublicKeySignature';
 import { LaunchQLOptions } from '@launchql/types';
 
 export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
@@ -32,7 +32,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
       );
 
       if (pubkey_challenge && pubkey_challenge.data) {
-        options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data));
+        options.appendPlugins.push(PublicKeySignature(pubkey_challenge.data as PublicKeyChallengeConfig));
       }
 
       options.appendPlugins = options.appendPlugins ?? [];

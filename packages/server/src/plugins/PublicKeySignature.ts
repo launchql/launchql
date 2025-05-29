@@ -12,7 +12,7 @@ interface Context {
   env: Record<string, any>;
 }
 
-interface PublicKeyChallengeConfig {
+export interface PublicKeyChallengeConfig {
   schema: string;
     crypto_network: string;
     // crypto_network: keyof typeof Networks;
