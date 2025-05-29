@@ -39,7 +39,10 @@ const transformServiceToApi = (svc: Service): ApiStructure => {
     anonRole: api.anonRole,
     roleName: api.roleName,
     schema: [...schemaNames, ...additionalSchemas],
-    apiModules: api.apiModules || [],
+    apiModules: api.apiModules?.nodes?.map(node => ({
+      name: node.name,
+      data: node.data
+    })) || [],
     rlsModule: api.rlsModule,
     domains,
     databaseId: api.databaseId,
@@ -80,7 +83,7 @@ export const createApiMiddleware = (opts: LaunchQLOptions) => {
       if (e.code === 'NO_VALID_SCHEMAS') {
         res.status(404).send(errorPage404Message(e.message));
       } else if (e.message.match(/does not exist/)) {
-        res.status(404).send(errorPage404Message('The resource you’re looking for does not exist.'));
+        res.status(404).send(errorPage404Message('The resource you\'re looking for does not exist.'));
       } else {
         console.error(e);
         res.status(500).send(errorPage50x);

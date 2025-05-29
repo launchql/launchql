@@ -85,6 +85,9 @@ export interface Site {
 export interface SiteNodes {
     nodes: Site[];
 }
+export interface ApiModuleNodes {
+    nodes: ApiModule[];
+}
 
 export interface Database {
     sites: SiteNodes;
@@ -97,7 +100,7 @@ export interface OldApiStructure {
     roleName: string;
     schemaNames: SchemaNodes;
     schemaNamesFromExt: SchemaNodes;
-    apiModules: ApiModule[];
+    apiModules: ApiModuleNodes;
     rlsModule?: RlsModule;
     database?: Database;
     databaseId?: string;
