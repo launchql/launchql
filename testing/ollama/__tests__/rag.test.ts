@@ -12,11 +12,11 @@ let ollama: OllamaClient;
 const formatVector = (embedding: number[]): string => `[${embedding.join(',')}]`;
 
 // Helper function to measure time
-const measureTime = async <T>(label: string, fn: () => Promise<T>): Promise<T> => {
+const measureTime = async <T>(service: 'ollama' | 'postgres' | 'other', action: string, fn: () => Promise<T>): Promise<T> => {
   const start = performance.now();
   const result = await fn();
   const end = performance.now();
-  console.log(`${label}: ${(end - start).toFixed(2)}ms`);
+  console.log(`[${service.toUpperCase()}] ${action}: ${(end - start).toFixed(2)}ms`);
   return result;
 };
 
@@ -46,13 +46,15 @@ describe('Retrieval Augmented Generation (RAG)', () => {
 
     // 2. Generate embedding for the full document
     const docEmbedding = await measureTime(
-      'Generate document embedding',
+      'ollama',
+      'generateEmbedding (full document)',
       () => ollama.generateEmbedding(longDocument)
     );
 
     // 3. Insert the document
     const docResult = await measureTime(
-      'Insert document',
+      'postgres',
+      'INSERT (documents table)',
       () => pg.client.query(
         `INSERT INTO intelligence.documents (title, content, embedding)
          VALUES ($1, $2, $3::vector)
@@ -64,7 +66,8 @@ describe('Retrieval Augmented Generation (RAG)', () => {
 
     // 4. Create chunks
     await measureTime(
-      'Create document chunks',
+      'postgres',
+      'create_document_chunks',
       () => pg.client.query(
         'SELECT intelligence.create_document_chunks($1, $2, $3)',
         [docId, 300, 100]
@@ -73,38 +76,53 @@ describe('Retrieval Augmented Generation (RAG)', () => {
 
     // 5. Get chunks and generate embeddings
     const chunks = await measureTime(
-      'Get chunks from database',
+      'postgres',
+      'SELECT (chunks table)',
       () => pg.client.query(
         `SELECT id, content FROM intelligence.chunks WHERE document_id = $1 ORDER BY chunk_index`,
         [docId]
       )
     );
 
-    console.log(`Processing ${chunks.rows.length} chunks...`);
+    // Process chunks
+    console.log(`\n[PROCESSING] Starting chunk embeddings for ${chunks.rows.length} chunks`);
     let totalChunkTime = 0;
-    for (const chunk of chunks.rows) {
+    for (const [index, chunk] of chunks.rows.entries()) {
       const chunkStart = performance.now();
-      const chunkEmbedding = await ollama.generateEmbedding(chunk.content);
-      await pg.client.query(
-        'UPDATE intelligence.chunks SET embedding = $1::vector WHERE id = $2',
-        [formatVector(chunkEmbedding), chunk.id]
+      
+      const chunkEmbedding = await measureTime(
+        'ollama',
+        `generateEmbedding (chunk ${index + 1}/${chunks.rows.length})`,
+        () => ollama.generateEmbedding(chunk.content)
       );
+
+      await measureTime(
+        'postgres',
+        `UPDATE (chunk ${index + 1} embedding)`,
+        () => pg.client.query(
+          'UPDATE intelligence.chunks SET embedding = $1::vector WHERE id = $2',
+          [formatVector(chunkEmbedding), chunk.id]
+        )
+      );
+
       const chunkEnd = performance.now();
       totalChunkTime += chunkEnd - chunkStart;
     }
-    console.log(`Total chunk processing time: ${totalChunkTime.toFixed(2)}ms`);
-    console.log(`Average time per chunk: ${(totalChunkTime / chunks.rows.length).toFixed(2)}ms`);
+    console.log(`[SUMMARY] Total chunk processing time: ${totalChunkTime.toFixed(2)}ms`);
+    console.log(`[SUMMARY] Average time per chunk: ${(totalChunkTime / chunks.rows.length).toFixed(2)}ms`);
 
     // 6. Search for similar chunks using a query
     const query = 'How does the Interchain JavaScript Stack simplify cross-chain app development? Can you give me a few taglines for a new webpage I can use as h1 and h2s?';
     
     const queryEmbedding = await measureTime(
-      'Generate query embedding',
+      'ollama',
+      'generateEmbedding (query)',
       () => ollama.generateEmbedding(query)
     );
 
     const similarChunks = await measureTime(
-      'Find similar chunks',
+      'postgres',
+      'find_similar_chunks',
       () => pg.client.query(
         `SELECT content, similarity
          FROM intelligence.find_similar_chunks($1::vector, $2, $3)
@@ -120,7 +138,8 @@ describe('Retrieval Augmented Generation (RAG)', () => {
 
     // 8. Generate RAG response using Ollama
     const response = await measureTime(
-      'Generate RAG response',
+      'ollama',
+      'generate (RAG response)',
       () => fetch('http://localhost:11434/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -139,7 +158,7 @@ Answer:`,
       }).then(res => res.json())
     );
 
-    console.log('\nRAG Response:');
+    console.log('\n[RAG] Response:');
     console.log(response.response);
 
     // 9. Verify the response
