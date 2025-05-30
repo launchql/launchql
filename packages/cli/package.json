@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.1.28",
+  "version": "4.1.29",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -42,8 +42,8 @@
   },
   "dependencies": {
     "@launchql/core": "^2.1.19",
-    "@launchql/explorer": "^2.1.16",
-    "@launchql/server": "^2.1.18",
+    "@launchql/explorer": "^2.1.17",
+    "@launchql/server": "^2.1.19",
     "@launchql/server-utils": "^2.1.13",
     "@launchql/templatizer": "^2.1.5",
     "@launchql/types": "^2.1.11",
