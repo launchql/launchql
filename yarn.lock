@@ -1414,13 +1414,6 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/busboy@^1.5.0":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@types/busboy/-/busboy-1.5.4.tgz#0038c31102ca90f2a7f0d8bc27ee5ebf1088e230"
-  integrity sha512-kG7WrUuAKK0NoyxfQHsVE6j1m01s6kMma64E+OZenQABMQyTJop1DumUWcLwAQ2JzpefU7PDYoRDKl8uZosFjw==
-  dependencies:
-    "@types/node" "*"
-
 "@types/connect@*":
   version "3.4.38"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.38.tgz#5ba7f3bc4fbbdeaff8dded952e5ff2cc53f8d858"
@@ -1634,11 +1627,6 @@
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.4.tgz#56e2cc26c397c038fab0e3a917a12d5c5909e901"
   integrity sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==
-
-"@types/object-path@^0.11.1":
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/@types/object-path/-/object-path-0.11.4.tgz#a14529227500faf7891d003b2c7f5772c4a5dfdc"
-  integrity sha512-4tgJ1Z3elF/tOMpA8JLVuR9spt9Ynsf7+JjqsQ2IqtiPJtcLoHoXcT6qU4E10cPFqyXX5HDm9QwIzZhBSkLxsw==
 
 "@types/parse-json@^4.0.0":
   version "4.0.2"
@@ -2429,13 +2417,6 @@ busboy@^0.3.1:
   integrity sha512-y7tTxhGKXcyBxRKAni+awqx8uqaJKrSFSNFSeRG5CsWNdmy2BIK+6VGWEW7TZnIO/533mtMEA4rOevQV815YJw==
   dependencies:
     dicer "0.3.0"
-
-busboy@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
-  integrity sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==
-  dependencies:
-    streamsearch "^1.1.0"
 
 byte-size@7.0.0:
   version "7.0.0"
@@ -3933,7 +3914,7 @@ fresh@^2.0.0:
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-2.0.0.tgz#8dd7df6a1b3a1b3a5cf186c05a5dd267622635a4"
   integrity sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==
 
-fs-capacitor@^6.1.0, fs-capacitor@^6.2.0:
+fs-capacitor@^6.1.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/fs-capacitor/-/fs-capacitor-6.2.0.tgz#fa79ac6576629163cb84561995602d8999afb7f5"
   integrity sha512-nKcE1UduoSKX27NSZlg879LdQc94OtbOsEmKMN2MBNudXREvijRKx2GEBsTMTfws+BrbkJoEuynbGSVRSpauvw==
@@ -4380,7 +4361,7 @@ graphql-tag@2.12.6:
   dependencies:
     tslib "^2.1.0"
 
-graphql-upload@11.0.0:
+graphql-upload@11.0.0, graphql-upload@^15.0.2:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/graphql-upload/-/graphql-upload-11.0.0.tgz#24b245ff18f353bab6715e8a055db9fd73035e10"
   integrity sha512-zsrDtu5gCbQFDWsNa5bMB4nf1LpKX9KDgh+f8oL1288ijV4RxeckhVozAjqjXAfRpxOHD1xOESsh6zq8SjdgjA==
@@ -4390,19 +4371,6 @@ graphql-upload@11.0.0:
     http-errors "^1.7.3"
     isobject "^4.0.0"
     object-path "^0.11.4"
-
-graphql-upload@^15.0.2:
-  version "15.0.2"
-  resolved "https://registry.yarnpkg.com/graphql-upload/-/graphql-upload-15.0.2.tgz#851667589439ee617238e2d90253000a2601ac04"
-  integrity sha512-ufJAkZJBKWRDD/4wJR3VZMy9QWTwqIYIciPtCEF5fCNgWF+V1p7uIgz+bP2YYLiS4OJBhCKR8rnqE/Wg3XPUiw==
-  dependencies:
-    "@types/busboy" "^1.5.0"
-    "@types/node" "*"
-    "@types/object-path" "^0.11.1"
-    busboy "^1.6.0"
-    fs-capacitor "^6.2.0"
-    http-errors "^2.0.0"
-    object-path "^0.11.8"
 
 graphql-ws@^5.6.2:
   version "5.16.2"
@@ -6839,7 +6807,7 @@ object-inspect@^1.13.3:
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.13.4.tgz#8375265e21bc20d0fa582c22e1b13485d6e00213"
   integrity sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==
 
-object-path@^0.11.4, object-path@^0.11.8:
+object-path@^0.11.4:
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.11.8.tgz#ed002c02bbdd0070b78a27455e8ae01fc14d4742"
   integrity sha512-YJjNZrlXJFM42wTBn6zgOJVar9KFJvzx6sTWDte8sWZF//cnjl0BxHNpfZx+ZffXX63A9q0b1zsFiBX4g4X5KA==
@@ -8448,11 +8416,6 @@ streamsearch@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-0.1.2.tgz#808b9d0e56fc273d809ba57338e929919a1a9f1a"
   integrity sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==
-
-streamsearch@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-1.1.0.tgz#404dd1e2247ca94af554e841a8ef0eaa238da764"
-  integrity sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==
 
 string-length@^4.0.1:
   version "4.0.2"
