@@ -1462,7 +1462,7 @@
     "@types/express-serve-static-core" "^5.0.0"
     "@types/serve-static" "*"
 
-"@types/fs-capacitor@*":
+"@types/fs-capacitor@*", "@types/fs-capacitor@8.0.2":
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/@types/fs-capacitor/-/fs-capacitor-8.0.2.tgz#8c0ec179fcb88961423f9e7cd2571511a499d37a"
   integrity sha512-uHCqZVh7Ofv9ROqq1wXH3wENCGGX0p4EWLKOquMILiapG3nlTBfL6tXiknGKWp07RtSIugWVCj21cp/eo1ebLQ==
