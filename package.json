@@ -52,6 +52,9 @@
   "resolutions": {
     "pg": "^8.16.0",
     "@types/pg": "^8.15.2",
-    "graphql": "15.5.2"
+    "graphql": "15.5.2",
+    "graphql-upload": "11.0.0",
+    "**/graphql-upload/graphql": "15.5.2",
+    "postgraphile-derived-upload-field/graphql-upload": "11.0.0"
   }
 }

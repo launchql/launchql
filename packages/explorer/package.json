@@ -61,6 +61,8 @@
     "interface"
   ],
   "resolutions": {
-    "graphql": "15.5.2"
+    "graphql": "15.5.2",
+    "graphql-upload": "11.0.0",
+    "**/graphql-upload/graphql": "15.5.2"
   }
 }
