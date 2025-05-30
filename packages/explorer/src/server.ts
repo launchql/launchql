@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction, Express } from 'express';
 import { postgraphile } from 'postgraphile';
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import { graphqlUploadExpress } from 'graphql-upload';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import {
   graphileCache,

@@ -5,7 +5,7 @@ import {
   getRootPgPool
 } from '@launchql/server-utils';
 
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import { graphqlUploadExpress } from 'graphql-upload';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
 import { createAuthenticateMiddleware } from './middleware/auth';
