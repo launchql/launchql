@@ -63,8 +63,27 @@ export const getSubdomain = (reqDomains: string[]): string | null => {
   return !names.length ? null : names.join('.');
 };
 
-export const createApiMiddleware = (opts: LaunchQLOptions) => {
+export const createApiMiddleware = (opts: any) => {
   return async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    if (opts.api?.enableMetaApi === false) {
+      const schemas = opts.api.exposedSchemas;
+      const anonRole = opts.api.anonRole;
+      const roleName = opts.api.roleName;
+      const databaseId = opts.api.defaultDatabaseId;
+      const api: ApiStructure = {
+        dbname: opts.pg?.database ?? '',
+        anonRole,
+        roleName,
+        schema: schemas,
+        apiModules: [],
+        domains: [],
+        databaseId,
+        isPublic: false
+      };
+      req.api = api;
+      req.databaseId = databaseId;
+      return next();
+    }
     try {
       const svc = await getApiConfig(opts, req);
 
@@ -135,7 +154,8 @@ const getMetaSchema = ({
   key: string;
   databaseId: string;
 }): any => {
-  const schemata = opts.graphile.metaSchemas;
+  const apiOpts = (opts as any).api || {};
+  const schemata = apiOpts.metaSchemas || [];
   const svc = {
     data: {
       api: {
@@ -183,7 +203,8 @@ const queryServiceByDomainAndSubdomain = async ({
   const nodes = result?.data?.domains?.nodes;
   if (nodes?.length) {
     const data = nodes[0];
-    if (!data.api || data.api.isPublic !== opts.graphile.isPublic) return null;
+    const apiPublic = (opts as any).api?.isPublic;
+    if (!data.api || data.api.isPublic !== apiPublic) return null;
     const svc = { data };
     svcCache.set(key, svc);
     return svc;
@@ -217,7 +238,8 @@ const queryServiceByApiName = async ({
   }
 
   const data = result?.data;
-  if (data?.api && data.api.isPublic === opts.graphile.isPublic) {
+  const apiPublic = (opts as any).api?.isPublic;
+  if (data?.api && data.api.isPublic === apiPublic) {
     const svc = { data };
     svcCache.set(key, svc);
     return svc;
@@ -232,7 +254,8 @@ const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
     .concat(domain)
     .join('.');
 
-  if (!opts.graphile.isPublic) {
+  const apiPublic = (opts as any).api?.isPublic;
+  if (apiPublic === false) {
     if (req.get('X-Api-Name')) {
       return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
     }
@@ -267,7 +290,8 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
   if (svcCache.has(key)) {
     svc = svcCache.get(key);
   } else {
-    const allSchemata = opts.graphile.metaSchemas || [];
+    const apiOpts = (opts as any).api || {};
+    const allSchemata = apiOpts.metaSchemas || [];
     const validatedSchemata = await validateSchemata(rootPgPool, allSchemata);
 
     if (validatedSchemata.length === 0) {
@@ -288,7 +312,8 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
     // @ts-ignore
     const client = new GraphileQuery({ schema, pool: rootPgPool, settings });
 
-    if (!opts.graphile.isPublic) {
+    const apiPublic = (opts as any).api?.isPublic;
+    if (apiPublic === false) {
       if (req.get('X-Schemata')) {
         svc = getHardCodedSchemata({
           opts,

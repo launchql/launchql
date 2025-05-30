@@ -23,13 +23,21 @@ export interface PgTestConnectionOptions {
     }
   }
 
+export interface ApiOptions {
+    enableMetaApi?: boolean;
+    exposedSchemas?: string[];
+    anonRole?: string;
+    roleName?: string;
+    defaultDatabaseId?: string;
+    isPublic?: boolean;
+    metaSchemas?: string[];
+}
+
 export interface LaunchQLOptions {
     db?: Partial<PgTestConnectionOptions>;
     pg?: Partial<PgConfig>;
     graphile?: {
-        isPublic?: boolean;
         schema?: string | string[];
-        metaSchemas?: string[];
         appendPlugins?: Plugin[];
         graphileBuildOptions?: PostGraphileOptions['graphileBuildOptions'];
         overrideSettings?: Partial<PostGraphileOptions>;
@@ -46,6 +54,7 @@ export interface LaunchQLOptions {
         oppositeBaseNames?: boolean;
         postgis?: boolean;
     };
+    api?: ApiOptions;
     cdn?: {
         bucketName?: string;
         awsRegion?: string;
@@ -54,7 +63,6 @@ export interface LaunchQLOptions {
         minioEndpoint?: string;
     };
 }
-
 
 export const launchqlDefaults: LaunchQLOptions = {
     db: {
@@ -76,9 +84,7 @@ export const launchqlDefaults: LaunchQLOptions = {
         database: 'postgres',
     },
     graphile: {
-        isPublic: true,
         schema: [],
-        metaSchemas: ['collections_public', 'meta_public'],
         appendPlugins: [],
         overrideSettings: {},
         graphileBuildOptions: {},
@@ -92,7 +98,16 @@ export const launchqlDefaults: LaunchQLOptions = {
     features: {
         simpleInflection: true,
         oppositeBaseNames: true,
-        postgis: true,
+        postgis: true
+    },
+    api: {
+        enableMetaApi: true,
+        exposedSchemas: [],
+        anonRole: 'administrator',
+        roleName: 'administrator',
+        defaultDatabaseId: 'hard-coded',
+        isPublic: true,
+        metaSchemas: ['collections_public', 'meta_public']
     },
     cdn: {
         bucketName: 'test-bucket',

@@ -1,5 +1,5 @@
 import { LaunchQLServer as server } from '@launchql/server';
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
+import { CLIOptions, Inquirerer, Question, OptionValue } from 'inquirerer';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
 
@@ -25,6 +25,14 @@ const questions: Question[] = [
   {
     name: 'postgis',
     message: 'Enable PostGIS extension?',
+    type: 'confirm',
+    required: false,
+    default: true,
+    useDefault: true
+  },
+  {
+    name: 'metaApi',
+    message: 'Enable Meta API?',
     type: 'confirm',
     required: false,
     default: true,
@@ -77,8 +85,57 @@ export default async (
     oppositeBaseNames,
     port,
     postgis,
-    simpleInflection
+    simpleInflection,
+    metaApi
   } = await prompter.prompt(argv, questions);
+
+  let selectedSchemas: string[] = [];
+  let authRole: string | undefined;
+  let roleName: string | undefined;
+  if (!metaApi) {
+    const db = await getRootPgPool({ database: selectedDb });
+    const result = await db.query(`
+      SELECT nspname 
+      FROM pg_namespace 
+      WHERE nspname NOT IN ('pg_catalog', 'information_schema')
+      ORDER BY nspname;
+    `);
+    
+    const schemaChoices = result.rows.map(row => ({
+      name: row.nspname,
+      value: row.nspname,
+      selected: true
+    }));
+    const { schemas } = await prompter.prompt(argv, [
+      {
+        type: 'checkbox',
+        name: 'schemas',
+        message: 'Select schemas to expose',
+        options: schemaChoices,
+        required: true
+      }
+    ]);
+    
+    selectedSchemas = (schemas as OptionValue[]).filter(s => s.selected).map(s => s.value);
+    const { authRole: selectedAuthRole, roleName: selectedRoleName } = await prompter.prompt(argv, [
+      {
+        type: 'autocomplete',
+        name: 'authRole',
+        message: 'Select the authentication role',
+        options: ['postgres', 'authenticated', 'anonymous'],
+        required: true
+      },
+      {
+        type: 'autocomplete',
+        name: 'roleName',
+        message: 'Enter the default role name:',
+        options: ['postgres', 'authenticated', 'anonymous'],
+        required: true
+      }
+    ]);
+    authRole = selectedAuthRole;
+    roleName = selectedRoleName;
+  }
 
   const options: LaunchQLOptions = getEnvOptions({
     pg: { database: selectedDb },
@@ -87,10 +144,14 @@ export default async (
       simpleInflection,
       postgis
     },
+    api: {
+      enableMetaApi: metaApi,
+      ...(metaApi === false && { exposedSchemas: selectedSchemas, authRole, roleName })
+    },
     server: {
       port
     }
-  });
+  } as LaunchQLOptions);
 
   log.success('✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {
