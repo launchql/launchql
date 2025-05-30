@@ -57,7 +57,8 @@
   "resolutions": {
     "graphql": "15.5.2",
     "graphql-upload": "11.0.0",
-    "**/graphql-upload/graphql": "15.5.2"
+    "**/graphql-upload/graphql": "15.5.2",
+    "@types/graphql-upload": "8.0.3"
   },
   "keywords": [
     "cli",

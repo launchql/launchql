@@ -55,6 +55,7 @@
     "graphql": "15.5.2",
     "graphql-upload": "11.0.0",
     "**/graphql-upload/graphql": "15.5.2",
-    "postgraphile-derived-upload-field/graphql-upload": "11.0.0"
+    "postgraphile-derived-upload-field/graphql-upload": "11.0.0",
+    "@types/graphql-upload": "8.0.3"
   }
 }
