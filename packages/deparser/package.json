@@ -1,6 +1,6 @@
 {
   "name": "@launchql/ast-deparser",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Deparser",
   "main": "index.js",

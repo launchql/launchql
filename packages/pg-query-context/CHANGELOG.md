@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.7](https://github.com/launchql/launchql/compare/pg-query-context@2.1.6...pg-query-context@2.1.7) (2025-05-30)
+
+**Note:** Version bump only for package pg-query-context
+
+
+
+
+
 ## [2.1.6](https://github.com/launchql/launchql/compare/pg-query-context@2.1.5...pg-query-context@2.1.6) (2025-05-20)
 
 **Note:** Version bump only for package pg-query-context
