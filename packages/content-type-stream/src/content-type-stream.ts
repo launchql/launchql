@@ -39,20 +39,18 @@ export function streamContentType({
 }: StreamContentTypeArgs): Promise<StreamContentTypeResult> {
   return new Promise((resolve, reject) => {
     const peekStream = new BufferPeekStream({ peekBytes });
-    peekStream.once('peek', function (buffer: Buffer) {
-      import('file-type').then(async (fileType) => {
-        try {
-          const fileTypeResult = await fileType.fileTypeFromBuffer(buffer);
-          const type = fileTypeResult?.mime || 'application/octet-stream';
-          const charset = getCharsetFromMimeType(type);
-          const contentType = getContentType(filename, type, charset);
-          resolve({ stream: peekStream, magic: { type, charset }, contentType });
-        } catch (err) {
-          reject(err);
-        }
-      }).catch((err) => {
+    peekStream.once('peek', async function (buffer: Buffer) {
+      try {
+        const Mimetics = require('mimetics');
+        const mimetics = new Mimetics();
+        const fileTypeResult = await mimetics.parseAsync(buffer);
+        const type = fileTypeResult?.mime || 'application/octet-stream';
+        const charset = getCharsetFromMimeType(type);
+        const contentType = getContentType(filename, type, charset);
+        resolve({ stream: peekStream, magic: { type, charset }, contentType });
+      } catch (err) {
         reject(err);
-      });
+      }
     });
     readStream.pipe(peekStream);
   });

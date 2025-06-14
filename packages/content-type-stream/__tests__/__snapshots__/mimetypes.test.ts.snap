@@ -38,10 +38,10 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "bmp.bmp": {
-    "contentType": "image/x-ms-bmp",
+    "contentType": "image/bmp",
     "magic": {
       "charset": "binary",
-      "type": "image/x-ms-bmp",
+      "type": "image/bmp",
     },
   },
   "build.js": {
@@ -87,17 +87,17 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "docx.docx": {
-    "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "contentType": "application/vnd.openxmlformats-officedocument",
     "magic": {
-      "charset": "binary",
-      "type": "application/zip",
+      "charset": "us-ascii",
+      "type": "application/vnd.openxmlformats-officedocument",
     },
   },
   "dwg.dwg": {
     "contentType": "image/vnd.dwg",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "dxf.dxf": {
@@ -110,8 +110,8 @@ exports[`mimetypes good files 1`] = `
   "emf.emf": {
     "contentType": "image/emf",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "epub.epub": {
@@ -124,29 +124,29 @@ exports[`mimetypes good files 1`] = `
   "font.otf": {
     "contentType": "application/x-font-opentype",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "font.ttf": {
     "contentType": "application/x-font-ttf",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "font.woff": {
     "contentType": "application/font-woff",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "font.woff2": {
     "contentType": "application/font-woff2",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "gif-w-alpha.gif": {
@@ -178,31 +178,31 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "less.less": {
-    "contentType": "text/less",
+    "contentType": "text/x-swift",
     "magic": {
       "charset": "us-ascii",
-      "type": "text/plain",
+      "type": "text/x-swift",
     },
   },
   "lock.lock": {
-    "contentType": "text/plain",
+    "contentType": "text/x-csrc",
     "magic": {
       "charset": "us-ascii",
-      "type": "text/plain",
+      "type": "text/x-csrc",
     },
   },
   "md.md": {
-    "contentType": "text/markdown",
+    "contentType": "text/x-csrc",
     "magic": {
       "charset": "us-ascii",
-      "type": "text/plain",
+      "type": "text/x-csrc",
     },
   },
   "mp4.mp4": {
     "contentType": "video/mp4",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "ods.ods": {
@@ -222,8 +222,8 @@ exports[`mimetypes good files 1`] = `
   "pct.pct": {
     "contentType": "image/x-pict",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "pdf.pdf": {
@@ -243,22 +243,22 @@ exports[`mimetypes good files 1`] = `
   "psd.psd": {
     "contentType": "image/vnd.adobe.photoshop",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "scss.scss": {
-    "contentType": "text/x-scss",
+    "contentType": "text/x-swift",
     "magic": {
       "charset": "us-ascii",
-      "type": "text/plain",
+      "type": "text/x-swift",
     },
   },
   "shellscript": {
-    "contentType": "text/plain",
+    "contentType": "application/x-sh",
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/plain",
+      "charset": "binary",
+      "type": "application/x-sh",
     },
   },
   "sql.sql": {
@@ -272,14 +272,14 @@ exports[`mimetypes good files 1`] = `
     "contentType": "image/svg+xml",
     "magic": {
       "charset": "us-ascii",
-      "type": "image/svg",
+      "type": "text/plain",
     },
   },
   "svg.svg": {
     "contentType": "image/svg+xml",
     "magic": {
       "charset": "us-ascii",
-      "type": "image/svg",
+      "type": "image/svg+xml",
     },
   },
   "svgo.yaml": {
@@ -292,15 +292,15 @@ exports[`mimetypes good files 1`] = `
   "swf.swf": {
     "contentType": "application/x-shockwave-flash",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "tga.tga": {
     "contentType": "image/x-tga",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "tif.tif": {
@@ -311,10 +311,10 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "todo-0.1.0.tgz": {
-    "contentType": "application/x-gzip",
+    "contentType": "application/gzip",
     "magic": {
       "charset": "binary",
-      "type": "application/x-gzip",
+      "type": "application/gzip",
     },
   },
   "tsv.tsv": {
@@ -332,31 +332,31 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "typescript.ts": {
-    "contentType": "text/x-typescript",
+    "contentType": "video/mp2t",
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/plain",
+      "charset": "binary",
+      "type": "application/x-sh",
     },
   },
   "typescript.tsx": {
-    "contentType": "text/x-typescript",
+    "contentType": "application/x-sh",
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/plain",
+      "charset": "binary",
+      "type": "application/x-sh",
     },
   },
   "wmf.wmf": {
     "contentType": "image/wmf",
     "magic": {
-      "charset": "binary",
-      "type": "application/octet-stream",
+      "charset": "us-ascii",
+      "type": "text/plain",
     },
   },
   "xlsx.xlsx": {
-    "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "contentType": "application/vnd.openxmlformats-officedocument",
     "magic": {
-      "charset": "binary",
-      "type": "application/zip",
+      "charset": "us-ascii",
+      "type": "application/vnd.openxmlformats-officedocument",
     },
   },
   "zip.zip": {
@@ -403,14 +403,14 @@ exports[`mimetypes malicious files 1`] = `
     "contentType": "image/svg+xml",
     "magic": {
       "charset": "us-ascii",
-      "type": "image/svg",
+      "type": "text/plain",
     },
   },
   "svg-with-script-tag.svg": {
     "contentType": "image/svg+xml",
     "magic": {
       "charset": "us-ascii",
-      "type": "image/svg",
+      "type": "image/svg+xml",
     },
   },
   "xml-as-xvg.svg": {
