@@ -23,10 +23,8 @@ const binaryExtensions = new Set([
   '.tga',
   // Media formats
   '.mp4',
-  '.swf',
-  // Source code (should be text but often detected incorrectly)
-  '.ts',
-  '.tsx'
+  '.swf'
+  // Removed .ts and .tsx from binary extensions as they should be text
 ]);
 
 // Override MIME types for specific extensions
@@ -44,12 +42,19 @@ const mimeTypeOverrides: Record<string, string> = {
   '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   '.pct': 'image/x-pict',
   '.psd': 'image/vnd.adobe.photoshop',
-  '.wmf': 'image/wmf'
+  '.wmf': 'image/wmf',
+  '.bmp': 'image/bmp',
+  '.lock': 'text/x-csrc'
 };
 
 const getCharsetFromMimeType = (mimeType: string, filename: string): string => {
   const ext = extname(filename).toLowerCase();
   
+  // Special case for TypeScript files - should be us-ascii
+  if (ext === '.ts' || ext === '.tsx') {
+    return 'us-ascii';
+  }
+
   // If it's a known binary extension, force binary charset
   if (binaryExtensions.has(ext)) {
     return 'binary';

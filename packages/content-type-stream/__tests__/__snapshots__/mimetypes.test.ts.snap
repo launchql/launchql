@@ -332,16 +332,16 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "typescript.ts": {
-    "contentType": "video/mp2t",
+    "contentType": "text/x-typescript",
     "magic": {
-      "charset": "binary",
+      "charset": "us-ascii",
       "type": "text/x-typescript",
     },
   },
   "typescript.tsx": {
     "contentType": "text/x-typescript",
     "magic": {
-      "charset": "binary",
+      "charset": "us-ascii",
       "type": "text/x-typescript",
     },
   },
