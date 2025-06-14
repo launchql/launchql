@@ -1,14 +1,20 @@
-// @ts-nocheck
+// @ts-ignore
 import { BufferPeekStream } from 'buffer-peek-stream';
 import type { Readable } from 'stream';
 
 import { getContentType } from './get-content-type';
 
 const getCharsetFromMimeType = (mimeType: string): string => {
-  if (mimeType.startsWith('text/') || mimeType.includes('svg') || mimeType === 'text/x-shellscript') {
-    return 'us-ascii';
-  }
-  if (mimeType.includes('json') || mimeType.includes('xml') || mimeType.includes('javascript')) {
+  const asciiMimeTypes = [
+    'text/',
+    'svg',
+    'text/x-shellscript',
+    'json',
+    'xml',
+    'javascript',
+  ];
+
+  if (asciiMimeTypes.some(type => mimeType.includes(type))) {
     return 'us-ascii';
   }
   return 'binary';
