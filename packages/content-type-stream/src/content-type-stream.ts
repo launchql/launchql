@@ -1,12 +1,18 @@
 // @ts-nocheck
-import mmm from '@launchql/mmmagic';
 import { BufferPeekStream } from 'buffer-peek-stream';
 import type { Readable } from 'stream';
 
 import { getContentType } from './get-content-type';
 
-const Magic = mmm.Magic;
-const magic: InstanceType<typeof mmm.Magic> = new Magic(mmm.MAGIC_MIME_TYPE | mmm.MAGIC_MIME_ENCODING);
+const getCharsetFromMimeType = (mimeType: string): string => {
+  if (mimeType.startsWith('text/') || mimeType.includes('svg') || mimeType === 'text/x-shellscript') {
+    return 'us-ascii';
+  }
+  if (mimeType.includes('json') || mimeType.includes('xml') || mimeType.includes('javascript')) {
+    return 'us-ascii';
+  }
+  return 'binary';
+};
 
 interface StreamContentTypeArgs {
   readStream: Readable;
@@ -28,11 +34,18 @@ export function streamContentType({
   return new Promise((resolve, reject) => {
     const peekStream = new BufferPeekStream({ peekBytes });
     peekStream.once('peek', function (buffer: Buffer) {
-      magic.detect(buffer, (err: Error | null, res: string) => {
-        if (err) return reject(err);
-        const [type, charset] = res.split('; charset=');
-        const contentType = getContentType(filename, type, charset);
-        resolve({ stream: peekStream, magic: { type, charset }, contentType });
+      import('file-type').then(async (fileType) => {
+        try {
+          const fileTypeResult = await fileType.fileTypeFromBuffer(buffer);
+          const type = fileTypeResult?.mime || 'application/octet-stream';
+          const charset = getCharsetFromMimeType(type);
+          const contentType = getContentType(filename, type, charset);
+          resolve({ stream: peekStream, magic: { type, charset }, contentType });
+        } catch (err) {
+          reject(err);
+        }
+      }).catch((err) => {
+        reject(err);
       });
     });
     readStream.pipe(peekStream);
