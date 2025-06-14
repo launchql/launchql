@@ -39,9 +39,12 @@ const mimeTypeOverrides: Record<string, string> = {
   '.sql': 'text/x-sql',
   '.tsv': 'text/tab-separated-values',
   '.svg': 'image/svg+xml',
-  '.shellscript': 'text/plain', // Keep as text/plain for better compatibility
+  '.shellscript': 'application/x-sh',
   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.pct': 'image/x-pict',
+  '.psd': 'image/vnd.adobe.photoshop',
+  '.wmf': 'image/wmf'
 };
 
 const getCharsetFromMimeType = (mimeType: string, filename: string): string => {
@@ -49,6 +52,11 @@ const getCharsetFromMimeType = (mimeType: string, filename: string): string => {
   
   // If it's a known binary extension, force binary charset
   if (binaryExtensions.has(ext)) {
+    return 'binary';
+  }
+
+  // Special case for shellscript - should be binary
+  if (ext === '.shellscript') {
     return 'binary';
   }
 

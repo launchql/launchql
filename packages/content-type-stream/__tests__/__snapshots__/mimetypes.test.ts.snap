@@ -223,7 +223,7 @@ exports[`mimetypes good files 1`] = `
     "contentType": "image/x-pict",
     "magic": {
       "charset": "binary",
-      "type": "text/plain",
+      "type": "image/x-pict",
     },
   },
   "pdf.pdf": {
@@ -244,7 +244,7 @@ exports[`mimetypes good files 1`] = `
     "contentType": "image/vnd.adobe.photoshop",
     "magic": {
       "charset": "binary",
-      "type": "text/plain",
+      "type": "image/vnd.adobe.photoshop",
     },
   },
   "scss.scss": {
@@ -349,7 +349,7 @@ exports[`mimetypes good files 1`] = `
     "contentType": "image/wmf",
     "magic": {
       "charset": "binary",
-      "type": "text/plain",
+      "type": "image/wmf",
     },
   },
   "xlsx.xlsx": {
