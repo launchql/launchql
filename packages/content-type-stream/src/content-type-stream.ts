@@ -44,7 +44,8 @@ const mimeTypeOverrides: Record<string, string> = {
   '.psd': 'image/vnd.adobe.photoshop',
   '.wmf': 'image/wmf',
   '.bmp': 'image/bmp',
-  '.lock': 'text/x-csrc'
+  '.lock': 'text/x-csrc',
+  '.tgz': 'application/gzip'
 };
 
 const getCharsetFromMimeType = (mimeType: string, filename: string): string => {
