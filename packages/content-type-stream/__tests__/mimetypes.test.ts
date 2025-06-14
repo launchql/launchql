@@ -1,8 +1,19 @@
-// @ts-nocheck
 import { streamContentType } from '../src';
 import { sync as glob } from 'glob';
 import { createReadStream } from 'fs';
 import { basename } from 'path';
+
+interface MagicType {
+  type: string;
+  charset: string;
+}
+
+interface ResultType {
+  [key: string]: {
+    magic: MagicType;
+    contentType: string;
+  };
+}
 
 const files = []
   .concat(glob(__dirname + '/../../../__fixtures__/kitchen-sink/**'))
@@ -28,7 +39,7 @@ const malicious = glob(__dirname + '/../../../__fixtures__/malicious/**')
 
 describe('mimetypes', () => {
   it('good files', async () => {
-    const res = {};
+    const res: ResultType = {};
     const use = files;
 
     for (var i = 0; i < use.length; i++) {
@@ -49,7 +60,7 @@ describe('mimetypes', () => {
     expect(res).toMatchSnapshot();
   });
   it('malicious files', async () => {
-    const res = {};
+    const res: ResultType = {};
     const use = malicious;
 
     for (var i = 0; i < use.length; i++) {
