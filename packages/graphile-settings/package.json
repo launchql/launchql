@@ -1,6 +1,6 @@
 {
   "name": "graphile-settings",
-  "version": "2.1.17",
+  "version": "2.1.18",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile settings",
   "main": "index.js",
@@ -31,9 +31,9 @@
   },
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
-    "@launchql/s3-streamer": "^2.1.12",
+    "@launchql/s3-streamer": "^2.1.13",
     "@launchql/types": "^2.1.12",
-    "@launchql/upload-names": "^2.1.4",
+    "@launchql/upload-names": "^2.1.5",
     "@pyramation/postgis": "^0.1.1",
     "@pyramation/postgraphile-plugin-fulltext-filter": "^2.0.0",
     "cors": "^2.8.5",
@@ -43,7 +43,7 @@
     "graphile-meta-schema": "^0.2.5",
     "graphile-query": "^2.1.8",
     "graphile-search-plugin": "^0.1.2",
-    "graphile-settings": "^2.1.17",
+    "graphile-settings": "^2.1.18",
     "graphile-simple-inflector": "^0.1.1",
     "graphql-tag": "2.12.6",
     "lru-cache": "^11.1.0",

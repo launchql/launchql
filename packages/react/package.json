@@ -1,6 +1,6 @@
 {
   "name": "@launchql/react",
-  "version": "2.2.12",
+  "version": "2.2.13",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL React",
   "main": "index.js",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@launchql/query": "^2.1.6",
     "graphql-request": "^7.1.2",
-    "introspectron": "^2.2.12",
+    "introspectron": "^2.2.13",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-query": "^3.39.3"

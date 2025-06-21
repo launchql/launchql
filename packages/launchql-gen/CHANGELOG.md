@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.15](https://github.com/launchql/launchql/compare/@launchql/codegen@2.5.14...@launchql/codegen@2.5.15) (2025-06-21)
+
+**Note:** Version bump only for package @launchql/codegen
+
+
+
+
+
 ## [2.5.14](https://github.com/launchql/launchql/compare/@launchql/codegen@2.5.13...@launchql/codegen@2.5.14) (2025-05-30)
 
 **Note:** Version bump only for package @launchql/codegen
