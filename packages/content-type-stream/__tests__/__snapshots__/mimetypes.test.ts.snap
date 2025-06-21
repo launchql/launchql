@@ -269,7 +269,7 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "sql.sql": {
-    "contentType": "text/plain",
+    "contentType": "application/x-sql",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
