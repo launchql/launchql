@@ -1,8 +1,8 @@
 {
-  "name": "magic-bytes",
+  "name": "mime-bytes",
   "version": "0.1.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "magic-bytes",
+  "description": "Lightning-fast file type detection using magic bytes (file signatures) with a focus on stream processing and minimal memory usage",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -33,5 +33,6 @@
   "devDependencies": {
     "@types/glob": "^8.1.0",
     "glob": "^11.0.2"
-  }
+  },
+  "gitHead": "63685fd0c6912d528be3aa21aeef58af130291f1"
 }

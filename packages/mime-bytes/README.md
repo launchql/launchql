@@ -1,4 +1,4 @@
-# magic-bytes
+# mime-bytes
 
 <p align="center" width="100%">
   <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
@@ -9,7 +9,7 @@
     <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/magic-bytes"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fmagic-bytes%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/mime-bytes"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fmime-bytes%2Fpackage.json"/></a>
 </p>
 
 **Lightning-fast file type detection using magic bytes (file signatures) with a focus on stream processing and minimal memory usage.**
@@ -36,13 +36,13 @@
 ## 📦 Installation
 
 ```bash
-npm install magic-bytes
+npm install mime-bytes
 ```
 
 ## 🚀 Quick Start
 
 ```typescript
-import { FileTypeDetector } from 'magic-bytes';
+import { FileTypeDetector } from 'mime-bytes';
 import { createReadStream } from 'fs';
 
 const detector = new FileTypeDetector();
@@ -244,7 +244,7 @@ interface FileTypeResult {
 
 ## ⚡ Performance
 
-magic-bytes is designed for speed and efficiency:
+mime-bytes is designed for speed and efficiency:
 
 - **Memory Usage**: O(1) - Only peeks necessary bytes
 - **Time Complexity**: O(n) where n is number of registered types
