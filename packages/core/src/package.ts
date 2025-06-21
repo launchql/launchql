@@ -56,16 +56,15 @@ export const packageModule = async (
 
   try {
     const parsed = await parse(sql);
-    const stmts = filterStatements(parsed.stmts as any, extension);
+    parsed.stmts = filterStatements(parsed.stmts as any, extension);
 
     const topLine = extension
       ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
       : '';
 
+    const finalSql = await deparse(parsed as any);
 
-    const finalSql = await deparse(stmts.map((s) => s.stmt));
-
-    const tree1 = stmts;
+    const tree1 = parsed.stmts;
     const tree2 = await parse(finalSql);
 
     const results: {

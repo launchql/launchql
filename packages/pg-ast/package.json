@@ -36,6 +36,6 @@
     "parse"
   ],
   "dependencies": {
-    "pgsql-parser": "^17.1.0"
+    "pgsql-parser": "^17.4.0"
   }
 }

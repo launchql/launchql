@@ -18,7 +18,7 @@ exports[`cmds:package updates module with \`extension\` and \`package\` commands
 "\\echo Use "CREATE EXTENSION secrets" to load this file. \\quit
 CREATE FUNCTION secretfunction() RETURNS text AS $$
   select * from generate_secret();
-$$ LANGUAGE sql STABLE"
+$$ LANGUAGE sql STABLE;"
 `;
 
 exports[`cmds:package updates module with \`extension\` and \`package\` commands in copied fixture workspace: initial - control file 1`] = `
