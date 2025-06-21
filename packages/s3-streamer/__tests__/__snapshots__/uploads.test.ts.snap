@@ -10,7 +10,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "278aee01-1404-5725-8f0e-7044c9c16397",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -22,14 +22,14 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   ".travis.yml": {
-    "contentType": "text/yaml",
+    "contentType": "application/x-yaml",
     "contents": {
       "etag": "eed1da4a1867d8af5f529e8668d23fd0",
       "sha": "d92d5fb6cf5a031d7036bed36a8447114a23ad02",
       "uuid": "f3dc1ee0-18fc-5f9e-af17-ff1ed4698f8c",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -48,7 +48,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "bcf3bf1d-249b-571f-b141-2402736dbd80",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -67,7 +67,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "32334d6b-424a-58a9-99aa-7037c1aa2f10",
     },
     "magic": {
-      "charset": "iso-8859-1",
+      "charset": "ascii",
       "type": "application/pdf",
     },
     "upload": {
@@ -98,7 +98,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "bmp.bmp": {
-    "contentType": "image/x-ms-bmp",
+    "contentType": "image/bmp",
     "contents": {
       "etag": "a986c2384e5e2d4ee0d5133f3c27d62d",
       "sha": "f45a12e5dcae2710a4e6c841c481363caea648a2",
@@ -106,7 +106,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "image/x-ms-bmp",
+      "type": "image/bmp",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -124,7 +124,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "31e59e9a-30ba-510d-afb3-3dc78a7b1b78",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -136,14 +136,14 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "build.js.map": {
-    "contentType": "application/json",
+    "contentType": "text/plain",
     "contents": {
       "etag": "c8cbb12bb4ef453eceac8c3fb889d082",
       "sha": "0d5d3124cfc4fa46a26628b1cb3790ca606503aa",
       "uuid": "b929c3e1-004b-59e0-af46-801e04b6ca96",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -162,7 +162,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "f68dd34c-37a6-53a1-b556-369c18963897",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -181,7 +181,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "d466f82f-b2b4-53a5-92a3-c5324794a2f4",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -200,7 +200,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "5f416069-1240-5fe3-b978-f39ca5fc493e",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -219,7 +219,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "5f416069-1240-5fe3-b978-f39ca5fc493e",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -250,7 +250,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "dwg.dwg": {
-    "contentType": "image/vnd.dwg",
+    "contentType": "application/acad",
     "contents": {
       "etag": "2feedee43f2d4f6a7a6b467d6faf27fa",
       "sha": "1507590977dbbc08c8dd72d7ccc14552efa6e4b2",
@@ -258,7 +258,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "image/vnd.dwg",
+      "type": "application/acad",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -276,7 +276,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "a277c9ad-28f7-5076-a08a-07be148c86bd",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -296,7 +296,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "image/emf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -315,7 +315,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/epub+zip",
+      "type": "application/zip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -326,7 +326,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "font.otf": {
-    "contentType": "application/x-font-opentype",
+    "contentType": "font/otf",
     "contents": {
       "etag": "945b9e0e38dcfd294b4b26150ccade3c",
       "sha": "f6b7979678bdf06d2fdca5093cec308e84c3c2c5",
@@ -334,7 +334,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/vnd.ms-opentype",
+      "type": "font/otf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -345,7 +345,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "font.ttf": {
-    "contentType": "application/x-font-ttf",
+    "contentType": "font/ttf",
     "contents": {
       "etag": "3736a705526e0ecd366f70a59f704ec6",
       "sha": "f7df25a76f7d79a7682eb9949fff7c2e173cf59f",
@@ -353,7 +353,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/font-sfnt",
+      "type": "font/ttf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -364,7 +364,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "font.woff": {
-    "contentType": "application/font-woff",
+    "contentType": "font/woff2",
     "contents": {
       "etag": "f2af1f64bc0a0e5cfe4b5fee322e4157",
       "sha": "fb9679572962f410b5f56d159573debcd5c4eabd",
@@ -372,7 +372,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "font/woff2",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -383,7 +383,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "font.woff2": {
-    "contentType": "application/font-woff2",
+    "contentType": "font/woff2",
     "contents": {
       "etag": "f2af1f64bc0a0e5cfe4b5fee322e4157",
       "sha": "fb9679572962f410b5f56d159573debcd5c4eabd",
@@ -391,7 +391,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "font/woff2",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -466,7 +466,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "78160718-8dfa-5cb4-bb50-e479c8c58383",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -478,14 +478,14 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "less.less": {
-    "contentType": "text/less",
+    "contentType": "text/x-less",
     "contents": {
       "etag": "ec5315f0f5af9b39421b6d06512ceb64",
       "sha": "7e271b5244414ebe8b0ccc47ad74d1edd58f2b65",
       "uuid": "be9337b6-dda5-5ca1-a0ad-4c75aa531cea",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -504,7 +504,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "66278343-543b-527c-95b0-08ed0452c0b7",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -523,7 +523,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "89250a3c-a794-5d26-8ee4-d692dff9fc35",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -542,7 +542,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "57826c39-fea3-5588-b4f2-db1958025495",
     },
     "magic": {
-      "charset": "binary",
+      "charset": "ascii",
       "type": "video/mp4",
     },
     "upload": {
@@ -561,8 +561,8 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "efadabfe-a65f-5235-a6da-353e750c6510",
     },
     "magic": {
-      "charset": "binary",
-      "type": "application/vnd.oasis.opendocument.spreadsheet",
+      "charset": "ascii",
+      "type": "application/zip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -580,8 +580,8 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "f9ac160d-597d-5252-a948-de54365160ed",
     },
     "magic": {
-      "charset": "binary",
-      "type": "application/vnd.oasis.opendocument.text",
+      "charset": "ascii",
+      "type": "application/zip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -600,7 +600,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "image/x-pict",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -618,7 +618,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "e6f5ba06-d53f-5f5b-b606-6476fe7ea639",
     },
     "magic": {
-      "charset": "binary",
+      "charset": "ascii",
       "type": "application/pdf",
     },
     "upload": {
@@ -656,7 +656,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "e66ef9d4-f9e0-54d1-9d6b-90b6f3da6b03",
     },
     "magic": {
-      "charset": "binary",
+      "charset": "ascii",
       "type": "image/vnd.adobe.photoshop",
     },
     "upload": {
@@ -668,15 +668,15 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "rtf.rtf": {
-    "contentType": "text/rtf",
+    "contentType": "application/rtf",
     "contents": {
       "etag": "6b16fb8eb9b9cd1d6631936f61d6d998",
       "sha": "629f149e655c88058d2be7cbbad0ee442ca8ccea",
       "uuid": "012fa6fc-8fdf-5992-be32-afdc62a64091",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/rtf",
+      "charset": "utf-8",
+      "type": "application/rtf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -694,7 +694,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "d56076b2-b52a-58a9-bf15-20c6791d8d23",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -706,15 +706,15 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "shellscript": {
-    "contentType": "text/x-shellscript",
+    "contentType": "text/plain",
     "contents": {
       "etag": "9e73a9fd45d381175f3791bc4f33ec11",
       "sha": "8301dee1416543a8ed2756efd4eeeaf83690eac4",
       "uuid": "6baad900-76df-55cb-8d32-a73ec827dc8a",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/x-shellscript",
+      "charset": "utf-8",
+      "type": "text/plain",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -751,8 +751,8 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "1b901d29-7d0a-5eac-ae79-0d794e109907",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "image/svg",
+      "charset": "utf-8",
+      "type": "text/plain",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -770,8 +770,8 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "296837f5-d3cf-55f4-b3ba-3e388fb0a037",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "image/svg",
+      "charset": "utf-8",
+      "type": "text/plain",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -782,14 +782,14 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "svgo.yaml": {
-    "contentType": "text/yaml",
+    "contentType": "application/x-yaml",
     "contents": {
       "etag": "08541d86097e1750cf2d980a9e405ad8",
       "sha": "955b0053a46d5fa4b202c275cf58101da506fd13",
       "uuid": "7a35a57d-b2ab-57db-bb15-a7a0dfd93902",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -820,7 +820,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "tga.tga": {
-    "contentType": "image/x-tga",
+    "contentType": "image/x-targa",
     "contents": {
       "etag": "4b4384288a9b5b1a3b544decc957dbe5",
       "sha": "3d6584fd6b585a5fc0d2738b680005f2d2b91700",
@@ -828,7 +828,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "image/x-tga",
+      "type": "image/x-targa",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -858,7 +858,7 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "todo-0.1.0.tgz": {
-    "contentType": "application/x-gzip",
+    "contentType": "application/gzip",
     "contents": {
       "etag": "b3af984d63447e8173fb565ae3874754",
       "sha": "175b3bf38c377bb282bfe28978a3d5641dc61a5f",
@@ -866,7 +866,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/x-gzip",
+      "type": "application/gzip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -884,7 +884,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "aa2f950a-cf7a-537a-a800-961b3870319c",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -903,7 +903,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "eec733bd-dfee-5647-ae8f-fffaacd7a54a",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -922,7 +922,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "4cb57844-fed2-5b51-b56b-c957a3f1f046",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -941,7 +941,7 @@ exports[`uploads upload files via class 1`] = `
       "uuid": "4cb57844-fed2-5b51-b56b-c957a3f1f046",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -953,11 +953,11 @@ exports[`uploads upload files via class 1`] = `
     },
   },
   "wmf.wmf": {
-    "contentType": "image/wmf",
+    "contentType": "application/octet-stream",
     "contents": {
-      "etag": "adc25f2984aa0dbaaa6a54fb486ea3e3",
-      "sha": "c674de1fedd2c5f0d23c77b5275bac2aca53d687",
-      "uuid": "9c08564f-148d-573e-869f-080cd49a95eb",
+      "etag": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "uuid": "23069e19-9218-5ae4-9815-d8ceaade97df",
     },
     "magic": {
       "charset": "binary",
@@ -965,7 +965,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""adc25f2984aa0dbaaa6a54fb486ea3e3"",
+      "ETag": ""d41d8cd98f00b204e9800998ecf8427e"",
       "Key": "db1/assets/wmf.wmf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/wmf.wmf",
       "key": "db1/assets/wmf.wmf",
@@ -1022,7 +1022,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "278aee01-1404-5725-8f0e-7044c9c16397",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1034,14 +1034,14 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   ".travis.yml": {
-    "contentType": "text/yaml",
+    "contentType": "application/x-yaml",
     "contents": {
       "etag": "eed1da4a1867d8af5f529e8668d23fd0",
       "sha": "d92d5fb6cf5a031d7036bed36a8447114a23ad02",
       "uuid": "f3dc1ee0-18fc-5f9e-af17-ff1ed4698f8c",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1060,7 +1060,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "bcf3bf1d-249b-571f-b141-2402736dbd80",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1079,7 +1079,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "32334d6b-424a-58a9-99aa-7037c1aa2f10",
     },
     "magic": {
-      "charset": "iso-8859-1",
+      "charset": "ascii",
       "type": "application/pdf",
     },
     "upload": {
@@ -1110,7 +1110,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "bmp.bmp": {
-    "contentType": "image/x-ms-bmp",
+    "contentType": "image/bmp",
     "contents": {
       "etag": "a986c2384e5e2d4ee0d5133f3c27d62d",
       "sha": "f45a12e5dcae2710a4e6c841c481363caea648a2",
@@ -1118,7 +1118,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "image/x-ms-bmp",
+      "type": "image/bmp",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1136,7 +1136,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "31e59e9a-30ba-510d-afb3-3dc78a7b1b78",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1148,14 +1148,14 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "build.js.map": {
-    "contentType": "application/json",
+    "contentType": "text/plain",
     "contents": {
       "etag": "c8cbb12bb4ef453eceac8c3fb889d082",
       "sha": "0d5d3124cfc4fa46a26628b1cb3790ca606503aa",
       "uuid": "b929c3e1-004b-59e0-af46-801e04b6ca96",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1174,7 +1174,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "f68dd34c-37a6-53a1-b556-369c18963897",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1193,7 +1193,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "d466f82f-b2b4-53a5-92a3-c5324794a2f4",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1212,7 +1212,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "5f416069-1240-5fe3-b978-f39ca5fc493e",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1231,7 +1231,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "5f416069-1240-5fe3-b978-f39ca5fc493e",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1262,7 +1262,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "dwg.dwg": {
-    "contentType": "image/vnd.dwg",
+    "contentType": "application/acad",
     "contents": {
       "etag": "2feedee43f2d4f6a7a6b467d6faf27fa",
       "sha": "1507590977dbbc08c8dd72d7ccc14552efa6e4b2",
@@ -1270,7 +1270,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "image/vnd.dwg",
+      "type": "application/acad",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1288,7 +1288,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "a277c9ad-28f7-5076-a08a-07be148c86bd",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1308,7 +1308,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "image/emf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1327,7 +1327,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/epub+zip",
+      "type": "application/zip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1338,7 +1338,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "font.otf": {
-    "contentType": "application/x-font-opentype",
+    "contentType": "font/otf",
     "contents": {
       "etag": "945b9e0e38dcfd294b4b26150ccade3c",
       "sha": "f6b7979678bdf06d2fdca5093cec308e84c3c2c5",
@@ -1346,7 +1346,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/vnd.ms-opentype",
+      "type": "font/otf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1357,7 +1357,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "font.ttf": {
-    "contentType": "application/x-font-ttf",
+    "contentType": "font/ttf",
     "contents": {
       "etag": "3736a705526e0ecd366f70a59f704ec6",
       "sha": "f7df25a76f7d79a7682eb9949fff7c2e173cf59f",
@@ -1365,7 +1365,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/font-sfnt",
+      "type": "font/ttf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1376,7 +1376,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "font.woff": {
-    "contentType": "application/font-woff",
+    "contentType": "font/woff2",
     "contents": {
       "etag": "f2af1f64bc0a0e5cfe4b5fee322e4157",
       "sha": "fb9679572962f410b5f56d159573debcd5c4eabd",
@@ -1384,7 +1384,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "font/woff2",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1395,7 +1395,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "font.woff2": {
-    "contentType": "application/font-woff2",
+    "contentType": "font/woff2",
     "contents": {
       "etag": "f2af1f64bc0a0e5cfe4b5fee322e4157",
       "sha": "fb9679572962f410b5f56d159573debcd5c4eabd",
@@ -1403,7 +1403,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "font/woff2",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1478,7 +1478,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "78160718-8dfa-5cb4-bb50-e479c8c58383",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1490,14 +1490,14 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "less.less": {
-    "contentType": "text/less",
+    "contentType": "text/x-less",
     "contents": {
       "etag": "ec5315f0f5af9b39421b6d06512ceb64",
       "sha": "7e271b5244414ebe8b0ccc47ad74d1edd58f2b65",
       "uuid": "be9337b6-dda5-5ca1-a0ad-4c75aa531cea",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1516,7 +1516,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "66278343-543b-527c-95b0-08ed0452c0b7",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1535,7 +1535,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "89250a3c-a794-5d26-8ee4-d692dff9fc35",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1554,7 +1554,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "57826c39-fea3-5588-b4f2-db1958025495",
     },
     "magic": {
-      "charset": "binary",
+      "charset": "ascii",
       "type": "video/mp4",
     },
     "upload": {
@@ -1573,8 +1573,8 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "efadabfe-a65f-5235-a6da-353e750c6510",
     },
     "magic": {
-      "charset": "binary",
-      "type": "application/vnd.oasis.opendocument.spreadsheet",
+      "charset": "ascii",
+      "type": "application/zip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1592,8 +1592,8 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "f9ac160d-597d-5252-a948-de54365160ed",
     },
     "magic": {
-      "charset": "binary",
-      "type": "application/vnd.oasis.opendocument.text",
+      "charset": "ascii",
+      "type": "application/zip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1612,7 +1612,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/octet-stream",
+      "type": "image/x-pict",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1630,7 +1630,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "e6f5ba06-d53f-5f5b-b606-6476fe7ea639",
     },
     "magic": {
-      "charset": "binary",
+      "charset": "ascii",
       "type": "application/pdf",
     },
     "upload": {
@@ -1668,7 +1668,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "e66ef9d4-f9e0-54d1-9d6b-90b6f3da6b03",
     },
     "magic": {
-      "charset": "binary",
+      "charset": "ascii",
       "type": "image/vnd.adobe.photoshop",
     },
     "upload": {
@@ -1680,15 +1680,15 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "rtf.rtf": {
-    "contentType": "text/rtf",
+    "contentType": "application/rtf",
     "contents": {
       "etag": "6b16fb8eb9b9cd1d6631936f61d6d998",
       "sha": "629f149e655c88058d2be7cbbad0ee442ca8ccea",
       "uuid": "012fa6fc-8fdf-5992-be32-afdc62a64091",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/rtf",
+      "charset": "utf-8",
+      "type": "application/rtf",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1706,7 +1706,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "d56076b2-b52a-58a9-bf15-20c6791d8d23",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1718,15 +1718,15 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "shellscript": {
-    "contentType": "text/x-shellscript",
+    "contentType": "text/plain",
     "contents": {
       "etag": "9e73a9fd45d381175f3791bc4f33ec11",
       "sha": "8301dee1416543a8ed2756efd4eeeaf83690eac4",
       "uuid": "6baad900-76df-55cb-8d32-a73ec827dc8a",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "text/x-shellscript",
+      "charset": "utf-8",
+      "type": "text/plain",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1763,8 +1763,8 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "1b901d29-7d0a-5eac-ae79-0d794e109907",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "image/svg",
+      "charset": "utf-8",
+      "type": "text/plain",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1782,8 +1782,8 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "296837f5-d3cf-55f4-b3ba-3e388fb0a037",
     },
     "magic": {
-      "charset": "us-ascii",
-      "type": "image/svg",
+      "charset": "utf-8",
+      "type": "text/plain",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1794,14 +1794,14 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "svgo.yaml": {
-    "contentType": "text/yaml",
+    "contentType": "application/x-yaml",
     "contents": {
       "etag": "08541d86097e1750cf2d980a9e405ad8",
       "sha": "955b0053a46d5fa4b202c275cf58101da506fd13",
       "uuid": "7a35a57d-b2ab-57db-bb15-a7a0dfd93902",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1832,7 +1832,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "tga.tga": {
-    "contentType": "image/x-tga",
+    "contentType": "image/x-targa",
     "contents": {
       "etag": "4b4384288a9b5b1a3b544decc957dbe5",
       "sha": "3d6584fd6b585a5fc0d2738b680005f2d2b91700",
@@ -1840,7 +1840,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "image/x-tga",
+      "type": "image/x-targa",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1870,7 +1870,7 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "todo-0.1.0.tgz": {
-    "contentType": "application/x-gzip",
+    "contentType": "application/gzip",
     "contents": {
       "etag": "b3af984d63447e8173fb565ae3874754",
       "sha": "175b3bf38c377bb282bfe28978a3d5641dc61a5f",
@@ -1878,7 +1878,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "magic": {
       "charset": "binary",
-      "type": "application/x-gzip",
+      "type": "application/gzip",
     },
     "upload": {
       "Bucket": "test-bucket",
@@ -1896,7 +1896,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "aa2f950a-cf7a-537a-a800-961b3870319c",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1915,7 +1915,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "eec733bd-dfee-5647-ae8f-fffaacd7a54a",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1934,7 +1934,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "4cb57844-fed2-5b51-b56b-c957a3f1f046",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1953,7 +1953,7 @@ exports[`uploads upload files via functions 1`] = `
       "uuid": "4cb57844-fed2-5b51-b56b-c957a3f1f046",
     },
     "magic": {
-      "charset": "us-ascii",
+      "charset": "utf-8",
       "type": "text/plain",
     },
     "upload": {
@@ -1965,11 +1965,11 @@ exports[`uploads upload files via functions 1`] = `
     },
   },
   "wmf.wmf": {
-    "contentType": "image/wmf",
+    "contentType": "application/octet-stream",
     "contents": {
-      "etag": "adc25f2984aa0dbaaa6a54fb486ea3e3",
-      "sha": "c674de1fedd2c5f0d23c77b5275bac2aca53d687",
-      "uuid": "9c08564f-148d-573e-869f-080cd49a95eb",
+      "etag": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "uuid": "23069e19-9218-5ae4-9815-d8ceaade97df",
     },
     "magic": {
       "charset": "binary",
@@ -1977,7 +1977,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""adc25f2984aa0dbaaa6a54fb486ea3e3"",
+      "ETag": ""d41d8cd98f00b204e9800998ecf8427e"",
       "Key": "db1/assets/wmf.wmf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/wmf.wmf",
       "key": "db1/assets/wmf.wmf",
