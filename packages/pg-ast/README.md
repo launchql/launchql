@@ -32,15 +32,15 @@ const node = ast.A_Expr({
 });
 ```
 
-## Pairs well with `pgsql-parser`
+## Pairs well with `pgsql-deparser`
 
-https://github.com/pyramation/pgsql-parser
+https://github.com/launchql/pgsql-parser
 
 You can create ASTs manually, and then generate your SQL:
 
 ```js
 import * as ast from '../src';
-import { deparse } from 'pgsql-parser';
+import { deparse } from 'pgsql-deparser';
 
 const node = ast.A_Expr({
   kind: 0,

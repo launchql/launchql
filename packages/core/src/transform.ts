@@ -1,4 +1,5 @@
-import { deparse, parse } from 'pgsql-parser';
+import { parse } from 'pgsql-parser';
+import { deparse } from 'pgsql-deparser';
 
 type TransformProps = {
   [key: string]: ((value: any) => any) | { [key: string]: any };
@@ -69,8 +70,8 @@ export const transformProps = (obj: any, props: TransformProps): any => {
  * @param props - A map of properties and their transformation rules.
  * @returns The transformed SQL statement.
  */
-export const transform = (statement: string, props: TransformProps): string => {
-  let tree = parse(statement);
+export const transform = async (statement: string, props: TransformProps): Promise<string> => {
+  let tree = await parse(statement);
   tree = transformProps(tree, props);
-  return deparse(tree, {});
+  return await deparse(tree as any);
 };

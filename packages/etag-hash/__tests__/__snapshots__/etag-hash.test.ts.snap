@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ETag ETag hash 1`] = `
+{
+  "Another String": "228dd4caf295a9d5b0a4e54b6be9f6f8",
+  "Hello World": "b10a8db164e0754105b7a99be72e3fe5",
+}
+`;
+
+exports[`ETag Large ETag hash 1`] = `"b5f547c711c4cf2d50088473dcd4fa92-7"`;

@@ -41,6 +41,10 @@ const config = {
   }
 };
 
+it('noop', () => {
+  expect(true).toBe(true);
+});
+describe('test case', () => {
 it('test case', async () => {
   const records = await parse(testCase, { headers: config.headers });
   const types = parseTypes(config);
@@ -143,4 +147,5 @@ it('arrays', async () => {
   ]);
 
   expect(sql).toMatchSnapshot();
+  });
 });

@@ -59,7 +59,7 @@ export const deployStream = async (
       } else {
         const modulePath = resolve(projectRoot.workspacePath, modules[extension].path);
         const localProject = new LaunchQLProject(modulePath);
-        const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
+        const pkg = await packageModule(localProject.modulePath, { usePlan, extension: false });
 
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);

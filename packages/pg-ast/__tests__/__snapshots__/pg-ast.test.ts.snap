@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`works 1`] = `
+exports[`deparses 1`] = `
 {
   "A_Expr": {
     "kind": "AEXPR_OP",
@@ -25,4 +25,4 @@ exports[`works 1`] = `
 }
 `;
 
-exports[`works 2`] = `"0 = 0"`;
+exports[`deparses 2`] = `"0 = 0"`;

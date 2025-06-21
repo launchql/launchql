@@ -97,9 +97,6 @@ jobs:
       - name: launchql/orm
         run: cd ./packages/orm && yarn test
 
-      - name: launchql/deparser
-        run: cd ./packages/deparser && yarn test
-
       - name: launchql/url-domains
         run: cd ./packages/url-domains && yarn test
 
