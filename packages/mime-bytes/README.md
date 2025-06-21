@@ -14,13 +14,13 @@
 
 **Lightning-fast file type detection using magic bytes (file signatures) with a focus on stream processing and minimal memory usage.**
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [API](#-api) • [File Types](#-supported-file-types) • [Performance](#-performance)
+[Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [API](#api) • [File Types](#supported-file-types) • [Performance](#performance)
 
 </div>
 
 ---
 
-## ✨ Features
+## Features
 
 - 🚀 **Stream-based detection** - Process files of any size without loading them into memory
 - 📦 **100+ file types** - Comprehensive coverage of common and specialized formats
@@ -33,13 +33,13 @@
 - 🌐 **Charset detection** - Automatic encoding detection for text files
 - 🛡️ **Robust error handling** - Graceful degradation for unknown formats
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install mime-bytes
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```typescript
 import { FileTypeDetector } from 'mime-bytes';
@@ -63,7 +63,7 @@ console.log(fileType);
 // }
 ```
 
-## 📖 API
+## API
 
 ### FileTypeDetector
 
@@ -200,7 +200,7 @@ interface FileTypeResult {
 }
 ```
 
-## 🗂️ Supported File Types
+## Supported File Types
 
 ### Images (30+ formats)
 - **Common**: PNG, JPEG, GIF, WebP, SVG, ICO
@@ -242,7 +242,7 @@ interface FileTypeResult {
 - **Database**: SQLite
 - **Disk Images**: ISO, DMG
 
-## ⚡ Performance
+## Performance
 
 mime-bytes is designed for speed and efficiency:
 
@@ -323,7 +323,7 @@ async function detectMultipleFiles(files: string[]) {
 }
 ```
 
-## 🛡️ Error Handling
+## Error Handling
 
 ```typescript
 try {
@@ -341,7 +341,7 @@ try {
 }
 ```
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
