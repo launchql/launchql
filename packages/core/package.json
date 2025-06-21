@@ -50,7 +50,12 @@
     "csv-to-pg": "^2.0.10",
     "glob": "^11.0.2",
     "parse-package-name": "^1.0.0",
-    "pgsql-parser": "^13.16.0",
+    "pgsql-deparser": "^17.1.0",
+    "@pgsql/types": "^17.1.0",
+    "pgsql-parser": "^17.1.0",
     "rimraf": "^6.0.1"
+  },
+  "peerDependencies": {
+    "@pgsql/types": "^17.1.0"
   }
 }

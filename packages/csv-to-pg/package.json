@@ -43,6 +43,6 @@
     "csv-parser": "^2.3.3",
     "js-yaml": "^3.14.0",
     "pg-ast": "^2.0.9",
-    "pgsql-deparser": "^1.2.3"
+    "pgsql-deparser": "^17.1.0"
   }
 }

@@ -1,7 +1,7 @@
 import * as ast from '../src';
-import { deparse } from 'pgsql-parser';
+import { deparse } from 'pgsql-deparser';
 
-it('works', () => {
+it('deparses', async () => {
   const obj = ast.A_Expr({
     kind: 'AEXPR_OP',
     name: [ast.String({ str: '=' })],
@@ -9,6 +9,5 @@ it('works', () => {
     rexpr: ast.Integer({ ival: 0 })
   });
   expect(obj).toMatchSnapshot();
-  // @ts-ignore
-  expect(deparse([obj])).toMatchSnapshot();
+  expect(await deparse([obj])).toMatchSnapshot();
 });

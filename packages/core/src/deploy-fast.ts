@@ -81,7 +81,7 @@ export const deployFast = async (
           continue;
         }
 
-        const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
+        const pkg = await packageModule(localProject.modulePath, { usePlan, extension: false });
 
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
