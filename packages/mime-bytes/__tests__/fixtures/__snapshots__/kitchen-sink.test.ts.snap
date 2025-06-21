@@ -1,0 +1,460 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Kitchen Sink Fixtures should detect all kitchen sink files correctly 1`] = `
+{
+  "LICENSE": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "ai.ai": {
+    "contentType": "application/pdf",
+    "magic": {
+      "charset": "ascii",
+      "confidence": 1,
+      "name": "pdf",
+      "type": "application/pdf",
+    },
+  },
+  "apng.png": {
+    "contentType": "image/png",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "png",
+      "type": "image/png",
+    },
+  },
+  "bmp.bmp": {
+    "contentType": "image/bmp",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "bmp",
+      "type": "image/bmp",
+    },
+  },
+  "build.js": {
+    "contentType": "application/javascript",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "build.js.map": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "css.css": {
+    "contentType": "text/css",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "csv.csv": {
+    "contentType": "text/csv",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "docs.js": {
+    "contentType": "application/javascript",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "docs.jsx": {
+    "contentType": "text/jsx",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "docx.docx": {
+    "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.9,
+      "name": "zip",
+      "type": "application/zip",
+    },
+  },
+  "dwg.dwg": {
+    "contentType": "application/acad",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "dwg",
+      "type": "application/acad",
+    },
+  },
+  "dxf.dxf": {
+    "contentType": "image/vnd.dxf",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "emf.emf": {
+    "contentType": "image/emf",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "emf",
+      "type": "image/emf",
+    },
+  },
+  "epub.epub": {
+    "contentType": "application/epub+zip",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.9,
+      "name": "zip",
+      "type": "application/zip",
+    },
+  },
+  "font.otf": {
+    "contentType": "font/otf",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "otf",
+      "type": "font/otf",
+    },
+  },
+  "font.ttf": {
+    "contentType": "font/ttf",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "ttf",
+      "type": "font/ttf",
+    },
+  },
+  "font.woff": {
+    "contentType": "font/woff2",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "woff2",
+      "type": "font/woff2",
+    },
+  },
+  "font.woff2": {
+    "contentType": "font/woff2",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "woff2",
+      "type": "font/woff2",
+    },
+  },
+  "gif-w-alpha.gif": {
+    "contentType": "image/gif",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "gif89a",
+      "type": "image/gif",
+    },
+  },
+  "gif.gif": {
+    "contentType": "image/gif",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "gif89a",
+      "type": "image/gif",
+    },
+  },
+  "jpg.jpg": {
+    "contentType": "image/jpeg",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "jpeg",
+      "type": "image/jpeg",
+    },
+  },
+  "json.json": {
+    "contentType": "application/json",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "less.less": {
+    "contentType": "text/x-less",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "lock.lock": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "md.md": {
+    "contentType": "text/markdown",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "mp4.mp4": {
+    "contentType": "video/mp4",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "mp4",
+      "type": "video/mp4",
+    },
+  },
+  "ods.ods": {
+    "contentType": "application/vnd.oasis.opendocument.spreadsheet",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.9,
+      "name": "zip",
+      "type": "application/zip",
+    },
+  },
+  "odt.odt": {
+    "contentType": "application/vnd.oasis.opendocument.text",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.9,
+      "name": "zip",
+      "type": "application/zip",
+    },
+  },
+  "pct.pct": {
+    "contentType": "image/x-pict",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.7,
+      "name": "pct",
+      "type": "image/x-pict",
+    },
+  },
+  "pdf.pdf": {
+    "contentType": "application/pdf",
+    "magic": {
+      "charset": "ascii",
+      "confidence": 1,
+      "name": "pdf",
+      "type": "application/pdf",
+    },
+  },
+  "png-w-alpha.png": {
+    "contentType": "image/png",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "png",
+      "type": "image/png",
+    },
+  },
+  "psd.psd": {
+    "contentType": "image/vnd.adobe.photoshop",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "psd",
+      "type": "image/vnd.adobe.photoshop",
+    },
+  },
+  "rtf.rtf": {
+    "contentType": "application/rtf",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 1,
+      "name": "rtf",
+      "type": "application/rtf",
+    },
+  },
+  "scss.scss": {
+    "contentType": "text/x-scss",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "shellscript": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "sql.sql": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 1,
+      "name": "utf8",
+      "type": "text/plain",
+    },
+  },
+  "svg-with-alpha-and-text.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "svg.svg": {
+    "contentType": "image/svg+xml",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "svgo.yaml": {
+    "contentType": "application/x-yaml",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "swf.swf": {
+    "contentType": "application/x-shockwave-flash",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "swf-compressed",
+      "type": "application/x-shockwave-flash",
+    },
+  },
+  "tga.tga": {
+    "contentType": "image/x-targa",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.7,
+      "name": "tga",
+      "type": "image/x-targa",
+    },
+  },
+  "tif.tif": {
+    "contentType": "image/tiff",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "tiff-be",
+      "type": "image/tiff",
+    },
+  },
+  "todo-0.1.0.tgz": {
+    "contentType": "application/gzip",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "gz",
+      "type": "application/gzip",
+    },
+  },
+  "tsv.tsv": {
+    "contentType": "text/tab-separated-values",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "txt.txt": {
+    "contentType": "text/plain",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "typescript.ts": {
+    "contentType": "text/x-typescript",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "typescript.tsx": {
+    "contentType": "text/x-typescript",
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.8,
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "wmf.wmf": {
+    "contentType": null,
+    "magic": null,
+  },
+  "xlsx.xlsx": {
+    "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "magic": {
+      "charset": "binary",
+      "confidence": 0.9,
+      "name": "zip",
+      "type": "application/zip",
+    },
+  },
+  "zip.zip": {
+    "contentType": "application/zip",
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "name": "zip",
+      "type": "application/zip",
+    },
+  },
+}
+`;

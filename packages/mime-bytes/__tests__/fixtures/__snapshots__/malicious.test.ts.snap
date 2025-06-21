@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Malicious Fixtures should detect polyglot files 1`] = `
+{
+  "GIFAR": {
+    "correct": true,
+    "description": "GIF + RAR polyglot",
+    "detectedAs": "gif89a",
+    "expectedAs": "gif89a",
+  },
+  "PDFZIP": {
+    "correct": true,
+    "description": "PDF + ZIP polyglot",
+    "detectedAs": "pdf",
+    "expectedAs": "pdf",
+  },
+}
+`;
+
+exports[`Malicious Fixtures should detect true file type despite wrong extension 1`] = `
+{
+  "html-as-jpg.jpg": {
+    "claimedExtension": "jpg",
+    "contentType": "text/plain",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "extensions": [
+        "txt",
+      ],
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "image-as-html.html": {
+    "claimedExtension": "html",
+    "contentType": "image/jpeg",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "binary",
+      "confidence": 1,
+      "extensions": [
+        "jpg",
+        "jpeg",
+        "jpe",
+        "jif",
+        "jfif",
+      ],
+      "name": "jpeg",
+      "type": "image/jpeg",
+    },
+  },
+  "js-as-image.jpg": {
+    "claimedExtension": "jpg",
+    "contentType": "text/plain",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "extensions": [
+        "txt",
+      ],
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "js-as-svg.svg": {
+    "claimedExtension": "svg",
+    "contentType": "text/plain",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "extensions": [
+        "txt",
+      ],
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "svg-with-script-tag-guya.svg": {
+    "claimedExtension": "svg",
+    "contentType": "application/xml",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 1,
+      "extensions": [
+        "xml",
+      ],
+      "name": "xml",
+      "type": "application/xml",
+    },
+  },
+  "svg-with-script-tag.svg": {
+    "claimedExtension": "svg",
+    "contentType": "text/plain",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "extensions": [
+        "txt",
+      ],
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+  "xml-as-xvg.svg": {
+    "claimedExtension": "svg",
+    "contentType": "text/plain",
+    "extensionMismatch": true,
+    "magic": {
+      "charset": "utf-8",
+      "confidence": 0.5,
+      "extensions": [
+        "txt",
+      ],
+      "name": "text",
+      "type": "text/plain",
+    },
+  },
+}
+`;
+
+exports[`Malicious Fixtures should handle corrupted or invalid files gracefully 1`] = `
+{
+  "html-as-jpg.jpg": {
+    "detected": true,
+    "status": "success",
+    "type": "text",
+  },
+  "image-as-html.html": {
+    "detected": true,
+    "status": "success",
+    "type": "jpeg",
+  },
+  "js-as-image.jpg": {
+    "detected": true,
+    "status": "success",
+    "type": "text",
+  },
+  "js-as-svg.svg": {
+    "detected": true,
+    "status": "success",
+    "type": "text",
+  },
+  "svg-with-script-tag-guya.svg": {
+    "detected": true,
+    "status": "success",
+    "type": "xml",
+  },
+  "svg-with-script-tag.svg": {
+    "detected": true,
+    "status": "success",
+    "type": "text",
+  },
+  "xml-as-xvg.svg": {
+    "detected": true,
+    "status": "success",
+    "type": "text",
+  },
+}
+`;
+
+exports[`Malicious Fixtures should prioritize magic bytes over file extension 1`] = `
+{
+  "fake.doc": {
+    "correct": true,
+    "detectedMime": "application/zip",
+    "detectedType": "zip",
+    "expectedMime": "application/zip",
+    "expectedType": "zip",
+  },
+  "fake.pdf": {
+    "correct": true,
+    "detectedMime": "image/jpeg",
+    "detectedType": "jpeg",
+    "expectedMime": "image/jpeg",
+    "expectedType": "jpeg",
+  },
+  "fake.txt": {
+    "correct": true,
+    "detectedMime": "image/png",
+    "detectedType": "png",
+    "expectedMime": "image/png",
+    "expectedType": "png",
+  },
+}
+`;
