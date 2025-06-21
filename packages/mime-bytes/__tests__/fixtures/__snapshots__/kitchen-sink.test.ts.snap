@@ -327,10 +327,10 @@ exports[`Kitchen Sink Fixtures should detect all kitchen sink files correctly 1`
     },
   },
   "sql.sql": {
-    "contentType": "text/plain",
+    "contentType": "application/x-sql",
     "magic": {
       "charset": "utf-8",
-      "confidence": 1,
+      "confidence": 0.8,
       "name": "utf8",
       "type": "text/plain",
     },
