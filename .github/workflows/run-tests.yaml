@@ -67,6 +67,9 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: password
 
+      - name: mime-bytes
+        run: cd ./packages/mime-bytes && yarn test
+
       - name: launchql/core
         run: cd ./packages/core && yarn test
 
