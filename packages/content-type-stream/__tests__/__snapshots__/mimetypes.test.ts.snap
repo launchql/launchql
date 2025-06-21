@@ -10,7 +10,7 @@ exports[`mimetypes good files 1`] = `
     },
   },
   ".travis.yml": {
-    "contentType": "text/yaml",
+    "contentType": "application/x-yaml",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
@@ -52,7 +52,7 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "build.js.map": {
-    "contentType": "application/json",
+    "contentType": "text/plain",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
@@ -122,28 +122,28 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "font.otf": {
-    "contentType": "application/x-font-opentype",
+    "contentType": "font/otf",
     "magic": {
       "charset": "binary",
       "type": "font/otf",
     },
   },
   "font.ttf": {
-    "contentType": "application/x-font-ttf",
+    "contentType": "font/ttf",
     "magic": {
       "charset": "binary",
       "type": "font/ttf",
     },
   },
   "font.woff": {
-    "contentType": "application/font-woff2",
+    "contentType": "font/woff2",
     "magic": {
       "charset": "binary",
       "type": "font/woff2",
     },
   },
   "font.woff2": {
-    "contentType": "application/font-woff2",
+    "contentType": "font/woff2",
     "magic": {
       "charset": "binary",
       "type": "font/woff2",
@@ -178,7 +178,7 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "less.less": {
-    "contentType": "text/less",
+    "contentType": "text/x-less",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
@@ -269,7 +269,7 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "sql.sql": {
-    "contentType": "application/x-sql",
+    "contentType": "text/plain",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
@@ -290,7 +290,7 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "svgo.yaml": {
-    "contentType": "text/yaml",
+    "contentType": "application/x-yaml",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
@@ -339,21 +339,21 @@ exports[`mimetypes good files 1`] = `
     },
   },
   "typescript.ts": {
-    "contentType": "video/mp2t",
+    "contentType": "text/x-typescript",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
     },
   },
   "typescript.tsx": {
-    "contentType": "text/plain",
+    "contentType": "text/x-typescript",
     "magic": {
       "charset": "utf-8",
       "type": "text/plain",
     },
   },
   "wmf.wmf": {
-    "contentType": "image/wmf",
+    "contentType": "application/octet-stream",
     "magic": {
       "charset": "binary",
       "type": "application/octet-stream",

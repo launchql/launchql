@@ -9,16 +9,26 @@ This document describes the changes made to replace `@launchql/mmmagic` and `buf
 **Removed:**
 - `@launchql/mmmagic@0.5.3` - Native libmagic bindings
 - `buffer-peek-stream@1.1.0` - Stream peeking utility
+- `mime@2.4.6` - MIME type lookup library (no longer needed)
 
 **Added:**
-- `mime-bytes@^0.1.1` - Pure JavaScript/TypeScript file type detection with built-in stream peeking
+- `mime-bytes@^0.1.1` - Pure JavaScript/TypeScript file type detection with built-in stream peeking and content-type generation
 
-### 2. Code Changes in `content-type-stream.ts`
+### 2. Code Changes
 
-- Replaced callback-based `magic.detect()` with async/await `detector.detectWithFallback()`
-- Removed the need for manual stream peeking setup (mime-bytes handles this internally)
-- Simplified error handling with try/catch instead of callback error parameters
-- Removed `@ts-nocheck` directive as mime-bytes has proper TypeScript support
+#### Removed Files
+- `src/get-content-type.ts` - No longer needed as mime-bytes provides content-type directly
+
+#### Updated Files
+- `src/content-type-stream.ts`:
+  - Replaced callback-based `magic.detect()` with async/await `detector.detectWithFallback()`
+  - Removed the need for manual stream peeking setup (mime-bytes handles this internally)
+  - Simplified error handling with try/catch instead of callback error parameters
+  - Removed `@ts-nocheck` directive as mime-bytes has proper TypeScript support
+  - Now uses `contentType` directly from mime-bytes instead of custom logic
+
+- `src/index.ts`:
+  - Removed export of `get-content-type` module
 
 ### 3. API Changes
 
@@ -33,8 +43,12 @@ The public API remains the same:
 2. **Better Performance**: Built-in caching and optimized detection
 3. **More Accurate Detection**: 100+ file types with magic byte detection
 4. **Better TypeScript Support**: Full type safety without `@ts-nocheck`
-5. **Improved Charset Detection**: More accurate UTF-8 vs ASCII detection
+5. **Improved Content-Type Detection**: 
+   - TypeScript files now correctly identified as `text/x-typescript` instead of `video/mp2t`
+   - Better font type detection (e.g., `font/woff2` instead of `application/font-woff2`)
+   - More accurate YAML detection (`application/x-yaml`)
 6. **Stream Efficiency**: Built-in peek functionality reduces complexity
+7. **Simpler Codebase**: Removed unnecessary abstraction layer
 
 ### 5. Test Updates
 
@@ -42,6 +56,7 @@ The test snapshots were updated to reflect:
 - More accurate charset detection (us-ascii → utf-8 for text files)
 - Improved MIME type detection for some formats
 - Better handling of ambiguous file types
+- Direct content-type values from mime-bytes
 
 ## Usage Example
 

@@ -1,8 +1,6 @@
 import { FileTypeDetector, BufferPeekStream } from 'mime-bytes';
 import type { Readable } from 'stream';
 
-import { getContentType } from './get-content-type';
-
 // Create a shared detector instance with default settings
 const detector = new FileTypeDetector({
   peekBytes: 16384,
@@ -41,14 +39,14 @@ export async function streamContentType({
     
     let type = 'application/octet-stream';
     let charset = 'binary';
+    let contentType = 'application/octet-stream';
     
     if (result) {
       type = result.mimeType;
       charset = result.charset || 'binary';
+      // Use the contentType directly from mime-bytes
+      contentType = result.contentType || result.mimeType;
     }
-    
-    // Use existing content type resolution logic for special cases
-    const contentType = getContentType(filename, type, charset);
     
     return {
       stream: peekStream,
@@ -59,7 +57,7 @@ export async function streamContentType({
     // If detection fails, return defaults with original stream
     const type = 'application/octet-stream';
     const charset = 'binary';
-    const contentType = getContentType(filename, type, charset);
+    const contentType = 'application/octet-stream';
     
     return {
       stream: readStream,

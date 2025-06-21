@@ -31,8 +31,7 @@
   },
   "dependencies": {
     "etag-hash": "^2.1.5",
-    "mime": "2.4.6",
-    "mime-bytes": "^0.1.1",
+    "mime-bytes": "file:../mime-bytes",
     "uuid-hash": "^2.1.4"
   },
   "keywords": [
