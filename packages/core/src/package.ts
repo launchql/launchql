@@ -7,7 +7,7 @@ import { getExtensionName } from './extensions';
 import { resolve, resolveWithPlan } from './resolve';
 import { transformProps } from './transform';
 import { Logger } from '@launchql/server-utils';
-import { RawStmt } from '@pgsql/types';
+import { RawStmt, ParseResult } from '@pgsql/types';
 
 const log = new Logger('package');
 
@@ -31,7 +31,7 @@ interface WritePackageOptions extends PackageModuleOptions {
   packageDir: string;
 }
 
-const filterStatements = (stmts: any[], extension: boolean): any[] => {
+const filterStatements = (stmts: RawStmt[], extension: boolean): RawStmt[] => {
   if (!extension) return stmts;
   return stmts.filter(node => {
     const stmt = node.stmt;
@@ -61,6 +61,7 @@ export const packageModule = async (
     const topLine = extension
       ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
       : '';
+
 
     const finalSql = await deparse(stmts.map((s) => s.stmt));
 
