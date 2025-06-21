@@ -247,6 +247,13 @@ exports[`mimetypes good files 1`] = `
       "type": "image/vnd.adobe.photoshop",
     },
   },
+  "rtf.rtf": {
+    "contentType": "text/rtf",
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/rtf",
+    },
+  },
   "scss.scss": {
     "contentType": "text/x-scss",
     "magic": {

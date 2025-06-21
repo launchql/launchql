@@ -667,6 +667,25 @@ exports[`uploads upload files via class 1`] = `
       "key": "db1/assets/psd.psd",
     },
   },
+  "rtf.rtf": {
+    "contentType": "text/rtf",
+    "contents": {
+      "etag": "6b16fb8eb9b9cd1d6631936f61d6d998",
+      "sha": "629f149e655c88058d2be7cbbad0ee442ca8ccea",
+      "uuid": "012fa6fc-8fdf-5992-be32-afdc62a64091",
+    },
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/rtf",
+    },
+    "upload": {
+      "Bucket": "test-bucket",
+      "ETag": ""6b16fb8eb9b9cd1d6631936f61d6d998"",
+      "Key": "db1/assets/rtf.rtf",
+      "Location": "http://minio_cdn:9000/test-bucket/db1/assets/rtf.rtf",
+      "key": "db1/assets/rtf.rtf",
+    },
+  },
   "scss.scss": {
     "contentType": "text/x-scss",
     "contents": {
@@ -1658,6 +1677,25 @@ exports[`uploads upload files via functions 1`] = `
       "Key": "db1/assets/psd.psd",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/psd.psd",
       "key": "db1/assets/psd.psd",
+    },
+  },
+  "rtf.rtf": {
+    "contentType": "text/rtf",
+    "contents": {
+      "etag": "6b16fb8eb9b9cd1d6631936f61d6d998",
+      "sha": "629f149e655c88058d2be7cbbad0ee442ca8ccea",
+      "uuid": "012fa6fc-8fdf-5992-be32-afdc62a64091",
+    },
+    "magic": {
+      "charset": "us-ascii",
+      "type": "text/rtf",
+    },
+    "upload": {
+      "Bucket": "test-bucket",
+      "ETag": ""6b16fb8eb9b9cd1d6631936f61d6d998"",
+      "Key": "db1/assets/rtf.rtf",
+      "Location": "http://minio_cdn:9000/test-bucket/db1/assets/rtf.rtf",
+      "key": "db1/assets/rtf.rtf",
     },
   },
   "scss.scss": {
