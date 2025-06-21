@@ -1,12 +1,11 @@
-// @ts-nocheck
-import mmm from '@launchql/mmmagic';
-import { BufferPeekStream } from 'buffer-peek-stream';
+import { FileTypeDetector, BufferPeekStream } from 'mime-bytes';
 import type { Readable } from 'stream';
 
-import { getContentType } from './get-content-type';
-
-const Magic = mmm.Magic;
-const magic: InstanceType<typeof mmm.Magic> = new Magic(mmm.MAGIC_MIME_TYPE | mmm.MAGIC_MIME_ENCODING);
+// Create a shared detector instance with default settings
+const detector = new FileTypeDetector({
+  peekBytes: 16384,
+  checkMultipleOffsets: true
+});
 
 interface StreamContentTypeArgs {
   readStream: Readable;
@@ -15,26 +14,55 @@ interface StreamContentTypeArgs {
 }
 
 interface StreamContentTypeResult {
-  stream: BufferPeekStream;
+  stream: BufferPeekStream | Readable;
   magic: { type: string; charset: string };
   contentType: string;
 }
 
-export function streamContentType({
+export async function streamContentType({
   readStream,
   filename,
   peekBytes = 16384
 }: StreamContentTypeArgs): Promise<StreamContentTypeResult> {
-  return new Promise((resolve, reject) => {
-    const peekStream = new BufferPeekStream({ peekBytes });
-    peekStream.once('peek', function (buffer: Buffer) {
-      magic.detect(buffer, (err: Error | null, res: string) => {
-        if (err) return reject(err);
-        const [type, charset] = res.split('; charset=');
-        const contentType = getContentType(filename, type, charset);
-        resolve({ stream: peekStream, magic: { type, charset }, contentType });
-      });
-    });
-    readStream.pipe(peekStream);
-  });
+  try {
+    // Create a custom detector if different peek bytes are needed
+    const customDetector = peekBytes !== 16384 
+      ? new FileTypeDetector({ peekBytes, checkMultipleOffsets: true })
+      : detector;
+
+    // Detect from stream with fallback to filename
+    const result = await customDetector.detectWithFallback(readStream, filename);
+    
+    // Get the peek stream that was created during detection
+    // mime-bytes returns the peek stream as part of the result
+    const peekStream = (result as any)?._stream || readStream;
+    
+    let type = 'application/octet-stream';
+    let charset = 'binary';
+    let contentType = 'application/octet-stream';
+    
+    if (result) {
+      type = result.mimeType;
+      charset = result.charset || 'binary';
+      // Use the contentType directly from mime-bytes
+      contentType = result.contentType || result.mimeType;
+    }
+    
+    return {
+      stream: peekStream,
+      magic: { type, charset },
+      contentType
+    };
+  } catch (error) {
+    // If detection fails, return defaults with original stream
+    const type = 'application/octet-stream';
+    const charset = 'binary';
+    const contentType = 'application/octet-stream';
+    
+    return {
+      stream: readStream,
+      magic: { type, charset },
+      contentType
+    };
+  }
 }

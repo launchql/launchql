@@ -297,7 +297,7 @@ export class FileTypeDetector {
             const extension = filename.substring(lastDot + 1);
             
             // Check for generic text files that might have specific content types
-            if (magicResult.name === 'text' && magicResult.charset) {
+            if (magicResult.mimeType === 'text/plain' && magicResult.charset) {
               const contentType = getContentTypeForExtension(extension, magicResult.charset);
               if (contentType) {
                 // Enhance the result with charset-aware content type

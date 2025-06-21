@@ -30,10 +30,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/mmmagic": "0.5.3",
-    "buffer-peek-stream": "1.1.0",
     "etag-hash": "^2.1.5",
-    "mime": "2.4.6",
+    "mime-bytes": "^0.1.1",
     "uuid-hash": "^2.1.4"
   },
   "keywords": [
