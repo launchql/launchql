@@ -1213,7 +1213,7 @@ export const CONTENT_TYPE_MAPPINGS: ContentTypeMapping[] = [
   [['md'], 'text/markdown', 'utf-8'],
   [['scss'], 'text/x-scss', 'utf-8'],
   [['sh'], 'application/x-sh', 'utf-8'],
-  [['sql'], 'application/sql', 'utf-8'],
+  [['sql'], 'application/x-sql', 'utf-8'],
   [['yaml'], 'application/x-yaml', 'utf-8'],
   [['yml'], 'application/x-yaml', 'utf-8'],
   [['jsx'], 'text/jsx', 'utf-8'],
