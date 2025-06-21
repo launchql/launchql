@@ -1,8 +1,8 @@
 {
-  "name": "mime-bytes",
+  "name": "magic-bytes",
   "version": "0.0.2",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "mime-bytes",
+  "description": "magic-bytes",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
