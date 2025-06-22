@@ -1187,15 +1187,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/types@^17.0.0":
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.0.0.tgz#a351a051597b17b81314a038495754fb0a3a3919"
-  integrity sha512-bbGk9TPI2vB58McRuADIvVPGqOznzrXuIPzcyHfoisvXswIrNuw73Sjj7ortvdiI3jypdevJkAAsKGLJkD65SQ==
-
-"@pgsql/types@^17.4.0", "@pgsql/types@^17.4.1":
-  version "17.4.1"
-  resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.4.1.tgz#e9fcbcd6e1c2c8dd965acb407b707f54cfeedb98"
-  integrity sha512-TVhMO7juHE2dDmZDqwd+uwjMCnzYBHd4yKGxao6x39SvXb1isV9AjC2xmOG6W3CCWL4rxY5ZXFPx97GZXbfSwg==
+"@pgsql/types@^17.0.0", "@pgsql/types@^17.4.2":
+  version "17.4.2"
+  resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.4.2.tgz#4d175dc212925d9d25224565b52e2dd36a4c9ee2"
+  integrity sha512-8vD/R/bDpeWjmmofYTWuzW5rw3OjKst4d//zJllDNBW/JkRrsNlCzSUUCIrb6S5GBaU5XPGUggyXRjQYwlnftw==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -7184,18 +7179,18 @@ pgpass@1.0.5:
     split2 "^4.1.0"
 
 pgsql-deparser@^17.1.0:
-  version "17.4.1"
-  resolved "https://registry.yarnpkg.com/pgsql-deparser/-/pgsql-deparser-17.4.1.tgz#332005f9f2c132f56ff44276a3235ca1029671ef"
-  integrity sha512-LzyOY8EMru30Gy6pKKioAZPq/YO4meF+CaKa3HfqBe1t51p6Dm3gKopTmfPqufim8IGW0CMRFPbjSAYMYp6Ngw==
+  version "17.5.0"
+  resolved "https://registry.yarnpkg.com/pgsql-deparser/-/pgsql-deparser-17.5.0.tgz#05b21cc747e653a997f07fb97368bd32b46e27e4"
+  integrity sha512-Xp890qlvlqPDXZDYVvZvZatDUgiysWfH6/6NadvBBrDIHbOV4J+XrwE/KIx3994iJvvdDWBKQQ0uUfB1arIXSA==
   dependencies:
-    "@pgsql/types" "^17.4.1"
+    "@pgsql/types" "^17.4.2"
 
 pgsql-parser@^17.4.0:
-  version "17.4.1"
-  resolved "https://registry.yarnpkg.com/pgsql-parser/-/pgsql-parser-17.4.1.tgz#52cb063ae8cb398a54439f58d973c3a5732fd9cd"
-  integrity sha512-bz0ree/r9r7qQMOCUI+Q/JK/7nuktgMrgCnD8CYHow1hukzlGYC/dzLnayLUUC11SjyqnmhdYd605pg4rfhQDg==
+  version "17.4.2"
+  resolved "https://registry.yarnpkg.com/pgsql-parser/-/pgsql-parser-17.4.2.tgz#d0becdfe273f6daf31b72b194984dfb4e4738135"
+  integrity sha512-gHopDoLsRvYDB8IfX0/jDCw2p61+YslDc84XpaNZ2IkL1qdmX6SPOB0h3Pg3t4oBg9DiHrqX+P6cu9ukHMCqHw==
   dependencies:
-    "@pgsql/types" "^17.4.1"
+    "@pgsql/types" "^17.4.2"
     libpg-query "17.3.3"
     minimist "^1.2.6"
 
