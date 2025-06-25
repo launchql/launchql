@@ -3,7 +3,7 @@ TODO
 TODO
 
 - [ ] Add tests for pg-ast
-- [ ] Add tests for csv-to-pg
+- [ ] bring back csv-to-pg
 
 
 CI / Workflow
