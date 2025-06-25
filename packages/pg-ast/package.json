@@ -23,8 +23,9 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run build:proto && npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
+    "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
+    "build:proto": "ts-node scripts/pg-proto-parser",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -35,7 +36,12 @@
     "parser",
     "parse"
   ],
+  "devDependencies": {
+    "pg-proto-parser": "^1.29.1",
+    "pgsql-deparser": "^17.8.1"
+  },
   "dependencies": {
-    "pgsql-parser": "^17.4.0"
+    "@pgsql/types": "^17.6.1",
+    "nested-obj": "0.0.1"
   }
 }

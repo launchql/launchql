@@ -12,7 +12,7 @@ exports[`deparses 1`] = `
     "name": [
       {
         "String": {
-          "str": "=",
+          "sval": "=",
         },
       },
     ],
