@@ -1,11 +1,13 @@
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 import { relative } from 'path';
-import { deparse, parse } from 'pgsql-parser';
+import { parse } from 'pgsql-parser';
+import { deparse } from 'pgsql-deparser';
 
 import { getExtensionName } from './extensions';
 import { resolve, resolveWithPlan } from './resolve';
 import { transformProps } from './transform';
 import { Logger } from '@launchql/server-utils';
+import { RawStmt, ParseResult } from '@pgsql/types';
 
 const log = new Logger('package');
 
@@ -22,6 +24,8 @@ export const cleanTree = (tree: any): any => {
 interface PackageModuleOptions {
   usePlan?: boolean;
   extension?: boolean;
+  pretty?: boolean;
+  functionDelimiter?: string;
 }
 
 interface WritePackageOptions extends PackageModuleOptions {
@@ -29,10 +33,19 @@ interface WritePackageOptions extends PackageModuleOptions {
   packageDir: string;
 }
 
-export const packageModule = (
+const filterStatements = (stmts: RawStmt[], extension: boolean): RawStmt[] => {
+  if (!extension) return stmts;
+  return stmts.filter(node => {
+    const stmt = node.stmt;
+    return !stmt.hasOwnProperty('TransactionStmt') && 
+           !stmt.hasOwnProperty('CreateExtensionStmt');
+  });
+};
+
+export const packageModule = async (
   packageDir: string,
-  { usePlan = true, extension = true }: PackageModuleOptions = {}
-): { sql: string; diff?: boolean; tree1?: string; tree2?: string } => {
+  { usePlan = true, extension = true, pretty = true, functionDelimiter = '$EOFCODE$' }: PackageModuleOptions = {}
+): Promise<{ sql: string; diff?: boolean; tree1?: string; tree2?: string }> => {
   const resolveFn = usePlan ? resolveWithPlan : resolve;
   const sql = resolveFn(packageDir);
 
@@ -44,22 +57,20 @@ export const packageModule = (
   const extname = getExtensionName(packageDir);
 
   try {
-    const parsed = parse(sql);
-    const stmts = parsed.reduce((m: any[], node: any) => {
-      if (extension) {
-        if (node.RawStmt.stmt.hasOwnProperty('TransactionStmt')) return m;
-        if (node.RawStmt.stmt.hasOwnProperty('CreateExtensionStmt')) return m;
-      }
-      return [...m, node];
-    }, []);
-  
+    const parsed = await parse(sql);
+    parsed.stmts = filterStatements(parsed.stmts as any, extension);
 
     const topLine = extension
       ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
       : '';
-    const finalSql = deparse(stmts, {});
-    const tree1 = stmts;
-    const tree2 = parse(finalSql);
+
+    const finalSql = await deparse(parsed, {
+      pretty,
+      functionDelimiter
+    });
+
+    const tree1 = parsed.stmts;
+    const tree2 = await parse(finalSql);
 
     const results: {
       sql: string;
@@ -102,7 +113,7 @@ export const writePackage = async ({
   const Makefile = readFileSync(makePath, 'utf-8');
   const control = readFileSync(controlPath, 'utf-8');
 
-  const { sql, diff, tree1, tree2 } = packageModule(packageDir, {
+  const { sql, diff, tree1, tree2 } = await packageModule(packageDir, {
     extension,
     usePlan,
   });

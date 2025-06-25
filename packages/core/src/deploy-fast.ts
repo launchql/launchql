@@ -81,7 +81,18 @@ export const deployFast = async (
           continue;
         }
 
-        const pkg = packageModule(localProject.modulePath, { usePlan, extension: false });
+        let pkg;
+        try {
+          pkg = await packageModule(localProject.modulePath, { usePlan, extension: false });
+        } catch (err) {
+          log.error(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
+          log.error(`   Error: ${err instanceof Error ? err.message : String(err)}`);
+          console.error(err); // Preserve full stack trace
+          throw errors.DEPLOYMENT_FAILED({ 
+            type: 'Deployment', 
+            module: extension
+          });
+        }
 
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);

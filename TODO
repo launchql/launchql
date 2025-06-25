@@ -1,5 +1,11 @@
 TODO
 
+TODO
+
+- [ ] Add tests for pg-ast
+- [ ] bring back csv-to-pg
+
+
 CI / Workflow
 -------------
 - [x] Remove Travis CI
