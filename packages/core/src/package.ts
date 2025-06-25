@@ -25,6 +25,7 @@ interface PackageModuleOptions {
   usePlan?: boolean;
   extension?: boolean;
   pretty?: boolean;
+  functionDelimiter?: string;
 }
 
 interface WritePackageOptions extends PackageModuleOptions {
@@ -43,7 +44,7 @@ const filterStatements = (stmts: RawStmt[], extension: boolean): RawStmt[] => {
 
 export const packageModule = async (
   packageDir: string,
-  { usePlan = true, extension = true, pretty = true }: PackageModuleOptions = {}
+  { usePlan = true, extension = true, pretty = true, functionDelimiter = '$EOFCODE$' }: PackageModuleOptions = {}
 ): Promise<{ sql: string; diff?: boolean; tree1?: string; tree2?: string }> => {
   const resolveFn = usePlan ? resolveWithPlan : resolve;
   const sql = resolveFn(packageDir);
@@ -64,7 +65,8 @@ export const packageModule = async (
       : '';
 
     const finalSql = await deparse(parsed, {
-      pretty
+      pretty,
+      functionDelimiter
     });
 
     const tree1 = parsed.stmts;

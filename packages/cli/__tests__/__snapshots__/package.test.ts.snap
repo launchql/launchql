@@ -16,9 +16,9 @@ exports[`cmds:package updates module with \`extension\` and \`package\` commands
 
 exports[`cmds:package updates module with \`extension\` and \`package\` commands in copied fixture workspace: extension-update - sql 1`] = `
 "\\echo Use "CREATE EXTENSION secrets" to load this file. \\quit
-CREATE FUNCTION secretfunction() RETURNS text AS $$
+CREATE FUNCTION secretfunction() RETURNS text AS $EOFCODE$
   select * from generate_secret();
-$$ LANGUAGE sql STABLE;"
+$EOFCODE$ LANGUAGE sql STABLE;"
 `;
 
 exports[`cmds:package updates module with \`extension\` and \`package\` commands in copied fixture workspace: initial - control file 1`] = `
