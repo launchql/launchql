@@ -24,6 +24,7 @@ export const cleanTree = (tree: any): any => {
 interface PackageModuleOptions {
   usePlan?: boolean;
   extension?: boolean;
+  pretty?: boolean;
 }
 
 interface WritePackageOptions extends PackageModuleOptions {
@@ -42,7 +43,7 @@ const filterStatements = (stmts: RawStmt[], extension: boolean): RawStmt[] => {
 
 export const packageModule = async (
   packageDir: string,
-  { usePlan = true, extension = true }: PackageModuleOptions = {}
+  { usePlan = true, extension = true, pretty = true }: PackageModuleOptions = {}
 ): Promise<{ sql: string; diff?: boolean; tree1?: string; tree2?: string }> => {
   const resolveFn = usePlan ? resolveWithPlan : resolve;
   const sql = resolveFn(packageDir);
@@ -62,7 +63,9 @@ export const packageModule = async (
       ? `\\echo Use "CREATE EXTENSION ${extname}" to load this file. \\quit\n`
       : '';
 
-    const finalSql = await deparse(parsed as any);
+    const finalSql = await deparse(parsed, {
+      pretty
+    });
 
     const tree1 = parsed.stmts;
     const tree2 = await parse(finalSql);

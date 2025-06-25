@@ -14,10 +14,17 @@ export default async (
       default: true,
       useDefault: true,
       required: true
+    },
+    {
+      type: 'confirm',
+      name: 'pretty',
+      default: true,
+      useDefault: true,
+      required: true
     }
   ];
 
-  let { cwd, plan } = await prompter.prompt(argv, questions);
+  let { cwd, plan, pretty } = await prompter.prompt(argv, questions);
 
   const project = new LaunchQLProject(cwd);
 
@@ -30,7 +37,8 @@ export default async (
     version: info.version,
     extension: true,
     usePlan: plan,
-    packageDir: project.modulePath
+    packageDir: project.modulePath,
+    pretty
   });
 
   return argv;
