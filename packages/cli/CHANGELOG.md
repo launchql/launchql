@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.31...@launchql/cli@4.2.0) (2025-06-25)
+
+
+### Bug Fixes
+
+* add function delimeter ([e099e39](https://github.com/launchql/launchql/commit/e099e3935412fba88fc74325d7cb7013cfe60336))
+
+
+
+
+
 ## [4.1.31](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.30...@launchql/cli@4.1.31) (2025-06-21)
 
 **Note:** Version bump only for package @launchql/cli

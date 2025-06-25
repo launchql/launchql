@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/launchql/launchql/compare/stream-to-etag@2.1.5...stream-to-etag@2.2.0) (2025-06-25)
+
+**Note:** Version bump only for package stream-to-etag
+
+
+
+
+
 ## [2.1.5](https://github.com/launchql/launchql/compare/stream-to-etag@2.1.4...stream-to-etag@2.1.5) (2025-05-30)
 
 **Note:** Version bump only for package stream-to-etag

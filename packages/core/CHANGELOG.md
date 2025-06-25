@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/launchql/launchql/compare/@launchql/core@2.1.20...@launchql/core@2.2.0) (2025-06-25)
+
+
+### Bug Fixes
+
+* add function delimeter ([e099e39](https://github.com/launchql/launchql/commit/e099e3935412fba88fc74325d7cb7013cfe60336))
+
+
+
+
+
 ## [2.1.20](https://github.com/launchql/launchql/compare/@launchql/core@2.1.19...@launchql/core@2.1.20) (2025-05-30)
 
 **Note:** Version bump only for package @launchql/core

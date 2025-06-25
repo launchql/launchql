@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/launchql/launchql/compare/etag-hash@2.1.5...etag-hash@2.2.0) (2025-06-25)
+
+**Note:** Version bump only for package etag-hash
+
+
+
+
+
 ## [2.1.5](https://github.com/launchql/launchql/compare/etag-hash@2.1.4...etag-hash@2.1.5) (2025-05-30)
 
 **Note:** Version bump only for package etag-hash
