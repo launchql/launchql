@@ -1241,7 +1241,7 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@pgsql/types@^17.6.1":
+"@pgsql/types@^17.6.0", "@pgsql/types@^17.6.1":
   version "17.6.1"
   resolved "https://registry.yarnpkg.com/@pgsql/types/-/types-17.6.1.tgz#fcbe4910321bd0dfa38aa0c26d87eff7b098d0e9"
   integrity sha512-Hk51+nyOxS7Dy5oySWywyNZxo5HndX1VDXT4ZEBD+p+vvMFM2Vc+sKSuByCiI8banou4edbgdnOC251IOuq7QQ==
@@ -5829,12 +5829,12 @@ libnpmpublish@7.1.4:
     sigstore "^1.4.0"
     ssri "^10.0.1"
 
-libpg-query@17.5.2:
-  version "17.5.2"
-  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.2.tgz#1d3663f482dc2fb253948a0d2d4bc3540b10d752"
-  integrity sha512-9VhuzWrWyZ6AalSCtF2+BDx/aHpp8JKLAsYa1qF77x7f+kJ5BxAXvdRYOduNNFqdwu67110eFpoBr6BtN4WH/A==
+libpg-query@17.5.5:
+  version "17.5.5"
+  resolved "https://registry.yarnpkg.com/libpg-query/-/libpg-query-17.5.5.tgz#6446641f0a2dc0ec12fccb1bbd14374ae191cece"
+  integrity sha512-vzD5sjv1Kqf5EtoxzO1pcL43Y5k9o84wmPWAxomhhBS1crEgLlkwuVi28aSE5SGz7UZOu+KqO5eLmGPt1ySGRg==
   dependencies:
-    "@pgsql/types" "^17.6.1"
+    "@pgsql/types" "^17.6.0"
 
 lines-and-columns@^1.1.6:
   version "1.2.4"
@@ -7289,6 +7289,13 @@ pgsql-deparser@^17.8.1:
   dependencies:
     "@pgsql/types" "^17.6.1"
 
+pgsql-deparser@^17.8.3:
+  version "17.8.3"
+  resolved "https://registry.yarnpkg.com/pgsql-deparser/-/pgsql-deparser-17.8.3.tgz#96ec5573c1fb7da27e1897ea8ac7f5de905750d8"
+  integrity sha512-sxOgYhCphHlyRVsVu9ggG1RyJIo1EK7F4nz5W+hBQ/dKEuEffVf3X+kYN0I1SRIEiqoNEk1yiAqS0Uo6VoclZA==
+  dependencies:
+    "@pgsql/types" "^17.6.1"
+
 pgsql-enums@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/pgsql-enums/-/pgsql-enums-1.1.1.tgz#fe970fc45be568325f20e2a8299b29d77746299b"
@@ -7296,14 +7303,14 @@ pgsql-enums@^1.1.1:
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-pgsql-parser@^17.7.2:
-  version "17.7.2"
-  resolved "https://registry.yarnpkg.com/pgsql-parser/-/pgsql-parser-17.7.2.tgz#64fb254a8a0a1a3c2587a2fa780615e814b6353c"
-  integrity sha512-pWokAnwbSbhOlu+jWK2cE4wfUE5KqCUycmlG2N5zB1OIA2ncVnffiiGeqr9Bfd5ZOWB7czCvOON/KKkh0iUirQ==
+pgsql-parser@^17.7.4:
+  version "17.7.4"
+  resolved "https://registry.yarnpkg.com/pgsql-parser/-/pgsql-parser-17.7.4.tgz#069c3e590e20a5d7b2bb8712fdfb5532081411a4"
+  integrity sha512-tI0uVSQ2tDBJoV+gr67KApTB28kcJpAciTdklIsWC33QoizMnxUTO5bA2t9VIXBT8W9Iewkra+804GjYTKBukw==
   dependencies:
     "@pgsql/types" "^17.6.1"
-    libpg-query "17.5.2"
-    pgsql-deparser "^17.8.1"
+    libpg-query "17.5.5"
+    pgsql-deparser "^17.8.3"
 
 picocolors@^1.1.1:
   version "1.1.1"
