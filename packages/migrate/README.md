@@ -1,64 +1,125 @@
-# migrate
+# @launchql/migrate
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
-    LaunchQL Migrate
-</p>
+A TypeScript-based database migration system for PostgreSQL that replaces Sqitch with a native implementation.
 
-## install
+## Features
 
-```sh
-npm install migrate
-```
-## Table of contents
+- **Native TypeScript**: No external dependencies on Sqitch
+- **PostgreSQL-based state tracking**: All migration state is stored in the database
+- **Dependency management**: Supports change dependencies
+- **Verification support**: Built-in support for verify scripts
+- **Import from Sqitch**: Can import existing Sqitch deployments
+- **Drop-in replacement**: Compatible with existing Sqitch plan files
 
-- [migrate](#migrate)
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
+## Installation
 
-## Developing
-
-When first cloning the repo:
-
-```sh
-yarn
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
+```bash
+npm install @launchql/migrate
 ```
 
-Or if you want to make your dev process smoother, you can run:
+## Usage
 
-```sh
-yarn
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+### As a Library
+
+```typescript
+import { LaunchQLMigrate } from '@launchql/migrate';
+
+const migrate = new LaunchQLMigrate({
+  host: 'localhost',
+  port: 5432,
+  user: 'postgres',
+  password: 'password',
+  database: 'postgres'
+});
+
+// Deploy changes
+const deployResult = await migrate.deploy({
+  project: 'myproject',
+  targetDatabase: 'myapp',
+  planPath: './sqitch.plan',
+  deployPath: './deploy',
+  verifyPath: './verify'
+});
+
+// Revert changes
+const revertResult = await migrate.revert({
+  project: 'myproject',
+  targetDatabase: 'myapp',
+  planPath: './sqitch.plan',
+  revertPath: './revert'
+});
+
+// Verify deployment
+const verifyResult = await migrate.verify({
+  project: 'myproject',
+  targetDatabase: 'myapp',
+  planPath: './sqitch.plan',
+  verifyPath: './verify'
+});
+
+// Check status
+const status = await migrate.status('myproject');
+
+// Import from existing Sqitch deployment
+await migrate.importFromSqitch();
+
+// Don't forget to close the connection
+await migrate.close();
 ```
 
-## Interchain JavaScript Stack 
+### As a Drop-in Replacement for Sqitch
 
-A unified toolkit for building applications and smart contracts in the Interchain ecosystem ⚛️
+```typescript
+import { deployCommand, revertCommand, verifyCommand } from '@launchql/migrate';
 
-| Category              | Tools                                                                                                                  | Description                                                                                           |
-|----------------------|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| **Chain Information**   | [**Chain Registry**](https://github.com/hyperweb-io/chain-registry), [**Utils**](https://www.npmjs.com/package/@chain-registry/utils), [**Client**](https://www.npmjs.com/package/@chain-registry/client) | Everything from token symbols, logos, and IBC denominations for all assets you want to support in your application. |
-| **Wallet Connectors**| [**Interchain Kit**](https://github.com/hyperweb-io/interchain-kit)<sup>beta</sup>, [**Cosmos Kit**](https://github.com/hyperweb.io/cosmos-kit) | Experience the convenience of connecting with a variety of web3 wallets through a single, streamlined interface. |
-| **Signing Clients**          | [**InterchainJS**](https://github.com/hyperweb-io/interchainjs)<sup>beta</sup>, [**CosmJS**](https://github.com/cosmos/cosmjs) | A single, universal signing interface for any network |
-| **SDK Clients**              | [**Telescope**](https://github.com/hyperweb.io/telescope)                                                          | Your Frontend Companion for Building with TypeScript with Cosmos SDK Modules. |
-| **Starter Kits**     | [**Create Interchain App**](https://github.com/hyperweb-io/create-interchain-app)<sup>beta</sup>, [**Create Cosmos App**](https://github.com/hyperweb.io/create-cosmos-app) | Set up a modern Interchain app by running one command. |
-| **UI Kits**          | [**Interchain UI**](https://github.com/hyperweb.io/interchain-ui)                                                   | The Interchain Design System, empowering developers with a flexible, easy-to-use UI kit. |
-| **Testing Frameworks**          | [**Starship**](https://github.com/hyperweb.io/starship)                                                             | Unified Testing and Development for the Interchain. |
-| **TypeScript Smart Contracts** | [**Create Hyperweb App**](https://github.com/hyperweb-io/create-hyperweb-app)                              | Build and deploy full-stack blockchain applications with TypeScript |
-| **CosmWasm Contracts** | [**CosmWasm TS Codegen**](https://github.com/CosmWasm/ts-codegen)                                                   | Convert your CosmWasm smart contracts into dev-friendly TypeScript classes. |
+const config = {
+  host: 'localhost',
+  port: 5432,
+  user: 'postgres',
+  password: 'password'
+};
 
-## Credits
+// Replace spawn('sqitch', ['deploy', 'db:pg:mydb'])
+await deployCommand(config, 'mydb', '/path/to/project');
 
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
+// Replace spawn('sqitch', ['revert', 'db:pg:mydb'])
+await revertCommand(config, 'mydb', '/path/to/project');
 
+// Replace spawn('sqitch', ['verify', 'db:pg:mydb'])
+await verifyCommand(config, 'mydb', '/path/to/project');
+```
 
-## Disclaimer
+## Migration Schema
 
-AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+The migration system creates a `launchql_migrate` schema in your PostgreSQL database with the following tables:
 
-No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
+- `projects`: Tracks migration projects
+- `changes`: Records deployed changes with their script hashes
+- `dependencies`: Tracks change dependencies
+- `events`: Logs deployment events (deploy, revert, fail)
+
+## Plan File Format
+
+The system is compatible with Sqitch plan files:
+
+```
+%syntax-version=1.0.0
+%project=myproject
+%uri=https://github.com/myorg/myproject
+
+schema 2024-01-01T00:00:00Z developer <dev@example.com> # Create schema
+users [schema] 2024-01-02T00:00:00Z developer <dev@example.com> # Create users table
+posts [users] 2024-01-03T00:00:00Z developer <dev@example.com> # Create posts table
+```
+
+## Differences from Sqitch
+
+1. **State Storage**: Migration state is stored in PostgreSQL instead of a separate registry
+2. **No Tags**: The system doesn't support Sqitch tags (yet)
+3. **Simplified Events**: Event logging is minimal compared to Sqitch
+4. **Script Hashing**: Uses SHA256 for script content hashing
+5. **Native TypeScript**: No need to install Sqitch or Perl
+
+## License
+
+See LICENSE in the root of the repository.

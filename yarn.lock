@@ -1762,7 +1762,7 @@
     "@types/node" "*"
     "@types/pg" "*"
 
-"@types/pg@*", "@types/pg@>=6 <9", "@types/pg@^8.15.2":
+"@types/pg@*", "@types/pg@>=6 <9", "@types/pg@^8.10.9", "@types/pg@^8.15.2":
   version "8.15.4"
   resolved "https://registry.yarnpkg.com/@types/pg/-/pg-8.15.4.tgz#419f791c6fac8e0bed66dd8f514b60f8ba8db46d"
   integrity sha512-I6UNVBAoYbvuWkkU3oosC8yxqH21f4/Jc4DK71JLG3dT2mdlGe1z+ep/LQGXaKaOgcvUrsQoPRqfgtMcvZiJhg==
@@ -7252,7 +7252,7 @@ pg-types@2.2.0, pg-types@^2.2.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-"pg@>=6.1.0 <9", pg@^8.16.0:
+"pg@>=6.1.0 <9", pg@^8.11.3, pg@^8.16.0:
   version "8.16.2"
   resolved "https://registry.yarnpkg.com/pg/-/pg-8.16.2.tgz#1b3744531abe86ce80209ac560fb6f0e8e15f943"
   integrity sha512-OtLWF0mKLmpxelOt9BqVq83QV6bTfsS0XLegIeAKqKjurRnRKie1Dc1iL89MugmSLhftxw6NNCyZhm1yQFLMEQ==

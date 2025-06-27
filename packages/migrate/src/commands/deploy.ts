@@ -1,0 +1,50 @@
+import { join } from 'path';
+import { existsSync } from 'fs';
+import { LaunchQLMigrate } from '../client';
+import { MigrateConfig } from '../types';
+import { Logger } from '@launchql/server-utils';
+
+const log = new Logger('migrate-deploy');
+
+/**
+ * Deploy command that mimics sqitch deploy behavior
+ * This is designed to be a drop-in replacement for spawn('sqitch', ['deploy', 'db:pg:database'])
+ */
+export async function deployCommand(
+  config: MigrateConfig,
+  database: string,
+  cwd: string,
+  options?: {
+    toChange?: string;
+  }
+): Promise<void> {
+  const planPath = join(cwd, 'sqitch.plan');
+  
+  if (!existsSync(planPath)) {
+    throw new Error(`No sqitch.plan found in ${cwd}`);
+  }
+  
+  const client = new LaunchQLMigrate(config);
+  
+  try {
+    const result = await client.deploy({
+      project: '', // Will be read from plan file
+      targetDatabase: database,
+      planPath,
+      deployPath: 'deploy',
+      verifyPath: existsSync(join(cwd, 'verify')) ? 'verify' : undefined,
+      toChange: options?.toChange
+    });
+    
+    if (result.failed) {
+      throw new Error(`Deployment failed at change: ${result.failed}`);
+    }
+    
+    log.info(`Deployed ${result.deployed.length} changes`);
+    if (result.skipped.length > 0) {
+      log.info(`Skipped ${result.skipped.length} already deployed changes`);
+    }
+  } finally {
+    await client.close();
+  }
+}

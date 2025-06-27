@@ -2,310 +2,191 @@
 
 ## Overview
 
-This plan outlines the implementation of a new TypeScript-based migration system that completely removes the Sqitch dependency while maintaining compatibility with existing Sqitch plan files. The system will be implemented as a new package (`@launchql/migrate`) that replaces all Sqitch calls in the existing `@launchql/core` deploy and deployFast functions.
+This document outlines the implementation plan for replacing Sqitch with a native TypeScript-based migration system in LaunchQL. The new system will be implemented as a separate package (`@launchql/migrate`) that can be used as a drop-in replacement for Sqitch calls throughout the codebase.
 
-## Goals
+## Current State Analysis
 
-1. **Complete Sqitch removal** - Eliminate all Sqitch/Perl dependencies
-2. **Maintain compatibility** - Support existing Sqitch plan file format (parser already exists in `resolve.ts`)
-3. **TypeScript implementation** - Pure TypeScript/Node.js solution
-4. **Minimal database footprint** - Only 4 tables in `launchql_migrate` schema
-5. **Drop-in replacement** - Replace all `spawn('sqitch', ...)` calls with new migration system
+### Sqitch Usage in LaunchQL
 
-## Architecture
+1. **Core Package (`packages/core/src/sqitch/`)**:
+   - `deploy.ts`: Uses `spawn('sqitch', ['deploy', 'db:pg:database'])`
+   - `revert.ts`: Uses `spawn('sqitch', ['revert', 'db:pg:database'])`
+   - `verify.ts`: Uses `spawn('sqitch', ['verify', 'db:pg:database'])`
+   - `resolve.ts`: Contains plan parser for reading `sqitch.plan` files
+
+2. **CLI Package (`packages/cli/src/commands/`)**:
+   - `deploy.ts`: Uses `execSync('sqitch deploy')`
+   - `revert.ts`: Uses `execSync('sqitch revert')`
+   - `verify.ts`: Uses `execSync('sqitch verify')`
+
+3. **Plan File Format**:
+   - Standard Sqitch plan files with dependencies
+   - Example: `change_name [dep1 dep2] timestamp planner <email> # comment`
+
+## Implementation Strategy
+
+### Phase 1: Create New Migration Package (COMPLETED ✓)
+
+Created `@launchql/migrate` package with:
+
+1. **Core Components**:
+   - ✓ PostgreSQL schema for tracking migrations (`launchql_migrate` schema)
+   - ✓ Client class (`LaunchQLMigrate`) for managing migrations
+   - ✓ Plan file parser compatible with Sqitch format
+   - ✓ Command wrappers for drop-in replacement
+
+2. **Database Schema**:
+   ```sql
+   -- Minimal schema focused on essential functionality
+   launchql_migrate.projects (project, created_at)
+   launchql_migrate.changes (change_id, change_name, project, script_hash, deployed_at)
+   launchql_migrate.dependencies (change_id, requires)
+   launchql_migrate.events (event_id, event_type, change_name, project, occurred_at)
+   ```
+
+3. **Key Features**:
+   - ✓ Deploy/revert/verify operations
+   - ✓ Dependency tracking and validation
+   - ✓ Script content hashing (SHA256)
+   - ✓ Import from existing Sqitch deployments
+   - ✓ Compatible with existing plan files
+
+### Phase 2: Integration with Existing Code (TODO)
+
+1. **Update Core Package**:
+   ```typescript
+   // packages/core/src/sqitch/deploy.ts
+   import { deployCommand } from '@launchql/migrate';
+   
+   // Replace spawn('sqitch', ['deploy', `db:pg:${database}`])
+   await deployCommand(pgConfig, database, modulePath);
+   ```
+
+2. **Update CLI Package**:
+   ```typescript
+   // packages/cli/src/commands/deploy.ts
+   import { deployCommand } from '@launchql/migrate';
+   
+   // Replace execSync('sqitch deploy')
+   await deployCommand(config, database, cwd);
+   ```
+
+3. **Configuration Updates**:
+   - Add `@launchql/migrate` as dependency to core and cli packages
+   - Update environment variable handling to pass PostgreSQL credentials
+   - Maintain backward compatibility with existing workflows
+
+### Phase 3: Migration Path (TODO)
+
+1. **Import Existing Deployments**:
+   - Run `importFromSqitch()` to import existing Sqitch state
+   - Verify imported data matches current deployment state
+   - Test rollback capabilities
+
+2. **Gradual Rollout**:
+   - Add feature flag to toggle between Sqitch and new system
+   - Test in development environments first
+   - Monitor for any discrepancies
+
+3. **Documentation**:
+   - Update deployment guides
+   - Document differences from Sqitch
+   - Provide migration guide for existing users
+
+## Implementation Details
 
 ### Package Structure
 
 ```
-packages/
-├── migrate/                    # New package: @launchql/migrate
-│   ├── src/
-│   │   ├── index.ts           # Main exports
-│   │   ├── client.ts          # LaunchQLMigrate client class
-│   │   ├── parser/
-│   │   │   ├── plan.ts        # Sqitch plan file parser
-│   │   │   └── types.ts       # Plan file types
-│   │   ├── sql/
-│   │   │   ├── schema.sql     # Database schema creation
-│   │   │   └── procedures.sql # Stored procedures
-│   │   ├── commands/
-│   │   │   ├── deploy.ts      # Deploy command implementation
-│   │   │   ├── revert.ts      # Revert command implementation
-│   │   │   ├── verify.ts      # Verify command implementation
-│   │   │   └── status.ts      # Status command implementation
-│   │   ├── utils/
-│   │   │   ├── hash.ts        # Script hashing utilities
-│   │   │   ├── fs.ts          # File system utilities
-│   │   │   └── remote.ts      # Remote dependency fetching
-│   │   └── types.ts           # TypeScript type definitions
-│   ├── package.json
-│   └── tsconfig.json
-├── core/                      # Existing package (minimal changes)
-│   └── src/
-│       ├── sqitch/            # Refactor to use @launchql/migrate
-│       └── deploy-fast.ts     # Update to use new migration system
-└── cli/                       # Existing package (minimal changes)
-    └── src/
-        └── commands/          # Update deploy/revert/verify commands
+packages/migrate/
+├── src/
+│   ├── client.ts          # Main LaunchQLMigrate class
+│   ├── types.ts           # TypeScript interfaces
+│   ├── parser/
+│   │   └── plan.ts        # Sqitch plan file parser
+│   ├── sql/
+│   │   ├── schema.sql     # Database schema
+│   │   └── procedures.sql # Stored procedures
+│   ├── commands/
+│   │   ├── deploy.ts      # Deploy command wrapper
+│   │   ├── revert.ts      # Revert command wrapper
+│   │   └── verify.ts      # Verify command wrapper
+│   └── utils/
+│       ├── hash.ts        # File hashing utilities
+│       └── fs.ts          # File system utilities
+├── __tests__/
+│   └── parser.test.ts     # Plan parser tests
+├── package.json
+└── README.md
 ```
-
-## Implementation Phases
-
-### Phase 1: Core Migration Package Setup (Week 1)
-
-1. **Create new package structure**
-   - Initialize `@launchql/migrate` package
-   - Set up TypeScript configuration
-   - Configure build system
-
-2. **Implement database schema**
-   - Create SQL files for schema and procedures
-   - Implement schema initialization function
-   - Add connection management
-
-3. **Create client class**
-   ```typescript
-   class LaunchQLMigrate {
-     constructor(connectionConfig: PgConfig)
-     async initialize(): Promise<void>
-     async deploy(...): Promise<void>
-     async revert(...): Promise<void>
-     async verify(...): Promise<boolean>
-     async status(...): Promise<Status[]>
-   }
-   ```
-
-### Phase 2: Plan File Integration (Week 1-2)
-
-1. **Enhance existing parser**
-   - Extend `resolveWithPlan` from `resolve.ts` to extract full metadata
-   - Parse dependencies from plan file format (e.g., `change_name [dependency1 dependency2]`)
-   - Extract timestamps and planner information
-   - Support for tags (@tag syntax)
-
-2. **Script hash calculation**
-   - Generate SHA256 hashes for deploy/revert/verify scripts
-   - Store hashes for change detection
-   - Validate script integrity
-
-3. **Dependency tracking**
-   - Parse dependencies from both plan files and SQL comments
-   - Build complete dependency graph
-   - Integrate with existing `getDeps` function
-
-### Phase 3: Core Commands Implementation (Week 2-3)
-
-1. **Deploy command**
-   - Read plan file and scripts
-   - Check deployment status
-   - Execute deployments in order
-   - Handle transactions and rollbacks
-   - Support for remote dependencies
-
-2. **Revert command**
-   - Check for dependent changes
-   - Execute revert scripts
-   - Update deployment records
-
-3. **Verify command**
-   - Run verification scripts
-   - Report verification status
-
-4. **Status command**
-   - Show deployment status
-   - List pending changes
-   - Display dependency information
-
-### Phase 4: Integration with Existing Code (Week 4)
-
-1. **Replace Sqitch calls in @launchql/core**
-   - Replace `spawn('sqitch', ['deploy', ...])` in `sqitch/deploy.ts`
-   - Replace `spawn('sqitch', ['revert', ...])` in `sqitch/revert.ts`
-   - Replace `spawn('sqitch', ['verify', ...])` in `sqitch/verify.ts`
-   - Update `deploy-fast.ts` to use new migration client directly
-   - Remove all Sqitch environment variable handling
-
-2. **Update @launchql/cli**
-   - Remove direct `execSync('sqitch ...')` calls
-   - Update deploy command to use new migration system
-   - Update revert command
-   - Update verify command
-   - Add `launchql migrate init` command for schema setup
-
-3. **Migration utilities**
-   - Tool to import existing Sqitch registry data
-   - Automatic detection and migration of Sqitch deployments
-   - Verification of migration data integrity
-
-### Phase 5: Testing and Documentation (Week 4-5)
-
-1. **Unit tests**
-   - Parser tests
-   - Command tests
-   - Integration tests
-
-2. **Documentation**
-   - API documentation
-   - Migration guide from Sqitch
-   - Usage examples
-
-## Technical Details
 
 ### API Design
 
-The new `@launchql/migrate` package will provide a drop-in replacement for Sqitch commands:
-
 ```typescript
-import { LaunchQLMigrate } from '@launchql/migrate';
+// Main client
+const migrate = new LaunchQLMigrate(pgConfig);
 
-class LaunchQLMigrate {
-  constructor(config: PgConfig);
-  
-  // Initialize migration schema (replaces sqitch init)
-  async initialize(): Promise<void>;
-  
-  // Deploy changes (replaces sqitch deploy)
-  async deploy(options: {
-    project: string;
-    targetDatabase: string;
-    planPath: string;
-    deployPath: string;
-    verifyPath?: string;
-    toChange?: string;  // Deploy up to specific change
-  }): Promise<DeployResult>;
-  
-  // Revert changes (replaces sqitch revert)
-  async revert(options: {
-    project: string;
-    targetDatabase: string;
-    planPath: string;
-    revertPath: string;
-    toChange?: string;  // Revert to specific change
-  }): Promise<RevertResult>;
-  
-  // Verify deployment (replaces sqitch verify)
-  async verify(options: {
-    project: string;
-    targetDatabase: string;
-    planPath: string;
-    verifyPath: string;
-  }): Promise<VerifyResult>;
-  
-  // Get deployment status (replaces sqitch status)
-  async status(project?: string): Promise<StatusResult[]>;
-  
-  // Import from existing Sqitch deployment
-  async importFromSqitch(): Promise<void>;
-}
+// Deploy changes
+await migrate.deploy({
+  project: 'myproject',
+  targetDatabase: 'mydb',
+  planPath: './sqitch.plan',
+  deployPath: './deploy',
+  verifyPath: './verify',
+  toChange: 'specific-change' // optional
+});
+
+// Drop-in replacement
+await deployCommand(pgConfig, 'mydb', '/path/to/project');
 ```
-
-### Plan File Parser Enhancement
-
-The existing `resolveWithPlan` function will be enhanced to parse full Sqitch plan format:
-
-```typescript
-interface Change {
-  name: string;
-  dependencies: string[];
-  timestamp?: string;
-  planner?: string;
-  email?: string;
-  comment?: string;
-}
-
-interface PlanFile {
-  project: string;
-  uri?: string;
-  changes: Change[];
-}
-
-// Example plan line format:
-// change_name [dep1 dep2] 2024-01-01T00:00:00Z planner <email> # comment
-```
-
-### Remote Dependency Syntax
-
-Support for remote dependencies in plan files:
-```
-change_name [https://example.com/migrations/dependency.sql] 2024-01-01T00:00:00Z planner <email> # comment
-```
-
-### Migration from Sqitch
-
-The system will provide automatic migration that:
-1. Detects existing Sqitch registry tables (`sqitch.*`)
-2. Imports deployment history into `launchql_migrate` tables
-3. Maps Sqitch change IDs to new format
-4. Preserves dependency relationships
-5. Verifies data integrity
-6. Optionally removes Sqitch tables after successful migration
-
-### Key Differences from Sqitch
-
-1. **No tags** - Use Git tags instead
-2. **No rework** - Use new change names for modifications
-3. **Simpler registry** - Only 4 tables vs Sqitch's 7+ tables
-4. **No committer tracking** - Git already tracks this
-5. **Direct SQL execution** - No need for external process spawning
-
-### Error Handling
-
-- Clear error messages for missing dependencies
-- Transaction rollback on deployment failure
-- Detailed logging for debugging
-- Network retry logic for remote dependencies
 
 ## Benefits
 
-1. **Complete Sqitch removal** - No Perl/Sqitch installation required
-2. **Simplified deployment** - Direct database connection, no subprocess spawning
-3. **Better performance** - No overhead from external process calls
-4. **Native TypeScript** - Better error handling and type safety
-5. **Remote dependencies** - Fetch migrations from URLs
-6. **Minimal overhead** - Only 4 database tables vs Sqitch's 7+
-7. **Plan file compatible** - Reuse existing Sqitch plan files without modification
+1. **No External Dependencies**: Removes Perl/Sqitch requirement
+2. **Native TypeScript**: Better integration with existing codebase
+3. **Simplified State Management**: All state in PostgreSQL
+4. **Better Error Handling**: Native JavaScript error handling
+5. **Improved Performance**: No process spawning overhead
+6. **Internet Connectivity**: Can fetch remote resources if needed
 
-## Migration Path
+## Risks and Mitigations
 
-1. **Parallel operation** - Can run alongside Sqitch initially
-2. **Gradual migration** - Projects can migrate one at a time
-3. **Data preservation** - Import existing deployment history
-4. **Rollback option** - Can revert to Sqitch if needed
+1. **Risk**: Incompatibility with complex Sqitch features
+   - **Mitigation**: Focus on core features used by LaunchQL
+   - **Mitigation**: Maintain Sqitch compatibility mode
+
+2. **Risk**: Data loss during migration
+   - **Mitigation**: Import existing Sqitch state
+   - **Mitigation**: Extensive testing before production use
+
+3. **Risk**: Performance issues with large deployments
+   - **Mitigation**: Optimize database queries
+   - **Mitigation**: Add batching for bulk operations
+
+## Next Steps
+
+1. **Immediate** (COMPLETED):
+   - ✓ Create `@launchql/migrate` package
+   - ✓ Implement core functionality
+   - ✓ Add tests for plan parser
+   - ✓ Create README documentation
+
+2. **Short-term** (TODO):
+   - [ ] Update `packages/core` to use new migration system
+   - [ ] Update `packages/cli` to use new migration system
+   - [ ] Add integration tests
+   - [ ] Test with real LaunchQL projects
+
+3. **Long-term** (TODO):
+   - [ ] Add CLI tool for standalone usage
+   - [ ] Support for migration rollback points
+   - [ ] Add migration dry-run capability
+   - [ ] Performance optimizations
 
 ## Success Criteria
 
-1. **Zero Sqitch dependency** - Complete removal of all Sqitch calls
-2. **Full compatibility** - Deploy all existing LaunchQL packages using plan files
-3. **Performance improvement** - Faster deployment without subprocess overhead
-4. **Remote dependencies** - Successfully fetch and deploy from URLs
-5. **Seamless migration** - Automatic import of existing Sqitch deployments
-6. **Test coverage** - All existing tests pass with new implementation
-7. **CLI compatibility** - `launchql deploy` works without Sqitch installed
-
-## Files to Modify
-
-### @launchql/core
-- `src/sqitch/deploy.ts` - Replace `spawn('sqitch', ['deploy'])` with migration client
-- `src/sqitch/revert.ts` - Replace `spawn('sqitch', ['revert'])` with migration client
-- `src/sqitch/verify.ts` - Replace `spawn('sqitch', ['verify'])` with migration client
-- `src/deploy-fast.ts` - Use migration client directly instead of packaging for Sqitch
-- `src/resolve.ts` - Enhance `resolveWithPlan` to parse full plan format
-
-### @launchql/cli
-- `src/commands/deploy.ts` - Remove `execSync('sqitch deploy')` calls
-- `src/commands/revert.ts` - Remove `execSync('sqitch revert')` calls
-- `src/commands/verify.ts` - Remove `execSync('sqitch verify')` calls
-- `src/commands/init/` - Add migration schema initialization
-
-### New Package (@launchql/migrate)
-- All new files as outlined in package structure
-
-## Timeline
-
-- **Week 1**: Core package setup and database schema
-- **Week 2**: Plan parser enhancement and basic commands
-- **Week 3**: Remote dependencies and advanced features
-- **Week 4**: Integration and migration tools
-- **Week 5**: Testing, documentation, and polish
-
-Total estimated time: 5 weeks for full implementation
+1. All existing LaunchQL deployments work without Sqitch
+2. No changes required to existing plan files
+3. Performance equal or better than Sqitch
+4. Successful import of existing Sqitch deployments
+5. All tests passing in CI/CD pipeline

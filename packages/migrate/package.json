@@ -29,5 +29,13 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "@launchql/server-utils": "^2.1.14",
+    "@launchql/types": "^2.1.12",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.10.9"
+  }
 }

@@ -1,0 +1,393 @@
+import { Pool, PoolConfig } from 'pg';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { Logger } from '@launchql/server-utils';
+import {
+  MigrateConfig,
+  DeployOptions,
+  RevertOptions,
+  VerifyOptions,
+  DeployResult,
+  RevertResult,
+  VerifyResult,
+  StatusResult
+} from './types';
+import { parsePlanFile, getChangesInOrder } from './parser/plan';
+import { hashFile } from './utils/hash';
+import { readScript, scriptExists } from './utils/fs';
+
+const log = new Logger('migrate');
+
+export class LaunchQLMigrate {
+  private pool: Pool;
+  private poolConfig: PoolConfig;
+  private initialized: boolean = false;
+
+  constructor(config: MigrateConfig) {
+    this.poolConfig = {
+      host: config.host || 'localhost',
+      port: config.port || 5432,
+      user: config.user,
+      password: config.password,
+      database: config.database || 'postgres',
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    };
+    
+    this.pool = new Pool(this.poolConfig);
+  }
+
+  /**
+   * Initialize the migration schema
+   */
+  async initialize(): Promise<void> {
+    if (this.initialized) return;
+
+    try {
+      log.info('Initializing LaunchQL migration schema...');
+      
+      // Read and execute schema SQL
+      const schemaPath = join(__dirname, 'sql', 'schema.sql');
+      const proceduresPath = join(__dirname, 'sql', 'procedures.sql');
+      
+      const schemaSql = readFileSync(schemaPath, 'utf-8');
+      const proceduresSql = readFileSync(proceduresPath, 'utf-8');
+      
+      await this.pool.query(schemaSql);
+      await this.pool.query(proceduresSql);
+      
+      this.initialized = true;
+      log.success('Migration schema initialized successfully');
+    } catch (error) {
+      log.error('Failed to initialize migration schema:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Deploy changes according to plan file
+   */
+  async deploy(options: DeployOptions): Promise<DeployResult> {
+    await this.initialize();
+    
+    const { project, targetDatabase, planPath, deployPath, verifyPath, toChange } = options;
+    const plan = parsePlanFile(planPath);
+    const changes = getChangesInOrder(planPath);
+    
+    const deployed: string[] = [];
+    const skipped: string[] = [];
+    let failed: string | undefined;
+    
+    // Use a separate pool for the target database
+    const targetPool = new Pool({
+      ...this.poolConfig,
+      database: targetDatabase
+    });
+    
+    try {
+      for (const change of changes) {
+        // Stop if we've reached the target change
+        if (toChange && deployed.includes(toChange)) {
+          break;
+        }
+        
+        // Check if already deployed
+        const isDeployed = await this.isDeployed(project, change.name);
+        if (isDeployed) {
+          log.info(`Skipping already deployed change: ${change.name}`);
+          skipped.push(change.name);
+          continue;
+        }
+        
+        // Read deploy script
+        const deployScript = readScript(dirname(planPath), deployPath, change.name);
+        if (!deployScript) {
+          log.error(`Deploy script not found for change: ${change.name}`);
+          failed = change.name;
+          break;
+        }
+        
+        // Read verify script if available
+        const verifyScript = verifyPath 
+          ? readScript(dirname(planPath), verifyPath, change.name)
+          : null;
+        
+        // Calculate script hash
+        const scriptHash = hashFile(join(dirname(planPath), deployPath, `${change.name}.sql`));
+        
+        try {
+          log.info(`Deploying change: ${change.name}`);
+          
+          // Call the deploy stored procedure
+          await targetPool.query(
+            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5, $6)',
+            [
+              project || plan.project,
+              change.name,
+              scriptHash,
+              change.dependencies.length > 0 ? change.dependencies : null,
+              deployScript,
+              verifyScript
+            ]
+          );
+          
+          deployed.push(change.name);
+          log.success(`Successfully deployed: ${change.name}`);
+        } catch (error) {
+          log.error(`Failed to deploy ${change.name}:`, error);
+          failed = change.name;
+          break;
+        }
+        
+        // Stop if this was the target change
+        if (toChange && change.name === toChange) {
+          break;
+        }
+      }
+    } finally {
+      await targetPool.end();
+    }
+    
+    return { deployed, skipped, failed };
+  }
+
+  /**
+   * Revert changes according to plan file
+   */
+  async revert(options: RevertOptions): Promise<RevertResult> {
+    await this.initialize();
+    
+    const { project, targetDatabase, planPath, revertPath, toChange } = options;
+    const plan = parsePlanFile(planPath);
+    const changes = getChangesInOrder(planPath, true); // Reverse order for revert
+    
+    const reverted: string[] = [];
+    const skipped: string[] = [];
+    let failed: string | undefined;
+    
+    // Use a separate pool for the target database
+    const targetPool = new Pool({
+      ...this.poolConfig,
+      database: targetDatabase
+    });
+    
+    try {
+      for (const change of changes) {
+        // Stop if we've reached the target change
+        if (toChange && change.name === toChange) {
+          break;
+        }
+        
+        // Check if deployed
+        const isDeployed = await this.isDeployed(project, change.name);
+        if (!isDeployed) {
+          log.info(`Skipping not deployed change: ${change.name}`);
+          skipped.push(change.name);
+          continue;
+        }
+        
+        // Read revert script
+        const revertScript = readScript(dirname(planPath), revertPath, change.name);
+        if (!revertScript) {
+          log.error(`Revert script not found for change: ${change.name}`);
+          failed = change.name;
+          break;
+        }
+        
+        try {
+          log.info(`Reverting change: ${change.name}`);
+          
+          // Call the revert stored procedure
+          await targetPool.query(
+            'CALL launchql_migrate.revert($1, $2, $3)',
+            [project || plan.project, change.name, revertScript]
+          );
+          
+          reverted.push(change.name);
+          log.success(`Successfully reverted: ${change.name}`);
+        } catch (error) {
+          log.error(`Failed to revert ${change.name}:`, error);
+          failed = change.name;
+          break;
+        }
+      }
+    } finally {
+      await targetPool.end();
+    }
+    
+    return { reverted, skipped, failed };
+  }
+
+  /**
+   * Verify deployed changes
+   */
+  async verify(options: VerifyOptions): Promise<VerifyResult> {
+    await this.initialize();
+    
+    const { project, targetDatabase, planPath, verifyPath } = options;
+    const plan = parsePlanFile(planPath);
+    const changes = getChangesInOrder(planPath);
+    
+    const verified: string[] = [];
+    const failed: string[] = [];
+    
+    // Use a separate pool for the target database
+    const targetPool = new Pool({
+      ...this.poolConfig,
+      database: targetDatabase
+    });
+    
+    try {
+      for (const change of changes) {
+        // Check if deployed
+        const isDeployed = await this.isDeployed(project, change.name);
+        if (!isDeployed) {
+          continue;
+        }
+        
+        // Read verify script
+        const verifyScript = readScript(dirname(planPath), verifyPath, change.name);
+        if (!verifyScript) {
+          log.warn(`Verify script not found for change: ${change.name}`);
+          continue;
+        }
+        
+        try {
+          log.info(`Verifying change: ${change.name}`);
+          
+          // Call the verify function
+          const result = await targetPool.query(
+            'SELECT launchql_migrate.verify($1, $2, $3) as verified',
+            [project || plan.project, change.name, verifyScript]
+          );
+          
+          if (result.rows[0].verified) {
+            verified.push(change.name);
+            log.success(`Successfully verified: ${change.name}`);
+          } else {
+            failed.push(change.name);
+            log.error(`Verification failed: ${change.name}`);
+          }
+        } catch (error) {
+          log.error(`Failed to verify ${change.name}:`, error);
+          failed.push(change.name);
+        }
+      }
+    } finally {
+      await targetPool.end();
+    }
+    
+    return { verified, failed };
+  }
+
+  /**
+   * Get deployment status
+   */
+  async status(project?: string): Promise<StatusResult[]> {
+    await this.initialize();
+    
+    const result = await this.pool.query(
+      'SELECT * FROM launchql_migrate.status($1)',
+      [project]
+    );
+    
+    return result.rows.map(row => ({
+      project: row.project,
+      totalDeployed: row.total_deployed,
+      lastChange: row.last_change,
+      lastDeployed: new Date(row.last_deployed)
+    }));
+  }
+
+  /**
+   * Check if a change is deployed
+   */
+  async isDeployed(project: string, changeName: string): Promise<boolean> {
+    const result = await this.pool.query(
+      'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+      [project, changeName]
+    );
+    
+    return result.rows[0].is_deployed;
+  }
+
+  /**
+   * Import from existing Sqitch deployment
+   */
+  async importFromSqitch(): Promise<void> {
+    await this.initialize();
+    
+    try {
+      log.info('Checking for existing Sqitch tables...');
+      
+      // Check if sqitch schema exists
+      const schemaResult = await this.pool.query(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'sqitch')"
+      );
+      
+      if (!schemaResult.rows[0].exists) {
+        log.info('No Sqitch schema found, nothing to import');
+        return;
+      }
+      
+      // Import projects
+      log.info('Importing Sqitch projects...');
+      await this.pool.query(`
+        INSERT INTO launchql_migrate.projects (project, created_at)
+        SELECT DISTINCT project, now()
+        FROM sqitch.projects
+        ON CONFLICT (project) DO NOTHING
+      `);
+      
+      // Import changes with dependencies
+      log.info('Importing Sqitch changes...');
+      await this.pool.query(`
+        WITH change_data AS (
+          SELECT 
+            c.project,
+            c.change,
+            c.change_id,
+            c.committed_at
+          FROM sqitch.changes c
+          WHERE c.change_id IN (
+            SELECT change_id FROM sqitch.tags
+          )
+        )
+        INSERT INTO launchql_migrate.changes (change_id, change_name, project, script_hash, deployed_at)
+        SELECT 
+          encode(sha256((cd.project || cd.change || cd.change_id)::bytea), 'hex'),
+          cd.change,
+          cd.project,
+          cd.change_id,
+          cd.committed_at
+        FROM change_data cd
+        ON CONFLICT (project, change_name) DO NOTHING
+      `);
+      
+      // Import dependencies
+      log.info('Importing Sqitch dependencies...');
+      await this.pool.query(`
+        INSERT INTO launchql_migrate.dependencies (change_id, requires)
+        SELECT 
+          c.change_id,
+          d.dependency
+        FROM launchql_migrate.changes c
+        JOIN sqitch.dependencies d ON d.change_id = c.script_hash
+        ON CONFLICT DO NOTHING
+      `);
+      
+      log.success('Successfully imported Sqitch deployment history');
+    } catch (error) {
+      log.error('Failed to import from Sqitch:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Close the database connection pool
+   */
+  async close(): Promise<void> {
+    await this.pool.end();
+  }
+}
