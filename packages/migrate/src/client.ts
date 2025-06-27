@@ -15,6 +15,7 @@ import {
 import { parsePlanFile, getChangesInOrder } from './parser/plan';
 import { hashFile } from './utils/hash';
 import { readScript, scriptExists } from './utils/fs';
+import { cleanSql } from './clean';
 
 const log = new Logger('migrate');
 
@@ -92,12 +93,25 @@ export class LaunchQLMigrate {
           break;
         }
         
-        // Check if already deployed
-        const isDeployed = await this.isDeployed(project, change.name);
-        if (isDeployed) {
-          log.info(`Skipping already deployed change: ${change.name}`);
-          skipped.push(change.name);
-          continue;
+        // Check if already deployed using target database connection
+        try {
+          const deployedResult = await targetPool.query(
+            'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+            [project || plan.project, change.name]
+          );
+          
+          if (deployedResult.rows[0]?.is_deployed) {
+            log.info(`Skipping already deployed change: ${change.name}`);
+            skipped.push(change.name);
+            continue;
+          }
+        } catch (checkError: any) {
+          // If the function doesn't exist, the schema hasn't been initialized
+          if (checkError.code === '42883') { // undefined_function
+            log.debug('Migration schema not found, will be initialized on first deploy');
+          } else {
+            throw checkError;
+          }
         }
         
         // Read deploy script
@@ -107,12 +121,9 @@ export class LaunchQLMigrate {
           failed = change.name;
           break;
         }
-        
-        // Read verify script if available
-        const verifyScript = verifyPath 
-          ? readScript(dirname(planPath), verifyPath, change.name)
-          : null;
-        
+
+        const cleanDeploySql = await cleanSql(deployScript, false, '$EOFCODE$');
+                
         // Calculate script hash
         const scriptHash = hashFile(join(dirname(planPath), deployPath, `${change.name}.sql`));
         
@@ -121,14 +132,13 @@ export class LaunchQLMigrate {
           
           // Call the deploy stored procedure
           await targetPool.query(
-            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5, $6)',
+            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
             [
               project || plan.project,
               change.name,
               scriptHash,
               change.dependencies.length > 0 ? change.dependencies : null,
-              deployScript,
-              verifyScript
+              cleanDeploySql
             ]
           );
           
@@ -194,6 +204,8 @@ export class LaunchQLMigrate {
           failed = change.name;
           break;
         }
+
+        const cleanRevertSql = await cleanSql(revertScript, false, '$EOFCODE$');
         
         try {
           log.info(`Reverting change: ${change.name}`);
@@ -201,7 +213,7 @@ export class LaunchQLMigrate {
           // Call the revert stored procedure
           await targetPool.query(
             'CALL launchql_migrate.revert($1, $2, $3)',
-            [project || plan.project, change.name, revertScript]
+            [project || plan.project, change.name, cleanRevertSql]
           );
           
           reverted.push(change.name);
@@ -253,13 +265,15 @@ export class LaunchQLMigrate {
           continue;
         }
         
+        const cleanVerifySql = await cleanSql(verifyScript, false, '$EOFCODE$');
+
         try {
           log.info(`Verifying change: ${change.name}`);
           
           // Call the verify function
           const result = await targetPool.query(
             'SELECT launchql_migrate.verify($1, $2, $3) as verified',
-            [project || plan.project, change.name, verifyScript]
+            [project || plan.project, change.name, cleanVerifySql]
           );
           
           if (result.rows[0].verified) {

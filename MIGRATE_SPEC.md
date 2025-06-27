@@ -350,8 +350,7 @@ BEGIN;
             id SERIAL PRIMARY KEY,
             user_id INT REFERENCES myapp.users(id),
             title TEXT NOT NULL
-        );',
-        'SELECT 1 FROM pg_tables WHERE tablename = ''posts'';'  -- verify
+        );'
     );
 COMMIT;
 ```
@@ -440,12 +439,11 @@ class LaunchQLMigrate {
         change: string,
         scriptHash: string,
         requires: string[] | null,
-        deployScript: string,
-        verifyScript?: string
+        deployScript: string
     ) {
         await this.db.query(
-            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5, $6)',
-            [project, change, scriptHash, requires, deployScript, verifyScript]
+            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
+            [project, change, scriptHash, requires, deployScript]
         );
     }
     

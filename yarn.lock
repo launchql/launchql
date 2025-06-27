@@ -7303,10 +7303,10 @@ pgsql-enums@^1.1.1:
   dependencies:
     "@babel/runtime" "^7.4.2"
 
-pgsql-parser@^17.7.4:
-  version "17.7.4"
-  resolved "https://registry.yarnpkg.com/pgsql-parser/-/pgsql-parser-17.7.4.tgz#069c3e590e20a5d7b2bb8712fdfb5532081411a4"
-  integrity sha512-tI0uVSQ2tDBJoV+gr67KApTB28kcJpAciTdklIsWC33QoizMnxUTO5bA2t9VIXBT8W9Iewkra+804GjYTKBukw==
+pgsql-parser@^17.7.5:
+  version "17.7.5"
+  resolved "https://registry.yarnpkg.com/pgsql-parser/-/pgsql-parser-17.7.5.tgz#359a0817e9435579df0d6ed068d343beec8c819a"
+  integrity sha512-UrliUHO01Iho13ln/GLJJII2LCgkWgYSNbiUDGHd93uBE3i4d6AKnDJt3QOh/PpWrBZQ3S7C2+CiH61NuMmQXQ==
   dependencies:
     "@pgsql/types" "^17.6.1"
     libpg-query "17.5.5"

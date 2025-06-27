@@ -28,8 +28,7 @@ CREATE OR REPLACE PROCEDURE launchql_migrate.deploy(
     p_change_name TEXT,
     p_script_hash TEXT,
     p_requires TEXT[],
-    p_deploy_sql TEXT,
-    p_verify_sql TEXT DEFAULT NULL
+    p_deploy_sql TEXT
 )
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -43,7 +42,19 @@ BEGIN
     
     -- Check if already deployed
     IF launchql_migrate.is_deployed(p_project, p_change_name) THEN
-        RAISE EXCEPTION 'Change % already deployed in project %', p_change_name, p_project;
+        -- Check if it's the same script (by hash)
+        IF EXISTS (
+            SELECT 1 FROM launchql_migrate.changes 
+            WHERE project = p_project 
+            AND change_name = p_change_name 
+            AND script_hash = p_script_hash
+        ) THEN
+            -- Same change with same content, skip silently
+            RETURN;
+        ELSE
+            -- Different content, this is an error
+            RAISE EXCEPTION 'Change % already deployed in project % with different content', p_change_name, p_project;
+        END IF;
     END IF;
     
     -- Check dependencies
@@ -63,17 +74,6 @@ BEGIN
         VALUES ('fail', p_change_name, p_project);
         RAISE;
     END;
-    
-    -- Execute verify if provided
-    -- IF p_verify_sql IS NOT NULL THEN
-    --     BEGIN
-    --         EXECUTE p_verify_sql;
-    --     EXCEPTION WHEN OTHERS THEN
-    --         INSERT INTO launchql_migrate.events (event_type, change_name, project)
-    --         VALUES ('fail', p_change_name, p_project);
-    --         RAISE EXCEPTION 'Verification failed';
-    --     END;
-    -- END IF;
     
     -- Record deployment
     INSERT INTO launchql_migrate.changes (change_id, change_name, project, script_hash)
