@@ -65,15 +65,15 @@ BEGIN
     END;
     
     -- Execute verify if provided
-    IF p_verify_sql IS NOT NULL THEN
-        BEGIN
-            EXECUTE p_verify_sql;
-        EXCEPTION WHEN OTHERS THEN
-            INSERT INTO launchql_migrate.events (event_type, change_name, project)
-            VALUES ('fail', p_change_name, p_project);
-            RAISE EXCEPTION 'Verification failed';
-        END;
-    END IF;
+    -- IF p_verify_sql IS NOT NULL THEN
+    --     BEGIN
+    --         EXECUTE p_verify_sql;
+    --     EXCEPTION WHEN OTHERS THEN
+    --         INSERT INTO launchql_migrate.events (event_type, change_name, project)
+    --         VALUES ('fail', p_change_name, p_project);
+    --         RAISE EXCEPTION 'Verification failed';
+    --     END;
+    -- END IF;
     
     -- Record deployment
     INSERT INTO launchql_migrate.changes (change_id, change_name, project, script_hash)

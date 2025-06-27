@@ -20,7 +20,9 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "copy": "npm run copy:pkg; npm run copy:sql",
+    "copy:pkg": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "copy:sql": "copyfiles -f src/sql/* dist/sql && copyfiles -f src/sql/* dist/esm/sql",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
     "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
