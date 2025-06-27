@@ -1,8 +1,8 @@
 import { resolve } from 'path';
-import { spawn } from 'child_process';
 
-import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions } from '@launchql/types';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { deployCommand } from '@launchql/migrate';
 import { LaunchQLProject } from '../class/launchql';
 
 interface Extensions {
@@ -49,35 +49,11 @@ export const deploy = async (
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
-        log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+        log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
 
-        const child = spawn('sqitch', ['deploy', `db:pg:${database}`], {
-          cwd: modulePath,
-          env: getSpawnEnvWithPg(opts.pg)
-        });
-
-        const exitCode: number = await new Promise((resolve, reject) => {
-          child.stdout.setEncoding('utf-8');
-          child.stderr.setEncoding('utf-8');
-
-          child.stderr.on('data', (chunk: Buffer | string) => {
-            const text = chunk.toString();
-            if (/error/i.test(text)) {
-              log.error(text);
-            } else if (/warning/i.test(text)) {
-              log.warn(text);
-            } else {
-              log.error(text); // non-warning stderr
-            }
-          });
-
-          child.stdout.pipe(process.stdout);
-
-          child.on('close', resolve);
-          child.on('error', reject);
-        });
-
-        if (exitCode !== 0) {
+        try {
+          await deployCommand(opts.pg, database, modulePath);
+        } catch (deployError) {
           log.error(`❌ Deployment failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
         }

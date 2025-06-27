@@ -1,9 +1,9 @@
 import { resolve } from 'path';
-import { spawn } from 'child_process';
 
-import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions } from '@launchql/types';
 import { LaunchQLProject } from '../class/launchql';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { verifyCommand } from '@launchql/migrate';
 
 interface Extensions {
   resolved: string[];
@@ -49,34 +49,11 @@ export const verify = async (
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Verifying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
-        log.debug(`→ Command: sqitch verify db:pg:${database}`);
+        log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
-        const child = spawn('sqitch', ['verify', `db:pg:${database}`], {
-          cwd: modulePath,
-          env: getSpawnEnvWithPg(opts.pg),
-        });
-
-        const exitCode: number = await new Promise((resolve, reject) => {
-          child.stdout.setEncoding('utf-8');
-          child.stderr.setEncoding('utf-8');
-
-          child.stderr.on('data', (chunk: Buffer | string) => {
-            const text = chunk.toString();
-            if (/error/i.test(text)) {
-              log.error(text);
-            } else if (/warning/i.test(text)) {
-              log.warn(text);
-            } else {
-              log.error(text); // stderr fallback
-            }
-          });
-
-          child.stdout.pipe(process.stdout);
-          child.on('close', resolve);
-          child.on('error', reject);
-        });
-
-        if (exitCode !== 0) {
+        try {
+          await verifyCommand(opts.pg, database, modulePath);
+        } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
         }

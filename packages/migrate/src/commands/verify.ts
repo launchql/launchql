@@ -11,7 +11,7 @@ const log = new Logger('migrate-verify');
  * This is designed to be a drop-in replacement for spawn('sqitch', ['verify', 'db:pg:database'])
  */
 export async function verifyCommand(
-  config: MigrateConfig,
+  config: Partial<MigrateConfig>,
   database: string,
   cwd: string
 ): Promise<void> {
@@ -27,7 +27,16 @@ export async function verifyCommand(
     return;
   }
   
-  const client = new LaunchQLMigrate(config);
+  // Provide defaults for missing config values
+  const fullConfig: MigrateConfig = {
+    host: config.host || 'localhost',
+    port: config.port || 5432,
+    user: config.user || 'postgres',
+    password: config.password || '',
+    database: config.database || 'postgres'
+  };
+  
+  const client = new LaunchQLMigrate(fullConfig);
   
   try {
     const result = await client.verify({

@@ -13,6 +13,7 @@ import { deploy, deployFast } from '@launchql/core';
 import { Logger } from '@launchql/server-utils';
 import { execSync } from 'child_process';
 import { LaunchQLProject } from '@launchql/core';
+import { deployCommand } from '@launchql/migrate';
 
 export default async (
   argv: Partial<ParsedArgs>,
@@ -105,10 +106,8 @@ export default async (
 
     log.success('Deployment complete.');
   } else {
-    log.info(`Running: sqitch deploy db:pg:${database}`);
-    execSync(`sqitch deploy db:pg:${database}`, {
-      env: getSpawnEnvWithPg(pgEnv)
-    });
+    log.info(`Running: launchql migrate deploy db:pg:${database}`);
+    await deployCommand(pgEnv, database, cwd);
     log.success('Deployment complete.');
   }
 

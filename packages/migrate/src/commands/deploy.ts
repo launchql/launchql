@@ -11,7 +11,7 @@ const log = new Logger('migrate-deploy');
  * This is designed to be a drop-in replacement for spawn('sqitch', ['deploy', 'db:pg:database'])
  */
 export async function deployCommand(
-  config: MigrateConfig,
+  config: Partial<MigrateConfig>,
   database: string,
   cwd: string,
   options?: {
@@ -24,7 +24,16 @@ export async function deployCommand(
     throw new Error(`No sqitch.plan found in ${cwd}`);
   }
   
-  const client = new LaunchQLMigrate(config);
+  // Provide defaults for missing config values
+  const fullConfig: MigrateConfig = {
+    host: config.host || 'localhost',
+    port: config.port || 5432,
+    user: config.user || 'postgres',
+    password: config.password || 'password',
+    database: config.database || 'postgres'
+  };
+  
+  const client = new LaunchQLMigrate(fullConfig);
   
   try {
     const result = await client.deploy({

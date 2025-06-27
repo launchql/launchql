@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import { parse } from 'parse-package-name';
 import os from 'os';
 import { Logger } from '@launchql/server-utils';
+import { execSync } from 'child_process';
 
 import {
   writeRenderedTemplates,
@@ -30,7 +31,7 @@ import {
   getInstalledExtensions,
   ExtensionInfo,
 } from '../extensions';
-import { execSync } from 'child_process';
+
 
 const logger = new Logger('launchql');
 
@@ -254,12 +255,32 @@ export class LaunchQLProject {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    const cur = process.cwd();
-    process.chdir(targetPath);
-    execSync(`sqitch init ${modName} --engine pg`, { stdio: 'inherit' });
-    const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}`;
+    // Create sqitch.conf file (minimal configuration)
+    const sqitchConf = `[core]
+\tengine = pg
+\tplan_file = sqitch.plan
+\ttop_dir = .
+[engine "pg"]
+\ttarget = db:pg:
+[deploy]
+\tverify = true
+[rebase]
+\tverify = true
+`;
+    writeFileSync(path.join(targetPath, 'sqitch.conf'), sqitchConf);
+    
+    // Create sqitch.plan file
+    const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}\n`;
     writeFileSync(path.join(targetPath, 'sqitch.plan'), plan);
-    process.chdir(cur);
+    
+    // Create deploy, revert, and verify directories
+    const dirs = ['deploy', 'revert', 'verify'];
+    dirs.forEach(dir => {
+      const dirPath = path.join(targetPath, dir);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+    });
   }
 
   initModule(options: InitModuleOptions): void {

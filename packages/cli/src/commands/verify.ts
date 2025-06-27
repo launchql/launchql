@@ -1,8 +1,8 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { exec } from 'shelljs';
 import { listModules, verify } from '@launchql/core';
-import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { errors, getEnvOptions, getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
+import { verifyCommand } from '@launchql/migrate';
 
 const log = new Logger('verify');
 
@@ -57,8 +57,9 @@ export default async (
     await verify(options, project, database, cwd);
     log.success('Verify complete.');
   } else {
-    log.info(`Running: sqitch verify db:pg:${database}`);
-    exec(`sqitch verify db:pg:${database}`);
+    log.info(`Running: launchql migrate verify db:pg:${database}`);
+    const pgEnv = getPgEnvOptions();
+    await verifyCommand(pgEnv, database, cwd);
     log.success('Verify complete.');
   }
 

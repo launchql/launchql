@@ -1,6 +1,6 @@
 {
   "name": "@launchql/migrate",
-  "version": "0.0.1",
+  "version": "2.2.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Migrate",
   "main": "index.js",

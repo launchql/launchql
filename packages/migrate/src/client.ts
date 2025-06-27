@@ -313,6 +313,20 @@ export class LaunchQLMigrate {
   }
 
   /**
+   * Check if Sqitch tables exist in the database
+   */
+  async hasSqitchTables(): Promise<boolean> {
+    const result = await this.pool.query(`
+      SELECT EXISTS (
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_schema = 'sqitch' 
+        AND table_name IN ('projects', 'changes', 'tags', 'events')
+      )
+    `);
+    return result.rows[0].exists;
+  }
+
+  /**
    * Import from existing Sqitch deployment
    */
   async importFromSqitch(): Promise<void> {

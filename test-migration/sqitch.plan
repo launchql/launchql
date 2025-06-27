@@ -1,0 +1,7 @@
+%syntax-version=1.0.0
+%project=test-project
+%uri=https://github.com/test/test-project
+
+schema 2024-01-01T00:00:00Z Test Developer <test@example.com> # Create schema
+users [schema] 2024-01-02T00:00:00Z Test Developer <test@example.com> # Create users table
+posts [users] 2024-01-03T00:00:00Z Test Developer <test@example.com> # Create posts table

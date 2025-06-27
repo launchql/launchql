@@ -1,8 +1,8 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { exec } from 'shelljs';
 import { listModules, revert } from '@launchql/core';
-import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { errors, getEnvOptions, getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
+import { revertCommand } from '@launchql/migrate';
 
 const log = new Logger('revert');
 
@@ -68,8 +68,9 @@ export default async (
     await revert(options, project, database, cwd);
     log.success('Revert complete.');
   } else {
-    log.info(`Running: sqitch revert db:pg:${database} -y`);
-    exec(`sqitch revert db:pg:${database} -y`);
+    log.info(`Running: launchql migrate revert db:pg:${database}`);
+    const pgEnv = getPgEnvOptions();
+    await revertCommand(pgEnv, database, cwd);
     log.success('Revert complete.');
   }
 
