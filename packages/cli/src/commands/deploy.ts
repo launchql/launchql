@@ -38,7 +38,7 @@ export default async (
     }
   ];
 
-  let { database, yes, recursive, createdb, cwd } = await prompter.prompt(argv, questions);
+  let { database, yes, recursive, createdb, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -106,8 +106,17 @@ export default async (
 
     log.success('Deployment complete.');
   } else {
-    log.info(`Running: launchql migrate deploy db:pg:${database}`);
-    await deployCommand(pgEnv, database, cwd);
+    if (useSqitch) {
+      log.info(`Running: sqitch deploy db:pg:${database} (using legacy Sqitch)`);
+      execSync(`sqitch deploy db:pg:${database}`, {
+        cwd,
+        env: getSpawnEnvWithPg(pgEnv),
+        stdio: 'inherit'
+      });
+    } else {
+      log.info(`Running: launchql migrate deploy db:pg:${database}`);
+      await deployCommand(pgEnv, database, cwd);
+    }
     log.success('Deployment complete.');
   }
 

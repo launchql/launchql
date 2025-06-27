@@ -1,8 +1,9 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { listModules, verify } from '@launchql/core';
-import { errors, getEnvOptions, getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { errors, getEnvOptions, getPgEnvOptions, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
 import { verifyCommand } from '@launchql/migrate';
+import { execSync } from 'child_process';
 
 const log = new Logger('verify');
 
@@ -20,7 +21,7 @@ export default async (
     }
   ];
 
-  let { database, recursive, cwd } = await prompter.prompt(argv, questions);
+  let { database, recursive, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
 
   if (!cwd) {
     cwd = process.cwd();
@@ -57,9 +58,18 @@ export default async (
     await verify(options, project, database, cwd);
     log.success('Verify complete.');
   } else {
-    log.info(`Running: launchql migrate verify db:pg:${database}`);
     const pgEnv = getPgEnvOptions();
-    await verifyCommand(pgEnv, database, cwd);
+    if (useSqitch) {
+      log.info(`Running: sqitch verify db:pg:${database} (using legacy Sqitch)`);
+      execSync(`sqitch verify db:pg:${database}`, {
+        cwd,
+        env: getSpawnEnvWithPg(pgEnv),
+        stdio: 'inherit'
+      });
+    } else {
+      log.info(`Running: launchql migrate verify db:pg:${database}`);
+      await verifyCommand(pgEnv, database, cwd);
+    }
     log.success('Verify complete.');
   }
 

@@ -17,6 +17,7 @@ This plan outlines the successful implementation of a TypeScript-based migration
 2. **Integration Complete**
    - Updated `@launchql/core` package
    - Updated `@launchql/cli` package
+   - Added `--use-sqitch` backwards compatibility flag
    - All packages building successfully
    - Zero breaking changes
 
@@ -114,11 +115,12 @@ launchql.verify_change()
 - ✅ Updated TypeScript types
 
 **CLI Package Updates:**
-- ✅ Updated deploy command
-- ✅ Updated revert command
-- ✅ Updated verify command
+- ✅ Updated deploy command with `--use-sqitch` flag
+- ✅ Updated revert command with `--use-sqitch` flag
+- ✅ Updated verify command with `--use-sqitch` flag
 - ✅ Added migrate-init command for schema setup
 - ✅ Added @launchql/migrate dependency
+- ✅ Backwards compatibility maintained
 
 **Build Status:**
 - ✅ @launchql/migrate builds successfully
@@ -175,6 +177,7 @@ launchql.verify_change()
 3. **Stored Procedures**: Atomic operations for consistency
 4. **Compatibility First**: No changes to existing plan files or structure
 5. **Progressive Enhancement**: Can detect and import existing Sqitch deployments
+6. **Backwards Compatibility**: `--use-sqitch` flag for gradual migration
 
 ## Benefits Achieved
 
@@ -189,9 +192,11 @@ launchql.verify_change()
 
 For existing LaunchQL projects:
 1. Update to latest @launchql/core and @launchql/cli
-2. Run `launchql migrate-init` to set up schema
-3. Continue using existing plan files unchanged
-4. Optional: Import existing Sqitch deployment history
+2. Test with `--use-sqitch` flag to ensure compatibility
+3. Run `launchql migrate-init` to set up schema
+4. Remove `--use-sqitch` flag to use new system
+5. Continue using existing plan files unchanged
+6. Optional: Import existing Sqitch deployment history
 
 ## Success Metrics
 
