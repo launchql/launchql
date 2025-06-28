@@ -513,6 +513,28 @@ export class LaunchQLMigrate {
   }
 
   /**
+   * Get dependencies for a change
+   */
+  async getDependencies(project: string, changeName: string): Promise<string[]> {
+    await this.initialize();
+    
+    try {
+      const result = await this.pool.query(
+        `SELECT d.requires 
+         FROM launchql_migrate.dependencies d
+         JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+         WHERE c.project = $1 AND c.change_name = $2`,
+        [project, changeName]
+      );
+      
+      return result.rows.map(row => row.requires);
+    } catch (error) {
+      log.error(`Failed to get dependencies for ${project}:${changeName}:`, error);
+      return [];
+    }
+  }
+
+  /**
    * Close the database connection pool
    */
   async close(): Promise<void> {
