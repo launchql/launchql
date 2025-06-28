@@ -1,7 +1,8 @@
 import { resolve } from 'path';
+import { spawn } from 'child_process';
 
 import { LaunchQLProject } from '../class/launchql';
-import { errors, LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions, getSpawnEnvWithPg } from '@launchql/types';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
 import { revertCommand } from '@launchql/migrate';
 
@@ -16,7 +17,8 @@ export const revert = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string
+  dir: string,
+  options?: { useSqitch?: boolean }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -51,13 +53,50 @@ export const revert = async (
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Reverting local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
-        log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
 
-        try {
-          await revertCommand(opts.pg, database, modulePath);
-        } catch (revertError) {
-          log.error(`❌ Revert failed for module ${extension}`);
-          throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+        if (options?.useSqitch) {
+          // Use legacy sqitch
+          log.debug(`→ Command: sqitch revert db:pg:${database} -y`);
+
+          const child = spawn('sqitch', ['revert', `db:pg:${database}`, '-y'], {
+            cwd: modulePath,
+            env: getSpawnEnvWithPg(opts.pg),
+          });
+
+          const exitCode: number = await new Promise((resolve, reject) => {
+            child.stdout.setEncoding('utf-8');
+            child.stderr.setEncoding('utf-8');
+
+            child.stderr.on('data', (chunk: Buffer | string) => {
+              const text = chunk.toString();
+              if (/error/i.test(text)) {
+                log.error(text);
+              } else if (/warning/i.test(text)) {
+                log.warn(text);
+              } else {
+                log.error(text); // non-warning stderr output
+              }
+            });
+
+            child.stdout.pipe(process.stdout);
+            child.on('close', resolve);
+            child.on('error', reject);
+          });
+
+          if (exitCode !== 0) {
+            log.error(`❌ Revert failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+          }
+        } else {
+          // Use new migration system
+          log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
+          
+          try {
+            await revertCommand(opts.pg, database, modulePath);
+          } catch (revertError) {
+            log.error(`❌ Revert failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+          }
         }
       }
     } catch (e) {

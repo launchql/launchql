@@ -26,11 +26,11 @@ export async function deployCommand(
   
   // Provide defaults for missing config values
   const fullConfig: MigrateConfig = {
-    host: config.host || 'localhost',
-    port: config.port || 5432,
-    user: config.user || 'postgres',
-    password: config.password || 'password',
-    database: config.database || 'postgres'
+    host: config.host,
+    port: config.port,
+    user: config.user,
+    password: config.password,
+    database: config.database
   };
   
   const client = new LaunchQLMigrate(fullConfig);

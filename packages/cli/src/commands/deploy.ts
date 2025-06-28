@@ -101,7 +101,7 @@ export default async (
         cache: false
       });
     } else {
-      await deploy(options, selectedProject, database, dir);
+      await deploy(options, selectedProject, database, dir, { useSqitch });
     }
 
     log.success('Deployment complete.');

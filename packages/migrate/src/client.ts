@@ -26,11 +26,11 @@ export class LaunchQLMigrate {
 
   constructor(config: MigrateConfig) {
     this.poolConfig = {
-      host: config.host || 'localhost',
-      port: config.port || 5432,
+      host: config.host,
+      port: config.port,
       user: config.user,
       password: config.password,
-      database: config.database || 'postgres',
+      database: config.database,
       max: 10,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,

@@ -66,7 +66,7 @@ export default async (
       }
     });
 
-    await revert(options, project, database, cwd);
+    await revert(options, project, database, cwd, { useSqitch });
     log.success('Revert complete.');
   } else {
     const pgEnv = getPgEnvOptions();

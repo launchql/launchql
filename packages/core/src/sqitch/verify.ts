@@ -1,6 +1,7 @@
 import { resolve } from 'path';
+import { spawn } from 'child_process';
 
-import { errors, LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions, getSpawnEnvWithPg } from '@launchql/types';
 import { LaunchQLProject } from '../class/launchql';
 import { getRootPgPool, Logger } from '@launchql/server-utils';
 import { verifyCommand } from '@launchql/migrate';
@@ -16,7 +17,8 @@ export const verify = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string
+  dir: string,
+  options?: { useSqitch?: boolean }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -52,7 +54,35 @@ export const verify = async (
         log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
         try {
-          await verifyCommand(opts.pg, database, modulePath);
+          if (options?.useSqitch) {
+            // Use legacy sqitch
+            const env = getSpawnEnvWithPg(opts.pg);
+            await new Promise<void>((resolve, reject) => {
+              const child = spawn('sqitch', ['verify', `db:pg:${database}`], {
+                cwd: modulePath,
+                env
+              });
+              
+              child.stdout.on('data', (data) => {
+                log.debug(data.toString().trim());
+              });
+              
+              child.stderr.on('data', (data) => {
+                log.error(data.toString().trim());
+              });
+              
+              child.on('close', (code) => {
+                if (code === 0) {
+                  resolve();
+                } else {
+                  reject(new Error(`sqitch verify exited with code ${code}`));
+                }
+              });
+            });
+          } else {
+            // Use new migration system
+            await verifyCommand(opts.pg, database, modulePath);
+          }
         } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

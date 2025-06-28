@@ -55,7 +55,7 @@ export default async (
     });
 
     log.info(`Verifying project ${project} on database ${database}...`);
-    await verify(options, project, database, cwd);
+    await verify(options, project, database, cwd, { useSqitch });
     log.success('Verify complete.');
   } else {
     const pgEnv = getPgEnvOptions();
