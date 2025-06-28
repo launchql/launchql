@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import { getEnvOptions } from '@launchql/types';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 
 it('LaunchQL', async () => {
     const db = 'db-'+randomUUID();
@@ -23,6 +23,6 @@ it('LaunchQL', async () => {
         verbose: false
     });
 
-    const pgPool = getRootPgPool({ ...opts.pg, database: db });
+    const pgPool = getPgPool({ ...opts.pg, database: db });
     await pgPool.end();
 });

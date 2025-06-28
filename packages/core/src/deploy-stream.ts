@@ -2,7 +2,7 @@ import { resolve } from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/logger';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
 import { streamSql } from './stream-sql';
@@ -46,7 +46,7 @@ export const deployStream = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = projectRoot.getModuleExtensions();
 
-  const pgPool = getRootPgPool({ ...opts.pg, database });
+  const pgPool = getPgPool({ ...opts.pg, database });
 
   log.success(`🚀 Deploying to database: ${database}`);
 

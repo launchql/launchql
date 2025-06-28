@@ -4,7 +4,7 @@ import { sync as glob } from 'glob';
 import Case from 'case';
 
 import { exportMeta } from './export-meta';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { LaunchQLOptions } from '@launchql/types';
 import { SqitchRow, writeSqitchFiles, writeSqitchPlan } from './sqitch/utils';
 import { LaunchQLProject } from './class/launchql';
@@ -48,7 +48,7 @@ const exportMigrationsToDisk = async ({
 }: ExportMigrationsToDiskOptions): Promise<void> => {
   outdir = outdir + '/';
 
-  const pgPool = getRootPgPool({
+  const pgPool = getPgPool({
     ...options.pg,
     database
   });

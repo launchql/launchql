@@ -2,7 +2,7 @@ import { Pool, PoolConfig } from 'pg';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { Logger } from '@launchql/logger';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 import {
   MigrateConfig,
@@ -35,7 +35,7 @@ export class LaunchQLMigrate {
       database: config.database
     };
     
-    this.pool = getRootPgPool(this.pgConfig);
+    this.pool = getPgPool(this.pgConfig);
   }
 
   /**
@@ -94,7 +94,7 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = getRootPgPool({
+    const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
     });
@@ -187,7 +187,7 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = getRootPgPool({
+    const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
     });
@@ -252,7 +252,7 @@ export class LaunchQLMigrate {
     const failed: string[] = [];
     
     // Use a separate pool for the target database
-    const targetPool = getRootPgPool({
+    const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
     });
@@ -420,7 +420,7 @@ export class LaunchQLMigrate {
    * Get recent changes
    */
   async getRecentChanges(targetDatabase: string, limit: number = 10): Promise<any[]> {
-    const targetPool = getRootPgPool({
+    const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
     });
@@ -450,7 +450,7 @@ export class LaunchQLMigrate {
     const plan = parsePlanFile(planPath);
     const allChanges = getChangesInOrder(planPath);
     
-    const targetPool = getRootPgPool({
+    const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
     });
@@ -477,7 +477,7 @@ export class LaunchQLMigrate {
    * Get all deployed changes for a project
    */
   async getDeployedChanges(targetDatabase: string, project: string): Promise<any[]> {
-    const targetPool = getRootPgPool({
+    const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
     });

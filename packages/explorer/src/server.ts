@@ -11,7 +11,7 @@ import { printSchemas, printDatabases } from './render';
 import { getGraphileSettings } from './settings';
 import { LaunchQLOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { GraphileCache, graphileCache } from 'graphile-cache';
 import { getEnvOptions } from '@launchql/types';
 
@@ -39,7 +39,7 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
       graphiqlRoute: '/graphiql'
     };
 
-    const pgPool = getRootPgPool(
+    const pgPool = getPgPool(
       getPgEnvOptions({
         ...opts.pg,
         database: dbname  
@@ -69,7 +69,7 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
     if (req.urlDomains?.subdomains.length === 1) {
       const [dbName] = req.urlDomains.subdomains;
       try {
-        const pgPool = getRootPgPool(
+        const pgPool = getPgPool(
           getPgEnvOptions({
             ...opts.pg,
             database: dbName  
@@ -108,7 +108,7 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
       const [, dbName] = req.urlDomains.subdomains;
       try {
         
-        const pgPool = getRootPgPool(
+        const pgPool = getPgPool(
           getPgEnvOptions({
             ...opts.pg,
             database: dbName  
@@ -158,7 +158,7 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     if (req.urlDomains?.subdomains.length === 0) {
       try {
-        const rootPgPool = getRootPgPool(
+        const rootPgPool = getPgPool(
           getPgEnvOptions({
             ...opts.pg,
             database: opts.pg.user // is this to get postgres?

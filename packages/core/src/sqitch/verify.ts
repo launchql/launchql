@@ -5,7 +5,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { getSpawnEnvWithPg } from 'pg-env';
 import { LaunchQLProject } from '../class/launchql';
 import { Logger } from '@launchql/logger';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { verifyCommand } from '@launchql/migrate';
 
 interface Extensions {
@@ -35,7 +35,7 @@ export const verify = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
-  const pgPool = getRootPgPool({
+  const pgPool = getPgPool({
     ...opts.pg,
     database
   });

@@ -1,6 +1,6 @@
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 
 export interface DatabaseSelectionOptions {
@@ -21,7 +21,7 @@ export async function getAvailableDatabases(options: DatabaseSelectionOptions = 
     excludeSystemDbs = true
   } = options;
 
-  const db = await getRootPgPool({
+  const db = await getPgPool({
     database: 'postgres'
   });
 

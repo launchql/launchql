@@ -41,11 +41,11 @@ When you import this package, it automatically registers a cleanup callback with
 
 ```typescript
 import { graphileCache, GraphileCache } from 'graphile-cache';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { postgraphile } from 'postgraphile';
 
 // Create a PostGraphile instance
-const pgPool = getRootPgPool({ database: 'mydb' });
+const pgPool = getPgPool({ database: 'mydb' });
 const handler = postgraphile(pgPool, 'public', {
   // PostGraphile options
 });
@@ -90,7 +90,7 @@ console.log(graphileCache.has('mydb.private')); // false
 
 ```typescript
 import { graphileCache, GraphileCache } from 'graphile-cache';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { postgraphile } from 'postgraphile';
 
 function getGraphileInstance(database: string, schema: string): GraphileCache {
@@ -103,7 +103,7 @@ function getGraphileInstance(database: string, schema: string): GraphileCache {
   }
   
   // Create new instance
-  const pgPool = getRootPgPool({ database });
+  const pgPool = getPgPool({ database });
   const handler = postgraphile(pgPool, schema, {
     graphqlRoute: '/graphql',
     graphiqlRoute: '/graphiql',

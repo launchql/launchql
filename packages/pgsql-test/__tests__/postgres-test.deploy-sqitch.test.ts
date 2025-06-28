@@ -2,7 +2,7 @@ process.env.LOG_SCOPE = 'pgsql-test';
 import { resolve } from 'path';
 import { PgTestClient } from '../src/test-client';
 import { getConnections } from '../src/connect';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { seed } from '../src';
 
 let pg: PgTestClient;
@@ -40,7 +40,7 @@ afterEach(async () => {
 afterAll(async () => {
 
     // clear this DB first! so teardown() doesn't choke...a
-    const pgPool = getRootPgPool({ ...pg.config, database: pg.config.database });
+    const pgPool = getPgPool({ ...pg.config, database: pg.config.database });
     await pgPool.end();
 
     await teardown();

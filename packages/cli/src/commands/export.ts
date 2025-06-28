@@ -2,7 +2,7 @@ import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { LaunchQLProject, exportMigrations } from '@launchql/core';
 import { getEnvOptions, getGitConfigInfo } from '@launchql/types';
 import { resolve } from 'path';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 
 export default async (
   argv: Partial<Record<string, any>>,
@@ -18,7 +18,7 @@ export default async (
 
   const options = getEnvOptions(); 
 
-  const db = await getRootPgPool({
+  const db = await getPgPool({
     database: 'postgres'
   });
 
@@ -40,7 +40,7 @@ export default async (
   ]));
 
   const dbname = databases.filter(d=>d.selected).map(d=>d.value)[0];
-  const selectedDb = await getRootPgPool({
+  const selectedDb = await getPgPool({
     database: dbname
   });
 

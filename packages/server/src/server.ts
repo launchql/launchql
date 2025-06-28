@@ -3,7 +3,7 @@ import {
   poweredBy,
   trustProxy
 } from '@launchql/server-utils';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
@@ -64,7 +64,7 @@ class Server {
   }
 
   getPool(): Pool {
-    return getRootPgPool(this.opts.pg);
+    return getPgPool(this.opts.pg);
   }
 
   addEventListener(): void {

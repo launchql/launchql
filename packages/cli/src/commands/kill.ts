@@ -1,6 +1,6 @@
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { Logger } from '@launchql/logger';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 
 const log = new Logger('db-kill');
 
@@ -9,7 +9,7 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  const db = await getRootPgPool({
+  const db = await getPgPool({
     database: 'postgres'
   });
 

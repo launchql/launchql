@@ -6,14 +6,14 @@ import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect'
 import { DatabaseObject } from './types';
 import { Logger } from '@launchql/logger';
 import { getPgEnvOptions } from 'pg-env';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { Client } from 'pg';
 
 const log = new Logger('pg-codegen');
 
 (async () => {
   const env = getPgEnvOptions();
-  const pool = getRootPgPool(env);
+  const pool = getPgPool(env);
   const options: GetIntrospectionRowsOptions = {
     // @ts-ignore
     client: pool as Client, // hope this is ok?

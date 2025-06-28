@@ -11,7 +11,7 @@ const getDbString = (
 ): string =>
   `postgres://${user}:${password}@${host}:${port}/${database}`;
 
-export const getRootPgPool = (pgConfig: Partial<PgConfig>): pg.Pool => {
+export const getPgPool = (pgConfig: Partial<PgConfig>): pg.Pool => {
   const config = getPgEnvOptions(pgConfig);
   const { user, password, host, port, database, } = config;
   if (pgCache.has(database)) {

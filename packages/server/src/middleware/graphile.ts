@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { graphileCache } from 'graphile-cache';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import { getGraphileSettings as getSettings } from 'graphile-settings';
 import PublicKeySignature, { PublicKeyChallengeConfig } from '../plugins/PublicKeySignature';
@@ -78,7 +78,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
         ...lOpts.graphile.overrideSettings
       };
 
-      const pgPool = getRootPgPool({
+      const pgPool = getPgPool({
         ...lOpts.pg,
         database: dbname
       });

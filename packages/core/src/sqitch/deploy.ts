@@ -4,7 +4,7 @@ import { spawn } from 'child_process';
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { deployCommand } from '@launchql/migrate';
 import { LaunchQLProject } from '../class/launchql';
 
@@ -35,7 +35,7 @@ export const deploy = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
-  const pgPool = getRootPgPool({
+  const pgPool = getPgPool({
     ...opts.pg,
     database
   });

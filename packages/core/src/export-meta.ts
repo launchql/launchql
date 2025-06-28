@@ -1,4 +1,4 @@
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { Parser } from 'csv-to-pg';
 import { LaunchQLOptions } from '@launchql/types';
 
@@ -223,7 +223,7 @@ interface ExportMetaParams {
 }
 
 export const exportMeta = async ({ opts, dbname, database_id }: ExportMetaParams): Promise<string> => {
-  const pool = getRootPgPool({
+  const pool = getPgPool({
     ...opts.pg,
     database: dbname
   });

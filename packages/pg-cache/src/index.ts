@@ -7,7 +7,7 @@ export {
 } from './lru';
 
 export {
-  getRootPgPool
+  getPgPool
 } from './pg';
 
 // Re-export types

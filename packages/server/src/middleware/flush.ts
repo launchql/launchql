@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { graphileCache } from 'graphile-cache';
 import { svcCache } from '@launchql/server-utils';
-import { getRootPgPool } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/logger';
 
@@ -19,7 +19,7 @@ export const flush = async (req: Request, res: Response, next: NextFunction): Pr
 };
 
 export const flushService = async (opts: LaunchQLOptions, databaseId: string): Promise<void> => {
-  const pgPool = getRootPgPool(opts.pg);
+  const pgPool = getPgPool(opts.pg);
   log.info('flushing db ' + databaseId);
 
   const api = new RegExp(`^api:${databaseId}:.*`);

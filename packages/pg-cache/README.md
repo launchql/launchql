@@ -34,10 +34,10 @@ npm install pg-cache
 ### Basic Pool Management
 
 ```typescript
-import { pgCache, getRootPgPool } from 'pg-cache';
+import { pgCache, getPgPool } from 'pg-cache';
 
 // Get or create a cached pool
-const pool = getRootPgPool({
+const pool = getPgPool({
   host: 'localhost',
   port: 5432,
   database: 'mydb',
@@ -49,7 +49,7 @@ const pool = getRootPgPool({
 const result = await pool.query('SELECT NOW()');
 
 // Pool is automatically cached and reused
-const samePool = getRootPgPool({ database: 'mydb' }); // Returns cached pool
+const samePool = getPgPool({ database: 'mydb' }); // Returns cached pool
 ```
 
 ### Direct Cache Access
@@ -123,7 +123,7 @@ The main PostgreSQL pool cache instance.
 - `clear(): void` - Remove and dispose all pools
 - `registerCleanupCallback(callback: (key: string) => void): () => void` - Register a cleanup callback
 
-### getRootPgPool(config: Partial<PgConfig>): Pool
+### getPgPool(config: Partial<PgConfig>): Pool
 
 Get or create a cached PostgreSQL pool using the provided configuration.
 
