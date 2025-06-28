@@ -4,15 +4,18 @@ import { ParsedArgs } from 'minimist';
 import {
   errors,
   getEnvOptions,
-  getPgEnvOptions,
-  getSpawnEnvWithPg,
   LaunchQLOptions
 } from '@launchql/types';
+import {
+  getPgEnvOptions,
+  getSpawnEnvWithPg,
+} from 'pg-env';
 
 import { deploy, deployFast } from '@launchql/core';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { LaunchQLProject } from '@launchql/core';
+import { deployCommand } from '@launchql/migrate';
 
 export default async (
   argv: Partial<ParsedArgs>,
@@ -37,7 +40,7 @@ export default async (
     }
   ];
 
-  let { database, yes, recursive, createdb, cwd } = await prompter.prompt(argv, questions);
+  let { database, yes, recursive, createdb, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -100,15 +103,22 @@ export default async (
         cache: false
       });
     } else {
-      await deploy(options, selectedProject, database, dir);
+      await deploy(options, selectedProject, database, dir, { useSqitch });
     }
 
     log.success('Deployment complete.');
   } else {
-    log.info(`Running: sqitch deploy db:pg:${database}`);
-    execSync(`sqitch deploy db:pg:${database}`, {
-      env: getSpawnEnvWithPg(pgEnv)
-    });
+    if (useSqitch) {
+      log.info(`Running: sqitch deploy db:pg:${database} (using legacy Sqitch)`);
+      execSync(`sqitch deploy db:pg:${database}`, {
+        cwd,
+        env: getSpawnEnvWithPg(pgEnv),
+        stdio: 'inherit'
+      });
+    } else {
+      log.info(`Running: launchql migrate deploy db:pg:${database}`);
+      await deployCommand(pgEnv, database, cwd);
+    }
     log.success('Deployment complete.');
   }
 

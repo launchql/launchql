@@ -17,7 +17,8 @@ import install from './commands/install';
 import _export from './commands/export';
 import _package from './commands/package';
 import kill from './commands/kill';
-import { teardownPgPools } from '@launchql/server-utils';
+import migrate from './commands/migrate';
+import { teardownPgPools } from 'pg-cache';
 
 const withPgTeardown = (fn: Function) => async (...args: any[]) => {
   try {
@@ -39,6 +40,7 @@ const commandMap: Record<string, Function> = {
   package: pgt(_package),
   kill: pgt(kill),
   install: pgt(install),
+  migrate: pgt(migrate),
 
   // These manage their own connection lifecycles
   server,

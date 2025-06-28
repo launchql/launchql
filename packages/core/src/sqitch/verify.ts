@@ -1,9 +1,12 @@
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 
-import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions } from '@launchql/types';
+import { getSpawnEnvWithPg } from 'pg-env';
 import { LaunchQLProject } from '../class/launchql';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
+import { getPgPool } from 'pg-cache';
+import { verifyCommand } from '@launchql/migrate';
 
 interface Extensions {
   resolved: string[];
@@ -16,7 +19,8 @@ export const verify = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string
+  dir: string,
+  options?: { useSqitch?: boolean }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -31,7 +35,7 @@ export const verify = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
-  const pgPool = getRootPgPool({
+  const pgPool = getPgPool({
     ...opts.pg,
     database
   });
@@ -49,34 +53,39 @@ export const verify = async (
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Verifying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
-        log.debug(`→ Command: sqitch verify db:pg:${database}`);
+        log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
-        const child = spawn('sqitch', ['verify', `db:pg:${database}`], {
-          cwd: modulePath,
-          env: getSpawnEnvWithPg(opts.pg),
-        });
-
-        const exitCode: number = await new Promise((resolve, reject) => {
-          child.stdout.setEncoding('utf-8');
-          child.stderr.setEncoding('utf-8');
-
-          child.stderr.on('data', (chunk: Buffer | string) => {
-            const text = chunk.toString();
-            if (/error/i.test(text)) {
-              log.error(text);
-            } else if (/warning/i.test(text)) {
-              log.warn(text);
-            } else {
-              log.error(text); // stderr fallback
-            }
-          });
-
-          child.stdout.pipe(process.stdout);
-          child.on('close', resolve);
-          child.on('error', reject);
-        });
-
-        if (exitCode !== 0) {
+        try {
+          if (options?.useSqitch) {
+            // Use legacy sqitch
+            const env = getSpawnEnvWithPg(opts.pg);
+            await new Promise<void>((resolve, reject) => {
+              const child = spawn('sqitch', ['verify', `db:pg:${database}`], {
+                cwd: modulePath,
+                env
+              });
+              
+              child.stdout.on('data', (data) => {
+                log.debug(data.toString().trim());
+              });
+              
+              child.stderr.on('data', (data) => {
+                log.error(data.toString().trim());
+              });
+              
+              child.on('close', (code) => {
+                if (code === 0) {
+                  resolve();
+                } else {
+                  reject(new Error(`sqitch verify exited with code ${code}`));
+                }
+              });
+            });
+          } else {
+            // Use new migration system
+            await verifyCommand(opts.pg, database, modulePath);
+          }
+        } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
         }

@@ -1,8 +1,11 @@
 import { resolve } from 'path';
 import { spawn } from 'child_process';
 
-import { errors, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { errors, LaunchQLOptions } from '@launchql/types';
+import { getSpawnEnvWithPg } from 'pg-env';
+import { Logger } from '@launchql/logger';
+import { getPgPool } from 'pg-cache';
+import { deployCommand } from '@launchql/migrate';
 import { LaunchQLProject } from '../class/launchql';
 
 interface Extensions {
@@ -16,7 +19,8 @@ export const deploy = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string
+  dir: string,
+  options?: { useSqitch?: boolean }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -31,7 +35,7 @@ export const deploy = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
-  const pgPool = getRootPgPool({
+  const pgPool = getPgPool({
     ...opts.pg,
     database
   });
@@ -49,37 +53,51 @@ export const deploy = async (
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
-        log.debug(`→ Command: sqitch deploy db:pg:${database}`);
 
-        const child = spawn('sqitch', ['deploy', `db:pg:${database}`], {
-          cwd: modulePath,
-          env: getSpawnEnvWithPg(opts.pg)
-        });
-
-        const exitCode: number = await new Promise((resolve, reject) => {
-          child.stdout.setEncoding('utf-8');
-          child.stderr.setEncoding('utf-8');
-
-          child.stderr.on('data', (chunk: Buffer | string) => {
-            const text = chunk.toString();
-            if (/error/i.test(text)) {
-              log.error(text);
-            } else if (/warning/i.test(text)) {
-              log.warn(text);
-            } else {
-              log.error(text); // non-warning stderr
-            }
+        if (options?.useSqitch) {
+          // Use legacy sqitch
+          log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+          
+          const child = spawn('sqitch', ['deploy', `db:pg:${database}`], {
+            cwd: modulePath,
+            env: getSpawnEnvWithPg(opts.pg)
           });
 
-          child.stdout.pipe(process.stdout);
+          const exitCode: number = await new Promise((resolve, reject) => {
+            child.stdout.setEncoding('utf-8');
+            child.stderr.setEncoding('utf-8');
 
-          child.on('close', resolve);
-          child.on('error', reject);
-        });
+            child.stderr.on('data', (chunk: Buffer | string) => {
+              const text = chunk.toString();
+              if (/error/i.test(text)) {
+                log.error(text);
+              } else if (/warning/i.test(text)) {
+                log.warn(text);
+              } else {
+                log.error(text); // non-warning stderr
+              }
+            });
 
-        if (exitCode !== 0) {
-          log.error(`❌ Deployment failed for module ${extension}`);
-          throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
+            child.stdout.pipe(process.stdout);
+
+            child.on('close', resolve);
+            child.on('error', reject);
+          });
+
+          if (exitCode !== 0) {
+            log.error(`❌ Deployment failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
+          }
+        } else {
+          // Use new migration system
+          log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
+          
+          try {
+            await deployCommand(opts.pg, database, modulePath);
+          } catch (deployError) {
+            log.error(`❌ Deployment failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
+          }
         }
       }
     } catch (err) {

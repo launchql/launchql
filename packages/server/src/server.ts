@@ -1,10 +1,9 @@
 import {
   healthz,
   poweredBy,
-  trustProxy,
-  getRootPgPool
+  trustProxy
 } from '@launchql/server-utils';
-
+import { getPgPool } from 'pg-cache';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
@@ -17,7 +16,7 @@ import requestIp from 'request-ip';
 import { Pool, PoolClient } from 'pg';
 
 import { LaunchQLOptions, getEnvOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('server');
 
@@ -65,7 +64,7 @@ class Server {
   }
 
   getPool(): Pool {
-    return getRootPgPool(this.opts.pg);
+    return getPgPool(this.opts.pg);
   }
 
   addEventListener(): void {

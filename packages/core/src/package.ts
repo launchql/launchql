@@ -6,7 +6,7 @@ import { deparse } from 'pgsql-deparser';
 import { getExtensionName } from './extensions';
 import { resolve, resolveWithPlan } from './resolve';
 import { transformProps } from './transform';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 import { RawStmt, ParseResult } from '@pgsql/types';
 
 const log = new Logger('package');

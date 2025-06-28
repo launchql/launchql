@@ -1,7 +1,6 @@
 import { spawn } from 'child_process';
 import { Readable } from 'stream';
-import { env } from 'process';
-import { getSpawnEnvWithPg, PgConfig } from '@launchql/types';
+import { PgConfig, getSpawnEnvWithPg } from 'pg-env';
 
 function setArgs(config: PgConfig): string[] {
   const args = [

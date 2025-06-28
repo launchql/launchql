@@ -1,9 +1,8 @@
 import pg from 'pg';
 import { pgCache } from './lru';
+import { getPgEnvOptions, PgConfig } from 'pg-env';
 
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
-
-export const getDbString = (
+const getDbString = (
   user: string,
   password: string,
   host: string,
@@ -12,7 +11,7 @@ export const getDbString = (
 ): string =>
   `postgres://${user}:${password}@${host}:${port}/${database}`;
 
-export const getRootPgPool = (pgConfig: Partial<PgConfig>): pg.Pool => {
+export const getPgPool = (pgConfig: Partial<PgConfig>): pg.Pool => {
   const config = getPgEnvOptions(pgConfig);
   const { user, password, host, port, database, } = config;
   if (pgCache.has(database)) {

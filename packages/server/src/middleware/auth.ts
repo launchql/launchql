@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
 import { LaunchQLOptions } from '@launchql/types';
 
@@ -12,7 +12,7 @@ export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHand
       return;
     }
 
-    const pool = getRootPgPool({
+    const pool = getPgPool({
       ...opts.pg,
       database: api.dbname
     });

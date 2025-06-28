@@ -1,7 +1,8 @@
 import { LaunchQLServer as server } from '@launchql/server';
 import { CLIOptions, Inquirerer, Question, OptionValue } from 'inquirerer';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
+import { getPgPool } from 'pg-cache';
 
 const log = new Logger('server');
 
@@ -58,7 +59,7 @@ export default async (
   let selectedDb: string | undefined = process.env.PGDATABASE;
 
   if (!selectedDb) {
-    const db = await getRootPgPool({ database: 'postgres' });
+    const db = await getPgPool({ database: 'postgres' });
     const result = await db.query(`
       SELECT datname FROM pg_database
       WHERE datistemplate = false AND datname NOT IN ('postgres')
@@ -93,7 +94,7 @@ export default async (
   let authRole: string | undefined;
   let roleName: string | undefined;
   if (!metaApi) {
-    const db = await getRootPgPool({ database: selectedDb });
+    const db = await getPgPool({ database: selectedDb });
     const result = await db.query(`
       SELECT nspname 
       FROM pg_namespace 

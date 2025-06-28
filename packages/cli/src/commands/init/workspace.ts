@@ -4,7 +4,7 @@ import { mkdirSync } from 'fs';
 
 import { writeRenderedTemplates, workspaceTemplate } from '@launchql/templatizer';
 import { sluggify } from '@launchql/core';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('workspace-init');
 

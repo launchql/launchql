@@ -1,6 +1,6 @@
 import { deployFast, LaunchQLProject } from '@launchql/core';
 import { getEnvOptions } from '@launchql/types';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getPgPool } from 'pg-cache';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 
@@ -22,7 +22,7 @@ it('GraphQL query', async () => {
         verbose: false
     });
 
-    const pgPool = getRootPgPool({ ...opts.pg, database: newDb });
+    const pgPool = getPgPool({ ...opts.pg, database: newDb });
 
     // we need to query the meta schema!
 

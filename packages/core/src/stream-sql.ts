@@ -1,4 +1,4 @@
-import { getSpawnEnvWithPg } from '@launchql/types';
+import { getSpawnEnvWithPg } from 'pg-env';
 import { spawn } from 'child_process';
 import { Readable } from 'stream';
 

@@ -1,8 +1,10 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { exec } from 'shelljs';
 import { listModules, revert } from '@launchql/core';
 import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { getPgEnvOptions, getSpawnEnvWithPg } from 'pg-env';
+import { Logger } from '@launchql/logger';
+import { revertCommand } from '@launchql/migrate';
+import { execSync } from 'child_process';
 
 const log = new Logger('revert');
 
@@ -26,7 +28,7 @@ export default async (
     }
   ];
 
-  let { database, yes, recursive, cwd } = await prompter.prompt(argv, questions);
+  let { database, yes, recursive, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -65,11 +67,21 @@ export default async (
       }
     });
 
-    await revert(options, project, database, cwd);
+    await revert(options, project, database, cwd, { useSqitch });
     log.success('Revert complete.');
   } else {
-    log.info(`Running: sqitch revert db:pg:${database} -y`);
-    exec(`sqitch revert db:pg:${database} -y`);
+    const pgEnv = getPgEnvOptions();
+    if (useSqitch) {
+      log.info(`Running: sqitch revert db:pg:${database} (using legacy Sqitch)`);
+      execSync(`sqitch revert db:pg:${database}`, {
+        cwd,
+        env: getSpawnEnvWithPg(pgEnv),
+        stdio: 'inherit'
+      });
+    } else {
+      log.info(`Running: launchql migrate revert db:pg:${database}`);
+      await revertCommand(pgEnv, database, cwd);
+    }
     log.success('Revert complete.');
   }
 

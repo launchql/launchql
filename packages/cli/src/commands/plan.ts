@@ -1,6 +1,6 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { LaunchQLProject } from '@launchql/core';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('plan');
 

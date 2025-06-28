@@ -5,7 +5,7 @@ import { from as copyFrom, to as copyTo } from 'pg-copy-streams';
 
 import { SeedAdapter, SeedContext } from './types';
 import { PgTestClient } from '../test-client';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('csv');
 

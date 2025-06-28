@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import { launchqlDefaults, LaunchQLOptions, PgConfig, PgTestConnectionOptions } from './launchql';
+import { launchqlDefaults, LaunchQLOptions, PgTestConnectionOptions } from './launchql';
 
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);
@@ -14,14 +14,6 @@ const parseEnvBoolean = (val?: string): boolean | undefined => {
 export const getEnvOptions = (overrides: LaunchQLOptions = {}): LaunchQLOptions => {
   const envOpts = getEnvVars();
   const defaults = deepmerge(launchqlDefaults, envOpts);
-  const options = deepmerge(defaults, overrides);
-  // if you need to sanitize...
-  return options;
-};
-
-export const getPgEnvOptions = (overrides: Partial<PgConfig> = {}): PgConfig => {
-  const envOpts = getPgEnvVars();
-  const defaults = deepmerge(launchqlDefaults.pg, envOpts);
   const options = deepmerge(defaults, overrides);
   // if you need to sanitize...
   return options;
@@ -110,44 +102,6 @@ const getEnvVars = (): LaunchQLOptions => {
   };
 };
 
-const getPgEnvVars = (): PgConfig => {
-  const {
-    PGHOST,
-    PGPORT,
-    PGUSER,
-    PGPASSWORD,
-    PGDATABASE
-  } = process.env;
-
-  return {
-    ...(PGHOST && { host: PGHOST }),
-    ...(PGPORT && { port: parseEnvNumber(PGPORT) }),
-    ...(PGUSER && { user: PGUSER }),
-    ...(PGPASSWORD && { password: PGPASSWORD }),
-    ...(PGDATABASE && { database: PGDATABASE }),
-  };
-};
-
-export function toPgEnvVars(config: Partial<PgConfig>): Record<string, string> {
-  const opts = deepmerge(launchqlDefaults.pg, config);
-  return {
-    ...(opts.host && { PGHOST: opts.host }),
-    ...(opts.port && { PGPORT: String(opts.port) }),
-    ...(opts.user && { PGUSER: opts.user }),
-    ...(opts.password && { PGPASSWORD: opts.password }),
-    ...(opts.database && { PGDATABASE: opts.database }),
-  };
-};
-
-export function getSpawnEnvWithPg(
-  config: Partial<PgConfig>,
-  baseEnv: NodeJS.ProcessEnv = process.env
-): NodeJS.ProcessEnv {
-  return {
-    ...baseEnv,
-    ...toPgEnvVars(config)
-  };
-}
 
 type NodeEnv = 'development' | 'production' | 'test';
 

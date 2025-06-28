@@ -1,5 +1,5 @@
 import { Client, QueryResult } from 'pg';
-import { PgConfig } from '@launchql/types';
+import { PgConfig } from 'pg-env';
 
 export class PgTestClient {
   public config: PgConfig;

@@ -1,22 +1,11 @@
 import chalk from 'chalk';
-
-import { readAndParsePackageJson } from './package';
-import { ParsedArgs } from 'minimist';
-
-export const extractFirst = (argv: Partial<ParsedArgs>) => {
-    const first = argv._?.[0];
-    const newArgv = {
-      ...argv,
-      _: argv._?.slice(1) ?? []
-    };
-    return { first, newArgv };
-  };
+import { readAndParsePackageJson } from '../package';
 
 // Function to display the version information
 export function displayVersion() {
-    const pkg = readAndParsePackageJson();
-    console.log(chalk.green(`Name: ${pkg.name}`));
-    console.log(chalk.blue(`Version: ${pkg.version}`));
+  const pkg = readAndParsePackageJson();
+  console.log(chalk.green(`Name: ${pkg.name}`));
+  console.log(chalk.blue(`Version: ${pkg.version}`));
 }
 
 export const usageText = `
@@ -35,5 +24,5 @@ export const usageText = `
   `;
 
 export function displayUsage() {
-    console.log(usageText);
+  console.log(usageText);
 }

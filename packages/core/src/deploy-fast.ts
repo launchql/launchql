@@ -2,8 +2,10 @@
 // Time:        1.056 s
 import { resolve } from 'path';
 
-import { LaunchQLOptions, PgConfig, errors } from '@launchql/types';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { LaunchQLOptions, errors } from '@launchql/types';
+import { PgConfig } from 'pg-env';
+import { Logger } from '@launchql/logger';
+import { getPgPool } from 'pg-cache';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
 
@@ -59,7 +61,7 @@ export const deployFast = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = projectRoot.getModuleExtensions();
 
-  const pgPool = getRootPgPool({ ...opts.pg, database });
+  const pgPool = getPgPool({ ...opts.pg, database });
 
   log.success(`🚀 Deploying to database: ${database}`);
 

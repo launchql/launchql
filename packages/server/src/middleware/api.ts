@@ -1,7 +1,8 @@
 import { getGraphileSettings } from 'graphile-settings';
 import { GraphileQuery, getSchema } from 'graphile-query';
 import { ApiQuery, ApiByNameQuery, ListOfAllDomainsOfDb } from './gql';
-import { svcCache, getRootPgPool } from '@launchql/server-utils';
+import { svcCache } from '@launchql/server-utils';
+import { getPgPool } from 'pg-cache';
 import { getNodeEnv } from '@launchql/types';
 import errorPage404Message from '../errors/404-message';
 import errorPage50x from '../errors/50x';
@@ -278,7 +279,7 @@ const validateSchemata = async (pool: Pool, schemata: string[]): Promise<string[
 };
 
 export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise<any> => {
-  const rootPgPool = getRootPgPool(opts.pg);
+  const rootPgPool = getPgPool(opts.pg);
   // @ts-ignore
   const subdomain = getSubdomain(req.urlDomains.subdomains);
   const domain: string = req.urlDomains.domain as string;
