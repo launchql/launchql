@@ -72,7 +72,7 @@ export class LaunchQLMigrate {
       } else {
         log.success('Migration schema found and ready');
       }
-      
+
       this.initialized = true;
     } catch (error) {
       log.error('Failed to initialize migration schema:', error);

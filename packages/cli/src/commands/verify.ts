@@ -1,10 +1,11 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { listModules, verify } from '@launchql/core';
+import { LaunchQLProject, verify } from '@launchql/core';
 import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { getPgEnvOptions, getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { verifyCommand } from '@launchql/migrate';
 import { execSync } from 'child_process';
+import { getTargetDatabase } from '../utils';
 
 const log = new Logger('verify');
 
@@ -13,38 +14,34 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  const questions: Question[] = [
-    {
-      name: 'database',
-      message: 'Database name',
-      type: 'text',
-      required: true
-    }
-  ];
+  const database = await getTargetDatabase(argv, prompter, {
+    message: 'Select database'
+  });
 
-  let { database, recursive, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
+  const questions: Question[] = [];
 
-  if (!cwd) {
-    cwd = process.cwd();
-    log.debug(`Using current directory: ${cwd}`);
-  }
+  let { recursive, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
+
+  log.debug(`Using current directory: ${cwd}`);
+
+  const project = new LaunchQLProject(cwd);
 
   if (recursive) {
-    const modules = await listModules(cwd);
-    const mods = Object.keys(modules);
+    const modules = await project.getModules();
+    const moduleNames = modules.map(mod => mod.getModuleName());
 
-    if (!mods.length) {
-      log.error('No modules found to verify.');
+    if (!moduleNames.length) {
+      log.error('No modules found in the specified directory.');
       prompter.close();
-      throw errors.NOT_FOUND({}, 'No modules found to verify.');
+      throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
     }
 
-    const { project } = await prompter.prompt(argv, [
+    const { project: selectedProject } = await prompter.prompt(argv, [
       {
         type: 'autocomplete',
         name: 'project',
         message: 'Choose a project to verify',
-        options: mods,
+        options: moduleNames,
         required: true
       }
     ]);
@@ -55,8 +52,8 @@ export default async (
       }
     });
 
-    log.info(`Verifying project ${project} on database ${database}...`);
-    await verify(options, project, database, cwd, { useSqitch });
+    log.info(`Verifying project ${selectedProject} on database ${database}...`);
+    await verify(options, selectedProject, database, cwd, { useSqitch });
     log.success('Verify complete.');
   } else {
     const pgEnv = getPgEnvOptions();

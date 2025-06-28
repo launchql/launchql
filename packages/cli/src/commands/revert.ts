@@ -1,5 +1,5 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { listModules, revert } from '@launchql/core';
+import { LaunchQLProject, revert } from '@launchql/core';
 import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { getPgEnvOptions, getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
@@ -43,34 +43,38 @@ export default async (
     return;
   }
 
-  if (recursive) {
-    const modules = await listModules(cwd);
-    const mods = Object.keys(modules);
+  log.debug(`Using current directory: ${cwd}`);
 
-    if (!mods.length) {
-      log.error('No modules found to revert.');
+  const project = new LaunchQLProject(cwd);
+
+  if (recursive) {
+    const modules = await project.getModules();
+    const moduleNames = modules.map(mod => mod.getModuleName());
+
+    if (!moduleNames.length) {
+      log.error('No modules found in the specified directory.');
       prompter.close();
-      throw errors.NOT_FOUND({}, 'No modules found to revert.');
+      throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
     }
 
-    const { project } = await prompter.prompt(argv, [
+    const { project: selectedProject } = await prompter.prompt(argv, [
       {
         type: 'autocomplete',
         name: 'project',
         message: 'Choose a project to revert',
-        options: mods,
+        options: moduleNames,
         required: true
       }
     ]);
 
-    log.success(`Reverting project ${project} on database ${database}...`);
+    log.success(`Reverting project ${selectedProject} on database ${database}...`);
     const options: LaunchQLOptions = getEnvOptions({
       pg: {
         database
       }
     });
 
-    await revert(options, project, database, cwd, { useSqitch, useTransaction: tx });
+    await revert(options, selectedProject, database, cwd, { useSqitch, useTransaction: tx });
     log.success('Revert complete.');
   } else {
     const pgEnv = getPgEnvOptions();
