@@ -3,6 +3,7 @@ import { ParsedArgs } from 'minimist';
 import { getPgEnvOptions } from '@launchql/types';
 import { Logger } from '@launchql/server-utils';
 import { LaunchQLMigrate } from '@launchql/migrate';
+import { getTargetDatabase } from '../../utils/database';
 
 const log = new Logger('migrate-init');
 
@@ -13,23 +14,21 @@ export default async (
 ) => {
   const pgEnv = getPgEnvOptions();
   
+  // Get target database
+  const database = await getTargetDatabase(argv, prompter, {
+    message: 'Select database to initialize migration tracking'
+  });
+  
   const questions: Question[] = [
-    {
-      type: 'text',
-      name: 'database',
-      message: 'Database name for migration schema',
-      required: true,
-      default: pgEnv.database || 'postgres'
-    },
     {
       name: 'yes',
       type: 'confirm',
-      message: 'Initialize LaunchQL migration schema?',
+      message: `Initialize LaunchQL migration schema in database "${database}"?`,
       required: true
     }
   ];
 
-  const { database, yes } = await prompter.prompt(argv, questions);
+  const { yes } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');

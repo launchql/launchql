@@ -140,8 +140,6 @@ export class LaunchQLMigrate {
         const scriptHash = hashFile(join(dirname(planPath), deployPath, `${change.name}.sql`));
         
         try {
-          log.info(`Deploying change: ${change.name}`);
-          
           // Call the deploy stored procedure
           await targetPool.query(
             'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
@@ -219,8 +217,6 @@ export class LaunchQLMigrate {
         const cleanRevertSql = await cleanSql(revertScript, false, '$EOFCODE$');
         
         try {
-          log.info(`Reverting change: ${change.name}`);
-          
           // Call the revert stored procedure
           await targetPool.query(
             'CALL launchql_migrate.revert($1, $2, $3)',
@@ -278,8 +274,6 @@ export class LaunchQLMigrate {
         const cleanVerifySql = await cleanSql(verifyScript, false, '$EOFCODE$');
 
         try {
-          log.info(`Verifying change: ${change.name}`);
-          
           // Call the verify function
           const result = await targetPool.query(
             'SELECT launchql_migrate.verify($1, $2, $3) as verified',
@@ -422,8 +416,96 @@ export class LaunchQLMigrate {
   }
 
   /**
+   * Get recent changes
+   */
+  async getRecentChanges(targetDatabase: string, limit: number = 10): Promise<any[]> {
+    const targetPool = getRootPgPool({
+      ...this.pgConfig,
+      database: targetDatabase
+    });
+
+    try {
+      const result = await targetPool.query(`
+        SELECT 
+          c.change_name,
+          c.deployed_at,
+          c.project
+        FROM launchql_migrate.changes c
+        ORDER BY c.deployed_at DESC NULLS LAST
+        LIMIT $1
+      `, [limit]);
+      
+      return result.rows;
+    } catch (error) {
+      log.error('Failed to get recent changes:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get pending changes (in plan but not deployed)
+   */
+  async getPendingChanges(planPath: string, targetDatabase: string): Promise<string[]> {
+    const plan = parsePlanFile(planPath);
+    const allChanges = getChangesInOrder(planPath);
+    
+    const targetPool = getRootPgPool({
+      ...this.pgConfig,
+      database: targetDatabase
+    });
+
+    try {
+      const deployedResult = await targetPool.query(`
+        SELECT c.change_name
+        FROM launchql_migrate.changes c
+        WHERE c.project = $1 AND c.deployed_at IS NOT NULL
+      `, [plan.project]);
+      
+      const deployedSet = new Set(deployedResult.rows.map((r: any) => r.change_name));
+      return allChanges.filter(c => !deployedSet.has(c.name)).map(c => c.name);
+    } catch (error: any) {
+      // If schema doesn't exist, all changes are pending
+      if (error.code === '42P01') { // undefined_table
+        return allChanges.map(c => c.name);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get all deployed changes for a project
+   */
+  async getDeployedChanges(targetDatabase: string, project: string): Promise<any[]> {
+    const targetPool = getRootPgPool({
+      ...this.pgConfig,
+      database: targetDatabase
+    });
+
+    try {
+      const result = await targetPool.query(`
+        SELECT 
+          c.change_name,
+          c.deployed_at,
+          c.script_hash
+        FROM launchql_migrate.changes c
+        WHERE c.project = $1 AND c.deployed_at IS NOT NULL
+        ORDER BY c.deployed_at ASC
+      `, [project]);
+      
+      return result.rows;
+    } catch (error: any) {
+      // If schema doesn't exist, no changes are deployed
+      if (error.code === '42P01') { // undefined_table
+        return [];
+      }
+      throw error;
+    }
+  }
+
+  /**
    * Close the database connection pool
    */
   async close(): Promise<void> {
+    // Pool is managed by PgPoolCacheManager, no need to close
   }
 }
