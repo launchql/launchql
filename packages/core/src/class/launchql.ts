@@ -1,12 +1,12 @@
 import fs, { writeFileSync } from 'fs';
-import path, { dirname, join, resolve } from 'path';
+import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
 import { extDeps, getDeps } from '../deps';
 import chalk from 'chalk';
 import { parse } from 'parse-package-name';
 import os from 'os';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 
 import {

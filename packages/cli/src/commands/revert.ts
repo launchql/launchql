@@ -1,7 +1,8 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { listModules, revert } from '@launchql/core';
-import { errors, getEnvOptions, getPgEnvOptions, getSpawnEnvWithPg, LaunchQLOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { errors, getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { getPgEnvOptions, getSpawnEnvWithPg } from 'pg-env';
+import { Logger } from '@launchql/logger';
 import { revertCommand } from '@launchql/migrate';
 import { execSync } from 'child_process';
 

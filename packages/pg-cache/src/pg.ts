@@ -1,9 +1,8 @@
 import pg from 'pg';
 import { pgCache } from './lru';
+import { getPgEnvOptions, PgConfig } from 'pg-env';
 
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
-
-export const getDbString = (
+const getDbString = (
   user: string,
   password: string,
   host: string,

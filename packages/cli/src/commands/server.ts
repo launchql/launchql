@@ -1,7 +1,8 @@
 import { LaunchQLServer as server } from '@launchql/server';
 import { CLIOptions, Inquirerer, Question, OptionValue } from 'inquirerer';
 import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
+import { getRootPgPool } from 'pg-cache';
 
 const log = new Logger('server');
 

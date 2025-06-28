@@ -1,7 +1,7 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { getPgEnvOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { getPgEnvOptions } from 'pg-env';
+import { Logger } from '@launchql/logger';
 import { LaunchQLMigrate } from '@launchql/migrate';
 import { getTargetDatabase } from '../../utils/database';
 

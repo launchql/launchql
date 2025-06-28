@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
 import { LaunchQLOptions } from '@launchql/types';
 

@@ -1,6 +1,6 @@
 import { deployFast, LaunchQLProject } from '@launchql/core';
 import { getEnvOptions } from '@launchql/types';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool } from 'pg-cache';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 

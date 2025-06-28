@@ -1,7 +1,7 @@
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { getRootPgPool } from '@launchql/server-utils';
-import { getPgEnvOptions } from '@launchql/types';
+import { getRootPgPool } from 'pg-cache';
+import { getPgEnvOptions } from 'pg-env';
 
 export interface DatabaseSelectionOptions {
   message?: string;

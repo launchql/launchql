@@ -4,9 +4,9 @@ import path from 'path';
 import { generateCodeTree } from './codegen/codegen';
 import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect';
 import { DatabaseObject } from './types';
-import { Logger } from '@launchql/server-utils';
-import { getPgEnvOptions } from '@launchql/types';
-import { getRootPgPool } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
+import { getPgEnvOptions } from 'pg-env';
+import { getRootPgPool } from 'pg-cache';
 import { Client } from 'pg';
 
 const log = new Logger('pg-codegen');

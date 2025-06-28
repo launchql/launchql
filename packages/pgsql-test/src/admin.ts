@@ -1,9 +1,9 @@
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
-import { getPgEnvOptions, PgConfig } from '@launchql/types';
+import { getPgEnvOptions, PgConfig } from 'pg-env';
 import { streamSql as stream } from './stream';
 import { SeedAdapter } from './seed/types';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('db-admin');
 

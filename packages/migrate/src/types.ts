@@ -1,4 +1,4 @@
-import { PgConfig } from '@launchql/types';
+import { PgConfig } from 'pg-env';
 
 export interface Change {
   name: string;

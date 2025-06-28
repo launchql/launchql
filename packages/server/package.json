@@ -49,6 +49,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "graphile-build": "^4.14.1",
+    "graphile-cache": "^1.0.0",
     "graphile-i18n": "^0.0.3",
     "graphile-meta-schema": "^0.2.5",
     "graphile-query": "^2.1.8",

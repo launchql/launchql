@@ -2,7 +2,7 @@ import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { LaunchQLProject, exportMigrations } from '@launchql/core';
 import { getEnvOptions, getGitConfigInfo } from '@launchql/types';
 import { resolve } from 'path';
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool } from 'pg-cache';
 
 export default async (
   argv: Partial<Record<string, any>>,

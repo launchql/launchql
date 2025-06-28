@@ -1,7 +1,8 @@
 import { getGraphileSettings } from 'graphile-settings';
 import { GraphileQuery, getSchema } from 'graphile-query';
 import { ApiQuery, ApiByNameQuery, ListOfAllDomainsOfDb } from './gql';
-import { svcCache, getRootPgPool } from '@launchql/server-utils';
+import { svcCache } from '@launchql/server-utils';
+import { getRootPgPool } from 'pg-cache';
 import { getNodeEnv } from '@launchql/types';
 import errorPage404Message from '../errors/404-message';
 import errorPage50x from '../errors/50x';

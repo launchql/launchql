@@ -1,4 +1,4 @@
-import { getRootPgPool } from '@launchql/server-utils';
+import { getRootPgPool } from 'pg-cache';
 import { Parser } from 'csv-to-pg';
 import { LaunchQLOptions } from '@launchql/types';
 

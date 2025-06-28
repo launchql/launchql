@@ -1,6 +1,6 @@
 import { LaunchQLMigrate } from '@launchql/migrate';
 import { deployCommand, revertCommand, verifyCommand } from '@launchql/migrate';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('test-migrate');
 

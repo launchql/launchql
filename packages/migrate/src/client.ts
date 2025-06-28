@@ -1,8 +1,9 @@
 import { Pool, PoolConfig } from 'pg';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
-import { Logger, getRootPgPool } from '@launchql/server-utils';
-import { PgConfig } from '@launchql/types';
+import { Logger } from '@launchql/logger';
+import { getRootPgPool } from 'pg-cache';
+import { PgConfig } from 'pg-env';
 import {
   MigrateConfig,
   DeployOptions,

@@ -1,14 +1,7 @@
 import { PostGraphileOptions } from 'postgraphile';
 import type { Plugin } from 'graphile-build';
 import { execSync } from 'child_process';
-
-export interface PgConfig {
-    host: string;
-    port: number;
-    user: string;
-    password: string;
-    database: string;
-}
+import { PgConfig } from 'pg-env';
 
 export interface PgTestConnectionOptions {
     rootDb?: string;

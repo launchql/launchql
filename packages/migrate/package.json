@@ -36,6 +36,7 @@
     "@launchql/server-utils": "^2.1.14",
     "@launchql/types": "^2.1.12",
     "@pgsql/types": "^17.6.1",
+    "pg-env": "^1.0.0",
     "pgsql-parser": "^17.7.5",
     "pg": "^8.11.3"
   },

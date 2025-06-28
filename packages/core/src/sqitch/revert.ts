@@ -2,8 +2,10 @@ import { resolve } from 'path';
 import { spawn } from 'child_process';
 
 import { LaunchQLProject } from '../class/launchql';
-import { errors, LaunchQLOptions, getSpawnEnvWithPg } from '@launchql/types';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { errors, LaunchQLOptions } from '@launchql/types';
+import { getSpawnEnvWithPg } from 'pg-env';
+import { Logger } from '@launchql/logger';
+import { getRootPgPool } from 'pg-cache';
 import { revertCommand } from '@launchql/migrate';
 
 interface Extensions {

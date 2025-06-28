@@ -18,7 +18,7 @@ import _export from './commands/export';
 import _package from './commands/package';
 import kill from './commands/kill';
 import migrate from './commands/migrate';
-import { teardownPgPools } from '@launchql/server-utils';
+import { teardownPgPools } from 'pg-cache';
 
 const withPgTeardown = (fn: Function) => async (...args: any[]) => {
   try {

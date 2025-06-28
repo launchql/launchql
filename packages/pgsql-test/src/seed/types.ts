@@ -1,4 +1,5 @@
-import { PgConfig, PgTestConnectionOptions } from "@launchql/types";
+import { PgTestConnectionOptions } from "@launchql/types";
+import { PgConfig } from "pg-env";
 import { DbAdmin } from "../admin";
 import { PgTestClient } from "../test-client";
 

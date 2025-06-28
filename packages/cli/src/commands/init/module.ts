@@ -1,7 +1,7 @@
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
 import { LaunchQLProject, sluggify } from '@launchql/core';
 import { errors, getGitConfigInfo } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('module-init');
 

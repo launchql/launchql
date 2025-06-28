@@ -3,16 +3,16 @@ import { postgraphile } from 'postgraphile';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import {
-  graphileCache,
-  getRootPgPool,
   cors,
   healthz,
   poweredBy,
-  GraphileCache
 } from '@launchql/server-utils';
 import { printSchemas, printDatabases } from './render';
 import { getGraphileSettings } from './settings';
-import { getPgEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@launchql/types';
+import { getPgEnvOptions } from 'pg-env';
+import { getRootPgPool } from 'pg-cache';
+import { GraphileCache, graphileCache } from 'graphile-cache';
 import { getEnvOptions } from '@launchql/types';
 
 export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {

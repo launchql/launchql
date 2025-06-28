@@ -32,7 +32,8 @@
   "dependencies": {
     "deepmerge": "^4.3.1",
     "graphile-build": "^4.14.1",
-    "postgraphile": "^4.14.1"
+    "postgraphile": "^4.14.1",
+    "pg-env": "^1.0.0"
   },
   "keywords": [
     "graphql",

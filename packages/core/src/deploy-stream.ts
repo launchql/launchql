@@ -1,7 +1,8 @@
 import { resolve } from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { getRootPgPool, Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
+import { getRootPgPool } from 'pg-cache';
 import { LaunchQLProject } from './class/launchql';
 import { packageModule } from './package';
 import { streamSql } from './stream-sql';

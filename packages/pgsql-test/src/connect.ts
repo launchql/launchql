@@ -1,14 +1,16 @@
 import { DbAdmin } from './admin';
 import {
-  getPgEnvOptions,
   PgTestConnectionOptions,
-  PgConfig,
   getConnEnvOptions
 } from '@launchql/types';
+import {
+  getPgEnvOptions,
+  PgConfig,
+} from 'pg-env';
 import { PgTestConnector } from './manager';
 import { randomUUID } from 'crypto';
 
-import { teardownPgPools } from '@launchql/server-utils';
+import { teardownPgPools } from 'pg-cache';
 import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
 import { seed } from './seed';

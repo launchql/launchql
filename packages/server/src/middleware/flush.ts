@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { graphileCache, svcCache, getRootPgPool } from '@launchql/server-utils';
+import { graphileCache } from 'graphile-cache';
+import { svcCache } from '@launchql/server-utils';
+import { getRootPgPool } from 'pg-cache';
 import { LaunchQLOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('flush');
 
@@ -24,7 +26,7 @@ export const flushService = async (opts: LaunchQLOptions, databaseId: string): P
   const schemata = new RegExp(`^schemata:${databaseId}:.*`);
   const meta = new RegExp(`^metaschema:api:${databaseId}`);
 
-  if (!opts.graphile.isPublic) {
+  if (!opts.api.isPublic) {
     graphileCache.forEach((_, k: string) => {
       if (api.test(k) || schemata.test(k) || meta.test(k)) {
         graphileCache.delete(k);

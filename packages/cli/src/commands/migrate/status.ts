@@ -1,8 +1,8 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { LaunchQLMigrate } from '@launchql/migrate';
-import { getPgEnvOptions } from '@launchql/types';
-import { Logger } from '@launchql/server-utils';
+import { getPgEnvOptions } from 'pg-env';
+import { Logger } from '@launchql/logger';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { parsePlanFile } from '@launchql/migrate';

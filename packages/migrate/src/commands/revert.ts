@@ -2,7 +2,7 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import { LaunchQLMigrate } from '../client';
 import { MigrateConfig } from '../types';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-revert');
 

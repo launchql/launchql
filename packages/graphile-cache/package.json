@@ -1,0 +1,53 @@
+{
+  "name": "graphile-cache",
+  "version": "1.0.0",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "PostGraphile LRU cache with automatic pool cleanup integration",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepare": "npm run build",
+    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@launchql/logger": "^1.0.0",
+    "pg-cache": "^1.0.0",
+    "lru-cache": "^11.1.0",
+    "pg": "^8.16.0",
+    "postgraphile": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.2",
+    "@types/rimraf": "^4.0.5",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "cache",
+    "lru",
+    "postgresql",
+    "launchql"
+  ]
+}

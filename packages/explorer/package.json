@@ -41,9 +41,11 @@
     "@launchql/upload-names": "^2.1.5",
     "@launchql/url-domains": "^2.1.4",
     "express": "^5.1.0",
+    "graphile-cache": "^1.0.0",
     "graphile-build": "^4.14.1",
     "graphile-settings": "^2.2.0",
     "graphql-upload": "^15.0.2",
+    "pg-cache": "^1.0.0",
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {

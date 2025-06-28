@@ -4,13 +4,15 @@ import { ParsedArgs } from 'minimist';
 import {
   errors,
   getEnvOptions,
-  getPgEnvOptions,
-  getSpawnEnvWithPg,
   LaunchQLOptions
 } from '@launchql/types';
+import {
+  getPgEnvOptions,
+  getSpawnEnvWithPg,
+} from 'pg-env';
 
 import { deploy, deployFast } from '@launchql/core';
-import { Logger } from '@launchql/server-utils';
+import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { LaunchQLProject } from '@launchql/core';
 import { deployCommand } from '@launchql/migrate';
