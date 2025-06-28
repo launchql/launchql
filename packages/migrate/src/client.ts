@@ -1,7 +1,8 @@
 import { Pool, PoolConfig } from 'pg';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
-import { Logger } from '@launchql/server-utils';
+import { Logger, getRootPgPool } from '@launchql/server-utils';
+import { PgConfig } from '@launchql/types';
 import {
   MigrateConfig,
   DeployOptions,
@@ -21,22 +22,19 @@ const log = new Logger('migrate');
 
 export class LaunchQLMigrate {
   private pool: Pool;
-  private poolConfig: PoolConfig;
+  private pgConfig: PgConfig;
   private initialized: boolean = false;
 
   constructor(config: MigrateConfig) {
-    this.poolConfig = {
+    this.pgConfig = {
       host: config.host,
       port: config.port,
       user: config.user,
       password: config.password,
-      database: config.database,
-      max: 10,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
+      database: config.database
     };
     
-    this.pool = new Pool(this.poolConfig);
+    this.pool = getRootPgPool(this.pgConfig);
   }
 
   /**
@@ -46,20 +44,34 @@ export class LaunchQLMigrate {
     if (this.initialized) return;
 
     try {
-      log.info('Initializing LaunchQL migration schema...');
+      log.info('Checking LaunchQL migration schema...');
       
-      // Read and execute schema SQL
-      const schemaPath = join(__dirname, 'sql', 'schema.sql');
-      const proceduresPath = join(__dirname, 'sql', 'procedures.sql');
+      // Check if launchql_migrate schema exists
+      const result = await this.pool.query(`
+        SELECT schema_name 
+        FROM information_schema.schemata 
+        WHERE schema_name = 'launchql_migrate'
+      `);
       
-      const schemaSql = readFileSync(schemaPath, 'utf-8');
-      const proceduresSql = readFileSync(proceduresPath, 'utf-8');
-      
-      await this.pool.query(schemaSql);
-      await this.pool.query(proceduresSql);
+      if (result.rows.length === 0) {
+        log.info('Schema not found, creating migration schema...');
+        
+        // Read and execute schema SQL to create schema and tables
+        const schemaPath = join(__dirname, 'sql', 'schema.sql');
+        const proceduresPath = join(__dirname, 'sql', 'procedures.sql');
+        
+        const schemaSql = readFileSync(schemaPath, 'utf-8');
+        const proceduresSql = readFileSync(proceduresPath, 'utf-8');
+        
+        await this.pool.query(schemaSql);
+        await this.pool.query(proceduresSql);
+        
+        log.success('Migration schema created successfully');
+      } else {
+        log.success('Migration schema found and ready');
+      }
       
       this.initialized = true;
-      log.success('Migration schema initialized successfully');
     } catch (error) {
       log.error('Failed to initialize migration schema:', error);
       throw error;
@@ -81,8 +93,8 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = new Pool({
-      ...this.poolConfig,
+    const targetPool = getRootPgPool({
+      ...this.pgConfig,
       database: targetDatabase
     });
     
@@ -156,7 +168,6 @@ export class LaunchQLMigrate {
         }
       }
     } finally {
-      await targetPool.end();
     }
     
     return { deployed, skipped, failed };
@@ -177,8 +188,8 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = new Pool({
-      ...this.poolConfig,
+    const targetPool = getRootPgPool({
+      ...this.pgConfig,
       database: targetDatabase
     });
     
@@ -225,7 +236,6 @@ export class LaunchQLMigrate {
         }
       }
     } finally {
-      await targetPool.end();
     }
     
     return { reverted, skipped, failed };
@@ -245,8 +255,8 @@ export class LaunchQLMigrate {
     const failed: string[] = [];
     
     // Use a separate pool for the target database
-    const targetPool = new Pool({
-      ...this.poolConfig,
+    const targetPool = getRootPgPool({
+      ...this.pgConfig,
       database: targetDatabase
     });
     
@@ -289,7 +299,6 @@ export class LaunchQLMigrate {
         }
       }
     } finally {
-      await targetPool.end();
     }
     
     return { verified, failed };
@@ -416,6 +425,5 @@ export class LaunchQLMigrate {
    * Close the database connection pool
    */
   async close(): Promise<void> {
-    await this.pool.end();
   }
 }

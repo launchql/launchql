@@ -52,6 +52,6 @@ export async function verifyCommand(
     
     log.info(`Verified ${result.verified.length} changes`);
   } finally {
-    await client.close();
+    // Pool is managed by PgPoolCacheManager, no need to close
   }
 }

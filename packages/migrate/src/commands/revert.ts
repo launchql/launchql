@@ -53,6 +53,6 @@ export async function revertCommand(
       log.info(`Skipped ${result.skipped.length} not deployed changes`);
     }
   } finally {
-    await client.close();
+    // Pool is managed by PgPoolCacheManager, no need to close
   }
 }

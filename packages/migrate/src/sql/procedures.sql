@@ -1,5 +1,5 @@
 -- Register a project (auto-called by deploy if needed)
-CREATE OR REPLACE PROCEDURE launchql_migrate.register_project(p_project TEXT)
+CREATE PROCEDURE launchql_migrate.register_project(p_project TEXT)
 LANGUAGE plpgsql AS $$
 BEGIN
     INSERT INTO launchql_migrate.projects (project) 
@@ -9,7 +9,7 @@ END;
 $$;
 
 -- Check if a change is deployed
-CREATE OR REPLACE FUNCTION launchql_migrate.is_deployed(
+CREATE FUNCTION launchql_migrate.is_deployed(
     p_project TEXT,
     p_change_name TEXT
 )
@@ -23,7 +23,7 @@ LANGUAGE sql STABLE AS $$
 $$;
 
 -- Deploy a change
-CREATE OR REPLACE PROCEDURE launchql_migrate.deploy(
+CREATE PROCEDURE launchql_migrate.deploy(
     p_project TEXT,
     p_change_name TEXT,
     p_script_hash TEXT,
@@ -92,7 +92,7 @@ END;
 $$;
 
 -- Revert a change
-CREATE OR REPLACE PROCEDURE launchql_migrate.revert(
+CREATE PROCEDURE launchql_migrate.revert(
     p_project TEXT,
     p_change_name TEXT,
     p_revert_sql TEXT
@@ -128,7 +128,7 @@ END;
 $$;
 
 -- Verify a change
-CREATE OR REPLACE FUNCTION launchql_migrate.verify(
+CREATE FUNCTION launchql_migrate.verify(
     p_project TEXT,
     p_change_name TEXT,
     p_verify_sql TEXT
@@ -144,7 +144,7 @@ END;
 $$;
 
 -- List deployed changes
-CREATE OR REPLACE FUNCTION launchql_migrate.deployed_changes(
+CREATE FUNCTION launchql_migrate.deployed_changes(
     p_project TEXT DEFAULT NULL
 )
 RETURNS TABLE(project TEXT, change_name TEXT, deployed_at TIMESTAMPTZ)
@@ -156,7 +156,7 @@ LANGUAGE sql STABLE AS $$
 $$;
 
 -- Get deployment status
-CREATE OR REPLACE FUNCTION launchql_migrate.status(
+CREATE FUNCTION launchql_migrate.status(
     p_project TEXT DEFAULT NULL
 )
 RETURNS TABLE(

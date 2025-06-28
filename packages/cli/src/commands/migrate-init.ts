@@ -39,10 +39,10 @@ export default async (
   log.info(`Initializing migration schema in database ${database}...`);
   
   const config = {
-    host: pgEnv.host || 'localhost',
-    port: pgEnv.port || 5432,
-    user: pgEnv.user || 'postgres',
-    password: pgEnv.password || '',
+    host: pgEnv.host,
+    port: pgEnv.port,
+    user: pgEnv.user,
+    password: pgEnv.password,
     database
   };
   

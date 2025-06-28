@@ -54,6 +54,6 @@ export async function deployCommand(
       log.info(`Skipped ${result.skipped.length} already deployed changes`);
     }
   } finally {
-    await client.close();
+    // Pool is managed by PgPoolCacheManager, no need to close
   }
 }
