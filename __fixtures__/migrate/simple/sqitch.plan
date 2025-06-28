@@ -1,0 +1,7 @@
+%syntax-version=1.0.0
+%project=test-simple
+%uri=https://github.com/test/simple
+
+schema 2024-01-01T00:00:00Z test <test@example.com> # Create schema
+table [schema] 2024-01-02T00:00:00Z test <test@example.com> # Create table
+index [table] 2024-01-03T00:00:00Z test <test@example.com> # Create index
