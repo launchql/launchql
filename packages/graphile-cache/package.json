@@ -1,6 +1,6 @@
 {
   "name": "graphile-cache",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile LRU cache with automatic pool cleanup integration",
   "main": "index.js",
@@ -30,10 +30,10 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/logger": "^1.0.0",
-    "pg-cache": "^1.0.0",
+    "@launchql/logger": "^1.0.1",
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
+    "pg-cache": "^1.0.1",
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {

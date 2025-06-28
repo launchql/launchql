@@ -1,6 +1,6 @@
 {
   "name": "@launchql/types",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "author": "Dan Lynch <Dan Lynch>",
   "description": "LaunchQL types",
   "main": "index.js",
@@ -32,8 +32,8 @@
   "dependencies": {
     "deepmerge": "^4.3.1",
     "graphile-build": "^4.14.1",
-    "postgraphile": "^4.14.1",
-    "pg-env": "^1.0.0"
+    "pg-env": "^1.0.1",
+    "postgraphile": "^4.14.1"
   },
   "keywords": [
     "graphql",
