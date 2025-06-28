@@ -59,11 +59,17 @@ BEGIN
     
     -- Check dependencies
     IF p_requires IS NOT NULL THEN
-        PERFORM 1 FROM unnest(p_requires) AS req
-        WHERE NOT launchql_migrate.is_deployed(p_project, req);
-        IF FOUND THEN
-            RAISE EXCEPTION 'Missing required changes';
-        END IF;
+        DECLARE
+            missing_changes TEXT[];
+        BEGIN
+            SELECT array_agg(req) INTO missing_changes
+            FROM unnest(p_requires) AS req
+            WHERE NOT launchql_migrate.is_deployed(p_project, req);
+            
+            IF array_length(missing_changes, 1) > 0 THEN
+                RAISE EXCEPTION 'Missing required changes for %: %', p_change_name, array_to_string(missing_changes, ', ');
+            END IF;
+        END;
     END IF;
     
     -- Execute deploy

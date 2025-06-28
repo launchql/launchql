@@ -22,6 +22,7 @@ export interface DeployOptions {
   deployPath: string;
   verifyPath?: string;
   toChange?: string;
+  useTransaction?: boolean;
 }
 
 export interface RevertOptions {
@@ -30,6 +31,7 @@ export interface RevertOptions {
   planPath: string;
   revertPath: string;
   toChange?: string;
+  useTransaction?: boolean;
 }
 
 export interface VerifyOptions {

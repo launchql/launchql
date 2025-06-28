@@ -5,6 +5,7 @@ import { getPgEnvOptions, getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { revertCommand } from '@launchql/migrate';
 import { execSync } from 'child_process';
+import { getTargetDatabase } from '../utils';
 
 const log = new Logger('revert');
 
@@ -13,31 +14,33 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  
+  const database = await getTargetDatabase(argv, prompter, {
+    message: 'Select database'
+  });
+
   const questions: Question[] = [
-    {
-      name: 'database',
-      message: 'Database name',
-      type: 'text',
-      required: true
-    },
     {
       name: 'yes',
       type: 'confirm',
       message: 'Are you sure you want to proceed?',
       required: true
+    },
+    {
+      name: 'tx',
+      type: 'confirm',
+      message: 'Use Transaction?',
+      useDefault: true,
+      default: true,
+      required: false
     }
   ];
 
-  let { database, yes, recursive, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
+  let { yes, recursive, cwd, 'use-sqitch': useSqitch, tx } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
     return;
-  }
-
-  if (!cwd) {
-    cwd = process.cwd();
-    log.debug(`Using current directory: ${cwd}`);
   }
 
   if (recursive) {
@@ -67,7 +70,7 @@ export default async (
       }
     });
 
-    await revert(options, project, database, cwd, { useSqitch });
+    await revert(options, project, database, cwd, { useSqitch, useTransaction: tx });
     log.success('Revert complete.');
   } else {
     const pgEnv = getPgEnvOptions();
@@ -80,7 +83,7 @@ export default async (
       });
     } else {
       log.info(`Running: launchql migrate revert db:pg:${database}`);
-      await revertCommand(pgEnv, database, cwd);
+      await revertCommand(pgEnv, database, cwd, { useTransaction: tx });
     }
     log.success('Revert complete.');
   }

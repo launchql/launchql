@@ -127,7 +127,31 @@ launchql.verify_change()
 - ✅ @launchql/core builds successfully
 - ✅ @launchql/cli builds successfully
 
-### Phase 3: Testing & Validation (IN PROGRESS)
+### Phase 3: Transaction Support ✅
+
+**Transaction Features Implemented:**
+- ✅ Created transaction utility module with `withTransaction` helper
+- ✅ Added `useTransaction` option to DeployOptions and RevertOptions
+- ✅ Updated LaunchQLMigrate client to wrap deploy/revert in transactions
+- ✅ Added `--tx`/`--no-tx` flags to CLI commands (defaults to --tx)
+- ✅ All database operations now use consistent transaction context
+- ✅ Automatic rollback on any error during deployment/reversion
+- ✅ Non-transactional mode available for compatibility
+
+**Transaction API:**
+```typescript
+// Deploy with transaction (default)
+await client.deploy({ ...options, useTransaction: true });
+
+// Deploy without transaction
+await client.deploy({ ...options, useTransaction: false });
+
+// CLI usage
+launchql deploy --no-tx  # Disable transactions
+launchql deploy          # Uses transactions by default
+```
+
+### Phase 4: Testing & Validation (IN PROGRESS)
 
 **Test Infrastructure Created:**
 ```
@@ -156,7 +180,7 @@ launchql.verify_change()
 4. Validate Sqitch compatibility
 5. Performance benchmarking
 
-### Phase 4: Documentation & Cleanup (TODO)
+### Phase 5: Documentation & Cleanup (TODO)
 
 **Documentation Needed:**
 - [ ] Migration guide from Sqitch

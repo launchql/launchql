@@ -20,7 +20,7 @@ export const deploy = async (
   name: string,
   database: string,
   dir: string,
-  options?: { useSqitch?: boolean }
+  options?: { useSqitch?: boolean; useTransaction?: boolean }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -93,7 +93,7 @@ export const deploy = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployCommand(opts.pg, database, modulePath);
+            await deployCommand(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
           } catch (deployError) {
             log.error(`❌ Deployment failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });

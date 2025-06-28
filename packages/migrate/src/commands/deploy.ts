@@ -16,6 +16,7 @@ export async function deployCommand(
   cwd: string,
   options?: {
     toChange?: string;
+    useTransaction?: boolean;
   }
 ): Promise<void> {
   const planPath = join(cwd, 'sqitch.plan');
@@ -42,7 +43,8 @@ export async function deployCommand(
       planPath,
       deployPath: 'deploy',
       verifyPath: existsSync(join(cwd, 'verify')) ? 'verify' : undefined,
-      toChange: options?.toChange
+      toChange: options?.toChange,
+      useTransaction: options?.useTransaction
     });
     
     if (result.failed) {

@@ -16,6 +16,7 @@ export async function revertCommand(
   cwd: string,
   options?: {
     toChange?: string;
+    useTransaction?: boolean;
   }
 ): Promise<void> {
   const planPath = join(cwd, 'sqitch.plan');
@@ -41,7 +42,8 @@ export async function revertCommand(
       targetDatabase: database,
       planPath,
       revertPath: 'revert',
-      toChange: options?.toChange
+      toChange: options?.toChange,
+      useTransaction: options?.useTransaction
     });
     
     if (result.failed) {

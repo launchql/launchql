@@ -18,6 +18,7 @@ import { parsePlanFile, getChangesInOrder } from './parser/plan';
 import { hashFile } from './utils/hash';
 import { readScript, scriptExists } from './utils/fs';
 import { cleanSql } from './clean';
+import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
 
 const log = new Logger('migrate');
 
@@ -85,7 +86,7 @@ export class LaunchQLMigrate {
   async deploy(options: DeployOptions): Promise<DeployResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, deployPath, verifyPath, toChange } = options;
+    const { project, targetDatabase, planPath, deployPath, verifyPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath);
     
@@ -99,7 +100,8 @@ export class LaunchQLMigrate {
       database: targetDatabase
     });
     
-    try {
+    // Execute deployment with or without transaction
+    await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
         if (toChange && deployed.includes(toChange)) {
@@ -108,7 +110,8 @@ export class LaunchQLMigrate {
         
         // Check if already deployed using target database connection
         try {
-          const deployedResult = await targetPool.query(
+          const deployedResult = await executeQuery(
+            context,
             'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
             [project || plan.project, change.name]
           );
@@ -142,7 +145,8 @@ export class LaunchQLMigrate {
         
         try {
           // Call the deploy stored procedure
-          await targetPool.query(
+          await executeQuery(
+            context,
             'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
             [
               project || plan.project,
@@ -158,7 +162,7 @@ export class LaunchQLMigrate {
         } catch (error) {
           log.error(`Failed to deploy ${change.name}:`, error);
           failed = change.name;
-          break;
+          throw error; // Re-throw to trigger rollback if in transaction
         }
         
         // Stop if this was the target change
@@ -166,8 +170,7 @@ export class LaunchQLMigrate {
           break;
         }
       }
-    } finally {
-    }
+    });
     
     return { deployed, skipped, failed };
   }
@@ -178,7 +181,7 @@ export class LaunchQLMigrate {
   async revert(options: RevertOptions): Promise<RevertResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, revertPath, toChange } = options;
+    const { project, targetDatabase, planPath, revertPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
@@ -192,7 +195,8 @@ export class LaunchQLMigrate {
       database: targetDatabase
     });
     
-    try {
+    // Execute revert with or without transaction
+    await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
         if (toChange && change.name === toChange) {
@@ -200,8 +204,13 @@ export class LaunchQLMigrate {
         }
         
         // Check if deployed
-        const isDeployed = await this.isDeployed(project, change.name);
-        if (!isDeployed) {
+        const deployedResult = await executeQuery(
+          context,
+          'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+          [project || plan.project, change.name]
+        );
+        
+        if (!deployedResult.rows[0]?.is_deployed) {
           log.info(`Skipping not deployed change: ${change.name}`);
           skipped.push(change.name);
           continue;
@@ -219,7 +228,8 @@ export class LaunchQLMigrate {
         
         try {
           // Call the revert stored procedure
-          await targetPool.query(
+          await executeQuery(
+            context,
             'CALL launchql_migrate.revert($1, $2, $3)',
             [project || plan.project, change.name, cleanRevertSql]
           );
@@ -229,11 +239,10 @@ export class LaunchQLMigrate {
         } catch (error) {
           log.error(`Failed to revert ${change.name}:`, error);
           failed = change.name;
-          break;
+          throw error; // Re-throw to trigger rollback if in transaction
         }
       }
-    } finally {
-    }
+    });
     
     return { reverted, skipped, failed };
   }

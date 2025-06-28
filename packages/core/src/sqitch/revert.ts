@@ -20,7 +20,7 @@ export const revert = async (
   name: string,
   database: string,
   dir: string,
-  options?: { useSqitch?: boolean }
+  options?: { useSqitch?: boolean; useTransaction?: boolean }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -94,7 +94,7 @@ export const revert = async (
           log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
           
           try {
-            await revertCommand(opts.pg, database, modulePath);
+            await revertCommand(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });

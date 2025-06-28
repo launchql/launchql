@@ -16,6 +16,7 @@ import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { LaunchQLProject } from '@launchql/core';
 import { deployCommand } from '@launchql/migrate';
+import { getTargetDatabase } from '../utils';
 
 export default async (
   argv: Partial<ParsedArgs>,
@@ -25,29 +26,49 @@ export default async (
   const pgEnv = getPgEnvOptions();
   const log = new Logger('cli');
 
+    // Get target database
+  let database: string;
+  
+  if (argv.createdb) {
+    // Prompt for selection
+    ({database} = await prompter.prompt(argv, [
+      {
+        type: 'text',
+        name: 'database',
+        message: 'Database name',
+        required: true
+      }
+    ]));
+  } else {
+    database = await getTargetDatabase(argv, prompter, {
+      message: 'Select database'
+    });
+  }
+
   const questions: Question[] = [
-    {
-      type: 'text',
-      name: 'database',
-      message: 'Database name',
-      required: true
-    },
     {
       name: 'yes',
       type: 'confirm',
       message: 'Are you sure you want to proceed?',
       required: true
+    },
+    {
+      name: 'tx',
+      type: 'confirm',
+      message: 'Use Transaction?',
+      useDefault: true,
+      default: true,
+      required: false
     }
   ];
 
-  let { database, yes, recursive, createdb, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
+  let { yes, recursive, createdb, cwd, 'use-sqitch': useSqitch, tx } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
     return;
   }
 
-  cwd = cwd || process.cwd();
   log.debug(`Using current directory: ${cwd}`);
 
   const project = new LaunchQLProject(cwd);
@@ -103,7 +124,7 @@ export default async (
         cache: false
       });
     } else {
-      await deploy(options, selectedProject, database, dir, { useSqitch });
+      await deploy(options, selectedProject, database, dir, { useSqitch, useTransaction: tx });
     }
 
     log.success('Deployment complete.');
@@ -117,7 +138,7 @@ export default async (
       });
     } else {
       log.info(`Running: launchql migrate deploy db:pg:${database}`);
-      await deployCommand(pgEnv, database, cwd);
+      await deployCommand(pgEnv, database, cwd, { useTransaction: tx });
     }
     log.success('Deployment complete.');
   }
