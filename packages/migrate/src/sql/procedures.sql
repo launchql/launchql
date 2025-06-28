@@ -129,14 +129,39 @@ BEGIN
         RAISE EXCEPTION 'Change % not deployed in project %', p_change_name, p_project;
     END IF;
     
-    -- Check if other changes depend on this
+    -- Check if other changes depend on this (including cross-project dependencies)
     IF EXISTS (
         SELECT 1 FROM launchql_migrate.dependencies d
         JOIN launchql_migrate.changes c ON c.change_id = d.change_id
-        WHERE d.requires = p_change_name
-        AND c.project = p_project
+        WHERE (
+            -- Local dependency within same project
+            (d.requires = p_change_name AND c.project = p_project)
+            OR
+            -- Cross-project dependency
+            (d.requires = p_project || ':' || p_change_name)
+        )
     ) THEN
-        RAISE EXCEPTION 'Other changes depend on %', p_change_name;
+        -- Get list of dependent changes for better error message
+        DECLARE
+            dependent_changes TEXT;
+        BEGIN
+            SELECT string_agg(
+                CASE 
+                    WHEN d.requires = p_change_name THEN c.change_name
+                    ELSE c.project || ':' || c.change_name
+                END, 
+                ', '
+            ) INTO dependent_changes
+            FROM launchql_migrate.dependencies d
+            JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+            WHERE (
+                (d.requires = p_change_name AND c.project = p_project)
+                OR
+                (d.requires = p_project || ':' || p_change_name)
+            );
+            
+            RAISE EXCEPTION 'Cannot revert %: required by %', p_change_name, dependent_changes;
+        END;
     END IF;
     
     -- Execute revert
@@ -178,6 +203,26 @@ LANGUAGE sql STABLE AS $$
     FROM launchql_migrate.changes 
     WHERE p_project IS NULL OR project = p_project
     ORDER BY deployed_at;
+$$;
+
+-- Get changes that depend on a given change
+CREATE FUNCTION launchql_migrate.get_dependents(
+    p_project TEXT,
+    p_change_name TEXT
+)
+RETURNS TABLE(project TEXT, change_name TEXT, dependency TEXT)
+LANGUAGE sql STABLE AS $$
+    SELECT c.project, c.change_name, d.requires as dependency
+    FROM launchql_migrate.dependencies d
+    JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+    WHERE (
+        -- Local dependency within same project
+        (d.requires = p_change_name AND c.project = p_project)
+        OR
+        -- Cross-project dependency
+        (d.requires = p_project || ':' || p_change_name)
+    )
+    ORDER BY c.project, c.change_name;
 $$;
 
 -- Get deployment status
