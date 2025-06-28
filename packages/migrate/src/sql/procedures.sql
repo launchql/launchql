@@ -8,18 +8,37 @@ BEGIN
 END;
 $$;
 
--- Check if a change is deployed
+-- Check if a change is deployed (handles both local and cross-project dependencies)
 CREATE FUNCTION launchql_migrate.is_deployed(
     p_project TEXT,
     p_change_name TEXT
 )
 RETURNS BOOLEAN
-LANGUAGE sql STABLE AS $$
-    SELECT EXISTS (
+LANGUAGE plpgsql STABLE AS $$
+DECLARE
+    v_actual_project TEXT;
+    v_actual_change TEXT;
+    v_colon_pos INT;
+BEGIN
+    -- Check if change_name contains a project prefix (cross-project dependency)
+    v_colon_pos := position(':' in p_change_name);
+    
+    IF v_colon_pos > 0 THEN
+        -- Split into project and change name
+        v_actual_project := substring(p_change_name from 1 for v_colon_pos - 1);
+        v_actual_change := substring(p_change_name from v_colon_pos + 1);
+    ELSE
+        -- Use provided project as default
+        v_actual_project := p_project;
+        v_actual_change := p_change_name;
+    END IF;
+    
+    RETURN EXISTS (
         SELECT 1 FROM launchql_migrate.changes 
-        WHERE project = p_project 
-        AND change_name = p_change_name
+        WHERE project = v_actual_project 
+        AND change_name = v_actual_change
     );
+END;
 $$;
 
 -- Deploy a change

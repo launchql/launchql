@@ -240,6 +240,8 @@ For existing LaunchQL projects:
 - Command-line compatibility layer
 - Unit test suite
 - Test project setup
+- Transaction support with --tx/--no-tx flags
+- Cross-project dependency support (project:change format)
 
 **IN PROGRESS:**
 - Integration testing
