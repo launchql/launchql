@@ -42,6 +42,7 @@
     "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
+    "@launchql/logger": "^1.0.1",
     "@launchql/migrate": "^2.2.1",
     "@launchql/server-utils": "^2.1.15",
     "@launchql/templatizer": "^2.1.6",
