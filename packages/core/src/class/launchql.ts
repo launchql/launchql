@@ -258,14 +258,6 @@ export class LaunchQLProject {
     // Create sqitch.conf file (minimal configuration)
     const sqitchConf = `[core]
 \tengine = pg
-\tplan_file = sqitch.plan
-\ttop_dir = .
-[engine "pg"]
-\ttarget = db:pg:
-[deploy]
-\tverify = true
-[rebase]
-\tverify = true
 `;
     writeFileSync(path.join(targetPath, 'sqitch.conf'), sqitchConf);
     
