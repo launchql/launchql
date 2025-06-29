@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs';
-import { Change, PlanFile } from '../types';
+import { SqitchChange, SqitchPlan } from '@launchql/types';
 
 /**
- * Parse a Sqitch plan file into a structured format
+ * Parse a Sqitch plan file into a structured format for execution
  * 
  * Plan line format:
  * change_name [dep1 dep2] timestamp planner <email> # comment
@@ -10,13 +10,13 @@ import { Change, PlanFile } from '../types';
  * Example:
  * procedures/verify_constraint [pg-utilities:procedures/tg_update_timestamps] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_constraint
  */
-export function parsePlanFile(planPath: string): PlanFile {
+export function parsePlanForExecution(planPath: string): SqitchPlan {
   const content = readFileSync(planPath, 'utf-8');
   const lines = content.split('\n');
   
   let project = '';
   let uri = '';
-  const changes: Change[] = [];
+  const changes: SqitchChange[] = [];
   
   for (const line of lines) {
     const trimmed = line.trim();
@@ -53,7 +53,7 @@ export function parsePlanFile(planPath: string): PlanFile {
 /**
  * Parse a single change line from a plan file
  */
-function parseChangeLine(line: string): Change | null {
+function parseChangeLine(line: string): SqitchChange | null {
   // Regular expression to parse change lines
   // Matches: change_name [deps] timestamp planner <email> # comment
   const regex = /^(\S+)(?:\s+\[([^\]]*)\])?(?:\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z))?(?:\s+(\S+))?(?:\s+<([^>]+)>)?(?:\s+#\s+(.*))?$/;
@@ -63,7 +63,7 @@ function parseChangeLine(line: string): Change | null {
     return null;
   }
   
-  const [, name, depsStr, timestamp, planner, email, comment] = match;
+  const [, name, depsStr, timestamp, planner, email, note] = match;
   
   // Parse dependencies
   const dependencies = depsStr 
@@ -76,7 +76,7 @@ function parseChangeLine(line: string): Change | null {
     timestamp,
     planner,
     email,
-    comment
+    note
   };
 }
 
@@ -84,14 +84,14 @@ function parseChangeLine(line: string): Change | null {
  * Extract just the change names from a plan file (for compatibility with existing code)
  */
 export function getChangeNamesFromPlan(planPath: string): string[] {
-  const plan = parsePlanFile(planPath);
+  const plan = parsePlanForExecution(planPath);
   return plan.changes.map(change => change.name);
 }
 
 /**
- * Get changes in deployment order (forward) or revert order (reverse)
+ * Get changes for deployment operations in forward or reverse order
  */
-export function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {
-  const plan = parsePlanFile(planPath);
+export function getChangesForDeployment(planPath: string, reverse: boolean = false): SqitchChange[] {
+  const plan = parsePlanForExecution(planPath);
   return reverse ? [...plan.changes].reverse() : plan.changes;
 }

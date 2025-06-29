@@ -1,19 +1,5 @@
 import { PgConfig } from 'pg-env';
-
-export interface Change {
-  name: string;
-  dependencies: string[];
-  timestamp?: string;
-  planner?: string;
-  email?: string;
-  comment?: string;
-}
-
-export interface PlanFile {
-  project: string;
-  uri?: string;
-  changes: Change[];
-}
+export { SqitchChange, SqitchPlan } from '@launchql/types';
 
 export interface DeployOptions {
   project: string;

@@ -14,7 +14,7 @@ import {
   VerifyResult,
   StatusResult
 } from './types';
-import { parsePlanFile, getChangesInOrder } from './parser/plan';
+import { parsePlanForExecution, getChangesForDeployment } from './parser/plan';
 import { hashFile } from './utils/hash';
 import { readScript, scriptExists } from './utils/fs';
 import { cleanSql } from './clean';
@@ -87,8 +87,8 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { project, targetDatabase, planPath, deployPath, verifyPath, toChange, useTransaction = true } = options;
-    const plan = parsePlanFile(planPath);
-    const changes = getChangesInOrder(planPath);
+    const plan = parsePlanForExecution(planPath);
+    const changes = getChangesForDeployment(planPath);
     
     const deployed: string[] = [];
     const skipped: string[] = [];
@@ -182,8 +182,8 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { project, targetDatabase, planPath, revertPath, toChange, useTransaction = true } = options;
-    const plan = parsePlanFile(planPath);
-    const changes = getChangesInOrder(planPath, true); // Reverse order for revert
+    const plan = parsePlanForExecution(planPath);
+    const changes = getChangesForDeployment(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
     const skipped: string[] = [];
@@ -254,8 +254,8 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { project, targetDatabase, planPath, verifyPath } = options;
-    const plan = parsePlanFile(planPath);
-    const changes = getChangesInOrder(planPath);
+    const plan = parsePlanForExecution(planPath);
+    const changes = getChangesForDeployment(planPath);
     
     const verified: string[] = [];
     const failed: string[] = [];
@@ -456,8 +456,8 @@ export class LaunchQLMigrate {
    * Get pending changes (in plan but not deployed)
    */
   async getPendingChanges(planPath: string, targetDatabase: string): Promise<string[]> {
-    const plan = parsePlanFile(planPath);
-    const allChanges = getChangesInOrder(planPath);
+    const plan = parsePlanForExecution(planPath);
+    const allChanges = getChangesForDeployment(planPath);
     
     const targetPool = getPgPool({
       ...this.pgConfig,
