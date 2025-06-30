@@ -14,3 +14,10 @@ export * from './sqitch/revert';
 export * from './sqitch/verify';
 export * from './transform';
 export * from './utils';
+
+// New exports for migration API
+export * from './api/migration';
+export { runSqitch } from './utils/sqitch-wrapper';
+export { deployCommand } from './migrate/deploy-command';
+export { revertCommand } from './migrate/revert-command';
+export { verifyCommand } from './migrate/verify-command';

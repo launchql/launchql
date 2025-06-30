@@ -5,7 +5,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { deployCommand } from '@launchql/migrate';
+import { deployCommand } from '../migrate/deploy-command';
 import { LaunchQLProject } from '../class/launchql';
 
 interface Extensions {

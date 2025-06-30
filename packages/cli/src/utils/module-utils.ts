@@ -1,6 +1,6 @@
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { getAvailableModules } from '@launchql/migrate';
+import { getAvailableModules } from '@launchql/core';
 import { errors } from '@launchql/types';
 
 /**

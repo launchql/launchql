@@ -6,7 +6,7 @@ import { getSpawnEnvWithPg } from 'pg-env';
 import { LaunchQLProject } from '../class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { verifyCommand } from '@launchql/migrate';
+import { verifyCommand } from '../migrate/verify-command';
 
 interface Extensions {
   resolved: string[];

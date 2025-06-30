@@ -1,11 +1,14 @@
-import { LaunchQLProject, deploy, revert, verify } from '@launchql/core';
+import { LaunchQLProject } from '../class/launchql';
+import { deploy } from '../sqitch/deploy';
+import { revert } from '../sqitch/revert';
+import { verify } from '../sqitch/verify';
 import { getEnvOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { deployCommand } from './commands/deploy';
-import { revertCommand } from './commands/revert';
-import { verifyCommand } from './commands/verify';
-import { runSqitch } from './sqitch-wrapper';
+import { deployCommand } from '../migrate/deploy-command';
+import { revertCommand } from '../migrate/revert-command';
+import { verifyCommand } from '../migrate/verify-command';
+import { runSqitch } from '../utils/sqitch-wrapper';
 
 const log = new Logger('project-commands');
 
@@ -22,7 +25,7 @@ export interface MigrationOptions {
 /**
  * Deploy a project - handles both recursive (multi-module) and non-recursive (single directory) deployments
  */
-export async function deployProject(options: MigrationOptions): Promise<void> {
+export async function deployWithOptions(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
       throw new Error('projectName is required when recursive is true');
@@ -70,7 +73,7 @@ export async function deployProject(options: MigrationOptions): Promise<void> {
 /**
  * Revert a project - handles both recursive (multi-module) and non-recursive (single directory) reverts
  */
-export async function revertProject(options: MigrationOptions): Promise<void> {
+export async function revertWithOptions(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
       throw new Error('projectName is required when recursive is true');
@@ -117,7 +120,7 @@ export async function revertProject(options: MigrationOptions): Promise<void> {
 /**
  * Verify a project - handles both recursive (multi-module) and non-recursive (single directory) verification
  */
-export async function verifyProject(options: MigrationOptions): Promise<void> {
+export async function verifyWithOptions(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
       throw new Error('projectName is required when recursive is true');

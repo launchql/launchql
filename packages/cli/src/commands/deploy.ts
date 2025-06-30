@@ -11,10 +11,9 @@ import {
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { deployFast } from '@launchql/core';
+import { deployFast, deployWithOptions } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
-import { deployProject } from '@launchql/migrate';
 import { getTargetDatabase } from '../utils';
 import { selectModule } from '../utils/module-utils';
 
@@ -108,7 +107,7 @@ export default async (
       cache: false
     });
   } else {
-    await deployProject({
+    await deployWithOptions({
       database,
       cwd,
       recursive,

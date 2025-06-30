@@ -6,7 +6,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { revertCommand } from '@launchql/migrate';
+import { revertCommand } from '../migrate/revert-command';
 
 interface Extensions {
   resolved: string[];
