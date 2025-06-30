@@ -41,8 +41,6 @@ export async function deployCommand(
       project: '', // Will be read from plan file
       targetDatabase: database,
       planPath,
-      deployPath: 'deploy',
-      verifyPath: existsSync(join(cwd, 'verify')) ? 'verify' : undefined,
       toChange: options?.toChange,
       useTransaction: options?.useTransaction
     });

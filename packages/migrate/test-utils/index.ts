@@ -55,7 +55,18 @@ export class MigrateTestFixture {
     
     // Create database using admin pool
     const adminPool = getPgPool(baseConfig);
-    await adminPool.query(`CREATE DATABASE "${dbName}"`);
+    try {
+      await adminPool.query(`CREATE DATABASE "${dbName}"`);
+    } catch (e) {
+      if (e instanceof AggregateError) {
+        for (const err of e.errors) {
+          console.error('AggregateError item:', err);
+        }
+      } else {
+        console.error('Test failure:', e);
+      }
+      throw e;
+    }
     
     // Get config for the new test database
     const pgConfig = getPgEnvOptions({
@@ -192,27 +203,34 @@ export class MigrateTestFixture {
   }
 
   async cleanup(): Promise<void> {
-    // Close all test database connections first
-    const dbNames = this.databases.map(db => db.name);
+    // Close all test database pools FIRST
+    for (const pool of this.pools) {
+      try {
+        await pool.end();
+      } catch (e) {
+        // Ignore errors during pool closure
+      }
+    }
     
-    // Close all pools for test databases
-    await closeDatabasePools(dbNames);
+    // Clear the pools array
+    this.pools = [];
     
-    // Get admin pool for database cleanup
-    // const adminConfig = getPgEnvOptions({
-    //   database: 'postgres'
-    // });
-    // const adminPool = getPgPool(adminConfig);
+    // Small delay to ensure connections are fully closed
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    // Now get admin pool for database cleanup
+    const adminConfig = getPgEnvOptions({
+      database: 'postgres'
+    });
+    const adminPool = getPgPool(adminConfig);
 
-    // Small delay to ensure connections are closed
-    await new Promise(resolve => setTimeout(resolve, 50));
-
+    // Drop all test databases
     for (const db of this.databases) {
       try {
-        // Drop the database
-        // await adminPool.query(`DROP DATABASE IF EXISTS "${db.name}"`);
+        await adminPool.query(`DROP DATABASE IF EXISTS "${db.name}"`);
       } catch (e) {
         // Ignore errors - database might have active connections
+        console.warn(`Failed to drop database ${db.name}:`, (e as Error).message);
       }
     }
 
@@ -224,6 +242,9 @@ export class MigrateTestFixture {
         // Ignore errors during cleanup
       }
     }
+    
+    // Clear the databases array
+    this.databases = [];
   }
 }
 

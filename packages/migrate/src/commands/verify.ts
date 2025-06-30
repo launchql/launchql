@@ -21,11 +21,7 @@ export async function verifyCommand(
     throw new Error(`No sqitch.plan found in ${cwd}`);
   }
   
-  const verifyPath = join(cwd, 'verify');
-  if (!existsSync(verifyPath)) {
-    log.warn('No verify directory found, nothing to verify');
-    return;
-  }
+  // The verify method will handle missing verify scripts per change
   
   // Provide defaults for missing config values
   const fullConfig: MigrateConfig = {
@@ -42,8 +38,7 @@ export async function verifyCommand(
     const result = await client.verify({
       project: '', // Will be read from plan file
       targetDatabase: database,
-      planPath,
-      verifyPath: 'verify'
+      planPath
     });
     
     if (result.failed.length > 0) {
