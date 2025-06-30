@@ -41,7 +41,6 @@ export async function revertCommand(
       project: '', // Will be read from plan file
       targetDatabase: database,
       planPath,
-      revertPath: 'revert',
       toChange: options?.toChange,
       useTransaction: options?.useTransaction
     });

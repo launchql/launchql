@@ -24,7 +24,6 @@ describe('Deploy Command', () => {
       project: 'test-simple',
       targetDatabase: db.name,
       planPath: join(fixturePath, 'sqitch.plan'),
-      deployPath: 'deploy',
       toChange: 'schema'
     });
     
@@ -50,7 +49,6 @@ describe('Deploy Command', () => {
       project: 'test-simple',
       targetDatabase: db.name,
       planPath: join(fixturePath, 'sqitch.plan'),
-      deployPath: 'deploy'
     });
     
     expect(result.deployed).toEqual(['schema', 'table', 'index']);
@@ -76,7 +74,6 @@ describe('Deploy Command', () => {
       project: 'test-simple',
       targetDatabase: db.name,
       planPath: join(fixturePath, 'sqitch.plan'),
-      deployPath: 'deploy',
       toChange: 'table'
     });
     
@@ -87,7 +84,6 @@ describe('Deploy Command', () => {
       project: 'test-simple',
       targetDatabase: db.name,
       planPath: join(fixturePath, 'sqitch.plan'),
-      deployPath: 'deploy'
     });
     
     expect(result2.deployed).toEqual(['index']);
@@ -116,7 +112,6 @@ describe('Deploy Command', () => {
       project: 'test-fail',
       targetDatabase: db.name,
       planPath: join(tempDir, 'sqitch.plan'),
-      deployPath: 'deploy',
       useTransaction: true // default
     })).rejects.toThrow();
     
@@ -152,7 +147,6 @@ describe('Deploy Command', () => {
       project: 'test-fail',
       targetDatabase: db.name,
       planPath: join(tempDir, 'sqitch.plan'),
-      deployPath: 'deploy',
       useTransaction: false
     })).rejects.toThrow();
     

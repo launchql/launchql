@@ -19,8 +19,6 @@ export interface DeployOptions {
   project: string;
   targetDatabase: string;
   planPath: string;
-  deployPath: string;
-  verifyPath?: string;
   toChange?: string;
   useTransaction?: boolean;
 }
@@ -29,7 +27,6 @@ export interface RevertOptions {
   project: string;
   targetDatabase: string;
   planPath: string;
-  revertPath: string;
   toChange?: string;
   useTransaction?: boolean;
 }
@@ -38,7 +35,6 @@ export interface VerifyOptions {
   project: string;
   targetDatabase: string;
   planPath: string;
-  verifyPath: string;
 }
 
 export interface DeployResult {

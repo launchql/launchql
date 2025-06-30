@@ -55,7 +55,18 @@ export class MigrateTestFixture {
     
     // Create database using admin pool
     const adminPool = getPgPool(baseConfig);
-    await adminPool.query(`CREATE DATABASE "${dbName}"`);
+    try {
+      await adminPool.query(`CREATE DATABASE "${dbName}"`);
+    } catch (e) {
+      if (e instanceof AggregateError) {
+        for (const err of e.errors) {
+          console.error('AggregateError item:', err);
+        }
+      } else {
+        console.error('Test failure:', e);
+      }
+      throw e;
+    }
     
     // Get config for the new test database
     const pgConfig = getPgEnvOptions({

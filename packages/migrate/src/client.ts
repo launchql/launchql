@@ -86,7 +86,7 @@ export class LaunchQLMigrate {
   async deploy(options: DeployOptions): Promise<DeployResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, deployPath, verifyPath, toChange, useTransaction = true } = options;
+    const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath);
     
@@ -131,7 +131,7 @@ export class LaunchQLMigrate {
         }
         
         // Read deploy script
-        const deployScript = readScript(dirname(planPath), deployPath, change.name);
+        const deployScript = readScript(dirname(planPath), 'deploy', change.name);
         if (!deployScript) {
           log.error(`Deploy script not found for change: ${change.name}`);
           failed = change.name;
@@ -141,7 +141,7 @@ export class LaunchQLMigrate {
         const cleanDeploySql = await cleanSql(deployScript, false, '$EOFCODE$');
                 
         // Calculate script hash
-        const scriptHash = hashFile(join(dirname(planPath), deployPath, `${change.name}.sql`));
+        const scriptHash = hashFile(join(dirname(planPath), 'deploy', `${change.name}.sql`));
         
         try {
           // Call the deploy stored procedure
@@ -181,7 +181,7 @@ export class LaunchQLMigrate {
   async revert(options: RevertOptions): Promise<RevertResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, revertPath, toChange, useTransaction = true } = options;
+    const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
@@ -217,7 +217,7 @@ export class LaunchQLMigrate {
         }
         
         // Read revert script
-        const revertScript = readScript(dirname(planPath), revertPath, change.name);
+        const revertScript = readScript(dirname(planPath), 'revert', change.name);
         if (!revertScript) {
           log.error(`Revert script not found for change: ${change.name}`);
           failed = change.name;
@@ -253,7 +253,7 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, verifyPath } = options;
+    const { project, targetDatabase, planPath } = options;
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath);
     
@@ -275,7 +275,7 @@ export class LaunchQLMigrate {
         }
         
         // Read verify script
-        const verifyScript = readScript(dirname(planPath), verifyPath, change.name);
+        const verifyScript = readScript(dirname(planPath), 'verify', change.name);
         if (!verifyScript) {
           log.warn(`Verify script not found for change: ${change.name}`);
           continue;
