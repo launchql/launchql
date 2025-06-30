@@ -7,3 +7,5 @@ export { withTransaction, TransactionContext, TransactionOptions } from './utils
 export { deployCommand } from './commands/deploy';
 export { revertCommand } from './commands/revert';
 export { verifyCommand } from './commands/verify';
+export { deployProject, revertProject, verifyProject, getAvailableModules, MigrationOptions } from './project-commands';
+export { runSqitch } from './sqitch-wrapper';

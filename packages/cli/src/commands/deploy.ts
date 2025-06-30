@@ -2,21 +2,21 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
 import {
-  errors,
   getEnvOptions,
   LaunchQLOptions
 } from '@launchql/types';
+
 import {
   getPgEnvOptions,
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { deploy, deployFast } from '@launchql/core';
+import { deployFast } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
-import { LaunchQLProject } from '@launchql/core';
-import { deployCommand } from '@launchql/migrate';
+import { deployProject } from '@launchql/migrate';
 import { getTargetDatabase } from '../utils';
+import { selectModule } from '../utils/module-utils';
 
 export default async (
   argv: Partial<ParsedArgs>,
@@ -71,8 +71,6 @@ export default async (
 
   log.debug(`Using current directory: ${cwd}`);
 
-  const project = new LaunchQLProject(cwd);
-
   if (createdb) {
     log.info(`Creating database ${database}...`);
     execSync(`createdb ${database}`, {
@@ -80,68 +78,47 @@ export default async (
     });
   }
 
-  const options: LaunchQLOptions = getEnvOptions({
-    pg: {
-      database
-    }
-  });
-
+  let projectName: string | undefined;
   if (recursive) {
-    const modules = await project.getModules();
-    const moduleNames = modules.map(mod => mod.getModuleName());
-
-    if (!moduleNames.length) {
-      log.error('No modules found in the specified directory.');
-      prompter.close();
-      throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
-    }
-
-    const { project: selectedProject } = await prompter.prompt(argv, [
-      {
-        type: 'autocomplete',
-        name: 'project',
-        message: 'Choose a project to deploy',
-        options: moduleNames,
-        required: true
-      }
-    ]);
-
-    const selected = modules.find(mod => mod.getModuleName() === selectedProject);
-    if (!selected) {
-      throw new Error(`Module ${selectedProject} not found`);
-    }
-
-    const dir = selected.getModulePath()!;
-    log.success(`Deploying project ${selectedProject} from ${dir} to database ${database}...`);
-
-    if (argv.fast) {
-      await deployFast({
-        opts: options,
-        database,
-        dir,
-        name: selectedProject,
-        usePlan: true,
-        cache: false
-      });
-    } else {
-      await deploy(options, selectedProject, database, dir, { useSqitch, useTransaction: tx });
-    }
-
-    log.success('Deployment complete.');
-  } else {
-    if (useSqitch) {
-      log.info(`Running: sqitch deploy db:pg:${database} (using legacy Sqitch)`);
-      execSync(`sqitch deploy db:pg:${database}`, {
-        cwd,
-        env: getSpawnEnvWithPg(pgEnv),
-        stdio: 'inherit'
-      });
-    } else {
-      log.info(`Running: launchql migrate deploy db:pg:${database}`);
-      await deployCommand(pgEnv, database, cwd, { useTransaction: tx });
-    }
-    log.success('Deployment complete.');
+    projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
+    log.info(`Selected project: ${projectName}`);
   }
+
+  // Handle fast deploy separately as it uses a different API
+  if (argv.fast && recursive) {
+    const options: LaunchQLOptions = getEnvOptions({
+      pg: {
+        database
+      }
+    });
+    
+    // Fast deploy needs the module path, so we need to get it
+    // This is a limitation of the current fast deploy API
+    const { LaunchQLProject } = await import('@launchql/core');
+    const project = new LaunchQLProject(cwd);
+    const modules = project.getModuleMap();
+    const modulePath = modules[projectName!].path;
+    
+    await deployFast({
+      opts: options,
+      database,
+      dir: modulePath,
+      name: projectName!,
+      usePlan: true,
+      cache: false
+    });
+  } else {
+    await deployProject({
+      database,
+      cwd,
+      recursive,
+      projectName,
+      useSqitch,
+      useTransaction: tx
+    });
+  }
+
+  log.success('Deployment complete.');
 
   return argv;
 };
