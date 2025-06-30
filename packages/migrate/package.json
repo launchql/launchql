@@ -1,6 +1,6 @@
 {
   "name": "@launchql/migrate",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Migrate",
   "main": "index.js",
@@ -38,8 +38,8 @@
     "@launchql/types": "^2.1.13",
     "@pgsql/types": "^17.6.1",
     "pg": "^8.11.3",
-    "pg-env": "^1.0.1",
     "pg-cache": "^1.0.1",
+    "pg-env": "^1.0.1",
     "pgsql-parser": "^17.7.5"
   },
   "devDependencies": {
