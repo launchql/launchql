@@ -2,16 +2,11 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
 import {
-  getEnvOptions,
-  LaunchQLOptions
-} from '@launchql/types';
-
-import {
   getPgEnvOptions,
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { deployFast, deployWithOptions } from '@launchql/core';
+import { deployModules } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { getTargetDatabase } from '../utils';
@@ -83,39 +78,17 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
-  // Handle fast deploy separately as it uses a different API
-  if (argv.fast && recursive) {
-    const options: LaunchQLOptions = getEnvOptions({
-      pg: {
-        database
-      }
-    });
-    
-    // Fast deploy needs the module path, so we need to get it
-    // This is a limitation of the current fast deploy API
-    const { LaunchQLProject } = await import('@launchql/core');
-    const project = new LaunchQLProject(cwd);
-    const modules = project.getModuleMap();
-    const modulePath = modules[projectName!].path;
-    
-    await deployFast({
-      opts: options,
-      database,
-      dir: modulePath,
-      name: projectName!,
-      usePlan: true,
-      cache: false
-    });
-  } else {
-    await deployWithOptions({
-      database,
-      cwd,
-      recursive,
-      projectName,
-      useSqitch,
-      useTransaction: tx
-    });
-  }
+  await deployModules({
+    database,
+    cwd,
+    recursive,
+    projectName,
+    useSqitch,
+    useTransaction: tx,
+    fast: argv.fast,
+    usePlan: argv.usePlan ?? true,
+    cache: argv.cache ?? false
+  });
 
   log.success('Deployment complete.');
 
