@@ -6,7 +6,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { getSpawnEnvWithPg } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { revertCommand } from '../migrate/revert-command';
+import { revertModule } from '../migrate/revert-module';
 
 interface Extensions {
   resolved: string[];
@@ -15,7 +15,7 @@ interface Extensions {
 
 const log = new Logger('revert');
 
-export const revert = async (
+export const revertProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
@@ -94,7 +94,7 @@ export const revert = async (
           log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
           
           try {
-            await revertCommand(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
+            await revertModule(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });

@@ -2,16 +2,11 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
 import {
-  getEnvOptions,
-  LaunchQLOptions
-} from '@launchql/types';
-
-import {
   getPgEnvOptions,
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { deploy, deployWithOptions } from '@launchql/core';
+import { deployModules } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { getTargetDatabase } from '../utils';
@@ -83,34 +78,17 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
-  // Handle fast deploy using the unified deploy function
-  if (argv.fast && recursive) {
-    const options: LaunchQLOptions = getEnvOptions({
-      pg: {
-        database
-      }
-    });
-    
-    const { LaunchQLProject } = await import('@launchql/core');
-    const project = new LaunchQLProject(cwd);
-    const modules = project.getModuleMap();
-    const modulePath = modules[projectName!].path;
-    
-    await deploy(options, projectName!, database, modulePath, {
-      fast: true,
-      usePlan: true,
-      cache: false
-    });
-  } else {
-    await deployWithOptions({
-      database,
-      cwd,
-      recursive,
-      projectName,
-      useSqitch,
-      useTransaction: tx
-    });
-  }
+  await deployModules({
+    database,
+    cwd,
+    recursive,
+    projectName,
+    useSqitch,
+    useTransaction: tx,
+    fast: argv.fast,
+    usePlan: argv.usePlan ?? true,
+    cache: argv.cache ?? false
+  });
 
   log.success('Deployment complete.');
 

@@ -1,13 +1,13 @@
 import { LaunchQLProject } from '../class/launchql';
-import { deploy } from '../sqitch/deploy';
-import { revert } from '../sqitch/revert';
-import { verify } from '../sqitch/verify';
+import { deployProject } from '../projects/deploy-project';
+import { revertProject } from '../projects/revert-project';
+import { verifyProject } from '../projects/verify-project';
 import { getEnvOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { deployCommand } from '../migrate/deploy-command';
-import { revertCommand } from '../migrate/revert-command';
-import { verifyCommand } from '../migrate/verify-command';
+import { deployModule } from './deploy-module';
+import { revertModule } from './revert-module';
+import { verifyModule } from './verify-module';
 import { runSqitch } from '../utils/sqitch-wrapper';
 
 const log = new Logger('project-commands');
@@ -20,12 +20,16 @@ export interface MigrationOptions {
   useSqitch?: boolean;
   useTransaction?: boolean;
   toChange?: string;
+  // Options for fast deployment
+  fast?: boolean;
+  usePlan?: boolean;
+  cache?: boolean;
 }
 
 /**
  * Deploy a project - handles both recursive (multi-module) and non-recursive (single directory) deployments
  */
-export async function deployWithOptions(options: MigrationOptions): Promise<void> {
+export async function deployModules(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
       throw new Error('projectName is required when recursive is true');
@@ -42,14 +46,17 @@ export async function deployWithOptions(options: MigrationOptions): Promise<void
     const modulePath = modules[options.projectName].path;
     log.info(`Deploying project ${options.projectName} from ${modulePath} to database ${options.database}...`);
     
-    await deploy(
+    await deployProject(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
       modulePath, 
       { 
         useSqitch: options.useSqitch, 
-        useTransaction: options.useTransaction 
+        useTransaction: options.useTransaction,
+        fast: options.fast,
+        usePlan: options.usePlan,
+        cache: options.cache
       }
     );
   } else {
@@ -57,7 +64,7 @@ export async function deployWithOptions(options: MigrationOptions): Promise<void
     if (options.useSqitch) {
       await runSqitch('deploy', options.database, options.cwd);
     } else {
-      await deployCommand(
+      await deployModule(
         getPgEnvOptions(), 
         options.database, 
         options.cwd, 
@@ -73,7 +80,7 @@ export async function deployWithOptions(options: MigrationOptions): Promise<void
 /**
  * Revert a project - handles both recursive (multi-module) and non-recursive (single directory) reverts
  */
-export async function revertWithOptions(options: MigrationOptions): Promise<void> {
+export async function revertModules(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
       throw new Error('projectName is required when recursive is true');
@@ -89,7 +96,7 @@ export async function revertWithOptions(options: MigrationOptions): Promise<void
     
     log.info(`Reverting project ${options.projectName} on database ${options.database}...`);
     
-    await revert(
+    await revertProject(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
@@ -104,7 +111,7 @@ export async function revertWithOptions(options: MigrationOptions): Promise<void
     if (options.useSqitch) {
       await runSqitch('revert', options.database, options.cwd);
     } else {
-      await revertCommand(
+      await revertModule(
         getPgEnvOptions(), 
         options.database, 
         options.cwd, 
@@ -120,7 +127,7 @@ export async function revertWithOptions(options: MigrationOptions): Promise<void
 /**
  * Verify a project - handles both recursive (multi-module) and non-recursive (single directory) verification
  */
-export async function verifyWithOptions(options: MigrationOptions): Promise<void> {
+export async function verifyModules(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
       throw new Error('projectName is required when recursive is true');
@@ -136,7 +143,7 @@ export async function verifyWithOptions(options: MigrationOptions): Promise<void
     
     log.info(`Verifying project ${options.projectName} on database ${options.database}...`);
     
-    await verify(
+    await verifyProject(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
@@ -148,7 +155,7 @@ export async function verifyWithOptions(options: MigrationOptions): Promise<void
     if (options.useSqitch) {
       await runSqitch('verify', options.database, options.cwd);
     } else {
-      await verifyCommand(
+      await verifyModule(
         getPgEnvOptions(), 
         options.database, 
         options.cwd

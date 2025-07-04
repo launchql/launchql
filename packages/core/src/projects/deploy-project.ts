@@ -5,7 +5,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { getSpawnEnvWithPg, PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { deployCommand } from '../migrate/deploy-command';
+import { deployModule } from '../migrate/deploy-module';
 import { LaunchQLProject } from '../class/launchql';
 import { packageModule } from '../package';
 
@@ -28,7 +28,7 @@ const getCacheKey = (
 
 const log = new Logger('deploy');
 
-export const deploy = async (
+export const deployProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
@@ -155,7 +155,7 @@ export const deploy = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployCommand(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
+            await deployModule(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
           } catch (deployError) {
             log.error(`❌ Deployment failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });

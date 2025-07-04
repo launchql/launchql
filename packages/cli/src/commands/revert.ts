@@ -1,6 +1,6 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { Logger } from '@launchql/logger';
-import { revertWithOptions } from '@launchql/core';
+import { revertModules } from '@launchql/core';
 import { getTargetDatabase } from '../utils';
 import { selectModule } from '../utils/module-utils';
 
@@ -48,7 +48,7 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
-  await revertWithOptions({
+  await revertModules({
     database,
     cwd,
     recursive,

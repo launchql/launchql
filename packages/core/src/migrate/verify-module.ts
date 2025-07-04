@@ -4,26 +4,24 @@ import { LaunchQLMigrate } from '@launchql/migrate';
 import { MigrateConfig } from '@launchql/migrate';
 import { Logger } from '@launchql/logger';
 
-const log = new Logger('migrate-revert');
+const log = new Logger('migrate-verify');
 
 /**
- * Revert command that mimics sqitch revert behavior
- * This is designed to be a drop-in replacement for spawn('sqitch', ['revert', 'db:pg:database'])
+ * Verify command that mimics sqitch verify behavior
+ * This is designed to be a drop-in replacement for spawn('sqitch', ['verify', 'db:pg:database'])
  */
-export async function revertCommand(
+export async function verifyModule(
   config: Partial<MigrateConfig>,
   database: string,
-  cwd: string,
-  options?: {
-    toChange?: string;
-    useTransaction?: boolean;
-  }
+  cwd: string
 ): Promise<void> {
   const planPath = join(cwd, 'sqitch.plan');
   
   if (!existsSync(planPath)) {
     throw new Error(`No sqitch.plan found in ${cwd}`);
   }
+  
+  // The verify method will handle missing verify scripts per change
   
   // Provide defaults for missing config values
   const fullConfig: MigrateConfig = {
@@ -37,22 +35,17 @@ export async function revertCommand(
   const client = new LaunchQLMigrate(fullConfig);
   
   try {
-    const result = await client.revert({
+    const result = await client.verify({
       project: '', // Will be read from plan file
       targetDatabase: database,
-      planPath,
-      toChange: options?.toChange,
-      useTransaction: options?.useTransaction
+      planPath
     });
     
-    if (result.failed) {
-      throw new Error(`Revert failed at change: ${result.failed}`);
+    if (result.failed.length > 0) {
+      throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
     }
     
-    log.info(`Reverted ${result.reverted.length} changes`);
-    if (result.skipped.length > 0) {
-      log.info(`Skipped ${result.skipped.length} not deployed changes`);
-    }
+    log.info(`Verified ${result.verified.length} changes`);
   } finally {
     // Pool is managed by PgPoolCacheManager, no need to close
   }
