@@ -1,6 +1,5 @@
 export * from './class/launchql';
 export * from './deploy-fast';
-export * from './deploy-stream';
 export * from './deps';
 export * from './export-meta';
 export * from './export-migrations';
