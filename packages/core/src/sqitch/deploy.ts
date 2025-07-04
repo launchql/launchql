@@ -18,12 +18,12 @@ interface Extensions {
 const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
 
 const getCacheKey = (
-  pg: Partial<PgConfig> | undefined,
+  pg: PgConfig,
   name: string,
   database: string
 ): string => {
   const { host, port, user } = pg ?? {};
-  return `${host ?? 'localhost'}:${port ?? 5432}:${user ?? 'user'}:${database}:${name}`;
+  return `${host}:${port}:${user}:${database}:${name}`;
 };
 
 const log = new Logger('deploy');
@@ -84,7 +84,7 @@ export const deploy = async (
         if (options?.fast ?? true) {
           // Use fast deployment strategy
           const localProject = new LaunchQLProject(modulePath);
-          const cacheKey = getCacheKey(opts.pg, extension, database);
+          const cacheKey = getCacheKey(opts.pg as PgConfig, extension, database);
           
           if (options?.cache && deployFastCache[cacheKey]) {
             log.warn(`⚡ Using cached pkg for ${extension}.`);
