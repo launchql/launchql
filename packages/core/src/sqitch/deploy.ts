@@ -39,6 +39,7 @@ export const deploy = async (
     /**
      * If true, use the fast deployment strategy
      * This will skip the sqitch deployment and new migration system and simply deploy the packaged sql
+     * Defaults to true for launchql
      */
     fast?: boolean;
     /**
@@ -80,7 +81,7 @@ export const deploy = async (
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
-        if (options?.fast) {
+        if (options?.fast ?? true) {
           // Use fast deployment strategy
           const localProject = new LaunchQLProject(modulePath);
           const cacheKey = getCacheKey(opts.pg, extension, database);

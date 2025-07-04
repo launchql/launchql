@@ -11,7 +11,7 @@ import {
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { deployFast, deployWithOptions } from '@launchql/core';
+import { deploy, deployWithOptions } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { getTargetDatabase } from '../utils';
@@ -83,7 +83,7 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
-  // Handle fast deploy separately as it uses a different API
+  // Handle fast deploy using the unified deploy function
   if (argv.fast && recursive) {
     const options: LaunchQLOptions = getEnvOptions({
       pg: {
@@ -91,18 +91,13 @@ export default async (
       }
     });
     
-    // Fast deploy needs the module path, so we need to get it
-    // This is a limitation of the current fast deploy API
     const { LaunchQLProject } = await import('@launchql/core');
     const project = new LaunchQLProject(cwd);
     const modules = project.getModuleMap();
     const modulePath = modules[projectName!].path;
     
-    await deployFast({
-      opts: options,
-      database,
-      dir: modulePath,
-      name: projectName!,
+    await deploy(options, projectName!, database, modulePath, {
+      fast: true,
       usePlan: true,
       cache: false
     });
