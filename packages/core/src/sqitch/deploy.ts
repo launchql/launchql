@@ -2,16 +2,29 @@ import { resolve } from 'path';
 import { spawn } from 'child_process';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { getSpawnEnvWithPg } from 'pg-env';
+import { getSpawnEnvWithPg, PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { deployCommand } from '../migrate/deploy-command';
 import { LaunchQLProject } from '../class/launchql';
+import { packageModule } from '../package';
 
 interface Extensions {
   resolved: string[];
   external: string[];
 }
+
+// Cache for fast deployment
+const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
+
+const getCacheKey = (
+  pg: Partial<PgConfig> | undefined,
+  name: string,
+  database: string
+): string => {
+  const { host, port, user } = pg ?? {};
+  return `${host ?? 'localhost'}:${port ?? 5432}:${user ?? 'user'}:${database}:${name}`;
+};
 
 const log = new Logger('deploy');
 
@@ -20,7 +33,23 @@ export const deploy = async (
   name: string,
   database: string,
   dir: string,
-  options?: { useSqitch?: boolean; useTransaction?: boolean }
+  options?: { 
+    useSqitch?: boolean;
+    useTransaction?: boolean;
+    /**
+     * If true, use the fast deployment strategy
+     * This will skip the sqitch deployment and new migration system and simply deploy the packaged sql
+     */
+    fast?: boolean;
+    /**
+     * if fast is true, you can choose to use the plan file or simply leverage the dependencies
+     */
+    usePlan?: boolean;
+    /**
+     * if fast is true, you can choose to cache the packaged module
+     */
+    cache?: boolean;
+  }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -35,10 +64,7 @@ export const deploy = async (
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = mod.getModuleExtensions();
 
-  const pgPool = getPgPool({
-    ...opts.pg,
-    database
-  });
+  const pgPool = getPgPool({ ...opts.pg, database });
 
   log.success(`🚀 Starting deployment to database ${database}...`);
 
@@ -54,7 +80,42 @@ export const deploy = async (
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
-        if (options?.useSqitch) {
+        if (options?.fast) {
+          // Use fast deployment strategy
+          const localProject = new LaunchQLProject(modulePath);
+          const cacheKey = getCacheKey(opts.pg, extension, database);
+          
+          if (options?.cache && deployFastCache[cacheKey]) {
+            log.warn(`⚡ Using cached pkg for ${extension}.`);
+            await pgPool.query(deployFastCache[cacheKey].sql);
+            continue;
+          }
+
+          let pkg;
+          try {
+            pkg = await packageModule(localProject.modulePath, { 
+              usePlan: options?.usePlan ?? true, 
+              extension: false 
+            });
+          } catch (err) {
+            log.error(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
+            log.error(`   Error: ${err instanceof Error ? err.message : String(err)}`);
+            console.error(err); // Preserve full stack trace
+            throw errors.DEPLOYMENT_FAILED({ 
+              type: 'Deployment', 
+              module: extension
+            });
+          }
+
+          log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+          log.debug(`> ${pkg.sql}`);
+
+          await pgPool.query(pkg.sql);
+
+          if (options?.cache) {
+            deployFastCache[cacheKey] = pkg;
+          }
+        } else if (options?.useSqitch) {
           // Use legacy sqitch
           log.debug(`→ Command: sqitch deploy db:pg:${database}`);
           
