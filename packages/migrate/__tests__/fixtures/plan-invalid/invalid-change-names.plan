@@ -1,0 +1,43 @@
+%syntax-version=1.0.0
+%project=invalid-changes
+%uri=https://github.com/test/invalid-changes
+
+# Invalid change names - each should trigger a validation error
+
+# Contains disallowed characters
+@foo 2024-01-01T00:00:00Z dev <dev@example.com> # @ not allowed in change names
+foo:bar 2024-01-01T00:00:01Z dev <dev@example.com> # : not allowed
+foo\bar 2024-01-01T00:00:02Z dev <dev@example.com> # \ not allowed
+foo#bar 2024-01-01T00:00:03Z dev <dev@example.com> # # not allowed
+
+# Invalid endings
+foo^6 2024-01-01T00:00:04Z dev <dev@example.com> # Cannot end with ^N
+bar~9 2024-01-01T00:00:05Z dev <dev@example.com> # Cannot end with ~N
+baz/3 2024-01-01T00:00:06Z dev <dev@example.com> # Cannot end with /N
+qux=7 2024-01-01T00:00:07Z dev <dev@example.com> # Cannot end with =N
+test%42 2024-01-01T00:00:08Z dev <dev@example.com> # Cannot end with %N
+
+# Starting with punctuation (except underscore)
++foo 2024-01-01T00:00:09Z dev <dev@example.com> # Cannot start with +
+-bar 2024-01-01T00:00:10Z dev <dev@example.com> # Cannot start with -
+.baz 2024-01-01T00:00:11Z dev <dev@example.com> # Cannot start with .
+!qux 2024-01-01T00:00:12Z dev <dev@example.com> # Cannot start with !
+
+# Ending with punctuation (except underscore)
+foo+ 2024-01-01T00:00:13Z dev <dev@example.com> # Cannot end with +
+bar- 2024-01-01T00:00:14Z dev <dev@example.com> # Cannot end with -
+baz. 2024-01-01T00:00:15Z dev <dev@example.com> # Cannot end with .
+qux! 2024-01-01T00:00:16Z dev <dev@example.com> # Cannot end with !
+
+# Contains whitespace
+foo bar 2024-01-01T00:00:17Z dev <dev@example.com> # No spaces allowed
+tab	test 2024-01-01T00:00:18Z dev <dev@example.com> # No tabs allowed
+new
+line 2024-01-01T00:00:19Z dev <dev@example.com> # No newlines allowed
+
+# Empty or missing name
+ 2024-01-01T00:00:20Z dev <dev@example.com> # Empty name
+  2024-01-01T00:00:21Z dev <dev@example.com> # Just whitespace
+
+# Special cases
+%hi 2024-01-01T00:00:22Z dev <dev@example.com> # Cannot start with %

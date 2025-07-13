@@ -1,5 +1,10 @@
 import { readFileSync } from 'fs';
 import { Change, PlanFile } from '../types';
+import { parsePlanFileWithValidation } from './plan-parser';
+
+// Re-export new parser functionality
+export * from './validators';
+export * from './plan-parser';
 
 /**
  * Parse a Sqitch plan file into a structured format
@@ -9,45 +14,27 @@ import { Change, PlanFile } from '../types';
  * 
  * Example:
  * procedures/verify_constraint [pg-utilities:procedures/tg_update_timestamps] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_constraint
+ * 
+ * @deprecated Use parsePlanFileWithValidation for full validation support
  */
 export function parsePlanFile(planPath: string): PlanFile {
-  const content = readFileSync(planPath, 'utf-8');
-  const lines = content.split('\n');
+  // Use the new parser but return the simple format for backwards compatibility
+  const result = parsePlanFileWithValidation(planPath);
   
-  let project = '';
-  let uri = '';
-  const changes: Change[] = [];
-  
-  for (const line of lines) {
-    const trimmed = line.trim();
-    
-    // Skip empty lines
-    if (!trimmed) continue;
-    
-    // Parse project metadata
-    if (trimmed.startsWith('%project=')) {
-      project = trimmed.substring('%project='.length);
-      continue;
-    }
-    
-    if (trimmed.startsWith('%uri=')) {
-      uri = trimmed.substring('%uri='.length);
-      continue;
-    }
-    
-    // Skip other metadata lines
-    if (trimmed.startsWith('%') || trimmed.startsWith('@')) {
-      continue;
-    }
-    
-    // Parse change lines
-    const change = parseChangeLine(trimmed);
-    if (change) {
-      changes.push(change);
-    }
+  if (result.errors.length > 0) {
+    // For backwards compatibility, we'll still try to return what we can
+    // In production, you should use parsePlanFileWithValidation and handle errors
+    console.warn('Plan file parsing encountered errors:', result.errors);
   }
   
-  return { project, uri, changes };
+  if (result.plan) {
+    // Return without the tags for backwards compatibility
+    const { tags, ...planWithoutTags } = result.plan;
+    return planWithoutTags;
+  }
+  
+  // Fallback to empty plan
+  return { project: '', uri: '', changes: [] };
 }
 
 /**

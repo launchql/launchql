@@ -1,0 +1,19 @@
+%syntax-version=1.0.0
+%project=symbolic-refs
+%uri=https://github.com/test/symbolic-refs
+
+# Base changes to test symbolic references
+first_change 2024-01-01T00:00:00Z dev <dev@example.com> # The ROOT
+second_change 2024-01-01T00:00:01Z dev <dev@example.com> # Second
+third_change 2024-01-01T00:00:02Z dev <dev@example.com> # Third
+fourth_change 2024-01-01T00:00:03Z dev <dev@example.com> # The HEAD (last)
+
+# Changes with symbolic dependencies
+depends_on_head [HEAD] 2024-01-01T00:00:04Z dev <dev@example.com> # Depends on last change
+depends_on_root [ROOT] 2024-01-01T00:00:05Z dev <dev@example.com> # Depends on first change
+depends_on_at_head [@HEAD] 2024-01-01T00:00:06Z dev <dev@example.com> # @ prefix variant
+depends_on_at_root [@ROOT] 2024-01-01T00:00:07Z dev <dev@example.com> # @ prefix variant
+
+# Cross-project symbolic references
+cross_head [other:HEAD] 2024-01-01T00:00:08Z dev <dev@example.com> # HEAD in another project
+cross_root [other:@ROOT] 2024-01-01T00:00:09Z dev <dev@example.com> # ROOT in another project

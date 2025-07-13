@@ -1,0 +1,22 @@
+%syntax-version=1.0.0
+%project=sha1-refs
+%uri=https://github.com/test/sha1-refs
+
+# Base changes
+initial 2024-01-01T00:00:00Z dev <dev@example.com> # Initial change
+secondary 2024-01-01T00:00:01Z dev <dev@example.com> # Secondary change
+
+# Dependencies using SHA1 hashes
+depends_on_sha1 [40763784148fa190d75bad036730ef44d1c2eac6] 2024-01-01T00:00:02Z dev <dev@example.com> # Full SHA1
+depends_on_sha2 [abcdef0123456789abcdef0123456789abcdef01] 2024-01-01T00:00:03Z dev <dev@example.com> # Another SHA1
+
+# SHA1 with project qualifier
+cross_sha1 [project:40763784148fa190d75bad036730ef44d1c2eac6] 2024-01-01T00:00:04Z dev <dev@example.com> # SHA1 in another project
+multi_sha [proj1:abc1234567890123456789012345678901234567 proj2:def1234567890123456789012345678901234567] 2024-01-01T00:00:05Z dev <dev@example.com>
+
+# Mixed dependencies (SHA1 and regular)
+mixed_deps [initial 40763784148fa190d75bad036730ef44d1c2eac6 secondary] 2024-01-01T00:00:06Z dev <dev@example.com>
+
+# SHA1 references in uppercase (should be case-insensitive)
+upper_sha [40763784148FA190D75BAD036730EF44D1C2EAC6] 2024-01-01T00:00:07Z dev <dev@example.com> # Uppercase SHA1
+mixed_case_sha [AbCdEf0123456789aBcDeF0123456789AbCdEf01] 2024-01-01T00:00:08Z dev <dev@example.com> # Mixed case SHA1
