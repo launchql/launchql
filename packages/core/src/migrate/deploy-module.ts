@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { LaunchQLMigrate } from '../client';
-import { MigrateConfig } from '../types';
+import { LaunchQLMigrate } from '@launchql/migrate';
+import { MigrateConfig } from '@launchql/migrate';
 import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-deploy');
@@ -10,7 +10,7 @@ const log = new Logger('migrate-deploy');
  * Deploy command that mimics sqitch deploy behavior
  * This is designed to be a drop-in replacement for spawn('sqitch', ['deploy', 'db:pg:database'])
  */
-export async function deployCommand(
+export async function deployModule(
   config: Partial<MigrateConfig>,
   database: string,
   cwd: string,

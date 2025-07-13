@@ -6,7 +6,7 @@ import { getSpawnEnvWithPg } from 'pg-env';
 import { LaunchQLProject } from '../class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { verifyCommand } from '@launchql/migrate';
+import { verifyModule } from '../migrate/verify-module';
 
 interface Extensions {
   resolved: string[];
@@ -15,7 +15,7 @@ interface Extensions {
 
 const log = new Logger('verify');
 
-export const verify = async (
+export const verifyProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
@@ -83,7 +83,7 @@ export const verify = async (
             });
           } else {
             // Use new migration system
-            await verifyCommand(opts.pg, database, modulePath);
+            await verifyModule(opts.pg, database, modulePath);
           }
         } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);

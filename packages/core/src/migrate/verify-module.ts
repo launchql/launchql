@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { LaunchQLMigrate } from '../client';
-import { MigrateConfig } from '../types';
+import { LaunchQLMigrate } from '@launchql/migrate';
+import { MigrateConfig } from '@launchql/migrate';
 import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-verify');
@@ -10,7 +10,7 @@ const log = new Logger('migrate-verify');
  * Verify command that mimics sqitch verify behavior
  * This is designed to be a drop-in replacement for spawn('sqitch', ['verify', 'db:pg:database'])
  */
-export async function verifyCommand(
+export async function verifyModule(
   config: Partial<MigrateConfig>,
   database: string,
   cwd: string
@@ -25,11 +25,11 @@ export async function verifyCommand(
   
   // Provide defaults for missing config values
   const fullConfig: MigrateConfig = {
-    host: config.host || 'localhost',
-    port: config.port || 5432,
-    user: config.user || 'postgres',
-    password: config.password || '',
-    database: config.database || 'postgres'
+    host: config.host,
+    port: config.port,
+    user: config.user,
+    password: config.password,
+    database: config.database
   };
   
   const client = new LaunchQLMigrate(fullConfig);
