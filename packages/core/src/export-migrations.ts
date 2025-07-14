@@ -6,7 +6,7 @@ import Case from 'case';
 import { exportMeta } from './export-meta';
 import { getPgPool } from 'pg-cache';
 import { LaunchQLOptions } from '@launchql/types';
-import { SqitchRow, writeSqitchFiles, writeSqitchPlan, SqlWriteOptions } from '@launchql/config-files';
+import { SqitchRow, writeSqitchFiles, writeSqitchPlan, SqlWriteOptions } from '@launchql/project-files';
 import { LaunchQLProject } from './class/launchql';
 
 interface ExportMigrationsToDiskOptions {

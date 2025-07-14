@@ -8,7 +8,7 @@ import { parse } from 'parse-package-name';
 import os from 'os';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
-import { generatePlan, writePlan } from '@launchql/config-files';
+import { generatePlan, writePlan } from '@launchql/project-files';
 
 import {
   writeRenderedTemplates,
@@ -30,7 +30,7 @@ import {
   getExtensionName,
   getInstalledExtensions,
   ExtensionInfo,
-} from '@launchql/config-files';
+} from '@launchql/project-files';
 import { getAvailableExtensions } from '../extensions';
 
 
@@ -256,7 +256,7 @@ export class LaunchQLProject {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create launchql.plan file using config-files package
+    // Create launchql.plan file using project-files package
     const plan = generatePlan({
       moduleName: modName,
       uri: modName,
@@ -475,7 +475,7 @@ export class LaunchQLProject {
       };
     });
 
-    // Use the config-files package to generate the plan
+    // Use the project-files package to generate the plan
     return generatePlan({
       moduleName,
       uri: options.uri,
@@ -493,7 +493,7 @@ export class LaunchQLProject {
     const mod = moduleMap[name];
     const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');
     
-    // Use the config-files package to write the plan
+    // Use the project-files package to write the plan
     writePlan(planPath, plan);
   }
 

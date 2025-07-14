@@ -1,6 +1,6 @@
 import { sync as glob } from 'glob';
 import { basename } from 'path';
-import { getLatestChange, parseControlFile, Module } from '@launchql/config-files';
+import { getLatestChange, parseControlFile, Module } from '@launchql/project-files';
 
 export type ModuleMap = Record<string, Module>;
 

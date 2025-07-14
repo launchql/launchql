@@ -14,9 +14,9 @@ import {
   VerifyResult,
   StatusResult
 } from './types';
-import { parsePlanFileSimple as parsePlanFile, Change } from '@launchql/config-files';
+import { parsePlanFileSimple as parsePlanFile, Change } from '@launchql/project-files';
 import { hashFile } from './utils/hash';
-import { readScript, scriptExists } from '@launchql/config-files';
+import { readScript, scriptExists } from '@launchql/project-files';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
 
