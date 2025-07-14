@@ -117,8 +117,8 @@ export function parsePlanFile(planPath: string): ParseResult<ExtendedPlanFile> {
  * Format: change_name [deps] timestamp planner <email> # comment
  */
 function parseChangeLine(line: string): Change | null {
-  // More flexible regex that handles various formats
-  const regex = /^(\S+)(?:\s+\[([^\]]*)\])?(?:\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z))?(?:\s+(\S+))?(?:\s+<([^>]+)>)?(?:\s+#\s+(.*))?$/;
+  // More flexible regex that handles various formats, including planner names with spaces
+  const regex = /^(\S+)(?:\s+\[([^\]]*)\])?(?:\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z))?(?:\s+([^<]+?))?(?:\s+<([^>]+)>)?(?:\s+#\s+(.*))?$/;
   
   const match = line.match(regex);
   if (!match) {

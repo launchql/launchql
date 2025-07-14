@@ -445,7 +445,8 @@ export class LaunchQLProject {
     // Process external dependencies if needed
     if (options.projects && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
-      const external = depData.modules.map((m) => `${m.name}:${m.latest}`);
+      const external = depData.modules
+        .map((m) => `${m.name}:${m.latest}`);
 
       // Add external dependencies to the first change if there is one
       if (resolved.length > 0) {
