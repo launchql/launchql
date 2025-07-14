@@ -1,350 +1,435 @@
-# LaunchQL Core vs Migrate Architecture Documentation
+# LaunchQL Migration System Documentation
 
 ## Overview
 
-LaunchQL's database migration system is built on two complementary packages that work together to provide a complete migration management solution:
+The LaunchQL migration system consists of two main packages that work together to provide a complete database migration solution:
 
-- **@launchql/migrate**: Low-level migration engine (pure Sqitch replacement)
+- **@launchql/migrate**: Low-level migration engine (pure TypeScript replacement for Sqitch)
 - **@launchql/core**: High-level orchestration and project management
 
-## Architecture Flow
+## Architecture
 
 ```mermaid
 graph TB
-    subgraph "User Interface"
-        CLI[CLI Commands]
-        Config[Configuration Files]
+    subgraph "User Interface Layer"
+        CLI["@launchql/cli<br/>Command Line Interface"]
+        API["Direct API Usage"]
     end
-    
-    subgraph "@launchql/core"
-        Project[LaunchQLProject]
-        Modules[Module Discovery]
-        Extensions[Extension Management]
-        Resolver[Dependency Resolution]
+
+    subgraph "@launchql/core - Orchestration Layer"
+        PM["Project Management<br/>(LaunchQLProject)"]
+        DM["Deploy Module<br/>(deployModules)"]
+        RM["Revert Module<br/>(revertModules)"]
+        VM["Verify Module<br/>(verifyModules)"]
         
-        Project --> Modules
-        Project --> Extensions
-        Modules --> Resolver
+        PM --> DM
+        PM --> RM
+        PM --> VM
     end
-    
-    subgraph "@launchql/migrate"
-        Engine[Migration Engine]
-        Parser[Plan Parser]
-        Executor[SQL Executor]
-        Registry[Change Registry]
+
+    subgraph "@launchql/migrate - Engine Layer"
+        MC["LaunchQLMigrate Client"]
+        DP["Deploy Logic"]
+        RV["Revert Logic"]
+        VF["Verify Logic"]
+        ST["Status Check"]
         
-        Engine --> Parser
-        Engine --> Executor
-        Engine --> Registry
+        MC --> DP
+        MC --> RV
+        MC --> VF
+        MC --> ST
     end
+
+    subgraph "Database Layer"
+        PG[("PostgreSQL Database")]
+        MS["launchql_migrate Schema"]
+        PT["projects table"]
+        CT["changes table"]
+        DT["dependencies table"]
+        ET["events table"]
+        
+        PG --> MS
+        MS --> PT
+        MS --> CT
+        MS --> DT
+        MS --> ET
+    end
+
+    subgraph "File System"
+        PF["launchql.plan<br/>(Plan File)"]
+        DS["deploy/*.sql<br/>(Deploy Scripts)"]
+        RS["revert/*.sql<br/>(Revert Scripts)"]
+        VS["verify/*.sql<br/>(Verify Scripts)"]
+    end
+
+    CLI --> PM
+    API --> MC
+    API --> PM
     
-    CLI --> Project
-    Config --> Project
-    Resolver --> Engine
-    Extensions --> Engine
+    DM --> MC
+    RM --> MC
+    VM --> MC
+    
+    DP --> PG
+    RV --> PG
+    VF --> PG
+    ST --> PG
+    
+    MC --> PF
+    DP --> DS
+    RV --> RS
+    VF --> VS
+
+    style CLI fill:#f9f,stroke:#333,stroke-width:2px
+    style API fill:#f9f,stroke:#333,stroke-width:2px
+    style MC fill:#9cf,stroke:#333,stroke-width:2px
+    style PG fill:#fc9,stroke:#333,stroke-width:2px
 ```
 
-## Package Responsibilities
-
-### @launchql/migrate (Low-Level Engine)
-
-The migrate package is a pure TypeScript replacement for Sqitch, handling the core migration mechanics:
-
-#### Core Components
-
-1. **Migration Engine** (`src/engine/`)
-   - Executes migrations in the correct order
-   - Handles rollbacks and reverts
-   - Manages transaction boundaries
-   - Tracks migration state
-
-2. **Plan Parser** (`src/parser/`)
-   - Parses plan files (sqitch.plan/launchql.plan)
-   - Validates change dependencies
-   - Resolves symbolic references (HEAD, ROOT, tags)
-
-3. **Change Registry** (`src/registry/`)
-   - Tracks applied changes in the database
-   - Manages migration history
-   - Handles verification of applied changes
-
-4. **SQL Executor** (`src/executor/`)
-   - Executes SQL files
-   - Manages database connections
-   - Handles transaction management
-
-#### Key APIs
-
-```typescript
-// Parse a plan file
-import { parsePlanFile } from '@launchql/migrate';
-
-const result = parsePlanFile('path/to/launchql.plan');
-if (result.errors.length === 0) {
-  const plan = result.data;
-  // plan.changes, plan.tags, etc.
-}
-
-// Execute migrations
-import { MigrationEngine } from '@launchql/migrate';
-
-const engine = new MigrationEngine({
-  planFile: 'launchql.plan',
-  deployDir: 'deploy/',
-  revertDir: 'revert/',
-  verifyDir: 'verify/',
-  connection: dbConnection
-});
-
-// Deploy to a specific target
-await engine.deploy({ target: '@v1.0.0' });
-
-// Revert to a previous state
-await engine.revert({ target: 'change_name' });
-
-// Verify current state
-const status = await engine.verify();
-```
-
-### @launchql/core (High-Level Orchestration)
-
-The core package provides project management and orchestration capabilities:
-
-#### Core Components
-
-1. **LaunchQLProject** (`src/project.ts`)
-   - Discovers and manages project structure
-   - Handles multi-module projects
-   - Manages configuration
-
-2. **Module Discovery** (`src/modules.ts`)
-   - Finds all modules in a project
-   - Extracts module metadata
-   - Resolves inter-module dependencies
-
-3. **Extension Management** (`src/extensions.ts`)
-   - Discovers PostgreSQL extensions
-   - Manages extension dependencies
-   - Handles extension installation order
-
-4. **Dependency Resolution** (`src/resolver.ts`)
-   - Resolves complex dependency graphs
-   - Handles circular dependency detection
-   - Optimizes deployment order
-
-#### Key APIs
-
-```typescript
-// Create a project instance
-import { LaunchQLProject } from '@launchql/core';
-
-const project = new LaunchQLProject({
-  root: '/path/to/project',
-  config: {
-    // configuration options
-  }
-});
-
-// Discover modules
-const modules = await project.getModules();
-// Returns array of modules with metadata
-
-// Get deployment order
-const deploymentOrder = await project.getDeploymentOrder();
-// Returns modules in correct deployment sequence
-
-// Deploy entire project
-await project.deploy({
-  target: 'latest',
-  modules: ['module1', 'module2'] // optional filter
-});
-
-// Get project status
-const status = await project.getStatus();
-// Returns deployment status for all modules
-```
-
-## Integration Flow
+## Data Flow
 
 ```mermaid
 sequenceDiagram
     participant User
     participant Core
     participant Migrate
-    participant Database
-    
-    User->>Core: lql deploy
-    Core->>Core: Discover modules
+    participant Parser
+    participant DB
+    participant FS as File System
+
+    User->>Core: deploy(project, database)
     Core->>Core: Resolve dependencies
-    Core->>Core: Determine deployment order
+    Core->>Migrate: new LaunchQLMigrate(config)
     
-    loop For each module
-        Core->>Migrate: Create MigrationEngine
-        Migrate->>Migrate: Parse plan file
-        Migrate->>Database: Check current state
-        Migrate->>Migrate: Calculate changes needed
+    loop For each module in dependency order
+        Core->>Migrate: deploy(options)
+        Migrate->>Parser: parsePlanFile(planPath)
+        Parser->>FS: Read launchql.plan
+        Parser-->>Migrate: PlanFile object
         
-        loop For each change
-            Migrate->>Database: Execute deploy script
-            Migrate->>Database: Record in registry
-            Migrate->>Database: Run verification
+        Migrate->>DB: Check deployed changes
+        DB-->>Migrate: Already deployed list
+        
+        loop For each change not deployed
+            Migrate->>FS: Read deploy script
+            Migrate->>Migrate: Hash script content
+            Migrate->>DB: BEGIN TRANSACTION
+            Migrate->>DB: Execute deploy script
+            Migrate->>DB: Record change in tables
+            Migrate->>DB: COMMIT
+            
+            opt If verify script exists
+                Migrate->>FS: Read verify script
+                Migrate->>DB: Execute verify script
+            end
         end
         
-        Migrate->>Core: Return status
+        Migrate-->>Core: DeployResult
     end
     
-    Core->>User: Deployment complete
+    Core-->>User: Success/Failure
 ```
 
-## Configuration
+## API Documentation
 
-### Project Structure
+### @launchql/migrate - Low-Level Engine
 
-```
-project/
-├── launchql.json          # Project configuration
-├── packages/
-│   ├── module1/
-│   │   ├── launchql.plan  # Module plan file
-│   │   ├── deploy/        # Deploy scripts
-│   │   ├── revert/        # Revert scripts
-│   │   └── verify/        # Verify scripts
-│   └── module2/
-│       └── ...
-└── extensions/
-    └── ...
-```
+#### LaunchQLMigrate Class
 
-### Configuration File (launchql.json)
+The main client for interacting with the migration system.
 
-```json
-{
-  "name": "my-project",
-  "version": "1.0.0",
-  "modules": {
-    "search": ["module1", "module2"],
-    "ignore": ["node_modules", "dist"]
-  },
-  "database": {
-    "host": "localhost",
-    "port": 5432,
-    "database": "mydb"
-  },
-  "migration": {
-    "registry": "launchql",
-    "planFile": "launchql.plan"
-  }
+```typescript
+class LaunchQLMigrate {
+  constructor(config: MigrateConfig)
+  
+  // Initialize migration schema in database
+  async initialize(): Promise<void>
+  
+  // Deploy changes
+  async deploy(options: DeployOptions): Promise<DeployResult>
+  
+  // Revert changes
+  async revert(options: RevertOptions): Promise<RevertResult>
+  
+  // Verify deployment
+  async verify(options: VerifyOptions): Promise<VerifyResult>
+  
+  // Check status
+  async status(project: string): Promise<StatusResult>
+  
+  // Import from existing Sqitch deployment
+  async importFromSqitch(): Promise<void>
+  
+  // Close database connection
+  async close(): Promise<void>
 }
 ```
 
-## Advanced Features
-
-### 1. Multi-Module Projects
-
-Core handles complex projects with multiple interdependent modules:
+#### Types
 
 ```typescript
-// Discover all modules
-const modules = await project.getModules();
+interface MigrateConfig {
+  host?: string;
+  port?: number;
+  user?: string;
+  password?: string;
+  database?: string;
+}
 
-// Deploy specific modules
-await project.deploy({
-  modules: ['auth', 'users'],
-  target: '@v2.0.0'
+interface DeployOptions {
+  project: string;
+  targetDatabase: string;
+  planPath: string;
+  toChange?: string;        // Deploy up to this change
+  useTransaction?: boolean; // Wrap in transaction (default: true)
+}
+
+interface RevertOptions {
+  project: string;
+  targetDatabase: string;
+  planPath: string;
+  toChange?: string;        // Revert to this change
+  useTransaction?: boolean; // Wrap in transaction (default: true)
+}
+
+interface VerifyOptions {
+  project: string;
+  targetDatabase: string;
+  planPath: string;
+}
+
+interface DeployResult {
+  deployed: string[];  // Successfully deployed changes
+  skipped: string[];   // Already deployed changes
+  failed?: string;     // Failed change name (if any)
+}
+
+interface RevertResult {
+  reverted: string[];  // Successfully reverted changes
+  skipped: string[];   // Not deployed changes
+  failed?: string;     // Failed change name (if any)
+}
+
+interface VerifyResult {
+  verified: string[];  // Successfully verified changes
+  failed: string[];    // Failed verifications
+}
+
+interface StatusResult {
+  project: string;
+  totalDeployed: number;
+  lastChange: string;
+  lastDeployed: Date;
+}
+```
+
+### @launchql/core - High-Level Orchestration
+
+#### Migration Functions
+
+```typescript
+// Deploy modules with dependency resolution
+async function deployModules(options: MigrationOptions): Promise<void>
+
+// Revert modules in reverse dependency order
+async function revertModules(options: MigrationOptions): Promise<void>
+
+// Verify module deployments
+async function verifyModules(options: MigrationOptions): Promise<void>
+```
+
+#### Types
+
+```typescript
+interface MigrationOptions {
+  database: string;      // Target database name
+  cwd: string;          // Working directory
+  recursive?: boolean;   // Handle multi-module projects
+  projectName?: string;  // Required if recursive=true
+  useSqitch?: boolean;   // Use sqitch instead of native
+  useTransaction?: boolean;
+  toChange?: string;     // Deploy/revert to specific change
+  
+  // Fast deployment options
+  fast?: boolean;        // Skip verification
+  usePlan?: boolean;     // Use plan-based deployment
+  cache?: boolean;       // Cache deployment state
+}
+```
+
+## Database Schema
+
+The migration system creates a `launchql_migrate` schema with the following tables:
+
+### projects
+Tracks migration projects.
+```sql
+CREATE TABLE launchql_migrate.projects (
+    project         TEXT        PRIMARY KEY,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp()
+);
+```
+
+### changes
+Records deployed changes with their script hashes.
+```sql
+CREATE TABLE launchql_migrate.changes (
+    change_id       TEXT        PRIMARY KEY,
+    change_name     TEXT        NOT NULL,
+    project         TEXT        NOT NULL REFERENCES projects(project),
+    script_hash     TEXT        NOT NULL,
+    deployed_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
+    UNIQUE(project, change_name),
+    UNIQUE(project, script_hash)
+);
+```
+
+### dependencies
+Tracks change dependencies.
+```sql
+CREATE TABLE launchql_migrate.dependencies (
+    change_id       TEXT        NOT NULL REFERENCES changes(change_id),
+    requires        TEXT        NOT NULL,
+    PRIMARY KEY (change_id, requires)
+);
+```
+
+### events
+Logs deployment events.
+```sql
+CREATE TABLE launchql_migrate.events (
+    event_id        SERIAL      PRIMARY KEY,
+    event_type      TEXT        NOT NULL CHECK (event_type IN ('deploy', 'revert', 'fail')),
+    change_name     TEXT        NOT NULL,
+    project         TEXT        NOT NULL,
+    occurred_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp()
+);
+```
+
+## Usage Examples
+
+### Direct API Usage (Low-Level)
+
+```typescript
+import { LaunchQLMigrate } from '@launchql/migrate';
+
+// Create client
+const migrate = new LaunchQLMigrate({
+  host: 'localhost',
+  port: 5432,
+  user: 'postgres',
+  password: 'password',
+  database: 'postgres'
 });
 
-// Get module dependencies
-const deps = await project.getModuleDependencies('users');
+// Deploy changes
+const result = await migrate.deploy({
+  project: 'myproject',
+  targetDatabase: 'myapp',
+  planPath: './launchql.plan',
+  toChange: 'add-users-table'  // Optional: deploy up to specific change
+});
+
+console.log(`Deployed: ${result.deployed.join(', ')}`);
+console.log(`Skipped: ${result.skipped.join(', ')}`);
+
+// Verify deployment
+const verifyResult = await migrate.verify({
+  project: 'myproject',
+  targetDatabase: 'myapp',
+  planPath: './launchql.plan'
+});
+
+// Check status
+const status = await migrate.status('myproject');
+console.log(`Total deployed: ${status.totalDeployed}`);
+console.log(`Last change: ${status.lastChange}`);
+
+// Don't forget to close
+await migrate.close();
 ```
 
-### 2. Extension Management
-
-Core automatically manages PostgreSQL extensions:
+### Using Core Orchestration (High-Level)
 
 ```typescript
-// Get required extensions
-const extensions = await project.getExtensions();
+import { deployModules, revertModules } from '@launchql/core';
 
-// Install extensions in correct order
-await project.installExtensions();
-```
+// Deploy a single module
+await deployModules({
+  database: 'myapp',
+  cwd: '/path/to/module',
+  useTransaction: true
+});
 
-### 3. Dependency Resolution
+// Deploy a multi-module project with dependencies
+await deployModules({
+  database: 'myapp',
+  cwd: '/path/to/project',
+  recursive: true,
+  projectName: 'myproject',
+  fast: true  // Skip verification for speed
+});
 
-Core provides sophisticated dependency resolution:
-
-```typescript
-// Get deployment order considering all dependencies
-const order = await project.getDeploymentOrder({
-  includeExtensions: true,
-  parallel: true // Get groups that can be deployed in parallel
+// Revert changes
+await revertModules({
+  database: 'myapp',
+  cwd: '/path/to/module',
+  toChange: 'baseline'  // Revert to specific change
 });
 ```
 
-### 4. Backwards Compatibility
+### CLI Usage
 
-Both packages support sqitch.plan files for easy migration:
+```bash
+# Deploy a module
+launchql deploy --database myapp --project myproject
 
-```typescript
-// Automatically detects sqitch.plan or launchql.plan
-const project = new LaunchQLProject({
-  root: '/legacy/sqitch/project'
-});
-// Works seamlessly with existing Sqitch projects
+# Deploy with options
+launchql deploy --database myapp --project myproject --fast --no-verify
+
+# Revert to a specific change
+launchql revert --database myapp --project myproject --to baseline
+
+# Check status
+launchql status --database myapp --project myproject
 ```
 
-## Migration from Sqitch
+## Key Differences from Sqitch
 
-1. **Drop-in Replacement**: @launchql/migrate can read existing sqitch.plan files
-2. **Gradual Migration**: Rename sqitch.plan to launchql.plan when ready
-3. **Enhanced Features**: Take advantage of Core's multi-module support
-4. **Compatible Registry**: Can use existing Sqitch registry tables
+1. **State Storage**: All migration state is stored in PostgreSQL (`launchql_migrate` schema) instead of a separate registry
+2. **No Tags Support**: The current implementation doesn't support Sqitch tags
+3. **Simplified Events**: Event logging is minimal compared to Sqitch's detailed event tracking
+4. **Script Hashing**: Uses SHA256 for script content verification
+5. **Native TypeScript**: No external Perl/Sqitch dependencies required
+6. **Transaction Control**: Supports per-change or per-deployment transaction wrapping
 
-## Best Practices
+## Migration Process
 
-1. **Use Core for Projects**: Always use @launchql/core for project-level operations
-2. **Use Migrate for Tools**: Use @launchql/migrate directly when building migration tools
-3. **Module Organization**: Keep related changes in the same module
-4. **Extension Declaration**: Declare extensions in the module that first uses them
-5. **Dependency Management**: Use explicit dependencies rather than relying on deployment order
+1. **Initialization**: Creates `launchql_migrate` schema if not exists
+2. **Plan Parsing**: Reads `launchql.plan` file to get changes and dependencies
+3. **Dependency Resolution**: Orders changes based on dependencies
+4. **Deployment**:
+   - Check if change already deployed (by name and hash)
+   - Read deploy script from filesystem
+   - Execute script in transaction
+   - Record change in database
+   - Run verify script if exists
+5. **Verification**: Run verify scripts for all deployed changes
+6. **Revert**: Execute revert scripts in reverse order
 
 ## Error Handling
 
-Both packages provide detailed error information:
+- Failed deployments are rolled back (if using transactions)
+- Events are logged for all operations (deploy, revert, fail)
+- Script hash verification prevents deploying modified scripts
+- Dependency violations are caught before deployment
 
-```typescript
-// Core errors include module context
-try {
-  await project.deploy();
-} catch (error) {
-  if (error.module) {
-    console.error(`Error in module ${error.module}:`, error.message);
-  }
-}
+## Best Practices
 
-// Migrate errors include line numbers and context
-const result = parsePlanFile('plan.txt');
-if (result.errors.length > 0) {
-  result.errors.forEach(err => {
-    console.error(`Line ${err.line}: ${err.message}`);
-  });
-}
-```
-
-## Testing
-
-Both packages include comprehensive testing utilities:
-
-```typescript
-// Test plan files
-import { TestPlan } from '@launchql/sqitch-parser/test-utils';
-
-const plan = new TestPlan('plan-valid/simple.plan');
-expect(plan.isValid()).toBe(true);
-
-// Test migrations
-import { TestDatabase } from '@launchql/migrate/test-utils';
-
-const db = await TestDatabase.create();
-await engine.deploy({ connection: db.connection });
-```
+1. **Always use transactions** for production deployments
+2. **Write idempotent scripts** that can be run multiple times safely
+3. **Include verify scripts** to ensure deployments are successful
+4. **Use meaningful change names** that describe what they do
+5. **Test migrations** in development before production
+6. **Keep revert scripts** up to date with deploy scripts
+7. **Use dependency management** to ensure correct deployment order
