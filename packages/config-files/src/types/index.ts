@@ -53,3 +53,13 @@ export interface ResolvedReference {
   target: string;
   resolved?: string;
 }
+
+// SQL file types
+export interface SqitchRow {
+  deploy: string;
+  revert?: string;
+  verify?: string;
+  content: string;
+  deps?: string[];
+  name?: string;
+}

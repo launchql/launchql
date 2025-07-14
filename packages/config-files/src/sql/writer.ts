@@ -1,33 +1,35 @@
 import fs from 'fs';
 import path from 'path';
+import { SqitchRow } from '../types';
 
-export interface SqitchRow {
-  deploy: string;
-  revert?: string;
-  verify?: string;
-  content: string;
-  deps?: string[];
-  name?: string;
-}
-
-interface WriteOptions {
+export interface SqlWriteOptions {
   outdir: string;
   name: string;
   replacer: (str: string) => string;
+  author?: string;
 }
 
-export const writeSqitchFiles = (rows: SqitchRow[], opts: WriteOptions): void => {
+/**
+ * Write SQL files for Sqitch migrations (deploy, revert, verify)
+ */
+export const writeSqitchFiles = (rows: SqitchRow[], opts: SqlWriteOptions): void => {
   rows.forEach((row) => writeVerify(row, opts));
   rows.forEach((row) => writeRevert(row, opts));
   rows.forEach((row) => writeDeploy(row, opts));
 };
 
+/**
+ * Sort dependencies in a consistent order
+ */
 const ordered = (arr?: string[]): string[] => {
   if (!arr) return [];
   return arr.sort((a, b) => a.length - b.length || a.localeCompare(b));
 };
 
-const writeDeploy = (row: SqitchRow, opts: WriteOptions): void => {
+/**
+ * Write a deploy SQL file for a Sqitch change
+ */
+const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
   const prefix = path.join(opts.outdir, opts.name, 'deploy');
@@ -50,7 +52,10 @@ COMMIT;
   fs.writeFileSync(actualFile, content);
 };
 
-const writeVerify = (row: SqitchRow, opts: WriteOptions): void => {
+/**
+ * Write a verify SQL file for a Sqitch change
+ */
+const writeVerify = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
   const prefix = path.join(opts.outdir, opts.name, 'verify');
@@ -67,7 +72,10 @@ COMMIT;
   fs.writeFileSync(actualFile, content);
 };
 
-const writeRevert = (row: SqitchRow, opts: WriteOptions): void => {
+/**
+ * Write a revert SQL file for a Sqitch change
+ */
+const writeRevert = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
   const prefix = path.join(opts.outdir, opts.name, 'revert');
@@ -82,35 +90,4 @@ COMMIT;
 
 `;
   fs.writeFileSync(actualFile, content);
-};
-
-export const writeSqitchPlan = (rows: SqitchRow[], opts: WriteOptions): void => {
-  const dir = path.resolve(path.join(opts.outdir, opts.name));
-  fs.mkdirSync(dir, { recursive: true });
-
-  const date = (): string => '2017-08-11T08:11:51Z'; // stubbed timestamp
-
-  const duplicates: Record<string, boolean> = {};
-
-  const plan = opts.replacer(`%syntax-version=1.0.0
-%project=launchql-extension-name
-%uri=launchql-extension-name
-
-${rows
-    .map((row) => {
-      if (duplicates[row.deploy]) {
-        console.log('DUPLICATE ' + row.deploy);
-        return '';
-      }
-      duplicates[row.deploy] = true;
-
-      if (row.deps?.length) {
-        return `${row.deploy} [${row.deps.join(' ')}] ${date()} launchql <launchql@5b0c196eeb62> # add ${row.name}`;
-      }
-      return `${row.deploy} ${date()} launchql <launchql@5b0c196eeb62> # add ${row.name}`;
-    })
-    .join('\n')}
-`);
-
-  fs.writeFileSync(path.join(dir, 'launchql.plan'), plan);
 };

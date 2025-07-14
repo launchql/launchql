@@ -1,4 +1,4 @@
-import fs, { writeFileSync } from 'fs';
+import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
@@ -8,6 +8,7 @@ import { parse } from 'parse-package-name';
 import os from 'os';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
+import { generatePlan, writePlan } from '@launchql/config-files';
 
 import {
   writeRenderedTemplates,
@@ -255,9 +256,13 @@ export class LaunchQLProject {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create launchql.plan file
-    const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}\n`;
-    writeFileSync(path.join(targetPath, 'launchql.plan'), plan);
+    // Create launchql.plan file using config-files package
+    const plan = generatePlan({
+      moduleName: modName,
+      uri: modName,
+      entries: []
+    });
+    writePlan(path.join(targetPath, 'launchql.plan'), plan);
     
     // Create deploy, revert, and verify directories
     const dirs = ['deploy', 'revert', 'verify'];
@@ -341,14 +346,6 @@ export class LaunchQLProject {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
-
-    const now = getNow();
-
-    const planfile: string[] = [
-      `%syntax-version=1.0.0`,
-      `%project=${moduleName}`,
-      `%uri=${options.uri || moduleName}`
-    ];
 
     // Get raw dependencies and resolved list
     let { resolved, deps } = getDeps(this.cwd, moduleName);
@@ -460,8 +457,8 @@ export class LaunchQLProject {
     // console.log("CLEAN DEPS GRAPH", JSON.stringify(deps, null, 2));
     // console.log("CLEAN RES GRAPH", JSON.stringify(resolved, null, 2));
 
-    // Generate the plan with the cleaned structures
-    resolved.forEach(res => {
+    // Prepare entries for the plan file
+    const entries = resolved.map(res => {
       const key = `/deploy/${res}.sql`;
       const dependencies = deps[key] || [];
 
@@ -471,18 +468,19 @@ export class LaunchQLProject {
         normalizeChangeName(dep) !== res
       );
 
-      if (filteredDeps.length > 0) {
-        planfile.push(
-          `${res} [${filteredDeps.join(' ')}] ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
-        );
-      } else {
-        planfile.push(
-          `${res} ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
-        );
-      }
+      return {
+        change: res,
+        dependencies: filteredDeps,
+        comment: `add ${res}`
+      };
     });
 
-    return planfile.join('\n');
+    // Use the config-files package to generate the plan
+    return generatePlan({
+      moduleName,
+      uri: options.uri,
+      entries
+    });
   }
 
   writeModulePlan(
@@ -494,7 +492,9 @@ export class LaunchQLProject {
     const moduleMap = this.getModuleMap();
     const mod = moduleMap[name];
     const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');
-    writeFileSync(planPath, plan);
+    
+    // Use the config-files package to write the plan
+    writePlan(planPath, plan);
   }
 
   // ──────────────── Packaging and npm ────────────────

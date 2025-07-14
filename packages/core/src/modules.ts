@@ -1,42 +1,8 @@
-import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
-import { basename, dirname, relative } from 'path';
-import { getLatestChange } from '@launchql/config-files';
-
-export interface Module {
-  path: string;
-  requires: string[];
-  version: string;
-}
+import { basename } from 'path';
+import { getLatestChange, parseControlFile, Module } from '@launchql/config-files';
 
 export type ModuleMap = Record<string, Module>;
-
-/**
- * Parse a .control file and extract its metadata.
- */
-const parseControlFile = (filePath: string, basePath: string): Module => {
-  const contents = readFileSync(filePath, 'utf-8');
-  const key = basename(filePath).split('.control')[0];
-  const requires = contents
-    .split('\n')
-    .find((line) => /^requires/.test(line))
-    ?.split('=')[1]
-    .split(',')
-    .map((req) => req.replace(/[\'\s]*/g, '').trim()) || [];
-
-  const version = contents
-    .split('\n')
-    .find((line) => /^default_version/.test(line))
-    ?.split('=')[1]
-    .replace(/[\']*/g, '')
-    .trim() || '';
-
-  return {
-    path: dirname(relative(basePath, filePath)),
-    requires,
-    version,
-  };
-};
 
 /**
  * List all modules by parsing .control files in the provided directory.
