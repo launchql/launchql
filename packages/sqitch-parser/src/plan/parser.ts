@@ -156,17 +156,52 @@ function parseTagLine(line: string, lastChangeName: string | null): Tag | null {
   
   // Remove the @ and parse
   const tagContent = line.substring(1);
-  // Tag format: tagname timestamp planner <email> # comment
-  // Updated regex to handle planner names with spaces
-  const regex = /^(\S+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(.+?)\s+<([^>]+)>(?:\s+#\s+(.*))?$/;
   
-  const match = tagContent.match(regex);
+  // Two possible formats:
+  // 1. tagname timestamp planner <email> # comment (tag for last change)
+  // 2. tagname changename timestamp planner <email> # comment (tag for specific change)
+  
+  // First try to match with change name (format 2)
+  const regexWithChange = /^(\S+)\s+(\S+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(.+?)\s+<([^>]+)>(?:\s+#\s+(.*))?$/;
+  let match = tagContent.match(regexWithChange);
+  
+  if (match) {
+    const [, name, secondToken, timestamp, planner, email, comment] = match;
+    
+    // Check if the second token is a timestamp (format 1) or change name (format 2)
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(secondToken)) {
+      // Format 1: no change name specified
+      return {
+        name,
+        change: lastChangeName || '', // Tag is associated with the last change
+        timestamp: secondToken,
+        planner: timestamp, // What we thought was timestamp is actually planner
+        email: planner, // Shift everything
+        comment: email || comment
+      };
+    } else {
+      // Format 2: explicit change name
+      return {
+        name,
+        change: secondToken,
+        timestamp,
+        planner,
+        email,
+        comment
+      };
+    }
+  }
+  
+  // Try simple format without change name
+  const regexSimple = /^(\S+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(.+?)\s+<([^>]+)>(?:\s+#\s+(.*))?$/;
+  match = tagContent.match(regexSimple);
+  
   if (!match) {
     return null;
   }
-  
+
   const [, name, timestamp, planner, email, comment] = match;
-  
+
   return {
     name,
     change: lastChangeName || '', // Tag is associated with the last change

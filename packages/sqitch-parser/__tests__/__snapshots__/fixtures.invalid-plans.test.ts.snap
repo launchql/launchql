@@ -114,59 +114,59 @@ exports[`plan-invalid/invalid-tag-names.plan 1`] = `
 [
   {
     "line": 11,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo/bar",
   },
   {
     "line": 12,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: v1/2",
   },
   {
     "line": 15,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo:bar",
   },
   {
     "line": 16,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo@bar",
   },
   {
     "line": 17,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo#bar",
   },
   {
     "line": 18,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo\\bar",
   },
   {
     "line": 21,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo^6",
   },
   {
     "line": 22,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: bar~9",
   },
   {
     "line": 23,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: test%42",
   },
   {
     "line": 26,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: +foo",
   },
   {
     "line": 27,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: -bar",
   },
   {
     "line": 28,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: .baz",
   },
   {
     "line": 31,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: foo+",
   },
   {
     "line": 32,
-    "message": "Invalid tag line format",
+    "message": "Invalid tag name: bar.",
   },
   {
     "line": 35,
