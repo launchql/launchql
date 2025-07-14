@@ -28,10 +28,10 @@ import {
   getExtensionInfo,
   writeExtensions,
   getExtensionName,
-  getAvailableExtensions,
   getInstalledExtensions,
   ExtensionInfo,
-} from '../extensions';
+} from '@launchql/config-files';
+import { getAvailableExtensions } from '../extensions';
 
 
 const logger = new Logger('launchql');

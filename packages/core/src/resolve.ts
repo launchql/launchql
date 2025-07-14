@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { getChanges } from '@launchql/config-files';
 
 import { getDeps } from './deps';
-import { getExtensionName } from './extensions';
+import { getExtensionName } from '@launchql/config-files';
 
 /**
  * Resolves SQL scripts for deployment or reversion.

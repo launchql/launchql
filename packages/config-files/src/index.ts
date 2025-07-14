@@ -12,3 +12,6 @@ export * from './control';
 
 // Export SQL file writing functionality
 export * from './sql';
+
+// Export extension functionality
+export * from './extension';
