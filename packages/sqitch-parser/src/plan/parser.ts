@@ -45,7 +45,8 @@ export function parsePlanFile(planPath: string): ParseResult<ExtendedPlanFile> {
     
     // Parse tag lines
     if (trimmed.startsWith('@')) {
-      const tag = parseTagLine(trimmed);
+      const lastChangeName = changes.length > 0 ? changes[changes.length - 1].name : null;
+      const tag = parseTagLine(trimmed, lastChangeName);
       if (tag) {
         if (isValidTagName(tag.name)) {
           tags.push(tag);
@@ -145,26 +146,27 @@ function parseChangeLine(line: string): Change | null {
  * Parse a tag line from a plan file
  * Format: @tag_name change_name timestamp planner <email> # comment
  */
-function parseTagLine(line: string): Tag | null {
+function parseTagLine(line: string, lastChangeName: string | null): Tag | null {
   // Tag lines start with @
   if (!line.startsWith('@')) {
     return null;
   }
   
-  // Remove the @ and parse similar to change line
+  // Remove the @ and parse
   const tagContent = line.substring(1);
-  const regex = /^(\S+)\s+(\S+)(?:\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z))?(?:\s+(\S+))?(?:\s+<([^>]+)>)?(?:\s+#\s+(.*))?$/;
+  // Tag format: tagname timestamp planner <email> # comment
+  const regex = /^(\S+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(\S+)\s+<([^>]+)>(?:\s+#\s+(.*))?$/;
   
   const match = tagContent.match(regex);
   if (!match) {
     return null;
   }
   
-  const [, name, change, timestamp, planner, email, comment] = match;
+  const [, name, timestamp, planner, email, comment] = match;
   
   return {
     name,
-    change,
+    change: lastChangeName || '', // Tag is associated with the last change
     timestamp,
     planner,
     email,
@@ -257,6 +259,11 @@ export function resolveReference(
   
   // Plain change reference
   if (parsed.change) {
+    // Validate that the change exists in the plan
+    const changeExists = plan.changes.some(c => c.name === parsed.change);
+    if (!changeExists) {
+      return { error: `Change not found: ${parsed.change}` };
+    }
     return { change: parsed.change };
   }
   
