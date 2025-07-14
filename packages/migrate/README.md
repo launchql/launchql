@@ -36,25 +36,21 @@ const migrate = new LaunchQLMigrate({
 const deployResult = await migrate.deploy({
   project: 'myproject',
   targetDatabase: 'myapp',
-  planPath: './launchql.plan',
-  deployPath: './deploy',
-  verifyPath: './verify'
+  planPath: './launchql.plan'
 });
 
 // Revert changes
 const revertResult = await migrate.revert({
   project: 'myproject',
   targetDatabase: 'myapp',
-  planPath: './launchql.plan',
-  revertPath: './revert'
+  planPath: './launchql.plan'
 });
 
 // Verify deployment
 const verifyResult = await migrate.verify({
   project: 'myproject',
   targetDatabase: 'myapp',
-  planPath: './launchql.plan',
-  verifyPath: './verify'
+  planPath: './launchql.plan'
 });
 
 // Check status
