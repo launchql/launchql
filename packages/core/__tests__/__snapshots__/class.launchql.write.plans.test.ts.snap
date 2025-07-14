@@ -30,7 +30,7 @@ module_pathname = '$libdir/pg-verify'
 requires = 'some-native-module,pg-utilities'
 relocatable = false
 superuser = false
-  ",
+   ",
   "deps": {
     "modules": [
       "pg-utilities",

@@ -48,13 +48,7 @@ export function generateControlFileContent(options: {
   let content = `# ${name} extension
 comment = '${comment}'
 default_version = '${default_version}'
-relocatable = ${relocatable}
-superuser = ${superuser}
 `;
-
-  if (schema) {
-    content += `schema = ${schema}\n`;
-  }
 
   if (module_pathname) {
     content += `module_pathname = '${module_pathname}'\n`;
@@ -63,7 +57,15 @@ superuser = ${superuser}
   }
 
   if (requires.length > 0) {
-    content += `requires = '${requires.join(',')}'`;
+    content += `requires = '${requires.join(',')}'\n`;
+  }
+
+  content += `relocatable = ${relocatable}
+superuser = ${superuser}
+   `;
+
+  if (schema) {
+    content += `schema = ${schema}\n`;
   }
 
   return content;
