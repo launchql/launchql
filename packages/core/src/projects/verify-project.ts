@@ -1,12 +1,12 @@
 import { resolve } from 'path';
-import { spawn } from 'child_process';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { getSpawnEnvWithPg } from 'pg-env';
+import { PgConfig } from 'pg-env';
 import { LaunchQLProject } from '../class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { verifyModule } from '../migrate/verify-module';
+import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -20,7 +20,14 @@ export const verifyProject = async (
   name: string,
   database: string,
   dir: string,
-  options?: { useSqitch?: boolean }
+  options?: { 
+    useSqitch?: boolean;
+    /**
+     * The plan file to use for sqitch operations
+     * Defaults to 'launchql.plan'
+     */
+    planFile?: string;
+  }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -58,29 +65,20 @@ export const verifyProject = async (
         try {
           if (options?.useSqitch) {
             // Use legacy sqitch
-            const env = getSpawnEnvWithPg(opts.pg);
-            await new Promise<void>((resolve, reject) => {
-              const child = spawn('sqitch', ['verify', '--plan-file', 'launchql.plan', `db:pg:${database}`], {
-                cwd: modulePath,
-                env
+            const planFile = options.planFile || 'launchql.plan';
+            log.debug(`→ Command: sqitch verify --plan-file ${planFile} db:pg:${database}`);
+            
+            try {
+              const exitCode = await runSqitch('verify', database, modulePath, opts.pg as PgConfig, {
+                planFile
               });
               
-              child.stdout.on('data', (data) => {
-                log.debug(data.toString().trim());
-              });
-              
-              child.stderr.on('data', (data) => {
-                log.error(data.toString().trim());
-              });
-              
-              child.on('close', (code) => {
-                if (code === 0) {
-                  resolve();
-                } else {
-                  reject(new Error(`sqitch verify exited with code ${code}`));
-                }
-              });
-            });
+              if (exitCode !== 0) {
+                throw new Error(`sqitch verify exited with code ${exitCode}`);
+              }
+            } catch (err) {
+              throw new Error(`Verification failed: ${err instanceof Error ? err.message : String(err)}`);
+            }
           } else {
             // Use new migration system
             await verifyModule(opts.pg, database, modulePath);

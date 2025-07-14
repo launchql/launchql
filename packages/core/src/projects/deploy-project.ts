@@ -1,13 +1,13 @@
 import { resolve } from 'path';
-import { spawn } from 'child_process';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { getSpawnEnvWithPg, PgConfig } from 'pg-env';
+import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { deployModule } from '../migrate/deploy-module';
 import { LaunchQLProject } from '../class/launchql';
 import { packageModule } from '../package';
+import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -50,6 +50,11 @@ export const deployProject = async (
      * if fast is true, you can choose to cache the packaged module
      */
     cache?: boolean;
+    /**
+     * The plan file to use for sqitch operations
+     * Defaults to 'launchql.plan'
+     */
+    planFile?: string;
   }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
@@ -118,35 +123,19 @@ export const deployProject = async (
           }
         } else if (options?.useSqitch) {
           // Use legacy sqitch
-          log.debug(`→ Command: sqitch deploy --plan-file launchql.plan db:pg:${database}`);
+          const planFile = options.planFile || 'launchql.plan';
+          log.debug(`→ Command: sqitch deploy --plan-file ${planFile} db:pg:${database}`);
           
-          const child = spawn('sqitch', ['deploy', '--plan-file', 'launchql.plan', `db:pg:${database}`], {
-            cwd: modulePath,
-            env: getSpawnEnvWithPg(opts.pg)
-          });
-
-          const exitCode: number = await new Promise((resolve, reject) => {
-            child.stdout.setEncoding('utf-8');
-            child.stderr.setEncoding('utf-8');
-
-            child.stderr.on('data', (chunk: Buffer | string) => {
-              const text = chunk.toString();
-              if (/error/i.test(text)) {
-                log.error(text);
-              } else if (/warning/i.test(text)) {
-                log.warn(text);
-              } else {
-                log.error(text); // non-warning stderr
-              }
+          try {
+            const exitCode = await runSqitch('deploy', database, modulePath, opts.pg as PgConfig, {
+              planFile
             });
-
-            child.stdout.pipe(process.stdout);
-
-            child.on('close', resolve);
-            child.on('error', reject);
-          });
-
-          if (exitCode !== 0) {
+            
+            if (exitCode !== 0) {
+              log.error(`❌ Deployment failed for module ${extension}`);
+              throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
+            }
+          } catch (err) {
             log.error(`❌ Deployment failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
           }
