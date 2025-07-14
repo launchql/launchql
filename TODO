@@ -4,6 +4,10 @@ TODO
 - [ ] Add tests for pg-ast
 - [ ] bring back csv-to-pg
 
+NOTES/QUESTIONS:
+sqitch.conf should theoretically be where we lookup whether or not we default to sqitch.plan or another
+Do we need it? Or should we consider scrapping these conf files?
+
 
 CI / Workflow
 -------------
