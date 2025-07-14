@@ -45,10 +45,15 @@ export class TestPlan {
   private insights: PlanInsights;
 
   constructor(fixturePath: string) {
-    // Resolve the fixture path relative to root __fixtures__/sqitch-parser
-    const rootDir = dirname(dirname(dirname(__dirname))); // Go up to workspace root
-    const basePath = join(rootDir, '__fixtures__', 'sqitch-parser');
-    this.fixturePath = join(basePath, fixturePath);
+    // If the path is absolute and exists, use it directly
+    if (fixturePath.startsWith('/') && existsSync(fixturePath)) {
+      this.fixturePath = fixturePath;
+    } else {
+      // Otherwise, resolve relative to root __fixtures__/sqitch-parser
+      const rootDir = dirname(dirname(dirname(__dirname))); // Go up to workspace root
+      const basePath = join(rootDir, '__fixtures__', 'sqitch-parser');
+      this.fixturePath = join(basePath, fixturePath);
+    }
     
     if (!existsSync(this.fixturePath)) {
       throw new Error(`Fixture not found: ${this.fixturePath}`);
