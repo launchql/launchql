@@ -4,11 +4,6 @@ TODO
 - [ ] Add tests for pg-ast
 - [ ] bring back csv-to-pg
 
-NOTES/QUESTIONS:
-sqitch.conf should theoretically be where we lookup whether or not we default to sqitch.plan or another
-Do we need it? Or should we consider scrapping these conf files?
-
-
 CI / Workflow
 -------------
 - [x] Remove Travis CI
@@ -22,8 +17,8 @@ Testing & Stability
 
 Package Cleanup
 ---------------
-- [ ] Remove shelljs
-- [ ] Remove deployFast option
+- [x] Remove shelljs
+- [x] Remove deployFast option
 - [ ] Add keywords to package.json files in all packages
 
 CSV-to-PG Improvements
