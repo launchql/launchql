@@ -18,7 +18,7 @@ function getExpectedFiles(pkg: string, version: string): string[] {
 
   return [
     `${basePath}/package.json`,
-    `${basePath}/sqitch.conf`,
+
     `${basePath}/launchql.plan`,
     `${basePath}/Makefile`,
     `${basePath}/sql/${extname}--${version}.sql`,

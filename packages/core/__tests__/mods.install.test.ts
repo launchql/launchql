@@ -31,7 +31,7 @@ describe('installModule()', () => {
         });
 
         expect(files.sort()).toMatchSnapshot();
-        expect(fs.existsSync(path.join(extDir, 'sqitch.conf'))).toBe(true);
+        expect(fs.existsSync(path.join(extDir, 'launchql.plan'))).toBe(true);
 
         const pkgJson = JSON.parse(
             fs.readFileSync(path.join(mod.getModulePath()!, 'package.json'), 'utf-8')

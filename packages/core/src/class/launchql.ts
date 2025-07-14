@@ -106,7 +106,7 @@ export class LaunchQLProject {
 
   private resolveSqitchPath(): string | undefined {
     try {
-      return walkUp(this.cwd, 'sqitch.conf');
+      return walkUp(this.cwd, 'launchql.plan');
     } catch {
       return undefined;
     }
@@ -255,12 +255,6 @@ export class LaunchQLProject {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create sqitch.conf file (minimal configuration)
-    const sqitchConf = `[core]
-\tengine = pg
-`;
-    writeFileSync(path.join(targetPath, 'sqitch.conf'), sqitchConf);
-    
     // Create launchql.plan file
     const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}\n`;
     writeFileSync(path.join(targetPath, 'launchql.plan'), plan);
@@ -520,7 +514,7 @@ export class LaunchQLProject {
     fs.mkdirSync(fullDist, { recursive: true });
 
     const folders = ['deploy', 'revert', 'sql', 'verify'];
-    const files = ['Makefile', 'package.json', 'sqitch.conf', 'launchql.plan', controlFile];
+    const files = ['Makefile', 'package.json', 'launchql.plan', controlFile];
 
 
     // Add README file regardless of casing
@@ -578,7 +572,7 @@ export class LaunchQLProject {
           stdio: 'inherit'
         });
   
-        const matches = glob.sync('./extensions/**/sqitch.conf');
+        const matches = glob.sync('./extensions/**/launchql.plan');
         const installs = matches.map((conf) => {
           const fullConf = resolve(conf);
           const extDir = dirname(fullConf);
