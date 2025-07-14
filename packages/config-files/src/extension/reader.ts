@@ -1,6 +1,40 @@
 import { readFileSync } from 'fs';
+import { basename, dirname, relative } from 'path';
 import { parsePlanFileSimple } from '../plan';
 import { ExtensionInfo } from './writer';
+
+export interface Module {
+  path: string;
+  requires: string[];
+  version: string;
+}
+
+/**
+ * Parse a .control file and extract its metadata.
+ */
+export function parseControlFile(filePath: string, basePath: string): Module {
+  const contents = readFileSync(filePath, 'utf-8');
+  const key = basename(filePath).split('.control')[0];
+  const requires = contents
+    .split('\n')
+    .find((line) => /^requires/.test(line))
+    ?.split('=')[1]
+    .split(',')
+    .map((req) => req.replace(/[\'\s]*/g, '').trim()) || [];
+
+  const version = contents
+    .split('\n')
+    .find((line) => /^default_version/.test(line))
+    ?.split('=')[1]
+    .replace(/[\']*/g, '')
+    .trim() || '';
+
+  return {
+    path: dirname(relative(basePath, filePath)),
+    requires,
+    version,
+  };
+}
 
 /**
  * Parse the launchql.plan file to get the extension name.

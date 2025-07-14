@@ -20,6 +20,56 @@ include $(PGXS)
 };
 
 /**
+ * Generate content for a .control file
+ */
+export function generateControlFileContent(options: {
+  name: string;
+  version: string;
+  comment?: string;
+  requires?: string[];
+  default_version?: string;
+  relocatable?: boolean;
+  superuser?: boolean;
+  schema?: string;
+  module_pathname?: string;
+}): string {
+  const {
+    name,
+    version,
+    comment = `${name} extension`,
+    requires = [],
+    default_version = version,
+    relocatable = false,
+    superuser = false,
+    schema,
+    module_pathname
+  } = options;
+
+  let content = `# ${name} extension
+comment = '${comment}'
+default_version = '${default_version}'
+relocatable = ${relocatable}
+superuser = ${superuser}
+`;
+
+  if (schema) {
+    content += `schema = ${schema}\n`;
+  }
+
+  if (module_pathname) {
+    content += `module_pathname = '${module_pathname}'\n`;
+  } else {
+    content += `module_pathname = '$libdir/${name}'\n`;
+  }
+
+  if (requires.length > 0) {
+    content += `requires = '${requires.join(',')}'`;
+  }
+
+  return content;
+}
+
+/**
  * Write the control file for the extension.
  */
 export const writeExtensionControlFile = (
@@ -28,14 +78,11 @@ export const writeExtensionControlFile = (
   extensions: string[],
   version: string
 ): void => {
-  const content = `# ${extname} extension
-comment = '${extname} extension'
-default_version = '${version}'
-module_pathname = '$libdir/${extname}'
-requires = '${extensions.join(',')}'
-relocatable = false
-superuser = false
-  `;
+  const content = generateControlFileContent({
+    name: extname,
+    version,
+    requires: extensions
+  });
   writeFileSync(outputPath, content);
 };
 
