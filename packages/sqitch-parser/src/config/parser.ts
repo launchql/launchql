@@ -7,7 +7,7 @@ import { ConfigFile, ConfigSection, ParseResult, ParseError } from '../types';
  * Example format:
  * [core]
  *   engine = pg
- *   plan_file = sqitch.plan
+ *   plan_file = launchql.plan
  *   top_dir = .
  * 
  * [engine "pg"]

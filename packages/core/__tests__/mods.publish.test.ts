@@ -43,11 +43,11 @@ describe('publishToDist()', () => {
     mod.publishToDist();
 
     const orig = fs.readFileSync(
-      path.join(fixture.tempFixtureDir, 'sqitch.plan'),
+      path.join(fixture.tempFixtureDir, 'launchql.plan'),
       'utf-8'
     );
     const copied = fs.readFileSync(
-      path.join(distDir, 'sqitch.plan'),
+      path.join(distDir, 'launchql.plan'),
       'utf-8'
     );
 
@@ -55,8 +55,8 @@ describe('publishToDist()', () => {
   });
 
   it('throws if required file is missing', () => {
-    fs.rmSync(path.join(fixture.tempFixtureDir, 'sqitch.plan'));
-    expect(() => mod.publishToDist()).toThrow(/sqitch\.plan/);
+    fs.rmSync(path.join(fixture.tempFixtureDir, 'launchql.plan'));
+    expect(() => mod.publishToDist()).toThrow(/launchql\.plan/);
   });
 
   it('skips extraneous files and folders', () => {

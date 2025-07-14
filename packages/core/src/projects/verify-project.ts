@@ -60,7 +60,7 @@ export const verifyProject = async (
             // Use legacy sqitch
             const env = getSpawnEnvWithPg(opts.pg);
             await new Promise<void>((resolve, reject) => {
-              const child = spawn('sqitch', ['verify', `db:pg:${database}`], {
+              const child = spawn('sqitch', ['verify', '--plan-file', 'launchql.plan', `db:pg:${database}`], {
                 cwd: modulePath,
                 env
               });

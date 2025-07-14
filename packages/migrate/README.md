@@ -36,7 +36,7 @@ const migrate = new LaunchQLMigrate({
 const deployResult = await migrate.deploy({
   project: 'myproject',
   targetDatabase: 'myapp',
-  planPath: './sqitch.plan',
+  planPath: './launchql.plan',
   deployPath: './deploy',
   verifyPath: './verify'
 });
@@ -45,7 +45,7 @@ const deployResult = await migrate.deploy({
 const revertResult = await migrate.revert({
   project: 'myproject',
   targetDatabase: 'myapp',
-  planPath: './sqitch.plan',
+  planPath: './launchql.plan',
   revertPath: './revert'
 });
 
@@ -53,7 +53,7 @@ const revertResult = await migrate.revert({
 const verifyResult = await migrate.verify({
   project: 'myproject',
   targetDatabase: 'myapp',
-  planPath: './sqitch.plan',
+  planPath: './launchql.plan',
   verifyPath: './verify'
 });
 

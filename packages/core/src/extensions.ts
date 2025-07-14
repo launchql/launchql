@@ -46,14 +46,14 @@ export const getAvailableExtensions = (
 };
 
 /**
- * Parse the sqitch.plan file to get the extension name.
+ * Parse the launchql.plan file to get the extension name.
  */
 export const getExtensionName = (packageDir: string): string => {
-  const planPath = `${packageDir}/sqitch.plan`;
+  const planPath = `${packageDir}/launchql.plan`;
   const plan = parsePlanFileSimple(planPath);
   
   if (!plan.project) {
-    throw new Error('No project name found in sqitch.plan!');
+    throw new Error('No project name found in launchql.plan!');
   }
 
   return plan.project;

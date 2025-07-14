@@ -32,7 +32,7 @@ export const resolve = (
 };
 
 /**
- * Resolves SQL scripts based on the `sqitch.plan` file.
+ * Resolves SQL scripts based on the `launchql.plan` file.
  *
  * @param pkgDir - The package directory (defaults to the current working directory).
  * @param scriptType - The type of script to resolve (`deploy` or `revert`).
@@ -43,7 +43,7 @@ export const resolveWithPlan = (
   scriptType: 'deploy' | 'revert' = 'deploy'
 ): string => {
   const sqlfile: string[] = [];
-  const planPath = `${pkgDir}/sqitch.plan`;
+  const planPath = `${pkgDir}/launchql.plan`;
   
   let resolved = getChanges(planPath);
 

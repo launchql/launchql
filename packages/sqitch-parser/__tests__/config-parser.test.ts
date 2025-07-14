@@ -24,7 +24,7 @@ describe('Config Parser', () => {
     it('should parse a simple config file', () => {
       const configContent = `[core]
     engine = pg
-    plan_file = sqitch.plan
+    plan_file = launchql.plan
     top_dir = .
 
 [engine "pg"]
@@ -51,7 +51,7 @@ describe('Config Parser', () => {
     # Another comment
     engine = pg
     
-    plan_file = sqitch.plan
+    plan_file = launchql.plan
 
 # Section comment
 [deploy]
@@ -109,7 +109,7 @@ invalid line without equals
     it('should parse config content directly', () => {
       const configContent = `[core]
     engine = pg
-    plan_file = sqitch.plan`;
+    plan_file = launchql.plan`;
 
       const result = parseConfigContent(configContent);
       
@@ -122,7 +122,7 @@ invalid line without equals
     const config: ConfigFile = {
       core: {
         engine: 'pg',
-        plan_file: 'sqitch.plan'
+        plan_file: 'launchql.plan'
       },
       'engine "pg"': {
         target: 'db:pg://localhost/mydb',
@@ -132,7 +132,7 @@ invalid line without equals
 
     it('should get values from simple sections', () => {
       expect(getConfigValue(config, 'core', 'engine')).toBe('pg');
-      expect(getConfigValue(config, 'core', 'plan_file')).toBe('sqitch.plan');
+      expect(getConfigValue(config, 'core', 'plan_file')).toBe('launchql.plan');
     });
 
     it('should get values from quoted sections', () => {
@@ -150,7 +150,7 @@ invalid line without equals
     const config: ConfigFile = {
       core: {
         engine: 'pg',
-        plan_file: 'sqitch.plan'
+        plan_file: 'launchql.plan'
       },
       deploy: {
         verify: 'true',
@@ -162,7 +162,7 @@ invalid line without equals
       const coreSection = getConfigSection(config, 'core');
       expect(coreSection).toEqual({
         engine: 'pg',
-        plan_file: 'sqitch.plan'
+        plan_file: 'launchql.plan'
       });
     });
 
@@ -188,7 +188,7 @@ invalid line without equals
     it('should handle all sqitch config options', () => {
       const configContent = `[core]
     engine = pg
-    plan_file = sqitch.plan
+    plan_file = launchql.plan
     top_dir = .
     deploy_dir = deploy
     revert_dir = revert

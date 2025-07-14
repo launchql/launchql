@@ -13,7 +13,7 @@ export async function runSqitch(
   cwd: string
 ): Promise<void> {
   const pgEnv = getPgEnvOptions();
-  const cmd = `sqitch ${command} db:pg:${database}`;
+  const cmd = `sqitch ${command} --plan-file launchql.plan db:pg:${database}`;
   
   log.info(`Running: ${cmd}`);
   

@@ -12,10 +12,10 @@ const log = new Logger('migrate-deps');
 
 export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
   const cwd = argv.cwd || process.cwd();
-  const planPath = join(cwd, 'sqitch.plan');
+  const planPath = join(cwd, 'launchql.plan');
   
   if (!existsSync(planPath)) {
-    log.error(`No sqitch.plan found in ${cwd}`);
+    log.error(`No launchql.plan found in ${cwd}`);
     process.exit(1);
   }
 

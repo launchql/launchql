@@ -58,9 +58,9 @@ export const revertProject = async (
 
         if (options?.useSqitch) {
           // Use legacy sqitch
-          log.debug(`→ Command: sqitch revert db:pg:${database} -y`);
+          log.debug(`→ Command: sqitch revert --plan-file launchql.plan db:pg:${database} -y`);
 
-          const child = spawn('sqitch', ['revert', `db:pg:${database}`, '-y'], {
+          const child = spawn('sqitch', ['revert', '--plan-file', 'launchql.plan', `db:pg:${database}`, '-y'], {
             cwd: modulePath,
             env: getSpawnEnvWithPg(opts.pg),
           });

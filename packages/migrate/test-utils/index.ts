@@ -190,7 +190,7 @@ export class MigrateTestFixture {
       lines.push(line);
     }
 
-    const planPath = join(tempDir, 'sqitch.plan');
+    const planPath = join(tempDir, 'launchql.plan');
     writeFileSync(planPath, lines.join('\n'));
     
     return tempDir;

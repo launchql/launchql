@@ -261,9 +261,9 @@ export class LaunchQLProject {
 `;
     writeFileSync(path.join(targetPath, 'sqitch.conf'), sqitchConf);
     
-    // Create sqitch.plan file
+    // Create launchql.plan file
     const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}\n`;
-    writeFileSync(path.join(targetPath, 'sqitch.plan'), plan);
+    writeFileSync(path.join(targetPath, 'launchql.plan'), plan);
     
     // Create deploy, revert, and verify directories
     const dirs = ['deploy', 'revert', 'verify'];
@@ -321,7 +321,7 @@ export class LaunchQLProject {
 
   getModulePlan(): string {
     this.ensureModule();
-    const planPath = path.join(this.getModulePath()!, 'sqitch.plan');
+    const planPath = path.join(this.getModulePath()!, 'launchql.plan');
     return fs.readFileSync(planPath, 'utf8');
   }
 
@@ -499,7 +499,7 @@ export class LaunchQLProject {
     const plan = this.generateModulePlan(options);
     const moduleMap = this.getModuleMap();
     const mod = moduleMap[name];
-    const planPath = path.join(this.workspacePath!, mod.path, 'sqitch.plan');
+    const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');
     writeFileSync(planPath, plan);
   }
 
@@ -520,7 +520,7 @@ export class LaunchQLProject {
     fs.mkdirSync(fullDist, { recursive: true });
 
     const folders = ['deploy', 'revert', 'sql', 'verify'];
-    const files = ['Makefile', 'package.json', 'sqitch.conf', 'sqitch.plan', controlFile];
+    const files = ['Makefile', 'package.json', 'sqitch.conf', 'launchql.plan', controlFile];
 
 
     // Add README file regardless of casing

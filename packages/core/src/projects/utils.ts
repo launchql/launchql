@@ -112,5 +112,5 @@ ${rows
     .join('\n')}
 `);
 
-  fs.writeFileSync(path.join(dir, 'sqitch.plan'), plan);
+  fs.writeFileSync(path.join(dir, 'launchql.plan'), plan);
 };

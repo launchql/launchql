@@ -54,7 +54,7 @@ export const listModules = (workspaceDir: string): ModuleMap => {
 };
 
 /**
- * Get the latest change from the sqitch.plan file for a specific module.
+ * Get the latest change from the launchql.plan file for a specific module.
  */
 export const latestChange = (
   sqlmodule: string,
@@ -66,7 +66,7 @@ export const latestChange = (
     throw new Error(`latestChange() ${sqlmodule} NOT FOUND!`);
   }
 
-  const planPath = `${basePath}/${module.path}/sqitch.plan`;
+  const planPath = `${basePath}/${module.path}/launchql.plan`;
   return getLatestChange(planPath);
 };
 
@@ -83,7 +83,7 @@ export const latestChangeAndVersion = (
     throw new Error(`latestChangeAndVersion() ${sqlmodule} NOT FOUND!`);
   }
 
-  const planPath = `${basePath}/${module.path}/sqitch.plan`;
+  const planPath = `${basePath}/${module.path}/launchql.plan`;
   const change = getLatestChange(planPath);
   const pkg = require(`${basePath}/${module.path}/package.json`);
 

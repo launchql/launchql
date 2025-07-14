@@ -118,9 +118,9 @@ export const deployProject = async (
           }
         } else if (options?.useSqitch) {
           // Use legacy sqitch
-          log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+          log.debug(`→ Command: sqitch deploy --plan-file launchql.plan db:pg:${database}`);
           
-          const child = spawn('sqitch', ['deploy', `db:pg:${database}`], {
+          const child = spawn('sqitch', ['deploy', '--plan-file', 'launchql.plan', `db:pg:${database}`], {
             cwd: modulePath,
             env: getSpawnEnvWithPg(opts.pg)
           });
