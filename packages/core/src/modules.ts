@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { basename, dirname, relative } from 'path';
+import { getLatestChange } from '@launchql/sqitch-parser';
 
 export interface Module {
   path: string;
@@ -65,12 +66,8 @@ export const latestChange = (
     throw new Error(`latestChange() ${sqlmodule} NOT FOUND!`);
   }
 
-  const plan = readFileSync(`${basePath}/${module.path}/sqitch.plan`, 'utf-8')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  return plan[plan.length - 1].split(' ')[0];
+  const planPath = `${basePath}/${module.path}/sqitch.plan`;
+  return getLatestChange(planPath);
 };
 
 /**
@@ -86,12 +83,8 @@ export const latestChangeAndVersion = (
     throw new Error(`latestChangeAndVersion() ${sqlmodule} NOT FOUND!`);
   }
 
-  const plan = readFileSync(`${basePath}/${module.path}/sqitch.plan`, 'utf-8')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  const change = plan[plan.length - 1].split(' ')[0];
+  const planPath = `${basePath}/${module.path}/sqitch.plan`;
+  const change = getLatestChange(planPath);
   const pkg = require(`${basePath}/${module.path}/package.json`);
 
   return { change, version: pkg.version };

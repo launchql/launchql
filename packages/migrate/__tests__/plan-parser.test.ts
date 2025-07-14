@@ -1,6 +1,6 @@
 import { join } from 'path';
 import {
-  parsePlanFileWithValidation,
+  parsePlanFile,
   resolveReference,
   ExtendedPlanFile
 } from '../src/parser/plan-parser';
@@ -11,7 +11,7 @@ describe('Plan Parser with Validation', () => {
   describe('Valid plan files', () => {
     it('should parse valid change names', () => {
       const planPath = join(fixturesDir, 'plan-valid', 'valid-change-names.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors).toHaveLength(0);
       expect(result.plan).toBeDefined();
@@ -38,7 +38,7 @@ describe('Plan Parser with Validation', () => {
 
     it('should parse valid tag names', () => {
       const planPath = join(fixturesDir, 'plan-valid', 'valid-tag-names.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors).toHaveLength(0);
       expect(result.plan).toBeDefined();
@@ -69,7 +69,7 @@ describe('Plan Parser with Validation', () => {
 
     it('should parse symbolic references', () => {
       const planPath = join(fixturesDir, 'plan-valid', 'symbolic-head-root.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors).toHaveLength(0);
       expect(result.plan).toBeDefined();
@@ -87,7 +87,7 @@ describe('Plan Parser with Validation', () => {
 
     it('should parse relative references', () => {
       const planPath = join(fixturesDir, 'plan-valid', 'relative-head-root.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors).toHaveLength(0);
       expect(result.plan).toBeDefined();
@@ -114,7 +114,7 @@ describe('Plan Parser with Validation', () => {
 
     it('should parse SHA1 references', () => {
       const planPath = join(fixturesDir, 'plan-valid', 'sha1-refs.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors).toHaveLength(0);
       expect(result.plan).toBeDefined();
@@ -132,7 +132,7 @@ describe('Plan Parser with Validation', () => {
   describe('Invalid plan files', () => {
     it('should report errors for invalid change names', () => {
       const planPath = join(fixturesDir, 'plan-invalid', 'invalid-change-names.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors.length).toBeGreaterThan(0);
       
@@ -146,7 +146,7 @@ describe('Plan Parser with Validation', () => {
 
     it('should report errors for invalid tag names', () => {
       const planPath = join(fixturesDir, 'plan-invalid', 'invalid-tag-names.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors.length).toBeGreaterThan(0);
       
@@ -158,7 +158,7 @@ describe('Plan Parser with Validation', () => {
 
     it('should report errors for bad symbolic references', () => {
       const planPath = join(fixturesDir, 'plan-invalid', 'bad-symbolic-refs.plan');
-      const result = parsePlanFileWithValidation(planPath);
+      const result = parsePlanFile(planPath);
       
       expect(result.errors.length).toBeGreaterThan(0);
       

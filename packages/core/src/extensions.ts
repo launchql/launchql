@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
+import { parsePlanFileSimple } from '@launchql/sqitch-parser';
 import { ModuleMap } from './modules';
 
 export interface ExtensionInfo {
@@ -48,16 +49,14 @@ export const getAvailableExtensions = (
  * Parse the sqitch.plan file to get the extension name.
  */
 export const getExtensionName = (packageDir: string): string => {
-  const plan = readFileSync(`${packageDir}/sqitch.plan`, 'utf-8')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => /^%project=/.test(line));
-
-  if (!plan.length) {
+  const planPath = `${packageDir}/sqitch.plan`;
+  const plan = parsePlanFileSimple(planPath);
+  
+  if (!plan.project) {
     throw new Error('No project name found in sqitch.plan!');
   }
 
-  return plan[0].split('=')[1].trim();
+  return plan.project;
 };
 
 /**

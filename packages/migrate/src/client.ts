@@ -14,11 +14,17 @@ import {
   VerifyResult,
   StatusResult
 } from './types';
-import { parsePlanFile, getChangesInOrder } from './parser/plan';
+import { parsePlanFileSimple as parsePlanFile, Change } from '@launchql/sqitch-parser';
 import { hashFile } from './utils/hash';
 import { readScript, scriptExists } from './utils/fs';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
+
+// Helper function to get changes in order
+function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {
+  const plan = parsePlanFile(planPath);
+  return reverse ? [...plan.changes].reverse() : plan.changes;
+}
 
 const log = new Logger('migrate');
 

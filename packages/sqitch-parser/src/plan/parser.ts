@@ -1,36 +1,12 @@
 import { readFileSync } from 'fs';
-import { Change, PlanFile } from '../types';
+import { Change, PlanFile, Tag, ExtendedPlanFile, ParseError, ParseResult } from '../types';
 import { isValidChangeName, isValidTagName, isValidDependency, parseReference } from './validators';
-
-export interface Tag {
-  name: string;
-  change: string;
-  timestamp?: string;
-  planner?: string;
-  email?: string;
-  comment?: string;
-}
-
-export interface ExtendedPlanFile extends PlanFile {
-  tags: Tag[];
-}
-
-export interface ParseError {
-  line: number;
-  message: string;
-  content: string;
-}
-
-export interface ParseResult {
-  plan?: ExtendedPlanFile;
-  errors: ParseError[];
-}
 
 /**
  * Parse a Sqitch plan file with full validation
  * Supports both changes and tags
  */
-export function parsePlanFileWithValidation(planPath: string): ParseResult {
+export function parsePlanFile(planPath: string): ParseResult<ExtendedPlanFile> {
   const content = readFileSync(planPath, 'utf-8');
   const lines = content.split('\n');
   
@@ -76,15 +52,15 @@ export function parsePlanFileWithValidation(planPath: string): ParseResult {
         } else {
           errors.push({
             line: lineNum,
-            message: `Invalid tag name: ${tag.name}`,
-            content: trimmed
+            message: `Invalid tag name: ${tag.name}`
+            
           });
         }
       } else {
         errors.push({
           line: lineNum,
-          message: 'Invalid tag line format',
-          content: trimmed
+          message: 'Invalid tag line format'
+          
         });
       }
       continue;
@@ -97,8 +73,8 @@ export function parsePlanFileWithValidation(planPath: string): ParseResult {
       if (!isValidChangeName(change.name)) {
         errors.push({
           line: lineNum,
-          message: `Invalid change name: ${change.name}`,
-          content: trimmed
+          message: `Invalid change name: ${change.name}`
+          
         });
         continue;
       }
@@ -108,8 +84,8 @@ export function parsePlanFileWithValidation(planPath: string): ParseResult {
         if (!isValidDependency(dep)) {
           errors.push({
             line: lineNum,
-            message: `Invalid dependency reference: ${dep}`,
-            content: trimmed
+            message: `Invalid dependency reference: ${dep}`
+            
           });
         }
       }
@@ -119,8 +95,8 @@ export function parsePlanFileWithValidation(planPath: string): ParseResult {
       // Non-empty line that couldn't be parsed
       errors.push({
         line: lineNum,
-        message: 'Invalid line format',
-        content: trimmed
+        message: 'Invalid line format'
+        
       });
     }
   }
@@ -130,7 +106,7 @@ export function parsePlanFileWithValidation(planPath: string): ParseResult {
   }
   
   return {
-    plan: { project, uri, changes, tags },
+    data: { project, uri, changes, tags },
     errors: []
   };
 }
@@ -285,4 +261,36 @@ export function resolveReference(
   }
   
   return { error: `Cannot resolve reference: ${ref}` };
+}
+
+/**
+ * Simple plan file parser without validation (for backwards compatibility)
+ */
+export function parsePlanFileSimple(planPath: string): PlanFile {
+  const result = parsePlanFile(planPath);
+  
+  if (result.data) {
+    // Return without tags for simple format
+    const { tags, ...planWithoutTags } = result.data;
+    return planWithoutTags;
+  }
+  
+  // Return empty plan on error
+  return { project: '', uri: '', changes: [] };
+}
+
+/**
+ * Get all change names from a plan file
+ */
+export function getChanges(planPath: string): string[] {
+  const plan = parsePlanFileSimple(planPath);
+  return plan.changes.map(change => change.name);
+}
+
+/**
+ * Get the latest (last) change from a plan file
+ */
+export function getLatestChange(planPath: string): string {
+  const changes = getChanges(planPath);
+  return changes[changes.length - 1] || '';
 }

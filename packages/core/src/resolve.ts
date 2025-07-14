@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { getChanges } from '@launchql/sqitch-parser';
 
 import { getDeps } from './deps';
 import { getExtensionName } from './extensions';
@@ -42,17 +43,9 @@ export const resolveWithPlan = (
   scriptType: 'deploy' | 'revert' = 'deploy'
 ): string => {
   const sqlfile: string[] = [];
-  const plan = readFileSync(`${pkgDir}/sqitch.plan`, 'utf-8');
-
-  let resolved = plan
-    .split('\n')
-    .filter(
-      (line) =>
-        line.trim().length > 0 && // Exclude empty lines
-        !line.trim().startsWith('%') && // Exclude initial project settings
-        !line.trim().startsWith('@') // Exclude tags
-    )
-    .map((line) => line.split(' ')[0]);
+  const planPath = `${pkgDir}/sqitch.plan`;
+  
+  let resolved = getChanges(planPath);
 
   if (scriptType === 'revert') {
     resolved = resolved.reverse();
