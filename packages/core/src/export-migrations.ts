@@ -88,7 +88,6 @@ const exportMigrationsToDisk = async ({
 
   const opts: SqlWriteOptions = {
     name,
-    replace,
     replacer,
     outdir,
     author

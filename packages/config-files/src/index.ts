@@ -15,3 +15,6 @@ export * from './sql';
 
 // Export extension functionality
 export * from './extension';
+
+// Export SQL scripts functionality
+export * from './sql-scripts';

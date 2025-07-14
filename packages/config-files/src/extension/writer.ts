@@ -1,4 +1,5 @@
 import { writeFileSync } from 'fs';
+import { getExtensionInfo } from './reader';
 
 /**
  * Write the Makefile for the extension.
@@ -52,13 +53,16 @@ export interface ExtensionInfo {
 
 /**
  * Write control and Makefile for the extension with given data.
+ * If extInfo is not provided, it will be generated from packageDir.
  */
 export const writeExtensions = (
   packageDir: string,
   extensions: string[],
-  extInfo: ExtensionInfo
+  extInfo?: ExtensionInfo
 ): void => {
-  const { controlFile, Makefile, extname, version } = extInfo;
+  // If extInfo is not provided, get it from packageDir
+  const info = extInfo || getExtensionInfo(packageDir);
+  const { controlFile, Makefile, extname, version } = info;
   writeExtensionControlFile(controlFile, extname, extensions, version);
   writeExtensionMakefile(Makefile, extname, version);
 };

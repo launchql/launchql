@@ -16,7 +16,7 @@ import {
 } from './types';
 import { parsePlanFileSimple as parsePlanFile, Change } from '@launchql/config-files';
 import { hashFile } from './utils/hash';
-import { readScript, scriptExists } from './utils/fs';
+import { readScript, scriptExists } from '@launchql/config-files';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
 
