@@ -18,11 +18,11 @@ afterEach(() => {
 
 describe('installModule()', () => {
     it('installs a package and updates package.json dependencies', async () => {
-        await mod.installModules('@launchql/base32@0.4.6');
+        await mod.installModules('@webql/base32@1.0.0');
 
         const extDir = path.join(
             mod.getWorkspacePath()!,
-            'extensions/@launchql/base32'
+            'extensions/@webql/base32'
         );
 
         const files = glob.sync('**/*', {
@@ -37,7 +37,7 @@ describe('installModule()', () => {
             fs.readFileSync(path.join(mod.getModulePath()!, 'package.json'), 'utf-8')
         );
         expect(pkgJson.dependencies).toBeDefined();
-        expect(pkgJson.dependencies['@launchql/base32']).toBe('0.4.6');
+        expect(pkgJson.dependencies['@webql/base32']).toBe('1.0.0');
 
         const controlFileContent = mod.getModuleControlFile();
         expect(controlFileContent).toMatchSnapshot();
@@ -46,7 +46,7 @@ describe('installModule()', () => {
     it('throws if package.json does not exist in module', async () => {
         fs.rmSync(path.join(mod.getModulePath()!, 'package.json'));
         await expect(
-            mod.installModules('@launchql/base32@0.4.6')
+            mod.installModules('@webql/base32@1.0.0')
         ).rejects.toThrow(/No package\.json found/);
     });
 });
