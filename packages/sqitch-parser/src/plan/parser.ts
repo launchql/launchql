@@ -157,7 +157,8 @@ function parseTagLine(line: string, lastChangeName: string | null): Tag | null {
   // Remove the @ and parse
   const tagContent = line.substring(1);
   // Tag format: tagname timestamp planner <email> # comment
-  const regex = /^(\S+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(\S+)\s+<([^>]+)>(?:\s+#\s+(.*))?$/;
+  // Updated regex to handle planner names with spaces
+  const regex = /^(\S+)\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(.+?)\s+<([^>]+)>(?:\s+#\s+(.*))?$/;
   
   const match = tagContent.match(regex);
   if (!match) {
@@ -284,7 +285,13 @@ export function parsePlanFileSimple(planPath: string): PlanFile {
     return planWithoutTags;
   }
   
-  // Return empty plan on error
+  // If there are errors, throw with details
+  if (result.errors && result.errors.length > 0) {
+    const errorMessages = result.errors.map(e => `Line ${e.line}: ${e.message}`).join('\n');
+    throw new Error(`Failed to parse plan file ${planPath}:\n${errorMessages}`);
+  }
+  
+  // Return empty plan if no data and no errors
   return { project: '', uri: '', changes: [] };
 }
 
