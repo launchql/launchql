@@ -3,6 +3,8 @@ TODO
 - [ ] pnpm instead of yarn
 - [ ] Add tests for pg-ast
 - [ ] bring back csv-to-pg
+- [ ] bootstrap-roles.sql and any other "bootstrap" can be included in actual code for onboarding
+
 
 CI / Workflow
 -------------
