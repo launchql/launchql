@@ -5,7 +5,7 @@ import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { parsePlanFile, getChangesInOrder } from '@launchql/migrate';
+import { parsePlanFile } from '@launchql/migrate';
 import { getTargetDatabase } from '../../utils/database';
 
 const log = new Logger('migrate-list');
@@ -35,8 +35,15 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
 
   try {
     // Get all changes from plan file
-    const plan = parsePlanFile(planPath);
-    const allChanges = getChangesInOrder(planPath);
+    const planResult = parsePlanFile(planPath);
+    
+    if (!planResult.data || planResult.errors.length > 0) {
+      log.error('Failed to parse plan file:', planResult.errors);
+      process.exit(1);
+    }
+    
+    const plan = planResult.data;
+    const allChanges = plan.changes;
     
     // Get deployed changes from database
     const deployedChanges = await client.getDeployedChanges(targetDatabase, plan.project);

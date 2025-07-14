@@ -34,7 +34,14 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
 
   try {
     // Parse plan file to get project name
-    const plan = parsePlanFile(planPath);
+    const planResult = parsePlanFile(planPath);
+    
+    if (!planResult.data || planResult.errors.length > 0) {
+      log.error('Failed to parse plan file:', planResult.errors);
+      process.exit(1);
+    }
+    
+    const plan = planResult.data;
     
     // Switch to target database
     const targetClient = new LaunchQLMigrate({
