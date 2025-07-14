@@ -7,21 +7,26 @@ exports[`installModule() installs a package and updates package.json dependencie
   "deploy/schemas/base32/procedures/decode.sql",
   "deploy/schemas/base32/procedures/encode.sql",
   "deploy/schemas/base32/schema.sql",
-  "launchql-base32.control",
+  "jest.config.js",
   "launchql.plan",
   "package.json",
+  "readme.md",
   "revert/schemas/base32/procedures/decode.sql",
   "revert/schemas/base32/procedures/encode.sql",
   "revert/schemas/base32/schema.sql",
-  "sql/launchql-base32--0.0.3.sql",
-  "test/__snapshots__/base32.decode.test.js.snap",
-  "test/__snapshots__/base32.encode.test.js.snap",
-  "test/base32.decode.test.js",
-  "test/base32.encode.test.js",
-  "test/utils/index.js",
+  "sql/webql-base32--1.2.1.sql",
+  "src/base32.ts",
+  "src/index.ts",
+  "test/__snapshots__/base32.decode.test.ts.snap",
+  "test/__snapshots__/base32.encode.test.ts.snap",
+  "test/base32.decode.test.ts",
+  "test/base32.encode.test.ts",
+  "tsconfig.esm.json",
+  "tsconfig.json",
   "verify/schemas/base32/procedures/decode.sql",
   "verify/schemas/base32/procedures/encode.sql",
   "verify/schemas/base32/schema.sql",
+  "webql-base32.control",
 ]
 `;
 
@@ -30,7 +35,7 @@ exports[`installModule() installs a package and updates package.json dependencie
 comment = 'totp extension'
 default_version = '0.0.1'
 module_pathname = '$libdir/totp'
-requires = 'launchql-base32,pgcrypto,plpgsql,uuid-ossp'
+requires = 'pgcrypto,plpgsql,uuid-ossp,webql-base32'
 relocatable = false
 superuser = false
   "

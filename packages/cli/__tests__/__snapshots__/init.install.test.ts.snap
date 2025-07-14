@@ -7,7 +7,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     "url": "https://github.com/undefined/undefined/issues",
   },
   "dependencies": {
-    "@webql/base32": "1.1.2",
+    "@webql/base32": "1.2.1",
   },
   "description": "undefined",
   "homepage": "https://github.com/undefined/undefined",
@@ -45,7 +45,6 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   "../../extensions/@webql/base32/deploy/schemas/base32/procedures/encode.sql",
   "../../extensions/@webql/base32/deploy/schemas/base32/schema.sql",
   "../../extensions/@webql/base32/jest.config.js",
-  "../../extensions/@webql/base32/launchql-base32.control",
   "../../extensions/@webql/base32/launchql.plan",
   "../../extensions/@webql/base32/LICENSE",
   "../../extensions/@webql/base32/Makefile",
@@ -54,7 +53,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   "../../extensions/@webql/base32/revert/schemas/base32/procedures/decode.sql",
   "../../extensions/@webql/base32/revert/schemas/base32/procedures/encode.sql",
   "../../extensions/@webql/base32/revert/schemas/base32/schema.sql",
-  "../../extensions/@webql/base32/sql/launchql-base32--0.4.5.sql",
+  "../../extensions/@webql/base32/sql/webql-base32--1.2.1.sql",
   "../../extensions/@webql/base32/src/base32.ts",
   "../../extensions/@webql/base32/src/index.ts",
   "../../extensions/@webql/base32/test/__snapshots__/base32.decode.test.ts.snap",
@@ -66,6 +65,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   "../../extensions/@webql/base32/verify/schemas/base32/procedures/decode.sql",
   "../../extensions/@webql/base32/verify/schemas/base32/procedures/encode.sql",
   "../../extensions/@webql/base32/verify/schemas/base32/schema.sql",
+  "../../extensions/@webql/base32/webql-base32.control",
 ]
 `;
 
@@ -74,7 +74,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
 comment = 'my-module extension'
 default_version = '0.0.1'
 module_pathname = '$libdir/my-module'
-requires = 'launchql-base32,plpgsql,uuid-ossp'
+requires = 'plpgsql,uuid-ossp,webql-base32'
 relocatable = false
 superuser = false
   "
@@ -87,8 +87,8 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     "url": "https://github.com/undefined/undefined/issues",
   },
   "dependencies": {
-    "@webql/base32": "1.1.2",
-    "@webql/utils": "1.1.1",
+    "@webql/base32": "1.2.1",
+    "@webql/utils": "1.1.2",
   },
   "description": "undefined",
   "homepage": "https://github.com/undefined/undefined",
@@ -125,7 +125,7 @@ exports[`cmds:install - with initialized workspace and module installs two modul
 comment = 'my-module extension'
 default_version = '0.0.1'
 module_pathname = '$libdir/my-module'
-requires = 'launchql-base32,launchql-utils,plpgsql,uuid-ossp'
+requires = 'plpgsql,uuid-ossp,webql-base32,webql-utils'
 relocatable = false
 superuser = false
   "
