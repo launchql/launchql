@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`plan-invalid/bad-symbolic-refs.plan 1`] = `
+[
+  {
+    "line": 14,
+    "message": "Invalid dependency reference: change:with:colons",
+  },
+  {
+    "line": 15,
+    "message": "Invalid dependency reference: @invalid@tag",
+  },
+  {
+    "line": 30,
+    "message": "Invalid dependency reference: @foo/bar",
+  },
+  {
+    "line": 31,
+    "message": "Invalid dependency reference: change@@double",
+  },
+  {
+    "line": 32,
+    "message": "Invalid dependency reference: change@",
+  },
+]
+`;
+
+exports[`plan-invalid/invalid-change-names.plan 1`] = `
+[
+  {
+    "line": 9,
+    "message": "Invalid change name: foo:bar",
+  },
+  {
+    "line": 10,
+    "message": "Invalid change name: foo\\bar",
+  },
+  {
+    "line": 11,
+    "message": "Invalid change name: foo#bar",
+  },
+  {
+    "line": 14,
+    "message": "Invalid change name: foo^6",
+  },
+  {
+    "line": 15,
+    "message": "Invalid change name: bar~9",
+  },
+  {
+    "line": 16,
+    "message": "Invalid change name: baz/3",
+  },
+  {
+    "line": 17,
+    "message": "Invalid change name: qux=7",
+  },
+  {
+    "line": 18,
+    "message": "Invalid change name: test%42",
+  },
+  {
+    "line": 21,
+    "message": "Invalid change name: +foo",
+  },
+  {
+    "line": 22,
+    "message": "Invalid change name: -bar",
+  },
+  {
+    "line": 23,
+    "message": "Invalid change name: .baz",
+  },
+  {
+    "line": 24,
+    "message": "Invalid change name: !qux",
+  },
+  {
+    "line": 27,
+    "message": "Invalid change name: foo+",
+  },
+  {
+    "line": 28,
+    "message": "Invalid change name: bar-",
+  },
+  {
+    "line": 29,
+    "message": "Invalid change name: baz.",
+  },
+  {
+    "line": 30,
+    "message": "Invalid change name: qux!",
+  },
+  {
+    "line": 33,
+    "message": "Invalid line format",
+  },
+  {
+    "line": 34,
+    "message": "Invalid line format",
+  },
+  {
+    "line": 39,
+    "message": "Invalid line format",
+  },
+  {
+    "line": 40,
+    "message": "Invalid line format",
+  },
+]
+`;
+
+exports[`plan-invalid/invalid-tag-names.plan 1`] = `
+[
+  {
+    "line": 11,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 12,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 15,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 16,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 17,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 18,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 21,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 22,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 23,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 26,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 27,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 28,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 31,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 32,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 35,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 36,
+    "message": "Invalid tag line format",
+  },
+  {
+    "line": 39,
+    "message": "Invalid tag line format",
+  },
+]
+`;
