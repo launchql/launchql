@@ -35,7 +35,7 @@
   "dependencies": {
     "@launchql/logger": "^1.0.0",
     "@launchql/server-utils": "^2.1.15",
-    "@launchql/sqitch-parser": "^2.0.0",
+    "@launchql/config-files": "^2.0.0",
     "@launchql/types": "^2.1.13",
     "@pgsql/types": "^17.6.1",
     "pg": "^8.11.3",

@@ -14,7 +14,7 @@ import {
   VerifyResult,
   StatusResult
 } from './types';
-import { parsePlanFileSimple as parsePlanFile, Change } from '@launchql/sqitch-parser';
+import { parsePlanFileSimple as parsePlanFile, Change } from '@launchql/config-files';
 import { hashFile } from './utils/hash';
 import { readScript, scriptExists } from './utils/fs';
 import { cleanSql } from './clean';

@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/sqitch-parser",
+  "name": "@launchql/config-files",
   "version": "2.0.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "LaunchQL Sqitch Parser",
+  "description": "LaunchQL Config Files",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

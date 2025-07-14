@@ -118,8 +118,8 @@ jobs:
       - name: launchql/launchql-gen
         run: cd ./packages/launchql-gen && yarn test
 
-      - name: launchql/sqitch-parser
-        run: cd ./packages/sqitch-parser && yarn test
+      - name: launchql/config-files
+        run: cd ./packages/config-files && yarn test
 
       - name: launchql/pg-ast
         run: cd ./packages/pg-ast && yarn test

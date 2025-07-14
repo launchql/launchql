@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { getChanges } from '@launchql/sqitch-parser';
+import { getChanges } from '@launchql/config-files';
 
 import { getDeps } from './deps';
 import { getExtensionName } from './extensions';

@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { basename, dirname, relative } from 'path';
-import { getLatestChange } from '@launchql/sqitch-parser';
+import { getLatestChange } from '@launchql/config-files';
 
 export interface Module {
   path: string;

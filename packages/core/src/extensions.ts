@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { parsePlanFileSimple } from '@launchql/sqitch-parser';
+import { parsePlanFileSimple } from '@launchql/config-files';
 import { ModuleMap } from './modules';
 
 export interface ExtensionInfo {
