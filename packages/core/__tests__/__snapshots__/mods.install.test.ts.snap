@@ -38,5 +38,5 @@ module_pathname = '$libdir/totp'
 requires = 'pgcrypto,plpgsql,uuid-ossp,webql-base32'
 relocatable = false
 superuser = false
-   "
+"
 `;

@@ -8,7 +8,7 @@ module_pathname = '$libdir/my-module'
 requires = 'citext,plpgsql'
 relocatable = false
 superuser = false
-   "
+"
 `;
 
 exports[`cmds:init initializes module: module-only - argv 1`] = `

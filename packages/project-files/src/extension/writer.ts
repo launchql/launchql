@@ -61,8 +61,7 @@ default_version = '${default_version}'
   }
 
   content += `relocatable = ${relocatable}
-superuser = ${superuser}
-   `;
+superuser = ${superuser}\n`;
 
   if (schema) {
     content += `schema = ${schema}\n`;
