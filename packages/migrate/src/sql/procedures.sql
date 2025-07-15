@@ -146,8 +146,16 @@ BEGIN
     
     -- Execute deploy
     BEGIN
+        INSERT INTO launchql_migrate.debug_log (message) 
+        VALUES ('About to execute SQL for ' || p_project || ':' || p_change_name || ': ' || substring(p_deploy_sql, 1, 200));
+        
         EXECUTE p_deploy_sql;
+        
+        INSERT INTO launchql_migrate.debug_log (message) 
+        VALUES ('Successfully executed SQL for ' || p_project || ':' || p_change_name);
     EXCEPTION WHEN OTHERS THEN
+        INSERT INTO launchql_migrate.debug_log (message) 
+        VALUES ('SQL execution failed for ' || p_project || ':' || p_change_name || ': ' || SQLERRM);
         INSERT INTO launchql_migrate.events (event_type, change_name, project)
         VALUES ('fail', p_change_name, p_project);
         RAISE;
