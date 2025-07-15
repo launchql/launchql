@@ -5,7 +5,7 @@ import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { parsePlanFile } from '@launchql/project-files';
+import { parsePlanFile } from '@launchql/core';
 import { getTargetDatabase } from '../../utils/database';
 const log = new Logger('migrate-status');
 

@@ -22,8 +22,6 @@ LaunchQL Core is the main package for LaunchQL, providing tools for database mig
 - Reading and writing SQL scripts
 - Resolving dependencies between migrations
 
-> **Note:** As of version 2.4.0, the functionality from `@launchql/project-files` has been integrated into this package to simplify the codebase and improve maintainability.
-
 ## Related LaunchQL Tooling
 
 ### 🧪 Testing

@@ -46,7 +46,6 @@
     "@launchql/migrate": "^2.3.0",
     "@launchql/server": "^2.2.1",
     "@launchql/server-utils": "^2.1.15",
-    "@launchql/project-files": "^2.0.0",
     "@launchql/templatizer": "^2.1.6",
     "@launchql/types": "^2.1.13",
     "chalk": "^4.1.0",
