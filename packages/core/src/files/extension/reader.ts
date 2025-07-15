@@ -11,6 +11,7 @@ export interface Module {
 
 /**
  * Parse a .control file and extract its metadata.
+ * https://www.postgresql.org/docs/current/extend-extensions.html
  */
 export function parseControlFile(filePath: string, basePath: string): Module {
   const contents = readFileSync(filePath, 'utf-8');

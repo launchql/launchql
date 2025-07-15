@@ -21,6 +21,7 @@ include $(PGXS)
 
 /**
  * Generate content for a .control file
+ * https://www.postgresql.org/docs/current/extend-extensions.html
  */
 export function generateControlFileContent(options: {
   name: string;
