@@ -19,10 +19,10 @@ export async function revertModule(
     useTransaction?: boolean;
   }
 ): Promise<void> {
-  const planPath = join(cwd, 'sqitch.plan');
+  const planPath = join(cwd, 'launchql.plan');
   
   if (!existsSync(planPath)) {
-    throw new Error(`No sqitch.plan found in ${cwd}`);
+    throw new Error(`No launchql.plan found in ${cwd}`);
   }
   
   // Provide defaults for missing config values

@@ -2,17 +2,17 @@ import { walkUp } from './utils';
 
 
 const PROJECT_FILES = {
-  SQITCH: 'sqitch.conf',
+  PLAN: 'launchql.plan',
   LAUNCHQL: 'launchql.json',
 };
 
 /**
- * Finds the Sqitch project path.
+ * Finds the module path by looking for launchql.plan.
  * @param cwd - Current working directory.
- * @returns A promise that resolves to the directory path containing `sqitch.conf`.
+ * @returns A promise that resolves to the directory path containing `launchql.plan`.
  */
-export const sqitchPath = (cwd: string = process.cwd()): string => {
-  return walkUp(cwd, PROJECT_FILES.SQITCH);
+export const modulePath = (cwd: string = process.cwd()): string => {
+  return walkUp(cwd, PROJECT_FILES.PLAN);
 };
 
 /**
@@ -41,7 +41,7 @@ export const getModulePath = (cwd: string): string => {
   let pkgPath: string;
 
   try {
-    pkgPath = sqitchPath(cwd);
+    pkgPath = modulePath(cwd);
   } catch (err) {
     console.error('Error: You must be in a LaunchQL module. You can initialize one with the `init` command.');
     process.exit(1);

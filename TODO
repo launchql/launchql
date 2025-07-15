@@ -3,6 +3,7 @@ TODO
 - [ ] pnpm instead of yarn
 - [ ] Add tests for pg-ast
 - [ ] bring back csv-to-pg
+- [ ] bootstrap-roles.sql and any other "bootstrap" can be included in actual code for onboarding
 
 
 CI / Workflow
@@ -18,8 +19,8 @@ Testing & Stability
 
 Package Cleanup
 ---------------
-- [ ] Remove shelljs
-- [ ] Remove deployFast option
+- [x] Remove shelljs
+- [x] Remove deployFast option
 - [ ] Add keywords to package.json files in all packages
 
 CSV-to-PG Improvements

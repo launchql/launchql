@@ -1,0 +1,26 @@
+%syntax-version=1.0.0
+%project=main-project
+%uri=https://github.com/test/main-project
+
+# Local changes
+base_schema 2024-01-01T00:00:00Z dev <dev@example.com> # Base schema
+base_tables 2024-01-01T00:00:01Z dev <dev@example.com> # Base tables
+
+# Dependencies on other projects
+auth_integration [auth_project:users_table] 2024-01-01T00:00:02Z dev <dev@example.com> # Depend on specific change
+billing_integration [billing_project:@v1.2] 2024-01-01T00:00:03Z dev <dev@example.com> # Depend on tag in other project
+reporting_integration [analytics:reports_table@v2.0] 2024-01-01T00:00:04Z dev <dev@example.com> # Change at specific tag
+
+# Multiple cross-project dependencies
+multi_integration [auth_project:users billing_project:invoices analytics:metrics] 2024-01-01T00:00:05Z dev <dev@example.com>
+
+# SHA1 references to other projects
+sha_dependency [other_project:40763784148fa190d75bad036730ef44d1c2eac6] 2024-01-01T00:00:06Z dev <dev@example.com>
+
+# Symbolic references to other projects
+other_head_dep [remote_project:HEAD] 2024-01-01T00:00:07Z dev <dev@example.com> # Latest in other project
+other_root_dep [remote_project:@ROOT] 2024-01-01T00:00:08Z dev <dev@example.com> # First in other project
+
+# Relative references in other projects
+other_relative [external:@HEAD^2] 2024-01-01T00:00:09Z dev <dev@example.com> # Two before HEAD in external
+other_tag_relative [external:@release~3] 2024-01-01T00:00:10Z dev <dev@example.com> # Three after release tag

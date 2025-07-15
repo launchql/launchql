@@ -1,4 +1,4 @@
-import fs, { writeFileSync } from 'fs';
+import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
@@ -8,6 +8,7 @@ import { parse } from 'parse-package-name';
 import os from 'os';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
+import { generatePlan, writePlan } from '../files';
 
 import {
   writeRenderedTemplates,
@@ -27,10 +28,10 @@ import {
   getExtensionInfo,
   writeExtensions,
   getExtensionName,
-  getAvailableExtensions,
   getInstalledExtensions,
   ExtensionInfo,
-} from '../extensions';
+} from '../files';
+import { getAvailableExtensions } from '../extensions';
 
 
 const logger = new Logger('launchql');
@@ -106,7 +107,7 @@ export class LaunchQLProject {
 
   private resolveSqitchPath(): string | undefined {
     try {
-      return walkUp(this.cwd, 'sqitch.conf');
+      return walkUp(this.cwd, 'launchql.plan');
     } catch {
       return undefined;
     }
@@ -255,15 +256,13 @@ export class LaunchQLProject {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create sqitch.conf file (minimal configuration)
-    const sqitchConf = `[core]
-\tengine = pg
-`;
-    writeFileSync(path.join(targetPath, 'sqitch.conf'), sqitchConf);
-    
-    // Create sqitch.plan file
-    const plan = `%syntax-version=1.0.0\n%project=${modName}\n%uri=${modName}\n`;
-    writeFileSync(path.join(targetPath, 'sqitch.plan'), plan);
+    // Create launchql.plan file using project-files package
+    const plan = generatePlan({
+      moduleName: modName,
+      uri: modName,
+      entries: []
+    });
+    writePlan(path.join(targetPath, 'launchql.plan'), plan);
     
     // Create deploy, revert, and verify directories
     const dirs = ['deploy', 'revert', 'verify'];
@@ -321,7 +320,7 @@ export class LaunchQLProject {
 
   getModulePlan(): string {
     this.ensureModule();
-    const planPath = path.join(this.getModulePath()!, 'sqitch.plan');
+    const planPath = path.join(this.getModulePath()!, 'launchql.plan');
     return fs.readFileSync(planPath, 'utf8');
   }
 
@@ -347,14 +346,6 @@ export class LaunchQLProject {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
-
-    const now = getNow();
-
-    const planfile: string[] = [
-      `%syntax-version=1.0.0`,
-      `%project=${moduleName}`,
-      `%uri=${options.uri || moduleName}`
-    ];
 
     // Get raw dependencies and resolved list
     let { resolved, deps } = getDeps(this.cwd, moduleName);
@@ -445,7 +436,8 @@ export class LaunchQLProject {
     // Process external dependencies if needed
     if (options.projects && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
-      const external = depData.modules.map((m) => `${m.name}:${m.latest}`);
+      const external = depData.modules
+        .map((m) => `${m.name}:${m.latest}`);
 
       // Add external dependencies to the first change if there is one
       if (resolved.length > 0) {
@@ -465,8 +457,8 @@ export class LaunchQLProject {
     // console.log("CLEAN DEPS GRAPH", JSON.stringify(deps, null, 2));
     // console.log("CLEAN RES GRAPH", JSON.stringify(resolved, null, 2));
 
-    // Generate the plan with the cleaned structures
-    resolved.forEach(res => {
+    // Prepare entries for the plan file
+    const entries = resolved.map(res => {
       const key = `/deploy/${res}.sql`;
       const dependencies = deps[key] || [];
 
@@ -476,18 +468,19 @@ export class LaunchQLProject {
         normalizeChangeName(dep) !== res
       );
 
-      if (filteredDeps.length > 0) {
-        planfile.push(
-          `${res} [${filteredDeps.join(' ')}] ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
-        );
-      } else {
-        planfile.push(
-          `${res} ${now} launchql <launchql@5b0c196eeb62> # add ${res}`
-        );
-      }
+      return {
+        change: res,
+        dependencies: filteredDeps,
+        comment: `add ${res}`
+      };
     });
 
-    return planfile.join('\n');
+    // Use the project-files package to generate the plan
+    return generatePlan({
+      moduleName,
+      uri: options.uri,
+      entries
+    });
   }
 
   writeModulePlan(
@@ -498,8 +491,10 @@ export class LaunchQLProject {
     const plan = this.generateModulePlan(options);
     const moduleMap = this.getModuleMap();
     const mod = moduleMap[name];
-    const planPath = path.join(this.workspacePath!, mod.path, 'sqitch.plan');
-    writeFileSync(planPath, plan);
+    const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');
+    
+    // Use the project-files package to write the plan
+    writePlan(planPath, plan);
   }
 
   // ──────────────── Packaging and npm ────────────────
@@ -519,7 +514,7 @@ export class LaunchQLProject {
     fs.mkdirSync(fullDist, { recursive: true });
 
     const folders = ['deploy', 'revert', 'sql', 'verify'];
-    const files = ['Makefile', 'package.json', 'sqitch.conf', 'sqitch.plan', controlFile];
+    const files = ['Makefile', 'package.json', 'launchql.plan', controlFile];
 
 
     // Add README file regardless of casing
@@ -577,7 +572,7 @@ export class LaunchQLProject {
           stdio: 'inherit'
         });
   
-        const matches = glob.sync('./extensions/**/sqitch.conf');
+        const matches = glob.sync('./extensions/**/launchql.plan');
         const installs = matches.map((conf) => {
           const fullConf = resolve(conf);
           const extDir = dirname(fullConf);

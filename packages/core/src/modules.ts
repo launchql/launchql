@@ -1,41 +1,8 @@
-import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
-import { basename, dirname, relative } from 'path';
-
-export interface Module {
-  path: string;
-  requires: string[];
-  version: string;
-}
+import { basename } from 'path';
+import { getLatestChange, parseControlFile, Module } from './files';
 
 export type ModuleMap = Record<string, Module>;
-
-/**
- * Parse a .control file and extract its metadata.
- */
-const parseControlFile = (filePath: string, basePath: string): Module => {
-  const contents = readFileSync(filePath, 'utf-8');
-  const key = basename(filePath).split('.control')[0];
-  const requires = contents
-    .split('\n')
-    .find((line) => /^requires/.test(line))
-    ?.split('=')[1]
-    .split(',')
-    .map((req) => req.replace(/[\'\s]*/g, '').trim()) || [];
-
-  const version = contents
-    .split('\n')
-    .find((line) => /^default_version/.test(line))
-    ?.split('=')[1]
-    .replace(/[\']*/g, '')
-    .trim() || '';
-
-  return {
-    path: dirname(relative(basePath, filePath)),
-    requires,
-    version,
-  };
-};
 
 /**
  * List all modules by parsing .control files in the provided directory.
@@ -53,7 +20,7 @@ export const listModules = (workspaceDir: string): ModuleMap => {
 };
 
 /**
- * Get the latest change from the sqitch.plan file for a specific module.
+ * Get the latest change from the launchql.plan file for a specific module.
  */
 export const latestChange = (
   sqlmodule: string,
@@ -65,12 +32,8 @@ export const latestChange = (
     throw new Error(`latestChange() ${sqlmodule} NOT FOUND!`);
   }
 
-  const plan = readFileSync(`${basePath}/${module.path}/sqitch.plan`, 'utf-8')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  return plan[plan.length - 1].split(' ')[0];
+  const planPath = `${basePath}/${module.path}/launchql.plan`;
+  return getLatestChange(planPath);
 };
 
 /**
@@ -86,12 +49,8 @@ export const latestChangeAndVersion = (
     throw new Error(`latestChangeAndVersion() ${sqlmodule} NOT FOUND!`);
   }
 
-  const plan = readFileSync(`${basePath}/${module.path}/sqitch.plan`, 'utf-8')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  const change = plan[plan.length - 1].split(' ')[0];
+  const planPath = `${basePath}/${module.path}/launchql.plan`;
+  const change = getLatestChange(planPath);
   const pkg = require(`${basePath}/${module.path}/package.json`);
 
   return { change, version: pkg.version };

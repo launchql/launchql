@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`installModule() installs a package and updates package.json dependencies 1`] = `
+[
+  "LICENSE",
+  "Makefile",
+  "deploy/schemas/base32/procedures/decode.sql",
+  "deploy/schemas/base32/procedures/encode.sql",
+  "deploy/schemas/base32/schema.sql",
+  "jest.config.js",
+  "launchql.plan",
+  "package.json",
+  "readme.md",
+  "revert/schemas/base32/procedures/decode.sql",
+  "revert/schemas/base32/procedures/encode.sql",
+  "revert/schemas/base32/schema.sql",
+  "sql/webql-base32--1.2.1.sql",
+  "src/base32.ts",
+  "src/index.ts",
+  "test/__snapshots__/base32.decode.test.ts.snap",
+  "test/__snapshots__/base32.encode.test.ts.snap",
+  "test/base32.decode.test.ts",
+  "test/base32.encode.test.ts",
+  "tsconfig.esm.json",
+  "tsconfig.json",
+  "verify/schemas/base32/procedures/decode.sql",
+  "verify/schemas/base32/procedures/encode.sql",
+  "verify/schemas/base32/schema.sql",
+  "webql-base32.control",
+]
+`;
+
+exports[`installModule() installs a package and updates package.json dependencies 2`] = `
+"# totp extension
+comment = 'totp extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/totp'
+requires = 'pgcrypto,plpgsql,uuid-ossp,webql-base32'
+relocatable = false
+superuser = false
+"
+`;

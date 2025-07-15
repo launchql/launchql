@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
+import { getChanges, getExtensionName } from './files';
 
 import { getDeps } from './deps';
-import { getExtensionName } from './extensions';
 
 /**
  * Resolves SQL scripts for deployment or reversion.
@@ -31,7 +31,7 @@ export const resolve = (
 };
 
 /**
- * Resolves SQL scripts based on the `sqitch.plan` file.
+ * Resolves SQL scripts based on the `launchql.plan` file.
  *
  * @param pkgDir - The package directory (defaults to the current working directory).
  * @param scriptType - The type of script to resolve (`deploy` or `revert`).
@@ -42,17 +42,9 @@ export const resolveWithPlan = (
   scriptType: 'deploy' | 'revert' = 'deploy'
 ): string => {
   const sqlfile: string[] = [];
-  const plan = readFileSync(`${pkgDir}/sqitch.plan`, 'utf-8');
-
-  let resolved = plan
-    .split('\n')
-    .filter(
-      (line) =>
-        line.trim().length > 0 && // Exclude empty lines
-        !line.trim().startsWith('%') && // Exclude initial project settings
-        !line.trim().startsWith('@') // Exclude tags
-    )
-    .map((line) => line.split(' ')[0]);
+  const planPath = `${pkgDir}/launchql.plan`;
+  
+  let resolved = getChanges(planPath);
 
   if (scriptType === 'revert') {
     resolved = resolved.reverse();

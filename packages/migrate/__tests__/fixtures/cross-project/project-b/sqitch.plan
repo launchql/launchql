@@ -1,6 +1,0 @@
-%syntax-version=1.0.0
-%project=project-b
-%uri=https://github.com/test/project-b
-
-app_schema [project-a:base_schema] 2023-01-01T00:02:00Z test <test@example.com> # Create app schema
-app_tables [app_schema project-a:base_types] 2023-01-01T00:03:00Z test <test@example.com> # Create app tables

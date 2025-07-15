@@ -3,7 +3,7 @@ import { relative } from 'path';
 import { parse } from 'pgsql-parser';
 import { deparse } from 'pgsql-deparser';
 
-import { getExtensionName } from './extensions';
+import { getExtensionName } from './files';
 import { resolve, resolveWithPlan } from './resolve';
 import { transformProps } from './transform';
 import { Logger } from '@launchql/logger';

@@ -326,7 +326,7 @@ function installit {
     echo $1
     cd $1
 
-    for x in $(find ./ -type f -name "sqitch.plan")
+    for x in $(find ./ -type f -name "launchql.plan")
     do
       orig=$(pwd)
       dir=$(dirname $x)

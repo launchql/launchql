@@ -3,12 +3,11 @@
 exports[`cmds:package updates module with \`extension\` and \`package\` commands in copied fixture workspace: extension-update - files 1`] = `
 [
   "deploy/procedures/secretfunction.sql",
+  "launchql.plan",
   "Makefile",
   "package.json",
   "revert/procedures/secretfunction.sql",
   "secrets.control",
-  "sqitch.conf",
-  "sqitch.plan",
   "sql/secrets--0.0.1.sql",
   "verify/procedures/secretfunction.sql",
 ]

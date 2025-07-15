@@ -24,6 +24,11 @@ export interface MigrationOptions {
   fast?: boolean;
   usePlan?: boolean;
   cache?: boolean;
+  /**
+   * The plan file to use for sqitch operations
+   * Defaults to 'launchql.plan'
+   */
+  planFile?: string;
 }
 
 /**
@@ -56,13 +61,16 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
         useTransaction: options.useTransaction,
         fast: options.fast,
         usePlan: options.usePlan,
-        cache: options.cache
+        cache: options.cache,
+        planFile: options.planFile
       }
     );
   } else {
     // Direct execution on current directory
     if (options.useSqitch) {
-      await runSqitch('deploy', options.database, options.cwd);
+      await runSqitch('deploy', options.database, options.cwd, getPgEnvOptions(), {
+        planFile: options.planFile || 'launchql.plan'
+      });
     } else {
       await deployModule(
         getPgEnvOptions(), 
@@ -103,13 +111,17 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
       options.cwd, 
       { 
         useSqitch: options.useSqitch, 
-        useTransaction: options.useTransaction 
+        useTransaction: options.useTransaction,
+        planFile: options.planFile
       }
     );
   } else {
     // Direct execution on current directory
     if (options.useSqitch) {
-      await runSqitch('revert', options.database, options.cwd);
+      await runSqitch('revert', options.database, options.cwd, getPgEnvOptions(), {
+        planFile: options.planFile || 'launchql.plan',
+        confirm: true
+      });
     } else {
       await revertModule(
         getPgEnvOptions(), 
@@ -148,12 +160,17 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
       options.projectName, 
       options.database, 
       options.cwd, 
-      { useSqitch: options.useSqitch }
+      { 
+        useSqitch: options.useSqitch,
+        planFile: options.planFile
+      }
     );
   } else {
     // Direct execution on current directory
     if (options.useSqitch) {
-      await runSqitch('verify', options.database, options.cwd);
+      await runSqitch('verify', options.database, options.cwd, getPgEnvOptions(), {
+        planFile: options.planFile || 'launchql.plan'
+      });
     } else {
       await verifyModule(
         getPgEnvOptions(), 

@@ -153,9 +153,11 @@ export const generateCodeTree = (
 
   const fileTree: Record<string, string> = {};
   Object.entries(schemaFiles).forEach(([filePath, statements]) => {
+    // @ts-ignore
     fileTree[filePath] = generate(t.program(statements)).code;
   });
-
+  
+  // @ts-ignore
   fileTree['index.ts'] = generate(t.program(indexFileStatements)).code;
   return fileTree;
 };

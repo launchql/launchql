@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`publishToDist() copies all required folders and files to dist/ 1`] = `
+[
+  "Makefile",
+  "deploy/procedures/generate_secret.sql",
+  "deploy/some/change.sql",
+  "launchql.plan",
+  "package.json",
+  "readme.md",
+  "revert/procedures/generate_secret.sql",
+  "revert/some/change.sql",
+  "sql/totp--0.0.1.sql",
+  "totp.control",
+  "verify/procedures/generate_secret.sql",
+  "verify/some/change.sql",
+]
+`;

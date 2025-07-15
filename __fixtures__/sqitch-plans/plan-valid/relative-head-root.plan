@@ -1,0 +1,32 @@
+%syntax-version=1.0.0
+%project=relative-refs
+%uri=https://github.com/test/relative-refs
+
+# Base changes for relative references
+change1 2024-01-01T00:00:00Z dev <dev@example.com> # First
+change2 2024-01-01T00:00:01Z dev <dev@example.com> # Second
+change3 2024-01-01T00:00:02Z dev <dev@example.com> # Third
+@beta change3 2024-01-01T00:00:03Z dev <dev@example.com> # Beta tag
+change4 2024-01-01T00:00:04Z dev <dev@example.com> # Fourth
+change5 2024-01-01T00:00:05Z dev <dev@example.com> # Fifth (HEAD)
+
+# Relative references from HEAD
+depends_head_1 [@HEAD^] 2024-01-01T00:00:06Z dev <dev@example.com> # One before HEAD (change4)
+depends_head_2 [@HEAD^^] 2024-01-01T00:00:07Z dev <dev@example.com> # Two before HEAD (change3)
+depends_head_3 [@HEAD^3] 2024-01-01T00:00:08Z dev <dev@example.com> # Three before HEAD (change2)
+
+# Relative references from ROOT
+depends_root_1 [@ROOT~] 2024-01-01T00:00:09Z dev <dev@example.com> # One after ROOT (change2)
+depends_root_2 [@ROOT~2] 2024-01-01T00:00:10Z dev <dev@example.com> # Two after ROOT (change3)
+
+# Relative references from tags
+depends_beta_back [@beta^] 2024-01-01T00:00:11Z dev <dev@example.com> # One before beta tag (change2)
+depends_beta_fwd [@beta~2] 2024-01-01T00:00:12Z dev <dev@example.com> # Two after beta tag (change5)
+
+# Relative references from specific changes
+depends_change3_back [change3^2] 2024-01-01T00:00:13Z dev <dev@example.com> # Two before change3 (change1)
+depends_change2_fwd [change2~3] 2024-01-01T00:00:14Z dev <dev@example.com> # Three after change2 (change5)
+
+# Cross-project relative references
+cross_relative [project:foo^2] 2024-01-01T00:00:15Z dev <dev@example.com> # Relative in another project
+cross_relative2 [project:foo~3] 2024-01-01T00:00:16Z dev <dev@example.com> # Forward relative in another project

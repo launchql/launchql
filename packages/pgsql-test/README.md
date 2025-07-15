@@ -422,7 +422,7 @@ This works for any Sqitch-compatible module, now accelerated by LaunchQL's deplo
 
 ## 🚀 LaunchQL Seeding
 
-If your project uses LaunchQL modules with a precompiled `sqitch.plan`, you can use `pgsql-test` with **zero configuration**. Just call `getConnections()` — and it *just works*:
+If your project uses LaunchQL modules with a precompiled `launchql.plan`, you can use `pgsql-test` with **zero configuration**. Just call `getConnections()` — and it *just works*:
 
 ```ts
 import { getConnections } from 'pgsql-test';

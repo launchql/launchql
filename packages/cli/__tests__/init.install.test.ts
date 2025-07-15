@@ -18,8 +18,7 @@ function getExpectedFiles(pkg: string, version: string): string[] {
 
   return [
     `${basePath}/package.json`,
-    `${basePath}/sqitch.conf`,
-    `${basePath}/sqitch.plan`,
+    `${basePath}/launchql.plan`,
     `${basePath}/Makefile`,
     `${basePath}/sql/${extname}--${version}.sql`,
     `${basePath}/${extname}.control`,
@@ -67,8 +66,8 @@ describe('cmds:install - with initialized workspace and module', () => {
   });
 
   it('installs a module package', async () => {
-    const pkg = '@launchql/base32';
-    const version = '0.4.6';
+    const pkg = '@webql/base32';
+    const version = '1.2.1';
 
     await fixture.runCmd({
       _: ['install', `${pkg}@${version}`],
@@ -97,13 +96,13 @@ describe('cmds:install - with initialized workspace and module', () => {
 
   it('installs two modules', async () => {
     const base32 = {
-      name: '@launchql/base32',
-      version: '0.4.6'
+      name: '@webql/base32',
+      version: '1.2.1'
     };
 
     const utils = {
-      name: '@launchql/utils',
-      version: '0.4.6'
+      name: '@webql/utils',
+      version: '1.1.2'
     };
 
     const pkgs = [base32, utils];

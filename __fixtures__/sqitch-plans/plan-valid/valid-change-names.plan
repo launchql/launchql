@@ -1,0 +1,29 @@
+%syntax-version=1.0.0
+%project=valid-changes
+%uri=https://github.com/test/valid-changes
+
+# Valid change names - testing various formats
+foo 2024-01-01T00:00:00Z dev <dev@example.com> # Simple name
+12 2024-01-01T00:00:01Z dev <dev@example.com> # Numeric name
+foo_bar 2024-01-01T00:00:02Z dev <dev@example.com> # With underscore
+v1.2-1 2024-01-01T00:00:03Z dev <dev@example.com> # With dots and dash
+beta2 2024-01-01T00:00:04Z dev <dev@example.com> # Alphanumeric
+_hidden 2024-01-01T00:00:05Z dev <dev@example.com> # Starting with underscore
+test_ 2024-01-01T00:00:06Z dev <dev@example.com> # Ending with underscore
+a-b-c 2024-01-01T00:00:07Z dev <dev@example.com> # Multiple dashes
+CamelCase 2024-01-01T00:00:08Z dev <dev@example.com> # Mixed case
+UPPERCASE 2024-01-01T00:00:09Z dev <dev@example.com> # All uppercase
+
+# Changes with dependencies
+users [foo] 2024-01-01T00:00:10Z dev <dev@example.com> # Single dependency
+posts [users foo_bar] 2024-01-01T00:00:11Z dev <dev@example.com> # Multiple dependencies
+comments [posts users] 2024-01-01T00:00:12Z dev <dev@example.com> # Multiple dependencies
+
+# Changes with cross-project dependencies
+external_dep [other_project:base_schema] 2024-01-01T00:00:13Z dev <dev@example.com> # Cross-project
+multi_external [proj1:schema proj2:tables] 2024-01-01T00:00:14Z dev <dev@example.com> # Multiple cross-project
+
+# Edge cases that are still valid
+x 2024-01-01T00:00:15Z dev <dev@example.com> # Single character
+___ 2024-01-01T00:00:16Z dev <dev@example.com> # All underscores
+a1b2c3 2024-01-01T00:00:17Z dev <dev@example.com> # Mixed alphanumeric

@@ -23,7 +23,7 @@ describe('Deploy Command', () => {
     const result = await client.deploy({
       project: 'test-simple',
       targetDatabase: db.name,
-      planPath: join(fixturePath, 'sqitch.plan'),
+      planPath: join(fixturePath, 'launchql.plan'),
       toChange: 'schema'
     });
     
@@ -48,7 +48,7 @@ describe('Deploy Command', () => {
     const result = await client.deploy({
       project: 'test-simple',
       targetDatabase: db.name,
-      planPath: join(fixturePath, 'sqitch.plan'),
+      planPath: join(fixturePath, 'launchql.plan'),
     });
     
     expect(result.deployed).toEqual(['schema', 'table', 'index']);
@@ -73,7 +73,7 @@ describe('Deploy Command', () => {
     const result1 = await client.deploy({
       project: 'test-simple',
       targetDatabase: db.name,
-      planPath: join(fixturePath, 'sqitch.plan'),
+      planPath: join(fixturePath, 'launchql.plan'),
       toChange: 'table'
     });
     
@@ -83,7 +83,7 @@ describe('Deploy Command', () => {
     const result2 = await client.deploy({
       project: 'test-simple',
       targetDatabase: db.name,
-      planPath: join(fixturePath, 'sqitch.plan'),
+      planPath: join(fixturePath, 'launchql.plan'),
     });
     
     expect(result2.deployed).toEqual(['index']);
@@ -111,7 +111,7 @@ describe('Deploy Command', () => {
     await expect(client.deploy({
       project: 'test-fail',
       targetDatabase: db.name,
-      planPath: join(tempDir, 'sqitch.plan'),
+      planPath: join(tempDir, 'launchql.plan'),
       useTransaction: true // default
     })).rejects.toThrow();
     
@@ -146,7 +146,7 @@ describe('Deploy Command', () => {
     await expect(client.deploy({
       project: 'test-fail',
       targetDatabase: db.name,
-      planPath: join(tempDir, 'sqitch.plan'),
+      planPath: join(tempDir, 'launchql.plan'),
       useTransaction: false
     })).rejects.toThrow();
     

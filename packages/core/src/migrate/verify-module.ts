@@ -15,10 +15,10 @@ export async function verifyModule(
   database: string,
   cwd: string
 ): Promise<void> {
-  const planPath = join(cwd, 'sqitch.plan');
+  const planPath = join(cwd, 'launchql.plan');
   
   if (!existsSync(planPath)) {
-    throw new Error(`No sqitch.plan found in ${cwd}`);
+    throw new Error(`No launchql.plan found in ${cwd}`);
   }
   
   // The verify method will handle missing verify scripts per change

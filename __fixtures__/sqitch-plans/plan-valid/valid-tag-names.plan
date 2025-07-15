@@ -1,0 +1,25 @@
+%syntax-version=1.0.0
+%project=valid-tags
+%uri=https://github.com/test/valid-tags
+
+# Setup changes for tags
+schema 2024-01-01T00:00:00Z dev <dev@example.com> # Base schema
+tables 2024-01-01T00:00:01Z dev <dev@example.com> # Tables
+functions 2024-01-01T00:00:02Z dev <dev@example.com> # Functions
+
+# Valid tag names
+@v1_0 schema 2024-01-01T00:00:03Z dev <dev@example.com> # Version tag with underscore
+@rc1 tables 2024-01-01T00:00:04Z dev <dev@example.com> # Release candidate
+@prod-tag functions 2024-01-01T00:00:05Z dev <dev@example.com> # Production tag with dash
+@beta tables 2024-01-01T00:00:06Z dev <dev@example.com> # Simple tag
+@_internal schema 2024-01-01T00:00:07Z dev <dev@example.com> # Tag starting with underscore
+@RELEASE functions 2024-01-01T00:00:08Z dev <dev@example.com> # Uppercase tag
+@v2.0.0 functions 2024-01-01T00:00:09Z dev <dev@example.com> # Semantic version style
+
+# More changes after tags (testing interleaved tags and changes)
+views [tables] 2024-01-01T00:00:10Z dev <dev@example.com> # Views
+@milestone1 views 2024-01-01T00:00:11Z dev <dev@example.com> # Tag on latest change
+
+# Testing tag references in dependencies
+indexes [tables@v1_0] 2024-01-01T00:00:12Z dev <dev@example.com> # Dependency on tagged change
+procedures [@beta] 2024-01-01T00:00:13Z dev <dev@example.com> # Dependency on tag alone

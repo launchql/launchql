@@ -1,12 +1,12 @@
 import { resolve } from 'path';
-import { spawn } from 'child_process';
 
 import { LaunchQLProject } from '../class/launchql';
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { getSpawnEnvWithPg } from 'pg-env';
+import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { revertModule } from '../migrate/revert-module';
+import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -20,7 +20,15 @@ export const revertProject = async (
   name: string,
   database: string,
   dir: string,
-  options?: { useSqitch?: boolean; useTransaction?: boolean }
+  options?: { 
+    useSqitch?: boolean; 
+    useTransaction?: boolean;
+    /**
+     * The plan file to use for sqitch operations
+     * Defaults to 'launchql.plan'
+     */
+    planFile?: string;
+  }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
 
@@ -58,34 +66,20 @@ export const revertProject = async (
 
         if (options?.useSqitch) {
           // Use legacy sqitch
-          log.debug(`→ Command: sqitch revert db:pg:${database} -y`);
+          const planFile = options.planFile || 'launchql.plan';
+          log.debug(`→ Command: sqitch revert --plan-file ${planFile} db:pg:${database} -y`);
 
-          const child = spawn('sqitch', ['revert', `db:pg:${database}`, '-y'], {
-            cwd: modulePath,
-            env: getSpawnEnvWithPg(opts.pg),
-          });
-
-          const exitCode: number = await new Promise((resolve, reject) => {
-            child.stdout.setEncoding('utf-8');
-            child.stderr.setEncoding('utf-8');
-
-            child.stderr.on('data', (chunk: Buffer | string) => {
-              const text = chunk.toString();
-              if (/error/i.test(text)) {
-                log.error(text);
-              } else if (/warning/i.test(text)) {
-                log.warn(text);
-              } else {
-                log.error(text); // non-warning stderr output
-              }
+          try {
+            const exitCode = await runSqitch('revert', database, modulePath, opts.pg as PgConfig, {
+              planFile,
+              confirm: true
             });
-
-            child.stdout.pipe(process.stdout);
-            child.on('close', resolve);
-            child.on('error', reject);
-          });
-
-          if (exitCode !== 0) {
+            
+            if (exitCode !== 0) {
+              log.error(`❌ Revert failed for module ${extension}`);
+              throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+            }
+          } catch (err) {
             log.error(`❌ Revert failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
           }

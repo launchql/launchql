@@ -1,0 +1,32 @@
+%syntax-version=1.0.0
+%project=bad-symbolic
+%uri=https://github.com/test/bad-symbolic
+
+# Base changes
+first 2024-01-01T00:00:00Z dev <dev@example.com> # First change
+second 2024-01-01T00:00:01Z dev <dev@example.com> # Second change
+
+# Invalid symbolic references
+
+# Invalid dependency references
+bad_dep1 [HEAD^-1] 2024-01-01T00:00:02Z dev <dev@example.com> # Negative relative count
+bad_dep2 [@ROOT^^~] 2024-01-01T00:00:03Z dev <dev@example.com> # Mixed ^ and ~
+bad_dep3 [change:with:colons] 2024-01-01T00:00:04Z dev <dev@example.com> # Too many colons
+bad_dep4 [@invalid@tag] 2024-01-01T00:00:05Z dev <dev@example.com> # @ in tag name
+bad_dep5 [change name with spaces] 2024-01-01T00:00:06Z dev <dev@example.com> # Spaces in dependency
+
+# Invalid SHA1 references
+bad_sha1 [40763784148fa190d75bad036730ef44d1c2eac] 2024-01-01T00:00:07Z dev <dev@example.com> # Too short (39 chars)
+bad_sha2 [40763784148fa190d75bad036730ef44d1c2eac6x] 2024-01-01T00:00:08Z dev <dev@example.com> # Too long (41 chars)
+bad_sha3 [40763784148fa190d75bad036730ef44d1c2eacg] 2024-01-01T00:00:09Z dev <dev@example.com> # Invalid hex char 'g'
+bad_sha4 [40763784148fa190d75bad036730ef44d1c2ea ] 2024-01-01T00:00:10Z dev <dev@example.com> # Space in SHA1
+
+# Out of bounds relative references (these would be runtime errors, not parse errors)
+# But including them to test error handling
+out_of_bounds1 [@ROOT^] 2024-01-01T00:00:11Z dev <dev@example.com> # Can't go before ROOT
+out_of_bounds2 [@HEAD~100] 2024-01-01T00:00:12Z dev <dev@example.com> # Too far forward
+
+# Invalid tag references in dependencies
+bad_tag_dep1 [@foo/bar] 2024-01-01T00:00:13Z dev <dev@example.com> # Tag with slash
+bad_tag_dep2 [change@@double] 2024-01-01T00:00:14Z dev <dev@example.com> # Double @
+bad_tag_dep3 [change@] 2024-01-01T00:00:15Z dev <dev@example.com> # Empty tag name
