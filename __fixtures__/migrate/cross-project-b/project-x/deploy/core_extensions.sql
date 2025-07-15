@@ -1,8 +1,6 @@
 -- Deploy project-x:core_extensions to pg
 -- requires: core_functions
 
-BEGIN;
-
 -- Extended audit functionality
 CREATE OR REPLACE FUNCTION core.audit_trigger()
 RETURNS TRIGGER AS $$
@@ -32,5 +30,3 @@ CREATE TRIGGER update_config_timestamp
     BEFORE UPDATE ON core.config
     FOR EACH ROW
     EXECUTE FUNCTION core.update_timestamp();
-
-COMMIT;

@@ -2,8 +2,6 @@
 -- requires: auth_users
 -- requires: project-x:@x1.1.0
 
-BEGIN;
-
 CREATE TABLE auth.roles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT UNIQUE NOT NULL,
@@ -27,5 +25,3 @@ CREATE TABLE auth.user_roles (
     granted_by UUID REFERENCES auth.users(id),
     PRIMARY KEY (user_id, role_id)
 );
-
-COMMIT;

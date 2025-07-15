@@ -32,6 +32,7 @@ import {
   ExtensionInfo,
 } from '../files';
 import { getAvailableExtensions } from '../extensions';
+import { parsePlanFile } from '../files/plan/parser';
 
 
 const logger = new Logger('launchql');
@@ -342,7 +343,7 @@ export class LaunchQLProject {
     return fs.readFileSync(info.sqlFile, 'utf8');
   }
 
-  generateModulePlan(options: { uri?: string; projects?: boolean }): string {
+  async generateModulePlan(options: { uri?: string; projects?: boolean }): Promise<string> {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
@@ -389,7 +390,7 @@ export class LaunchQLProject {
     const normalizedDeps: any = {};
 
     // Process each deps entry
-    Object.keys(deps).forEach(key => {
+    for (const key of Object.keys(deps)) {
       // Normalize the key - strip "/deploy/" and ".sql" if present
       let normalizedKey = key;
       if (normalizedKey.startsWith('/deploy/')) {
@@ -413,21 +414,23 @@ export class LaunchQLProject {
 
       // Add dependencies, handling both formats
       const dependencies = deps[key] || [];
-      dependencies.forEach(dep => {
+      for (const dep of dependencies) {
+        const resolvedDep = await this.resolveDependencyReference(dep, moduleName);
+        
         // For truly external dependencies, keep the full reference
-        if (isExternalChange(dep)) {
-          if (!normalizedDeps[standardKey].includes(dep)) {
-            normalizedDeps[standardKey].push(dep);
+        if (isExternalChange(resolvedDep)) {
+          if (!normalizedDeps[standardKey].includes(resolvedDep)) {
+            normalizedDeps[standardKey].push(resolvedDep);
           }
         } else {
           // For same-project dependencies, normalize by removing prefix
-          const normalizedDep = normalizeChangeName(dep);
+          const normalizedDep = normalizeChangeName(resolvedDep);
           if (!normalizedDeps[standardKey].includes(normalizedDep)) {
             normalizedDeps[standardKey].push(normalizedDep);
           }
         }
-      });
-    });
+      }
+    }
 
     // Update with normalized versions
     resolved = normalizedResolved;
@@ -483,12 +486,93 @@ export class LaunchQLProject {
     });
   }
 
-  writeModulePlan(
+  /**
+   * Resolve a dependency reference that may contain tags
+   * Handles formats like: @tagname, project:@tagname, project:changename
+   */
+  private async resolveDependencyReference(dep: string, currentProject: string): Promise<string> {
+    if (!dep.includes('@')) {
+      return dep;
+    }
+
+    const [projectPart, refPart] = dep.includes(':') ? dep.split(':', 2) : [currentProject, dep];
+    
+    if (refPart.startsWith('@')) {
+      const tagName = refPart.substring(1);
+      
+      if (projectPart !== currentProject) {
+        const externalChange = await this.resolveExternalTag(projectPart, tagName);
+        return `${projectPart}:${externalChange}`;
+      } else {
+        const localChange = this.resolveLocalTag(tagName);
+        return localChange;
+      }
+    }
+    
+    return dep;
+  }
+
+  /**
+   * Resolve a tag in the current project's plan
+   */
+  private resolveLocalTag(tagName: string): string {
+    const planPath = this.getModulePlan();
+    const result = parsePlanFile(planPath);
+    
+    if (result.errors && result.errors.length > 0) {
+      throw new Error(`Failed to parse plan file: ${result.errors.map(e => e.message).join(', ')}`);
+    }
+    
+    const tag = result.data?.tags.find(t => t.name === tagName);
+    if (!tag) {
+      throw new Error(`Tag not found: @${tagName}`);
+    }
+    
+    return tag.change;
+  }
+
+  /**
+   * Resolve a tag in an external project's plan
+   */
+  private async resolveExternalTag(projectName: string, tagName: string): Promise<string> {
+    
+    if (!this.workspacePath) {
+      throw new Error(`Cannot resolve external tag ${projectName}:@${tagName} - not in workspace`);
+    }
+    
+    // Get all modules in the workspace to find the external project
+    const modules = await this.getModules();
+    const externalProject = modules.find((module: any) => {
+      const moduleName = module.getModuleName();
+      return moduleName === projectName;
+    });
+    
+    if (!externalProject) {
+      throw new Error(`External project not found in workspace: ${projectName}`);
+    }
+    
+    // Use the external project's plan file
+    const externalPlanPath = externalProject.getModulePlan();
+    const result = parsePlanFile(externalPlanPath);
+    
+    if (result.errors && result.errors.length > 0) {
+      throw new Error(`Failed to parse external plan file: ${result.errors.map(e => e.message).join(', ')}`);
+    }
+    
+    const tag = result.data?.tags.find(t => t.name === tagName);
+    if (!tag) {
+      throw new Error(`Tag not found in ${projectName}: @${tagName}`);
+    }
+    
+    return tag.change;
+  }
+
+  async writeModulePlan(
     options: { uri?: string; projects?: boolean }
-  ): void {
+  ): Promise<void> {
     this.ensureModule();
     const name = this.getModuleName();
-    const plan = this.generateModulePlan(options);
+    const plan = await this.generateModulePlan(options);
     const moduleMap = this.getModuleMap();
     const mod = moduleMap[name];
     const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');

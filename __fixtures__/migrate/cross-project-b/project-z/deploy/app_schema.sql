@@ -2,8 +2,6 @@
 -- requires: project-x:@x1.1.0
 -- requires: project-y:@y1.0.0
 
-BEGIN;
-
 CREATE SCHEMA IF NOT EXISTS app;
 COMMENT ON SCHEMA app IS 'Main application schema';
 
@@ -17,5 +15,3 @@ BEGIN
         RAISE EXCEPTION 'Auth system not at required version';
     END IF;
 END $$;
-
-COMMIT;

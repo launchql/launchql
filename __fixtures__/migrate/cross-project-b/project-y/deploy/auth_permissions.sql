@@ -2,8 +2,6 @@
 -- requires: auth_roles
 -- requires: project-x:core_extensions
 
-BEGIN;
-
 CREATE TABLE auth.permissions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     resource TEXT NOT NULL,
@@ -42,5 +40,3 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Store permission config in core.config
 INSERT INTO core.config (key, value, description)
 VALUES ('auth.permissions.cache_ttl', '{"seconds": 300}', 'Permission cache TTL in seconds');
-
-COMMIT;

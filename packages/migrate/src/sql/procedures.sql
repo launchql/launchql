@@ -8,6 +8,53 @@ BEGIN
 END;
 $$;
 
+CREATE FUNCTION launchql_migrate.resolve_tag_reference(
+    p_project TEXT,
+    p_reference TEXT
+)
+RETURNS TEXT
+LANGUAGE plpgsql STABLE AS $$
+DECLARE
+    v_actual_project TEXT;
+    v_actual_reference TEXT;
+    v_colon_pos INT;
+    v_resolved_change TEXT;
+BEGIN
+    -- Check if reference contains a project prefix (cross-project dependency)
+    v_colon_pos := position(':' in p_reference);
+    
+    IF v_colon_pos > 0 THEN
+        -- Split into project and reference
+        v_actual_project := substring(p_reference from 1 for v_colon_pos - 1);
+        v_actual_reference := substring(p_reference from v_colon_pos + 1);
+    ELSE
+        -- Use provided project as default
+        v_actual_project := p_project;
+        v_actual_reference := p_reference;
+    END IF;
+    
+    -- Check if this is a tag reference (starts with @)
+    IF v_actual_reference LIKE '@%' THEN
+        SELECT change_name INTO v_resolved_change
+        FROM launchql_migrate.tags 
+        WHERE project = v_actual_project 
+        AND tag_name = substring(v_actual_reference from 2);
+        
+        IF v_resolved_change IS NOT NULL THEN
+            IF v_colon_pos > 0 THEN
+                RETURN v_actual_project || ':' || v_resolved_change;
+            ELSE
+                RETURN v_resolved_change;
+            END IF;
+        ELSE
+            RETURN p_reference;
+        END IF;
+    ELSE
+        RETURN p_reference;
+    END IF;
+END;
+$$;
+
 -- Check if a change is deployed (handles both local and cross-project dependencies)
 CREATE FUNCTION launchql_migrate.is_deployed(
     p_project TEXT,
@@ -19,18 +66,21 @@ DECLARE
     v_actual_project TEXT;
     v_actual_change TEXT;
     v_colon_pos INT;
+    v_resolved_reference TEXT;
 BEGIN
-    -- Check if change_name contains a project prefix (cross-project dependency)
-    v_colon_pos := position(':' in p_change_name);
+    v_resolved_reference := launchql_migrate.resolve_tag_reference(p_project, p_change_name);
+    
+    -- Check if resolved reference contains a project prefix (cross-project dependency)
+    v_colon_pos := position(':' in v_resolved_reference);
     
     IF v_colon_pos > 0 THEN
         -- Split into project and change name
-        v_actual_project := substring(p_change_name from 1 for v_colon_pos - 1);
-        v_actual_change := substring(p_change_name from v_colon_pos + 1);
+        v_actual_project := substring(v_resolved_reference from 1 for v_colon_pos - 1);
+        v_actual_change := substring(v_resolved_reference from v_colon_pos + 1);
     ELSE
         -- Use provided project as default
         v_actual_project := p_project;
-        v_actual_change := p_change_name;
+        v_actual_change := v_resolved_reference;
     END IF;
     
     RETURN EXISTS (
@@ -53,6 +103,9 @@ LANGUAGE plpgsql AS $$
 DECLARE
     v_change_id TEXT;
 BEGIN
+    INSERT INTO launchql_migrate.debug_log (message) 
+    VALUES ('Deploy called for project=' || p_project || ', change=' || p_change_name || ', requires=' || array_to_string(p_requires, ','));
+    
     -- Ensure project exists
     CALL launchql_migrate.register_project(p_project);
     

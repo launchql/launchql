@@ -2,8 +2,6 @@
 -- requires: app_schema
 -- requires: project-y:auth_users
 
-BEGIN;
-
 CREATE TABLE app.organizations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -43,5 +41,3 @@ CREATE TRIGGER generate_org_slug
     FOR EACH ROW
     WHEN (NEW.slug IS NULL OR NEW.slug = '')
     EXECUTE FUNCTION core.generate_slug(NEW.name);
-
-COMMIT;

@@ -2,8 +2,6 @@
 -- requires: auth_schema
 -- requires: project-x:core_types
 
-BEGIN;
-
 CREATE TABLE auth.users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     username TEXT UNIQUE NOT NULL,
@@ -26,5 +24,3 @@ CREATE TRIGGER update_users_timestamp
     BEFORE UPDATE ON auth.users
     FOR EACH ROW
     EXECUTE FUNCTION core.update_timestamp();
-
-COMMIT;

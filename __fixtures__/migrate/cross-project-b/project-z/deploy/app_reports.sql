@@ -1,8 +1,6 @@
 -- Deploy project-z:app_reports to pg
 -- requires: app_analytics
 
-BEGIN;
-
 CREATE TABLE app.report_definitions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -64,5 +62,3 @@ BEGIN
     RETURN QUERY EXECUTE v_query;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
-
-COMMIT;

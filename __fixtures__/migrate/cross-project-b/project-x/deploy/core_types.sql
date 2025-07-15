@@ -1,8 +1,6 @@
 -- Deploy project-x:core_types to pg
 -- requires: core_schema
 
-BEGIN;
-
 -- Create custom types used across projects
 CREATE TYPE core.status_enum AS ENUM ('active', 'inactive', 'pending', 'archived');
 CREATE TYPE core.priority_enum AS ENUM ('low', 'medium', 'high', 'critical');
@@ -17,5 +15,3 @@ CREATE TABLE core.audit_log (
     old_data JSONB,
     new_data JSONB
 );
-
-COMMIT;

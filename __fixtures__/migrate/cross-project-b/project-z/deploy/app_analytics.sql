@@ -3,8 +3,6 @@
 -- requires: project-x:@x2.0.0
 -- requires: project-y:@y2.0.0
 
-BEGIN;
-
 -- Analytics tables using advanced features from core v2.0.0 and auth v2.0.0
 CREATE TABLE app.analytics_events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -70,5 +68,3 @@ CREATE TRIGGER audit_analytics_events
     AFTER INSERT OR UPDATE OR DELETE ON app.analytics_events
     FOR EACH ROW
     EXECUTE FUNCTION core.audit_trigger();
-
-COMMIT;

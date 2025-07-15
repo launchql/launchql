@@ -2,8 +2,6 @@
 -- requires: app_entities
 -- requires: project-y:auth_roles
 
-BEGIN;
-
 CREATE TABLE app.workflows (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES app.projects(id) ON DELETE CASCADE,
@@ -51,5 +49,3 @@ BEGIN
     );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
-
-COMMIT;

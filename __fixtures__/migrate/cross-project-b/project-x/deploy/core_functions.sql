@@ -1,8 +1,6 @@
 -- Deploy project-x:core_functions to pg
 -- requires: core_types
 
-BEGIN;
-
 -- Utility function for generating slugs
 CREATE OR REPLACE FUNCTION core.generate_slug(input_text TEXT)
 RETURNS TEXT AS $$
@@ -19,5 +17,3 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-COMMIT;
