@@ -77,7 +77,7 @@ module_pathname = '$libdir/my-module'
 requires = 'plpgsql,uuid-ossp,webql-base32'
 relocatable = false
 superuser = false
-  "
+   "
 `;
 
 exports[`cmds:install - with initialized workspace and module installs two modules 1`] = `
@@ -128,5 +128,5 @@ module_pathname = '$libdir/my-module'
 requires = 'plpgsql,uuid-ossp,webql-base32,webql-utils'
 relocatable = false
 superuser = false
-  "
+   "
 `;
