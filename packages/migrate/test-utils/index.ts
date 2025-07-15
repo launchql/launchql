@@ -154,7 +154,6 @@ export class MigrateTestFixture {
     const originalPath = join(FIXTURES_PATH, fixtureName);
     const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
     const fixturePath = join(tempDir, fixtureName);
-    
     cpSync(originalPath, fixturePath, { recursive: true });
     this.tempDirs.push(tempDir);
     

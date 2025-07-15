@@ -1,0 +1,8 @@
+%syntax-version=1.0.0
+%project=tagged-deps
+%uri=https://github.com/test/tagged-deps
+
+base 2024-01-01T00:00:00Z test <test@example.com> # Base tables
+add_settings [base] 2024-01-02T00:00:00Z test <test@example.com> # Settings system
+@v0.2.0 2024-01-02T12:00:00Z test <test@example.com> # Settings release
+add_features [add_settings] 2024-01-03T00:00:00Z test <test@example.com> # Feature flags

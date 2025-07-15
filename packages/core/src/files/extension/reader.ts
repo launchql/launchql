@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { basename, dirname, relative } from 'path';
+import { dirname, relative } from 'path';
 import { parsePlanFileSimple } from '../plan';
 import { ExtensionInfo } from './writer';
 
@@ -15,7 +15,7 @@ export interface Module {
  */
 export function parseControlFile(filePath: string, basePath: string): Module {
   const contents = readFileSync(filePath, 'utf-8');
-  const key = basename(filePath).split('.control')[0];
+  // const key = basename(filePath).split('.control')[0];
   const requires = contents
     .split('\n')
     .find((line) => /^requires/.test(line))

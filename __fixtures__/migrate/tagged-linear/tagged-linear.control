@@ -1,0 +1,6 @@
+# tagged-linear extension
+comment = 'tagged linear migration example'
+default_version = '1.0.0'
+requires = ''
+relocatable = false
+superuser = false

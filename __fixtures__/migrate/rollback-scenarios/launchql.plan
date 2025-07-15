@@ -1,0 +1,16 @@
+%syntax-version=1.0.0
+%project=rollback-scenarios
+%uri=https://github.com/test/rollback-scenarios
+
+# Test various rollback scenarios
+initial_setup 2024-01-01T00:00:00Z test <test@example.com> # Initial setup
+add_users [initial_setup] 2024-01-02T00:00:00Z test <test@example.com> # Add users table
+@v1.0.0 2024-01-02T12:00:00Z test <test@example.com> # First stable release
+add_products [add_users] 2024-01-03T00:00:00Z test <test@example.com> # Add products
+add_orders [add_products] 2024-01-04T00:00:00Z test <test@example.com> # Add orders
+@v1.1.0 2024-01-04T12:00:00Z test <test@example.com> # Feature release
+add_reviews [add_orders] 2024-01-05T00:00:00Z test <test@example.com> # Add reviews
+add_analytics [add_reviews] 2024-01-06T00:00:00Z test <test@example.com> # Add analytics
+@v2.0.0 2024-01-06T12:00:00Z test <test@example.com> # Major release
+add_notifications [add_analytics] 2024-01-07T00:00:00Z test <test@example.com> # Add notifications
+@v2.1.0 2024-01-07T12:00:00Z test <test@example.com> # Minor update

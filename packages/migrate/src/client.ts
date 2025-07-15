@@ -14,15 +14,21 @@ import {
   VerifyResult,
   StatusResult
 } from './types';
-import { parsePlanFileSimple as parsePlanFile, Change, readScript, scriptExists } from '@launchql/core';
+import { parsePlanFileSimple, Change, readScript, scriptExists } from '@launchql/core';
 import { hashFile } from './utils/hash';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
 
 // Helper function to get changes in order
 function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {
-  const plan = parsePlanFile(planPath);
+  const plan = parsePlanFileSimple(planPath);
   return reverse ? [...plan.changes].reverse() : plan.changes;
+}
+
+function ensurePlanFile(where: string, planPath: string) {
+  if (!planPath || !planPath.endsWith('.plan')) {
+    throw new Error(`${where}: Plan file path is required, was given ${planPath}`);
+  }
 }
 
 const log = new Logger('migrate');
@@ -92,7 +98,8 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
-    const plan = parsePlanFile(planPath);
+    ensurePlanFile('deploy', planPath);
+    const plan = parsePlanFileSimple(planPath);
     const changes = getChangesInOrder(planPath);
     
     const deployed: string[] = [];
@@ -187,7 +194,8 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
-    const plan = parsePlanFile(planPath);
+    ensurePlanFile('revert', planPath);
+    const plan = parsePlanFileSimple(planPath);
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
@@ -259,7 +267,8 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { project, targetDatabase, planPath } = options;
-    const plan = parsePlanFile(planPath);
+    ensurePlanFile('verify', planPath);
+    const plan = parsePlanFileSimple(planPath);
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
@@ -461,7 +470,7 @@ export class LaunchQLMigrate {
    * Get pending changes (in plan but not deployed)
    */
   async getPendingChanges(planPath: string, targetDatabase: string): Promise<string[]> {
-    const plan = parsePlanFile(planPath);
+    const plan = parsePlanFileSimple(planPath);
     const allChanges = getChangesInOrder(planPath);
     
     const targetPool = getPgPool({

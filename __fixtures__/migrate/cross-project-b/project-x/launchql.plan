@@ -1,0 +1,11 @@
+%syntax-version=1.0.0
+%project=project-x
+%uri=https://github.com/test/project-x
+
+core_schema 2024-01-01T00:00:00Z test <test@example.com> # Create core schema
+core_types [core_schema] 2024-01-02T00:00:00Z test <test@example.com> # Create core types
+@x1.0.0 2024-01-02T12:00:00Z test <test@example.com> # Core system v1.0.0
+core_functions [core_types] 2024-01-03T00:00:00Z test <test@example.com> # Core utility functions
+@x1.1.0 2024-01-03T12:00:00Z test <test@example.com> # Core system v1.1.0
+core_extensions [core_functions] 2024-01-04T00:00:00Z test <test@example.com> # Extended core features
+@x2.0.0 2024-01-04T12:00:00Z test <test@example.com> # Core system v2.0.0

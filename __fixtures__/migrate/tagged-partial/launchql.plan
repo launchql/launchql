@@ -1,0 +1,11 @@
+%syntax-version=1.0.0
+%project=tagged-partial
+%uri=https://github.com/test/tagged-partial
+
+a 2024-01-01T00:00:00Z test <test@example.com> # Change A
+b [a] 2024-01-02T00:00:00Z test <test@example.com> # Change B
+@v1.0.0 2024-01-02T12:00:00Z test <test@example.com> # First milestone
+c [b] 2024-01-03T00:00:00Z test <test@example.com> # Change C
+d [c] 2024-01-04T00:00:00Z test <test@example.com> # Change D
+@v1.2.0 2024-01-04T12:00:00Z test <test@example.com> # Second milestone
+e [d] 2024-01-05T00:00:00Z test <test@example.com> # Change E

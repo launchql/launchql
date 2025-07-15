@@ -1,4 +1,3 @@
-import { parsePlanFileSimple } from './files';
 import { ModuleMap } from './modules';
 
 /**

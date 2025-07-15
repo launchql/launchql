@@ -1,0 +1,13 @@
+%syntax-version=1.0.0
+%project=project-z
+%uri=https://github.com/test/project-z
+
+# Project Z depends on both X and Y at specific versions
+app_schema [project-x:@x1.1.0 project-y:@y1.0.0] 2024-01-10T00:00:00Z test <test@example.com> # App needs core v1.1.0 and auth v1.0.0
+app_entities [app_schema project-y:auth_users] 2024-01-11T00:00:00Z test <test@example.com> # App entities linked to users
+@z1.0.0 2024-01-11T12:00:00Z test <test@example.com> # App v1.0.0
+app_workflows [app_entities project-y:auth_roles] 2024-01-12T00:00:00Z test <test@example.com> # Workflows with role checks
+@z1.1.0 2024-01-12T12:00:00Z test <test@example.com> # App v1.1.0
+app_analytics [app_workflows project-x:@x2.0.0 project-y:@y2.0.0] 2024-01-13T00:00:00Z test <test@example.com> # Analytics requires latest versions
+app_reports [app_analytics] 2024-01-14T00:00:00Z test <test@example.com> # Reporting system
+@z2.0.0 2024-01-14T12:00:00Z test <test@example.com> # App v2.0.0

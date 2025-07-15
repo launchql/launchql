@@ -1,0 +1,11 @@
+%syntax-version=1.0.0
+%project=tagged-linear
+%uri=https://github.com/test/tagged-linear
+
+init 2024-01-01T00:00:00Z test <test@example.com> # Initialize database
+create_users [init] 2024-01-02T00:00:00Z test <test@example.com> # Create users table
+@v1.0.0 2024-01-02T12:00:00Z test <test@example.com> # First release
+create_orders [create_users] 2024-01-03T00:00:00Z test <test@example.com> # Create orders table
+create_payments [create_orders] 2024-01-04T00:00:00Z test <test@example.com> # Create payments table
+@v1.1.0 2024-01-04T12:00:00Z test <test@example.com> # Payment system added
+add_discounts [create_orders] 2024-01-05T00:00:00Z test <test@example.com> # Add discount system

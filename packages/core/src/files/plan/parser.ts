@@ -7,6 +7,9 @@ import { isValidChangeName, isValidTagName, isValidDependency, parseReference } 
  * Supports both changes and tags
  */
 export function parsePlanFile(planPath: string): ParseResult<ExtendedPlanFile> {
+  if (!planPath || !planPath.endsWith('.plan')) {
+    throw new Error(`Plan file path is required, was given ${planPath}`);
+  }
   const content = readFileSync(planPath, 'utf-8');
   const lines = content.split('\n');
   
@@ -312,6 +315,9 @@ export function resolveReference(
  * Simple plan file parser without validation (for backwards compatibility)
  */
 export function parsePlanFileSimple(planPath: string): PlanFile {
+  if (!planPath || !planPath.endsWith('.plan')) {
+    throw new Error(`Plan file path is required, was given ${planPath}`);
+  }
   const result = parsePlanFile(planPath);
   
   if (result.data) {
