@@ -3,6 +3,8 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
+export { TestPlan } from './TestPlan';
+
 const { mkdtempSync, rmSync, cpSync } = fs;
 
 export const FIXTURES_PATH = path.resolve(__dirname, '../../../__fixtures__');

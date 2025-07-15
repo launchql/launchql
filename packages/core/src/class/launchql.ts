@@ -8,7 +8,7 @@ import { parse } from 'parse-package-name';
 import os from 'os';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
-import { generatePlan, writePlan } from '@launchql/project-files';
+import { generatePlan, writePlan } from '../files';
 
 import {
   writeRenderedTemplates,
@@ -30,7 +30,7 @@ import {
   getExtensionName,
   getInstalledExtensions,
   ExtensionInfo,
-} from '@launchql/project-files';
+} from '../files';
 import { getAvailableExtensions } from '../extensions';
 
 

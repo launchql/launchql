@@ -12,6 +12,18 @@
    <a href="https://www.npmjs.com/package/@launchql/core"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fcore%2Fpackage.json"/></a>
 </p>
 
+## Overview
+
+LaunchQL Core is the main package for LaunchQL, providing tools for database migrations, package management, and project scaffolding. It includes functionality for:
+
+- Managing PostgreSQL extensions and modules
+- Deploying, reverting, and verifying migrations
+- Parsing and generating migration plans
+- Reading and writing SQL scripts
+- Resolving dependencies between migrations
+
+> **Note:** As of version 2.4.0, the functionality from `@launchql/project-files` has been integrated into this package to simplify the codebase and improve maintainability.
+
 ## Related LaunchQL Tooling
 
 ### 🧪 Testing

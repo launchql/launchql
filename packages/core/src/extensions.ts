@@ -1,4 +1,4 @@
-import { parsePlanFileSimple } from '@launchql/project-files';
+import { parsePlanFileSimple } from './files';
 import { ModuleMap } from './modules';
 
 /**

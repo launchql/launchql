@@ -118,9 +118,6 @@ jobs:
       - name: launchql/launchql-gen
         run: cd ./packages/launchql-gen && yarn test
 
-      - name: launchql/project-files
-        run: cd ./packages/project-files && yarn test
-
       - name: launchql/pg-ast
         run: cd ./packages/pg-ast && yarn test
 

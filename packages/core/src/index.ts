@@ -19,3 +19,6 @@ export { runSqitch } from './utils/sqitch-wrapper';
 export { deployModule } from './migrate/deploy-module';
 export { revertModule } from './migrate/revert-module';
 export { verifyModule } from './migrate/verify-module';
+
+// Export project-files functionality (now integrated into core)
+export * from './files';
