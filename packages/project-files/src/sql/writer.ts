@@ -7,6 +7,7 @@ export interface SqlWriteOptions {
   name: string;
   replacer: (str: string) => string;
   author?: string;
+  useTx?: boolean;
 }
 
 /**
@@ -36,6 +37,10 @@ const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const actualDir = path.resolve(prefix, dir);
   const actualFile = path.resolve(prefix, `${deploy}.sql`);
   fs.mkdirSync(actualDir, { recursive: true });
+  
+  const sqlContent = opts.replacer(row.content);
+  const useTx = opts.useTx ?? false;
+  
   const content = `-- Deploy: ${deploy} to pg
 -- made with <3 @ launchql.com
 
@@ -45,9 +50,9 @@ ${opts.replacer(
       .join('\n') || ''
   )}
 
-BEGIN;
-${opts.replacer(row.content)}
-COMMIT;
+${useTx ? 'BEGIN;' : ''}
+${sqlContent}
+${useTx ? 'COMMIT;' : ''}
 `;
   fs.writeFileSync(actualFile, content);
 };
@@ -62,11 +67,15 @@ const writeVerify = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const actualDir = path.resolve(prefix, dir);
   const actualFile = path.resolve(prefix, `${deploy}.sql`);
   fs.mkdirSync(actualDir, { recursive: true });
+  
+  const sqlContent = opts.replacer(row.verify);
+  const useTx = opts.useTx ?? false;
+  
   const content = opts.replacer(`-- Verify: ${deploy} on pg
 
-BEGIN;
-${opts.replacer(row.verify)}
-COMMIT;
+${useTx ? 'BEGIN;' : ''}
+${sqlContent}
+${useTx ? 'COMMIT;' : ''}
 
 `);
   fs.writeFileSync(actualFile, content);
@@ -82,11 +91,15 @@ const writeRevert = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const actualDir = path.resolve(prefix, dir);
   const actualFile = path.resolve(prefix, `${deploy}.sql`);
   fs.mkdirSync(actualDir, { recursive: true });
+  
+  const sqlContent = opts.replacer(row.revert);
+  const useTx = opts.useTx ?? false;
+  
   const content = `-- Revert: ${deploy} from pg
 
-BEGIN;
-${opts.replacer(row.revert)}
-COMMIT;
+${useTx ? 'BEGIN;' : ''}
+${sqlContent}
+${useTx ? 'COMMIT;' : ''}
 
 `;
   fs.writeFileSync(actualFile, content);
