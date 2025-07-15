@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { LaunchQLProject } from '../src/class/launchql';
-import { TestFixture } from '../test-utils';
+import { LaunchQLProject } from '../../src/class/launchql';
+import { TestFixture } from '../../test-utils';
 import * as glob from 'glob';
 
 let fixture: TestFixture;

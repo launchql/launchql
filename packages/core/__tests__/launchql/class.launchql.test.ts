@@ -1,6 +1,6 @@
 import path from 'path';
-import { LaunchQLProject, ProjectContext } from '../src/class/launchql';
-import { TestFixture } from '../test-utils';
+import { LaunchQLProject, ProjectContext } from '../../src/class/launchql';
+import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
 

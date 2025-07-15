@@ -1,4 +1,4 @@
-import { cleanText, TestFixture } from '../test-utils';
+import { cleanText, TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
 

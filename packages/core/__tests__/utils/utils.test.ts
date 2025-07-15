@@ -3,8 +3,8 @@ import {
   getExtensionsAndModulesChanges,
   latestChange,
   listModules
-} from '../src/modules';
-import { TestFixture } from '../test-utils';
+} from '../../src/modules';
+import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
 

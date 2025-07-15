@@ -1,7 +1,7 @@
 import { join } from 'path';
 
-import { getDeps } from '../src/deps';
-import { FIXTURES_PATH } from '../test-utils';
+import { getDeps } from '../../src/deps';
+import { FIXTURES_PATH } from '../../test-utils';
 
 const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/broken');
 

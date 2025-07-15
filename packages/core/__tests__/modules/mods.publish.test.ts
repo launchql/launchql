@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import * as glob from 'glob';
-import { LaunchQLProject } from '../src/class/launchql';
-import { TestFixture } from '../test-utils';
+import { LaunchQLProject } from '../../src/class/launchql';
+import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
 let distDir: string;
