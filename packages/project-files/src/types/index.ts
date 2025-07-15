@@ -27,14 +27,7 @@ export interface ExtendedPlanFile extends PlanFile {
   tags: Tag[];
 }
 
-// Config file types
-export interface ConfigSection {
-  [key: string]: string;
-}
-
-export interface ConfigFile {
-  [section: string]: ConfigSection;
-}
+// Config file types have been removed
 
 // Parser result types
 export interface ParseError {
