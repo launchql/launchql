@@ -4,18 +4,7 @@
 
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS app;
+CREATE SCHEMA app;
 COMMENT ON SCHEMA app IS 'Main application schema';
-
--- Verify dependencies are at correct versions
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM core.config LIMIT 1) THEN
-        RAISE EXCEPTION 'Core system not at required version';
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM auth.users LIMIT 0) THEN
-        RAISE EXCEPTION 'Auth system not at required version';
-    END IF;
-END $$;
 
 COMMIT;

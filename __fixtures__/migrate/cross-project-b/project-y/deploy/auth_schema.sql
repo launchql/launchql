@@ -3,7 +3,7 @@
 
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS auth;
+CREATE SCHEMA auth;
 COMMENT ON SCHEMA auth IS 'Authentication and authorization schema';
 
 COMMIT;

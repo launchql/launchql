@@ -38,10 +38,4 @@ CREATE TRIGGER update_projects_timestamp
     FOR EACH ROW
     EXECUTE FUNCTION core.update_timestamp();
 
-CREATE TRIGGER generate_org_slug
-    BEFORE INSERT OR UPDATE ON app.organizations
-    FOR EACH ROW
-    WHEN (NEW.slug IS NULL OR NEW.slug = '')
-    EXECUTE FUNCTION core.generate_slug(NEW.name);
-
 COMMIT;

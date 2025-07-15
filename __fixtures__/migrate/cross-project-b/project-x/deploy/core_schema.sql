@@ -2,7 +2,7 @@
 
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS core;
+CREATE SCHEMA core;
 COMMENT ON SCHEMA core IS 'Core system schema for shared functionality';
 
 COMMIT;

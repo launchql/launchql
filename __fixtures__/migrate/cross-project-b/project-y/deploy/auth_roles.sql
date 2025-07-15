@@ -13,12 +13,22 @@ CREATE TABLE auth.roles (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Use core function to generate slug
+-- Wrapper trigger function to generate slug using core.generate_slug(name)
+CREATE OR REPLACE FUNCTION auth.set_role_slug()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.slug IS NULL OR NEW.slug = '' THEN
+        NEW.slug := core.generate_slug(NEW.name);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger using the wrapper function
 CREATE TRIGGER generate_role_slug
     BEFORE INSERT OR UPDATE ON auth.roles
     FOR EACH ROW
-    WHEN (NEW.slug IS NULL OR NEW.slug = '')
-    EXECUTE FUNCTION core.generate_slug(NEW.name);
+    EXECUTE FUNCTION auth.set_role_slug();
 
 CREATE TABLE auth.user_roles (
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,

@@ -4,7 +4,7 @@
 BEGIN;
 
 -- Extended audit functionality
-CREATE OR REPLACE FUNCTION core.audit_trigger()
+CREATE FUNCTION core.audit_trigger()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO core.audit_log (table_name, operation, user_id, old_data, new_data)
