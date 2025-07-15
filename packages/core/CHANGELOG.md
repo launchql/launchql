@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/launchql/launchql/compare/@launchql/core@2.4.0...@launchql/core@2.5.0) (2025-07-15)
+
+
+### Features
+
+* remove all sqitch.conf references, use launchql.plan for module discovery ([59c5003](https://github.com/launchql/launchql/commit/59c500304da69efc3cdb8111ffbac22af80e3189))
+
+
+### BREAKING CHANGES
+
+* Modules are now identified by launchql.plan files instead of sqitch.conf
+
+
+
+
+
 # [2.4.0](https://github.com/launchql/launchql/compare/@launchql/core@2.3.1...@launchql/core@2.4.0) (2025-06-30)
 
 **Note:** Version bump only for package @launchql/core

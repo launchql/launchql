@@ -1,6 +1,6 @@
 {
   "name": "introspectron",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "introspect your Postgres database and generate an SDK",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "graphile-test": "^2.2.1",
-    "pgsql-test": "^2.4.0"
+    "pgsql-test": "^2.5.0"
   },
   "dependencies": {
     "graphql-tag": "2.12.6"
