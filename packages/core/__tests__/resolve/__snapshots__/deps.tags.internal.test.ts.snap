@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`sqitch package dependencies [simple-w-tags/1st] 1`] = `
+exports[`sqitch package dependencies with internal tag resolution [simple-w-tags/1st] 1`] = `
 {
   "deps": {
     "/deploy/schema_myapp.sql": [],
@@ -24,7 +24,7 @@ exports[`sqitch package dependencies [simple-w-tags/1st] 1`] = `
 }
 `;
 
-exports[`sqitch package dependencies [simple-w-tags/2nd] 1`] = `
+exports[`sqitch package dependencies with internal tag resolution [simple-w-tags/2nd] 1`] = `
 {
   "deps": {
     "/deploy/create_another_table.sql": [
@@ -48,6 +48,33 @@ exports[`sqitch package dependencies [simple-w-tags/2nd] 1`] = `
     "create_schema",
     "create_table",
     "create_another_table",
+  ],
+}
+`;
+
+exports[`sqitch package dependencies with internal tag resolution [simple-w-tags/3rd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_schema.sql": [
+      "my-first:@v1.1.0",
+      "my-second:@v2.0.0",
+    ],
+    "/deploy/create_table.sql": [
+      "my-third:@v2.0.0",
+      "my-second:@v2.1.0",
+    ],
+    "my-first:@v1.1.0": [],
+    "my-second:@v2.0.0": [],
+    "my-second:@v2.1.0": [],
+  },
+  "external": [
+    "my-first:@v1.1.0",
+    "my-second:@v2.0.0",
+    "my-second:@v2.1.0",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
   ],
 }
 `;

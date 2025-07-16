@@ -28,11 +28,10 @@ it('sqitch package dependencies [simple-w-tags/2nd]', async () => {
 });
 
 it('sqitch package dependencies [simple-w-tags/3rd]', async () => {
-  const res = await getDeps(
+  expect(() => getDeps(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-third'),
     'my-third'
-  );
-  expect(res).toMatchSnapshot();
+  )).toThrow();
 });
 
 

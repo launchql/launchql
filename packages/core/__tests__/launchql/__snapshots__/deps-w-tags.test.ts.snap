@@ -23,7 +23,7 @@ exports[`generateModulePlan with tags generates plan for my-third with multiple 
 %project=my-third
 %uri=my-third
 create_schema [my-first:@v1.1.0 my-second:@v2.0.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_schema
-create_table [create_schema my-second:@v2.1.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_table"
+create_table [@v2.0.0 my-second:@v2.1.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_table"
 `;
 
 exports[`generateModulePlan with tags generates plan without projects flag loses cross-project dependencies 1`] = `

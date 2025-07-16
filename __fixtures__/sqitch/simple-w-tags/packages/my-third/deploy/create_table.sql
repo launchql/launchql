@@ -1,5 +1,5 @@
 -- Deploy my-third:create_table to pg
--- requires: my-third:create_schema
+-- requires: my-third:@v2.0.0
 -- requires: my-second:@v2.1.0
 
 BEGIN;
