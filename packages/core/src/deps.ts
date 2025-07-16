@@ -1,6 +1,8 @@
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
-import { relative } from 'path';
+import { relative, join } from 'path';
+import { parsePlanFile } from './files/plan/parser';
+import { ExtendedPlanFile } from './files/types';
 
 interface DependencyGraph {
   [key: string]: string[];
@@ -199,4 +201,227 @@ export const extDeps = (
   dep_resolve(name, resolved, unresolved);
 
   return { external, resolved };
+};
+
+/**
+ * Get dependencies with tag resolution
+ * This method resolves tag references to the actual changes they represent
+ */
+export const getDepsWithTags = (
+  packageDir: string,
+  extname: string
+): DependencyResult => {
+  // Load plan files for all referenced projects
+  const planCache: Record<string, ExtendedPlanFile> = {};
+  
+  // Helper function to load a plan file for a project
+  const loadPlanFile = (projectName: string): ExtendedPlanFile | null => {
+    if (planCache[projectName]) {
+      return planCache[projectName];
+    }
+    
+    try {
+      let planPath: string;
+      if (projectName === extname) {
+        // For the current project
+        planPath = join(packageDir, 'launchql.plan');
+      } else {
+        // For external projects, try to find them in parent directories
+        // This assumes a monorepo structure where packages are siblings
+        const parentDir = join(packageDir, '..', '..');
+        planPath = join(parentDir, 'packages', projectName, 'launchql.plan');
+      }
+      
+      const result = parsePlanFile(planPath);
+      if (result.data) {
+        planCache[projectName] = result.data;
+        return result.data;
+      }
+    } catch (error) {
+      // Plan file not found or parse error
+      console.warn(`Could not load plan file for project ${projectName}: ${error}`);
+    }
+    
+    return null;
+  };
+  
+  // Helper function to resolve a tag to all changes up to and including it
+  const resolveTagToChanges = (projectName: string, tagName: string): string[] => {
+    const plan = loadPlanFile(projectName);
+    if (!plan) {
+      return [];
+    }
+    
+    // Find the tag
+    const tag = plan.tags.find(t => t.name === tagName);
+    if (!tag) {
+      return [];
+    }
+    
+    // Find the index of the change this tag points to
+    const changeIndex = plan.changes.findIndex(c => c.name === tag.change);
+    if (changeIndex === -1) {
+      return [];
+    }
+    
+    // Return all changes up to and including the tagged change
+    return plan.changes.slice(0, changeIndex + 1).map(c => c.name);
+  };
+  
+  const external: string[] = [];
+  const deps: DependencyGraph = {};
+
+  // Process SQL files and build dependency graph with resolved tags
+  const files = glob(`${packageDir}/deploy/**/*.sql`);
+
+  for (const file of files) {
+    const data = readFileSync(file, 'utf-8');
+    const lines = data.split('\n');
+    const key = '/' + relative(packageDir, file);
+    deps[key] = [];
+
+    for (const line of lines) {
+      // Handle requires statements
+      const requiresMatch = line.match(/^-- requires: (.*)/);
+      if (requiresMatch) {
+        const dep = requiresMatch[1].trim();
+        
+        // Check if this is a tag reference
+        if (dep.includes('@')) {
+          const match = dep.match(/^([^:]+):@(.+)$/);
+          if (match) {
+            const [, projectName, tagName] = match;
+            const taggedChanges = resolveTagToChanges(projectName, tagName);
+            
+            if (taggedChanges.length > 0) {
+              // Replace the tag with the specific change it points to
+              // (the last change in the list)
+              const tagChange = taggedChanges[taggedChanges.length - 1];
+              deps[key].push(`${projectName}:${tagChange}`);
+            } else {
+              // Could not resolve tag, keep it as is
+              deps[key].push(dep);
+            }
+          } else {
+            // Invalid tag format, keep as is
+            deps[key].push(dep);
+          }
+        } else {
+          // Not a tag, keep as is
+          deps[key].push(dep);
+        }
+        continue;
+      }
+
+      // Handle deploy statements - exactly as in original
+      let m2;
+      let keyToTest;
+
+      if (/:/.test(line)) {
+        m2 = line.match(/^-- Deploy ([^:]*):([\w\/]+) to pg/);
+        if (m2) {
+          const actualProject = m2[1];
+          keyToTest = m2[2];
+        
+          if (extname !== actualProject) {
+            throw new Error(
+              `Mismatched project name in deploy file:
+          Expected project: ${extname}
+          Found in line   : ${actualProject}
+          Line            : ${line}`
+            );
+          }
+        
+          const expectedKey = makeKey(keyToTest);
+          if (key !== expectedKey) {
+            throw new Error(
+              `Deployment script path or internal name mismatch:
+          Expected key    : ${key}
+          Found in line   : ${expectedKey}
+          Line            : ${line}`
+            );
+          }
+        }
+
+      } else {
+        m2 = line.match(/^-- Deploy (.*) to pg/);
+        if (m2) {
+          keyToTest = m2[1];
+          if (key !== makeKey(keyToTest)) {
+            throw new Error(
+              'deployment script in wrong place or is named wrong internally\n' + line
+            );
+          }
+        }
+      }
+    }
+  }
+
+  // Original dependency resolution algorithm
+  function dep_resolve(
+    sqlmodule: string,
+    resolved: string[],
+    unresolved: string[]
+  ): void {
+    unresolved.push(sqlmodule);
+    let edges = deps[makeKey(sqlmodule)];
+    
+    if (/:/.test(sqlmodule)) {
+      // Has a prefix — could be internal or external
+      const [project, localKey] = sqlmodule.split(':', 2);
+      if (project === extname) {
+        // Internal reference to current project
+        sqlmodule = localKey;
+        edges = deps[makeKey(localKey)];
+        if (!edges) {
+          throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+        }
+      } else {
+        // External reference — always OK, even if not in deps yet
+        external.push(sqlmodule);
+        deps[sqlmodule] = [];
+        return;
+      }
+    } else {
+      // No prefix — must be internal
+      if (!edges) {
+        throw new Error(`Internal module not found: ${sqlmodule}`);
+      }
+    }
+        
+    for (const dep of edges) {
+      if (!resolved.includes(dep)) {
+        if (unresolved.includes(dep)) {
+          throw new Error(`Circular reference detected ${sqlmodule}, ${dep}`);
+        }
+        dep_resolve(dep, resolved, unresolved);
+      }
+    }
+
+    resolved.push(sqlmodule);
+    const index = unresolved.indexOf(sqlmodule);
+    unresolved.splice(index);
+  }
+
+  let resolved: string[] = [];
+  const unresolved: string[] = [];
+
+  // Add synthetic root node - exactly as in original
+  deps[makeKey('apps/index')] = Object.keys(deps)
+    .filter((dep) => dep.startsWith('/deploy/'))
+    .map((dep) => dep.replace(/^\/deploy\//, '').replace(/\.sql$/, ''));
+
+  dep_resolve('apps/index', resolved, unresolved);
+  
+  // Remove synthetic root
+  const index = resolved.indexOf('apps/index');
+  resolved.splice(index, 1);
+  delete deps[makeKey('apps/index')];
+
+  // Sort extensions first - exactly as in original
+  const extensions = resolved.filter((module) => module.startsWith('extensions/'));
+  const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
+  resolved = [...extensions, ...normalSql];
+
+  return { external, resolved, deps };
 };
