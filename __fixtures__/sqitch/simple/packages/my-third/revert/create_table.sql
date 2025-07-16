@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE thirdschema.thirdtable;
+DROP TABLE metaschema.customers;
 
 COMMIT;

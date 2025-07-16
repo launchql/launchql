@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP SCHEMA thirdschema CASCADE;
+DROP SCHEMA metaschema CASCADE;
 
 COMMIT;
