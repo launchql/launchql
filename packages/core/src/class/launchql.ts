@@ -2,7 +2,7 @@ import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
-import { extDeps, getDepsWithTagsInternalResolve } from '../deps';
+import { extDeps, resolveDependencies } from '../deps';
 import chalk from 'chalk';
 import { parse } from 'parse-package-name';
 import os from 'os';
@@ -348,7 +348,7 @@ export class LaunchQLProject {
     const moduleName = info.extname;
 
     // Get raw dependencies and resolved list
-    let { resolved, deps } = getDepsWithTagsInternalResolve(this.cwd, moduleName);
+    let { resolved, deps } = resolveDependencies(this.cwd, moduleName, { tagResolution: 'internal' });
 
     // Helper to extract module name from a change reference
     const getModuleName = (change: string): string | null => {

@@ -1,5 +1,5 @@
 import { TestFixture } from '../../test-utils';
-import { getDepsWithTagsInternalResolve } from '../../src/deps';
+import { resolveDependencies } from '../../src/deps';
 
 let fixture: TestFixture;
 
@@ -12,25 +12,28 @@ afterAll(() => {
 });
 
 it('sqitch package dependencies with internal tag resolution [simple-w-tags/1st]', async () => {
-  const res = await getDepsWithTagsInternalResolve(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-first'),
-    'my-first'
+    'my-first',
+    { tagResolution: 'internal' }
   );
   expect(res).toMatchSnapshot();
 });
 
 it('sqitch package dependencies with internal tag resolution [simple-w-tags/2nd]', async () => {
-  const res = await getDepsWithTagsInternalResolve(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-second'),
-    'my-second'
+    'my-second',
+    { tagResolution: 'internal' }
   );
   expect(res).toMatchSnapshot();
 });
 
 it('sqitch package dependencies with internal tag resolution [simple-w-tags/3rd]', async () => {
-  const res = await getDepsWithTagsInternalResolve(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-third'),
-    'my-third'
+    'my-third',
+    { tagResolution: 'internal' }
   );
   expect(res).toMatchSnapshot();
 });

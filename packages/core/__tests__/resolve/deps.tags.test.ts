@@ -1,5 +1,5 @@
 import { TestFixture } from '../../test-utils';
-import { getDeps } from '../../src/deps';
+import { resolveDependencies } from '../../src/deps';
 
 let fixture: TestFixture;
 
@@ -12,7 +12,7 @@ afterAll(() => {
 });
 
 it('sqitch package dependencies [simple-w-tags/1st]', async () => {
-  const res = await getDeps(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-first'),
     'my-first'
   );
@@ -20,7 +20,7 @@ it('sqitch package dependencies [simple-w-tags/1st]', async () => {
 });
 
 it('sqitch package dependencies [simple-w-tags/2nd]', async () => {
-  const res = await getDeps(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-second'),
     'my-second'
   );
@@ -28,7 +28,7 @@ it('sqitch package dependencies [simple-w-tags/2nd]', async () => {
 });
 
 it('sqitch package dependencies [simple-w-tags/3rd]', async () => {
-  expect(() => getDeps(
+  expect(() => resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-third'),
     'my-third'
   )).toThrow();

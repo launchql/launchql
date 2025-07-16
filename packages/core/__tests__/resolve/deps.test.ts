@@ -1,5 +1,5 @@
 import { TestFixture } from '../../test-utils';
-import { getDeps, extDeps } from '../../src/deps';
+import { resolveDependencies, extDeps } from '../../src/deps';
 import { listModules } from '../../src/modules';
 
 let fixture: TestFixture;
@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 it('sqitch package dependencies [utils]', async () => {
-  const res = await getDeps(
+  const res = await resolveDependencies(
     fixture.getFixturePath('launchql', 'packages', 'utils'),
     'utils'
   );
@@ -21,7 +21,7 @@ it('sqitch package dependencies [utils]', async () => {
 });
 
 it('sqitch package dependencies [simple/1st]', async () => {
-  const res = await getDeps(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple', 'packages', 'my-first'),
     'my-first'
   );
@@ -29,7 +29,7 @@ it('sqitch package dependencies [simple/1st]', async () => {
 });
 
 it('sqitch package dependencies [simple/2nd]', async () => {
-  const res = await getDeps(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple', 'packages', 'my-second'),
     'my-second'
   );
@@ -37,7 +37,7 @@ it('sqitch package dependencies [simple/2nd]', async () => {
 });
 
 it('sqitch package dependencies [simple/3rd]', async () => {
-  const res = await getDeps(
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple', 'packages', 'my-third'),
     'my-third'
   );
