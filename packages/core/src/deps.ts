@@ -4,18 +4,155 @@ import { relative, join } from 'path';
 import { parsePlanFile } from './files/plan/parser';
 import { ExtendedPlanFile } from './files/types';
 
+/**
+ * Represents a dependency graph where keys are module identifiers
+ * and values are arrays of their direct dependencies
+ */
 interface DependencyGraph {
   [key: string]: string[];
 }
 
+/**
+ * Result object returned by dependency resolution functions
+ */
 interface DependencyResult {
+  /** Array of external dependencies that are not part of the current project */
   external: string[];
+  /** Array of modules in topologically sorted order for deployment */
   resolved: string[];
+  /** The complete dependency graph mapping modules to their dependencies */
   deps: DependencyGraph;
 }
 
+/**
+ * Configuration options for customizing the core dependency resolver behavior.
+ * This interface allows different dependency resolution functions to share the same
+ * core algorithm while maintaining their specific behaviors.
+ */
+interface DependencyResolverOptions {
+  /** 
+   * Function to handle external dependencies when they are not found in the dependency graph.
+   * Used by extDeps to add external dependencies to the external array.
+   * @param dep - The dependency module name that was not found
+   * @param deps - The dependency graph to potentially add the dependency to
+   * @param external - Array to collect external dependencies
+   */
+  handleExternalDep?: (dep: string, deps: DependencyGraph, external: string[]) => void;
+  
+  /** 
+   * Function to transform module names and resolve their dependencies during resolution.
+   * Used by getDeps and resolveDependencies to handle project:module syntax and tag resolution.
+   * @param module - The module name to transform
+   * @param extname - The current project/extension name for context
+   * @returns Object containing the transformed module name, its dependency edges, and whether to return early
+   */
+  transformModule?: (module: string, extname: string) => { module: string; edges: string[] | undefined; returnEarly?: boolean };
+  
+  /** 
+   * Function to generate standardized keys for dependency lookup in the graph.
+   * Defaults to the module name as-is if not provided.
+   * @param module - The module name to generate a key for
+   * @returns The standardized key for dependency graph lookup
+   */
+  makeKey?: (module: string) => string;
+  
+  /** 
+   * The current project/extension name used for internal reference resolution.
+   * This is used to distinguish between internal and external module references.
+   */
+  extname: string;
+}
+
+/**
+ * Core dependency resolution algorithm that handles circular dependency detection
+ * and topological sorting of dependencies. This unified implementation eliminates
+ * code duplication between getDeps, extDeps, and resolveDependencies.
+ * 
+ * @param deps - The dependency graph mapping modules to their dependencies
+ * @param external - Array to collect external dependencies
+ * @param options - Configuration options for customizing resolver behavior
+ * @returns A function that performs dependency resolution with the given configuration
+ */
+function createDependencyResolver(
+  deps: DependencyGraph,
+  external: string[],
+  options: DependencyResolverOptions
+) {
+  const { 
+    handleExternalDep, 
+    transformModule, 
+    makeKey = (module: string) => module,
+    extname 
+  } = options;
+
+  return function dep_resolve(
+    sqlmodule: string,
+    resolved: string[],
+    unresolved: string[]
+  ): void {
+    unresolved.push(sqlmodule);
+    
+    let moduleToResolve = sqlmodule;
+    let edges: string[] | undefined;
+    let returnEarly = false;
+
+    if (transformModule) {
+      const result = transformModule(sqlmodule, extname);
+      moduleToResolve = result.module;
+      edges = result.edges;
+      returnEarly = result.returnEarly || false;
+    } else {
+      edges = deps[makeKey(sqlmodule)];
+    }
+
+    // Handle external dependencies if no edges found
+    if (!edges) {
+      if (handleExternalDep) {
+        handleExternalDep(sqlmodule, deps, external);
+        edges = deps[sqlmodule] || [];
+      } else {
+        throw new Error(`Internal module not found: ${sqlmodule}`);
+      }
+    }
+
+    if (returnEarly) {
+      const index = unresolved.indexOf(sqlmodule);
+      unresolved.splice(index, 1);
+      return;
+    }
+
+    // Process each dependency
+    for (const dep of edges) {
+      if (!resolved.includes(dep)) {
+        if (unresolved.includes(dep)) {
+          throw new Error(`Circular reference detected ${moduleToResolve}, ${dep}`);
+        }
+        dep_resolve(dep, resolved, unresolved);
+      }
+    }
+
+    resolved.push(moduleToResolve);
+    const index = unresolved.indexOf(sqlmodule);
+    unresolved.splice(index, 1);
+  };
+}
+
+/**
+ * Generates a standardized key for SQL deployment files
+ * @param sqlmodule - The module name (e.g., 'users/create')
+ * @returns The standardized file path key (e.g., '/deploy/users/create.sql')
+ */
 const makeKey = (sqlmodule: string): string => `/deploy/${sqlmodule}.sql`;
 
+/**
+ * Resolves dependencies for SQL deployment files in a package directory.
+ * Parses SQL files to extract dependency information and builds a dependency graph
+ * with proper ordering for deployment.
+ * 
+ * @param packageDir - The package directory containing SQL files
+ * @param extname - The extension/project name for internal reference resolution
+ * @returns Object containing external dependencies, resolved order, and dependency graph
+ */
 export const getDeps = (
   packageDir: string,
   extname: string
@@ -23,13 +160,8 @@ export const getDeps = (
   const external: string[] = [];
   const deps: DependencyGraph = {};
 
-  // Original dependency resolution algorithm
-  function dep_resolve(
-    sqlmodule: string,
-    resolved: string[],
-    unresolved: string[]
-  ): void {
-    unresolved.push(sqlmodule);
+  const transformModule = (sqlmodule: string, extname: string): { module: string; edges: string[] | undefined; returnEarly?: boolean } => {
+    let moduleToResolve = sqlmodule;
     let edges = deps[makeKey(sqlmodule)];
     
     if (/:/.test(sqlmodule)) {
@@ -37,7 +169,7 @@ export const getDeps = (
       const [project, localKey] = sqlmodule.split(':', 2);
       if (project === extname) {
         // Internal reference to current project
-        sqlmodule = localKey;
+        moduleToResolve = localKey;
         edges = deps[makeKey(localKey)];
         if (!edges) {
           throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
@@ -46,7 +178,7 @@ export const getDeps = (
         // External reference — always OK, even if not in deps yet
         external.push(sqlmodule);
         deps[sqlmodule] = [];
-        return;
+        return { module: sqlmodule, edges: [], returnEarly: true };
       }
     } else {
       // No prefix — must be internal
@@ -54,20 +186,16 @@ export const getDeps = (
         throw new Error(`Internal module not found: ${sqlmodule}`);
       }
     }
-        
-    for (const dep of edges) {
-      if (!resolved.includes(dep)) {
-        if (unresolved.includes(dep)) {
-          throw new Error(`Circular reference detected ${sqlmodule}, ${dep}`);
-        }
-        dep_resolve(dep, resolved, unresolved);
-      }
-    }
+    
+    return { module: moduleToResolve, edges };
+  };
 
-    resolved.push(sqlmodule);
-    const index = unresolved.indexOf(sqlmodule);
-    unresolved.splice(index);
-  }
+  // Create the dependency resolver with getDeps-specific configuration
+  const dep_resolve = createDependencyResolver(deps, external, {
+    transformModule,
+    makeKey,
+    extname
+  });
 
   // Process SQL files and build dependency graph
   const files = glob(`${packageDir}/deploy/**/*.sql`);
@@ -77,7 +205,6 @@ export const getDeps = (
     const lines = data.split('\n');
     const key = '/' + relative(packageDir, file);
     deps[key] = [];
-    // console.log(key, data);
 
     for (const line of lines) {
       // Handle requires statements
@@ -154,6 +281,14 @@ export const getDeps = (
   return { external, resolved, deps };
 };
 
+/**
+ * Resolves dependencies for extension modules using a pre-built module map.
+ * This is a simpler version that works with module metadata rather than parsing SQL files.
+ * 
+ * @param name - The name of the module to resolve dependencies for
+ * @param modules - Record mapping module names to their dependency requirements
+ * @returns Object containing external dependencies and resolved dependency order
+ */
 export const extDeps = (
   name: string,
   modules: Record<string, { requires: string[] }>
@@ -168,32 +303,17 @@ export const extDeps = (
     return memo;
   }, {} as DependencyGraph);
 
-  function dep_resolve(
-    sqlmodule: string,
-    resolved: string[],
-    unresolved: string[]
-  ): void {
-    unresolved.push(sqlmodule);
-    let edges = deps[sqlmodule];
-    
-    if (!edges) {
-      external.push(sqlmodule);
-      edges = deps[sqlmodule] = [];
-    }
+  // Handle external dependencies for extDeps - simpler than getDeps
+  const handleExternalDep = (dep: string, deps: DependencyGraph, external: string[]): void => {
+    external.push(dep);
+    deps[dep] = [];
+  };
 
-    for (const dep of edges) {
-      if (!resolved.includes(dep)) {
-        if (unresolved.includes(dep)) {
-          throw new Error(`Circular reference detected ${sqlmodule}, ${dep}`);
-        }
-        dep_resolve(dep, resolved, unresolved);
-      }
-    }
-
-    resolved.push(sqlmodule);
-    const index = unresolved.indexOf(sqlmodule);
-    unresolved.splice(index);
-  }
+  // Create the dependency resolver with extDeps-specific configuration
+  const dep_resolve = createDependencyResolver(deps, external, {
+    handleExternalDep,
+    extname: name // For extDeps, we use the module name as extname
+  });
 
   const resolved: string[] = [];
   const unresolved: string[] = [];
@@ -226,8 +346,14 @@ export interface DependencyResolutionOptions {
 }
 
 /**
- * Unified dependency resolution function with configurable options
- * This is the main entry point for all dependency resolution needs
+ * Unified dependency resolution function with configurable options.
+ * This is the main entry point for all dependency resolution needs,
+ * supporting advanced features like tag resolution and plan file loading.
+ * 
+ * @param packageDir - The package directory containing SQL files
+ * @param extname - The extension/project name for internal reference resolution
+ * @param options - Configuration options for dependency resolution behavior
+ * @returns Object containing external dependencies, resolved order, and dependency graph
  */
 export const resolveDependencies = (
   packageDir: string,
@@ -400,13 +526,19 @@ export const resolveDependencies = (
     }
   }
 
-  // Modified dependency resolution algorithm
-  function dep_resolve(
-    sqlmodule: string,
-    resolved: string[],
-    unresolved: string[]
-  ): void {
-    unresolved.push(sqlmodule);
+  const transformModule = (sqlmodule: string, extname: string): { module: string; edges: string[] | undefined; returnEarly?: boolean } => {
+    const originalModule = sqlmodule;
+    
+    // Check if the ORIGINAL module (before tag resolution) is external
+    if (/:/.test(originalModule)) {
+      const [project, localKey] = originalModule.split(':', 2);
+      if (project !== extname) {
+        // External reference — always OK, even if not in deps yet
+        external.push(originalModule);
+        deps[originalModule] = deps[originalModule] || [];
+        return { module: originalModule, edges: [], returnEarly: true };
+      }
+    }
     
     // For internal resolution mode, check if this module is a tag and resolve it
     let moduleToResolve = sqlmodule;
@@ -417,7 +549,7 @@ export const resolveDependencies = (
     let edges = deps[makeKey(moduleToResolve)];
     
     if (/:/.test(moduleToResolve)) {
-      // Has a prefix — could be internal or external
+      // Has a prefix — must be internal since we already handled external above
       const [project, localKey] = moduleToResolve.split(':', 2);
       if (project === extname) {
         // Internal reference to current project
@@ -426,11 +558,6 @@ export const resolveDependencies = (
         if (!edges) {
           throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
         }
-      } else {
-        // External reference — always OK, even if not in deps yet
-        external.push(sqlmodule); // Use original module name
-        deps[sqlmodule] = deps[sqlmodule] || [];
-        return;
       }
     } else {
       // No prefix — must be internal
@@ -442,26 +569,37 @@ export const resolveDependencies = (
         }
       }
     }
-        
-    for (const dep of edges) {
-      // For internal resolution, resolve the dependency if it's a tag
-      let depToResolve = dep;
-      if (tagResolution === 'internal' && tagMappings[dep]) {
-        depToResolve = tagMappings[dep];
-      }
-      
-      if (!resolved.includes(depToResolve)) {
-        if (unresolved.includes(depToResolve)) {
-          throw new Error(`Circular reference detected ${moduleToResolve}, ${depToResolve}`);
+    
+    // For internal resolution, process dependencies through tag mappings
+    if (tagResolution === 'internal' && edges) {
+      const processedEdges = edges.map(dep => {
+        // Check if this dependency is external - if so, don't resolve tags
+        if (/:/.test(dep)) {
+          const [project, localKey] = dep.split(':', 2);
+          if (project !== extname) {
+            // External dependency - keep original tag name
+            return dep;
+          }
         }
-        dep_resolve(dep, resolved, unresolved); // Use original dep name for recursion
-      }
+        
+        // Internal dependency - apply tag mapping if available
+        if (tagMappings[dep]) {
+          return tagMappings[dep];
+        }
+        return dep;
+      });
+      return { module: moduleToResolve, edges: processedEdges };
     }
+    
+    return { module: moduleToResolve, edges };
+  };
 
-    resolved.push(moduleToResolve);
-    const index = unresolved.indexOf(sqlmodule);
-    unresolved.splice(index);
-  }
+  // Create the dependency resolver with resolveDependencies-specific configuration
+  const dep_resolve = createDependencyResolver(deps, external, {
+    transformModule,
+    makeKey,
+    extname
+  });
 
   let resolved: string[] = [];
   const unresolved: string[] = [];
