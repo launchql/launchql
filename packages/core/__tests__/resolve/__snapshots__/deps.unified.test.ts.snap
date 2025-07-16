@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`resolveDependencies with different options tagResolution: internal should preserve tags in output but resolve internally [simple-w-tags/2nd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [
+      "my-first:@v1.0.0",
+    ],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+    "my-first:@v1.0.0": [],
+  },
+  "external": [
+    "my-first:@v1.0.0",
+    "my-first:@v1.0.0",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
+
+exports[`resolveDependencies with different options tagResolution: preserve (default) should behave like original getDeps [simple-w-tags/2nd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [
+      "my-first:@v1.0.0",
+    ],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+    "my-first:@v1.0.0": [],
+  },
+  "external": [
+    "my-first:@v1.0.0",
+    "my-first:@v1.0.0",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
+
+exports[`resolveDependencies with different options tagResolution: resolve should resolve tags to their target changes [simple-w-tags/2nd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [
+      "my-first:table_users",
+    ],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+    "my-first:table_users": [],
+  },
+  "external": [
+    "my-first:table_users",
+    "my-first:table_users",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
+
+exports[`resolveDependencies with different options with custom plan loader should use custom plan loader when provided 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [
+      "my-first:table_users",
+    ],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+    "my-first:table_users": [],
+  },
+  "external": [
+    "my-first:table_users",
+    "my-first:table_users",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
+
+exports[`resolveDependencies with different options with loadPlanFiles: false should not resolve tags when plan loading is disabled 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [
+      "my-first:@v1.0.0",
+    ],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+    "my-first:@v1.0.0": [],
+  },
+  "external": [
+    "my-first:@v1.0.0",
+    "my-first:@v1.0.0",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
