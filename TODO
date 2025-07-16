@@ -6,6 +6,8 @@ TODO
 - [ ] bootstrap-roles.sql and any other "bootstrap" can be included in actual code for onboarding
 
 
+- [ ] validateDeployment - Hash-based change tracking — without deploying, hash the local .sql files against the changes that have been deployed, and ensure that the hashes match.
+
 CI / Workflow
 -------------
 - [x] Remove Travis CI
