@@ -2,7 +2,7 @@ import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../utils';
-import { extDeps, getDepsWithTags } from '../deps';
+import { extDeps, getDeps } from '../deps';
 import chalk from 'chalk';
 import { parse } from 'parse-package-name';
 import os from 'os';
@@ -348,7 +348,7 @@ export class LaunchQLProject {
     const moduleName = info.extname;
 
     // Get raw dependencies and resolved list
-    let { resolved, deps } = getDepsWithTags(this.cwd, moduleName);
+    let { resolved, deps } = getDeps(this.cwd, moduleName);
 
     // Helper to extract module name from a change reference
     const getModuleName = (change: string): string | null => {
