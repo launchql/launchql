@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sqitch package dependencies [simple-w-tags/1st] 1`] = `
+{
+  "deps": {
+    "/deploy/schema_myapp.sql": [],
+    "/deploy/table_products.sql": [
+      "my-first:schema_myapp",
+      "my-first:table_users",
+    ],
+    "/deploy/table_users.sql": [
+      "my-first:schema_myapp",
+    ],
+  },
+  "external": [],
+  "resolved": [
+    "schema_myapp",
+    "table_users",
+    "schema_myapp",
+    "schema_myapp",
+    "table_users",
+    "table_products",
+  ],
+}
+`;
+
+exports[`sqitch package dependencies [simple-w-tags/2nd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_another_table.sql": [
+      "my-second:create_table",
+    ],
+    "/deploy/create_schema.sql": [
+      "my-first:@v1.0.0",
+    ],
+    "/deploy/create_table.sql": [
+      "my-second:create_schema",
+    ],
+    "my-first:@v1.0.0": [],
+  },
+  "external": [
+    "my-first:@v1.0.0",
+    "my-first:@v1.0.0",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+    "create_schema",
+    "create_table",
+    "create_another_table",
+  ],
+}
+`;
+
+exports[`sqitch package dependencies [simple-w-tags/3rd] 1`] = `
+{
+  "deps": {
+    "/deploy/create_schema.sql": [
+      "my-first:@v1.1.0",
+      "my-second:@v2.0.0",
+    ],
+    "/deploy/create_table.sql": [
+      "my-third:create_schema",
+      "my-second:@v2.1.0",
+    ],
+    "my-first:@v1.1.0": [],
+    "my-second:@v2.0.0": [],
+    "my-second:@v2.1.0": [],
+  },
+  "external": [
+    "my-first:@v1.1.0",
+    "my-second:@v2.0.0",
+    "my-second:@v2.1.0",
+  ],
+  "resolved": [
+    "create_schema",
+    "create_table",
+  ],
+}
+`;
