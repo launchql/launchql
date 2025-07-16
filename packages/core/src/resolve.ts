@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { getChanges, getExtensionName } from './files';
 
-import { getDeps } from './deps';
+import { getDepsWithTags } from './deps';
 
 /**
  * Resolves SQL scripts for deployment or reversion.
@@ -16,7 +16,7 @@ export const resolve = (
 ): string => {
   const sqlfile: string[] = [];
   const name = getExtensionName(pkgDir);
-  const { resolved, external } = getDeps(pkgDir, name);
+  const { resolved, external } = getDepsWithTags(pkgDir, name);
 
   const scripts = scriptType === 'revert' ? [...resolved].reverse() : resolved;
 
