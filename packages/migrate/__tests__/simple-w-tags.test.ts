@@ -277,4 +277,144 @@ describe('Simple with Tags Migration', () => {
     expect(myThirdChanges).toHaveLength(2);
     expect(myThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });
+
+  test('extensive tag-based deploy/revert sequence using toChangeTag', async () => {
+    const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
+    
+    await client.deploy({
+      project: 'my-first',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+    });
+    
+    await client.deploy({
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+    });
+    
+    const deployThirdResult = await deployWithTags(client, {
+      project: 'my-third',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+    });
+    
+    expect(deployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
+    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    
+    // Verify initial state: all projects fully deployed
+    let deployedChanges = await db.getDeployedChanges();
+    expect(deployedChanges.filter(c => c.project === 'my-first')).toHaveLength(3);
+    expect(deployedChanges.filter(c => c.project === 'my-second')).toHaveLength(3);
+    expect(deployedChanges.filter(c => c.project === 'my-third')).toHaveLength(2);
+    
+    await client.revert({
+      project: 'my-third',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+    });
+    
+    const revertToV1Result = await revertWithTags(client, {
+      project: 'my-first',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      toChangeTag: 'my-first:@v1.0.0'
+    });
+    
+    expect(revertToV1Result.reverted).toEqual(['table_products']);
+    expect(await db.exists('table', 'myapp.users')).toBe(true);
+    expect(await db.exists('table', 'myapp.products')).toBe(false);
+    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    
+    // Verify state after revert to v1.0.0
+    deployedChanges = await db.getDeployedChanges();
+    const myFirstChanges = deployedChanges.filter(c => c.project === 'my-first');
+    expect(myFirstChanges).toHaveLength(2); // schema_myapp, table_users
+    expect(myFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users']);
+    
+    const revertSecondResult = await revertWithTags(client, {
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      toChangeTag: 'my-second:@v2.0.0'
+    });
+    
+    expect(revertSecondResult.reverted).toEqual(['create_another_table']);
+    expect(await db.exists('schema', 'otherschema')).toBe(true);
+    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    
+    // Verify state at my-second v2.0.0
+    deployedChanges = await db.getDeployedChanges();
+    const mySecondChanges = deployedChanges.filter(c => c.project === 'my-second');
+    expect(mySecondChanges).toHaveLength(2); // create_schema, create_table
+    expect(mySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
+    
+    const revertSecondEarlierResult = await client.revert({
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      toChange: 'create_schema'
+    });
+    
+    expect(revertSecondEarlierResult.reverted).toEqual(['create_table']);
+    expect(await db.exists('schema', 'otherschema')).toBe(true);
+    expect(await db.exists('table', 'otherschema.users')).toBe(false);
+    
+    // Verify state after reverting create_table
+    deployedChanges = await db.getDeployedChanges();
+    const mySecondChangesAfterRevert = deployedChanges.filter(c => c.project === 'my-second');
+    expect(mySecondChangesAfterRevert).toHaveLength(1); // only create_schema
+    expect(mySecondChangesAfterRevert.map(c => c.change_name)).toEqual(['create_schema']);
+    
+    const redeployFirstResult = await deployWithTags(client, {
+      project: 'my-first',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      toChangeTag: 'my-first:@v1.1.0'
+    });
+    
+    expect(redeployFirstResult.deployed).toEqual(['table_products']);
+    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    
+    const redeploySecondResult = await deployWithTags(client, {
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      toChangeTag: 'my-second:@v2.0.0'
+    });
+    
+    expect(redeploySecondResult.deployed).toEqual(['create_table']);
+    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    
+    const finalDeployThirdResult = await deployWithTags(client, {
+      project: 'my-third',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      toChangeTag: 'my-third:@v3.0.0'
+    });
+    
+    expect(finalDeployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
+    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    
+    // Verify final state: all dependencies correctly resolved
+    const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
+    expect(createSchemaDeps).toContain('my-first:table_products'); // resolved from my-first:@v1.1.0
+    expect(createSchemaDeps).toContain('my-second:create_table'); // resolved from my-second:@v2.0.0
+    
+    // Verify final deployment state
+    const finalDeployedChanges = await db.getDeployedChanges();
+    const finalMyFirstChanges = finalDeployedChanges.filter(c => c.project === 'my-first');
+    const finalMySecondChanges = finalDeployedChanges.filter(c => c.project === 'my-second');
+    const finalMyThirdChanges = finalDeployedChanges.filter(c => c.project === 'my-third');
+    
+    expect(finalMyFirstChanges).toHaveLength(3); // back to full deployment
+    expect(finalMySecondChanges).toHaveLength(2); // at v2.0.0 (create_schema, create_table)
+    expect(finalMyThirdChanges).toHaveLength(2); // full deployment (create_schema, create_table)
+    
+    expect(finalMyFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users', 'table_products']);
+    expect(finalMySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
+    expect(finalMyThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
+  });
 });
