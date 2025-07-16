@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE myapp.products;
+DROP TABLE myapp.products CASCADE;
 
 COMMIT;

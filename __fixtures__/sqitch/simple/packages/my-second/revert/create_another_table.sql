@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE otherschema.anothertable;
+DROP TABLE otherschema.anothertable CASCADE;
 
 COMMIT;
