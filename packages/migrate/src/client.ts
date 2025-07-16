@@ -93,6 +93,7 @@ export class LaunchQLMigrate {
     
     const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
+    const resolvedToChange = toChange && toChange.includes('@') ? this.resolveTagToChangeName(planPath, toChange, project || plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
     const fullPlanResult = parsePlanFileFull(planPath);
@@ -125,7 +126,7 @@ export class LaunchQLMigrate {
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
-        if (toChange && deployed.includes(toChange)) {
+        if (resolvedToChange && deployed.includes(resolvedToChange)) {
           break;
         }
         
@@ -207,6 +208,7 @@ export class LaunchQLMigrate {
     
     const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
+    const resolvedToChange = toChange && toChange.includes('@') ? this.resolveTagToChangeName(planPath, toChange, project || plan.project) : toChange;
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
@@ -223,7 +225,7 @@ export class LaunchQLMigrate {
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
-        if (toChange && change.name === toChange) {
+        if (resolvedToChange && change.name === resolvedToChange) {
           break;
         }
         
@@ -563,5 +565,45 @@ export class LaunchQLMigrate {
    */
   async close(): Promise<void> {
     // Pool is managed by PgPoolCacheManager, no need to close
+  }
+
+  /**
+   * Helper function to resolve a tag to its corresponding change name
+   */
+  private resolveTagToChangeName(planPath: string, tagReference: string, currentProject?: string): string {
+    if (!tagReference.includes('@')) {
+      return tagReference;
+    }
+    
+    if (tagReference.startsWith('@') && !tagReference.includes(':')) {
+      if (!currentProject) {
+        const plan = parsePlanFileFull(planPath);
+        if (!plan.data) {
+          throw new Error(`Could not parse plan file: ${planPath}`);
+        }
+        currentProject = plan.data.project;
+      }
+      tagReference = `${currentProject}:${tagReference}`;
+    }
+    
+    const match = tagReference.match(/^([^:]+):@(.+)$/);
+    if (!match) {
+      throw new Error(`Invalid tag format: ${tagReference}. Expected format: project:@tagName or @tagName`);
+    }
+    
+    const [, projectName, tagName] = match;
+    
+    const planResult = parsePlanFileFull(planPath);
+    
+    if (!planResult.data) {
+      throw new Error(`Could not parse plan file: ${planPath}`);
+    }
+    
+    const tag = planResult.data.tags?.find((t: any) => t.name === tagName);
+    if (!tag) {
+      throw new Error(`Tag ${tagName} not found in project ${projectName}`);
+    }
+    
+    return tag.change;
   }
 }
