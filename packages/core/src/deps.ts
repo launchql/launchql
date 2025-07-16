@@ -3,6 +3,7 @@ import { sync as glob } from 'glob';
 import { relative, join } from 'path';
 import { parsePlanFile } from './files/plan/parser';
 import { ExtendedPlanFile } from './files/types';
+import { LaunchQLProject } from './class/launchql';
 
 /**
  * Represents a dependency graph where keys are module identifiers
@@ -146,8 +147,7 @@ const makeKey = (sqlmodule: string): string => `/deploy/${sqlmodule}.sql`;
 
 /**
  * Resolves dependencies for SQL deployment files in a package directory.
- * Parses SQL files to extract dependency information and builds a dependency graph
- * with proper ordering for deployment.
+ * This is a simplified wrapper around resolveDependencies for backward compatibility.
  * 
  * @param packageDir - The package directory containing SQL files
  * @param extname - The extension/project name for internal reference resolution
@@ -157,128 +157,7 @@ export const getDeps = (
   packageDir: string,
   extname: string
 ): DependencyResult => {
-  const external: string[] = [];
-  const deps: DependencyGraph = {};
-
-  const transformModule = (sqlmodule: string, extname: string): { module: string; edges: string[] | undefined; returnEarly?: boolean } => {
-    let moduleToResolve = sqlmodule;
-    let edges = deps[makeKey(sqlmodule)];
-    
-    if (/:/.test(sqlmodule)) {
-      // Has a prefix — could be internal or external
-      const [project, localKey] = sqlmodule.split(':', 2);
-      if (project === extname) {
-        // Internal reference to current project
-        moduleToResolve = localKey;
-        edges = deps[makeKey(localKey)];
-        if (!edges) {
-          throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
-        }
-      } else {
-        // External reference — always OK, even if not in deps yet
-        external.push(sqlmodule);
-        deps[sqlmodule] = [];
-        return { module: sqlmodule, edges: [], returnEarly: true };
-      }
-    } else {
-      // No prefix — must be internal
-      if (!edges) {
-        throw new Error(`Internal module not found: ${sqlmodule}`);
-      }
-    }
-    
-    return { module: moduleToResolve, edges };
-  };
-
-  // Create the dependency resolver with getDeps-specific configuration
-  const dep_resolve = createDependencyResolver(deps, external, {
-    transformModule,
-    makeKey,
-    extname
-  });
-
-  // Process SQL files and build dependency graph
-  const files = glob(`${packageDir}/deploy/**/*.sql`);
-
-  for (const file of files) {
-    const data = readFileSync(file, 'utf-8');
-    const lines = data.split('\n');
-    const key = '/' + relative(packageDir, file);
-    deps[key] = [];
-
-    for (const line of lines) {
-      // Handle requires statements
-      const requiresMatch = line.match(/^-- requires: (.*)/);
-      if (requiresMatch) {
-        deps[key].push(requiresMatch[1].trim());
-        continue;
-      }
-
-      // Handle deploy statements - exactly as in original
-      let m2;
-      let keyToTest;
-
-      if (/:/.test(line)) {
-        m2 = line.match(/^-- Deploy ([^:]*):([\w\/]+) to pg/);
-        if (m2) {
-          const actualProject = m2[1];
-          keyToTest = m2[2];
-        
-          if (extname !== actualProject) {
-            throw new Error(
-              `Mismatched project name in deploy file:
-          Expected project: ${extname}
-          Found in line   : ${actualProject}
-          Line            : ${line}`
-            );
-          }
-        
-          const expectedKey = makeKey(keyToTest);
-          if (key !== expectedKey) {
-            throw new Error(
-              `Deployment script path or internal name mismatch:
-          Expected key    : ${key}
-          Found in line   : ${expectedKey}
-          Line            : ${line}`
-            );
-          }
-        }
-
-      } else {
-        m2 = line.match(/^-- Deploy (.*) to pg/);
-        if (m2) {
-          keyToTest = m2[1];
-          if (key !== makeKey(keyToTest)) {
-            throw new Error(
-              'deployment script in wrong place or is named wrong internally\n' + line
-            );
-          }
-        }
-      }
-    }
-  }
-
-  let resolved: string[] = [];
-  const unresolved: string[] = [];
-
-  // Add synthetic root node - exactly as in original
-  deps[makeKey('apps/index')] = Object.keys(deps)
-    .filter((dep) => dep.startsWith('/deploy/'))
-    .map((dep) => dep.replace(/^\/deploy\//, '').replace(/\.sql$/, ''));
-
-  dep_resolve('apps/index', resolved, unresolved);
-  
-  // Remove synthetic root
-  const index = resolved.indexOf('apps/index');
-  resolved.splice(index, 1);
-  delete deps[makeKey('apps/index')];
-
-  // Sort extensions first - exactly as in original
-  const extensions = resolved.filter((module) => module.startsWith('extensions/'));
-  const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
-  resolved = [...extensions, ...normalSql];
-
-  return { external, resolved, deps };
+  return resolveDependencies(packageDir, extname, { tagResolution: 'preserve' });
 };
 
 /**
@@ -366,11 +245,6 @@ export const resolveDependencies = (
     planFileLoader
   } = options;
   
-  // For 'preserve' mode, just use the original getDeps
-  if (tagResolution === 'preserve') {
-    return getDeps(packageDir, extname);
-  }
-  
   // For 'resolve' and 'internal' modes, we need plan file loading
   const planCache: Record<string, ExtendedPlanFile> = {};
   
@@ -394,10 +268,21 @@ export const resolveDependencies = (
         // For the current project
         planPath = join(packageDir, 'launchql.plan');
       } else {
-        // For external projects, try to find them in parent directories
-        // This assumes a monorepo structure where packages are siblings
-        const parentDir = join(packageDir, '..', '..');
-        planPath = join(parentDir, 'packages', projectName, 'launchql.plan');
+        // For external projects, use LaunchQLProject to find module path
+        const project = new LaunchQLProject(packageDir);
+        const moduleMap = project.getModuleMap();
+        const module = moduleMap[projectName];
+        
+        if (!module) {
+          throw new Error(`Module ${projectName} not found in workspace`);
+        }
+        
+        const workspacePath = project.getWorkspacePath();
+        if (!workspacePath) {
+          throw new Error(`No workspace found for module ${projectName}`);
+        }
+        
+        planPath = join(workspacePath, module.path, 'launchql.plan');
       }
       
       const result = parsePlanFile(planPath);
@@ -450,7 +335,13 @@ export const resolveDependencies = (
       if (requiresMatch) {
         const dep = requiresMatch[1].trim();
         
-        // Check if this is a tag reference
+        // For 'preserve' mode, just add the dependency as-is (like original getDeps)
+        if (tagResolution === 'preserve') {
+          deps[key].push(dep);
+          continue;
+        }
+        
+        // For other modes, handle tag resolution
         if (dep.includes('@')) {
           const match = dep.match(/^([^:]+):@(.+)$/);
           if (match) {
@@ -528,6 +419,37 @@ export const resolveDependencies = (
 
   const transformModule = (sqlmodule: string, extname: string): { module: string; edges: string[] | undefined; returnEarly?: boolean } => {
     const originalModule = sqlmodule;
+    
+    // For 'preserve' mode, use simpler logic (like original getDeps)
+    if (tagResolution === 'preserve') {
+      let moduleToResolve = sqlmodule;
+      let edges = deps[makeKey(sqlmodule)];
+      
+      if (/:/.test(sqlmodule)) {
+        // Has a prefix — could be internal or external
+        const [project, localKey] = sqlmodule.split(':', 2);
+        if (project === extname) {
+          // Internal reference to current project
+          moduleToResolve = localKey;
+          edges = deps[makeKey(localKey)];
+          if (!edges) {
+            throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+          }
+        } else {
+          // External reference — always OK, even if not in deps yet
+          external.push(sqlmodule);
+          deps[sqlmodule] = [];
+          return { module: sqlmodule, edges: [], returnEarly: true };
+        }
+      } else {
+        // No prefix — must be internal
+        if (!edges) {
+          throw new Error(`Internal module not found: ${sqlmodule}`);
+        }
+      }
+      
+      return { module: moduleToResolve, edges };
+    }
     
     // Check if the ORIGINAL module (before tag resolution) is external
     if (/:/.test(originalModule)) {
