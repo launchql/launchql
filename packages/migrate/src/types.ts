@@ -61,6 +61,18 @@ export interface StatusResult {
   lastDeployed: Date;
 }
 
+export interface ValidationResult {
+  validated: string[];
+  failed: ValidationError[];
+}
+
+export interface ValidationError {
+  changeName: string;
+  expectedHash: string;
+  actualHash: string;
+  message: string;
+}
+
 export interface MigrateConfig extends PgConfig {
   // Additional config options can be added here
 }

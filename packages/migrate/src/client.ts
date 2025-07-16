@@ -1,5 +1,5 @@
 import { Pool, PoolConfig } from 'pg';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
@@ -12,7 +12,9 @@ import {
   DeployResult,
   RevertResult,
   VerifyResult,
-  StatusResult
+  StatusResult,
+  ValidationResult,
+  ValidationError
 } from './types';
 import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists, resolveDependencies } from '@launchql/core';
 import { hashFile } from './utils/hash';
@@ -557,6 +559,77 @@ export class LaunchQLMigrate {
     } catch (error) {
       log.error(`Failed to get dependencies for ${project}:${changeName}:`, error);
       return [];
+    }
+  }
+
+  /**
+   * Validate that local SQL files match deployed changes without deploying
+   */
+  async validateDeployment(
+    targetDatabase: string, 
+    planPath: string, 
+    project?: string,
+    toChange?: string
+  ): Promise<ValidationResult> {
+    try {
+      const plan = parsePlanFile(planPath);
+      const projectName = project || plan.project;
+      
+      const deployedChanges = await this.getDeployedChanges(targetDatabase, projectName);
+      const deployedMap = new Map(deployedChanges.map(c => [c.change_name, c.script_hash]));
+      
+      const allChanges = getChangesInOrder(planPath);
+      const changesToValidate = toChange 
+        ? allChanges.slice(0, allChanges.findIndex(c => c.name === toChange) + 1)
+        : allChanges;
+      
+      const validated: string[] = [];
+      const failed: ValidationError[] = [];
+      
+      for (const change of changesToValidate) {
+        const deployedHash = deployedMap.get(change.name);
+        
+        if (!deployedHash) {
+          continue;
+        }
+        
+        // Calculate hash of local file
+        const scriptPath = join(dirname(planPath), 'deploy', `${change.name}.sql`);
+        if (!existsSync(scriptPath)) {
+          failed.push({
+            changeName: change.name,
+            expectedHash: deployedHash,
+            actualHash: 'FILE_NOT_FOUND',
+            message: `Local deploy script not found: ${scriptPath}`
+          });
+          continue;
+        }
+        
+        const localHash = hashFile(scriptPath);
+        
+        if (localHash === deployedHash) {
+          validated.push(change.name);
+        } else {
+          failed.push({
+            changeName: change.name,
+            expectedHash: deployedHash,
+            actualHash: localHash,
+            message: `Hash mismatch for ${change.name}: expected ${deployedHash}, got ${localHash}`
+          });
+        }
+      }
+      
+      return { validated, failed };
+    } catch (error: any) {
+      if (error.message && error.message.includes('Failed to parse plan file')) {
+        throw new Error(`Invalid plan file: ${error.message}`);
+      }
+      
+      if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+        throw new Error(`Database connection failed: ${error.message}`);
+      }
+      
+      throw error;
     }
   }
 
