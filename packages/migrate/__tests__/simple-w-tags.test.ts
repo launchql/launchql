@@ -333,22 +333,22 @@ describe('Simple with Tags Migration', () => {
     expect(myFirstChanges).toHaveLength(2); // schema_myapp, table_users
     expect(myFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users']);
     
-    const revertSecondResult = await revertWithTags(client, {
+    const deploySecondToTagResult = await deployWithTags(client, {
       project: 'my-second',
       targetDatabase: db.name,
       planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
       toChangeTag: 'my-second:@v2.0.0'
     });
     
-    expect(revertSecondResult.reverted).toEqual(['create_another_table']);
+    expect(deploySecondToTagResult.deployed).toEqual([]); // Already at v2.0.0
     expect(await db.exists('schema', 'otherschema')).toBe(true);
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     
-    // Verify state at my-second v2.0.0
+    // Verify state remains at my-second v2.0.0 level (all changes deployed)
     deployedChanges = await db.getDeployedChanges();
     const mySecondChanges = deployedChanges.filter(c => c.project === 'my-second');
-    expect(mySecondChanges).toHaveLength(2); // create_schema, create_table
-    expect(mySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
+    expect(mySecondChanges).toHaveLength(3); // create_schema, create_table, create_another_table
+    expect(mySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     
     const revertSecondEarlierResult = await client.revert({
       project: 'my-second',
@@ -410,11 +410,11 @@ describe('Simple with Tags Migration', () => {
     const finalMyThirdChanges = finalDeployedChanges.filter(c => c.project === 'my-third');
     
     expect(finalMyFirstChanges).toHaveLength(3); // back to full deployment
-    expect(finalMySecondChanges).toHaveLength(2); // at v2.0.0 (create_schema, create_table)
+    expect(finalMySecondChanges).toHaveLength(3); // remains fully deployed (create_schema, create_table, create_another_table)
     expect(finalMyThirdChanges).toHaveLength(2); // full deployment (create_schema, create_table)
     
     expect(finalMyFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users', 'table_products']);
-    expect(finalMySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
+    expect(finalMySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     expect(finalMyThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });
 });
