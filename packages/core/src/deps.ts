@@ -145,20 +145,6 @@ function createDependencyResolver(
  */
 const makeKey = (sqlmodule: string): string => `/deploy/${sqlmodule}.sql`;
 
-/**
- * Resolves dependencies for SQL deployment files in a package directory.
- * This is a simplified wrapper around resolveDependencies for backward compatibility.
- * 
- * @param packageDir - The package directory containing SQL files
- * @param extname - The extension/project name for internal reference resolution
- * @returns Object containing external dependencies, resolved order, and dependency graph
- */
-export const getDeps = (
-  packageDir: string,
-  extname: string
-): DependencyResult => {
-  return resolveDependencies(packageDir, extname, { tagResolution: 'preserve' });
-};
 
 /**
  * Resolves dependencies for extension modules using a pre-built module map.
