@@ -7,8 +7,7 @@ import { getPgPool, teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions, PgConfig } from 'pg-env';
 import { Pool } from 'pg';
 
-export const FIXTURES_PATH = resolve(__dirname, '../../../__fixtures__/migrate');
-export const SQITCH_FIXTURES_PATH = resolve(__dirname, '../../../__fixtures__/sqitch');
+export const FIXTURES_PATH = resolve(__dirname, '../../../__fixtures__');
 
 // Global teardown function to be called after all tests
 export async function teardownAllPools(): Promise<void> {
@@ -59,8 +58,8 @@ export class MigrateTestFixture {
     try {
       await adminPool.query(`CREATE DATABASE "${dbName}"`);
     } catch (e) {
-      if (e instanceof AggregateError) {
-        for (const err of e.errors) {
+      if (e && typeof e === 'object' && 'errors' in e && Array.isArray((e as any).errors)) {
+        for (const err of (e as any).errors) {
           console.error('AggregateError item:', err);
         }
       } else {
@@ -151,9 +150,8 @@ export class MigrateTestFixture {
     return db;
   }
 
-  setupFixture(fixtureName: string, basePath?: string): string {
-    const fixturesPath = basePath || FIXTURES_PATH;
-    const originalPath = join(fixturesPath, fixtureName);
+  setupFixture(fixtureName: string, fixtureType: 'migrate' | 'sqitch' = 'migrate'): string {
+    const originalPath = join(FIXTURES_PATH, fixtureType, fixtureName);
     const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
     const fixturePath = join(tempDir, fixtureName);
     
@@ -161,10 +159,6 @@ export class MigrateTestFixture {
     this.tempDirs.push(tempDir);
     
     return fixturePath;
-  }
-
-  setupSqitchFixture(fixtureName: string): string {
-    return this.setupFixture(fixtureName, SQITCH_FIXTURES_PATH);
   }
 
   createPlanFile(project: string, changes: Change[]): string {

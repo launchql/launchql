@@ -18,7 +18,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('deploys my-third module with tag dependencies', async () => {
-    const basePath = fixture.setupSqitchFixture('simple-w-tags');
+    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
     
     const resultFirst = await client.deploy({
       project: 'my-first',
@@ -86,7 +86,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('handles revert and redeploy with tag dependencies', async () => {
-    const basePath = fixture.setupSqitchFixture('simple-w-tags');
+    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
     
     await client.deploy({
       project: 'my-first',
@@ -135,7 +135,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('prevents revert of changes with tag-dependent modules', async () => {
-    const basePath = fixture.setupSqitchFixture('simple-w-tags');
+    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
     
     await client.deploy({
       project: 'my-first',
@@ -179,5 +179,90 @@ describe('Simple with Tags Migration', () => {
     // Verify nothing was reverted
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     expect(await db.exists('schema', 'metaschema')).toBe(true);
+  });
+
+  test('complex deploy/revert sequence with tag dependencies', async () => {
+    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
+    
+    await client.deploy({
+      project: 'my-first',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+    });
+    
+    await client.deploy({
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+    });
+    
+    const deployResult = await client.deploy({
+      project: 'my-third',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+    });
+    
+    expect(deployResult.deployed).toEqual(['create_schema', 'create_table']);
+    expect(await db.exists('schema', 'myapp')).toBe(true);
+    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    expect(await db.exists('schema', 'otherschema')).toBe(true);
+    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    
+    const revertFirstResult = await client.revert({
+      project: 'my-first',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      toChange: 'table_users'
+    });
+    
+    expect(revertFirstResult.reverted).toEqual(['table_products']);
+    expect(await db.exists('schema', 'myapp')).toBe(true);
+    expect(await db.exists('table', 'myapp.users')).toBe(true);
+    expect(await db.exists('table', 'myapp.products')).toBe(false);
+    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    
+    const deploySecondResult = await client.deploy({
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+    });
+    
+    expect(deploySecondResult.deployed).toEqual(['create_another_table']);
+    expect(await db.exists('schema', 'otherschema')).toBe(true);
+    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    
+    const revertSecondResult = await client.revert({
+      project: 'my-second',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      toChange: 'create_table'
+    });
+    
+    expect(revertSecondResult.reverted).toEqual(['create_another_table']);
+    expect(await db.exists('schema', 'otherschema')).toBe(true);
+    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    
+    const redeployThirdResult = await client.deploy({
+      project: 'my-third',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+    });
+    
+    expect(redeployThirdResult.deployed).toEqual([]);
+    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    
+    // Verify final state: my-third dependencies should still be resolved correctly
+    const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
+    expect(createSchemaDeps).toContain('my-first:table_products'); // resolved from my-first:@v1.1.0
+    expect(createSchemaDeps).toContain('my-second:create_table'); // resolved from my-second:@v2.0.0
+    
+    // Verify that the dependencies are still valid even after the reverts
+    const deployedChanges = await db.getDeployedChanges();
+    const myThirdChanges = deployedChanges.filter(c => c.project === 'my-third');
+    expect(myThirdChanges).toHaveLength(2);
+    expect(myThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });
 });
