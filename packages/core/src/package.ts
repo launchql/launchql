@@ -7,7 +7,7 @@ import { getExtensionName } from './files';
 import { resolve, resolveWithPlan } from './resolve';
 import { transformProps } from './transform';
 import { Logger } from '@launchql/logger';
-import { RawStmt, ParseResult } from '@pgsql/types';
+import { RawStmt } from '@pgsql/types';
 
 const log = new Logger('package');
 
