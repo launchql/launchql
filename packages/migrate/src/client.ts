@@ -14,7 +14,7 @@ import {
   VerifyResult,
   StatusResult
 } from './types';
-import { parsePlanFileSimple as parsePlanFile, Change, readScript, scriptExists } from '@launchql/core';
+import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists, resolveDependencies } from '@launchql/core';
 import { hashFile } from './utils/hash';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
@@ -95,6 +95,22 @@ export class LaunchQLMigrate {
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath);
     
+    const fullPlanResult = parsePlanFileFull(planPath);
+    const packageDir = dirname(planPath);
+    
+    // Only apply tag resolution if there are tags in the plan file
+    const hasTagDependencies = fullPlanResult.data.changes.some(change => 
+      change.dependencies.some(dep => dep.includes('@'))
+    );
+    
+    let resolvedDeps: any = null;
+    if (hasTagDependencies) {
+      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data.project, {
+        tagResolution: 'resolve',
+        loadPlanFiles: true
+      });
+    }
+    
     const deployed: string[] = [];
     const skipped: string[] = [];
     let failed: string | undefined;
@@ -148,6 +164,9 @@ export class LaunchQLMigrate {
         // Calculate script hash
         const scriptHash = hashFile(join(dirname(planPath), 'deploy', `${change.name}.sql`));
         
+        const changeKey = `/deploy/${change.name}.sql`;
+        const resolvedChangeDeps = resolvedDeps?.deps[changeKey] || change.dependencies;
+        
         try {
           // Call the deploy stored procedure
           await executeQuery(
@@ -157,7 +176,7 @@ export class LaunchQLMigrate {
               project || plan.project,
               change.name,
               scriptHash,
-              change.dependencies.length > 0 ? change.dependencies : null,
+              resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
               cleanDeploySql
             ]
           );

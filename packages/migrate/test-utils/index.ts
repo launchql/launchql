@@ -8,6 +8,7 @@ import { getPgEnvOptions, PgConfig } from 'pg-env';
 import { Pool } from 'pg';
 
 export const FIXTURES_PATH = resolve(__dirname, '../../../__fixtures__/migrate');
+export const SQITCH_FIXTURES_PATH = resolve(__dirname, '../../../__fixtures__/sqitch');
 
 // Global teardown function to be called after all tests
 export async function teardownAllPools(): Promise<void> {
@@ -150,8 +151,9 @@ export class MigrateTestFixture {
     return db;
   }
 
-  setupFixture(fixtureName: string): string {
-    const originalPath = join(FIXTURES_PATH, fixtureName);
+  setupFixture(fixtureName: string, basePath?: string): string {
+    const fixturesPath = basePath || FIXTURES_PATH;
+    const originalPath = join(fixturesPath, fixtureName);
     const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
     const fixturePath = join(tempDir, fixtureName);
     
@@ -159,6 +161,10 @@ export class MigrateTestFixture {
     this.tempDirs.push(tempDir);
     
     return fixturePath;
+  }
+
+  setupSqitchFixture(fixtureName: string): string {
+    return this.setupFixture(fixtureName, SQITCH_FIXTURES_PATH);
   }
 
   createPlanFile(project: string, changes: Change[]): string {
