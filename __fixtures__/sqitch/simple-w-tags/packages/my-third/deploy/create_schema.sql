@@ -1,9 +1,10 @@
 -- Deploy my-third:create_schema to pg
 
--- requires: my-second:create_table
+-- requires: my-first:@v1.1.0
+-- requires: my-second:@v2.0.0
 
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS metaschema;
+CREATE SCHEMA metaschema;
 
 COMMIT;

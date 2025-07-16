@@ -2,6 +2,8 @@
 %project=my-second
 %uri=my-second
 
-create_schema 2025-05-16T05:53:07Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # yolo
-create_table 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # asdf
-create_another_table 2025-05-16T05:53:58Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # sdf
+create_schema [my-first:@v1.0.0] 2025-05-16T05:53:07Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # yolo - depends on my-first v1.0.0
+create_table [create_schema] 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # asdf
+@v2.0.0 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # Base tables ready
+create_another_table [create_table] 2025-05-16T05:53:58Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # sdf
+@v2.1.0 2025-05-16T05:53:58Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # Extended functionality

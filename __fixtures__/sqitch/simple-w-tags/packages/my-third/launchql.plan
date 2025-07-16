@@ -2,5 +2,6 @@
 %project=my-third
 %uri=my-third
 
-create_schema 2025-05-16T05:53:07Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # yolo
-create_table 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # asdf
+create_schema [my-first:@v1.1.0 my-second:@v2.0.0] 2025-05-16T05:53:07Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # yolo - depends on specific versions
+create_table [create_schema] 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # asdf
+@v3.0.0 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # Integration complete
