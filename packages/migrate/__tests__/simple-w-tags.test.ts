@@ -1,5 +1,5 @@
 import { LaunchQLMigrate } from '../src/client';
-import { MigrateTestFixture, TestDatabase } from '../test-utils';
+import { MigrateTestFixture, TestDatabase, deployWithTags, revertWithTags } from '../test-utils';
 import { join } from 'path';
 
 describe('Simple with Tags Migration', () => {
@@ -18,7 +18,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('deploys my-third module with tag dependencies', async () => {
-    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
+    const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     const resultFirst = await client.deploy({
       project: 'my-first',
@@ -86,7 +86,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('handles revert and redeploy with tag dependencies', async () => {
-    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
+    const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
       project: 'my-first',
@@ -135,7 +135,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('prevents revert of changes with tag-dependent modules', async () => {
-    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
+    const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
       project: 'my-first',
@@ -182,7 +182,7 @@ describe('Simple with Tags Migration', () => {
   });
 
   test('complex deploy/revert sequence with tag dependencies', async () => {
-    const basePath = fixture.setupFixture('simple-w-tags', 'sqitch');
+    const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
       project: 'my-first',
@@ -210,6 +210,15 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'metaschema')).toBe(true);
     expect(await db.exists('table', 'metaschema.customers')).toBe(true);
     
+    const revertThirdResult = await client.revert({
+      project: 'my-third',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+    });
+    
+    expect(revertThirdResult.reverted).toEqual(['create_table', 'create_schema']);
+    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    
     const revertFirstResult = await client.revert({
       project: 'my-first',
       targetDatabase: db.name,
@@ -221,7 +230,16 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'myapp')).toBe(true);
     expect(await db.exists('table', 'myapp.users')).toBe(true);
     expect(await db.exists('table', 'myapp.products')).toBe(false);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    
+    const redeployFirstResult = await client.deploy({
+      project: 'my-first',
+      targetDatabase: db.name,
+      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+    });
+    
+    expect(redeployFirstResult.deployed).toEqual(['table_products']);
+    expect(await db.exists('table', 'myapp.products')).toBe(true);
     
     const deploySecondResult = await client.deploy({
       project: 'my-second',
@@ -229,18 +247,7 @@ describe('Simple with Tags Migration', () => {
       planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
     });
     
-    expect(deploySecondResult.deployed).toEqual(['create_another_table']);
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
-    
-    const revertSecondResult = await client.revert({
-      project: 'my-second',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
-      toChange: 'create_table'
-    });
-    
-    expect(revertSecondResult.reverted).toEqual(['create_another_table']);
+    expect(deploySecondResult.deployed).toEqual([]);
     expect(await db.exists('schema', 'otherschema')).toBe(true);
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     
@@ -250,18 +257,23 @@ describe('Simple with Tags Migration', () => {
       planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
     });
     
-    expect(redeployThirdResult.deployed).toEqual([]);
+    expect(redeployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
     expect(await db.exists('schema', 'metaschema')).toBe(true);
     expect(await db.exists('table', 'metaschema.customers')).toBe(true);
     
-    // Verify final state: my-third dependencies should still be resolved correctly
+    // Verify final state: my-third dependencies should still be resolved correctly after the complex sequence
     const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
     expect(createSchemaDeps).toContain('my-first:table_products'); // resolved from my-first:@v1.1.0
     expect(createSchemaDeps).toContain('my-second:create_table'); // resolved from my-second:@v2.0.0
     
-    // Verify that the dependencies are still valid even after the reverts
+    // Verify that all projects are back to their fully deployed state
     const deployedChanges = await db.getDeployedChanges();
+    const myFirstChanges = deployedChanges.filter(c => c.project === 'my-first');
+    const mySecondChanges = deployedChanges.filter(c => c.project === 'my-second');
     const myThirdChanges = deployedChanges.filter(c => c.project === 'my-third');
+    
+    expect(myFirstChanges).toHaveLength(3);
+    expect(mySecondChanges).toHaveLength(3);
     expect(myThirdChanges).toHaveLength(2);
     expect(myThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });

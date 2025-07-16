@@ -1,5 +1,6 @@
-import { MigrateConfig } from '../src/types';
+import { MigrateConfig, DeployOptions, RevertOptions, DeployResult, RevertResult } from '../src/types';
 import { LaunchQLMigrate } from '../src/client';
+import { parsePlanFile } from '@launchql/core';
 import { mkdtempSync, rmSync, cpSync, writeFileSync, mkdirSync } from 'fs';
 import { join, resolve } from 'path';
 import { tmpdir } from 'os';
@@ -150,15 +151,16 @@ export class MigrateTestFixture {
     return db;
   }
 
-  setupFixture(fixtureName: string, fixtureType: 'migrate' | 'sqitch' = 'migrate'): string {
-    const originalPath = join(FIXTURES_PATH, fixtureType, fixtureName);
+  setupFixture(fixturePath: string[]): string {
+    const originalPath = join(FIXTURES_PATH, ...fixturePath);
+    const fixtureName = fixturePath[fixturePath.length - 1]; // Use last element as fixture name
     const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
-    const fixturePath = join(tempDir, fixtureName);
+    const fixtureDestPath = join(tempDir, fixtureName);
     
-    cpSync(originalPath, fixturePath, { recursive: true });
+    cpSync(originalPath, fixtureDestPath, { recursive: true });
     this.tempDirs.push(tempDir);
     
-    return fixturePath;
+    return fixtureDestPath;
   }
 
   createPlanFile(project: string, changes: Change[]): string {
@@ -246,4 +248,75 @@ export class MigrateTestFixture {
     // Clear the databases array
     this.databases = [];
   }
+}
+
+// Tag-aware wrapper functions for deploy and revert operations
+
+/**
+ * Deploy with tag resolution support for toChange parameter
+ */
+export async function deployWithTags(
+  client: LaunchQLMigrate,
+  options: DeployOptions & { toChangeTag?: string }
+): Promise<DeployResult> {
+  const { toChangeTag, ...deployOptions } = options;
+  
+  if (toChangeTag) {
+    const resolvedToChange = resolveTagToChangeName(options.planPath, toChangeTag);
+    return client.deploy({
+      ...deployOptions,
+      toChange: resolvedToChange
+    });
+  }
+  
+  return client.deploy(deployOptions);
+}
+
+/**
+ * Revert with tag resolution support for toChange parameter
+ */
+export async function revertWithTags(
+  client: LaunchQLMigrate,
+  options: RevertOptions & { toChangeTag?: string }
+): Promise<RevertResult> {
+  const { toChangeTag, ...revertOptions } = options;
+  
+  if (toChangeTag) {
+    const resolvedToChange = resolveTagToChangeName(options.planPath, toChangeTag);
+    return client.revert({
+      ...revertOptions,
+      toChange: resolvedToChange
+    });
+  }
+  
+  return client.revert(revertOptions);
+}
+
+/**
+ * Helper function to resolve a tag to its corresponding change name
+ */
+function resolveTagToChangeName(planPath: string, tagReference: string): string {
+  if (!tagReference.includes('@')) {
+    return tagReference;
+  }
+  
+  const match = tagReference.match(/^([^:]+):@(.+)$/);
+  if (!match) {
+    throw new Error(`Invalid tag format: ${tagReference}. Expected format: project:@tagName`);
+  }
+  
+  const [, projectName, tagName] = match;
+  
+  const planResult = parsePlanFile(planPath);
+  
+  if (!planResult.data) {
+    throw new Error(`Could not parse plan file: ${planPath}`);
+  }
+  
+  const tag = planResult.data.tags?.find((t: any) => t.name === tagName);
+  if (!tag) {
+    throw new Error(`Tag ${tagName} not found in project ${projectName}`);
+  }
+  
+  return tag.change;
 }

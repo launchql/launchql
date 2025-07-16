@@ -18,7 +18,7 @@ describe('Cross-Project Dependencies', () => {
   });
   
   test('deploys cross-project dependencies', async () => {
-    const basePath = fixture.setupFixture('cross-project');
+    const basePath = fixture.setupFixture(['migrate', 'cross-project']);
     
     // First deploy project-a
     const resultA = await client.deploy({
@@ -50,7 +50,7 @@ describe('Cross-Project Dependencies', () => {
   });
   
   test('fails deployment when cross-project dependency missing', async () => {
-    const basePath = fixture.setupFixture('cross-project');
+    const basePath = fixture.setupFixture(['migrate', 'cross-project']);
     
     // Try to deploy project-b without project-a
     await expect(client.deploy({
@@ -65,7 +65,7 @@ describe('Cross-Project Dependencies', () => {
   });
   
   test('prevents revert of changes with cross-project dependents', async () => {
-    const basePath = fixture.setupFixture('cross-project');
+    const basePath = fixture.setupFixture(['migrate', 'cross-project']);
     
     // Deploy both projects
     await client.deploy({
@@ -96,7 +96,7 @@ describe('Cross-Project Dependencies', () => {
   });
   
   test('lists cross-project dependents correctly', async () => {
-    const basePath = fixture.setupFixture('cross-project');
+    const basePath = fixture.setupFixture(['migrate', 'cross-project']);
     
     // Deploy both projects
     await client.deploy({

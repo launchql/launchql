@@ -16,7 +16,7 @@ describe('Deploy Command', () => {
   });
   
   test('deploys single change', async () => {
-    const fixturePath = fixture.setupFixture('simple');
+    const fixturePath = fixture.setupFixture(['migrate', 'simple']);
     const client = new LaunchQLMigrate(db.config);
     
     // Deploy only the schema change
@@ -41,7 +41,7 @@ describe('Deploy Command', () => {
   });
   
   test('deploys changes in dependency order', async () => {
-    const fixturePath = fixture.setupFixture('simple');
+    const fixturePath = fixture.setupFixture(['migrate', 'simple']);
     const client = new LaunchQLMigrate(db.config);
     
     // Deploy all changes
@@ -66,7 +66,7 @@ describe('Deploy Command', () => {
   });
   
   test('skips already deployed changes', async () => {
-    const fixturePath = fixture.setupFixture('simple');
+    const fixturePath = fixture.setupFixture(['migrate', 'simple']);
     const client = new LaunchQLMigrate(db.config);
     
     // First deployment
