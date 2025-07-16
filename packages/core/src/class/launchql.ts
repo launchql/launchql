@@ -444,9 +444,17 @@ export class LaunchQLProject {
         const firstKey = `/deploy/${resolved[0]}.sql`;
         deps[firstKey] = deps[firstKey] || [];
 
-        // Only add external deps that don't already exist
+        // Only add external deps that don't already exist and don't have a tag dependency
         external.forEach(ext => {
-          if (!deps[firstKey].includes(ext)) {
+          const extModuleName = ext.split(':')[0];
+          
+          // Check if we already have a tag dependency for this module
+          const hasTagDependency = deps[firstKey].some(dep => {
+            return dep.startsWith(`${extModuleName}:@`);
+          });
+          
+          // Only add if we don't already have this dependency or a tag dependency for this module
+          if (!hasTagDependency && !deps[firstKey].includes(ext)) {
             deps[firstKey].push(ext);
           }
         });

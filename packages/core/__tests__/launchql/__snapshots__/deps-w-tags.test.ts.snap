@@ -1,5 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`generateModulePlan with tags generates plan for my-first 1`] = `
+"%syntax-version=1.0.0
+%project=my-first
+%uri=my-first
+schema_myapp 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add schema_myapp
+table_users [schema_myapp] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_users
+table_products [schema_myapp table_users] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_products"
+`;
+
+exports[`generateModulePlan with tags generates plan for my-second with cross-project dependencies 1`] = `
+"%syntax-version=1.0.0
+%project=my-second
+%uri=my-second
+create_schema [my-first:@v1.0.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_schema
+create_table [create_schema] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_table
+create_another_table [create_table] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_another_table"
+`;
+
+exports[`generateModulePlan with tags generates plan for my-third with multiple cross-project dependencies 1`] = `
+"%syntax-version=1.0.0
+%project=my-third
+%uri=my-third
+create_schema [my-first:@v1.1.0 my-second:@v2.0.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_schema
+create_table [create_schema my-second:@v2.1.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_table"
+`;
+
+exports[`generateModulePlan with tags generates plan without projects flag loses cross-project dependencies 1`] = `
+"%syntax-version=1.0.0
+%project=my-second
+%uri=my-second
+create_schema [my-first:@v1.0.0] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_schema
+create_table [create_schema] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_table
+create_another_table [create_table] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add create_another_table"
+`;
+
+exports[`generateModulePlan with tags reads existing plan file with tags 1`] = `
+"%syntax-version=1.0.0
+%project=my-first
+%uri=my-first
+
+schema_myapp 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add schema_myapp
+table_users [schema_myapp] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_users
+@v1.0.0 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # First stable release with users
+table_products [schema_myapp table_users] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_products
+@v1.1.0 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # Added products feature"
+`;
+
 exports[`getModuleDependencies for my-third 1`] = `
 {
   "modules": [
