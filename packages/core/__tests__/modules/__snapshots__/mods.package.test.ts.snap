@@ -3,13 +3,13 @@
 exports[`packageModule tests creates an extension 1`] = `
 "\\echo Use "CREATE EXTENSION secrets" to load this file. \\quit
 CREATE FUNCTION secretfunction() RETURNS text AS $EOFCODE$
-select * from generate_secret();
+  select * from generate_secret();
 $EOFCODE$ LANGUAGE sql STABLE;"
 `;
 
 exports[`packageModule tests creates an extension via plan 1`] = `
 "\\echo Use "CREATE EXTENSION secrets" to load this file. \\quit
 CREATE FUNCTION secretfunction() RETURNS text AS $EOFCODE$
-select * from generate_secret();
+  select * from generate_secret();
 $EOFCODE$ LANGUAGE sql STABLE;"
 `;
