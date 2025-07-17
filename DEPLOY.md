@@ -16,7 +16,7 @@ LaunchQL provides a sophisticated deployment system that manages PostgreSQL data
 ### Key Components
 
 1. **Core Deployment Engine** (`packages/core/src/projects/deploy-project.ts`)
-2. **Migration System** (`packages/migrate/`)
+2. **Migration System** (`packages/core/src/migrate/`)
 3. **CLI Interface** (`packages/cli/src/commands/deploy.ts`)
 4. **Dependency Resolution** (`packages/core/src/deps.ts`)
 
@@ -123,7 +123,7 @@ for (const extension of reversedExtensions) {
 The migration system includes safety checks in stored procedures:
 
 ```sql
--- packages/migrate/src/sql/procedures.sql
+-- packages/core/src/migrate/sql/procedures.sql
 IF EXISTS (
   SELECT 1 FROM launchql_migrate.dependencies d
   JOIN launchql_migrate.changes c ON c.change_id = d.change_id
@@ -147,7 +147,7 @@ Tags follow the format: `project:@tagName` or `@tagName` (for current project)
 The `resolveTagToChangeName` function handles tag resolution:
 
 ```typescript
-// packages/migrate/src/client.ts
+// packages/core/src/migrate/client.ts
 private resolveTagToChangeName(planPath: string, tagReference: string, currentProject?: string): string {
   if (!tagReference.includes('@')) {
     return tagReference;
