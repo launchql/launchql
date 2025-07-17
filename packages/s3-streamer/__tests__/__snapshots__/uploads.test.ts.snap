@@ -18,7 +18,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""952fd44d14cee87882239b707231609d"",
       "Key": "db1/assets/.gitignore",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/.gitignore",
-      "key": "db1/assets/.gitignore",
     },
   },
   ".travis.yml": {
@@ -37,7 +36,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""eed1da4a1867d8af5f529e8668d23fd0"",
       "Key": "db1/assets/.travis.yml",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/.travis.yml",
-      "key": "db1/assets/.travis.yml",
     },
   },
   "LICENSE": {
@@ -56,7 +54,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""17c231f7b93a4b3c5bd4c2c18effb21e"",
       "Key": "db1/assets/LICENSE",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/LICENSE",
-      "key": "db1/assets/LICENSE",
     },
   },
   "ai.ai": {
@@ -75,7 +72,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""648644bf1b5fcadf5c0a0ac67577b64f"",
       "Key": "db1/assets/ai.ai",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/ai.ai",
-      "key": "db1/assets/ai.ai",
     },
   },
   "apng.png": {
@@ -94,7 +90,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""425e622d348abc7ea349245e7e8738c2"",
       "Key": "db1/assets/apng.png",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/apng.png",
-      "key": "db1/assets/apng.png",
     },
   },
   "bmp.bmp": {
@@ -113,7 +108,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""a986c2384e5e2d4ee0d5133f3c27d62d"",
       "Key": "db1/assets/bmp.bmp",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/bmp.bmp",
-      "key": "db1/assets/bmp.bmp",
     },
   },
   "build.js": {
@@ -132,7 +126,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""01e41e2830bae8fcc21129ce6095d9be"",
       "Key": "db1/assets/build.js",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/build.js",
-      "key": "db1/assets/build.js",
     },
   },
   "build.js.map": {
@@ -151,7 +144,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""c8cbb12bb4ef453eceac8c3fb889d082"",
       "Key": "db1/assets/build.js.map",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/build.js.map",
-      "key": "db1/assets/build.js.map",
     },
   },
   "css.css": {
@@ -170,7 +162,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""216e807dd0b784846799cb18051f250d"",
       "Key": "db1/assets/css.css",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/css.css",
-      "key": "db1/assets/css.css",
     },
   },
   "csv.csv": {
@@ -189,7 +180,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""fedefb601304bf36f8c5f076191e7d44"",
       "Key": "db1/assets/csv.csv",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/csv.csv",
-      "key": "db1/assets/csv.csv",
     },
   },
   "docs.js": {
@@ -208,7 +198,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""fc829c7b7378701e2e5f835ab968bba1"",
       "Key": "db1/assets/docs.js",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/docs.js",
-      "key": "db1/assets/docs.js",
     },
   },
   "docs.jsx": {
@@ -227,7 +216,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""fc829c7b7378701e2e5f835ab968bba1"",
       "Key": "db1/assets/docs.jsx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/docs.jsx",
-      "key": "db1/assets/docs.jsx",
     },
   },
   "docx.docx": {
@@ -246,7 +234,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""352c6f638cc9ff63590f818eeea6707d"",
       "Key": "db1/assets/docx.docx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/docx.docx",
-      "key": "db1/assets/docx.docx",
     },
   },
   "dwg.dwg": {
@@ -265,7 +252,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""2feedee43f2d4f6a7a6b467d6faf27fa"",
       "Key": "db1/assets/dwg.dwg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/dwg.dwg",
-      "key": "db1/assets/dwg.dwg",
     },
   },
   "dxf.dxf": {
@@ -284,7 +270,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""422ffda43f6f6f17a9c0ef5ed62ed9bd"",
       "Key": "db1/assets/dxf.dxf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/dxf.dxf",
-      "key": "db1/assets/dxf.dxf",
     },
   },
   "emf.emf": {
@@ -303,7 +288,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""bab54b66b80237d5bb800b1aef9ebe9b"",
       "Key": "db1/assets/emf.emf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/emf.emf",
-      "key": "db1/assets/emf.emf",
     },
   },
   "epub.epub": {
@@ -322,7 +306,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""8dc60cd4a41395178a3d80bfa2974c41"",
       "Key": "db1/assets/epub.epub",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/epub.epub",
-      "key": "db1/assets/epub.epub",
     },
   },
   "font.otf": {
@@ -341,7 +324,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""945b9e0e38dcfd294b4b26150ccade3c"",
       "Key": "db1/assets/font.otf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.otf",
-      "key": "db1/assets/font.otf",
     },
   },
   "font.ttf": {
@@ -360,7 +342,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""3736a705526e0ecd366f70a59f704ec6"",
       "Key": "db1/assets/font.ttf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.ttf",
-      "key": "db1/assets/font.ttf",
     },
   },
   "font.woff": {
@@ -379,7 +360,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""f2af1f64bc0a0e5cfe4b5fee322e4157"",
       "Key": "db1/assets/font.woff",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.woff",
-      "key": "db1/assets/font.woff",
     },
   },
   "font.woff2": {
@@ -398,7 +378,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""f2af1f64bc0a0e5cfe4b5fee322e4157"",
       "Key": "db1/assets/font.woff2",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.woff2",
-      "key": "db1/assets/font.woff2",
     },
   },
   "gif-w-alpha.gif": {
@@ -417,7 +396,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""70b8ba9aebd02707cdcc43b6f9061fb0"",
       "Key": "db1/assets/gif-w-alpha.gif",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/gif-w-alpha.gif",
-      "key": "db1/assets/gif-w-alpha.gif",
     },
   },
   "gif.gif": {
@@ -436,7 +414,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""b411ab31d73df4637d9ddcd99c03b7e9"",
       "Key": "db1/assets/gif.gif",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/gif.gif",
-      "key": "db1/assets/gif.gif",
     },
   },
   "jpg.jpg": {
@@ -455,7 +432,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""0d55576e9c5c346dc0ed4adedfaf0619"",
       "Key": "db1/assets/jpg.jpg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/jpg.jpg",
-      "key": "db1/assets/jpg.jpg",
     },
   },
   "json.json": {
@@ -474,7 +450,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""64dcb5b3b291074d02c80f600fda3f6e"",
       "Key": "db1/assets/json.json",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/json.json",
-      "key": "db1/assets/json.json",
     },
   },
   "less.less": {
@@ -493,7 +468,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""ec5315f0f5af9b39421b6d06512ceb64"",
       "Key": "db1/assets/less.less",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/less.less",
-      "key": "db1/assets/less.less",
     },
   },
   "lock.lock": {
@@ -512,7 +486,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""78f1c5a17d4a71257b95061e2432cadc"",
       "Key": "db1/assets/lock.lock",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/lock.lock",
-      "key": "db1/assets/lock.lock",
     },
   },
   "md.md": {
@@ -531,7 +504,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""2524b9c1caad97610a5149886a7e793f"",
       "Key": "db1/assets/md.md",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/md.md",
-      "key": "db1/assets/md.md",
     },
   },
   "mp4.mp4": {
@@ -550,7 +522,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""0c147ea51be2c7425677a04e800a4342"",
       "Key": "db1/assets/mp4.mp4",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/mp4.mp4",
-      "key": "db1/assets/mp4.mp4",
     },
   },
   "ods.ods": {
@@ -569,7 +540,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""28f9c41946c806e049bd5e7d1ad07fde"",
       "Key": "db1/assets/ods.ods",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/ods.ods",
-      "key": "db1/assets/ods.ods",
     },
   },
   "odt.odt": {
@@ -588,7 +558,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""24cac2f0a673e3af35095a109dc6a9fa"",
       "Key": "db1/assets/odt.odt",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/odt.odt",
-      "key": "db1/assets/odt.odt",
     },
   },
   "pct.pct": {
@@ -607,7 +576,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""630620c4f931bd94573cafe460ad4af6"",
       "Key": "db1/assets/pct.pct",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/pct.pct",
-      "key": "db1/assets/pct.pct",
     },
   },
   "pdf.pdf": {
@@ -626,7 +594,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""b9aa628349df6cc1c99919fe4a12216c"",
       "Key": "db1/assets/pdf.pdf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/pdf.pdf",
-      "key": "db1/assets/pdf.pdf",
     },
   },
   "png-w-alpha.png": {
@@ -645,7 +612,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""e81f3ad8e657fe1df43548c4a20f7b76"",
       "Key": "db1/assets/png-w-alpha.png",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/png-w-alpha.png",
-      "key": "db1/assets/png-w-alpha.png",
     },
   },
   "psd.psd": {
@@ -664,7 +630,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""2625e3d597d2bc0d0223169c3b6a7c58"",
       "Key": "db1/assets/psd.psd",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/psd.psd",
-      "key": "db1/assets/psd.psd",
     },
   },
   "rtf.rtf": {
@@ -683,7 +648,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""6b16fb8eb9b9cd1d6631936f61d6d998"",
       "Key": "db1/assets/rtf.rtf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/rtf.rtf",
-      "key": "db1/assets/rtf.rtf",
     },
   },
   "scss.scss": {
@@ -702,7 +666,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""cd8759ad9f9530b6f852675d1db3235a"",
       "Key": "db1/assets/scss.scss",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/scss.scss",
-      "key": "db1/assets/scss.scss",
     },
   },
   "shellscript": {
@@ -721,7 +684,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""9e73a9fd45d381175f3791bc4f33ec11"",
       "Key": "db1/assets/shellscript",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/shellscript",
-      "key": "db1/assets/shellscript",
     },
   },
   "sql.sql": {
@@ -740,7 +702,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""acb01cdf33de89cc35d84d748cf05bc8"",
       "Key": "db1/assets/sql.sql",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/sql.sql",
-      "key": "db1/assets/sql.sql",
     },
   },
   "svg-with-alpha-and-text.svg": {
@@ -759,7 +720,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""6036843b30c15b80898bc23174da05f7"",
       "Key": "db1/assets/svg-with-alpha-and-text.svg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/svg-with-alpha-and-text.svg",
-      "key": "db1/assets/svg-with-alpha-and-text.svg",
     },
   },
   "svg.svg": {
@@ -778,7 +738,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""a82efeaff853f1cf8cf85c2d526c0d9e"",
       "Key": "db1/assets/svg.svg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/svg.svg",
-      "key": "db1/assets/svg.svg",
     },
   },
   "svgo.yaml": {
@@ -797,7 +756,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""08541d86097e1750cf2d980a9e405ad8"",
       "Key": "db1/assets/svgo.yaml",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/svgo.yaml",
-      "key": "db1/assets/svgo.yaml",
     },
   },
   "swf.swf": {
@@ -816,7 +774,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""008b732b6223004db383b3d605b0fe70"",
       "Key": "db1/assets/swf.swf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/swf.swf",
-      "key": "db1/assets/swf.swf",
     },
   },
   "tga.tga": {
@@ -835,7 +792,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""4b4384288a9b5b1a3b544decc957dbe5"",
       "Key": "db1/assets/tga.tga",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/tga.tga",
-      "key": "db1/assets/tga.tga",
     },
   },
   "tif.tif": {
@@ -854,7 +810,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""4171810ca9e1293197110c23f324161f"",
       "Key": "db1/assets/tif.tif",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/tif.tif",
-      "key": "db1/assets/tif.tif",
     },
   },
   "todo-0.1.0.tgz": {
@@ -873,7 +828,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""b3af984d63447e8173fb565ae3874754"",
       "Key": "db1/assets/todo-0.1.0.tgz",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/todo-0.1.0.tgz",
-      "key": "db1/assets/todo-0.1.0.tgz",
     },
   },
   "tsv.tsv": {
@@ -892,7 +846,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""2ddf1d91d0e148ba36b1d711d3f15518"",
       "Key": "db1/assets/tsv.tsv",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/tsv.tsv",
-      "key": "db1/assets/tsv.tsv",
     },
   },
   "txt.txt": {
@@ -911,7 +864,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""b9d78e5636ec484481763d0213cc39cb"",
       "Key": "db1/assets/txt.txt",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/txt.txt",
-      "key": "db1/assets/txt.txt",
     },
   },
   "typescript.ts": {
@@ -930,7 +882,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""d318a3bfecfad0286a38ab05f901302e"",
       "Key": "db1/assets/typescript.ts",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/typescript.ts",
-      "key": "db1/assets/typescript.ts",
     },
   },
   "typescript.tsx": {
@@ -949,7 +900,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""d318a3bfecfad0286a38ab05f901302e"",
       "Key": "db1/assets/typescript.tsx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/typescript.tsx",
-      "key": "db1/assets/typescript.tsx",
     },
   },
   "wmf.wmf": {
@@ -968,7 +918,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""d41d8cd98f00b204e9800998ecf8427e"",
       "Key": "db1/assets/wmf.wmf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/wmf.wmf",
-      "key": "db1/assets/wmf.wmf",
     },
   },
   "xlsx.xlsx": {
@@ -987,7 +936,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""11ee509d7e7015cbb693787206345c67"",
       "Key": "db1/assets/xlsx.xlsx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/xlsx.xlsx",
-      "key": "db1/assets/xlsx.xlsx",
     },
   },
   "zip.zip": {
@@ -1006,7 +954,6 @@ exports[`uploads upload files via class 1`] = `
       "ETag": ""9dfdfd1ae3cb267b12ef9d63bffa2295"",
       "Key": "db1/assets/zip.zip",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/zip.zip",
-      "key": "db1/assets/zip.zip",
     },
   },
 }
@@ -1030,7 +977,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""952fd44d14cee87882239b707231609d"",
       "Key": "db1/assets/.gitignore",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/.gitignore",
-      "key": "db1/assets/.gitignore",
     },
   },
   ".travis.yml": {
@@ -1049,7 +995,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""eed1da4a1867d8af5f529e8668d23fd0"",
       "Key": "db1/assets/.travis.yml",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/.travis.yml",
-      "key": "db1/assets/.travis.yml",
     },
   },
   "LICENSE": {
@@ -1068,7 +1013,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""17c231f7b93a4b3c5bd4c2c18effb21e"",
       "Key": "db1/assets/LICENSE",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/LICENSE",
-      "key": "db1/assets/LICENSE",
     },
   },
   "ai.ai": {
@@ -1087,7 +1031,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""648644bf1b5fcadf5c0a0ac67577b64f"",
       "Key": "db1/assets/ai.ai",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/ai.ai",
-      "key": "db1/assets/ai.ai",
     },
   },
   "apng.png": {
@@ -1106,7 +1049,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""425e622d348abc7ea349245e7e8738c2"",
       "Key": "db1/assets/apng.png",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/apng.png",
-      "key": "db1/assets/apng.png",
     },
   },
   "bmp.bmp": {
@@ -1125,7 +1067,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""a986c2384e5e2d4ee0d5133f3c27d62d"",
       "Key": "db1/assets/bmp.bmp",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/bmp.bmp",
-      "key": "db1/assets/bmp.bmp",
     },
   },
   "build.js": {
@@ -1144,7 +1085,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""01e41e2830bae8fcc21129ce6095d9be"",
       "Key": "db1/assets/build.js",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/build.js",
-      "key": "db1/assets/build.js",
     },
   },
   "build.js.map": {
@@ -1163,7 +1103,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""c8cbb12bb4ef453eceac8c3fb889d082"",
       "Key": "db1/assets/build.js.map",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/build.js.map",
-      "key": "db1/assets/build.js.map",
     },
   },
   "css.css": {
@@ -1182,7 +1121,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""216e807dd0b784846799cb18051f250d"",
       "Key": "db1/assets/css.css",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/css.css",
-      "key": "db1/assets/css.css",
     },
   },
   "csv.csv": {
@@ -1201,7 +1139,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""fedefb601304bf36f8c5f076191e7d44"",
       "Key": "db1/assets/csv.csv",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/csv.csv",
-      "key": "db1/assets/csv.csv",
     },
   },
   "docs.js": {
@@ -1220,7 +1157,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""fc829c7b7378701e2e5f835ab968bba1"",
       "Key": "db1/assets/docs.js",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/docs.js",
-      "key": "db1/assets/docs.js",
     },
   },
   "docs.jsx": {
@@ -1239,7 +1175,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""fc829c7b7378701e2e5f835ab968bba1"",
       "Key": "db1/assets/docs.jsx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/docs.jsx",
-      "key": "db1/assets/docs.jsx",
     },
   },
   "docx.docx": {
@@ -1258,7 +1193,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""352c6f638cc9ff63590f818eeea6707d"",
       "Key": "db1/assets/docx.docx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/docx.docx",
-      "key": "db1/assets/docx.docx",
     },
   },
   "dwg.dwg": {
@@ -1277,7 +1211,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""2feedee43f2d4f6a7a6b467d6faf27fa"",
       "Key": "db1/assets/dwg.dwg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/dwg.dwg",
-      "key": "db1/assets/dwg.dwg",
     },
   },
   "dxf.dxf": {
@@ -1296,7 +1229,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""422ffda43f6f6f17a9c0ef5ed62ed9bd"",
       "Key": "db1/assets/dxf.dxf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/dxf.dxf",
-      "key": "db1/assets/dxf.dxf",
     },
   },
   "emf.emf": {
@@ -1315,7 +1247,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""bab54b66b80237d5bb800b1aef9ebe9b"",
       "Key": "db1/assets/emf.emf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/emf.emf",
-      "key": "db1/assets/emf.emf",
     },
   },
   "epub.epub": {
@@ -1334,7 +1265,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""8dc60cd4a41395178a3d80bfa2974c41"",
       "Key": "db1/assets/epub.epub",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/epub.epub",
-      "key": "db1/assets/epub.epub",
     },
   },
   "font.otf": {
@@ -1353,7 +1283,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""945b9e0e38dcfd294b4b26150ccade3c"",
       "Key": "db1/assets/font.otf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.otf",
-      "key": "db1/assets/font.otf",
     },
   },
   "font.ttf": {
@@ -1372,7 +1301,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""3736a705526e0ecd366f70a59f704ec6"",
       "Key": "db1/assets/font.ttf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.ttf",
-      "key": "db1/assets/font.ttf",
     },
   },
   "font.woff": {
@@ -1391,7 +1319,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""f2af1f64bc0a0e5cfe4b5fee322e4157"",
       "Key": "db1/assets/font.woff",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.woff",
-      "key": "db1/assets/font.woff",
     },
   },
   "font.woff2": {
@@ -1410,7 +1337,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""f2af1f64bc0a0e5cfe4b5fee322e4157"",
       "Key": "db1/assets/font.woff2",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/font.woff2",
-      "key": "db1/assets/font.woff2",
     },
   },
   "gif-w-alpha.gif": {
@@ -1429,7 +1355,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""70b8ba9aebd02707cdcc43b6f9061fb0"",
       "Key": "db1/assets/gif-w-alpha.gif",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/gif-w-alpha.gif",
-      "key": "db1/assets/gif-w-alpha.gif",
     },
   },
   "gif.gif": {
@@ -1448,7 +1373,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""b411ab31d73df4637d9ddcd99c03b7e9"",
       "Key": "db1/assets/gif.gif",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/gif.gif",
-      "key": "db1/assets/gif.gif",
     },
   },
   "jpg.jpg": {
@@ -1467,7 +1391,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""0d55576e9c5c346dc0ed4adedfaf0619"",
       "Key": "db1/assets/jpg.jpg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/jpg.jpg",
-      "key": "db1/assets/jpg.jpg",
     },
   },
   "json.json": {
@@ -1486,7 +1409,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""64dcb5b3b291074d02c80f600fda3f6e"",
       "Key": "db1/assets/json.json",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/json.json",
-      "key": "db1/assets/json.json",
     },
   },
   "less.less": {
@@ -1505,7 +1427,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""ec5315f0f5af9b39421b6d06512ceb64"",
       "Key": "db1/assets/less.less",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/less.less",
-      "key": "db1/assets/less.less",
     },
   },
   "lock.lock": {
@@ -1524,7 +1445,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""78f1c5a17d4a71257b95061e2432cadc"",
       "Key": "db1/assets/lock.lock",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/lock.lock",
-      "key": "db1/assets/lock.lock",
     },
   },
   "md.md": {
@@ -1543,7 +1463,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""2524b9c1caad97610a5149886a7e793f"",
       "Key": "db1/assets/md.md",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/md.md",
-      "key": "db1/assets/md.md",
     },
   },
   "mp4.mp4": {
@@ -1562,7 +1481,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""0c147ea51be2c7425677a04e800a4342"",
       "Key": "db1/assets/mp4.mp4",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/mp4.mp4",
-      "key": "db1/assets/mp4.mp4",
     },
   },
   "ods.ods": {
@@ -1581,7 +1499,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""28f9c41946c806e049bd5e7d1ad07fde"",
       "Key": "db1/assets/ods.ods",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/ods.ods",
-      "key": "db1/assets/ods.ods",
     },
   },
   "odt.odt": {
@@ -1600,7 +1517,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""24cac2f0a673e3af35095a109dc6a9fa"",
       "Key": "db1/assets/odt.odt",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/odt.odt",
-      "key": "db1/assets/odt.odt",
     },
   },
   "pct.pct": {
@@ -1619,7 +1535,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""630620c4f931bd94573cafe460ad4af6"",
       "Key": "db1/assets/pct.pct",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/pct.pct",
-      "key": "db1/assets/pct.pct",
     },
   },
   "pdf.pdf": {
@@ -1638,7 +1553,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""b9aa628349df6cc1c99919fe4a12216c"",
       "Key": "db1/assets/pdf.pdf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/pdf.pdf",
-      "key": "db1/assets/pdf.pdf",
     },
   },
   "png-w-alpha.png": {
@@ -1657,7 +1571,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""e81f3ad8e657fe1df43548c4a20f7b76"",
       "Key": "db1/assets/png-w-alpha.png",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/png-w-alpha.png",
-      "key": "db1/assets/png-w-alpha.png",
     },
   },
   "psd.psd": {
@@ -1676,7 +1589,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""2625e3d597d2bc0d0223169c3b6a7c58"",
       "Key": "db1/assets/psd.psd",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/psd.psd",
-      "key": "db1/assets/psd.psd",
     },
   },
   "rtf.rtf": {
@@ -1695,7 +1607,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""6b16fb8eb9b9cd1d6631936f61d6d998"",
       "Key": "db1/assets/rtf.rtf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/rtf.rtf",
-      "key": "db1/assets/rtf.rtf",
     },
   },
   "scss.scss": {
@@ -1714,7 +1625,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""cd8759ad9f9530b6f852675d1db3235a"",
       "Key": "db1/assets/scss.scss",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/scss.scss",
-      "key": "db1/assets/scss.scss",
     },
   },
   "shellscript": {
@@ -1733,7 +1643,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""9e73a9fd45d381175f3791bc4f33ec11"",
       "Key": "db1/assets/shellscript",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/shellscript",
-      "key": "db1/assets/shellscript",
     },
   },
   "sql.sql": {
@@ -1752,7 +1661,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""acb01cdf33de89cc35d84d748cf05bc8"",
       "Key": "db1/assets/sql.sql",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/sql.sql",
-      "key": "db1/assets/sql.sql",
     },
   },
   "svg-with-alpha-and-text.svg": {
@@ -1771,7 +1679,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""6036843b30c15b80898bc23174da05f7"",
       "Key": "db1/assets/svg-with-alpha-and-text.svg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/svg-with-alpha-and-text.svg",
-      "key": "db1/assets/svg-with-alpha-and-text.svg",
     },
   },
   "svg.svg": {
@@ -1790,7 +1697,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""a82efeaff853f1cf8cf85c2d526c0d9e"",
       "Key": "db1/assets/svg.svg",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/svg.svg",
-      "key": "db1/assets/svg.svg",
     },
   },
   "svgo.yaml": {
@@ -1809,7 +1715,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""08541d86097e1750cf2d980a9e405ad8"",
       "Key": "db1/assets/svgo.yaml",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/svgo.yaml",
-      "key": "db1/assets/svgo.yaml",
     },
   },
   "swf.swf": {
@@ -1828,7 +1733,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""008b732b6223004db383b3d605b0fe70"",
       "Key": "db1/assets/swf.swf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/swf.swf",
-      "key": "db1/assets/swf.swf",
     },
   },
   "tga.tga": {
@@ -1847,7 +1751,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""4b4384288a9b5b1a3b544decc957dbe5"",
       "Key": "db1/assets/tga.tga",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/tga.tga",
-      "key": "db1/assets/tga.tga",
     },
   },
   "tif.tif": {
@@ -1866,7 +1769,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""4171810ca9e1293197110c23f324161f"",
       "Key": "db1/assets/tif.tif",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/tif.tif",
-      "key": "db1/assets/tif.tif",
     },
   },
   "todo-0.1.0.tgz": {
@@ -1885,7 +1787,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""b3af984d63447e8173fb565ae3874754"",
       "Key": "db1/assets/todo-0.1.0.tgz",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/todo-0.1.0.tgz",
-      "key": "db1/assets/todo-0.1.0.tgz",
     },
   },
   "tsv.tsv": {
@@ -1904,7 +1805,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""2ddf1d91d0e148ba36b1d711d3f15518"",
       "Key": "db1/assets/tsv.tsv",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/tsv.tsv",
-      "key": "db1/assets/tsv.tsv",
     },
   },
   "txt.txt": {
@@ -1923,7 +1823,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""b9d78e5636ec484481763d0213cc39cb"",
       "Key": "db1/assets/txt.txt",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/txt.txt",
-      "key": "db1/assets/txt.txt",
     },
   },
   "typescript.ts": {
@@ -1942,7 +1841,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""d318a3bfecfad0286a38ab05f901302e"",
       "Key": "db1/assets/typescript.ts",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/typescript.ts",
-      "key": "db1/assets/typescript.ts",
     },
   },
   "typescript.tsx": {
@@ -1961,7 +1859,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""d318a3bfecfad0286a38ab05f901302e"",
       "Key": "db1/assets/typescript.tsx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/typescript.tsx",
-      "key": "db1/assets/typescript.tsx",
     },
   },
   "wmf.wmf": {
@@ -1980,7 +1877,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""d41d8cd98f00b204e9800998ecf8427e"",
       "Key": "db1/assets/wmf.wmf",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/wmf.wmf",
-      "key": "db1/assets/wmf.wmf",
     },
   },
   "xlsx.xlsx": {
@@ -1999,7 +1895,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""11ee509d7e7015cbb693787206345c67"",
       "Key": "db1/assets/xlsx.xlsx",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/xlsx.xlsx",
-      "key": "db1/assets/xlsx.xlsx",
     },
   },
   "zip.zip": {
@@ -2018,7 +1913,6 @@ exports[`uploads upload files via functions 1`] = `
       "ETag": ""9dfdfd1ae3cb267b12ef9d63bffa2295"",
       "Key": "db1/assets/zip.zip",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/zip.zip",
-      "key": "db1/assets/zip.zip",
     },
   },
 }

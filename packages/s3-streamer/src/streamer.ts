@@ -1,5 +1,5 @@
 import { ReadStream } from 'fs';
-import S3 from 'aws-sdk/clients/s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import getS3 from './s3';
 import { upload as streamUpload, type AsyncUploadResult } from './utils';
 
@@ -19,7 +19,7 @@ interface UploadParams {
 }
 
 export class Streamer {
-  private s3: S3;
+  private s3: S3Client;
   private defaultBucket?: string;
 
   constructor({
@@ -44,6 +44,10 @@ export class Streamer {
     key,
     bucket = this.defaultBucket
   }: UploadParams): Promise<AsyncUploadResult> {
+    if (!bucket) {
+      throw new Error('Bucket is required');
+    }
+    
     return await streamUpload({
       client: this.s3,
       readStream,
@@ -51,6 +55,10 @@ export class Streamer {
       key,
       bucket
     });
+  }
+
+  destroy(): void {
+    this.s3.destroy();
   }
 }
 

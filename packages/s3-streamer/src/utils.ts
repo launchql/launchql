@@ -1,5 +1,6 @@
 import stream, { PassThrough, Readable } from 'stream';
-import type S3 from 'aws-sdk/clients/s3';
+import { S3Client, CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 
 import {
   streamContentType,
@@ -7,7 +8,7 @@ import {
 } from '@launchql/content-type-stream';
 
 export interface UploadParams {
-  client: S3;
+  client: S3Client;
   key: string;
   contentType: string;
   bucket: string;
@@ -19,15 +20,22 @@ export interface AsyncUploadParams extends UploadParams {
 }
 
 export interface UploadWithFilenameParams {
-  client: S3;
+  client: S3Client;
   readStream: Readable;
   filename: string;
   key: string;
   bucket: string;
 }
 
+export interface UploadResult {
+  Location: string;
+  ETag?: string;
+  Bucket?: string;
+  Key?: string;
+}
+
 export interface AsyncUploadResult {
-  upload: S3.ManagedUpload.SendData;
+  upload: UploadResult;
   magic: { charset: string };
   contentType: string;
   contents: unknown;
@@ -41,23 +49,30 @@ export const uploadFromStream = ({
 }: UploadParams): PassThrough => {
   const pass = new stream.PassThrough();
 
-  const params = {
-    Body: pass,
-    Key: key,
-    ContentType: contentType,
-    Bucket: bucket
-  };
-
-  client.upload(params, function (
-    err: Error | null,
-    data: S3.ManagedUpload.SendData
-  ): void {
-    if (err) {
-      pass.emit('error', err);
-    } else {
-      pass.emit('upload', data);
-    }
+  const upload = new Upload({
+    client,
+    params: {
+      Body: pass,
+      Key: key,
+      ContentType: contentType,
+      Bucket: bucket
+    },
   });
+
+  upload.done()
+    .then((data) => {
+      // Transform to match v2 response format
+      const result: UploadResult = {
+        Location: data.Location || `https://${bucket}.s3.amazonaws.com/${key}`,
+        ETag: data.ETag,
+        Bucket: bucket,
+        Key: key
+      };
+      pass.emit('upload', result);
+    })
+    .catch((err) => {
+      pass.emit('error', err);
+    });
 
   return pass;
 };
@@ -72,7 +87,7 @@ export const asyncUpload = ({
 }: AsyncUploadParams): Promise<AsyncUploadResult> => {
   return new Promise((resolve, reject) => {
     // upload stream
-    let upload: S3.ManagedUpload.SendData | undefined;
+    let upload: UploadResult | undefined;
 
     const uploadStream = uploadFromStream({
       client,
@@ -106,13 +121,18 @@ export const asyncUpload = ({
       });
 
     uploadStream
-      .on('upload', (results: S3.ManagedUpload.SendData) => {
+      .on('upload', (results: UploadResult) => {
         upload = results;
         tryResolve();
       })
       .on('error', (error: Error) => {
         reject(error);
       });
+
+    // Ensure proper cleanup on stream end
+    uploadStream.on('finish', () => {
+      readStream.destroy();
+    });
 
     readStream.pipe(contentStream);
     contentStream.pipe(uploadStream);

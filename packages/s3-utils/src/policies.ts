@@ -1,10 +1,15 @@
-import type S3 from 'aws-sdk/clients/s3';
+import { 
+  S3Client, 
+  CreateBucketCommand, 
+  PutBucketCorsCommand, 
+  PutBucketPolicyCommand 
+} from '@aws-sdk/client-s3';
 
-export async function createS3Bucket(client: S3, Bucket: string): Promise<{ success: boolean }> {
+export async function createS3Bucket(client: S3Client, Bucket: string): Promise<{ success: boolean }> {
   try {
-    await client.createBucket({ Bucket }).promise();
+    await client.send(new CreateBucketCommand({ Bucket }));
   } catch (e: any) {
-    if (e.code === 'BucketAlreadyOwnedByYou') {
+    if (e.name === 'BucketAlreadyOwnedByYou' || e.Code === 'BucketAlreadyOwnedByYou') {
       console.warn(`[createS3Bucket] Bucket "${Bucket}" already exists`);
       return { success: true };
     } else {
@@ -13,10 +18,15 @@ export async function createS3Bucket(client: S3, Bucket: string): Promise<{ succ
     }
   }
 
+  // Check if it's MinIO by looking at the endpoint
+  const endpoint = (client as any).config?.endpoint;
+  const endpointUrl = typeof endpoint === 'function' ? await endpoint() : endpoint;
+  const hostname = endpointUrl?.hostname || endpointUrl?.host || '';
+  
   const isMinio =
     process.env.IS_MINIO === 'true' ||
-    ['localhost', '127.0.0.1'].includes(client.endpoint.hostname) ||
-    client.endpoint.hostname.includes('minio');
+    ['localhost', '127.0.0.1'].includes(hostname) ||
+    hostname.includes('minio');
 
   const policy = isMinio
     ? {
@@ -53,25 +63,26 @@ export async function createS3Bucket(client: S3, Bucket: string): Promise<{ succ
 
   try {
     if (!isMinio) {
-      await client
-        .putBucketCors({
-          Bucket,
-          CORSConfiguration: {
-            CORSRules: [
-              {
-                AllowedMethods: ['POST', 'GET', 'PUT', 'DELETE', 'HEAD'],
-                AllowedHeaders: ['Authorization', 'Content-Type', 'Content-Length'],
-                AllowedOrigins: ['*'],
-                ExposeHeaders: ['ETag'],
-                MaxAgeSeconds: 3000,
-              },
-            ],
-          },
-        })
-        .promise();
+      await client.send(new PutBucketCorsCommand({
+        Bucket,
+        CORSConfiguration: {
+          CORSRules: [
+            {
+              AllowedMethods: ['POST', 'GET', 'PUT', 'DELETE', 'HEAD'],
+              AllowedHeaders: ['Authorization', 'Content-Type', 'Content-Length'],
+              AllowedOrigins: ['*'],
+              ExposeHeaders: ['ETag'],
+              MaxAgeSeconds: 3000,
+            },
+          ],
+        },
+      }));
     }
 
-    await client.putBucketPolicy({ Bucket, Policy: JSON.stringify(policy) }).promise();
+    await client.send(new PutBucketPolicyCommand({ 
+      Bucket, 
+      Policy: JSON.stringify(policy) 
+    }));
 
     return { success: true };
   } catch (e) {
