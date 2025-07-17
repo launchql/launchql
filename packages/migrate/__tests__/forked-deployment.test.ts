@@ -37,7 +37,7 @@ describe('Forked Deployment', () => {
     const verifyDir = join(basePath, 'packages', 'my-first', 'verify');
     
     const originalPlan = readFileSync(planPath, 'utf8');
-    const changeAPlan = originalPlan + 'table_orders [table_products] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_orders\n';
+    const changeAPlan = originalPlan.trimEnd() + '\ntable_orders [table_products] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_orders\n';
     writeFileSync(planPath, changeAPlan);
     
     writeFileSync(join(deployDir, 'table_orders.sql'), `-- Deploy my-first:table_orders to pg
@@ -76,7 +76,6 @@ SELECT 1/count(*) FROM information_schema.tables WHERE table_schema = 'myapp' AN
       targetDatabase: db.name,
       planPath: planPath,
     });
-    
     expect(deployAResult.deployed).toEqual(['table_orders']);
     expect(await db.exists('table', 'myapp.orders')).toBe(true);
     
@@ -96,7 +95,7 @@ SELECT 1/count(*) FROM information_schema.tables WHERE table_schema = 'myapp' AN
     unlinkSync(join(revertDir, 'table_orders.sql'));
     unlinkSync(join(verifyDir, 'table_orders.sql'));
     
-    const changeBPlan = originalPlan + 'table_categories [table_products] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_categories\n';
+    const changeBPlan = originalPlan.trimEnd() + '\ntable_categories [table_products] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_categories\n';
     writeFileSync(planPath, changeBPlan);
     
     writeFileSync(join(deployDir, 'table_categories.sql'), `-- Deploy my-first:table_categories to pg
