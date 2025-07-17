@@ -18,10 +18,11 @@ describe('Forked Deployment with deployModules', () => {
 
   test('handles modified deployment scenario', async () => {
     const basePath = fixture.tempFixtureDir;
-    const planPath = join(basePath, 'packages', 'my-first', 'launchql.plan');
-    const deployDir = join(basePath, 'packages', 'my-first', 'deploy');
-    const revertDir = join(basePath, 'packages', 'my-first', 'revert');
-    const verifyDir = join(basePath, 'packages', 'my-first', 'verify');
+    const packagePath = join(basePath, 'packages', 'my-first');
+    const planPath = join(packagePath, 'launchql.plan');
+    const deployDir = join(packagePath, 'deploy');
+    const revertDir = join(packagePath, 'revert');
+    const verifyDir = join(packagePath, 'verify');
     
     const originalPlan = readFileSync(planPath, 'utf8');
     const modifiedPlan = originalPlan.trimEnd() + '\ntable_orders [table_products] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_orders\n';
@@ -74,8 +75,8 @@ SELECT 1/count(*) FROM information_schema.tables WHERE table_schema = 'myapp' AN
     expect(tables.rows.map((r: any) => r.table_name)).toEqual(['orders', 'products', 'users']);
     
     writeFileSync(planPath, originalPlan);
-    unlinkSync(join(deployDir, 'table_orders.sql'));
-    unlinkSync(join(revertDir, 'table_orders.sql'));
-    unlinkSync(join(verifyDir, 'table_orders.sql'));
+    // unlinkSync(join(deployDir, 'table_orders.sql'));
+    // unlinkSync(join(revertDir, 'table_orders.sql')); 
+    // unlinkSync(join(verifyDir, 'table_orders.sql'));
   });
 });
