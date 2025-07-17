@@ -1,5 +1,5 @@
 import { LaunchQLMigrate } from '../../src/migrate/client';
-import { MigrateTestFixture, TestDatabase } from '../../test-utils';
+import { MigrateTestFixture, TestDatabase, teardownAllPools } from '../../test-utils';
 import { join } from 'path';
 
 describe('Cross-Project Dependencies', () => {
@@ -15,6 +15,10 @@ describe('Cross-Project Dependencies', () => {
   
   afterEach(async () => {
     await fixture.cleanup();
+  });
+
+  afterAll(async () => {
+    await teardownAllPools();
   });
   
   test('deploys cross-project dependencies', async () => {

@@ -1,5 +1,5 @@
 import { LaunchQLMigrate } from '../../src/migrate/client';
-import { MigrateTestFixture, TestDatabase } from '../../test-utils';
+import { MigrateTestFixture, TestDatabase, teardownAllPools } from '../../test-utils';
 import { join } from 'path';
 
 describe('Simple with Tags Migration', () => {
@@ -15,6 +15,10 @@ describe('Simple with Tags Migration', () => {
   
   afterEach(async () => {
     await fixture.cleanup();
+  });
+
+  afterAll(async () => {
+    await teardownAllPools();
   });
 
   test('deploys my-third module with tag dependencies', async () => {
