@@ -59,11 +59,7 @@ async function executeFastDeploy(
   } catch (err) {
     log.error(`❌ Failed to package module at path: ${modulePath}`);
     log.error(`   Error: ${err instanceof Error ? err.message : String(err)}`);
-    console.error(err);
-    throw errors.DEPLOYMENT_FAILED({ 
-      type: 'Deployment', 
-      module: extensionName || 'unknown'
-    });
+    throw err;
   }
 
   log.debug(`→ Command: sqitch deploy db:pg:${database}`);
@@ -102,7 +98,7 @@ export async function executeDeployStrategy(
       }
     } catch (err) {
       log.error(`❌ Deployment failed for module ${extensionName || 'unknown'}`);
-      throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extensionName || 'unknown' });
+      throw err;
     }
   } else {
     log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
@@ -114,7 +110,7 @@ export async function executeDeployStrategy(
       });
     } catch (deployError) {
       log.error(`❌ Deployment failed for module ${extensionName || 'unknown'}`);
-      throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extensionName || 'unknown' });
+      throw deployError;
     }
   }
 }
@@ -144,7 +140,7 @@ export async function executeRevertStrategy(
       }
     } catch (err) {
       log.error(`❌ Revert failed for module ${extensionName || 'unknown'}`);
-      throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extensionName || 'unknown' });
+      throw err;
     }
   } else {
     log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
@@ -156,7 +152,7 @@ export async function executeRevertStrategy(
       });
     } catch (revertError) {
       log.error(`❌ Revert failed for module ${extensionName || 'unknown'}`);
-      throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extensionName || 'unknown' });
+      throw revertError;
     }
   }
 }
