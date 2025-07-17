@@ -15,6 +15,7 @@ export * from './utils';
 
 // New exports for migration API
 export * from './migrate/migration';
+export * from './migrate/strategy';
 export { runSqitch } from './utils/sqitch-wrapper';
 export { deployModule } from './migrate/deploy-module';
 export { revertModule } from './migrate/revert-module';
