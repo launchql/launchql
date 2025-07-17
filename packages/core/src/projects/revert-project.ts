@@ -28,6 +28,11 @@ export const revertProject = async (
      * Defaults to 'launchql.plan'
      */
     planFile?: string;
+    /**
+     * Revert to a specific change (exclusive - this change will NOT be reverted)
+     * Can be a change name or a tag reference (e.g., '@v1.0.0')
+     */
+    toChange?: string;
   }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
@@ -67,12 +72,14 @@ export const revertProject = async (
         if (options?.useSqitch) {
           // Use legacy sqitch
           const planFile = options.planFile || 'launchql.plan';
-          log.debug(`→ Command: sqitch revert --plan-file ${planFile} db:pg:${database} -y`);
+          const sqitchArgs = options?.toChange ? [options.toChange] : [];
+          log.debug(`→ Command: sqitch revert --plan-file ${planFile} db:pg:${database} -y${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
 
           try {
             const exitCode = await runSqitch('revert', database, modulePath, opts.pg as PgConfig, {
               planFile,
-              confirm: true
+              confirm: true,
+              args: sqitchArgs
             });
             
             if (exitCode !== 0) {
@@ -88,7 +95,10 @@ export const revertProject = async (
           log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
           
           try {
-            await revertModule(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
+            await revertModule(opts.pg, database, modulePath, { 
+              useTransaction: options?.useTransaction,
+              toChange: options?.toChange
+            });
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });

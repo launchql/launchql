@@ -62,14 +62,16 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
         fast: options.fast,
         usePlan: options.usePlan,
         cache: options.cache,
-        planFile: options.planFile
+        planFile: options.planFile,
+        toChange: options.toChange
       }
     );
   } else {
     // Direct execution on current directory
     if (options.useSqitch) {
       await runSqitch('deploy', options.database, options.cwd, getPgEnvOptions(), {
-        planFile: options.planFile || 'launchql.plan'
+        planFile: options.planFile,
+        args: options.toChange ? [options.toChange] : []
       });
     } else {
       await deployModule(
@@ -112,15 +114,17 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
       { 
         useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
-        planFile: options.planFile
+        planFile: options.planFile,
+        toChange: options.toChange
       }
     );
   } else {
     // Direct execution on current directory
     if (options.useSqitch) {
       await runSqitch('revert', options.database, options.cwd, getPgEnvOptions(), {
-        planFile: options.planFile || 'launchql.plan',
-        confirm: true
+        planFile: options.planFile,
+        confirm: true,
+        args: options.toChange ? [options.toChange] : []
       });
     } else {
       await revertModule(
@@ -169,7 +173,7 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
     // Direct execution on current directory
     if (options.useSqitch) {
       await runSqitch('verify', options.database, options.cwd, getPgEnvOptions(), {
-        planFile: options.planFile || 'launchql.plan'
+        planFile: options.planFile
       });
     } else {
       await verifyModule(

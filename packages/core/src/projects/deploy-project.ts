@@ -55,6 +55,11 @@ export const deployProject = async (
      * Defaults to 'launchql.plan'
      */
     planFile?: string;
+    /**
+     * Deploy up to a specific change (inclusive)
+     * Can be a change name or a tag reference (e.g., '@v1.0.0')
+     */
+    toChange?: string;
   }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
@@ -124,11 +129,13 @@ export const deployProject = async (
         } else if (options?.useSqitch) {
           // Use legacy sqitch
           const planFile = options.planFile || 'launchql.plan';
-          log.debug(`→ Command: sqitch deploy --plan-file ${planFile} db:pg:${database}`);
+          const sqitchArgs = options?.toChange ? [options.toChange] : [];
+          log.debug(`→ Command: sqitch deploy --plan-file ${planFile} db:pg:${database}${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
           
           try {
             const exitCode = await runSqitch('deploy', database, modulePath, opts.pg as PgConfig, {
-              planFile
+              planFile,
+              args: sqitchArgs
             });
             
             if (exitCode !== 0) {
@@ -144,7 +151,10 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployModule(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
+            await deployModule(opts.pg, database, modulePath, { 
+              useTransaction: options?.useTransaction,
+              toChange: options?.toChange
+            });
           } catch (deployError) {
             log.error(`❌ Deployment failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
