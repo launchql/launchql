@@ -1,4 +1,4 @@
-import { CoreDeployTestFixture } from './utils';
+import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 import { TestDatabase } from '../../../migrate/test-utils';
 
 describe('Basic Deployment with deployModules', () => {

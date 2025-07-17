@@ -1,6 +1,6 @@
-import { TestFixture } from '../../../test-utils';
-import { deployModules, revertModules, MigrationOptions } from '../../../src/migrate/migration';
-import { MigrateTestFixture, TestDatabase } from '../../../../migrate/test-utils';
+import { TestFixture } from './TestFixture';
+import { deployModules, revertModules, MigrationOptions } from '../src/migrate/migration';
+import { MigrateTestFixture, TestDatabase } from '../../migrate/test-utils';
 import { join } from 'path';
 
 export class CoreDeployTestFixture extends TestFixture {
