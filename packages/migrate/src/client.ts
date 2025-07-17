@@ -16,7 +16,7 @@ import {
   ValidationResult,
   ValidationError
 } from './types';
-import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists, resolveDependencies } from '@launchql/core';
+import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists, resolveDependencies, resolveReference } from '@launchql/core';
 import { hashFile } from './utils/hash';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
@@ -572,15 +572,30 @@ export class LaunchQLMigrate {
     toChange?: string
   ): Promise<ValidationResult> {
     try {
-      const plan = parsePlanFile(planPath);
+      const planResult = parsePlanFileFull(planPath);
+      if (!planResult.data) {
+        const errorMessages = planResult.errors?.map(e => `Line ${e.line}: ${e.message}`).join('\n') || 'Unknown error';
+        throw new Error(`Failed to parse plan file ${planPath}:\n${errorMessages}`);
+      }
+      
+      const plan = planResult.data;
       const projectName = project || plan.project;
+      
+      let resolvedToChange = toChange;
+      if (toChange) {
+        const resolved = resolveReference(toChange, plan, projectName);
+        if (resolved.error) {
+          throw new Error(`Invalid toChange reference: ${resolved.error}`);
+        }
+        resolvedToChange = resolved.change;
+      }
       
       const deployedChanges = await this.getDeployedChanges(targetDatabase, projectName);
       const deployedMap = new Map(deployedChanges.map(c => [c.change_name, c.script_hash]));
       
       const allChanges = getChangesInOrder(planPath);
-      const changesToValidate = toChange 
-        ? allChanges.slice(0, allChanges.findIndex(c => c.name === toChange) + 1)
+      const changesToValidate = resolvedToChange 
+        ? allChanges.slice(0, allChanges.findIndex(c => c.name === resolvedToChange) + 1)
         : allChanges;
       
       const validated: string[] = [];
