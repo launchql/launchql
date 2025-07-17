@@ -26,7 +26,7 @@ yarn build
 Then to run a test:
 
 ```sh
-cd packages/migrate
+cd packages/core
 yarn test
 ```
 
