@@ -1,6 +1,6 @@
 import { TestFixture } from './TestFixture';
 import { deployModules, revertModules, MigrationOptions } from '../src/migrate/migration';
-import { MigrateTestFixture, TestDatabase } from '../../migrate/test-utils';
+import { MigrateTestFixture, TestDatabase } from './index';
 import { teardownPgPools } from 'pg-cache';
 import { join } from 'path';
 
