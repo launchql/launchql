@@ -12,11 +12,26 @@
    <a href="https://www.npmjs.com/package/@launchql/s3-streamer"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fs3-streamer%2Fpackage.json"/></a>
 </p>
 
+Stream uploads to S3 with automatic content-type detection, ETag generation, and metadata extraction. Built on AWS SDK v3 for optimal performance and smaller bundle sizes.
+
+## Features
+
+- 🚀 **Streaming uploads** - Memory efficient streaming directly to S3
+- 🔍 **Automatic content-type detection** - Uses magic bytes to detect file types
+- 🏷️ **Metadata extraction** - Generates ETags, SHA hashes, and UUIDs for uploaded content
+- 📦 **AWS SDK v3** - Modern, modular SDK with better tree-shaking
+- 🔧 **MinIO compatible** - Works with S3-compatible storage services
+- 💪 **TypeScript support** - Full type definitions included
+
+## Installation
+
 ```sh
 npm install @launchql/s3-streamer
 ```
 
-Stream uploads to s3
+## Quick Start
+
+Stream uploads to S3
 
 ```js
 import Streamer from '@launchql/s3-streamer';
@@ -30,22 +45,46 @@ const results = await streamer.upload({
 });
 ```
 
-and get detailed payload results
+## Response Format
+
+The upload methods return a detailed payload with upload results and file metadata:
 
 ```js
-{ upload:
-{ ETag: '"952fd44d14cee87882239b707231609d"',
+{
+  upload: {
+    ETag: '"952fd44d14cee87882239b707231609d"',
     Location: 'http://localhost:9000/launchql/db1/assets/.gitignore',
-    key: 'db1/assets/.gitignore',
     Key: 'db1/assets/.gitignore',
-    Bucket: 'launchql' },
-magic: { type: 'text/plain', charset: 'us-ascii' },
-contentType: 'text/plain',
-contents:
-{ uuid: '278aee01-1404-5725-8f0e-7044c9c16397',
+    Bucket: 'launchql'
+  },
+  magic: { 
+    type: 'text/plain', 
+    charset: 'us-ascii' 
+  },
+  contentType: 'text/plain',
+  contents: {
+    uuid: '278aee01-1404-5725-8f0e-7044c9c16397',
     sha: '7d65523f2a5afb69d76824dd1dfa62a34faa3197',
-    etag: '952fd44d14cee87882239b707231609d' } }
+    etag: '952fd44d14cee87882239b707231609d'
+  }
+}
 ```
+
+### Response Fields
+
+- **upload**: S3 upload response
+  - `ETag`: S3 ETag of the uploaded object
+  - `Location`: Full URL to the uploaded object
+  - `Key`: S3 object key
+  - `Bucket`: Bucket name where object was uploaded
+- **magic**: File type detection results
+  - `type`: MIME type detected from file content
+  - `charset`: Character encoding (for text files)
+- **contentType**: Final content-type used for upload
+- **contents**: File metadata
+  - `uuid`: Deterministic UUID based on file content
+  - `sha`: SHA-1 hash of file content
+  - `etag`: Computed ETag (matches S3 ETag for single-part uploads)
 
 ## functional utils
 
@@ -64,37 +103,97 @@ const results = await upload({
 });
 ```
 
-## variables
+## Configuration
 
-### production
-
-```js
-    const streamer = new Streamer({
-      defaultBucket: BUCKET_NAME,
-      AWS_REGION,
-      AWS_SECRET_KEY,
-      AWS_ACCESS_KEY,
-      MINIO_ENDPOINT
-    });
-```
-
-### using minio
+### AWS S3 Production
 
 ```js
-    const streamer = new Streamer({
-      defaultBucket: BUCKET_NAME,
-      AWS_REGION,
-      AWS_SECRET_KEY,
-      AWS_ACCESS_KEY,
-      MINIO_ENDPOINT
-    });
+const streamer = new Streamer({
+  defaultBucket: 'my-bucket',
+  awsRegion: 'us-east-1',
+  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
+  awsAccessKey: process.env.AWS_ACCESS_KEY_ID
+});
 ```
 
-values:
+### MinIO / S3-Compatible Storage
 
-`MINIO_ENDPOINT`=http://localhost:9000
-`AWS_ACCESS_KEY`=minio-access
-`AWS_SECRET_KEY`=minio-secret
+```js
+const streamer = new Streamer({
+  defaultBucket: 'my-bucket',
+  awsRegion: 'us-east-1',
+  awsSecretKey: 'minio-secret',
+  awsAccessKey: 'minio-access',
+  minioEndpoint: 'http://localhost:9000'
+});
+```
+
+## API Reference
+
+### Streamer Class
+
+#### Constructor Options
+
+```typescript
+interface StreamerOptions {
+  awsRegion: string;        // AWS region (e.g., 'us-east-1')
+  awsSecretKey: string;     // AWS secret access key
+  awsAccessKey: string;     // AWS access key ID
+  minioEndpoint?: string;   // Optional: MinIO/S3-compatible endpoint
+  defaultBucket: string;    // Default bucket for uploads
+}
+```
+
+#### Methods
+
+##### `upload(params)`
+
+Uploads a file stream to S3 with automatic content-type detection and metadata extraction.
+
+```typescript
+interface UploadParams {
+  readStream: ReadStream;   // Node.js readable stream
+  filename: string;         // Original filename (used for content-type detection)
+  key: string;             // S3 object key (path in bucket)
+  bucket?: string;         // Optional: Override default bucket
+}
+```
+
+##### `destroy()`
+
+Cleans up the S3 client connections. Should be called when done with the streamer instance.
+
+```js
+streamer.destroy();
+```
+
+### Functional API
+
+If you prefer functional programming over classes:
+
+```js
+import { getClient, upload } from '@launchql/s3-streamer';
+
+// Create S3 client
+const client = getClient({
+  awsRegion: 'us-east-1',
+  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
+  awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
+  minioEndpoint: 'http://localhost:9000' // optional
+});
+
+// Upload file
+const results = await upload({
+  client,
+  readStream: createReadStream('file.pdf'),
+  filename: 'file.pdf',
+  bucket: 'my-bucket',
+  key: 'uploads/file.pdf'
+});
+
+// Clean up when done
+client.destroy();
+```
 
 ## Related LaunchQL Tooling
 
