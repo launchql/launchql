@@ -1,6 +1,7 @@
 import { TestFixture } from './TestFixture';
 import { deployModules, revertModules, MigrationOptions } from '../src/migrate/migration';
 import { MigrateTestFixture, TestDatabase } from '../../migrate/test-utils';
+import { teardownPgPools } from 'pg-cache';
 import { join } from 'path';
 
 export class CoreDeployTestFixture extends TestFixture {
@@ -75,6 +76,11 @@ export class CoreDeployTestFixture extends TestFixture {
     if (this.migrateFixture) {
       await this.migrateFixture.cleanup();
     }
+    
+    await teardownPgPools();
+    
+    // Small delay to ensure connections are fully closed
+    await new Promise(resolve => setTimeout(resolve, 10));
     
     super.cleanup();
   }
