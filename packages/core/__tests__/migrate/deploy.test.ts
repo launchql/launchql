@@ -1,5 +1,5 @@
 import { LaunchQLMigrate } from '../../src/migrate/client';
-import { MigrateTestFixture, TestDatabase } from '../../test-utils';
+import { MigrateTestFixture, TestDatabase, teardownAllPools } from '../../test-utils';
 import { join } from 'path';
 
 describe('Deploy Command', () => {
@@ -13,6 +13,10 @@ describe('Deploy Command', () => {
   
   afterEach(async () => {
     await fixture.cleanup();
+  });
+
+  afterAll(async () => {
+    await teardownAllPools();
   });
   
   test('deploys single change', async () => {
