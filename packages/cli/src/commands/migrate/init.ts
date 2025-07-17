@@ -2,7 +2,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { LaunchQLMigrate } from '@launchql/migrate';
+import { LaunchQLMigrate } from '@launchql/core';
 import { getTargetDatabase } from '../../utils/database';
 
 const log = new Logger('migrate-init');

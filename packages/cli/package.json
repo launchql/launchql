@@ -43,7 +43,6 @@
   "dependencies": {
     "@launchql/core": "^2.5.0",
     "@launchql/explorer": "^2.2.1",
-    "@launchql/migrate": "^2.4.0",
     "@launchql/server": "^2.2.1",
     "@launchql/server-utils": "^2.1.15",
     "@launchql/templatizer": "^2.2.0",

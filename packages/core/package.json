@@ -20,7 +20,9 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "copy": "npm run copy:pkg; npm run copy:sql",
+    "copy:pkg": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "copy:sql": "copyfiles -f src/migrate/sql/* dist/migrate/sql && copyfiles -f src/migrate/sql/* dist/esm/migrate/sql",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
     "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
@@ -42,7 +44,6 @@
     "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
-    "@launchql/migrate": "^2.4.0",
     "@launchql/server-utils": "^2.1.15",
     "@launchql/templatizer": "^2.2.0",
     "@launchql/types": "^2.1.13",
