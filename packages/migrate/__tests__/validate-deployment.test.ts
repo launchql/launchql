@@ -155,6 +155,7 @@ describe('validateDeployment', () => {
     expect(validationResult.failed).toEqual([]);
   });
 
+  // this should go into the LaunchQLMigrate class
   test('handles database connection errors gracefully', async () => {
     const basePath = fixture.createPlanFile('test-project', [
       { name: 'create_schema', comment: 'Create test schema' }
