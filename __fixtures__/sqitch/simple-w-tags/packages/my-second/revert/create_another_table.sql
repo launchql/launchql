@@ -2,6 +2,7 @@
 
 BEGIN;
 
-DROP TABLE otherschema.anothertable;
+DROP TABLE otherschema.consent_agreements;
+DROP TABLE otherschema.user_interactions;
 
 COMMIT;

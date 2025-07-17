@@ -112,7 +112,8 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
       { 
         useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
-        planFile: options.planFile
+        planFile: options.planFile,
+        toChange: options.toChange
       }
     );
   } else {

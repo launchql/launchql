@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 
 import { LaunchQLProject } from '../class/launchql';
 import { errors, LaunchQLOptions } from '@launchql/types';
@@ -7,6 +7,7 @@ import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { revertModule } from '../migrate/revert-module';
 import { runSqitch } from '../utils/sqitch-wrapper';
+import { resolveReference, parsePlanFile } from '../files/plan/parser';
 
 interface Extensions {
   resolved: string[];
@@ -28,6 +29,10 @@ export const revertProject = async (
      * Defaults to 'launchql.plan'
      */
     planFile?: string;
+    /**
+     * The change to revert to (for partial reverts)
+     */
+    toChange?: string;
   }
 ): Promise<Extensions> => {
   const mod = new LaunchQLProject(dir);
@@ -87,8 +92,37 @@ export const revertProject = async (
           // Use new migration system
           log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
           
+          let moduleToChange: string | undefined = options?.toChange;
+          if (options?.toChange && options.toChange.includes(':')) {
+            const [targetProject, targetReference] = options.toChange.split(':', 2);
+            if (targetProject !== extension) {
+              moduleToChange = undefined;
+            } else {
+              try {
+                const planPath = join(modulePath, 'launchql.plan');
+                const planResult = parsePlanFile(planPath);
+                if (planResult.data) {
+                  const resolved = resolveReference(targetReference, planResult.data, targetProject);
+                  if (resolved.error) {
+                    throw new Error(resolved.error);
+                  }
+                  moduleToChange = resolved.change;
+                } else {
+                  throw new Error(`Could not parse plan file: ${planPath}`);
+                }
+              } catch (error) {
+                log.error(`Failed to resolve reference ${targetReference} for project ${targetProject}: ${error}`);
+                throw error;
+              }
+            }
+          }
+          
+          
           try {
-            await revertModule(opts.pg, database, modulePath, { useTransaction: options?.useTransaction });
+            await revertModule(opts.pg, database, modulePath, { 
+              useTransaction: options?.useTransaction,
+              toChange: moduleToChange
+            });
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });

@@ -33,7 +33,7 @@ describe('Forked Deployment with deployModules - my-third', () => {
     expect(tables.rows).toHaveLength(1);
     expect(tables.rows.map((r: any) => r.table_name)).toEqual(['customers']);
     
-    await fixture.revertModule('my-third', db.name, ['sqitch', 'simple-w-tags'], 'my-first:@v1.0.0');
+    await fixture.revertToChangeOrTag('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
 
     expect(await db.exists('schema', 'metaschema')).toBe(false);
     expect(await db.exists('table', 'metaschema.customers')).toBe(false);
