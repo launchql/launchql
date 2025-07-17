@@ -1,12 +1,12 @@
 import { resolve } from 'path';
 
-import { LaunchQLProject } from '../class/launchql';
+import { LaunchQLProject } from '../../class/launchql';
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { revertModule } from '../migrate/revert-module';
-import { runSqitch } from '../utils/sqitch-wrapper';
+import { revertModule } from '../modules/revert';
+import { runSqitch } from '../../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];

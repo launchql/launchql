@@ -7,18 +7,18 @@ export * from './modules';
 export * from './package';
 export * from './paths';
 export * from './resolve';
-export * from './projects/deploy-project';
-export * from './projects/revert-project';
-export * from './projects/verify-project';
+export * from './operations/projects/deploy';
+export * from './operations/projects/revert';
+export * from './operations/projects/verify';
 export * from './transform';
 export * from './utils';
 
 // New exports for migration API
-export * from './migrate/migration';
+export * from './operations';
 export { runSqitch } from './utils/sqitch-wrapper';
-export { deployModule } from './migrate/deploy-module';
-export { revertModule } from './migrate/revert-module';
-export { verifyModule } from './migrate/verify-module';
+export { deployModule } from './operations/modules/deploy';
+export { revertModule } from './operations/modules/revert';
+export { verifyModule } from './operations/modules/verify';
 
 // Export project-files functionality (now integrated into core)
 export * from './files';

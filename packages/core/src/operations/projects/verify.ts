@@ -2,11 +2,11 @@ import { resolve } from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
-import { LaunchQLProject } from '../class/launchql';
+import { LaunchQLProject } from '../../class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { verifyModule } from '../migrate/verify-module';
-import { runSqitch } from '../utils/sqitch-wrapper';
+import { verifyModule } from '../modules/verify';
+import { runSqitch } from '../../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
