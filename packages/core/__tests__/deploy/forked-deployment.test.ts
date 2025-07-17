@@ -1,5 +1,5 @@
 import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
-import { TestDatabase } from '../../../migrate/test-utils';
+import { TestDatabase } from '../../test-utils';
 import { writeFileSync, readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
 
