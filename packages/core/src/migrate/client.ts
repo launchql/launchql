@@ -36,10 +36,7 @@ export class LaunchQLMigrate {
 
   constructor(config: MigrateConfig) {
     this.pgConfig = {
-      host: config.host,
-      port: config.port,
-      user: config.user,
-      password: config.password,
+      ...config.pg,
       database: config.database
     };
     

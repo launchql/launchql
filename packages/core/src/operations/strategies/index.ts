@@ -1,11 +1,11 @@
 import { PgConfig } from 'pg-env';
 import { LaunchQLOptions } from '@launchql/types';
-import { deploy as deployModule } from '../operations/modules/deploy';
-import { revert as revertModule } from '../operations/modules/revert';
-import { verify as verifyModule } from '../operations/modules/verify';
-import { runSqitch } from '../utils/sqitch-wrapper';
-import { packageModule } from '../package';
-import { LaunchQLProject } from '../class/launchql';
+import { deploy as deployModule } from '../modules/deploy';
+import { revert as revertModule } from '../modules/revert';
+import { verify as verifyModule } from '../modules/verify';
+import { runSqitch } from '../../utils/sqitch-wrapper';
+import { packageModule } from '../../package';
+import { LaunchQLProject } from '../../class/launchql';
 import { getPgPool } from 'pg-cache';
 import { Logger } from '@launchql/logger';
 import { errors } from '@launchql/types';

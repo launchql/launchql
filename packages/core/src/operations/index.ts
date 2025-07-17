@@ -1,11 +1,12 @@
 import { LaunchQLProject } from '../class/launchql';
-import { deploy as deployProject } from '../operations/projects/deploy';
-import { revert as revertProject } from '../operations/projects/revert';
-import { verify as verifyProject } from '../operations/projects/verify';
+import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { executeDeployStrategy, executeRevertStrategy, executeVerifyStrategy, StrategyOptions } from '../operations/strategies';
+import { executeDeployStrategy, executeRevertStrategy, executeVerifyStrategy, StrategyOptions } from './strategies';
+import { deploy as deployProject } from './projects/deploy';
+import { revert as revertProject } from './projects/revert';
+import { verify as verifyProject } from './projects/verify';
 
 const log = new Logger('project-commands');
 
@@ -13,12 +14,9 @@ export interface MigrationOptions extends StrategyOptions {
   database: string;
   cwd: string;
   recursive?: boolean;
-  projectName?: string;  // Required if recursive=true
+  projectName?: string;
 }
 
-/**
- * Deploy - handles both recursive (multi-module) and non-recursive (single directory) deployments
- */
 export async function deploy(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
@@ -29,14 +27,13 @@ export async function deploy(options: MigrationOptions): Promise<void> {
     const modules = project.getModuleMap();
     
     if (!modules[options.projectName]) {
-      throw new Error(`Module "${options.projectName}" not found`);
+      throw new Error(`Project "${options.projectName}" not found in modules`);
     }
-    
-    const modulePath = modules[options.projectName].path;
-    log.info(`Deploying project ${options.projectName} from ${modulePath} to database ${options.database}...`);
+
+    const modulePath = project.modulePath;
     
     await deployProject(
-      getPgEnvOptions(),
+      getPgEnvOptions(), 
       options.projectName, 
       options.database, 
       modulePath, 
@@ -52,9 +49,6 @@ export async function deploy(options: MigrationOptions): Promise<void> {
   }
 }
 
-/**
- * Revert - handles both recursive (multi-module) and non-recursive (single directory) reverts
- */
 export async function revert(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
@@ -65,13 +59,11 @@ export async function revert(options: MigrationOptions): Promise<void> {
     const modules = project.getModuleMap();
     
     if (!modules[options.projectName]) {
-      throw new Error(`Module "${options.projectName}" not found`);
+      throw new Error(`Project "${options.projectName}" not found in modules`);
     }
-    
-    log.info(`Reverting project ${options.projectName} on database ${options.database}...`);
-    
+
     await revertProject(
-      getPgEnvOptions(),
+      getPgEnvOptions(), 
       options.projectName, 
       options.database, 
       options.cwd, 
@@ -87,9 +79,6 @@ export async function revert(options: MigrationOptions): Promise<void> {
   }
 }
 
-/**
- * Verify - handles both recursive (multi-module) and non-recursive (single directory) verification
- */
 export async function verify(options: MigrationOptions): Promise<void> {
   if (options.recursive) {
     if (!options.projectName) {
@@ -100,13 +89,11 @@ export async function verify(options: MigrationOptions): Promise<void> {
     const modules = project.getModuleMap();
     
     if (!modules[options.projectName]) {
-      throw new Error(`Module "${options.projectName}" not found`);
+      throw new Error(`Project "${options.projectName}" not found in modules`);
     }
-    
-    log.info(`Verifying project ${options.projectName} on database ${options.database}...`);
-    
+
     await verifyProject(
-      getPgEnvOptions(),
+      getPgEnvOptions(), 
       options.projectName, 
       options.database, 
       options.cwd, 
@@ -122,10 +109,7 @@ export async function verify(options: MigrationOptions): Promise<void> {
   }
 }
 
-/**
- * Get available modules in a directory
- */
-export async function getAvailableModules(cwd: string): Promise<string[]> {
+export async function getModuleNames(cwd: string): Promise<string[]> {
   const project = new LaunchQLProject(cwd);
   const modules = await project.getModules();
   return modules.map(mod => mod.getModuleName());
