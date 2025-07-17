@@ -22,3 +22,20 @@ export { verifyModule } from './migrate/verify-module';
 
 // Export project-files functionality (now integrated into core)
 export * from './files';
+
+export { LaunchQLMigrate } from './migrate/client';
+export { 
+  MigrateChange, 
+  MigratePlanFile, 
+  DeployOptions, 
+  RevertOptions, 
+  VerifyOptions, 
+  DeployResult, 
+  RevertResult, 
+  VerifyResult, 
+  StatusResult, 
+  MigrateConfig 
+} from './migrate/types';
+export { hashFile, hashString } from './migrate/utils/hash';
+export { withTransaction, TransactionContext, TransactionOptions, executeQuery } from './migrate/utils/transaction';
+export { cleanSql } from './migrate/clean';

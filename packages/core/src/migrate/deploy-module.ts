@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { LaunchQLMigrate } from '@launchql/migrate';
-import { MigrateConfig } from '@launchql/migrate';
+import { LaunchQLMigrate } from './client';
+import { MigrateConfig } from './types';
 import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-deploy');
