@@ -316,8 +316,36 @@ interface DeploymentOptions {
   usePlan?: boolean;        // Use plan file for ordering
   cache?: boolean;          // Cache packaged modules
   planFile?: string;        // Custom plan file name
+  toChange?: string;        // Deploy up to specific change (inclusive)
+}
+
+interface RevertOptions {
+  useSqitch?: boolean;      // Use legacy Sqitch
+  useTransaction?: boolean;  // Wrap in transaction
+  planFile?: string;        // Custom plan file name
+  toChange?: string;        // Revert to specific change (exclusive)
 }
 ```
+
+### Partial Deployment and Revert
+
+The `toChange` parameter enables partial deployments and reverts:
+
+```bash
+# Deploy up to and including a specific change
+launchql deploy --to-change "users/table"
+
+# Deploy up to a tagged version
+launchql deploy --to-change "@v1.0.0"
+
+# Revert to a specific change (not including it)
+launchql revert --to-change "users/table"
+```
+
+**Important Notes:**
+- For deployment: `toChange` is **inclusive** - the specified change will be deployed
+- For revert: `toChange` is **exclusive** - the specified change will NOT be reverted
+- Verify operations do not support `toChange` - they always verify all deployed changes
 
 ### Migration Schema
 
