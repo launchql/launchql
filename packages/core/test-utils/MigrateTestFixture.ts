@@ -45,11 +45,9 @@ export class MigrateTestFixture {
     });
     
     const config: MigrateConfig = {
-      host: pgConfig.host,
-      port: pgConfig.port,
-      user: pgConfig.user,
-      password: pgConfig.password,
-      database: pgConfig.database
+      pg: pgConfig,
+      database: pgConfig.database,
+      modulePath: '' // Will be set by the test
     };
 
     // Initialize migrate schema
