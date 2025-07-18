@@ -1,5 +1,22 @@
 # LaunchQL Core - Issues and Test Cases
 
+
+## Current Priority
+
+
+read packages/core/__tests__/projects/forked-deployment-scenarios.test.ts as an example
+
+you'll see some commented out code:
+
+// await fixture.revertModule('my-third', db.name, ['sqitch', 'simple-w-tags'], 'my-first:@v1.0.0');
+
+// expect(await db.exists('schema', 'metaschema')).toBe(false);
+// expect(await db.exists('table', 'metaschema.customers')).toBe(false);
+
+* we need to assess, is this the appriopriate API for revertModule?
+* are the underlying methods used by revertModule passing down all the needed information?
+
+
 ## Critical Test Scenarios
 
 ### Deployment Failure Recovery
