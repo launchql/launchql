@@ -16,7 +16,7 @@ interface DependencyGraph {
 /**
  * Result object returned by dependency resolution functions
  */
-interface DependencyResult {
+export interface DependencyResult {
   /** Array of external dependencies that are not part of the current project */
   external: string[];
   /** Array of modules in topologically sorted order for deployment */
