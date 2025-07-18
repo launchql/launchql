@@ -16,6 +16,15 @@ you'll see some commented out code:
 * we need to assess, is this the appriopriate API for revertModule?
 * are the underlying methods used by revertModule passing down all the needed information?
 
+please carefully make sure that we can revert back to a change, and also revert a tag. 
+
+our tag resolution should be higher up in the API surface, but I believe the LaunchQLMigrate class already handles this, we should check
+
+
+
+
+
+
 
 ## Critical Test Scenarios
 
