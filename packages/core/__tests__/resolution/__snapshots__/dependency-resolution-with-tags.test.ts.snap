@@ -21,6 +21,7 @@ exports[`sqitch package dependencies [simple-w-tags/1st] 1`] = `
     "table_users",
     "table_products",
   ],
+  "resolvedTags": {},
 }
 `;
 
@@ -49,5 +50,6 @@ exports[`sqitch package dependencies [simple-w-tags/2nd] 1`] = `
     "create_table",
     "create_another_table",
   ],
+  "resolvedTags": {},
 }
 `;
