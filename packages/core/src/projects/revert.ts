@@ -68,8 +68,7 @@ export const revertProject = async (
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Reverting local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
-
-        if (options?.useSqitch) {
+        if (options?.useSqitch === true) {
           // Use legacy sqitch
           const planFile = options.planFile || 'launchql.plan';
           const sqitchArgs = options?.toChange ? [options.toChange] : [];
@@ -91,7 +90,7 @@ export const revertProject = async (
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
           }
         } else {
-          // Use new migration system
+          // Use new migration system (default, consistent with deploy logic)
           log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
           
           try {

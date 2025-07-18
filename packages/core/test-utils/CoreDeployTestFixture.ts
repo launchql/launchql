@@ -58,7 +58,8 @@ export class CoreDeployTestFixture extends TestFixture {
         cwd: projectPath,
         recursive: true,
         projectName,
-        toChange
+        toChange,
+        useSqitch: false
       };
 
       await revertModules(options);

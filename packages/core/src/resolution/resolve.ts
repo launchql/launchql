@@ -109,15 +109,37 @@ export const resolveTagToChangeName = (
   
   const [, projectName, tagName] = match;
   
-  // Parse plan file to find tag
-  const planResult = parsePlanFile(planPath);
+  let targetPlanPath = planPath;
   
-  if (!planResult.data) {
-    throw new Error(`Could not parse plan file: ${planPath}`);
+  const currentPlan = parsePlanFile(planPath);
+  if (currentPlan.data && currentPlan.data.project !== projectName) {
+    const currentDir = planPath.replace('/launchql.plan', '');
+    const parentDir = currentDir.replace(/\/[^\/]+$/, '');
+    const targetDir = `${parentDir}/${projectName}`;
+    targetPlanPath = `${targetDir}/launchql.plan`;
+    
+    try {
+      const targetPlan = parsePlanFile(targetPlanPath);
+      if (!targetPlan.data || targetPlan.data.project !== projectName) {
+        throw new Error(`Project ${projectName} not found or invalid`);
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Could not find plan file for project ${projectName}: ${errorMessage}`);
+    }
   }
   
-  // Find the tag in the plan
-  const tag = planResult.data.tags?.find((t: any) => t.name === tagName);
+  // Parse the target plan file to find tag
+  const planResult = parsePlanFile(targetPlanPath);
+  
+  if (!planResult.data) {
+    throw new Error(`Could not parse plan file: ${targetPlanPath}`);
+  }
+  
+  // Find the tag in the plan (tags are stored without @ prefix in parsed data)
+  const tagWithoutPrefix = tagName.startsWith('@') ? tagName.slice(1) : tagName;
+  
+  const tag = planResult.data.tags?.find((t: any) => t.name === tagWithoutPrefix);
   if (!tag) {
     throw new Error(`Tag ${tagName} not found in project ${projectName}`);
   }

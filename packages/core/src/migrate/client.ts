@@ -223,14 +223,21 @@ export class LaunchQLMigrate {
       database: targetDatabase
     });
     
+    // If toChange is specified, we need to find which changes to revert
+    let changesToRevert = changes;
+    if (resolvedToChange) {
+      const forwardChanges = getChangesInOrder(planPath, false);
+      const targetIndex = forwardChanges.findIndex(c => c.name === resolvedToChange);
+      
+      if (targetIndex !== -1) {
+        const changesAfterTarget = forwardChanges.slice(targetIndex + 1);
+        changesToRevert = changesAfterTarget.reverse();
+      }
+    }
+    
     // Execute revert with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
-      for (const change of changes) {
-        // Stop if we've reached the target change
-        if (resolvedToChange && change.name === resolvedToChange) {
-          break;
-        }
-        
+      for (const change of changesToRevert) {
         // Check if deployed
         const deployedResult = await executeQuery(
           context,
