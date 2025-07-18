@@ -1,13 +1,13 @@
 import { LaunchQLProject } from '../class/launchql';
-import { deployProject } from '../projects/deploy-project';
-import { revertProject } from '../projects/revert-project';
-import { verifyProject } from '../projects/verify-project';
+import { deployProject } from '../projects/deploy';
+import { revertProject } from '../projects/revert';
+import { verifyProject } from '../projects/verify';
 import { getEnvOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { deployModule } from './deploy-module';
-import { revertModule } from './revert-module';
-import { verifyModule } from './verify-module';
+import { deployModule } from '../modules/deploy';
+import { revertModule } from '../modules/revert';
+import { verifyModule } from '../modules/verify';
 import { runSqitch } from '../utils/sqitch-wrapper';
 
 const log = new Logger('project-commands');
