@@ -23,6 +23,8 @@ interface DependencyResult {
   resolved: string[];
   /** The complete dependency graph mapping modules to their dependencies */
   deps: DependencyGraph;
+  /** Mapping of resolved tags to their target changes (only for resolveDependencies) */
+  resolvedTags?: Record<string, string>;
 }
 
 /**
@@ -529,5 +531,5 @@ export const resolveDependencies = (
   const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
   resolved = [...extensions, ...normalSql];
 
-  return { external, resolved, deps };
+  return { external, resolved, deps, resolvedTags: tagMappings };
 };
