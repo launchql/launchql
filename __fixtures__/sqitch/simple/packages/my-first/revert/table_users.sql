@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE myapp.users CASCADE;
+DROP TABLE myapp.users;
 
 COMMIT;
