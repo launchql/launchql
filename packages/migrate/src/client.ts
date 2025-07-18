@@ -200,11 +200,35 @@ export class LaunchQLMigrate {
       database: targetDatabase
     });
     
+    // If toChange is specified, we need to revert all changes that come AFTER the target change
+    let shouldRevert = true;
+    if (toChange) {
+      try {
+        const targetDeployedResult = await targetPool.query(
+          'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+          [project || plan.project, toChange]
+        );
+        
+        if (!targetDeployedResult.rows[0]?.is_deployed) {
+          log.info(`Target change '${toChange}' is not deployed, reverting all deployed changes until we reach it`);
+          shouldRevert = true;
+        }
+      } catch (error: any) {
+        // If the function doesn't exist, the schema hasn't been initialized
+        if (error.code === '42883') { // undefined_function
+          log.debug('Migration schema not found, treating as no changes deployed');
+          shouldRevert = false;
+        } else {
+          throw error;
+        }
+      }
+    }
+    
     // Execute revert with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
-        // Stop if we've reached the target change
         if (toChange && change.name === toChange) {
+          log.info(`Reached target change '${toChange}', stopping revert`);
           break;
         }
         
