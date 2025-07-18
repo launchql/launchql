@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`my-first extension 1`] = `
+"\\echo Use "CREATE EXTENSION my-first" to load this file. \\quit
+CREATE SCHEMA IF NOT EXISTS myapp;
+
+CREATE TABLE myapp.users (
+  id serial PRIMARY KEY,
+  username text NOT NULL UNIQUE,
+  email text NOT NULL UNIQUE,
+  created_at pg_catalog.timestamp DEFAULT now()
+);
+
+CREATE TABLE myapp.products (
+  id serial PRIMARY KEY,
+  name text NOT NULL,
+  description text,
+  price numeric(10, 2) NOT NULL CHECK (price >= 0),
+  in_stock boolean DEFAULT true,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now()
+);"
+`;
+
+exports[`my-first extension via plan 1`] = `
+"\\echo Use "CREATE EXTENSION my-first" to load this file. \\quit
+CREATE SCHEMA IF NOT EXISTS myapp;
+
+CREATE TABLE myapp.users (
+  id serial PRIMARY KEY,
+  username text NOT NULL UNIQUE,
+  email text NOT NULL UNIQUE,
+  created_at pg_catalog.timestamp DEFAULT now()
+);
+
+CREATE TABLE myapp.products (
+  id serial PRIMARY KEY,
+  name text NOT NULL,
+  description text,
+  price numeric(10, 2) NOT NULL CHECK (price >= 0),
+  in_stock boolean DEFAULT true,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now()
+);"
+`;
+
+exports[`my-second extension 1`] = `
+"\\echo Use "CREATE EXTENSION my-second" to load this file. \\quit
+CREATE SCHEMA otherschema;
+
+CREATE TABLE otherschema.users (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text UNIQUE NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  last_active_at timestamptz
+);
+
+CREATE TABLE otherschema.user_interactions (
+  id bigserial PRIMARY KEY,
+  user_id uuid REFERENCES otherschema.users (id)
+    ON DELETE CASCADE,
+  interaction_type text NOT NULL CHECK (interaction_type IN ('click', 'hover', 'scroll', 'input')),
+  target text NOT NULL,
+  metadata jsonb,
+  occurred_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE otherschema.consent_agreements (
+  id bigserial PRIMARY KEY,
+  user_id uuid REFERENCES otherschema.users (id)
+    ON DELETE CASCADE,
+  consent_type text NOT NULL,
+  granted_at timestamptz DEFAULT now(),
+  revoked_at timestamptz,
+  version text NOT NULL
+);"
+`;
+
+exports[`my-second extension via plan 1`] = `
+"\\echo Use "CREATE EXTENSION my-second" to load this file. \\quit
+CREATE SCHEMA otherschema;
+
+CREATE TABLE otherschema.users (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text UNIQUE NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  last_active_at timestamptz
+);
+
+CREATE TABLE otherschema.user_interactions (
+  id bigserial PRIMARY KEY,
+  user_id uuid REFERENCES otherschema.users (id)
+    ON DELETE CASCADE,
+  interaction_type text NOT NULL CHECK (interaction_type IN ('click', 'hover', 'scroll', 'input')),
+  target text NOT NULL,
+  metadata jsonb,
+  occurred_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE otherschema.consent_agreements (
+  id bigserial PRIMARY KEY,
+  user_id uuid REFERENCES otherschema.users (id)
+    ON DELETE CASCADE,
+  consent_type text NOT NULL,
+  granted_at timestamptz DEFAULT now(),
+  revoked_at timestamptz,
+  version text NOT NULL
+);"
+`;
+
+exports[`my-third extension 1`] = `
+"\\echo Use "CREATE EXTENSION my-third" to load this file. \\quit
+CREATE SCHEMA metaschema;
+
+CREATE TABLE metaschema.customers (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text UNIQUE NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  last_active_at timestamptz
+);"
+`;
+
+exports[`my-third extension via plan 1`] = `
+"\\echo Use "CREATE EXTENSION my-third" to load this file. \\quit
+CREATE SCHEMA metaschema;
+
+CREATE TABLE metaschema.customers (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text UNIQUE NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  last_active_at timestamptz
+);"
+`;

@@ -2,6 +2,6 @@
 
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS otherschema;
+CREATE SCHEMA otherschema;
 
 COMMIT;

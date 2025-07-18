@@ -4,6 +4,6 @@
 
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS metaschema;
+CREATE SCHEMA metaschema;
 
 COMMIT;
