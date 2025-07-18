@@ -41,9 +41,39 @@ export async function withTransaction<T>(
     log.debug('Transaction committed successfully');
     
     return result;
-  } catch (error) {
-    await client.query('ROLLBACK');
-    log.error('Transaction rolled back due to error:', error);
+  } catch (error: any) {
+    const isDebugMode = process.env.LAUNCHQL_DEBUG === 'true' || process.env.NODE_ENV === 'development';
+    
+    try {
+      await client.query('ROLLBACK');
+    } catch (rollbackError) {
+      log.error('Failed to rollback transaction:', rollbackError);
+    }
+    
+    if (isDebugMode) {
+      if (error.code === '25P02') {
+        log.error('Transaction aborted - all subsequent commands ignored until rollback. Original error:', error.originalError || error);
+        const enhancedError = new Error(`Transaction aborted due to previous error. ${error.message}`);
+        (enhancedError as any).code = error.code;
+        (enhancedError as any).originalError = error;
+        (enhancedError as any).transactionState = 'aborted';
+        throw enhancedError;
+      }
+      
+      if (error.originalError || error.sqlQuery) {
+        log.error('Transaction rolled back due to enhanced error:', {
+          message: error.message,
+          code: error.code,
+          sqlQuery: error.sqlQuery,
+          sqlParams: error.sqlParams
+        });
+      } else {
+        log.error('Transaction rolled back due to error:', error);
+      }
+    } else {
+      log.error('Transaction rolled back due to error:', error);
+    }
+    
     throw error;
   } finally {
     client.release();
@@ -58,5 +88,21 @@ export async function executeQuery(
   query: string,
   params?: any[]
 ): Promise<any> {
-  return context.client.query(query, params);
+  const isDebugMode = process.env.LAUNCHQL_DEBUG === 'true' || process.env.NODE_ENV === 'development';
+  
+  if (!isDebugMode) {
+    return context.client.query(query, params);
+  }
+  
+  try {
+    return await context.client.query(query, params);
+  } catch (error: any) {
+    const enhancedError = new Error(`SQL execution failed: ${error.message}\nQuery: ${query}\nParams: ${JSON.stringify(params)}`);
+    enhancedError.stack = error.stack;
+    (enhancedError as any).code = error.code;
+    (enhancedError as any).originalError = error;
+    (enhancedError as any).sqlQuery = query;
+    (enhancedError as any).sqlParams = params;
+    throw enhancedError;
+  }
 }

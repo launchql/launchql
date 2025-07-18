@@ -81,6 +81,28 @@ export class LaunchQLMigrate {
         log.success('Migration schema found and ready');
       }
 
+      const isDebugMode = process.env.LAUNCHQL_DEBUG === 'true' || process.env.NODE_ENV === 'development';
+      if (isDebugMode) {
+        try {
+          await this.pool.query(`
+            CREATE TABLE IF NOT EXISTS launchql_migrate.debug_mode_enabled (
+              enabled BOOLEAN DEFAULT TRUE,
+              created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+            INSERT INTO launchql_migrate.debug_mode_enabled (enabled) 
+            VALUES (TRUE) ON CONFLICT DO NOTHING;
+          `);
+          
+          const debugSchemaPath = join(__dirname, 'sql', 'debug-schema.sql');
+          const debugSchemaSql = readFileSync(debugSchemaPath, 'utf8');
+          await this.pool.query(debugSchemaSql);
+          
+          log.debug('Debug mode schema enhancements applied');
+        } catch (debugError) {
+          log.warn('Failed to apply debug schema enhancements:', debugError);
+        }
+      }
+
       this.initialized = true;
     } catch (error) {
       log.error('Failed to initialize migration schema:', error);
@@ -187,10 +209,35 @@ export class LaunchQLMigrate {
           
           deployed.push(change.name);
           log.success(`Successfully deployed: ${change.name}`);
-        } catch (error) {
-          log.error(`Failed to deploy ${change.name}:`, error);
-          failed = change.name;
-          throw error; // Re-throw to trigger rollback if in transaction
+        } catch (error: any) {
+          const isDebugMode = process.env.LAUNCHQL_DEBUG === 'true' || process.env.NODE_ENV === 'development';
+          
+          if (isDebugMode) {
+            const contextualError = new Error(`Failed to deploy change '${change.name}' in project '${project || plan.project}': ${error.message}`);
+            contextualError.stack = error.stack;
+            (contextualError as any).code = error.code;
+            (contextualError as any).originalError = error;
+            (contextualError as any).changeName = change.name;
+            (contextualError as any).projectName = project || plan.project;
+            (contextualError as any).changeKey = changeKey;
+            (contextualError as any).scriptHash = scriptHash;
+            
+            log.error(`Failed to deploy ${change.name}:`, {
+              message: contextualError.message,
+              changeName: change.name,
+              projectName: project || plan.project,
+              changeKey,
+              scriptHash,
+              originalError: error.message,
+              code: error.code
+            });
+            failed = change.name;
+            throw contextualError;
+          } else {
+            log.error(`Failed to deploy ${change.name}:`, error);
+            failed = change.name;
+            throw error; // Re-throw to trigger rollback if in transaction
+          }
         }
         
         // Stop if this was the target change

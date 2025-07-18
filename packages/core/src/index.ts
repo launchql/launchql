@@ -39,3 +39,4 @@ export {
 export { hashFile, hashString } from './migrate/utils/hash';
 export { withTransaction, TransactionContext, TransactionOptions, executeQuery } from './migrate/utils/transaction';
 export { cleanSql } from './migrate/clean';
+export { MigrationError, MigrationErrorContext, isDebugMode, enhanceErrorWithContext } from './migrate/utils/errors';

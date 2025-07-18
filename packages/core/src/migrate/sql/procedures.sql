@@ -97,7 +97,15 @@ BEGIN
     EXCEPTION WHEN OTHERS THEN
         INSERT INTO launchql_migrate.events (event_type, change_name, project)
         VALUES ('fail', p_change_name, p_project);
-        RAISE;
+        
+        IF EXISTS (SELECT 1 FROM information_schema.tables 
+                  WHERE table_schema = 'launchql_migrate' 
+                  AND table_name = 'debug_mode_enabled') THEN
+            RAISE EXCEPTION 'Deploy failed for change "%" in project "%": % (SQL State: %)', 
+                p_change_name, p_project, SQLERRM, SQLSTATE;
+        ELSE
+            RAISE;
+        END IF;
     END;
     
     -- Record deployment
@@ -165,7 +173,18 @@ BEGIN
     END IF;
     
     -- Execute revert
-    EXECUTE p_revert_sql;
+    BEGIN
+        EXECUTE p_revert_sql;
+    EXCEPTION WHEN OTHERS THEN
+        IF EXISTS (SELECT 1 FROM information_schema.tables 
+                  WHERE table_schema = 'launchql_migrate' 
+                  AND table_name = 'debug_mode_enabled') THEN
+            RAISE EXCEPTION 'Revert failed for change "%" in project "%": % (SQL State: %)', 
+                p_change_name, p_project, SQLERRM, SQLSTATE;
+        ELSE
+            RAISE;
+        END IF;
+    END;
     
     -- Remove from deployed
     DELETE FROM launchql_migrate.changes 
