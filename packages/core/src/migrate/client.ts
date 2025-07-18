@@ -137,7 +137,7 @@ export class LaunchQLMigrate {
         try {
           const deployedResult = await executeQuery(
             context,
-            'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+            'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
             [project || plan.project, change.name]
           );
           
@@ -364,7 +364,7 @@ export class LaunchQLMigrate {
             
             const targetDeployedResult = await executeQuery(
               context,
-              'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+              'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
               [actualTargetProject, actualTargetChangeName]
             );
             
@@ -405,7 +405,7 @@ export class LaunchQLMigrate {
         // Check if deployed
         const deployedResult = await executeQuery(
           context,
-          'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+          'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
           [project || plan.project, change.name]
         );
         
@@ -531,7 +531,7 @@ export class LaunchQLMigrate {
    */
   async isDeployed(project: string, changeName: string): Promise<boolean> {
     const result = await this.pool.query(
-      'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+      'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
       [project, changeName]
     );
     
