@@ -2,7 +2,7 @@ import { resolve } from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
-import { LaunchQLProject } from '../class/launchql';
+import { LaunchQLProject } from '../core/class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { verifyModule } from '../modules/verify';
