@@ -1,5 +1,5 @@
-import { parsePlanFileSimple } from './files';
-import { ModuleMap } from './modules';
+import { parsePlanFileSimple } from '../files';
+import { ModuleMap } from '../modules/modules';
 
 /**
  * Get the list of available extensions, including predefined core extensions.

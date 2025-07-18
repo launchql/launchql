@@ -3,8 +3,8 @@ import { relative } from 'path';
 import { parse } from 'pgsql-parser';
 import { deparse } from 'pgsql-deparser';
 
-import { getExtensionName } from './files';
-import { resolve, resolveWithPlan } from './resolve';
+import { getExtensionName } from '../files';
+import { resolve, resolveWithPlan } from '../resolution/resolve';
 import { transformProps } from './transform';
 import { Logger } from '@launchql/logger';
 import { RawStmt } from '@pgsql/types';

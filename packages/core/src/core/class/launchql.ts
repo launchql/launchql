@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
-import { walkUp } from '../utils';
-import { extDeps, resolveDependencies } from '../deps';
+import { walkUp } from '../../workspace/utils';
+import { extDeps, resolveDependencies } from '../../resolution/deps';
 import chalk from 'chalk';
 import { parse } from 'parse-package-name';
 import os from 'os';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
-import { generatePlan, writePlan } from '../files';
+import { generatePlan, writePlan } from '../../files';
 
 import {
   writeRenderedTemplates,
@@ -22,7 +22,7 @@ import {
   getExtensionsAndModules,
   getExtensionsAndModulesChanges,
   ModuleMap
-} from '../modules';
+} from '../../modules/modules';
 
 import {
   getExtensionInfo,
@@ -30,8 +30,8 @@ import {
   getExtensionName,
   getInstalledExtensions,
   ExtensionInfo,
-} from '../files';
-import { getAvailableExtensions } from '../extensions';
+} from '../../files';
+import { getAvailableExtensions } from '../../extensions/extensions';
 
 
 const logger = new Logger('launchql');

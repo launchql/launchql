@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import { LaunchQLProject } from '../class/launchql';
+import { LaunchQLProject } from '../core/class/launchql';
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';

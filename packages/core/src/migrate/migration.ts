@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '../class/launchql';
+import { LaunchQLProject } from '../core/class/launchql';
 import { deployProject } from '../projects/deploy';
 import { revertProject } from '../projects/revert';
 import { verifyProject } from '../projects/verify';

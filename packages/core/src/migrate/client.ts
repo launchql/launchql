@@ -15,8 +15,8 @@ import {
   StatusResult
 } from './types';
 import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists } from '../files';
-import { resolveDependencies } from '../deps';
-import { resolveTagToChangeName } from '../resolve';
+import { resolveDependencies } from '../resolution/deps';
+import { resolveTagToChangeName } from '../resolution/resolve';
 import { hashFile } from './utils/hash';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';

@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { relative, join } from 'path';
-import { parsePlanFile } from './files/plan/parser';
-import { ExtendedPlanFile } from './files/types';
-import { LaunchQLProject } from './class/launchql';
+import { parsePlanFile } from '../files/plan/parser';
+import { ExtendedPlanFile } from '../files/types';
+import { LaunchQLProject } from '../core/class/launchql';
 
 /**
  * Represents a dependency graph where keys are module identifiers
