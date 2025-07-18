@@ -5,7 +5,7 @@ import { PgConfig } from 'pg-env';
 import { LaunchQLProject } from '../class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { verifyModule } from '../migrate/verify-module';
+import { verifyModule } from '../modules/verify';
 import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {

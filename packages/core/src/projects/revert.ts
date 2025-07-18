@@ -5,7 +5,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { revertModule } from '../migrate/revert-module';
+import { revertModule } from '../modules/revert';
 import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
