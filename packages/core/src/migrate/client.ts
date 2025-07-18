@@ -172,6 +172,7 @@ export class LaunchQLMigrate {
         
         try {
           // Call the deploy stored procedure
+          console.log('DEBUG: About to deploy change:', change.name, 'in project:', project || plan.project);
           await executeQuery(
             context,
             'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
@@ -183,6 +184,13 @@ export class LaunchQLMigrate {
               cleanDeploySql
             ]
           );
+          
+          const verifyResult = await executeQuery(
+            context,
+            'SELECT * FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
+            [project || plan.project, change.name]
+          );
+          console.log('DEBUG: Change record after deploy:', JSON.stringify(verifyResult.rows, null, 2));
           
           deployed.push(change.name);
           log.success(`Successfully deployed: ${change.name}`);
@@ -210,7 +218,57 @@ export class LaunchQLMigrate {
     
     const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
-    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, project || plan.project) : toChange;
+    
+    const fullPlanResult = parsePlanFileFull(planPath);
+    const packageDir = dirname(planPath);
+    
+    // Check if we have cross-module tag dependencies or cross-module toChange
+    const hasTagDependencies = fullPlanResult.data?.changes.some((change: any) => 
+      change.dependencies.some((dep: string) => dep.includes('@'))
+    ) || (toChange && toChange.includes(':@'));
+    
+    let resolvedDeps: any = null;
+    if (hasTagDependencies) {
+      const parentDir = dirname(dirname(packageDir));
+      console.log('DEBUG: Using parent directory for resolution:', parentDir);
+      resolvedDeps = resolveDependencies(parentDir, fullPlanResult.data?.project || plan.project, {
+        tagResolution: 'internal',
+        loadPlanFiles: true
+      });
+      console.log('DEBUG: resolvedDeps:', JSON.stringify(resolvedDeps, null, 2));
+    }
+    
+    let resolvedToChange = toChange;
+    let targetProject = project || plan.project;
+    let targetChangeName = toChange;
+    
+    if (toChange && toChange.includes('@')) {
+      console.log('DEBUG: Processing toChange:', toChange);
+      if (toChange.includes(':@')) {
+        const [crossProject, tag] = toChange.split(':@');
+        targetProject = crossProject;
+        console.log('DEBUG: Cross-module case - targetProject:', targetProject, 'tag:', tag);
+        const parentDir = dirname(dirname(packageDir));
+        const targetPlanPath = join(parentDir, 'packages', crossProject, 'launchql.plan');
+        console.log('DEBUG: Looking for target plan at:', targetPlanPath);
+        
+        try {
+          const resolvedChange = resolveTagToChangeName(targetPlanPath, `@${tag}`, crossProject);
+          targetChangeName = resolvedChange;
+          resolvedToChange = resolvedChange;
+          console.log('DEBUG: Resolved cross-module tag to:', resolvedChange);
+        } catch (error) {
+          console.log('DEBUG: Failed to resolve cross-module tag, using original:', toChange);
+          resolvedToChange = toChange;
+          targetChangeName = toChange;
+        }
+      } else {
+        resolvedToChange = resolveTagToChangeName(planPath, toChange, project || plan.project);
+        targetChangeName = resolvedToChange;
+        console.log('DEBUG: Local tag resolved to:', resolvedToChange);
+      }
+    }
+    
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
@@ -227,8 +285,72 @@ export class LaunchQLMigrate {
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
-        if (resolvedToChange && change.name === resolvedToChange) {
-          break;
+        if (resolvedToChange && targetProject && targetChangeName) {
+          if (toChange && toChange.includes(':@')) {
+            let actualTargetChangeName = targetChangeName;
+            let actualTargetProject = targetProject;
+            
+            if (resolvedDeps && resolvedDeps.resolvedTags && resolvedDeps.resolvedTags[toChange]) {
+              const resolvedTag = resolvedDeps.resolvedTags[toChange];
+              console.log('DEBUG: Using resolved tag:', resolvedTag);
+              
+              if (resolvedTag.includes(':')) {
+                const [resolvedProject, resolvedChange] = resolvedTag.split(':', 2);
+                actualTargetProject = resolvedProject;
+                actualTargetChangeName = resolvedChange;
+              } else {
+                actualTargetChangeName = resolvedTag;
+              }
+            }
+            
+            console.log('DEBUG: Checking deployment for project:', actualTargetProject, 'change:', actualTargetChangeName);
+            
+            const allChangesResult = await executeQuery(
+              context,
+              'SELECT project, change_name, deployed_at FROM launchql_migrate.changes ORDER BY deployed_at',
+              []
+            );
+            console.log('DEBUG: All changes in DB (including NULL deployed_at):', JSON.stringify(allChangesResult.rows, null, 2));
+            
+            const targetDeployedResult = await executeQuery(
+              context,
+              'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
+              [actualTargetProject, actualTargetChangeName]
+            );
+            console.log('DEBUG: is_deployed result:', targetDeployedResult.rows[0]);
+            
+            if (!targetDeployedResult.rows[0]?.is_deployed) {
+              log.warn(`Target change ${targetProject}:${actualTargetChangeName} is not deployed, stopping revert`);
+              break;
+            }
+            
+            // Get deployment time of target change
+            const targetTimeResult = await executeQuery(
+              context,
+              'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
+              [actualTargetProject, actualTargetChangeName]
+            );
+            
+            const currentTimeResult = await executeQuery(
+              context,
+              'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
+              [project || plan.project, change.name]
+            );
+            
+            if (targetTimeResult.rows[0] && currentTimeResult.rows[0]) {
+              const targetTime = new Date(targetTimeResult.rows[0].deployed_at);
+              const currentTime = new Date(currentTimeResult.rows[0].deployed_at);
+              
+              if (currentTime <= targetTime) {
+                log.info(`Stopping revert at ${change.name} (deployed at ${currentTime}) as it was deployed before/at target ${actualTargetProject}:${actualTargetChangeName} (deployed at ${targetTime})`);
+                break;
+              }
+            }
+          } else {
+            if (change.name === resolvedToChange) {
+              break;
+            }
+          }
         }
         
         // Check if deployed
