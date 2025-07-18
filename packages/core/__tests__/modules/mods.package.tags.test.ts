@@ -1,5 +1,5 @@
 import { TestFixture, cleanText } from '../../test-utils';
-import { packageModule } from '../../src/package';
+import { packageModule } from '../../src/packaging/package';
 
 let fixtures: TestFixture[];
 

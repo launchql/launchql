@@ -1,5 +1,5 @@
 import { TestFixture } from '../../test-utils';
-import { resolveDependencies } from '../../src/deps';
+import { resolveDependencies } from '../../src/resolution/deps';
 
 let fixture: TestFixture;
 

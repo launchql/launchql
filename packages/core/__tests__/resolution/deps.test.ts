@@ -1,6 +1,6 @@
 import { TestFixture } from '../../test-utils';
-import { resolveDependencies, extDeps } from '../../src/deps';
-import { listModules } from '../../src/modules';
+import { resolveDependencies, extDeps } from '../../src/resolution/deps';
+import { listModules } from '../../src/modules/modules';
 
 let fixture: TestFixture;
 

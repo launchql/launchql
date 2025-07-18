@@ -1,4 +1,4 @@
-import { LaunchQLProject, ProjectContext } from '../../src/class/launchql';
+import { LaunchQLProject, ProjectContext } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;

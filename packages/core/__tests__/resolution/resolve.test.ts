@@ -1,4 +1,4 @@
-import { resolve, resolveWithPlan } from '../../src/resolve';
+import { resolve, resolveWithPlan } from '../../src/resolution/resolve';
 import { TestFixture } from '../../test-utils';
 
 let baseFixture: TestFixture;

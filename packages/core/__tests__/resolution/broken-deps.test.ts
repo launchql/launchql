@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { resolveDependencies } from '../../src/deps';
+import { resolveDependencies } from '../../src/resolution/deps';
 import { FIXTURES_PATH } from '../../test-utils';
 
 const PROJECT_PATH = join(FIXTURES_PATH, 'sqitch/broken');
