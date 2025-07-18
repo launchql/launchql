@@ -94,7 +94,7 @@ export class LaunchQLMigrate {
   async deploy(options: DeployOptions): Promise<DeployResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
+    const { project, targetDatabase, planPath, toChange, useTransaction = true, debug = false } = options;
     const plan = parsePlanFile(planPath);
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, project || plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
@@ -187,8 +187,66 @@ export class LaunchQLMigrate {
           
           deployed.push(change.name);
           log.success(`Successfully deployed: ${change.name}`);
-        } catch (error) {
-          log.error(`Failed to deploy ${change.name}:`, error);
+        } catch (error: any) {
+          // Build comprehensive error message
+          const errorLines = [];
+          errorLines.push(`Failed to deploy ${change.name}:`);
+          errorLines.push(`  Change: ${change.name}`);
+          errorLines.push(`  Project: ${project || plan.project}`);
+          errorLines.push(`  Script Hash: ${scriptHash}`);
+          errorLines.push(`  Dependencies: ${resolvedChangeDeps.length > 0 ? resolvedChangeDeps.join(', ') : 'none'}`);
+          errorLines.push(`  Error Code: ${error.code || 'N/A'}`);
+          errorLines.push(`  Error Message: ${error.message || 'N/A'}`);
+          
+          // Show SQL script preview for debugging
+          if (cleanDeploySql) {
+            const sqlLines = cleanDeploySql.split('\n');
+            const previewLines = debug ? sqlLines : sqlLines.slice(0, 10);
+            
+            if (debug) {
+              errorLines.push(`  Full SQL Script (${sqlLines.length} lines):`);
+              previewLines.forEach((line, index) => {
+                errorLines.push(`    ${index + 1}: ${line}`);
+              });
+            } else {
+              errorLines.push(`  SQL Preview (first 10 lines):`);
+              previewLines.forEach((line, index) => {
+                errorLines.push(`    ${index + 1}: ${line}`);
+              });
+              if (sqlLines.length > 10) {
+                errorLines.push(`    ... and ${sqlLines.length - 10} more lines`);
+                errorLines.push(`    💡 Use debug mode to see full SQL script`);
+              }
+            }
+          }
+          
+          // Show resolved dependencies in debug mode
+          if (debug && resolvedDeps) {
+            errorLines.push(`  Resolved Dependencies Context:`);
+            const changeKey = `/deploy/${change.name}.sql`;
+            const depInfo = resolvedDeps.deps[changeKey];
+            if (depInfo) {
+              errorLines.push(`    Key: ${changeKey}`);
+              errorLines.push(`    Dependencies: ${JSON.stringify(depInfo, null, 2)}`);
+            }
+          }
+          
+          // Provide debugging hints based on error code
+          if (error.code === '25P02') {
+            errorLines.push(`🔍 Debug Info: This error means a previous command in the transaction failed.`);
+            errorLines.push(`   The SQL script above may contain the failing command.`);
+            errorLines.push(`   Check the transaction query history for more details.`);
+          } else if (error.code === '42P01') {
+            errorLines.push(`💡 Hint: A table or view referenced in the SQL script does not exist.`);
+            errorLines.push(`   Check if dependencies are applied in the correct order.`);
+          } else if (error.code === '42883') {
+            errorLines.push(`💡 Hint: A function referenced in the SQL script does not exist.`);
+            errorLines.push(`   Check if required extensions or previous migrations are applied.`);
+          }
+          
+          // Log the consolidated error message
+          log.error(errorLines.join('\n'));
+          
           failed = change.name;
           throw error; // Re-throw to trigger rollback if in transaction
         }

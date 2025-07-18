@@ -108,9 +108,27 @@ export const deployProject = async (
               usePlan: options?.usePlan ?? true, 
               extension: false 
             });
-          } catch (err) {
-            log.error(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
-            log.error(`   Error: ${err instanceof Error ? err.message : String(err)}`);
+          } catch (err: any) {
+            // Build comprehensive error message
+            const errorLines = [];
+            errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
+            errorLines.push(`   Module Path: ${modulePath}`);
+            errorLines.push(`   Workspace Path: ${mod.workspacePath}`);
+            errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
+            errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
+            
+            // Provide debugging hints
+            if (err.code === 'ENOENT') {
+              errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
+            } else if (err.code === 'EACCES') {
+              errorLines.push('💡 Hint: Permission denied. Check file permissions.');
+            } else if (err.message && err.message.includes('launchql.plan')) {
+              errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
+            }
+            
+            // Log the consolidated error message
+            log.error(errorLines.join('\n'));
+            
             console.error(err); // Preserve full stack trace
             throw errors.DEPLOYMENT_FAILED({ 
               type: 'Deployment', 
