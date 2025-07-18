@@ -45,21 +45,6 @@ The `deployModules` function provides the highest-level deployment interface:
   - Validates required parameters based on operation mode
   - Provides unified interface for CLI and programmatic usage
 
-## Capabilities
-
-- [x] Support deploying individual modules
-- [x] Support deploying individual projects  
-- [x] Support deploying via tag (using `toChange` parameter)
-- [ ] Support recursive deploy via tag (across projects/modules)
-- [x] Support transaction control for deployments
-- [x] Support dependency resolution within projects
-- [x] Support external extension management
-- [x] Support Sqitch compatibility mode
-- [x] Support change targeting (deploy up to specific change)
-- [ ] Support cross-project dependency resolution
-- [ ] Support workspace-wide recursive deployment
-- [ ] Support parallel deployment of independent modules
-
 ### Missing Capabilities Analysis
 
 #### Support recursive deploy via tag (across projects/modules)

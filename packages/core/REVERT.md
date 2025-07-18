@@ -47,22 +47,6 @@ The `revertModules` function provides the highest-level revert interface:
   - Validates required parameters based on operation mode
   - Provides unified interface for CLI and programmatic usage
 
-## Capabilities
-
-- [x] Support reverting individual modules
-- [x] Support reverting individual projects
-- [x] Support reverting via tag (using `toChange` parameter)
-- [ ] Support recursive revert via tag (across projects/modules)
-- [x] Support transaction control for reverts
-- [x] Support reverse dependency order processing
-- [x] Support external extension cleanup with CASCADE
-- [x] Support Sqitch compatibility mode
-- [x] Support change targeting (revert to specific change)
-- [ ] Support cross-project dependency-aware revert
-- [ ] Support workspace-wide recursive revert
-- [ ] Support dry-run revert operations
-- [ ] Support revert impact analysis
-
 ### Missing Capabilities Analysis
 
 #### Support recursive revert via tag (across projects/modules)
