@@ -16,7 +16,7 @@ describe('Forked Deployment with deployModules - my-third', () => {
     await fixture.cleanup();
   });
 
-  test.only('handles modified deployment scenario for my-third', async () => {
+  test('handles modified deployment scenario for my-third', async () => {
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
 
     expect(await db.exists('schema', 'metaschema')).toBe(true);
