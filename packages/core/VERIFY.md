@@ -61,22 +61,6 @@ The core database verification logic:
   - Returns detailed verification results
   - Does not modify database state during verification
 
-## Capabilities
-
-- [x] Support verifying individual modules
-- [x] Support verifying individual projects
-- [ ] Support verifying via tag (tag-based verification)
-- [ ] Support recursive verify across project graph
-- [x] Support external extension availability checking
-- [x] Support Sqitch compatibility mode
-- [x] Support change state validation
-- [x] Support dependency order verification
-- [ ] Support workspace-wide recursive verification
-- [ ] Support verification reporting and summaries
-- [ ] Support verification with change targeting
-- [ ] Support verification impact analysis
-- [ ] Support verification dry-run mode
-
 ### Missing Capabilities Analysis
 
 #### Support verifying via tag (tag-based verification)
