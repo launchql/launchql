@@ -1,5 +1,5 @@
 import { TestFixture } from '../../test-utils';
-import { resolveDependencies } from '../../src/deps';
+import { resolveDependencies } from '../../src/resolution/deps';
 
 let fixture: TestFixture;
 
@@ -11,27 +11,29 @@ afterAll(() => {
   fixture.cleanup();
 });
 
-it('sqitch package dependencies [simple-w-tags/1st]', async () => {
+it('sqitch package dependencies with resolved tags [simple-w-tags/1st]', async () => {
   const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-first'),
-    'my-first'
+    'my-first',
+    { tagResolution: 'resolve' }
   );
   expect(res).toMatchSnapshot();
 });
 
-it('sqitch package dependencies [simple-w-tags/2nd]', async () => {
+it('sqitch package dependencies with resolved tags [simple-w-tags/2nd]', async () => {
   const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-second'),
-    'my-second'
+    'my-second',
+    { tagResolution: 'resolve' }
   );
   expect(res).toMatchSnapshot();
 });
 
-it('sqitch package dependencies [simple-w-tags/3rd]', async () => {
-  expect(() => resolveDependencies(
+it('sqitch package dependencies with resolved tags [simple-w-tags/3rd]', async () => {
+  const res = await resolveDependencies(
     fixture.getFixturePath('simple-w-tags', 'packages', 'my-third'),
-    'my-third'
-  )).toThrow();
+    'my-third',
+    { tagResolution: 'resolve' }
+  );
+  expect(res).toMatchSnapshot();
 });
-
-

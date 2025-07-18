@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { LaunchQLProject } from '../../src/class/launchql';
+import { LaunchQLProject } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 
 it('writes module metadata files without modifying fixture', async () => {
