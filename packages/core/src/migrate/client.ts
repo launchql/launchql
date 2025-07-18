@@ -220,12 +220,18 @@ export class LaunchQLMigrate {
     ) || (toChange && toChange.includes(':@'));
     
     let resolvedDeps: any = null;
+    let launchqlProject: any = null;
     if (hasTagDependencies) {
-      const parentDir = dirname(dirname(packageDir));
-      resolvedDeps = resolveDependencies(parentDir, fullPlanResult.data?.project || plan.project, {
-        tagResolution: 'internal',
-        loadPlanFiles: true
-      });
+      const { LaunchQLProject } = await import('../core/class/launchql');
+      launchqlProject = new LaunchQLProject(packageDir);
+      const workspacePath = launchqlProject.getWorkspacePath();
+      
+      if (workspacePath) {
+        resolvedDeps = resolveDependencies(workspacePath, fullPlanResult.data?.project || plan.project, {
+          tagResolution: 'internal',
+          loadPlanFiles: true
+        });
+      }
     }
     
     let resolvedToChange = toChange;
@@ -236,13 +242,26 @@ export class LaunchQLMigrate {
       if (toChange.includes(':@')) {
         const [crossProject, tag] = toChange.split(':@');
         targetProject = crossProject;
-        const parentDir = dirname(dirname(packageDir));
-        const targetPlanPath = join(parentDir, 'packages', crossProject, 'launchql.plan');
         
         try {
-          const resolvedChange = resolveTagToChangeName(targetPlanPath, `@${tag}`, crossProject);
-          targetChangeName = resolvedChange;
-          resolvedToChange = resolvedChange;
+          if (!launchqlProject) {
+            const { LaunchQLProject } = await import('../core/class/launchql');
+            launchqlProject = new LaunchQLProject(packageDir);
+          }
+          
+          const moduleMap = launchqlProject.getModuleMap();
+          const targetModule = moduleMap[crossProject];
+          const workspacePath = launchqlProject.getWorkspacePath();
+          
+          if (targetModule && workspacePath) {
+            const targetPlanPath = join(workspacePath, targetModule.path, 'launchql.plan');
+            const resolvedChange = resolveTagToChangeName(targetPlanPath, `@${tag}`, crossProject);
+            targetChangeName = resolvedChange;
+            resolvedToChange = resolvedChange;
+          } else {
+            resolvedToChange = toChange;
+            targetChangeName = toChange;
+          }
         } catch (error) {
           resolvedToChange = toChange;
           targetChangeName = toChange;

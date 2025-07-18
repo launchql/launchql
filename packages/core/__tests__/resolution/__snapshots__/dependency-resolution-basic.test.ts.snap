@@ -21,6 +21,7 @@ exports[`sqitch package dependencies [simple/1st] 1`] = `
     "table_users",
     "table_products",
   ],
+  "resolvedTags": {},
 }
 `;
 
@@ -43,6 +44,7 @@ exports[`sqitch package dependencies [simple/2nd] 1`] = `
     "create_table",
     "create_another_table",
   ],
+  "resolvedTags": {},
 }
 `;
 
@@ -64,6 +66,7 @@ exports[`sqitch package dependencies [simple/3rd] 1`] = `
     "create_schema",
     "create_table",
   ],
+  "resolvedTags": {},
 }
 `;
 
@@ -76,5 +79,6 @@ exports[`sqitch package dependencies [utils] 1`] = `
   "resolved": [
     "procedures/myfunction",
   ],
+  "resolvedTags": {},
 }
 `;
