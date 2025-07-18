@@ -172,7 +172,6 @@ export class LaunchQLMigrate {
         
         try {
           // Call the deploy stored procedure
-          console.log('DEBUG: About to deploy change:', change.name, 'in project:', project || plan.project);
           await executeQuery(
             context,
             'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
@@ -184,13 +183,6 @@ export class LaunchQLMigrate {
               cleanDeploySql
             ]
           );
-          
-          const verifyResult = await executeQuery(
-            context,
-            'SELECT * FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
-            [project || plan.project, change.name]
-          );
-          console.log('DEBUG: Change record after deploy:', JSON.stringify(verifyResult.rows, null, 2));
           
           deployed.push(change.name);
           log.success(`Successfully deployed: ${change.name}`);
@@ -230,12 +222,10 @@ export class LaunchQLMigrate {
     let resolvedDeps: any = null;
     if (hasTagDependencies) {
       const parentDir = dirname(dirname(packageDir));
-      console.log('DEBUG: Using parent directory for resolution:', parentDir);
       resolvedDeps = resolveDependencies(parentDir, fullPlanResult.data?.project || plan.project, {
         tagResolution: 'internal',
         loadPlanFiles: true
       });
-      console.log('DEBUG: resolvedDeps:', JSON.stringify(resolvedDeps, null, 2));
     }
     
     let resolvedToChange = toChange;
@@ -243,29 +233,23 @@ export class LaunchQLMigrate {
     let targetChangeName = toChange;
     
     if (toChange && toChange.includes('@')) {
-      console.log('DEBUG: Processing toChange:', toChange);
       if (toChange.includes(':@')) {
         const [crossProject, tag] = toChange.split(':@');
         targetProject = crossProject;
-        console.log('DEBUG: Cross-module case - targetProject:', targetProject, 'tag:', tag);
         const parentDir = dirname(dirname(packageDir));
         const targetPlanPath = join(parentDir, 'packages', crossProject, 'launchql.plan');
-        console.log('DEBUG: Looking for target plan at:', targetPlanPath);
         
         try {
           const resolvedChange = resolveTagToChangeName(targetPlanPath, `@${tag}`, crossProject);
           targetChangeName = resolvedChange;
           resolvedToChange = resolvedChange;
-          console.log('DEBUG: Resolved cross-module tag to:', resolvedChange);
         } catch (error) {
-          console.log('DEBUG: Failed to resolve cross-module tag, using original:', toChange);
           resolvedToChange = toChange;
           targetChangeName = toChange;
         }
       } else {
         resolvedToChange = resolveTagToChangeName(planPath, toChange, project || plan.project);
         targetChangeName = resolvedToChange;
-        console.log('DEBUG: Local tag resolved to:', resolvedToChange);
       }
     }
     
@@ -292,7 +276,6 @@ export class LaunchQLMigrate {
             
             if (resolvedDeps && resolvedDeps.resolvedTags && resolvedDeps.resolvedTags[toChange]) {
               const resolvedTag = resolvedDeps.resolvedTags[toChange];
-              console.log('DEBUG: Using resolved tag:', resolvedTag);
               
               if (resolvedTag.includes(':')) {
                 const [resolvedProject, resolvedChange] = resolvedTag.split(':', 2);
@@ -303,21 +286,11 @@ export class LaunchQLMigrate {
               }
             }
             
-            console.log('DEBUG: Checking deployment for project:', actualTargetProject, 'change:', actualTargetChangeName);
-            
-            const allChangesResult = await executeQuery(
-              context,
-              'SELECT project, change_name, deployed_at FROM launchql_migrate.changes ORDER BY deployed_at',
-              []
-            );
-            console.log('DEBUG: All changes in DB (including NULL deployed_at):', JSON.stringify(allChangesResult.rows, null, 2));
-            
             const targetDeployedResult = await executeQuery(
               context,
               'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
               [actualTargetProject, actualTargetChangeName]
             );
-            console.log('DEBUG: is_deployed result:', targetDeployedResult.rows[0]);
             
             if (!targetDeployedResult.rows[0]?.is_deployed) {
               log.warn(`Target change ${targetProject}:${actualTargetChangeName} is not deployed, stopping revert`);
