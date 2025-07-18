@@ -60,10 +60,18 @@ export const revertProject = async (
   for (const extension of reversedExtensions) {
     try {
       if (extensions.external.includes(extension)) {
-        const msg = `DROP EXTENSION IF EXISTS "${extension}" CASCADE;`;
+        const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
         log.warn(`⚠️ Dropping external extension: ${extension}`);
         log.debug(`> ${msg}`);
-        await pgPool.query(msg);
+        try {
+          await pgPool.query(msg);
+        } catch (err: any) {
+          if (err.code === '2BP01') { // dependent_objects_still_exist
+            log.warn(`⚠️ Cannot drop extension ${extension} due to dependencies, skipping`);
+          } else {
+            throw err;
+          }
+        }
       } else {
         const modulePath = resolve(mod.workspacePath, modules[extension].path);
         log.info(`📂 Reverting local module: ${extension}`);
