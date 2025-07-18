@@ -184,6 +184,13 @@ export class LaunchQLMigrate {
             ]
           );
           
+          const verifyResult = await executeQuery(
+            context,
+            'SELECT project, change_name, deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
+            [project || plan.project, change.name]
+          );
+          console.log(`[DEBUG] After deploying ${project || plan.project}:${change.name}, database record:`, verifyResult.rows);
+          
           deployed.push(change.name);
           log.success(`Successfully deployed: ${change.name}`);
         } catch (error) {
@@ -226,17 +233,37 @@ export class LaunchQLMigrate {
     // If toChange is specified, we need to find which changes to revert
     let changesToRevert = changes;
     if (resolvedToChange) {
-      const forwardChanges = getChangesInOrder(planPath, false);
-      const targetIndex = forwardChanges.findIndex(c => c.name === resolvedToChange);
-      
-      if (targetIndex !== -1) {
-        const changesAfterTarget = forwardChanges.slice(targetIndex + 1);
-        changesToRevert = changesAfterTarget.reverse();
+      if (resolvedToChange.includes(':')) {
+        console.log(`[DEBUG] Cross-project reference ${resolvedToChange} detected for ${project || plan.project}, reverting all changes`);
+        changesToRevert = changes;
+      } else {
+        const forwardChanges = getChangesInOrder(planPath, false);
+        const targetIndex = forwardChanges.findIndex(c => c.name === resolvedToChange);
+        
+        console.log(`[DEBUG] Revert logic for ${project || plan.project}:`);
+        console.log(`[DEBUG] - resolvedToChange: ${resolvedToChange}`);
+        console.log(`[DEBUG] - forwardChanges: ${forwardChanges.map(c => c.name).join(', ')}`);
+        console.log(`[DEBUG] - targetIndex: ${targetIndex}`);
+        
+        if (targetIndex !== -1) {
+          const changesAfterTarget = forwardChanges.slice(targetIndex + 1);
+          changesToRevert = changesAfterTarget.reverse();
+          console.log(`[DEBUG] - changesToRevert: ${changesToRevert.map(c => c.name).join(', ')}`);
+        } else {
+          console.log(`[DEBUG] - Target change not found in this plan, reverting all changes`);
+        }
       }
     }
     
     // Execute revert with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
+      const allChangesResult = await executeQuery(
+        context,
+        'SELECT project, change_name, deployed_at FROM launchql_migrate.changes ORDER BY project, change_name',
+        []
+      );
+      console.log(`[DEBUG] All deployed changes in database:`, allChangesResult.rows);
+      
       for (const change of changesToRevert) {
         // Check if deployed
         const deployedResult = await executeQuery(
@@ -244,6 +271,8 @@ export class LaunchQLMigrate {
           'SELECT launchql_migrate.is_deployed($1, $2) as is_deployed',
           [project || plan.project, change.name]
         );
+        
+        console.log(`[DEBUG] Checking deployment status for ${project || plan.project}:${change.name} = ${deployedResult.rows[0]?.is_deployed}`);
         
         if (!deployedResult.rows[0]?.is_deployed) {
           log.info(`Skipping not deployed change: ${change.name}`);
