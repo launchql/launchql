@@ -15,11 +15,12 @@ import {
   StatusResult
 } from './types';
 import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists } from '../files';
-import { resolveDependencies } from '../resolution/deps';
+import { resolveDependencies, DependencyResult } from '../resolution/deps';
 import { resolveTagToChangeName } from '../resolution/resolve';
 import { hashFile } from './utils/hash';
 import { cleanSql } from './clean';
 import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
+import { LaunchQLProject } from '../core/class/launchql';
 
 // Helper function to get changes in order
 function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {
@@ -219,10 +220,9 @@ export class LaunchQLMigrate {
       change.dependencies.some((dep: string) => dep.includes('@'))
     ) || (toChange && toChange.includes(':@'));
     
-    let resolvedDeps: any = null;
-    let launchqlProject: any = null;
+    let resolvedDeps: DependencyResult | null = null;
+    let launchqlProject: LaunchQLProject | null = null;
     if (hasTagDependencies) {
-      const { LaunchQLProject } = await import('../core/class/launchql');
       launchqlProject = new LaunchQLProject(packageDir);
       const workspacePath = launchqlProject.getWorkspacePath();
       
@@ -245,7 +245,6 @@ export class LaunchQLMigrate {
         
         try {
           if (!launchqlProject) {
-            const { LaunchQLProject } = await import('../core/class/launchql');
             launchqlProject = new LaunchQLProject(packageDir);
           }
           
