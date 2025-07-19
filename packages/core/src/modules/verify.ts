@@ -11,8 +11,7 @@ const log = new Logger('migrate-verify');
  * This is designed to be a drop-in replacement for spawn('sqitch', ['verify', 'db:pg:database'])
  */
 export async function verifyModule(
-  config: Partial<PgConfig>,
-  database: string,
+  config: PgConfig,
   cwd: string
 ): Promise<void> {
   const planPath = join(cwd, 'launchql.plan');
@@ -23,21 +22,12 @@ export async function verifyModule(
   
   // The verify method will handle missing verify scripts per change
   
-  // Provide defaults for missing config values
-  const fullConfig: PgConfig = {
-    host: config.host,
-    port: config.port,
-    user: config.user,
-    password: config.password,
-    database
-  };
-  
-  const client = new LaunchQLMigrate(fullConfig);
+  const client = new LaunchQLMigrate(config);
   
   try {
     const result = await client.verify({
       project: '', // Will be read from plan file
-      targetDatabase: database,
+      targetDatabase: config.database,
       planPath
     });
     

@@ -10,7 +10,7 @@ import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { generatePlan, writePlan } from '../../files';
 import { LaunchQLOptions, errors } from '@launchql/types';
-import { PgConfig } from 'pg-env';
+import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { getPgPool } from 'pg-cache';
 import { deployModule } from '../../modules/deploy';
 import { revertModule } from '../../modules/revert';
@@ -755,7 +755,7 @@ export class LaunchQLProject {
             log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
             
             try {
-              await deployModule(opts.pg, opts.pg.database, modulePath, { 
+              await deployModule(getPgEnvOptions(opts.pg), modulePath, { 
                 useTransaction: opts.deployment.useTx,
                 toChange
               });
@@ -820,7 +820,7 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate revert db:pg:${opts.pg.database}`);
           
           try {
-            await revertModule(opts.pg, opts.pg.database, modulePath, { 
+            await revertModule(getPgEnvOptions(opts.pg), modulePath, { 
               useTransaction: opts.deployment.useTx,
               toChange
             });
@@ -873,7 +873,7 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate verify db:pg:${opts.pg.database}`);
 
           try {
-            await verifyModule(opts.pg, opts.pg.database, modulePath);
+            await verifyModule(getPgEnvOptions(opts.pg), modulePath);
           } catch (verifyError) {
             log.error(`❌ Verification failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

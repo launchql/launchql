@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import * as path from 'path';
 
 import { errors, LaunchQLOptions, getEnvOptions } from '@launchql/types';
-import { PgConfig } from 'pg-env';
+import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { deployModule } from '../modules/deploy';
@@ -124,7 +124,7 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployModule(mergedOpts.pg, database, modulePath, { 
+            await deployModule(getPgEnvOptions(mergedOpts.pg), modulePath, { 
               useTransaction: mergedOpts.deployment.useTx,
               toChange
             });
