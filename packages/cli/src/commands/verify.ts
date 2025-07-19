@@ -19,12 +19,12 @@ export default async (
 
   const questions: Question[] = [];
 
-  let { recursive, cwd } = await prompter.prompt(argv, questions);
+  let { singleModule, cwd } = await prompter.prompt(argv, questions);
 
   log.debug(`Using current directory: ${cwd}`);
 
   let projectName: string | undefined;
-  if (recursive) {
+  if (singleModule) {
     projectName = await selectModule(argv, prompter, 'Choose a project to verify', cwd);
     log.info(`Selected project: ${projectName}`);
   }
@@ -39,7 +39,7 @@ export default async (
     opts,
     projectName,
     argv.toChange,
-    recursive
+    singleModule
   );
 
   log.success('Verify complete.');

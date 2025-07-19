@@ -70,7 +70,7 @@ skitch generate table
 Deploy recursively, using all the required modules!
 
 ```sh
-skitch deploy --createdb --recursive
+skitch deploy --createdb --single-module
 ```
 
 ## testing

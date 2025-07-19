@@ -94,5 +94,5 @@ lql generate table --schema myschema --table mytable
 You can also deploy all modules utilizing versioning as sqtich modules. Remove `--createdb` if you already created your db:
 
 ```sh
-lql deploy awesome-db --yes --recursive --createdb
+lql deploy awesome-db --yes --single-module --createdb
 ```

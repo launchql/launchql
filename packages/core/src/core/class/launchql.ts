@@ -662,7 +662,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name?: string,
     toChange?: string,
-    recursive: boolean = true
+    singleModule: boolean = false
   ): Promise<void> {
     const log = new Logger('deploy');
 
@@ -670,7 +670,7 @@ export class LaunchQLProject {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
-        recursive = false;
+        singleModule = true;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
       } else {
@@ -678,7 +678,7 @@ export class LaunchQLProject {
       }
     }
 
-    if (recursive) {
+    if (!singleModule) {
       // Cache for fast deployment
       const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
 
@@ -821,7 +821,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name?: string,
     toChange?: string,
-    recursive: boolean = true
+    singleModule: boolean = false
   ): Promise<void> {
     const log = new Logger('revert');
 
@@ -829,7 +829,7 @@ export class LaunchQLProject {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
-        recursive = false;
+        singleModule = true;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
       } else {
@@ -837,7 +837,7 @@ export class LaunchQLProject {
       }
     }
 
-    if (recursive) {
+    if (!singleModule) {
       log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
       const modules = this.getModuleMap();
 
@@ -928,7 +928,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name?: string,
     toChange?: string,
-    recursive: boolean = true
+    singleModule: boolean = false
   ): Promise<void> {
     const log = new Logger('verify');
 
@@ -936,7 +936,7 @@ export class LaunchQLProject {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
-        recursive = false;
+        singleModule = true;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
       } else {
@@ -944,7 +944,7 @@ export class LaunchQLProject {
       }
     }
 
-    if (recursive) {
+    if (!singleModule) {
       log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
       const modules = this.getModuleMap();
 

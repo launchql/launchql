@@ -116,6 +116,8 @@ export interface LaunchQLOptions {
         cache?: boolean;
         /** Deploy up to a specific change (inclusive) - can be a change name or tag reference (e.g., '@v1.0.0') */
         toChange?: string;
+        /** Deploy only a single module instead of workspace-wide deployment */
+        singleModule?: boolean;
     };
     /** Migration and code generation options */
     migrations?: {
@@ -185,7 +187,8 @@ export const launchqlDefaults: LaunchQLOptions = {
         useTx: true,
         fast: false,
         usePlan: true,
-        cache: false
+        cache: false,
+        singleModule: false
     },
     migrations: {
         codegen: {

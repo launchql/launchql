@@ -66,7 +66,7 @@ export default async (
     }
   ];
 
-  let { yes, recursive, createdb, cwd, tx, fast } = await prompter.prompt(argv, questions);
+  let { yes, singleModule, createdb, cwd, tx, fast } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -83,7 +83,7 @@ export default async (
   }
 
   let projectName: string | undefined;
-  if (recursive) {
+  if (singleModule) {
     projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
     log.info(`Selected project: ${projectName}`);
   }
@@ -106,7 +106,7 @@ export default async (
     opts,
     projectName,
     argv.toChange,
-    recursive
+    singleModule
   );
 
   log.success('Deployment complete.');

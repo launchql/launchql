@@ -35,7 +35,7 @@ export default async (
     }
   ];
 
-  let { yes, recursive, cwd, tx } = await prompter.prompt(argv, questions);
+  let { yes, singleModule, cwd, tx } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -45,7 +45,7 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let projectName: string | undefined;
-  if (recursive) {
+  if (singleModule) {
     projectName = await selectModule(argv, prompter, 'Choose a project to revert', cwd);
     log.info(`Selected project: ${projectName}`);
   }
@@ -63,7 +63,7 @@ export default async (
     opts,
     projectName,
     argv.toChange,
-    recursive
+    singleModule
   );
 
   log.success('Revert complete.');
