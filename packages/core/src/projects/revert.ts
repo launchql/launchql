@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import * as path from 'path';
 
 import { LaunchQLProject } from '../core/class/launchql';
@@ -6,7 +6,7 @@ import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { revertModule } from '../modules/revert';
+import { LaunchQLMigrate } from '../migrate/client';
 
 interface Extensions {
   resolved: string[];
@@ -76,10 +76,17 @@ export const revertProject = async (
         log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
         
         try {
-          await revertModule(opts.pg as PgConfig, modulePath, { 
-            useTransaction: options?.useTransaction,
-            toChange: options?.toChange
+          const client = new LaunchQLMigrate(opts.pg as PgConfig);
+          
+          const result = await client.revert({
+            modulePath,
+            toChange: options?.toChange,
+            useTransaction: options?.useTransaction
           });
+          
+          if (result.failed) {
+            throw new Error(`Revert failed at change: ${result.failed}`);
+          }
         } catch (revertError) {
           log.error(`❌ Revert failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });

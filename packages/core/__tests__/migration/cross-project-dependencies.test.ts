@@ -26,9 +26,7 @@ describe('Cross-Project Dependencies', () => {
     
     // First deploy project-a
     const resultA = await client.deploy({
-      project: 'project-a',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-a', 'launchql.plan'),
+      modulePath: join(basePath, 'project-a'),
     });
     
     expect(resultA.deployed).toEqual(['base_schema', 'base_types']);
@@ -36,9 +34,7 @@ describe('Cross-Project Dependencies', () => {
     
     // Then deploy project-b which depends on project-a
     const resultB = await client.deploy({
-      project: 'project-b',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-b', 'launchql.plan'),
+      modulePath: join(basePath, 'project-b'),
     });
     
     expect(resultB.deployed).toEqual(['app_schema', 'app_tables']);
@@ -58,9 +54,7 @@ describe('Cross-Project Dependencies', () => {
     
     // Try to deploy project-b without project-a
     await expect(client.deploy({
-      project: 'project-b',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-b', 'launchql.plan'),
+      modulePath: join(basePath, 'project-b'),
     })).rejects.toThrow(/project-a:base_schema/);
     
     // Verify nothing was deployed
@@ -73,23 +67,17 @@ describe('Cross-Project Dependencies', () => {
     
     // Deploy both projects
     await client.deploy({
-      project: 'project-a',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-a', 'launchql.plan'),
+      modulePath: join(basePath, 'project-a'),
     });
     
     await client.deploy({
-      project: 'project-b',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-b', 'launchql.plan'),
+      modulePath: join(basePath, 'project-b'),
     });
     
     // Try to revert project-a:base_types which project-b depends on
     // Note: toChange means "revert TO this change", so to revert base_types we revert to base_schema
     await expect(client.revert({
-      project: 'project-a',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-a', 'launchql.plan'),
+      modulePath: join(basePath, 'project-a'),
       toChange: 'base_schema'
     })).rejects.toThrow(/Cannot revert base_types: required by project-b:app_tables/);
     
@@ -104,15 +92,11 @@ describe('Cross-Project Dependencies', () => {
     
     // Deploy both projects
     await client.deploy({
-      project: 'project-a',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-a', 'launchql.plan'),
+      modulePath: join(basePath, 'project-a'),
     });
     
     await client.deploy({
-      project: 'project-b',
-      targetDatabase: db.name,
-      planPath: join(basePath, 'project-b', 'launchql.plan'),
+      modulePath: join(basePath, 'project-b'),
     });
     
     // Query dependents using the SQL function
@@ -161,21 +145,15 @@ describe('Cross-Project Dependencies', () => {
     
     // Deploy in order
     await client.deploy({
-      project: 'complex-a',
-      targetDatabase: db.name,
-      planPath: join(projectA, 'launchql.plan'),
+      modulePath: projectA,
     });
     
     await client.deploy({
-      project: 'complex-b',
-      targetDatabase: db.name,
-      planPath: join(projectB, 'launchql.plan'),
+      modulePath: projectB,
     });
     
     await client.deploy({
-      project: 'complex-c',
-      targetDatabase: db.name,
-      planPath: join(projectC, 'launchql.plan'),
+      modulePath: projectC,
     });
     
     // Verify all deployed
@@ -185,9 +163,7 @@ describe('Cross-Project Dependencies', () => {
     // Try to revert a change that many depend on
     // Note: to revert 'utils', we revert TO 'base' (which keeps base but reverts utils)
     await expect(client.revert({
-      project: 'complex-a',
-      targetDatabase: db.name,
-      planPath: join(projectA, 'launchql.plan'),
+      modulePath: projectA,
       toChange: 'base'
     })).rejects.toThrow(/Cannot revert utils: required by/);
   });

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path, { dirname, resolve } from 'path';
+import path, { dirname, resolve, join } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../../workspace/utils';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
@@ -12,9 +12,7 @@ import { generatePlan, writePlan } from '../../files';
 import { LaunchQLOptions, errors } from '@launchql/types';
 import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { getPgPool } from 'pg-cache';
-import { deployModule } from '../../modules/deploy';
-import { revertModule } from '../../modules/revert';
-import { verifyModule } from '../../modules/verify';
+import { LaunchQLMigrate } from '../../migrate/client';
 import { packageModule } from '../../packaging/package';
 
 import {
@@ -755,10 +753,17 @@ export class LaunchQLProject {
             log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
             
             try {
-              await deployModule(opts.pg as PgConfig, modulePath, { 
-                useTransaction: opts.deployment.useTx,
-                toChange
+              const client = new LaunchQLMigrate(opts.pg as PgConfig);
+              
+              const result = await client.deploy({
+                modulePath,
+                toChange,
+                useTransaction: opts.deployment.useTx
               });
+              
+              if (result.failed) {
+                throw new Error(`Deployment failed at change: ${result.failed}`);
+              }
             } catch (deployError) {
               log.error(`❌ Deployment failed for module ${extension}`);
               throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
@@ -820,10 +825,17 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate revert db:pg:${opts.pg.database}`);
           
           try {
-            await revertModule(opts.pg as PgConfig, modulePath, { 
-              useTransaction: opts.deployment.useTx,
-              toChange
+            const client = new LaunchQLMigrate(opts.pg as PgConfig);
+            
+            const result = await client.revert({
+              modulePath,
+              toChange,
+              useTransaction: opts.deployment.useTx
             });
+            
+            if (result.failed) {
+              throw new Error(`Revert failed at change: ${result.failed}`);
+            }
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
@@ -873,7 +885,15 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate verify db:pg:${opts.pg.database}`);
 
           try {
-            await verifyModule(opts.pg as PgConfig, modulePath);
+            const client = new LaunchQLMigrate(opts.pg as PgConfig);
+            
+            const result = await client.verify({
+              modulePath
+            });
+            
+            if (result.failed.length > 0) {
+              throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+            }
           } catch (verifyError) {
             log.error(`❌ Verification failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

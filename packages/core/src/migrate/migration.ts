@@ -1,10 +1,9 @@
 import { LaunchQLProject } from '../core/class/launchql';
+import { join } from 'path';
 import { getEnvOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
-import { deployModule } from '../modules/deploy';
-import { revertModule } from '../modules/revert';
-import { verifyModule } from '../modules/verify';
+import { LaunchQLMigrate } from '../migrate/client';
 
 const log = new Logger('project-commands');
 
@@ -56,14 +55,17 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     );
   } else {
     // Direct execution on current directory
-    await deployModule(
-      getPgEnvOptions({ database: options.database }), 
-      options.cwd, 
-      { 
-        useTransaction: options.useTransaction, 
-        toChange: options.toChange 
-      }
-    );
+    const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
+    
+    const result = await client.deploy({
+      modulePath: options.cwd,
+      toChange: options.toChange,
+      useTransaction: options.useTransaction
+    });
+    
+    if (result.failed) {
+      throw new Error(`Deployment failed at change: ${result.failed}`);
+    }
   }
 }
 
@@ -98,14 +100,17 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
     );
   } else {
     // Direct execution on current directory
-    await revertModule(
-      getPgEnvOptions({ database: options.database }), 
-      options.cwd, 
-      { 
-        useTransaction: options.useTransaction, 
-        toChange: options.toChange 
-      }
-    );
+    const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
+    
+    const result = await client.revert({
+      modulePath: options.cwd,
+      toChange: options.toChange,
+      useTransaction: options.useTransaction
+    });
+    
+    if (result.failed) {
+      throw new Error(`Revert failed at change: ${result.failed}`);
+    }
   }
 }
 
@@ -137,10 +142,15 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
     );
   } else {
     // Direct execution on current directory
-    await verifyModule(
-      getPgEnvOptions({ database: options.database }), 
-      options.cwd
-    );
+    const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
+    
+    const result = await client.verify({
+      modulePath: options.cwd
+    });
+    
+    if (result.failed.length > 0) {
+      throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+    }
   }
 }
 
