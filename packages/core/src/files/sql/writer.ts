@@ -32,8 +32,14 @@ const ordered = (arr?: string[]): string[] => {
  * Write a deploy SQL file for a Sqitch change
  */
 const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
-  const globalOpts = getEnvOptions({});
-  const useTx = opts.useTx ?? globalOpts.deployment.useTx;
+  const globalOpts = getEnvOptions({
+    migrations: {
+      codegen: {
+        useTx: opts.useTx
+      }
+    }
+  });
+  const useTx = globalOpts.migrations.codegen.useTx;
   
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
@@ -64,8 +70,14 @@ ${useTx ? 'COMMIT;' : ''}
  * Write a verify SQL file for a Sqitch change
  */
 const writeVerify = (row: SqitchRow, opts: SqlWriteOptions): void => {
-  const globalOpts = getEnvOptions({});
-  const useTx = opts.useTx ?? globalOpts.deployment.useTx;
+  const globalOpts = getEnvOptions({
+    migrations: {
+      codegen: {
+        useTx: opts.useTx
+      }
+    }
+  });
+  const useTx = globalOpts.migrations.codegen.useTx;
   
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
@@ -90,8 +102,14 @@ ${useTx ? 'COMMIT;' : ''}
  * Write a revert SQL file for a Sqitch change
  */
 const writeRevert = (row: SqitchRow, opts: SqlWriteOptions): void => {
-  const globalOpts = getEnvOptions({});
-  const useTx = opts.useTx ?? globalOpts.deployment.useTx;
+  const globalOpts = getEnvOptions({
+    migrations: {
+      codegen: {
+        useTx: opts.useTx
+      }
+    }
+  });
+  const useTx = globalOpts.migrations.codegen.useTx;
   
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
