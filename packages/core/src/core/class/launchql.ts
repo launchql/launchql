@@ -664,13 +664,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { 
-      useTransaction?: boolean;
-      fast?: boolean;
-      usePlan?: boolean;
-      cache?: boolean;
-      toChange?: string;
-    }
+    toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('deploy');
 
@@ -710,11 +704,11 @@ export class LaunchQLProject {
           log.info(`📂 Deploying local module: ${extension}`);
           log.debug(`→ Path: ${modulePath}`);
 
-          if (options?.fast ?? true) {
+          if (opts.deployment.fast) {
             const localProject = this.getModuleProject(extension);
             const cacheKey = getCacheKey(opts.pg as PgConfig, extension, database);
             
-            if (options?.cache && deployFastCache[cacheKey]) {
+            if (opts.deployment.cache && deployFastCache[cacheKey]) {
               log.warn(`⚡ Using cached pkg for ${extension}.`);
               await pgPool.query(deployFastCache[cacheKey].sql);
               continue;
@@ -723,7 +717,7 @@ export class LaunchQLProject {
             let pkg;
             try {
               pkg = await packageModule(localProject.modulePath, { 
-                usePlan: options?.usePlan ?? true, 
+                usePlan: opts.deployment.usePlan, 
                 extension: false 
               });
             } catch (err: any) {
@@ -755,7 +749,7 @@ export class LaunchQLProject {
 
             await pgPool.query(pkg.sql);
 
-            if (options?.cache) {
+            if (opts.deployment.cache) {
               deployFastCache[cacheKey] = pkg;
             }
           } else {
@@ -763,8 +757,8 @@ export class LaunchQLProject {
             
             try {
               await deployModule(opts.pg, database, modulePath, { 
-                useTransaction: options?.useTransaction,
-                toChange: options?.toChange
+                useTransaction: opts.deployment.useTx,
+                toChange
               });
             } catch (deployError) {
               log.error(`❌ Deployment failed for module ${extension}`);
@@ -787,10 +781,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { 
-      useTransaction?: boolean;
-      toChange?: string;
-    }
+    toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('revert');
 
@@ -835,8 +826,8 @@ export class LaunchQLProject {
           
           try {
             await revertModule(opts.pg, database, modulePath, { 
-              useTransaction: options?.useTransaction,
-              toChange: options?.toChange
+              useTransaction: opts.deployment.useTx,
+              toChange
             });
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
@@ -858,7 +849,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { }
+    toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('verify');
 

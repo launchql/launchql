@@ -42,16 +42,18 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     log.info(`Deploying project ${options.projectName} from ${modulePath} to database ${options.database}...`);
 
     await project.deploy(
-      getEnvOptions({ pg: { database: options.database } }), 
+      getEnvOptions({ 
+        pg: { database: options.database },
+        deployment: {
+          useTx: options.useTransaction,
+          fast: options.fast,
+          usePlan: options.usePlan,
+          cache: options.cache
+        }
+      }), 
       options.projectName, 
-      options.database, 
-      { 
-        useTransaction: options.useTransaction,
-        fast: options.fast,
-        usePlan: options.usePlan,
-        cache: options.cache,
-        toChange: options.toChange
-      }
+      options.database,
+      options.toChange
     );
   } else {
     // Direct execution on current directory
@@ -87,13 +89,15 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
     log.info(`Reverting project ${options.projectName} on database ${options.database}...`);
     
     await project.revert(
-      getEnvOptions({ pg: { database: options.database } }), 
+      getEnvOptions({ 
+        pg: { database: options.database },
+        deployment: {
+          useTx: options.useTransaction
+        }
+      }), 
       options.projectName, 
-      options.database, 
-      { 
-        useTransaction: options.useTransaction,
-        toChange: options.toChange
-      }
+      options.database,
+      options.toChange
     );
   } else {
     // Direct execution on current directory
@@ -129,10 +133,12 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
     log.info(`Verifying project ${options.projectName} on database ${options.database}...`);
     
     await project.verify(
-      getEnvOptions({ pg: { database: options.database } }), 
+      getEnvOptions({ 
+        pg: { database: options.database }
+      }), 
       options.projectName, 
-      options.database, 
-      { }
+      options.database,
+      options.toChange
     );
   } else {
     // Direct execution on current directory
