@@ -781,10 +781,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { 
-      useTransaction?: boolean;
-      toChange?: string;
-    }
+    toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('revert');
 
@@ -829,8 +826,8 @@ export class LaunchQLProject {
           
           try {
             await revertModule(opts.pg, database, modulePath, { 
-              useTransaction: options?.useTransaction,
-              toChange: options?.toChange
+              useTransaction: opts.deployment.useTx,
+              toChange
             });
           } catch (revertError) {
             log.error(`❌ Revert failed for module ${extension}`);
@@ -852,7 +849,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { }
+    toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('verify');
 
