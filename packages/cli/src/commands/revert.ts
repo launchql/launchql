@@ -53,7 +53,8 @@ export default async (
     cwd,
     recursive,
     projectName,
-    useTransaction: tx
+    useTransaction: tx,
+    toChange: argv.toChange
   });
 
   log.success('Revert complete.');

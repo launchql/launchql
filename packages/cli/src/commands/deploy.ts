@@ -106,6 +106,7 @@ export default async (
     recursive,
     projectName,
     useTransaction: opts.deployment.useTx,
+    toChange: argv.toChange,
     fast: opts.deployment.fast,
     usePlan: opts.deployment.usePlan,
     cache: opts.deployment.cache

@@ -31,7 +31,8 @@ export default async (
     database,
     cwd,
     recursive,
-    projectName
+    projectName,
+    toChange: argv.toChange
   });
 
   log.success('Verify complete.');
