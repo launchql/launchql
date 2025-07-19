@@ -42,16 +42,18 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     log.info(`Deploying project ${options.projectName} from ${modulePath} to database ${options.database}...`);
 
     await project.deploy(
-      getEnvOptions({ pg: { database: options.database } }), 
+      getEnvOptions({ 
+        pg: { database: options.database },
+        deployment: {
+          useTx: options.useTransaction,
+          fast: options.fast,
+          usePlan: options.usePlan,
+          cache: options.cache
+        }
+      }), 
       options.projectName, 
-      options.database, 
-      { 
-        useTransaction: options.useTransaction,
-        fast: options.fast,
-        usePlan: options.usePlan,
-        cache: options.cache,
-        toChange: options.toChange
-      }
+      options.database,
+      options.toChange
     );
   } else {
     // Direct execution on current directory

@@ -7,14 +7,15 @@ export function sqitch(cwd?: string): SeedAdapter {
     async seed(ctx: SeedContext) {
       const proj = new LaunchQLProject(cwd ?? ctx.connect.cwd);
       if (!proj.isInModule()) return;
-      const opts = getEnvOptions({ pg: ctx.config });
       await proj.deploy(
-        opts,
+        getEnvOptions({ 
+          pg: ctx.config,
+          deployment: {
+            fast: false
+          }
+        }),
         proj.getModuleName(),
-        ctx.config.database,
-        {
-          fast: false
-        }
+        ctx.config.database
       );
     }
   };
