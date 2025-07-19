@@ -60,7 +60,11 @@ export interface LaunchQLOptions {
         fast?: boolean;
         usePlan?: boolean;
         cache?: boolean;
-        useTx?: boolean;
+    };
+    migrations?: {
+        codegen?: {
+            useTx?: boolean;
+        };
     };
 }
 
@@ -119,8 +123,12 @@ export const launchqlDefaults: LaunchQLOptions = {
         useTransaction: true,
         fast: false,
         usePlan: true,
-        cache: false,
-        useTx: false
+        cache: false
+    },
+    migrations: {
+        codegen: {
+            useTx: false
+        }
     }
 };
 
