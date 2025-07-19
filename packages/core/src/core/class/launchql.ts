@@ -764,7 +764,7 @@ export class LaunchQLProject {
             
             try {
               await deployModule(opts.pg, database, modulePath, { 
-                useTransaction: opts.deployment.useTransaction,
+                useTransaction: opts.deployment.useTx,
                 toChange: options?.toChange
               });
             } catch (deployError) {

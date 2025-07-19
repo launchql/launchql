@@ -146,7 +146,7 @@ export const deployProject = async (
           
           try {
             await deployModule(mergedOpts.pg, database, modulePath, { 
-              useTransaction: mergedOpts.deployment.useTransaction,
+              useTransaction: mergedOpts.deployment.useTx,
               toChange: options?.toChange
             });
           } catch (deployError) {
