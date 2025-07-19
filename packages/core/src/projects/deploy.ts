@@ -33,28 +33,7 @@ export const deployProject = async (
   name: string,
   database: string,
   project: LaunchQLProject,
-  options?: { 
-    useTransaction?: boolean;
-    /**
-     * If true, use the fast deployment strategy
-     * This will skip the new migration system and simply deploy the packaged sql
-     * Defaults to true for launchql
-     */
-    fast?: boolean;
-    /**
-     * if fast is true, you can choose to use the plan file or simply leverage the dependencies
-     */
-    usePlan?: boolean;
-    /**
-     * if fast is true, you can choose to cache the packaged module
-     */
-    cache?: boolean;
-    /**
-     * Deploy up to a specific change (inclusive)
-     * Can be a change name or a tag reference (e.g., '@v1.0.0')
-     */
-    toChange?: string;
-  }
+  toChange?: string
 ): Promise<Extensions> => {
   const mergedOpts = getEnvOptions(opts);
   log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
@@ -147,7 +126,7 @@ export const deployProject = async (
           try {
             await deployModule(mergedOpts.pg, database, modulePath, { 
               useTransaction: mergedOpts.deployment.useTx,
-              toChange: options?.toChange
+              toChange
             });
           } catch (deployError) {
             log.error(`❌ Deployment failed for module ${extension}`);

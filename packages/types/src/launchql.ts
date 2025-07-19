@@ -114,6 +114,8 @@ export interface LaunchQLOptions {
         usePlan?: boolean;
         /** Enable caching of deployment packages */
         cache?: boolean;
+        /** Deploy up to a specific change (inclusive) - can be a change name or tag reference (e.g., '@v1.0.0') */
+        toChange?: string;
     };
     /** Migration and code generation options */
     migrations?: {

@@ -665,13 +665,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { 
-      useTransaction?: boolean;
-      fast?: boolean;
-      usePlan?: boolean;
-      cache?: boolean;
-      toChange?: string;
-    }
+    toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('deploy');
 
@@ -765,7 +759,7 @@ export class LaunchQLProject {
             try {
               await deployModule(opts.pg, database, modulePath, { 
                 useTransaction: opts.deployment.useTx,
-                toChange: options?.toChange
+                toChange
               });
             } catch (deployError) {
               log.error(`❌ Deployment failed for module ${extension}`);
