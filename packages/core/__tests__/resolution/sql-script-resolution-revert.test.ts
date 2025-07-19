@@ -4,7 +4,7 @@ import { resolve } from '../../src/resolution/resolve';
 let fixture: TestFixture;
 
 beforeAll(() => {
-  fixture = new TestFixture('sqitch', 'resolve', 'basic');
+  fixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

@@ -5,9 +5,9 @@ let fixtures: TestFixture[];
 
 beforeAll(() => {
     fixtures = [
-        new TestFixture('sqitch', 'simple-w-tags', 'packages', 'my-first'),
-        new TestFixture('sqitch', 'simple-w-tags', 'packages', 'my-second'),
-        new TestFixture('sqitch', 'simple-w-tags', 'packages', 'my-third'),
+        new TestFixture('migrate', 'simple'),
+        new TestFixture('migrate', 'simple'),
+        new TestFixture('migrate', 'simple'),
     ];
 });
 

@@ -9,7 +9,7 @@ import { TestFixture } from '../../test-utils';
 let fixture: TestFixture;
 
 beforeAll(() => {
-  fixture = new TestFixture('sqitch', 'launchql');
+  fixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

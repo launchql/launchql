@@ -3,7 +3,7 @@ import { cleanText, TestFixture } from '../../test-utils';
 let fixture: TestFixture;
 
 beforeAll(() => {
-  fixture = new TestFixture('sqitch');
+  fixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

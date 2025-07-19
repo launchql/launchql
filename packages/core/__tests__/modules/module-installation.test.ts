@@ -8,8 +8,8 @@ let fixture: TestFixture;
 let mod: LaunchQLProject;
 
 beforeEach(() => {
-    fixture = new TestFixture('sqitch', 'publish');
-    mod = fixture.getModuleProject(['.'], 'totp')!;
+    fixture = new TestFixture('migrate', 'simple');
+    mod = fixture.getModuleProject(['.'], 'my-first')!;
 });
 
 afterEach(() => {

@@ -9,7 +9,7 @@ let distDir: string;
 let mod: LaunchQLProject;
 
 beforeEach(() => {
-  fixture = new TestFixture('sqitch', 'publish', 'packages', 'totp');
+  fixture = new TestFixture('migrate', 'simple');
   distDir = path.join(fixture.tempFixtureDir, 'dist');
   mod = new LaunchQLProject(fixture.tempFixtureDir);
 });

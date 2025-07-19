@@ -4,7 +4,7 @@ import { TestFixture } from '../../test-utils';
 let baseFixture: TestFixture;
 
 beforeAll(() => {
-  baseFixture = new TestFixture('sqitch', 'resolve');
+  baseFixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

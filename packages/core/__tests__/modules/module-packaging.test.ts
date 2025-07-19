@@ -4,7 +4,7 @@ import { packageModule } from '../../src/packaging/package';
 let fixture: TestFixture;
 
 beforeAll(() => {
-  fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
+  fixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

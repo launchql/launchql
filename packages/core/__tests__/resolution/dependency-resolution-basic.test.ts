@@ -5,7 +5,7 @@ import { listModules } from '../../src/modules/modules';
 let fixture: TestFixture;
 
 beforeAll(() => {
-  fixture = new TestFixture('sqitch');
+  fixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

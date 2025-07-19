@@ -4,7 +4,7 @@ import { resolveDependencies } from '../../src/resolution/deps';
 let fixture: TestFixture;
 
 beforeAll(() => {
-  fixture = new TestFixture('sqitch');
+  fixture = new TestFixture('migrate', 'simple');
 });
 
 afterAll(() => {

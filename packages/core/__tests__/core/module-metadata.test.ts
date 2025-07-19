@@ -4,7 +4,7 @@ import { LaunchQLProject } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 
 it('writes module metadata files without modifying fixture', async () => {
-  const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
+  const fixture = new TestFixture('migrate', 'simple');
   const dst = fixture.tempFixtureDir;
 
   const project = new LaunchQLProject(dst);
