@@ -31,7 +31,10 @@ export async function deployModule(
     port: config.port,
     user: config.user,
     password: config.password,
-    database: config.database
+    // check on this.... WHY so we pass in targetDatabase if it's not used?
+    // initialize takes no arguments, and uses this database, while targetDatabase is used for deploy
+    // this is a little confusing
+    database: database
   };
   
   const client = new LaunchQLMigrate(fullConfig);
