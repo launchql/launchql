@@ -1,11 +1,11 @@
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import * as path from 'path';
 
 import { errors, LaunchQLOptions, getEnvOptions } from '@launchql/types';
 import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { deployModule } from '../modules/deploy';
+import { LaunchQLMigrate } from '../migrate/client';
 import { LaunchQLProject } from '../core/class/launchql';
 import { packageModule } from '../packaging/package';
 
@@ -124,10 +124,20 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployModule(mergedOpts.pg as PgConfig, modulePath, { 
-              useTransaction: mergedOpts.deployment.useTx,
-              toChange
+            const planPath = join(modulePath, 'launchql.plan');
+            const client = new LaunchQLMigrate(mergedOpts.pg as PgConfig);
+            
+            const result = await client.deploy({
+              project: '',
+              targetDatabase: mergedOpts.pg.database,
+              planPath,
+              toChange,
+              useTransaction: mergedOpts.deployment.useTx
             });
+            
+            if (result.failed) {
+              throw new Error(`Deployment failed at change: ${result.failed}`);
+            }
           } catch (deployError) {
             log.error(`❌ Deployment failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });

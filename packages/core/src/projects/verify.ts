@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import * as path from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
@@ -6,7 +6,7 @@ import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { LaunchQLProject } from '../core/class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
-import { verifyModule } from '../modules/verify';
+import { LaunchQLMigrate } from '../migrate/client';
 
 interface Extensions {
   resolved: string[];
@@ -58,8 +58,18 @@ export const verifyProject = async (
         log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
         try {
-          // Use new migration system
-          await verifyModule(opts.pg as PgConfig, modulePath);
+          const planPath = join(modulePath, 'launchql.plan');
+          const client = new LaunchQLMigrate(opts.pg as PgConfig);
+          
+          const result = await client.verify({
+            project: '',
+            targetDatabase: opts.pg.database,
+            planPath
+          });
+          
+          if (result.failed.length > 0) {
+            throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+          }
         } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

@@ -12,9 +12,6 @@ export * from './workspace/utils';
 
 // New exports for migration API
 export * from './migrate/migration';
-export { deployModule } from './modules/deploy';
-export { revertModule } from './modules/revert';
-export { verifyModule } from './modules/verify';
 
 // Export project-files functionality (now integrated into core)
 export * from './files';
