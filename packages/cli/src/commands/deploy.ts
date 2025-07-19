@@ -1,6 +1,5 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import deepmerge from 'deepmerge';
 
 import {
   getPgEnvOptions,

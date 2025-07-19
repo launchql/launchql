@@ -48,7 +48,6 @@
     "@launchql/templatizer": "^2.2.0",
     "@launchql/types": "^2.1.13",
     "chalk": "^4.1.0",
-    "deepmerge": "^4.3.1",
     "inquirerer": "^2.0.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
