@@ -663,7 +663,7 @@ export class LaunchQLProject {
     name?: string,
     toChange?: string,
     recursive: boolean = true
-  ): Promise<{ resolved: string[]; external: string[] }> {
+  ): Promise<void> {
     const log = new Logger('deploy');
 
     if (!name) {
@@ -792,7 +792,6 @@ export class LaunchQLProject {
     }
 
       log.success(`✅ Deployment complete for ${name}.`);
-      return extensions;
     } else {
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
@@ -815,7 +814,6 @@ export class LaunchQLProject {
       }
 
       log.success(`✅ Single module deployment complete for ${name}.`);
-      return { resolved: [name], external: [] };
     }
   }
 
@@ -824,7 +822,7 @@ export class LaunchQLProject {
     name?: string,
     toChange?: string,
     recursive: boolean = true
-  ): Promise<{ resolved: string[]; external: string[] }> {
+  ): Promise<void> {
     const log = new Logger('revert');
 
     if (!name) {
@@ -901,7 +899,6 @@ export class LaunchQLProject {
     }
 
       log.success(`✅ Revert complete for ${name}.`);
-      return extensions;
     } else {
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
@@ -924,7 +921,6 @@ export class LaunchQLProject {
       }
 
       log.success(`✅ Single module revert complete for ${name}.`);
-      return { resolved: [name], external: [] };
     }
   }
 
@@ -933,7 +929,7 @@ export class LaunchQLProject {
     name?: string,
     toChange?: string,
     recursive: boolean = true
-  ): Promise<{ resolved: string[]; external: string[] }> {
+  ): Promise<void> {
     const log = new Logger('verify');
 
     if (!name) {
@@ -997,7 +993,6 @@ export class LaunchQLProject {
     }
 
       log.success(`✅ Verification complete for ${name}.`);
-      return extensions;
     } else {
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
@@ -1018,7 +1013,6 @@ export class LaunchQLProject {
       }
 
       log.success(`✅ Single module verification complete for ${name}.`);
-      return { resolved: [name], external: [] };
     }
   }
 }
