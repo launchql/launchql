@@ -49,6 +49,11 @@ jobs:
           git config --global user.name "CI Test User"
           git config --global user.email "ci@example.com"
 
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install -y postgresql-client
+
       - name: checkout
         uses: actions/checkout@v4
 
