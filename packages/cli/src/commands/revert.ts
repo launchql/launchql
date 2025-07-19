@@ -1,6 +1,8 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { Logger } from '@launchql/logger';
-import { revertModules } from '@launchql/core';
+import { LaunchQLProject } from '@launchql/core';
+import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions } from 'pg-env';
 import { getTargetDatabase } from '../utils';
 import { selectModule } from '../utils/module-utils';
 
@@ -48,14 +50,21 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
-  await revertModules({
-    database,
-    cwd,
-    recursive,
-    projectName,
-    useTransaction: tx,
-    toChange: argv.toChange
+  const project = new LaunchQLProject(cwd);
+  
+  const opts = getEnvOptions({ 
+    pg: getPgEnvOptions({ database }),
+    deployment: {
+      useTx: tx
+    }
   });
+  
+  await project.revert(
+    opts,
+    projectName,
+    argv.toChange,
+    recursive
+  );
 
   log.success('Revert complete.');
 

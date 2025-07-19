@@ -10,8 +10,8 @@ export * from './resolution/resolve';
 export * from './packaging/transform';
 export * from './workspace/utils';
 
-// New exports for migration API
-export * from './migrate/migration';
+// Export getAvailableModules function from migration API
+export { getAvailableModules } from './migrate/migration';
 
 // Export project-files functionality (now integrated into core)
 export * from './files';

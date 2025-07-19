@@ -1,6 +1,8 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { Logger } from '@launchql/logger';
-import { verifyModules } from '@launchql/core';
+import { LaunchQLProject } from '@launchql/core';
+import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions } from 'pg-env';
 import { getTargetDatabase } from '../utils';
 import { selectModule } from '../utils/module-utils';
 
@@ -27,13 +29,18 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
-  await verifyModules({
-    database,
-    cwd,
-    recursive,
-    projectName,
-    toChange: argv.toChange
+  const project = new LaunchQLProject(cwd);
+  
+  const opts = getEnvOptions({ 
+    pg: getPgEnvOptions({ database })
   });
+  
+  await project.verify(
+    opts,
+    projectName,
+    argv.toChange,
+    recursive
+  );
 
   log.success('Verify complete.');
 

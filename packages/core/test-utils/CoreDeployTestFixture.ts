@@ -1,5 +1,7 @@
 import { TestFixture } from './TestFixture';
-import { deployModules, revertModules, MigrationOptions } from '../src/migrate/migration';
+import { LaunchQLProject } from '../src/core/class/launchql';
+import { getEnvOptions } from '@launchql/types';
+import { getPgEnvOptions } from 'pg-env';
 import { MigrateTestFixture, TestDatabase } from './index';
 import { teardownPgPools } from 'pg-cache';
 import { join } from 'path';
@@ -30,16 +32,17 @@ export class CoreDeployTestFixture extends TestFixture {
     try {
       process.chdir(basePath);
       
-      const options: MigrationOptions = {
-        database,
-        cwd: basePath,
-        recursive: true,
-        projectName,
-        fast: false,
-        usePlan: true
-      };
+      const project = new LaunchQLProject(basePath);
+      
+      const opts = getEnvOptions({ 
+        pg: getPgEnvOptions({ database }),
+        deployment: {
+          fast: false,
+          usePlan: true
+        }
+      });
 
-      await deployModules(options);
+      await project.deploy(opts, projectName, undefined, true);
     } finally {
       process.chdir(originalCwd);
     }
@@ -53,15 +56,13 @@ export class CoreDeployTestFixture extends TestFixture {
       const projectPath = join(basePath, 'packages', projectName);
       process.chdir(projectPath);
       
-      const options: MigrationOptions = {
-        database,
-        cwd: projectPath,
-        recursive: true,
-        projectName,
-        toChange
-      };
+      const project = new LaunchQLProject(projectPath);
+      
+      const opts = getEnvOptions({ 
+        pg: getPgEnvOptions({ database })
+      });
 
-      await revertModules(options);
+      await project.revert(opts, projectName, toChange, true);
     } finally {
       process.chdir(originalCwd);
     }
