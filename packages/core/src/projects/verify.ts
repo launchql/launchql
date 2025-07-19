@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import * as path from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
@@ -19,7 +20,7 @@ export const verifyProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string,
+  project: LaunchQLProject,
   options?: { 
     useSqitch?: boolean;
     /**
@@ -29,18 +30,19 @@ export const verifyProject = async (
     planFile?: string;
   }
 ): Promise<Extensions> => {
-  const mod = new LaunchQLProject(dir);
-
-  log.info(`🔍 Gathering modules from ${dir}...`);
-  const modules = mod.getModuleMap();
+  log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
+  const modules = project.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
+  const modulePath = path.resolve(project.workspacePath!, modules[name].path);
+  const moduleProject = new LaunchQLProject(modulePath);
+
   log.info(`📦 Resolving dependencies for ${name}...`);
-  const extensions: Extensions = mod.getModuleExtensions();
+  const extensions: Extensions = moduleProject.getModuleExtensions();
 
   const pgPool = getPgPool({
     ...opts.pg,
@@ -57,7 +59,7 @@ export const verifyProject = async (
         log.debug(`> ${query}`);
         await pgPool.query(query, [extension]);
       } else {
-        const modulePath = resolve(mod.workspacePath, modules[extension].path);
+        const modulePath = resolve(project.workspacePath!, modules[extension].path);
         log.info(`📂 Verifying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
         log.debug(`→ Command: launchql migrate verify db:pg:${database}`);

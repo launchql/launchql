@@ -110,7 +110,7 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
-      options.cwd, 
+      project, 
       { 
         useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
@@ -163,7 +163,7 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
-      options.cwd, 
+      project, 
       { 
         useSqitch: options.useSqitch,
         planFile: options.planFile

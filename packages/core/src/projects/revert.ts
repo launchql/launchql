@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import * as path from 'path';
 
 import { LaunchQLProject } from '../core/class/launchql';
 import { errors, LaunchQLOptions } from '@launchql/types';
@@ -19,7 +20,7 @@ export const revertProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string,
+  project: LaunchQLProject,
   options?: { 
     useSqitch?: boolean; 
     useTransaction?: boolean;
@@ -35,18 +36,19 @@ export const revertProject = async (
     toChange?: string;
   }
 ): Promise<Extensions> => {
-  const mod = new LaunchQLProject(dir);
-
-  log.info(`🔍 Gathering modules from ${dir}...`);
-  const modules = mod.getModuleMap();
+  log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
+  const modules = project.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
+  const modulePath = path.resolve(project.workspacePath!, modules[name].path);
+  const moduleProject = new LaunchQLProject(modulePath);
+
   log.info(`📦 Resolving dependencies for ${name}...`);
-  const extensions: Extensions = mod.getModuleExtensions();
+  const extensions: Extensions = moduleProject.getModuleExtensions();
 
   const pgPool = getPgPool({
     ...opts.pg,
@@ -73,7 +75,7 @@ export const revertProject = async (
           }
         }
       } else {
-        const modulePath = resolve(mod.workspacePath, modules[extension].path);
+        const modulePath = resolve(project.workspacePath!, modules[extension].path);
         log.info(`📂 Reverting local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
