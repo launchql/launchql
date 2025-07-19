@@ -29,7 +29,7 @@ export async function verifyModule(
     port: config.port,
     user: config.user,
     password: config.password,
-    database: config.database
+    database
   };
   
   const client = new LaunchQLMigrate(fullConfig);
