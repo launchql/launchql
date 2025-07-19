@@ -36,8 +36,7 @@ export class CoreDeployTestFixture extends TestFixture {
         recursive: true,
         projectName,
         fast: false,
-        usePlan: true,
-        useSqitch: false
+        usePlan: true
       };
 
       await deployModules(options);
@@ -59,8 +58,7 @@ export class CoreDeployTestFixture extends TestFixture {
         cwd: projectPath,
         recursive: true,
         projectName,
-        toChange,
-        useSqitch: false
+        toChange
       };
 
       await revertModules(options);
