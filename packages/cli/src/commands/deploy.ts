@@ -9,7 +9,7 @@ import {
 
 import { getEnvOptions } from '@launchql/types';
 
-import { deployModules } from '@launchql/core';
+import { LaunchQLProject } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { getTargetDatabase } from '../utils';
@@ -90,8 +90,9 @@ export default async (
   }
 
   const cliOverrides = {
+    pg: getPgEnvOptions({ database }),
     deployment: {
-      useTransaction: tx,
+      useTx: tx,
       fast,
       usePlan: argv.usePlan,
       cache: argv.cache
@@ -100,16 +101,14 @@ export default async (
   
   const opts = getEnvOptions(cliOverrides);
 
-  await deployModules({
-    database,
-    cwd,
-    recursive,
+  const project = new LaunchQLProject(cwd);
+  
+  await project.deploy(
+    opts,
     projectName,
-    useTransaction: opts.deployment.useTx,
-    fast: opts.deployment.fast,
-    usePlan: opts.deployment.usePlan,
-    cache: opts.deployment.cache
-  });
+    argv.toChange,
+    recursive
+  );
 
   log.success('Deployment complete.');
 

@@ -660,30 +660,44 @@ export class LaunchQLProject {
 
   async deploy(
     opts: LaunchQLOptions,
-    name: string,
-    toChange?: string
-  ): Promise<{ resolved: string[]; external: string[] }> {
+    name?: string,
+    toChange?: string,
+    recursive: boolean = true
+  ): Promise<void> {
     const log = new Logger('deploy');
 
-    // Cache for fast deployment
-    const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
+    if (!name) {
+      const context = this.getContext();
+      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
+        name = this.getModuleName();
+        recursive = false;
+      } else if (context === ProjectContext.Workspace) {
+        throw new Error('Module name is required when running from workspace root');
+      } else {
+        throw new Error('Not in a LaunchQL workspace or module');
+      }
+    }
 
-    const getCacheKey = (
-      pg: PgConfig,
-      name: string,
-      database: string
-    ): string => {
-      const { host, port, user } = pg ?? {};
-      return `${host}:${port}:${user}:${database}:${name}`;
-    };
+    if (recursive) {
+      // Cache for fast deployment
+      const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
 
-    log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
-    const modules = this.getModuleMap();
+      const getCacheKey = (
+        pg: PgConfig,
+        name: string,
+        database: string
+      ): string => {
+        const { host, port, user } = pg ?? {};
+        return `${host}:${port}:${user}:${database}:${name}`;
+      };
 
-    const moduleProject = this.getModuleProject(name);
+      log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
+      const modules = this.getModuleMap();
 
-    log.info(`📦 Resolving dependencies for ${name}...`);
-    const extensions = moduleProject.getModuleExtensions();
+      const moduleProject = this.getModuleProject(name);
+
+      log.info(`📦 Resolving dependencies for ${name}...`);
+      const extensions = moduleProject.getModuleExtensions();
 
     const pgPool = getPgPool(opts.pg);
 
@@ -741,7 +755,7 @@ export class LaunchQLProject {
               });
             }
 
-            log.debug(`→ Command: sqitch deploy db:pg:${opts.pg.database}`);
+            log.debug(`→ Deploy: ${opts.pg.database}`);
             log.debug(`> ${pkg.sql}`);
 
             await pgPool.query(pkg.sql);
@@ -750,7 +764,7 @@ export class LaunchQLProject {
               deployFastCache[cacheKey] = pkg;
             }
           } else {
-            log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
+            log.debug(`→ Migrate: ${opts.pg.database}`);
             
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -777,24 +791,60 @@ export class LaunchQLProject {
       }
     }
 
-    log.success(`✅ Deployment complete for ${name}.`);
-    return extensions;
+      log.success(`✅ Deployment complete for ${name}.`);
+    } else {
+      const moduleProject = this.getModuleProject(name);
+      const modulePath = moduleProject.getModulePath();
+      if (!modulePath) {
+        throw new Error(`Could not resolve module path for ${name}`);
+      }
+
+      log.info(`📂 Deploying single module: ${name}`);
+      log.debug(`→ Path: ${modulePath}`);
+
+      const client = new LaunchQLMigrate(opts.pg as PgConfig);
+      const result = await client.deploy({
+        modulePath,
+        toChange,
+        useTransaction: opts.deployment?.useTx
+      });
+
+      if (result.failed) {
+        throw new Error(`Deployment failed at change: ${result.failed}`);
+      }
+
+      log.success(`✅ Single module deployment complete for ${name}.`);
+    }
   }
 
   async revert(
     opts: LaunchQLOptions,
-    name: string,
-    toChange?: string
-  ): Promise<{ resolved: string[]; external: string[] }> {
+    name?: string,
+    toChange?: string,
+    recursive: boolean = true
+  ): Promise<void> {
     const log = new Logger('revert');
 
-    log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
-    const modules = this.getModuleMap();
+    if (!name) {
+      const context = this.getContext();
+      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
+        name = this.getModuleName();
+        recursive = false;
+      } else if (context === ProjectContext.Workspace) {
+        throw new Error('Module name is required when running from workspace root');
+      } else {
+        throw new Error('Not in a LaunchQL workspace or module');
+      }
+    }
 
-    const moduleProject = this.getModuleProject(name);
+    if (recursive) {
+      log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
+      const modules = this.getModuleMap();
 
-    log.info(`📦 Resolving dependencies for ${name}...`);
-    const extensions = moduleProject.getModuleExtensions();
+      const moduleProject = this.getModuleProject(name);
+
+      log.info(`📦 Resolving dependencies for ${name}...`);
+      const extensions = moduleProject.getModuleExtensions();
 
     const pgPool = getPgPool(opts.pg);
 
@@ -848,24 +898,60 @@ export class LaunchQLProject {
       }
     }
 
-    log.success(`✅ Revert complete for ${name}.`);
-    return extensions;
+      log.success(`✅ Revert complete for ${name}.`);
+    } else {
+      const moduleProject = this.getModuleProject(name);
+      const modulePath = moduleProject.getModulePath();
+      if (!modulePath) {
+        throw new Error(`Could not resolve module path for ${name}`);
+      }
+
+      log.info(`📂 Reverting single module: ${name}`);
+      log.debug(`→ Path: ${modulePath}`);
+
+      const client = new LaunchQLMigrate(opts.pg as PgConfig);
+      const result = await client.revert({
+        modulePath,
+        toChange,
+        useTransaction: opts.deployment?.useTx
+      });
+
+      if (result.failed) {
+        throw new Error(`Revert failed at change: ${result.failed}`);
+      }
+
+      log.success(`✅ Single module revert complete for ${name}.`);
+    }
   }
 
   async verify(
     opts: LaunchQLOptions,
-    name: string,
-    toChange?: string
-  ): Promise<{ resolved: string[]; external: string[] }> {
+    name?: string,
+    toChange?: string,
+    recursive: boolean = true
+  ): Promise<void> {
     const log = new Logger('verify');
 
-    log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
-    const modules = this.getModuleMap();
+    if (!name) {
+      const context = this.getContext();
+      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
+        name = this.getModuleName();
+        recursive = false;
+      } else if (context === ProjectContext.Workspace) {
+        throw new Error('Module name is required when running from workspace root');
+      } else {
+        throw new Error('Not in a LaunchQL workspace or module');
+      }
+    }
 
-    const moduleProject = this.getModuleProject(name);
+    if (recursive) {
+      log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
+      const modules = this.getModuleMap();
 
-    log.info(`📦 Resolving dependencies for ${name}...`);
-    const extensions = moduleProject.getModuleExtensions();
+      const moduleProject = this.getModuleProject(name);
+
+      log.info(`📦 Resolving dependencies for ${name}...`);
+      const extensions = moduleProject.getModuleExtensions();
 
     const pgPool = getPgPool(opts.pg);
 
@@ -906,7 +992,27 @@ export class LaunchQLProject {
       }
     }
 
-    log.success(`✅ Verification complete for ${name}.`);
-    return extensions;
+      log.success(`✅ Verification complete for ${name}.`);
+    } else {
+      const moduleProject = this.getModuleProject(name);
+      const modulePath = moduleProject.getModulePath();
+      if (!modulePath) {
+        throw new Error(`Could not resolve module path for ${name}`);
+      }
+
+      log.info(`📂 Verifying single module: ${name}`);
+      log.debug(`→ Path: ${modulePath}`);
+
+      const client = new LaunchQLMigrate(opts.pg as PgConfig);
+      const result = await client.verify({
+        modulePath
+      });
+
+      if (result.failed.length > 0) {
+        throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+      }
+
+      log.success(`✅ Single module verification complete for ${name}.`);
+    }
   }
 }
