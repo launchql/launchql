@@ -755,7 +755,7 @@ export class LaunchQLProject {
             log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
             
             try {
-              await deployModule(getPgEnvOptions(opts.pg), modulePath, { 
+              await deployModule(opts.pg as PgConfig, modulePath, { 
                 useTransaction: opts.deployment.useTx,
                 toChange
               });
@@ -820,7 +820,7 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate revert db:pg:${opts.pg.database}`);
           
           try {
-            await revertModule(getPgEnvOptions(opts.pg), modulePath, { 
+            await revertModule(opts.pg as PgConfig, modulePath, { 
               useTransaction: opts.deployment.useTx,
               toChange
             });
@@ -873,7 +873,7 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate verify db:pg:${opts.pg.database}`);
 
           try {
-            await verifyModule(getPgEnvOptions(opts.pg), modulePath);
+            await verifyModule(opts.pg as PgConfig, modulePath);
           } catch (verifyError) {
             log.error(`❌ Verification failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

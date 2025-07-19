@@ -76,7 +76,7 @@ export const revertProject = async (
         log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
         
         try {
-          await revertModule(getPgEnvOptions(opts.pg), modulePath, { 
+          await revertModule(opts.pg as PgConfig, modulePath, { 
             useTransaction: options?.useTransaction,
             toChange: options?.toChange
           });

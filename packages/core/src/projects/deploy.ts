@@ -124,7 +124,7 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployModule(getPgEnvOptions(mergedOpts.pg), modulePath, { 
+            await deployModule(mergedOpts.pg as PgConfig, modulePath, { 
               useTransaction: mergedOpts.deployment.useTx,
               toChange
             });
