@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { getEnvOptions } from '@launchql/types';
 import { SqitchRow } from '../types';
 
 export interface SqlWriteOptions {
@@ -31,6 +32,9 @@ const ordered = (arr?: string[]): string[] => {
  * Write a deploy SQL file for a Sqitch change
  */
 const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
+  const globalOpts = getEnvOptions({});
+  const useTx = opts.useTx ?? globalOpts.deployment.useTx;
+  
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
   const prefix = path.join(opts.outdir, opts.name, 'deploy');
@@ -39,7 +43,6 @@ const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
   fs.mkdirSync(actualDir, { recursive: true });
   
   const sqlContent = opts.replacer(row.content);
-  const useTx = opts.useTx ?? false;
   
   const content = `-- Deploy: ${deploy} to pg
 -- made with <3 @ launchql.com
@@ -61,6 +64,9 @@ ${useTx ? 'COMMIT;' : ''}
  * Write a verify SQL file for a Sqitch change
  */
 const writeVerify = (row: SqitchRow, opts: SqlWriteOptions): void => {
+  const globalOpts = getEnvOptions({});
+  const useTx = opts.useTx ?? globalOpts.deployment.useTx;
+  
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
   const prefix = path.join(opts.outdir, opts.name, 'verify');
@@ -69,7 +75,6 @@ const writeVerify = (row: SqitchRow, opts: SqlWriteOptions): void => {
   fs.mkdirSync(actualDir, { recursive: true });
   
   const sqlContent = opts.replacer(row.verify);
-  const useTx = opts.useTx ?? false;
   
   const content = opts.replacer(`-- Verify: ${deploy} on pg
 
@@ -85,6 +90,9 @@ ${useTx ? 'COMMIT;' : ''}
  * Write a revert SQL file for a Sqitch change
  */
 const writeRevert = (row: SqitchRow, opts: SqlWriteOptions): void => {
+  const globalOpts = getEnvOptions({});
+  const useTx = opts.useTx ?? globalOpts.deployment.useTx;
+  
   const deploy = opts.replacer(row.deploy);
   const dir = path.dirname(deploy);
   const prefix = path.join(opts.outdir, opts.name, 'revert');
@@ -93,7 +101,6 @@ const writeRevert = (row: SqitchRow, opts: SqlWriteOptions): void => {
   fs.mkdirSync(actualDir, { recursive: true });
   
   const sqlContent = opts.replacer(row.revert);
-  const useTx = opts.useTx ?? false;
   
   const content = `-- Revert: ${deploy} from pg
 

@@ -1,10 +1,13 @@
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
+import deepmerge from 'deepmerge';
 
 import {
   getPgEnvOptions,
   getSpawnEnvWithPg,
 } from 'pg-env';
+
+import { getEnvOptions } from '@launchql/types';
 
 import { deployModules } from '@launchql/core';
 import { Logger } from '@launchql/logger';
@@ -86,15 +89,26 @@ export default async (
     log.info(`Selected project: ${projectName}`);
   }
 
+  const cliOverrides = {
+    deployment: {
+      useTransaction: tx,
+      fast,
+      usePlan: argv.usePlan,
+      cache: argv.cache
+    }
+  };
+  
+  const opts = getEnvOptions(cliOverrides);
+
   await deployModules({
     database,
     cwd,
     recursive,
     projectName,
-    useTransaction: tx,
-    fast,
-    usePlan: argv.usePlan ?? true,
-    cache: argv.cache ?? false
+    useTransaction: opts.deployment.useTransaction,
+    fast: opts.deployment.fast,
+    usePlan: opts.deployment.usePlan,
+    cache: opts.deployment.cache
   });
 
   log.success('Deployment complete.');
