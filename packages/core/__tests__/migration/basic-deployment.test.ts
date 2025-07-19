@@ -25,8 +25,6 @@ describe('Deploy Command', () => {
     
     // Deploy only the schema change
     const result = await client.deploy({
-      project: 'test-simple',
-      targetDatabase: db.name,
       planPath: join(fixturePath, 'launchql.plan'),
       toChange: 'schema'
     });
@@ -50,8 +48,6 @@ describe('Deploy Command', () => {
     
     // Deploy all changes
     const result = await client.deploy({
-      project: 'test-simple',
-      targetDatabase: db.name,
       planPath: join(fixturePath, 'launchql.plan'),
     });
     
@@ -75,8 +71,6 @@ describe('Deploy Command', () => {
     
     // First deployment
     const result1 = await client.deploy({
-      project: 'test-simple',
-      targetDatabase: db.name,
       planPath: join(fixturePath, 'launchql.plan'),
       toChange: 'table'
     });
@@ -85,8 +79,6 @@ describe('Deploy Command', () => {
     
     // Second deployment - should skip already deployed
     const result2 = await client.deploy({
-      project: 'test-simple',
-      targetDatabase: db.name,
       planPath: join(fixturePath, 'launchql.plan'),
     });
     
@@ -113,8 +105,6 @@ describe('Deploy Command', () => {
     const client = new LaunchQLMigrate(db.config);
     
     await expect(client.deploy({
-      project: 'test-fail',
-      targetDatabase: db.name,
       planPath: join(tempDir, 'launchql.plan'),
       useTransaction: true // default
     })).rejects.toThrow();
@@ -148,8 +138,6 @@ describe('Deploy Command', () => {
     const client = new LaunchQLMigrate(db.config);
     
     await expect(client.deploy({
-      project: 'test-fail',
-      targetDatabase: db.name,
       planPath: join(tempDir, 'launchql.plan'),
       useTransaction: false
     })).rejects.toThrow();

@@ -62,8 +62,6 @@ export const verifyProject = async (
           const client = new LaunchQLMigrate(opts.pg as PgConfig);
           
           const result = await client.verify({
-            project: '',
-            targetDatabase: opts.pg.database,
             planPath
           });
           

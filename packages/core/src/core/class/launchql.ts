@@ -757,8 +757,6 @@ export class LaunchQLProject {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
               const result = await client.deploy({
-                project: '',
-                targetDatabase: opts.pg.database,
                 planPath,
                 toChange,
                 useTransaction: opts.deployment.useTx
@@ -832,8 +830,6 @@ export class LaunchQLProject {
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
             const result = await client.revert({
-              project: '',
-              targetDatabase: opts.pg.database,
               planPath,
               toChange,
               useTransaction: opts.deployment.useTx
@@ -895,8 +891,6 @@ export class LaunchQLProject {
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
             const result = await client.verify({
-              project: '',
-              targetDatabase: opts.pg.database,
               planPath
             });
             

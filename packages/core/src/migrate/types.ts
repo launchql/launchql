@@ -16,8 +16,6 @@ export interface MigratePlanFile {
 }
 
 export interface DeployOptions {
-  project: string;
-  targetDatabase: string;
   planPath: string;
   toChange?: string;
   useTransaction?: boolean;
@@ -26,8 +24,6 @@ export interface DeployOptions {
 }
 
 export interface RevertOptions {
-  project: string;
-  targetDatabase: string;
   planPath: string;
   toChange?: string;
   useTransaction?: boolean;
@@ -36,8 +32,6 @@ export interface RevertOptions {
 }
 
 export interface VerifyOptions {
-  project: string;
-  targetDatabase: string;
   planPath: string;
 }
 

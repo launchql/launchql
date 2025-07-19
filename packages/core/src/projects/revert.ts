@@ -80,8 +80,6 @@ export const revertProject = async (
           const client = new LaunchQLMigrate(opts.pg as PgConfig);
           
           const result = await client.revert({
-            project: '',
-            targetDatabase: opts.pg.database,
             planPath,
             toChange: options?.toChange,
             useTransaction: options?.useTransaction

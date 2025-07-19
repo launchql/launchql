@@ -128,8 +128,6 @@ export const deployProject = async (
             const client = new LaunchQLMigrate(mergedOpts.pg as PgConfig);
             
             const result = await client.deploy({
-              project: '',
-              targetDatabase: mergedOpts.pg.database,
               planPath,
               toChange,
               useTransaction: mergedOpts.deployment.useTx

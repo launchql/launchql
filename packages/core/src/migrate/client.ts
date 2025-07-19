@@ -93,9 +93,9 @@ export class LaunchQLMigrate {
   async deploy(options: DeployOptions): Promise<DeployResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, toChange, useTransaction = true, debug = false } = options;
+    const { planPath, toChange, useTransaction = true, debug = false } = options;
     const plan = parsePlanFile(planPath);
-    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, project || plan.project) : toChange;
+    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
     const fullPlanResult = parsePlanFileFull(planPath);
@@ -121,7 +121,7 @@ export class LaunchQLMigrate {
     // Use a separate pool for the target database
     const targetPool = getPgPool({
       ...this.pgConfig,
-      database: targetDatabase
+      database: this.pgConfig.database
     });
     
     // Execute deployment with or without transaction
@@ -137,7 +137,7 @@ export class LaunchQLMigrate {
           const deployedResult = await executeQuery(
             context,
             'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-            [project || plan.project, change.name]
+            [plan.project, change.name]
           );
           
           if (deployedResult.rows[0]?.is_deployed) {
@@ -176,7 +176,7 @@ export class LaunchQLMigrate {
             context,
             'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
             [
-              project || plan.project,
+              plan.project,
               change.name,
               scriptHash,
               resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
@@ -191,7 +191,7 @@ export class LaunchQLMigrate {
           const errorLines = [];
           errorLines.push(`Failed to deploy ${change.name}:`);
           errorLines.push(`  Change: ${change.name}`);
-          errorLines.push(`  Project: ${project || plan.project}`);
+          errorLines.push(`  Project: ${plan.project}`);
           errorLines.push(`  Script Hash: ${scriptHash}`);
           errorLines.push(`  Dependencies: ${resolvedChangeDeps.length > 0 ? resolvedChangeDeps.join(', ') : 'none'}`);
           errorLines.push(`  Error Code: ${error.code || 'N/A'}`);
@@ -266,7 +266,7 @@ export class LaunchQLMigrate {
   async revert(options: RevertOptions): Promise<RevertResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath, toChange, useTransaction = true } = options;
+    const { planPath, toChange, useTransaction = true } = options;
     const plan = parsePlanFile(planPath);
     
     const fullPlanResult = parsePlanFileFull(planPath);
@@ -292,7 +292,7 @@ export class LaunchQLMigrate {
     }
     
     let resolvedToChange = toChange;
-    let targetProject = project || plan.project;
+    let targetProject = plan.project;
     let targetChangeName = toChange;
     
     if (toChange && toChange.includes('@')) {
@@ -323,7 +323,7 @@ export class LaunchQLMigrate {
           targetChangeName = toChange;
         }
       } else {
-        resolvedToChange = resolveTagToChangeName(planPath, toChange, project || plan.project);
+        resolvedToChange = resolveTagToChangeName(planPath, toChange, plan.project);
         targetChangeName = resolvedToChange;
       }
     }
@@ -337,9 +337,9 @@ export class LaunchQLMigrate {
     // Use a separate pool for the target database
     const targetPool = getPgPool({
       ...this.pgConfig,
-      database: targetDatabase
+      database: this.pgConfig.database
     });
-    
+
     // Execute revert with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
@@ -382,7 +382,7 @@ export class LaunchQLMigrate {
             const currentTimeResult = await executeQuery(
               context,
               'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
-              [project || plan.project, change.name]
+              [plan.project, change.name]
             );
             
             if (targetTimeResult.rows[0] && currentTimeResult.rows[0]) {
@@ -405,7 +405,7 @@ export class LaunchQLMigrate {
         const deployedResult = await executeQuery(
           context,
           'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-          [project || plan.project, change.name]
+          [plan.project, change.name]
         );
         
         if (!deployedResult.rows[0]?.is_deployed) {
@@ -429,7 +429,7 @@ export class LaunchQLMigrate {
           await executeQuery(
             context,
             'CALL launchql_migrate.revert($1, $2, $3)',
-            [project || plan.project, change.name, cleanRevertSql]
+            [plan.project, change.name, cleanRevertSql]
           );
           
           reverted.push(change.name);
@@ -451,7 +451,7 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { project, targetDatabase, planPath } = options;
+    const { planPath } = options;
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath);
     
@@ -461,13 +461,13 @@ export class LaunchQLMigrate {
     // Use a separate pool for the target database
     const targetPool = getPgPool({
       ...this.pgConfig,
-      database: targetDatabase
+      database: this.pgConfig.database
     });
-    
+
     try {
       for (const change of changes) {
         // Check if deployed
-        const isDeployed = await this.isDeployed(project, change.name);
+        const isDeployed = await this.isDeployed(plan.project, change.name);
         if (!isDeployed) {
           continue;
         }
@@ -485,7 +485,7 @@ export class LaunchQLMigrate {
           // Call the verify function
           const result = await targetPool.query(
             'SELECT launchql_migrate.verify($1, $2, $3) as verified',
-            [project || plan.project, change.name, cleanVerifySql]
+            [plan.project, change.name, cleanVerifySql]
           );
           
           if (result.rows[0].verified) {

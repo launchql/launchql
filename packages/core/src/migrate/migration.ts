@@ -59,8 +59,6 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
     
     const result = await client.deploy({
-      project: '',
-      targetDatabase: options.database,
       planPath,
       toChange: options.toChange,
       useTransaction: options.useTransaction
@@ -107,8 +105,6 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
     const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
     
     const result = await client.revert({
-      project: '',
-      targetDatabase: options.database,
       planPath,
       toChange: options.toChange,
       useTransaction: options.useTransaction
@@ -152,8 +148,6 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
     const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
     
     const result = await client.verify({
-      project: '',
-      targetDatabase: options.database,
       planPath
     });
     
