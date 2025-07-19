@@ -236,6 +236,22 @@ export class LaunchQLProject {
     return getAvailableExtensions(modules);
   }
 
+  getModuleProject(name: string): LaunchQLProject {
+    this.ensureWorkspace();
+    
+    if (this.isInModule() && name === this.getModuleName()) {
+      return this;
+    }
+    
+    const modules = this.getModuleMap();
+    if (!modules[name]) {
+      throw new Error(`Module "${name}" does not exist.`);
+    }
+    
+    const modulePath = path.resolve(this.workspacePath!, modules[name].path);
+    return new LaunchQLProject(modulePath);
+  }
+
   // ──────────────── Module-scoped ────────────────
 
   getModuleInfo(): ExtensionInfo {
@@ -673,13 +689,7 @@ export class LaunchQLProject {
     log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
     const modules = this.getModuleMap();
 
-    if (!modules[name]) {
-      log.error(`❌ Module "${name}" not found in modules list.`);
-      throw new Error(`Module "${name}" does not exist.`);
-    }
-
-    const modulePath = path.resolve(this.workspacePath!, modules[name].path);
-    const moduleProject = new LaunchQLProject(modulePath);
+    const moduleProject = this.getModuleProject(name);
 
     log.info(`📦 Resolving dependencies for ${name}...`);
     const extensions = moduleProject.getModuleExtensions();
@@ -701,7 +711,7 @@ export class LaunchQLProject {
           log.debug(`→ Path: ${modulePath}`);
 
           if (options?.fast ?? true) {
-            const localProject = new LaunchQLProject(modulePath);
+            const localProject = this.getModuleProject(extension);
             const cacheKey = getCacheKey(opts.pg as PgConfig, extension, database);
             
             if (options?.cache && deployFastCache[cacheKey]) {
@@ -787,13 +797,7 @@ export class LaunchQLProject {
     log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
     const modules = this.getModuleMap();
 
-    if (!modules[name]) {
-      log.error(`❌ Module "${name}" not found in modules list.`);
-      throw new Error(`Module "${name}" does not exist.`);
-    }
-
-    const modulePath = path.resolve(this.workspacePath!, modules[name].path);
-    const moduleProject = new LaunchQLProject(modulePath);
+    const moduleProject = this.getModuleProject(name);
 
     log.info(`📦 Resolving dependencies for ${name}...`);
     const extensions = moduleProject.getModuleExtensions();
@@ -861,13 +865,7 @@ export class LaunchQLProject {
     log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
     const modules = this.getModuleMap();
 
-    if (!modules[name]) {
-      log.error(`❌ Module "${name}" not found in modules list.`);
-      throw new Error(`Module "${name}" does not exist.`);
-    }
-
-    const modulePath = path.resolve(this.workspacePath!, modules[name].path);
-    const moduleProject = new LaunchQLProject(modulePath);
+    const moduleProject = this.getModuleProject(name);
 
     log.info(`📦 Resolving dependencies for ${name}...`);
     const extensions = moduleProject.getModuleExtensions();
