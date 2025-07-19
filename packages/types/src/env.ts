@@ -29,6 +29,13 @@ export const getConnEnvOptions = (overrides: Partial<PgTestConnectionOptions> = 
 const getEnvVars = (): LaunchQLOptions => {
   const {
     PGROOTDATABASE,
+    PGTEMPLATE,
+    DB_PREFIX,
+    DB_EXTENSIONS,
+    DB_CWD,
+    DB_CONNECTION_USER,
+    DB_CONNECTION_PASSWORD,
+    DB_CONNECTION_ROLE,
 
     PORT,
     SERVER_HOST,
@@ -41,6 +48,8 @@ const getEnvVars = (): LaunchQLOptions => {
     PGUSER,
     PGPASSWORD,
     PGDATABASE,
+
+    GRAPHILE_SCHEMA,
 
     FEATURES_SIMPLE_INFLECTION,
     FEATURES_OPPOSITE_BASE_NAMES,
@@ -58,11 +67,30 @@ const getEnvVars = (): LaunchQLOptions => {
     AWS_ACCESS_KEY,
     AWS_SECRET_KEY,
     MINIO_ENDPOINT,
+
+    DEPLOYMENT_USE_TX,
+    DEPLOYMENT_FAST,
+    DEPLOYMENT_USE_PLAN,
+    DEPLOYMENT_CACHE,
+    DEPLOYMENT_TO_CHANGE,
+
+    MIGRATIONS_CODEGEN_USE_TX,
   } = process.env;
 
   return {
     db: {
       ...(PGROOTDATABASE && { rootDb: PGROOTDATABASE }),
+      ...(PGTEMPLATE && { template: PGTEMPLATE }),
+      ...(DB_PREFIX && { prefix: DB_PREFIX }),
+      ...(DB_EXTENSIONS && { extensions: DB_EXTENSIONS.split(',').map(ext => ext.trim()) }),
+      ...(DB_CWD && { cwd: DB_CWD }),
+      ...((DB_CONNECTION_USER || DB_CONNECTION_PASSWORD || DB_CONNECTION_ROLE) && {
+        connection: {
+          ...(DB_CONNECTION_USER && { user: DB_CONNECTION_USER }),
+          ...(DB_CONNECTION_PASSWORD && { password: DB_CONNECTION_PASSWORD }),
+          ...(DB_CONNECTION_ROLE && { role: DB_CONNECTION_ROLE }),
+        }
+      }),
     },
     server: {
       ...(PORT && { port: parseEnvNumber(PORT) }),
@@ -78,6 +106,15 @@ const getEnvVars = (): LaunchQLOptions => {
       ...(PGPASSWORD && { password: PGPASSWORD }),
       ...(PGDATABASE && { database: PGDATABASE }),
     },
+    graphile: {
+      ...(GRAPHILE_SCHEMA && { 
+        schema: GRAPHILE_SCHEMA.includes(',') 
+          ? GRAPHILE_SCHEMA.split(',').map(s => s.trim())
+          : GRAPHILE_SCHEMA 
+      }),
+      // Note: appendPlugins, graphileBuildOptions, and overrideSettings are complex objects
+      // and cannot be easily represented as environment variables
+    },
     features: {
       ...(FEATURES_SIMPLE_INFLECTION && { simpleInflection: parseEnvBoolean(FEATURES_SIMPLE_INFLECTION) }),
       ...(FEATURES_OPPOSITE_BASE_NAMES && { oppositeBaseNames: parseEnvBoolean(FEATURES_OPPOSITE_BASE_NAMES) }),
@@ -86,8 +123,8 @@ const getEnvVars = (): LaunchQLOptions => {
     api: {
       ...(API_ENABLE_META && { enableMetaApi: parseEnvBoolean(API_ENABLE_META) }),
       ...(API_IS_PUBLIC && { isPublic: parseEnvBoolean(API_IS_PUBLIC) }),
-      ...(API_EXPOSED_SCHEMAS && { exposedSchemas: API_EXPOSED_SCHEMAS.split(',') }),
-      ...(API_META_SCHEMAS && { metaSchemas: API_META_SCHEMAS.split(',') }),
+      ...(API_EXPOSED_SCHEMAS && { exposedSchemas: API_EXPOSED_SCHEMAS.split(',').map(s => s.trim()) }),
+      ...(API_META_SCHEMAS && { metaSchemas: API_META_SCHEMAS.split(',').map(s => s.trim()) }),
       ...(API_ANON_ROLE && { anonRole: API_ANON_ROLE }),
       ...(API_ROLE_NAME && { roleName: API_ROLE_NAME }),
       ...(API_DEFAULT_DATABASE_ID && { defaultDatabaseId: API_DEFAULT_DATABASE_ID }),
@@ -98,6 +135,20 @@ const getEnvVars = (): LaunchQLOptions => {
       ...(AWS_ACCESS_KEY && { awsAccessKey: AWS_ACCESS_KEY }),
       ...(AWS_SECRET_KEY && { awsSecretKey: AWS_SECRET_KEY }),
       ...(MINIO_ENDPOINT && { minioEndpoint: MINIO_ENDPOINT }),
+    },
+    deployment: {
+      ...(DEPLOYMENT_USE_TX && { useTx: parseEnvBoolean(DEPLOYMENT_USE_TX) }),
+      ...(DEPLOYMENT_FAST && { fast: parseEnvBoolean(DEPLOYMENT_FAST) }),
+      ...(DEPLOYMENT_USE_PLAN && { usePlan: parseEnvBoolean(DEPLOYMENT_USE_PLAN) }),
+      ...(DEPLOYMENT_CACHE && { cache: parseEnvBoolean(DEPLOYMENT_CACHE) }),
+      ...(DEPLOYMENT_TO_CHANGE && { toChange: DEPLOYMENT_TO_CHANGE }),
+    },
+    migrations: {
+      ...(MIGRATIONS_CODEGEN_USE_TX && {
+        codegen: {
+          useTx: parseEnvBoolean(MIGRATIONS_CODEGEN_USE_TX)
+        }
+      }),
     }
   };
 };
