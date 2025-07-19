@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CLI Deployment Scenarios handles modified deployment scenario for my-third using script approach: deployment-scenario-commands 1`] = `
+[
+  {
+    "args": {
+      "_": [
+        "deploy",
+      ],
+      "cwd": "<CWD>",
+      "database": "test_db",
+      "fast": false,
+      "project": "my-third",
+      "recursive": true,
+      "tx": true,
+      "yes": true,
+    },
+    "command": "deploy",
+  },
+  {
+    "args": {
+      "_": [
+        "revert",
+      ],
+      "cwd": "<CWD>",
+      "database": "test_db",
+      "fast": false,
+      "project": "my-third",
+      "recursive": true,
+      "toChange": "my-first:@v1.0.0",
+      "tx": true,
+      "yes": true,
+    },
+    "command": "revert",
+  },
+  {
+    "args": {
+      "_": [
+        "deploy",
+      ],
+      "cwd": "<CWD>",
+      "database": "test_db",
+      "fast": false,
+      "project": "my-third",
+      "recursive": true,
+      "tx": true,
+      "yes": true,
+    },
+    "command": "deploy",
+  },
+  {
+    "args": {
+      "_": [
+        "revert",
+      ],
+      "cwd": "<CWD>",
+      "database": "test_db",
+      "fast": false,
+      "project": "my-third",
+      "recursive": true,
+      "toChange": "my-first:@v1.0.0",
+      "tx": true,
+      "yes": true,
+    },
+    "command": "revert",
+  },
+  {
+    "args": {
+      "_": [
+        "deploy",
+      ],
+      "cwd": "<CWD>",
+      "database": "test_db",
+      "fast": false,
+      "project": "my-third",
+      "recursive": true,
+      "tx": true,
+      "yes": true,
+    },
+    "command": "deploy",
+  },
+  {
+    "args": {
+      "_": [
+        "verify",
+      ],
+      "cwd": "<CWD>",
+      "database": "test_db",
+      "fast": false,
+      "project": "my-third",
+      "recursive": true,
+      "tx": true,
+      "yes": true,
+    },
+    "command": "verify",
+  },
+]
+`;
