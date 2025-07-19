@@ -63,8 +63,6 @@
     "@launchql/core": "^2.5.0",
     "@launchql/server-utils": "^2.1.15",
     "@launchql/types": "^2.1.13",
-    "chalk": "^4.1.0",
-    "deepmerge": "^4.3.1",
     "pg": "^8.16.0",
     "pg-cache": "^1.0.1",
     "pg-copy-streams": "^6.0.6",
