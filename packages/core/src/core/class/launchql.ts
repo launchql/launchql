@@ -755,7 +755,7 @@ export class LaunchQLProject {
               });
             }
 
-            log.debug(`→ Command: sqitch deploy db:pg:${opts.pg.database}`);
+            log.debug(`→ Deploy: ${opts.pg.database}`);
             log.debug(`> ${pkg.sql}`);
 
             await pgPool.query(pkg.sql);
@@ -764,7 +764,7 @@ export class LaunchQLProject {
               deployFastCache[cacheKey] = pkg;
             }
           } else {
-            log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
+            log.debug(`→ Migrate: ${opts.pg.database}`);
             
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
