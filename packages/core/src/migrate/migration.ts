@@ -1,7 +1,4 @@
 import { LaunchQLProject } from '../core/class/launchql';
-import { deployProject } from '../projects/deploy';
-import { revertProject } from '../projects/revert';
-import { verifyProject } from '../projects/verify';
 import { getEnvOptions } from '@launchql/types';
 import { getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
@@ -51,18 +48,16 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     const modulePath = modules[options.projectName].path;
     log.info(`Deploying project ${options.projectName} from ${modulePath} to database ${options.database}...`);
 
-    await deployProject(
+    await project.deploy(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
-      project, 
       { 
         useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
         fast: options.fast,
         usePlan: options.usePlan,
         cache: options.cache,
-        planFile: options.planFile,
         toChange: options.toChange
       }
     );
@@ -106,15 +101,13 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
     
     log.info(`Reverting project ${options.projectName} on database ${options.database}...`);
     
-    await revertProject(
+    await project.revert(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
-      project, 
       { 
         useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
-        planFile: options.planFile,
         toChange: options.toChange
       }
     );
@@ -159,14 +152,12 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
     
     log.info(`Verifying project ${options.projectName} on database ${options.database}...`);
     
-    await verifyProject(
+    await project.verify(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
-      project, 
       { 
-        useSqitch: options.useSqitch,
-        planFile: options.planFile
+        useSqitch: options.useSqitch
       }
     );
   } else {
