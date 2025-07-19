@@ -21,12 +21,12 @@ describe('CLI Deployment Scenarios - Execution Tests', () => {
 
   test('executes modified deployment scenario for my-third using script approach', async () => {
     const script = `
-      lql deploy --recursive --project my-third --database test_db
-      lql revert --recursive --project my-third --database test_db --toChange my-first:@v1.0.0
-      lql deploy --recursive --project my-third --database test_db
-      lql revert --recursive --project my-third --database test_db --toChange my-first:@v1.0.0
-      lql deploy --recursive --project my-third --database test_db
-      lql verify --recursive --project my-third --database test_db
+      lql deploy --recursive --project my-third --database postgres
+      lql revert --recursive --project my-third --database postgres --toChange my-first:@v1.0.0
+      lql deploy --recursive --project my-third --database postgres
+      lql revert --recursive --project my-third --database postgres --toChange my-first:@v1.0.0
+      lql deploy --recursive --project my-third --database postgres
+      lql verify --recursive --project my-third --database postgres
     `;
 
     const commands = fixture.parseScript(script);
@@ -67,7 +67,7 @@ describe('CLI Deployment Scenarios - Execution Tests', () => {
   test('executes commands with boolean negation flags', async () => {
     const script = `
       lql deploy --recursive --no-fast --project my-app
-      lql verify --no-tx --database test_db
+      lql verify --no-tx --database postgres
     `;
 
     const commands = fixture.parseScript(script);
