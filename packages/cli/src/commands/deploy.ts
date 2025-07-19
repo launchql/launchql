@@ -53,10 +53,18 @@ export default async (
       useDefault: true,
       default: true,
       required: false
+    },
+    {
+      name: 'fast',
+      type: 'confirm',
+      message: 'Use Fast Deployment?',
+      useDefault: true,
+      default: false,
+      required: false
     }
   ];
 
-  let { yes, recursive, createdb, cwd, 'use-sqitch': useSqitch, tx } = await prompter.prompt(argv, questions);
+  let { yes, recursive, createdb, cwd, 'use-sqitch': useSqitch, tx, fast } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -85,7 +93,7 @@ export default async (
     projectName,
     useSqitch,
     useTransaction: tx,
-    fast: argv.fast,
+    fast,
     usePlan: argv.usePlan ?? true,
     cache: argv.cache ?? false
   });
