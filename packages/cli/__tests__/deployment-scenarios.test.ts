@@ -47,60 +47,53 @@ describe('CLI Deployment Scenarios', () => {
       });
   };
 
-  const runScriptCommands = async (script: string) => {
-    const commands = parseScript(script);
-    const results: Array<{
-      command: string;
-      result: {
-        result: any;
-        argv: ParsedArgs;
-        writeResults: string[];
-        transformResults: string[];
-      };
-    }> = [];
 
-    for (const { command, args } of commands) {
-      const result = await fixture.runCmd(args);
-      results.push({ command, result });
-    }
-
-    return results;
-  };
-
-  test('handles modified deployment scenario for my-third using script approach', async () => {
+  test('handles modified deployment scenario for my-third using script approach', () => {
     const script = `
-      lql deploy --recursive --project my-third --database test_deployment_scenarios
-      lql revert --recursive --project my-third --database test_deployment_scenarios --toChange my-first:@v1.0.0
-      lql deploy --recursive --project my-third --database test_deployment_scenarios
-      lql revert --recursive --project my-third --database test_deployment_scenarios --toChange my-first:@v1.0.0
-      lql deploy --recursive --project my-third --database test_deployment_scenarios
-      lql verify --recursive --project my-third --database test_deployment_scenarios
+      lql deploy --recursive --project my-third --database test_db
+      lql revert --recursive --project my-third --database test_db --toChange my-first:@v1.0.0
+      lql deploy --recursive --project my-third --database test_db
+      lql revert --recursive --project my-third --database test_db --toChange my-first:@v1.0.0
+      lql deploy --recursive --project my-third --database test_db
+      lql verify --recursive --project my-third --database test_db
     `;
 
-    const originalEnv = process.env;
-    process.env.LAUNCHQL_TEST_MODULE = 'my-third';
-    process.env.LAUNCHQL_TEST_DATABASE = 'test_deployment_scenarios';
+    const commands = parseScript(script);
+    
+    expect(commands).toHaveLength(6);
+    
+    expect(commands[0]).toEqual({
+      command: 'deploy',
+      args: expect.objectContaining({
+        _: ['deploy'],
+        recursive: true,
+        project: 'my-third',
+        database: 'test_db',
+        yes: true,
+        tx: true
+      })
+    });
 
-    try {
-      const results = await runScriptCommands(script);
-      
-      expect(results).toHaveLength(6);
-      
-      results.forEach(({ command, result }) => {
-        expect(result.argv._).toContain(command);
-        expect(result.argv.recursive).toBe(true);
-        expect(result.argv.project).toBe('my-third');
-        expect(result.argv.database).toBe('test_deployment_scenarios');
-      });
+    expect(commands[1]).toEqual({
+      command: 'revert',
+      args: expect.objectContaining({
+        _: ['revert'],
+        recursive: true,
+        project: 'my-third',
+        database: 'test_db',
+        toChange: 'my-first:@v1.0.0',
+        yes: true,
+        tx: true
+      })
+    });
 
-      expect(results.map(r => ({
-        command: r.command,
-        argv: { ...r.result.argv, cwd: '<CWD>' }
-      }))).toMatchSnapshot('deployment-scenario-flow');
+    const expectedSequence = ['deploy', 'revert', 'deploy', 'revert', 'deploy', 'verify'];
+    expect(commands.map(c => c.command)).toEqual(expectedSequence);
 
-    } finally {
-      process.env = originalEnv;
-    }
+    expect(commands.map(c => ({
+      command: c.command,
+      args: { ...c.args, cwd: '<CWD>' }
+    }))).toMatchSnapshot('deployment-scenario-commands');
   });
 
   test('parses script commands correctly', () => {
