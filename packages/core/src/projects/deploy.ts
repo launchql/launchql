@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import * as path from 'path';
 
-import { errors, LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions, getEnvOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
@@ -56,6 +56,7 @@ export const deployProject = async (
     toChange?: string;
   }
 ): Promise<Extensions> => {
+  const mergedOpts = getEnvOptions(opts);
   log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
   const modules = project.getModuleMap();
 
@@ -86,12 +87,12 @@ export const deployProject = async (
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
-        if (options?.fast ?? true) {
+        if (mergedOpts.deployment.fast) {
           // Use fast deployment strategy
           const localProject = new LaunchQLProject(modulePath);
-          const cacheKey = getCacheKey(opts.pg as PgConfig, extension, database);
+          const cacheKey = getCacheKey(mergedOpts.pg as PgConfig, extension, database);
           
-          if (options?.cache && deployFastCache[cacheKey]) {
+          if (mergedOpts.deployment.cache && deployFastCache[cacheKey]) {
             log.warn(`⚡ Using cached pkg for ${extension}.`);
             await pgPool.query(deployFastCache[cacheKey].sql);
             continue;
@@ -100,7 +101,7 @@ export const deployProject = async (
           let pkg;
           try {
             pkg = await packageModule(localProject.modulePath, { 
-              usePlan: options?.usePlan ?? true, 
+              usePlan: mergedOpts.deployment.usePlan, 
               extension: false 
             });
           } catch (err: any) {
@@ -136,7 +137,7 @@ export const deployProject = async (
 
           await pgPool.query(pkg.sql);
 
-          if (options?.cache) {
+          if (mergedOpts.deployment.cache) {
             deployFastCache[cacheKey] = pkg;
           }
         } else {
@@ -144,8 +145,8 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            await deployModule(opts.pg, database, modulePath, { 
-              useTransaction: options?.useTransaction,
+            await deployModule(mergedOpts.pg, database, modulePath, { 
+              useTransaction: mergedOpts.deployment.useTransaction,
               toChange: options?.toChange
             });
           } catch (deployError) {

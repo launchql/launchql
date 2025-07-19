@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
+import deepmerge from 'deepmerge';
 import { walkUp } from '../../workspace/utils';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
 import chalk from 'chalk';
@@ -710,11 +711,11 @@ export class LaunchQLProject {
           log.info(`📂 Deploying local module: ${extension}`);
           log.debug(`→ Path: ${modulePath}`);
 
-          if (options?.fast ?? true) {
+          if (opts.deployment.fast) {
             const localProject = this.getModuleProject(extension);
             const cacheKey = getCacheKey(opts.pg as PgConfig, extension, database);
             
-            if (options?.cache && deployFastCache[cacheKey]) {
+            if (opts.deployment.cache && deployFastCache[cacheKey]) {
               log.warn(`⚡ Using cached pkg for ${extension}.`);
               await pgPool.query(deployFastCache[cacheKey].sql);
               continue;
@@ -723,7 +724,7 @@ export class LaunchQLProject {
             let pkg;
             try {
               pkg = await packageModule(localProject.modulePath, { 
-                usePlan: options?.usePlan ?? true, 
+                usePlan: opts.deployment.usePlan, 
                 extension: false 
               });
             } catch (err: any) {
@@ -755,7 +756,7 @@ export class LaunchQLProject {
 
             await pgPool.query(pkg.sql);
 
-            if (options?.cache) {
+            if (opts.deployment.cache) {
               deployFastCache[cacheKey] = pkg;
             }
           } else {
@@ -763,7 +764,7 @@ export class LaunchQLProject {
             
             try {
               await deployModule(opts.pg, database, modulePath, { 
-                useTransaction: options?.useTransaction,
+                useTransaction: opts.deployment.useTransaction,
                 toChange: options?.toChange
               });
             } catch (deployError) {

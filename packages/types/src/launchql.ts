@@ -55,6 +55,13 @@ export interface LaunchQLOptions {
         awsSecretKey?: string;
         minioEndpoint?: string;
     };
+    deployment?: {
+        useTransaction?: boolean;
+        fast?: boolean;
+        usePlan?: boolean;
+        cache?: boolean;
+        useTx?: boolean;
+    };
 }
 
 export const launchqlDefaults: LaunchQLOptions = {
@@ -107,6 +114,13 @@ export const launchqlDefaults: LaunchQLOptions = {
         awsRegion: 'us-east-1',
         awsAccessKey: 'minioadmin',
         awsSecretKey: 'minioadmin'
+    },
+    deployment: {
+        useTransaction: true,
+        fast: false,
+        usePlan: true,
+        cache: false,
+        useTx: false
     }
 };
 
