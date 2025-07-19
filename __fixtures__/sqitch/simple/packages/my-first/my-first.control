@@ -1,8 +1,0 @@
-# my-first extension
-comment = 'my-first extension'
-default_version = '0.0.1'
-module_pathname = '$libdir/my-first'
-requires = 'citext,plpgsql,pgcrypto'
-relocatable = false
-superuser = false
-  

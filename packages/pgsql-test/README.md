@@ -399,26 +399,6 @@ it('has loaded rows', async () => {
 });
 ```
 
-## 🏗️ Sqitch Seeding
-
-*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance [TypeScript-based deploy engine.](#-launchql-seeding) that we encourage using for sqitch projects*
-
-You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine:
-
-```ts
-import path from 'path';
-import { getConnections, seed } from 'pgsql-test';
-
-const cwd = path.resolve(__dirname, '../path/to/sqitch');
-
-beforeAll(async () => {
-  ({ db, teardown } = await getConnections({}, [
-    seed.sqitch(cwd)
-  ]));
-});
-```
-
-This works for any Sqitch-compatible module, now accelerated by LaunchQL's deployment tooling.
 
 ## 🚀 LaunchQL Seeding
 
@@ -456,12 +436,11 @@ beforeAll(async () => {
 
 LaunchQL provides the best of both worlds:
 
-1. **Sqitch Compatibility**: Keep your familiar Sqitch syntax and migration approach
-2. **TypeScript Performance**: Our TS-rewritten deployment engine delivers up to 10x faster schema deployments
+1. **TypeScript Performance**: Our TS-rewritten deployment engine delivers up to 10x faster schema deployments
 3. **Developer Experience**: Tight feedback loops with near-instant schema setup for tests
 4. **CI Optimization**: Dramatically reduced test suite run times with optimized deployment
 
-By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
+LaunchQL's TypeScript engine delivers supercharged performance for your migration patterns.
 
 ## `getConnections` Options
 
@@ -472,7 +451,7 @@ This table documents the available options for the `getConnections` function. Th
 | Option                   | Type       | Default          | Description                                                                 |
 | ------------------------ | ---------- | ---------------- | --------------------------------------------------------------------------- |
 | `db.extensions`          | `string[]` | `[]`             | Array of PostgreSQL extensions to include in the test database              |
-| `db.cwd`                 | `string`   | `process.cwd()`  | Working directory used for LaunchQL/Sqitch projects                         |
+| `db.cwd`                 | `string`   | `process.cwd()`  | Working directory used for LaunchQL projects                                |
 | `db.connection.user`     | `string`   | `'app_user'`     | User for simulating RLS via `setContext()`                                  |
 | `db.connection.password` | `string`   | `'app_password'` | Password for RLS test user                                                  |
 | `db.connection.role`     | `string`   | `'anonymous'`    | Default role used during `setContext()`                                     |

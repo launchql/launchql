@@ -1,8 +1,0 @@
-# my-third extension
-comment = 'my-third extension'
-default_version = '0.0.1'
-module_pathname = '$libdir/my-third'
-requires = 'citext,plpgsql,pgcrypto,my-second'
-relocatable = false
-superuser = false
-  

@@ -51,24 +51,6 @@ export default async (
     await client.initialize();
     log.success('Migration schema initialized successfully.');
     
-    // Check if there's an existing Sqitch deployment to import
-    const hasSquitch = await client.hasSqitchTables();
-    if (hasSquitch) {
-      const { importSquitch } = await prompter.prompt(argv, [
-        {
-          name: 'importSquitch',
-          type: 'confirm',
-          message: 'Existing Sqitch deployment detected. Import it?',
-          required: true
-        }
-      ]);
-      
-      if (importSquitch) {
-        log.info('Importing Sqitch deployment history...');
-        await client.importFromSqitch();
-        log.success('Sqitch deployment imported successfully.');
-      }
-    }
   } catch (error) {
     log.error(`Failed to initialize migration schema: ${error instanceof Error ? error.message : error}`);
     throw error;

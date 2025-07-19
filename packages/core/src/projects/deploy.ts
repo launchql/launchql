@@ -7,7 +7,6 @@ import { getPgPool } from 'pg-cache';
 import { deployModule } from '../modules/deploy';
 import { LaunchQLProject } from '../core/class/launchql';
 import { packageModule } from '../packaging/package';
-import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -34,7 +33,6 @@ export const deployProject = async (
   database: string,
   dir: string,
   options?: { 
-    useSqitch?: boolean;
     useTransaction?: boolean;
     /**
      * If true, use the fast deployment strategy
@@ -50,11 +48,6 @@ export const deployProject = async (
      * if fast is true, you can choose to cache the packaged module
      */
     cache?: boolean;
-    /**
-     * The plan file to use for sqitch operations
-     * Defaults to 'launchql.plan'
-     */
-    planFile?: string;
     /**
      * Deploy up to a specific change (inclusive)
      * Can be a change name or a tag reference (e.g., '@v1.0.0')
@@ -125,26 +118,6 @@ export const deployProject = async (
 
           if (options?.cache) {
             deployFastCache[cacheKey] = pkg;
-          }
-        } else if (options?.useSqitch) {
-          // Use legacy sqitch
-          const planFile = options.planFile || 'launchql.plan';
-          const sqitchArgs = options?.toChange ? [options.toChange] : [];
-          log.debug(`→ Command: sqitch deploy --plan-file ${planFile} db:pg:${database}${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
-          
-          try {
-            const exitCode = await runSqitch('deploy', database, modulePath, opts.pg as PgConfig, {
-              planFile,
-              args: sqitchArgs
-            });
-            
-            if (exitCode !== 0) {
-              log.error(`❌ Deployment failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
-            }
-          } catch (err) {
-            log.error(`❌ Deployment failed for module ${extension}`);
-            throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
           }
         } else {
           // Use new migration system

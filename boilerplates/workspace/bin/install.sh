@@ -19,7 +19,7 @@ install_sql_modules() {
   fi
 
   echo -e "${GREEN}Installing SQL modules from:${RESET} ${CYAN}${base_dir}${RESET}"
-  find "$base_dir" -type f -name "sqitch.plan" | while read -r plan_file; do
+  find "$base_dir" -type f -name "launchql.plan" | while read -r plan_file; do
     local dir rel_path pkg_name
     dir=$(dirname "$plan_file")
     rel_path="${dir#"$base_dir"/}"         # strip base_dir prefix

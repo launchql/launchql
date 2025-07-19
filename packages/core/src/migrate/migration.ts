@@ -8,7 +8,6 @@ import { Logger } from '@launchql/logger';
 import { deployModule } from '../modules/deploy';
 import { revertModule } from '../modules/revert';
 import { verifyModule } from '../modules/verify';
-import { runSqitch } from '../utils/sqitch-wrapper';
 
 const log = new Logger('project-commands');
 
@@ -17,18 +16,12 @@ export interface MigrationOptions {
   cwd: string;
   recursive?: boolean;
   projectName?: string;  // Required if recursive=true
-  useSqitch?: boolean;
   useTransaction?: boolean;
   toChange?: string;
   // Options for fast deployment
   fast?: boolean;
   usePlan?: boolean;
   cache?: boolean;
-  /**
-   * The plan file to use for sqitch operations
-   * Defaults to 'launchql.plan'
-   */
-  planFile?: string;
 }
 
 /**
@@ -57,33 +50,24 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
       options.database, 
       modulePath, 
       { 
-        useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
         fast: options.fast,
         usePlan: options.usePlan,
         cache: options.cache,
-        planFile: options.planFile,
         toChange: options.toChange
       }
     );
   } else {
     // Direct execution on current directory
-    if (options.useSqitch) {
-      await runSqitch('deploy', options.database, options.cwd, getPgEnvOptions(), {
-        planFile: options.planFile,
-        args: options.toChange ? [options.toChange] : []
-      });
-    } else {
-      await deployModule(
-        getPgEnvOptions(), 
-        options.database, 
-        options.cwd, 
-        { 
-          useTransaction: options.useTransaction, 
-          toChange: options.toChange 
-        }
-      );
-    }
+    await deployModule(
+      getPgEnvOptions(), 
+      options.database, 
+      options.cwd, 
+      { 
+        useTransaction: options.useTransaction, 
+        toChange: options.toChange 
+      }
+    );
   }
 }
 
@@ -112,31 +96,21 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
       options.database, 
       options.cwd, 
       { 
-        useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,
-        planFile: options.planFile,
         toChange: options.toChange
       }
     );
   } else {
     // Direct execution on current directory
-    if (options.useSqitch) {
-      await runSqitch('revert', options.database, options.cwd, getPgEnvOptions(), {
-        planFile: options.planFile,
-        confirm: true,
-        args: options.toChange ? [options.toChange] : []
-      });
-    } else {
-      await revertModule(
-        getPgEnvOptions(), 
-        options.database, 
-        options.cwd, 
-        { 
-          useTransaction: options.useTransaction, 
-          toChange: options.toChange 
-        }
-      );
-    }
+    await revertModule(
+      getPgEnvOptions(), 
+      options.database, 
+      options.cwd, 
+      { 
+        useTransaction: options.useTransaction, 
+        toChange: options.toChange 
+      }
+    );
   }
 }
 
@@ -164,24 +138,15 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
       options.projectName, 
       options.database, 
       options.cwd, 
-      { 
-        useSqitch: options.useSqitch,
-        planFile: options.planFile
-      }
+      {}
     );
   } else {
     // Direct execution on current directory
-    if (options.useSqitch) {
-      await runSqitch('verify', options.database, options.cwd, getPgEnvOptions(), {
-        planFile: options.planFile
-      });
-    } else {
-      await verifyModule(
-        getPgEnvOptions(), 
-        options.database, 
-        options.cwd
-      );
-    }
+    await verifyModule(
+      getPgEnvOptions(), 
+      options.database, 
+      options.cwd
+    );
   }
 }
 

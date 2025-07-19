@@ -1,7 +1,0 @@
-%syntax-version=1.0.0
-%project=my-second
-%uri=my-second
-
-create_schema 2025-05-16T05:53:07Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # yolo
-create_table 2025-05-16T05:53:40Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # asdf
-create_another_table 2025-05-16T05:53:58Z Hyperweb <pyramation@Hyperwebs-MacBook-Pro.local> # sdf

@@ -15,7 +15,6 @@ export * from './workspace/utils';
 
 // New exports for migration API
 export * from './migrate/migration';
-export { runSqitch } from './utils/sqitch-wrapper';
 export { deployModule } from './modules/deploy';
 export { revertModule } from './modules/revert';
 export { verifyModule } from './modules/verify';
