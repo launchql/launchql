@@ -1,6 +1,6 @@
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { getAvailableModules } from '@launchql/core';
+import { LaunchQLProject } from '@launchql/core';
 import { errors } from '@launchql/types';
 
 /**
@@ -12,8 +12,10 @@ export async function selectModule(
   message: string,
   cwd: string
 ): Promise<string> {
-  const modules = await getAvailableModules(cwd);
-  
+  const p = new LaunchQLProject(cwd);
+  const m = await p.getModules();
+  const modules = m.map(mod => mod.getModuleName());
+
   if (!modules.length) {
     prompter.close();
     throw errors.NOT_FOUND({}, 'No modules found in the specified directory.');
