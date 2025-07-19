@@ -7,7 +7,6 @@ import { LaunchQLProject } from '../core/class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { verifyModule } from '../modules/verify';
-import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -22,12 +21,6 @@ export const verifyProject = async (
   database: string,
   project: LaunchQLProject,
   options?: { 
-    useSqitch?: boolean;
-    /**
-     * The plan file to use for sqitch operations
-     * Defaults to 'launchql.plan'
-     */
-    planFile?: string;
   }
 ): Promise<Extensions> => {
   log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
@@ -65,26 +58,8 @@ export const verifyProject = async (
         log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
         try {
-          if (options?.useSqitch) {
-            // Use legacy sqitch
-            const planFile = options.planFile || 'launchql.plan';
-            log.debug(`→ Command: sqitch verify --plan-file ${planFile} db:pg:${database}`);
-            
-            try {
-              const exitCode = await runSqitch('verify', database, modulePath, opts.pg as PgConfig, {
-                planFile
-              });
-              
-              if (exitCode !== 0) {
-                throw new Error(`sqitch verify exited with code ${exitCode}`);
-              }
-            } catch (err) {
-              throw new Error(`Verification failed: ${err instanceof Error ? err.message : String(err)}`);
-            }
-          } else {
-            // Use new migration system
-            await verifyModule(opts.pg, database, modulePath);
-          }
+          // Use new migration system
+          await verifyModule(opts.pg, database, modulePath);
         } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

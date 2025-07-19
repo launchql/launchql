@@ -16,7 +16,6 @@ import { deployModule } from '../../modules/deploy';
 import { revertModule } from '../../modules/revert';
 import { verifyModule } from '../../modules/verify';
 import { packageModule } from '../../packaging/package';
-import { runSqitch } from '../../utils/sqitch-wrapper';
 
 import {
   writeRenderedTemplates,
@@ -263,30 +262,11 @@ export class LaunchQLProject {
     writeExtensions(this.cwd, modules);
   }
 
-  private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create launchql.plan file using project-files package
-    const plan = generatePlan({
-      moduleName: modName,
-      uri: modName,
-      entries: []
-    });
-    writePlan(path.join(targetPath, 'launchql.plan'), plan);
-    
-    // Create deploy, revert, and verify directories
-    const dirs = ['deploy', 'revert', 'verify'];
-    dirs.forEach(dir => {
-      const dirPath = path.join(targetPath, dir);
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-      }
-    });
-  }
 
   initModule(options: InitModuleOptions): void {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
     writeRenderedTemplates(moduleTemplate, targetPath, options);
-    this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
   }
 
@@ -650,7 +630,6 @@ export class LaunchQLProject {
     name: string,
     database: string,
     options?: { 
-      useSqitch?: boolean;
       useTransaction?: boolean;
       fast?: boolean;
       usePlan?: boolean;
@@ -750,25 +729,6 @@ export class LaunchQLProject {
             if (options?.cache) {
               deployFastCache[cacheKey] = pkg;
             }
-          } else if (options?.useSqitch) {
-            const planFile = 'launchql.plan';
-            const sqitchArgs = options?.toChange ? [options.toChange] : [];
-            log.debug(`→ Command: sqitch deploy --plan-file ${planFile} db:pg:${database}${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
-            
-            try {
-              const exitCode = await runSqitch('deploy', database, modulePath, opts.pg as PgConfig, {
-                planFile,
-                args: sqitchArgs
-              });
-              
-              if (exitCode !== 0) {
-                log.error(`❌ Deployment failed for module ${extension}`);
-                throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
-              }
-            } catch (err) {
-              log.error(`❌ Deployment failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
-            }
           } else {
             log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
             
@@ -799,7 +759,6 @@ export class LaunchQLProject {
     name: string,
     database: string,
     options?: { 
-      useSqitch?: boolean; 
       useTransaction?: boolean;
       toChange?: string;
     }
@@ -849,38 +808,16 @@ export class LaunchQLProject {
           log.info(`📂 Reverting local module: ${extension}`);
           log.debug(`→ Path: ${modulePath}`);
 
-          if (options?.useSqitch) {
-            const planFile = 'launchql.plan';
-            const sqitchArgs = options?.toChange ? [options.toChange] : [];
-            log.debug(`→ Command: sqitch revert --plan-file ${planFile} db:pg:${database} -y${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
-
-            try {
-              const exitCode = await runSqitch('revert', database, modulePath, opts.pg as PgConfig, {
-                planFile,
-                confirm: true,
-                args: sqitchArgs
-              });
-              
-              if (exitCode !== 0) {
-                log.error(`❌ Revert failed for module ${extension}`);
-                throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
-              }
-            } catch (err) {
-              log.error(`❌ Revert failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
-            }
-          } else {
-            log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
-            
-            try {
-              await revertModule(opts.pg, database, modulePath, { 
-                useTransaction: options?.useTransaction,
-                toChange: options?.toChange
-              });
-            } catch (revertError) {
-              log.error(`❌ Revert failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
-            }
+          log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
+          
+          try {
+            await revertModule(opts.pg, database, modulePath, { 
+              useTransaction: options?.useTransaction,
+              toChange: options?.toChange
+            });
+          } catch (revertError) {
+            log.error(`❌ Revert failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
           }
         }
       } catch (e) {
@@ -898,9 +835,7 @@ export class LaunchQLProject {
     opts: LaunchQLOptions,
     name: string,
     database: string,
-    options?: { 
-      useSqitch?: boolean;
-    }
+    options?: { }
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('verify');
 
@@ -939,24 +874,7 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
           try {
-            if (options?.useSqitch) {
-              const planFile = 'launchql.plan';
-              log.debug(`→ Command: sqitch verify --plan-file ${planFile} db:pg:${database}`);
-              
-              try {
-                const exitCode = await runSqitch('verify', database, modulePath, opts.pg as PgConfig, {
-                  planFile
-                });
-                
-                if (exitCode !== 0) {
-                  throw new Error(`sqitch verify exited with code ${exitCode}`);
-                }
-              } catch (err) {
-                throw new Error(`Verification failed: ${err instanceof Error ? err.message : String(err)}`);
-              }
-            } else {
-              await verifyModule(opts.pg, database, modulePath);
-            }
+            await verifyModule(opts.pg, database, modulePath);
           } catch (verifyError) {
             log.error(`❌ Verification failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
