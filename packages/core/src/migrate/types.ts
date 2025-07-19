@@ -16,7 +16,7 @@ export interface MigratePlanFile {
 }
 
 export interface DeployOptions {
-  planPath: string;
+  modulePath: string;
   toChange?: string;
   useTransaction?: boolean;
   // Add debug mode for enhanced error reporting
@@ -24,7 +24,7 @@ export interface DeployOptions {
 }
 
 export interface RevertOptions {
-  planPath: string;
+  modulePath: string;
   toChange?: string;
   useTransaction?: boolean;
   // Add debug mode for enhanced error reporting
@@ -32,7 +32,7 @@ export interface RevertOptions {
 }
 
 export interface VerifyOptions {
-  planPath: string;
+  modulePath: string;
 }
 
 export interface DeployResult {

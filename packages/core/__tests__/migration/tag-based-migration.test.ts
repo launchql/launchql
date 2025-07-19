@@ -25,7 +25,7 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     const resultFirst = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     expect(resultFirst.deployed).toEqual(['schema_myapp', 'table_users', 'table_products']);
@@ -34,7 +34,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'myapp.products')).toBe(true);
     
     const resultSecond = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     expect(resultSecond.deployed).toEqual(['create_schema', 'create_table', 'create_another_table']);
@@ -42,7 +42,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     
     const resultThird = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(resultThird.deployed).toEqual(['create_schema', 'create_table']);
@@ -87,15 +87,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(await db.exists('schema', 'myapp')).toBe(true);
@@ -103,14 +103,14 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'metaschema')).toBe(true);
     
     const revertResult = await client.revert({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(revertResult.reverted).toEqual(['create_table', 'create_schema']);
     expect(await db.exists('schema', 'metaschema')).toBe(false);
     
     const redeployResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(redeployResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -126,21 +126,21 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     // Try to revert my-first:table_products which my-third depends on via tag my-first:@v1.1.0
     // Note: toChange means "revert TO this change", so to revert table_products we revert to table_users
     await expect(client.revert({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
       toChange: 'table_users'
     })).rejects.toThrow(/Cannot revert table_products: required by my-third:create_schema/);
     
@@ -150,7 +150,7 @@ describe('Simple with Tags Migration', () => {
     
     // Try to revert my-second:create_another_table which my-third depends on via tag my-second:@v2.1.0
     await expect(client.revert({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
       toChange: 'create_schema'
     })).rejects.toThrow(/Cannot revert create_another_table: required by my-third:create_table/);
     
@@ -163,15 +163,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     const deployResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(deployResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -183,14 +183,14 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'metaschema.customers')).toBe(true);
     
     const revertThirdResult = await client.revert({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(revertThirdResult.reverted).toEqual(['create_table', 'create_schema']);
     expect(await db.exists('schema', 'metaschema')).toBe(false);
     
     const revertFirstResult = await client.revert({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
       toChange: 'table_users'
     });
     
@@ -201,14 +201,14 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'metaschema')).toBe(false);
     
     const redeployFirstResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     expect(redeployFirstResult.deployed).toEqual(['table_products']);
     expect(await db.exists('table', 'myapp.products')).toBe(true);
     
     const deploySecondResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     expect(deploySecondResult.deployed).toEqual([]);
@@ -216,7 +216,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     
     const redeployThirdResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(redeployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -244,15 +244,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     const deployThirdResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(deployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -266,11 +266,11 @@ describe('Simple with Tags Migration', () => {
     expect(deployedChanges.filter(c => c.project === 'my-third')).toHaveLength(2);
     
     await client.revert({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     const revertToV1Result = await client.revert({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
       toChange: 'my-first:@v1.0.0'
     });
     
@@ -286,7 +286,7 @@ describe('Simple with Tags Migration', () => {
     expect(myFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users']);
     
     const deploySecondToTagResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
       toChange: 'my-second:@v2.0.0'
     });
     
@@ -301,7 +301,7 @@ describe('Simple with Tags Migration', () => {
     expect(mySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     
     const deploySecondToSchemaResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
       toChange: 'create_schema'
     });
     
@@ -316,7 +316,7 @@ describe('Simple with Tags Migration', () => {
     expect(mySecondChangesAfterRevert.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     
     const redeployFirstResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
       toChange: 'my-first:@v1.1.0'
     });
     
@@ -324,7 +324,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'myapp.products')).toBe(true);
     
     const redeploySecondResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
       toChange: 'my-second:@v2.0.0'
     });
     
@@ -332,7 +332,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     
     const finalDeployThirdResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-third', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-third'),
       toChange: 'my-third:@v3.0.0'
     });
     
@@ -364,11 +364,11 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      planPath: join(basePath, 'packages', 'my-first', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     const deploySecondToTagResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
       toChange: 'my-second:@v2.0.0'
     });
     
@@ -377,7 +377,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'otherschema.users')).toBe(true);
     
     const deploySecondShortFormatResult = await client.deploy({
-      planPath: join(basePath, 'packages', 'my-second', 'launchql.plan'),
+      modulePath: join(basePath, 'packages', 'my-second'),
       toChange: '@v2.1.0'
     });
     

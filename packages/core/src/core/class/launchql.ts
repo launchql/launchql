@@ -753,11 +753,10 @@ export class LaunchQLProject {
             log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
             
             try {
-              const planPath = join(modulePath, 'launchql.plan');
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
               const result = await client.deploy({
-                planPath,
+                modulePath,
                 toChange,
                 useTransaction: opts.deployment.useTx
               });
@@ -826,11 +825,10 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate revert db:pg:${opts.pg.database}`);
           
           try {
-            const planPath = join(modulePath, 'launchql.plan');
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
             const result = await client.revert({
-              planPath,
+              modulePath,
               toChange,
               useTransaction: opts.deployment.useTx
             });
@@ -887,11 +885,10 @@ export class LaunchQLProject {
           log.debug(`→ Command: launchql migrate verify db:pg:${opts.pg.database}`);
 
           try {
-            const planPath = join(modulePath, 'launchql.plan');
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
             const result = await client.verify({
-              planPath
+              modulePath
             });
             
             if (result.failed.length > 0) {

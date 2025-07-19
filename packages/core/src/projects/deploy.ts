@@ -124,11 +124,10 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            const planPath = join(modulePath, 'launchql.plan');
             const client = new LaunchQLMigrate(mergedOpts.pg as PgConfig);
             
             const result = await client.deploy({
-              planPath,
+              modulePath,
               toChange,
               useTransaction: mergedOpts.deployment.useTx
             });

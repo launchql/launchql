@@ -55,11 +55,10 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     );
   } else {
     // Direct execution on current directory
-    const planPath = join(options.cwd, 'launchql.plan');
     const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
     
     const result = await client.deploy({
-      planPath,
+      modulePath: options.cwd,
       toChange: options.toChange,
       useTransaction: options.useTransaction
     });
@@ -101,11 +100,10 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
     );
   } else {
     // Direct execution on current directory
-    const planPath = join(options.cwd, 'launchql.plan');
     const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
     
     const result = await client.revert({
-      planPath,
+      modulePath: options.cwd,
       toChange: options.toChange,
       useTransaction: options.useTransaction
     });
@@ -144,11 +142,10 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
     );
   } else {
     // Direct execution on current directory
-    const planPath = join(options.cwd, 'launchql.plan');
     const client = new LaunchQLMigrate(getPgEnvOptions({ database: options.database }));
     
     const result = await client.verify({
-      planPath
+      modulePath: options.cwd
     });
     
     if (result.failed.length > 0) {

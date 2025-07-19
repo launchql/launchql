@@ -58,11 +58,10 @@ export const verifyProject = async (
         log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
 
         try {
-          const planPath = join(modulePath, 'launchql.plan');
           const client = new LaunchQLMigrate(opts.pg as PgConfig);
           
           const result = await client.verify({
-            planPath
+            modulePath
           });
           
           if (result.failed.length > 0) {

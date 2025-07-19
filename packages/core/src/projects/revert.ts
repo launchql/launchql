@@ -76,11 +76,10 @@ export const revertProject = async (
         log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
         
         try {
-          const planPath = join(modulePath, 'launchql.plan');
           const client = new LaunchQLMigrate(opts.pg as PgConfig);
           
           const result = await client.revert({
-            planPath,
+            modulePath,
             toChange: options?.toChange,
             useTransaction: options?.useTransaction
           });

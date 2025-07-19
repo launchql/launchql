@@ -93,7 +93,8 @@ export class LaunchQLMigrate {
   async deploy(options: DeployOptions): Promise<DeployResult> {
     await this.initialize();
     
-    const { planPath, toChange, useTransaction = true, debug = false } = options;
+    const { modulePath, toChange, useTransaction = true, debug = false } = options;
+    const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFile(planPath);
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
@@ -266,7 +267,8 @@ export class LaunchQLMigrate {
   async revert(options: RevertOptions): Promise<RevertResult> {
     await this.initialize();
     
-    const { planPath, toChange, useTransaction = true } = options;
+    const { modulePath, toChange, useTransaction = true } = options;
+    const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFile(planPath);
     
     const fullPlanResult = parsePlanFileFull(planPath);
@@ -451,7 +453,8 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { planPath } = options;
+    const { modulePath } = options;
+    const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFile(planPath);
     const changes = getChangesInOrder(planPath);
     
