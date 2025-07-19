@@ -52,14 +52,12 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
         }
       }), 
       options.projectName, 
-      options.database,
       options.toChange
     );
   } else {
     // Direct execution on current directory
     await deployModule(
-      getPgEnvOptions(), 
-      options.database, 
+      getPgEnvOptions({ database: options.database }), 
       options.cwd, 
       { 
         useTransaction: options.useTransaction, 
@@ -96,14 +94,12 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
         }
       }), 
       options.projectName, 
-      options.database,
       options.toChange
     );
   } else {
     // Direct execution on current directory
     await revertModule(
-      getPgEnvOptions(), 
-      options.database, 
+      getPgEnvOptions({ database: options.database }), 
       options.cwd, 
       { 
         useTransaction: options.useTransaction, 
@@ -137,14 +133,12 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
         pg: { database: options.database }
       }), 
       options.projectName, 
-      options.database,
       options.toChange
     );
   } else {
     // Direct execution on current directory
     await verifyModule(
-      getPgEnvOptions(), 
-      options.database, 
+      getPgEnvOptions({ database: options.database }), 
       options.cwd
     );
   }

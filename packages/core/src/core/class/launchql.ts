@@ -10,7 +10,7 @@ import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { generatePlan, writePlan } from '../../files';
 import { LaunchQLOptions, errors } from '@launchql/types';
-import { PgConfig } from 'pg-env';
+import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { getPgPool } from 'pg-cache';
 import { deployModule } from '../../modules/deploy';
 import { revertModule } from '../../modules/revert';
@@ -663,7 +663,6 @@ export class LaunchQLProject {
   async deploy(
     opts: LaunchQLOptions,
     name: string,
-    database: string,
     toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('deploy');
@@ -688,9 +687,9 @@ export class LaunchQLProject {
     log.info(`📦 Resolving dependencies for ${name}...`);
     const extensions = moduleProject.getModuleExtensions();
 
-    const pgPool = getPgPool({ ...opts.pg, database });
+    const pgPool = getPgPool(opts.pg);
 
-    log.success(`🚀 Starting deployment to database ${database}...`);
+    log.success(`🚀 Starting deployment to database ${opts.pg.database}...`);
 
     for (const extension of extensions.resolved) {
       try {
@@ -706,7 +705,7 @@ export class LaunchQLProject {
 
           if (opts.deployment.fast) {
             const localProject = this.getModuleProject(extension);
-            const cacheKey = getCacheKey(opts.pg as PgConfig, extension, database);
+            const cacheKey = getCacheKey(opts.pg as PgConfig, extension, opts.pg.database);
             
             if (opts.deployment.cache && deployFastCache[cacheKey]) {
               log.warn(`⚡ Using cached pkg for ${extension}.`);
@@ -744,7 +743,7 @@ export class LaunchQLProject {
               });
             }
 
-            log.debug(`→ Command: sqitch deploy db:pg:${database}`);
+            log.debug(`→ Command: sqitch deploy db:pg:${opts.pg.database}`);
             log.debug(`> ${pkg.sql}`);
 
             await pgPool.query(pkg.sql);
@@ -753,10 +752,10 @@ export class LaunchQLProject {
               deployFastCache[cacheKey] = pkg;
             }
           } else {
-            log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
+            log.debug(`→ Command: launchql migrate deploy db:pg:${opts.pg.database}`);
             
             try {
-              await deployModule(opts.pg, database, modulePath, { 
+              await deployModule(opts.pg as PgConfig, modulePath, { 
                 useTransaction: opts.deployment.useTx,
                 toChange
               });
@@ -780,7 +779,6 @@ export class LaunchQLProject {
   async revert(
     opts: LaunchQLOptions,
     name: string,
-    database: string,
     toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('revert');
@@ -793,12 +791,9 @@ export class LaunchQLProject {
     log.info(`📦 Resolving dependencies for ${name}...`);
     const extensions = moduleProject.getModuleExtensions();
 
-    const pgPool = getPgPool({
-      ...opts.pg,
-      database
-    });
+    const pgPool = getPgPool(opts.pg);
 
-    log.success(`🧹 Starting revert process on database ${database}...`);
+    log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
     const reversedExtensions = [...extensions.resolved].reverse();
 
@@ -822,10 +817,10 @@ export class LaunchQLProject {
           log.info(`📂 Reverting local module: ${extension}`);
           log.debug(`→ Path: ${modulePath}`);
 
-          log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
+          log.debug(`→ Command: launchql migrate revert db:pg:${opts.pg.database}`);
           
           try {
-            await revertModule(opts.pg, database, modulePath, { 
+            await revertModule(opts.pg as PgConfig, modulePath, { 
               useTransaction: opts.deployment.useTx,
               toChange
             });
@@ -848,7 +843,6 @@ export class LaunchQLProject {
   async verify(
     opts: LaunchQLOptions,
     name: string,
-    database: string,
     toChange?: string
   ): Promise<{ resolved: string[]; external: string[] }> {
     const log = new Logger('verify');
@@ -861,12 +855,9 @@ export class LaunchQLProject {
     log.info(`📦 Resolving dependencies for ${name}...`);
     const extensions = moduleProject.getModuleExtensions();
 
-    const pgPool = getPgPool({
-      ...opts.pg,
-      database
-    });
+    const pgPool = getPgPool(opts.pg);
 
-    log.success(`🔎 Verifying deployment of ${name} on database ${database}...`);
+    log.success(`🔎 Verifying deployment of ${name} on database ${opts.pg.database}...`);
 
     for (const extension of extensions.resolved) {
       try {
@@ -879,10 +870,10 @@ export class LaunchQLProject {
           const modulePath = resolve(this.workspacePath!, modules[extension].path);
           log.info(`📂 Verifying local module: ${extension}`);
           log.debug(`→ Path: ${modulePath}`);
-          log.debug(`→ Command: launchql migrate verify db:pg:${database}`);
+          log.debug(`→ Command: launchql migrate verify db:pg:${opts.pg.database}`);
 
           try {
-            await verifyModule(opts.pg, database, modulePath);
+            await verifyModule(opts.pg as PgConfig, modulePath);
           } catch (verifyError) {
             log.error(`❌ Verification failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
@@ -898,5 +889,4 @@ export class LaunchQLProject {
     log.success(`✅ Verification complete for ${name}.`);
     return extensions;
   }
-
 }

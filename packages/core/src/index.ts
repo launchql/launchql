@@ -29,8 +29,7 @@ export {
   DeployResult, 
   RevertResult, 
   VerifyResult, 
-  StatusResult, 
-  MigrateConfig 
+  StatusResult
 } from './migrate/types';
 export { hashFile, hashString } from './migrate/utils/hash';
 export { withTransaction, TransactionContext, TransactionOptions, executeQuery } from './migrate/utils/transaction';

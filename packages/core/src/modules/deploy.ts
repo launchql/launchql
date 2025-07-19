@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { LaunchQLMigrate } from '../migrate/client';
-import { MigrateConfig } from '../migrate/types';
+import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-deploy');
@@ -11,8 +11,7 @@ const log = new Logger('migrate-deploy');
  * This is designed to be a drop-in replacement for spawn('sqitch', ['deploy', 'db:pg:database'])
  */
 export async function deployModule(
-  config: Partial<MigrateConfig>,
-  database: string,
+  config: PgConfig,
   cwd: string,
   options?: {
     toChange?: string;
@@ -25,24 +24,12 @@ export async function deployModule(
     throw new Error(`No launchql.plan found in ${cwd}`);
   }
   
-  // Provide defaults for missing config values
-  const fullConfig: MigrateConfig = {
-    host: config.host,
-    port: config.port,
-    user: config.user,
-    password: config.password,
-    // check on this.... WHY so we pass in targetDatabase if it's not used?
-    // initialize takes no arguments, and uses this database, while targetDatabase is used for deploy
-    // this is a little confusing
-    database: database
-  };
-  
-  const client = new LaunchQLMigrate(fullConfig);
+  const client = new LaunchQLMigrate(config);
   
   try {
     const result = await client.deploy({
       project: '', // Will be read from plan file
-      targetDatabase: database,
+      targetDatabase: config.database,
       planPath,
       toChange: options?.toChange,
       useTransaction: options?.useTransaction

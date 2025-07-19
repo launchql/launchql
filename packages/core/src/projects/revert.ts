@@ -3,7 +3,7 @@ import * as path from 'path';
 
 import { LaunchQLProject } from '../core/class/launchql';
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { PgConfig } from 'pg-env';
+import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { revertModule } from '../modules/revert';
@@ -76,7 +76,7 @@ export const revertProject = async (
         log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
         
         try {
-          await revertModule(opts.pg, database, modulePath, { 
+          await revertModule(opts.pg as PgConfig, modulePath, { 
             useTransaction: options?.useTransaction,
             toChange: options?.toChange
           });

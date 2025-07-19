@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import * as path from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
-import { PgConfig } from 'pg-env';
+import { PgConfig, getPgEnvOptions } from 'pg-env';
 import { LaunchQLProject } from '../core/class/launchql';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
@@ -59,7 +59,7 @@ export const verifyProject = async (
 
         try {
           // Use new migration system
-          await verifyModule(opts.pg, database, modulePath);
+          await verifyModule(opts.pg as PgConfig, modulePath);
         } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);
           throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });

@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { LaunchQLMigrate } from '../migrate/client';
-import { MigrateConfig } from '../migrate/types';
+import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-revert');
@@ -11,8 +11,7 @@ const log = new Logger('migrate-revert');
  * This is designed to be a drop-in replacement for spawn('sqitch', ['revert', 'db:pg:database'])
  */
 export async function revertModule(
-  config: Partial<MigrateConfig>,
-  database: string,
+  config: PgConfig,
   cwd: string,
   options?: {
     toChange?: string;
@@ -25,21 +24,12 @@ export async function revertModule(
     throw new Error(`No launchql.plan found in ${cwd}`);
   }
   
-  // Provide defaults for missing config values
-  const fullConfig: MigrateConfig = {
-    host: config.host,
-    port: config.port,
-    user: config.user,
-    password: config.password,
-    database
-  };
-  
-  const client = new LaunchQLMigrate(fullConfig);
+  const client = new LaunchQLMigrate(config);
   
   try {
     const result = await client.revert({
       project: '', // Will be read from plan file
-      targetDatabase: database,
+      targetDatabase: config.database,
       planPath,
       toChange: options?.toChange,
       useTransaction: options?.useTransaction

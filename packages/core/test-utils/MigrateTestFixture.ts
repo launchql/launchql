@@ -1,4 +1,4 @@
-import { MigrateConfig } from '../src/migrate/types';
+import { PgConfig } from 'pg-env';
 import { LaunchQLMigrate } from '../src/migrate/client';
 import { mkdtempSync, rmSync, cpSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
@@ -44,7 +44,7 @@ export class MigrateTestFixture {
       database: dbName
     });
     
-    const config: MigrateConfig = {
+    const config: PgConfig = {
       host: pgConfig.host,
       port: pgConfig.port,
       user: pgConfig.user,
