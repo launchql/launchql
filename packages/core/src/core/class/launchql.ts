@@ -262,11 +262,30 @@ export class LaunchQLProject {
     writeExtensions(this.cwd, modules);
   }
 
+  private initModuleSqitch(modName: string, targetPath: string): void {
+    // Create launchql.plan file using project-files package
+    const plan = generatePlan({
+      moduleName: modName,
+      uri: modName,
+      entries: []
+    });
+    writePlan(path.join(targetPath, 'launchql.plan'), plan);
+    
+    // Create deploy, revert, and verify directories
+    const dirs = ['deploy', 'revert', 'verify'];
+    dirs.forEach(dir => {
+      const dirPath = path.join(targetPath, dir);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+    });
+  }
 
   initModule(options: InitModuleOptions): void {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
     writeRenderedTemplates(moduleTemplate, targetPath, options);
+    this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
   }
 
