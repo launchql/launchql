@@ -10,11 +10,16 @@ export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
 
       const opts = getEnvOptions({ pg: ctx.config });
 
-      await deployProject(opts, proj.getModuleName(), ctx.config.database, proj.modulePath, {
-        fast: true,
-        usePlan: true,
-        cache
-      });
+      await deployProject(
+        opts, proj.getModuleName(),
+        ctx.config.database,
+        proj,
+        {
+          fast: true,
+          usePlan: true,
+          cache
+        }
+      );
     }
   };
 }

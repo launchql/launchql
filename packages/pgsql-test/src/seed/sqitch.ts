@@ -8,10 +8,16 @@ export function sqitch(cwd?: string): SeedAdapter {
       const proj = new LaunchQLProject(cwd ?? ctx.connect.cwd);
       if (!proj.isInModule()) return;
       const opts = getEnvOptions({ pg: ctx.config });
-      await deployProject(opts, proj.getModuleName(), ctx.config.database, proj.modulePath, {
-        useSqitch: true,
-        fast: false
-      });
+      await deployProject(
+        opts,
+        proj.getModuleName(),
+        ctx.config.database,
+        proj,
+        {
+          useSqitch: true,
+          fast: false
+        }
+      );
     }
   };
 }
