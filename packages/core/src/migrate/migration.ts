@@ -43,19 +43,19 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
     // Use existing deploy() from core that handles dependencies
     const project = new LaunchQLProject(options.cwd);
     const modules = project.getModuleMap();
-    
+        
     if (!modules[options.projectName]) {
       throw new Error(`Module "${options.projectName}" not found`);
     }
     
     const modulePath = modules[options.projectName].path;
     log.info(`Deploying project ${options.projectName} from ${modulePath} to database ${options.database}...`);
-    
+
     await deployProject(
       getEnvOptions({ pg: { database: options.database } }), 
       options.projectName, 
       options.database, 
-      modulePath, 
+      project, 
       { 
         useSqitch: options.useSqitch, 
         useTransaction: options.useTransaction,

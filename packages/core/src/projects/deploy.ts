@@ -32,7 +32,7 @@ export const deployProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string,
+  project: LaunchQLProject,
   options?: { 
     useSqitch?: boolean;
     useTransaction?: boolean;
@@ -62,9 +62,8 @@ export const deployProject = async (
     toChange?: string;
   }
 ): Promise<Extensions> => {
-  const mod = new LaunchQLProject(dir);
-
-  log.info(`🔍 Gathering modules from ${dir}...`);
+  log.info(`🔍 Gathering modules from ${project.modulePath}...`);
+  const mod = project;
   const modules = mod.getModuleMap();
 
   if (!modules[name]) {
