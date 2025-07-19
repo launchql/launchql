@@ -889,5 +889,4 @@ export class LaunchQLProject {
     log.success(`✅ Verification complete for ${name}.`);
     return extensions;
   }
-
 }
