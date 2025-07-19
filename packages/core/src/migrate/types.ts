@@ -64,7 +64,3 @@ export interface StatusResult {
   lastChange: string;
   lastDeployed: Date;
 }
-
-export interface MigrateConfig extends PgConfig {
-  // Additional config options can be added here
-}

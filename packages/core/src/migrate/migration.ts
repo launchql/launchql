@@ -52,7 +52,6 @@ export async function deployModules(options: MigrationOptions): Promise<void> {
         }
       }), 
       options.projectName, 
-      options.database,
       options.toChange
     );
   } else {
@@ -96,7 +95,6 @@ export async function revertModules(options: MigrationOptions): Promise<void> {
         }
       }), 
       options.projectName, 
-      options.database,
       options.toChange
     );
   } else {
@@ -137,7 +135,6 @@ export async function verifyModules(options: MigrationOptions): Promise<void> {
         pg: { database: options.database }
       }), 
       options.projectName, 
-      options.database,
       options.toChange
     );
   } else {

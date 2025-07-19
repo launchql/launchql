@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { LaunchQLMigrate } from '../migrate/client';
-import { MigrateConfig } from '../migrate/types';
+import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 
 const log = new Logger('migrate-deploy');
@@ -11,7 +11,7 @@ const log = new Logger('migrate-deploy');
  * This is designed to be a drop-in replacement for spawn('sqitch', ['deploy', 'db:pg:database'])
  */
 export async function deployModule(
-  config: Partial<MigrateConfig>,
+  config: Partial<PgConfig>,
   database: string,
   cwd: string,
   options?: {
@@ -26,7 +26,7 @@ export async function deployModule(
   }
   
   // Provide defaults for missing config values
-  const fullConfig: MigrateConfig = {
+  const fullConfig: PgConfig = {
     host: config.host,
     port: config.port,
     user: config.user,

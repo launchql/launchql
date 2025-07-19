@@ -5,7 +5,6 @@ import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 import {
-  MigrateConfig,
   DeployOptions,
   RevertOptions,
   VerifyOptions,
@@ -35,7 +34,7 @@ export class LaunchQLMigrate {
   private pgConfig: PgConfig;
   private initialized: boolean = false;
 
-  constructor(config: MigrateConfig) {
+  constructor(config: PgConfig) {
     this.pgConfig = {
       host: config.host,
       port: config.port,

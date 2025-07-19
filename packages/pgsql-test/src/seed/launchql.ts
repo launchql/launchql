@@ -17,8 +17,7 @@ export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
             cache
           }
         }), 
-        proj.getModuleName(),
-        ctx.config.database
+        proj.getModuleName()
       );
     }
   };
