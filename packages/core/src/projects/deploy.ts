@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import * as path from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
@@ -62,17 +63,19 @@ export const deployProject = async (
     toChange?: string;
   }
 ): Promise<Extensions> => {
-  log.info(`🔍 Gathering modules from ${project.modulePath}...`);
-  const mod = project;
-  const modules = mod.getModuleMap();
+  log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
+  const modules = project.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
+  const modulePath = path.resolve(project.workspacePath!, modules[name].path);
+  const moduleProject = new LaunchQLProject(modulePath);
+
   log.info(`📦 Resolving dependencies for ${name}...`);
-  const extensions: Extensions = mod.getModuleExtensions();
+  const extensions: Extensions = moduleProject.getModuleExtensions();
 
   const pgPool = getPgPool({ ...opts.pg, database });
 
@@ -86,7 +89,7 @@ export const deployProject = async (
         log.debug(`> ${msg}`);
         await pgPool.query(msg);
       } else {
-        const modulePath = resolve(mod.workspacePath, modules[extension].path);
+        const modulePath = resolve(project.workspacePath!, modules[extension].path);
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
@@ -112,7 +115,7 @@ export const deployProject = async (
             const errorLines = [];
             errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
             errorLines.push(`   Module Path: ${modulePath}`);
-            errorLines.push(`   Workspace Path: ${mod.workspacePath}`);
+            errorLines.push(`   Workspace Path: ${project.workspacePath}`);
             errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
             errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
             
