@@ -6,6 +6,7 @@ import { Inquirerer } from 'inquirerer';
 import { commands } from '../src/commands';
 import { ParsedArgs } from 'minimist';
 import { TestEnvironment, setupTests } from './cli';
+import { MigrateTestFixture, TestDatabase } from '../../core/test-utils';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
 
@@ -19,9 +20,12 @@ export class TestFixture {
   readonly tempFixtureDir: string;
   readonly getFixturePath: (...paths: string[]) => string;
   private environment: TestEnvironment;
+  private databases: TestDatabase[] = [];
+  private migrateFixture?: MigrateTestFixture;
 
   constructor(...fixturePath: string[]) {
     this.tempDir = mkdtempSync(path.join(os.tmpdir(), 'launchql-test-'));
+    this.migrateFixture = new MigrateTestFixture();
 
     if (fixturePath.length > 0) {
       const originalFixtureDir = getFixturePath(...fixturePath);
@@ -41,7 +45,16 @@ export class TestFixture {
     return path.join(this.tempFixtureDir, ...paths);
   }
 
-  cleanup() {
+  async cleanup() {
+    for (const db of this.databases) {
+      await db.close();
+    }
+    this.databases = [];
+    
+    if (this.migrateFixture) {
+      await this.migrateFixture.cleanup();
+    }
+    
     rmSync(this.tempDir, { recursive: true, force: true });
   }
 
@@ -106,6 +119,16 @@ export class TestFixture {
       writeResults,
       transformResults
     };
+  }
+
+  async setupTestDatabase(): Promise<TestDatabase> {
+    if (!this.migrateFixture) {
+      throw new Error('MigrateTestFixture not initialized');
+    }
+    
+    const db = await this.migrateFixture.setupTestDatabase();
+    this.databases.push(db);
+    return db;
   }
 
   async getSnapshottableResults(commands: Array<{ command: string; args: ParsedArgs }>) {

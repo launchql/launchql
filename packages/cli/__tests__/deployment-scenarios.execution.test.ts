@@ -1,4 +1,5 @@
 import { TestFixture } from '../test-utils';
+import { TestDatabase } from '../../core/test-utils';
 import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 
@@ -10,23 +11,25 @@ interface ExecutionResult {
 
 describe('CLI Deployment Scenarios - Execution Tests', () => {
   let fixture: TestFixture;
+  let db: TestDatabase;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     fixture = new TestFixture('sqitch', 'simple-w-tags');
+    db = await fixture.setupTestDatabase();
   });
 
-  afterAll(() => {
-    fixture.cleanup();
+  afterAll(async () => {
+    await fixture.cleanup();
   });
 
   test('executes modified deployment scenario for my-third using script approach', async () => {
     const script = `
-      lql deploy --recursive --project my-third --database postgres
-      lql revert --recursive --project my-third --database postgres --toChange my-first:@v1.0.0
-      lql deploy --recursive --project my-third --database postgres
-      lql revert --recursive --project my-third --database postgres --toChange my-first:@v1.0.0
-      lql deploy --recursive --project my-third --database postgres
-      lql verify --recursive --project my-third --database postgres
+      lql deploy --recursive --project my-third --database ${db.name}
+      lql revert --recursive --project my-third --database ${db.name} --toChange my-first:@v1.0.0
+      lql deploy --recursive --project my-third --database ${db.name}
+      lql revert --recursive --project my-third --database ${db.name} --toChange my-first:@v1.0.0
+      lql deploy --recursive --project my-third --database ${db.name}
+      lql verify --recursive --project my-third --database ${db.name}
     `;
 
     const commands = fixture.parseScript(script);
@@ -67,7 +70,7 @@ describe('CLI Deployment Scenarios - Execution Tests', () => {
   test('executes commands with boolean negation flags', async () => {
     const script = `
       lql deploy --recursive --no-fast --project my-app
-      lql verify --no-tx --database postgres
+      lql verify --no-tx --database ${db.name}
     `;
 
     const commands = fixture.parseScript(script);
