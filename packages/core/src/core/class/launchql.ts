@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
-import deepmerge from 'deepmerge';
 import { walkUp } from '../../workspace/utils';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
 import chalk from 'chalk';
