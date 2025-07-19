@@ -35,7 +35,7 @@ export class CoreDeployTestFixture extends TestFixture {
         cwd: basePath,
         recursive: true,
         projectName,
-        fast: true,
+        fast: false,
         usePlan: true
       };
 

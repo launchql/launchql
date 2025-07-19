@@ -1,6 +1,6 @@
 import { SeedAdapter, SeedContext } from './types';
 import { getEnvOptions } from '@launchql/types';
-import { LaunchQLProject, deployProject } from '@launchql/core';
+import { LaunchQLProject } from '@launchql/core';
 
 export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
   return {
@@ -10,11 +10,15 @@ export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
 
       const opts = getEnvOptions({ pg: ctx.config });
 
-      await deployProject(opts, proj.getModuleName(), ctx.config.database, proj.modulePath, {
-        fast: true,
-        usePlan: true,
-        cache
-      });
+      await proj.deploy(
+        opts, proj.getModuleName(),
+        ctx.config.database,
+        {
+          fast: true,
+          usePlan: true,
+          cache
+        }
+      );
     }
   };
 }

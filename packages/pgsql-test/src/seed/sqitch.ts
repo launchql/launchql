@@ -1,6 +1,6 @@
 import { SeedAdapter, SeedContext } from './types';
 import { getEnvOptions } from '@launchql/types';
-import { LaunchQLProject, deployProject } from '@launchql/core';
+import { LaunchQLProject } from '@launchql/core';
 
 export function sqitch(cwd?: string): SeedAdapter {
   return {
@@ -8,10 +8,14 @@ export function sqitch(cwd?: string): SeedAdapter {
       const proj = new LaunchQLProject(cwd ?? ctx.connect.cwd);
       if (!proj.isInModule()) return;
       const opts = getEnvOptions({ pg: ctx.config });
-      await deployProject(opts, proj.getModuleName(), ctx.config.database, proj.modulePath, {
-        useSqitch: true,
-        fast: false
-      });
+      await proj.deploy(
+        opts,
+        proj.getModuleName(),
+        ctx.config.database,
+        {
+          fast: false
+        }
+      );
     }
   };
 }

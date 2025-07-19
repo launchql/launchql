@@ -16,13 +16,15 @@ interface DependencyGraph {
 /**
  * Result object returned by dependency resolution functions
  */
-interface DependencyResult {
+export interface DependencyResult {
   /** Array of external dependencies that are not part of the current project */
   external: string[];
   /** Array of modules in topologically sorted order for deployment */
   resolved: string[];
   /** The complete dependency graph mapping modules to their dependencies */
   deps: DependencyGraph;
+  /** Mapping of resolved tags to their target changes (only for resolveDependencies) */
+  resolvedTags?: Record<string, string>;
 }
 
 /**
@@ -529,5 +531,5 @@ export const resolveDependencies = (
   const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
   resolved = [...extensions, ...normalSql];
 
-  return { external, resolved, deps };
+  return { external, resolved, deps, resolvedTags: tagMappings };
 };

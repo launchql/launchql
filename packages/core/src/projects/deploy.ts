@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import * as path from 'path';
 
 import { errors, LaunchQLOptions } from '@launchql/types';
 import { PgConfig } from 'pg-env';
@@ -7,7 +8,6 @@ import { getPgPool } from 'pg-cache';
 import { deployModule } from '../modules/deploy';
 import { LaunchQLProject } from '../core/class/launchql';
 import { packageModule } from '../packaging/package';
-import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -32,13 +32,12 @@ export const deployProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  dir: string,
+  project: LaunchQLProject,
   options?: { 
-    useSqitch?: boolean;
     useTransaction?: boolean;
     /**
      * If true, use the fast deployment strategy
-     * This will skip the sqitch deployment and new migration system and simply deploy the packaged sql
+     * This will skip the new migration system and simply deploy the packaged sql
      * Defaults to true for launchql
      */
     fast?: boolean;
@@ -51,29 +50,25 @@ export const deployProject = async (
      */
     cache?: boolean;
     /**
-     * The plan file to use for sqitch operations
-     * Defaults to 'launchql.plan'
-     */
-    planFile?: string;
-    /**
      * Deploy up to a specific change (inclusive)
      * Can be a change name or a tag reference (e.g., '@v1.0.0')
      */
     toChange?: string;
   }
 ): Promise<Extensions> => {
-  const mod = new LaunchQLProject(dir);
-
-  log.info(`🔍 Gathering modules from ${dir}...`);
-  const modules = mod.getModuleMap();
+  log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
+  const modules = project.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
+  const modulePath = path.resolve(project.workspacePath!, modules[name].path);
+  const moduleProject = new LaunchQLProject(modulePath);
+
   log.info(`📦 Resolving dependencies for ${name}...`);
-  const extensions: Extensions = mod.getModuleExtensions();
+  const extensions: Extensions = moduleProject.getModuleExtensions();
 
   const pgPool = getPgPool({ ...opts.pg, database });
 
@@ -87,7 +82,7 @@ export const deployProject = async (
         log.debug(`> ${msg}`);
         await pgPool.query(msg);
       } else {
-        const modulePath = resolve(mod.workspacePath, modules[extension].path);
+        const modulePath = resolve(project.workspacePath!, modules[extension].path);
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
@@ -108,9 +103,27 @@ export const deployProject = async (
               usePlan: options?.usePlan ?? true, 
               extension: false 
             });
-          } catch (err) {
-            log.error(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
-            log.error(`   Error: ${err instanceof Error ? err.message : String(err)}`);
+          } catch (err: any) {
+            // Build comprehensive error message
+            const errorLines = [];
+            errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
+            errorLines.push(`   Module Path: ${modulePath}`);
+            errorLines.push(`   Workspace Path: ${project.workspacePath}`);
+            errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
+            errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
+            
+            // Provide debugging hints
+            if (err.code === 'ENOENT') {
+              errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
+            } else if (err.code === 'EACCES') {
+              errorLines.push('💡 Hint: Permission denied. Check file permissions.');
+            } else if (err.message && err.message.includes('launchql.plan')) {
+              errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
+            }
+            
+            // Log the consolidated error message
+            log.error(errorLines.join('\n'));
+            
             console.error(err); // Preserve full stack trace
             throw errors.DEPLOYMENT_FAILED({ 
               type: 'Deployment', 
@@ -125,26 +138,6 @@ export const deployProject = async (
 
           if (options?.cache) {
             deployFastCache[cacheKey] = pkg;
-          }
-        } else if (options?.useSqitch) {
-          // Use legacy sqitch
-          const planFile = options.planFile || 'launchql.plan';
-          const sqitchArgs = options?.toChange ? [options.toChange] : [];
-          log.debug(`→ Command: sqitch deploy --plan-file ${planFile} db:pg:${database}${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
-          
-          try {
-            const exitCode = await runSqitch('deploy', database, modulePath, opts.pg as PgConfig, {
-              planFile,
-              args: sqitchArgs
-            });
-            
-            if (exitCode !== 0) {
-              log.error(`❌ Deployment failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
-            }
-          } catch (err) {
-            log.error(`❌ Deployment failed for module ${extension}`);
-            throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
           }
         } else {
           // Use new migration system

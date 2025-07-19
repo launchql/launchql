@@ -21,6 +21,8 @@ export interface DeployOptions {
   planPath: string;
   toChange?: string;
   useTransaction?: boolean;
+  // Add debug mode for enhanced error reporting
+  debug?: boolean;
 }
 
 export interface RevertOptions {
@@ -29,6 +31,8 @@ export interface RevertOptions {
   planPath: string;
   toChange?: string;
   useTransaction?: boolean;
+  // Add debug mode for enhanced error reporting
+  debug?: boolean;
 }
 
 export interface VerifyOptions {
