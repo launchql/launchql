@@ -7,7 +7,6 @@ import { PgConfig } from 'pg-env';
 import { Logger } from '@launchql/logger';
 import { getPgPool } from 'pg-cache';
 import { revertModule } from '../modules/revert';
-import { runSqitch } from '../utils/sqitch-wrapper';
 
 interface Extensions {
   resolved: string[];
@@ -22,13 +21,7 @@ export const revertProject = async (
   database: string,
   project: LaunchQLProject,
   options?: { 
-    useSqitch?: boolean; 
     useTransaction?: boolean;
-    /**
-     * The plan file to use for sqitch operations
-     * Defaults to 'launchql.plan'
-     */
-    planFile?: string;
     /**
      * Revert to a specific change (exclusive - this change will NOT be reverted)
      * Can be a change name or a tag reference (e.g., '@v1.0.0')
@@ -79,40 +72,17 @@ export const revertProject = async (
         log.info(`📂 Reverting local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
-        if (options?.useSqitch) {
-          // Use legacy sqitch
-          const planFile = options.planFile || 'launchql.plan';
-          const sqitchArgs = options?.toChange ? [options.toChange] : [];
-          log.debug(`→ Command: sqitch revert --plan-file ${planFile} db:pg:${database} -y${sqitchArgs.length ? ' ' + sqitchArgs.join(' ') : ''}`);
-
-          try {
-            const exitCode = await runSqitch('revert', database, modulePath, opts.pg as PgConfig, {
-              planFile,
-              confirm: true,
-              args: sqitchArgs
-            });
-            
-            if (exitCode !== 0) {
-              log.error(`❌ Revert failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
-            }
-          } catch (err) {
-            log.error(`❌ Revert failed for module ${extension}`);
-            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
-          }
-        } else {
-          // Use new migration system
-          log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
-          
-          try {
-            await revertModule(opts.pg, database, modulePath, { 
-              useTransaction: options?.useTransaction,
-              toChange: options?.toChange
-            });
-          } catch (revertError) {
-            log.error(`❌ Revert failed for module ${extension}`);
-            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
-          }
+        // Use new migration system
+        log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
+        
+        try {
+          await revertModule(opts.pg, database, modulePath, { 
+            useTransaction: options?.useTransaction,
+            toChange: options?.toChange
+          });
+        } catch (revertError) {
+          log.error(`❌ Revert failed for module ${extension}`);
+          throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
         }
       }
     } catch (e) {

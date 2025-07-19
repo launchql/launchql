@@ -7,15 +7,11 @@ export * from './modules/modules';
 export * from './packaging/package';
 export * from './workspace/paths';
 export * from './resolution/resolve';
-export * from './projects/deploy';
-export * from './projects/revert';
-export * from './projects/verify';
 export * from './packaging/transform';
 export * from './workspace/utils';
 
 // New exports for migration API
 export * from './migrate/migration';
-export { runSqitch } from './utils/sqitch-wrapper';
 export { deployModule } from './modules/deploy';
 export { revertModule } from './modules/revert';
 export { verifyModule } from './modules/verify';

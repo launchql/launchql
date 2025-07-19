@@ -17,7 +17,7 @@ export default async (
 
   const questions: Question[] = [];
 
-  let { recursive, cwd, 'use-sqitch': useSqitch } = await prompter.prompt(argv, questions);
+  let { recursive, cwd } = await prompter.prompt(argv, questions);
 
   log.debug(`Using current directory: ${cwd}`);
 
@@ -31,8 +31,7 @@ export default async (
     database,
     cwd,
     recursive,
-    projectName,
-    useSqitch
+    projectName
   });
 
   log.success('Verify complete.');

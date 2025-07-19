@@ -64,7 +64,7 @@ export default async (
     }
   ];
 
-  let { yes, recursive, createdb, cwd, 'use-sqitch': useSqitch, tx, fast } = await prompter.prompt(argv, questions);
+  let { yes, recursive, createdb, cwd, tx, fast } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -91,7 +91,6 @@ export default async (
     cwd,
     recursive,
     projectName,
-    useSqitch,
     useTransaction: tx,
     fast,
     usePlan: argv.usePlan ?? true,
