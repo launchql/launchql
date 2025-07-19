@@ -33,15 +33,7 @@ describe('CLI Deployment Scenarios - Execution Tests', () => {
     
     expect(commands).toHaveLength(6);
     
-    const results: ExecutionResult[] = [];
-    for (const { command, args } of commands) {
-      const result = await fixture.runCmd(args);
-      results.push({
-        command,
-        args: { ...args, cwd: '<CWD>' }, // Normalize cwd for snapshot
-        success: result.result !== null && result.result !== undefined
-      });
-    }
+    const results = await fixture.getSnapshottableResults(commands);
 
     const expectedSequence = ['deploy', 'revert', 'deploy', 'revert', 'deploy', 'verify'];
     expect(results.map(r => r.command)).toEqual(expectedSequence);
@@ -63,15 +55,7 @@ describe('CLI Deployment Scenarios - Execution Tests', () => {
     
     expect(commands).toHaveLength(3);
     
-    const results: ExecutionResult[] = [];
-    for (const { command, args } of commands) {
-      const result = await fixture.runCmd(args);
-      results.push({
-        command,
-        args: { ...args, cwd: '<CWD>' },
-        success: result.result !== null && result.result !== undefined
-      });
-    }
+    const results = await fixture.getSnapshottableResults(commands);
 
     expect(results.map(r => r.command)).toEqual(['deploy', 'revert', 'verify']);
 
@@ -93,15 +77,7 @@ describe('CLI Deployment Scenarios - Execution Tests', () => {
     expect(commands[0].args.fast).toBe(false);
     expect(commands[1].args.tx).toBe(false);
     
-    const results: ExecutionResult[] = [];
-    for (const { command, args } of commands) {
-      const result = await fixture.runCmd(args);
-      results.push({
-        command,
-        args: { ...args, cwd: '<CWD>' },
-        success: result.result !== null && result.result !== undefined
-      });
-    }
+    const results = await fixture.getSnapshottableResults(commands);
 
     expect(results.map(r => r.command)).toEqual(['deploy', 'verify']);
 

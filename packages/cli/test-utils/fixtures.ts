@@ -107,4 +107,17 @@ export class TestFixture {
       transformResults
     };
   }
+
+  async getSnapshottableResults(commands: Array<{ command: string; args: ParsedArgs }>) {
+    const results: Array<{ command: string; args: ParsedArgs & { cwd: string }; success: boolean }> = [];
+    for (const { command, args } of commands) {
+      const result = await this.runCmd(args);
+      results.push({
+        command,
+        args: { ...args, cwd: '<CWD>' }, // Normalize cwd for snapshot
+        success: result.result !== null && result.result !== undefined
+      });
+    }
+    return results;
+  }
 }
