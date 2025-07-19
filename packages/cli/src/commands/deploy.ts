@@ -105,7 +105,7 @@ export default async (
     cwd,
     recursive,
     projectName,
-    useTransaction: opts.deployment.useTransaction,
+    useTransaction: opts.deployment.useTx,
     fast: opts.deployment.fast,
     usePlan: opts.deployment.usePlan,
     cache: opts.deployment.cache
