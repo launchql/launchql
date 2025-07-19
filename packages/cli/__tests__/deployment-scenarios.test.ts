@@ -13,39 +13,6 @@ describe('CLI Deployment Scenarios', () => {
     fixture.cleanup();
   });
 
-  const parseScript = (script: string): Array<{ command: string; args: ParsedArgs }> => {
-    return script
-      .trim()
-      .split('\n')
-      .filter(line => line.trim() && !line.trim().startsWith('#'))
-      .map(line => {
-        const parts = line.trim().split(/\s+/);
-        const [, command, ...argParts] = parts; // Skip 'lql'
-        
-        const args: ParsedArgs = {
-          _: [command],
-          cwd: fixture.tempFixtureDir,
-          recursive: true,
-          yes: true, // Auto-confirm prompts
-          tx: true,  // Use transactions
-          fast: false // Don't use fast deployment
-        };
-
-        for (let i = 0; i < argParts.length; i++) {
-          const arg = argParts[i];
-          if (arg.startsWith('--')) {
-            const key = arg.slice(2);
-            if (i + 1 < argParts.length && !argParts[i + 1].startsWith('--')) {
-              args[key] = argParts[++i];
-            } else {
-              args[key] = true;
-            }
-          }
-        }
-
-        return { command, args };
-      });
-  };
 
 
   test('handles modified deployment scenario for my-third using script approach', () => {
@@ -58,7 +25,7 @@ describe('CLI Deployment Scenarios', () => {
       lql verify --recursive --project my-third --database test_db
     `;
 
-    const commands = parseScript(script);
+    const commands = fixture.parseScript(script);
     
     expect(commands).toHaveLength(6);
     
@@ -104,7 +71,7 @@ describe('CLI Deployment Scenarios', () => {
       lql verify --recursive
     `;
 
-    const commands = parseScript(script);
+    const commands = fixture.parseScript(script);
     
     expect(commands).toHaveLength(3);
     
@@ -137,6 +104,41 @@ describe('CLI Deployment Scenarios', () => {
         recursive: true,
         yes: true,
         tx: true
+      })
+    });
+  });
+
+  test('handles boolean negation with --no- prefix', () => {
+    const script = `
+      lql deploy --recursive --no-fast --project my-app
+      lql verify --no-tx --database test_db
+    `;
+
+    const commands = fixture.parseScript(script);
+    
+    expect(commands).toHaveLength(2);
+    
+    expect(commands[0]).toEqual({
+      command: 'deploy',
+      args: expect.objectContaining({
+        _: ['deploy'],
+        recursive: true,
+        fast: false, // --no-fast should set fast to false
+        project: 'my-app',
+        yes: true,
+        tx: true
+      })
+    });
+
+    expect(commands[1]).toEqual({
+      command: 'verify',
+      args: expect.objectContaining({
+        _: ['verify'],
+        recursive: true,
+        tx: false, // --no-tx should set tx to false
+        database: 'test_db',
+        yes: true,
+        fast: false
       })
     });
   });

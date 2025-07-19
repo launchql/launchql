@@ -45,6 +45,44 @@ export class TestFixture {
     rmSync(this.tempDir, { recursive: true, force: true });
   }
 
+  parseScript(script: string): Array<{ command: string; args: ParsedArgs }> {
+    return script
+      .trim()
+      .split('\n')
+      .filter(line => line.trim() && !line.trim().startsWith('#'))
+      .map(line => {
+        const parts = line.trim().split(/\s+/);
+        const [, command, ...argParts] = parts; // Skip 'lql'
+        
+        const args: ParsedArgs = {
+          _: [command],
+          cwd: this.tempFixtureDir,
+          recursive: true,
+          yes: true, // Auto-confirm prompts
+          tx: true,  // Use transactions
+          fast: false // Don't use fast deployment
+        };
+
+        for (let i = 0; i < argParts.length; i++) {
+          const arg = argParts[i];
+          if (arg.startsWith('--')) {
+            const key = arg.slice(2);
+            
+            if (key.startsWith('no-')) {
+              const booleanKey = key.slice(3); // Remove 'no-' prefix
+              args[booleanKey] = false;
+            } else if (i + 1 < argParts.length && !argParts[i + 1].startsWith('--')) {
+              args[key] = argParts[++i];
+            } else {
+              args[key] = true;
+            }
+          }
+        }
+
+        return { command, args };
+      });
+  }
+
   async runCmd(argv: ParsedArgs) {
     const {
       mockInput,
