@@ -101,6 +101,31 @@ export class MigrateTestFixture {
         return result.rows;
       },
 
+      async getMigrationState() {
+        const changes = await pool.query(`
+          SELECT project, change_name, script_hash, deployed_at
+          FROM launchql_migrate.changes 
+          ORDER BY deployed_at
+        `);
+        
+        const events = await pool.query(`
+          SELECT project, change_name, event_type, occurred_at
+          FROM launchql_migrate.events 
+          ORDER BY occurred_at
+        `);
+        
+        // Remove timestamps from objects for consistent snapshots
+        const cleanChanges = changes.rows.map(({ deployed_at, ...change }) => change);
+        const cleanEvents = events.rows.map(({ occurred_at, ...event }) => event);
+        
+        return {
+          changes: cleanChanges,
+          events: cleanEvents,
+          changeCount: cleanChanges.length,
+          eventCount: cleanEvents.length
+        };
+      },
+
       async getDependencies(project: string, changeName: string) {
         const result = await pool.query(
           `SELECT d.requires 
