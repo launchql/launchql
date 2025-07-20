@@ -34,6 +34,7 @@ export interface RevertOptions {
 
 export interface VerifyOptions {
   modulePath: string;
+  toChange?: string;
 }
 
 export interface DeployResult {

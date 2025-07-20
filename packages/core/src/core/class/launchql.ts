@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path, { dirname, resolve, join } from 'path';
+import path, { dirname, resolve } from 'path';
 import * as glob from 'glob';
 import { walkUp } from '../../workspace/utils';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
@@ -10,7 +10,7 @@ import { Logger } from '@launchql/logger';
 import { execSync } from 'child_process';
 import { generatePlan, writePlan } from '../../files';
 import { LaunchQLOptions, errors } from '@launchql/types';
-import { PgConfig, getPgEnvOptions } from 'pg-env';
+import { PgConfig } from 'pg-env';
 import { getPgPool } from 'pg-cache';
 import { LaunchQLMigrate } from '../../migrate/client';
 import { packageModule } from '../../packaging/package';
@@ -691,12 +691,8 @@ export class LaunchQLProject {
         return `${host}:${port}:${user}:${database}:${name}`;
       };
 
-      log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
       const modules = this.getModuleMap();
-
       const moduleProject = this.getModuleProject(name);
-
-      log.info(`📦 Resolving dependencies for ${name}...`);
       const extensions = moduleProject.getModuleExtensions();
 
     const pgPool = getPgPool(opts.pg);
@@ -708,12 +704,10 @@ export class LaunchQLProject {
         if (extensions.external.includes(extension)) {
           const msg = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
           log.info(`📥 Installing external extension: ${extension}`);
-          log.debug(`> ${msg}`);
           await pgPool.query(msg);
         } else {
           const modulePath = resolve(this.workspacePath!, modules[extension].path);
           log.info(`📂 Deploying local module: ${extension}`);
-          log.debug(`→ Path: ${modulePath}`);
 
           if (opts.deployment.fast) {
             const localProject = this.getModuleProject(extension);
@@ -755,17 +749,12 @@ export class LaunchQLProject {
               });
             }
 
-            log.debug(`→ Deploy: ${opts.pg.database}`);
-            log.debug(`> ${pkg.sql}`);
-
             await pgPool.query(pkg.sql);
 
             if (opts.deployment.cache) {
               deployFastCache[cacheKey] = pkg;
             }
           } else {
-            log.debug(`→ Migrate: ${opts.pg.database}`);
-            
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
@@ -799,9 +788,6 @@ export class LaunchQLProject {
       if (!modulePath) {
         throw new Error(`Could not resolve module path for ${name}`);
       }
-
-      log.info(`📂 Deploying single module: ${name}`);
-      log.debug(`→ Path: ${modulePath}`);
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
       const result = await client.deploy({
@@ -840,12 +826,8 @@ export class LaunchQLProject {
     }
 
     if (recursive) {
-      log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
       const modules = this.getModuleMap();
-
       const moduleProject = this.getModuleProject(name);
-
-      log.info(`📦 Resolving dependencies for ${name}...`);
       const extensions = moduleProject.getModuleExtensions();
 
     const pgPool = getPgPool(opts.pg);
@@ -859,7 +841,6 @@ export class LaunchQLProject {
         if (extensions.external.includes(extension)) {
           const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
           log.warn(`⚠️ Dropping external extension: ${extension}`);
-          log.debug(`> ${msg}`);
           try {
             await pgPool.query(msg);
           } catch (err: any) {
@@ -872,9 +853,6 @@ export class LaunchQLProject {
         } else {
           const modulePath = resolve(this.workspacePath!, modules[extension].path);
           log.info(`📂 Reverting local module: ${extension}`);
-          log.debug(`→ Path: ${modulePath}`);
-
-          log.debug(`→ Command: launchql migrate revert db:pg:${opts.pg.database}`);
           
           try {
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -907,9 +885,6 @@ export class LaunchQLProject {
       if (!modulePath) {
         throw new Error(`Could not resolve module path for ${name}`);
       }
-
-      log.info(`📂 Reverting single module: ${name}`);
-      log.debug(`→ Path: ${modulePath}`);
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
       const result = await client.revert({
@@ -947,12 +922,8 @@ export class LaunchQLProject {
     }
 
     if (recursive) {
-      log.info(`🔍 Gathering modules from ${this.workspacePath}...`);
       const modules = this.getModuleMap();
-
       const moduleProject = this.getModuleProject(name);
-
-      log.info(`📦 Resolving dependencies for ${name}...`);
       const extensions = moduleProject.getModuleExtensions();
 
     const pgPool = getPgPool(opts.pg);
@@ -964,19 +935,17 @@ export class LaunchQLProject {
         if (extensions.external.includes(extension)) {
           const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
           log.info(`🔍 Verifying external extension: ${extension}`);
-          log.debug(`> ${query}`);
           await pgPool.query(query, [extension]);
         } else {
           const modulePath = resolve(this.workspacePath!, modules[extension].path);
           log.info(`📂 Verifying local module: ${extension}`);
-          log.debug(`→ Path: ${modulePath}`);
-          log.debug(`→ Command: launchql migrate verify db:pg:${opts.pg.database}`);
 
           try {
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
             const result = await client.verify({
-              modulePath
+              modulePath,
+              toChange
             });
             
             if (result.failed.length > 0) {
@@ -1002,12 +971,10 @@ export class LaunchQLProject {
         throw new Error(`Could not resolve module path for ${name}`);
       }
 
-      log.info(`📂 Verifying single module: ${name}`);
-      log.debug(`→ Path: ${modulePath}`);
-
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
       const result = await client.verify({
-        modulePath
+        modulePath,
+        toChange
       });
 
       if (result.failed.length > 0) {
