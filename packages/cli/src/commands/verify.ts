@@ -38,8 +38,7 @@ export default async (
   
   await project.verify(
     opts,
-    projectName,
-    argv.toChange,
+    projectName && argv.toChange ? `${projectName}:${argv.toChange}` : (projectName || argv.toChange),
     recursive
   );
 

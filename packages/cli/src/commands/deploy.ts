@@ -111,8 +111,7 @@ export default async (
   
   await project.deploy(
     opts,
-    projectName,
-    argv.toChange,
+    projectName && argv.toChange ? `${projectName}:${argv.toChange}` : (projectName || argv.toChange),
     recursive
   );
 

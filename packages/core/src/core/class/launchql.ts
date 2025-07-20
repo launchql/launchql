@@ -60,6 +60,32 @@ const getNow = () =>
     ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
     : getUTCTimestamp(new Date());
 
+function parseTarget(target: string): { project: string | null, change: string | null } {
+  const colonIndex = target.indexOf(':');
+  
+  if (colonIndex > 0) {
+    const project = target.substring(0, colonIndex);
+    const change = target.substring(colonIndex + 1);
+    
+    return { project, change };
+  } else {
+    return { project: target, change: null };
+  }
+}
+
+function shouldPassToChange(extensionName: string, target: string): string | undefined {
+  const colonIndex = target.indexOf(':');
+  const hasProjectPrefix = colonIndex > 0;
+  
+  if (hasProjectPrefix) {
+    const targetProject = target.substring(0, colonIndex);
+    const changeName = target.substring(colonIndex + 1);
+    return targetProject === extensionName ? changeName : undefined;
+  } else {
+    return undefined;
+  }
+}
+
 
 export enum ProjectContext {
   Outside = 'outside',
@@ -649,16 +675,18 @@ export class LaunchQLProject {
 
   async deploy(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('deploy');
 
-    if (!name) {
+    const { project: name, change: toChange } = parseTarget(target || '');
+    let projectName = name;
+
+    if (!projectName) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
+        projectName = this.getModuleName();
         recursive = false;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
@@ -749,7 +777,7 @@ export class LaunchQLProject {
               
                 const result = await client.deploy({
                   modulePath,
-                  toChange: extension === name ? toChange : undefined,
+                  toChange: shouldPassToChange(extension, target || ''),
                   useTransaction: opts.deployment.useTx,
                   logOnly: opts.deployment.logOnly
                 });
@@ -770,12 +798,12 @@ export class LaunchQLProject {
         }
       }
 
-      log.success(`✅ Deployment complete for ${name}.`);
+      log.success(`✅ Deployment complete for ${projectName}.`);
     } else {
-      const moduleProject = this.getModuleProject(name);
+      const moduleProject = this.getModuleProject(projectName);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
-        throw new Error(`Could not resolve module path for ${name}`);
+        throw new Error(`Could not resolve module path for ${projectName}`);
       }
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -790,22 +818,24 @@ export class LaunchQLProject {
         throw new Error(`Deployment failed at change: ${result.failed}`);
       }
 
-      log.success(`✅ Single module deployment complete for ${name}.`);
+      log.success(`✅ Single module deployment complete for ${projectName}.`);
     }
   }
 
   async revert(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('revert');
 
-    if (!name) {
+    const { project: name, change: toChange } = parseTarget(target || '');
+    let projectName = name;
+
+    if (!projectName) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
+        projectName = this.getModuleName();
         recursive = false;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
@@ -816,7 +846,7 @@ export class LaunchQLProject {
 
     if (recursive) {
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
+      const moduleProject = this.getModuleProject(projectName);
       const extensions = moduleProject.getModuleExtensions();
 
       const pgPool = getPgPool(opts.pg);
@@ -848,7 +878,7 @@ export class LaunchQLProject {
             
               const result = await client.revert({
                 modulePath,
-                toChange: extension === name ? toChange : undefined,
+                toChange: shouldPassToChange(extension, target || ''),
                 useTransaction: opts.deployment.useTx
               });
             
@@ -867,12 +897,12 @@ export class LaunchQLProject {
         }
       }
 
-      log.success(`✅ Revert complete for ${name}.`);
+      log.success(`✅ Revert complete for ${projectName}.`);
     } else {
-      const moduleProject = this.getModuleProject(name);
+      const moduleProject = this.getModuleProject(projectName);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
-        throw new Error(`Could not resolve module path for ${name}`);
+        throw new Error(`Could not resolve module path for ${projectName}`);
       }
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -886,22 +916,24 @@ export class LaunchQLProject {
         throw new Error(`Revert failed at change: ${result.failed}`);
       }
 
-      log.success(`✅ Single module revert complete for ${name}.`);
+      log.success(`✅ Single module revert complete for ${projectName}.`);
     }
   }
 
   async verify(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('verify');
 
-    if (!name) {
+    const { project: name, change: toChange } = parseTarget(target || '');
+    let projectName = name;
+
+    if (!projectName) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
+        projectName = this.getModuleName();
         recursive = false;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
@@ -912,12 +944,12 @@ export class LaunchQLProject {
 
     if (recursive) {
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
+      const moduleProject = this.getModuleProject(projectName);
       const extensions = moduleProject.getModuleExtensions();
 
       const pgPool = getPgPool(opts.pg);
 
-      log.success(`🔎 Verifying deployment of ${name} on database ${opts.pg.database}...`);
+      log.success(`🔎 Verifying deployment of ${projectName} on database ${opts.pg.database}...`);
 
       for (const extension of extensions.resolved) {
         try {
@@ -935,7 +967,7 @@ export class LaunchQLProject {
               // Only apply toChange to the target module being verified, not its dependencies.
               const result = await client.verify({
                 modulePath,
-                toChange: extension === name ? toChange : undefined
+                toChange: shouldPassToChange(extension, target || '')
               });
             
               if (result.failed.length > 0) {
@@ -953,12 +985,12 @@ export class LaunchQLProject {
         }
       }
 
-      log.success(`✅ Verification complete for ${name}.`);
+      log.success(`✅ Verification complete for ${projectName}.`);
     } else {
-      const moduleProject = this.getModuleProject(name);
+      const moduleProject = this.getModuleProject(projectName);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
-        throw new Error(`Could not resolve module path for ${name}`);
+        throw new Error(`Could not resolve module path for ${projectName}`);
       }
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -971,7 +1003,7 @@ export class LaunchQLProject {
         throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
       }
 
-      log.success(`✅ Single module verification complete for ${name}.`);
+      log.success(`✅ Single module verification complete for ${projectName}.`);
     }
   }
 }

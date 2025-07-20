@@ -62,8 +62,7 @@ export default async (
   
   await project.revert(
     opts,
-    projectName,
-    argv.toChange,
+    projectName && argv.toChange ? `${projectName}:${argv.toChange}` : (projectName || argv.toChange),
     recursive
   );
 

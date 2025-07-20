@@ -119,6 +119,13 @@ export class LaunchQLMigrate {
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
+    if (resolvedToChange) {
+      const toChangeIndex = changes.findIndex(c => c.name === resolvedToChange);
+      if (toChangeIndex === -1) {
+        throw new Error(`Change '${resolvedToChange}' not found in plan`);
+      }
+    }
+    
     const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
@@ -352,6 +359,13 @@ export class LaunchQLMigrate {
     }
     
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
+    
+    if (resolvedToChange && !resolvedToChange.includes(':')) {
+      const toChangeIndex = changes.findIndex(c => c.name === resolvedToChange);
+      if (toChangeIndex === -1) {
+        throw new Error(`Change '${resolvedToChange}' not found in plan`);
+      }
+    }
     
     const reverted: string[] = [];
     const skipped: string[] = [];
