@@ -21,6 +21,14 @@ export class EventLogger {
     this.pool = getPgPool(config);
   }
 
+  private sanitizeStackTrace(stackTrace: string | null): string | null {
+    if (!stackTrace) return null;
+    
+    return stackTrace
+      .replace(/\/.*?\/launchql\//g, '/launchql/')
+      .replace(/\/__w\/launchql\/launchql\//g, '/launchql/');
+  }
+
   async logEvent(entry: EventLogEntry): Promise<void> {
     try {
       await this.pool.query(`
@@ -33,7 +41,7 @@ export class EventLogger {
         entry.project,
         entry.errorMessage || null,
         entry.errorCode || null,
-        entry.stackTrace || null
+        this.sanitizeStackTrace(entry.stackTrace)
       ]);
       
       log.debug(`Logged ${entry.eventType} event for ${entry.project}:${entry.changeName}`);
