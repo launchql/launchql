@@ -93,7 +93,7 @@ export class LaunchQLMigrate {
   async deploy(options: DeployOptions): Promise<DeployResult> {
     await this.initialize();
     
-    const { modulePath, toChange, useTransaction = true, debug = false } = options;
+    const { modulePath, toChange, useTransaction = true, debug = false, logOnly = false } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFile(planPath);
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
@@ -175,18 +175,19 @@ export class LaunchQLMigrate {
           // Call the deploy stored procedure
           await executeQuery(
             context,
-            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5)',
+            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5, $6)',
             [
               plan.project,
               change.name,
               scriptHash,
               resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
-              cleanDeploySql
+              cleanDeploySql,
+              logOnly
             ]
           );
           
           deployed.push(change.name);
-          log.success(`Successfully deployed: ${change.name}`);
+          log.success(`Successfully ${logOnly ? 'logged' : 'deployed'}: ${change.name}`);
         } catch (error: any) {
           // Build comprehensive error message
           const errorLines = [];

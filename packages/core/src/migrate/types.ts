@@ -21,6 +21,7 @@ export interface DeployOptions {
   useTransaction?: boolean;
   // Add debug mode for enhanced error reporting
   debug?: boolean;
+  logOnly?: boolean;
 }
 
 export interface RevertOptions {
