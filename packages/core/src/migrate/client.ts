@@ -6,7 +6,7 @@ import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
 import { LaunchQLProject } from '../core/class/launchql';
-import { Change, parsePlanFile as parsePlanFileFull, parsePlanFileSimple as parsePlanFile, readScript } from '../files';
+import { Change, parsePlanFile, parsePlanFileSimple, readScript } from '../files';
 import { DependencyResult,resolveDependencies } from '../resolution/deps';
 import { resolveTagToChangeName } from '../resolution/resolve';
 import { cleanSql } from './clean';
@@ -23,7 +23,7 @@ import { executeQuery,withTransaction } from './utils/transaction';
 
 // Helper function to get changes in order
 function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {
-  const plan = parsePlanFile(planPath);
+  const plan = parsePlanFileSimple(planPath);
   return reverse ? [...plan.changes].reverse() : plan.changes;
 }
 
@@ -95,11 +95,11 @@ export class LaunchQLMigrate {
     
     const { modulePath, toChange, useTransaction = true, debug = false, logOnly = false } = options;
     const planPath = join(modulePath, 'launchql.plan');
-    const plan = parsePlanFile(planPath);
+    const plan = parsePlanFileSimple(planPath);
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
-    const fullPlanResult = parsePlanFileFull(planPath);
+    const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
     // Only apply tag resolution if there are tags in the plan file
@@ -270,9 +270,9 @@ export class LaunchQLMigrate {
     
     const { modulePath, toChange, useTransaction = true } = options;
     const planPath = join(modulePath, 'launchql.plan');
-    const plan = parsePlanFile(planPath);
+    const plan = parsePlanFileSimple(planPath);
     
-    const fullPlanResult = parsePlanFileFull(planPath);
+    const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
     // Check if we have cross-module tag dependencies or cross-module toChange
@@ -456,7 +456,7 @@ export class LaunchQLMigrate {
     
     const { modulePath } = options;
     const planPath = join(modulePath, 'launchql.plan');
-    const plan = parsePlanFile(planPath);
+    const plan = parsePlanFileSimple(planPath);
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
@@ -658,7 +658,7 @@ export class LaunchQLMigrate {
    * Get pending changes (in plan but not deployed)
    */
   async getPendingChanges(planPath: string, targetDatabase: string): Promise<string[]> {
-    const plan = parsePlanFile(planPath);
+    const plan = parsePlanFileSimple(planPath);
     const allChanges = getChangesInOrder(planPath);
     
     const targetPool = getPgPool({
