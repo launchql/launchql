@@ -122,7 +122,7 @@ export class MigrateTestFixture {
         
         // Remove timestamps from objects for consistent snapshots
         const cleanChanges = changes.rows.map(({ deployed_at, ...change }) => change);
-        const cleanEvents = events.rows.map(({ occurred_at, ...event }) => event);
+        const cleanEvents = sanitizedEvents.map(({ occurred_at, ...event }) => event);
         
         return {
           changes: cleanChanges,

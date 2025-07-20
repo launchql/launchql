@@ -13,13 +13,13 @@ exports[`Deploy Failure Scenarios constraint violation with transaction - automa
       "event_type": "deploy",
       "project": "test-constraint-fail",
       "stack_trace": "error: duplicate key value violates unique constraint "test_users_email_key"
-    at /home/ubuntu/repos/launchql/node_modules/pg/lib/client.js:545:17
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at executeQuery (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:89:24)
-    at /home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:150:21
-    at withTransaction (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:35:24)
-    at LaunchQLMigrate.deploy (/home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:112:9)
-    at Object.<anonymous> (/home/ubuntu/repos/launchql/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:43:9)",
+    at <project-root>/node_modules/pg/lib/client.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at withTransaction (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
     },
   ],
 }
@@ -65,12 +65,12 @@ exports[`Deploy Failure Scenarios constraint violation without transaction - par
       "event_type": "deploy",
       "project": "test-constraint-partial",
       "stack_trace": "error: duplicate key value violates unique constraint "test_products_sku_key"
-    at /home/ubuntu/repos/launchql/node_modules/pg-pool/index.js:45:11
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at executeQuery (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:89:24)
-    at /home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:150:21
-    at LaunchQLMigrate.deploy (/home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:112:9)
-    at Object.<anonymous> (/home/ubuntu/repos/launchql/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:84:9)",
+    at <project-root>/node_modules/pg-pool/index.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
     },
   ],
 }
@@ -100,13 +100,13 @@ exports[`Deploy Failure Scenarios verify database state after constraint failure
       "event_type": "deploy",
       "project": "test-state-check",
       "stack_trace": "error: new row for relation "orders" violates check constraint "orders_amount_check"
-    at /home/ubuntu/repos/launchql/node_modules/pg/lib/client.js:545:17
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at executeQuery (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:89:24)
-    at /home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:150:21
-    at withTransaction (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:35:24)
-    at LaunchQLMigrate.deploy (/home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:112:9)
-    at Object.<anonymous> (/home/ubuntu/repos/launchql/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:124:9)",
+    at <project-root>/node_modules/pg/lib/client.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at withTransaction (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
     },
     {
       "change_name": "setup_schema",
@@ -131,12 +131,12 @@ exports[`Deploy Failure Scenarios verify database state after constraint failure
       "event_type": "deploy",
       "project": "test-state-check",
       "stack_trace": "error: new row for relation "orders" violates check constraint "orders_amount_check"
-    at /home/ubuntu/repos/launchql/node_modules/pg-pool/index.js:45:11
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at executeQuery (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:89:24)
-    at /home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:150:21
-    at LaunchQLMigrate.deploy (/home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:112:9)
-    at Object.<anonymous> (/home/ubuntu/repos/launchql/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:134:9)",
+    at <project-root>/node_modules/pg-pool/index.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
     },
   ],
 }
@@ -155,13 +155,13 @@ exports[`Deploy Failure Scenarios verify database state after constraint failure
       "event_type": "deploy",
       "project": "test-state-check",
       "stack_trace": "error: new row for relation "orders" violates check constraint "orders_amount_check"
-    at /home/ubuntu/repos/launchql/node_modules/pg/lib/client.js:545:17
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at executeQuery (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:89:24)
-    at /home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:150:21
-    at withTransaction (/home/ubuntu/repos/launchql/packages/core/src/migrate/utils/transaction.ts:35:24)
-    at LaunchQLMigrate.deploy (/home/ubuntu/repos/launchql/packages/core/src/migrate/client.ts:112:9)
-    at Object.<anonymous> (/home/ubuntu/repos/launchql/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:124:9)",
+    at <project-root>/node_modules/pg/lib/client.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at withTransaction (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
     },
   ],
 }
