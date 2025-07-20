@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
+    "@launchql/env": "^2.1.13",
     "@launchql/s3-streamer": "^2.2.1",
     "@launchql/types": "^2.1.13",
     "@launchql/upload-names": "^2.1.5",
