@@ -125,7 +125,7 @@ describe('Deploy Failure Scenarios', () => {
     expect(finalState).toMatchSnapshot('partial-deployment-migration-state');
     
     expect(finalState.changeCount).toBe(2);
-    expect(finalState.changes.map((c: any) => c.change_name)).toEqual(['add_record', 'create_table']);
+    expect(finalState.changes.map((c: any) => c.change_name)).toEqual(['create_table', 'add_record']);
     
     expect(await db.exists('table', 'test_products')).toBe(true);
     const records = await db.query('SELECT * FROM test_products');
@@ -199,7 +199,7 @@ describe('Deploy Failure Scenarios', () => {
     expect(records.rows).toHaveLength(0);
     
     expect(partialState.changeCount).toBe(2);
-    expect(partialState.changes.map((c: any) => c.change_name)).toEqual(['create_constraint_table', 'setup_schema']);
+    expect(partialState.changes.map((c: any) => c.change_name)).toEqual(['setup_schema', 'create_constraint_table']);
     
     const successEvents = partialState.events.filter((e: any) => e.event_type === 'deploy');
     expect(successEvents.length).toBe(2); // setup_schema, create_constraint_table
