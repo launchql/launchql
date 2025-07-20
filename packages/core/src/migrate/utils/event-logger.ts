@@ -25,6 +25,7 @@ export class EventLogger {
     if (!stackTrace) return null;
     
     return stackTrace
+      .replace(/\/.*?\/launchql\/launchql\//g, '/launchql/')
       .replace(/\/.*?\/launchql\//g, '/launchql/')
       .replace(/\/__w\/launchql\/launchql\//g, '/launchql/');
   }
