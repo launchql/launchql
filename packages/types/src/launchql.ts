@@ -158,6 +158,12 @@ export interface DeploymentOptions {
     toChange?: string;
     /** Log-only mode - skip script execution and only record deployment metadata */
     logOnly?: boolean;
+    /** 
+     * Hash method for SQL files:
+     * - 'content': Hash the raw file content (fast, but sensitive to formatting changes)
+     * - 'ast': Hash the parsed AST structure (robust, ignores formatting/comments but slower)
+     */
+    hashMethod?: 'content' | 'ast';
 }
 
 /**
@@ -243,7 +249,8 @@ export const launchqlDefaults: LaunchQLOptions = {
     fast: false,
     usePlan: true,
     cache: false,
-    logOnly: false
+    logOnly: false,
+    hashMethod: 'content'
   },
   migrations: {
     codegen: {
