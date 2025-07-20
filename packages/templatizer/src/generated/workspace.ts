@@ -114,22 +114,6 @@ export default [
   },
 
   (vars: Record<string, any>) => {
-    const relPath = `launchql.config.js.example`;
-    const content = `// Alternative JavaScript configuration with JSDoc type safety
-/** @type {import('@launchql/types').LaunchQLWorkspaceConfig} */
-module.exports = {
-  packages: [
-    "packages/*",
-    "extensions/*"
-  ],
-  name: "${vars.MODULENAME}",
-  settings: {
-  }
-};`;
-    return { relPath, content };
-  },
-
-  (vars: Record<string, any>) => {
     const relPath = `docker-compose.yml`;
     const content = `services:
   postgres:
