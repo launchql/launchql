@@ -47,7 +47,8 @@ CREATE PROCEDURE launchql_migrate.deploy(
     p_change_name TEXT,
     p_script_hash TEXT,
     p_requires TEXT[],
-    p_deploy_sql TEXT
+    p_deploy_sql TEXT,
+    p_log_only BOOLEAN DEFAULT FALSE
 )
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -91,14 +92,16 @@ BEGIN
         END;
     END IF;
     
-    -- Execute deploy
-    BEGIN
-        EXECUTE p_deploy_sql;
-    EXCEPTION WHEN OTHERS THEN
-        INSERT INTO launchql_migrate.events (event_type, change_name, project)
-        VALUES ('fail', p_change_name, p_project);
-        RAISE;
-    END;
+    -- Execute deploy (skip if log-only mode)
+    IF NOT p_log_only THEN
+        BEGIN
+            EXECUTE p_deploy_sql;
+        EXCEPTION WHEN OTHERS THEN
+            INSERT INTO launchql_migrate.events (event_type, change_name, project)
+            VALUES ('fail', p_change_name, p_project);
+            RAISE;
+        END;
+    END IF;
     
     -- Record deployment
     INSERT INTO launchql_migrate.changes (change_id, change_name, project, script_hash)
