@@ -454,9 +454,10 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { modulePath } = options;
+    const { modulePath, toChange } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFile(planPath);
+    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
@@ -470,6 +471,11 @@ export class LaunchQLMigrate {
 
     try {
       for (const change of changes) {
+        // Stop if we've reached the target change
+        if (resolvedToChange && verified.includes(resolvedToChange)) {
+          break;
+        }
+        
         // Check if deployed
         const isDeployed = await this.isDeployed(plan.project, change.name);
         if (!isDeployed) {
