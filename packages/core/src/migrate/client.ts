@@ -7,8 +7,7 @@ import { PgConfig } from 'pg-env';
 
 import { LaunchQLProject } from '../core/class/launchql';
 import { Change, parsePlanFile, parsePlanFileSimple, readScript } from '../files';
-import { DependencyResult,resolveDependencies } from '../resolution/deps';
-
+import { DependencyResult, resolveDependencies } from '../resolution/deps';
 import { resolveTagToChangeName } from '../resolution/resolve';
 import { cleanSql } from './clean';
 import {
