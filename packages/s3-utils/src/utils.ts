@@ -1,11 +1,9 @@
-import { PassThrough, Readable } from 'stream';
-import { 
-  S3Client, 
-  HeadObjectCommand, 
+import {
   GetObjectCommand,
-  CompleteMultipartUploadCommandOutput
-} from '@aws-sdk/client-s3';
+  HeadObjectCommand, 
+  S3Client} from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
+import { PassThrough, Readable } from 'stream';
 
 interface FileOperationArgs {
   client: S3Client;

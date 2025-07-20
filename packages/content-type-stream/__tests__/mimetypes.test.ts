@@ -1,8 +1,9 @@
 // @ts-nocheck
-import { streamContentType } from '../src';
-import { sync as glob } from 'glob';
 import { createReadStream } from 'fs';
+import { sync as glob } from 'glob';
 import { basename } from 'path';
+
+import { streamContentType } from '../src';
 
 const files = []
   .concat(glob(__dirname + '/../../../__fixtures__/kitchen-sink/**'))
@@ -31,7 +32,7 @@ describe('mimetypes', () => {
     const res = {};
     const use = files;
 
-    for (var i = 0; i < use.length; i++) {
+    for (let i = 0; i < use.length; i++) {
       const file = use[i];
       const key = file.key;
       const readStream = createReadStream(file.path);
@@ -52,7 +53,7 @@ describe('mimetypes', () => {
     const res = {};
     const use = malicious;
 
-    for (var i = 0; i < use.length; i++) {
+    for (let i = 0; i < use.length; i++) {
       const file = use[i];
       const key = file.key;
       const readStream = createReadStream(file.path);

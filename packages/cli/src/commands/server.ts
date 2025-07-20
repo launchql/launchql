@@ -1,7 +1,7 @@
-import { LaunchQLServer as server } from '@launchql/server';
-import { CLIOptions, Inquirerer, Question, OptionValue } from 'inquirerer';
-import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/logger';
+import { LaunchQLServer as server } from '@launchql/server';
+import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { CLIOptions, Inquirerer, OptionValue,Question } from 'inquirerer';
 import { getPgPool } from 'pg-cache';
 
 const log = new Logger('server');

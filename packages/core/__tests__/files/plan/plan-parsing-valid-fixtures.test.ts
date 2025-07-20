@@ -1,4 +1,4 @@
-import { TestPlan } from "../../../test-utils";
+import { TestPlan } from '../../../test-utils';
 
 it('plan-valid/project-qualified.plan', () => {
   const testPlan = new TestPlan('plan-valid/project-qualified.plan');

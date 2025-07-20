@@ -1,7 +1,7 @@
 import { LaunchQLExplorer as explorer } from '@launchql/explorer';
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/logger';
+import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const log = new Logger('explorer');
 

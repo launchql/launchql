@@ -1,30 +1,28 @@
 export * from './core/class/launchql';
-export * from './resolution/deps';
 export * from './export/export-meta';
 export * from './export/export-migrations';
 export * from './extensions/extensions';
 export * from './modules/modules';
 export * from './packaging/package';
-export * from './workspace/paths';
-export * from './resolution/resolve';
 export * from './packaging/transform';
+export * from './resolution/deps';
+export * from './resolution/resolve';
+export * from './workspace/paths';
 export * from './workspace/utils';
 
 // Export project-files functionality (now integrated into core)
 export * from './files';
-
+export { cleanSql } from './migrate/clean';
 export { LaunchQLMigrate } from './migrate/client';
 export { 
+  DeployOptions, 
+  DeployResult, 
   MigrateChange, 
   MigratePlanFile, 
-  DeployOptions, 
   RevertOptions, 
-  VerifyOptions, 
-  DeployResult, 
   RevertResult, 
-  VerifyResult, 
-  StatusResult
-} from './migrate/types';
+  StatusResult,
+  VerifyOptions, 
+  VerifyResult} from './migrate/types';
 export { hashFile, hashString } from './migrate/utils/hash';
-export { withTransaction, TransactionContext, TransactionOptions, executeQuery } from './migrate/utils/transaction';
-export { cleanSql } from './migrate/clean';
+export { executeQuery,TransactionContext, TransactionOptions, withTransaction } from './migrate/utils/transaction';

@@ -1,6 +1,6 @@
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { LaunchQLProject } from '@launchql/core';
 import { Logger } from '@launchql/logger';
+import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const log = new Logger('plan');
 
@@ -28,7 +28,7 @@ export default async (
 
   project.writeModulePlan({
     projects: true
-  })
+  });
   
   return argv;
 };

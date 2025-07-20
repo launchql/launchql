@@ -1,11 +1,10 @@
-import {
-  withPostGraphileContext,
-  createPostGraphileSchema,
-  PostGraphileOptions
-} from 'postgraphile';
-import { graphql, GraphQLSchema, ExecutionResult } from 'graphql';
+import { ExecutionResult,graphql, GraphQLSchema } from 'graphql';
 import { print } from 'graphql/language/printer';
 import { Pool } from 'pg';
+import {
+  createPostGraphileSchema,
+  PostGraphileOptions,
+  withPostGraphileContext} from 'postgraphile';
 
 interface GraphileSettings extends PostGraphileOptions {
   schema: string | string[];
@@ -53,8 +52,8 @@ export class GraphileQuery {
       role != null
         ? { role }
         : typeof pgSettingsGenerator === 'function'
-        ? await pgSettingsGenerator(req)
-        : pgSettingsGenerator;
+          ? await pgSettingsGenerator(req)
+          : pgSettingsGenerator;
 
     return await withPostGraphileContext(
       {

@@ -1,7 +1,8 @@
-import { FileTypeDetector } from '../../src/file-type-detector';
-import { glob } from 'glob';
 import { createReadStream } from 'fs';
+import { glob } from 'glob';
 import path from 'path';
+
+import { FileTypeDetector } from '../../src/file-type-detector';
 
 describe('Malicious Fixtures', () => {
   let detector: FileTypeDetector;

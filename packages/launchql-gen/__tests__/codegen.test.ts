@@ -1,10 +1,10 @@
 process.env.LOG_SCOPE = 'launchql-codegen';
 
 import { getConnections, GraphQLQueryFn, seed } from 'graphile-test';
-import { IntrospectionQuery, IntrospectionQueryResult, parseGraphQuery } from 'introspectron';
 import { print } from 'graphql';
-
+import { IntrospectionQuery, IntrospectionQueryResult, parseGraphQuery } from 'introspectron';
 import { join } from 'path';
+
 import { generate, GqlMap } from '../src';
 import { generateKeyedObjFromIntrospection } from '../test-utils/generate-from-introspection';
 

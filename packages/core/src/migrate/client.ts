@@ -1,25 +1,25 @@
-import { Pool, PoolConfig } from 'pg';
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
 import { Logger } from '@launchql/logger';
+import { readFileSync } from 'fs';
+import { dirname,join } from 'path';
+import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
+
+import { LaunchQLProject } from '../core/class/launchql';
+import { Change, parsePlanFile as parsePlanFileFull, parsePlanFileSimple as parsePlanFile, readScript } from '../files';
+import { DependencyResult,resolveDependencies } from '../resolution/deps';
+import { resolveTagToChangeName } from '../resolution/resolve';
+import { cleanSql } from './clean';
 import {
   DeployOptions,
-  RevertOptions,
-  VerifyOptions,
   DeployResult,
+  RevertOptions,
   RevertResult,
-  VerifyResult,
-  StatusResult
-} from './types';
-import { parsePlanFileSimple as parsePlanFile, parsePlanFile as parsePlanFileFull, Change, readScript, scriptExists } from '../files';
-import { resolveDependencies, DependencyResult } from '../resolution/deps';
-import { resolveTagToChangeName } from '../resolution/resolve';
+  StatusResult,
+  VerifyOptions,
+  VerifyResult} from './types';
 import { hashFile } from './utils/hash';
-import { cleanSql } from './clean';
-import { withTransaction, executeQuery, TransactionContext } from './utils/transaction';
-import { LaunchQLProject } from '../core/class/launchql';
+import { executeQuery,withTransaction } from './utils/transaction';
 
 // Helper function to get changes in order
 function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {

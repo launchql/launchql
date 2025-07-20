@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { basename, dirname, relative } from 'path';
+
 import { parsePlanFileSimple } from '../plan';
 import { ExtensionInfo } from './writer';
 

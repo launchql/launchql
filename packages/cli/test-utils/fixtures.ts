@@ -1,11 +1,11 @@
 import fs from 'fs';
+import { Inquirerer } from 'inquirerer';
+import { ParsedArgs } from 'minimist';
 import os from 'os';
 import path from 'path';
-import { sync as glob } from 'glob';
-import { Inquirerer } from 'inquirerer';
+
 import { commands } from '../src/commands';
-import { ParsedArgs } from 'minimist';
-import { TestEnvironment, setupTests } from './cli';
+import { setupTests,TestEnvironment } from './cli';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
 

@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import { readAndParsePackageJson } from '../package';
 
 // Function to display the version information

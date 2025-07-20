@@ -1,8 +1,9 @@
 process.env.LOG_SCOPE = 'introspectron';
 
-import { getConnections, seed } from 'pgsql-test';
 import { join } from 'path';
+import { getConnections, seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
+
 import { introspect } from '../src';
 import type { PgIntrospectionResultByKind } from '../src/pg-types';
 

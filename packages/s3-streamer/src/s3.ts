@@ -14,17 +14,17 @@ export default function getS3(opts: S3Options): S3Client {
     region: opts.awsRegion,
     ...(opts.awsAccessKey && opts.awsSecretKey
       ? {
-          credentials: {
-            accessKeyId: opts.awsAccessKey,
-            secretAccessKey: opts.awsSecretKey,
-          },
-        }
+        credentials: {
+          accessKeyId: opts.awsAccessKey,
+          secretAccessKey: opts.awsSecretKey,
+        },
+      }
       : {}),
     ...(isMinio
       ? {
-          endpoint: opts.minioEndpoint,
-          forcePathStyle: true,
-        }
+        endpoint: opts.minioEndpoint,
+        forcePathStyle: true,
+      }
       : {}),
   };
 

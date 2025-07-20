@@ -1,4 +1,5 @@
 import { writeFileSync } from 'fs';
+
 import { getExtensionInfo } from './reader';
 
 /**

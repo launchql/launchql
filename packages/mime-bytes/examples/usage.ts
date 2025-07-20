@@ -1,6 +1,7 @@
-import { FileTypeDetector, detectFromStream } from '../src';
 import { createReadStream } from 'fs';
 import path from 'path';
+
+import { detectFromStream,FileTypeDetector } from '../src';
 
 async function demonstrateUsage() {
   console.log('=== mime-bytes Usage Examples ===\n');

@@ -1,20 +1,19 @@
 // Main file type detector class with stream-focused API
 
 import { Readable } from 'stream';
-import { peek, BufferPeekStream } from './peak';
+
 import {
+  detectCharset,
+  DetectionResult,
   FILE_TYPES,
   FileTypeDefinition,
-  DetectionResult,
-  getFileTypeByMagicBytes,
-  getFileTypeByExtension,
-  getFileTypesByCategory,
   getContentTypeByExtension,
-  detectCharset,
-  getContentTypeForExtension
-} from './file-types-registry';
+  getContentTypeForExtension,
+  getFileTypeByExtension,
+  getFileTypesByCategory} from './file-types-registry';
+import {peek } from './peak';
+import {normalizeExtension } from './utils/extensions';
 import { compareBytes } from './utils/magic-bytes';
-import { normalizeExtension, getCategoryFromExtension } from './utils/extensions';
 import { resolveMimeAlias } from './utils/mime-types';
 
 export interface FileTypeDetectorOptions {
@@ -407,7 +406,7 @@ export class FileTypeDetector {
     totalTypes: number;
     byCategory: Record<string, number>;
     byMimePrefix: Record<string, number>;
-  } {
+    } {
     const stats = {
       totalTypes: this.fileTypes.length,
       byCategory: {} as Record<string, number>,

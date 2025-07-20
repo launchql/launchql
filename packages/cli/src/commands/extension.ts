@@ -1,6 +1,6 @@
+import { LaunchQLProject } from '@launchql/core';
 import { CLIOptions, Inquirerer, OptionValue, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { LaunchQLProject } from '@launchql/core';
 
 export default async (
   argv: Partial<ParsedArgs>,

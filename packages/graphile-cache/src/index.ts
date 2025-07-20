@@ -1,6 +1,5 @@
 // Main exports from graphile-cache package
 export { 
-  graphileCache,
+  closeAllCaches,
   GraphileCache,
-  closeAllCaches
-} from './graphile-cache';
+  graphileCache} from './graphile-cache';

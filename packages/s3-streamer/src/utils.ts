@@ -1,11 +1,9 @@
-import stream, { PassThrough, Readable } from 'stream';
-import { S3Client, CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
+import {S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
-
 import {
-  streamContentType,
-  ContentStream
-} from '@launchql/content-type-stream';
+  ContentStream,
+  streamContentType} from '@launchql/content-type-stream';
+import stream, { PassThrough, Readable } from 'stream';
 
 export interface UploadParams {
   client: S3Client;

@@ -1,6 +1,6 @@
+
 import { LaunchQLMigrate } from '../../src/migrate/client';
-import { MigrateTestFixture, TestDatabase, teardownAllPools } from '../../test-utils';
-import { join } from 'path';
+import { MigrateTestFixture, teardownAllPools,TestDatabase } from '../../test-utils';
 
 describe('Deploy Command', () => {
   let fixture: MigrateTestFixture;

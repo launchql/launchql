@@ -1,6 +1,7 @@
-import stream2etag from '../src';
 import { createReadStream } from 'fs';
 import { sync as glob } from 'glob';
+
+import stream2etag from '../src';
 
 describe('etags', () => {
   it('calculates etags properly', async () => {

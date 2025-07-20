@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
-import { Change, PlanFile, Tag, ExtendedPlanFile, ParseError, ParseResult } from '../types';
-import { isValidChangeName, isValidTagName, isValidDependency, parseReference } from './validators';
+
+import { Change, ExtendedPlanFile, ParseError, ParseResult,PlanFile, Tag } from '../types';
+import { isValidChangeName, isValidDependency, isValidTagName, parseReference } from './validators';
 
 /**
  * Parse a Sqitch plan file with full validation

@@ -1,9 +1,8 @@
 // @ts-nocheck
 import crypto from 'crypto';
-import stream from 'stream';
-
-import * as uuid from 'uuid-hash';
 import * as etag from 'etag-hash';
+import stream from 'stream';
+import * as uuid from 'uuid-hash';
 
 export class ContentStream extends stream.Transform {
   constructor() {

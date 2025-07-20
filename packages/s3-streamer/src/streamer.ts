@@ -1,7 +1,8 @@
-import { ReadStream } from 'fs';
 import { S3Client } from '@aws-sdk/client-s3';
+import { ReadStream } from 'fs';
+
 import getS3 from './s3';
-import { upload as streamUpload, type AsyncUploadResult } from './utils';
+import { type AsyncUploadResult,upload as streamUpload } from './utils';
 
 interface StreamerOptions {
   awsRegion: string;

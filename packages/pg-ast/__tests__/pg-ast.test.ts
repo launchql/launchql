@@ -1,5 +1,6 @@
-import * as t from '../src';
 import { deparse } from 'pgsql-deparser';
+
+import * as t from '../src';
 
 it('deparses', async () => {
   const obj = t.nodes.aExpr({

@@ -1,5 +1,5 @@
-import { parse } from 'pgsql-parser';
 import { deparse } from 'pgsql-deparser';
+import { parse } from 'pgsql-parser';
 
 type TransformProps = {
   [key: string]: ((value: any) => any) | { [key: string]: any };

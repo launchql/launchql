@@ -1,6 +1,6 @@
-import { FileTypeDetector, detectFromStream, detectFromBuffer } from '../src';
-import { createReadStream } from 'fs';
 import { Readable } from 'stream';
+
+import { FileTypeDetector } from '../src';
 
 async function main() {
   // Create a detector instance

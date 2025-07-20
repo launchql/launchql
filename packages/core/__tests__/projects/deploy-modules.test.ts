@@ -1,5 +1,5 @@
-import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 import { TestDatabase } from '../../test-utils';
+import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 
 describe('Basic Deployment with deployModules', () => {
   let fixture: CoreDeployTestFixture;

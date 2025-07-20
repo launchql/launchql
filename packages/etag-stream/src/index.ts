@@ -1,5 +1,5 @@
-import { Transform, TransformCallback } from 'stream';
 import { createHash } from 'etag-hash';
+import { Transform, TransformCallback } from 'stream';
 
 interface ETagStreamOptions {
   partSizeInMb?: number;

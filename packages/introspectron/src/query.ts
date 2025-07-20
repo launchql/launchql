@@ -87,19 +87,19 @@ export const makeIntrospectionQuery = (serverVersionNum, options = {}) => {
         pro.provariadic = 0 and
         -- Filter our aggregate functions and window functions.
         ${
-          serverVersionNum >= 110000
-            ? "pro.prokind = 'f'"
-            : 'pro.proisagg = false and pro.proiswindow = false'
-        } and
+  serverVersionNum >= 110000
+    ? "pro.prokind = 'f'"
+    : 'pro.proisagg = false and pro.proiswindow = false'
+} and
         ${
-          pgLegacyFunctionsOnly
-            ? `\
+  pgLegacyFunctionsOnly
+    ? `\
         -- We want to make sure the argument mode for all of our arguments is
         -- \`IN\` which means \`proargmodes\` will be null.
         pro.proargmodes is null and
         -- Do not select procedures that return \`RECORD\` (oid 2249).
         pro.prorettype operator(pg_catalog.<>) 2249 and`
-            : `\
+    : `\
         -- We want to make sure the argument modes for all of our arguments are
         -- \`IN\`, \`OUT\`, \`INOUT\`, or \`TABLE\` (not \`VARIADIC\`).
         (pro.proargmodes is null or pro.proargmodes operator(pg_catalog.<@) array['i','o','b','t']::"char"[]) and
@@ -108,7 +108,7 @@ export const makeIntrospectionQuery = (serverVersionNum, options = {}) => {
         (pro.prorettype operator(pg_catalog.<>) 2249 or pro.proargmodes && array['o','b','t']::"char"[]) and
         -- Do not select procedures that have \`RECORD\` arguments.
         (pro.proallargtypes is null or not (pro.proallargtypes operator(pg_catalog.@>) array[2249::oid])) and`
-        }
+}
         -- Do not select procedures that create range types. These are utility
         -- functions that really don’t need to be exposed in an API.
         pro.proname not in (
@@ -379,8 +379,8 @@ export const makeIntrospectionQuery = (serverVersionNum, options = {}) => {
         idx.indkey as "attributeNums",
         am.amname as "indexType",
         ${
-          serverVersionNum >= 90600
-            ? `\
+  serverVersionNum >= 90600
+    ? `\
         (
           select array_agg(pg_index_column_has_property(idx.indexrelid,n::int2,'asc'))
           from unnest(idx.indkey) with ordinality as ord(key,n)
@@ -389,8 +389,8 @@ export const makeIntrospectionQuery = (serverVersionNum, options = {}) => {
           select array_agg(pg_index_column_has_property(idx.indexrelid,n::int2,'nulls_first'))
           from unnest(idx.indkey) with ordinality as ord(key,n)
         ) as "attributePropertiesNullsFirst",`
-            : ''
-        }
+    : ''
+}
         dsc.description as "description"
       from
         pg_catalog.pg_index as idx

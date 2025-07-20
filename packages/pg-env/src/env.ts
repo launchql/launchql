@@ -1,4 +1,4 @@
-import { PgConfig, defaultPgConfig } from './pg-config';
+import { defaultPgConfig,PgConfig } from './pg-config';
 
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);

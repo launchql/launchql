@@ -1,5 +1,5 @@
-import { Pool, PoolClient } from 'pg';
 import { Logger } from '@launchql/logger';
+import { Pool, PoolClient } from 'pg';
 
 const log = new Logger('migrate:transaction');
 

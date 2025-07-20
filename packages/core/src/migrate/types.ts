@@ -1,4 +1,3 @@
-import { PgConfig } from 'pg-env';
 
 export interface MigrateChange {
   name: string;

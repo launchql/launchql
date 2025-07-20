@@ -1,10 +1,11 @@
+import { mkdirSync, rmSync,writeFileSync } from 'fs';
 import { join } from 'path';
-import { writeFileSync, mkdirSync, rmSync } from 'fs';
+
 import { 
-  parsePlanFile, 
-  parsePlanFileSimple,
   getChanges,
   getLatestChange,
+  parsePlanFile, 
+  parsePlanFileSimple,
   resolveReference
 } from '../../../src/files';
 import { ExtendedPlanFile } from '../../../src/files/types';

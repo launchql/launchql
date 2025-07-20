@@ -1,7 +1,7 @@
-import { PostGraphileOptions } from 'postgraphile';
-import { getGraphileSettings as getSettings } from 'graphile-settings';
 import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/types';
+import { getGraphileSettings as getSettings } from 'graphile-settings';
+import { PostGraphileOptions } from 'postgraphile';
 
 export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptions => {
   const opts = getEnvOptions(rawOpts);

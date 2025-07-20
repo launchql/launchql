@@ -1,6 +1,4 @@
 import {
-  IntrospectionDirective,
-  IntrospectionEnumValue,
   IntrospectionField,
   IntrospectionInputValue,
   IntrospectionQueryResult,

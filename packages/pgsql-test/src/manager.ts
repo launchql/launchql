@@ -1,8 +1,9 @@
-import { Pool } from 'pg';
-import { DbAdmin } from './admin';
-import { getPgEnvOptions, PgConfig } from 'pg-env';
-import { PgTestClient } from './test-client';
 import { Logger } from '@launchql/logger';
+import { Pool } from 'pg';
+import { getPgEnvOptions, PgConfig } from 'pg-env';
+
+import { DbAdmin } from './admin';
+import { PgTestClient } from './test-client';
 
 const log = new Logger('test-connector');
 

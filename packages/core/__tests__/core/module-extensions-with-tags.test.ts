@@ -28,9 +28,9 @@ it('getModuleExtensions for my-third', () => {
 it('getModuleDependencies for my-third', () => {
   const project = fixture.getModuleProject(['simple-w-tags'], 'my-third');
 
-//   console.log(project.getAvailableModules());
-//   console.log(project.getModuleMap());
-//   console.log(project.getModuleExtensions());
+  //   console.log(project.getAvailableModules());
+  //   console.log(project.getModuleMap());
+  //   console.log(project.getModuleExtensions());
 
   expect(project.getModuleDependencies('my-third')).toMatchSnapshot();
 });

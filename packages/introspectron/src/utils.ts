@@ -22,8 +22,8 @@ export const parseTags = (
           [key]: !Object.prototype.hasOwnProperty.call(prev.tags, key)
             ? value
             : Array.isArray(prev.tags[key])
-            ? [...(prev.tags[key] as (string | boolean)[]), value]
-            : [prev.tags[key], value]
+              ? [...(prev.tags[key] as (string | boolean)[]), value]
+              : [prev.tags[key], value]
         }
       };
     },

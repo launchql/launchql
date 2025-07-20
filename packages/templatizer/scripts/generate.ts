@@ -1,8 +1,7 @@
 
-import { writeRenderedTemplates } from '../src/templatize/generateFromCompiled';
-
 import moduleTemplate from '../src/generated/module';
 import workspaceTemplate from '../src/generated/workspace';
+import { writeRenderedTemplates } from '../src/templatize/generateFromCompiled';
 
 const vars = {
   PACKAGE_IDENTIFIER: 'my-package',

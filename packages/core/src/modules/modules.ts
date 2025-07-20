@@ -1,6 +1,7 @@
 import { sync as glob } from 'glob';
 import { basename } from 'path';
-import { getLatestChange, parseControlFile, Module } from '../files';
+
+import { getLatestChange, Module,parseControlFile } from '../files';
 
 export type ModuleMap = Record<string, Module>;
 

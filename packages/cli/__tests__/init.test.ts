@@ -1,10 +1,11 @@
-import { Inquirerer } from 'inquirerer';
-import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
-import * as path from 'path';
-import { sync as glob } from 'glob';
-import { commands } from '../src/commands';
-import { ParsedArgs } from 'minimist';
 import { LaunchQLProject } from '@launchql/core';
+import { sync as glob } from 'glob';
+import { Inquirerer } from 'inquirerer';
+import { ParsedArgs } from 'minimist';
+import * as path from 'path';
+
+import { commands } from '../src/commands';
+import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
 
 const beforeEachSetup = setupTests();
 
@@ -68,7 +69,7 @@ describe('cmds:init', () => {
   it('initializes module', async () => {
     const workspaceDir = path.join(fixture.tempDir, 'my-workspace');
     const moduleDir = path.join(workspaceDir, 'packages', 'my-module');
-    console.log({workspaceDir, moduleDir})
+    console.log({workspaceDir, moduleDir});
     await runInitTest(
       {
         _: ['init'],

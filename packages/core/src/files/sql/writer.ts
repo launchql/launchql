@@ -1,6 +1,7 @@
+import { getEnvOptions } from '@launchql/types';
 import fs from 'fs';
 import path from 'path';
-import { getEnvOptions } from '@launchql/types';
+
 import { SqitchRow } from '../types';
 
 export interface SqlWriteOptions {

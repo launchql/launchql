@@ -5,10 +5,10 @@ export const cors = (app: Express, origin?: string) => {
   const corsOptions =
     origin && origin.trim() !== '*'
       ? {
-          origin,
-          credentials: true,
-          optionsSuccessStatus: 200, // legacy browser support
-        }
+        origin,
+        credentials: true,
+        optionsSuccessStatus: 200, // legacy browser support
+      }
       : undefined;
 
   if (corsOptions) {

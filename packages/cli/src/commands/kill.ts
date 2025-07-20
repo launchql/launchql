@@ -1,5 +1,5 @@
-import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { Logger } from '@launchql/logger';
+import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { getPgPool } from 'pg-cache';
 
 const log = new Logger('db-kill');

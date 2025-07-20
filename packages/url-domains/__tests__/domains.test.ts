@@ -1,5 +1,6 @@
-import { parseReq, middleware as parseMiddleware } from '../src';
 import cases from 'jest-in-case';
+
+import { middleware as parseMiddleware,parseReq } from '../src';
 
 const fixtures = [
   {

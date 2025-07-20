@@ -1,11 +1,12 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { snapshot } from '../src';
-import { seed } from 'pgsql-test';
 import { join } from 'path';
-import type { GraphQLQueryUnwrappedFn } from '../src/types';
+import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
+
+import { snapshot } from '../src';
 import { getConnectionsUnwrapped } from '../src/get-connections';
+import type { GraphQLQueryUnwrappedFn } from '../src/types';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -15,20 +16,20 @@ let query: GraphQLQueryUnwrappedFn;
 let db: PgTestClient;
 
 beforeAll(async () => {
-    const connections = await getConnectionsUnwrapped(
-        {
-            schemas,
-            authRole: 'authenticated'
-        },
-        [
-            seed.sqlfile([
-                sql('test.sql'),
-                sql('grants.sql')
-            ])
-        ]
-    );
+  const connections = await getConnectionsUnwrapped(
+    {
+      schemas,
+      authRole: 'authenticated'
+    },
+    [
+      seed.sqlfile([
+        sql('test.sql'),
+        sql('grants.sql')
+      ])
+    ]
+  );
 
-    ({ query, db, teardown } = connections);
+  ({ query, db, teardown } = connections);
 });
 
 beforeEach(() => db.beforeEach());
@@ -36,9 +37,9 @@ afterEach(() => db.afterEach());
 afterAll(() => teardown());
 
 it('creates a user and returns typed result', async () => {
-    db.setContext({
-        role: 'authenticated'
-    })
+  db.setContext({
+    role: 'authenticated'
+  });
     interface CreateUserVariables {
         input: {
             user: {
@@ -68,11 +69,11 @@ it('creates a user and returns typed result', async () => {
     `;
 
     const variables: CreateUserVariables = {
-        input: {
-            user: {
-                username: 'alice'
-            }
+      input: {
+        user: {
+          username: 'alice'
         }
+      }
     };
 
     // Using positional API: query, variables, commit, reqOptions
@@ -89,9 +90,9 @@ it('creates a user and returns typed result', async () => {
 });
 
 it('throws error when trying to create duplicate users due to unwrapped nature', async () => {
-    db.setContext({
-        role: 'authenticated'
-    });
+  db.setContext({
+    role: 'authenticated'
+  });
 
     interface CreateUserVariables {
         input: {
@@ -122,11 +123,11 @@ it('throws error when trying to create duplicate users due to unwrapped nature',
     `;
 
     const bobVariables: CreateUserVariables = {
-        input: {
-            user: {
-                username: 'bob'
-            }
+      input: {
+        user: {
+          username: 'bob'
         }
+      }
     };
 
     // First user creation should succeed - using positional API
@@ -137,6 +138,6 @@ it('throws error when trying to create duplicate users due to unwrapped nature',
     // Second user creation with same username should throw due to unwrapped nature
     // (assuming username has a unique constraint)
     await expect(
-        query<CreateUserResult>(createUserMutation, bobVariables) // Same variables - should cause constraint violation
+      query<CreateUserResult>(createUserMutation, bobVariables) // Same variables - should cause constraint violation
     ).rejects.toThrow(); // The unwrapped function will throw the GraphQL error as an exception
 });

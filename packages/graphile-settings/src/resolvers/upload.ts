@@ -61,24 +61,24 @@ export class Uploader {
     const allowedMimes = tags.mime
       ? tags.mime.trim().split(',').map((a: string) => a.trim())
       : typ === 'image'
-      ? ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml']
-      : [];
+        ? ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml']
+        : [];
 
     if (allowedMimes.length && !allowedMimes.includes(contentType)) {
       throw new Error(`UPLOAD_MIMETYPE ${allowedMimes.join(',')}`);
     }
 
     switch (typ) {
-      case 'image':
-      case 'upload':
-        return {
-          filename,
-          mime: contentType,
-          url
-        };
-      case 'attachment':
-      default:
-        return url;
+    case 'image':
+    case 'upload':
+      return {
+        filename,
+        mime: contentType,
+        url
+      };
+    case 'attachment':
+    default:
+      return url;
     }
   }
 }

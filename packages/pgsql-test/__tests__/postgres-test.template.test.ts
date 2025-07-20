@@ -1,11 +1,11 @@
 process.env.LOG_SCOPE = 'pgsql-test';
-import path from 'path';
 import { randomUUID } from 'crypto';
+import path from 'path';
 import { getPgEnvOptions } from 'pg-env';
 
-import { PgTestClient } from '../src/test-client';
 import { DbAdmin } from '../src/admin';
 import { getConnections } from '../src/connect';
+import { PgTestClient } from '../src/test-client';
 
 const sql = (file: string) => path.resolve(__dirname, '../sql', file);
 

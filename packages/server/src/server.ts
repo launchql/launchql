@@ -1,22 +1,22 @@
+import { Logger } from '@launchql/logger';
 import {
   healthz,
   poweredBy,
   trustProxy
 } from '@launchql/server-utils';
-import { getPgPool } from 'pg-cache';
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import { getEnvOptions,LaunchQLOptions } from '@launchql/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
-import { createAuthenticateMiddleware } from './middleware/auth';
-import { graphile } from './middleware/graphile';
-import { cors } from './middleware/cors';
-import { createApiMiddleware } from './middleware/api';
-import { flush, flushService } from './middleware/flush';
-import requestIp from 'request-ip';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { Pool, PoolClient } from 'pg';
+import { getPgPool } from 'pg-cache';
+import requestIp from 'request-ip';
 
-import { LaunchQLOptions, getEnvOptions } from '@launchql/types';
-import { Logger } from '@launchql/logger';
+import { createApiMiddleware } from './middleware/api';
+import { createAuthenticateMiddleware } from './middleware/auth';
+import { cors } from './middleware/cors';
+import { flush, flushService } from './middleware/flush';
+import { graphile } from './middleware/graphile';
 
 const log = new Logger('server');
 

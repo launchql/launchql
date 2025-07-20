@@ -1,6 +1,6 @@
-import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
-import { LaunchQLProject, exportMigrations } from '@launchql/core';
+import { exportMigrations,LaunchQLProject } from '@launchql/core';
 import { getEnvOptions, getGitConfigInfo } from '@launchql/types';
+import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { resolve } from 'path';
 import { getPgPool } from 'pg-cache';
 

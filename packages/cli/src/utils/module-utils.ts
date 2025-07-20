@@ -1,7 +1,7 @@
-import { Inquirerer } from 'inquirerer';
-import { ParsedArgs } from 'minimist';
 import { LaunchQLProject } from '@launchql/core';
 import { errors } from '@launchql/types';
+import { Inquirerer } from 'inquirerer';
+import { ParsedArgs } from 'minimist';
 
 /**
  * Prompt user to select a module from available modules in the directory

@@ -1,16 +1,14 @@
+import { LaunchQLProject } from '@launchql/core';
+import { Logger } from '@launchql/logger';
+import { getEnvOptions } from '@launchql/types';
+import { execSync } from 'child_process';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-
 import {
   getPgEnvOptions,
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { getEnvOptions } from '@launchql/types';
-
-import { LaunchQLProject } from '@launchql/core';
-import { Logger } from '@launchql/logger';
-import { execSync } from 'child_process';
 import { getTargetDatabase } from '../utils';
 import { selectModule } from '../utils/module-utils';
 
@@ -22,7 +20,7 @@ export default async (
   const pgEnv = getPgEnvOptions();
   const log = new Logger('cli');
 
-    // Get target database
+  // Get target database
   let database: string;
   
   if (argv.createdb) {

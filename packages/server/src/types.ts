@@ -1,5 +1,3 @@
-import { PostGraphileOptions } from 'postgraphile';
-import type { Plugin } from 'graphile-build';
 
 export interface CorsModuleData {
     urls: string[];

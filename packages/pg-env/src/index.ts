@@ -1,7 +1,6 @@
-export { PgConfig, defaultPgConfig } from './pg-config';
 export { 
-  getPgEnvVars,
   getPgEnvOptions,
-  toPgEnvVars,
-  getSpawnEnvWithPg
-} from './env';
+  getPgEnvVars,
+  getSpawnEnvWithPg,
+  toPgEnvVars} from './env';
+export { defaultPgConfig,PgConfig } from './pg-config';

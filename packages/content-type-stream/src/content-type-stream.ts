@@ -1,4 +1,4 @@
-import { FileTypeDetector, BufferPeekStream } from 'mime-bytes';
+import { BufferPeekStream,FileTypeDetector } from 'mime-bytes';
 import type { Readable } from 'stream';
 
 // Create a shared detector instance with default settings

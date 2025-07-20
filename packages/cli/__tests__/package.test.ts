@@ -1,12 +1,13 @@
-import { Inquirerer } from 'inquirerer';
-import { setupTests, TestEnvironment } from '../test-utils';
-import * as os from 'os';
-import * as path from 'path';
+import { LaunchQLProject } from '@launchql/core';
 import * as fs from 'fs';
 import { sync as glob } from 'glob';
-import { commands } from '../src/commands';
+import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { LaunchQLProject } from '@launchql/core';
+import * as os from 'os';
+import * as path from 'path';
+
+import { commands } from '../src/commands';
+import { setupTests, TestEnvironment } from '../test-utils';
 
 const fixture = (name: string) =>
   path.resolve(__dirname, '../../..', '__fixtures__', 'sqitch', name);

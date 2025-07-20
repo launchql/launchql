@@ -1,12 +1,13 @@
-import dotenv from 'dotenv';
-import { sync as glob } from 'glob';
-import { createReadStream } from 'fs';
-import { basename } from 'path';
 import { S3Client } from '@aws-sdk/client-s3';
-import { Streamer, getClient, upload } from '../src';
-import { cleanEnv, str, url } from 'envalid';
-import type { AsyncUploadResult } from '../src/utils';
 import { createS3Bucket } from '@launchql/s3-utils';
+import dotenv from 'dotenv';
+import { cleanEnv, str, url } from 'envalid';
+import { createReadStream } from 'fs';
+import { sync as glob } from 'glob';
+import { basename } from 'path';
+
+import { getClient, Streamer, upload } from '../src';
+import type { AsyncUploadResult } from '../src/utils';
 
 // Manually load the dotenv file
 dotenv.config({ path: __dirname + '/../../../.env.minio.env' });
@@ -90,7 +91,7 @@ describe('uploads', () => {
       Object.keys(res).map((k)=>{
         // CI/CD matching
         res[k].upload.Location = res[k].upload.Location.replace(/localhost:9000/g, 'minio_cdn:9000');
-      })
+      });
 
       expect(res).toMatchSnapshot();
     } finally {
@@ -125,7 +126,7 @@ describe('uploads', () => {
       Object.keys(res).map((k)=>{
         // CI/CD matching
         res[k].upload.Location = res[k].upload.Location.replace(/localhost:9000/g, 'minio_cdn:9000');
-      })
+      });
       expect(res).toMatchSnapshot();
     } finally {
       // Clean up the client

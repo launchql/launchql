@@ -1,8 +1,8 @@
-import { generateGranular as generate } from '../src';
-
 import { print } from 'graphql';
+
 import mutations from '../__fixtures__/api/mutations.json';
 import queries from '../__fixtures__/api/queries.json';
+import { generateGranular as generate } from '../src';
 
 it('generate', () => {
   // @ts-ignore

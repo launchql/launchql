@@ -1,9 +1,10 @@
-import { graphql, print, ExecutionResult, DocumentNode } from 'graphql';
-import { withPostGraphileContext, PostGraphileOptions } from 'postgraphile';
+import { DocumentNode,ExecutionResult, graphql, print } from 'graphql';
 // @ts-ignore
 import MockReq from 'mock-req';
 import type { Client, Pool } from 'pg';
 import { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
+import { PostGraphileOptions,withPostGraphileContext } from 'postgraphile';
+
 import { GetConnectionsInput } from './types';
 
 interface PgSettings {
@@ -11,15 +12,15 @@ interface PgSettings {
 }
 
 export const runGraphQLInContext = async <T = ExecutionResult>({
-    input,
-    conn,
-    pgPool,
-    schema,
-    options,
-    authRole,
-    query,
-    variables,
-    reqOptions = {}
+  input,
+  conn,
+  pgPool,
+  schema,
+  options,
+  authRole,
+  query,
+  variables,
+  reqOptions = {}
 }: {
     input: GetConnectionsInput & GetConnectionOpts,
     conn: GetConnectionResult;
@@ -31,48 +32,48 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
     variables?: Record<string, any>;
     reqOptions?: Record<string, any>;
 }): Promise<T> => {
-    if (!conn.pg.client) {
-        throw new Error('pgClient is required and must be provided externally.');
-    }
+  if (!conn.pg.client) {
+    throw new Error('pgClient is required and must be provided externally.');
+  }
 
-    const req = new MockReq({
-        url: options.graphqlRoute || '/graphql',
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        ...reqOptions
-    });
+  const req = new MockReq({
+    url: options.graphqlRoute || '/graphql',
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    ...reqOptions
+  });
 
-    const pgSettingsGenerator = options.pgSettings;
-    // @ts-ignore
-    const pgSettings: PgSettings =
+  const pgSettingsGenerator = options.pgSettings;
+  // @ts-ignore
+  const pgSettings: PgSettings =
         typeof pgSettingsGenerator === 'function'
-            ? await pgSettingsGenerator(req)
-            : pgSettingsGenerator || {};
+          ? await pgSettingsGenerator(req)
+          : pgSettingsGenerator || {};
 
-    // @ts-ignore
-    return await withPostGraphileContext(   
-        { ...options, pgPool, pgSettings },
-        async context => {
+  // @ts-ignore
+  return await withPostGraphileContext(   
+    { ...options, pgPool, pgSettings },
+    async context => {
 
-            const pgConn = input.useRoot ? conn.pg : conn.db;
-            const pgClient = pgConn.client;
-            // IS THIS BAD TO HAVE ROLE HERE 
-            await setContextOnClient(pgClient, pgSettings, authRole);
-            await pgConn.ctxQuery();
+      const pgConn = input.useRoot ? conn.pg : conn.db;
+      const pgClient = pgConn.client;
+      // IS THIS BAD TO HAVE ROLE HERE 
+      await setContextOnClient(pgClient, pgSettings, authRole);
+      await pgConn.ctxQuery();
 
-            const printed = typeof query === 'string' ? query : print(query);
-            const result = await graphql({
-                schema,
-                source: printed,
-                contextValue: { ...context, pgClient },
-                variableValues: variables ?? null
-            });
-            return result as T;
-        }
-    );
+      const printed = typeof query === 'string' ? query : print(query);
+      const result = await graphql({
+        schema,
+        source: printed,
+        contextValue: { ...context, pgClient },
+        variableValues: variables ?? null
+      });
+      return result as T;
+    }
+  );
 };
 
 // IS THIS BAD TO HAVE ROLE HERE 

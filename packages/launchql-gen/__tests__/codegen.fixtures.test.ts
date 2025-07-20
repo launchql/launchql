@@ -1,14 +1,14 @@
 import { print } from 'graphql';
-import {
-  getManyPaginatedNodes,
-  getMany,
-  getOne
-} from '../src';
 
-import mutations from '../__fixtures__/mutations.json';
-import queries from '../__fixtures__/queries.json';
 import queryNestedSelectionMany from '../__fixtures__/api/query-nested-selection-many.json';
 import queryNestedSelectionOne from '../__fixtures__/api/query-nested-selection-one.json';
+import mutations from '../__fixtures__/mutations.json';
+import queries from '../__fixtures__/queries.json';
+import {
+  getMany,
+  getManyPaginatedNodes,
+  getOne
+} from '../src';
 import { generateKeyedObjFromGqlMap } from '../test-utils/generate-from-introspection';
 
 // Type helper (optional but recommended for strong typing on selection fields)
@@ -29,7 +29,7 @@ interface NestedSelectionQuery {
 describe('GraphQL Code Generation', () => {
   it('generate(): full AST map snapshot', () => {
     // @ts-ignore
-    const output = generateKeyedObjFromGqlMap({ ...queries, ...mutations })
+    const output = generateKeyedObjFromGqlMap({ ...queries, ...mutations });
     expect(output).toMatchSnapshot('full generate() output');
   });
 

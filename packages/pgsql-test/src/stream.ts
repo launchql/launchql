@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
+import { getSpawnEnvWithPg,PgConfig } from 'pg-env';
 import { Readable } from 'stream';
-import { PgConfig, getSpawnEnvWithPg } from 'pg-env';
 
 function setArgs(config: PgConfig): string[] {
   const args = [

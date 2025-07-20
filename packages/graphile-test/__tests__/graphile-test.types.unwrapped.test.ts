@@ -1,11 +1,12 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { snapshot } from '../src';
-import { seed } from 'pgsql-test';
 import { join } from 'path';
-import type { GraphQLQueryUnwrappedFn, GraphQLQueryUnwrappedFnObj } from '../src/types';
+import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
+
+import { snapshot } from '../src';
 import { getConnectionsObjectUnwrapped } from '../src/get-connections';
+import type { GraphQLQueryUnwrappedFnObj } from '../src/types';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -15,20 +16,20 @@ let query: GraphQLQueryUnwrappedFnObj;
 let db: PgTestClient;
 
 beforeAll(async () => {
-    const connections = await getConnectionsObjectUnwrapped(
-        {
-            schemas,
-            authRole: 'authenticated'
-        },
-        [
-            seed.sqlfile([
-                sql('test.sql'),
-                sql('grants.sql')
-            ])
-        ]
-    );
+  const connections = await getConnectionsObjectUnwrapped(
+    {
+      schemas,
+      authRole: 'authenticated'
+    },
+    [
+      seed.sqlfile([
+        sql('test.sql'),
+        sql('grants.sql')
+      ])
+    ]
+  );
 
-    ({ query, db, teardown } = connections);
+  ({ query, db, teardown } = connections);
 });
 
 beforeEach(() => db.beforeEach());
@@ -36,9 +37,9 @@ afterEach(() => db.afterEach());
 afterAll(() => teardown());
 
 it('creates a user and returns typed result', async () => {
-    db.setContext({
-        role: 'authenticated'
-    })
+  db.setContext({
+    role: 'authenticated'
+  });
     interface CreateUserVariables {
         input: {
             user: {
@@ -57,7 +58,7 @@ it('creates a user and returns typed result', async () => {
     }
 
     const result = await query<CreateUserResult, CreateUserVariables>({
-        query: `
+      query: `
         mutation CreateUser($input: CreateUserInput!) {
           createUser(input: $input) {
             user {
@@ -67,13 +68,13 @@ it('creates a user and returns typed result', async () => {
           }
         }
       `,
-        variables: {
-            input: {
-                user: {
-                    username: 'alice'
-                }
-            }
+      variables: {
+        input: {
+          user: {
+            username: 'alice'
+          }
         }
+      }
     });
 
     // Assertions - much cleaner since result is already unwrapped!
@@ -87,9 +88,9 @@ it('creates a user and returns typed result', async () => {
 });
 
 it('throws error when trying to create duplicate users due to unwrapped nature', async () => {
-    db.setContext({
-        role: 'authenticated'
-    });
+  db.setContext({
+    role: 'authenticated'
+  });
 
     interface CreateUserVariables {
         input: {
@@ -121,14 +122,14 @@ it('throws error when trying to create duplicate users due to unwrapped nature',
 
     // First user creation should succeed
     const firstResult = await query<CreateUserResult, CreateUserVariables>({
-        query: createUserMutation,
-        variables: {
-            input: {
-                user: {
-                    username: 'bob'
-                }
-            }
+      query: createUserMutation,
+      variables: {
+        input: {
+          user: {
+            username: 'bob'
+          }
         }
+      }
     });
 
     expect(firstResult.createUser.user.username).toBe('bob');
@@ -136,15 +137,15 @@ it('throws error when trying to create duplicate users due to unwrapped nature',
     // Second user creation with same username should throw due to unwrapped nature
     // (assuming username has a unique constraint)
     await expect(
-        query<CreateUserResult, CreateUserVariables>({
-            query: createUserMutation,
-            variables: {
-                input: {
-                    user: {
-                        username: 'bob' // Same username - should cause constraint violation
-                    }
-                }
+      query<CreateUserResult, CreateUserVariables>({
+        query: createUserMutation,
+        variables: {
+          input: {
+            user: {
+              username: 'bob' // Same username - should cause constraint violation
             }
-        })
+          }
+        }
+      })
     ).rejects.toThrow(); // The unwrapped function will throw the GraphQL error as an exception
 });

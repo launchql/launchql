@@ -1,7 +1,7 @@
-import { PostGraphileOptions } from 'postgraphile';
-import type { Plugin } from 'graphile-build';
 import { execSync } from 'child_process';
+import type { Plugin } from 'graphile-build';
 import { PgConfig } from 'pg-env';
+import { PostGraphileOptions } from 'postgraphile';
 
 /**
  * Configuration options for PostgreSQL test database connections
@@ -133,68 +133,68 @@ export interface LaunchQLOptions {
  * Default configuration values for LaunchQL framework
  */
 export const launchqlDefaults: LaunchQLOptions = {
-    db: {
-        rootDb: 'postgres',
-        prefix: 'db-',
-        extensions: [],
-        cwd: process.cwd(),
-        connection: {
-            user: 'app_user',
-            password: 'app_password',
-            role: 'anonymous'
-        }
-    },
-    pg: {
-        host: 'localhost',
-        port: 5432,
-        user: 'postgres',
-        password: 'password',
-        database: 'postgres',
-    },
-    graphile: {
-        schema: [],
-        appendPlugins: [],
-        overrideSettings: {},
-        graphileBuildOptions: {},
-    },
-    server: {
-        host: 'localhost',
-        port: 3000,
-        trustProxy: false,
-        strictAuth: false,
-    },
-    features: {
-        simpleInflection: true,
-        oppositeBaseNames: true,
-        postgis: true
-    },
-    api: {
-        enableMetaApi: true,
-        exposedSchemas: [],
-        anonRole: 'administrator',
-        roleName: 'administrator',
-        defaultDatabaseId: 'hard-coded',
-        isPublic: true,
-        metaSchemas: ['collections_public', 'meta_public']
-    },
-    cdn: {
-        bucketName: 'test-bucket',
-        awsRegion: 'us-east-1',
-        awsAccessKey: 'minioadmin',
-        awsSecretKey: 'minioadmin'
-    },
-    deployment: {
-        useTx: true,
-        fast: false,
-        usePlan: true,
-        cache: false,
-        logOnly: false
-    },
-    migrations: {
-        codegen: {
-            useTx: false
-        }
+  db: {
+    rootDb: 'postgres',
+    prefix: 'db-',
+    extensions: [],
+    cwd: process.cwd(),
+    connection: {
+      user: 'app_user',
+      password: 'app_password',
+      role: 'anonymous'
     }
+  },
+  pg: {
+    host: 'localhost',
+    port: 5432,
+    user: 'postgres',
+    password: 'password',
+    database: 'postgres',
+  },
+  graphile: {
+    schema: [],
+    appendPlugins: [],
+    overrideSettings: {},
+    graphileBuildOptions: {},
+  },
+  server: {
+    host: 'localhost',
+    port: 3000,
+    trustProxy: false,
+    strictAuth: false,
+  },
+  features: {
+    simpleInflection: true,
+    oppositeBaseNames: true,
+    postgis: true
+  },
+  api: {
+    enableMetaApi: true,
+    exposedSchemas: [],
+    anonRole: 'administrator',
+    roleName: 'administrator',
+    defaultDatabaseId: 'hard-coded',
+    isPublic: true,
+    metaSchemas: ['collections_public', 'meta_public']
+  },
+  cdn: {
+    bucketName: 'test-bucket',
+    awsRegion: 'us-east-1',
+    awsAccessKey: 'minioadmin',
+    awsSecretKey: 'minioadmin'
+  },
+  deployment: {
+    useTx: true,
+    fast: false,
+    usePlan: true,
+    cache: false,
+    logOnly: false
+  },
+  migrations: {
+    codegen: {
+      useTx: false
+    }
+  }
 };
 
 /**

@@ -1,11 +1,12 @@
 process.env.LOG_SCOPE='pg-codegen';
 
-import { getConnections, seed } from 'pgsql-test';
 import { join } from 'path';
-import getIntrospectionRows from '../src/introspect';
-import { generateCodeTree } from '../src/codegen/codegen';
-import type { DatabaseObject } from '../src/types';
+import { getConnections, seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
+
+import { generateCodeTree } from '../src/codegen/codegen';
+import getIntrospectionRows from '../src/introspect';
+import type { DatabaseObject } from '../src/types';
 
 const sql = (f: string) => join(__dirname, '/../sql', f);
 

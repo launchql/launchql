@@ -1,6 +1,5 @@
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { LaunchQLProject, writePackage } from '@launchql/core';
-import chalk from 'chalk';
+import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 export default async (
   argv: Partial<Record<string, any>>,
@@ -38,7 +37,7 @@ export default async (
   project.ensureModule();
 
   const info = project.getModuleInfo();
-  info.version
+  info.version;
 
   await writePackage({
     version: info.version,
