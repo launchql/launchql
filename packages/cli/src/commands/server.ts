@@ -1,6 +1,7 @@
 import { Logger } from '@launchql/logger';
 import { LaunchQLServer as server } from '@launchql/server';
-import { getEnvOptions, LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, OptionValue,Question } from 'inquirerer';
 import { getPgPool } from 'pg-cache';
 

@@ -1,5 +1,5 @@
 import { deployFast, LaunchQLProject } from '@launchql/core';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 

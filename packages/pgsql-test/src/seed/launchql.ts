@@ -1,5 +1,5 @@
 import { LaunchQLProject } from '@launchql/core';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 
 import { SeedAdapter, SeedContext } from './types';
 

@@ -34,7 +34,7 @@ import {
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
-import { walkUp } from '../../workspace/utils';
+import { walkUp } from '@launchql/env';
 
 
 const logger = new Logger('launchql');
