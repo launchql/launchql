@@ -8,6 +8,7 @@ import { PgConfig } from 'pg-env';
 import { LaunchQLProject } from '../core/class/launchql';
 import { Change, parsePlanFile, parsePlanFileSimple, readScript } from '../files';
 import { DependencyResult,resolveDependencies } from '../resolution/deps';
+
 import { resolveTagToChangeName } from '../resolution/resolve';
 import { cleanSql } from './clean';
 import {
@@ -18,8 +19,8 @@ import {
   StatusResult,
   VerifyOptions,
   VerifyResult} from './types';
-import { hashFile } from './utils/hash';
-import { executeQuery,withTransaction } from './utils/transaction';
+import { hashFile, hashSqlFile } from './utils/hash';
+import { executeQuery, withTransaction } from './utils/transaction';
 
 // Helper function to get changes in order
 function getChangesInOrder(planPath: string, reverse: boolean = false): Change[] {
@@ -29,12 +30,24 @@ function getChangesInOrder(planPath: string, reverse: boolean = false): Change[]
 
 const log = new Logger('migrate');
 
+export type HashMethod = 'content' | 'ast';
+
+export interface LaunchQLMigrateOptions {
+  /**
+   * Hash method for SQL files:
+   * - 'content': Hash the raw file content (fast, but sensitive to formatting changes)
+   * - 'ast': Hash the parsed AST structure (robust, ignores formatting/comments but slower)
+   */
+  hashMethod?: HashMethod;
+}
+
 export class LaunchQLMigrate {
   private pool: Pool;
   private pgConfig: PgConfig;
+  private hashMethod: HashMethod;
   private initialized: boolean = false;
 
-  constructor(config: PgConfig) {
+  constructor(config: PgConfig, options: LaunchQLMigrateOptions = {}) {
     this.pgConfig = {
       host: config.host,
       port: config.port,
@@ -43,7 +56,19 @@ export class LaunchQLMigrate {
       database: config.database
     };
     
+    this.hashMethod = options.hashMethod || 'content';
     this.pool = getPgPool(this.pgConfig);
+  }
+
+  /**
+   * Calculate script hash using the configured method
+   */
+  private async calculateScriptHash(filePath: string): Promise<string> {
+    if (this.hashMethod === 'ast') {
+      return await hashSqlFile(filePath);
+    } else {
+      return await hashFile(filePath);
+    }
   }
 
   /**
@@ -166,7 +191,7 @@ export class LaunchQLMigrate {
         const cleanDeploySql = await cleanSql(deployScript, false, '$EOFCODE$');
                 
         // Calculate script hash
-        const scriptHash = hashFile(join(dirname(planPath), 'deploy', `${change.name}.sql`));
+        const scriptHash = await this.calculateScriptHash(join(dirname(planPath), 'deploy', `${change.name}.sql`));
         
         const changeKey = `/deploy/${change.name}.sql`;
         const resolvedChangeDeps = resolvedDeps?.deps[changeKey] || change.dependencies;
