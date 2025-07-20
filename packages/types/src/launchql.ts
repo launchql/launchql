@@ -140,6 +140,8 @@ export interface LaunchQLWorkspaceConfig {
   settings?: {
     [key: string]: any;
   };
+  /** Deployment configuration for the workspace */
+  deployment?: Omit<DeploymentOptions, 'toChange'>;
 }
 
 /**

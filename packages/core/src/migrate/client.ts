@@ -1,4 +1,5 @@
 import { Logger } from '@launchql/logger';
+import { getDeploymentEnvOptions } from '@launchql/types/src/env';
 import { readFileSync } from 'fs';
 import { dirname,join } from 'path';
 import { Pool } from 'pg';
