@@ -99,11 +99,6 @@ export class CoreDeployTestFixture extends TestFixture {
       await this.migrateFixture.cleanup();
     }
     
-    await teardownPgPools();
-    
-    // Small delay to ensure connections are fully closed
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
     super.cleanup();
   }
 }

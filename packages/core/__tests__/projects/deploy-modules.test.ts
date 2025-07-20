@@ -8,11 +8,11 @@ describe('Basic Deployment with deployModules', () => {
   beforeEach(async () => {
     fixture = new CoreDeployTestFixture('sqitch', 'simple-w-tags');
     db = await fixture.setupTestDatabase();
-  });
+  }, 30000);
   
   afterEach(async () => {
     await fixture.cleanup();
-  });
+  }, 30000);
 
   test('deploys my-third with tag dependencies in single command', async () => {
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);

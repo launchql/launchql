@@ -8,11 +8,11 @@ describe('Basic Verification with verifyModules', () => {
   beforeEach(async () => {
     fixture = new CoreDeployTestFixture('sqitch', 'simple-w-tags');
     db = await fixture.setupTestDatabase();
-  });
+  }, 30000);
   
   afterEach(async () => {
     await fixture.cleanup();
-  });
+  }, 30000);
 
   test('verifies deployed module successfully', async () => {
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);

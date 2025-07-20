@@ -14,7 +14,6 @@ export class MigrateTestFixture {
   private tempDirs: string[] = [];
   private databases: TestDatabase[] = [];
   private dbCounter = 0;
-  private pools: Pool[] = [];
 
   async setupTestDatabase(): Promise<TestDatabase> {
     const dbName = `test_migrate_${Date.now()}_${Math.random().toString(36).substring(2, 8)}_${this.dbCounter++}`;
@@ -58,7 +57,6 @@ export class MigrateTestFixture {
 
     // Get pool for test database operations
     const pool = getPgPool(pgConfig);
-    this.pools.push(pool);
 
     const db: TestDatabase = {
       name: dbName,
@@ -175,22 +173,7 @@ export class MigrateTestFixture {
   }
 
   async cleanup(): Promise<void> {
-    // Close all test database pools FIRST
-    for (const pool of this.pools) {
-      try {
-        await pool.end();
-      } catch (e) {
-        // Ignore errors during pool closure
-      }
-    }
-    
-    // Clear the pools array
-    this.pools = [];
-    
-    // Small delay to ensure connections are fully closed
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
-    // Now get admin pool for database cleanup
+    // Get admin pool for database cleanup
     const adminConfig = getPgEnvOptions({
       database: 'postgres'
     });
