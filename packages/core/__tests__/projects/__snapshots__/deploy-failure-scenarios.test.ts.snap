@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Deploy Failure Scenarios constraint violation with transaction - automatic rollback: transaction-rollback-migration-state 1`] = `
+{
+  "changeCount": 0,
+  "changes": [],
+  "eventCount": 0,
+  "events": [],
+}
+`;
+
+exports[`Deploy Failure Scenarios constraint violation without transaction - partial deployment: partial-deployment-migration-state 1`] = `
+{
+  "changeCount": 2,
+  "changes": [
+    {
+      "change_name": "create_table",
+      "deployed_at": 2025-07-20T09:15:13.265Z,
+      "project": "test-constraint-partial",
+      "script_hash": "0624b3e2276299c8c3b8bfa514fe0d128906193769b3aeaea6732e71c0e352e6",
+    },
+    {
+      "change_name": "add_record",
+      "deployed_at": 2025-07-20T09:15:13.269Z,
+      "project": "test-constraint-partial",
+      "script_hash": "833d7d349e3c4f07e1a24ed40ac9814329efc87c180180342a09874f8124a037",
+    },
+  ],
+  "eventCount": 2,
+  "events": [
+    {
+      "change_name": "create_table",
+      "event_type": "deploy",
+      "occurred_at": 2025-07-20T09:15:13.266Z,
+      "project": "test-constraint-partial",
+    },
+    {
+      "change_name": "add_record",
+      "event_type": "deploy",
+      "occurred_at": 2025-07-20T09:15:13.269Z,
+      "project": "test-constraint-partial",
+    },
+  ],
+}
+`;
+
+exports[`Deploy Failure Scenarios verify database state after constraint failure: partial-deployment-state-comparison 1`] = `
+{
+  "changeCount": 2,
+  "changes": [
+    {
+      "change_name": "setup_schema",
+      "deployed_at": 2025-07-20T09:15:13.419Z,
+      "project": "test-state-check",
+      "script_hash": "a3419a48994fd13a668befcaab23c4d0d7e9e08e6e6a9093effb3c85b7e953d9",
+    },
+    {
+      "change_name": "create_constraint_table",
+      "deployed_at": 2025-07-20T09:15:13.424Z,
+      "project": "test-state-check",
+      "script_hash": "ec5b17e155a2cd4e098716204192083d31d096a4cf163550d5ea176a4615a4d2",
+    },
+  ],
+  "eventCount": 2,
+  "events": [
+    {
+      "change_name": "setup_schema",
+      "event_type": "deploy",
+      "occurred_at": 2025-07-20T09:15:13.420Z,
+      "project": "test-state-check",
+    },
+    {
+      "change_name": "create_constraint_table",
+      "event_type": "deploy",
+      "occurred_at": 2025-07-20T09:15:13.424Z,
+      "project": "test-state-check",
+    },
+  ],
+}
+`;
+
+exports[`Deploy Failure Scenarios verify database state after constraint failure: transaction-rollback-state-comparison 1`] = `
+{
+  "changeCount": 0,
+  "changes": [],
+  "eventCount": 0,
+  "events": [],
+}
+`;
