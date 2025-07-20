@@ -772,7 +772,8 @@ export class LaunchQLProject {
               const result = await client.deploy({
                 modulePath,
                 toChange,
-                useTransaction: opts.deployment.useTx
+                useTransaction: opts.deployment.useTx,
+                logOnly: opts.deployment.logOnly
               });
               
               if (result.failed) {
@@ -806,7 +807,8 @@ export class LaunchQLProject {
       const result = await client.deploy({
         modulePath,
         toChange,
-        useTransaction: opts.deployment?.useTx
+        useTransaction: opts.deployment?.useTx,
+        logOnly: opts.deployment?.logOnly
       });
 
       if (result.failed) {
