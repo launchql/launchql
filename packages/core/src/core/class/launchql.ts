@@ -932,6 +932,8 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
+              // Only apply toChange to the target module being verified, not its dependencies.
+              // dependencies should be fully verified to ensure system integrity.
               const result = await client.verify({
                 modulePath,
                 toChange: extension === name ? toChange : undefined
