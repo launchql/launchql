@@ -75,4 +75,65 @@ describe('uploads', () => {
     }
     expect(res).toMatchSnapshot();
   });
+  it('double dots are collapsed', () => {
+    const inputs = [
+      'data..v1..report.csv',
+      'archive..tar..gz',
+      '..config.env',
+      'some..file..name.txt'
+    ];
+    const res = {};
+    for (const input of inputs) {
+      res[input] = getName(input);
+    }
+    expect(res).toMatchSnapshot();
+  });
+
+  it('preserves meaningful dots in name', () => {
+    const inputs = [
+      '.env',
+      'my.file.config.json',
+      'node.module.js',
+      'lev.р',
+    ];
+    const res = {};
+    for (const input of inputs) {
+      res[input] = getName(input);
+    }
+    expect(res).toMatchSnapshot();
+  });
+
+  it('non-ASCII fallback when slug would be empty', () => {
+    const inputs = [
+      '你好',
+      'こんにちは',
+      'Дмитрий',
+      '全国温泉ガイド',
+      '😊😊😊.txt'
+    ];
+    const res = {};
+    for (const input of inputs) {
+      try {
+        getName(input, { english: true });
+      } catch (e) {
+        res[input] = e.message;
+      }
+    }
+    expect(res).toMatchSnapshot();
+  });
+
+  it('keeps non-English names when english=false', () => {
+    const inputs = [
+      '你好.txt',
+      'こんにちは',
+      '全国温泉ガイド.jp',
+      '😊😊😊.txt'
+    ];
+    const res = {};
+    for (const input of inputs) {
+      res[input] = getName(input, { english: false });
+    }
+    expect(res).toMatchSnapshot();
+  });
+
 });
