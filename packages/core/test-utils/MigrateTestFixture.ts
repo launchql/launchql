@@ -109,7 +109,7 @@ export class MigrateTestFixture {
         `);
         
         const events = await pool.query(`
-          SELECT project, change_name, event_type, occurred_at
+          SELECT project, change_name, event_type, occurred_at, error_message, error_code, stack_trace
           FROM launchql_migrate.events 
           ORDER BY occurred_at
         `);

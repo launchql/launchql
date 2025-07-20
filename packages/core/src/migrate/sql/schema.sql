@@ -31,5 +31,8 @@ CREATE TABLE launchql_migrate.events (
     event_type      TEXT        NOT NULL CHECK (event_type IN ('deploy', 'revert', 'fail')),
     change_name     TEXT        NOT NULL,
     project         TEXT        NOT NULL,
-    occurred_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp()
+    occurred_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
+    error_message   TEXT,
+    error_code      TEXT,
+    stack_trace     TEXT
 );

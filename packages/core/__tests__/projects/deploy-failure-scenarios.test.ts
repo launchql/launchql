@@ -66,7 +66,9 @@ describe('Deploy Failure Scenarios', () => {
     expect(finalState).toMatchSnapshot('transaction-rollback-migration-state');
     
     expect(finalState.changeCount).toBe(0);
-    expect(finalState.eventCount).toBe(0); // Complete rollback - no events logged
+    expect(finalState.eventCount).toBe(1); // Now expect fail event to be logged
+    expect(finalState.events[0].event_type).toBe('fail');
+    expect(finalState.events[0].error_message).toContain('duplicate key value violates unique constraint');
     
     expect(await db.exists('table', 'test_users')).toBe(false);
   });
@@ -137,7 +139,9 @@ describe('Deploy Failure Scenarios', () => {
     
     const successEvents = finalState.events.filter((e: any) => e.event_type === 'deploy');
     expect(successEvents.length).toBe(2); // create_table, add_record
-    expect(finalState.eventCount).toBe(2); // Only successful deployments logged
+    const failEvents = finalState.events.filter((e: any) => e.event_type === 'fail');
+    expect(failEvents.length).toBe(1); // violate_constraint failure logged
+    expect(finalState.eventCount).toBe(3); // 2 successful deployments + 1 failure
   });
   
   test('verify database state after constraint failure', async () => {
@@ -182,6 +186,8 @@ describe('Deploy Failure Scenarios', () => {
     
     expect(await db.exists('schema', 'test_schema')).toBe(false);
     expect(transactionState.changeCount).toBe(0);
+    expect(transactionState.eventCount).toBe(1); // Fail event logged outside transaction
+    expect(transactionState.events[0].event_type).toBe('fail');
     
     await expect(client.deploy({
       modulePath: tempDir,
@@ -203,19 +209,21 @@ describe('Deploy Failure Scenarios', () => {
     
     const successEvents = partialState.events.filter((e: any) => e.event_type === 'deploy');
     expect(successEvents.length).toBe(2); // setup_schema, create_constraint_table
-    expect(partialState.eventCount).toBe(2); // Only successful deployments logged
+    const failEvents = partialState.events.filter((e: any) => e.event_type === 'fail');
+    expect(failEvents.length).toBe(2); // fail_on_constraint failure logged twice (transaction + non-transaction)
+    expect(partialState.eventCount).toBe(4); // 2 successful deployments + 2 failures (from both runs)
     
     /*
      * KEY INSIGHT: Same failure scenario, different outcomes
      * 
      * Transaction mode:
      * - launchql_migrate.changes: 0 rows (complete rollback)
-     * - launchql_migrate.events: failure events only
+     * - launchql_migrate.events: 1 failure event (logged outside transaction)
      * - Database objects: none (clean state)
      * 
      * Non-transaction mode:
      * - launchql_migrate.changes: 2 rows (partial success)
-     * - launchql_migrate.events: mix of success + failure events
+     * - launchql_migrate.events: 2 success + 2 failure events (includes failure from transaction run)
      * - Database objects: schema + table exist (mixed state)
      * 
      * RECOMMENDATION: Use transaction mode (default) unless you specifically
