@@ -15,7 +15,7 @@ export const loadConfigFileSync = (configPath: string): LaunchQLOptions => {
       return JSON.parse(fs.readFileSync(configPath, 'utf8'));
     
     case '.js':
-      delete require.cache[require.resolve(configPath)];
+      // delete require.cache[require.resolve(configPath)];
       const configModule = require(configPath);
       return configModule.default || configModule;
     
