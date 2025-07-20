@@ -1,25 +1,39 @@
 import { basename, extname } from 'path';
-
 import slugify from './slugify';
+
+interface Options {
+  english?: boolean;
+  lower?: boolean;
+  delimeter?: string;
+}
+
 export default (
   filename: string,
-  { english = true, lower = true, delimeter = '-' } = {}
-) => {
-  const ext = extname(filename);
+  { english = true, lower = true, delimeter = '-' }: Options = {}
+): string => {
+  // Step 1: Normalize input
+  filename = filename.trim().replace(/\.{2,}/g, '.'); // collapse double dots
 
-  const name = basename(filename)
-    .replace(new RegExp(ext.replace(/\./g, '\\.') + '$'), '')
+  const ext = extname(filename);
+  const base = basename(filename, ext);
+
+  // Step 2: Normalize base name
+  const name = base
     .replace(/\s+/g, delimeter)
-    .replace(new RegExp(delimeter + delimeter + '+', 'g'), delimeter)
+    .replace(new RegExp(`${delimeter}{2,}`, 'g'), delimeter)
     .trim();
 
+  // Step 3: Sluggify (ASCII-only if english = true)
+  let slug = name;
   if (english) {
-    const fname = slugify(name);
-    if (fname.length === 0 && name.length > 0) {
+    slug = slugify(name);
+    if (slug.length === 0 && name.length > 0) {
+      // Optionally fallback instead of throwing:
+      // return `${crypto.randomUUID()}${ext}`;
       throw new Error(`BAD_FILE_NAME ${name}`);
     }
   }
 
-  const result = english ? slugify(name) + slugify(ext) : name + ext;
+  const result = english ? `${slug}${slugify(ext)}` : `${name}${ext}`;
   return lower ? result.toLowerCase() : result;
 };

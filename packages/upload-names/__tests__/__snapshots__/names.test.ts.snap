@@ -11,6 +11,15 @@ exports[`uploads any 1`] = `
 }
 `;
 
+exports[`uploads double dots are collapsed 1`] = `
+{
+  "..config.env": ".config.env",
+  "archive..tar..gz": "archive.tar.gz",
+  "data..v1..report.csv": "data.v1.report.csv",
+  "some..file..name.txt": "some.file.name.txt",
+}
+`;
+
 exports[`uploads english 1`] = `
 {
   ".gitignore": ".gitignore",
@@ -73,6 +82,26 @@ exports[`uploads english 1`] = `
   "xlsx.xlsx": "xlsx.xlsx",
   "zip.zip": "zip.zip",
   "Салом Ҷаҳон.gif": "салом-ҷаҳон.gif",
+}
+`;
+
+exports[`uploads keeps non-English names when english=false 1`] = `
+{
+  "こんにちは": "こんにちは",
+  "你好.txt": "你好.txt",
+  "全国温泉ガイド.jp": "全国温泉ガイド.jp",
+  "😊😊😊.txt": "😊😊😊.txt",
+}
+`;
+
+exports[`uploads non-ASCII fallback when slug would be empty 1`] = `{}`;
+
+exports[`uploads preserves meaningful dots in name 1`] = `
+{
+  ".env": ".env",
+  "lev.р": "lev.р",
+  "my.file.config.json": "my.file.config.json",
+  "node.module.js": "node.module.js",
 }
 `;
 
