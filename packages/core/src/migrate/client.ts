@@ -474,10 +474,18 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { modulePath } = options;
+    const { modulePath, toChange } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const changes = getChangesInOrder(planPath);
+    let changes = getChangesInOrder(planPath);
+    
+    if (toChange) {
+      const toChangeIndex = changes.findIndex(c => c.name === toChange);
+      if (toChangeIndex === -1) {
+        throw new Error(`Change '${toChange}' not found in plan`);
+      }
+      changes = changes.slice(0, toChangeIndex + 1);
+    }
     
     const verified: string[] = [];
     const failed: string[] = [];

@@ -934,7 +934,7 @@ export class LaunchQLProject {
             
               const result = await client.verify({
                 modulePath,
-                toChange
+                toChange: extension === name ? toChange : undefined
               });
             
               if (result.failed.length > 0) {
