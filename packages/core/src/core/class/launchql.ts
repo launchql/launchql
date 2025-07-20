@@ -91,17 +91,13 @@ export class LaunchQLProject {
 
   resetCwd(cwd: string) {
     this.cwd = cwd;
-    this.workspacePath = this.resolveLaunchqlPath();
+    this.workspacePath = resolveLaunchqlPath(this.cwd);
     this.modulePath = this.resolveSqitchPath();
 
     if (this.workspacePath) {
       this.config = this.loadConfigSync();
       this.allowedDirs = this.loadAllowedDirs();
     }
-  }
-
-  private resolveLaunchqlPath(): string | undefined {
-    return resolveLaunchqlPath(this.cwd);
   }
 
   private resolveSqitchPath(): string | undefined {
@@ -113,11 +109,7 @@ export class LaunchQLProject {
   }
 
   private loadConfigSync(): LaunchQLWorkspaceConfig {
-    return this.loadConfigSyncFromDir(this.workspacePath!);
-  }
-
-  private loadConfigSyncFromDir(dir: string): LaunchQLWorkspaceConfig {
-    return loadConfigSyncFromDir(dir) as LaunchQLWorkspaceConfig;
+    return loadConfigSyncFromDir(this.workspacePath!) as LaunchQLWorkspaceConfig;
   }
 
   private loadAllowedDirs(): string[] {
