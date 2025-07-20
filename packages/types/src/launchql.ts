@@ -116,6 +116,8 @@ export interface LaunchQLOptions {
         cache?: boolean;
         /** Deploy up to a specific change (inclusive) - can be a change name or tag reference (e.g., '@v1.0.0') */
         toChange?: string;
+        /** Log-only mode - skip script execution and only record deployment metadata */
+        logOnly?: boolean;
     };
     /** Migration and code generation options */
     migrations?: {
@@ -185,7 +187,8 @@ export const launchqlDefaults: LaunchQLOptions = {
         useTx: true,
         fast: false,
         usePlan: true,
-        cache: false
+        cache: false,
+        logOnly: false
     },
     migrations: {
         codegen: {

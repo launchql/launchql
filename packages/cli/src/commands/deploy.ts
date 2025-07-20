@@ -63,10 +63,18 @@ export default async (
       useDefault: true,
       default: false,
       required: false
+    },
+    {
+      name: 'logOnly',
+      type: 'confirm',
+      message: 'Log-only mode (skip script execution)?',
+      useDefault: true,
+      default: false,
+      required: false
     }
   ];
 
-  let { yes, recursive, createdb, cwd, tx, fast } = await prompter.prompt(argv, questions);
+  let { yes, recursive, createdb, cwd, tx, fast, logOnly } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -94,7 +102,8 @@ export default async (
       useTx: tx,
       fast,
       usePlan: argv.usePlan,
-      cache: argv.cache
+      cache: argv.cache,
+      logOnly
     }
   };
   

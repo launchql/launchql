@@ -129,7 +129,8 @@ export const deployProject = async (
             const result = await client.deploy({
               modulePath,
               toChange,
-              useTransaction: mergedOpts.deployment.useTx
+              useTransaction: mergedOpts.deployment.useTx,
+              logOnly: mergedOpts.deployment.logOnly
             });
             
             if (result.failed) {
