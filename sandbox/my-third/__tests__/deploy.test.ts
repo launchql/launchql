@@ -1,6 +1,6 @@
 import { deploy, LaunchQLProject } from '@launchql/core';
 import { resolve } from 'path';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 

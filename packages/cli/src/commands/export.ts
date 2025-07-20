@@ -1,5 +1,6 @@
 import { exportMigrations,LaunchQLProject } from '@launchql/core';
-import { getEnvOptions, getGitConfigInfo } from '@launchql/types';
+import { getGitConfigInfo } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { resolve } from 'path';
 import { getPgPool } from 'pg-cache';

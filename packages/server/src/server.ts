@@ -4,7 +4,8 @@ import {
   poweredBy,
   trustProxy
 } from '@launchql/server-utils';
-import { getEnvOptions,LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';

@@ -1,6 +1,6 @@
 import { LaunchQLProject } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 

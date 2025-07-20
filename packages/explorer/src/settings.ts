@@ -1,5 +1,5 @@
 import { LaunchQLOptions } from '@launchql/types';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { getGraphileSettings as getSettings } from 'graphile-settings';
 import { PostGraphileOptions } from 'postgraphile';
 
