@@ -25,7 +25,7 @@ export class CoreDeployTestFixture extends TestFixture {
     return db;
   }
 
-  async deployModule(projectName: string, database: string, fixturePath: string[]): Promise<void> {
+  async deployModule(projectName: string, database: string, fixturePath: string[], logOnly: boolean = false): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
@@ -38,7 +38,8 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database }),
         deployment: {
           fast: false,
-          usePlan: true
+          usePlan: true,
+          logOnly
         }
       });
 
