@@ -175,7 +175,7 @@ export class LaunchQLMigrate {
           // Call the deploy stored procedure
           await executeQuery(
             context,
-            'CALL launchql_migrate.deploy($1, $2, $3, $4, $5, $6)',
+            'CALL launchql_migrate.deploy($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT[], $5::TEXT, $6::BOOLEAN)',
             [
               plan.project,
               change.name,
