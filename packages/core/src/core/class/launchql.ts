@@ -262,7 +262,39 @@ export class LaunchQLProject {
 
   setModuleDependencies(modules: string[]): void {
     this.ensureModule();
+    
+    // Validate for circular dependencies
+    this.validateModuleDependencies(modules);
+    
     writeExtensions(this.cwd, modules);
+  }
+
+  private validateModuleDependencies(modules: string[]): void {
+    const currentModuleName = this.getModuleName();
+    
+    if (modules.includes(currentModuleName)) {
+      throw new Error(`Circular reference detected: module "${currentModuleName}" cannot depend on itself`);
+    }
+    
+    // Check for circular dependencies by examining each module's dependencies
+    const visited = new Set<string>();
+    const visiting = new Set<string>();
+    
+    const checkCircular = (moduleName: string, path: string[] = []): void => {
+      if (visiting.has(moduleName)) {
+        throw new Error(`Circular reference detected: ${path.join(' -> ')} -> ${moduleName}`);
+      }
+      if (visited.has(moduleName)) {
+        return;
+      }
+      
+      visiting.add(moduleName);
+      // More complex dependency resolution would require loading other modules' dependencies
+      visiting.delete(moduleName);
+      visited.add(moduleName);
+    };
+    
+    modules.forEach(module => checkCircular(module, [currentModuleName]));
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {

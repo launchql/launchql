@@ -27,3 +27,39 @@ it('writes module metadata files without modifying fixture', async () => {
 
   fixture.cleanup();
 });
+
+it('throws error when module depends on itself', async () => {
+  const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
+  const dst = fixture.tempFixtureDir;
+  const project = new LaunchQLProject(dst);
+
+  expect(() =>
+    project.setModuleDependencies(['plpgsql', 'secrets', 'uuid-ossp'])
+  ).toThrow('Circular reference detected: module "secrets" cannot depend on itself');
+
+  fixture.cleanup();
+});
+
+it('throws error with specific circular dependency example from issue', async () => {
+  const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
+  const dst = fixture.tempFixtureDir;
+  const project = new LaunchQLProject(dst);
+
+  expect(() =>
+    project.setModuleDependencies(['some-native-module', 'secrets'])
+  ).toThrow('Circular reference detected: module "secrets" cannot depend on itself');
+
+  fixture.cleanup();
+});
+
+it('allows valid dependencies without circular references', async () => {
+  const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
+  const dst = fixture.tempFixtureDir;
+  const project = new LaunchQLProject(dst);
+
+  expect(() =>
+    project.setModuleDependencies(['plpgsql', 'uuid-ossp', 'other-module'])
+  ).not.toThrow();
+
+  fixture.cleanup();
+});
