@@ -749,7 +749,7 @@ export class LaunchQLProject {
               
                 const result = await client.deploy({
                   modulePath,
-                  toChange,
+                  toChange: extension === name ? toChange : undefined,
                   useTransaction: opts.deployment.useTx,
                   logOnly: opts.deployment.logOnly
                 });
@@ -848,7 +848,7 @@ export class LaunchQLProject {
             
               const result = await client.revert({
                 modulePath,
-                toChange,
+                toChange: extension === name ? toChange : undefined,
                 useTransaction: opts.deployment.useTx
               });
             
