@@ -28,7 +28,7 @@ describe('Partial Verification with toChange parameter', () => {
     );
     fs.writeFileSync(verifyScriptPath, brokenContent);
     
-    await fixture.verifyModule('my-third', db.name, ['sqitch', 'simple-w-tags'], 'create_schema');
+    await fixture.verifyModule('my-third:create_schema', db.name, ['sqitch', 'simple-w-tags']);
     
     await expect(
       fixture.verifyModule('my-third', db.name, ['sqitch', 'simple-w-tags'])

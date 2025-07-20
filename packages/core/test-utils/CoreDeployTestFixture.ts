@@ -26,7 +26,7 @@ export class CoreDeployTestFixture extends TestFixture {
     return db;
   }
 
-  async deployModule(projectName: string, database: string, fixturePath: string[], logOnly: boolean = false): Promise<void> {
+  async deployModule(target: string, database: string, fixturePath: string[], logOnly: boolean = false): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
@@ -44,17 +44,18 @@ export class CoreDeployTestFixture extends TestFixture {
         }
       });
 
-      await project.deploy(opts, projectName, true);
+      await project.deploy(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
   }
 
-  async revertModule(projectName: string, database: string, fixturePath: string[], toChange?: string): Promise<void> {
+  async revertModule(target: string, database: string, fixturePath: string[]): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
     try {
+      const projectName = target.includes(':') ? target.split(':')[0] : target;
       const projectPath = join(basePath, 'packages', projectName);
       process.chdir(projectPath);
       
@@ -64,13 +65,13 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      await project.revert(opts, projectName && toChange ? `${projectName}:${toChange}` : (projectName || toChange), true);
+      await project.revert(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
   }
 
-  async verifyModule(projectName: string, database: string, fixturePath: string[], toChange?: string): Promise<void> {
+  async verifyModule(target: string, database: string, fixturePath: string[]): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
@@ -83,7 +84,7 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      await project.verify(opts, projectName && toChange ? `${projectName}:${toChange}` : (projectName || toChange), true);
+      await project.verify(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
