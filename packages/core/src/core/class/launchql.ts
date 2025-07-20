@@ -976,7 +976,8 @@ export class LaunchQLProject {
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
             const result = await client.verify({
-              modulePath
+              modulePath,
+              toChange
             });
             
             if (result.failed.length > 0) {
@@ -1007,7 +1008,8 @@ export class LaunchQLProject {
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
       const result = await client.verify({
-        modulePath
+        modulePath,
+        toChange
       });
 
       if (result.failed.length > 0) {

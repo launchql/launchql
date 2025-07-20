@@ -69,6 +69,25 @@ export class CoreDeployTestFixture extends TestFixture {
     }
   }
 
+  async verifyModule(projectName: string, database: string, fixturePath: string[], toChange?: string): Promise<void> {
+    const basePath = this.tempFixtureDir;
+    const originalCwd = process.cwd();
+    
+    try {
+      process.chdir(basePath);
+      
+      const project = new LaunchQLProject(basePath);
+      
+      const opts = getEnvOptions({ 
+        pg: getPgEnvOptions({ database })
+      });
+
+      await project.verify(opts, projectName, toChange, true);
+    } finally {
+      process.chdir(originalCwd);
+    }
+  }
+
   async cleanup(): Promise<void> {
     for (const db of this.databases) {
       await db.close();
