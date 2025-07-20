@@ -1,6 +1,19 @@
 import deepmerge from 'deepmerge';
 
-import { launchqlDefaults, LaunchQLOptions, PgTestConnectionOptions } from './launchql';
+import { 
+  launchqlDefaults, 
+  LaunchQLOptions, 
+  PgTestConnectionOptions, 
+  DeploymentOptions,
+  ServerOptions,
+  FeatureOptions,
+  GraphileOptions,
+  CDNOptions,
+  MigrationOptions,
+  ApiOptions,
+  CodegenOptions,
+  DatabaseConnectionOptions
+} from './launchql';
 
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);
@@ -25,6 +38,13 @@ export const getConnEnvOptions = (overrides: Partial<PgTestConnectionOptions> = 
     db: overrides
   });
   return opts.db;
+};
+
+export const getDeploymentEnvOptions = (overrides: Partial<DeploymentOptions> = {}): DeploymentOptions => {
+  const opts = getEnvOptions({
+    deployment: overrides
+  });
+  return opts.deployment;
 };
 
 const getEnvVars = (): LaunchQLOptions => {

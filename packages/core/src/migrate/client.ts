@@ -1,4 +1,5 @@
 import { Logger } from '@launchql/logger';
+import { getDeploymentEnvOptions } from '@launchql/types/src/env';
 import { readFileSync } from 'fs';
 import { dirname,join } from 'path';
 import { Pool } from 'pg';
@@ -47,15 +48,10 @@ export class LaunchQLMigrate {
   private initialized: boolean = false;
 
   constructor(config: PgConfig, options: LaunchQLMigrateOptions = {}) {
-    this.pgConfig = {
-      host: config.host,
-      port: config.port,
-      user: config.user,
-      password: config.password,
-      database: config.database
-    };
-    
-    this.hashMethod = options.hashMethod || 'content';
+    this.pgConfig = config;
+    // Use environment variable DEPLOYMENT_HASH_METHOD if available, otherwise use options or default to 'content'
+    const envHashMethod = process.env.DEPLOYMENT_HASH_METHOD as HashMethod;
+    this.hashMethod = options.hashMethod || envHashMethod || 'content';
     this.pool = getPgPool(this.pgConfig);
   }
 
