@@ -66,8 +66,8 @@ describe('Deploy Failure Scenarios', () => {
     expect(finalState).toMatchSnapshot('transaction-rollback-migration-state');
     
     expect(finalState.changeCount).toBe(0);
-    expect(finalState.eventCount).toBe(1); // Now expect fail event to be logged
-    expect(finalState.events[0].event_type).toBe('fail');
+    expect(finalState.eventCount).toBe(1); // Now expect deploy failure event to be logged
+    expect(finalState.events[0].event_type).toBe('deploy');
     expect(finalState.events[0].error_message).toContain('duplicate key value violates unique constraint');
     
     expect(await db.exists('table', 'test_users')).toBe(false);
@@ -137,9 +137,9 @@ describe('Deploy Failure Scenarios', () => {
     const finalRecord = await db.query("SELECT * FROM test_products WHERE sku = 'PROD-002'");
     expect(finalRecord.rows).toHaveLength(0);
     
-    const successEvents = finalState.events.filter((e: any) => e.event_type === 'deploy');
+    const successEvents = finalState.events.filter((e: any) => e.event_type === 'deploy' && !e.error_message);
     expect(successEvents.length).toBe(2); // create_table, add_record
-    const failEvents = finalState.events.filter((e: any) => e.event_type === 'fail');
+    const failEvents = finalState.events.filter((e: any) => e.event_type === 'deploy' && e.error_message);
     expect(failEvents.length).toBe(1); // violate_constraint failure logged
     expect(finalState.eventCount).toBe(3); // 2 successful deployments + 1 failure
   });
@@ -186,8 +186,8 @@ describe('Deploy Failure Scenarios', () => {
     
     expect(await db.exists('schema', 'test_schema')).toBe(false);
     expect(transactionState.changeCount).toBe(0);
-    expect(transactionState.eventCount).toBe(1); // Fail event logged outside transaction
-    expect(transactionState.events[0].event_type).toBe('fail');
+    expect(transactionState.eventCount).toBe(1); // Deploy failure event logged outside transaction
+    expect(transactionState.events[0].event_type).toBe('deploy');
     
     await expect(client.deploy({
       modulePath: tempDir,
@@ -207,9 +207,9 @@ describe('Deploy Failure Scenarios', () => {
     expect(partialState.changeCount).toBe(2);
     expect(partialState.changes.map((c: any) => c.change_name)).toEqual(['setup_schema', 'create_constraint_table']);
     
-    const successEvents = partialState.events.filter((e: any) => e.event_type === 'deploy');
+    const successEvents = partialState.events.filter((e: any) => e.event_type === 'deploy' && !e.error_message);
     expect(successEvents.length).toBe(2); // setup_schema, create_constraint_table
-    const failEvents = partialState.events.filter((e: any) => e.event_type === 'fail');
+    const failEvents = partialState.events.filter((e: any) => e.event_type === 'deploy' && e.error_message);
     expect(failEvents.length).toBe(2); // fail_on_constraint failure logged twice (transaction + non-transaction)
     expect(partialState.eventCount).toBe(4); // 2 successful deployments + 2 failures (from both runs)
     

@@ -6,7 +6,7 @@ import { PgConfig } from 'pg-env';
 const log = new Logger('migrate:event-logger');
 
 export interface EventLogEntry {
-  eventType: 'deploy' | 'revert' | 'fail';
+  eventType: 'deploy' | 'revert' | 'verify';
   changeName: string;
   project: string;
   errorMessage?: string;
@@ -21,14 +21,6 @@ export class EventLogger {
     this.pool = getPgPool(config);
   }
 
-  private sanitizeStackTrace(stackTrace: string | null): string | null {
-    if (!stackTrace) return null;
-    
-    return stackTrace
-      .replace(/\/.*?\/launchql\/launchql\//g, '/launchql/')
-      .replace(/\/.*?\/launchql\//g, '/launchql/')
-      .replace(/\/__w\/launchql\/launchql\//g, '/launchql/');
-  }
 
   async logEvent(entry: EventLogEntry): Promise<void> {
     try {
@@ -42,7 +34,7 @@ export class EventLogger {
         entry.project,
         entry.errorMessage || null,
         entry.errorCode || null,
-        this.sanitizeStackTrace(entry.stackTrace)
+        entry.stackTrace || null
       ]);
       
       log.debug(`Logged ${entry.eventType} event for ${entry.project}:${entry.changeName}`);

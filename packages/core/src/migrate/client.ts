@@ -213,7 +213,7 @@ export class LaunchQLMigrate {
         } catch (error: any) {
           // Log failure event outside of transaction
           await this.eventLogger.logEvent({
-            eventType: 'fail',
+            eventType: 'deploy',
             changeName: change.name,
             project: plan.project,
             errorMessage: error.message || 'Unknown error',
@@ -472,7 +472,7 @@ export class LaunchQLMigrate {
         } catch (error: any) {
           // Log failure event outside of transaction
           await this.eventLogger.logEvent({
-            eventType: 'fail',
+            eventType: 'revert',
             changeName: change.name,
             project: plan.project,
             errorMessage: error.message || 'Unknown error',

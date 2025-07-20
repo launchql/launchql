@@ -61,6 +61,7 @@ export class MigrateTestFixture {
     const pool = getPgPool(pgConfig);
     this.pools.push(pool);
 
+    const fixture = this;
     const db: TestDatabase = {
       name: dbName,
       config,
@@ -114,6 +115,11 @@ export class MigrateTestFixture {
           ORDER BY occurred_at
         `);
         
+        const sanitizedEvents = events.rows.map(event => ({
+          ...event,
+          stack_trace: event.stack_trace ? fixture.sanitizeStackTrace(event.stack_trace) : null
+        }));
+        
         // Remove timestamps from objects for consistent snapshots
         const cleanChanges = changes.rows.map(({ deployed_at, ...change }) => change);
         const cleanEvents = events.rows.map(({ occurred_at, ...event }) => event);
@@ -145,6 +151,16 @@ export class MigrateTestFixture {
 
     this.databases.push(db);
     return db;
+  }
+
+  private sanitizeStackTrace(stackTrace: string): string {
+    return stackTrace
+      .replace(/\/home\/ubuntu\/repos\/launchql\//g, '<project-root>/')
+      .replace(/\/.*?\/launchql\/launchql\//g, '<project-root>/')
+      .replace(/\/.*?\/launchql\//g, '<project-root>/')
+      .replace(/\/__w\/launchql\/launchql\//g, '<project-root>/')
+      .replace(/:\d+:\d+/g, ':LINE:COLUMN')
+      .replace(/node:internal\/[^)]+/g, 'NODE_INTERNAL');
   }
 
   setupFixture(fixturePath: string[]): string {

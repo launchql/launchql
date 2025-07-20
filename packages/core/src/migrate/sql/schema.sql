@@ -28,7 +28,7 @@ CREATE TABLE launchql_migrate.dependencies (
 -- 4. Event log (minimal history for rollback)
 CREATE TABLE launchql_migrate.events (
     event_id        SERIAL      PRIMARY KEY,
-    event_type      TEXT        NOT NULL CHECK (event_type IN ('deploy', 'revert', 'fail')),
+    event_type      TEXT        NOT NULL CHECK (event_type IN ('deploy', 'revert', 'verify')),
     change_name     TEXT        NOT NULL,
     project         TEXT        NOT NULL,
     occurred_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
