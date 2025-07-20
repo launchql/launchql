@@ -18,15 +18,94 @@ export interface PgTestConnectionOptions {
     /** Current working directory for database operations */
     cwd?: string;
     /** Database connection credentials */
-    connection?: {
-      /** Database user name */
-      user?: string;
-      /** Database password */
-      password?: string;
-      /** Database role to assume */
-      role?: string;
-    }
-  }
+    connection?: DatabaseConnectionOptions;
+}
+
+/**
+ * Database connection credentials
+ */
+export interface DatabaseConnectionOptions {
+    /** Database user name */
+    user?: string;
+    /** Database password */
+    password?: string;
+    /** Database role to assume */
+    role?: string;
+}
+
+/**
+ * HTTP server configuration
+ */
+export interface ServerOptions {
+    /** Server host address */
+    host?: string;
+    /** Server port number */
+    port?: number;
+    /** Whether to trust proxy headers */
+    trustProxy?: boolean;
+    /** CORS origin configuration */
+    origin?: string;
+    /** Whether to enforce strict authentication */
+    strictAuth?: boolean;
+}
+
+/**
+ * Feature flags and toggles
+ */
+export interface FeatureOptions {
+    /** Use simple inflection for GraphQL field names */
+    simpleInflection?: boolean;
+    /** Use opposite base names for relationships */
+    oppositeBaseNames?: boolean;
+    /** Enable PostGIS spatial database support */
+    postgis?: boolean;
+}
+
+/**
+ * PostGraphile/Graphile configuration
+ */
+export interface GraphileOptions {
+    /** Database schema(s) to expose through GraphQL */
+    schema?: string | string[];
+    /** Additional Graphile plugins to load */
+    appendPlugins?: Plugin[];
+    /** Build options for Graphile */
+    graphileBuildOptions?: PostGraphileOptions['graphileBuildOptions'];
+    /** Override settings for PostGraphile */
+    overrideSettings?: Partial<PostGraphileOptions>;
+}
+
+/**
+ * CDN and file storage configuration
+ */
+export interface CDNOptions {
+    /** S3 bucket name for file storage */
+    bucketName?: string;
+    /** AWS region for S3 bucket */
+    awsRegion?: string;
+    /** AWS access key for S3 */
+    awsAccessKey?: string;
+    /** AWS secret key for S3 */
+    awsSecretKey?: string;
+    /** MinIO endpoint URL for local development */
+    minioEndpoint?: string;
+}
+
+/**
+ * Code generation settings
+ */
+export interface CodegenOptions {
+    /** Whether to wrap generated SQL code in transactions */
+    useTx?: boolean;
+}
+
+/**
+ * Migration and code generation options
+ */
+export interface MigrationOptions {
+    /** Code generation settings */
+    codegen?: CodegenOptions;
+}
 
 /**
  * Configuration options for the LaunchQL API
@@ -64,6 +143,24 @@ export interface LaunchQLWorkspaceConfig {
 }
 
 /**
+ * Configuration options for module deployment
+ */
+export interface DeploymentOptions {
+    /** Whether to wrap deployments in database transactions */
+    useTx?: boolean;
+    /** Use fast deployment strategy (skip migration system) */
+    fast?: boolean;
+    /** Whether to use Sqitch plan files for deployments */
+    usePlan?: boolean;
+    /** Enable caching of deployment packages */
+    cache?: boolean;
+    /** Deploy up to a specific change (inclusive) - can be a change name or tag reference (e.g., '@v1.0.0') */
+    toChange?: string;
+    /** Log-only mode - skip script execution and only record deployment metadata */
+    logOnly?: boolean;
+}
+
+/**
  * Main configuration options for the LaunchQL framework
  */
 export interface LaunchQLOptions {
@@ -72,76 +169,19 @@ export interface LaunchQLOptions {
     /** PostgreSQL connection configuration */
     pg?: Partial<PgConfig>;
     /** PostGraphile/Graphile configuration */
-    graphile?: {
-        /** Database schema(s) to expose through GraphQL */
-        schema?: string | string[];
-        /** Additional Graphile plugins to load */
-        appendPlugins?: Plugin[];
-        /** Build options for Graphile */
-        graphileBuildOptions?: PostGraphileOptions['graphileBuildOptions'];
-        /** Override settings for PostGraphile */
-        overrideSettings?: Partial<PostGraphileOptions>;
-    };
+    graphile?: GraphileOptions;
     /** HTTP server configuration */
-    server?: {
-        /** Server host address */
-        host?: string;
-        /** Server port number */
-        port?: number;
-        /** Whether to trust proxy headers */
-        trustProxy?: boolean;
-        /** CORS origin configuration */
-        origin?: string;
-        /** Whether to enforce strict authentication */
-        strictAuth?: boolean;
-    };
+    server?: ServerOptions;
     /** Feature flags and toggles */
-    features?: {
-        /** Use simple inflection for GraphQL field names */
-        simpleInflection?: boolean;
-        /** Use opposite base names for relationships */
-        oppositeBaseNames?: boolean;
-        /** Enable PostGIS spatial database support */
-        postgis?: boolean;
-    };
+    features?: FeatureOptions;
     /** API configuration options */
     api?: ApiOptions;
     /** CDN and file storage configuration */
-    cdn?: {
-        /** S3 bucket name for file storage */
-        bucketName?: string;
-        /** AWS region for S3 bucket */
-        awsRegion?: string;
-        /** AWS access key for S3 */
-        awsAccessKey?: string;
-        /** AWS secret key for S3 */
-        awsSecretKey?: string;
-        /** MinIO endpoint URL for local development */
-        minioEndpoint?: string;
-    };
+    cdn?: CDNOptions;
     /** Module deployment configuration */
-    deployment?: {
-        /** Whether to wrap deployments in database transactions */
-        useTx?: boolean;
-        /** Use fast deployment strategy (skip migration system) */
-        fast?: boolean;
-        /** Whether to use Sqitch plan files for deployments */
-        usePlan?: boolean;
-        /** Enable caching of deployment packages */
-        cache?: boolean;
-        /** Deploy up to a specific change (inclusive) - can be a change name or tag reference (e.g., '@v1.0.0') */
-        toChange?: string;
-        /** Log-only mode - skip script execution and only record deployment metadata */
-        logOnly?: boolean;
-    };
+    deployment?: DeploymentOptions;
     /** Migration and code generation options */
-    migrations?: {
-        /** Code generation settings */
-        codegen?: {
-            /** Whether to wrap generated SQL code in transactions */
-            useTx?: boolean;
-        };
-    };
+    migrations?: MigrationOptions;
 }
 
 /**
