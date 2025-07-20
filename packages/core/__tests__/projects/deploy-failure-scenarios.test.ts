@@ -18,26 +18,6 @@ describe('Deploy Failure Scenarios', () => {
     await teardownAllPools();
   });
 
-  async function getMigrationState() {
-    const changes = await db.query(`
-      SELECT project, change_name, script_hash
-      FROM launchql_migrate.changes 
-      ORDER BY change_name
-    `);
-    
-    const events = await db.query(`
-      SELECT project, change_name, event_type
-      FROM launchql_migrate.events 
-      ORDER BY change_name
-    `);
-    
-    return {
-      changes: changes.rows,
-      events: events.rows,
-      changeCount: changes.rows.length,
-      eventCount: events.rows.length
-    };
-  }
   
   test('constraint violation with transaction - automatic rollback', async () => {
     /*
@@ -72,7 +52,7 @@ describe('Deploy Failure Scenarios', () => {
     
     const client = new LaunchQLMigrate(db.config);
     
-    const initialState = await getMigrationState();
+    const initialState = await db.getMigrationState();
     expect(initialState.changeCount).toBe(0);
     expect(initialState.eventCount).toBe(0);
     
@@ -81,7 +61,7 @@ describe('Deploy Failure Scenarios', () => {
       useTransaction: true
     })).rejects.toThrow(/duplicate key value violates unique constraint/);
     
-    const finalState = await getMigrationState();
+    const finalState = await db.getMigrationState();
     
     expect(finalState).toMatchSnapshot('transaction-rollback-migration-state');
     
@@ -132,7 +112,7 @@ describe('Deploy Failure Scenarios', () => {
     
     const client = new LaunchQLMigrate(db.config);
     
-    const initialState = await getMigrationState();
+    const initialState = await db.getMigrationState();
     expect(initialState.changeCount).toBe(0);
     
     await expect(client.deploy({
@@ -140,7 +120,7 @@ describe('Deploy Failure Scenarios', () => {
       useTransaction: false
     })).rejects.toThrow(/duplicate key value violates unique constraint/);
     
-    const finalState = await getMigrationState();
+    const finalState = await db.getMigrationState();
     
     expect(finalState).toMatchSnapshot('partial-deployment-migration-state');
     
@@ -196,7 +176,7 @@ describe('Deploy Failure Scenarios', () => {
       useTransaction: true
     })).rejects.toThrow(/violates check constraint/);
     
-    const transactionState = await getMigrationState();
+    const transactionState = await db.getMigrationState();
     
     expect(transactionState).toMatchSnapshot('transaction-rollback-state-comparison');
     
@@ -208,7 +188,7 @@ describe('Deploy Failure Scenarios', () => {
       useTransaction: false
     })).rejects.toThrow(/violates check constraint/);
     
-    const partialState = await getMigrationState();
+    const partialState = await db.getMigrationState();
     
     expect(partialState).toMatchSnapshot('partial-deployment-state-comparison');
     
