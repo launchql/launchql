@@ -1,8 +1,9 @@
-import { CLIOptions, Inquirerer, Question } from 'inquirerer';
-import { Logger } from '@launchql/logger';
 import { LaunchQLProject } from '@launchql/core';
+import { Logger } from '@launchql/logger';
 import { getEnvOptions } from '@launchql/types';
+import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
+
 import { getTargetDatabase } from '../utils';
 import { selectModule } from '../utils/module-utils';
 

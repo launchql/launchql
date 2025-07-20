@@ -1,24 +1,23 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-
-import { readAndParsePackageJson } from './package';
-import { extractFirst, usageText } from './utils';
+import { teardownPgPools } from 'pg-cache';
 
 // Commands
 import deploy from './commands/deploy';
-import server from './commands/server';
 import explorer from './commands/explorer';
-import verify from './commands/verify';
-import revert from './commands/revert';
-import init from './commands/init';
-import extension from './commands/extension';
-import plan from './commands/plan';
-import install from './commands/install';
 import _export from './commands/export';
-import _package from './commands/package';
+import extension from './commands/extension';
+import init from './commands/init';
+import install from './commands/install';
 import kill from './commands/kill';
 import migrate from './commands/migrate';
-import { teardownPgPools } from 'pg-cache';
+import _package from './commands/package';
+import plan from './commands/plan';
+import revert from './commands/revert';
+import server from './commands/server';
+import verify from './commands/verify';
+import { readAndParsePackageJson } from './package';
+import { extractFirst, usageText } from './utils';
 
 const withPgTeardown = (fn: Function) => async (...args: any[]) => {
   try {

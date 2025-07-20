@@ -1,10 +1,11 @@
-import { TestFixture } from './TestFixture';
-import { LaunchQLProject } from '../src/core/class/launchql';
 import { getEnvOptions } from '@launchql/types';
-import { getPgEnvOptions } from 'pg-env';
-import { MigrateTestFixture, TestDatabase } from './index';
-import { teardownPgPools } from 'pg-cache';
 import { join } from 'path';
+import { teardownPgPools } from 'pg-cache';
+import { getPgEnvOptions } from 'pg-env';
+
+import { LaunchQLProject } from '../src/core/class/launchql';
+import { MigrateTestFixture, TestDatabase } from './index';
+import { TestFixture } from './TestFixture';
 
 export class CoreDeployTestFixture extends TestFixture {
   private databases: TestDatabase[] = [];

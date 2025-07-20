@@ -1,8 +1,9 @@
 // @ts-nocheck
 
 import * as t from 'gql-ast';
-import plz from 'pluralize';
 import inflection from 'inflection';
+import plz from 'pluralize';
+
 import { getCustomAst, isIntervalType } from './custom-ast';
 
 const isObject = val => val !== null && typeof val === 'object';
@@ -22,28 +23,28 @@ const createGqlMutation = ({
 }) => {
   const opSel = !modelName
     ? [
-        t.field({
-          name: operationName,
-          args: selectArgs,
-          selectionSet: t.selectionSet({ selections })
-        })
-      ]
+      t.field({
+        name: operationName,
+        args: selectArgs,
+        selectionSet: t.selectionSet({ selections })
+      })
+    ]
     : [
-        t.field({
-          name: operationName,
-          args: selectArgs,
-          selectionSet: t.selectionSet({
-            selections: useModel
-              ? [
-                  t.field({
-                    name: modelName,
-                    selectionSet: t.selectionSet({ selections })
-                  })
-                ]
-              : selections
-          })
+      t.field({
+        name: operationName,
+        args: selectArgs,
+        selectionSet: t.selectionSet({
+          selections: useModel
+            ? [
+              t.field({
+                name: modelName,
+                selectionSet: t.selectionSet({ selections })
+              })
+            ]
+            : selections
         })
-      ];
+      })
+    ];
 
   return t.document({
     definitions: [
@@ -247,23 +248,23 @@ export const getMany = ({
                   }),
                   builder._edges
                     ? t.field({
-                        name: 'edges',
-                        selectionSet: t.selectionSet({
-                          selections: [
-                            t.field({ name: 'cursor' }),
-                            t.field({
-                              name: 'node',
-                              selectionSet: t.selectionSet({ selections })
-                            })
-                          ]
-                        })
+                      name: 'edges',
+                      selectionSet: t.selectionSet({
+                        selections: [
+                          t.field({ name: 'cursor' }),
+                          t.field({
+                            name: 'node',
+                            selectionSet: t.selectionSet({ selections })
+                          })
+                        ]
                       })
+                    })
                     : t.field({
-                        name: 'nodes',
-                        selectionSet: t.selectionSet({
-                          selections
-                        })
+                      name: 'nodes',
+                      selectionSet: t.selectionSet({
+                        selections
                       })
+                    })
                 ]
               })
             })
@@ -550,8 +551,8 @@ export function getSelections(selection = []) {
   const selectionAst = (field) => {
     return typeof field === 'string'
       ? t.field({
-          name: field
-        })
+        name: field
+      })
       : getCustomAst(field.fieldDefn);
   };
 
@@ -572,21 +573,21 @@ export function getSelections(selection = []) {
           }, []),
           selectionSet: isBelongTo
             ? t.selectionSet({
-                selections: selection.map((field) => selectionAst(field))
-              })
+              selections: selection.map((field) => selectionAst(field))
+            })
             : t.objectValue({
-                fields: [
-                  t.field({
-                    name: 'totalCount'
-                  }),
-                  t.field({
-                    name: 'nodes',
-                    selectionSet: t.selectionSet({
-                      selections: selection.map((field) => selectionAst(field))
-                    })
+              fields: [
+                t.field({
+                  name: 'totalCount'
+                }),
+                t.field({
+                  name: 'nodes',
+                  selectionSet: t.selectionSet({
+                    selections: selection.map((field) => selectionAst(field))
                   })
-                ]
-              })
+                })
+              ]
+            })
         });
       } else {
         const { fieldDefn } = selectionDefn;

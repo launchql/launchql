@@ -1,13 +1,13 @@
+import { Logger } from '@launchql/logger';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { Client } from 'pg';
+import { getPgPool } from 'pg-cache';
+import { getPgEnvOptions } from 'pg-env';
 
 import { generateCodeTree } from './codegen/codegen';
 import getIntrospectionRows, { GetIntrospectionRowsOptions } from './introspect';
 import { DatabaseObject } from './types';
-import { Logger } from '@launchql/logger';
-import { getPgEnvOptions } from 'pg-env';
-import { getPgPool } from 'pg-cache';
-import { Client } from 'pg';
 
 const log = new Logger('pg-codegen');
 

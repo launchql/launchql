@@ -8,14 +8,14 @@ export interface IntrospectionQueryResult {
     };
   }
   
-  export interface IntrospectionDirective {
+export interface IntrospectionDirective {
     name: string;
     description?: string | null;
     locations: string[];
     args: IntrospectionInputValue[];
   }
   
-  export interface IntrospectionType {
+export interface IntrospectionType {
     kind: TypeKind;
     name: string;
     description?: string | null;
@@ -26,7 +26,7 @@ export interface IntrospectionQueryResult {
     possibleTypes?: IntrospectionTypeRef[] | null;
   }
   
-  export interface IntrospectionField {
+export interface IntrospectionField {
     name: string;
     description?: string | null;
     args: IntrospectionInputValue[];
@@ -35,27 +35,27 @@ export interface IntrospectionQueryResult {
     deprecationReason?: string | null;
   }
   
-  export interface IntrospectionInputValue {
+export interface IntrospectionInputValue {
     name: string;
     description?: string | null;
     type: IntrospectionTypeRef;
     defaultValue?: string | null;
   }
   
-  export interface IntrospectionEnumValue {
+export interface IntrospectionEnumValue {
     name: string;
     description?: string | null;
     isDeprecated: boolean;
     deprecationReason?: string | null;
   }
   
-  export interface IntrospectionTypeRef {
+export interface IntrospectionTypeRef {
     kind: TypeKind;
     name?: string | null;
     ofType?: IntrospectionTypeRef | null;
   }
   
-  export type TypeKind =
+export type TypeKind =
     | 'SCALAR'
     | 'OBJECT'
     | 'INTERFACE'

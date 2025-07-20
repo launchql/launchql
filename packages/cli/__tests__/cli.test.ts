@@ -1,4 +1,5 @@
 import { Inquirerer, Question } from 'inquirerer';
+
 import { KEY_SEQUENCES, setupTests, TestEnvironment } from '../test-utils';
 
 const beforeEachSetup = setupTests();
@@ -11,7 +12,7 @@ describe('Inquirerer', () => {
   });
 
   it('prompts user and correctly processes delayed input', async () => {
-   const { mockInput, mockOutput, writeResults, transformResults, enqueueInputResponse } = environment;
+    const { mockInput, mockOutput, writeResults, transformResults, enqueueInputResponse } = environment;
 
     const prompter = new Inquirerer({
       input: mockInput,

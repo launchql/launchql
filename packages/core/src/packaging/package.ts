@@ -1,13 +1,13 @@
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
+import { Logger } from '@launchql/logger';
+import { RawStmt } from '@pgsql/types';
+import { mkdirSync, readFileSync, rmSync,writeFileSync } from 'fs';
 import { relative } from 'path';
-import { parse } from 'pgsql-parser';
 import { deparse } from 'pgsql-deparser';
+import { parse } from 'pgsql-parser';
 
 import { getExtensionName } from '../files';
 import { resolve, resolveWithPlan } from '../resolution/resolve';
 import { transformProps } from './transform';
-import { Logger } from '@launchql/logger';
-import { RawStmt } from '@pgsql/types';
 
 const log = new Logger('package');
 

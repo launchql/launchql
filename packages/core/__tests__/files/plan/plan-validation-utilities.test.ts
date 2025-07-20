@@ -1,7 +1,7 @@
 import {
   isValidChangeName,
-  isValidTagName,
   isValidDependency,
+  isValidTagName,
   parseReference
 } from '../../../src/files';
 

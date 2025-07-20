@@ -3,7 +3,7 @@ import workspaceTemplate from './generated/workspace';
 import { writeRenderedTemplates } from './templatize/generateFromCompiled';
 
 export {
-    moduleTemplate,
-    workspaceTemplate,
-    writeRenderedTemplates
+  moduleTemplate,
+  workspaceTemplate,
+  writeRenderedTemplates
 };

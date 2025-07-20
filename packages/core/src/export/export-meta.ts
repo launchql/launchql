@@ -1,6 +1,6 @@
-import { getPgPool } from 'pg-cache';
-import { Parser } from 'csv-to-pg';
 import { LaunchQLOptions } from '@launchql/types';
+import { Parser } from 'csv-to-pg';
+import { getPgPool } from 'pg-cache';
 
 type FieldType = 'uuid' | 'text' | 'text[]' | 'boolean' | 'image' | 'upload' | 'url' | 'jsonb';
 

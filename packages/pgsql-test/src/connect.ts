@@ -1,19 +1,18 @@
-import { DbAdmin } from './admin';
 import {
-  PgTestConnectionOptions,
-  getConnEnvOptions
-} from '@launchql/types';
+  getConnEnvOptions,
+  PgTestConnectionOptions} from '@launchql/types';
+import { randomUUID } from 'crypto';
+import { teardownPgPools } from 'pg-cache';
 import {
   getPgEnvOptions,
   PgConfig,
 } from 'pg-env';
-import { PgTestConnector } from './manager';
-import { randomUUID } from 'crypto';
 
-import { teardownPgPools } from 'pg-cache';
+import { DbAdmin } from './admin';
+import { PgTestConnector } from './manager';
+import { seed } from './seed';
 import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
-import { seed } from './seed';
 
 let manager: PgTestConnector;
 
@@ -23,7 +22,7 @@ export const getPgRootAdmin = (connOpts: PgTestConnectionOptions = {}) => {
   });
   const admin = new DbAdmin(opts);
   return admin;
-}
+};
 
 export interface GetConnectionOpts {
   pg?: Partial<PgConfig>;
@@ -39,8 +38,8 @@ const getConnOopts = (cn: GetConnectionOpts = {}) => {
   return {
     pg: config,
     db: connect
-  }
-}
+  };
+};
 
 export interface GetConnectionResult {
   pg: PgTestClient;
@@ -90,7 +89,7 @@ export const getConnections = async (
       admin,
       config: config,
       pg: manager.getClient(config)
-    })
+    });
   }
 
   // App user connection

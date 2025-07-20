@@ -1,7 +1,8 @@
 import type { ClientBase } from 'pg';
+
+import type { PgIntrospectionResultByKind } from './pg-types';
 import { makeIntrospectionQuery } from './query';
 import { parseTags } from './utils';
-import type { PgIntrospectionResultByKind } from './pg-types';
 
 interface IntrospectOptions {
   schemas: string[];

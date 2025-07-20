@@ -1,6 +1,7 @@
 import fs from 'fs';
-import path from 'path';
 import * as glob from 'glob';
+import path from 'path';
+
 import { LaunchQLProject } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 

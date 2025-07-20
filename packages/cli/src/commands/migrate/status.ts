@@ -1,11 +1,12 @@
+import { LaunchQLMigrate } from '@launchql/core';
+import { parsePlanFile } from '@launchql/core';
+import { Logger } from '@launchql/logger';
+import { existsSync } from 'fs';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { LaunchQLMigrate } from '@launchql/core';
-import { getPgEnvOptions } from 'pg-env';
-import { Logger } from '@launchql/logger';
 import { join } from 'path';
-import { existsSync } from 'fs';
-import { parsePlanFile } from '@launchql/core';
+import { getPgEnvOptions } from 'pg-env';
+
 import { getTargetDatabase } from '../../utils/database';
 const log = new Logger('migrate-status');
 

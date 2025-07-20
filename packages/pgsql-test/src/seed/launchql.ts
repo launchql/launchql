@@ -1,6 +1,7 @@
-import { SeedAdapter, SeedContext } from './types';
-import { getEnvOptions } from '@launchql/types';
 import { LaunchQLProject } from '@launchql/core';
+import { getEnvOptions } from '@launchql/types';
+
+import { SeedAdapter, SeedContext } from './types';
 
 export function launchql(cwd?: string, cache: boolean = false): SeedAdapter {
   return {

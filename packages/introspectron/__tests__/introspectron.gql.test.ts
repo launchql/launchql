@@ -2,8 +2,9 @@ process.env.LOG_SCOPE = 'introspectron';
 
 import { getConnections, GraphQLQueryFn, seed } from 'graphile-test';
 import { join } from 'path';
+
 import { IntrospectionQuery } from '../src';
-import type { IntrospectionQueryResult, IntrospectionField, IntrospectionInputValue } from '../src/gql-types';
+import type { IntrospectionField,IntrospectionQueryResult } from '../src/gql-types';
 
 const sql = (f: string) => join(__dirname, '/../sql', f);
 

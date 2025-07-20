@@ -1,4 +1,4 @@
-import { Pool, ClientBase, PoolClient, QueryResult } from 'pg';
+import { ClientBase, Pool, PoolClient, QueryResult } from 'pg';
 
 function setContext(ctx: Record<string, string>): string[] {
   return Object.keys(ctx || {}).reduce<string[]>((m, el) => {

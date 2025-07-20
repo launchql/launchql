@@ -54,12 +54,12 @@ export class PgTestClient {
 
   setContext(ctx: Record<string, string | null>): void {
     this.ctxStmts = Object.entries(ctx)
-    .map(([key, val]) =>
-      val === null
-    ? `SELECT set_config('${key}', NULL, true);`
-    : `SELECT set_config('${key}', '${val}', true);`
-  )
-  .join('\n');
+      .map(([key, val]) =>
+        val === null
+          ? `SELECT set_config('${key}', NULL, true);`
+          : `SELECT set_config('${key}', '${val}', true);`
+      )
+      .join('\n');
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {

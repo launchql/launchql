@@ -1,4 +1,5 @@
 import Ajv from 'ajv';
+
 import format from './format.json';
 
 export function validateMetaObject(obj: any) {

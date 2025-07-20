@@ -1,10 +1,11 @@
 process.env.LOG_SCOPE = 'graphile-test';
 ;
-import { seed } from 'pgsql-test';
 import { join } from 'path';
+import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
-import { logDbSessionInfo } from '../test-utils/utils';
+
 import { getConnections } from '../src/get-connections';
+import { logDbSessionInfo } from '../test-utils/utils';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -34,14 +35,14 @@ beforeAll(async () => {
 // Normally we use savepoints per test for isolation like this:
 
 
-  // beforeEach(async () => {
-  //     await pg.begin();
-  //     await pg.savepoint('db');
-  // });
-  // afterEach(async () => {
-  //     await db.rollback('db');
-  //     await db.commit();
-  // });
+// beforeEach(async () => {
+//     await pg.begin();
+//     await pg.savepoint('db');
+// });
+// afterEach(async () => {
+//     await db.rollback('db');
+//     await db.commit();
+// });
 
 
 // But to test *true* transaction-aborted behavior, we avoid savepoints,

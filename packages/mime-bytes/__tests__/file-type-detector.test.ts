@@ -1,6 +1,6 @@
-import { FileTypeDetector } from '../src/file-type-detector';
-import { createReadStream } from 'fs';
 import { Readable } from 'stream';
+
+import { FileTypeDetector } from '../src/file-type-detector';
 
 describe('FileTypeDetector', () => {
   let detector: FileTypeDetector;

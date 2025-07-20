@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { print as gqlPrint } from 'graphql';
-import { getMany, getOne, getAll, createOne, patchOne, deleteOne } from './ast';
 import inflection from 'inflection';
+
+import { createOne, deleteOne,getAll, getMany, getOne, patchOne } from './ast';
 import { validateMetaObject } from './meta-object';
 export * as MetaObject from './meta-object';
 
@@ -101,17 +102,17 @@ export class QueryBuilder {
     // We only need deleteAction from all of [deleteAction, deleteActionBySlug, deleteActionByName]
     const getInputName = (mutationType) => {
       switch (mutationType) {
-        case 'delete': {
-          return `Delete${inflection.camelize(this._model)}Input`;
-        }
-        case 'create': {
-          return `Create${inflection.camelize(this._model)}Input`;
-        }
-        case 'patch': {
-          return `Update${inflection.camelize(this._model)}Input`;
-        }
-        default:
-          throw new Error('Unhandled mutation type' + mutationType);
+      case 'delete': {
+        return `Delete${inflection.camelize(this._model)}Input`;
+      }
+      case 'create': {
+        return `Create${inflection.camelize(this._model)}Input`;
+      }
+      case 'patch': {
+        return `Update${inflection.camelize(this._model)}Input`;
+      }
+      default:
+        throw new Error('Unhandled mutation type' + mutationType);
       }
     };
 

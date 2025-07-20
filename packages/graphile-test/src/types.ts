@@ -1,4 +1,4 @@
-import { DocumentNode, ExecutionResult, GraphQLError } from 'graphql';
+import { DocumentNode, GraphQLError } from 'graphql';
 
 export interface GraphQLQueryOptions<TVariables = Record<string, any>> {
   query: string | DocumentNode;

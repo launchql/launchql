@@ -1,5 +1,5 @@
 import { RawStmt } from '@pgsql/types';
-import { parse, deparse } from 'pgsql-parser';
+import { deparse,parse } from 'pgsql-parser';
 
 const filterStatements = (stmts: RawStmt[]): { filteredStmts: RawStmt[], hasFiltered: boolean } => {
   const filteredStmts = stmts.filter(node => {

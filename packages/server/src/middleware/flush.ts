@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import { graphileCache } from 'graphile-cache';
-import { svcCache } from '@launchql/server-utils';
-import { getPgPool } from 'pg-cache';
-import { LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@launchql/logger';
+import { svcCache } from '@launchql/server-utils';
+import { LaunchQLOptions } from '@launchql/types';
+import { NextFunction,Request, Response } from 'express';
+import { graphileCache } from 'graphile-cache';
+import { getPgPool } from 'pg-cache';
 
 const log = new Logger('flush');
 

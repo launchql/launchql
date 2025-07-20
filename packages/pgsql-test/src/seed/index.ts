@@ -1,10 +1,10 @@
-import { fn, sqlfile, compose } from './adapters';
+import { compose,fn, sqlfile } from './adapters';
 import { csv } from './csv';
 import { json } from './json';
-import { sqitch } from './sqitch';
 import { launchql } from './launchql';
-export * from './types';
+import { sqitch } from './sqitch';
 export * from './csv';
+export * from './types';
 
 export const seed = {
   launchql,

@@ -1,6 +1,7 @@
+import { createHash } from 'crypto';
 import { createReadStream } from 'fs';
 import { sync as glob } from 'glob';
-import { createHash } from 'crypto';
+
 import ETagStream from '../src';
 
 const getETag = (stream: NodeJS.ReadableStream): Promise<string | null> => {

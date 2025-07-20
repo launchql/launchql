@@ -1,7 +1,7 @@
 import Streamer from '@launchql/s3-streamer';
 import uploadNames from '@launchql/upload-names';
-import type { GraphQLResolveInfo } from 'graphql';
 import { ReadStream } from 'fs';
+import type { GraphQLResolveInfo } from 'graphql';
 
 interface UploaderOptions {
   bucketName: string;
@@ -72,24 +72,24 @@ export class UploadHandler {
     const mim = tags.mime
       ? tags.mime.trim().split(',').map((a: string) => a.trim())
       : typ === 'image'
-      ? ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml']
-      : [];
+        ? ['image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml']
+        : [];
 
     if (mim.length && !mim.includes(contentType)) {
       throw new Error(`UPLOAD_MIMETYPE ${mim.join(',')}`);
     }
 
     switch (typ) {
-      case 'image':
-      case 'upload':
-        return {
-          filename,
-          mime: contentType,
-          url
-        };
-      case 'attachment':
-      default:
-        return url;
+    case 'image':
+    case 'upload':
+      return {
+        filename,
+        mime: contentType,
+        url
+      };
+    case 'attachment':
+    default:
+      return url;
     }
   }
 }

@@ -1,6 +1,6 @@
 import fs from 'fs';
-import path from 'path';
 import { sync as globSync } from 'glob';
+import path from 'path';
 
 export interface CompiledTemplate {
   funcName: string;

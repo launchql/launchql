@@ -1,5 +1,5 @@
-import { IntrospectionQueryResult, parseGraphQuery } from 'introspectron';
 import { print } from 'graphql';
+import { IntrospectionQueryResult, parseGraphQuery } from 'introspectron';
 
 import { generate, GqlMap } from '../src/gql';
 

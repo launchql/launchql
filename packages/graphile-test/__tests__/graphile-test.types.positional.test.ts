@@ -1,11 +1,12 @@
 process.env.LOG_SCOPE = 'graphile-test';
 
-import { snapshot } from '../src';
-import { seed } from 'pgsql-test';
 import { join } from 'path';
-import type { GraphQLQueryFn } from '../src/types';
+import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
+
+import { snapshot } from '../src';
 import { getConnections } from '../src/get-connections';
+import type { GraphQLQueryFn } from '../src/types';
 
 const schemas = ['app_public'];
 const sql = (f: string) => join(__dirname, '/../sql', f);
@@ -15,20 +16,20 @@ let query: GraphQLQueryFn;
 let db: PgTestClient;
 
 beforeAll(async () => {
-    const connections = await getConnections(
-        {
-            schemas,
-            authRole: 'authenticated'
-        },
-        [
-            seed.sqlfile([
-                sql('test.sql'),
-                sql('grants.sql')
-            ])
-        ]
-    );
+  const connections = await getConnections(
+    {
+      schemas,
+      authRole: 'authenticated'
+    },
+    [
+      seed.sqlfile([
+        sql('test.sql'),
+        sql('grants.sql')
+      ])
+    ]
+  );
 
-    ({ query, db, teardown } = connections);
+  ({ query, db, teardown } = connections);
 });
 
 beforeEach(() => db.beforeEach());
@@ -36,9 +37,9 @@ afterEach(() => db.afterEach());
 afterAll(() => teardown());
 
 it('creates a user and returns typed result', async () => {
-    db.setContext({
-        role: 'authenticated'
-    })
+  db.setContext({
+    role: 'authenticated'
+  });
     interface CreateUserVariables {
         input: {
             user: {
@@ -68,11 +69,11 @@ it('creates a user and returns typed result', async () => {
     `;
 
     const variables: CreateUserVariables = {
-        input: {
-            user: {
-                username: 'alice'
-            }
+      input: {
+        user: {
+          username: 'alice'
         }
+      }
     };
 
     // Using positional API: query, variables, commit, reqOptions
@@ -91,9 +92,9 @@ it('creates a user and returns typed result', async () => {
 });
 
 it('handles errors gracefully with raw GraphQL responses', async () => {
-    db.setContext({
-        role: 'authenticated'
-    });
+  db.setContext({
+    role: 'authenticated'
+  });
 
     interface CreateUserVariables {
         input: {
@@ -124,11 +125,11 @@ it('handles errors gracefully with raw GraphQL responses', async () => {
     `;
 
     const bobVariables: CreateUserVariables = {
-        input: {
-            user: {
-                username: 'bob'
-            }
+      input: {
+        user: {
+          username: 'bob'
         }
+      }
     };
 
     // First user creation should succeed - using positional API

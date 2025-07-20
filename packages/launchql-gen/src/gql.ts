@@ -1,10 +1,5 @@
-import plz from 'pluralize';
-// @ts-ignore
-import inflection from 'inflection';
-
 // TODO: use inflection for all the things
 // const { singularize } = require('inflection');
-
 import * as t from 'gql-ast';
 import {
   ArgumentNode,
@@ -13,6 +8,9 @@ import {
   TypeNode,
   VariableDefinitionNode,
 } from 'graphql';
+// @ts-ignore
+import inflection from 'inflection';
+import plz from 'pluralize';
 
 const NON_MUTABLE_PROPS = [
   'id',
@@ -47,28 +45,28 @@ export const createGqlMutation = ({
 
   const opSel: FieldNode[] = !modelName
     ? [
-        t.field({
-          name: operationName,
-          args: selectArgs,
-          selectionSet: t.selectionSet({ selections }),
-        }),
-      ]
+      t.field({
+        name: operationName,
+        args: selectArgs,
+        selectionSet: t.selectionSet({ selections }),
+      }),
+    ]
     : [
-        t.field({
-          name: operationName,
-          args: selectArgs,
-          selectionSet: t.selectionSet({
-            selections: useModel
-              ? [
-                  t.field({
-                    name: modelName,
-                    selectionSet: t.selectionSet({ selections }),
-                  }),
-                ]
-              : selections,
-          }),
+      t.field({
+        name: operationName,
+        args: selectArgs,
+        selectionSet: t.selectionSet({
+          selections: useModel
+            ? [
+              t.field({
+                name: modelName,
+                selectionSet: t.selectionSet({ selections }),
+              }),
+            ]
+            : selections,
         }),
-      ];
+      }),
+    ];
 
   return t.document({
     definitions: [
@@ -931,18 +929,18 @@ export const createMutation = ({
   const selectArgs: ArgumentNode[] =
     otherAttrs.length > 0
       ? [
-          t.argument({
-            name: 'input',
-            value: t.objectValue({
-              fields: otherAttrs.map((f) =>
-                t.objectField({
-                  name: f.name,
-                  value: t.variable({ name: f.name }),
-                })
-              ),
-            }),
+        t.argument({
+          name: 'input',
+          value: t.objectValue({
+            fields: otherAttrs.map((f) =>
+              t.objectField({
+                name: f.name,
+                value: t.variable({ name: f.name }),
+              })
+            ),
           }),
-        ]
+        }),
+      ]
       : [];
 
   const outputFields: string[] =

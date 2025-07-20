@@ -1,4 +1,4 @@
-import { SeedAdapter, SeedContext } from "./types";
+import { SeedAdapter, SeedContext } from './types';
 
 export function sqlfile(files: string[]): SeedAdapter {
   return {

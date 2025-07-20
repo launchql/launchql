@@ -1,6 +1,7 @@
-import { FileTypeDetector } from '../src';
 import { createReadStream } from 'fs';
 import path from 'path';
+
+import { FileTypeDetector } from '../src';
 
 async function testRealFile() {
   const detector = new FileTypeDetector();

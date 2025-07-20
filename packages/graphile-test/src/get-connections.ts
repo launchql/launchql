@@ -1,18 +1,17 @@
-import { getConnections as getPgConnections } from 'pgsql-test';
-import { GraphQLTest } from './graphile-test';
-
 import type { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
-import type { PgTestClient } from 'pgsql-test/test-client';
+import { getConnections as getPgConnections } from 'pgsql-test';
 import type { SeedAdapter } from 'pgsql-test/seed/types';
+import type { PgTestClient } from 'pgsql-test/test-client';
+
+import { GraphQLTest } from './graphile-test';
 import type {
-  GraphQLQueryOptions,
-  GraphQLQueryFnObj,
+  GetConnectionsInput,
   GraphQLQueryFn,
-  GraphQLQueryUnwrappedFnObj,
+  GraphQLQueryFnObj,
+  GraphQLQueryOptions,
   GraphQLQueryUnwrappedFn,
-  GraphQLResponse,
-  GetConnectionsInput
-} from './types';
+  GraphQLQueryUnwrappedFnObj,
+  GraphQLResponse} from './types';
 
 // Core unwrapping utility
 const unwrap = <T>(res: GraphQLResponse<T>): T => {

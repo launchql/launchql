@@ -1,8 +1,8 @@
+import { Logger } from '@launchql/logger';
 import { Client } from 'pg';
 
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';
 import { DatabaseObject } from './types';
-import { Logger } from '@launchql/logger';
 const log = new Logger('pg-codegen');
 
 export interface GetIntrospectionRowsOptions {

@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { sync as glob } from 'glob';
-import { createReadStream } from 'fs';
 import { basename } from 'path';
 
 import getName from '../src';
@@ -37,7 +36,7 @@ describe('uploads', () => {
   it('english', async () => {
     const res = {};
     const use = files;
-    for (var i = 0; i < use.length; i++) {
+    for (let i = 0; i < use.length; i++) {
       const file = use[i];
       const results = getName(file);
       res[basename(file)] = results;
@@ -47,7 +46,7 @@ describe('uploads', () => {
   it('upper', async () => {
     const res = {};
     const use = files;
-    for (var i = 0; i < use.length; i++) {
+    for (let i = 0; i < use.length; i++) {
       const file = use[i];
       const results = getName(file, { lower: false });
       res[basename(file)] = results;
@@ -57,7 +56,7 @@ describe('uploads', () => {
   it('any w english', async () => {
     const res = {};
     const use = allNonEnglish;
-    for (var i = 0; i < use.length; i++) {
+    for (let i = 0; i < use.length; i++) {
       const file = use[i];
       try {
         getName(file);
@@ -69,7 +68,7 @@ describe('uploads', () => {
   it('any', async () => {
     const res = {};
     const use = allNonEnglish;
-    for (var i = 0; i < use.length; i++) {
+    for (let i = 0; i < use.length; i++) {
       const file = use[i];
       const results = await getName(file, { english: false });
       res[basename(file)] = results;

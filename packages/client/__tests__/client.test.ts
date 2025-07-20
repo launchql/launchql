@@ -1,4 +1,5 @@
 import { PoolClient } from 'pg';
+
 import { Database } from '../src';
 
 let client: Database;

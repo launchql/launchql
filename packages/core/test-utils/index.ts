@@ -1,15 +1,12 @@
-export { TestPlan } from './TestPlan';
 export { CoreDeployTestFixture } from './CoreDeployTestFixture';
-export { TestFixture } from './TestFixture';
-
+export { MigrateTestChange } from './MigrateTestChange';
 export { MigrateTestFixture } from './MigrateTestFixture';
 export { TestDatabase } from './TestDatabase';
-export { MigrateTestChange } from './MigrateTestChange';
-
+export { TestFixture } from './TestFixture';
+export { TestPlan } from './TestPlan';
 export {
+  cleanText,
+  closeDatabasePools,
   FIXTURES_PATH,
   getFixturePath,
-  cleanText,
-  teardownAllPools,
-  closeDatabasePools
-} from './utils';
+  teardownAllPools} from './utils';

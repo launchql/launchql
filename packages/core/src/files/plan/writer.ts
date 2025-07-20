@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { PlanFile, Change, SqitchRow } from '../types';
+
+import { Change, PlanFile, SqitchRow } from '../types';
 
 export interface PlanWriteOptions {
   outdir: string;
@@ -27,19 +28,19 @@ export function writeSqitchPlan(rows: SqitchRow[], opts: PlanWriteOptions): void
 %uri=launchql-extension-name
 
 ${rows
-  .map((row) => {
-    if (duplicates[row.deploy]) {
-      console.log('DUPLICATE ' + row.deploy);
-      return '';
-    }
-    duplicates[row.deploy] = true;
+    .map((row) => {
+      if (duplicates[row.deploy]) {
+        console.log('DUPLICATE ' + row.deploy);
+        return '';
+      }
+      duplicates[row.deploy] = true;
 
-    if (row.deps?.length) {
-      return `${row.deploy} [${row.deps.join(' ')}] ${date()} ${author} <${email}> # add ${row.name}`;
-    }
-    return `${row.deploy} ${date()} ${author} <${email}> # add ${row.name}`;
-  })
-  .join('\n')}
+      if (row.deps?.length) {
+        return `${row.deploy} [${row.deps.join(' ')}] ${date()} ${author} <${email}> # add ${row.name}`;
+      }
+      return `${row.deploy} ${date()} ${author} <${email}> # add ${row.name}`;
+    })
+    .join('\n')}
 `);
 
   fs.writeFileSync(path.join(dir, 'launchql.plan'), plan);

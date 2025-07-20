@@ -1,4 +1,5 @@
 import deepmerge from 'deepmerge';
+
 import { launchqlDefaults, LaunchQLOptions, PgTestConnectionOptions } from './launchql';
 
 const parseEnvNumber = (val?: string): number | undefined => {

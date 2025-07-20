@@ -2,38 +2,35 @@
 
 // Export the main detector class and convenience functions
 export {
-  FileTypeDetector,
-  FileTypeDetectorOptions,
   defaultDetector,
-  detectFromStream,
   detectFromBuffer,
-  detectFromExtension
-} from './file-type-detector';
+  detectFromExtension,
+  detectFromStream,
+  FileTypeDetector,
+  FileTypeDetectorOptions} from './file-type-detector';
 
 // Export registry types and functions
 export {
-  FileTypeDefinition,
-  DetectionResult,
-  ContentTypeMapping,
-  FILE_TYPES,
   CONTENT_TYPE_MAPPINGS,
-  getFileTypeByMagicBytes,
-  getFileTypeByExtension,
-  getFileTypesByCategory,
+  ContentTypeMapping,
+  detectCharset,
+  DetectionResult,
+  FILE_TYPES,
+  FileTypeDefinition,
   getContentTypeByExtension,
-  detectCharset
-} from './file-types-registry';
+  getFileTypeByExtension,
+  getFileTypeByMagicBytes,
+  getFileTypesByCategory} from './file-types-registry';
 
 // Export peek stream functionality
 export {
-  peek,
   BufferPeekStream,
-  PeekStreamOptions,
+  peek,
   PeekCallback,
-  PeekPromise
-} from './peak';
+  PeekPromise,
+  PeekStreamOptions} from './peak';
 
 // Export utility functions
+export * from './utils/extensions';
 export * from './utils/magic-bytes';
 export * from './utils/mime-types';
-export * from './utils/extensions';

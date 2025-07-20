@@ -1,6 +1,5 @@
+
 import { FileTypeDetector } from '../../src/file-type-detector';
-import * as fs from 'fs';
-import * as path from 'path';
 
 describe('TypeScript File Detection Integration', () => {
   let detector: FileTypeDetector;

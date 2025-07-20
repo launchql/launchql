@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+
 import { CompiledTemplate } from './compileTemplatesToFunctions';
 
 export function writeCompiledTemplatesToFile(

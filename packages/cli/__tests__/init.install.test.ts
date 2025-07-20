@@ -1,8 +1,9 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { TestFixture } from '../test-utils';
-import * as glob from 'glob';
 import { LaunchQLProject } from '@launchql/core';
+import * as fs from 'fs';
+import * as glob from 'glob';
+import * as path from 'path';
+
+import { TestFixture } from '../test-utils';
 
 function getExpectedFiles(pkg: string, version: string): string[] {
   const parts = pkg.split('/');

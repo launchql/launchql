@@ -1,11 +1,12 @@
 process.env.LOG_SCOPE = 'pgsql-test';
 
-import path from 'path';
 import fs from 'fs';
-import { PgTestClient } from '../src/test-client';
-import { getConnections } from '../src/connect';
+import path from 'path';
+
 import { seed } from '../src';
+import { getConnections } from '../src/connect';
 import { exportTableToCsv } from '../src/seed/csv';
+import { PgTestClient } from '../src/test-client';
 
 const csv = (file: string) => path.resolve(__dirname, '../csv', file);
 

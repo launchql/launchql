@@ -1,5 +1,6 @@
-import slugify from './slugify';
 import { basename, extname } from 'path';
+
+import slugify from './slugify';
 export default (
   filename: string,
   { english = true, lower = true, delimeter = '-' } = {}

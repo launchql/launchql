@@ -1,9 +1,8 @@
 import { 
-  S3Client, 
   CreateBucketCommand, 
   PutBucketCorsCommand, 
-  PutBucketPolicyCommand 
-} from '@aws-sdk/client-s3';
+  PutBucketPolicyCommand, 
+  S3Client} from '@aws-sdk/client-s3';
 
 export async function createS3Bucket(client: S3Client, Bucket: string): Promise<{ success: boolean }> {
   try {

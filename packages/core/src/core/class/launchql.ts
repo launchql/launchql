@@ -1,42 +1,39 @@
-import fs from 'fs';
-import path, { dirname, resolve } from 'path';
-import * as glob from 'glob';
-import { walkUp } from '../../workspace/utils';
-import { extDeps, resolveDependencies } from '../../resolution/deps';
-import chalk from 'chalk';
-import { parse } from 'parse-package-name';
-import os from 'os';
 import { Logger } from '@launchql/logger';
+import {
+  moduleTemplate,
+  writeRenderedTemplates} from '@launchql/templatizer';
+import { errors,LaunchQLOptions } from '@launchql/types';
+import chalk from 'chalk';
 import { execSync } from 'child_process';
-import { generatePlan, writePlan } from '../../files';
-import { LaunchQLOptions, errors } from '@launchql/types';
-import { PgConfig } from 'pg-env';
+import fs from 'fs';
+import * as glob from 'glob';
+import os from 'os';
+import { parse } from 'parse-package-name';
+import path, { dirname, resolve } from 'path';
 import { getPgPool } from 'pg-cache';
-import { LaunchQLMigrate } from '../../migrate/client';
-import { packageModule } from '../../packaging/package';
+import { PgConfig } from 'pg-env';
 
+import { getAvailableExtensions } from '../../extensions/extensions';
+import { generatePlan, writePlan } from '../../files';
 import {
-  writeRenderedTemplates,
-  moduleTemplate
-} from '@launchql/templatizer';
-
-import {
-  listModules,
-  latestChange,
-  latestChangeAndVersion,
-  getExtensionsAndModules,
-  getExtensionsAndModulesChanges,
-  ModuleMap
-} from '../../modules/modules';
-
-import {
+  ExtensionInfo,
   getExtensionInfo,
-  writeExtensions,
   getExtensionName,
   getInstalledExtensions,
-  ExtensionInfo,
+  writeExtensions,
 } from '../../files';
-import { getAvailableExtensions } from '../../extensions/extensions';
+import { LaunchQLMigrate } from '../../migrate/client';
+import {
+  getExtensionsAndModules,
+  getExtensionsAndModulesChanges,
+  latestChange,
+  latestChangeAndVersion,
+  listModules,
+  ModuleMap
+} from '../../modules/modules';
+import { packageModule } from '../../packaging/package';
+import { extDeps, resolveDependencies } from '../../resolution/deps';
+import { walkUp } from '../../workspace/utils';
 
 
 const logger = new Logger('launchql');
@@ -695,91 +692,91 @@ export class LaunchQLProject {
       const moduleProject = this.getModuleProject(name);
       const extensions = moduleProject.getModuleExtensions();
 
-    const pgPool = getPgPool(opts.pg);
+      const pgPool = getPgPool(opts.pg);
 
-    log.success(`🚀 Starting deployment to database ${opts.pg.database}...`);
+      log.success(`🚀 Starting deployment to database ${opts.pg.database}...`);
 
-    for (const extension of extensions.resolved) {
-      try {
-        if (extensions.external.includes(extension)) {
-          const msg = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
-          log.info(`📥 Installing external extension: ${extension}`);
-          await pgPool.query(msg);
-        } else {
-          const modulePath = resolve(this.workspacePath!, modules[extension].path);
-          log.info(`📂 Deploying local module: ${extension}`);
-
-          if (opts.deployment.fast) {
-            const localProject = this.getModuleProject(extension);
-            const cacheKey = getCacheKey(opts.pg as PgConfig, extension, opts.pg.database);
-            
-            if (opts.deployment.cache && deployFastCache[cacheKey]) {
-              log.warn(`⚡ Using cached pkg for ${extension}.`);
-              await pgPool.query(deployFastCache[cacheKey].sql);
-              continue;
-            }
-
-            let pkg;
-            try {
-              pkg = await packageModule(localProject.modulePath, { 
-                usePlan: opts.deployment.usePlan, 
-                extension: false 
-              });
-            } catch (err: any) {
-              const errorLines = [];
-              errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
-              errorLines.push(`   Module Path: ${modulePath}`);
-              errorLines.push(`   Workspace Path: ${this.workspacePath}`);
-              errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
-              errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
-              
-              if (err.code === 'ENOENT') {
-                errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
-              } else if (err.code === 'EACCES') {
-                errorLines.push('💡 Hint: Permission denied. Check file permissions.');
-              } else if (err.message && err.message.includes('launchql.plan')) {
-                errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
-              }
-              
-              log.error(errorLines.join('\n'));
-              console.error(err);
-              throw errors.DEPLOYMENT_FAILED({ 
-                type: 'Deployment', 
-                module: extension
-              });
-            }
-
-            await pgPool.query(pkg.sql);
-
-            if (opts.deployment.cache) {
-              deployFastCache[cacheKey] = pkg;
-            }
+      for (const extension of extensions.resolved) {
+        try {
+          if (extensions.external.includes(extension)) {
+            const msg = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
+            log.info(`📥 Installing external extension: ${extension}`);
+            await pgPool.query(msg);
           } else {
-            try {
-              const client = new LaunchQLMigrate(opts.pg as PgConfig);
-              
-              const result = await client.deploy({
-                modulePath,
-                toChange,
-                useTransaction: opts.deployment.useTx,
-                logOnly: opts.deployment.logOnly
-              });
-              
-              if (result.failed) {
-                throw new Error(`Deployment failed at change: ${result.failed}`);
+            const modulePath = resolve(this.workspacePath!, modules[extension].path);
+            log.info(`📂 Deploying local module: ${extension}`);
+
+            if (opts.deployment.fast) {
+              const localProject = this.getModuleProject(extension);
+              const cacheKey = getCacheKey(opts.pg as PgConfig, extension, opts.pg.database);
+            
+              if (opts.deployment.cache && deployFastCache[cacheKey]) {
+                log.warn(`⚡ Using cached pkg for ${extension}.`);
+                await pgPool.query(deployFastCache[cacheKey].sql);
+                continue;
               }
-            } catch (deployError) {
-              log.error(`❌ Deployment failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
+
+              let pkg;
+              try {
+                pkg = await packageModule(localProject.modulePath, { 
+                  usePlan: opts.deployment.usePlan, 
+                  extension: false 
+                });
+              } catch (err: any) {
+                const errorLines = [];
+                errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
+                errorLines.push(`   Module Path: ${modulePath}`);
+                errorLines.push(`   Workspace Path: ${this.workspacePath}`);
+                errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
+                errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
+              
+                if (err.code === 'ENOENT') {
+                  errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
+                } else if (err.code === 'EACCES') {
+                  errorLines.push('💡 Hint: Permission denied. Check file permissions.');
+                } else if (err.message && err.message.includes('launchql.plan')) {
+                  errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
+                }
+              
+                log.error(errorLines.join('\n'));
+                console.error(err);
+                throw errors.DEPLOYMENT_FAILED({ 
+                  type: 'Deployment', 
+                  module: extension
+                });
+              }
+
+              await pgPool.query(pkg.sql);
+
+              if (opts.deployment.cache) {
+                deployFastCache[cacheKey] = pkg;
+              }
+            } else {
+              try {
+                const client = new LaunchQLMigrate(opts.pg as PgConfig);
+              
+                const result = await client.deploy({
+                  modulePath,
+                  toChange,
+                  useTransaction: opts.deployment.useTx,
+                  logOnly: opts.deployment.logOnly
+                });
+              
+                if (result.failed) {
+                  throw new Error(`Deployment failed at change: ${result.failed}`);
+                }
+              } catch (deployError) {
+                log.error(`❌ Deployment failed for module ${extension}`);
+                throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
+              }
             }
           }
+        } catch (err) {
+          log.error(`🛑 Error during deployment: ${err instanceof Error ? err.message : err}`);
+          console.error(err);
+          throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
         }
-      } catch (err) {
-        log.error(`🛑 Error during deployment: ${err instanceof Error ? err.message : err}`);
-        console.error(err);
-        throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
       }
-    }
 
       log.success(`✅ Deployment complete for ${name}.`);
     } else {
@@ -830,53 +827,53 @@ export class LaunchQLProject {
       const moduleProject = this.getModuleProject(name);
       const extensions = moduleProject.getModuleExtensions();
 
-    const pgPool = getPgPool(opts.pg);
+      const pgPool = getPgPool(opts.pg);
 
-    log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
+      log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
-    const reversedExtensions = [...extensions.resolved].reverse();
+      const reversedExtensions = [...extensions.resolved].reverse();
 
-    for (const extension of reversedExtensions) {
-      try {
-        if (extensions.external.includes(extension)) {
-          const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
-          log.warn(`⚠️ Dropping external extension: ${extension}`);
-          try {
-            await pgPool.query(msg);
-          } catch (err: any) {
-            if (err.code === '2BP01') {
-              log.warn(`⚠️ Cannot drop extension ${extension} due to dependencies, skipping`);
-            } else {
-              throw err;
+      for (const extension of reversedExtensions) {
+        try {
+          if (extensions.external.includes(extension)) {
+            const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
+            log.warn(`⚠️ Dropping external extension: ${extension}`);
+            try {
+              await pgPool.query(msg);
+            } catch (err: any) {
+              if (err.code === '2BP01') {
+                log.warn(`⚠️ Cannot drop extension ${extension} due to dependencies, skipping`);
+              } else {
+                throw err;
+              }
             }
-          }
-        } else {
-          const modulePath = resolve(this.workspacePath!, modules[extension].path);
-          log.info(`📂 Reverting local module: ${extension}`);
+          } else {
+            const modulePath = resolve(this.workspacePath!, modules[extension].path);
+            log.info(`📂 Reverting local module: ${extension}`);
           
-          try {
-            const client = new LaunchQLMigrate(opts.pg as PgConfig);
+            try {
+              const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-            const result = await client.revert({
-              modulePath,
-              toChange,
-              useTransaction: opts.deployment.useTx
-            });
+              const result = await client.revert({
+                modulePath,
+                toChange,
+                useTransaction: opts.deployment.useTx
+              });
             
-            if (result.failed) {
-              throw new Error(`Revert failed at change: ${result.failed}`);
+              if (result.failed) {
+                throw new Error(`Revert failed at change: ${result.failed}`);
+              }
+            } catch (revertError) {
+              log.error(`❌ Revert failed for module ${extension}`);
+              throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
             }
-          } catch (revertError) {
-            log.error(`❌ Revert failed for module ${extension}`);
-            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
           }
+        } catch (e) {
+          log.error(`🛑 Error during revert: ${e instanceof Error ? e.message : e}`);
+          console.error(e);
+          throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
         }
-      } catch (e) {
-        log.error(`🛑 Error during revert: ${e instanceof Error ? e.message : e}`);
-        console.error(e);
-        throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
       }
-    }
 
       log.success(`✅ Revert complete for ${name}.`);
     } else {
@@ -926,42 +923,42 @@ export class LaunchQLProject {
       const moduleProject = this.getModuleProject(name);
       const extensions = moduleProject.getModuleExtensions();
 
-    const pgPool = getPgPool(opts.pg);
+      const pgPool = getPgPool(opts.pg);
 
-    log.success(`🔎 Verifying deployment of ${name} on database ${opts.pg.database}...`);
+      log.success(`🔎 Verifying deployment of ${name} on database ${opts.pg.database}...`);
 
-    for (const extension of extensions.resolved) {
-      try {
-        if (extensions.external.includes(extension)) {
-          const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
-          log.info(`🔍 Verifying external extension: ${extension}`);
-          await pgPool.query(query, [extension]);
-        } else {
-          const modulePath = resolve(this.workspacePath!, modules[extension].path);
-          log.info(`📂 Verifying local module: ${extension}`);
+      for (const extension of extensions.resolved) {
+        try {
+          if (extensions.external.includes(extension)) {
+            const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
+            log.info(`🔍 Verifying external extension: ${extension}`);
+            await pgPool.query(query, [extension]);
+          } else {
+            const modulePath = resolve(this.workspacePath!, modules[extension].path);
+            log.info(`📂 Verifying local module: ${extension}`);
 
-          try {
-            const client = new LaunchQLMigrate(opts.pg as PgConfig);
+            try {
+              const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-            const result = await client.verify({
-              modulePath,
-              toChange
-            });
+              const result = await client.verify({
+                modulePath,
+                toChange
+              });
             
-            if (result.failed.length > 0) {
-              throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+              if (result.failed.length > 0) {
+                throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+              }
+            } catch (verifyError) {
+              log.error(`❌ Verification failed for module ${extension}`);
+              throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
             }
-          } catch (verifyError) {
-            log.error(`❌ Verification failed for module ${extension}`);
-            throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
           }
+        } catch (e) {
+          log.error(`🛑 Error during verification: ${e instanceof Error ? e.message : e}`);
+          console.error(e);
+          throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
         }
-      } catch (e) {
-        log.error(`🛑 Error during verification: ${e instanceof Error ? e.message : e}`);
-        console.error(e);
-        throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
       }
-    }
 
       log.success(`✅ Verification complete for ${name}.`);
     } else {

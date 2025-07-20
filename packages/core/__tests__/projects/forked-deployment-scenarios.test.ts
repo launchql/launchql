@@ -1,7 +1,7 @@
 process.env.LAUNCHQL_DEBUG = 'true';
 
-import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 import { TestDatabase } from '../../test-utils';
+import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 
 describe('Forked Deployment with deployModules - my-third', () => {
   let fixture: CoreDeployTestFixture;

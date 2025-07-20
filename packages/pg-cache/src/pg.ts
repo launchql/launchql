@@ -1,6 +1,7 @@
 import pg from 'pg';
-import { pgCache } from './lru';
 import { getPgEnvOptions, PgConfig } from 'pg-env';
+
+import { pgCache } from './lru';
 
 const getDbString = (
   user: string,

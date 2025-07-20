@@ -3,15 +3,15 @@
 * DO NOT MODIFY IT BY HAND. Instead, modify the source proto file,
 * and run the pg-proto-parser generate command to regenerate this file.
 */
-import _o from "nested-obj";
-import { ParseResult, ScanResult, Integer, Float, Boolean, String, BitString, List, OidList, IntList, A_Const, Alias, RangeVar, TableFunc, IntoClause, Var, Param, Aggref, GroupingFunc, WindowFunc, WindowFuncRunCondition, MergeSupportFunc, SubscriptingRef, FuncExpr, NamedArgExpr, OpExpr, DistinctExpr, NullIfExpr, ScalarArrayOpExpr, BoolExpr, SubLink, SubPlan, AlternativeSubPlan, FieldSelect, FieldStore, RelabelType, CoerceViaIO, ArrayCoerceExpr, ConvertRowtypeExpr, CollateExpr, CaseExpr, CaseWhen, CaseTestExpr, ArrayExpr, RowExpr, RowCompareExpr, CoalesceExpr, MinMaxExpr, SQLValueFunction, XmlExpr, JsonFormat, JsonReturning, JsonValueExpr, JsonConstructorExpr, JsonIsPredicate, JsonBehavior, JsonExpr, JsonTablePath, JsonTablePathScan, JsonTableSiblingJoin, NullTest, BooleanTest, MergeAction, CoerceToDomain, CoerceToDomainValue, SetToDefault, CurrentOfExpr, NextValueExpr, InferenceElem, TargetEntry, RangeTblRef, JoinExpr, FromExpr, OnConflictExpr, Query, TypeName, ColumnRef, ParamRef, A_Expr, TypeCast, CollateClause, RoleSpec, FuncCall, A_Star, A_Indices, A_Indirection, A_ArrayExpr, ResTarget, MultiAssignRef, SortBy, WindowDef, RangeSubselect, RangeFunction, RangeTableFunc, RangeTableFuncCol, RangeTableSample, ColumnDef, TableLikeClause, IndexElem, DefElem, LockingClause, XmlSerialize, PartitionElem, PartitionSpec, PartitionBoundSpec, PartitionRangeDatum, SinglePartitionSpec, PartitionCmd, RangeTblEntry, RTEPermissionInfo, RangeTblFunction, TableSampleClause, WithCheckOption, SortGroupClause, GroupingSet, WindowClause, RowMarkClause, WithClause, InferClause, OnConflictClause, CTESearchClause, CTECycleClause, CommonTableExpr, MergeWhenClause, TriggerTransition, JsonOutput, JsonArgument, JsonFuncExpr, JsonTablePathSpec, JsonTable, JsonTableColumn, JsonKeyValue, JsonParseExpr, JsonScalarExpr, JsonSerializeExpr, JsonObjectConstructor, JsonArrayConstructor, JsonArrayQueryConstructor, JsonAggConstructor, JsonObjectAgg, JsonArrayAgg, RawStmt, InsertStmt, DeleteStmt, UpdateStmt, MergeStmt, SelectStmt, SetOperationStmt, ReturnStmt, PLAssignStmt, CreateSchemaStmt, AlterTableStmt, ReplicaIdentityStmt, AlterTableCmd, AlterCollationStmt, AlterDomainStmt, GrantStmt, ObjectWithArgs, AccessPriv, GrantRoleStmt, AlterDefaultPrivilegesStmt, CopyStmt, VariableSetStmt, VariableShowStmt, CreateStmt, Constraint, CreateTableSpaceStmt, DropTableSpaceStmt, AlterTableSpaceOptionsStmt, AlterTableMoveAllStmt, CreateExtensionStmt, AlterExtensionStmt, AlterExtensionContentsStmt, CreateFdwStmt, AlterFdwStmt, CreateForeignServerStmt, AlterForeignServerStmt, CreateForeignTableStmt, CreateUserMappingStmt, AlterUserMappingStmt, DropUserMappingStmt, ImportForeignSchemaStmt, CreatePolicyStmt, AlterPolicyStmt, CreateAmStmt, CreateTrigStmt, CreateEventTrigStmt, AlterEventTrigStmt, CreatePLangStmt, CreateRoleStmt, AlterRoleStmt, AlterRoleSetStmt, DropRoleStmt, CreateSeqStmt, AlterSeqStmt, DefineStmt, CreateDomainStmt, CreateOpClassStmt, CreateOpClassItem, CreateOpFamilyStmt, AlterOpFamilyStmt, DropStmt, TruncateStmt, CommentStmt, SecLabelStmt, DeclareCursorStmt, ClosePortalStmt, FetchStmt, IndexStmt, CreateStatsStmt, StatsElem, AlterStatsStmt, CreateFunctionStmt, FunctionParameter, AlterFunctionStmt, DoStmt, InlineCodeBlock, CallStmt, CallContext, RenameStmt, AlterObjectDependsStmt, AlterObjectSchemaStmt, AlterOwnerStmt, AlterOperatorStmt, AlterTypeStmt, RuleStmt, NotifyStmt, ListenStmt, UnlistenStmt, TransactionStmt, CompositeTypeStmt, CreateEnumStmt, CreateRangeStmt, AlterEnumStmt, ViewStmt, LoadStmt, CreatedbStmt, AlterDatabaseStmt, AlterDatabaseRefreshCollStmt, AlterDatabaseSetStmt, DropdbStmt, AlterSystemStmt, ClusterStmt, VacuumStmt, VacuumRelation, ExplainStmt, CreateTableAsStmt, RefreshMatViewStmt, CheckPointStmt, DiscardStmt, LockStmt, ConstraintsSetStmt, ReindexStmt, CreateConversionStmt, CreateCastStmt, CreateTransformStmt, PrepareStmt, ExecuteStmt, DeallocateStmt, DropOwnedStmt, ReassignOwnedStmt, AlterTSDictionaryStmt, AlterTSConfigurationStmt, PublicationTable, PublicationObjSpec, CreatePublicationStmt, AlterPublicationStmt, CreateSubscriptionStmt, AlterSubscriptionStmt, DropSubscriptionStmt, ScanToken } from "@pgsql/types";
+import { A_ArrayExpr, A_Const, A_Expr, A_Indices, A_Indirection, A_Star, AccessPriv, Aggref, Alias, AlterCollationStmt, AlterDatabaseRefreshCollStmt, AlterDatabaseSetStmt, AlterDatabaseStmt, AlterDefaultPrivilegesStmt, AlterDomainStmt, AlterEnumStmt, AlterEventTrigStmt, AlterExtensionContentsStmt, AlterExtensionStmt, AlterFdwStmt, AlterForeignServerStmt, AlterFunctionStmt, AlternativeSubPlan, AlterObjectDependsStmt, AlterObjectSchemaStmt, AlterOperatorStmt, AlterOpFamilyStmt, AlterOwnerStmt, AlterPolicyStmt, AlterPublicationStmt, AlterRoleSetStmt, AlterRoleStmt, AlterSeqStmt, AlterStatsStmt, AlterSubscriptionStmt, AlterSystemStmt, AlterTableCmd, AlterTableMoveAllStmt, AlterTableSpaceOptionsStmt, AlterTableStmt, AlterTSConfigurationStmt, AlterTSDictionaryStmt, AlterTypeStmt, AlterUserMappingStmt, ArrayCoerceExpr, ArrayExpr, BitString, BooleanTest, BoolExpr, CallContext, CallStmt, CaseExpr, CaseTestExpr, CaseWhen, CheckPointStmt, ClosePortalStmt, ClusterStmt, CoalesceExpr, CoerceToDomain, CoerceToDomainValue, CoerceViaIO, CollateClause, CollateExpr, ColumnDef, ColumnRef, CommentStmt, CommonTableExpr, CompositeTypeStmt, Constraint, ConstraintsSetStmt, ConvertRowtypeExpr, CopyStmt, CreateAmStmt, CreateCastStmt, CreateConversionStmt, CreatedbStmt, CreateDomainStmt, CreateEnumStmt, CreateEventTrigStmt, CreateExtensionStmt, CreateFdwStmt, CreateForeignServerStmt, CreateForeignTableStmt, CreateFunctionStmt, CreateOpClassItem, CreateOpClassStmt, CreateOpFamilyStmt, CreatePLangStmt, CreatePolicyStmt, CreatePublicationStmt, CreateRangeStmt, CreateRoleStmt, CreateSchemaStmt, CreateSeqStmt, CreateStatsStmt, CreateStmt, CreateSubscriptionStmt, CreateTableAsStmt, CreateTableSpaceStmt, CreateTransformStmt, CreateTrigStmt, CreateUserMappingStmt, CTECycleClause, CTESearchClause, CurrentOfExpr, DeallocateStmt, DeclareCursorStmt, DefElem, DefineStmt, DeleteStmt, DiscardStmt, DistinctExpr, DoStmt, DropdbStmt, DropOwnedStmt, DropRoleStmt, DropStmt, DropSubscriptionStmt, DropTableSpaceStmt, DropUserMappingStmt, ExecuteStmt, ExplainStmt, FetchStmt, FieldSelect, FieldStore, Float, FromExpr, FuncCall, FuncExpr, FunctionParameter, GrantRoleStmt, GrantStmt, GroupingFunc, GroupingSet, ImportForeignSchemaStmt, IndexElem, IndexStmt, InferClause, InferenceElem, InlineCodeBlock, InsertStmt, Integer, IntList, IntoClause, JoinExpr, JsonAggConstructor, JsonArgument, JsonArrayAgg, JsonArrayConstructor, JsonArrayQueryConstructor, JsonBehavior, JsonConstructorExpr, JsonExpr, JsonFormat, JsonFuncExpr, JsonIsPredicate, JsonKeyValue, JsonObjectAgg, JsonObjectConstructor, JsonOutput, JsonParseExpr, JsonReturning, JsonScalarExpr, JsonSerializeExpr, JsonTable, JsonTableColumn, JsonTablePath, JsonTablePathScan, JsonTablePathSpec, JsonTableSiblingJoin, JsonValueExpr, List, ListenStmt, LoadStmt, LockingClause, LockStmt, MergeAction, MergeStmt, MergeSupportFunc, MergeWhenClause, MinMaxExpr, MultiAssignRef, NamedArgExpr, NextValueExpr, NotifyStmt, NullIfExpr, NullTest, ObjectWithArgs, OidList, OnConflictClause, OnConflictExpr, OpExpr, Param, ParamRef, ParseResult, PartitionBoundSpec, PartitionCmd, PartitionElem, PartitionRangeDatum, PartitionSpec, PLAssignStmt, PrepareStmt, PublicationObjSpec, PublicationTable, Query, RangeFunction, RangeSubselect, RangeTableFunc, RangeTableFuncCol, RangeTableSample, RangeTblEntry, RangeTblFunction, RangeTblRef, RangeVar, RawStmt, ReassignOwnedStmt, RefreshMatViewStmt, ReindexStmt, RelabelType, RenameStmt, ReplicaIdentityStmt, ResTarget, ReturnStmt, RoleSpec, RowCompareExpr, RowExpr, RowMarkClause, RTEPermissionInfo, RuleStmt, ScalarArrayOpExpr, ScanResult, ScanToken,SecLabelStmt, SelectStmt, SetOperationStmt, SetToDefault, SinglePartitionSpec, SortBy, SortGroupClause, SQLValueFunction, StatsElem, SubLink, SubPlan, SubscriptingRef, TableFunc, TableLikeClause, TableSampleClause, TargetEntry, TransactionStmt, TriggerTransition, TruncateStmt, TypeCast, TypeName, UnlistenStmt, UpdateStmt, VacuumRelation, VacuumStmt, Var, VariableSetStmt, VariableShowStmt, ViewStmt, WindowClause, WindowDef, WindowFunc, WindowFuncRunCondition, WithCheckOption, WithClause, XmlExpr, XmlSerialize } from '@pgsql/types';
+import _o from 'nested-obj';
 export default {
   parseResult(_p?: ParseResult): {
     ParseResult: ParseResult;
   } {
     const _j = {} as ParseResult;
-    _o.set(_j, "version", _p?.version);
-    _o.set(_j, "stmts", _p?.stmts);
+    _o.set(_j, 'version', _p?.version);
+    _o.set(_j, 'stmts', _p?.stmts);
     return {
       ParseResult: _j
     };
@@ -20,8 +20,8 @@ export default {
     ScanResult: ScanResult;
   } {
     const _j = {} as ScanResult;
-    _o.set(_j, "version", _p?.version);
-    _o.set(_j, "tokens", _p?.tokens);
+    _o.set(_j, 'version', _p?.version);
+    _o.set(_j, 'tokens', _p?.tokens);
     return {
       ScanResult: _j
     };
@@ -30,7 +30,7 @@ export default {
     Integer: Integer;
   } {
     const _j = {} as Integer;
-    _o.set(_j, "ival", _p?.ival);
+    _o.set(_j, 'ival', _p?.ival);
     return {
       Integer: _j
     };
@@ -39,25 +39,25 @@ export default {
     Float: Float;
   } {
     const _j = {} as Float;
-    _o.set(_j, "fval", _p?.fval);
+    _o.set(_j, 'fval', _p?.fval);
     return {
       Float: _j
     };
   },
-  boolean(_p?: Boolean): {
-    Boolean: Boolean;
+  boolean(_p?: boolean): {
+    Boolean: boolean;
   } {
-    const _j = {} as Boolean;
-    _o.set(_j, "boolval", _p?.boolval);
+    const _j = {} as boolean;
+    _o.set(_j, 'boolval', _p?.boolval);
     return {
       Boolean: _j
     };
   },
-  string(_p?: String): {
-    String: String;
+  string(_p?: string): {
+    String: string;
   } {
-    const _j = {} as String;
-    _o.set(_j, "sval", _p?.sval);
+    const _j = {} as string;
+    _o.set(_j, 'sval', _p?.sval);
     return {
       String: _j
     };
@@ -66,7 +66,7 @@ export default {
     BitString: BitString;
   } {
     const _j = {} as BitString;
-    _o.set(_j, "bsval", _p?.bsval);
+    _o.set(_j, 'bsval', _p?.bsval);
     return {
       BitString: _j
     };
@@ -75,7 +75,7 @@ export default {
     List: List;
   } {
     const _j = {} as List;
-    _o.set(_j, "items", _p?.items);
+    _o.set(_j, 'items', _p?.items);
     return {
       List: _j
     };
@@ -84,7 +84,7 @@ export default {
     OidList: OidList;
   } {
     const _j = {} as OidList;
-    _o.set(_j, "items", _p?.items);
+    _o.set(_j, 'items', _p?.items);
     return {
       OidList: _j
     };
@@ -93,7 +93,7 @@ export default {
     IntList: IntList;
   } {
     const _j = {} as IntList;
-    _o.set(_j, "items", _p?.items);
+    _o.set(_j, 'items', _p?.items);
     return {
       IntList: _j
     };
@@ -102,13 +102,13 @@ export default {
     A_Const: A_Const;
   } {
     const _j = {} as A_Const;
-    _o.set(_j, "ival", _p?.ival);
-    _o.set(_j, "fval", _p?.fval);
-    _o.set(_j, "boolval", _p?.boolval);
-    _o.set(_j, "sval", _p?.sval);
-    _o.set(_j, "bsval", _p?.bsval);
-    _o.set(_j, "isnull", _p?.isnull);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'ival', _p?.ival);
+    _o.set(_j, 'fval', _p?.fval);
+    _o.set(_j, 'boolval', _p?.boolval);
+    _o.set(_j, 'sval', _p?.sval);
+    _o.set(_j, 'bsval', _p?.bsval);
+    _o.set(_j, 'isnull', _p?.isnull);
+    _o.set(_j, 'location', _p?.location);
     return {
       A_Const: _j
     };
@@ -117,8 +117,8 @@ export default {
     Alias: Alias;
   } {
     const _j = {} as Alias;
-    _o.set(_j, "aliasname", _p?.aliasname);
-    _o.set(_j, "colnames", _p?.colnames);
+    _o.set(_j, 'aliasname', _p?.aliasname);
+    _o.set(_j, 'colnames', _p?.colnames);
     return {
       Alias: _j
     };
@@ -127,13 +127,13 @@ export default {
     RangeVar: RangeVar;
   } {
     const _j = {} as RangeVar;
-    _o.set(_j, "catalogname", _p?.catalogname);
-    _o.set(_j, "schemaname", _p?.schemaname);
-    _o.set(_j, "relname", _p?.relname);
-    _o.set(_j, "inh", _p?.inh);
-    _o.set(_j, "relpersistence", _p?.relpersistence);
-    _o.set(_j, "alias", _p?.alias);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'catalogname', _p?.catalogname);
+    _o.set(_j, 'schemaname', _p?.schemaname);
+    _o.set(_j, 'relname', _p?.relname);
+    _o.set(_j, 'inh', _p?.inh);
+    _o.set(_j, 'relpersistence', _p?.relpersistence);
+    _o.set(_j, 'alias', _p?.alias);
+    _o.set(_j, 'location', _p?.location);
     return {
       RangeVar: _j
     };
@@ -142,23 +142,23 @@ export default {
     TableFunc: TableFunc;
   } {
     const _j = {} as TableFunc;
-    _o.set(_j, "functype", _p?.functype);
-    _o.set(_j, "ns_uris", _p?.ns_uris);
-    _o.set(_j, "ns_names", _p?.ns_names);
-    _o.set(_j, "docexpr", _p?.docexpr);
-    _o.set(_j, "rowexpr", _p?.rowexpr);
-    _o.set(_j, "colnames", _p?.colnames);
-    _o.set(_j, "coltypes", _p?.coltypes);
-    _o.set(_j, "coltypmods", _p?.coltypmods);
-    _o.set(_j, "colcollations", _p?.colcollations);
-    _o.set(_j, "colexprs", _p?.colexprs);
-    _o.set(_j, "coldefexprs", _p?.coldefexprs);
-    _o.set(_j, "colvalexprs", _p?.colvalexprs);
-    _o.set(_j, "passingvalexprs", _p?.passingvalexprs);
-    _o.set(_j, "notnulls", _p?.notnulls);
-    _o.set(_j, "plan", _p?.plan);
-    _o.set(_j, "ordinalitycol", _p?.ordinalitycol);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'functype', _p?.functype);
+    _o.set(_j, 'ns_uris', _p?.ns_uris);
+    _o.set(_j, 'ns_names', _p?.ns_names);
+    _o.set(_j, 'docexpr', _p?.docexpr);
+    _o.set(_j, 'rowexpr', _p?.rowexpr);
+    _o.set(_j, 'colnames', _p?.colnames);
+    _o.set(_j, 'coltypes', _p?.coltypes);
+    _o.set(_j, 'coltypmods', _p?.coltypmods);
+    _o.set(_j, 'colcollations', _p?.colcollations);
+    _o.set(_j, 'colexprs', _p?.colexprs);
+    _o.set(_j, 'coldefexprs', _p?.coldefexprs);
+    _o.set(_j, 'colvalexprs', _p?.colvalexprs);
+    _o.set(_j, 'passingvalexprs', _p?.passingvalexprs);
+    _o.set(_j, 'notnulls', _p?.notnulls);
+    _o.set(_j, 'plan', _p?.plan);
+    _o.set(_j, 'ordinalitycol', _p?.ordinalitycol);
+    _o.set(_j, 'location', _p?.location);
     return {
       TableFunc: _j
     };
@@ -167,14 +167,14 @@ export default {
     IntoClause: IntoClause;
   } {
     const _j = {} as IntoClause;
-    _o.set(_j, "rel", _p?.rel);
-    _o.set(_j, "colNames", _p?.colNames);
-    _o.set(_j, "accessMethod", _p?.accessMethod);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "onCommit", _p?.onCommit);
-    _o.set(_j, "tableSpaceName", _p?.tableSpaceName);
-    _o.set(_j, "viewQuery", _p?.viewQuery);
-    _o.set(_j, "skipData", _p?.skipData);
+    _o.set(_j, 'rel', _p?.rel);
+    _o.set(_j, 'colNames', _p?.colNames);
+    _o.set(_j, 'accessMethod', _p?.accessMethod);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'onCommit', _p?.onCommit);
+    _o.set(_j, 'tableSpaceName', _p?.tableSpaceName);
+    _o.set(_j, 'viewQuery', _p?.viewQuery);
+    _o.set(_j, 'skipData', _p?.skipData);
     return {
       IntoClause: _j
     };
@@ -183,15 +183,15 @@ export default {
     Var: Var;
   } {
     const _j = {} as Var;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "varno", _p?.varno);
-    _o.set(_j, "varattno", _p?.varattno);
-    _o.set(_j, "vartype", _p?.vartype);
-    _o.set(_j, "vartypmod", _p?.vartypmod);
-    _o.set(_j, "varcollid", _p?.varcollid);
-    _o.set(_j, "varnullingrels", _p?.varnullingrels);
-    _o.set(_j, "varlevelsup", _p?.varlevelsup);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'varno', _p?.varno);
+    _o.set(_j, 'varattno', _p?.varattno);
+    _o.set(_j, 'vartype', _p?.vartype);
+    _o.set(_j, 'vartypmod', _p?.vartypmod);
+    _o.set(_j, 'varcollid', _p?.varcollid);
+    _o.set(_j, 'varnullingrels', _p?.varnullingrels);
+    _o.set(_j, 'varlevelsup', _p?.varlevelsup);
+    _o.set(_j, 'location', _p?.location);
     return {
       Var: _j
     };
@@ -200,13 +200,13 @@ export default {
     Param: Param;
   } {
     const _j = {} as Param;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "paramkind", _p?.paramkind);
-    _o.set(_j, "paramid", _p?.paramid);
-    _o.set(_j, "paramtype", _p?.paramtype);
-    _o.set(_j, "paramtypmod", _p?.paramtypmod);
-    _o.set(_j, "paramcollid", _p?.paramcollid);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'paramkind', _p?.paramkind);
+    _o.set(_j, 'paramid', _p?.paramid);
+    _o.set(_j, 'paramtype', _p?.paramtype);
+    _o.set(_j, 'paramtypmod', _p?.paramtypmod);
+    _o.set(_j, 'paramcollid', _p?.paramcollid);
+    _o.set(_j, 'location', _p?.location);
     return {
       Param: _j
     };
@@ -215,25 +215,25 @@ export default {
     Aggref: Aggref;
   } {
     const _j = {} as Aggref;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "aggfnoid", _p?.aggfnoid);
-    _o.set(_j, "aggtype", _p?.aggtype);
-    _o.set(_j, "aggcollid", _p?.aggcollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "aggargtypes", _p?.aggargtypes);
-    _o.set(_j, "aggdirectargs", _p?.aggdirectargs);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "aggorder", _p?.aggorder);
-    _o.set(_j, "aggdistinct", _p?.aggdistinct);
-    _o.set(_j, "aggfilter", _p?.aggfilter);
-    _o.set(_j, "aggstar", _p?.aggstar);
-    _o.set(_j, "aggvariadic", _p?.aggvariadic);
-    _o.set(_j, "aggkind", _p?.aggkind);
-    _o.set(_j, "agglevelsup", _p?.agglevelsup);
-    _o.set(_j, "aggsplit", _p?.aggsplit);
-    _o.set(_j, "aggno", _p?.aggno);
-    _o.set(_j, "aggtransno", _p?.aggtransno);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'aggfnoid', _p?.aggfnoid);
+    _o.set(_j, 'aggtype', _p?.aggtype);
+    _o.set(_j, 'aggcollid', _p?.aggcollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'aggargtypes', _p?.aggargtypes);
+    _o.set(_j, 'aggdirectargs', _p?.aggdirectargs);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'aggorder', _p?.aggorder);
+    _o.set(_j, 'aggdistinct', _p?.aggdistinct);
+    _o.set(_j, 'aggfilter', _p?.aggfilter);
+    _o.set(_j, 'aggstar', _p?.aggstar);
+    _o.set(_j, 'aggvariadic', _p?.aggvariadic);
+    _o.set(_j, 'aggkind', _p?.aggkind);
+    _o.set(_j, 'agglevelsup', _p?.agglevelsup);
+    _o.set(_j, 'aggsplit', _p?.aggsplit);
+    _o.set(_j, 'aggno', _p?.aggno);
+    _o.set(_j, 'aggtransno', _p?.aggtransno);
+    _o.set(_j, 'location', _p?.location);
     return {
       Aggref: _j
     };
@@ -242,11 +242,11 @@ export default {
     GroupingFunc: GroupingFunc;
   } {
     const _j = {} as GroupingFunc;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "refs", _p?.refs);
-    _o.set(_j, "agglevelsup", _p?.agglevelsup);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'refs', _p?.refs);
+    _o.set(_j, 'agglevelsup', _p?.agglevelsup);
+    _o.set(_j, 'location', _p?.location);
     return {
       GroupingFunc: _j
     };
@@ -255,18 +255,18 @@ export default {
     WindowFunc: WindowFunc;
   } {
     const _j = {} as WindowFunc;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "winfnoid", _p?.winfnoid);
-    _o.set(_j, "wintype", _p?.wintype);
-    _o.set(_j, "wincollid", _p?.wincollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "aggfilter", _p?.aggfilter);
-    _o.set(_j, "runCondition", _p?.runCondition);
-    _o.set(_j, "winref", _p?.winref);
-    _o.set(_j, "winstar", _p?.winstar);
-    _o.set(_j, "winagg", _p?.winagg);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'winfnoid', _p?.winfnoid);
+    _o.set(_j, 'wintype', _p?.wintype);
+    _o.set(_j, 'wincollid', _p?.wincollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'aggfilter', _p?.aggfilter);
+    _o.set(_j, 'runCondition', _p?.runCondition);
+    _o.set(_j, 'winref', _p?.winref);
+    _o.set(_j, 'winstar', _p?.winstar);
+    _o.set(_j, 'winagg', _p?.winagg);
+    _o.set(_j, 'location', _p?.location);
     return {
       WindowFunc: _j
     };
@@ -275,11 +275,11 @@ export default {
     WindowFuncRunCondition: WindowFuncRunCondition;
   } {
     const _j = {} as WindowFuncRunCondition;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "opno", _p?.opno);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "wfunc_left", _p?.wfunc_left);
-    _o.set(_j, "arg", _p?.arg);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'opno', _p?.opno);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'wfunc_left', _p?.wfunc_left);
+    _o.set(_j, 'arg', _p?.arg);
     return {
       WindowFuncRunCondition: _j
     };
@@ -288,10 +288,10 @@ export default {
     MergeSupportFunc: MergeSupportFunc;
   } {
     const _j = {} as MergeSupportFunc;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "msftype", _p?.msftype);
-    _o.set(_j, "msfcollid", _p?.msfcollid);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'msftype', _p?.msftype);
+    _o.set(_j, 'msfcollid', _p?.msfcollid);
+    _o.set(_j, 'location', _p?.location);
     return {
       MergeSupportFunc: _j
     };
@@ -300,16 +300,16 @@ export default {
     SubscriptingRef: SubscriptingRef;
   } {
     const _j = {} as SubscriptingRef;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "refcontainertype", _p?.refcontainertype);
-    _o.set(_j, "refelemtype", _p?.refelemtype);
-    _o.set(_j, "refrestype", _p?.refrestype);
-    _o.set(_j, "reftypmod", _p?.reftypmod);
-    _o.set(_j, "refcollid", _p?.refcollid);
-    _o.set(_j, "refupperindexpr", _p?.refupperindexpr);
-    _o.set(_j, "reflowerindexpr", _p?.reflowerindexpr);
-    _o.set(_j, "refexpr", _p?.refexpr);
-    _o.set(_j, "refassgnexpr", _p?.refassgnexpr);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'refcontainertype', _p?.refcontainertype);
+    _o.set(_j, 'refelemtype', _p?.refelemtype);
+    _o.set(_j, 'refrestype', _p?.refrestype);
+    _o.set(_j, 'reftypmod', _p?.reftypmod);
+    _o.set(_j, 'refcollid', _p?.refcollid);
+    _o.set(_j, 'refupperindexpr', _p?.refupperindexpr);
+    _o.set(_j, 'reflowerindexpr', _p?.reflowerindexpr);
+    _o.set(_j, 'refexpr', _p?.refexpr);
+    _o.set(_j, 'refassgnexpr', _p?.refassgnexpr);
     return {
       SubscriptingRef: _j
     };
@@ -318,16 +318,16 @@ export default {
     FuncExpr: FuncExpr;
   } {
     const _j = {} as FuncExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "funcid", _p?.funcid);
-    _o.set(_j, "funcresulttype", _p?.funcresulttype);
-    _o.set(_j, "funcretset", _p?.funcretset);
-    _o.set(_j, "funcvariadic", _p?.funcvariadic);
-    _o.set(_j, "funcformat", _p?.funcformat);
-    _o.set(_j, "funccollid", _p?.funccollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'funcid', _p?.funcid);
+    _o.set(_j, 'funcresulttype', _p?.funcresulttype);
+    _o.set(_j, 'funcretset', _p?.funcretset);
+    _o.set(_j, 'funcvariadic', _p?.funcvariadic);
+    _o.set(_j, 'funcformat', _p?.funcformat);
+    _o.set(_j, 'funccollid', _p?.funccollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       FuncExpr: _j
     };
@@ -336,11 +336,11 @@ export default {
     NamedArgExpr: NamedArgExpr;
   } {
     const _j = {} as NamedArgExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "argnumber", _p?.argnumber);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'argnumber', _p?.argnumber);
+    _o.set(_j, 'location', _p?.location);
     return {
       NamedArgExpr: _j
     };
@@ -349,14 +349,14 @@ export default {
     OpExpr: OpExpr;
   } {
     const _j = {} as OpExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "opno", _p?.opno);
-    _o.set(_j, "opresulttype", _p?.opresulttype);
-    _o.set(_j, "opretset", _p?.opretset);
-    _o.set(_j, "opcollid", _p?.opcollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'opno', _p?.opno);
+    _o.set(_j, 'opresulttype', _p?.opresulttype);
+    _o.set(_j, 'opretset', _p?.opretset);
+    _o.set(_j, 'opcollid', _p?.opcollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       OpExpr: _j
     };
@@ -365,14 +365,14 @@ export default {
     DistinctExpr: DistinctExpr;
   } {
     const _j = {} as DistinctExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "opno", _p?.opno);
-    _o.set(_j, "opresulttype", _p?.opresulttype);
-    _o.set(_j, "opretset", _p?.opretset);
-    _o.set(_j, "opcollid", _p?.opcollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'opno', _p?.opno);
+    _o.set(_j, 'opresulttype', _p?.opresulttype);
+    _o.set(_j, 'opretset', _p?.opretset);
+    _o.set(_j, 'opcollid', _p?.opcollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       DistinctExpr: _j
     };
@@ -381,14 +381,14 @@ export default {
     NullIfExpr: NullIfExpr;
   } {
     const _j = {} as NullIfExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "opno", _p?.opno);
-    _o.set(_j, "opresulttype", _p?.opresulttype);
-    _o.set(_j, "opretset", _p?.opretset);
-    _o.set(_j, "opcollid", _p?.opcollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'opno', _p?.opno);
+    _o.set(_j, 'opresulttype', _p?.opresulttype);
+    _o.set(_j, 'opretset', _p?.opretset);
+    _o.set(_j, 'opcollid', _p?.opcollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       NullIfExpr: _j
     };
@@ -397,12 +397,12 @@ export default {
     ScalarArrayOpExpr: ScalarArrayOpExpr;
   } {
     const _j = {} as ScalarArrayOpExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "opno", _p?.opno);
-    _o.set(_j, "useOr", _p?.useOr);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'opno', _p?.opno);
+    _o.set(_j, 'useOr', _p?.useOr);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       ScalarArrayOpExpr: _j
     };
@@ -411,10 +411,10 @@ export default {
     BoolExpr: BoolExpr;
   } {
     const _j = {} as BoolExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "boolop", _p?.boolop);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'boolop', _p?.boolop);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       BoolExpr: _j
     };
@@ -423,13 +423,13 @@ export default {
     SubLink: SubLink;
   } {
     const _j = {} as SubLink;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "subLinkType", _p?.subLinkType);
-    _o.set(_j, "subLinkId", _p?.subLinkId);
-    _o.set(_j, "testexpr", _p?.testexpr);
-    _o.set(_j, "operName", _p?.operName);
-    _o.set(_j, "subselect", _p?.subselect);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'subLinkType', _p?.subLinkType);
+    _o.set(_j, 'subLinkId', _p?.subLinkId);
+    _o.set(_j, 'testexpr', _p?.testexpr);
+    _o.set(_j, 'operName', _p?.operName);
+    _o.set(_j, 'subselect', _p?.subselect);
+    _o.set(_j, 'location', _p?.location);
     return {
       SubLink: _j
     };
@@ -438,23 +438,23 @@ export default {
     SubPlan: SubPlan;
   } {
     const _j = {} as SubPlan;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "subLinkType", _p?.subLinkType);
-    _o.set(_j, "testexpr", _p?.testexpr);
-    _o.set(_j, "paramIds", _p?.paramIds);
-    _o.set(_j, "plan_id", _p?.plan_id);
-    _o.set(_j, "plan_name", _p?.plan_name);
-    _o.set(_j, "firstColType", _p?.firstColType);
-    _o.set(_j, "firstColTypmod", _p?.firstColTypmod);
-    _o.set(_j, "firstColCollation", _p?.firstColCollation);
-    _o.set(_j, "useHashTable", _p?.useHashTable);
-    _o.set(_j, "unknownEqFalse", _p?.unknownEqFalse);
-    _o.set(_j, "parallel_safe", _p?.parallel_safe);
-    _o.set(_j, "setParam", _p?.setParam);
-    _o.set(_j, "parParam", _p?.parParam);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "startup_cost", _p?.startup_cost);
-    _o.set(_j, "per_call_cost", _p?.per_call_cost);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'subLinkType', _p?.subLinkType);
+    _o.set(_j, 'testexpr', _p?.testexpr);
+    _o.set(_j, 'paramIds', _p?.paramIds);
+    _o.set(_j, 'plan_id', _p?.plan_id);
+    _o.set(_j, 'plan_name', _p?.plan_name);
+    _o.set(_j, 'firstColType', _p?.firstColType);
+    _o.set(_j, 'firstColTypmod', _p?.firstColTypmod);
+    _o.set(_j, 'firstColCollation', _p?.firstColCollation);
+    _o.set(_j, 'useHashTable', _p?.useHashTable);
+    _o.set(_j, 'unknownEqFalse', _p?.unknownEqFalse);
+    _o.set(_j, 'parallel_safe', _p?.parallel_safe);
+    _o.set(_j, 'setParam', _p?.setParam);
+    _o.set(_j, 'parParam', _p?.parParam);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'startup_cost', _p?.startup_cost);
+    _o.set(_j, 'per_call_cost', _p?.per_call_cost);
     return {
       SubPlan: _j
     };
@@ -463,8 +463,8 @@ export default {
     AlternativeSubPlan: AlternativeSubPlan;
   } {
     const _j = {} as AlternativeSubPlan;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "subplans", _p?.subplans);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'subplans', _p?.subplans);
     return {
       AlternativeSubPlan: _j
     };
@@ -473,12 +473,12 @@ export default {
     FieldSelect: FieldSelect;
   } {
     const _j = {} as FieldSelect;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "fieldnum", _p?.fieldnum);
-    _o.set(_j, "resulttype", _p?.resulttype);
-    _o.set(_j, "resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "resultcollid", _p?.resultcollid);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'fieldnum', _p?.fieldnum);
+    _o.set(_j, 'resulttype', _p?.resulttype);
+    _o.set(_j, 'resulttypmod', _p?.resulttypmod);
+    _o.set(_j, 'resultcollid', _p?.resultcollid);
     return {
       FieldSelect: _j
     };
@@ -487,11 +487,11 @@ export default {
     FieldStore: FieldStore;
   } {
     const _j = {} as FieldStore;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "newvals", _p?.newvals);
-    _o.set(_j, "fieldnums", _p?.fieldnums);
-    _o.set(_j, "resulttype", _p?.resulttype);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'newvals', _p?.newvals);
+    _o.set(_j, 'fieldnums', _p?.fieldnums);
+    _o.set(_j, 'resulttype', _p?.resulttype);
     return {
       FieldStore: _j
     };
@@ -500,13 +500,13 @@ export default {
     RelabelType: RelabelType;
   } {
     const _j = {} as RelabelType;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "resulttype", _p?.resulttype);
-    _o.set(_j, "resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "resultcollid", _p?.resultcollid);
-    _o.set(_j, "relabelformat", _p?.relabelformat);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'resulttype', _p?.resulttype);
+    _o.set(_j, 'resulttypmod', _p?.resulttypmod);
+    _o.set(_j, 'resultcollid', _p?.resultcollid);
+    _o.set(_j, 'relabelformat', _p?.relabelformat);
+    _o.set(_j, 'location', _p?.location);
     return {
       RelabelType: _j
     };
@@ -515,12 +515,12 @@ export default {
     CoerceViaIO: CoerceViaIO;
   } {
     const _j = {} as CoerceViaIO;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "resulttype", _p?.resulttype);
-    _o.set(_j, "resultcollid", _p?.resultcollid);
-    _o.set(_j, "coerceformat", _p?.coerceformat);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'resulttype', _p?.resulttype);
+    _o.set(_j, 'resultcollid', _p?.resultcollid);
+    _o.set(_j, 'coerceformat', _p?.coerceformat);
+    _o.set(_j, 'location', _p?.location);
     return {
       CoerceViaIO: _j
     };
@@ -529,14 +529,14 @@ export default {
     ArrayCoerceExpr: ArrayCoerceExpr;
   } {
     const _j = {} as ArrayCoerceExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "elemexpr", _p?.elemexpr);
-    _o.set(_j, "resulttype", _p?.resulttype);
-    _o.set(_j, "resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "resultcollid", _p?.resultcollid);
-    _o.set(_j, "coerceformat", _p?.coerceformat);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'elemexpr', _p?.elemexpr);
+    _o.set(_j, 'resulttype', _p?.resulttype);
+    _o.set(_j, 'resulttypmod', _p?.resulttypmod);
+    _o.set(_j, 'resultcollid', _p?.resultcollid);
+    _o.set(_j, 'coerceformat', _p?.coerceformat);
+    _o.set(_j, 'location', _p?.location);
     return {
       ArrayCoerceExpr: _j
     };
@@ -545,11 +545,11 @@ export default {
     ConvertRowtypeExpr: ConvertRowtypeExpr;
   } {
     const _j = {} as ConvertRowtypeExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "resulttype", _p?.resulttype);
-    _o.set(_j, "convertformat", _p?.convertformat);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'resulttype', _p?.resulttype);
+    _o.set(_j, 'convertformat', _p?.convertformat);
+    _o.set(_j, 'location', _p?.location);
     return {
       ConvertRowtypeExpr: _j
     };
@@ -558,10 +558,10 @@ export default {
     CollateExpr: CollateExpr;
   } {
     const _j = {} as CollateExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "collOid", _p?.collOid);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'collOid', _p?.collOid);
+    _o.set(_j, 'location', _p?.location);
     return {
       CollateExpr: _j
     };
@@ -570,13 +570,13 @@ export default {
     CaseExpr: CaseExpr;
   } {
     const _j = {} as CaseExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "casetype", _p?.casetype);
-    _o.set(_j, "casecollid", _p?.casecollid);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "defresult", _p?.defresult);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'casetype', _p?.casetype);
+    _o.set(_j, 'casecollid', _p?.casecollid);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'defresult', _p?.defresult);
+    _o.set(_j, 'location', _p?.location);
     return {
       CaseExpr: _j
     };
@@ -585,10 +585,10 @@ export default {
     CaseWhen: CaseWhen;
   } {
     const _j = {} as CaseWhen;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "result", _p?.result);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'result', _p?.result);
+    _o.set(_j, 'location', _p?.location);
     return {
       CaseWhen: _j
     };
@@ -597,10 +597,10 @@ export default {
     CaseTestExpr: CaseTestExpr;
   } {
     const _j = {} as CaseTestExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "typeId", _p?.typeId);
-    _o.set(_j, "typeMod", _p?.typeMod);
-    _o.set(_j, "collation", _p?.collation);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'typeId', _p?.typeId);
+    _o.set(_j, 'typeMod', _p?.typeMod);
+    _o.set(_j, 'collation', _p?.collation);
     return {
       CaseTestExpr: _j
     };
@@ -609,13 +609,13 @@ export default {
     ArrayExpr: ArrayExpr;
   } {
     const _j = {} as ArrayExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "array_typeid", _p?.array_typeid);
-    _o.set(_j, "array_collid", _p?.array_collid);
-    _o.set(_j, "element_typeid", _p?.element_typeid);
-    _o.set(_j, "elements", _p?.elements);
-    _o.set(_j, "multidims", _p?.multidims);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'array_typeid', _p?.array_typeid);
+    _o.set(_j, 'array_collid', _p?.array_collid);
+    _o.set(_j, 'element_typeid', _p?.element_typeid);
+    _o.set(_j, 'elements', _p?.elements);
+    _o.set(_j, 'multidims', _p?.multidims);
+    _o.set(_j, 'location', _p?.location);
     return {
       ArrayExpr: _j
     };
@@ -624,12 +624,12 @@ export default {
     RowExpr: RowExpr;
   } {
     const _j = {} as RowExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "row_typeid", _p?.row_typeid);
-    _o.set(_j, "row_format", _p?.row_format);
-    _o.set(_j, "colnames", _p?.colnames);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'row_typeid', _p?.row_typeid);
+    _o.set(_j, 'row_format', _p?.row_format);
+    _o.set(_j, 'colnames', _p?.colnames);
+    _o.set(_j, 'location', _p?.location);
     return {
       RowExpr: _j
     };
@@ -638,13 +638,13 @@ export default {
     RowCompareExpr: RowCompareExpr;
   } {
     const _j = {} as RowCompareExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "rctype", _p?.rctype);
-    _o.set(_j, "opnos", _p?.opnos);
-    _o.set(_j, "opfamilies", _p?.opfamilies);
-    _o.set(_j, "inputcollids", _p?.inputcollids);
-    _o.set(_j, "largs", _p?.largs);
-    _o.set(_j, "rargs", _p?.rargs);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'rctype', _p?.rctype);
+    _o.set(_j, 'opnos', _p?.opnos);
+    _o.set(_j, 'opfamilies', _p?.opfamilies);
+    _o.set(_j, 'inputcollids', _p?.inputcollids);
+    _o.set(_j, 'largs', _p?.largs);
+    _o.set(_j, 'rargs', _p?.rargs);
     return {
       RowCompareExpr: _j
     };
@@ -653,11 +653,11 @@ export default {
     CoalesceExpr: CoalesceExpr;
   } {
     const _j = {} as CoalesceExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "coalescetype", _p?.coalescetype);
-    _o.set(_j, "coalescecollid", _p?.coalescecollid);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'coalescetype', _p?.coalescetype);
+    _o.set(_j, 'coalescecollid', _p?.coalescecollid);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       CoalesceExpr: _j
     };
@@ -666,13 +666,13 @@ export default {
     MinMaxExpr: MinMaxExpr;
   } {
     const _j = {} as MinMaxExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "minmaxtype", _p?.minmaxtype);
-    _o.set(_j, "minmaxcollid", _p?.minmaxcollid);
-    _o.set(_j, "inputcollid", _p?.inputcollid);
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'minmaxtype', _p?.minmaxtype);
+    _o.set(_j, 'minmaxcollid', _p?.minmaxcollid);
+    _o.set(_j, 'inputcollid', _p?.inputcollid);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'location', _p?.location);
     return {
       MinMaxExpr: _j
     };
@@ -681,11 +681,11 @@ export default {
     SQLValueFunction: SQLValueFunction;
   } {
     const _j = {} as SQLValueFunction;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "type", _p?.type);
-    _o.set(_j, "typmod", _p?.typmod);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'type', _p?.type);
+    _o.set(_j, 'typmod', _p?.typmod);
+    _o.set(_j, 'location', _p?.location);
     return {
       SQLValueFunction: _j
     };
@@ -694,17 +694,17 @@ export default {
     XmlExpr: XmlExpr;
   } {
     const _j = {} as XmlExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "named_args", _p?.named_args);
-    _o.set(_j, "arg_names", _p?.arg_names);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "xmloption", _p?.xmloption);
-    _o.set(_j, "indent", _p?.indent);
-    _o.set(_j, "type", _p?.type);
-    _o.set(_j, "typmod", _p?.typmod);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'named_args', _p?.named_args);
+    _o.set(_j, 'arg_names', _p?.arg_names);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'xmloption', _p?.xmloption);
+    _o.set(_j, 'indent', _p?.indent);
+    _o.set(_j, 'type', _p?.type);
+    _o.set(_j, 'typmod', _p?.typmod);
+    _o.set(_j, 'location', _p?.location);
     return {
       XmlExpr: _j
     };
@@ -713,9 +713,9 @@ export default {
     JsonFormat: JsonFormat;
   } {
     const _j = {} as JsonFormat;
-    _o.set(_j, "format_type", _p?.format_type);
-    _o.set(_j, "encoding", _p?.encoding);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'format_type', _p?.format_type);
+    _o.set(_j, 'encoding', _p?.encoding);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonFormat: _j
     };
@@ -724,9 +724,9 @@ export default {
     JsonReturning: JsonReturning;
   } {
     const _j = {} as JsonReturning;
-    _o.set(_j, "format", _p?.format);
-    _o.set(_j, "typid", _p?.typid);
-    _o.set(_j, "typmod", _p?.typmod);
+    _o.set(_j, 'format', _p?.format);
+    _o.set(_j, 'typid', _p?.typid);
+    _o.set(_j, 'typmod', _p?.typmod);
     return {
       JsonReturning: _j
     };
@@ -735,9 +735,9 @@ export default {
     JsonValueExpr: JsonValueExpr;
   } {
     const _j = {} as JsonValueExpr;
-    _o.set(_j, "raw_expr", _p?.raw_expr);
-    _o.set(_j, "formatted_expr", _p?.formatted_expr);
-    _o.set(_j, "format", _p?.format);
+    _o.set(_j, 'raw_expr', _p?.raw_expr);
+    _o.set(_j, 'formatted_expr', _p?.formatted_expr);
+    _o.set(_j, 'format', _p?.format);
     return {
       JsonValueExpr: _j
     };
@@ -746,15 +746,15 @@ export default {
     JsonConstructorExpr: JsonConstructorExpr;
   } {
     const _j = {} as JsonConstructorExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "type", _p?.type);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "func", _p?.func);
-    _o.set(_j, "coercion", _p?.coercion);
-    _o.set(_j, "returning", _p?.returning);
-    _o.set(_j, "absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "unique", _p?.unique);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'type', _p?.type);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'func', _p?.func);
+    _o.set(_j, 'coercion', _p?.coercion);
+    _o.set(_j, 'returning', _p?.returning);
+    _o.set(_j, 'absent_on_null', _p?.absent_on_null);
+    _o.set(_j, 'unique', _p?.unique);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonConstructorExpr: _j
     };
@@ -763,11 +763,11 @@ export default {
     JsonIsPredicate: JsonIsPredicate;
   } {
     const _j = {} as JsonIsPredicate;
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "format", _p?.format);
-    _o.set(_j, "item_type", _p?.item_type);
-    _o.set(_j, "unique_keys", _p?.unique_keys);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'format', _p?.format);
+    _o.set(_j, 'item_type', _p?.item_type);
+    _o.set(_j, 'unique_keys', _p?.unique_keys);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonIsPredicate: _j
     };
@@ -776,10 +776,10 @@ export default {
     JsonBehavior: JsonBehavior;
   } {
     const _j = {} as JsonBehavior;
-    _o.set(_j, "btype", _p?.btype);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "coerce", _p?.coerce);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'btype', _p?.btype);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'coerce', _p?.coerce);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonBehavior: _j
     };
@@ -788,23 +788,23 @@ export default {
     JsonExpr: JsonExpr;
   } {
     const _j = {} as JsonExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "column_name", _p?.column_name);
-    _o.set(_j, "formatted_expr", _p?.formatted_expr);
-    _o.set(_j, "format", _p?.format);
-    _o.set(_j, "path_spec", _p?.path_spec);
-    _o.set(_j, "returning", _p?.returning);
-    _o.set(_j, "passing_names", _p?.passing_names);
-    _o.set(_j, "passing_values", _p?.passing_values);
-    _o.set(_j, "on_empty", _p?.on_empty);
-    _o.set(_j, "on_error", _p?.on_error);
-    _o.set(_j, "use_io_coercion", _p?.use_io_coercion);
-    _o.set(_j, "use_json_coercion", _p?.use_json_coercion);
-    _o.set(_j, "wrapper", _p?.wrapper);
-    _o.set(_j, "omit_quotes", _p?.omit_quotes);
-    _o.set(_j, "collation", _p?.collation);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'column_name', _p?.column_name);
+    _o.set(_j, 'formatted_expr', _p?.formatted_expr);
+    _o.set(_j, 'format', _p?.format);
+    _o.set(_j, 'path_spec', _p?.path_spec);
+    _o.set(_j, 'returning', _p?.returning);
+    _o.set(_j, 'passing_names', _p?.passing_names);
+    _o.set(_j, 'passing_values', _p?.passing_values);
+    _o.set(_j, 'on_empty', _p?.on_empty);
+    _o.set(_j, 'on_error', _p?.on_error);
+    _o.set(_j, 'use_io_coercion', _p?.use_io_coercion);
+    _o.set(_j, 'use_json_coercion', _p?.use_json_coercion);
+    _o.set(_j, 'wrapper', _p?.wrapper);
+    _o.set(_j, 'omit_quotes', _p?.omit_quotes);
+    _o.set(_j, 'collation', _p?.collation);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonExpr: _j
     };
@@ -813,7 +813,7 @@ export default {
     JsonTablePath: JsonTablePath;
   } {
     const _j = {} as JsonTablePath;
-    _o.set(_j, "name", _p?.name);
+    _o.set(_j, 'name', _p?.name);
     return {
       JsonTablePath: _j
     };
@@ -822,12 +822,12 @@ export default {
     JsonTablePathScan: JsonTablePathScan;
   } {
     const _j = {} as JsonTablePathScan;
-    _o.set(_j, "plan", _p?.plan);
-    _o.set(_j, "path", _p?.path);
-    _o.set(_j, "errorOnError", _p?.errorOnError);
-    _o.set(_j, "child", _p?.child);
-    _o.set(_j, "colMin", _p?.colMin);
-    _o.set(_j, "colMax", _p?.colMax);
+    _o.set(_j, 'plan', _p?.plan);
+    _o.set(_j, 'path', _p?.path);
+    _o.set(_j, 'errorOnError', _p?.errorOnError);
+    _o.set(_j, 'child', _p?.child);
+    _o.set(_j, 'colMin', _p?.colMin);
+    _o.set(_j, 'colMax', _p?.colMax);
     return {
       JsonTablePathScan: _j
     };
@@ -836,9 +836,9 @@ export default {
     JsonTableSiblingJoin: JsonTableSiblingJoin;
   } {
     const _j = {} as JsonTableSiblingJoin;
-    _o.set(_j, "plan", _p?.plan);
-    _o.set(_j, "lplan", _p?.lplan);
-    _o.set(_j, "rplan", _p?.rplan);
+    _o.set(_j, 'plan', _p?.plan);
+    _o.set(_j, 'lplan', _p?.lplan);
+    _o.set(_j, 'rplan', _p?.rplan);
     return {
       JsonTableSiblingJoin: _j
     };
@@ -847,11 +847,11 @@ export default {
     NullTest: NullTest;
   } {
     const _j = {} as NullTest;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "nulltesttype", _p?.nulltesttype);
-    _o.set(_j, "argisrow", _p?.argisrow);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'nulltesttype', _p?.nulltesttype);
+    _o.set(_j, 'argisrow', _p?.argisrow);
+    _o.set(_j, 'location', _p?.location);
     return {
       NullTest: _j
     };
@@ -860,10 +860,10 @@ export default {
     BooleanTest: BooleanTest;
   } {
     const _j = {} as BooleanTest;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "booltesttype", _p?.booltesttype);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'booltesttype', _p?.booltesttype);
+    _o.set(_j, 'location', _p?.location);
     return {
       BooleanTest: _j
     };
@@ -872,12 +872,12 @@ export default {
     MergeAction: MergeAction;
   } {
     const _j = {} as MergeAction;
-    _o.set(_j, "matchKind", _p?.matchKind);
-    _o.set(_j, "commandType", _p?.commandType);
-    _o.set(_j, "override", _p?.override);
-    _o.set(_j, "qual", _p?.qual);
-    _o.set(_j, "targetList", _p?.targetList);
-    _o.set(_j, "updateColnos", _p?.updateColnos);
+    _o.set(_j, 'matchKind', _p?.matchKind);
+    _o.set(_j, 'commandType', _p?.commandType);
+    _o.set(_j, 'override', _p?.override);
+    _o.set(_j, 'qual', _p?.qual);
+    _o.set(_j, 'targetList', _p?.targetList);
+    _o.set(_j, 'updateColnos', _p?.updateColnos);
     return {
       MergeAction: _j
     };
@@ -886,13 +886,13 @@ export default {
     CoerceToDomain: CoerceToDomain;
   } {
     const _j = {} as CoerceToDomain;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "resulttype", _p?.resulttype);
-    _o.set(_j, "resulttypmod", _p?.resulttypmod);
-    _o.set(_j, "resultcollid", _p?.resultcollid);
-    _o.set(_j, "coercionformat", _p?.coercionformat);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'resulttype', _p?.resulttype);
+    _o.set(_j, 'resulttypmod', _p?.resulttypmod);
+    _o.set(_j, 'resultcollid', _p?.resultcollid);
+    _o.set(_j, 'coercionformat', _p?.coercionformat);
+    _o.set(_j, 'location', _p?.location);
     return {
       CoerceToDomain: _j
     };
@@ -901,11 +901,11 @@ export default {
     CoerceToDomainValue: CoerceToDomainValue;
   } {
     const _j = {} as CoerceToDomainValue;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "typeId", _p?.typeId);
-    _o.set(_j, "typeMod", _p?.typeMod);
-    _o.set(_j, "collation", _p?.collation);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'typeId', _p?.typeId);
+    _o.set(_j, 'typeMod', _p?.typeMod);
+    _o.set(_j, 'collation', _p?.collation);
+    _o.set(_j, 'location', _p?.location);
     return {
       CoerceToDomainValue: _j
     };
@@ -914,11 +914,11 @@ export default {
     SetToDefault: SetToDefault;
   } {
     const _j = {} as SetToDefault;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "typeId", _p?.typeId);
-    _o.set(_j, "typeMod", _p?.typeMod);
-    _o.set(_j, "collation", _p?.collation);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'typeId', _p?.typeId);
+    _o.set(_j, 'typeMod', _p?.typeMod);
+    _o.set(_j, 'collation', _p?.collation);
+    _o.set(_j, 'location', _p?.location);
     return {
       SetToDefault: _j
     };
@@ -927,10 +927,10 @@ export default {
     CurrentOfExpr: CurrentOfExpr;
   } {
     const _j = {} as CurrentOfExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "cvarno", _p?.cvarno);
-    _o.set(_j, "cursor_name", _p?.cursor_name);
-    _o.set(_j, "cursor_param", _p?.cursor_param);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'cvarno', _p?.cvarno);
+    _o.set(_j, 'cursor_name', _p?.cursor_name);
+    _o.set(_j, 'cursor_param', _p?.cursor_param);
     return {
       CurrentOfExpr: _j
     };
@@ -939,9 +939,9 @@ export default {
     NextValueExpr: NextValueExpr;
   } {
     const _j = {} as NextValueExpr;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "seqid", _p?.seqid);
-    _o.set(_j, "typeId", _p?.typeId);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'seqid', _p?.seqid);
+    _o.set(_j, 'typeId', _p?.typeId);
     return {
       NextValueExpr: _j
     };
@@ -950,10 +950,10 @@ export default {
     InferenceElem: InferenceElem;
   } {
     const _j = {} as InferenceElem;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "infercollid", _p?.infercollid);
-    _o.set(_j, "inferopclass", _p?.inferopclass);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'infercollid', _p?.infercollid);
+    _o.set(_j, 'inferopclass', _p?.inferopclass);
     return {
       InferenceElem: _j
     };
@@ -962,14 +962,14 @@ export default {
     TargetEntry: TargetEntry;
   } {
     const _j = {} as TargetEntry;
-    _o.set(_j, "xpr", _p?.xpr);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "resno", _p?.resno);
-    _o.set(_j, "resname", _p?.resname);
-    _o.set(_j, "ressortgroupref", _p?.ressortgroupref);
-    _o.set(_j, "resorigtbl", _p?.resorigtbl);
-    _o.set(_j, "resorigcol", _p?.resorigcol);
-    _o.set(_j, "resjunk", _p?.resjunk);
+    _o.set(_j, 'xpr', _p?.xpr);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'resno', _p?.resno);
+    _o.set(_j, 'resname', _p?.resname);
+    _o.set(_j, 'ressortgroupref', _p?.ressortgroupref);
+    _o.set(_j, 'resorigtbl', _p?.resorigtbl);
+    _o.set(_j, 'resorigcol', _p?.resorigcol);
+    _o.set(_j, 'resjunk', _p?.resjunk);
     return {
       TargetEntry: _j
     };
@@ -978,7 +978,7 @@ export default {
     RangeTblRef: RangeTblRef;
   } {
     const _j = {} as RangeTblRef;
-    _o.set(_j, "rtindex", _p?.rtindex);
+    _o.set(_j, 'rtindex', _p?.rtindex);
     return {
       RangeTblRef: _j
     };
@@ -987,15 +987,15 @@ export default {
     JoinExpr: JoinExpr;
   } {
     const _j = {} as JoinExpr;
-    _o.set(_j, "jointype", _p?.jointype);
-    _o.set(_j, "isNatural", _p?.isNatural);
-    _o.set(_j, "larg", _p?.larg);
-    _o.set(_j, "rarg", _p?.rarg);
-    _o.set(_j, "usingClause", _p?.usingClause);
-    _o.set(_j, "join_using_alias", _p?.join_using_alias);
-    _o.set(_j, "quals", _p?.quals);
-    _o.set(_j, "alias", _p?.alias);
-    _o.set(_j, "rtindex", _p?.rtindex);
+    _o.set(_j, 'jointype', _p?.jointype);
+    _o.set(_j, 'isNatural', _p?.isNatural);
+    _o.set(_j, 'larg', _p?.larg);
+    _o.set(_j, 'rarg', _p?.rarg);
+    _o.set(_j, 'usingClause', _p?.usingClause);
+    _o.set(_j, 'join_using_alias', _p?.join_using_alias);
+    _o.set(_j, 'quals', _p?.quals);
+    _o.set(_j, 'alias', _p?.alias);
+    _o.set(_j, 'rtindex', _p?.rtindex);
     return {
       JoinExpr: _j
     };
@@ -1004,8 +1004,8 @@ export default {
     FromExpr: FromExpr;
   } {
     const _j = {} as FromExpr;
-    _o.set(_j, "fromlist", _p?.fromlist);
-    _o.set(_j, "quals", _p?.quals);
+    _o.set(_j, 'fromlist', _p?.fromlist);
+    _o.set(_j, 'quals', _p?.quals);
     return {
       FromExpr: _j
     };
@@ -1014,14 +1014,14 @@ export default {
     OnConflictExpr: OnConflictExpr;
   } {
     const _j = {} as OnConflictExpr;
-    _o.set(_j, "action", _p?.action);
-    _o.set(_j, "arbiterElems", _p?.arbiterElems);
-    _o.set(_j, "arbiterWhere", _p?.arbiterWhere);
-    _o.set(_j, "constraint", _p?.constraint);
-    _o.set(_j, "onConflictSet", _p?.onConflictSet);
-    _o.set(_j, "onConflictWhere", _p?.onConflictWhere);
-    _o.set(_j, "exclRelIndex", _p?.exclRelIndex);
-    _o.set(_j, "exclRelTlist", _p?.exclRelTlist);
+    _o.set(_j, 'action', _p?.action);
+    _o.set(_j, 'arbiterElems', _p?.arbiterElems);
+    _o.set(_j, 'arbiterWhere', _p?.arbiterWhere);
+    _o.set(_j, 'constraint', _p?.constraint);
+    _o.set(_j, 'onConflictSet', _p?.onConflictSet);
+    _o.set(_j, 'onConflictWhere', _p?.onConflictWhere);
+    _o.set(_j, 'exclRelIndex', _p?.exclRelIndex);
+    _o.set(_j, 'exclRelTlist', _p?.exclRelTlist);
     return {
       OnConflictExpr: _j
     };
@@ -1030,48 +1030,48 @@ export default {
     Query: Query;
   } {
     const _j = {} as Query;
-    _o.set(_j, "commandType", _p?.commandType);
-    _o.set(_j, "querySource", _p?.querySource);
-    _o.set(_j, "canSetTag", _p?.canSetTag);
-    _o.set(_j, "utilityStmt", _p?.utilityStmt);
-    _o.set(_j, "resultRelation", _p?.resultRelation);
-    _o.set(_j, "hasAggs", _p?.hasAggs);
-    _o.set(_j, "hasWindowFuncs", _p?.hasWindowFuncs);
-    _o.set(_j, "hasTargetSRFs", _p?.hasTargetSRFs);
-    _o.set(_j, "hasSubLinks", _p?.hasSubLinks);
-    _o.set(_j, "hasDistinctOn", _p?.hasDistinctOn);
-    _o.set(_j, "hasRecursive", _p?.hasRecursive);
-    _o.set(_j, "hasModifyingCTE", _p?.hasModifyingCTE);
-    _o.set(_j, "hasForUpdate", _p?.hasForUpdate);
-    _o.set(_j, "hasRowSecurity", _p?.hasRowSecurity);
-    _o.set(_j, "isReturn", _p?.isReturn);
-    _o.set(_j, "cteList", _p?.cteList);
-    _o.set(_j, "rtable", _p?.rtable);
-    _o.set(_j, "rteperminfos", _p?.rteperminfos);
-    _o.set(_j, "jointree", _p?.jointree);
-    _o.set(_j, "mergeActionList", _p?.mergeActionList);
-    _o.set(_j, "mergeTargetRelation", _p?.mergeTargetRelation);
-    _o.set(_j, "mergeJoinCondition", _p?.mergeJoinCondition);
-    _o.set(_j, "targetList", _p?.targetList);
-    _o.set(_j, "override", _p?.override);
-    _o.set(_j, "onConflict", _p?.onConflict);
-    _o.set(_j, "returningList", _p?.returningList);
-    _o.set(_j, "groupClause", _p?.groupClause);
-    _o.set(_j, "groupDistinct", _p?.groupDistinct);
-    _o.set(_j, "groupingSets", _p?.groupingSets);
-    _o.set(_j, "havingQual", _p?.havingQual);
-    _o.set(_j, "windowClause", _p?.windowClause);
-    _o.set(_j, "distinctClause", _p?.distinctClause);
-    _o.set(_j, "sortClause", _p?.sortClause);
-    _o.set(_j, "limitOffset", _p?.limitOffset);
-    _o.set(_j, "limitCount", _p?.limitCount);
-    _o.set(_j, "limitOption", _p?.limitOption);
-    _o.set(_j, "rowMarks", _p?.rowMarks);
-    _o.set(_j, "setOperations", _p?.setOperations);
-    _o.set(_j, "constraintDeps", _p?.constraintDeps);
-    _o.set(_j, "withCheckOptions", _p?.withCheckOptions);
-    _o.set(_j, "stmt_location", _p?.stmt_location);
-    _o.set(_j, "stmt_len", _p?.stmt_len);
+    _o.set(_j, 'commandType', _p?.commandType);
+    _o.set(_j, 'querySource', _p?.querySource);
+    _o.set(_j, 'canSetTag', _p?.canSetTag);
+    _o.set(_j, 'utilityStmt', _p?.utilityStmt);
+    _o.set(_j, 'resultRelation', _p?.resultRelation);
+    _o.set(_j, 'hasAggs', _p?.hasAggs);
+    _o.set(_j, 'hasWindowFuncs', _p?.hasWindowFuncs);
+    _o.set(_j, 'hasTargetSRFs', _p?.hasTargetSRFs);
+    _o.set(_j, 'hasSubLinks', _p?.hasSubLinks);
+    _o.set(_j, 'hasDistinctOn', _p?.hasDistinctOn);
+    _o.set(_j, 'hasRecursive', _p?.hasRecursive);
+    _o.set(_j, 'hasModifyingCTE', _p?.hasModifyingCTE);
+    _o.set(_j, 'hasForUpdate', _p?.hasForUpdate);
+    _o.set(_j, 'hasRowSecurity', _p?.hasRowSecurity);
+    _o.set(_j, 'isReturn', _p?.isReturn);
+    _o.set(_j, 'cteList', _p?.cteList);
+    _o.set(_j, 'rtable', _p?.rtable);
+    _o.set(_j, 'rteperminfos', _p?.rteperminfos);
+    _o.set(_j, 'jointree', _p?.jointree);
+    _o.set(_j, 'mergeActionList', _p?.mergeActionList);
+    _o.set(_j, 'mergeTargetRelation', _p?.mergeTargetRelation);
+    _o.set(_j, 'mergeJoinCondition', _p?.mergeJoinCondition);
+    _o.set(_j, 'targetList', _p?.targetList);
+    _o.set(_j, 'override', _p?.override);
+    _o.set(_j, 'onConflict', _p?.onConflict);
+    _o.set(_j, 'returningList', _p?.returningList);
+    _o.set(_j, 'groupClause', _p?.groupClause);
+    _o.set(_j, 'groupDistinct', _p?.groupDistinct);
+    _o.set(_j, 'groupingSets', _p?.groupingSets);
+    _o.set(_j, 'havingQual', _p?.havingQual);
+    _o.set(_j, 'windowClause', _p?.windowClause);
+    _o.set(_j, 'distinctClause', _p?.distinctClause);
+    _o.set(_j, 'sortClause', _p?.sortClause);
+    _o.set(_j, 'limitOffset', _p?.limitOffset);
+    _o.set(_j, 'limitCount', _p?.limitCount);
+    _o.set(_j, 'limitOption', _p?.limitOption);
+    _o.set(_j, 'rowMarks', _p?.rowMarks);
+    _o.set(_j, 'setOperations', _p?.setOperations);
+    _o.set(_j, 'constraintDeps', _p?.constraintDeps);
+    _o.set(_j, 'withCheckOptions', _p?.withCheckOptions);
+    _o.set(_j, 'stmt_location', _p?.stmt_location);
+    _o.set(_j, 'stmt_len', _p?.stmt_len);
     return {
       Query: _j
     };
@@ -1080,14 +1080,14 @@ export default {
     TypeName: TypeName;
   } {
     const _j = {} as TypeName;
-    _o.set(_j, "names", _p?.names);
-    _o.set(_j, "typeOid", _p?.typeOid);
-    _o.set(_j, "setof", _p?.setof);
-    _o.set(_j, "pct_type", _p?.pct_type);
-    _o.set(_j, "typmods", _p?.typmods);
-    _o.set(_j, "typemod", _p?.typemod);
-    _o.set(_j, "arrayBounds", _p?.arrayBounds);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'names', _p?.names);
+    _o.set(_j, 'typeOid', _p?.typeOid);
+    _o.set(_j, 'setof', _p?.setof);
+    _o.set(_j, 'pct_type', _p?.pct_type);
+    _o.set(_j, 'typmods', _p?.typmods);
+    _o.set(_j, 'typemod', _p?.typemod);
+    _o.set(_j, 'arrayBounds', _p?.arrayBounds);
+    _o.set(_j, 'location', _p?.location);
     return {
       TypeName: _j
     };
@@ -1096,8 +1096,8 @@ export default {
     ColumnRef: ColumnRef;
   } {
     const _j = {} as ColumnRef;
-    _o.set(_j, "fields", _p?.fields);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'fields', _p?.fields);
+    _o.set(_j, 'location', _p?.location);
     return {
       ColumnRef: _j
     };
@@ -1106,8 +1106,8 @@ export default {
     ParamRef: ParamRef;
   } {
     const _j = {} as ParamRef;
-    _o.set(_j, "number", _p?.number);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'number', _p?.number);
+    _o.set(_j, 'location', _p?.location);
     return {
       ParamRef: _j
     };
@@ -1116,11 +1116,11 @@ export default {
     A_Expr: A_Expr;
   } {
     const _j = {} as A_Expr;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "lexpr", _p?.lexpr);
-    _o.set(_j, "rexpr", _p?.rexpr);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'lexpr', _p?.lexpr);
+    _o.set(_j, 'rexpr', _p?.rexpr);
+    _o.set(_j, 'location', _p?.location);
     return {
       A_Expr: _j
     };
@@ -1129,9 +1129,9 @@ export default {
     TypeCast: TypeCast;
   } {
     const _j = {} as TypeCast;
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'location', _p?.location);
     return {
       TypeCast: _j
     };
@@ -1140,9 +1140,9 @@ export default {
     CollateClause: CollateClause;
   } {
     const _j = {} as CollateClause;
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "collname", _p?.collname);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'collname', _p?.collname);
+    _o.set(_j, 'location', _p?.location);
     return {
       CollateClause: _j
     };
@@ -1151,9 +1151,9 @@ export default {
     RoleSpec: RoleSpec;
   } {
     const _j = {} as RoleSpec;
-    _o.set(_j, "roletype", _p?.roletype);
-    _o.set(_j, "rolename", _p?.rolename);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'roletype', _p?.roletype);
+    _o.set(_j, 'rolename', _p?.rolename);
+    _o.set(_j, 'location', _p?.location);
     return {
       RoleSpec: _j
     };
@@ -1162,17 +1162,17 @@ export default {
     FuncCall: FuncCall;
   } {
     const _j = {} as FuncCall;
-    _o.set(_j, "funcname", _p?.funcname);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "agg_order", _p?.agg_order);
-    _o.set(_j, "agg_filter", _p?.agg_filter);
-    _o.set(_j, "over", _p?.over);
-    _o.set(_j, "agg_within_group", _p?.agg_within_group);
-    _o.set(_j, "agg_star", _p?.agg_star);
-    _o.set(_j, "agg_distinct", _p?.agg_distinct);
-    _o.set(_j, "func_variadic", _p?.func_variadic);
-    _o.set(_j, "funcformat", _p?.funcformat);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'funcname', _p?.funcname);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'agg_order', _p?.agg_order);
+    _o.set(_j, 'agg_filter', _p?.agg_filter);
+    _o.set(_j, 'over', _p?.over);
+    _o.set(_j, 'agg_within_group', _p?.agg_within_group);
+    _o.set(_j, 'agg_star', _p?.agg_star);
+    _o.set(_j, 'agg_distinct', _p?.agg_distinct);
+    _o.set(_j, 'func_variadic', _p?.func_variadic);
+    _o.set(_j, 'funcformat', _p?.funcformat);
+    _o.set(_j, 'location', _p?.location);
     return {
       FuncCall: _j
     };
@@ -1189,9 +1189,9 @@ export default {
     A_Indices: A_Indices;
   } {
     const _j = {} as A_Indices;
-    _o.set(_j, "is_slice", _p?.is_slice);
-    _o.set(_j, "lidx", _p?.lidx);
-    _o.set(_j, "uidx", _p?.uidx);
+    _o.set(_j, 'is_slice', _p?.is_slice);
+    _o.set(_j, 'lidx', _p?.lidx);
+    _o.set(_j, 'uidx', _p?.uidx);
     return {
       A_Indices: _j
     };
@@ -1200,8 +1200,8 @@ export default {
     A_Indirection: A_Indirection;
   } {
     const _j = {} as A_Indirection;
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "indirection", _p?.indirection);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'indirection', _p?.indirection);
     return {
       A_Indirection: _j
     };
@@ -1210,8 +1210,8 @@ export default {
     A_ArrayExpr: A_ArrayExpr;
   } {
     const _j = {} as A_ArrayExpr;
-    _o.set(_j, "elements", _p?.elements);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'elements', _p?.elements);
+    _o.set(_j, 'location', _p?.location);
     return {
       A_ArrayExpr: _j
     };
@@ -1220,10 +1220,10 @@ export default {
     ResTarget: ResTarget;
   } {
     const _j = {} as ResTarget;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "indirection", _p?.indirection);
-    _o.set(_j, "val", _p?.val);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'indirection', _p?.indirection);
+    _o.set(_j, 'val', _p?.val);
+    _o.set(_j, 'location', _p?.location);
     return {
       ResTarget: _j
     };
@@ -1232,9 +1232,9 @@ export default {
     MultiAssignRef: MultiAssignRef;
   } {
     const _j = {} as MultiAssignRef;
-    _o.set(_j, "source", _p?.source);
-    _o.set(_j, "colno", _p?.colno);
-    _o.set(_j, "ncolumns", _p?.ncolumns);
+    _o.set(_j, 'source', _p?.source);
+    _o.set(_j, 'colno', _p?.colno);
+    _o.set(_j, 'ncolumns', _p?.ncolumns);
     return {
       MultiAssignRef: _j
     };
@@ -1243,11 +1243,11 @@ export default {
     SortBy: SortBy;
   } {
     const _j = {} as SortBy;
-    _o.set(_j, "node", _p?.node);
-    _o.set(_j, "sortby_dir", _p?.sortby_dir);
-    _o.set(_j, "sortby_nulls", _p?.sortby_nulls);
-    _o.set(_j, "useOp", _p?.useOp);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'node', _p?.node);
+    _o.set(_j, 'sortby_dir', _p?.sortby_dir);
+    _o.set(_j, 'sortby_nulls', _p?.sortby_nulls);
+    _o.set(_j, 'useOp', _p?.useOp);
+    _o.set(_j, 'location', _p?.location);
     return {
       SortBy: _j
     };
@@ -1256,14 +1256,14 @@ export default {
     WindowDef: WindowDef;
   } {
     const _j = {} as WindowDef;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "refname", _p?.refname);
-    _o.set(_j, "partitionClause", _p?.partitionClause);
-    _o.set(_j, "orderClause", _p?.orderClause);
-    _o.set(_j, "frameOptions", _p?.frameOptions);
-    _o.set(_j, "startOffset", _p?.startOffset);
-    _o.set(_j, "endOffset", _p?.endOffset);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'refname', _p?.refname);
+    _o.set(_j, 'partitionClause', _p?.partitionClause);
+    _o.set(_j, 'orderClause', _p?.orderClause);
+    _o.set(_j, 'frameOptions', _p?.frameOptions);
+    _o.set(_j, 'startOffset', _p?.startOffset);
+    _o.set(_j, 'endOffset', _p?.endOffset);
+    _o.set(_j, 'location', _p?.location);
     return {
       WindowDef: _j
     };
@@ -1272,9 +1272,9 @@ export default {
     RangeSubselect: RangeSubselect;
   } {
     const _j = {} as RangeSubselect;
-    _o.set(_j, "lateral", _p?.lateral);
-    _o.set(_j, "subquery", _p?.subquery);
-    _o.set(_j, "alias", _p?.alias);
+    _o.set(_j, 'lateral', _p?.lateral);
+    _o.set(_j, 'subquery', _p?.subquery);
+    _o.set(_j, 'alias', _p?.alias);
     return {
       RangeSubselect: _j
     };
@@ -1283,12 +1283,12 @@ export default {
     RangeFunction: RangeFunction;
   } {
     const _j = {} as RangeFunction;
-    _o.set(_j, "lateral", _p?.lateral);
-    _o.set(_j, "ordinality", _p?.ordinality);
-    _o.set(_j, "is_rowsfrom", _p?.is_rowsfrom);
-    _o.set(_j, "functions", _p?.functions);
-    _o.set(_j, "alias", _p?.alias);
-    _o.set(_j, "coldeflist", _p?.coldeflist);
+    _o.set(_j, 'lateral', _p?.lateral);
+    _o.set(_j, 'ordinality', _p?.ordinality);
+    _o.set(_j, 'is_rowsfrom', _p?.is_rowsfrom);
+    _o.set(_j, 'functions', _p?.functions);
+    _o.set(_j, 'alias', _p?.alias);
+    _o.set(_j, 'coldeflist', _p?.coldeflist);
     return {
       RangeFunction: _j
     };
@@ -1297,13 +1297,13 @@ export default {
     RangeTableFunc: RangeTableFunc;
   } {
     const _j = {} as RangeTableFunc;
-    _o.set(_j, "lateral", _p?.lateral);
-    _o.set(_j, "docexpr", _p?.docexpr);
-    _o.set(_j, "rowexpr", _p?.rowexpr);
-    _o.set(_j, "namespaces", _p?.namespaces);
-    _o.set(_j, "columns", _p?.columns);
-    _o.set(_j, "alias", _p?.alias);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'lateral', _p?.lateral);
+    _o.set(_j, 'docexpr', _p?.docexpr);
+    _o.set(_j, 'rowexpr', _p?.rowexpr);
+    _o.set(_j, 'namespaces', _p?.namespaces);
+    _o.set(_j, 'columns', _p?.columns);
+    _o.set(_j, 'alias', _p?.alias);
+    _o.set(_j, 'location', _p?.location);
     return {
       RangeTableFunc: _j
     };
@@ -1312,13 +1312,13 @@ export default {
     RangeTableFuncCol: RangeTableFuncCol;
   } {
     const _j = {} as RangeTableFuncCol;
-    _o.set(_j, "colname", _p?.colname);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "for_ordinality", _p?.for_ordinality);
-    _o.set(_j, "is_not_null", _p?.is_not_null);
-    _o.set(_j, "colexpr", _p?.colexpr);
-    _o.set(_j, "coldefexpr", _p?.coldefexpr);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'colname', _p?.colname);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'for_ordinality', _p?.for_ordinality);
+    _o.set(_j, 'is_not_null', _p?.is_not_null);
+    _o.set(_j, 'colexpr', _p?.colexpr);
+    _o.set(_j, 'coldefexpr', _p?.coldefexpr);
+    _o.set(_j, 'location', _p?.location);
     return {
       RangeTableFuncCol: _j
     };
@@ -1327,11 +1327,11 @@ export default {
     RangeTableSample: RangeTableSample;
   } {
     const _j = {} as RangeTableSample;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "method", _p?.method);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "repeatable", _p?.repeatable);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'method', _p?.method);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'repeatable', _p?.repeatable);
+    _o.set(_j, 'location', _p?.location);
     return {
       RangeTableSample: _j
     };
@@ -1340,25 +1340,25 @@ export default {
     ColumnDef: ColumnDef;
   } {
     const _j = {} as ColumnDef;
-    _o.set(_j, "colname", _p?.colname);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "compression", _p?.compression);
-    _o.set(_j, "inhcount", _p?.inhcount);
-    _o.set(_j, "is_local", _p?.is_local);
-    _o.set(_j, "is_not_null", _p?.is_not_null);
-    _o.set(_j, "is_from_type", _p?.is_from_type);
-    _o.set(_j, "storage", _p?.storage);
-    _o.set(_j, "storage_name", _p?.storage_name);
-    _o.set(_j, "raw_default", _p?.raw_default);
-    _o.set(_j, "cooked_default", _p?.cooked_default);
-    _o.set(_j, "identity", _p?.identity);
-    _o.set(_j, "identitySequence", _p?.identitySequence);
-    _o.set(_j, "generated", _p?.generated);
-    _o.set(_j, "collClause", _p?.collClause);
-    _o.set(_j, "collOid", _p?.collOid);
-    _o.set(_j, "constraints", _p?.constraints);
-    _o.set(_j, "fdwoptions", _p?.fdwoptions);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'colname', _p?.colname);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'compression', _p?.compression);
+    _o.set(_j, 'inhcount', _p?.inhcount);
+    _o.set(_j, 'is_local', _p?.is_local);
+    _o.set(_j, 'is_not_null', _p?.is_not_null);
+    _o.set(_j, 'is_from_type', _p?.is_from_type);
+    _o.set(_j, 'storage', _p?.storage);
+    _o.set(_j, 'storage_name', _p?.storage_name);
+    _o.set(_j, 'raw_default', _p?.raw_default);
+    _o.set(_j, 'cooked_default', _p?.cooked_default);
+    _o.set(_j, 'identity', _p?.identity);
+    _o.set(_j, 'identitySequence', _p?.identitySequence);
+    _o.set(_j, 'generated', _p?.generated);
+    _o.set(_j, 'collClause', _p?.collClause);
+    _o.set(_j, 'collOid', _p?.collOid);
+    _o.set(_j, 'constraints', _p?.constraints);
+    _o.set(_j, 'fdwoptions', _p?.fdwoptions);
+    _o.set(_j, 'location', _p?.location);
     return {
       ColumnDef: _j
     };
@@ -1367,9 +1367,9 @@ export default {
     TableLikeClause: TableLikeClause;
   } {
     const _j = {} as TableLikeClause;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "relationOid", _p?.relationOid);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'relationOid', _p?.relationOid);
     return {
       TableLikeClause: _j
     };
@@ -1378,14 +1378,14 @@ export default {
     IndexElem: IndexElem;
   } {
     const _j = {} as IndexElem;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "indexcolname", _p?.indexcolname);
-    _o.set(_j, "collation", _p?.collation);
-    _o.set(_j, "opclass", _p?.opclass);
-    _o.set(_j, "opclassopts", _p?.opclassopts);
-    _o.set(_j, "ordering", _p?.ordering);
-    _o.set(_j, "nulls_ordering", _p?.nulls_ordering);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'indexcolname', _p?.indexcolname);
+    _o.set(_j, 'collation', _p?.collation);
+    _o.set(_j, 'opclass', _p?.opclass);
+    _o.set(_j, 'opclassopts', _p?.opclassopts);
+    _o.set(_j, 'ordering', _p?.ordering);
+    _o.set(_j, 'nulls_ordering', _p?.nulls_ordering);
     return {
       IndexElem: _j
     };
@@ -1394,11 +1394,11 @@ export default {
     DefElem: DefElem;
   } {
     const _j = {} as DefElem;
-    _o.set(_j, "defnamespace", _p?.defnamespace);
-    _o.set(_j, "defname", _p?.defname);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "defaction", _p?.defaction);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'defnamespace', _p?.defnamespace);
+    _o.set(_j, 'defname', _p?.defname);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'defaction', _p?.defaction);
+    _o.set(_j, 'location', _p?.location);
     return {
       DefElem: _j
     };
@@ -1407,9 +1407,9 @@ export default {
     LockingClause: LockingClause;
   } {
     const _j = {} as LockingClause;
-    _o.set(_j, "lockedRels", _p?.lockedRels);
-    _o.set(_j, "strength", _p?.strength);
-    _o.set(_j, "waitPolicy", _p?.waitPolicy);
+    _o.set(_j, 'lockedRels', _p?.lockedRels);
+    _o.set(_j, 'strength', _p?.strength);
+    _o.set(_j, 'waitPolicy', _p?.waitPolicy);
     return {
       LockingClause: _j
     };
@@ -1418,11 +1418,11 @@ export default {
     XmlSerialize: XmlSerialize;
   } {
     const _j = {} as XmlSerialize;
-    _o.set(_j, "xmloption", _p?.xmloption);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "indent", _p?.indent);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'xmloption', _p?.xmloption);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'indent', _p?.indent);
+    _o.set(_j, 'location', _p?.location);
     return {
       XmlSerialize: _j
     };
@@ -1431,11 +1431,11 @@ export default {
     PartitionElem: PartitionElem;
   } {
     const _j = {} as PartitionElem;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "collation", _p?.collation);
-    _o.set(_j, "opclass", _p?.opclass);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'collation', _p?.collation);
+    _o.set(_j, 'opclass', _p?.opclass);
+    _o.set(_j, 'location', _p?.location);
     return {
       PartitionElem: _j
     };
@@ -1444,9 +1444,9 @@ export default {
     PartitionSpec: PartitionSpec;
   } {
     const _j = {} as PartitionSpec;
-    _o.set(_j, "strategy", _p?.strategy);
-    _o.set(_j, "partParams", _p?.partParams);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'strategy', _p?.strategy);
+    _o.set(_j, 'partParams', _p?.partParams);
+    _o.set(_j, 'location', _p?.location);
     return {
       PartitionSpec: _j
     };
@@ -1455,14 +1455,14 @@ export default {
     PartitionBoundSpec: PartitionBoundSpec;
   } {
     const _j = {} as PartitionBoundSpec;
-    _o.set(_j, "strategy", _p?.strategy);
-    _o.set(_j, "is_default", _p?.is_default);
-    _o.set(_j, "modulus", _p?.modulus);
-    _o.set(_j, "remainder", _p?.remainder);
-    _o.set(_j, "listdatums", _p?.listdatums);
-    _o.set(_j, "lowerdatums", _p?.lowerdatums);
-    _o.set(_j, "upperdatums", _p?.upperdatums);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'strategy', _p?.strategy);
+    _o.set(_j, 'is_default', _p?.is_default);
+    _o.set(_j, 'modulus', _p?.modulus);
+    _o.set(_j, 'remainder', _p?.remainder);
+    _o.set(_j, 'listdatums', _p?.listdatums);
+    _o.set(_j, 'lowerdatums', _p?.lowerdatums);
+    _o.set(_j, 'upperdatums', _p?.upperdatums);
+    _o.set(_j, 'location', _p?.location);
     return {
       PartitionBoundSpec: _j
     };
@@ -1471,9 +1471,9 @@ export default {
     PartitionRangeDatum: PartitionRangeDatum;
   } {
     const _j = {} as PartitionRangeDatum;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "value", _p?.value);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'value', _p?.value);
+    _o.set(_j, 'location', _p?.location);
     return {
       PartitionRangeDatum: _j
     };
@@ -1490,9 +1490,9 @@ export default {
     PartitionCmd: PartitionCmd;
   } {
     const _j = {} as PartitionCmd;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "bound", _p?.bound);
-    _o.set(_j, "concurrent", _p?.concurrent);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'bound', _p?.bound);
+    _o.set(_j, 'concurrent', _p?.concurrent);
     return {
       PartitionCmd: _j
     };
@@ -1501,38 +1501,38 @@ export default {
     RangeTblEntry: RangeTblEntry;
   } {
     const _j = {} as RangeTblEntry;
-    _o.set(_j, "alias", _p?.alias);
-    _o.set(_j, "eref", _p?.eref);
-    _o.set(_j, "rtekind", _p?.rtekind);
-    _o.set(_j, "relid", _p?.relid);
-    _o.set(_j, "inh", _p?.inh);
-    _o.set(_j, "relkind", _p?.relkind);
-    _o.set(_j, "rellockmode", _p?.rellockmode);
-    _o.set(_j, "perminfoindex", _p?.perminfoindex);
-    _o.set(_j, "tablesample", _p?.tablesample);
-    _o.set(_j, "subquery", _p?.subquery);
-    _o.set(_j, "security_barrier", _p?.security_barrier);
-    _o.set(_j, "jointype", _p?.jointype);
-    _o.set(_j, "joinmergedcols", _p?.joinmergedcols);
-    _o.set(_j, "joinaliasvars", _p?.joinaliasvars);
-    _o.set(_j, "joinleftcols", _p?.joinleftcols);
-    _o.set(_j, "joinrightcols", _p?.joinrightcols);
-    _o.set(_j, "join_using_alias", _p?.join_using_alias);
-    _o.set(_j, "functions", _p?.functions);
-    _o.set(_j, "funcordinality", _p?.funcordinality);
-    _o.set(_j, "tablefunc", _p?.tablefunc);
-    _o.set(_j, "values_lists", _p?.values_lists);
-    _o.set(_j, "ctename", _p?.ctename);
-    _o.set(_j, "ctelevelsup", _p?.ctelevelsup);
-    _o.set(_j, "self_reference", _p?.self_reference);
-    _o.set(_j, "coltypes", _p?.coltypes);
-    _o.set(_j, "coltypmods", _p?.coltypmods);
-    _o.set(_j, "colcollations", _p?.colcollations);
-    _o.set(_j, "enrname", _p?.enrname);
-    _o.set(_j, "enrtuples", _p?.enrtuples);
-    _o.set(_j, "lateral", _p?.lateral);
-    _o.set(_j, "inFromCl", _p?.inFromCl);
-    _o.set(_j, "securityQuals", _p?.securityQuals);
+    _o.set(_j, 'alias', _p?.alias);
+    _o.set(_j, 'eref', _p?.eref);
+    _o.set(_j, 'rtekind', _p?.rtekind);
+    _o.set(_j, 'relid', _p?.relid);
+    _o.set(_j, 'inh', _p?.inh);
+    _o.set(_j, 'relkind', _p?.relkind);
+    _o.set(_j, 'rellockmode', _p?.rellockmode);
+    _o.set(_j, 'perminfoindex', _p?.perminfoindex);
+    _o.set(_j, 'tablesample', _p?.tablesample);
+    _o.set(_j, 'subquery', _p?.subquery);
+    _o.set(_j, 'security_barrier', _p?.security_barrier);
+    _o.set(_j, 'jointype', _p?.jointype);
+    _o.set(_j, 'joinmergedcols', _p?.joinmergedcols);
+    _o.set(_j, 'joinaliasvars', _p?.joinaliasvars);
+    _o.set(_j, 'joinleftcols', _p?.joinleftcols);
+    _o.set(_j, 'joinrightcols', _p?.joinrightcols);
+    _o.set(_j, 'join_using_alias', _p?.join_using_alias);
+    _o.set(_j, 'functions', _p?.functions);
+    _o.set(_j, 'funcordinality', _p?.funcordinality);
+    _o.set(_j, 'tablefunc', _p?.tablefunc);
+    _o.set(_j, 'values_lists', _p?.values_lists);
+    _o.set(_j, 'ctename', _p?.ctename);
+    _o.set(_j, 'ctelevelsup', _p?.ctelevelsup);
+    _o.set(_j, 'self_reference', _p?.self_reference);
+    _o.set(_j, 'coltypes', _p?.coltypes);
+    _o.set(_j, 'coltypmods', _p?.coltypmods);
+    _o.set(_j, 'colcollations', _p?.colcollations);
+    _o.set(_j, 'enrname', _p?.enrname);
+    _o.set(_j, 'enrtuples', _p?.enrtuples);
+    _o.set(_j, 'lateral', _p?.lateral);
+    _o.set(_j, 'inFromCl', _p?.inFromCl);
+    _o.set(_j, 'securityQuals', _p?.securityQuals);
     return {
       RangeTblEntry: _j
     };
@@ -1541,13 +1541,13 @@ export default {
     RTEPermissionInfo: RTEPermissionInfo;
   } {
     const _j = {} as RTEPermissionInfo;
-    _o.set(_j, "relid", _p?.relid);
-    _o.set(_j, "inh", _p?.inh);
-    _o.set(_j, "requiredPerms", _p?.requiredPerms);
-    _o.set(_j, "checkAsUser", _p?.checkAsUser);
-    _o.set(_j, "selectedCols", _p?.selectedCols);
-    _o.set(_j, "insertedCols", _p?.insertedCols);
-    _o.set(_j, "updatedCols", _p?.updatedCols);
+    _o.set(_j, 'relid', _p?.relid);
+    _o.set(_j, 'inh', _p?.inh);
+    _o.set(_j, 'requiredPerms', _p?.requiredPerms);
+    _o.set(_j, 'checkAsUser', _p?.checkAsUser);
+    _o.set(_j, 'selectedCols', _p?.selectedCols);
+    _o.set(_j, 'insertedCols', _p?.insertedCols);
+    _o.set(_j, 'updatedCols', _p?.updatedCols);
     return {
       RTEPermissionInfo: _j
     };
@@ -1556,13 +1556,13 @@ export default {
     RangeTblFunction: RangeTblFunction;
   } {
     const _j = {} as RangeTblFunction;
-    _o.set(_j, "funcexpr", _p?.funcexpr);
-    _o.set(_j, "funccolcount", _p?.funccolcount);
-    _o.set(_j, "funccolnames", _p?.funccolnames);
-    _o.set(_j, "funccoltypes", _p?.funccoltypes);
-    _o.set(_j, "funccoltypmods", _p?.funccoltypmods);
-    _o.set(_j, "funccolcollations", _p?.funccolcollations);
-    _o.set(_j, "funcparams", _p?.funcparams);
+    _o.set(_j, 'funcexpr', _p?.funcexpr);
+    _o.set(_j, 'funccolcount', _p?.funccolcount);
+    _o.set(_j, 'funccolnames', _p?.funccolnames);
+    _o.set(_j, 'funccoltypes', _p?.funccoltypes);
+    _o.set(_j, 'funccoltypmods', _p?.funccoltypmods);
+    _o.set(_j, 'funccolcollations', _p?.funccolcollations);
+    _o.set(_j, 'funcparams', _p?.funcparams);
     return {
       RangeTblFunction: _j
     };
@@ -1571,9 +1571,9 @@ export default {
     TableSampleClause: TableSampleClause;
   } {
     const _j = {} as TableSampleClause;
-    _o.set(_j, "tsmhandler", _p?.tsmhandler);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "repeatable", _p?.repeatable);
+    _o.set(_j, 'tsmhandler', _p?.tsmhandler);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'repeatable', _p?.repeatable);
     return {
       TableSampleClause: _j
     };
@@ -1582,11 +1582,11 @@ export default {
     WithCheckOption: WithCheckOption;
   } {
     const _j = {} as WithCheckOption;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "relname", _p?.relname);
-    _o.set(_j, "polname", _p?.polname);
-    _o.set(_j, "qual", _p?.qual);
-    _o.set(_j, "cascaded", _p?.cascaded);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'relname', _p?.relname);
+    _o.set(_j, 'polname', _p?.polname);
+    _o.set(_j, 'qual', _p?.qual);
+    _o.set(_j, 'cascaded', _p?.cascaded);
     return {
       WithCheckOption: _j
     };
@@ -1595,11 +1595,11 @@ export default {
     SortGroupClause: SortGroupClause;
   } {
     const _j = {} as SortGroupClause;
-    _o.set(_j, "tleSortGroupRef", _p?.tleSortGroupRef);
-    _o.set(_j, "eqop", _p?.eqop);
-    _o.set(_j, "sortop", _p?.sortop);
-    _o.set(_j, "nulls_first", _p?.nulls_first);
-    _o.set(_j, "hashable", _p?.hashable);
+    _o.set(_j, 'tleSortGroupRef', _p?.tleSortGroupRef);
+    _o.set(_j, 'eqop', _p?.eqop);
+    _o.set(_j, 'sortop', _p?.sortop);
+    _o.set(_j, 'nulls_first', _p?.nulls_first);
+    _o.set(_j, 'hashable', _p?.hashable);
     return {
       SortGroupClause: _j
     };
@@ -1608,9 +1608,9 @@ export default {
     GroupingSet: GroupingSet;
   } {
     const _j = {} as GroupingSet;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "content", _p?.content);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'content', _p?.content);
+    _o.set(_j, 'location', _p?.location);
     return {
       GroupingSet: _j
     };
@@ -1619,20 +1619,20 @@ export default {
     WindowClause: WindowClause;
   } {
     const _j = {} as WindowClause;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "refname", _p?.refname);
-    _o.set(_j, "partitionClause", _p?.partitionClause);
-    _o.set(_j, "orderClause", _p?.orderClause);
-    _o.set(_j, "frameOptions", _p?.frameOptions);
-    _o.set(_j, "startOffset", _p?.startOffset);
-    _o.set(_j, "endOffset", _p?.endOffset);
-    _o.set(_j, "startInRangeFunc", _p?.startInRangeFunc);
-    _o.set(_j, "endInRangeFunc", _p?.endInRangeFunc);
-    _o.set(_j, "inRangeColl", _p?.inRangeColl);
-    _o.set(_j, "inRangeAsc", _p?.inRangeAsc);
-    _o.set(_j, "inRangeNullsFirst", _p?.inRangeNullsFirst);
-    _o.set(_j, "winref", _p?.winref);
-    _o.set(_j, "copiedOrder", _p?.copiedOrder);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'refname', _p?.refname);
+    _o.set(_j, 'partitionClause', _p?.partitionClause);
+    _o.set(_j, 'orderClause', _p?.orderClause);
+    _o.set(_j, 'frameOptions', _p?.frameOptions);
+    _o.set(_j, 'startOffset', _p?.startOffset);
+    _o.set(_j, 'endOffset', _p?.endOffset);
+    _o.set(_j, 'startInRangeFunc', _p?.startInRangeFunc);
+    _o.set(_j, 'endInRangeFunc', _p?.endInRangeFunc);
+    _o.set(_j, 'inRangeColl', _p?.inRangeColl);
+    _o.set(_j, 'inRangeAsc', _p?.inRangeAsc);
+    _o.set(_j, 'inRangeNullsFirst', _p?.inRangeNullsFirst);
+    _o.set(_j, 'winref', _p?.winref);
+    _o.set(_j, 'copiedOrder', _p?.copiedOrder);
     return {
       WindowClause: _j
     };
@@ -1641,10 +1641,10 @@ export default {
     RowMarkClause: RowMarkClause;
   } {
     const _j = {} as RowMarkClause;
-    _o.set(_j, "rti", _p?.rti);
-    _o.set(_j, "strength", _p?.strength);
-    _o.set(_j, "waitPolicy", _p?.waitPolicy);
-    _o.set(_j, "pushedDown", _p?.pushedDown);
+    _o.set(_j, 'rti', _p?.rti);
+    _o.set(_j, 'strength', _p?.strength);
+    _o.set(_j, 'waitPolicy', _p?.waitPolicy);
+    _o.set(_j, 'pushedDown', _p?.pushedDown);
     return {
       RowMarkClause: _j
     };
@@ -1653,9 +1653,9 @@ export default {
     WithClause: WithClause;
   } {
     const _j = {} as WithClause;
-    _o.set(_j, "ctes", _p?.ctes);
-    _o.set(_j, "recursive", _p?.recursive);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'ctes', _p?.ctes);
+    _o.set(_j, 'recursive', _p?.recursive);
+    _o.set(_j, 'location', _p?.location);
     return {
       WithClause: _j
     };
@@ -1664,10 +1664,10 @@ export default {
     InferClause: InferClause;
   } {
     const _j = {} as InferClause;
-    _o.set(_j, "indexElems", _p?.indexElems);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "conname", _p?.conname);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'indexElems', _p?.indexElems);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'conname', _p?.conname);
+    _o.set(_j, 'location', _p?.location);
     return {
       InferClause: _j
     };
@@ -1676,11 +1676,11 @@ export default {
     OnConflictClause: OnConflictClause;
   } {
     const _j = {} as OnConflictClause;
-    _o.set(_j, "action", _p?.action);
-    _o.set(_j, "infer", _p?.infer);
-    _o.set(_j, "targetList", _p?.targetList);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'action', _p?.action);
+    _o.set(_j, 'infer', _p?.infer);
+    _o.set(_j, 'targetList', _p?.targetList);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'location', _p?.location);
     return {
       OnConflictClause: _j
     };
@@ -1689,10 +1689,10 @@ export default {
     CTESearchClause: CTESearchClause;
   } {
     const _j = {} as CTESearchClause;
-    _o.set(_j, "search_col_list", _p?.search_col_list);
-    _o.set(_j, "search_breadth_first", _p?.search_breadth_first);
-    _o.set(_j, "search_seq_column", _p?.search_seq_column);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'search_col_list', _p?.search_col_list);
+    _o.set(_j, 'search_breadth_first', _p?.search_breadth_first);
+    _o.set(_j, 'search_seq_column', _p?.search_seq_column);
+    _o.set(_j, 'location', _p?.location);
     return {
       CTESearchClause: _j
     };
@@ -1701,16 +1701,16 @@ export default {
     CTECycleClause: CTECycleClause;
   } {
     const _j = {} as CTECycleClause;
-    _o.set(_j, "cycle_col_list", _p?.cycle_col_list);
-    _o.set(_j, "cycle_mark_column", _p?.cycle_mark_column);
-    _o.set(_j, "cycle_mark_value", _p?.cycle_mark_value);
-    _o.set(_j, "cycle_mark_default", _p?.cycle_mark_default);
-    _o.set(_j, "cycle_path_column", _p?.cycle_path_column);
-    _o.set(_j, "location", _p?.location);
-    _o.set(_j, "cycle_mark_type", _p?.cycle_mark_type);
-    _o.set(_j, "cycle_mark_typmod", _p?.cycle_mark_typmod);
-    _o.set(_j, "cycle_mark_collation", _p?.cycle_mark_collation);
-    _o.set(_j, "cycle_mark_neop", _p?.cycle_mark_neop);
+    _o.set(_j, 'cycle_col_list', _p?.cycle_col_list);
+    _o.set(_j, 'cycle_mark_column', _p?.cycle_mark_column);
+    _o.set(_j, 'cycle_mark_value', _p?.cycle_mark_value);
+    _o.set(_j, 'cycle_mark_default', _p?.cycle_mark_default);
+    _o.set(_j, 'cycle_path_column', _p?.cycle_path_column);
+    _o.set(_j, 'location', _p?.location);
+    _o.set(_j, 'cycle_mark_type', _p?.cycle_mark_type);
+    _o.set(_j, 'cycle_mark_typmod', _p?.cycle_mark_typmod);
+    _o.set(_j, 'cycle_mark_collation', _p?.cycle_mark_collation);
+    _o.set(_j, 'cycle_mark_neop', _p?.cycle_mark_neop);
     return {
       CTECycleClause: _j
     };
@@ -1719,19 +1719,19 @@ export default {
     CommonTableExpr: CommonTableExpr;
   } {
     const _j = {} as CommonTableExpr;
-    _o.set(_j, "ctename", _p?.ctename);
-    _o.set(_j, "aliascolnames", _p?.aliascolnames);
-    _o.set(_j, "ctematerialized", _p?.ctematerialized);
-    _o.set(_j, "ctequery", _p?.ctequery);
-    _o.set(_j, "search_clause", _p?.search_clause);
-    _o.set(_j, "cycle_clause", _p?.cycle_clause);
-    _o.set(_j, "location", _p?.location);
-    _o.set(_j, "cterecursive", _p?.cterecursive);
-    _o.set(_j, "cterefcount", _p?.cterefcount);
-    _o.set(_j, "ctecolnames", _p?.ctecolnames);
-    _o.set(_j, "ctecoltypes", _p?.ctecoltypes);
-    _o.set(_j, "ctecoltypmods", _p?.ctecoltypmods);
-    _o.set(_j, "ctecolcollations", _p?.ctecolcollations);
+    _o.set(_j, 'ctename', _p?.ctename);
+    _o.set(_j, 'aliascolnames', _p?.aliascolnames);
+    _o.set(_j, 'ctematerialized', _p?.ctematerialized);
+    _o.set(_j, 'ctequery', _p?.ctequery);
+    _o.set(_j, 'search_clause', _p?.search_clause);
+    _o.set(_j, 'cycle_clause', _p?.cycle_clause);
+    _o.set(_j, 'location', _p?.location);
+    _o.set(_j, 'cterecursive', _p?.cterecursive);
+    _o.set(_j, 'cterefcount', _p?.cterefcount);
+    _o.set(_j, 'ctecolnames', _p?.ctecolnames);
+    _o.set(_j, 'ctecoltypes', _p?.ctecoltypes);
+    _o.set(_j, 'ctecoltypmods', _p?.ctecoltypmods);
+    _o.set(_j, 'ctecolcollations', _p?.ctecolcollations);
     return {
       CommonTableExpr: _j
     };
@@ -1740,12 +1740,12 @@ export default {
     MergeWhenClause: MergeWhenClause;
   } {
     const _j = {} as MergeWhenClause;
-    _o.set(_j, "matchKind", _p?.matchKind);
-    _o.set(_j, "commandType", _p?.commandType);
-    _o.set(_j, "override", _p?.override);
-    _o.set(_j, "condition", _p?.condition);
-    _o.set(_j, "targetList", _p?.targetList);
-    _o.set(_j, "values", _p?.values);
+    _o.set(_j, 'matchKind', _p?.matchKind);
+    _o.set(_j, 'commandType', _p?.commandType);
+    _o.set(_j, 'override', _p?.override);
+    _o.set(_j, 'condition', _p?.condition);
+    _o.set(_j, 'targetList', _p?.targetList);
+    _o.set(_j, 'values', _p?.values);
     return {
       MergeWhenClause: _j
     };
@@ -1754,9 +1754,9 @@ export default {
     TriggerTransition: TriggerTransition;
   } {
     const _j = {} as TriggerTransition;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "isNew", _p?.isNew);
-    _o.set(_j, "isTable", _p?.isTable);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'isNew', _p?.isNew);
+    _o.set(_j, 'isTable', _p?.isTable);
     return {
       TriggerTransition: _j
     };
@@ -1765,8 +1765,8 @@ export default {
     JsonOutput: JsonOutput;
   } {
     const _j = {} as JsonOutput;
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "returning", _p?.returning);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'returning', _p?.returning);
     return {
       JsonOutput: _j
     };
@@ -1775,8 +1775,8 @@ export default {
     JsonArgument: JsonArgument;
   } {
     const _j = {} as JsonArgument;
-    _o.set(_j, "val", _p?.val);
-    _o.set(_j, "name", _p?.name);
+    _o.set(_j, 'val', _p?.val);
+    _o.set(_j, 'name', _p?.name);
     return {
       JsonArgument: _j
     };
@@ -1785,17 +1785,17 @@ export default {
     JsonFuncExpr: JsonFuncExpr;
   } {
     const _j = {} as JsonFuncExpr;
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "column_name", _p?.column_name);
-    _o.set(_j, "context_item", _p?.context_item);
-    _o.set(_j, "pathspec", _p?.pathspec);
-    _o.set(_j, "passing", _p?.passing);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "on_empty", _p?.on_empty);
-    _o.set(_j, "on_error", _p?.on_error);
-    _o.set(_j, "wrapper", _p?.wrapper);
-    _o.set(_j, "quotes", _p?.quotes);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'column_name', _p?.column_name);
+    _o.set(_j, 'context_item', _p?.context_item);
+    _o.set(_j, 'pathspec', _p?.pathspec);
+    _o.set(_j, 'passing', _p?.passing);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'on_empty', _p?.on_empty);
+    _o.set(_j, 'on_error', _p?.on_error);
+    _o.set(_j, 'wrapper', _p?.wrapper);
+    _o.set(_j, 'quotes', _p?.quotes);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonFuncExpr: _j
     };
@@ -1804,10 +1804,10 @@ export default {
     JsonTablePathSpec: JsonTablePathSpec;
   } {
     const _j = {} as JsonTablePathSpec;
-    _o.set(_j, "string", _p?.string);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "name_location", _p?.name_location);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'string', _p?.string);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'name_location', _p?.name_location);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonTablePathSpec: _j
     };
@@ -1816,14 +1816,14 @@ export default {
     JsonTable: JsonTable;
   } {
     const _j = {} as JsonTable;
-    _o.set(_j, "context_item", _p?.context_item);
-    _o.set(_j, "pathspec", _p?.pathspec);
-    _o.set(_j, "passing", _p?.passing);
-    _o.set(_j, "columns", _p?.columns);
-    _o.set(_j, "on_error", _p?.on_error);
-    _o.set(_j, "alias", _p?.alias);
-    _o.set(_j, "lateral", _p?.lateral);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'context_item', _p?.context_item);
+    _o.set(_j, 'pathspec', _p?.pathspec);
+    _o.set(_j, 'passing', _p?.passing);
+    _o.set(_j, 'columns', _p?.columns);
+    _o.set(_j, 'on_error', _p?.on_error);
+    _o.set(_j, 'alias', _p?.alias);
+    _o.set(_j, 'lateral', _p?.lateral);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonTable: _j
     };
@@ -1832,17 +1832,17 @@ export default {
     JsonTableColumn: JsonTableColumn;
   } {
     const _j = {} as JsonTableColumn;
-    _o.set(_j, "coltype", _p?.coltype);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "pathspec", _p?.pathspec);
-    _o.set(_j, "format", _p?.format);
-    _o.set(_j, "wrapper", _p?.wrapper);
-    _o.set(_j, "quotes", _p?.quotes);
-    _o.set(_j, "columns", _p?.columns);
-    _o.set(_j, "on_empty", _p?.on_empty);
-    _o.set(_j, "on_error", _p?.on_error);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'coltype', _p?.coltype);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'pathspec', _p?.pathspec);
+    _o.set(_j, 'format', _p?.format);
+    _o.set(_j, 'wrapper', _p?.wrapper);
+    _o.set(_j, 'quotes', _p?.quotes);
+    _o.set(_j, 'columns', _p?.columns);
+    _o.set(_j, 'on_empty', _p?.on_empty);
+    _o.set(_j, 'on_error', _p?.on_error);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonTableColumn: _j
     };
@@ -1851,8 +1851,8 @@ export default {
     JsonKeyValue: JsonKeyValue;
   } {
     const _j = {} as JsonKeyValue;
-    _o.set(_j, "key", _p?.key);
-    _o.set(_j, "value", _p?.value);
+    _o.set(_j, 'key', _p?.key);
+    _o.set(_j, 'value', _p?.value);
     return {
       JsonKeyValue: _j
     };
@@ -1861,10 +1861,10 @@ export default {
     JsonParseExpr: JsonParseExpr;
   } {
     const _j = {} as JsonParseExpr;
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "unique_keys", _p?.unique_keys);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'unique_keys', _p?.unique_keys);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonParseExpr: _j
     };
@@ -1873,9 +1873,9 @@ export default {
     JsonScalarExpr: JsonScalarExpr;
   } {
     const _j = {} as JsonScalarExpr;
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonScalarExpr: _j
     };
@@ -1884,9 +1884,9 @@ export default {
     JsonSerializeExpr: JsonSerializeExpr;
   } {
     const _j = {} as JsonSerializeExpr;
-    _o.set(_j, "expr", _p?.expr);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'expr', _p?.expr);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonSerializeExpr: _j
     };
@@ -1895,11 +1895,11 @@ export default {
     JsonObjectConstructor: JsonObjectConstructor;
   } {
     const _j = {} as JsonObjectConstructor;
-    _o.set(_j, "exprs", _p?.exprs);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "unique", _p?.unique);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'exprs', _p?.exprs);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'absent_on_null', _p?.absent_on_null);
+    _o.set(_j, 'unique', _p?.unique);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonObjectConstructor: _j
     };
@@ -1908,10 +1908,10 @@ export default {
     JsonArrayConstructor: JsonArrayConstructor;
   } {
     const _j = {} as JsonArrayConstructor;
-    _o.set(_j, "exprs", _p?.exprs);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'exprs', _p?.exprs);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'absent_on_null', _p?.absent_on_null);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonArrayConstructor: _j
     };
@@ -1920,11 +1920,11 @@ export default {
     JsonArrayQueryConstructor: JsonArrayQueryConstructor;
   } {
     const _j = {} as JsonArrayQueryConstructor;
-    _o.set(_j, "query", _p?.query);
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "format", _p?.format);
-    _o.set(_j, "absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'query', _p?.query);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'format', _p?.format);
+    _o.set(_j, 'absent_on_null', _p?.absent_on_null);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonArrayQueryConstructor: _j
     };
@@ -1933,11 +1933,11 @@ export default {
     JsonAggConstructor: JsonAggConstructor;
   } {
     const _j = {} as JsonAggConstructor;
-    _o.set(_j, "output", _p?.output);
-    _o.set(_j, "agg_filter", _p?.agg_filter);
-    _o.set(_j, "agg_order", _p?.agg_order);
-    _o.set(_j, "over", _p?.over);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'output', _p?.output);
+    _o.set(_j, 'agg_filter', _p?.agg_filter);
+    _o.set(_j, 'agg_order', _p?.agg_order);
+    _o.set(_j, 'over', _p?.over);
+    _o.set(_j, 'location', _p?.location);
     return {
       JsonAggConstructor: _j
     };
@@ -1946,10 +1946,10 @@ export default {
     JsonObjectAgg: JsonObjectAgg;
   } {
     const _j = {} as JsonObjectAgg;
-    _o.set(_j, "constructor", _p?.constructor);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "absent_on_null", _p?.absent_on_null);
-    _o.set(_j, "unique", _p?.unique);
+    _o.set(_j, 'constructor', _p?.constructor);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'absent_on_null', _p?.absent_on_null);
+    _o.set(_j, 'unique', _p?.unique);
     return {
       JsonObjectAgg: _j
     };
@@ -1958,9 +1958,9 @@ export default {
     JsonArrayAgg: JsonArrayAgg;
   } {
     const _j = {} as JsonArrayAgg;
-    _o.set(_j, "constructor", _p?.constructor);
-    _o.set(_j, "arg", _p?.arg);
-    _o.set(_j, "absent_on_null", _p?.absent_on_null);
+    _o.set(_j, 'constructor', _p?.constructor);
+    _o.set(_j, 'arg', _p?.arg);
+    _o.set(_j, 'absent_on_null', _p?.absent_on_null);
     return {
       JsonArrayAgg: _j
     };
@@ -1969,9 +1969,9 @@ export default {
     RawStmt: RawStmt;
   } {
     const _j = {} as RawStmt;
-    _o.set(_j, "stmt", _p?.stmt);
-    _o.set(_j, "stmt_location", _p?.stmt_location);
-    _o.set(_j, "stmt_len", _p?.stmt_len);
+    _o.set(_j, 'stmt', _p?.stmt);
+    _o.set(_j, 'stmt_location', _p?.stmt_location);
+    _o.set(_j, 'stmt_len', _p?.stmt_len);
     return {
       RawStmt: _j
     };
@@ -1980,13 +1980,13 @@ export default {
     InsertStmt: InsertStmt;
   } {
     const _j = {} as InsertStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "cols", _p?.cols);
-    _o.set(_j, "selectStmt", _p?.selectStmt);
-    _o.set(_j, "onConflictClause", _p?.onConflictClause);
-    _o.set(_j, "returningList", _p?.returningList);
-    _o.set(_j, "withClause", _p?.withClause);
-    _o.set(_j, "override", _p?.override);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'cols', _p?.cols);
+    _o.set(_j, 'selectStmt', _p?.selectStmt);
+    _o.set(_j, 'onConflictClause', _p?.onConflictClause);
+    _o.set(_j, 'returningList', _p?.returningList);
+    _o.set(_j, 'withClause', _p?.withClause);
+    _o.set(_j, 'override', _p?.override);
     return {
       InsertStmt: _j
     };
@@ -1995,11 +1995,11 @@ export default {
     DeleteStmt: DeleteStmt;
   } {
     const _j = {} as DeleteStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "usingClause", _p?.usingClause);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "returningList", _p?.returningList);
-    _o.set(_j, "withClause", _p?.withClause);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'usingClause', _p?.usingClause);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'returningList', _p?.returningList);
+    _o.set(_j, 'withClause', _p?.withClause);
     return {
       DeleteStmt: _j
     };
@@ -2008,12 +2008,12 @@ export default {
     UpdateStmt: UpdateStmt;
   } {
     const _j = {} as UpdateStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "targetList", _p?.targetList);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "fromClause", _p?.fromClause);
-    _o.set(_j, "returningList", _p?.returningList);
-    _o.set(_j, "withClause", _p?.withClause);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'targetList', _p?.targetList);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'fromClause', _p?.fromClause);
+    _o.set(_j, 'returningList', _p?.returningList);
+    _o.set(_j, 'withClause', _p?.withClause);
     return {
       UpdateStmt: _j
     };
@@ -2022,12 +2022,12 @@ export default {
     MergeStmt: MergeStmt;
   } {
     const _j = {} as MergeStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "sourceRelation", _p?.sourceRelation);
-    _o.set(_j, "joinCondition", _p?.joinCondition);
-    _o.set(_j, "mergeWhenClauses", _p?.mergeWhenClauses);
-    _o.set(_j, "returningList", _p?.returningList);
-    _o.set(_j, "withClause", _p?.withClause);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'sourceRelation', _p?.sourceRelation);
+    _o.set(_j, 'joinCondition', _p?.joinCondition);
+    _o.set(_j, 'mergeWhenClauses', _p?.mergeWhenClauses);
+    _o.set(_j, 'returningList', _p?.returningList);
+    _o.set(_j, 'withClause', _p?.withClause);
     return {
       MergeStmt: _j
     };
@@ -2036,26 +2036,26 @@ export default {
     SelectStmt: SelectStmt;
   } {
     const _j = {} as SelectStmt;
-    _o.set(_j, "distinctClause", _p?.distinctClause);
-    _o.set(_j, "intoClause", _p?.intoClause);
-    _o.set(_j, "targetList", _p?.targetList);
-    _o.set(_j, "fromClause", _p?.fromClause);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "groupClause", _p?.groupClause);
-    _o.set(_j, "groupDistinct", _p?.groupDistinct);
-    _o.set(_j, "havingClause", _p?.havingClause);
-    _o.set(_j, "windowClause", _p?.windowClause);
-    _o.set(_j, "valuesLists", _p?.valuesLists);
-    _o.set(_j, "sortClause", _p?.sortClause);
-    _o.set(_j, "limitOffset", _p?.limitOffset);
-    _o.set(_j, "limitCount", _p?.limitCount);
-    _o.set(_j, "limitOption", _p?.limitOption);
-    _o.set(_j, "lockingClause", _p?.lockingClause);
-    _o.set(_j, "withClause", _p?.withClause);
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "all", _p?.all);
-    _o.set(_j, "larg", _p?.larg);
-    _o.set(_j, "rarg", _p?.rarg);
+    _o.set(_j, 'distinctClause', _p?.distinctClause);
+    _o.set(_j, 'intoClause', _p?.intoClause);
+    _o.set(_j, 'targetList', _p?.targetList);
+    _o.set(_j, 'fromClause', _p?.fromClause);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'groupClause', _p?.groupClause);
+    _o.set(_j, 'groupDistinct', _p?.groupDistinct);
+    _o.set(_j, 'havingClause', _p?.havingClause);
+    _o.set(_j, 'windowClause', _p?.windowClause);
+    _o.set(_j, 'valuesLists', _p?.valuesLists);
+    _o.set(_j, 'sortClause', _p?.sortClause);
+    _o.set(_j, 'limitOffset', _p?.limitOffset);
+    _o.set(_j, 'limitCount', _p?.limitCount);
+    _o.set(_j, 'limitOption', _p?.limitOption);
+    _o.set(_j, 'lockingClause', _p?.lockingClause);
+    _o.set(_j, 'withClause', _p?.withClause);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'all', _p?.all);
+    _o.set(_j, 'larg', _p?.larg);
+    _o.set(_j, 'rarg', _p?.rarg);
     return {
       SelectStmt: _j
     };
@@ -2064,14 +2064,14 @@ export default {
     SetOperationStmt: SetOperationStmt;
   } {
     const _j = {} as SetOperationStmt;
-    _o.set(_j, "op", _p?.op);
-    _o.set(_j, "all", _p?.all);
-    _o.set(_j, "larg", _p?.larg);
-    _o.set(_j, "rarg", _p?.rarg);
-    _o.set(_j, "colTypes", _p?.colTypes);
-    _o.set(_j, "colTypmods", _p?.colTypmods);
-    _o.set(_j, "colCollations", _p?.colCollations);
-    _o.set(_j, "groupClauses", _p?.groupClauses);
+    _o.set(_j, 'op', _p?.op);
+    _o.set(_j, 'all', _p?.all);
+    _o.set(_j, 'larg', _p?.larg);
+    _o.set(_j, 'rarg', _p?.rarg);
+    _o.set(_j, 'colTypes', _p?.colTypes);
+    _o.set(_j, 'colTypmods', _p?.colTypmods);
+    _o.set(_j, 'colCollations', _p?.colCollations);
+    _o.set(_j, 'groupClauses', _p?.groupClauses);
     return {
       SetOperationStmt: _j
     };
@@ -2080,7 +2080,7 @@ export default {
     ReturnStmt: ReturnStmt;
   } {
     const _j = {} as ReturnStmt;
-    _o.set(_j, "returnval", _p?.returnval);
+    _o.set(_j, 'returnval', _p?.returnval);
     return {
       ReturnStmt: _j
     };
@@ -2089,11 +2089,11 @@ export default {
     PLAssignStmt: PLAssignStmt;
   } {
     const _j = {} as PLAssignStmt;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "indirection", _p?.indirection);
-    _o.set(_j, "nnames", _p?.nnames);
-    _o.set(_j, "val", _p?.val);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'indirection', _p?.indirection);
+    _o.set(_j, 'nnames', _p?.nnames);
+    _o.set(_j, 'val', _p?.val);
+    _o.set(_j, 'location', _p?.location);
     return {
       PLAssignStmt: _j
     };
@@ -2102,10 +2102,10 @@ export default {
     CreateSchemaStmt: CreateSchemaStmt;
   } {
     const _j = {} as CreateSchemaStmt;
-    _o.set(_j, "schemaname", _p?.schemaname);
-    _o.set(_j, "authrole", _p?.authrole);
-    _o.set(_j, "schemaElts", _p?.schemaElts);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, 'schemaname', _p?.schemaname);
+    _o.set(_j, 'authrole', _p?.authrole);
+    _o.set(_j, 'schemaElts', _p?.schemaElts);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
     return {
       CreateSchemaStmt: _j
     };
@@ -2114,10 +2114,10 @@ export default {
     AlterTableStmt: AlterTableStmt;
   } {
     const _j = {} as AlterTableStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "cmds", _p?.cmds);
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'cmds', _p?.cmds);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       AlterTableStmt: _j
     };
@@ -2126,8 +2126,8 @@ export default {
     ReplicaIdentityStmt: ReplicaIdentityStmt;
   } {
     const _j = {} as ReplicaIdentityStmt;
-    _o.set(_j, "identity_type", _p?.identity_type);
-    _o.set(_j, "name", _p?.name);
+    _o.set(_j, 'identity_type', _p?.identity_type);
+    _o.set(_j, 'name', _p?.name);
     return {
       ReplicaIdentityStmt: _j
     };
@@ -2136,14 +2136,14 @@ export default {
     AlterTableCmd: AlterTableCmd;
   } {
     const _j = {} as AlterTableCmd;
-    _o.set(_j, "subtype", _p?.subtype);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "num", _p?.num);
-    _o.set(_j, "newowner", _p?.newowner);
-    _o.set(_j, "def", _p?.def);
-    _o.set(_j, "behavior", _p?.behavior);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
-    _o.set(_j, "recurse", _p?.recurse);
+    _o.set(_j, 'subtype', _p?.subtype);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'num', _p?.num);
+    _o.set(_j, 'newowner', _p?.newowner);
+    _o.set(_j, 'def', _p?.def);
+    _o.set(_j, 'behavior', _p?.behavior);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
+    _o.set(_j, 'recurse', _p?.recurse);
     return {
       AlterTableCmd: _j
     };
@@ -2152,7 +2152,7 @@ export default {
     AlterCollationStmt: AlterCollationStmt;
   } {
     const _j = {} as AlterCollationStmt;
-    _o.set(_j, "collname", _p?.collname);
+    _o.set(_j, 'collname', _p?.collname);
     return {
       AlterCollationStmt: _j
     };
@@ -2161,12 +2161,12 @@ export default {
     AlterDomainStmt: AlterDomainStmt;
   } {
     const _j = {} as AlterDomainStmt;
-    _o.set(_j, "subtype", _p?.subtype);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "def", _p?.def);
-    _o.set(_j, "behavior", _p?.behavior);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'subtype', _p?.subtype);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'def', _p?.def);
+    _o.set(_j, 'behavior', _p?.behavior);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       AlterDomainStmt: _j
     };
@@ -2175,15 +2175,15 @@ export default {
     GrantStmt: GrantStmt;
   } {
     const _j = {} as GrantStmt;
-    _o.set(_j, "is_grant", _p?.is_grant);
-    _o.set(_j, "targtype", _p?.targtype);
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "objects", _p?.objects);
-    _o.set(_j, "privileges", _p?.privileges);
-    _o.set(_j, "grantees", _p?.grantees);
-    _o.set(_j, "grant_option", _p?.grant_option);
-    _o.set(_j, "grantor", _p?.grantor);
-    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, 'is_grant', _p?.is_grant);
+    _o.set(_j, 'targtype', _p?.targtype);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'objects', _p?.objects);
+    _o.set(_j, 'privileges', _p?.privileges);
+    _o.set(_j, 'grantees', _p?.grantees);
+    _o.set(_j, 'grant_option', _p?.grant_option);
+    _o.set(_j, 'grantor', _p?.grantor);
+    _o.set(_j, 'behavior', _p?.behavior);
     return {
       GrantStmt: _j
     };
@@ -2192,10 +2192,10 @@ export default {
     ObjectWithArgs: ObjectWithArgs;
   } {
     const _j = {} as ObjectWithArgs;
-    _o.set(_j, "objname", _p?.objname);
-    _o.set(_j, "objargs", _p?.objargs);
-    _o.set(_j, "objfuncargs", _p?.objfuncargs);
-    _o.set(_j, "args_unspecified", _p?.args_unspecified);
+    _o.set(_j, 'objname', _p?.objname);
+    _o.set(_j, 'objargs', _p?.objargs);
+    _o.set(_j, 'objfuncargs', _p?.objfuncargs);
+    _o.set(_j, 'args_unspecified', _p?.args_unspecified);
     return {
       ObjectWithArgs: _j
     };
@@ -2204,8 +2204,8 @@ export default {
     AccessPriv: AccessPriv;
   } {
     const _j = {} as AccessPriv;
-    _o.set(_j, "priv_name", _p?.priv_name);
-    _o.set(_j, "cols", _p?.cols);
+    _o.set(_j, 'priv_name', _p?.priv_name);
+    _o.set(_j, 'cols', _p?.cols);
     return {
       AccessPriv: _j
     };
@@ -2214,12 +2214,12 @@ export default {
     GrantRoleStmt: GrantRoleStmt;
   } {
     const _j = {} as GrantRoleStmt;
-    _o.set(_j, "granted_roles", _p?.granted_roles);
-    _o.set(_j, "grantee_roles", _p?.grantee_roles);
-    _o.set(_j, "is_grant", _p?.is_grant);
-    _o.set(_j, "opt", _p?.opt);
-    _o.set(_j, "grantor", _p?.grantor);
-    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, 'granted_roles', _p?.granted_roles);
+    _o.set(_j, 'grantee_roles', _p?.grantee_roles);
+    _o.set(_j, 'is_grant', _p?.is_grant);
+    _o.set(_j, 'opt', _p?.opt);
+    _o.set(_j, 'grantor', _p?.grantor);
+    _o.set(_j, 'behavior', _p?.behavior);
     return {
       GrantRoleStmt: _j
     };
@@ -2228,8 +2228,8 @@ export default {
     AlterDefaultPrivilegesStmt: AlterDefaultPrivilegesStmt;
   } {
     const _j = {} as AlterDefaultPrivilegesStmt;
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "action", _p?.action);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'action', _p?.action);
     return {
       AlterDefaultPrivilegesStmt: _j
     };
@@ -2238,14 +2238,14 @@ export default {
     CopyStmt: CopyStmt;
   } {
     const _j = {} as CopyStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "query", _p?.query);
-    _o.set(_j, "attlist", _p?.attlist);
-    _o.set(_j, "is_from", _p?.is_from);
-    _o.set(_j, "is_program", _p?.is_program);
-    _o.set(_j, "filename", _p?.filename);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "whereClause", _p?.whereClause);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'query', _p?.query);
+    _o.set(_j, 'attlist', _p?.attlist);
+    _o.set(_j, 'is_from', _p?.is_from);
+    _o.set(_j, 'is_program', _p?.is_program);
+    _o.set(_j, 'filename', _p?.filename);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'whereClause', _p?.whereClause);
     return {
       CopyStmt: _j
     };
@@ -2254,10 +2254,10 @@ export default {
     VariableSetStmt: VariableSetStmt;
   } {
     const _j = {} as VariableSetStmt;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "is_local", _p?.is_local);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'is_local', _p?.is_local);
     return {
       VariableSetStmt: _j
     };
@@ -2266,7 +2266,7 @@ export default {
     VariableShowStmt: VariableShowStmt;
   } {
     const _j = {} as VariableShowStmt;
-    _o.set(_j, "name", _p?.name);
+    _o.set(_j, 'name', _p?.name);
     return {
       VariableShowStmt: _j
     };
@@ -2275,18 +2275,18 @@ export default {
     CreateStmt: CreateStmt;
   } {
     const _j = {} as CreateStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "tableElts", _p?.tableElts);
-    _o.set(_j, "inhRelations", _p?.inhRelations);
-    _o.set(_j, "partbound", _p?.partbound);
-    _o.set(_j, "partspec", _p?.partspec);
-    _o.set(_j, "ofTypename", _p?.ofTypename);
-    _o.set(_j, "constraints", _p?.constraints);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "oncommit", _p?.oncommit);
-    _o.set(_j, "tablespacename", _p?.tablespacename);
-    _o.set(_j, "accessMethod", _p?.accessMethod);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'tableElts', _p?.tableElts);
+    _o.set(_j, 'inhRelations', _p?.inhRelations);
+    _o.set(_j, 'partbound', _p?.partbound);
+    _o.set(_j, 'partspec', _p?.partspec);
+    _o.set(_j, 'ofTypename', _p?.ofTypename);
+    _o.set(_j, 'constraints', _p?.constraints);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'oncommit', _p?.oncommit);
+    _o.set(_j, 'tablespacename', _p?.tablespacename);
+    _o.set(_j, 'accessMethod', _p?.accessMethod);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
     return {
       CreateStmt: _j
     };
@@ -2295,37 +2295,37 @@ export default {
     Constraint: Constraint;
   } {
     const _j = {} as Constraint;
-    _o.set(_j, "contype", _p?.contype);
-    _o.set(_j, "conname", _p?.conname);
-    _o.set(_j, "deferrable", _p?.deferrable);
-    _o.set(_j, "initdeferred", _p?.initdeferred);
-    _o.set(_j, "skip_validation", _p?.skip_validation);
-    _o.set(_j, "initially_valid", _p?.initially_valid);
-    _o.set(_j, "is_no_inherit", _p?.is_no_inherit);
-    _o.set(_j, "raw_expr", _p?.raw_expr);
-    _o.set(_j, "cooked_expr", _p?.cooked_expr);
-    _o.set(_j, "generated_when", _p?.generated_when);
-    _o.set(_j, "inhcount", _p?.inhcount);
-    _o.set(_j, "nulls_not_distinct", _p?.nulls_not_distinct);
-    _o.set(_j, "keys", _p?.keys);
-    _o.set(_j, "including", _p?.including);
-    _o.set(_j, "exclusions", _p?.exclusions);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "indexname", _p?.indexname);
-    _o.set(_j, "indexspace", _p?.indexspace);
-    _o.set(_j, "reset_default_tblspc", _p?.reset_default_tblspc);
-    _o.set(_j, "access_method", _p?.access_method);
-    _o.set(_j, "where_clause", _p?.where_clause);
-    _o.set(_j, "pktable", _p?.pktable);
-    _o.set(_j, "fk_attrs", _p?.fk_attrs);
-    _o.set(_j, "pk_attrs", _p?.pk_attrs);
-    _o.set(_j, "fk_matchtype", _p?.fk_matchtype);
-    _o.set(_j, "fk_upd_action", _p?.fk_upd_action);
-    _o.set(_j, "fk_del_action", _p?.fk_del_action);
-    _o.set(_j, "fk_del_set_cols", _p?.fk_del_set_cols);
-    _o.set(_j, "old_conpfeqop", _p?.old_conpfeqop);
-    _o.set(_j, "old_pktable_oid", _p?.old_pktable_oid);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'contype', _p?.contype);
+    _o.set(_j, 'conname', _p?.conname);
+    _o.set(_j, 'deferrable', _p?.deferrable);
+    _o.set(_j, 'initdeferred', _p?.initdeferred);
+    _o.set(_j, 'skip_validation', _p?.skip_validation);
+    _o.set(_j, 'initially_valid', _p?.initially_valid);
+    _o.set(_j, 'is_no_inherit', _p?.is_no_inherit);
+    _o.set(_j, 'raw_expr', _p?.raw_expr);
+    _o.set(_j, 'cooked_expr', _p?.cooked_expr);
+    _o.set(_j, 'generated_when', _p?.generated_when);
+    _o.set(_j, 'inhcount', _p?.inhcount);
+    _o.set(_j, 'nulls_not_distinct', _p?.nulls_not_distinct);
+    _o.set(_j, 'keys', _p?.keys);
+    _o.set(_j, 'including', _p?.including);
+    _o.set(_j, 'exclusions', _p?.exclusions);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'indexname', _p?.indexname);
+    _o.set(_j, 'indexspace', _p?.indexspace);
+    _o.set(_j, 'reset_default_tblspc', _p?.reset_default_tblspc);
+    _o.set(_j, 'access_method', _p?.access_method);
+    _o.set(_j, 'where_clause', _p?.where_clause);
+    _o.set(_j, 'pktable', _p?.pktable);
+    _o.set(_j, 'fk_attrs', _p?.fk_attrs);
+    _o.set(_j, 'pk_attrs', _p?.pk_attrs);
+    _o.set(_j, 'fk_matchtype', _p?.fk_matchtype);
+    _o.set(_j, 'fk_upd_action', _p?.fk_upd_action);
+    _o.set(_j, 'fk_del_action', _p?.fk_del_action);
+    _o.set(_j, 'fk_del_set_cols', _p?.fk_del_set_cols);
+    _o.set(_j, 'old_conpfeqop', _p?.old_conpfeqop);
+    _o.set(_j, 'old_pktable_oid', _p?.old_pktable_oid);
+    _o.set(_j, 'location', _p?.location);
     return {
       Constraint: _j
     };
@@ -2334,10 +2334,10 @@ export default {
     CreateTableSpaceStmt: CreateTableSpaceStmt;
   } {
     const _j = {} as CreateTableSpaceStmt;
-    _o.set(_j, "tablespacename", _p?.tablespacename);
-    _o.set(_j, "owner", _p?.owner);
-    _o.set(_j, "location", _p?.location);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'tablespacename', _p?.tablespacename);
+    _o.set(_j, 'owner', _p?.owner);
+    _o.set(_j, 'location', _p?.location);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateTableSpaceStmt: _j
     };
@@ -2346,8 +2346,8 @@ export default {
     DropTableSpaceStmt: DropTableSpaceStmt;
   } {
     const _j = {} as DropTableSpaceStmt;
-    _o.set(_j, "tablespacename", _p?.tablespacename);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'tablespacename', _p?.tablespacename);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       DropTableSpaceStmt: _j
     };
@@ -2356,9 +2356,9 @@ export default {
     AlterTableSpaceOptionsStmt: AlterTableSpaceOptionsStmt;
   } {
     const _j = {} as AlterTableSpaceOptionsStmt;
-    _o.set(_j, "tablespacename", _p?.tablespacename);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "isReset", _p?.isReset);
+    _o.set(_j, 'tablespacename', _p?.tablespacename);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'isReset', _p?.isReset);
     return {
       AlterTableSpaceOptionsStmt: _j
     };
@@ -2367,11 +2367,11 @@ export default {
     AlterTableMoveAllStmt: AlterTableMoveAllStmt;
   } {
     const _j = {} as AlterTableMoveAllStmt;
-    _o.set(_j, "orig_tablespacename", _p?.orig_tablespacename);
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "roles", _p?.roles);
-    _o.set(_j, "new_tablespacename", _p?.new_tablespacename);
-    _o.set(_j, "nowait", _p?.nowait);
+    _o.set(_j, 'orig_tablespacename', _p?.orig_tablespacename);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'roles', _p?.roles);
+    _o.set(_j, 'new_tablespacename', _p?.new_tablespacename);
+    _o.set(_j, 'nowait', _p?.nowait);
     return {
       AlterTableMoveAllStmt: _j
     };
@@ -2380,9 +2380,9 @@ export default {
     CreateExtensionStmt: CreateExtensionStmt;
   } {
     const _j = {} as CreateExtensionStmt;
-    _o.set(_j, "extname", _p?.extname);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'extname', _p?.extname);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateExtensionStmt: _j
     };
@@ -2391,8 +2391,8 @@ export default {
     AlterExtensionStmt: AlterExtensionStmt;
   } {
     const _j = {} as AlterExtensionStmt;
-    _o.set(_j, "extname", _p?.extname);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'extname', _p?.extname);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterExtensionStmt: _j
     };
@@ -2401,10 +2401,10 @@ export default {
     AlterExtensionContentsStmt: AlterExtensionContentsStmt;
   } {
     const _j = {} as AlterExtensionContentsStmt;
-    _o.set(_j, "extname", _p?.extname);
-    _o.set(_j, "action", _p?.action);
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "object", _p?.object);
+    _o.set(_j, 'extname', _p?.extname);
+    _o.set(_j, 'action', _p?.action);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'object', _p?.object);
     return {
       AlterExtensionContentsStmt: _j
     };
@@ -2413,9 +2413,9 @@ export default {
     CreateFdwStmt: CreateFdwStmt;
   } {
     const _j = {} as CreateFdwStmt;
-    _o.set(_j, "fdwname", _p?.fdwname);
-    _o.set(_j, "func_options", _p?.func_options);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'fdwname', _p?.fdwname);
+    _o.set(_j, 'func_options', _p?.func_options);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateFdwStmt: _j
     };
@@ -2424,9 +2424,9 @@ export default {
     AlterFdwStmt: AlterFdwStmt;
   } {
     const _j = {} as AlterFdwStmt;
-    _o.set(_j, "fdwname", _p?.fdwname);
-    _o.set(_j, "func_options", _p?.func_options);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'fdwname', _p?.fdwname);
+    _o.set(_j, 'func_options', _p?.func_options);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterFdwStmt: _j
     };
@@ -2435,12 +2435,12 @@ export default {
     CreateForeignServerStmt: CreateForeignServerStmt;
   } {
     const _j = {} as CreateForeignServerStmt;
-    _o.set(_j, "servername", _p?.servername);
-    _o.set(_j, "servertype", _p?.servertype);
-    _o.set(_j, "version", _p?.version);
-    _o.set(_j, "fdwname", _p?.fdwname);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'servername', _p?.servername);
+    _o.set(_j, 'servertype', _p?.servertype);
+    _o.set(_j, 'version', _p?.version);
+    _o.set(_j, 'fdwname', _p?.fdwname);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateForeignServerStmt: _j
     };
@@ -2449,10 +2449,10 @@ export default {
     AlterForeignServerStmt: AlterForeignServerStmt;
   } {
     const _j = {} as AlterForeignServerStmt;
-    _o.set(_j, "servername", _p?.servername);
-    _o.set(_j, "version", _p?.version);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "has_version", _p?.has_version);
+    _o.set(_j, 'servername', _p?.servername);
+    _o.set(_j, 'version', _p?.version);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'has_version', _p?.has_version);
     return {
       AlterForeignServerStmt: _j
     };
@@ -2461,9 +2461,9 @@ export default {
     CreateForeignTableStmt: CreateForeignTableStmt;
   } {
     const _j = {} as CreateForeignTableStmt;
-    _o.set(_j, "base", _p?.base);
-    _o.set(_j, "servername", _p?.servername);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'base', _p?.base);
+    _o.set(_j, 'servername', _p?.servername);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateForeignTableStmt: _j
     };
@@ -2472,10 +2472,10 @@ export default {
     CreateUserMappingStmt: CreateUserMappingStmt;
   } {
     const _j = {} as CreateUserMappingStmt;
-    _o.set(_j, "user", _p?.user);
-    _o.set(_j, "servername", _p?.servername);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'user', _p?.user);
+    _o.set(_j, 'servername', _p?.servername);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateUserMappingStmt: _j
     };
@@ -2484,9 +2484,9 @@ export default {
     AlterUserMappingStmt: AlterUserMappingStmt;
   } {
     const _j = {} as AlterUserMappingStmt;
-    _o.set(_j, "user", _p?.user);
-    _o.set(_j, "servername", _p?.servername);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'user', _p?.user);
+    _o.set(_j, 'servername', _p?.servername);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterUserMappingStmt: _j
     };
@@ -2495,9 +2495,9 @@ export default {
     DropUserMappingStmt: DropUserMappingStmt;
   } {
     const _j = {} as DropUserMappingStmt;
-    _o.set(_j, "user", _p?.user);
-    _o.set(_j, "servername", _p?.servername);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'user', _p?.user);
+    _o.set(_j, 'servername', _p?.servername);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       DropUserMappingStmt: _j
     };
@@ -2506,12 +2506,12 @@ export default {
     ImportForeignSchemaStmt: ImportForeignSchemaStmt;
   } {
     const _j = {} as ImportForeignSchemaStmt;
-    _o.set(_j, "server_name", _p?.server_name);
-    _o.set(_j, "remote_schema", _p?.remote_schema);
-    _o.set(_j, "local_schema", _p?.local_schema);
-    _o.set(_j, "list_type", _p?.list_type);
-    _o.set(_j, "table_list", _p?.table_list);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'server_name', _p?.server_name);
+    _o.set(_j, 'remote_schema', _p?.remote_schema);
+    _o.set(_j, 'local_schema', _p?.local_schema);
+    _o.set(_j, 'list_type', _p?.list_type);
+    _o.set(_j, 'table_list', _p?.table_list);
+    _o.set(_j, 'options', _p?.options);
     return {
       ImportForeignSchemaStmt: _j
     };
@@ -2520,13 +2520,13 @@ export default {
     CreatePolicyStmt: CreatePolicyStmt;
   } {
     const _j = {} as CreatePolicyStmt;
-    _o.set(_j, "policy_name", _p?.policy_name);
-    _o.set(_j, "table", _p?.table);
-    _o.set(_j, "cmd_name", _p?.cmd_name);
-    _o.set(_j, "permissive", _p?.permissive);
-    _o.set(_j, "roles", _p?.roles);
-    _o.set(_j, "qual", _p?.qual);
-    _o.set(_j, "with_check", _p?.with_check);
+    _o.set(_j, 'policy_name', _p?.policy_name);
+    _o.set(_j, 'table', _p?.table);
+    _o.set(_j, 'cmd_name', _p?.cmd_name);
+    _o.set(_j, 'permissive', _p?.permissive);
+    _o.set(_j, 'roles', _p?.roles);
+    _o.set(_j, 'qual', _p?.qual);
+    _o.set(_j, 'with_check', _p?.with_check);
     return {
       CreatePolicyStmt: _j
     };
@@ -2535,11 +2535,11 @@ export default {
     AlterPolicyStmt: AlterPolicyStmt;
   } {
     const _j = {} as AlterPolicyStmt;
-    _o.set(_j, "policy_name", _p?.policy_name);
-    _o.set(_j, "table", _p?.table);
-    _o.set(_j, "roles", _p?.roles);
-    _o.set(_j, "qual", _p?.qual);
-    _o.set(_j, "with_check", _p?.with_check);
+    _o.set(_j, 'policy_name', _p?.policy_name);
+    _o.set(_j, 'table', _p?.table);
+    _o.set(_j, 'roles', _p?.roles);
+    _o.set(_j, 'qual', _p?.qual);
+    _o.set(_j, 'with_check', _p?.with_check);
     return {
       AlterPolicyStmt: _j
     };
@@ -2548,9 +2548,9 @@ export default {
     CreateAmStmt: CreateAmStmt;
   } {
     const _j = {} as CreateAmStmt;
-    _o.set(_j, "amname", _p?.amname);
-    _o.set(_j, "handler_name", _p?.handler_name);
-    _o.set(_j, "amtype", _p?.amtype);
+    _o.set(_j, 'amname', _p?.amname);
+    _o.set(_j, 'handler_name', _p?.handler_name);
+    _o.set(_j, 'amtype', _p?.amtype);
     return {
       CreateAmStmt: _j
     };
@@ -2559,21 +2559,21 @@ export default {
     CreateTrigStmt: CreateTrigStmt;
   } {
     const _j = {} as CreateTrigStmt;
-    _o.set(_j, "replace", _p?.replace);
-    _o.set(_j, "isconstraint", _p?.isconstraint);
-    _o.set(_j, "trigname", _p?.trigname);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "funcname", _p?.funcname);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "row", _p?.row);
-    _o.set(_j, "timing", _p?.timing);
-    _o.set(_j, "events", _p?.events);
-    _o.set(_j, "columns", _p?.columns);
-    _o.set(_j, "whenClause", _p?.whenClause);
-    _o.set(_j, "transitionRels", _p?.transitionRels);
-    _o.set(_j, "deferrable", _p?.deferrable);
-    _o.set(_j, "initdeferred", _p?.initdeferred);
-    _o.set(_j, "constrrel", _p?.constrrel);
+    _o.set(_j, 'replace', _p?.replace);
+    _o.set(_j, 'isconstraint', _p?.isconstraint);
+    _o.set(_j, 'trigname', _p?.trigname);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'funcname', _p?.funcname);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'row', _p?.row);
+    _o.set(_j, 'timing', _p?.timing);
+    _o.set(_j, 'events', _p?.events);
+    _o.set(_j, 'columns', _p?.columns);
+    _o.set(_j, 'whenClause', _p?.whenClause);
+    _o.set(_j, 'transitionRels', _p?.transitionRels);
+    _o.set(_j, 'deferrable', _p?.deferrable);
+    _o.set(_j, 'initdeferred', _p?.initdeferred);
+    _o.set(_j, 'constrrel', _p?.constrrel);
     return {
       CreateTrigStmt: _j
     };
@@ -2582,10 +2582,10 @@ export default {
     CreateEventTrigStmt: CreateEventTrigStmt;
   } {
     const _j = {} as CreateEventTrigStmt;
-    _o.set(_j, "trigname", _p?.trigname);
-    _o.set(_j, "eventname", _p?.eventname);
-    _o.set(_j, "whenclause", _p?.whenclause);
-    _o.set(_j, "funcname", _p?.funcname);
+    _o.set(_j, 'trigname', _p?.trigname);
+    _o.set(_j, 'eventname', _p?.eventname);
+    _o.set(_j, 'whenclause', _p?.whenclause);
+    _o.set(_j, 'funcname', _p?.funcname);
     return {
       CreateEventTrigStmt: _j
     };
@@ -2594,8 +2594,8 @@ export default {
     AlterEventTrigStmt: AlterEventTrigStmt;
   } {
     const _j = {} as AlterEventTrigStmt;
-    _o.set(_j, "trigname", _p?.trigname);
-    _o.set(_j, "tgenabled", _p?.tgenabled);
+    _o.set(_j, 'trigname', _p?.trigname);
+    _o.set(_j, 'tgenabled', _p?.tgenabled);
     return {
       AlterEventTrigStmt: _j
     };
@@ -2604,12 +2604,12 @@ export default {
     CreatePLangStmt: CreatePLangStmt;
   } {
     const _j = {} as CreatePLangStmt;
-    _o.set(_j, "replace", _p?.replace);
-    _o.set(_j, "plname", _p?.plname);
-    _o.set(_j, "plhandler", _p?.plhandler);
-    _o.set(_j, "plinline", _p?.plinline);
-    _o.set(_j, "plvalidator", _p?.plvalidator);
-    _o.set(_j, "pltrusted", _p?.pltrusted);
+    _o.set(_j, 'replace', _p?.replace);
+    _o.set(_j, 'plname', _p?.plname);
+    _o.set(_j, 'plhandler', _p?.plhandler);
+    _o.set(_j, 'plinline', _p?.plinline);
+    _o.set(_j, 'plvalidator', _p?.plvalidator);
+    _o.set(_j, 'pltrusted', _p?.pltrusted);
     return {
       CreatePLangStmt: _j
     };
@@ -2618,9 +2618,9 @@ export default {
     CreateRoleStmt: CreateRoleStmt;
   } {
     const _j = {} as CreateRoleStmt;
-    _o.set(_j, "stmt_type", _p?.stmt_type);
-    _o.set(_j, "role", _p?.role);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'stmt_type', _p?.stmt_type);
+    _o.set(_j, 'role', _p?.role);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateRoleStmt: _j
     };
@@ -2629,9 +2629,9 @@ export default {
     AlterRoleStmt: AlterRoleStmt;
   } {
     const _j = {} as AlterRoleStmt;
-    _o.set(_j, "role", _p?.role);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "action", _p?.action);
+    _o.set(_j, 'role', _p?.role);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'action', _p?.action);
     return {
       AlterRoleStmt: _j
     };
@@ -2640,9 +2640,9 @@ export default {
     AlterRoleSetStmt: AlterRoleSetStmt;
   } {
     const _j = {} as AlterRoleSetStmt;
-    _o.set(_j, "role", _p?.role);
-    _o.set(_j, "database", _p?.database);
-    _o.set(_j, "setstmt", _p?.setstmt);
+    _o.set(_j, 'role', _p?.role);
+    _o.set(_j, 'database', _p?.database);
+    _o.set(_j, 'setstmt', _p?.setstmt);
     return {
       AlterRoleSetStmt: _j
     };
@@ -2651,8 +2651,8 @@ export default {
     DropRoleStmt: DropRoleStmt;
   } {
     const _j = {} as DropRoleStmt;
-    _o.set(_j, "roles", _p?.roles);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'roles', _p?.roles);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       DropRoleStmt: _j
     };
@@ -2661,11 +2661,11 @@ export default {
     CreateSeqStmt: CreateSeqStmt;
   } {
     const _j = {} as CreateSeqStmt;
-    _o.set(_j, "sequence", _p?.sequence);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "ownerId", _p?.ownerId);
-    _o.set(_j, "for_identity", _p?.for_identity);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, 'sequence', _p?.sequence);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'ownerId', _p?.ownerId);
+    _o.set(_j, 'for_identity', _p?.for_identity);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
     return {
       CreateSeqStmt: _j
     };
@@ -2674,10 +2674,10 @@ export default {
     AlterSeqStmt: AlterSeqStmt;
   } {
     const _j = {} as AlterSeqStmt;
-    _o.set(_j, "sequence", _p?.sequence);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "for_identity", _p?.for_identity);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'sequence', _p?.sequence);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'for_identity', _p?.for_identity);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       AlterSeqStmt: _j
     };
@@ -2686,13 +2686,13 @@ export default {
     DefineStmt: DefineStmt;
   } {
     const _j = {} as DefineStmt;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "oldstyle", _p?.oldstyle);
-    _o.set(_j, "defnames", _p?.defnames);
-    _o.set(_j, "args", _p?.args);
-    _o.set(_j, "definition", _p?.definition);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'oldstyle', _p?.oldstyle);
+    _o.set(_j, 'defnames', _p?.defnames);
+    _o.set(_j, 'args', _p?.args);
+    _o.set(_j, 'definition', _p?.definition);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
+    _o.set(_j, 'replace', _p?.replace);
     return {
       DefineStmt: _j
     };
@@ -2701,10 +2701,10 @@ export default {
     CreateDomainStmt: CreateDomainStmt;
   } {
     const _j = {} as CreateDomainStmt;
-    _o.set(_j, "domainname", _p?.domainname);
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "collClause", _p?.collClause);
-    _o.set(_j, "constraints", _p?.constraints);
+    _o.set(_j, 'domainname', _p?.domainname);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'collClause', _p?.collClause);
+    _o.set(_j, 'constraints', _p?.constraints);
     return {
       CreateDomainStmt: _j
     };
@@ -2713,12 +2713,12 @@ export default {
     CreateOpClassStmt: CreateOpClassStmt;
   } {
     const _j = {} as CreateOpClassStmt;
-    _o.set(_j, "opclassname", _p?.opclassname);
-    _o.set(_j, "opfamilyname", _p?.opfamilyname);
-    _o.set(_j, "amname", _p?.amname);
-    _o.set(_j, "datatype", _p?.datatype);
-    _o.set(_j, "items", _p?.items);
-    _o.set(_j, "isDefault", _p?.isDefault);
+    _o.set(_j, 'opclassname', _p?.opclassname);
+    _o.set(_j, 'opfamilyname', _p?.opfamilyname);
+    _o.set(_j, 'amname', _p?.amname);
+    _o.set(_j, 'datatype', _p?.datatype);
+    _o.set(_j, 'items', _p?.items);
+    _o.set(_j, 'isDefault', _p?.isDefault);
     return {
       CreateOpClassStmt: _j
     };
@@ -2727,12 +2727,12 @@ export default {
     CreateOpClassItem: CreateOpClassItem;
   } {
     const _j = {} as CreateOpClassItem;
-    _o.set(_j, "itemtype", _p?.itemtype);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "number", _p?.number);
-    _o.set(_j, "order_family", _p?.order_family);
-    _o.set(_j, "class_args", _p?.class_args);
-    _o.set(_j, "storedtype", _p?.storedtype);
+    _o.set(_j, 'itemtype', _p?.itemtype);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'number', _p?.number);
+    _o.set(_j, 'order_family', _p?.order_family);
+    _o.set(_j, 'class_args', _p?.class_args);
+    _o.set(_j, 'storedtype', _p?.storedtype);
     return {
       CreateOpClassItem: _j
     };
@@ -2741,8 +2741,8 @@ export default {
     CreateOpFamilyStmt: CreateOpFamilyStmt;
   } {
     const _j = {} as CreateOpFamilyStmt;
-    _o.set(_j, "opfamilyname", _p?.opfamilyname);
-    _o.set(_j, "amname", _p?.amname);
+    _o.set(_j, 'opfamilyname', _p?.opfamilyname);
+    _o.set(_j, 'amname', _p?.amname);
     return {
       CreateOpFamilyStmt: _j
     };
@@ -2751,10 +2751,10 @@ export default {
     AlterOpFamilyStmt: AlterOpFamilyStmt;
   } {
     const _j = {} as AlterOpFamilyStmt;
-    _o.set(_j, "opfamilyname", _p?.opfamilyname);
-    _o.set(_j, "amname", _p?.amname);
-    _o.set(_j, "isDrop", _p?.isDrop);
-    _o.set(_j, "items", _p?.items);
+    _o.set(_j, 'opfamilyname', _p?.opfamilyname);
+    _o.set(_j, 'amname', _p?.amname);
+    _o.set(_j, 'isDrop', _p?.isDrop);
+    _o.set(_j, 'items', _p?.items);
     return {
       AlterOpFamilyStmt: _j
     };
@@ -2763,11 +2763,11 @@ export default {
     DropStmt: DropStmt;
   } {
     const _j = {} as DropStmt;
-    _o.set(_j, "objects", _p?.objects);
-    _o.set(_j, "removeType", _p?.removeType);
-    _o.set(_j, "behavior", _p?.behavior);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
-    _o.set(_j, "concurrent", _p?.concurrent);
+    _o.set(_j, 'objects', _p?.objects);
+    _o.set(_j, 'removeType', _p?.removeType);
+    _o.set(_j, 'behavior', _p?.behavior);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
+    _o.set(_j, 'concurrent', _p?.concurrent);
     return {
       DropStmt: _j
     };
@@ -2776,9 +2776,9 @@ export default {
     TruncateStmt: TruncateStmt;
   } {
     const _j = {} as TruncateStmt;
-    _o.set(_j, "relations", _p?.relations);
-    _o.set(_j, "restart_seqs", _p?.restart_seqs);
-    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, 'relations', _p?.relations);
+    _o.set(_j, 'restart_seqs', _p?.restart_seqs);
+    _o.set(_j, 'behavior', _p?.behavior);
     return {
       TruncateStmt: _j
     };
@@ -2787,9 +2787,9 @@ export default {
     CommentStmt: CommentStmt;
   } {
     const _j = {} as CommentStmt;
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "object", _p?.object);
-    _o.set(_j, "comment", _p?.comment);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'object', _p?.object);
+    _o.set(_j, 'comment', _p?.comment);
     return {
       CommentStmt: _j
     };
@@ -2798,10 +2798,10 @@ export default {
     SecLabelStmt: SecLabelStmt;
   } {
     const _j = {} as SecLabelStmt;
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "object", _p?.object);
-    _o.set(_j, "provider", _p?.provider);
-    _o.set(_j, "label", _p?.label);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'object', _p?.object);
+    _o.set(_j, 'provider', _p?.provider);
+    _o.set(_j, 'label', _p?.label);
     return {
       SecLabelStmt: _j
     };
@@ -2810,9 +2810,9 @@ export default {
     DeclareCursorStmt: DeclareCursorStmt;
   } {
     const _j = {} as DeclareCursorStmt;
-    _o.set(_j, "portalname", _p?.portalname);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "query", _p?.query);
+    _o.set(_j, 'portalname', _p?.portalname);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'query', _p?.query);
     return {
       DeclareCursorStmt: _j
     };
@@ -2821,7 +2821,7 @@ export default {
     ClosePortalStmt: ClosePortalStmt;
   } {
     const _j = {} as ClosePortalStmt;
-    _o.set(_j, "portalname", _p?.portalname);
+    _o.set(_j, 'portalname', _p?.portalname);
     return {
       ClosePortalStmt: _j
     };
@@ -2830,10 +2830,10 @@ export default {
     FetchStmt: FetchStmt;
   } {
     const _j = {} as FetchStmt;
-    _o.set(_j, "direction", _p?.direction);
-    _o.set(_j, "howMany", _p?.howMany);
-    _o.set(_j, "portalname", _p?.portalname);
-    _o.set(_j, "ismove", _p?.ismove);
+    _o.set(_j, 'direction', _p?.direction);
+    _o.set(_j, 'howMany', _p?.howMany);
+    _o.set(_j, 'portalname', _p?.portalname);
+    _o.set(_j, 'ismove', _p?.ismove);
     return {
       FetchStmt: _j
     };
@@ -2842,30 +2842,30 @@ export default {
     IndexStmt: IndexStmt;
   } {
     const _j = {} as IndexStmt;
-    _o.set(_j, "idxname", _p?.idxname);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "accessMethod", _p?.accessMethod);
-    _o.set(_j, "tableSpace", _p?.tableSpace);
-    _o.set(_j, "indexParams", _p?.indexParams);
-    _o.set(_j, "indexIncludingParams", _p?.indexIncludingParams);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "excludeOpNames", _p?.excludeOpNames);
-    _o.set(_j, "idxcomment", _p?.idxcomment);
-    _o.set(_j, "indexOid", _p?.indexOid);
-    _o.set(_j, "oldNumber", _p?.oldNumber);
-    _o.set(_j, "oldCreateSubid", _p?.oldCreateSubid);
-    _o.set(_j, "oldFirstRelfilelocatorSubid", _p?.oldFirstRelfilelocatorSubid);
-    _o.set(_j, "unique", _p?.unique);
-    _o.set(_j, "nulls_not_distinct", _p?.nulls_not_distinct);
-    _o.set(_j, "primary", _p?.primary);
-    _o.set(_j, "isconstraint", _p?.isconstraint);
-    _o.set(_j, "deferrable", _p?.deferrable);
-    _o.set(_j, "initdeferred", _p?.initdeferred);
-    _o.set(_j, "transformed", _p?.transformed);
-    _o.set(_j, "concurrent", _p?.concurrent);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
-    _o.set(_j, "reset_default_tblspc", _p?.reset_default_tblspc);
+    _o.set(_j, 'idxname', _p?.idxname);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'accessMethod', _p?.accessMethod);
+    _o.set(_j, 'tableSpace', _p?.tableSpace);
+    _o.set(_j, 'indexParams', _p?.indexParams);
+    _o.set(_j, 'indexIncludingParams', _p?.indexIncludingParams);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'excludeOpNames', _p?.excludeOpNames);
+    _o.set(_j, 'idxcomment', _p?.idxcomment);
+    _o.set(_j, 'indexOid', _p?.indexOid);
+    _o.set(_j, 'oldNumber', _p?.oldNumber);
+    _o.set(_j, 'oldCreateSubid', _p?.oldCreateSubid);
+    _o.set(_j, 'oldFirstRelfilelocatorSubid', _p?.oldFirstRelfilelocatorSubid);
+    _o.set(_j, 'unique', _p?.unique);
+    _o.set(_j, 'nulls_not_distinct', _p?.nulls_not_distinct);
+    _o.set(_j, 'primary', _p?.primary);
+    _o.set(_j, 'isconstraint', _p?.isconstraint);
+    _o.set(_j, 'deferrable', _p?.deferrable);
+    _o.set(_j, 'initdeferred', _p?.initdeferred);
+    _o.set(_j, 'transformed', _p?.transformed);
+    _o.set(_j, 'concurrent', _p?.concurrent);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
+    _o.set(_j, 'reset_default_tblspc', _p?.reset_default_tblspc);
     return {
       IndexStmt: _j
     };
@@ -2874,13 +2874,13 @@ export default {
     CreateStatsStmt: CreateStatsStmt;
   } {
     const _j = {} as CreateStatsStmt;
-    _o.set(_j, "defnames", _p?.defnames);
-    _o.set(_j, "stat_types", _p?.stat_types);
-    _o.set(_j, "exprs", _p?.exprs);
-    _o.set(_j, "relations", _p?.relations);
-    _o.set(_j, "stxcomment", _p?.stxcomment);
-    _o.set(_j, "transformed", _p?.transformed);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, 'defnames', _p?.defnames);
+    _o.set(_j, 'stat_types', _p?.stat_types);
+    _o.set(_j, 'exprs', _p?.exprs);
+    _o.set(_j, 'relations', _p?.relations);
+    _o.set(_j, 'stxcomment', _p?.stxcomment);
+    _o.set(_j, 'transformed', _p?.transformed);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
     return {
       CreateStatsStmt: _j
     };
@@ -2889,8 +2889,8 @@ export default {
     StatsElem: StatsElem;
   } {
     const _j = {} as StatsElem;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "expr", _p?.expr);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'expr', _p?.expr);
     return {
       StatsElem: _j
     };
@@ -2899,9 +2899,9 @@ export default {
     AlterStatsStmt: AlterStatsStmt;
   } {
     const _j = {} as AlterStatsStmt;
-    _o.set(_j, "defnames", _p?.defnames);
-    _o.set(_j, "stxstattarget", _p?.stxstattarget);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'defnames', _p?.defnames);
+    _o.set(_j, 'stxstattarget', _p?.stxstattarget);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       AlterStatsStmt: _j
     };
@@ -2910,13 +2910,13 @@ export default {
     CreateFunctionStmt: CreateFunctionStmt;
   } {
     const _j = {} as CreateFunctionStmt;
-    _o.set(_j, "is_procedure", _p?.is_procedure);
-    _o.set(_j, "replace", _p?.replace);
-    _o.set(_j, "funcname", _p?.funcname);
-    _o.set(_j, "parameters", _p?.parameters);
-    _o.set(_j, "returnType", _p?.returnType);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "sql_body", _p?.sql_body);
+    _o.set(_j, 'is_procedure', _p?.is_procedure);
+    _o.set(_j, 'replace', _p?.replace);
+    _o.set(_j, 'funcname', _p?.funcname);
+    _o.set(_j, 'parameters', _p?.parameters);
+    _o.set(_j, 'returnType', _p?.returnType);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'sql_body', _p?.sql_body);
     return {
       CreateFunctionStmt: _j
     };
@@ -2925,10 +2925,10 @@ export default {
     FunctionParameter: FunctionParameter;
   } {
     const _j = {} as FunctionParameter;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "argType", _p?.argType);
-    _o.set(_j, "mode", _p?.mode);
-    _o.set(_j, "defexpr", _p?.defexpr);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'argType', _p?.argType);
+    _o.set(_j, 'mode', _p?.mode);
+    _o.set(_j, 'defexpr', _p?.defexpr);
     return {
       FunctionParameter: _j
     };
@@ -2937,9 +2937,9 @@ export default {
     AlterFunctionStmt: AlterFunctionStmt;
   } {
     const _j = {} as AlterFunctionStmt;
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "func", _p?.func);
-    _o.set(_j, "actions", _p?.actions);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'func', _p?.func);
+    _o.set(_j, 'actions', _p?.actions);
     return {
       AlterFunctionStmt: _j
     };
@@ -2948,7 +2948,7 @@ export default {
     DoStmt: DoStmt;
   } {
     const _j = {} as DoStmt;
-    _o.set(_j, "args", _p?.args);
+    _o.set(_j, 'args', _p?.args);
     return {
       DoStmt: _j
     };
@@ -2957,10 +2957,10 @@ export default {
     InlineCodeBlock: InlineCodeBlock;
   } {
     const _j = {} as InlineCodeBlock;
-    _o.set(_j, "source_text", _p?.source_text);
-    _o.set(_j, "langOid", _p?.langOid);
-    _o.set(_j, "langIsTrusted", _p?.langIsTrusted);
-    _o.set(_j, "atomic", _p?.atomic);
+    _o.set(_j, 'source_text', _p?.source_text);
+    _o.set(_j, 'langOid', _p?.langOid);
+    _o.set(_j, 'langIsTrusted', _p?.langIsTrusted);
+    _o.set(_j, 'atomic', _p?.atomic);
     return {
       InlineCodeBlock: _j
     };
@@ -2969,9 +2969,9 @@ export default {
     CallStmt: CallStmt;
   } {
     const _j = {} as CallStmt;
-    _o.set(_j, "funccall", _p?.funccall);
-    _o.set(_j, "funcexpr", _p?.funcexpr);
-    _o.set(_j, "outargs", _p?.outargs);
+    _o.set(_j, 'funccall', _p?.funccall);
+    _o.set(_j, 'funcexpr', _p?.funcexpr);
+    _o.set(_j, 'outargs', _p?.outargs);
     return {
       CallStmt: _j
     };
@@ -2980,7 +2980,7 @@ export default {
     CallContext: CallContext;
   } {
     const _j = {} as CallContext;
-    _o.set(_j, "atomic", _p?.atomic);
+    _o.set(_j, 'atomic', _p?.atomic);
     return {
       CallContext: _j
     };
@@ -2989,14 +2989,14 @@ export default {
     RenameStmt: RenameStmt;
   } {
     const _j = {} as RenameStmt;
-    _o.set(_j, "renameType", _p?.renameType);
-    _o.set(_j, "relationType", _p?.relationType);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "object", _p?.object);
-    _o.set(_j, "subname", _p?.subname);
-    _o.set(_j, "newname", _p?.newname);
-    _o.set(_j, "behavior", _p?.behavior);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'renameType', _p?.renameType);
+    _o.set(_j, 'relationType', _p?.relationType);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'object', _p?.object);
+    _o.set(_j, 'subname', _p?.subname);
+    _o.set(_j, 'newname', _p?.newname);
+    _o.set(_j, 'behavior', _p?.behavior);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       RenameStmt: _j
     };
@@ -3005,11 +3005,11 @@ export default {
     AlterObjectDependsStmt: AlterObjectDependsStmt;
   } {
     const _j = {} as AlterObjectDependsStmt;
-    _o.set(_j, "objectType", _p?.objectType);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "object", _p?.object);
-    _o.set(_j, "extname", _p?.extname);
-    _o.set(_j, "remove", _p?.remove);
+    _o.set(_j, 'objectType', _p?.objectType);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'object', _p?.object);
+    _o.set(_j, 'extname', _p?.extname);
+    _o.set(_j, 'remove', _p?.remove);
     return {
       AlterObjectDependsStmt: _j
     };
@@ -3018,11 +3018,11 @@ export default {
     AlterObjectSchemaStmt: AlterObjectSchemaStmt;
   } {
     const _j = {} as AlterObjectSchemaStmt;
-    _o.set(_j, "objectType", _p?.objectType);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "object", _p?.object);
-    _o.set(_j, "newschema", _p?.newschema);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'objectType', _p?.objectType);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'object', _p?.object);
+    _o.set(_j, 'newschema', _p?.newschema);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       AlterObjectSchemaStmt: _j
     };
@@ -3031,10 +3031,10 @@ export default {
     AlterOwnerStmt: AlterOwnerStmt;
   } {
     const _j = {} as AlterOwnerStmt;
-    _o.set(_j, "objectType", _p?.objectType);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "object", _p?.object);
-    _o.set(_j, "newowner", _p?.newowner);
+    _o.set(_j, 'objectType', _p?.objectType);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'object', _p?.object);
+    _o.set(_j, 'newowner', _p?.newowner);
     return {
       AlterOwnerStmt: _j
     };
@@ -3043,8 +3043,8 @@ export default {
     AlterOperatorStmt: AlterOperatorStmt;
   } {
     const _j = {} as AlterOperatorStmt;
-    _o.set(_j, "opername", _p?.opername);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'opername', _p?.opername);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterOperatorStmt: _j
     };
@@ -3053,8 +3053,8 @@ export default {
     AlterTypeStmt: AlterTypeStmt;
   } {
     const _j = {} as AlterTypeStmt;
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterTypeStmt: _j
     };
@@ -3063,13 +3063,13 @@ export default {
     RuleStmt: RuleStmt;
   } {
     const _j = {} as RuleStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "rulename", _p?.rulename);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "event", _p?.event);
-    _o.set(_j, "instead", _p?.instead);
-    _o.set(_j, "actions", _p?.actions);
-    _o.set(_j, "replace", _p?.replace);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'rulename', _p?.rulename);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'event', _p?.event);
+    _o.set(_j, 'instead', _p?.instead);
+    _o.set(_j, 'actions', _p?.actions);
+    _o.set(_j, 'replace', _p?.replace);
     return {
       RuleStmt: _j
     };
@@ -3078,8 +3078,8 @@ export default {
     NotifyStmt: NotifyStmt;
   } {
     const _j = {} as NotifyStmt;
-    _o.set(_j, "conditionname", _p?.conditionname);
-    _o.set(_j, "payload", _p?.payload);
+    _o.set(_j, 'conditionname', _p?.conditionname);
+    _o.set(_j, 'payload', _p?.payload);
     return {
       NotifyStmt: _j
     };
@@ -3088,7 +3088,7 @@ export default {
     ListenStmt: ListenStmt;
   } {
     const _j = {} as ListenStmt;
-    _o.set(_j, "conditionname", _p?.conditionname);
+    _o.set(_j, 'conditionname', _p?.conditionname);
     return {
       ListenStmt: _j
     };
@@ -3097,7 +3097,7 @@ export default {
     UnlistenStmt: UnlistenStmt;
   } {
     const _j = {} as UnlistenStmt;
-    _o.set(_j, "conditionname", _p?.conditionname);
+    _o.set(_j, 'conditionname', _p?.conditionname);
     return {
       UnlistenStmt: _j
     };
@@ -3106,12 +3106,12 @@ export default {
     TransactionStmt: TransactionStmt;
   } {
     const _j = {} as TransactionStmt;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "savepoint_name", _p?.savepoint_name);
-    _o.set(_j, "gid", _p?.gid);
-    _o.set(_j, "chain", _p?.chain);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'savepoint_name', _p?.savepoint_name);
+    _o.set(_j, 'gid', _p?.gid);
+    _o.set(_j, 'chain', _p?.chain);
+    _o.set(_j, 'location', _p?.location);
     return {
       TransactionStmt: _j
     };
@@ -3120,8 +3120,8 @@ export default {
     CompositeTypeStmt: CompositeTypeStmt;
   } {
     const _j = {} as CompositeTypeStmt;
-    _o.set(_j, "typevar", _p?.typevar);
-    _o.set(_j, "coldeflist", _p?.coldeflist);
+    _o.set(_j, 'typevar', _p?.typevar);
+    _o.set(_j, 'coldeflist', _p?.coldeflist);
     return {
       CompositeTypeStmt: _j
     };
@@ -3130,8 +3130,8 @@ export default {
     CreateEnumStmt: CreateEnumStmt;
   } {
     const _j = {} as CreateEnumStmt;
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "vals", _p?.vals);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'vals', _p?.vals);
     return {
       CreateEnumStmt: _j
     };
@@ -3140,8 +3140,8 @@ export default {
     CreateRangeStmt: CreateRangeStmt;
   } {
     const _j = {} as CreateRangeStmt;
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "params", _p?.params);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'params', _p?.params);
     return {
       CreateRangeStmt: _j
     };
@@ -3150,12 +3150,12 @@ export default {
     AlterEnumStmt: AlterEnumStmt;
   } {
     const _j = {} as AlterEnumStmt;
-    _o.set(_j, "typeName", _p?.typeName);
-    _o.set(_j, "oldVal", _p?.oldVal);
-    _o.set(_j, "newVal", _p?.newVal);
-    _o.set(_j, "newValNeighbor", _p?.newValNeighbor);
-    _o.set(_j, "newValIsAfter", _p?.newValIsAfter);
-    _o.set(_j, "skipIfNewValExists", _p?.skipIfNewValExists);
+    _o.set(_j, 'typeName', _p?.typeName);
+    _o.set(_j, 'oldVal', _p?.oldVal);
+    _o.set(_j, 'newVal', _p?.newVal);
+    _o.set(_j, 'newValNeighbor', _p?.newValNeighbor);
+    _o.set(_j, 'newValIsAfter', _p?.newValIsAfter);
+    _o.set(_j, 'skipIfNewValExists', _p?.skipIfNewValExists);
     return {
       AlterEnumStmt: _j
     };
@@ -3164,12 +3164,12 @@ export default {
     ViewStmt: ViewStmt;
   } {
     const _j = {} as ViewStmt;
-    _o.set(_j, "view", _p?.view);
-    _o.set(_j, "aliases", _p?.aliases);
-    _o.set(_j, "query", _p?.query);
-    _o.set(_j, "replace", _p?.replace);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "withCheckOption", _p?.withCheckOption);
+    _o.set(_j, 'view', _p?.view);
+    _o.set(_j, 'aliases', _p?.aliases);
+    _o.set(_j, 'query', _p?.query);
+    _o.set(_j, 'replace', _p?.replace);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'withCheckOption', _p?.withCheckOption);
     return {
       ViewStmt: _j
     };
@@ -3178,7 +3178,7 @@ export default {
     LoadStmt: LoadStmt;
   } {
     const _j = {} as LoadStmt;
-    _o.set(_j, "filename", _p?.filename);
+    _o.set(_j, 'filename', _p?.filename);
     return {
       LoadStmt: _j
     };
@@ -3187,8 +3187,8 @@ export default {
     CreatedbStmt: CreatedbStmt;
   } {
     const _j = {} as CreatedbStmt;
-    _o.set(_j, "dbname", _p?.dbname);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'dbname', _p?.dbname);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreatedbStmt: _j
     };
@@ -3197,8 +3197,8 @@ export default {
     AlterDatabaseStmt: AlterDatabaseStmt;
   } {
     const _j = {} as AlterDatabaseStmt;
-    _o.set(_j, "dbname", _p?.dbname);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'dbname', _p?.dbname);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterDatabaseStmt: _j
     };
@@ -3207,7 +3207,7 @@ export default {
     AlterDatabaseRefreshCollStmt: AlterDatabaseRefreshCollStmt;
   } {
     const _j = {} as AlterDatabaseRefreshCollStmt;
-    _o.set(_j, "dbname", _p?.dbname);
+    _o.set(_j, 'dbname', _p?.dbname);
     return {
       AlterDatabaseRefreshCollStmt: _j
     };
@@ -3216,8 +3216,8 @@ export default {
     AlterDatabaseSetStmt: AlterDatabaseSetStmt;
   } {
     const _j = {} as AlterDatabaseSetStmt;
-    _o.set(_j, "dbname", _p?.dbname);
-    _o.set(_j, "setstmt", _p?.setstmt);
+    _o.set(_j, 'dbname', _p?.dbname);
+    _o.set(_j, 'setstmt', _p?.setstmt);
     return {
       AlterDatabaseSetStmt: _j
     };
@@ -3226,9 +3226,9 @@ export default {
     DropdbStmt: DropdbStmt;
   } {
     const _j = {} as DropdbStmt;
-    _o.set(_j, "dbname", _p?.dbname);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'dbname', _p?.dbname);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
+    _o.set(_j, 'options', _p?.options);
     return {
       DropdbStmt: _j
     };
@@ -3237,7 +3237,7 @@ export default {
     AlterSystemStmt: AlterSystemStmt;
   } {
     const _j = {} as AlterSystemStmt;
-    _o.set(_j, "setstmt", _p?.setstmt);
+    _o.set(_j, 'setstmt', _p?.setstmt);
     return {
       AlterSystemStmt: _j
     };
@@ -3246,9 +3246,9 @@ export default {
     ClusterStmt: ClusterStmt;
   } {
     const _j = {} as ClusterStmt;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "indexname", _p?.indexname);
-    _o.set(_j, "params", _p?.params);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'indexname', _p?.indexname);
+    _o.set(_j, 'params', _p?.params);
     return {
       ClusterStmt: _j
     };
@@ -3257,9 +3257,9 @@ export default {
     VacuumStmt: VacuumStmt;
   } {
     const _j = {} as VacuumStmt;
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "rels", _p?.rels);
-    _o.set(_j, "is_vacuumcmd", _p?.is_vacuumcmd);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'rels', _p?.rels);
+    _o.set(_j, 'is_vacuumcmd', _p?.is_vacuumcmd);
     return {
       VacuumStmt: _j
     };
@@ -3268,9 +3268,9 @@ export default {
     VacuumRelation: VacuumRelation;
   } {
     const _j = {} as VacuumRelation;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "oid", _p?.oid);
-    _o.set(_j, "va_cols", _p?.va_cols);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'oid', _p?.oid);
+    _o.set(_j, 'va_cols', _p?.va_cols);
     return {
       VacuumRelation: _j
     };
@@ -3279,8 +3279,8 @@ export default {
     ExplainStmt: ExplainStmt;
   } {
     const _j = {} as ExplainStmt;
-    _o.set(_j, "query", _p?.query);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'query', _p?.query);
+    _o.set(_j, 'options', _p?.options);
     return {
       ExplainStmt: _j
     };
@@ -3289,11 +3289,11 @@ export default {
     CreateTableAsStmt: CreateTableAsStmt;
   } {
     const _j = {} as CreateTableAsStmt;
-    _o.set(_j, "query", _p?.query);
-    _o.set(_j, "into", _p?.into);
-    _o.set(_j, "objtype", _p?.objtype);
-    _o.set(_j, "is_select_into", _p?.is_select_into);
-    _o.set(_j, "if_not_exists", _p?.if_not_exists);
+    _o.set(_j, 'query', _p?.query);
+    _o.set(_j, 'into', _p?.into);
+    _o.set(_j, 'objtype', _p?.objtype);
+    _o.set(_j, 'is_select_into', _p?.is_select_into);
+    _o.set(_j, 'if_not_exists', _p?.if_not_exists);
     return {
       CreateTableAsStmt: _j
     };
@@ -3302,9 +3302,9 @@ export default {
     RefreshMatViewStmt: RefreshMatViewStmt;
   } {
     const _j = {} as RefreshMatViewStmt;
-    _o.set(_j, "concurrent", _p?.concurrent);
-    _o.set(_j, "skipData", _p?.skipData);
-    _o.set(_j, "relation", _p?.relation);
+    _o.set(_j, 'concurrent', _p?.concurrent);
+    _o.set(_j, 'skipData', _p?.skipData);
+    _o.set(_j, 'relation', _p?.relation);
     return {
       RefreshMatViewStmt: _j
     };
@@ -3321,7 +3321,7 @@ export default {
     DiscardStmt: DiscardStmt;
   } {
     const _j = {} as DiscardStmt;
-    _o.set(_j, "target", _p?.target);
+    _o.set(_j, 'target', _p?.target);
     return {
       DiscardStmt: _j
     };
@@ -3330,9 +3330,9 @@ export default {
     LockStmt: LockStmt;
   } {
     const _j = {} as LockStmt;
-    _o.set(_j, "relations", _p?.relations);
-    _o.set(_j, "mode", _p?.mode);
-    _o.set(_j, "nowait", _p?.nowait);
+    _o.set(_j, 'relations', _p?.relations);
+    _o.set(_j, 'mode', _p?.mode);
+    _o.set(_j, 'nowait', _p?.nowait);
     return {
       LockStmt: _j
     };
@@ -3341,8 +3341,8 @@ export default {
     ConstraintsSetStmt: ConstraintsSetStmt;
   } {
     const _j = {} as ConstraintsSetStmt;
-    _o.set(_j, "constraints", _p?.constraints);
-    _o.set(_j, "deferred", _p?.deferred);
+    _o.set(_j, 'constraints', _p?.constraints);
+    _o.set(_j, 'deferred', _p?.deferred);
     return {
       ConstraintsSetStmt: _j
     };
@@ -3351,10 +3351,10 @@ export default {
     ReindexStmt: ReindexStmt;
   } {
     const _j = {} as ReindexStmt;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "params", _p?.params);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'params', _p?.params);
     return {
       ReindexStmt: _j
     };
@@ -3363,11 +3363,11 @@ export default {
     CreateConversionStmt: CreateConversionStmt;
   } {
     const _j = {} as CreateConversionStmt;
-    _o.set(_j, "conversion_name", _p?.conversion_name);
-    _o.set(_j, "for_encoding_name", _p?.for_encoding_name);
-    _o.set(_j, "to_encoding_name", _p?.to_encoding_name);
-    _o.set(_j, "func_name", _p?.func_name);
-    _o.set(_j, "def", _p?.def);
+    _o.set(_j, 'conversion_name', _p?.conversion_name);
+    _o.set(_j, 'for_encoding_name', _p?.for_encoding_name);
+    _o.set(_j, 'to_encoding_name', _p?.to_encoding_name);
+    _o.set(_j, 'func_name', _p?.func_name);
+    _o.set(_j, 'def', _p?.def);
     return {
       CreateConversionStmt: _j
     };
@@ -3376,11 +3376,11 @@ export default {
     CreateCastStmt: CreateCastStmt;
   } {
     const _j = {} as CreateCastStmt;
-    _o.set(_j, "sourcetype", _p?.sourcetype);
-    _o.set(_j, "targettype", _p?.targettype);
-    _o.set(_j, "func", _p?.func);
-    _o.set(_j, "context", _p?.context);
-    _o.set(_j, "inout", _p?.inout);
+    _o.set(_j, 'sourcetype', _p?.sourcetype);
+    _o.set(_j, 'targettype', _p?.targettype);
+    _o.set(_j, 'func', _p?.func);
+    _o.set(_j, 'context', _p?.context);
+    _o.set(_j, 'inout', _p?.inout);
     return {
       CreateCastStmt: _j
     };
@@ -3389,11 +3389,11 @@ export default {
     CreateTransformStmt: CreateTransformStmt;
   } {
     const _j = {} as CreateTransformStmt;
-    _o.set(_j, "replace", _p?.replace);
-    _o.set(_j, "type_name", _p?.type_name);
-    _o.set(_j, "lang", _p?.lang);
-    _o.set(_j, "fromsql", _p?.fromsql);
-    _o.set(_j, "tosql", _p?.tosql);
+    _o.set(_j, 'replace', _p?.replace);
+    _o.set(_j, 'type_name', _p?.type_name);
+    _o.set(_j, 'lang', _p?.lang);
+    _o.set(_j, 'fromsql', _p?.fromsql);
+    _o.set(_j, 'tosql', _p?.tosql);
     return {
       CreateTransformStmt: _j
     };
@@ -3402,9 +3402,9 @@ export default {
     PrepareStmt: PrepareStmt;
   } {
     const _j = {} as PrepareStmt;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "argtypes", _p?.argtypes);
-    _o.set(_j, "query", _p?.query);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'argtypes', _p?.argtypes);
+    _o.set(_j, 'query', _p?.query);
     return {
       PrepareStmt: _j
     };
@@ -3413,8 +3413,8 @@ export default {
     ExecuteStmt: ExecuteStmt;
   } {
     const _j = {} as ExecuteStmt;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "params", _p?.params);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'params', _p?.params);
     return {
       ExecuteStmt: _j
     };
@@ -3423,9 +3423,9 @@ export default {
     DeallocateStmt: DeallocateStmt;
   } {
     const _j = {} as DeallocateStmt;
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "isall", _p?.isall);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'isall', _p?.isall);
+    _o.set(_j, 'location', _p?.location);
     return {
       DeallocateStmt: _j
     };
@@ -3434,8 +3434,8 @@ export default {
     DropOwnedStmt: DropOwnedStmt;
   } {
     const _j = {} as DropOwnedStmt;
-    _o.set(_j, "roles", _p?.roles);
-    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, 'roles', _p?.roles);
+    _o.set(_j, 'behavior', _p?.behavior);
     return {
       DropOwnedStmt: _j
     };
@@ -3444,8 +3444,8 @@ export default {
     ReassignOwnedStmt: ReassignOwnedStmt;
   } {
     const _j = {} as ReassignOwnedStmt;
-    _o.set(_j, "roles", _p?.roles);
-    _o.set(_j, "newrole", _p?.newrole);
+    _o.set(_j, 'roles', _p?.roles);
+    _o.set(_j, 'newrole', _p?.newrole);
     return {
       ReassignOwnedStmt: _j
     };
@@ -3454,8 +3454,8 @@ export default {
     AlterTSDictionaryStmt: AlterTSDictionaryStmt;
   } {
     const _j = {} as AlterTSDictionaryStmt;
-    _o.set(_j, "dictname", _p?.dictname);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'dictname', _p?.dictname);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterTSDictionaryStmt: _j
     };
@@ -3464,13 +3464,13 @@ export default {
     AlterTSConfigurationStmt: AlterTSConfigurationStmt;
   } {
     const _j = {} as AlterTSConfigurationStmt;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "cfgname", _p?.cfgname);
-    _o.set(_j, "tokentype", _p?.tokentype);
-    _o.set(_j, "dicts", _p?.dicts);
-    _o.set(_j, "override", _p?.override);
-    _o.set(_j, "replace", _p?.replace);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'cfgname', _p?.cfgname);
+    _o.set(_j, 'tokentype', _p?.tokentype);
+    _o.set(_j, 'dicts', _p?.dicts);
+    _o.set(_j, 'override', _p?.override);
+    _o.set(_j, 'replace', _p?.replace);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
     return {
       AlterTSConfigurationStmt: _j
     };
@@ -3479,9 +3479,9 @@ export default {
     PublicationTable: PublicationTable;
   } {
     const _j = {} as PublicationTable;
-    _o.set(_j, "relation", _p?.relation);
-    _o.set(_j, "whereClause", _p?.whereClause);
-    _o.set(_j, "columns", _p?.columns);
+    _o.set(_j, 'relation', _p?.relation);
+    _o.set(_j, 'whereClause', _p?.whereClause);
+    _o.set(_j, 'columns', _p?.columns);
     return {
       PublicationTable: _j
     };
@@ -3490,10 +3490,10 @@ export default {
     PublicationObjSpec: PublicationObjSpec;
   } {
     const _j = {} as PublicationObjSpec;
-    _o.set(_j, "pubobjtype", _p?.pubobjtype);
-    _o.set(_j, "name", _p?.name);
-    _o.set(_j, "pubtable", _p?.pubtable);
-    _o.set(_j, "location", _p?.location);
+    _o.set(_j, 'pubobjtype', _p?.pubobjtype);
+    _o.set(_j, 'name', _p?.name);
+    _o.set(_j, 'pubtable', _p?.pubtable);
+    _o.set(_j, 'location', _p?.location);
     return {
       PublicationObjSpec: _j
     };
@@ -3502,10 +3502,10 @@ export default {
     CreatePublicationStmt: CreatePublicationStmt;
   } {
     const _j = {} as CreatePublicationStmt;
-    _o.set(_j, "pubname", _p?.pubname);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "pubobjects", _p?.pubobjects);
-    _o.set(_j, "for_all_tables", _p?.for_all_tables);
+    _o.set(_j, 'pubname', _p?.pubname);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'pubobjects', _p?.pubobjects);
+    _o.set(_j, 'for_all_tables', _p?.for_all_tables);
     return {
       CreatePublicationStmt: _j
     };
@@ -3514,11 +3514,11 @@ export default {
     AlterPublicationStmt: AlterPublicationStmt;
   } {
     const _j = {} as AlterPublicationStmt;
-    _o.set(_j, "pubname", _p?.pubname);
-    _o.set(_j, "options", _p?.options);
-    _o.set(_j, "pubobjects", _p?.pubobjects);
-    _o.set(_j, "for_all_tables", _p?.for_all_tables);
-    _o.set(_j, "action", _p?.action);
+    _o.set(_j, 'pubname', _p?.pubname);
+    _o.set(_j, 'options', _p?.options);
+    _o.set(_j, 'pubobjects', _p?.pubobjects);
+    _o.set(_j, 'for_all_tables', _p?.for_all_tables);
+    _o.set(_j, 'action', _p?.action);
     return {
       AlterPublicationStmt: _j
     };
@@ -3527,10 +3527,10 @@ export default {
     CreateSubscriptionStmt: CreateSubscriptionStmt;
   } {
     const _j = {} as CreateSubscriptionStmt;
-    _o.set(_j, "subname", _p?.subname);
-    _o.set(_j, "conninfo", _p?.conninfo);
-    _o.set(_j, "publication", _p?.publication);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'subname', _p?.subname);
+    _o.set(_j, 'conninfo', _p?.conninfo);
+    _o.set(_j, 'publication', _p?.publication);
+    _o.set(_j, 'options', _p?.options);
     return {
       CreateSubscriptionStmt: _j
     };
@@ -3539,11 +3539,11 @@ export default {
     AlterSubscriptionStmt: AlterSubscriptionStmt;
   } {
     const _j = {} as AlterSubscriptionStmt;
-    _o.set(_j, "kind", _p?.kind);
-    _o.set(_j, "subname", _p?.subname);
-    _o.set(_j, "conninfo", _p?.conninfo);
-    _o.set(_j, "publication", _p?.publication);
-    _o.set(_j, "options", _p?.options);
+    _o.set(_j, 'kind', _p?.kind);
+    _o.set(_j, 'subname', _p?.subname);
+    _o.set(_j, 'conninfo', _p?.conninfo);
+    _o.set(_j, 'publication', _p?.publication);
+    _o.set(_j, 'options', _p?.options);
     return {
       AlterSubscriptionStmt: _j
     };
@@ -3552,9 +3552,9 @@ export default {
     DropSubscriptionStmt: DropSubscriptionStmt;
   } {
     const _j = {} as DropSubscriptionStmt;
-    _o.set(_j, "subname", _p?.subname);
-    _o.set(_j, "missing_ok", _p?.missing_ok);
-    _o.set(_j, "behavior", _p?.behavior);
+    _o.set(_j, 'subname', _p?.subname);
+    _o.set(_j, 'missing_ok', _p?.missing_ok);
+    _o.set(_j, 'behavior', _p?.behavior);
     return {
       DropSubscriptionStmt: _j
     };
@@ -3563,10 +3563,10 @@ export default {
     ScanToken: ScanToken;
   } {
     const _j = {} as ScanToken;
-    _o.set(_j, "start", _p?.start);
-    _o.set(_j, "end", _p?.end);
-    _o.set(_j, "token", _p?.token);
-    _o.set(_j, "keywordKind", _p?.keywordKind);
+    _o.set(_j, 'start', _p?.start);
+    _o.set(_j, 'end', _p?.end);
+    _o.set(_j, 'token', _p?.token);
+    _o.set(_j, 'keywordKind', _p?.keywordKind);
     return {
       ScanToken: _j
     };

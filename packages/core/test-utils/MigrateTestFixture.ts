@@ -1,13 +1,14 @@
-import { PgConfig } from 'pg-env';
-import { LaunchQLMigrate } from '../src/migrate/client';
-import { mkdtempSync, rmSync, cpSync, writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { cpSync, mkdirSync,mkdtempSync, rmSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
-import { getPgPool } from 'pg-cache';
-import { getPgEnvOptions } from 'pg-env';
+import { join } from 'path';
 import { Pool } from 'pg';
-import { TestDatabase } from './TestDatabase';
+import { getPgPool } from 'pg-cache';
+import { PgConfig } from 'pg-env';
+import { getPgEnvOptions } from 'pg-env';
+
+import { LaunchQLMigrate } from '../src/migrate/client';
 import { MigrateTestChange } from './MigrateTestChange';
+import { TestDatabase } from './TestDatabase';
 import { FIXTURES_PATH } from './utils';
 
 export class MigrateTestFixture {

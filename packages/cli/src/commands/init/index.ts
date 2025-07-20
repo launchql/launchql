@@ -1,6 +1,7 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
-import runWorkspaceSetup from './workspace';
+
 import runModuleSetup from './module';
+import runWorkspaceSetup from './workspace';
 
 export default async (
   argv: Partial<Record<string, any>>,
@@ -14,10 +15,10 @@ async function handlePromptFlow(argv: Partial<Record<string, any>>, prompter: In
   const { workspace } = argv;
 
   switch (workspace) {
-    case true:
-      return runWorkspaceSetup(argv, prompter);
-    case false:
-    default:
-      return runModuleSetup(argv, prompter);
+  case true:
+    return runWorkspaceSetup(argv, prompter);
+  case false:
+  default:
+    return runModuleSetup(argv, prompter);
   }
 }

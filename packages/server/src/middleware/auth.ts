@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { LaunchQLOptions } from '@launchql/types';
+import { NextFunction, Request, RequestHandler,Response } from 'express';
 import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
-import { LaunchQLOptions } from '@launchql/types';
 
 export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHandler => {
 

@@ -1,5 +1,5 @@
-import Streamer from './streamer';
 import getClient from './s3';
+import Streamer from './streamer';
 
 export * from './utils';
 

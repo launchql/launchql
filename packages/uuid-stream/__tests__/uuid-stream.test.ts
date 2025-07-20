@@ -1,5 +1,6 @@
 import { createHash } from 'crypto';
 import { Readable, ReadableOptions } from 'stream';
+
 import UuidStream from '../src';
 
 const getUuid = (stream: NodeJS.ReadableStream): Promise<string | null> => {

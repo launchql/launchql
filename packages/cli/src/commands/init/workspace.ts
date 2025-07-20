@@ -1,10 +1,9 @@
-import { Inquirerer, Question } from 'inquirerer';
-import path from 'path';
-import { mkdirSync } from 'fs';
-
-import { writeRenderedTemplates, workspaceTemplate } from '@launchql/templatizer';
 import { sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
+import { workspaceTemplate,writeRenderedTemplates } from '@launchql/templatizer';
+import { mkdirSync } from 'fs';
+import { Inquirerer, Question } from 'inquirerer';
+import path from 'path';
 
 const log = new Logger('workspace-init');
 

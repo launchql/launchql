@@ -1,7 +1,8 @@
-import { readFileSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { existsSync } from 'fs';
+import { dirname,join } from 'path';
+
 import { parsePlanFile } from '../src/files';
-import { ExtendedPlanFile, PlanFile, ParseError, ParseResult } from '../src/files/types';
+import { ExtendedPlanFile, ParseResult } from '../src/files/types';
 
 export class TestPlan {
   private fixturePath: string;

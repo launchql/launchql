@@ -1,29 +1,30 @@
-import { NodePlugin, Plugin } from 'graphile-build';
-// @ts-ignore
-import PgSimpleInflector from 'graphile-simple-inflector';
-// @ts-ignore
-import PgMetaschema from 'graphile-meta-schema';
-import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
-// @ts-ignore
-import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
-// @ts-ignore
-import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
-import {
-  LangPlugin,
-  additionalGraphQLContextFromRequest as langAdditional
-  // @ts-ignore
-} from 'graphile-i18n';
-import PgPostgis from '@pyramation/postgis';
-// @ts-ignore
-import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
-// @ts-ignore
-import PgSearch from 'graphile-search-plugin';
-import LqlTypesPlugin from './plugins/types';
-import { Uploader } from './resolvers/upload';
-import { PostGraphileOptions } from 'postgraphile';
 import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/types';
+import PgPostgis from '@pyramation/postgis';
+// @ts-ignore
+import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
+import { NodePlugin, Plugin } from 'graphile-build';
+import {
+  additionalGraphQLContextFromRequest as langAdditional,
+  LangPlugin
+  // @ts-ignore
+} from 'graphile-i18n';
+// @ts-ignore
+import PgMetaschema from 'graphile-meta-schema';
+// @ts-ignore
+import PgSearch from 'graphile-search-plugin';
+// @ts-ignore
+import PgSimpleInflector from 'graphile-simple-inflector';
+import { PostGraphileOptions } from 'postgraphile';
+// @ts-ignore
+import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
+import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+// @ts-ignore
+import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
+
+import LqlTypesPlugin from './plugins/types';
+import { Uploader } from './resolvers/upload';
 
 export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptions => {
   const opts = getEnvOptions(rawOpts);

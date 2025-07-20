@@ -1,8 +1,7 @@
 // TypeScript implementation of peek stream for efficient file type detection
 // Based on reference-packages/buffer-peak/peak.js
 
-import { Transform, TransformOptions, Readable } from 'stream';
-import { EventEmitter } from 'events';
+import { Readable,Transform, TransformOptions } from 'stream';
 
 export interface PeekStreamOptions extends TransformOptions {
   peekBytes: number;

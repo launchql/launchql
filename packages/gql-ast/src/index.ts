@@ -2,6 +2,7 @@ import {
   ArgumentNode,
   BooleanValueNode,
   DefinitionNode,
+  DirectiveNode,
   DocumentNode,
   FieldNode,
   FragmentDefinitionNode,
@@ -17,10 +18,9 @@ import {
   OperationTypeNode,
   SelectionSetNode,
   StringValueNode,
+  TypeNode,
   VariableDefinitionNode,
   VariableNode,
-  DirectiveNode,
-  TypeNode,
 } from 'graphql';
 
 export const document = ({ definitions }: { definitions: DefinitionNode[] }): DocumentNode => ({

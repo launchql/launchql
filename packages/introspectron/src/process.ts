@@ -1,12 +1,11 @@
-import { deepClone, parseTags } from './utils';
 import type {
-  PgIntrospectionResultByKind,
+  PgAttribute,
   PgClass,
   PgConstraint,
-  PgAttribute,
-  PgType,
-  PgIndex
-} from './pg-types';
+  PgIndex,
+  PgIntrospectionResultByKind,
+  PgType} from './pg-types';
+import { deepClone, parseTags } from './utils';
 
 const removeQuotes = (str: string): string => {
   const trimmed = str.trim();

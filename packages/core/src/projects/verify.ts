@@ -1,11 +1,11 @@
-import { resolve, join } from 'path';
-import * as path from 'path';
-
-import { errors, LaunchQLOptions } from '@launchql/types';
-import { PgConfig, getPgEnvOptions } from 'pg-env';
-import { LaunchQLProject } from '../core/class/launchql';
 import { Logger } from '@launchql/logger';
+import { errors, LaunchQLOptions } from '@launchql/types';
+import {resolve } from 'path';
+import * as path from 'path';
 import { getPgPool } from 'pg-cache';
+import {PgConfig } from 'pg-env';
+
+import { LaunchQLProject } from '../core/class/launchql';
 import { LaunchQLMigrate } from '../migrate/client';
 
 interface Extensions {

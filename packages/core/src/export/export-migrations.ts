@@ -1,13 +1,13 @@
-import path from 'path';
+import { LaunchQLOptions } from '@launchql/types';
+import Case from 'case';
 import { mkdirSync, rmSync } from 'fs';
 import { sync as glob } from 'glob';
-import Case from 'case';
-
-import { exportMeta } from './export-meta';
+import path from 'path';
 import { getPgPool } from 'pg-cache';
-import { LaunchQLOptions } from '@launchql/types';
-import { SqitchRow, writeSqitchFiles, writeSqitchPlan, SqlWriteOptions } from '../files';
+
 import { LaunchQLProject } from '../core/class/launchql';
+import { SqitchRow, SqlWriteOptions,writeSqitchFiles, writeSqitchPlan } from '../files';
+import { exportMeta } from './export-meta';
 
 interface ExportMigrationsToDiskOptions {
   project: LaunchQLProject;

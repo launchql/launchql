@@ -99,9 +99,9 @@ export class Logger {
 
     const outputFn =
       level === 'error' ? console.error :
-      level === 'warn'  ? console.warn  :
-      level === 'debug' ? console.debug :
-      console.log;
+        level === 'warn'  ? console.warn  :
+          level === 'debug' ? console.debug :
+            console.log;
 
     outputFn(timestamp, tag, prefix, ...formattedArgs);
   }

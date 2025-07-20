@@ -1,4 +1,4 @@
-import { SeedAdapter, SeedContext } from "./types";
+import { SeedAdapter, SeedContext } from './types';
 
 interface JsonSeedMap {
   [table: string]: Record<string, any>[];

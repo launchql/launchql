@@ -1,4 +1,4 @@
-import { TestPlan } from "../../../test-utils";
+import { TestPlan } from '../../../test-utils';
 
 it('plan-invalid/bad-symbolic-refs.plan', () => {
   const testPlan = new TestPlan('plan-invalid/bad-symbolic-refs.plan');

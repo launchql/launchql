@@ -1,4 +1,4 @@
-import { Express, Request, Response, NextFunction } from 'express';
+import { Express, NextFunction,Request, Response } from 'express';
 
 export const healthz = (app: Express): void => {
   app.get('/healthz', (req: Request, res: Response) => {
