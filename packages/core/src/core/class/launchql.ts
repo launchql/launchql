@@ -34,7 +34,7 @@ import {
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
-import { walkUp } from '@launchql/env';
+import { walkUp, loadConfigSyncFromDir, resolveLaunchqlPath } from '@launchql/env';
 
 
 const logger = new Logger('launchql');
@@ -101,16 +101,7 @@ export class LaunchQLProject {
   }
 
   private resolveLaunchqlPath(): string | undefined {
-    const configFiles = ['launchql.config.js', 'launchql.json'];
-    
-    for (const filename of configFiles) {
-      try {
-        return walkUp(this.cwd, filename);
-      } catch {
-      }
-    }
-    
-    return undefined;
+    return resolveLaunchqlPath(this.cwd);
   }
 
   private resolveSqitchPath(): string | undefined {
@@ -126,36 +117,7 @@ export class LaunchQLProject {
   }
 
   private loadConfigSyncFromDir(dir: string): LaunchQLWorkspaceConfig {
-    const configFiles = [
-      'launchql.config.js',
-      'launchql.json'
-    ];
-    
-    for (const filename of configFiles) {
-      const configPath = path.join(dir, filename);
-      if (fs.existsSync(configPath)) {
-        return this.loadConfigFileSync(configPath);
-      }
-    }
-    
-    throw new Error('No launchql config file found. Expected one of: ' + configFiles.join(', '));
-  }
-
-  private loadConfigFileSync(configPath: string): LaunchQLWorkspaceConfig {
-    const ext = path.extname(configPath);
-    
-    switch (ext) {
-      case '.json':
-        return JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      
-      case '.js':
-        delete require.cache[require.resolve(configPath)];
-        const configModule = require(configPath);
-        return configModule.default || configModule;
-      
-      default:
-        throw new Error(`Unsupported config file type: ${ext}`);
-    }
+    return loadConfigSyncFromDir(dir) as LaunchQLWorkspaceConfig;
   }
 
   private loadAllowedDirs(): string[] {
