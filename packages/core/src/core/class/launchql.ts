@@ -101,7 +101,7 @@ export class LaunchQLProject {
   }
 
   private resolveLaunchqlPath(): string | undefined {
-    const configFiles = ['launchql.config.js', 'launchql.config.mjs', 'launchql.json'];
+    const configFiles = ['launchql.config.js', 'launchql.json'];
     
     for (const filename of configFiles) {
       try {
@@ -128,7 +128,6 @@ export class LaunchQLProject {
   private loadConfigSyncFromDir(dir: string): LaunchQLWorkspaceConfig {
     const configFiles = [
       'launchql.config.js',
-      'launchql.config.mjs', 
       'launchql.json'
     ];
     
@@ -150,14 +149,9 @@ export class LaunchQLProject {
         return JSON.parse(fs.readFileSync(configPath, 'utf8'));
       
       case '.js':
-      case '.mjs':
-        if (ext === '.js') {
-          delete require.cache[require.resolve(configPath)];
-          const configModule = require(configPath);
-          return configModule.default || configModule;
-        } else {
-          throw new Error('.mjs config files are not supported in synchronous loading. Please use .js or .json instead.');
-        }
+        delete require.cache[require.resolve(configPath)];
+        const configModule = require(configPath);
+        return configModule.default || configModule;
       
       default:
         throw new Error(`Unsupported config file type: ${ext}`);
