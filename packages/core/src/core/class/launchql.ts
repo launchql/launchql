@@ -60,31 +60,6 @@ const getNow = () =>
     ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
     : getUTCTimestamp(new Date());
 
-function parseTarget(target: string): { project: string | null, change: string | null } {
-  const colonIndex = target.indexOf(':');
-  
-  if (colonIndex > 0) {
-    const project = target.substring(0, colonIndex);
-    const change = target.substring(colonIndex + 1);
-    
-    return { project, change };
-  } else {
-    return { project: target, change: null };
-  }
-}
-
-function shouldPassToChange(extensionName: string, target: string): string | undefined {
-  const colonIndex = target.indexOf(':');
-  const hasProjectPrefix = colonIndex > 0;
-  
-  if (hasProjectPrefix) {
-    const targetProject = target.substring(0, colonIndex);
-    const changeName = target.substring(colonIndex + 1);
-    return targetProject === extensionName ? changeName : undefined;
-  } else {
-    return undefined;
-  }
-}
 
 
 export enum ProjectContext {
@@ -675,13 +650,11 @@ export class LaunchQLProject {
 
   async deploy(
     opts: LaunchQLOptions,
-    target?: string,
+    projectName?: string,
+    toChange?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('deploy');
-
-    const { project: name, change: toChange } = parseTarget(target || '');
-    let projectName = name;
 
     if (!projectName) {
       const context = this.getContext();
@@ -709,7 +682,7 @@ export class LaunchQLProject {
       };
 
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
+      const moduleProject = this.getModuleProject(projectName);
       const extensions = moduleProject.getModuleExtensions();
 
       const pgPool = getPgPool(opts.pg);
@@ -777,7 +750,7 @@ export class LaunchQLProject {
               
                 const result = await client.deploy({
                   modulePath,
-                  toChange: shouldPassToChange(extension, target || ''),
+                  toChange: extension === projectName ? toChange : undefined,
                   useTransaction: opts.deployment.useTx,
                   logOnly: opts.deployment.logOnly
                 });
@@ -824,13 +797,11 @@ export class LaunchQLProject {
 
   async revert(
     opts: LaunchQLOptions,
-    target?: string,
+    projectName?: string,
+    toChange?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('revert');
-
-    const { project: name, change: toChange } = parseTarget(target || '');
-    let projectName = name;
 
     if (!projectName) {
       const context = this.getContext();
@@ -878,7 +849,7 @@ export class LaunchQLProject {
             
               const result = await client.revert({
                 modulePath,
-                toChange: shouldPassToChange(extension, target || ''),
+                toChange: extension === projectName ? toChange : undefined,
                 useTransaction: opts.deployment.useTx
               });
             
@@ -922,13 +893,11 @@ export class LaunchQLProject {
 
   async verify(
     opts: LaunchQLOptions,
-    target?: string,
+    projectName?: string,
+    toChange?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('verify');
-
-    const { project: name, change: toChange } = parseTarget(target || '');
-    let projectName = name;
 
     if (!projectName) {
       const context = this.getContext();
@@ -967,7 +936,7 @@ export class LaunchQLProject {
               // Only apply toChange to the target module being verified, not its dependencies.
               const result = await client.verify({
                 modulePath,
-                toChange: shouldPassToChange(extension, target || '')
+                toChange: extension === projectName ? toChange : undefined
               });
             
               if (result.failed.length > 0) {

@@ -25,9 +25,16 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let projectName: string | undefined;
+  let toChange: string | undefined;
+
   if (recursive) {
     projectName = await selectModule(argv, prompter, 'Choose a project to verify', cwd);
     log.info(`Selected project: ${projectName}`);
+    toChange = argv.toChange;
+  } else {
+    if (argv.toChange) {
+      toChange = argv.toChange;
+    }
   }
 
   const project = new LaunchQLProject(cwd);
@@ -38,7 +45,8 @@ export default async (
   
   await project.verify(
     opts,
-    projectName && argv.toChange ? `${projectName}:${argv.toChange}` : (projectName || argv.toChange),
+    projectName,
+    toChange,
     recursive
   );
 

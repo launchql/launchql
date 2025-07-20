@@ -44,7 +44,9 @@ export class CoreDeployTestFixture extends TestFixture {
         }
       });
 
-      await project.deploy(opts, target, true);
+      const projectName = target.includes(':') ? target.split(':')[0] : target;
+      const toChange = target.includes(':') ? target.split(':')[1] : undefined;
+      await project.deploy(opts, projectName, toChange, true);
     } finally {
       process.chdir(originalCwd);
     }
@@ -65,7 +67,8 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      await project.revert(opts, target, true);
+      const toChange = target.includes(':') ? target.split(':')[1] : undefined;
+      await project.revert(opts, projectName, toChange, true);
     } finally {
       process.chdir(originalCwd);
     }
@@ -84,7 +87,9 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      await project.verify(opts, target, true);
+      const projectName = target.includes(':') ? target.split(':')[0] : target;
+      const toChange = target.includes(':') ? target.split(':')[1] : undefined;
+      await project.verify(opts, projectName, toChange, true);
     } finally {
       process.chdir(originalCwd);
     }
