@@ -1,6 +1,6 @@
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import { LaunchQLOptions } from '@launchql/types';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import PgPostgis from '@pyramation/postgis';
 // @ts-ignore
 import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';

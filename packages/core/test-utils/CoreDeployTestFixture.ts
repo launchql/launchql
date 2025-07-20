@@ -1,4 +1,4 @@
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { join } from 'path';
 import { teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';

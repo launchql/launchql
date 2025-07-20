@@ -4,7 +4,7 @@ import {
   poweredBy,
 } from '@launchql/server-utils';
 import { LaunchQLOptions } from '@launchql/types';
-import { getEnvOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express,NextFunction, Request, Response } from 'express';
 import { GraphileCache, graphileCache } from 'graphile-cache';

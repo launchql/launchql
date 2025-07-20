@@ -1,5 +1,6 @@
 import { Logger } from '@launchql/logger';
-import { errors, getEnvOptions,LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@launchql/env';
 import {resolve } from 'path';
 import * as path from 'path';
 import { getPgPool } from 'pg-cache';
