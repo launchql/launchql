@@ -2,7 +2,7 @@ import { Logger } from '@launchql/logger';
 import {
   moduleTemplate,
   writeRenderedTemplates} from '@launchql/templatizer';
-import { errors,LaunchQLOptions } from '@launchql/types';
+import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
 import fs from 'fs';
@@ -10,6 +10,7 @@ import * as glob from 'glob';
 import os from 'os';
 import { parse } from 'parse-package-name';
 import path, { dirname, resolve } from 'path';
+import { pathToFileURL } from 'url';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
@@ -78,7 +79,7 @@ export class LaunchQLProject {
   public cwd: string;
   public workspacePath?: string;
   public modulePath?: string;
-  public config?: any;
+  public config?: LaunchQLWorkspaceConfig;
   public allowedDirs: string[] = [];
 
   private _moduleMap?: ModuleMap;
@@ -94,17 +95,22 @@ export class LaunchQLProject {
     this.modulePath = this.resolveSqitchPath();
 
     if (this.workspacePath) {
-      this.config = this.loadConfig();
+      this.config = this.loadConfigSync();
       this.allowedDirs = this.loadAllowedDirs();
     }
   }
 
   private resolveLaunchqlPath(): string | undefined {
-    try {
-      return walkUp(this.cwd, 'launchql.json');
-    } catch {
-      return undefined;
+    const configFiles = ['launchql.config.js', 'launchql.config.mjs', 'launchql.json'];
+    
+    for (const filename of configFiles) {
+      try {
+        return walkUp(this.cwd, filename);
+      } catch {
+      }
     }
+    
+    return undefined;
   }
 
   private resolveSqitchPath(): string | undefined {
@@ -115,9 +121,47 @@ export class LaunchQLProject {
     }
   }
 
-  private loadConfig(): any {
-    const configPath = path.join(this.workspacePath!, 'launchql.json');
-    return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  private loadConfigSync(): LaunchQLWorkspaceConfig {
+    return this.loadConfigSyncFromDir(this.workspacePath!);
+  }
+
+  private loadConfigSyncFromDir(dir: string): LaunchQLWorkspaceConfig {
+    const configFiles = [
+      'launchql.config.js',
+      'launchql.config.mjs', 
+      'launchql.json'
+    ];
+    
+    for (const filename of configFiles) {
+      const configPath = path.join(dir, filename);
+      if (fs.existsSync(configPath)) {
+        return this.loadConfigFileSync(configPath);
+      }
+    }
+    
+    throw new Error('No launchql config file found. Expected one of: ' + configFiles.join(', '));
+  }
+
+  private loadConfigFileSync(configPath: string): LaunchQLWorkspaceConfig {
+    const ext = path.extname(configPath);
+    
+    switch (ext) {
+      case '.json':
+        return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      
+      case '.js':
+      case '.mjs':
+        if (ext === '.js') {
+          delete require.cache[require.resolve(configPath)];
+          const configModule = require(configPath);
+          return configModule.default || configModule;
+        } else {
+          throw new Error('.mjs config files are not supported in synchronous loading. Please use .js or .json instead.');
+        }
+      
+      default:
+        throw new Error(`Unsupported config file type: ${ext}`);
+    }
   }
 
   private loadAllowedDirs(): string[] {

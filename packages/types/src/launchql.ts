@@ -49,6 +49,21 @@ export interface ApiOptions {
 }
 
 /**
+ * Configuration for LaunchQL workspace
+ */
+export interface LaunchQLWorkspaceConfig {
+  /** Glob patterns for package directories */
+  packages: string[];
+  /** Optional workspace metadata */
+  name?: string;
+  version?: string;
+  /** Additional workspace settings */
+  settings?: {
+    [key: string]: any;
+  };
+}
+
+/**
  * Main configuration options for the LaunchQL framework
  */
 export interface LaunchQLOptions {
