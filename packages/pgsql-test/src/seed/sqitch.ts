@@ -16,6 +16,7 @@ export function sqitch(cwd?: string): SeedAdapter {
           }
         }),
         proj.getModuleName(),
+        undefined,
         true
       );
     }
