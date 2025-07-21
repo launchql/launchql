@@ -677,13 +677,6 @@ export class LaunchQLProject {
     const log = new Logger('deploy');
 
     const { name, toChange } = this.parseProjectTarget(target);
-    
-    if (!target) {
-      const context = this.getContext();
-      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        recursive = false;
-      }
-    }
 
     if (recursive) {
       // Cache for fast deployment
@@ -821,13 +814,6 @@ export class LaunchQLProject {
     const log = new Logger('revert');
 
     const { name, toChange } = this.parseProjectTarget(target);
-    
-    if (!target) {
-      const context = this.getContext();
-      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        recursive = false;
-      }
-    }
 
     if (recursive) {
       const modules = this.getModuleMap();
@@ -914,13 +900,6 @@ export class LaunchQLProject {
     const log = new Logger('verify');
 
     const { name, toChange } = this.parseProjectTarget(target);
-    
-    if (!target) {
-      const context = this.getContext();
-      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        recursive = false;
-      }
-    }
 
     if (recursive) {
       const modules = this.getModuleMap();
