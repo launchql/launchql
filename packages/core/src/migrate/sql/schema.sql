@@ -33,6 +33,5 @@ CREATE TABLE launchql_migrate.events (
     project         TEXT        NOT NULL,
     occurred_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
     error_message   TEXT,
-    error_code      TEXT,
-    stack_trace     TEXT
+    error_code      TEXT
 );

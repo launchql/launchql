@@ -217,8 +217,7 @@ export class LaunchQLMigrate {
             changeName: change.name,
             project: plan.project,
             errorMessage: error.message || 'Unknown error',
-            errorCode: error.code || null,
-            stackTrace: error.stack || null
+            errorCode: error.code || null
           });
 
           // Build comprehensive error message
@@ -476,8 +475,7 @@ export class LaunchQLMigrate {
             changeName: change.name,
             project: plan.project,
             errorMessage: error.message || 'Unknown error',
-            errorCode: error.code || null,
-            stackTrace: error.stack || null
+            errorCode: error.code || null
           });
 
           log.error(`Failed to revert ${change.name}:`, error);
@@ -549,8 +547,7 @@ export class LaunchQLMigrate {
             changeName: change.name,
             project: plan.project,
             errorMessage: error.message || 'Unknown error',
-            errorCode: error.code || null,
-            stackTrace: error.stack || null
+            errorCode: error.code || null
           });
 
           log.error(`Failed to verify ${change.name}:`, error);
