@@ -97,8 +97,6 @@ BEGIN
         BEGIN
             EXECUTE p_deploy_sql;
         EXCEPTION WHEN OTHERS THEN
-            INSERT INTO launchql_migrate.events (event_type, change_name, project)
-            VALUES ('fail', p_change_name, p_project);
             RAISE;
         END;
     END IF;

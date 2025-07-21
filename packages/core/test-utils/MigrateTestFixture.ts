@@ -61,6 +61,7 @@ export class MigrateTestFixture {
     const pool = getPgPool(pgConfig);
     this.pools.push(pool);
 
+    const fixture = this;
     const db: TestDatabase = {
       name: dbName,
       config,
@@ -109,14 +110,16 @@ export class MigrateTestFixture {
         `);
         
         const events = await pool.query(`
-          SELECT project, change_name, event_type, occurred_at
+          SELECT project, change_name, event_type, occurred_at, error_message, error_code
           FROM launchql_migrate.events 
           ORDER BY occurred_at
         `);
         
+        const sanitizedEvents = events.rows;
+        
         // Remove timestamps from objects for consistent snapshots
         const cleanChanges = changes.rows.map(({ deployed_at, ...change }) => change);
-        const cleanEvents = events.rows.map(({ occurred_at, ...event }) => event);
+        const cleanEvents = sanitizedEvents.map(({ occurred_at, ...event }) => event);
         
         return {
           changes: cleanChanges,
@@ -146,6 +149,7 @@ export class MigrateTestFixture {
     this.databases.push(db);
     return db;
   }
+
 
   setupFixture(fixturePath: string[]): string {
     const originalPath = join(FIXTURES_PATH, ...fixturePath);

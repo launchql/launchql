@@ -4,8 +4,16 @@ exports[`Deploy Failure Scenarios constraint violation with transaction - automa
 {
   "changeCount": 0,
   "changes": [],
-  "eventCount": 0,
-  "events": [],
+  "eventCount": 1,
+  "events": [
+    {
+      "change_name": "violate_constraint",
+      "error_code": "23505",
+      "error_message": "duplicate key value violates unique constraint "test_users_email_key"",
+      "event_type": "deploy",
+      "project": "test-constraint-fail",
+    },
+  ],
 }
 `;
 
@@ -24,15 +32,26 @@ exports[`Deploy Failure Scenarios constraint violation without transaction - par
       "script_hash": "833d7d349e3c4f07e1a24ed40ac9814329efc87c180180342a09874f8124a037",
     },
   ],
-  "eventCount": 2,
+  "eventCount": 3,
   "events": [
     {
       "change_name": "create_table",
+      "error_code": null,
+      "error_message": null,
       "event_type": "deploy",
       "project": "test-constraint-partial",
     },
     {
       "change_name": "add_record",
+      "error_code": null,
+      "error_message": null,
+      "event_type": "deploy",
+      "project": "test-constraint-partial",
+    },
+    {
+      "change_name": "violate_constraint",
+      "error_code": "23505",
+      "error_message": "duplicate key value violates unique constraint "test_products_sku_key"",
       "event_type": "deploy",
       "project": "test-constraint-partial",
     },
@@ -40,42 +59,91 @@ exports[`Deploy Failure Scenarios constraint violation without transaction - par
 }
 `;
 
-exports[`Deploy Failure Scenarios verify database state after constraint failure: partial-deployment-state-comparison 1`] = `
+exports[`Deploy Failure Scenarios non-transaction mode - partial deployment on constraint failure: non-transaction-mode-constraint-failure 1`] = `
 {
   "changeCount": 2,
   "changes": [
     {
       "change_name": "setup_schema",
-      "project": "test-state-check",
+      "project": "test-nontransaction-partial",
       "script_hash": "a3419a48994fd13a668befcaab23c4d0d7e9e08e6e6a9093effb3c85b7e953d9",
     },
     {
       "change_name": "create_constraint_table",
-      "project": "test-state-check",
+      "project": "test-nontransaction-partial",
       "script_hash": "ec5b17e155a2cd4e098716204192083d31d096a4cf163550d5ea176a4615a4d2",
     },
   ],
-  "eventCount": 2,
+  "eventCount": 3,
   "events": [
     {
       "change_name": "setup_schema",
+      "error_code": null,
+      "error_message": null,
       "event_type": "deploy",
-      "project": "test-state-check",
+      "project": "test-nontransaction-partial",
     },
     {
       "change_name": "create_constraint_table",
+      "error_code": null,
+      "error_message": null,
       "event_type": "deploy",
-      "project": "test-state-check",
+      "project": "test-nontransaction-partial",
+    },
+    {
+      "change_name": "fail_on_constraint",
+      "error_code": "23514",
+      "error_message": "new row for relation "orders" violates check constraint "orders_amount_check"",
+      "event_type": "deploy",
+      "project": "test-nontransaction-partial",
     },
   ],
 }
 `;
 
-exports[`Deploy Failure Scenarios verify database state after constraint failure: transaction-rollback-state-comparison 1`] = `
+exports[`Deploy Failure Scenarios transaction mode - complete rollback on constraint failure: transaction-mode-constraint-failure 1`] = `
 {
   "changeCount": 0,
   "changes": [],
-  "eventCount": 0,
-  "events": [],
+  "eventCount": 1,
+  "events": [
+    {
+      "change_name": "fail_on_constraint",
+      "error_code": "23514",
+      "error_message": "new row for relation "orders" violates check constraint "orders_amount_check"",
+      "event_type": "deploy",
+      "project": "test-transaction-rollback",
+    },
+  ],
+}
+`;
+
+exports[`Deploy Failure Scenarios verify failure - non-existent table reference: verify-failure-non-existent-table 1`] = `
+{
+  "changeCount": 1,
+  "changes": [
+    {
+      "change_name": "create_simple_table",
+      "project": "test-verify-fail",
+      "script_hash": "f5f0794a55d611246115a67e39747c887da6d6f83d79f63c3aa730fa97772942",
+    },
+  ],
+  "eventCount": 2,
+  "events": [
+    {
+      "change_name": "create_simple_table",
+      "error_code": null,
+      "error_message": null,
+      "event_type": "deploy",
+      "project": "test-verify-fail",
+    },
+    {
+      "change_name": "create_simple_table",
+      "error_code": "VERIFICATION_FAILED",
+      "error_message": "Verification failed for create_simple_table",
+      "event_type": "verify",
+      "project": "test-verify-fail",
+    },
+  ],
 }
 `;

@@ -1,5 +1,4 @@
 import { Logger } from '@launchql/logger';
-import { getDeploymentEnvOptions } from '@launchql/env';
 import { readFileSync } from 'fs';
 import { dirname,join } from 'path';
 import { Pool } from 'pg';
@@ -19,6 +18,7 @@ import {
   StatusResult,
   VerifyOptions,
   VerifyResult} from './types';
+import { EventLogger } from './utils/event-logger';
 import { hashFile, hashSqlFile } from './utils/hash';
 import { executeQuery, withTransaction } from './utils/transaction';
 
@@ -45,6 +45,7 @@ export class LaunchQLMigrate {
   private pool: Pool;
   private pgConfig: PgConfig;
   private hashMethod: HashMethod;
+  private eventLogger: EventLogger;
   private initialized: boolean = false;
 
   constructor(config: PgConfig, options: LaunchQLMigrateOptions = {}) {
@@ -53,6 +54,7 @@ export class LaunchQLMigrate {
     const envHashMethod = process.env.DEPLOYMENT_HASH_METHOD as HashMethod;
     this.hashMethod = options.hashMethod || envHashMethod || 'content';
     this.pool = getPgPool(this.pgConfig);
+    this.eventLogger = new EventLogger(this.pgConfig);
   }
 
   /**
@@ -209,6 +211,15 @@ export class LaunchQLMigrate {
           deployed.push(change.name);
           log.success(`Successfully ${logOnly ? 'logged' : 'deployed'}: ${change.name}`);
         } catch (error: any) {
+          // Log failure event outside of transaction
+          await this.eventLogger.logEvent({
+            eventType: 'deploy',
+            changeName: change.name,
+            project: plan.project,
+            errorMessage: error.message || 'Unknown error',
+            errorCode: error.code || null
+          });
+
           // Build comprehensive error message
           const errorLines = [];
           errorLines.push(`Failed to deploy ${change.name}:`);
@@ -457,7 +468,16 @@ export class LaunchQLMigrate {
           
           reverted.push(change.name);
           log.success(`Successfully reverted: ${change.name}`);
-        } catch (error) {
+        } catch (error: any) {
+          // Log failure event outside of transaction
+          await this.eventLogger.logEvent({
+            eventType: 'revert',
+            changeName: change.name,
+            project: plan.project,
+            errorMessage: error.message || 'Unknown error',
+            errorCode: error.code || null
+          });
+
           log.error(`Failed to revert ${change.name}:`, error);
           failed = change.name;
           throw error; // Re-throw to trigger rollback if in transaction
@@ -516,15 +536,29 @@ export class LaunchQLMigrate {
             verified.push(change.name);
             log.success(`Successfully verified: ${change.name}`);
           } else {
-            failed.push(change.name);
-            log.error(`Verification failed: ${change.name}`);
+            const verificationError = new Error(`Verification failed for ${change.name}`) as any;
+            verificationError.code = 'VERIFICATION_FAILED';
+            throw verificationError;
           }
-        } catch (error) {
+        } catch (error: any) {
+          // Log failure event with rich error information
+          await this.eventLogger.logEvent({
+            eventType: 'verify',
+            changeName: change.name,
+            project: plan.project,
+            errorMessage: error.message || 'Unknown error',
+            errorCode: error.code || null
+          });
+
           log.error(`Failed to verify ${change.name}:`, error);
           failed.push(change.name);
         }
       }
     } finally {
+    }
+    
+    if (failed.length > 0) {
+      throw new Error(`Verification failed for ${failed.length} change(s): ${failed.join(', ')}`);
     }
     
     return { verified, failed };
