@@ -302,13 +302,8 @@ export class LaunchQLMigrate {
         }
         
         // Check if deployed
-        const deployedResult = await executeQuery(
-          context,
-          'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-          [plan.project, change.name]
-        );
-        
-        if (!deployedResult.rows[0]?.is_deployed) {
+        const isDeployed = await this.isDeployed(plan.project, change.name);
+        if (!isDeployed) {
           log.info(`Skipping not deployed change: ${change.name}`);
           skipped.push(change.name);
           continue;
