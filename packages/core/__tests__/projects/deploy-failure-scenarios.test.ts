@@ -313,12 +313,19 @@ describe('Deploy Failure Scenarios', () => {
     expect(deployState.changeCount).toBe(1);
     expect(await db.exists('table', 'users')).toBe(true);
     
-    const verifyResult = await client.verify({
-      modulePath: tempDir
-    });
+    let verifyResult;
+    let verifyError: Error | undefined;
     
-    expect(verifyResult.verified).toEqual([]);
-    expect(verifyResult.failed).toEqual(['create_simple_table']);
+    try {
+      verifyResult = await client.verify({
+        modulePath: tempDir
+      });
+    } catch (error) {
+      verifyError = error as Error;
+    }
+    
+    expect(verifyError).toBeDefined();
+    expect(verifyError!.message).toContain('Verification failed for 1 change(s): create_simple_table');
     
     const finalState = await db.getMigrationState();
     
