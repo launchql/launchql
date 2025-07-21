@@ -131,10 +131,7 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = getPgPool({
-      ...this.pgConfig,
-      database: this.pgConfig.database
-    });
+    const targetPool = getPgPool(this.pgConfig);
     
     // Execute deployment with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
@@ -265,10 +262,7 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = getPgPool({
-      ...this.pgConfig,
-      database: this.pgConfig.database
-    });
+    const targetPool = getPgPool(this.pgConfig);
 
     // Execute revert with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
@@ -336,10 +330,7 @@ export class LaunchQLMigrate {
     const failed: string[] = [];
     
     // Use a separate pool for the target database
-    const targetPool = getPgPool({
-      ...this.pgConfig,
-      database: this.pgConfig.database
-    });
+    const targetPool = getPgPool(this.pgConfig);
 
     try {
       for (const change of changes) {
