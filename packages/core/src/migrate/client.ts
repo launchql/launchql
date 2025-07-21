@@ -314,40 +314,9 @@ export class LaunchQLMigrate {
     }
     
     let resolvedToChange = toChange;
-    let targetProject = plan.project;
-    let targetChangeName = toChange;
     
     if (toChange && toChange.includes('@')) {
-      if (toChange.includes(':@')) {
-        const [crossProject, tag] = toChange.split(':@');
-        targetProject = crossProject;
-        
-        try {
-          if (!launchqlProject) {
-            launchqlProject = new LaunchQLProject(packageDir);
-          }
-          
-          const moduleMap = launchqlProject.getModuleMap();
-          const targetModule = moduleMap[crossProject];
-          const workspacePath = launchqlProject.getWorkspacePath();
-          
-          if (targetModule && workspacePath) {
-            const targetPlanPath = join(workspacePath, targetModule.path, 'launchql.plan');
-            const resolvedChange = resolveTagToChangeName(targetPlanPath, `@${tag}`, crossProject);
-            targetChangeName = resolvedChange;
-            resolvedToChange = resolvedChange;
-          } else {
-            resolvedToChange = toChange;
-            targetChangeName = toChange;
-          }
-        } catch (error) {
-          resolvedToChange = toChange;
-          targetChangeName = toChange;
-        }
-      } else {
-        resolvedToChange = resolveTagToChangeName(planPath, toChange, plan.project);
-        targetChangeName = resolvedToChange;
-      }
+      resolvedToChange = resolveTagToChangeName(planPath, toChange, plan.project);
     }
     
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
@@ -366,61 +335,8 @@ export class LaunchQLMigrate {
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
-        if (resolvedToChange && targetProject && targetChangeName) {
-          if (toChange && toChange.includes(':@')) {
-            let actualTargetChangeName = targetChangeName;
-            let actualTargetProject = targetProject;
-            
-            if (resolvedDeps && resolvedDeps.resolvedTags && resolvedDeps.resolvedTags[toChange]) {
-              const resolvedTag = resolvedDeps.resolvedTags[toChange];
-              
-              if (resolvedTag.includes(':')) {
-                const [resolvedProject, resolvedChange] = resolvedTag.split(':', 2);
-                actualTargetProject = resolvedProject;
-                actualTargetChangeName = resolvedChange;
-              } else {
-                actualTargetChangeName = resolvedTag;
-              }
-            }
-            
-            const targetDeployedResult = await executeQuery(
-              context,
-              'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-              [actualTargetProject, actualTargetChangeName]
-            );
-            
-            if (!targetDeployedResult.rows[0]?.is_deployed) {
-              log.warn(`Target change ${targetProject}:${actualTargetChangeName} is not deployed, stopping revert`);
-              break;
-            }
-            
-            // Get deployment time of target change
-            const targetTimeResult = await executeQuery(
-              context,
-              'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
-              [actualTargetProject, actualTargetChangeName]
-            );
-            
-            const currentTimeResult = await executeQuery(
-              context,
-              'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
-              [plan.project, change.name]
-            );
-            
-            if (targetTimeResult.rows[0] && currentTimeResult.rows[0]) {
-              const targetTime = new Date(targetTimeResult.rows[0].deployed_at);
-              const currentTime = new Date(currentTimeResult.rows[0].deployed_at);
-              
-              if (currentTime <= targetTime) {
-                log.info(`Stopping revert at ${change.name} (deployed at ${currentTime}) as it was deployed before/at target ${actualTargetProject}:${actualTargetChangeName} (deployed at ${targetTime})`);
-                break;
-              }
-            }
-          } else {
-            if (change.name === resolvedToChange) {
-              break;
-            }
-          }
+        if (resolvedToChange && change.name === resolvedToChange) {
+          break;
         }
         
         // Check if deployed
@@ -473,9 +389,10 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { modulePath } = options;
+    const { modulePath, toChange } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
+    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
@@ -489,6 +406,11 @@ export class LaunchQLMigrate {
 
     try {
       for (const change of changes) {
+        // Stop if we've reached the target change
+        if (resolvedToChange && change.name === resolvedToChange) {
+          break;
+        }
+        
         // Check if deployed
         const isDeployed = await this.isDeployed(plan.project, change.name);
         if (!isDeployed) {
