@@ -290,9 +290,6 @@ export class LaunchQLMigrate {
 
         const cleanRevertSql = await cleanSql(revertScript, false, '$EOFCODE$');
         
-        // const changeKey = `/deploy/${change.name}.sql`;
-        // const resolvedChangeDeps = resolvedDeps?.deps[changeKey] || change.dependencies;
-        
         try {
           // Call the revert stored procedure
           await executeQuery(
