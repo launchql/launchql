@@ -10,9 +10,10 @@ import fs from 'fs';
 import * as glob from 'glob';
 import os from 'os';
 import { parse } from 'parse-package-name';
-import path, { dirname, resolve } from 'path';
+import path, { dirname, resolve, join } from 'path';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
+import { withTransaction } from '../../migrate/utils/transaction';
 
 import { getAvailableExtensions } from '../../extensions/extensions';
 import { generatePlan, writePlan } from '../../files';
@@ -34,6 +35,7 @@ import {
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
+import { resolveTagToChangeName } from '../../resolution/resolve';
 import { parseTarget } from '../../utils/target-utils';
 
 
@@ -828,7 +830,9 @@ export class LaunchQLProject {
       toChange = parsed.toChange;
     }
 
-    if (recursive) {
+    if (recursive && toChange && toChange.includes('@')) {
+      await this.revertChronologically(opts, name, toChange, log);
+    } else if (recursive) {
       const modules = this.getModuleMap();
       const moduleProject = this.getModuleProject(name);
       const extensions = moduleProject.getModuleExtensions();
@@ -904,6 +908,103 @@ export class LaunchQLProject {
       log.success(`✅ Single module revert complete for ${name}.`);
     }
   }
+
+  private async revertChronologically(
+    opts: LaunchQLOptions,
+    targetProject: string,
+    toChange: string,
+    log: Logger
+  ): Promise<void> {
+    const pgPool = getPgPool(opts.pg);
+    const modules = this.getModuleMap();
+
+    log.success(`🧹 Starting chronological revert process on database ${opts.pg.database}...`);
+
+    let targetTimestamp: Date | null = null;
+    if (toChange.includes('@')) {
+      const tag = toChange.substring(1); // Remove @ prefix
+      
+      try {
+        const targetModulePath = resolve(this.workspacePath!, modules[targetProject].path);
+        const targetPlanPath = join(targetModulePath, 'launchql.plan');
+        const resolvedChangeName = resolveTagToChangeName(targetPlanPath, toChange, targetProject);
+        
+        const targetTimeResult = await pgPool.query(
+          'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
+          [targetProject, resolvedChangeName]
+        );
+        
+        if (targetTimeResult.rows[0]) {
+          targetTimestamp = new Date(targetTimeResult.rows[0].deployed_at);
+          log.info(`🎯 Target timestamp: ${targetTimestamp.toISOString()} for ${targetProject}:${resolvedChangeName}`);
+        } else {
+          log.warn(`⚠️ Target change ${targetProject}:${resolvedChangeName} is not deployed, stopping revert`);
+          return;
+        }
+      } catch (error) {
+        log.error(`❌ Failed to resolve target tag ${toChange}: ${error}`);
+        throw error;
+      }
+    }
+
+    if (!targetTimestamp) {
+      throw new Error(`Could not determine target timestamp for ${targetProject}:${toChange}`);
+    }
+
+    const allChangesResult = await pgPool.query(`
+      SELECT project, change_name, deployed_at, script_hash
+      FROM launchql_migrate.changes 
+      WHERE deployed_at > $1
+      ORDER BY deployed_at DESC
+    `, [targetTimestamp]);
+
+    const changesToRevert = allChangesResult.rows;
+    log.info(`📋 Found ${changesToRevert.length} changes to revert chronologically`);
+
+    if (changesToRevert.length === 0) {
+      log.info(`✅ No changes to revert - target timestamp is already the latest`);
+      return;
+    }
+
+    for (const change of changesToRevert) {
+      const { project, change_name, deployed_at, script_hash } = change;
+      
+      try {
+        log.info(`🔄 Reverting ${project}:${change_name} (deployed at ${new Date(deployed_at).toISOString()})`);
+        
+        const modulePath = resolve(this.workspacePath!, modules[project].path);
+        const revertScriptPath = join(modulePath, 'revert', `${change_name}.sql`);
+        
+        if (!fs.existsSync(revertScriptPath)) {
+          log.warn(`⚠️ No revert script found for ${project}:${change_name}, skipping`);
+          continue;
+        }
+        
+        const revertScript = fs.readFileSync(revertScriptPath, 'utf8');
+        
+        await pgPool.query(revertScript);
+        
+        await pgPool.query(
+          'DELETE FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
+          [project, change_name]
+        );
+        
+        await pgPool.query(
+          'INSERT INTO launchql_migrate.events (event_type, change_name, project) VALUES ($1, $2, $3)',
+          ['revert', change_name, project]
+        );
+        
+        log.success(`✅ Reverted ${project}:${change_name}`);
+        
+      } catch (error) {
+        log.error(`❌ Failed to revert ${project}:${change_name}: ${error}`);
+        throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: project });
+      }
+    }
+
+    log.success(`✅ Chronological revert complete - reverted ${changesToRevert.length} changes`);
+  }
+
 
   async verify(
     opts: LaunchQLOptions,
