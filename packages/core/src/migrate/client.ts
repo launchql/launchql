@@ -290,7 +290,9 @@ export class LaunchQLMigrate {
     const { modulePath, toChange, useTransaction = true } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    
+    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
+    const changes = getChangesInOrder(planPath, true); // Reverse order for revert
+
     const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
@@ -312,14 +314,6 @@ export class LaunchQLMigrate {
         });
       }
     }
-    
-    let resolvedToChange = toChange;
-    
-    if (toChange && toChange.includes('@')) {
-      resolvedToChange = resolveTagToChangeName(planPath, toChange, plan.project);
-    }
-    
-    const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
     const skipped: string[] = [];
