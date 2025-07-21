@@ -324,7 +324,7 @@ describe('Deploy Failure Scenarios', () => {
     // Should have deploy success event + verify failure event
     const verifyEvents = finalState.events.filter((e: any) => e.event_type === 'verify');
     expect(verifyEvents.length).toBe(1);
-    expect(verifyEvents[0].error_message).toBe('Verification failed');
-    expect(verifyEvents[0].error_code).toBe(null);
+    expect(verifyEvents[0].error_message).toBe('Verification failed for create_simple_table');
+    expect(verifyEvents[0].error_code).toBe('VERIFICATION_FAILED');
   });
 });

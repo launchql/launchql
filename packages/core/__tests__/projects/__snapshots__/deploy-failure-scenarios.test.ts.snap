@@ -174,11 +174,14 @@ exports[`Deploy Failure Scenarios verify failure - non-existent table reference:
     },
     {
       "change_name": "create_simple_table",
-      "error_code": null,
-      "error_message": "Verification failed",
+      "error_code": "VERIFICATION_FAILED",
+      "error_message": "Verification failed for create_simple_table",
       "event_type": "verify",
       "project": "test-verify-fail",
-      "stack_trace": null,
+      "stack_trace": "Error: Verification failed for create_simple_table
+    at LaunchQLMigrate.verify (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at processTicksAndRejections (NODE_INTERNAL)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
     },
   ],
 }
