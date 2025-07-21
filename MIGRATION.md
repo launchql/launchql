@@ -46,6 +46,27 @@ To revert an entire module (remove all changes), set `toChange` to `undefined`:
 launchql revert  # No toChange specified - reverts all changes
 ```
 
+## Workspace-Wide Operations (LaunchQLProject)
+
+When both `name` and `toChange` are undefined, LaunchQLProject exhibits different behaviors depending on the operation:
+
+### Deploy/Verify All Modules
+```bash
+# Deploy ALL modules in the workspace
+launchql deploy  # No name or toChange - deploys everything
+
+# Verify ALL modules in the workspace  
+launchql verify  # No name or toChange - verifies everything
+```
+
+### Revert Everything (Complete Rollback)
+```bash
+# Revert ALL modules completely (remove all changes from all modules)
+launchql revert  # No name or toChange - complete workspace rollback
+```
+
+**Important**: This workspace-wide behavior is handled by `LaunchQLProject`, not `LaunchQLMigrate`. The `LaunchQLMigrate` class always operates on a single module and requires a `modulePath` parameter.
+
 ## Method Signatures
 
 ### deploy(options: DeployOptions)
