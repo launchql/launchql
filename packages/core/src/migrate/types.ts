@@ -16,6 +16,10 @@ export interface MigratePlanFile {
 
 export interface DeployOptions {
   modulePath: string;
+  /** 
+   * Target change name or tag (e.g., "changeName" or "@tagName").
+   * Note: Project name is already resolved upstream by LaunchQLProject.
+   */
   toChange?: string;
   useTransaction?: boolean;
   // Add debug mode for enhanced error reporting
@@ -25,6 +29,10 @@ export interface DeployOptions {
 
 export interface RevertOptions {
   modulePath: string;
+  /** 
+   * Target change name or tag (e.g., "changeName" or "@tagName").
+   * Note: Project name is already resolved upstream by LaunchQLProject.
+   */
   toChange?: string;
   useTransaction?: boolean;
   // Add debug mode for enhanced error reporting
@@ -33,6 +41,10 @@ export interface RevertOptions {
 
 export interface VerifyOptions {
   modulePath: string;
+  /** 
+   * Target change name or tag (e.g., "changeName" or "@tagName").
+   * Note: Project name is already resolved upstream by LaunchQLProject.
+   */
   toChange?: string;
 }
 
