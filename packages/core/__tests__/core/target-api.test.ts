@@ -34,7 +34,7 @@ describe('LaunchQLProject Target API', () => {
       const result = parseTarget('secrets:@v1.0.0');
       expect(result).toEqual({
         projectName: 'secrets',
-        toChange: 'secrets:@v1.0.0'
+        toChange: '@v1.0.0'
       });
     });
 

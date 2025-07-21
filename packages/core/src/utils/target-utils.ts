@@ -22,7 +22,7 @@ export function parseTarget(target: string): ParsedTarget {
       if (!beforeAt) {
         throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
       }
-      return { projectName: beforeAt, toChange: `${beforeAt}:@${afterAt}` };
+      return { projectName: beforeAt, toChange: `@${afterAt}` };
     }
     
     const lastColonIndex = beforeAt.lastIndexOf(':');
