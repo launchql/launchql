@@ -11,7 +11,6 @@ export interface EventLogEntry {
   project: string;
   errorMessage?: string;
   errorCode?: string;
-  stackTrace?: string;
 }
 
 export class EventLogger {
@@ -26,15 +25,14 @@ export class EventLogger {
     try {
       await this.pool.query(`
         INSERT INTO launchql_migrate.events 
-        (event_type, change_name, project, error_message, error_code, stack_trace)
-        VALUES ($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT, $5::TEXT, $6::TEXT)
+        (event_type, change_name, project, error_message, error_code)
+        VALUES ($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT, $5::TEXT)
       `, [
         entry.eventType,
         entry.changeName,
         entry.project,
         entry.errorMessage || null,
-        entry.errorCode || null,
-        entry.stackTrace || null
+        entry.errorCode || null
       ]);
       
       log.debug(`Logged ${entry.eventType} event for ${entry.project}:${entry.changeName}`);

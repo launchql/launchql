@@ -110,15 +110,12 @@ export class MigrateTestFixture {
         `);
         
         const events = await pool.query(`
-          SELECT project, change_name, event_type, occurred_at, error_message, error_code, stack_trace
+          SELECT project, change_name, event_type, occurred_at, error_message, error_code
           FROM launchql_migrate.events 
           ORDER BY occurred_at
         `);
         
-        const sanitizedEvents = events.rows.map(event => ({
-          ...event,
-          stack_trace: event.stack_trace ? fixture.sanitizeStackTrace(event.stack_trace) : null
-        }));
+        const sanitizedEvents = events.rows;
         
         // Remove timestamps from objects for consistent snapshots
         const cleanChanges = changes.rows.map(({ deployed_at, ...change }) => change);
@@ -153,15 +150,6 @@ export class MigrateTestFixture {
     return db;
   }
 
-  private sanitizeStackTrace(stackTrace: string): string {
-    const currentDir = process.cwd(); // /home/ubuntu/repos/launchql/packages/core
-    const projectRoot = currentDir.replace(/\/packages\/core$/, ''); // /home/ubuntu/repos/launchql
-    
-    return stackTrace
-      .replace(new RegExp(projectRoot.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '<project-root>')
-      .replace(/:\d+:\d+/g, ':LINE:COLUMN')
-      .replace(/node:internal\/[^)]+/g, 'NODE_INTERNAL');
-  }
 
   setupFixture(fixturePath: string[]): string {
     const originalPath = join(FIXTURES_PATH, ...fixturePath);
