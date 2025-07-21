@@ -151,3 +151,35 @@ exports[`Deploy Failure Scenarios transaction mode - complete rollback on constr
   ],
 }
 `;
+
+exports[`Deploy Failure Scenarios verify failure - non-existent table reference: verify-failure-non-existent-table 1`] = `
+{
+  "changeCount": 1,
+  "changes": [
+    {
+      "change_name": "create_simple_table",
+      "project": "test-verify-fail",
+      "script_hash": "f5f0794a55d611246115a67e39747c887da6d6f83d79f63c3aa730fa97772942",
+    },
+  ],
+  "eventCount": 2,
+  "events": [
+    {
+      "change_name": "create_simple_table",
+      "error_code": null,
+      "error_message": null,
+      "event_type": "deploy",
+      "project": "test-verify-fail",
+      "stack_trace": null,
+    },
+    {
+      "change_name": "create_simple_table",
+      "error_code": null,
+      "error_message": "Verification failed",
+      "event_type": "verify",
+      "project": "test-verify-fail",
+      "stack_trace": null,
+    },
+  ],
+}
+`;

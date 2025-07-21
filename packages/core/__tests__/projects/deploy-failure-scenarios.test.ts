@@ -277,4 +277,57 @@ describe('Deploy Failure Scenarios', () => {
      * need partial deployment behavior for incremental rollout scenarios.
      */
   });
+
+  test('verify failure - non-existent table reference', async () => {
+    /*
+     * SCENARIO: Verify script references a table that doesn't exist
+     * 
+     * This test demonstrates LaunchQL's verify failure behavior when a verify script
+     * tries to check a table that was never created or was dropped.
+     * 
+     * Expected behavior:
+     * - Deploy succeeds (creates a simple table)
+     * - Verify fails because script references non-existent table
+     * - Failure event logged with detailed error information
+     */
+    const tempDir = fixture.createPlanFile('test-verify-fail', [
+      { name: 'create_simple_table' }
+    ]);
+    
+    fixture.createScript(tempDir, 'deploy', 'create_simple_table', 
+      'CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(100));'
+    );
+    
+    fixture.createScript(tempDir, 'verify', 'create_simple_table', 
+      'SELECT 1 FROM non_existent_table LIMIT 1;'
+    );
+    
+    const client = new LaunchQLMigrate(db.config);
+    
+    await client.deploy({
+      modulePath: tempDir,
+      useTransaction: true
+    });
+    
+    const deployState = await db.getMigrationState();
+    expect(deployState.changeCount).toBe(1);
+    expect(await db.exists('table', 'users')).toBe(true);
+    
+    const verifyResult = await client.verify({
+      modulePath: tempDir
+    });
+    
+    expect(verifyResult.verified).toEqual([]);
+    expect(verifyResult.failed).toEqual(['create_simple_table']);
+    
+    const finalState = await db.getMigrationState();
+    
+    expect(finalState).toMatchSnapshot('verify-failure-non-existent-table');
+    
+    // Should have deploy success event + verify failure event
+    const verifyEvents = finalState.events.filter((e: any) => e.event_type === 'verify');
+    expect(verifyEvents.length).toBe(1);
+    expect(verifyEvents[0].error_message).toBe('Verification failed');
+    expect(verifyEvents[0].error_code).toBe(null);
+  });
 });
