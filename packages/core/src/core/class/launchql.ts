@@ -820,8 +820,8 @@ export class LaunchQLProject {
               try {
                 const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
-                // When target is specified, only apply toChange to the target module
-                const moduleToChange = (!target || extension === name) ? toChange : undefined;
+                // Only apply toChange to the target module, not its dependencies
+                const moduleToChange = (extension === name) ? toChange : undefined;
                 const result = await client.deploy({
                   modulePath,
                   toChange: moduleToChange,
@@ -961,8 +961,8 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              // When target is specified, only apply toChange to the target module
-              const moduleToChange = (!target || extension === name) ? toChange : undefined;
+              // Only apply toChange to the target module, not its dependencies
+              const moduleToChange = (extension === name) ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
                 toChange: moduleToChange,
@@ -1059,8 +1059,8 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              // When target is specified, only apply toChange to the target module
-              const moduleToChange = (!target || extension === name) ? toChange : undefined;
+              // Only apply toChange to the target module, not its dependencies
+              const moduleToChange = (extension === name) ? toChange : undefined;
               const result = await client.verify({
                 modulePath,
                 toChange: moduleToChange
