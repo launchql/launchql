@@ -110,6 +110,13 @@ export class LaunchQLMigrate {
   }
 
   /**
+   * Resolve toChange parameter, handling tag resolution if needed
+   */
+  private resolveToChange(toChange: string | undefined, planPath: string, project: string): string | undefined {
+    return toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, project) : toChange;
+  }
+
+  /**
    * Deploy changes according to plan file
    */
   async deploy(options: DeployOptions): Promise<DeployResult> {
@@ -118,7 +125,7 @@ export class LaunchQLMigrate {
     const { modulePath, toChange, useTransaction = true, debug = false, logOnly = false } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
+    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.project);
     const changes = getChangesInOrder(planPath);
     
     const fullPlanResult = parsePlanFile(planPath);
@@ -266,7 +273,7 @@ export class LaunchQLMigrate {
     const { modulePath, toChange, useTransaction = true } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
+    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.project);
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
@@ -341,7 +348,7 @@ export class LaunchQLMigrate {
     const { modulePath, toChange } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
+    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.project);
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
