@@ -144,26 +144,11 @@ export class LaunchQLMigrate {
           break;
         }
         
-        // Check if already deployed using target database connection
-        try {
-          const deployedResult = await executeQuery(
-            context,
-            'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-            [plan.project, change.name]
-          );
-          
-          if (deployedResult.rows[0]?.is_deployed) {
-            log.info(`Skipping already deployed change: ${change.name}`);
-            skipped.push(change.name);
-            continue;
-          }
-        } catch (checkError: any) {
-          // If the function doesn't exist, the schema hasn't been initialized
-          if (checkError.code === '42883') { // undefined_function
-            log.debug('Migration schema not found, will be initialized on first deploy');
-          } else {
-            throw checkError;
-          }
+        const isDeployed = await this.isDeployed(plan.project, change.name);
+        if (isDeployed) {
+          log.info(`Skipping already deployed change: ${change.name}`);
+          skipped.push(change.name);
+          continue;
         }
         
         // Read deploy script
