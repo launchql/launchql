@@ -118,6 +118,13 @@ export class LaunchQLMigrate {
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
+    const fullPlanResult = parsePlanFile(planPath);
+    const packageDir = dirname(planPath);
+    
+    const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.project || plan.project, {
+      tagResolution: 'resolve',
+      loadPlanFiles: true
+    });
     
     const deployed: string[] = [];
     const skipped: string[] = [];
@@ -173,7 +180,7 @@ export class LaunchQLMigrate {
         const scriptHash = await this.calculateScriptHash(join(dirname(planPath), 'deploy', `${change.name}.sql`));
         
         const changeKey = `/deploy/${change.name}.sql`;
-        const resolvedChangeDeps = change.dependencies;
+        const resolvedChangeDeps = resolvedDeps?.deps[changeKey] || change.dependencies;
         
         try {
           // Call the deploy stored procedure
@@ -225,6 +232,17 @@ export class LaunchQLMigrate {
             }
           }
           
+          
+          // Show resolved dependencies in debug mode
+          if (debug && resolvedDeps) {
+            errorLines.push(`  Resolved Dependencies Context:`);
+            const changeKey = `/deploy/${change.name}.sql`;
+            const depInfo = resolvedDeps.deps[changeKey];
+            if (depInfo) {
+              errorLines.push(`    Key: ${changeKey}`);
+              errorLines.push(`    Dependencies: ${JSON.stringify(depInfo, null, 2)}`);
+            }
+          }
           
           // Provide debugging hints based on error code
           if (error.code === '25P02') {
