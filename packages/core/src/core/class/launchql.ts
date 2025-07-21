@@ -817,18 +817,53 @@ export class LaunchQLProject {
 
     if (recursive) {
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
-      const extensions = moduleProject.getModuleExtensions();
+      
+      // Mirror deploy logic: find all modules that depend on the target module
+      let extensionsToRevert: { resolved: string[]; external: string[] };
+      
+      if (toChange) {
+        const allModuleNames = Object.keys(modules);
+        const dependentModules = new Set<string>();
+        
+        for (const moduleName of allModuleNames) {
+          const moduleProject = this.getModuleProject(moduleName);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          if (moduleExtensions.resolved.includes(name)) {
+            dependentModules.add(moduleName);
+          }
+        }
+        
+        if (dependentModules.size === 0) {
+          dependentModules.add(name);
+        }
+        
+        let maxDependencies = 0;
+        let topModule = name;
+        for (const depModule of dependentModules) {
+          const moduleProject = this.getModuleProject(depModule);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          if (moduleExtensions.resolved.length > maxDependencies) {
+            maxDependencies = moduleExtensions.resolved.length;
+            topModule = depModule;
+          }
+        }
+        
+        const topModuleProject = this.getModuleProject(topModule);
+        extensionsToRevert = topModuleProject.getModuleExtensions();
+      } else {
+        const moduleProject = this.getModuleProject(name);
+        extensionsToRevert = moduleProject.getModuleExtensions();
+      }
 
       const pgPool = getPgPool(opts.pg);
 
       log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
-      const reversedExtensions = [...extensions.resolved].reverse();
+      const reversedExtensions = [...extensionsToRevert.resolved].reverse();
 
       for (const extension of reversedExtensions) {
         try {
-          if (extensions.external.includes(extension)) {
+          if (extensionsToRevert.external.includes(extension)) {
             const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
             log.warn(`⚠️ Dropping external extension: ${extension}`);
             try {
@@ -847,6 +882,7 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
+              // Mirror deploy logic: apply toChange to target module, undefined to dependencies
               const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
