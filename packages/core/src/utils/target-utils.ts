@@ -25,16 +25,7 @@ export function parseTarget(target: string): ParsedTarget {
       return { projectName: beforeAt, toChange: `@${afterAt}` };
     }
     
-    const lastColonIndex = beforeAt.lastIndexOf(':');
-    const projectName = beforeAt.substring(0, lastColonIndex);
-    const changeName = beforeAt.substring(lastColonIndex + 1);
-    
-    if (!projectName || !changeName) {
-      throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
-    }
-    
-    const toChange = `${changeName}:@${afterAt}`;
-    return { projectName, toChange };
+    throw new Error(`Invalid target format: ${target}. Expected formats: project, project:changeName, or project:@tagName`);
   }
   
   if (target.includes(':') && !target.includes('@')) {
