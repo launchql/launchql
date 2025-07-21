@@ -1,7 +1,8 @@
-import { LaunchQLProject } from '../src/core/class/launchql';
 import fs from 'fs';
-import path from 'path';
 import os from 'os';
+import path from 'path';
+
+import { LaunchQLProject } from '../src/core/class/launchql';
 
 describe('Config Loading', () => {
   let tempDir: string;

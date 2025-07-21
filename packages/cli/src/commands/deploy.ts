@@ -109,10 +109,16 @@ export default async (
 
   const project = new LaunchQLProject(cwd);
   
+  let target: string | undefined;
+  if (projectName && argv.toChange) {
+    target = `${projectName}:${argv.toChange}`;
+  } else if (projectName) {
+    target = projectName;
+  }
+  
   await project.deploy(
     opts,
-    projectName,
-    argv.toChange,
+    target,
     recursive
   );
 
