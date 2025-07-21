@@ -688,7 +688,14 @@ export class LaunchQLProject {
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
       } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
+        // Use the first available module as the entry point for recursive operations
+        const modules = this.getModuleMap();
+        const moduleNames = Object.keys(modules);
+        if (moduleNames.length === 0) {
+          throw new Error('No modules found in workspace');
+        }
+        // Use the first module as the entry point - recursive logic will handle all modules
+        name = moduleNames[0];
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
@@ -724,8 +731,31 @@ export class LaunchQLProject {
       };
 
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
-      const extensions = moduleProject.getModuleExtensions();
+      
+      let extensions: { resolved: string[]; external: string[] };
+      
+      if (!target) {
+        // When target is undefined, deploy ALL modules in the workspace
+        const allModuleNames = Object.keys(modules);
+        const allExtensions = new Set<string>();
+        const allExternalExtensions = new Set<string>();
+        
+        // Collect all extensions from all modules
+        for (const moduleName of allModuleNames) {
+          const moduleProject = this.getModuleProject(moduleName);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          moduleExtensions.resolved.forEach(ext => allExtensions.add(ext));
+          moduleExtensions.external.forEach(ext => allExternalExtensions.add(ext));
+        }
+        
+        extensions = {
+          resolved: Array.from(allExtensions),
+          external: Array.from(allExternalExtensions)
+        };
+      } else {
+        const moduleProject = this.getModuleProject(name);
+        extensions = moduleProject.getModuleExtensions();
+      }
 
       const pgPool = getPgPool(opts.pg);
 
@@ -790,7 +820,8 @@ export class LaunchQLProject {
               try {
                 const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
-                const moduleToChange = extension === name ? toChange : undefined;
+                // When target is specified, only apply toChange to the target module
+                const moduleToChange = (!target || extension === name) ? toChange : undefined;
                 const result = await client.deploy({
                   modulePath,
                   toChange: moduleToChange,
@@ -853,7 +884,23 @@ export class LaunchQLProject {
       // Mirror deploy logic: find all modules that depend on the target module
       let extensionsToRevert: { resolved: string[]; external: string[] };
       
-      if (toChange) {
+      if (!target) {
+        const allModuleNames = Object.keys(modules);
+        const allExtensions = new Set<string>();
+        const allExternalExtensions = new Set<string>();
+        
+        for (const moduleName of allModuleNames) {
+          const moduleProject = this.getModuleProject(moduleName);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          moduleExtensions.resolved.forEach(ext => allExtensions.add(ext));
+          moduleExtensions.external.forEach(ext => allExternalExtensions.add(ext));
+        }
+        
+        extensionsToRevert = {
+          resolved: Array.from(allExtensions),
+          external: Array.from(allExternalExtensions)
+        };
+      } else if (toChange) {
         const allModuleNames = Object.keys(modules);
         const dependentModules = new Set<string>();
         
@@ -914,8 +961,8 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              // Mirror deploy logic: apply toChange to target module, undefined to dependencies
-              const moduleToChange = extension === name ? toChange : undefined;
+              // When target is specified, only apply toChange to the target module
+              const moduleToChange = (!target || extension === name) ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
                 toChange: moduleToChange,
@@ -971,8 +1018,29 @@ export class LaunchQLProject {
 
     if (recursive) {
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
-      const extensions = moduleProject.getModuleExtensions();
+      
+      let extensions: { resolved: string[]; external: string[] };
+      
+      if (!target) {
+        const allModuleNames = Object.keys(modules);
+        const allExtensions = new Set<string>();
+        const allExternalExtensions = new Set<string>();
+        
+        for (const moduleName of allModuleNames) {
+          const moduleProject = this.getModuleProject(moduleName);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          moduleExtensions.resolved.forEach(ext => allExtensions.add(ext));
+          moduleExtensions.external.forEach(ext => allExternalExtensions.add(ext));
+        }
+        
+        extensions = {
+          resolved: Array.from(allExtensions),
+          external: Array.from(allExternalExtensions)
+        };
+      } else {
+        const moduleProject = this.getModuleProject(name);
+        extensions = moduleProject.getModuleExtensions();
+      }
 
       const pgPool = getPgPool(opts.pg);
 
@@ -991,8 +1059,8 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              // Only apply toChange to the target module being verified, not its dependencies.
-              const moduleToChange = extension === name ? toChange : undefined;
+              // When target is specified, only apply toChange to the target module
+              const moduleToChange = (!target || extension === name) ? toChange : undefined;
               const result = await client.verify({
                 modulePath,
                 toChange: moduleToChange
