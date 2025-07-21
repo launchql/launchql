@@ -1,3 +1,4 @@
+import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
 import { Logger } from '@launchql/logger';
 import {
   moduleTemplate,
@@ -10,7 +11,6 @@ import * as glob from 'glob';
 import os from 'os';
 import { parse } from 'parse-package-name';
 import path, { dirname, resolve } from 'path';
-import { pathToFileURL } from 'url';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
@@ -34,7 +34,6 @@ import {
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
-import { walkUp, loadConfigSyncFromDir, resolveLaunchqlPath } from '@launchql/env';
 
 
 const logger = new Logger('launchql');
@@ -647,15 +646,74 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
+  private parseTarget(target: string): { projectName: string; toChange?: string } {
+    if (!target) {
+      throw new Error('Target parameter is required');
+    }
+
+    if (target.includes(':@')) {
+      const atIndex = target.indexOf(':@');
+      const beforeAt = target.substring(0, atIndex);
+      const afterAt = target.substring(atIndex + 2);
+      
+      if (!afterAt) {
+        throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
+      }
+      
+      // Check if this is a simple project:@tag format
+      if (!beforeAt.includes(':')) {
+        if (!beforeAt) {
+          throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
+        }
+        return { projectName: beforeAt, toChange: `${beforeAt}:@${afterAt}` };
+      }
+      
+      const lastColonIndex = beforeAt.lastIndexOf(':');
+      const projectName = beforeAt.substring(0, lastColonIndex);
+      const changeName = beforeAt.substring(lastColonIndex + 1);
+      
+      if (!projectName || !changeName) {
+        throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
+      }
+      
+      const toChange = `${changeName}:@${afterAt}`;
+      return { projectName, toChange };
+    }
+    
+    if (target.includes(':') && !target.includes('@')) {
+      const parts = target.split(':');
+      
+      if (parts.length > 2) {
+        throw new Error(`Invalid target format: ${target}. Expected formats: project, project:changeName, or project:@tagName`);
+      }
+      
+      const [projectName, changeName] = parts;
+      
+      if (!projectName || !changeName) {
+        throw new Error(`Invalid change format: ${target}. Expected format: project:changeName`);
+      }
+      
+      return { projectName, toChange: changeName };
+    }
+    
+    if (!target.includes(':')) {
+      return { projectName: target, toChange: undefined };
+    }
+
+    throw new Error(`Invalid target format: ${target}. Expected formats: project, project:changeName, or project:@tagName`);
+  }
+
   async deploy(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('deploy');
 
-    if (!name) {
+    let name: string;
+    let toChange: string | undefined;
+
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
@@ -665,6 +723,10 @@ export class LaunchQLProject {
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
+    } else {
+      const parsed = this.parseTarget(target);
+      name = parsed.projectName;
+      toChange = parsed.toChange;
     }
 
     if (recursive) {
@@ -747,9 +809,10 @@ export class LaunchQLProject {
               try {
                 const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
+                const moduleToChange = extension === name ? toChange : undefined;
                 const result = await client.deploy({
                   modulePath,
-                  toChange: extension === name ? toChange : undefined,
+                  toChange: moduleToChange,
                   useTransaction: opts.deployment.useTx,
                   logOnly: opts.deployment.logOnly
                 });
@@ -796,13 +859,15 @@ export class LaunchQLProject {
 
   async revert(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('revert');
 
-    if (!name) {
+    let name: string;
+    let toChange: string | undefined;
+
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
@@ -812,6 +877,10 @@ export class LaunchQLProject {
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
+    } else {
+      const parsed = this.parseTarget(target);
+      name = parsed.projectName;
+      toChange = parsed.toChange;
     }
 
     if (recursive) {
@@ -846,9 +915,10 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
-                toChange: extension === name ? toChange : undefined,
+                toChange: moduleToChange,
                 useTransaction: opts.deployment.useTx
               });
             
@@ -892,13 +962,15 @@ export class LaunchQLProject {
 
   async verify(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('verify');
 
-    if (!name) {
+    let name: string;
+    let toChange: string | undefined;
+
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
@@ -908,6 +980,10 @@ export class LaunchQLProject {
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
+    } else {
+      const parsed = this.parseTarget(target);
+      name = parsed.projectName;
+      toChange = parsed.toChange;
     }
 
     if (recursive) {
@@ -933,9 +1009,10 @@ export class LaunchQLProject {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
               // Only apply toChange to the target module being verified, not its dependencies.
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.verify({
                 modulePath,
-                toChange: extension === name ? toChange : undefined
+                toChange: moduleToChange
               });
             
               if (result.failed.length > 0) {

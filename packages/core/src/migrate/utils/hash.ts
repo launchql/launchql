@@ -1,5 +1,4 @@
 import { createHash } from 'crypto';
-import { readFileSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { parse } from 'pgsql-parser';
 
