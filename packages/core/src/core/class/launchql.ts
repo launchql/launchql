@@ -830,7 +830,7 @@ export class LaunchQLProject {
       toChange = parsed.toChange;
     }
 
-    if (recursive && toChange && toChange.includes('@')) {
+    if (recursive && toChange) {
       await this.revertChronologically(opts, name, toChange, log);
     } else if (recursive) {
       const modules = this.getModuleMap();
