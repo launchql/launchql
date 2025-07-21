@@ -53,6 +53,10 @@ describe('LaunchQLProject Target API', () => {
     test('throws error for invalid format with multiple colons', () => {
       expect(() => parseTarget('secrets:change:extra')).toThrow('Invalid target format: secrets:change:extra. Expected formats: project, project:changeName, or project:@tagName');
     });
+
+    test('throws error for multi-colon tag format', () => {
+      expect(() => parseTarget('my-third:my-first:@v1.0.0')).toThrow('Invalid target format: my-third:my-first:@v1.0.0. Expected formats: project, project:changeName, or project:@tagName');
+    });
   });
 
   describe('deploy method with target parameter', () => {
