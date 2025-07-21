@@ -118,21 +118,6 @@ export class LaunchQLMigrate {
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
-    const fullPlanResult = parsePlanFile(planPath);
-    const packageDir = dirname(planPath);
-    
-    // Only apply tag resolution if there are tags in the plan file
-    const hasTagDependencies = fullPlanResult.data?.changes.some((change: any) => 
-      change.dependencies.some((dep: string) => dep.includes('@'))
-    ) || false;
-    
-    let resolvedDeps: any = null;
-    if (hasTagDependencies) {
-      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.project || plan.project, {
-        tagResolution: 'resolve',
-        loadPlanFiles: true
-      });
-    }
     
     const deployed: string[] = [];
     const skipped: string[] = [];
@@ -188,7 +173,7 @@ export class LaunchQLMigrate {
         const scriptHash = await this.calculateScriptHash(join(dirname(planPath), 'deploy', `${change.name}.sql`));
         
         const changeKey = `/deploy/${change.name}.sql`;
-        const resolvedChangeDeps = resolvedDeps?.deps[changeKey] || change.dependencies;
+        const resolvedChangeDeps = change.dependencies;
         
         try {
           // Call the deploy stored procedure
@@ -240,16 +225,6 @@ export class LaunchQLMigrate {
             }
           }
           
-          // Show resolved dependencies in debug mode
-          if (debug && resolvedDeps) {
-            errorLines.push(`  Resolved Dependencies Context:`);
-            const changeKey = `/deploy/${change.name}.sql`;
-            const depInfo = resolvedDeps.deps[changeKey];
-            if (depInfo) {
-              errorLines.push(`    Key: ${changeKey}`);
-              errorLines.push(`    Dependencies: ${JSON.stringify(depInfo, null, 2)}`);
-            }
-          }
           
           // Provide debugging hints based on error code
           if (error.code === '25P02') {
@@ -293,27 +268,6 @@ export class LaunchQLMigrate {
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
 
-    const fullPlanResult = parsePlanFile(planPath);
-    const packageDir = dirname(planPath);
-    
-    // Check if we have cross-module tag dependencies or cross-module toChange
-    const hasTagDependencies = fullPlanResult.data?.changes.some((change: any) => 
-      change.dependencies.some((dep: string) => dep.includes('@'))
-    ) || (toChange && toChange.includes(':@'));
-    
-    let resolvedDeps: DependencyResult | null = null;
-    let launchqlProject: LaunchQLProject | null = null;
-    if (hasTagDependencies) {
-      launchqlProject = new LaunchQLProject(packageDir);
-      const workspacePath = launchqlProject.getWorkspacePath();
-      
-      if (workspacePath) {
-        resolvedDeps = resolveDependencies(workspacePath, fullPlanResult.data?.project || plan.project, {
-          tagResolution: 'internal',
-          loadPlanFiles: true
-        });
-      }
-    }
     
     const reverted: string[] = [];
     const skipped: string[] = [];
