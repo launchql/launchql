@@ -650,23 +650,25 @@ export class LaunchQLProject {
 
   async deploy(
     opts: LaunchQLOptions,
-    projectName?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('deploy');
 
-    if (!projectName) {
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        projectName = this.getModuleName();
+        target = this.getModuleName();
         recursive = false;
       } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
+        throw new Error('Target is required when running from workspace root');
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
     }
+
+    const projectName = target.includes(':') ? target.split(':')[0] : target;
+    const toChange = target.includes(':') ? target.split(':').slice(1).join(':') : undefined;
 
     if (recursive) {
       // Cache for fast deployment
@@ -797,23 +799,25 @@ export class LaunchQLProject {
 
   async revert(
     opts: LaunchQLOptions,
-    projectName?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('revert');
 
-    if (!projectName) {
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        projectName = this.getModuleName();
+        target = this.getModuleName();
         recursive = false;
       } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
+        throw new Error('Target is required when running from workspace root');
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
     }
+
+    const projectName = target.includes(':') ? target.split(':')[0] : target;
+    const toChange = target.includes(':') ? target.split(':').slice(1).join(':') : undefined;
 
     if (recursive) {
       const modules = this.getModuleMap();
@@ -847,9 +851,19 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
+              let moduleToChange: string | undefined = undefined;
+              if (toChange && toChange.includes(':')) {
+                const [dependencyProject, dependencyChange] = toChange.split(':', 2);
+                if (extension === dependencyProject) {
+                  moduleToChange = dependencyChange;
+                }
+              } else if (extension === projectName) {
+                moduleToChange = toChange;
+              }
+
               const result = await client.revert({
                 modulePath,
-                toChange: extension === projectName ? toChange : undefined,
+                toChange: moduleToChange,
                 useTransaction: opts.deployment.useTx
               });
             
@@ -893,23 +907,25 @@ export class LaunchQLProject {
 
   async verify(
     opts: LaunchQLOptions,
-    projectName?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('verify');
 
-    if (!projectName) {
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        projectName = this.getModuleName();
+        target = this.getModuleName();
         recursive = false;
       } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
+        throw new Error('Target is required when running from workspace root');
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
     }
+
+    const projectName = target.includes(':') ? target.split(':')[0] : target;
+    const toChange = target.includes(':') ? target.split(':').slice(1).join(':') : undefined;
 
     if (recursive) {
       const modules = this.getModuleMap();

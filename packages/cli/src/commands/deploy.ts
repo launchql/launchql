@@ -88,17 +88,14 @@ export default async (
     });
   }
 
-  let projectName: string | undefined;
-  let toChange: string | undefined;
+  let target: string | undefined;
 
   if (recursive) {
-    projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
+    const projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
     log.info(`Selected project: ${projectName}`);
-    toChange = argv.toChange;
+    target = argv.toChange ? `${projectName}:${argv.toChange}` : projectName;
   } else {
-    if (argv.toChange) {
-      toChange = argv.toChange;
-    }
+    target = argv.toChange;
   }
 
   const cliOverrides = {
@@ -118,8 +115,7 @@ export default async (
   
   await project.deploy(
     opts,
-    projectName,
-    toChange,
+    target,
     recursive
   );
 

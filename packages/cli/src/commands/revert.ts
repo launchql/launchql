@@ -45,17 +45,14 @@ export default async (
 
   log.debug(`Using current directory: ${cwd}`);
 
-  let projectName: string | undefined;
-  let toChange: string | undefined;
+  let target: string | undefined;
 
   if (recursive) {
-    projectName = await selectModule(argv, prompter, 'Choose a project to revert', cwd);
+    const projectName = await selectModule(argv, prompter, 'Choose a project to revert', cwd);
     log.info(`Selected project: ${projectName}`);
-    toChange = argv.toChange;
+    target = argv.toChange ? `${projectName}:${argv.toChange}` : projectName;
   } else {
-    if (argv.toChange) {
-      toChange = argv.toChange;
-    }
+    target = argv.toChange;
   }
 
   const project = new LaunchQLProject(cwd);
@@ -69,8 +66,7 @@ export default async (
   
   await project.revert(
     opts,
-    projectName,
-    toChange,
+    target,
     recursive
   );
 

@@ -44,31 +44,28 @@ export class CoreDeployTestFixture extends TestFixture {
         }
       });
 
-      const projectName = target.includes(':') ? target.split(':')[0] : target;
-      const toChange = target.includes(':') ? target.split(':')[1] : undefined;
-      await project.deploy(opts, projectName, toChange, true);
+      await project.deploy(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
   }
 
-  async revertModule(target: string, database: string, fixturePath: string[]): Promise<void> {
+  async revertModule(projectNameOrTarget: string, database: string, fixturePath: string[], toChange?: string): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
     try {
-      const projectName = target.includes(':') ? target.split(':')[0] : target;
-      const projectPath = join(basePath, 'packages', projectName);
-      process.chdir(projectPath);
+      process.chdir(basePath);
       
-      const project = new LaunchQLProject(projectPath);
+      const project = new LaunchQLProject(basePath);
       
       const opts = getEnvOptions({ 
         pg: getPgEnvOptions({ database })
       });
 
-      const toChange = target.includes(':') ? target.split(':')[1] : undefined;
-      await project.revert(opts, projectName, toChange, true);
+      const target = toChange ? `${projectNameOrTarget}:${toChange}` : projectNameOrTarget;
+
+      await project.revert(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
@@ -87,9 +84,7 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      const projectName = target.includes(':') ? target.split(':')[0] : target;
-      const toChange = target.includes(':') ? target.split(':')[1] : undefined;
-      await project.verify(opts, projectName, toChange, true);
+      await project.verify(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
