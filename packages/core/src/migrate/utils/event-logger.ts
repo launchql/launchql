@@ -27,7 +27,7 @@ export class EventLogger {
       await this.pool.query(`
         INSERT INTO launchql_migrate.events 
         (event_type, change_name, project, error_message, error_code, stack_trace)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        VALUES ($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT, $5::TEXT, $6::TEXT)
       `, [
         entry.eventType,
         entry.changeName,
