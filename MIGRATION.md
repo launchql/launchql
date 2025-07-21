@@ -48,7 +48,7 @@ launchql revert  # No toChange specified - reverts all changes
 
 ## Workspace-Wide Operations (LaunchQLProject)
 
-When both `name` and `toChange` are undefined, LaunchQLProject exhibits different behaviors depending on the operation:
+When both `name` and `toChange` arguments are undefined in LaunchQLProject method calls, the behavior differs depending on the operation:
 
 ### Deploy/Verify All Modules
 ```bash
@@ -65,7 +65,7 @@ launchql verify  # No name or toChange - verifies everything
 launchql revert  # No name or toChange - complete workspace rollback
 ```
 
-**Important**: This workspace-wide behavior is handled by `LaunchQLProject`, not `LaunchQLMigrate`. The `LaunchQLMigrate` class always operates on a single module and requires a `modulePath` parameter.
+**Important**: This workspace-wide behavior is handled by `LaunchQLProject` method arguments (`name` and `toChange` parameters), not `LaunchQLMigrate`. The `LaunchQLMigrate` class always operates on a single module and requires a `modulePath` parameter.
 
 ## Method Signatures
 
