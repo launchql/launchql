@@ -540,8 +540,28 @@ export class LaunchQLMigrate {
           } else {
             failed.push(change.name);
             log.error(`Verification failed: ${change.name}`);
+            
+            // Log failure event outside of transaction
+            await this.eventLogger.logEvent({
+              eventType: 'verify',
+              changeName: change.name,
+              project: plan.project,
+              errorMessage: 'Verification failed',
+              errorCode: null,
+              stackTrace: null
+            });
           }
-        } catch (error) {
+        } catch (error: any) {
+          // Log failure event outside of transaction
+          await this.eventLogger.logEvent({
+            eventType: 'verify',
+            changeName: change.name,
+            project: plan.project,
+            errorMessage: error.message || 'Unknown error',
+            errorCode: error.code || null,
+            stackTrace: error.stack || null
+          });
+
           log.error(`Failed to verify ${change.name}:`, error);
           failed.push(change.name);
         }

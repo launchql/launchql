@@ -154,11 +154,11 @@ export class MigrateTestFixture {
   }
 
   private sanitizeStackTrace(stackTrace: string): string {
+    const currentDir = process.cwd(); // /home/ubuntu/repos/launchql/packages/core
+    const projectRoot = currentDir.replace(/\/packages\/core$/, ''); // /home/ubuntu/repos/launchql
+    
     return stackTrace
-      .replace(/\/__w\/launchql\/launchql\//g, '<project-root>/')
-      .replace(/\/home\/ubuntu\/repos\/launchql\//g, '<project-root>/')
-      .replace(/\/.*?\/launchql\/launchql\//g, '<project-root>/')
-      .replace(/\/.*?\/launchql\//g, '<project-root>/')
+      .replace(new RegExp(projectRoot.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '<project-root>')
       .replace(/:\d+:\d+/g, ':LINE:COLUMN')
       .replace(/node:internal\/[^)]+/g, 'NODE_INTERNAL');
   }
