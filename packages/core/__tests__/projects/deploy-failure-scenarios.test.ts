@@ -144,18 +144,20 @@ describe('Deploy Failure Scenarios', () => {
     expect(finalState.eventCount).toBe(3); // 2 successful deployments + 1 failure
   });
   
-  test('verify database state after constraint failure', async () => {
+  test('transaction mode - complete rollback on constraint failure', async () => {
     /*
-     * SCENARIO: Comparison of transaction vs non-transaction behavior
+     * SCENARIO: Transaction-based deployment with constraint failure
      * 
-     * This test demonstrates the key difference between transaction and non-transaction
-     * deployment modes when failures occur. It shows how the same failure scenario
-     * results in completely different database states.
+     * This test demonstrates LaunchQL's complete rollback behavior when useTransaction: true (default).
+     * When ANY change fails during deployment, ALL changes are automatically rolled back.
      * 
-     * Transaction mode: Complete rollback (clean state)
-     * Non-transaction mode: Partial deployment (mixed state requiring cleanup)
+     * Expected behavior:
+     * - All 3 changes attempted in single transaction
+     * - Constraint violation on 3rd change triggers complete rollback
+     * - Database state: clean (as if deployment never happened)
+     * - Migration tracking: zero deployed changes, failure event logged outside transaction
      */
-    const tempDir = fixture.createPlanFile('test-state-check', [
+    const tempDir = fixture.createPlanFile('test-transaction-rollback', [
       { name: 'setup_schema' },
       { name: 'create_constraint_table', dependencies: ['setup_schema'] },
       { name: 'fail_on_constraint', dependencies: ['create_constraint_table'] }
@@ -180,23 +182,71 @@ describe('Deploy Failure Scenarios', () => {
       useTransaction: true
     })).rejects.toThrow(/violates check constraint/);
     
-    const transactionState = await db.getMigrationState();
+    const finalState = await db.getMigrationState();
     
-    expect(transactionState).toMatchSnapshot('transaction-rollback-state-comparison');
+    expect(finalState).toMatchSnapshot('transaction-mode-constraint-failure');
     
     expect(await db.exists('schema', 'test_schema')).toBe(false);
-    expect(transactionState.changeCount).toBe(0);
-    expect(transactionState.eventCount).toBe(1); // Deploy failure event logged outside transaction
-    expect(transactionState.events[0].event_type).toBe('deploy');
+    expect(finalState.changeCount).toBe(0);
+    expect(finalState.eventCount).toBe(1); // Deploy failure event logged outside transaction
+    expect(finalState.events[0].event_type).toBe('deploy');
+    expect(finalState.events[0].error_message).toContain('violates check constraint');
+    
+    /*
+     * KEY INSIGHT: Transaction mode provides complete rollback
+     * 
+     * - launchql_migrate.changes: 0 rows (complete rollback)
+     * - launchql_migrate.events: 1 failure event (logged outside transaction)
+     * - Database objects: none (clean state)
+     * 
+     * RECOMMENDATION: Use transaction mode (default) for atomic deployments
+     * where you want all-or-nothing behavior.
+     */
+  });
+
+  test('non-transaction mode - partial deployment on constraint failure', async () => {
+    /*
+     * SCENARIO: Non-transaction deployment with constraint failure
+     * 
+     * This test demonstrates LaunchQL's partial deployment behavior when useTransaction: false.
+     * Each change is deployed individually - successful changes remain deployed
+     * even when later changes fail. Deployment stops at first failure.
+     * 
+     * Expected behavior:
+     * - Changes deployed one-by-one (no transaction wrapper)
+     * - First 2 changes succeed and remain deployed
+     * - 3rd change fails on constraint violation, deployment stops
+     * - Database state: partial (successful changes persist)
+     * - Migration tracking: shows successful deployments + failure event
+     */
+    const tempDir = fixture.createPlanFile('test-nontransaction-partial', [
+      { name: 'setup_schema' },
+      { name: 'create_constraint_table', dependencies: ['setup_schema'] },
+      { name: 'fail_on_constraint', dependencies: ['create_constraint_table'] }
+    ]);
+    
+    fixture.createScript(tempDir, 'deploy', 'setup_schema', 
+      'CREATE SCHEMA test_schema;'
+    );
+    
+    fixture.createScript(tempDir, 'deploy', 'create_constraint_table', 
+      'CREATE TABLE test_schema.orders (id SERIAL PRIMARY KEY, amount DECIMAL(10,2) CHECK (amount > 0));'
+    );
+    
+    fixture.createScript(tempDir, 'deploy', 'fail_on_constraint', 
+      'INSERT INTO test_schema.orders (amount) VALUES (-100.00);'
+    );
+    
+    const client = new LaunchQLMigrate(db.config);
     
     await expect(client.deploy({
       modulePath: tempDir,
       useTransaction: false
     })).rejects.toThrow(/violates check constraint/);
     
-    const partialState = await db.getMigrationState();
+    const finalState = await db.getMigrationState();
     
-    expect(partialState).toMatchSnapshot('partial-deployment-state-comparison');
+    expect(finalState).toMatchSnapshot('non-transaction-mode-constraint-failure');
     
     expect(await db.exists('schema', 'test_schema')).toBe(true);
     expect(await db.exists('table', 'test_schema.orders')).toBe(true);
@@ -204,29 +254,26 @@ describe('Deploy Failure Scenarios', () => {
     const records = await db.query('SELECT * FROM test_schema.orders');
     expect(records.rows).toHaveLength(0);
     
-    expect(partialState.changeCount).toBe(2);
-    expect(partialState.changes.map((c: any) => c.change_name)).toEqual(['setup_schema', 'create_constraint_table']);
+    expect(finalState.changeCount).toBe(2);
+    expect(finalState.changes.map((c: any) => c.change_name)).toEqual(['setup_schema', 'create_constraint_table']);
     
-    const successEvents = partialState.events.filter((e: any) => e.event_type === 'deploy' && !e.error_message);
+    const successEvents = finalState.events.filter((e: any) => e.event_type === 'deploy' && !e.error_message);
     expect(successEvents.length).toBe(2); // setup_schema, create_constraint_table
-    const failEvents = partialState.events.filter((e: any) => e.event_type === 'deploy' && e.error_message);
-    expect(failEvents.length).toBe(2); // fail_on_constraint failure logged twice (transaction + non-transaction)
-    expect(partialState.eventCount).toBe(4); // 2 successful deployments + 2 failures (from both runs)
+    const failEvents = finalState.events.filter((e: any) => e.event_type === 'deploy' && e.error_message);
+    expect(failEvents.length).toBe(1); // fail_on_constraint failure logged
+    expect(finalState.eventCount).toBe(3); // 2 successful deployments + 1 failure
     
     /*
-     * KEY INSIGHT: Same failure scenario, different outcomes
+     * KEY INSIGHT: Non-transaction mode provides partial deployment
      * 
-     * Transaction mode:
-     * - launchql_migrate.changes: 0 rows (complete rollback)
-     * - launchql_migrate.events: 1 failure event (logged outside transaction)
-     * - Database objects: none (clean state)
-     * 
-     * Non-transaction mode:
      * - launchql_migrate.changes: 2 rows (partial success)
-     * - launchql_migrate.events: 2 success + 2 failure events (includes failure from transaction run)
+     * - launchql_migrate.events: 2 success + 1 failure event
      * - Database objects: schema + table exist (mixed state)
      * 
-     * RECOMMENDATION: Use transaction mode (default) unless you specifically
+     * IMPORTANT: Deployment stops immediately at first failure, just like transaction mode.
+     * The difference is in state persistence, not error handling behavior.
+     * 
+     * RECOMMENDATION: Use non-transaction mode only when you specifically
      * need partial deployment behavior for incremental rollout scenarios.
      */
   });

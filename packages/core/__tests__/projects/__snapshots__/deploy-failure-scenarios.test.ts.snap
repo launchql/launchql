@@ -76,6 +76,82 @@ exports[`Deploy Failure Scenarios constraint violation without transaction - par
 }
 `;
 
+exports[`Deploy Failure Scenarios non-transaction mode - partial deployment on constraint failure: non-transaction-mode-constraint-failure 1`] = `
+{
+  "changeCount": 2,
+  "changes": [
+    {
+      "change_name": "setup_schema",
+      "project": "test-nontransaction-partial",
+      "script_hash": "a3419a48994fd13a668befcaab23c4d0d7e9e08e6e6a9093effb3c85b7e953d9",
+    },
+    {
+      "change_name": "create_constraint_table",
+      "project": "test-nontransaction-partial",
+      "script_hash": "ec5b17e155a2cd4e098716204192083d31d096a4cf163550d5ea176a4615a4d2",
+    },
+  ],
+  "eventCount": 3,
+  "events": [
+    {
+      "change_name": "setup_schema",
+      "error_code": null,
+      "error_message": null,
+      "event_type": "deploy",
+      "project": "test-nontransaction-partial",
+      "stack_trace": null,
+    },
+    {
+      "change_name": "create_constraint_table",
+      "error_code": null,
+      "error_message": null,
+      "event_type": "deploy",
+      "project": "test-nontransaction-partial",
+      "stack_trace": null,
+    },
+    {
+      "change_name": "fail_on_constraint",
+      "error_code": "23514",
+      "error_message": "new row for relation "orders" violates check constraint "orders_amount_check"",
+      "event_type": "deploy",
+      "project": "test-nontransaction-partial",
+      "stack_trace": "error: new row for relation "orders" violates check constraint "orders_amount_check"
+    at <project-root>/node_modules/pg-pool/index.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
+    },
+  ],
+}
+`;
+
+exports[`Deploy Failure Scenarios transaction mode - complete rollback on constraint failure: transaction-mode-constraint-failure 1`] = `
+{
+  "changeCount": 0,
+  "changes": [],
+  "eventCount": 1,
+  "events": [
+    {
+      "change_name": "fail_on_constraint",
+      "error_code": "23514",
+      "error_message": "new row for relation "orders" violates check constraint "orders_amount_check"",
+      "event_type": "deploy",
+      "project": "test-transaction-rollback",
+      "stack_trace": "error: new row for relation "orders" violates check constraint "orders_amount_check"
+    at <project-root>/node_modules/pg/lib/client.js:LINE:COLUMN
+    at processTicksAndRejections (NODE_INTERNAL)
+    at executeQuery (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at <project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN
+    at withTransaction (<project-root>/packages/core/src/migrate/utils/transaction.ts:LINE:COLUMN)
+    at LaunchQLMigrate.deploy (<project-root>/packages/core/src/migrate/client.ts:LINE:COLUMN)
+    at Object.<anonymous> (<project-root>/packages/core/__tests__/projects/deploy-failure-scenarios.test.ts:LINE:COLUMN)",
+    },
+  ],
+}
+`;
+
 exports[`Deploy Failure Scenarios verify database state after constraint failure: partial-deployment-state-comparison 1`] = `
 {
   "changeCount": 2,
