@@ -847,7 +847,7 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              const moduleToChange = target && toChange ? target : (extension === name ? toChange : undefined);
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
                 toChange: moduleToChange,
