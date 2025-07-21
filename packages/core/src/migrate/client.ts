@@ -274,14 +274,6 @@ export class LaunchQLMigrate {
     const plan = parsePlanFileSimple(planPath);
     const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
-
-    const fullPlanResult = parsePlanFile(planPath);
-    const packageDir = dirname(planPath);
-    
-    const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.project || plan.project, {
-      tagResolution: 'resolve',
-      loadPlanFiles: true
-    });
     
     const reverted: string[] = [];
     const skipped: string[] = [];
