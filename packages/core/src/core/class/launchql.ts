@@ -647,14 +647,7 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
-
-  async deploy(
-    opts: LaunchQLOptions,
-    target?: string,
-    recursive: boolean = true
-  ): Promise<void> {
-    const log = new Logger('deploy');
-
+  private parseProjectTarget(target?: string): { name: string; toChange: string | undefined } {
     let name: string;
     let toChange: string | undefined;
 
@@ -662,7 +655,6 @@ export class LaunchQLProject {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
-        recursive = false;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
       } else {
@@ -672,6 +664,25 @@ export class LaunchQLProject {
       const parsed = parseTarget(target);
       name = parsed.projectName;
       toChange = parsed.toChange;
+    }
+
+    return { name, toChange };
+  }
+
+  async deploy(
+    opts: LaunchQLOptions,
+    target?: string,
+    recursive: boolean = true
+  ): Promise<void> {
+    const log = new Logger('deploy');
+
+    const { name, toChange } = this.parseProjectTarget(target);
+    
+    if (!target) {
+      const context = this.getContext();
+      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
+        recursive = false;
+      }
     }
 
     if (recursive) {
@@ -809,23 +820,13 @@ export class LaunchQLProject {
   ): Promise<void> {
     const log = new Logger('revert');
 
-    let name: string;
-    let toChange: string | undefined;
-
+    const { name, toChange } = this.parseProjectTarget(target);
+    
     if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
         recursive = false;
-      } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
-      } else {
-        throw new Error('Not in a LaunchQL workspace or module');
       }
-    } else {
-      const parsed = parseTarget(target);
-      name = parsed.projectName;
-      toChange = parsed.toChange;
     }
 
     if (recursive) {
@@ -860,7 +861,7 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              const moduleToChange = extension === name ? toChange : undefined;
+              const moduleToChange = target && toChange ? target : (extension === name ? toChange : undefined);
               const result = await client.revert({
                 modulePath,
                 toChange: moduleToChange,
@@ -912,23 +913,13 @@ export class LaunchQLProject {
   ): Promise<void> {
     const log = new Logger('verify');
 
-    let name: string;
-    let toChange: string | undefined;
-
+    const { name, toChange } = this.parseProjectTarget(target);
+    
     if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
         recursive = false;
-      } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
-      } else {
-        throw new Error('Not in a LaunchQL workspace or module');
       }
-    } else {
-      const parsed = parseTarget(target);
-      name = parsed.projectName;
-      toChange = parsed.toChange;
     }
 
     if (recursive) {
