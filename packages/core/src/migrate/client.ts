@@ -124,28 +124,17 @@ export class LaunchQLMigrate {
     const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
-    // Only apply tag resolution if there are tags in the plan file
-    const hasTagDependencies = fullPlanResult.data?.changes.some((change: any) => 
-      change.dependencies.some((dep: string) => dep.includes('@'))
-    ) || false;
-    
-    let resolvedDeps: any = null;
-    if (hasTagDependencies) {
-      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.project || plan.project, {
-        tagResolution: 'resolve',
-        loadPlanFiles: true
-      });
-    }
+    const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.project || plan.project, {
+      tagResolution: 'resolve',
+      loadPlanFiles: true
+    });
     
     const deployed: string[] = [];
     const skipped: string[] = [];
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = getPgPool({
-      ...this.pgConfig,
-      database: this.pgConfig.database
-    });
+    const targetPool = getPgPool(this.pgConfig);
     
     // Execute deployment with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
@@ -155,26 +144,11 @@ export class LaunchQLMigrate {
           break;
         }
         
-        // Check if already deployed using target database connection
-        try {
-          const deployedResult = await executeQuery(
-            context,
-            'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-            [plan.project, change.name]
-          );
-          
-          if (deployedResult.rows[0]?.is_deployed) {
-            log.info(`Skipping already deployed change: ${change.name}`);
-            skipped.push(change.name);
-            continue;
-          }
-        } catch (checkError: any) {
-          // If the function doesn't exist, the schema hasn't been initialized
-          if (checkError.code === '42883') { // undefined_function
-            log.debug('Migration schema not found, will be initialized on first deploy');
-          } else {
-            throw checkError;
-          }
+        const isDeployed = await this.isDeployed(plan.project, change.name);
+        if (isDeployed) {
+          log.info(`Skipping already deployed change: ${change.name}`);
+          skipped.push(change.name);
+          continue;
         }
         
         // Read deploy script
@@ -191,7 +165,8 @@ export class LaunchQLMigrate {
         const scriptHash = await this.calculateScriptHash(join(dirname(planPath), 'deploy', `${change.name}.sql`));
         
         const changeKey = `/deploy/${change.name}.sql`;
-        const resolvedChangeDeps = resolvedDeps?.deps[changeKey] || change.dependencies;
+        const resolvedFromDeps = resolvedDeps?.deps[changeKey];
+        const resolvedChangeDeps = (resolvedFromDeps && resolvedFromDeps.length > 0) ? resolvedFromDeps : change.dependencies;
         
         try {
           // Call the deploy stored procedure
@@ -252,17 +227,6 @@ export class LaunchQLMigrate {
             }
           }
           
-          // Show resolved dependencies in debug mode
-          if (debug && resolvedDeps) {
-            errorLines.push(`  Resolved Dependencies Context:`);
-            const changeKey = `/deploy/${change.name}.sql`;
-            const depInfo = resolvedDeps.deps[changeKey];
-            if (depInfo) {
-              errorLines.push(`    Key: ${changeKey}`);
-              errorLines.push(`    Dependencies: ${JSON.stringify(depInfo, null, 2)}`);
-            }
-          }
-          
           // Provide debugging hints based on error code
           if (error.code === '25P02') {
             errorLines.push(`🔍 Debug Info: This error means a previous command in the transaction failed.`);
@@ -302,66 +266,7 @@ export class LaunchQLMigrate {
     const { modulePath, toChange, useTransaction = true } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    
-    const fullPlanResult = parsePlanFile(planPath);
-    const packageDir = dirname(planPath);
-    
-    // Check if we have cross-module tag dependencies or cross-module toChange
-    const hasTagDependencies = fullPlanResult.data?.changes.some((change: any) => 
-      change.dependencies.some((dep: string) => dep.includes('@'))
-    ) || (toChange && toChange.includes(':@'));
-    
-    let resolvedDeps: DependencyResult | null = null;
-    let launchqlProject: LaunchQLProject | null = null;
-    if (hasTagDependencies) {
-      launchqlProject = new LaunchQLProject(packageDir);
-      const workspacePath = launchqlProject.getWorkspacePath();
-      
-      if (workspacePath) {
-        resolvedDeps = resolveDependencies(workspacePath, fullPlanResult.data?.project || plan.project, {
-          tagResolution: 'internal',
-          loadPlanFiles: true
-        });
-      }
-    }
-    
-    let resolvedToChange = toChange;
-    let targetProject = plan.project;
-    let targetChangeName = toChange;
-    
-    if (toChange && toChange.includes('@')) {
-      if (toChange.includes(':@')) {
-        const [crossProject, tag] = toChange.split(':@');
-        targetProject = crossProject;
-        
-        try {
-          if (!launchqlProject) {
-            launchqlProject = new LaunchQLProject(packageDir);
-          }
-          
-          const moduleMap = launchqlProject.getModuleMap();
-          const targetModule = moduleMap[crossProject];
-          const workspacePath = launchqlProject.getWorkspacePath();
-          
-          if (targetModule && workspacePath) {
-            const targetPlanPath = join(workspacePath, targetModule.path, 'launchql.plan');
-            const resolvedChange = resolveTagToChangeName(targetPlanPath, `@${tag}`, crossProject);
-            targetChangeName = resolvedChange;
-            resolvedToChange = resolvedChange;
-          } else {
-            resolvedToChange = toChange;
-            targetChangeName = toChange;
-          }
-        } catch (error) {
-          resolvedToChange = toChange;
-          targetChangeName = toChange;
-        }
-      } else {
-        resolvedToChange = resolveTagToChangeName(planPath, toChange, plan.project);
-        targetChangeName = resolvedToChange;
-      }
-    }
-    
+    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
@@ -369,80 +274,19 @@ export class LaunchQLMigrate {
     let failed: string | undefined;
     
     // Use a separate pool for the target database
-    const targetPool = getPgPool({
-      ...this.pgConfig,
-      database: this.pgConfig.database
-    });
+    const targetPool = getPgPool(this.pgConfig);
 
     // Execute revert with or without transaction
     await withTransaction(targetPool, { useTransaction }, async (context) => {
       for (const change of changes) {
         // Stop if we've reached the target change
-        if (resolvedToChange && targetProject && targetChangeName) {
-          if (toChange && toChange.includes(':@')) {
-            let actualTargetChangeName = targetChangeName;
-            let actualTargetProject = targetProject;
-            
-            if (resolvedDeps && resolvedDeps.resolvedTags && resolvedDeps.resolvedTags[toChange]) {
-              const resolvedTag = resolvedDeps.resolvedTags[toChange];
-              
-              if (resolvedTag.includes(':')) {
-                const [resolvedProject, resolvedChange] = resolvedTag.split(':', 2);
-                actualTargetProject = resolvedProject;
-                actualTargetChangeName = resolvedChange;
-              } else {
-                actualTargetChangeName = resolvedTag;
-              }
-            }
-            
-            const targetDeployedResult = await executeQuery(
-              context,
-              'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-              [actualTargetProject, actualTargetChangeName]
-            );
-            
-            if (!targetDeployedResult.rows[0]?.is_deployed) {
-              log.warn(`Target change ${targetProject}:${actualTargetChangeName} is not deployed, stopping revert`);
-              break;
-            }
-            
-            // Get deployment time of target change
-            const targetTimeResult = await executeQuery(
-              context,
-              'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
-              [actualTargetProject, actualTargetChangeName]
-            );
-            
-            const currentTimeResult = await executeQuery(
-              context,
-              'SELECT deployed_at FROM launchql_migrate.changes WHERE project = $1 AND change_name = $2',
-              [plan.project, change.name]
-            );
-            
-            if (targetTimeResult.rows[0] && currentTimeResult.rows[0]) {
-              const targetTime = new Date(targetTimeResult.rows[0].deployed_at);
-              const currentTime = new Date(currentTimeResult.rows[0].deployed_at);
-              
-              if (currentTime <= targetTime) {
-                log.info(`Stopping revert at ${change.name} (deployed at ${currentTime}) as it was deployed before/at target ${actualTargetProject}:${actualTargetChangeName} (deployed at ${targetTime})`);
-                break;
-              }
-            }
-          } else {
-            if (change.name === resolvedToChange) {
-              break;
-            }
-          }
+        if (resolvedToChange && change.name === resolvedToChange) {
+          break;
         }
         
         // Check if deployed
-        const deployedResult = await executeQuery(
-          context,
-          'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-          [plan.project, change.name]
-        );
-        
-        if (!deployedResult.rows[0]?.is_deployed) {
+        const isDeployed = await this.isDeployed(plan.project, change.name);
+        if (!isDeployed) {
           log.info(`Skipping not deployed change: ${change.name}`);
           skipped.push(change.name);
           continue;
@@ -494,22 +338,25 @@ export class LaunchQLMigrate {
   async verify(options: VerifyOptions): Promise<VerifyResult> {
     await this.initialize();
     
-    const { modulePath } = options;
+    const { modulePath, toChange } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
+    const resolvedToChange = toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, plan.project) : toChange;
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
     const failed: string[] = [];
     
     // Use a separate pool for the target database
-    const targetPool = getPgPool({
-      ...this.pgConfig,
-      database: this.pgConfig.database
-    });
+    const targetPool = getPgPool(this.pgConfig);
 
     try {
       for (const change of changes) {
+        // Stop if we've reached the target change
+        if (resolvedToChange && change.name === resolvedToChange) {
+          break;
+        }
+        
         // Check if deployed
         const isDeployed = await this.isDeployed(plan.project, change.name);
         if (!isDeployed) {

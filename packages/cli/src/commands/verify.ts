@@ -36,10 +36,16 @@ export default async (
     pg: getPgEnvOptions({ database })
   });
   
+  let target: string | undefined;
+  if (projectName && argv.toChange) {
+    target = `${projectName}:${argv.toChange}`;
+  } else if (projectName) {
+    target = projectName;
+  }
+  
   await project.verify(
     opts,
-    projectName,
-    argv.toChange,
+    target,
     recursive
   );
 

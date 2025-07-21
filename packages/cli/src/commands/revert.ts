@@ -60,10 +60,16 @@ export default async (
     }
   });
   
+  let target: string | undefined;
+  if (projectName && argv.toChange) {
+    target = `${projectName}:${argv.toChange}`;
+  } else if (projectName) {
+    target = projectName;
+  }
+  
   await project.revert(
     opts,
-    projectName,
-    argv.toChange,
+    target,
     recursive
   );
 

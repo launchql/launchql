@@ -1,3 +1,4 @@
+import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
 import { Logger } from '@launchql/logger';
 import {
   moduleTemplate,
@@ -10,7 +11,6 @@ import * as glob from 'glob';
 import os from 'os';
 import { parse } from 'parse-package-name';
 import path, { dirname, resolve } from 'path';
-import { pathToFileURL } from 'url';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
@@ -34,7 +34,7 @@ import {
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
 import { extDeps, resolveDependencies } from '../../resolution/deps';
-import { walkUp, loadConfigSyncFromDir, resolveLaunchqlPath } from '@launchql/env';
+import { parseTarget } from '../../utils/target-utils';
 
 
 const logger = new Logger('launchql');
@@ -679,25 +679,36 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
-  async deploy(
-    opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
-    recursive: boolean = true
-  ): Promise<void> {
-    const log = new Logger('deploy');
+  private parseProjectTarget(target?: string): { name: string; toChange: string | undefined } {
+    let name: string;
+    let toChange: string | undefined;
 
-    if (!name) {
+    if (!target) {
       const context = this.getContext();
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
-        recursive = false;
       } else if (context === ProjectContext.Workspace) {
         throw new Error('Module name is required when running from workspace root');
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
+    } else {
+      const parsed = parseTarget(target);
+      name = parsed.projectName;
+      toChange = parsed.toChange;
     }
+
+    return { name, toChange };
+  }
+
+  async deploy(
+    opts: LaunchQLOptions,
+    target?: string,
+    recursive: boolean = true
+  ): Promise<void> {
+    const log = new Logger('deploy');
+
+    const { name, toChange } = this.parseProjectTarget(target);
 
     if (recursive) {
       // Cache for fast deployment
@@ -779,9 +790,10 @@ export class LaunchQLProject {
               try {
                 const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
+                const moduleToChange = extension === name ? toChange : undefined;
                 const result = await client.deploy({
                   modulePath,
-                  toChange,
+                  toChange: moduleToChange,
                   useTransaction: opts.deployment.useTx,
                   logOnly: opts.deployment.logOnly
                 });
@@ -828,38 +840,62 @@ export class LaunchQLProject {
 
   async revert(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('revert');
 
-    if (!name) {
-      const context = this.getContext();
-      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
-        recursive = false;
-      } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
-      } else {
-        throw new Error('Not in a LaunchQL workspace or module');
-      }
-    }
+    const { name, toChange } = this.parseProjectTarget(target);
 
     if (recursive) {
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
-      const extensions = moduleProject.getModuleExtensions();
+      
+      // Mirror deploy logic: find all modules that depend on the target module
+      let extensionsToRevert: { resolved: string[]; external: string[] };
+      
+      if (toChange) {
+        const allModuleNames = Object.keys(modules);
+        const dependentModules = new Set<string>();
+        
+        for (const moduleName of allModuleNames) {
+          const moduleProject = this.getModuleProject(moduleName);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          if (moduleExtensions.resolved.includes(name)) {
+            dependentModules.add(moduleName);
+          }
+        }
+        
+        if (dependentModules.size === 0) {
+          dependentModules.add(name);
+        }
+        
+        let maxDependencies = 0;
+        let topModule = name;
+        for (const depModule of dependentModules) {
+          const moduleProject = this.getModuleProject(depModule);
+          const moduleExtensions = moduleProject.getModuleExtensions();
+          if (moduleExtensions.resolved.length > maxDependencies) {
+            maxDependencies = moduleExtensions.resolved.length;
+            topModule = depModule;
+          }
+        }
+        
+        const topModuleProject = this.getModuleProject(topModule);
+        extensionsToRevert = topModuleProject.getModuleExtensions();
+      } else {
+        const moduleProject = this.getModuleProject(name);
+        extensionsToRevert = moduleProject.getModuleExtensions();
+      }
 
       const pgPool = getPgPool(opts.pg);
 
       log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
-      const reversedExtensions = [...extensions.resolved].reverse();
+      const reversedExtensions = [...extensionsToRevert.resolved].reverse();
 
       for (const extension of reversedExtensions) {
         try {
-          if (extensions.external.includes(extension)) {
+          if (extensionsToRevert.external.includes(extension)) {
             const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
             log.warn(`⚠️ Dropping external extension: ${extension}`);
             try {
@@ -878,9 +914,11 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
+              // Mirror deploy logic: apply toChange to target module, undefined to dependencies
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
-                toChange,
+                toChange: moduleToChange,
                 useTransaction: opts.deployment.useTx
               });
             
@@ -924,23 +962,12 @@ export class LaunchQLProject {
 
   async verify(
     opts: LaunchQLOptions,
-    name?: string,
-    toChange?: string,
+    target?: string,
     recursive: boolean = true
   ): Promise<void> {
     const log = new Logger('verify');
 
-    if (!name) {
-      const context = this.getContext();
-      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
-        name = this.getModuleName();
-        recursive = false;
-      } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
-      } else {
-        throw new Error('Not in a LaunchQL workspace or module');
-      }
-    }
+    const { name, toChange } = this.parseProjectTarget(target);
 
     if (recursive) {
       const modules = this.getModuleMap();
@@ -964,9 +991,11 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
+              // Only apply toChange to the target module being verified, not its dependencies.
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.verify({
                 modulePath,
-                toChange
+                toChange: moduleToChange
               });
             
               if (result.failed.length > 0) {
