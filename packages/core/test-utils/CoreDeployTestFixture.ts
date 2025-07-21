@@ -26,7 +26,7 @@ export class CoreDeployTestFixture extends TestFixture {
     return db;
   }
 
-  async deployModule(projectName: string, database: string, fixturePath: string[], logOnly: boolean = false): Promise<void> {
+  async deployModule(target: string, database: string, fixturePath: string[], logOnly: boolean = false): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
@@ -44,32 +44,22 @@ export class CoreDeployTestFixture extends TestFixture {
         }
       });
 
-      await project.deploy(opts, projectName, true);
+      await project.deploy(opts, target, true);
     } finally {
       process.chdir(originalCwd);
     }
   }
 
-  async revertModule(projectName: string, database: string, fixturePath: string[], toChange?: string): Promise<void> {
+  async revertModule(target: string, database: string, fixturePath: string[]): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
     try {
-      const projectPath = join(basePath, 'packages', projectName);
-      process.chdir(projectPath);
-      
-      const project = new LaunchQLProject(projectPath);
+      const project = new LaunchQLProject(basePath);
       
       const opts = getEnvOptions({ 
         pg: getPgEnvOptions({ database })
       });
-
-      let target: string | undefined;
-      if (toChange) {
-        target = `${projectName}:${toChange}`;
-      } else if (projectName) {
-        target = projectName;
-      }
       
       await project.revert(opts, target, true);
     } finally {
@@ -77,7 +67,7 @@ export class CoreDeployTestFixture extends TestFixture {
     }
   }
 
-  async verifyModule(projectName: string, database: string, fixturePath: string[], toChange?: string): Promise<void> {
+  async verifyModule(target: string, database: string, fixturePath: string[]): Promise<void> {
     const basePath = this.tempFixtureDir;
     const originalCwd = process.cwd();
     
@@ -89,13 +79,6 @@ export class CoreDeployTestFixture extends TestFixture {
       const opts = getEnvOptions({ 
         pg: getPgEnvOptions({ database })
       });
-
-      let target: string | undefined;
-      if (toChange) {
-        target = `${projectName}:${toChange}`;
-      } else if (projectName) {
-        target = projectName;
-      }
       
       await project.verify(opts, target, true);
     } finally {
