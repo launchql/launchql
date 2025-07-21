@@ -22,7 +22,8 @@ describe('Forked Deployment with deployModules - my-third', () => {
     expect(await db.exists('schema', 'metaschema')).toBe(true);
     expect(await db.exists('table', 'metaschema.customers')).toBe(true);
 
-    await fixture.revertModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.revertModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.revertModule('my-first', db.name, ['sqitch', 'simple-w-tags']);
 
     expect(await db.exists('schema', 'metaschema')).toBe(false);
     expect(await db.exists('table', 'metaschema.customers')).toBe(false);
@@ -32,7 +33,8 @@ describe('Forked Deployment with deployModules - my-third', () => {
     expect(await db.exists('schema', 'metaschema')).toBe(true);
     expect(await db.exists('table', 'metaschema.customers')).toBe(true);
 
-    await fixture.revertModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.revertModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.revertModule('my-first', db.name, ['sqitch', 'simple-w-tags']);
 
     expect(await db.exists('schema', 'metaschema')).toBe(false);
     expect(await db.exists('table', 'metaschema.customers')).toBe(false);
