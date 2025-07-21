@@ -1,4 +1,5 @@
 import { LaunchQLProject } from '../../src/core/class/launchql';
+import { parseTarget } from '../../src/utils/target-utils';
 import { TestFixture } from '../../test-utils';
 
 describe('LaunchQLProject Target API', () => {
@@ -12,16 +13,9 @@ describe('LaunchQLProject Target API', () => {
     fixture.cleanup();
   });
 
-  describe('parseTarget method', () => {
-    let project: LaunchQLProject;
-
-    beforeEach(() => {
-      const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLProject(fixturePath);
-    });
-
+  describe('parseTarget utility function', () => {
     test('parses project-only target format', () => {
-      const result = (project as any).parseTarget('secrets');
+      const result = parseTarget('secrets');
       expect(result).toEqual({
         projectName: 'secrets',
         toChange: undefined
@@ -29,7 +23,7 @@ describe('LaunchQLProject Target API', () => {
     });
 
     test('parses project:change target format', () => {
-      const result = (project as any).parseTarget('secrets:procedures/secretfunction');
+      const result = parseTarget('secrets:procedures/secretfunction');
       expect(result).toEqual({
         projectName: 'secrets',
         toChange: 'procedures/secretfunction'
@@ -37,7 +31,7 @@ describe('LaunchQLProject Target API', () => {
     });
 
     test('parses project:@tag target format', () => {
-      const result = (project as any).parseTarget('secrets:@v1.0.0');
+      const result = parseTarget('secrets:@v1.0.0');
       expect(result).toEqual({
         projectName: 'secrets',
         toChange: 'secrets:@v1.0.0'
@@ -45,19 +39,19 @@ describe('LaunchQLProject Target API', () => {
     });
 
     test('throws error for empty target', () => {
-      expect(() => (project as any).parseTarget('')).toThrow('Target parameter is required');
+      expect(() => parseTarget('')).toThrow('Target parameter is required');
     });
 
     test('throws error for invalid tag format', () => {
-      expect(() => (project as any).parseTarget('secrets:@')).toThrow('Invalid tag format: secrets:@. Expected format: project:@tagName');
+      expect(() => parseTarget('secrets:@')).toThrow('Invalid tag format: secrets:@. Expected format: project:@tagName');
     });
 
     test('throws error for invalid change format', () => {
-      expect(() => (project as any).parseTarget('secrets:')).toThrow('Invalid change format: secrets:. Expected format: project:changeName');
+      expect(() => parseTarget('secrets:')).toThrow('Invalid change format: secrets:. Expected format: project:changeName');
     });
 
     test('throws error for invalid format with multiple colons', () => {
-      expect(() => (project as any).parseTarget('secrets:change:extra')).toThrow('Invalid target format: secrets:change:extra. Expected formats: project, project:changeName, or project:@tagName');
+      expect(() => parseTarget('secrets:change:extra')).toThrow('Invalid target format: secrets:change:extra. Expected formats: project, project:changeName, or project:@tagName');
     });
   });
 
