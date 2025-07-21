@@ -541,7 +541,7 @@ export class LaunchQLMigrate {
             failed.push(change.name);
             log.error(`Verification failed: ${change.name}`);
             
-            // Log failure event for normal verification failure
+            // Log failure event with detailed error information
             await this.eventLogger.logEvent({
               eventType: 'verify',
               changeName: change.name,
@@ -552,16 +552,6 @@ export class LaunchQLMigrate {
             });
           }
         } catch (error: any) {
-          // Log failure event outside of transaction
-          await this.eventLogger.logEvent({
-            eventType: 'verify',
-            changeName: change.name,
-            project: plan.project,
-            errorMessage: error.message || 'Unknown error',
-            errorCode: error.code || null,
-            stackTrace: error.stack || null
-          });
-
           log.error(`Failed to verify ${change.name}:`, error);
           failed.push(change.name);
         }
