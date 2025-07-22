@@ -824,8 +824,7 @@ export class LaunchQLProject {
                 const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
                 // Only apply toChange to the target module, not its dependencies
-                // When name is null (workspace-wide), toChange applies to all modules
-                const moduleToChange = name === null || extension === name ? toChange : undefined;
+                const moduleToChange = extension === name ? toChange : undefined;
                 const result = await client.deploy({
                   modulePath,
                   toChange: moduleToChange,
@@ -957,8 +956,7 @@ export class LaunchQLProject {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
               // Only apply toChange to the target module, not its dependencies
-              // When name is null (workspace-wide), toChange applies to all modules
-              const moduleToChange = name === null || extension === name ? toChange : undefined;
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
                 toChange: moduleToChange,
@@ -1047,8 +1045,7 @@ export class LaunchQLProject {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
               // Only apply toChange to the target module, not its dependencies
-              // When name is null (workspace-wide), toChange applies to all modules
-              const moduleToChange = name === null || extension === name ? toChange : undefined;
+              const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.verify({
                 modulePath,
                 toChange: moduleToChange
