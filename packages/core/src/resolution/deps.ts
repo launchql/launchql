@@ -516,16 +516,16 @@ export const resolveDependencies = (
   const unresolved: string[] = [];
 
   // Add synthetic root node - exactly as in original
-  deps[makeKey('apps/index')] = Object.keys(deps)
+  deps[makeKey('_virtual/app')] = Object.keys(deps)
     .filter((dep) => dep.startsWith('/deploy/'))
     .map((dep) => dep.replace(/^\/deploy\//, '').replace(/\.sql$/, ''));
 
-  dep_resolve('apps/index', resolved, unresolved);
+  dep_resolve('_virtual/app', resolved, unresolved);
   
   // Remove synthetic root
-  const index = resolved.indexOf('apps/index');
+  const index = resolved.indexOf('_virtual/app');
   resolved.splice(index, 1);
-  delete deps[makeKey('apps/index')];
+  delete deps[makeKey('_virtual/app')];
 
   // Sort extensions first - exactly as in original
   const extensions = resolved.filter((module) => module.startsWith('extensions/'));

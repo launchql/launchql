@@ -682,6 +682,12 @@ export class LaunchQLProject {
   private getAllWorkspaceExtensions(): { resolved: string[]; external: string[] } {
     const modules = this.getModuleMap();
     const allModuleNames = Object.keys(modules);
+    
+    if (allModuleNames.length === 0) {
+      return { resolved: [], external: [] };
+    }
+    
+    // Collect all extensions from all modules
     const allExtensions = new Set<string>();
     const allExternalExtensions = new Set<string>();
     
@@ -696,6 +702,39 @@ export class LaunchQLProject {
       resolved: Array.from(allExtensions),
       external: Array.from(allExternalExtensions)
     };
+  }
+
+  private findTopDependentModule(name: string, toChange: string): { resolved: string[]; external: string[] } {
+    const modules = this.getModuleMap();
+    const allModuleNames = Object.keys(modules);
+    const dependentModules = new Set<string>();
+    
+    // Find all modules that depend on the target module
+    for (const moduleName of allModuleNames) {
+      const moduleProject = this.getModuleProject(moduleName);
+      const moduleExtensions = moduleProject.getModuleExtensions();
+      if (moduleExtensions.resolved.includes(name)) {
+        dependentModules.add(moduleName);
+      }
+    }
+    
+    if (dependentModules.size === 0) {
+      dependentModules.add(name);
+    }
+    
+    let maxDependencies = 0;
+    let topModule = name;
+    for (const depModule of dependentModules) {
+      const moduleProject = this.getModuleProject(depModule);
+      const moduleExtensions = moduleProject.getModuleExtensions();
+      if (moduleExtensions.resolved.length > maxDependencies) {
+        maxDependencies = moduleExtensions.resolved.length;
+        topModule = depModule;
+      }
+    }
+    
+    const topModuleProject = this.getModuleProject(topModule);
+    return topModuleProject.getModuleExtensions();
   }
 
   private parseProjectTarget(target?: string): { name: string | null; toChange: string | undefined } {
@@ -894,34 +933,7 @@ export class LaunchQLProject {
         // When name is null, revert ALL modules in the workspace
         extensionsToRevert = this.getAllWorkspaceExtensions();
       } else if (toChange) {
-        const allModuleNames = Object.keys(modules);
-        const dependentModules = new Set<string>();
-        
-        for (const moduleName of allModuleNames) {
-          const moduleProject = this.getModuleProject(moduleName);
-          const moduleExtensions = moduleProject.getModuleExtensions();
-          if (moduleExtensions.resolved.includes(name)) {
-            dependentModules.add(moduleName);
-          }
-        }
-        
-        if (dependentModules.size === 0) {
-          dependentModules.add(name);
-        }
-        
-        let maxDependencies = 0;
-        let topModule = name;
-        for (const depModule of dependentModules) {
-          const moduleProject = this.getModuleProject(depModule);
-          const moduleExtensions = moduleProject.getModuleExtensions();
-          if (moduleExtensions.resolved.length > maxDependencies) {
-            maxDependencies = moduleExtensions.resolved.length;
-            topModule = depModule;
-          }
-        }
-        
-        const topModuleProject = this.getModuleProject(topModule);
-        extensionsToRevert = topModuleProject.getModuleExtensions();
+        extensionsToRevert = this.findTopDependentModule(name, toChange);
       } else {
         const moduleProject = this.getModuleProject(name);
         extensionsToRevert = moduleProject.getModuleExtensions();
