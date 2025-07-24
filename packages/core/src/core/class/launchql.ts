@@ -679,7 +679,7 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
-  private getAllWorkspaceExtensions(): { resolved: string[]; external: string[] } {
+  private getWorkspaceExtensionsInDependencyOrder(): { resolved: string[]; external: string[] } {
     const modules = this.getModuleMap();
     const allModuleNames = Object.keys(modules);
     
@@ -687,20 +687,36 @@ export class LaunchQLProject {
       return { resolved: [], external: [] };
     }
     
-    // Collect all extensions from all modules
-    const allExtensions = new Set<string>();
-    const allExternalExtensions = new Set<string>();
+    // Create a virtual module that depends on all workspace modules
+    const virtualModuleName = '_virtual/workspace';
+    const virtualModuleMap = {
+      ...modules,
+      [virtualModuleName]: {
+        requires: allModuleNames
+      }
+    };
     
-    for (const moduleName of allModuleNames) {
-      const moduleProject = this.getModuleProject(moduleName);
-      const moduleExtensions = moduleProject.getModuleExtensions();
-      moduleExtensions.resolved.forEach(ext => allExtensions.add(ext));
-      moduleExtensions.external.forEach(ext => allExternalExtensions.add(ext));
+    const { resolved, external } = extDeps(virtualModuleName, virtualModuleMap);
+    
+    const filteredResolved = resolved.filter(moduleName => moduleName !== virtualModuleName);
+    
+    // Collect all actual extensions from the resolved modules in dependency order
+    const orderedExtensions: string[] = [];
+    const orderedExternalExtensions: string[] = [];
+    
+    for (const moduleName of filteredResolved) {
+      // Only process modules that exist in our workspace
+      if (modules[moduleName]) {
+        const moduleProject = this.getModuleProject(moduleName);
+        const moduleExtensions = moduleProject.getModuleExtensions();
+        orderedExtensions.push(...moduleExtensions.resolved);
+        orderedExternalExtensions.push(...moduleExtensions.external);
+      }
     }
     
     return {
-      resolved: Array.from(allExtensions),
-      external: Array.from(allExternalExtensions)
+      resolved: orderedExtensions,
+      external: orderedExternalExtensions
     };
   }
 
@@ -792,7 +808,7 @@ export class LaunchQLProject {
       
       if (name === null) {
         // When name is null, deploy ALL modules in the workspace
-        extensions = this.getAllWorkspaceExtensions();
+        extensions = this.getWorkspaceExtensionsInDependencyOrder();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensions = moduleProject.getModuleExtensions();
@@ -930,8 +946,12 @@ export class LaunchQLProject {
       let extensionsToRevert: { resolved: string[]; external: string[] };
       
       if (name === null) {
-        // When name is null, revert ALL modules in the workspace
-        extensionsToRevert = this.getAllWorkspaceExtensions();
+        // When name is null, revert ALL modules in the workspace in reverse dependency order
+        const workspaceExtensions = this.getWorkspaceExtensionsInDependencyOrder();
+        extensionsToRevert = {
+          resolved: [...workspaceExtensions.resolved].reverse(),
+          external: workspaceExtensions.external
+        };
       } else if (toChange) {
         extensionsToRevert = this.findTopDependentModule(name, toChange);
       } else {
@@ -944,7 +964,7 @@ export class LaunchQLProject {
       const targetDescription = name === null ? 'all modules' : name;
       log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
-      const reversedExtensions = [...extensionsToRevert.resolved].reverse();
+      const reversedExtensions = name === null ? extensionsToRevert.resolved : [...extensionsToRevert.resolved].reverse();
 
       for (const extension of reversedExtensions) {
         try {
@@ -1032,7 +1052,7 @@ export class LaunchQLProject {
       
       if (name === null) {
         // When name is null, verify ALL modules in the workspace
-        extensions = this.getAllWorkspaceExtensions();
+        extensions = this.getWorkspaceExtensionsInDependencyOrder();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensions = moduleProject.getModuleExtensions();
