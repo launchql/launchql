@@ -679,7 +679,7 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
-  private getWorkspaceExtensionsInDependencyOrder(): { resolved: string[]; external: string[] } {
+  public getWorkspaceExtensionsInDependencyOrder(): { resolved: string[]; external: string[] } {
     const modules = this.getModuleMap();
     const allModuleNames = Object.keys(modules);
     
