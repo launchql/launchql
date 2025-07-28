@@ -679,7 +679,7 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
-  public getWorkspaceExtensionsInDependencyOrder(): { resolved: string[]; external: string[] } {
+  public resolveWorkspaceExtensionDependencies(): { resolved: string[]; external: string[] } {
     const modules = this.getModuleMap();
     const allModuleNames = Object.keys(modules);
     
@@ -793,7 +793,7 @@ export class LaunchQLProject {
       
       if (name === null) {
         // When name is null, deploy ALL modules in the workspace
-        extensions = this.getWorkspaceExtensionsInDependencyOrder();
+        extensions = this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensions = moduleProject.getModuleExtensions();
@@ -932,7 +932,7 @@ export class LaunchQLProject {
       
       if (name === null) {
         // When name is null, revert ALL modules in the workspace in reverse dependency order
-        const workspaceExtensions = this.getWorkspaceExtensionsInDependencyOrder();
+        const workspaceExtensions = this.resolveWorkspaceExtensionDependencies();
         extensionsToRevert = {
           resolved: [...workspaceExtensions.resolved].reverse(),
           external: workspaceExtensions.external
@@ -1037,7 +1037,7 @@ export class LaunchQLProject {
       
       if (name === null) {
         // When name is null, verify ALL modules in the workspace
-        extensions = this.getWorkspaceExtensionsInDependencyOrder();
+        extensions = this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensions = moduleProject.getModuleExtensions();
