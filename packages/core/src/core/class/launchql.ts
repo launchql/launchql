@@ -701,6 +701,8 @@ export class LaunchQLProject {
     const filteredResolved = resolved.filter(moduleName => moduleName !== virtualModuleName);
     
     // Collect all actual extensions from the resolved modules in dependency order
+    const seenResolved = new Set<string>();
+    const seenExternal = new Set<string>();
     const orderedExtensions: string[] = [];
     const orderedExternalExtensions: string[] = [];
     
@@ -709,8 +711,21 @@ export class LaunchQLProject {
       if (modules[moduleName]) {
         const moduleProject = this.getModuleProject(moduleName);
         const moduleExtensions = moduleProject.getModuleExtensions();
-        orderedExtensions.push(...moduleExtensions.resolved);
-        orderedExternalExtensions.push(...moduleExtensions.external);
+        
+        for (const ext of moduleExtensions.resolved) {
+          if (!seenResolved.has(ext)) {
+            seenResolved.add(ext);
+            orderedExtensions.push(ext);
+          }
+        }
+        
+        // Add external extensions, preserving order and avoiding duplicates
+        for (const ext of moduleExtensions.external) {
+          if (!seenExternal.has(ext)) {
+            seenExternal.add(ext);
+            orderedExternalExtensions.push(ext);
+          }
+        }
       }
     }
     
