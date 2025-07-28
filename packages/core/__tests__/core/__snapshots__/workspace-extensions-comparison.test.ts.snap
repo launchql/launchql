@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getWorkspaceExtensionsInDependencyOrder vs simplified approach compares current implementation vs simplified resolveExtensionDependencies approach 1`] = `
+{
+  "current": {
+    "external": [
+      "citext",
+      "plpgsql",
+      "pgcrypto",
+    ],
+    "resolved": [
+      "citext",
+      "plpgsql",
+      "pgcrypto",
+      "my-first",
+      "my-second",
+      "my-third",
+    ],
+  },
+  "differences": {
+    "externalArraysIdentical": true,
+    "externalLengthDiff": 0,
+    "externalOrderingDifferences": {
+      "differentPositions": [],
+      "onlyInFirst": [],
+      "onlyInSecond": [],
+    },
+    "resolvedArraysIdentical": true,
+    "resolvedLengthDiff": 0,
+    "resolvedOrderingDifferences": {
+      "differentPositions": [],
+      "onlyInFirst": [],
+      "onlyInSecond": [],
+    },
+  },
+  "simplified": {
+    "external": [
+      "citext",
+      "plpgsql",
+      "pgcrypto",
+    ],
+    "resolved": [
+      "citext",
+      "plpgsql",
+      "pgcrypto",
+      "my-first",
+      "my-second",
+      "my-third",
+    ],
+  },
+}
+`;

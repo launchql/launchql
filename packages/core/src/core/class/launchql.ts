@@ -698,40 +698,10 @@ export class LaunchQLProject {
     
     const { resolved, external } = resolveExtensionDependencies(virtualModuleName, virtualModuleMap);
     
-    const filteredResolved = resolved.filter((moduleName: string) => moduleName !== virtualModuleName);
-    
-    // Collect all actual extensions from the resolved modules in dependency order
-    const seenResolved = new Set<string>();
-    const seenExternal = new Set<string>();
-    const orderedExtensions: string[] = [];
-    const orderedExternalExtensions: string[] = [];
-    
-    for (const moduleName of filteredResolved) {
-      // Only process modules that exist in our workspace
-      if (modules[moduleName]) {
-        const moduleProject = this.getModuleProject(moduleName);
-        const moduleExtensions = moduleProject.getModuleExtensions();
-        
-        for (const ext of moduleExtensions.resolved) {
-          if (!seenResolved.has(ext)) {
-            seenResolved.add(ext);
-            orderedExtensions.push(ext);
-          }
-        }
-        
-        // Add external extensions, preserving order and avoiding duplicates
-        for (const ext of moduleExtensions.external) {
-          if (!seenExternal.has(ext)) {
-            seenExternal.add(ext);
-            orderedExternalExtensions.push(ext);
-          }
-        }
-      }
-    }
-    
+    // Filter out the virtual module and return the result
     return {
-      resolved: orderedExtensions,
-      external: orderedExternalExtensions
+      resolved: resolved.filter((moduleName: string) => moduleName !== virtualModuleName),
+      external: external
     };
   }
 

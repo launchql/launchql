@@ -27,8 +27,8 @@ exports[`getWorkspaceExtensionsInDependencyOrder with complex existing fixtures 
   ],
   "resolved": [
     "plpgsql",
-    "pg-utilities",
     "uuid-ossp",
+    "pg-utilities",
     "pg-verify",
     "pgcrypto",
     "totp",
@@ -83,8 +83,8 @@ exports[`getWorkspaceExtensionsInDependencyOrder with existing fixtures returns 
   ],
   "resolved": [
     "plpgsql",
-    "pg-utilities",
     "uuid-ossp",
+    "pg-utilities",
     "pg-verify",
     "pgcrypto",
     "totp",
