@@ -19,7 +19,7 @@ describe('getWorkspaceExtensionsInDependencyOrder vs simplified approach', () =>
     const workspacePath = fixture.getFixturePath('simple-w-tags');
     const project = new LaunchQLProject(workspacePath);
     
-    const currentOutput = project.getWorkspaceExtensionsInDependencyOrder();
+    const currentOutput = project.resolveWorkspaceExtensionDependencies();
     
     const modules = project.getModuleMap();
     const allModuleNames = Object.keys(modules);
@@ -58,7 +58,7 @@ describe('getWorkspaceExtensionsInDependencyOrder vs simplified approach', () =>
       const workspacePath = fixture.getFixturePath(fixtureName);
       const project = new LaunchQLProject(workspacePath);
       
-      const currentOutput = project.getWorkspaceExtensionsInDependencyOrder();
+      const currentOutput = project.resolveWorkspaceExtensionDependencies();
       
       const modules = project.getModuleMap();
       const allModuleNames = Object.keys(modules);
