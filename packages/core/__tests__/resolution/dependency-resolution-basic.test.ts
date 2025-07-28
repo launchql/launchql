@@ -1,5 +1,5 @@
 import { listModules } from '../../src/modules/modules';
-import { extDeps,resolveDependencies } from '../../src/resolution/deps';
+import { resolveExtensionDependencies, resolveDependencies } from '../../src/resolution/deps';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
@@ -47,7 +47,7 @@ it('sqitch package dependencies [simple/3rd]', async () => {
 it('launchql project extensions dependencies', async () => {
   const modules = listModules(fixture.getFixturePath('launchql'));
 
-  const utils = await extDeps('utils', modules);
+  const utils = await resolveExtensionDependencies('utils', modules);
   expect(utils).toEqual({
     external: ['plpgsql', 'uuid-ossp', 'pgcrypto'],
     resolved: [
@@ -61,7 +61,7 @@ it('launchql project extensions dependencies', async () => {
     ]
   });
 
-  const secrets = await extDeps('secrets', modules);
+  const secrets = await resolveExtensionDependencies('secrets', modules);
   expect(secrets).toEqual({
     external: ['plpgsql', 'uuid-ossp', 'pgcrypto'],
     resolved: [
@@ -75,7 +75,7 @@ it('launchql project extensions dependencies', async () => {
     ]
   });
 
-  const totp = await extDeps('totp', modules);
+  const totp = await resolveExtensionDependencies('totp', modules);
   expect(totp).toEqual({
     external: ['plpgsql', 'uuid-ossp', 'pgcrypto'],
     resolved: [
