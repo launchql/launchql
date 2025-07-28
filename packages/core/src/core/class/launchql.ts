@@ -705,6 +705,30 @@ export class LaunchQLProject {
     };
   }
 
+  /**
+   * Finds the extensions from the "top" dependent module for revert operations.
+   * 
+   * This method is used during revert operations when a specific change is being reverted.
+   * It finds all modules that depend on the target module, then selects the module with
+   * the most dependencies (the "top" module in the dependency hierarchy), and returns
+   * that module's extensions. This ensures that when reverting, we include all necessary
+   * dependencies that might be affected by the revert operation.
+   * 
+   * Algorithm:
+   * 1. Find all modules that have the target module in their resolved extensions
+   * 2. If no dependent modules found, use the target module itself
+   * 3. Among dependent modules, find the one with the most resolved extensions
+   * 4. Return the extensions from that "top" module
+   * 
+   * @param name - The target module name being reverted
+   * @param toChange - The specific change being reverted (currently unused but kept for consistency)
+   * @returns Extensions object containing resolved and external extensions from the top dependent module
+   * 
+   * @example
+   * // If module 'auth' depends on 'users', and 'api' depends on both 'auth' and 'users'
+   * // When reverting 'users', this will return extensions from 'api' (the top dependent)
+   * // since 'api' has more total dependencies than 'auth'
+   */
   private findTopDependentModule(name: string, toChange: string): { resolved: string[]; external: string[] } {
     const modules = this.getModuleMap();
     const allModuleNames = Object.keys(modules);
