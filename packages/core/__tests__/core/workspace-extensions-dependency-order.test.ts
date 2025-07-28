@@ -19,7 +19,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
       const workspacePath = fixture.getFixturePath('simple-w-tags');
       const project = new LaunchQLProject(workspacePath);
       
-      const result = project.getWorkspaceExtensionsInDependencyOrder();
+      const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
     });
 
@@ -27,7 +27,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
       const workspacePath = fixture.getFixturePath('launchql');
       const project = new LaunchQLProject(workspacePath);
       
-      const result = project.getWorkspaceExtensionsInDependencyOrder();
+      const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
     });
 
@@ -35,7 +35,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
       const workspacePath = fixture.getFixturePath('simple');
       const project = new LaunchQLProject(workspacePath);
       
-      const result = project.getWorkspaceExtensionsInDependencyOrder();
+      const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
       
       expect(result).toHaveProperty('resolved');
@@ -48,7 +48,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
       const workspacePath = fixture.getFixturePath('launchql');
       const project = new LaunchQLProject(workspacePath);
       
-      const result = project.getWorkspaceExtensionsInDependencyOrder();
+      const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
       
       expect(Array.isArray(result.resolved)).toBe(true);
@@ -59,7 +59,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
       const workspacePath = fixture.getFixturePath('simple-w-tags');
       const project = new LaunchQLProject(workspacePath);
       
-      const result = project.getWorkspaceExtensionsInDependencyOrder();
+      const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
       
       expect(result).toHaveProperty('resolved');
@@ -75,7 +75,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
       const workspacePath = fixture.getFixturePath('simple');
       const project = new LaunchQLProject(workspacePath);
       
-      const result = project.getWorkspaceExtensionsInDependencyOrder();
+      const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
       
       expect(result.resolved.length).toBeGreaterThan(0);
