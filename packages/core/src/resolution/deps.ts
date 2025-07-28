@@ -36,7 +36,7 @@ export interface DependencyResult {
 interface DependencyResolverOptions {
   /** 
    * Function to handle external dependencies when they are not found in the dependency graph.
-   * Used by extDeps to add external dependencies to the external array.
+   * Used by resolveExtensionDependencies to add external dependencies to the external array.
    * @param dep - The dependency module name that was not found
    * @param deps - The dependency graph to potentially add the dependency to
    * @param external - Array to collect external dependencies
@@ -70,7 +70,7 @@ interface DependencyResolverOptions {
 /**
  * Core dependency resolution algorithm that handles circular dependency detection
  * and topological sorting of dependencies. This unified implementation eliminates
- * code duplication between getDeps, extDeps, and resolveDependencies.
+ * code duplication between getDeps, resolveExtensionDependencies, and resolveDependencies.
  * 
  * @param deps - The dependency graph mapping modules to their dependencies
  * @param external - Array to collect external dependencies
@@ -157,7 +157,7 @@ const makeKey = (sqlmodule: string): string => `/deploy/${sqlmodule}.sql`;
  * @param modules - Record mapping module names to their dependency requirements
  * @returns Object containing external dependencies and resolved dependency order
  */
-export const extDeps = (
+export const resolveExtensionDependencies = (
   name: string,
   modules: Record<string, { requires: string[] }>
 ): { external: string[]; resolved: string[] } => {
@@ -171,16 +171,16 @@ export const extDeps = (
     return memo;
   }, {} as DependencyGraph);
 
-  // Handle external dependencies for extDeps - simpler than getDeps
+  // Handle external dependencies for resolveExtensionDependencies - simpler than getDeps
   const handleExternalDep = (dep: string, deps: DependencyGraph, external: string[]): void => {
     external.push(dep);
     deps[dep] = [];
   };
 
-  // Create the dependency resolver with extDeps-specific configuration
+  // Create the dependency resolver with resolveExtensionDependencies-specific configuration
   const dep_resolve = createDependencyResolver(deps, external, {
     handleExternalDep,
-    extname: name // For extDeps, we use the module name as extname
+    extname: name // For resolveExtensionDependencies, we use the module name as extname
   });
 
   const resolved: string[] = [];

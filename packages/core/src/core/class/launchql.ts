@@ -33,7 +33,7 @@ import {
   ModuleMap
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
-import { extDeps, resolveDependencies } from '../../resolution/deps';
+import { resolveExtensionDependencies, resolveDependencies } from '../../resolution/deps';
 import { parseTarget } from '../../utils/target-utils';
 
 
@@ -340,7 +340,7 @@ export class LaunchQLProject {
     this.ensureModule();
     const moduleName = this.getModuleName();
     const moduleMap = this.getModuleMap();
-    return extDeps(moduleName, moduleMap);
+    return resolveExtensionDependencies(moduleName, moduleMap);
   }
 
   getModuleDependencies(moduleName: string): { native: string[]; modules: string[] } {
@@ -696,9 +696,9 @@ export class LaunchQLProject {
       }
     };
     
-    const { resolved, external } = extDeps(virtualModuleName, virtualModuleMap);
+    const { resolved, external } = resolveExtensionDependencies(virtualModuleName, virtualModuleMap);
     
-    const filteredResolved = resolved.filter(moduleName => moduleName !== virtualModuleName);
+    const filteredResolved = resolved.filter((moduleName: string) => moduleName !== virtualModuleName);
     
     // Collect all actual extensions from the resolved modules in dependency order
     const seenResolved = new Set<string>();
