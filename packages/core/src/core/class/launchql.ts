@@ -705,62 +705,6 @@ export class LaunchQLProject {
     };
   }
 
-  /**
-   * Finds the extensions from the "top" dependent module for revert operations.
-   * 
-   * This method is used during revert operations when a specific change is being reverted.
-   * It finds all modules that depend on the target module, then selects the module with
-   * the most dependencies (the "top" module in the dependency hierarchy), and returns
-   * that module's extensions. This ensures that when reverting, we include all necessary
-   * dependencies that might be affected by the revert operation.
-   * 
-   * Algorithm:
-   * 1. Find all modules that have the target module in their resolved extensions
-   * 2. If no dependent modules found, use the target module itself
-   * 3. Among dependent modules, find the one with the most resolved extensions
-   * 4. Return the extensions from that "top" module
-   * 
-   * @param name - The target module name being reverted
-   * @param toChange - The specific change being reverted (currently unused but kept for consistency)
-   * @returns Extensions object containing resolved and external extensions from the top dependent module
-   * 
-   * @example
-   * // If module 'auth' depends on 'users', and 'api' depends on both 'auth' and 'users'
-   * // When reverting 'users', this will return extensions from 'api' (the top dependent)
-   * // since 'api' has more total dependencies than 'auth'
-   */
-  private findTopDependentModule(name: string, toChange: string): { resolved: string[]; external: string[] } {
-    const modules = this.getModuleMap();
-    const allModuleNames = Object.keys(modules);
-    const dependentModules = new Set<string>();
-    
-    // Find all modules that depend on the target module
-    for (const moduleName of allModuleNames) {
-      const moduleProject = this.getModuleProject(moduleName);
-      const moduleExtensions = moduleProject.getModuleExtensions();
-      if (moduleExtensions.resolved.includes(name)) {
-        dependentModules.add(moduleName);
-      }
-    }
-    
-    if (dependentModules.size === 0) {
-      dependentModules.add(name);
-    }
-    
-    let maxDependencies = 0;
-    let topModule = name;
-    for (const depModule of dependentModules) {
-      const moduleProject = this.getModuleProject(depModule);
-      const moduleExtensions = moduleProject.getModuleExtensions();
-      if (moduleExtensions.resolved.length > maxDependencies) {
-        maxDependencies = moduleExtensions.resolved.length;
-        topModule = depModule;
-      }
-    }
-    
-    const topModuleProject = this.getModuleProject(topModule);
-    return topModuleProject.getModuleExtensions();
-  }
 
   private parseProjectTarget(target?: string): { name: string | null; toChange: string | undefined } {
     let name: string | null;
@@ -962,7 +906,7 @@ export class LaunchQLProject {
           external: workspaceExtensions.external
         };
       } else if (toChange) {
-        extensionsToRevert = this.findTopDependentModule(name, toChange);
+        extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensionsToRevert = moduleProject.getModuleExtensions();
