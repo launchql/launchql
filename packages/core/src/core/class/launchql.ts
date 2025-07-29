@@ -899,12 +899,8 @@ export class LaunchQLProject {
       let extensionsToRevert: { resolved: string[]; external: string[] };
       
       if (name === null) {
-        // When name is null, revert ALL modules in the workspace in reverse dependency order
-        const workspaceExtensions = this.resolveWorkspaceExtensionDependencies();
-        extensionsToRevert = {
-          resolved: [...workspaceExtensions.resolved].reverse(),
-          external: workspaceExtensions.external
-        };
+        // When name is null, revert ALL modules in the workspace
+        extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else if (toChange) {
         extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else {
@@ -917,7 +913,7 @@ export class LaunchQLProject {
       const targetDescription = name === null ? 'all modules' : name;
       log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
-      const reversedExtensions = name === null ? extensionsToRevert.resolved : [...extensionsToRevert.resolved].reverse();
+      const reversedExtensions = [...extensionsToRevert.resolved].reverse();
 
       for (const extension of reversedExtensions) {
         try {
