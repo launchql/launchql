@@ -907,7 +907,8 @@ export class LaunchQLProject {
         // When name is null, revert ALL modules in the workspace
         extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else if (toChange) {
-        // to prevent "Cannot revert X: required by Y" database dependency violations.
+        // Use workspace-wide resolution to prevent "Cannot revert X: required by Y" database dependency violations.
+        // This ensures all dependent modules are reverted before their dependencies.
         extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
