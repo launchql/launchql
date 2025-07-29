@@ -87,9 +87,6 @@ export class CoreDeployTestFixture extends TestFixture {
   }
 
   async cleanup(): Promise<void> {
-    for (const db of this.databases) {
-      await db.close();
-    }
     this.databases = [];
     
     if (this.migrateFixture) {

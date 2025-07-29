@@ -12,7 +12,7 @@ describe('Revert Truncation Scenarios', () => {
     db = await fixture.setupTestDatabase();
   });
   
-  afterEach(async () => {
+  afterAll(async () => {
     await fixture.cleanup();
   });
 
