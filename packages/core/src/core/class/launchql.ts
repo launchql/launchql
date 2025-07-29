@@ -883,6 +883,11 @@ export class LaunchQLProject {
     }
   }
 
+  /**
+   * Reverts database changes for modules. Unlike verify operations, revert operations
+   * modify database state and must ensure dependent modules are reverted before their
+   * dependencies to prevent database constraint violations.
+   */
   async revert(
     opts: LaunchQLOptions,
     target?: string,
@@ -902,6 +907,7 @@ export class LaunchQLProject {
         // When name is null, revert ALL modules in the workspace
         extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else if (toChange) {
+        // to prevent "Cannot revert X: required by Y" database dependency violations.
         extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
