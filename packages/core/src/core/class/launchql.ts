@@ -901,6 +901,8 @@ export class LaunchQLProject {
       if (name === null) {
         // When name is null, revert ALL modules in the workspace
         extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
+      } else if (toChange) {
+        extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensionsToRevert = moduleProject.getModuleExtensions();
