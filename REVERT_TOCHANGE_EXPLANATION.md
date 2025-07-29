@@ -144,3 +144,21 @@ The `toChange` special case in the revert method is **correct and necessary** fo
 ### Recommendation
 
 **Keep the current implementation** as it correctly handles the complex dependency scenarios that arise when reverting specific changes across modules with inter-dependencies.
+
+## Truncation Optimization
+
+### Performance Improvement
+
+The revert method now includes truncation logic to avoid processing unnecessary modules beyond the target. When reverting with a toChange parameter:
+
+1. **Workspace-wide resolution** is still used for dependency safety
+2. **Truncation is applied** before reversal to remove modules that come after the target
+3. **Reversal proceeds** with only the necessary modules
+
+### Example
+
+When reverting `my-second:@v2.0.0` in a workspace with `[my-first, my-second, my-third]`:
+- **Before truncation**: Process all modules `[my-third, my-second, my-first]` (reversed)
+- **After truncation**: Process only `[my-second, my-first]` (reversed)
+
+This prevents unnecessary processing of `my-third` while maintaining database safety through proper dependency ordering.
