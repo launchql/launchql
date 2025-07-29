@@ -159,6 +159,6 @@ The revert method now includes truncation logic to avoid processing unnecessary 
 
 When reverting `my-second:@v2.0.0` in a workspace with `[my-first, my-second, my-third]`:
 - **Before truncation**: Process all modules `[my-third, my-second, my-first]` (reversed)
-- **After truncation**: Process only `[my-second, my-first]` (reversed)
+- **After truncation**: Process only `[my-third, my-second]` (reversed)
 
-This prevents unnecessary processing of `my-third` while maintaining database safety through proper dependency ordering.
+This prevents unnecessary processing of `my-first` while maintaining database safety through proper dependency ordering. We must revert `my-third` first since it depends on `my-second`.
