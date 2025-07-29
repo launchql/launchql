@@ -705,6 +705,30 @@ export class LaunchQLProject {
     };
   }
 
+  /**
+   * Truncates workspace extensions to include only modules from the target onwards.
+   * This prevents processing unnecessary modules that come before the target in dependency order.
+   * 
+   * @param workspaceExtensions - The full workspace extension dependencies
+   * @param targetName - The target module name to truncate from
+   * @returns Truncated extensions starting from the target module
+   */
+  private truncateExtensionsToTarget(
+    workspaceExtensions: { resolved: string[]; external: string[] },
+    targetName: string
+  ): { resolved: string[]; external: string[] } {
+    const targetIndex = workspaceExtensions.resolved.indexOf(targetName);
+    
+    if (targetIndex === -1) {
+      return workspaceExtensions;
+    }
+    
+    return {
+      resolved: workspaceExtensions.resolved.slice(targetIndex),
+      external: workspaceExtensions.external
+    };
+  }
+
 
   private parseProjectTarget(target?: string): { name: string | null; toChange: string | undefined } {
     let name: string | null;
@@ -909,7 +933,8 @@ export class LaunchQLProject {
       } else if (toChange) {
         // Use workspace-wide resolution to prevent "Cannot revert X: required by Y" database dependency violations.
         // This ensures all dependent modules are reverted before their dependencies.
-        extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
+        const workspaceExtensions = this.resolveWorkspaceExtensionDependencies();
+        extensionsToRevert = this.truncateExtensionsToTarget(workspaceExtensions, name);
       } else {
         const moduleProject = this.getModuleProject(name);
         extensionsToRevert = moduleProject.getModuleExtensions();
