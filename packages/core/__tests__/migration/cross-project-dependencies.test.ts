@@ -107,7 +107,7 @@ describe('Cross-Project Dependencies', () => {
     );
     
     expect(result.rows).toContainEqual({
-      project: 'project-b',
+      package: 'project-b',
       change_name: 'app_schema',
       dependency: 'project-a:base_schema'
     });

@@ -485,10 +485,10 @@ export class LaunchQLMigrate {
       // Import packages
       log.info('Importing Sqitch packages...');
       await this.pool.query(`
-        INSERT INTO launchql_migrate.projects (project, created_at)
+        INSERT INTO launchql_migrate.packages (package, created_at)
         SELECT DISTINCT project, now()
         FROM sqitch.projects
-        ON CONFLICT (project) DO NOTHING
+        ON CONFLICT (package) DO NOTHING
       `);
       
       // Import changes with dependencies
@@ -578,7 +578,7 @@ export class LaunchQLMigrate {
       const deployedResult = await targetPool.query(`
         SELECT c.change_name
         FROM launchql_migrate.changes c
-        WHERE c.project = $1 AND c.deployed_at IS NOT NULL
+        WHERE c.package = $1 AND c.deployed_at IS NOT NULL
       `, [plan.package]);
       
       const deployedSet = new Set(deployedResult.rows.map((r: any) => r.change_name));
@@ -608,7 +608,7 @@ export class LaunchQLMigrate {
           c.deployed_at,
           c.script_hash
         FROM launchql_migrate.changes c
-        WHERE c.project = $1 AND c.deployed_at IS NOT NULL
+        WHERE c.package = $1 AND c.deployed_at IS NOT NULL
         ORDER BY c.deployed_at ASC
       `, [project]);
       
@@ -633,7 +633,7 @@ export class LaunchQLMigrate {
         `SELECT d.requires 
          FROM launchql_migrate.dependencies d
          JOIN launchql_migrate.changes c ON c.change_id = d.change_id
-         WHERE c.project = $1 AND c.change_name = $2`,
+         WHERE c.package = $1 AND c.change_name = $2`,
         [project, changeName]
       );
       

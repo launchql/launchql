@@ -52,7 +52,7 @@ describe('Log-Only Deployment', () => {
     // Verify that the migration metadata WAS recorded
     // This shows the changes were logged as deployed in the tracking tables
     const deploymentRecords = await db.query(`
-      SELECT change_name, project 
+      SELECT change_name, package 
         FROM launchql_migrate.changes 
     `);
 

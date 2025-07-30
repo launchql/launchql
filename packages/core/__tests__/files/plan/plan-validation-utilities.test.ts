@@ -119,7 +119,7 @@ describe('Validators', () => {
     it('should parse project-qualified references', () => {
       const ref = parseReference('other_project:users_table');
       expect(ref).toMatchObject({
-        project: 'other_project',
+        package: 'other_project',
         change: 'users_table'
       });
     });
