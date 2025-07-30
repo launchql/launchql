@@ -8,13 +8,13 @@ afterAll(async () => {
 describe('CLIDeployTestFixture', () => {
   let fixture: CLIDeployTestFixture;
 
-  beforeEach(async () => {
+  beforeAll(() => {
     fixture = new CLIDeployTestFixture();
-  }, 15000); // Increase timeout to 15 seconds
+  });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await fixture.cleanup();
-  }, 15000); // Increase timeout to 15 seconds
+  });
 
   it('should setup test database', async () => {
     const db = await fixture.setupTestDatabase();
@@ -27,7 +27,7 @@ describe('CLIDeployTestFixture', () => {
     
     const schemaExists = await db.exists('schema', 'launchql_migrate');
     expect(schemaExists).toBe(true);
-  }, 15000);
+  });
 
   it('should handle CLI command execution with database', async () => {
     const db = await fixture.setupTestDatabase();
@@ -36,7 +36,7 @@ describe('CLIDeployTestFixture', () => {
     expect(statusResult.result).toBeDefined();
     
     expect(true).toBe(true);
-  }, 15000);
+  });
 
   it('should initialize workspace via CLI', async () => {
     const result = await fixture.initWorkspaceViaCliCommand('test-workspace', { workspace: true });
@@ -44,12 +44,12 @@ describe('CLIDeployTestFixture', () => {
     expect(result.result).toBeDefined();
     expect(result.argv.name).toBe('test-workspace');
     expect(result.argv.workspace).toBe(true);
-  }, 15000);
+  });
 
   it('should initialize module via CLI', async () => {
     const workspaceResult = await fixture.initWorkspaceViaCliCommand('test-workspace', { workspace: true });
     expect(workspaceResult.result).toBeDefined();
     
     expect(true).toBe(true);
-  }, 15000);
+  });
 });
