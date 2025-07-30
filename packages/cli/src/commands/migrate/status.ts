@@ -60,7 +60,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
     
     if (statusResults.length > 0) {
       const status = statusResults[0];
-      console.log(`Package: ${status.project}`);
+      console.log(`Package: ${status.package}`);
       console.log(`Total Deployed: ${status.totalDeployed}`);
       
       if (status.lastChange) {
