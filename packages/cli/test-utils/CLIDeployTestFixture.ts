@@ -6,9 +6,14 @@ import { Pool } from 'pg';
 import { getPgPool, teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 import { ParsedArgs } from 'minimist';
+import { Inquirerer, CLIOptions } from 'inquirerer';
 
 import { TestFixture } from './fixtures';
 import { TestDatabase } from './TestDatabase';
+
+import deploy from '../src/commands/deploy';
+import revert from '../src/commands/revert';
+import verify from '../src/commands/verify';
 
 export class CLIDeployTestFixture extends TestFixture {
   private databases: TestDatabase[] = [];
@@ -182,12 +187,12 @@ export class CLIDeployTestFixture extends TestFixture {
         // Handle LaunchQL CLI commands
         const argv = this.parseCliCommand(tokens.slice(1), currentDir);
         if (executeCommands) {
-          const result = await this.runCmd(argv);
+          const result = await this.runCliCommandDirect(argv);
           results.push({ command: processedCommand, type: 'cli', result });
         } else {
           results.push({ command: processedCommand, type: 'cli', result: { argv } });
         }
-      } else {
+      }else {
         throw new Error(`Unsupported command: ${tokens[0]}`);
       }
     }
@@ -228,6 +233,44 @@ export class CLIDeployTestFixture extends TestFixture {
     }
     
     return argv;
+  }
+
+  private async runCliCommandDirect(argv: ParsedArgs): Promise<any> {
+    const command = argv._[0];
+    const prompter = new Inquirerer({
+      input: process.stdin,
+      output: process.stdout,
+      noTty: true
+    });
+
+    const options: CLIOptions = {
+      noTty: true,
+      input: process.stdin,
+      output: process.stdout,
+      version: '1.0.0',
+      minimistOpts: {
+        alias: {
+          v: 'version',
+          h: 'help'
+        }
+      }
+    };
+
+    switch (command) {
+      case 'deploy':
+        await deploy(argv, prompter, options);
+        break;
+      case 'revert':
+        await revert(argv, prompter, options);
+        break;
+      case 'verify':
+        await verify(argv, prompter, options);
+        break;
+      default:
+        throw new Error(`Unsupported CLI command: ${command}`);
+    }
+
+    return { argv };
   }
 
   async cleanup(): Promise<void> {
