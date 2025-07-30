@@ -89,15 +89,7 @@ export default async (
   const changeName = answers.changeName;
   const comment = answers.comment;
 
-  if (pkg.isInModule()) {
-    try {
-      pkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
-      log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'}`);
-    } catch (error) {
-      log.error(`Failed to add tag: ${error instanceof Error ? error.message : String(error)}`);
-      throw error;
-    }
-  } else {
+  if (argv.package || !pkg.isInModule()) {
     const moduleMap = pkg.getModuleMap();
     const module = moduleMap[packageName];
     if (!module) {
@@ -109,6 +101,14 @@ export default async (
     try {
       modulePkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
       log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'} in package '${packageName}'`);
+    } catch (error) {
+      log.error(`Failed to add tag: ${error instanceof Error ? error.message : String(error)}`);
+      throw error;
+    }
+  } else {
+    try {
+      pkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
+      log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'}`);
     } catch (error) {
       log.error(`Failed to add tag: ${error instanceof Error ? error.message : String(error)}`);
       throw error;
