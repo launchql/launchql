@@ -9,7 +9,7 @@ export interface MigrateChange {
 }
 
 export interface MigratePlanFile {
-  project: string;
+  package: string;
   uri?: string;
   changes: MigrateChange[];
 }
@@ -66,7 +66,7 @@ export interface VerifyResult {
 }
 
 export interface StatusResult {
-  project: string;
+  package: string;
   totalDeployed: number;
   lastChange: string;
   lastDeployed: Date;
