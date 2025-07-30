@@ -34,7 +34,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
   });
 
   try {
-    // Parse plan file to get project name
+    // Parse plan file to get package name
     const planResult = parsePlanFile(planPath);
     
     if (!planResult.data || planResult.errors.length > 0) {
@@ -53,14 +53,14 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
       database: targetDatabase
     });
     
-    const statusResults = await targetClient.status(plan.project);
+    const statusResults = await targetClient.status(plan.package);
     
     console.log('\n📊 Migration Status\n');
     console.log(`Database: ${targetDatabase}`);
     
     if (statusResults.length > 0) {
       const status = statusResults[0];
-      console.log(`Project: ${status.project}`);
+      console.log(`Package: ${status.package}`);
       console.log(`Total Deployed: ${status.totalDeployed}`);
       
       if (status.lastChange) {
@@ -70,7 +70,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
         console.log('No changes deployed yet');
       }
     } else {
-      console.log(`Project: ${plan.project}`);
+      console.log(`Package: ${plan.package}`);
       console.log('No deployment history found');
     }
 

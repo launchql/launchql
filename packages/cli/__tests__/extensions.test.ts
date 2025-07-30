@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
@@ -55,7 +55,7 @@ describe('cmds:extension', () => {
     });
 
     // Step 2b: Snapshot initial control file and module dependencies
-    const initialProject = new LaunchQLProject(modulePath);
+    const initialProject = new LaunchQLPackage(modulePath);
 
     expect(initialProject.getModuleControlFile()).toMatchSnapshot('initial - control file');
     expect(initialProject.getModuleDependencies('my-module')).toMatchSnapshot('initial - module dependencies');
@@ -83,8 +83,8 @@ describe('cmds:extension', () => {
     expect(extensionResult).toMatchSnapshot('extension-update - result');
     expect(relativeFiles).toMatchSnapshot('extension-update - files');
 
-    // Step 4: Re-init project and validate changes
-    const updatedProject = new LaunchQLProject(modulePath);
+    // Step 4: Re-init package and validate changes
+    const updatedProject = new LaunchQLPackage(modulePath);
 
     expect(updatedProject.getModuleControlFile()).toMatchSnapshot('updated - control file');
     expect(updatedProject.getModuleDependencies('my-module')).toMatchSnapshot('updated - module dependencies');

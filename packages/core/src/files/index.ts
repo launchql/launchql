@@ -1,4 +1,4 @@
-// Re-export all functionality from project-files
+// Re-export all functionality from package-files
 export * from './extension';
 export * from './plan';
 export * from './sql';

@@ -59,27 +59,27 @@ describe('Simple with Tags Migration', () => {
     
     const deployedChanges = await db.getDeployedChanges();
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-first',
+      package: 'my-first',
       change_name: 'schema_myapp'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-first',
+      package: 'my-first',
       change_name: 'table_products'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-second',
+      package: 'my-second',
       change_name: 'create_schema'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-second',
+      package: 'my-second',
       change_name: 'create_table'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-third',
+      package: 'my-third',
       change_name: 'create_schema'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-third',
+      package: 'my-third',
       change_name: 'create_table'
     }));
   });
@@ -231,9 +231,9 @@ describe('Simple with Tags Migration', () => {
     
     // Verify that all projects are back to their fully deployed state
     const deployedChanges = await db.getDeployedChanges();
-    const myFirstChanges = deployedChanges.filter(c => c.project === 'my-first');
-    const mySecondChanges = deployedChanges.filter(c => c.project === 'my-second');
-    const myThirdChanges = deployedChanges.filter(c => c.project === 'my-third');
+    const myFirstChanges = deployedChanges.filter(c => c.package === 'my-first');
+    const mySecondChanges = deployedChanges.filter(c => c.package === 'my-second');
+    const myThirdChanges = deployedChanges.filter(c => c.package === 'my-third');
     
     expect(myFirstChanges).toHaveLength(3);
     expect(mySecondChanges).toHaveLength(3);
@@ -262,9 +262,9 @@ describe('Simple with Tags Migration', () => {
     
     // Verify initial state: all projects fully deployed
     let deployedChanges = await db.getDeployedChanges();
-    expect(deployedChanges.filter(c => c.project === 'my-first')).toHaveLength(3);
-    expect(deployedChanges.filter(c => c.project === 'my-second')).toHaveLength(3);
-    expect(deployedChanges.filter(c => c.project === 'my-third')).toHaveLength(2);
+    expect(deployedChanges.filter(c => c.package === 'my-first')).toHaveLength(3);
+    expect(deployedChanges.filter(c => c.package === 'my-second')).toHaveLength(3);
+    expect(deployedChanges.filter(c => c.package === 'my-third')).toHaveLength(2);
     
     await client.revert({
       modulePath: join(basePath, 'packages', 'my-third'),
@@ -282,7 +282,7 @@ describe('Simple with Tags Migration', () => {
     
     // Verify state after revert to v1.0.0
     deployedChanges = await db.getDeployedChanges();
-    const myFirstChanges = deployedChanges.filter(c => c.project === 'my-first');
+    const myFirstChanges = deployedChanges.filter(c => c.package === 'my-first');
     expect(myFirstChanges).toHaveLength(2); // schema_myapp, table_users
     expect(myFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users']);
     
@@ -297,7 +297,7 @@ describe('Simple with Tags Migration', () => {
     
     // Verify state remains at my-second v2.0.0 level (all changes deployed)
     deployedChanges = await db.getDeployedChanges();
-    const mySecondChanges = deployedChanges.filter(c => c.project === 'my-second');
+    const mySecondChanges = deployedChanges.filter(c => c.package === 'my-second');
     expect(mySecondChanges).toHaveLength(3); // create_schema, create_table, create_another_table
     expect(mySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     
@@ -312,7 +312,7 @@ describe('Simple with Tags Migration', () => {
     
     // Verify state - my-second remains fully deployed due to fixture limitation
     deployedChanges = await db.getDeployedChanges();
-    const mySecondChangesAfterRevert = deployedChanges.filter(c => c.project === 'my-second');
+    const mySecondChangesAfterRevert = deployedChanges.filter(c => c.package === 'my-second');
     expect(mySecondChangesAfterRevert).toHaveLength(3); // all changes remain due to fixture limitation
     expect(mySecondChangesAfterRevert.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     
@@ -348,9 +348,9 @@ describe('Simple with Tags Migration', () => {
     
     // Verify final deployment state
     const finalDeployedChanges = await db.getDeployedChanges();
-    const finalMyFirstChanges = finalDeployedChanges.filter(c => c.project === 'my-first');
-    const finalMySecondChanges = finalDeployedChanges.filter(c => c.project === 'my-second');
-    const finalMyThirdChanges = finalDeployedChanges.filter(c => c.project === 'my-third');
+    const finalMyFirstChanges = finalDeployedChanges.filter(c => c.package === 'my-first');
+    const finalMySecondChanges = finalDeployedChanges.filter(c => c.package === 'my-second');
+    const finalMyThirdChanges = finalDeployedChanges.filter(c => c.package === 'my-third');
     
     expect(finalMyFirstChanges).toHaveLength(3); // back to full deployment
     expect(finalMySecondChanges).toHaveLength(3); // remains fully deployed (create_schema, create_table, create_another_table)
@@ -388,7 +388,7 @@ describe('Simple with Tags Migration', () => {
     
     // Verify both tag formats resolve to the same changes when appropriate
     const deployedChanges = await db.getDeployedChanges();
-    const mySecondChanges = deployedChanges.filter(c => c.project === 'my-second');
+    const mySecondChanges = deployedChanges.filter(c => c.package === 'my-second');
     expect(mySecondChanges).toHaveLength(3); // create_schema, create_table, create_another_table
     expect(mySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
   });

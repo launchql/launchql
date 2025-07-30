@@ -95,7 +95,7 @@ export class MigrateTestFixture {
 
       async getDeployedChanges() {
         const result = await pool.query(
-          `SELECT project, change_name, deployed_at 
+          `SELECT package, change_name, deployed_at 
            FROM launchql_migrate.changes 
            ORDER BY deployed_at`
         );
@@ -104,13 +104,13 @@ export class MigrateTestFixture {
 
       async getMigrationState() {
         const changes = await pool.query(`
-          SELECT project, change_name, script_hash, deployed_at
+          SELECT package, change_name, script_hash, deployed_at
           FROM launchql_migrate.changes 
           ORDER BY deployed_at
         `);
         
         const events = await pool.query(`
-          SELECT project, change_name, event_type, occurred_at, error_message, error_code
+          SELECT package, change_name, event_type, occurred_at, error_message, error_code
           FROM launchql_migrate.events 
           ORDER BY occurred_at
         `);
@@ -129,13 +129,13 @@ export class MigrateTestFixture {
         };
       },
 
-      async getDependencies(project: string, changeName: string) {
+      async getDependencies(packageName: string, changeName: string) {
         const result = await pool.query(
           `SELECT d.requires 
            FROM launchql_migrate.dependencies d
            JOIN launchql_migrate.changes c ON c.change_id = d.change_id
-           WHERE c.project = $1 AND c.change_name = $2`,
-          [project, changeName]
+           WHERE c.package = $1 AND c.change_name = $2`,
+          [packageName, changeName]
         );
         return result.rows.map((row: any) => row.requires);
       },
@@ -163,14 +163,14 @@ export class MigrateTestFixture {
     return fixtureDestPath;
   }
 
-  createPlanFile(project: string, changes: MigrateTestChange[]): string {
+  createPlanFile(packageName: string, changes: MigrateTestChange[]): string {
     const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
     this.tempDirs.push(tempDir);
 
     const lines = [
       '%syntax-version=1.0.0',
-      `%project=${project}`,
-      `%uri=https://github.com/test/${project}`,
+      `%project=${packageName}`,
+      `%uri=https://github.com/test/${packageName}`,
       ''
     ];
 

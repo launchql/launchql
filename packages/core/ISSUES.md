@@ -51,10 +51,10 @@ our tag resolution should be higher up in the API surface, but I believe the Lau
   - **Integration**: Should work with both deploy and verify commands
   - **Reporting**: Clear error messages indicating file and line number
 
-### Cross-Project Dependencies
-- [ ] **Multiple Project References**: Handle projects referencing each other multiple times (non-circular)
-  - **Question**: Can we treat projects like files for dependency resolution?
-  - **Example**: ProjectA → ProjectB (auth), ProjectA → ProjectB (utils)
+### Cross-Package Dependencies
+- [ ] **Multiple Package References**: Handle packages referencing each other multiple times (non-circular)
+  - **Question**: Can we treat packages like files for dependency resolution?
+  - **Example**: PackageA → PackageB (auth), PackageA → PackageB (utils)
   - **Resolution**: Need clear dependency graph visualization
 
 ## Revert and Rollback Capabilities
@@ -72,26 +72,26 @@ our tag resolution should be higher up in the API surface, but I believe the Lau
   - **Example**: `launchql revert --recursive --to-tag @v1.0.0` reverts entire workspace
   - **Complexity**: Non-trivial - requires cross-project tag resolution
 
-- [ ] **Cross-Project Dependency-Aware Revert** (Priority: High)
-  - **Description**: Consider dependencies between projects when reverting
-  - **Safety**: Prevent reverting changes that other projects depend on
+- [ ] **Cross-Package Dependency-Aware Revert** (Priority: High)
+  - **Description**: Consider dependencies between packages when reverting
+  - **Safety**: Prevent reverting changes that other packages depend on
   - **Example**: Can't revert auth:users if app:sessions depends on it
 
 - [ ] **Workspace-Wide Recursive Revert** (Priority: Medium)
-  - **Description**: Revert all projects in workspace in correct order
+  - **Description**: Revert all packages in workspace in correct order
   - **Use Case**: Full environment rollback for disaster recovery
-  - **Implementation**: Extension of project-level logic to workspace
+  - **Implementation**: Extension of package-level logic to workspace
 
 - [ ] **External Extension Cleanup Verification** (Priority: Medium)
-  - **Description**: Verify CASCADE cleanup doesn't impact cross-project dependencies
-  - **Risk**: External extensions might be shared across projects
+  - **Description**: Verify CASCADE cleanup doesn't impact cross-package dependencies
+  - **Risk**: External extensions might be shared across packages
   - **Solution**: Add dependency checking before CASCADE operations
 
 ## Deploy Capabilities
 
 ### ✅ Completed Features
 - [x] Support deploying individual modules
-- [x] Support deploying individual projects  
+- [x] Support deploying individual packages  
 - [x] Support deploying via tag (using `toChange` parameter)
 - [x] Support transaction control for deployments
 - [x] Support dependency resolution within projects
@@ -101,25 +101,25 @@ our tag resolution should be higher up in the API surface, but I believe the Lau
 
 ### 🚧 Missing Features
 - [ ] **Recursive Tag-Based Deploy** (Priority: High)
-  - **Description**: Deploy to a specific tag across entire project graph
-  - **Consistency**: Ensure all projects deploy to compatible versions
+  - **Description**: Deploy to a specific tag across entire package graph
+  - **Consistency**: Ensure all packages deploy to compatible versions
   - **Example**: `launchql deploy --recursive --to-tag @v2.0.0`
 
-- [ ] **Cross-Project Dependency Resolution** (Priority: High)
-  - **Description**: Resolve dependencies across project boundaries
-  - **Challenge**: Loading and parsing external project plans
+- [ ] **Cross-Package Dependency Resolution** (Priority: High)
+  - **Description**: Resolve dependencies across package boundaries
+  - **Challenge**: Loading and parsing external package plans
   - **Cache**: Consider caching dependency graphs for performance
 
 - [ ] **Workspace-Wide Recursive Deployment** (Priority: Medium)
-  - **Description**: Deploy all projects in dependency order
+  - **Description**: Deploy all packages in dependency order
   - **Optimization**: Could support parallel deployment of independent branches
-  - **Progress**: Show deployment progress across all projects
+  - **Progress**: Show deployment progress across all packages
 
 ## Verify Capabilities
 
 ### ✅ Completed Features
 - [x] Support verifying individual modules
-- [x] Support verifying individual projects
+- [x] Support verifying individual packages
 - [x] Support external extension availability checking
 - [x] Support Sqitch compatibility mode
 - [x] Support change state validation
@@ -131,13 +131,13 @@ our tag resolution should be higher up in the API surface, but I believe the Lau
   - **Use Case**: Ensure production matches expected version
   - **Output**: Report differences between current and tagged state
 
-- [ ] **Recursive Project Graph Verification** (Priority: Medium)
-  - **Description**: Verify entire project dependency graph
-  - **Depth**: Follow dependencies across project boundaries
-  - **Report**: Show verification status for each project/module
+- [ ] **Recursive Package Graph Verification** (Priority: Medium)
+  - **Description**: Verify entire package dependency graph
+  - **Depth**: Follow dependencies across package boundaries
+  - **Report**: Show verification status for each package/module
 
 - [ ] **Workspace-Wide Recursive Verification** (Priority: Low)
-  - **Description**: Verify all projects in workspace
+  - **Description**: Verify all packages in workspace
   - **Summary**: Aggregate report of all verification results
   - **Performance**: Could benefit from parallel execution
 

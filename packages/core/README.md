@@ -14,7 +14,7 @@
 
 ## Overview
 
-LaunchQL Core is the main package for LaunchQL, providing tools for database migrations, package management, and project scaffolding. It includes functionality for:
+LaunchQL Core is the main package for LaunchQL, providing tools for database migrations, package management, and package scaffolding. It includes functionality for:
 
 - Managing PostgreSQL extensions and modules
 - Deploying, reverting, and verifying migrations
@@ -56,7 +56,7 @@ LaunchQL Core is the main package for LaunchQL, providing tools for database mig
 
 ### 🧰 CLI & Codegen
 
-* [@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL projects—supports database scaffolding, migrations, seeding, code generation, and automation.
+* [@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL packages—supports database scaffolding, migrations, seeding, code generation, and automation.
 * [launchql/launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
 * [@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
 * [@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query): **🧩 Fluent GraphQL builder** for PostGraphile schemas. ⚡ Schema-aware via introspection, 🧩 composable and ergonomic for building deeply nested queries.

@@ -86,7 +86,7 @@ export function isValidTagName(name: string): boolean {
  * - "project:40763784148fa190d75bad036730ef44d1c2eac6"
  */
 export interface ParsedReference {
-  project?: string;
+  package?: string;
   change?: string;
   tag?: string;
   sha1?: string;
@@ -115,23 +115,23 @@ export function parseReference(ref: string): ParsedReference | null {
 
   const result: ParsedReference = {};
 
-  // Check for project qualifier
+  // Check for package qualifier
   let workingRef = ref;
   const colonIndex = ref.indexOf(':');
   if (colonIndex > 0) {
     const projectPart = ref.substring(0, colonIndex);
     const remainingPart = ref.substring(colonIndex + 1);
     
-    // Check if this is actually a project qualifier or just a colon in the name
-    // Project names should be valid identifiers (alphanumeric, dash, underscore)
+    // Check if this is actually a package qualifier or just a colon in the name
+    // Package names should be valid identifiers (alphanumeric, dash, underscore)
     // Also check that the remaining part doesn't have more colons
     if (/^[a-zA-Z0-9_-]+$/.test(projectPart) && 
         remainingPart.length > 0 && 
         remainingPart.indexOf(':') === -1) {
-      result.project = projectPart;
+      result.package = projectPart;
       workingRef = remainingPart;
     } else {
-      // Not a valid project qualifier, treat the whole thing as a reference
+      // Not a valid package qualifier, treat the whole thing as a reference
       workingRef = ref;
     }
   }

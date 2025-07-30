@@ -47,10 +47,10 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
     const allChanges = plan.changes;
     
     // Get deployed changes from database
-    const deployedChanges = await client.getDeployedChanges(targetDatabase, plan.project);
+    const deployedChanges = await client.getDeployedChanges(targetDatabase, plan.package);
 
     console.log('\n📋 All Changes\n');
-    console.log(`Project: ${plan.project}`);
+    console.log(`Package: ${plan.package}`);
     console.log(`Total Changes: ${allChanges.length}`);
     console.log(`Deployed: ${deployedChanges.length}`);
     console.log(`Pending: ${allChanges.length - deployedChanges.length}\n`);

@@ -5,12 +5,12 @@ import { sync as glob } from 'glob';
 import path from 'path';
 import { getPgPool } from 'pg-cache';
 
-import { LaunchQLProject } from '../core/class/launchql';
+import { LaunchQLPackage } from '../core/class/launchql';
 import { SqitchRow, SqlWriteOptions,writeSqitchFiles, writeSqitchPlan } from '../files';
 import { exportMeta } from './export-meta';
 
 interface ExportMigrationsToDiskOptions {
-  project: LaunchQLProject;
+  project: LaunchQLPackage;
   options: LaunchQLOptions;
   database: string;
   databaseId: string;
@@ -22,7 +22,7 @@ interface ExportMigrationsToDiskOptions {
 }
 
 interface ExportOptions {
-  project: LaunchQLProject;
+  project: LaunchQLPackage;
   options: LaunchQLOptions;
   dbInfo: {
     dbname: string;
@@ -218,7 +218,7 @@ export const exportMigrations = async ({
 
 
 interface PreparePackageOptions {
-  project: LaunchQLProject;
+  project: LaunchQLPackage;
   author: string;
   outdir: string;
   name: string;

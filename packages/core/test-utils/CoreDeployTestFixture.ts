@@ -3,7 +3,7 @@ import { join } from 'path';
 import { teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 
-import { LaunchQLProject } from '../src/core/class/launchql';
+import { LaunchQLPackage } from '../src/core/class/launchql';
 import { MigrateTestFixture, TestDatabase } from './index';
 import { TestFixture } from './TestFixture';
 
@@ -33,7 +33,7 @@ export class CoreDeployTestFixture extends TestFixture {
     try {
       process.chdir(basePath);
       
-      const project = new LaunchQLProject(basePath);
+      const project = new LaunchQLPackage(basePath);
       
       const opts = getEnvOptions({ 
         pg: getPgEnvOptions({ database }),
@@ -55,7 +55,7 @@ export class CoreDeployTestFixture extends TestFixture {
     const originalCwd = process.cwd();
     
     try {
-      const project = new LaunchQLProject(basePath);
+      const project = new LaunchQLPackage(basePath);
       
       const opts = getEnvOptions({ 
         pg: getPgEnvOptions({ database })
@@ -74,7 +74,7 @@ export class CoreDeployTestFixture extends TestFixture {
     try {
       process.chdir(basePath);
       
-      const project = new LaunchQLProject(basePath);
+      const project = new LaunchQLPackage(basePath);
       
       const opts = getEnvOptions({ 
         pg: getPgEnvOptions({ database })

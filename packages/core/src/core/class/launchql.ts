@@ -85,7 +85,7 @@ const truncateExtensionsToTarget = (
   };
 }
 
-export enum ProjectContext {
+export enum PackageContext {
   Outside = 'outside',
   Workspace = 'workspace-root',
   Module = 'module',
@@ -99,7 +99,7 @@ export interface InitModuleOptions {
   extensions: string[];
 }
 
-export class LaunchQLProject {
+export class LaunchQLPackage {
   public cwd: string;
   public workspacePath?: string;
   public modulePath?: string;
@@ -180,26 +180,26 @@ export class LaunchQLProject {
     if (!this.workspacePath) throw new Error('Not inside a workspace');
   }
 
-  getContext(): ProjectContext {
+  getContext(): PackageContext {
     if (this.modulePath && this.workspacePath) {
       const rel = path.relative(this.workspacePath, this.modulePath);
       const nested = !rel.startsWith('..') && !path.isAbsolute(rel);
-      return nested ? ProjectContext.ModuleInsideWorkspace : ProjectContext.Module;
+      return nested ? PackageContext.ModuleInsideWorkspace : PackageContext.Module;
     }
 
-    if (this.modulePath) return ProjectContext.Module;
-    if (this.workspacePath) return ProjectContext.Workspace;
-    return ProjectContext.Outside;
+    if (this.modulePath) return PackageContext.Module;
+    if (this.workspacePath) return PackageContext.Workspace;
+    return PackageContext.Outside;
   }
 
   isInWorkspace(): boolean {
-    return this.getContext() === ProjectContext.Workspace;
+    return this.getContext() === PackageContext.Workspace;
   }
 
   isInModule(): boolean {
     return (
-      this.getContext() === ProjectContext.Module ||
-      this.getContext() === ProjectContext.ModuleInsideWorkspace
+      this.getContext() === PackageContext.Module ||
+      this.getContext() === PackageContext.ModuleInsideWorkspace
     );
   }
 
@@ -218,14 +218,14 @@ export class LaunchQLProject {
 
   // ──────────────── Workspace-wide ────────────────
 
-  async getModules(): Promise<LaunchQLProject[]> {
+  async getModules(): Promise<LaunchQLPackage[]> {
     if (!this.workspacePath || !this.config) return [];
 
     const dirs = this.loadAllowedDirs();
-    const results: LaunchQLProject[] = [];
+    const results: LaunchQLPackage[] = [];
 
     for (const dir of dirs) {
-      const proj = new LaunchQLProject(dir);
+      const proj = new LaunchQLPackage(dir);
       if (proj.isInModule()) {
         results.push(proj);
       }
@@ -247,7 +247,7 @@ export class LaunchQLProject {
     return getAvailableExtensions(modules);
   }
 
-  getModuleProject(name: string): LaunchQLProject {
+  getModuleProject(name: string): LaunchQLPackage {
     this.ensureWorkspace();
     
     if (this.isInModule() && name === this.getModuleName()) {
@@ -260,7 +260,7 @@ export class LaunchQLProject {
     }
     
     const modulePath = path.resolve(this.workspacePath!, modules[name].path);
-    return new LaunchQLProject(modulePath);
+    return new LaunchQLPackage(modulePath);
   }
 
   // ──────────────── Module-scoped ────────────────
@@ -322,7 +322,7 @@ export class LaunchQLProject {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create launchql.plan file using project-files package
+    // Create launchql.plan file using package-files package
     const plan = generatePlan({
       moduleName: modName,
       uri: modName,
@@ -408,7 +408,7 @@ export class LaunchQLProject {
     return fs.readFileSync(info.sqlFile, 'utf8');
   }
 
-  generateModulePlan(options: { uri?: string; projects?: boolean }): string {
+  generateModulePlan(options: { uri?: string; packages?: boolean }): string {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
@@ -422,13 +422,13 @@ export class LaunchQLProject {
       return colonIndex > 0 ? change.substring(0, colonIndex) : null;
     };
 
-    // Helper to determine if a change is truly from an external project
+    // Helper to determine if a change is truly from an external package
     const isExternalChange = (change: string): boolean => {
       const changeModule = getModuleName(change);
       return changeModule !== null && changeModule !== moduleName;
     };
 
-    // Helper to normalize change name (remove project prefix)
+    // Helper to normalize change name (remove package prefix)
     const normalizeChangeName = (change: string): string => {
       return change.includes(':') ? change.split(':').pop() : change;
     };
@@ -468,7 +468,7 @@ export class LaunchQLProject {
       // Skip keys for truly external changes - we only want local changes as keys
       if (isExternalChange(normalizedKey)) return;
 
-      // Normalize the key for all changes, removing any same-project prefix
+      // Normalize the key for all changes, removing any same-package prefix
       const cleanKey = normalizeChangeName(normalizedKey);
 
       // Build the standard key format for our normalized deps
@@ -486,7 +486,7 @@ export class LaunchQLProject {
             normalizedDeps[standardKey].push(dep);
           }
         } else {
-          // For same-project dependencies, normalize by removing prefix
+          // For same-package dependencies, normalize by removing prefix
           const normalizedDep = normalizeChangeName(dep);
           if (!normalizedDeps[standardKey].includes(normalizedDep)) {
             normalizedDeps[standardKey].push(normalizedDep);
@@ -500,7 +500,7 @@ export class LaunchQLProject {
     deps = normalizedDeps;
 
     // Process external dependencies if needed
-    if (options.projects && this.workspacePath) {
+    if (options.packages && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
       const external = depData.modules
         .map((m) => `${m.name}:${m.latest}`);
@@ -549,7 +549,7 @@ export class LaunchQLProject {
       };
     });
 
-    // Use the project-files package to generate the plan
+    // Use the package-files package to generate the plan
     return generatePlan({
       moduleName,
       uri: options.uri,
@@ -558,7 +558,7 @@ export class LaunchQLProject {
   }
 
   writeModulePlan(
-    options: { uri?: string; projects?: boolean }
+    options: { uri?: string; packages?: boolean }
   ): void {
     this.ensureModule();
     const name = this.getModuleName();
@@ -567,7 +567,7 @@ export class LaunchQLProject {
     const mod = moduleMap[name];
     const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');
     
-    // Use the project-files package to write the plan
+    // Use the package-files package to write the plan
     writePlan(planPath, plan);
   }
 
@@ -701,7 +701,7 @@ export class LaunchQLProject {
     writeExtensions(this.modulePath!, updatedDeps);
   }
 
-  // ──────────────── Project Operations ────────────────
+  // ──────────────── Package Operations ────────────────
 
   public resolveWorkspaceExtensionDependencies(): { resolved: string[]; external: string[] } {
     const modules = this.getModuleMap();
@@ -729,15 +729,15 @@ export class LaunchQLProject {
     };
   }
 
-  private parseProjectTarget(target?: string): { name: string | null; toChange: string | undefined } {
+  private parsePackageTarget(target?: string): { name: string | null; toChange: string | undefined } {
     let name: string | null;
     let toChange: string | undefined;
 
     if (!target) {
       const context = this.getContext();
-      if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
+      if (context === PackageContext.Module || context === PackageContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
-      } else if (context === ProjectContext.Workspace) {
+      } else if (context === PackageContext.Workspace) {
         const modules = this.getModuleMap();
         const moduleNames = Object.keys(modules);
         if (moduleNames.length === 0) {
@@ -749,7 +749,7 @@ export class LaunchQLProject {
       }
     } else {
       const parsed = parseTarget(target);
-      name = parsed.projectName;
+      name = parsed.packageName;
       toChange = parsed.toChange;
     }
 
@@ -763,7 +763,7 @@ export class LaunchQLProject {
   ): Promise<void> {
     const log = new Logger('deploy');
 
-    const { name, toChange } = this.parseProjectTarget(target);
+    const { name, toChange } = this.parsePackageTarget(target);
 
     if (recursive) {
       // Cache for fast deployment
@@ -918,7 +918,7 @@ export class LaunchQLProject {
   ): Promise<void> {
     const log = new Logger('revert');
 
-    const { name, toChange } = this.parseProjectTarget(target);
+    const { name, toChange } = this.parsePackageTarget(target);
 
     if (recursive) {
       const modules = this.getModuleMap();
@@ -1020,7 +1020,7 @@ export class LaunchQLProject {
   ): Promise<void> {
     const log = new Logger('verify');
 
-    const { name, toChange } = this.parseProjectTarget(target);
+    const { name, toChange } = this.parsePackageTarget(target);
 
     if (recursive) {
       const modules = this.getModuleMap();

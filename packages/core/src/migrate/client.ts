@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
-import { LaunchQLProject } from '../core/class/launchql';
+import { LaunchQLPackage } from '../core/class/launchql';
 import { Change, parsePlanFile, parsePlanFileSimple, readScript } from '../files';
 import { DependencyResult, resolveDependencies } from '../resolution/deps';
 import { resolveTagToChangeName } from '../resolution/resolve';
@@ -112,8 +112,8 @@ export class LaunchQLMigrate {
   /**
    * Resolve toChange parameter, handling tag resolution if needed
    */
-  private resolveToChange(toChange: string | undefined, planPath: string, project: string): string | undefined {
-    return toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, project) : toChange;
+  private resolveToChange(toChange: string | undefined, planPath: string, packageName: string): string | undefined {
+    return toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, packageName) : toChange;
   }
 
   /**
@@ -125,13 +125,13 @@ export class LaunchQLMigrate {
     const { modulePath, toChange, useTransaction = true, debug = false, logOnly = false } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.project);
+    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.package);
     const changes = getChangesInOrder(planPath);
     
     const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
-    const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.project || plan.project, {
+    const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
       tagResolution: 'resolve',
       loadPlanFiles: true
     });
@@ -151,7 +151,7 @@ export class LaunchQLMigrate {
           break;
         }
         
-        const isDeployed = await this.isDeployed(plan.project, change.name);
+        const isDeployed = await this.isDeployed(plan.package, change.name);
         if (isDeployed) {
           log.info(`Skipping already deployed change: ${change.name}`);
           skipped.push(change.name);
@@ -181,7 +181,7 @@ export class LaunchQLMigrate {
             context,
             'CALL launchql_migrate.deploy($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT[], $5::TEXT, $6::BOOLEAN)',
             [
-              plan.project,
+              plan.package,
               change.name,
               scriptHash,
               resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
@@ -197,7 +197,7 @@ export class LaunchQLMigrate {
           await this.eventLogger.logEvent({
             eventType: 'deploy',
             changeName: change.name,
-            project: plan.project,
+            package: plan.package,
             errorMessage: error.message || 'Unknown error',
             errorCode: error.code || null
           });
@@ -206,7 +206,7 @@ export class LaunchQLMigrate {
           const errorLines = [];
           errorLines.push(`Failed to deploy ${change.name}:`);
           errorLines.push(`  Change: ${change.name}`);
-          errorLines.push(`  Project: ${plan.project}`);
+          errorLines.push(`  Package: ${plan.package}`);
           errorLines.push(`  Script Hash: ${scriptHash}`);
           errorLines.push(`  Dependencies: ${resolvedChangeDeps.length > 0 ? resolvedChangeDeps.join(', ') : 'none'}`);
           errorLines.push(`  Error Code: ${error.code || 'N/A'}`);
@@ -273,7 +273,7 @@ export class LaunchQLMigrate {
     const { modulePath, toChange, useTransaction = true } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.project);
+    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.package);
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
     
     const reverted: string[] = [];
@@ -292,7 +292,7 @@ export class LaunchQLMigrate {
         }
         
         // Check if deployed
-        const isDeployed = await this.isDeployed(plan.project, change.name);
+        const isDeployed = await this.isDeployed(plan.package, change.name);
         if (!isDeployed) {
           log.info(`Skipping not deployed change: ${change.name}`);
           skipped.push(change.name);
@@ -314,7 +314,7 @@ export class LaunchQLMigrate {
           await executeQuery(
             context,
             'CALL launchql_migrate.revert($1, $2, $3)',
-            [plan.project, change.name, cleanRevertSql]
+            [plan.package, change.name, cleanRevertSql]
           );
           
           reverted.push(change.name);
@@ -324,7 +324,7 @@ export class LaunchQLMigrate {
           await this.eventLogger.logEvent({
             eventType: 'revert',
             changeName: change.name,
-            project: plan.project,
+            package: plan.package,
             errorMessage: error.message || 'Unknown error',
             errorCode: error.code || null
           });
@@ -348,7 +348,7 @@ export class LaunchQLMigrate {
     const { modulePath, toChange } = options;
     const planPath = join(modulePath, 'launchql.plan');
     const plan = parsePlanFileSimple(planPath);
-    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.project);
+    const resolvedToChange = this.resolveToChange(toChange, planPath, plan.package);
     const changes = getChangesInOrder(planPath);
     
     const verified: string[] = [];
@@ -365,7 +365,7 @@ export class LaunchQLMigrate {
         }
         
         // Check if deployed
-        const isDeployed = await this.isDeployed(plan.project, change.name);
+        const isDeployed = await this.isDeployed(plan.package, change.name);
         if (!isDeployed) {
           continue;
         }
@@ -383,7 +383,7 @@ export class LaunchQLMigrate {
           // Call the verify function
           const result = await targetPool.query(
             'SELECT launchql_migrate.verify($1, $2, $3) as verified',
-            [plan.project, change.name, cleanVerifySql]
+            [plan.package, change.name, cleanVerifySql]
           );
           
           if (result.rows[0].verified) {
@@ -399,7 +399,7 @@ export class LaunchQLMigrate {
           await this.eventLogger.logEvent({
             eventType: 'verify',
             changeName: change.name,
-            project: plan.project,
+            package: plan.package,
             errorMessage: error.message || 'Unknown error',
             errorCode: error.code || null
           });
@@ -421,16 +421,16 @@ export class LaunchQLMigrate {
   /**
    * Get deployment status
    */
-  async status(project?: string): Promise<StatusResult[]> {
+  async status(packageName?: string): Promise<StatusResult[]> {
     await this.initialize();
     
     const result = await this.pool.query(
       'SELECT * FROM launchql_migrate.status($1)',
-      [project]
+      [packageName]
     );
     
     return result.rows.map(row => ({
-      project: row.project,
+      package: row.package,
       totalDeployed: row.total_deployed,
       lastChange: row.last_change,
       lastDeployed: new Date(row.last_deployed)
@@ -440,10 +440,10 @@ export class LaunchQLMigrate {
   /**
    * Check if a change is deployed
    */
-  async isDeployed(project: string, changeName: string): Promise<boolean> {
+  async isDeployed(packageName: string, changeName: string): Promise<boolean> {
     const result = await this.pool.query(
       'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-      [project, changeName]
+      [packageName, changeName]
     );
     
     return result.rows[0].is_deployed;
@@ -482,13 +482,13 @@ export class LaunchQLMigrate {
         return;
       }
       
-      // Import projects
-      log.info('Importing Sqitch projects...');
+      // Import packages
+      log.info('Importing Sqitch packages...');
       await this.pool.query(`
-        INSERT INTO launchql_migrate.projects (project, created_at)
+        INSERT INTO launchql_migrate.packages (package, created_at)
         SELECT DISTINCT project, now()
         FROM sqitch.projects
-        ON CONFLICT (project) DO NOTHING
+        ON CONFLICT (package) DO NOTHING
       `);
       
       // Import changes with dependencies
@@ -505,7 +505,7 @@ export class LaunchQLMigrate {
             SELECT change_id FROM sqitch.tags
           )
         )
-        INSERT INTO launchql_migrate.changes (change_id, change_name, project, script_hash, deployed_at)
+        INSERT INTO launchql_migrate.changes (change_id, change_name, package, script_hash, deployed_at)
         SELECT 
           encode(sha256((cd.project || cd.change || cd.change_id)::bytea), 'hex'),
           cd.change,
@@ -513,7 +513,7 @@ export class LaunchQLMigrate {
           cd.change_id,
           cd.committed_at
         FROM change_data cd
-        ON CONFLICT (project, change_name) DO NOTHING
+        ON CONFLICT (package, change_name) DO NOTHING
       `);
       
       // Import dependencies
@@ -549,7 +549,7 @@ export class LaunchQLMigrate {
         SELECT 
           c.change_name,
           c.deployed_at,
-          c.project
+          c.package
         FROM launchql_migrate.changes c
         ORDER BY c.deployed_at DESC NULLS LAST
         LIMIT $1
@@ -578,8 +578,8 @@ export class LaunchQLMigrate {
       const deployedResult = await targetPool.query(`
         SELECT c.change_name
         FROM launchql_migrate.changes c
-        WHERE c.project = $1 AND c.deployed_at IS NOT NULL
-      `, [plan.project]);
+        WHERE c.package = $1 AND c.deployed_at IS NOT NULL
+      `, [plan.package]);
       
       const deployedSet = new Set(deployedResult.rows.map((r: any) => r.change_name));
       return allChanges.filter(c => !deployedSet.has(c.name)).map(c => c.name);
@@ -595,7 +595,7 @@ export class LaunchQLMigrate {
   /**
    * Get all deployed changes for a project
    */
-  async getDeployedChanges(targetDatabase: string, project: string): Promise<any[]> {
+  async getDeployedChanges(targetDatabase: string, packageName: string): Promise<any[]> {
     const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
@@ -608,9 +608,9 @@ export class LaunchQLMigrate {
           c.deployed_at,
           c.script_hash
         FROM launchql_migrate.changes c
-        WHERE c.project = $1 AND c.deployed_at IS NOT NULL
+        WHERE c.package = $1 AND c.deployed_at IS NOT NULL
         ORDER BY c.deployed_at ASC
-      `, [project]);
+      `, [packageName]);
       
       return result.rows;
     } catch (error: any) {
@@ -625,7 +625,7 @@ export class LaunchQLMigrate {
   /**
    * Get dependencies for a change
    */
-  async getDependencies(project: string, changeName: string): Promise<string[]> {
+  async getDependencies(packageName: string, changeName: string): Promise<string[]> {
     await this.initialize();
     
     try {
@@ -633,13 +633,13 @@ export class LaunchQLMigrate {
         `SELECT d.requires 
          FROM launchql_migrate.dependencies d
          JOIN launchql_migrate.changes c ON c.change_id = d.change_id
-         WHERE c.project = $1 AND c.change_name = $2`,
-        [project, changeName]
+         WHERE c.package = $1 AND c.change_name = $2`,
+        [packageName, changeName]
       );
       
       return result.rows.map(row => row.requires);
     } catch (error) {
-      log.error(`Failed to get dependencies for ${project}:${changeName}:`, error);
+      log.error(`Failed to get dependencies for ${packageName}:${changeName}:`, error);
       return [];
     }
   }

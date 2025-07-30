@@ -54,7 +54,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
     if (argv.all) {
       // Show dependency graph for all changes
       console.log('\n🔗 Dependency Graph\n');
-      console.log(`Project: ${plan.project}`);
+      console.log(`Package: ${plan.package}`);
       console.log(`Total Changes: ${allChanges.length}\n`);
 
       // Build dependency tree
@@ -137,7 +137,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
       });
 
       try {
-        const deployedChanges = await client.getDeployedChanges(targetDatabase, plan.project);
+        const deployedChanges = await client.getDeployedChanges(targetDatabase, plan.package);
         const deployedMap = new Map(deployedChanges.map(c => [c.change_name, c]));
 
         console.log('\n📊 Deployment Status:');

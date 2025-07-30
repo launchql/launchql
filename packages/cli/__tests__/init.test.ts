@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
@@ -86,7 +86,7 @@ describe('cmds:init', () => {
       'module-only'
     );
 
-    const lql = new LaunchQLProject(moduleDir);
+    const lql = new LaunchQLPackage(moduleDir);
     expect(lql.getModuleControlFile()).toMatchSnapshot();
   });
 });

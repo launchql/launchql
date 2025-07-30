@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
@@ -47,7 +47,7 @@ describe('cmds:package', () => {
     fs.cpSync(fixtureWorkspace, workspacePath, { recursive: true });
 
     const modulePath = path.join(workspacePath, 'packages', 'secrets');
-    const initialProject = new LaunchQLProject(modulePath);
+    const initialProject = new LaunchQLPackage(modulePath);
 
     // Snapshot initial state
     expect(initialProject.getModuleControlFile()).toMatchSnapshot('initial - control file');

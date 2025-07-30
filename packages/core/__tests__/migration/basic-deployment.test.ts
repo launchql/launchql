@@ -37,7 +37,7 @@ describe('Deploy Command', () => {
     const deployed = await db.getDeployedChanges();
     expect(deployed).toHaveLength(1);
     expect(deployed[0]).toMatchObject({
-      project: 'test-simple',
+      package: 'test-simple',
       change_name: 'schema'
     });
   });

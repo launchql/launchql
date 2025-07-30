@@ -24,7 +24,7 @@ describe('CLI Deploy Command', () => {
   });
 
   it('should deploy single schema via CLI', async () => {
-    const commands = `lql deploy --database ${testDb.name} --project my-first --to schema_myapp --yes`;
+    const commands = `lql deploy --database ${testDb.name} --package my-first --to schema_myapp --yes`;
     
     await fixture.runTerminalCommands(commands, {
       database: testDb.name
@@ -33,13 +33,13 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('schema', 'myapp')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.find((change: any) => change.project === 'my-first' && change.change_name === 'schema_myapp')).toBeTruthy();
-    expect(deployedChanges.find((change: any) => change.project === 'my-second')).toBeFalsy();
-    expect(deployedChanges.find((change: any) => change.project === 'my-third')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-first' && change.change_name === 'schema_myapp')).toBeTruthy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-third')).toBeFalsy();
   });
 
   it('should deploy full project with tables via CLI', async () => {
-    const commands = `lql deploy --database ${testDb.name} --project my-first --yes`;
+    const commands = `lql deploy --database ${testDb.name} --package my-first --yes`;
     
     await fixture.runTerminalCommands(commands, {
       database: testDb.name
@@ -50,17 +50,17 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'myapp.products')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.some((change: any) => change.project === 'my-first')).toBe(true);
-    expect(deployedChanges.find((change: any) => change.project === 'my-second')).toBeFalsy();
-    expect(deployedChanges.find((change: any) => change.project === 'my-third')).toBeFalsy();
+    expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
+    expect(deployedChanges.find((change: any) => change.package === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-third')).toBeFalsy();
   });
 
   it('should deploy multiple packages via CLI', async () => {
     const commands = `
       cd packages/
-      lql deploy --database ${testDb.name} --project my-first --yes
-      lql deploy --database ${testDb.name} --project my-second --yes
-      lql deploy --database ${testDb.name} --project my-third --yes
+      lql deploy --database ${testDb.name} --package my-first --yes
+      lql deploy --database ${testDb.name} --package my-second --yes
+      lql deploy --database ${testDb.name} --package my-third --yes
     `;
     
     await fixture.runTerminalCommands(commands, {
@@ -75,13 +75,13 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.some((change: any) => change.project === 'my-first')).toBe(true);
-    expect(deployedChanges.some((change: any) => change.project === 'my-second')).toBe(true);
-    expect(deployedChanges.some((change: any) => change.project === 'my-third')).toBe(true);
+    expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
+    expect(deployedChanges.some((change: any) => change.package === 'my-second')).toBe(true);
+    expect(deployedChanges.some((change: any) => change.package === 'my-third')).toBe(true);
   });
 
   it('should revert changes via CLI', async () => {
-    const deployCommands = `lql deploy --database ${testDb.name} --project my-first --yes`;
+    const deployCommands = `lql deploy --database ${testDb.name} --package my-first --yes`;
     await fixture.runTerminalCommands(deployCommands, {
       database: testDb.name
     }, true);

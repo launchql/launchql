@@ -9,7 +9,7 @@ export interface Change {
 }
 
 export interface PlanFile {
-  project: string;
+  package: string;
   uri?: string;
   changes: Change[];
 }
