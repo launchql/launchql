@@ -19,34 +19,38 @@ import verify from './commands/verify';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 
-const withPgTeardown = (fn: Function) => async (...args: any[]) => {
+const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
   try {
     await fn(...args);
   } finally {
-    await teardownPgPools();
+    if (!skipTeardown) {
+      await teardownPgPools();
+    }
   }
 };
 
-const pgt = withPgTeardown;
-const commandMap: Record<string, Function> = {
-  deploy: pgt(deploy),
-  verify: pgt(verify),
-  revert: pgt(revert),
-  init: pgt(init),
-  extension: pgt(extension),
-  plan: pgt(plan),
-  export: pgt(_export),
-  package: pgt(_package),
-  kill: pgt(kill),
-  install: pgt(install),
-  migrate: pgt(migrate),
+const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
+  const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
+  return {
+    deploy: pgt(deploy),
+    verify: pgt(verify),
+    revert: pgt(revert),
+    init: pgt(init),
+    extension: pgt(extension),
+    plan: pgt(plan),
+    export: pgt(_export),
+    package: pgt(_package),
+    kill: pgt(kill),
+    install: pgt(install),
+    migrate: pgt(migrate),
 
-  // These manage their own connection lifecycles
-  server,
-  explorer
+    // These manage their own connection lifecycles
+    server,
+    explorer
+  };
 };
 
-export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
+export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions & { skipPgTeardown?: boolean }) => {
   if (argv.version || argv.v) {
     const pkg = readAndParsePackageJson();
     console.log(pkg.version);
@@ -60,6 +64,8 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
     console.log(usageText);
     process.exit(0);
   }
+
+  const commandMap = createCommandMap(options?.skipPgTeardown);
 
   // Prompt if no command provided
   if (!command) {

@@ -59,8 +59,13 @@ export class TestFixture {
       noTty: true
     });
 
-    // @ts-ignore
-    const result = await commands(argv, prompter, {});
+    const result = await commands(argv, prompter, {
+      noTty: true,
+      input: mockInput,
+      output: mockOutput,
+      version: '1.0.0',
+      minimistOpts: {}
+    });
 
     return {
       result,
