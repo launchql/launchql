@@ -66,7 +66,7 @@ describe('CLIDeployTestFixture', () => {
   it('should emulate terminal commands with database operations', async () => {
     const terminalCommands = `
       cd packages/
-      lql deploy --recursive --database ${testDb.name} --createdb --yes --project my-first
+      lql deploy --recursive --database ${testDb.name} --yes --project my-first
       lql revert --recursive --database ${testDb.name} --yes --project my-first
     `;
     
