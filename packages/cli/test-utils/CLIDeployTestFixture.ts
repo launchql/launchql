@@ -249,7 +249,22 @@ export class CLIDeployTestFixture extends TestFixture {
   }
 
   async cleanup(): Promise<void> {
+    // Close all test database pools FIRST
+    for (const pool of this.pools) {
+      try {
+        await pool.end();
+      } catch (e) {
+        // Ignore errors during pool closure
+      }
+    }
+    
+    // Clear the pools array
     this.pools = [];
+    
+    await teardownPgPools();
+    
+    // Small delay to ensure connections are fully closed
+    await new Promise(resolve => setTimeout(resolve, 10));
     
     try {
       const adminConfig = getPgEnvOptions({
