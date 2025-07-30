@@ -197,7 +197,7 @@ export class LaunchQLMigrate {
           await this.eventLogger.logEvent({
             eventType: 'deploy',
             changeName: change.name,
-            project: plan.package,
+            package: plan.package,
             errorMessage: error.message || 'Unknown error',
             errorCode: error.code || null
           });
@@ -324,7 +324,7 @@ export class LaunchQLMigrate {
           await this.eventLogger.logEvent({
             eventType: 'revert',
             changeName: change.name,
-            project: plan.package,
+            package: plan.package,
             errorMessage: error.message || 'Unknown error',
             errorCode: error.code || null
           });
@@ -399,7 +399,7 @@ export class LaunchQLMigrate {
           await this.eventLogger.logEvent({
             eventType: 'verify',
             changeName: change.name,
-            project: plan.package,
+            package: plan.package,
             errorMessage: error.message || 'Unknown error',
             errorCode: error.code || null
           });
