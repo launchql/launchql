@@ -8,7 +8,7 @@ describe('CLI Tag Command', () => {
   let exec: (commands: string) => Promise<any[]>;
 
   beforeAll(async () => {
-    fixture = new CLIDeployTestFixture('sqitch', 'simple-w-tags');
+    fixture = new CLIDeployTestFixture('sqitch', 'simple');
   });
 
   beforeEach(async () => {
