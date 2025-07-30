@@ -59,27 +59,27 @@ describe('Simple with Tags Migration', () => {
     
     const deployedChanges = await db.getDeployedChanges();
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-first',
+      package: 'my-first',
       change_name: 'schema_myapp'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-first',
+      package: 'my-first',
       change_name: 'table_products'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-second',
+      package: 'my-second',
       change_name: 'create_schema'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-second',
+      package: 'my-second',
       change_name: 'create_table'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-third',
+      package: 'my-third',
       change_name: 'create_schema'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
-      project: 'my-third',
+      package: 'my-third',
       change_name: 'create_table'
     }));
   });
