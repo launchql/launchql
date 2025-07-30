@@ -18,6 +18,11 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     await fixture.cleanup();
   });
 
+  afterAll(async () => {
+    const { teardownPgPools } = require('pg-cache');
+    await teardownPgPools();
+  });
+
   test('adds tag to package and generates correct plan file', async () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-first');
