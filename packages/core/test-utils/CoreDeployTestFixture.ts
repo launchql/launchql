@@ -93,8 +93,6 @@ export class CoreDeployTestFixture extends TestFixture {
       await this.migrateFixture.cleanup();
     }
     
-    await teardownPgPools();
-    
     super.cleanup();
   }
 }
