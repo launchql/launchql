@@ -15,6 +15,7 @@ import _package from './commands/package';
 import plan from './commands/plan';
 import revert from './commands/revert';
 import server from './commands/server';
+import tag from './commands/tag';
 import verify from './commands/verify';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
@@ -40,6 +41,7 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
     plan: pgt(plan),
     export: pgt(_export),
     package: pgt(_package),
+    tag: pgt(tag),
     kill: pgt(kill),
     install: pgt(install),
     migrate: pgt(migrate),
