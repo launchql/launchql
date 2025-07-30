@@ -31,40 +31,40 @@ describe('CLI Tag Command', () => {
   it('adds tag to latest change in current package', async () => {
     await exec(`lql deploy --database $database --package my-first --yes`);
     
-    await exec(`lql tag v1.0.0 --package my-first --yes`);
+    await exec(`lql tag v1.2.0 --package my-first --yes`);
     
-    await exec(`lql deploy --database $database --package my-first --to @v1.0.0 --yes`);
+    await exec(`lql deploy --database $database --package my-first --to @v1.2.0 --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(true);
+    expect(await testDb.exists('schema', 'myapp')).toBe(true);
   });
 
   it('adds tag to specific change in package', async () => {
     await exec(`lql deploy --database $database --package my-second --yes`);
     
-    await exec(`lql tag v2.0.0 --package my-second --changeName add_customers --yes`);
+    await exec(`lql tag v2.2.0 --package my-second --changeName create_table --yes`);
     
-    await exec(`lql revert --database $database --package my-second --to @v2.0.0 --yes`);
+    await exec(`lql revert --database $database --package my-second --to @v2.2.0 --yes`);
     
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await testDb.exists('schema', 'otherschema')).toBe(true);
   });
 
   it('handles tag with comment', async () => {
     await exec(`lql deploy --database $database --package my-first --yes`);
     
-    await exec(`lql tag v1.1.0 --package my-first --comment "Release with bug fixes" --yes`);
+    await exec(`lql tag v1.3.0 --package my-first --comment "Release with bug fixes" --yes`);
     
-    await exec(`lql deploy --database $database --package my-first --to @v1.1.0 --yes`);
+    await exec(`lql deploy --database $database --package my-first --to @v1.3.0 --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(true);
+    expect(await testDb.exists('schema', 'myapp')).toBe(true);
   });
 
   it('prevents duplicate tag names', async () => {
     await exec(`lql deploy --database $database --package my-first --yes`);
     
-    await exec(`lql tag v1.0.0 --package my-first --yes`);
+    await exec(`lql tag v1.4.0 --package my-first --yes`);
     
     try {
-      await exec(`lql tag v1.0.0 --package my-first --yes`);
+      await exec(`lql tag v1.4.0 --package my-first --yes`);
       fail('Expected duplicate tag to throw error');
     } catch (error) {
       expect((error as Error).message).toContain('already exists');
@@ -75,14 +75,14 @@ describe('CLI Tag Command', () => {
     await exec(`lql deploy --database $database --package my-first --yes`);
     
     try {
-      await exec(`lql tag v1.0/invalid --package my-first --yes`);
+      await exec(`lql tag v1.5/invalid --package my-first --yes`);
       fail('Expected invalid tag name to throw error');
     } catch (error) {
       expect((error as Error).message).toContain('Invalid tag name');
     }
     
     try {
-      await exec(`lql tag @v1.0.0 --package my-first --yes`);
+      await exec(`lql tag @v1.5.0 --package my-first --yes`);
       fail('Expected invalid tag name to throw error');
     } catch (error) {
       expect((error as Error).message).toContain('Invalid tag name');
@@ -93,7 +93,7 @@ describe('CLI Tag Command', () => {
     await exec(`lql deploy --database $database --package my-first --yes`);
     
     try {
-      await exec(`lql tag v1.0.0 --package my-first --changeName nonexistent_change --yes`);
+      await exec(`lql tag v1.6.0 --package my-first --changeName nonexistent_change --yes`);
       fail('Expected non-existent change to throw error');
     } catch (error) {
       expect((error as Error).message).toContain('not found in plan file');
