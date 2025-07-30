@@ -33,7 +33,9 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('schema', 'myapp')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.some((change: any) => change.project === 'my-first' && change.change_name === 'schema_myapp')).toBe(true);
+    expect(deployedChanges.find((change: any) => change.project === 'my-first' && change.change_name === 'schema_myapp')).toBeTruthy();
+    expect(deployedChanges.find((change: any) => change.project === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.project === 'my-third')).toBeFalsy();
   });
 
   it('should deploy full project with tables via CLI', async () => {
@@ -49,6 +51,8 @@ describe('CLI Deploy Command', () => {
     
     const deployedChanges = await testDb.getDeployedChanges();
     expect(deployedChanges.some((change: any) => change.project === 'my-first')).toBe(true);
+    expect(deployedChanges.find((change: any) => change.project === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.project === 'my-third')).toBeFalsy();
   });
 
   it('should deploy multiple packages via CLI', async () => {
