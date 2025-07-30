@@ -67,7 +67,7 @@ describe('CLI Tag Command', () => {
       await exec(`lql tag v1.0.0 --package my-first --yes`);
       fail('Expected duplicate tag to throw error');
     } catch (error) {
-      expect(error.message).toContain('already exists');
+      expect((error as Error).message).toContain('already exists');
     }
   });
 
@@ -78,14 +78,14 @@ describe('CLI Tag Command', () => {
       await exec(`lql tag v1.0/invalid --package my-first --yes`);
       fail('Expected invalid tag name to throw error');
     } catch (error) {
-      expect(error.message).toContain('Invalid tag name');
+      expect((error as Error).message).toContain('Invalid tag name');
     }
     
     try {
       await exec(`lql tag @v1.0.0 --package my-first --yes`);
       fail('Expected invalid tag name to throw error');
     } catch (error) {
-      expect(error.message).toContain('Invalid tag name');
+      expect((error as Error).message).toContain('Invalid tag name');
     }
   });
 
@@ -96,7 +96,7 @@ describe('CLI Tag Command', () => {
       await exec(`lql tag v1.0.0 --package my-first --changeName nonexistent_change --yes`);
       fail('Expected non-existent change to throw error');
     } catch (error) {
-      expect(error.message).toContain('not found in plan file');
+      expect((error as Error).message).toContain('not found in plan file');
     }
   });
 });
