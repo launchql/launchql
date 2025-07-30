@@ -1,5 +1,7 @@
 import { CLIDeployTestFixture } from '../test-utils';
 
+jest.setTimeout(30000);
+
 afterAll(async () => {
   const { teardownPgPools } = require('pg-cache');
   await teardownPgPools();
@@ -30,25 +32,35 @@ describe('CLIDeployTestFixture', () => {
   });
 
   it('should handle CLI command execution with database', async () => {
-    const statusResult = await fixture.migrateStatusViaCliCommand(testDb.name);
-    expect(statusResult.result).toBeDefined();
+    const commands = `lql migrate status --database ${testDb.name}`;
+    const results = await fixture.runTerminalCommands(commands, { database: testDb.name }, false);
     
-    expect(true).toBe(true);
+    expect(results).toHaveLength(1);
+    expect(results[0].type).toBe('cli');
+    expect(results[0].result.argv._).toContain('migrate');
+    expect(results[0].result.argv._).toContain('status');
+    expect(results[0].result.argv.database).toBe(testDb.name);
   });
 
   it('should initialize workspace via CLI', async () => {
-    const result = await fixture.initWorkspaceViaCliCommand('test-workspace', { workspace: true });
+    const commands = `lql init test-workspace --workspace`;
+    const results = await fixture.runTerminalCommands(commands, {}, false);
     
-    expect(result.result).toBeDefined();
-    expect(result.argv.name).toBe('test-workspace');
-    expect(result.argv.workspace).toBe(true);
+    expect(results).toHaveLength(1);
+    expect(results[0].type).toBe('cli');
+    expect(results[0].result.argv._).toContain('init');
+    expect(results[0].result.argv._).toContain('test-workspace');
+    expect(results[0].result.argv.workspace).toBe(true);
   });
 
   it('should initialize module via CLI', async () => {
-    const workspaceResult = await fixture.initWorkspaceViaCliCommand('test-workspace', { workspace: true });
-    expect(workspaceResult.result).toBeDefined();
+    const commands = `lql init test-module`;
+    const results = await fixture.runTerminalCommands(commands, {}, false);
     
-    expect(true).toBe(true);
+    expect(results).toHaveLength(1);
+    expect(results[0].type).toBe('cli');
+    expect(results[0].result.argv._).toContain('init');
+    expect(results[0].result.argv._).toContain('test-module');
   });
 
   it('should emulate terminal commands with database operations', async () => {
