@@ -2,11 +2,11 @@ import fs from 'fs';
 import * as glob from 'glob';
 import path from 'path';
 
-import { LaunchQLProject } from '../../src/core/class/launchql';
+import { LaunchQLPackage } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
-let mod: LaunchQLProject;
+let mod: LaunchQLPackage;
 
 beforeEach(() => {
   fixture = new TestFixture('sqitch', 'publish');

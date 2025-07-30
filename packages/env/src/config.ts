@@ -5,7 +5,7 @@ import { walkUp } from './utils';
 
 /**
  * Load configuration file with support for both .js and .json formats
- * Moved from LaunchQLProject class for better reusability
+ * Moved from LaunchQLPackage class for better reusability
  */
 export const loadConfigFileSync = (configPath: string): LaunchQLOptions => {
   const ext = path.extname(configPath);
@@ -26,7 +26,7 @@ export const loadConfigFileSync = (configPath: string): LaunchQLOptions => {
 
 /**
  * Load configuration from a specific directory
- * Moved from LaunchQLProject class for better reusability
+ * Moved from LaunchQLPackage class for better reusability
  */
 export const loadConfigSyncFromDir = (dir: string): LaunchQLOptions => {
   const configFiles = [
@@ -64,7 +64,7 @@ export const loadConfigSync = (cwd: string = process.cwd()): LaunchQLOptions => 
 
 /**
  * Resolve the path to the LaunchQL workspace by finding config files
- * Moved from LaunchQLProject class for better reusability
+ * Moved from LaunchQLPackage class for better reusability
  */
 export const resolveLaunchqlPath = (cwd: string = process.cwd()): string | undefined => {
   const configFiles = ['launchql.config.js', 'launchql.json'];

@@ -1,5 +1,5 @@
 export interface ParsedTarget {
-  projectName: string;
+  packageName: string;
   toChange?: string;
 }
 
@@ -14,39 +14,39 @@ export function parseTarget(target: string): ParsedTarget {
     const afterAt = target.substring(atIndex + 2);
     
     if (!afterAt) {
-      throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
+      throw new Error(`Invalid tag format: ${target}. Expected format: package:@tagName`);
     }
     
-    // Check if this is a simple project:@tag format
+    // Check if this is a simple package:@tag format
     if (!beforeAt.includes(':')) {
       if (!beforeAt) {
-        throw new Error(`Invalid tag format: ${target}. Expected format: project:@tagName`);
+        throw new Error(`Invalid tag format: ${target}. Expected format: package:@tagName`);
       }
-      return { projectName: beforeAt, toChange: `@${afterAt}` };
+      return { packageName: beforeAt, toChange: `@${afterAt}` };
     }
     
-    throw new Error(`Invalid target format: ${target}. Expected formats: project, project:changeName, or project:@tagName`);
+    throw new Error(`Invalid target format: ${target}. Expected formats: package, package:changeName, or package:@tagName`);
   }
   
   if (target.includes(':') && !target.includes('@')) {
     const parts = target.split(':');
     
     if (parts.length > 2) {
-      throw new Error(`Invalid target format: ${target}. Expected formats: project, project:changeName, or project:@tagName`);
+      throw new Error(`Invalid target format: ${target}. Expected formats: package, package:changeName, or package:@tagName`);
     }
     
-    const [projectName, changeName] = parts;
+    const [packageName, changeName] = parts;
     
-    if (!projectName || !changeName) {
-      throw new Error(`Invalid change format: ${target}. Expected format: project:changeName`);
+    if (!packageName || !changeName) {
+      throw new Error(`Invalid change format: ${target}. Expected format: package:changeName`);
     }
     
-    return { projectName, toChange: changeName };
+    return { packageName, toChange: changeName };
   }
   
   if (!target.includes(':')) {
-    return { projectName: target, toChange: undefined };
+    return { packageName: target, toChange: undefined };
   }
 
-  throw new Error(`Invalid target format: ${target}. Expected formats: project, project:changeName, or project:@tagName`);
+  throw new Error(`Invalid target format: ${target}. Expected formats: package, package:changeName, or package:@tagName`);
 }

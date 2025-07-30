@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
@@ -20,14 +20,14 @@ export default async (
     log.info(`Using current directory: ${cwd}`);
   }
 
-  const project = new LaunchQLProject(cwd);
+  const packageInstance = new LaunchQLPackage(cwd);
 
-  if (!project.isInModule()) {
+  if (!packageInstance.isInModule()) {
     throw new Error('This command must be run inside a LaunchQL module.');
   }
 
-  project.writeModulePlan({
-    projects: true
+  packageInstance.writeModulePlan({
+    packages: true
   });
   
   return argv;

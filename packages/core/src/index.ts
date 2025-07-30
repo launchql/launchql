@@ -10,7 +10,7 @@ export * from './resolution/resolve';
 export * from './workspace/paths';
 export * from './workspace/utils';
 
-// Export project-files functionality (now integrated into core)
+// Export package-files functionality (now integrated into core)
 export * from './files';
 export { cleanSql } from './migrate/clean';
 export { LaunchQLMigrate } from './migrate/client';

@@ -1,11 +1,11 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
-import { selectProject } from '../utils/module-utils';
+import { selectPackage } from '../utils/module-utils';
 
 const log = new Logger('revert');
 
@@ -45,12 +45,12 @@ export default async (
 
   log.debug(`Using current directory: ${cwd}`);
 
-  let projectName: string | undefined;
+  let packageName: string | undefined;
   if (recursive) {
-    projectName = await selectProject(argv, prompter, cwd, 'revert', log);
+    packageName = await selectPackage(argv, prompter, cwd, 'revert', log);
   }
 
-  const project = new LaunchQLProject(cwd);
+  const packageInstance = new LaunchQLPackage(cwd);
   
   const opts = getEnvOptions({ 
     pg: getPgEnvOptions({ database }),
@@ -60,17 +60,17 @@ export default async (
   });
   
   let target: string | undefined;
-  if (projectName && argv.to) {
-    target = `${projectName}:${argv.to}`;
-  } else if (projectName) {
-    target = projectName;
-  } else if (argv.project && argv.to) {
-    target = `${argv.project}:${argv.to}`;
-  } else if (argv.project) {
-    target = argv.project as string;
+  if (packageName && argv.to) {
+    target = `${packageName}:${argv.to}`;
+  } else if (packageName) {
+    target = packageName;
+  } else if (argv.package && argv.to) {
+    target = `${argv.package}:${argv.to}`;
+  } else if (argv.package) {
+    target = argv.package as string;
   }
   
-  await project.revert(
+  await packageInstance.revert(
     opts,
     target,
     recursive

@@ -45,11 +45,11 @@ export const getExtensionName = (packageDir: string): string => {
   const planPath = `${packageDir}/launchql.plan`;
   const plan = parsePlanFileSimple(planPath);
   
-  if (!plan.project) {
-    throw new Error('No project name found in launchql.plan!');
+  if (!plan.package) {
+    throw new Error('No package name found in launchql.plan!');
   }
 
-  return plan.project;
+  return plan.package;
 };
 
 /**

@@ -1,8 +1,8 @@
-import { LaunchQLProject } from '../../src/core/class/launchql';
+import { LaunchQLPackage } from '../../src/core/class/launchql';
 import { parseTarget } from '../../src/utils/target-utils';
 import { TestFixture } from '../../test-utils';
 
-describe('LaunchQLProject Target API', () => {
+describe('LaunchQLPackage Target API', () => {
   let fixture: TestFixture;
 
   beforeAll(() => {
@@ -17,7 +17,7 @@ describe('LaunchQLProject Target API', () => {
     test('parses project-only target format', () => {
       const result = parseTarget('secrets');
       expect(result).toEqual({
-        projectName: 'secrets',
+        packageName: 'secrets',
         toChange: undefined
       });
     });
@@ -25,7 +25,7 @@ describe('LaunchQLProject Target API', () => {
     test('parses project:change target format', () => {
       const result = parseTarget('secrets:procedures/secretfunction');
       expect(result).toEqual({
-        projectName: 'secrets',
+        packageName: 'secrets',
         toChange: 'procedures/secretfunction'
       });
     });
@@ -33,7 +33,7 @@ describe('LaunchQLProject Target API', () => {
     test('parses project:@tag target format', () => {
       const result = parseTarget('secrets:@v1.0.0');
       expect(result).toEqual({
-        projectName: 'secrets',
+        packageName: 'secrets',
         toChange: '@v1.0.0'
       });
     });
@@ -43,27 +43,27 @@ describe('LaunchQLProject Target API', () => {
     });
 
     test('throws error for invalid tag format', () => {
-      expect(() => parseTarget('secrets:@')).toThrow('Invalid tag format: secrets:@. Expected format: project:@tagName');
+      expect(() => parseTarget('secrets:@')).toThrow('Invalid tag format: secrets:@. Expected format: package:@tagName');
     });
 
     test('throws error for invalid change format', () => {
-      expect(() => parseTarget('secrets:')).toThrow('Invalid change format: secrets:. Expected format: project:changeName');
+      expect(() => parseTarget('secrets:')).toThrow('Invalid change format: secrets:. Expected format: package:changeName');
     });
 
     test('throws error for invalid format with multiple colons', () => {
-      expect(() => parseTarget('secrets:change:extra')).toThrow('Invalid target format: secrets:change:extra. Expected formats: project, project:changeName, or project:@tagName');
+      expect(() => parseTarget('secrets:change:extra')).toThrow('Invalid target format: secrets:change:extra. Expected formats: package, package:changeName, or package:@tagName');
     });
 
     test('throws error for multi-colon tag format', () => {
-      expect(() => parseTarget('my-third:my-first:@v1.0.0')).toThrow('Invalid target format: my-third:my-first:@v1.0.0. Expected formats: project, project:changeName, or project:@tagName');
+      expect(() => parseTarget('my-third:my-first:@v1.0.0')).toThrow('Invalid target format: my-third:my-first:@v1.0.0. Expected formats: package, package:changeName, or package:@tagName');
     });
   });
 
   describe('deploy method with target parameter', () => {
-    let project: LaunchQLProject;
+    let project: LaunchQLPackage;
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLProject(fixturePath);
+      project = new LaunchQLPackage(fixturePath);
     });
 
     test('deploys with project-only target', async () => {
@@ -104,11 +104,11 @@ describe('LaunchQLProject Target API', () => {
   });
 
   describe('revert method with target parameter', () => {
-    let project: LaunchQLProject;
+    let project: LaunchQLPackage;
 
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLProject(fixturePath);
+      project = new LaunchQLPackage(fixturePath);
     });
 
     test('reverts with project-only target', async () => {
@@ -149,11 +149,11 @@ describe('LaunchQLProject Target API', () => {
   });
 
   describe('verify method with target parameter', () => {
-    let project: LaunchQLProject;
+    let project: LaunchQLPackage;
 
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLProject(fixturePath);
+      project = new LaunchQLPackage(fixturePath);
     });
 
     test('verifies with project-only target', async () => {
@@ -194,11 +194,11 @@ describe('LaunchQLProject Target API', () => {
   });
 
   describe('backward compatibility', () => {
-    let project: LaunchQLProject;
+    let project: LaunchQLPackage;
 
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLProject(fixturePath);
+      project = new LaunchQLPackage(fixturePath);
     });
 
     test('deploy works without target parameter (uses context)', async () => {

@@ -1,22 +1,22 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { errors } from '@launchql/types';
 import { Logger } from '@launchql/logger';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
 /**
- * Handle project selection for operations that need a specific project
- * Returns the selected project name, or undefined if validation fails or no projects exist
+ * Handle package selection for operations that need a specific package
+ * Returns the selected package name, or undefined if validation fails or no packages exist
  */
-export async function selectProject(
+export async function selectPackage(
   argv: Partial<ParsedArgs>,
   prompter: Inquirerer,
   cwd: string,
   operationName: string,
   log?: Logger
 ): Promise<string | undefined> {
-  const project = new LaunchQLProject(cwd);
-  const modules = await project.getModules();
+  const packageInstance = new LaunchQLPackage(cwd);
+  const modules = await packageInstance.getModules();
   const moduleNames = modules.map(mod => mod.getModuleName());
 
   // Check if any modules exist
@@ -31,13 +31,13 @@ export async function selectProject(
     }
   }
 
-  // If a specific project was provided, validate it
-  if (argv.project) {
-    const projectName = argv.project as string;
-    if (log) log.info(`Using specified project: ${projectName}`);
+  // If a specific package was provided, validate it
+  if (argv.package) {
+    const packageName = argv.package as string;
+    if (log) log.info(`Using specified package: ${packageName}`);
     
-    if (!moduleNames.includes(projectName)) {
-      const errorMsg = `Project '${projectName}' not found. Available projects: ${moduleNames.join(', ')}`;
+    if (!moduleNames.includes(packageName)) {
+      const errorMsg = `Package '${packageName}' not found. Available packages: ${moduleNames.join(', ')}`;
       if (log) {
         log.error(errorMsg);
         return undefined;
@@ -46,18 +46,18 @@ export async function selectProject(
       }
     }
     
-    return projectName;
+    return packageName;
   }
 
   // Interactive selection
-  const { project: selectedProject } = await prompter.prompt(argv, [{
+  const { package: selectedPackage } = await prompter.prompt(argv, [{
     type: 'autocomplete',
-    name: 'project',
-    message: `Choose a project to ${operationName}`,
+    name: 'package',
+    message: `Choose a package to ${operationName}`,
     options: moduleNames,
     required: true
   }]);
 
-  if (log) log.info(`Selected project: ${selectedProject}`);
-  return selectedProject;
+  if (log) log.info(`Selected package: ${selectedPackage}`);
+  return selectedPackage;
 }

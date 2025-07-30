@@ -37,7 +37,7 @@ posts_table [users_table] 2024-01-02T00:00:00Z Developer <dev@example.com> # Cre
       
       expect(result.errors).toHaveLength(0);
       expect(result.data).toBeDefined();
-      expect(result.data!.project).toBe('test-project');
+      expect(result.data!.package).toBe('test-project');
       expect(result.data!.uri).toBe('https://github.com/test/project');
       expect(result.data!.changes).toHaveLength(2);
       expect(result.data!.changes[0].name).toBe('users_table');
@@ -145,7 +145,7 @@ posts_table 2024-01-03T00:00:00Z Developer <dev@example.com>
 
       const result = parsePlanFileSimple(planPath);
       
-      expect(result.project).toBe('test-project');
+      expect(result.package).toBe('test-project');
       expect(result.changes).toHaveLength(2);
       expect(result.changes[0].name).toBe('users_table');
       expect(result.changes[1].name).toBe('posts_table');
@@ -203,7 +203,7 @@ comments_table 2024-01-03T00:00:00Z Developer <dev@example.com>
 
   describe('resolveReference', () => {
     const plan: ExtendedPlanFile = {
-      project: 'test-project',
+      package: 'test-project',
       uri: '',
       changes: [
         { name: 'users_table', dependencies: [] },

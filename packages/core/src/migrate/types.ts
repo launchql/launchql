@@ -18,7 +18,7 @@ export interface DeployOptions {
   modulePath: string;
   /** 
    * Target change name or tag (e.g., "changeName" or "@tagName").
-   * Note: Project name is already resolved upstream by LaunchQLProject.
+   * Note: Project name is already resolved upstream by LaunchQLPackage.
    */
   toChange?: string;
   useTransaction?: boolean;
@@ -31,7 +31,7 @@ export interface RevertOptions {
   modulePath: string;
   /** 
    * Target change name or tag (e.g., "changeName" or "@tagName").
-   * Note: Project name is already resolved upstream by LaunchQLProject.
+   * Note: Project name is already resolved upstream by LaunchQLPackage.
    */
   toChange?: string;
   useTransaction?: boolean;
@@ -43,7 +43,7 @@ export interface VerifyOptions {
   modulePath: string;
   /** 
    * Target change name or tag (e.g., "changeName" or "@tagName").
-   * Note: Project name is already resolved upstream by LaunchQLProject.
+   * Note: Project name is already resolved upstream by LaunchQLPackage.
    */
   toChange?: string;
 }

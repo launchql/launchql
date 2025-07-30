@@ -19,7 +19,7 @@ export const extractFirst = (argv: Partial<ParsedArgs>) => {
 export interface ValidatedArgv extends ParsedArgs {
   cwd: string;
   database?: string;
-  project?: string;
+  package?: string;
   to?: string;
   recursive?: boolean;
   yes?: boolean;
@@ -55,7 +55,7 @@ export function validateCommonArgs(argv: Partial<ParsedArgs>): ValidatedArgv {
     }
   }
 
-  const stringFlags = ['project', 'to', 'database'];
+  const stringFlags = ['package', 'to', 'database'];
   
   for (const flag of stringFlags) {
     if (argv[flag] !== undefined && typeof argv[flag] !== 'string') {
@@ -71,13 +71,13 @@ export function validateCommonArgs(argv: Partial<ParsedArgs>): ValidatedArgv {
  * Checks if required flags are provided when certain conditions are met
  */
 export function validateFlagDependencies(argv: ValidatedArgv): void {
-  if (argv.to && !argv.project && !argv.recursive) {
-    log.warn('--to flag provided without --project or --recursive. Target may not work as expected.');
+  if (argv.to && !argv.package && !argv.recursive) {
+    log.warn('--to flag provided without --package or --recursive. Target may not work as expected.');
   }
 
-  if (argv.project && argv.recursive) {
-    if (argv.project.includes(':')) {
-      log.warn('--project should not contain ":" when using --recursive. Use --to for target specification.');
+  if (argv.package && argv.recursive) {
+    if (argv.package.includes(':')) {
+      log.warn('--package should not contain ":" when using --recursive. Use --to for target specification.');
     }
   }
 }
@@ -89,7 +89,7 @@ export function logEffectiveArgs(argv: ValidatedArgv, commandName: string): void
   const relevantArgs = {
     cwd: argv.cwd,
     database: argv.database,
-    project: argv.project,
+    package: argv.package,
     to: argv.to,
     recursive: argv.recursive,
     yes: argv.yes,
@@ -114,17 +114,17 @@ export function logEffectiveArgs(argv: ValidatedArgv, commandName: string): void
 }
 
 /**
- * Constructs a deployment target string from project and to arguments
+ * Constructs a deployment target string from package and to arguments
  */
-export function constructTarget(argv: ValidatedArgv, projectName?: string): string | undefined {
-  if (projectName && argv.to) {
-    return `${projectName}:${argv.to}`;
-  } else if (projectName) {
-    return projectName;
-  } else if (argv.project && argv.to) {
-    return `${argv.project}:${argv.to}`;
-  } else if (argv.project) {
-    return argv.project;
+export function constructTarget(argv: ValidatedArgv, packageName?: string): string | undefined {
+  if (packageName && argv.to) {
+    return `${packageName}:${argv.to}`;
+  } else if (packageName) {
+    return packageName;
+  } else if (argv.package && argv.to) {
+    return `${argv.package}:${argv.to}`;
+  } else if (argv.package) {
+    return argv.package;
   }
   return undefined;
 }

@@ -1,4 +1,4 @@
-import { exportMigrations,LaunchQLProject } from '@launchql/core';
+import { exportMigrations,LaunchQLPackage } from '@launchql/core';
 import { getGitConfigInfo } from '@launchql/types';
 import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
@@ -12,7 +12,7 @@ export default async (
 ) => {
   const { email, username } = getGitConfigInfo();
   const cwd = argv.cwd ?? process.cwd();
-  const project = new LaunchQLProject(cwd);
+  const project = new LaunchQLPackage(cwd);
 
   project.ensureWorkspace();
   project.resetCwd(project.workspacePath);

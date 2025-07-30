@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { LaunchQLProject } from '../src/core/class/launchql';
+import { LaunchQLPackage } from '../src/core/class/launchql';
 
 describe('Config Loading', () => {
   let tempDir: string;
@@ -25,7 +25,7 @@ describe('Config Loading', () => {
       JSON.stringify(configContent, null, 2)
     );
 
-    const project = new LaunchQLProject(tempDir);
+    const project = new LaunchQLPackage(tempDir);
     
     expect(project.config).toEqual(configContent);
     expect(project.config?.packages).toEqual(['packages/*', 'extensions/*']);
@@ -46,7 +46,7 @@ module.exports = {
       configContent
     );
 
-    const project = new LaunchQLProject(tempDir);
+    const project = new LaunchQLPackage(tempDir);
     
     expect(project.config?.packages).toEqual(['packages/*', 'extensions/*']);
     expect(project.config?.name).toBe('test-workspace');
@@ -73,14 +73,14 @@ module.exports = {
       jsConfig
     );
 
-    const project = new LaunchQLProject(tempDir);
+    const project = new LaunchQLPackage(tempDir);
     
     expect(project.config?.packages).toEqual(['js-packages/*']);
     expect(project.config?.name).toBe('js-workspace');
   });
 
   it('should have no config when no config file exists', () => {
-    const project = new LaunchQLProject(tempDir);
+    const project = new LaunchQLPackage(tempDir);
     expect(project.config).toBeUndefined();
     expect(project.workspacePath).toBeUndefined();
   });
