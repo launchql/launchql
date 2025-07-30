@@ -33,7 +33,7 @@ import {
   ModuleMap
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
-import { extDeps, resolveDependencies } from '../../resolution/deps';
+import { resolveExtensionDependencies, resolveDependencies } from '../../resolution/deps';
 import { parseTarget } from '../../utils/target-utils';
 
 
@@ -60,6 +60,30 @@ const getNow = () =>
     ? getUTCTimestamp(new Date('2017-08-11T08:11:51Z'))
     : getUTCTimestamp(new Date());
 
+
+/**
+ * Truncates workspace extensions to include only modules from the target onwards.
+ * This prevents processing unnecessary modules that come before the target in dependency order.
+ * 
+ * @param workspaceExtensions - The full workspace extension dependencies
+ * @param targetName - The target module name to truncate from
+ * @returns Truncated extensions starting from the target module
+ */
+const truncateExtensionsToTarget = (
+  workspaceExtensions: { resolved: string[]; external: string[] },
+  targetName: string
+): { resolved: string[]; external: string[] } => {
+  const targetIndex = workspaceExtensions.resolved.indexOf(targetName);
+
+  if (targetIndex === -1) {
+    return workspaceExtensions;
+  }
+
+  return {
+    resolved: workspaceExtensions.resolved.slice(targetIndex),
+    external: workspaceExtensions.external
+  };
+}
 
 export enum ProjectContext {
   Outside = 'outside',
@@ -340,7 +364,7 @@ export class LaunchQLProject {
     this.ensureModule();
     const moduleName = this.getModuleName();
     const moduleMap = this.getModuleMap();
-    return extDeps(moduleName, moduleMap);
+    return resolveExtensionDependencies(moduleName, moduleMap);
   }
 
   getModuleDependencies(moduleName: string): { native: string[]; modules: string[] } {
@@ -679,8 +703,34 @@ export class LaunchQLProject {
 
   // ──────────────── Project Operations ────────────────
 
-  private parseProjectTarget(target?: string): { name: string; toChange: string | undefined } {
-    let name: string;
+  public resolveWorkspaceExtensionDependencies(): { resolved: string[]; external: string[] } {
+    const modules = this.getModuleMap();
+    const allModuleNames = Object.keys(modules);
+    
+    if (allModuleNames.length === 0) {
+      return { resolved: [], external: [] };
+    }
+    
+    // Create a virtual module that depends on all workspace modules
+    const virtualModuleName = '_virtual/workspace';
+    const virtualModuleMap = {
+      ...modules,
+      [virtualModuleName]: {
+        requires: allModuleNames
+      }
+    };
+    
+    const { resolved, external } = resolveExtensionDependencies(virtualModuleName, virtualModuleMap);
+    
+    // Filter out the virtual module and return the result
+    return {
+      resolved: resolved.filter((moduleName: string) => moduleName !== virtualModuleName),
+      external: external
+    };
+  }
+
+  private parseProjectTarget(target?: string): { name: string | null; toChange: string | undefined } {
+    let name: string | null;
     let toChange: string | undefined;
 
     if (!target) {
@@ -688,7 +738,12 @@ export class LaunchQLProject {
       if (context === ProjectContext.Module || context === ProjectContext.ModuleInsideWorkspace) {
         name = this.getModuleName();
       } else if (context === ProjectContext.Workspace) {
-        throw new Error('Module name is required when running from workspace root');
+        const modules = this.getModuleMap();
+        const moduleNames = Object.keys(modules);
+        if (moduleNames.length === 0) {
+          throw new Error('No modules found in workspace');
+        }
+        name = null; // Indicates workspace-wide operation
       } else {
         throw new Error('Not in a LaunchQL workspace or module');
       }
@@ -724,11 +779,20 @@ export class LaunchQLProject {
       };
 
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
-      const extensions = moduleProject.getModuleExtensions();
+      
+      let extensions: { resolved: string[]; external: string[] };
+      
+      if (name === null) {
+        // When name is null, deploy ALL modules in the workspace
+        extensions = this.resolveWorkspaceExtensionDependencies();
+      } else {
+        const moduleProject = this.getModuleProject(name);
+        extensions = moduleProject.getModuleExtensions();
+      }
 
       const pgPool = getPgPool(opts.pg);
 
+      const targetDescription = name === null ? 'all modules' : name;
       log.success(`🚀 Starting deployment to database ${opts.pg.database}...`);
 
       for (const extension of extensions.resolved) {
@@ -790,6 +854,7 @@ export class LaunchQLProject {
               try {
                 const client = new LaunchQLMigrate(opts.pg as PgConfig);
               
+                // Only apply toChange to the target module, not its dependencies
                 const moduleToChange = extension === name ? toChange : undefined;
                 const result = await client.deploy({
                   modulePath,
@@ -814,8 +879,11 @@ export class LaunchQLProject {
         }
       }
 
-      log.success(`✅ Deployment complete for ${name}.`);
+      log.success(`✅ Deployment complete for ${targetDescription}.`);
     } else {
+      if (name === null) {
+        throw new Error('Cannot perform non-recursive operation on workspace. Use recursive=true or specify a target module.');
+      }
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
@@ -838,6 +906,11 @@ export class LaunchQLProject {
     }
   }
 
+  /**
+   * Reverts database changes for modules. Unlike verify operations, revert operations
+   * modify database state and must ensure dependent modules are reverted before their
+   * dependencies to prevent database constraint violations.
+   */
   async revert(
     opts: LaunchQLOptions,
     target?: string,
@@ -853,42 +926,19 @@ export class LaunchQLProject {
       // Mirror deploy logic: find all modules that depend on the target module
       let extensionsToRevert: { resolved: string[]; external: string[] };
       
-      if (toChange) {
-        const allModuleNames = Object.keys(modules);
-        const dependentModules = new Set<string>();
-        
-        for (const moduleName of allModuleNames) {
-          const moduleProject = this.getModuleProject(moduleName);
-          const moduleExtensions = moduleProject.getModuleExtensions();
-          if (moduleExtensions.resolved.includes(name)) {
-            dependentModules.add(moduleName);
-          }
-        }
-        
-        if (dependentModules.size === 0) {
-          dependentModules.add(name);
-        }
-        
-        let maxDependencies = 0;
-        let topModule = name;
-        for (const depModule of dependentModules) {
-          const moduleProject = this.getModuleProject(depModule);
-          const moduleExtensions = moduleProject.getModuleExtensions();
-          if (moduleExtensions.resolved.length > maxDependencies) {
-            maxDependencies = moduleExtensions.resolved.length;
-            topModule = depModule;
-          }
-        }
-        
-        const topModuleProject = this.getModuleProject(topModule);
-        extensionsToRevert = topModuleProject.getModuleExtensions();
+      if (name === null) {
+        // When name is null, revert ALL modules in the workspace
+        extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
       } else {
-        const moduleProject = this.getModuleProject(name);
-        extensionsToRevert = moduleProject.getModuleExtensions();
+        // Always use workspace-wide resolution in recursive mode
+        // This ensures all dependent modules are reverted before their dependencies.
+        const workspaceExtensions = this.resolveWorkspaceExtensionDependencies();
+        extensionsToRevert = truncateExtensionsToTarget(workspaceExtensions, name);
       }
 
       const pgPool = getPgPool(opts.pg);
 
+      const targetDescription = name === null ? 'all modules' : name;
       log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
       const reversedExtensions = [...extensionsToRevert.resolved].reverse();
@@ -914,7 +964,7 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              // Mirror deploy logic: apply toChange to target module, undefined to dependencies
+              // Only apply toChange to the target module, not its dependencies
               const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.revert({
                 modulePath,
@@ -937,8 +987,11 @@ export class LaunchQLProject {
         }
       }
 
-      log.success(`✅ Revert complete for ${name}.`);
+      log.success(`✅ Revert complete for ${targetDescription}.`);
     } else {
+      if (name === null) {
+        throw new Error('Cannot perform non-recursive operation on workspace. Use recursive=true or specify a target module.');
+      }
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
@@ -971,12 +1024,21 @@ export class LaunchQLProject {
 
     if (recursive) {
       const modules = this.getModuleMap();
-      const moduleProject = this.getModuleProject(name);
-      const extensions = moduleProject.getModuleExtensions();
+      
+      let extensions: { resolved: string[]; external: string[] };
+      
+      if (name === null) {
+        // When name is null, verify ALL modules in the workspace
+        extensions = this.resolveWorkspaceExtensionDependencies();
+      } else {
+        const moduleProject = this.getModuleProject(name);
+        extensions = moduleProject.getModuleExtensions();
+      }
 
       const pgPool = getPgPool(opts.pg);
 
-      log.success(`🔎 Verifying deployment of ${name} on database ${opts.pg.database}...`);
+      const targetDescription = name === null ? 'all modules' : name;
+      log.success(`🔎 Verifying deployment of ${targetDescription} on database ${opts.pg.database}...`);
 
       for (const extension of extensions.resolved) {
         try {
@@ -991,7 +1053,7 @@ export class LaunchQLProject {
             try {
               const client = new LaunchQLMigrate(opts.pg as PgConfig);
             
-              // Only apply toChange to the target module being verified, not its dependencies.
+              // Only apply toChange to the target module, not its dependencies
               const moduleToChange = extension === name ? toChange : undefined;
               const result = await client.verify({
                 modulePath,
@@ -1013,8 +1075,11 @@ export class LaunchQLProject {
         }
       }
 
-      log.success(`✅ Verification complete for ${name}.`);
+      log.success(`✅ Verification complete for ${targetDescription}.`);
     } else {
+      if (name === null) {
+        throw new Error('Cannot perform non-recursive operation on workspace. Use recursive=true or specify a target module.');
+      }
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {

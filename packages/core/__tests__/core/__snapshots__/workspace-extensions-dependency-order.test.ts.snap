@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getWorkspaceExtensionsInDependencyOrder with complex existing fixtures handles different fixture types consistently 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+    "my-second",
+    "my-third",
+  ],
+}
+`;
+
+exports[`getWorkspaceExtensionsInDependencyOrder with complex existing fixtures returns extensions in dependency order for complex workspace 1`] = `
+{
+  "external": [
+    "plpgsql",
+    "uuid-ossp",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "plpgsql",
+    "uuid-ossp",
+    "pg-utilities",
+    "pg-verify",
+    "pgcrypto",
+    "totp",
+    "utils",
+    "secrets",
+  ],
+}
+`;
+
+exports[`getWorkspaceExtensionsInDependencyOrder with complex existing fixtures verifies dependency ordering properties 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+    "my-second",
+    "my-third",
+  ],
+}
+`;
+
+exports[`getWorkspaceExtensionsInDependencyOrder with existing fixtures handles workspace with minimal modules 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+    "my-second",
+    "my-third",
+  ],
+}
+`;
+
+exports[`getWorkspaceExtensionsInDependencyOrder with existing fixtures returns extensions in dependency order for launchql workspace 1`] = `
+{
+  "external": [
+    "plpgsql",
+    "uuid-ossp",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "plpgsql",
+    "uuid-ossp",
+    "pg-utilities",
+    "pg-verify",
+    "pgcrypto",
+    "totp",
+    "utils",
+    "secrets",
+  ],
+}
+`;
+
+exports[`getWorkspaceExtensionsInDependencyOrder with existing fixtures returns extensions in dependency order for simple-w-tags workspace 1`] = `
+{
+  "external": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+  ],
+  "resolved": [
+    "citext",
+    "plpgsql",
+    "pgcrypto",
+    "my-first",
+    "my-second",
+    "my-third",
+  ],
+}
+`;
