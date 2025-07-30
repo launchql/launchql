@@ -13,6 +13,6 @@ export interface TestDatabase {
     changeCount: number;
     eventCount: number;
   }>;
-  getDependencies(project: string, changeName: string): Promise<string[]>;
+  getDependencies(packageName: string, changeName: string): Promise<string[]>;
   close(): Promise<void>;
 }
