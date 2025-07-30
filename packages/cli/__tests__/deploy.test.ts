@@ -7,7 +7,7 @@ describe('CLI Deploy Command', () => {
   let testDb: any;
 
   beforeAll(async () => {
-    fixture = new CLIDeployTestFixture('sqitch', 'simple');
+    fixture = new CLIDeployTestFixture('sqitch', 'simple-w-tags');
   });
 
   beforeEach(async () => {
@@ -86,7 +86,7 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'myapp.users')).toBe(true);
     expect(await testDb.exists('table', 'myapp.products')).toBe(true);
     
-    const revertCommands = `lql revert --database ${testDb.name} --project my-first --yes`;
+    const revertCommands = `lql revert --database $database --yes`;
     await fixture.runTerminalCommands(revertCommands, {
       database: testDb.name
     }, true);
