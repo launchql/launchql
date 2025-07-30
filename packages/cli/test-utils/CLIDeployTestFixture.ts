@@ -262,29 +262,6 @@ export class CLIDeployTestFixture extends TestFixture {
     this.pools = [];
     
     await teardownPgPools();
-    
-    // Small delay to ensure connections are fully closed
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
-    try {
-      const adminConfig = getPgEnvOptions({
-        database: 'postgres'
-      });
-      const adminPool = getPgPool(adminConfig);
-
-      // Drop all test databases
-      for (const db of this.databases) {
-        try {
-          await adminPool.query(`DROP DATABASE IF EXISTS "${db.name}"`);
-        } catch (e) {
-          // Ignore errors - database might have active connections
-          console.warn(`Failed to drop database ${db.name}:`, (e as Error).message);
-        }
-      }
-    } catch (e) {
-      // Ignore errors if pg-cache is already closed
-      console.warn('Could not clean up databases, pg-cache may be closed:', (e as Error).message);
-    }
 
     // Clear the databases array
     this.databases = [];
