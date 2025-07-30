@@ -3,6 +3,7 @@ import { Logger } from '@launchql/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { extractFirst } from '../utils/argv';
 import { selectPackage } from '../utils/module-utils';
+import * as path from 'path';
 
 const log = new Logger('tag');
 
@@ -89,30 +90,34 @@ export default async (
   const changeName = answers.changeName;
   const comment = answers.comment;
 
-  if (argv.package || !pkg.isInModule()) {
-    const moduleMap = pkg.getModuleMap();
-    const module = moduleMap[packageName];
-    if (!module) {
-      throw new Error(`Module '${packageName}' not found.`);
-    }
-    
-    const modulePkg = new LaunchQLPackage(module.path);
-    
-    try {
-      modulePkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
-      log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'} in package '${packageName}'`);
-    } catch (error) {
-      log.error(`Failed to add tag: ${error instanceof Error ? error.message : String(error)}`);
-      throw error;
-    }
-  } else {
-    try {
+  try {
+    if (argv.package || !pkg.isInModule()) {
+      const moduleMap = pkg.getModuleMap();
+      const module = moduleMap[packageName];
+      if (!module) {
+        throw new Error(`Module '${packageName}' not found.`);
+      }
+      
+      const workspacePath = pkg.getWorkspacePath()!;
+      const absoluteModulePath = path.resolve(workspacePath, module.path);
+      
+      const originalCwd = process.cwd();
+      process.chdir(absoluteModulePath);
+      
+      try {
+        const modulePkg = new LaunchQLPackage(absoluteModulePath);
+        modulePkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
+        log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'} in package '${packageName}'`);
+      } finally {
+        process.chdir(originalCwd);
+      }
+    } else {
       pkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
       log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'}`);
-    } catch (error) {
-      log.error(`Failed to add tag: ${error instanceof Error ? error.message : String(error)}`);
-      throw error;
     }
+  } catch (error) {
+    log.error(`Failed to add tag: ${error instanceof Error ? error.message : String(error)}`);
+    throw error;
   }
   
   return newArgv;
