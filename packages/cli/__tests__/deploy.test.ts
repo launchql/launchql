@@ -33,9 +33,9 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('schema', 'myapp')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.find((change: any) => change.project === 'my-first' && change.change_name === 'schema_myapp')).toBeTruthy();
-    expect(deployedChanges.find((change: any) => change.project === 'my-second')).toBeFalsy();
-    expect(deployedChanges.find((change: any) => change.project === 'my-third')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-first' && change.change_name === 'schema_myapp')).toBeTruthy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-third')).toBeFalsy();
   });
 
   it('should deploy full project with tables via CLI', async () => {
@@ -50,9 +50,9 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'myapp.products')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.some((change: any) => change.project === 'my-first')).toBe(true);
-    expect(deployedChanges.find((change: any) => change.project === 'my-second')).toBeFalsy();
-    expect(deployedChanges.find((change: any) => change.project === 'my-third')).toBeFalsy();
+    expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
+    expect(deployedChanges.find((change: any) => change.package === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-third')).toBeFalsy();
   });
 
   it('should deploy multiple packages via CLI', async () => {
@@ -75,9 +75,9 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.some((change: any) => change.project === 'my-first')).toBe(true);
-    expect(deployedChanges.some((change: any) => change.project === 'my-second')).toBe(true);
-    expect(deployedChanges.some((change: any) => change.project === 'my-third')).toBe(true);
+    expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
+    expect(deployedChanges.some((change: any) => change.package === 'my-second')).toBe(true);
+    expect(deployedChanges.some((change: any) => change.package === 'my-third')).toBe(true);
   });
 
   it('should revert changes via CLI', async () => {
