@@ -10,7 +10,7 @@ import {
 } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
-import { selectModule } from '../utils/module-utils';
+import { selectProject } from '../utils/module-utils';
 
 export default async (
   argv: Partial<ParsedArgs>,
@@ -90,23 +90,7 @@ export default async (
 
   let projectName: string | undefined;
   if (recursive) {
-    if (argv.project) {
-      projectName = argv.project as string;
-      log.info(`Using specified project: ${projectName}`);
-      
-      const project = new LaunchQLProject(cwd);
-      const modules = await project.getModules();
-      const moduleNames = modules.map(mod => mod.getModuleName());
-      
-      if (!moduleNames.includes(projectName)) {
-        log.error(`Project '${projectName}' not found. Available projects: ${moduleNames.join(', ')}`);
-        return;
-      }
-    } else {
-      // Fall back to interactive selection
-      projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
-      log.info(`Selected project: ${projectName}`);
-    }
+    projectName = await selectProject(argv, prompter, cwd, 'deploy', log);
   }
 
   const cliOverrides = {
