@@ -1,8 +1,10 @@
 process.env.LAUNCHQL_DEBUG = 'true';
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { TestDatabase } from '../../test-utils';
+import { teardownPgPools } from 'pg-cache';
+import { readFileSync } from 'fs';
+import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { join } from 'path';
 import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 
 describe('Tag functionality with CoreDeployTestFixture', () => {
@@ -10,16 +12,11 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
   let db: TestDatabase;
   
   beforeEach(async () => {
-    fixture = new CoreDeployTestFixture('sqitch', 'simple-w-tags');
+    fixture = new CoreDeployTestFixture('sqitch', 'simple');
     db = await fixture.setupTestDatabase();
   });
   
-  afterEach(async () => {
-    await fixture.cleanup();
-  });
-
   afterAll(async () => {
-    const { teardownPgPools } = require('pg-cache');
     await teardownPgPools();
   });
 
@@ -28,7 +25,6 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const packagePath = join(basePath, 'packages', 'my-first');
     const planPath = join(packagePath, 'launchql.plan');
     
-    const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
     
     pkg.addTag('v1.2.0', undefined, 'Test release tag');
@@ -43,7 +39,6 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-first');
     
-    const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
     pkg.addTag('v1.3.0', 'schema_myapp', 'Initial schema tag');
     
@@ -66,7 +61,6 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-second');
     
-    const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
     pkg.addTag('v2.2.0', 'create_table', 'Table creation release');
     

@@ -78,7 +78,7 @@ export class PgPoolCacheManager {
   }
 
   set(key: PgPoolKey, pool: pg.Pool): void {
-    if (this.closed) throw new Error('Cannot add to cache after it has been closed');
+    if (this.closed) throw new Error(`Cannot add to cache after it has been closed (key: ${key})`);
     this.pgCache.set(key, new ManagedPgPool(pool, key));
   }
 
