@@ -10,10 +10,7 @@ import { Inquirerer, CLIOptions } from 'inquirerer';
 
 import { TestFixture } from './fixtures';
 import { TestDatabase } from './TestDatabase';
-
-import deploy from '../src/commands/deploy';
-import revert from '../src/commands/revert';
-import verify from '../src/commands/verify';
+import { commands } from '../src/commands';
 
 export class CLIDeployTestFixture extends TestFixture {
   private databases: TestDatabase[] = [];
@@ -187,12 +184,12 @@ export class CLIDeployTestFixture extends TestFixture {
         // Handle LaunchQL CLI commands
         const argv = this.parseCliCommand(tokens.slice(1), currentDir);
         if (executeCommands) {
-          const result = await this.runCliCommandDirect(argv);
+          const result = await this.runCliCommand(argv);
           results.push({ command: processedCommand, type: 'cli', result });
         } else {
           results.push({ command: processedCommand, type: 'cli', result: { argv } });
         }
-      }else {
+      } else {
         throw new Error(`Unsupported command: ${tokens[0]}`);
       }
     }
@@ -235,19 +232,19 @@ export class CLIDeployTestFixture extends TestFixture {
     return argv;
   }
 
-  private async runCliCommandDirect(argv: ParsedArgs): Promise<any> {
-    const command = argv._[0];
+  private async runCliCommand(argv: ParsedArgs): Promise<any> {
     const prompter = new Inquirerer({
       input: process.stdin,
       output: process.stdout,
       noTty: true
     });
 
-    const options: CLIOptions = {
+    const options: CLIOptions & { skipPgTeardown?: boolean } = {
       noTty: true,
       input: process.stdin,
       output: process.stdout,
       version: '1.0.0',
+      skipPgTeardown: true,
       minimistOpts: {
         alias: {
           v: 'version',
@@ -256,19 +253,7 @@ export class CLIDeployTestFixture extends TestFixture {
       }
     };
 
-    switch (command) {
-      case 'deploy':
-        await deploy(argv, prompter, options);
-        break;
-      case 'revert':
-        await revert(argv, prompter, options);
-        break;
-      case 'verify':
-        await verify(argv, prompter, options);
-        break;
-      default:
-        throw new Error(`Unsupported CLI command: ${command}`);
-    }
+    await commands(argv, prompter, options);
 
     return { argv };
   }
