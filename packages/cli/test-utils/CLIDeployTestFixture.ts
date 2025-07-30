@@ -237,6 +237,108 @@ export class CLIDeployTestFixture extends TestFixture {
     return await this.runCmd(argv);
   }
 
+  async runTerminalCommands(commandString: string, variables: Record<string, string> = {}, executeCommands: boolean = true): Promise<any[]> {
+    const results: any[] = [];
+    let currentDir = this.tempFixtureDir;
+    
+    const commands = commandString
+      .split(/\n|;/)
+      .map(cmd => cmd.trim())
+      .filter(cmd => cmd.length > 0);
+    
+    for (const command of commands) {
+      let processedCommand = command;
+      for (const [key, value] of Object.entries(variables)) {
+        processedCommand = processedCommand.replace(new RegExp(`\\$${key}`, 'g'), value);
+      }
+      
+      const tokens = this.tokenizeCommand(processedCommand);
+      
+      if (tokens[0] === 'cd') {
+        const targetDir = tokens[1];
+        if (targetDir.startsWith('/')) {
+          currentDir = targetDir;
+        } else {
+          currentDir = require('path').resolve(currentDir, targetDir);
+        }
+        results.push({ command: processedCommand, type: 'cd', result: { cwd: currentDir } });
+      } else if (tokens[0] === 'lql' || tokens[0] === 'launchql') {
+        // Handle LaunchQL CLI commands
+        const argv = this.parseCliCommand(tokens.slice(1), currentDir);
+        if (executeCommands) {
+          const result = await this.runCmd(argv);
+          results.push({ command: processedCommand, type: 'cli', result });
+        } else {
+          results.push({ command: processedCommand, type: 'cli', result: { argv } });
+        }
+      } else {
+        throw new Error(`Unsupported command: ${tokens[0]}`);
+      }
+    }
+    
+    return results;
+  }
+
+  private tokenizeCommand(command: string): string[] {
+    const tokens: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    let quoteChar = '';
+    
+    for (let i = 0; i < command.length; i++) {
+      const char = command[i];
+      
+      if ((char === '"' || char === "'") && !inQuotes) {
+        inQuotes = true;
+        quoteChar = char;
+      } else if (char === quoteChar && inQuotes) {
+        inQuotes = false;
+        quoteChar = '';
+      } else if (char === ' ' && !inQuotes) {
+        if (current) {
+          tokens.push(current);
+          current = '';
+        }
+      } else {
+        current += char;
+      }
+    }
+    
+    if (current) {
+      tokens.push(current);
+    }
+    
+    return tokens;
+  }
+
+  private parseCliCommand(tokens: string[], cwd: string): ParsedArgs {
+    const argv: ParsedArgs = {
+      _: [],
+      cwd
+    };
+    
+    let i = 0;
+    while (i < tokens.length) {
+      const token = tokens[i];
+      
+      if (token.startsWith('--')) {
+        const key = token.substring(2);
+        if (i + 1 < tokens.length && !tokens[i + 1].startsWith('--')) {
+          argv[key] = tokens[i + 1];
+          i += 2;
+        } else {
+          argv[key] = true;
+          i += 1;
+        }
+      } else {
+        argv._.push(token);
+        i += 1;
+      }
+    }
+    
+    return argv;
+  }
+
   async cleanup(): Promise<void> {
     this.pools = [];
     
