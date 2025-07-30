@@ -216,25 +216,6 @@ export class MigrateTestFixture {
     
     // Clear the pools array
     this.pools = [];
-    
-    // Small delay to ensure connections are fully closed
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
-    // Now get admin pool for database cleanup
-    const adminConfig = getPgEnvOptions({
-      database: 'postgres'
-    });
-    const adminPool = getPgPool(adminConfig);
-
-    // Drop all test databases
-    for (const db of this.databases) {
-      try {
-        await adminPool.query(`DROP DATABASE IF EXISTS "${db.name}"`);
-      } catch (e) {
-        // Ignore errors - database might have active connections
-        console.warn(`Failed to drop database ${db.name}:`, (e as Error).message);
-      }
-    }
 
     // Remove temporary directories
     for (const dir of this.tempDirs) {
