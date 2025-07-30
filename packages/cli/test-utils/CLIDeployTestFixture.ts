@@ -17,26 +17,8 @@ export class CLIDeployTestFixture extends TestFixture {
 
   constructor(...fixturePath: string[]) {
     super(...fixturePath);
-    this.createMinimalProject();
   }
 
-  private createMinimalProject(): void {
-    const fs = require('fs');
-    const path = require('path');
-    
-    // Create a minimal launchql.plan file for CLI commands
-    const planContent = `%syntax-version=1.0.0
-%project=test-cli-project
-%uri=https://github.com/test/test-cli-project
-
-`;
-    fs.writeFileSync(path.join(this.tempFixtureDir, 'launchql.plan'), planContent);
-    
-    // Create deploy, revert, verify directories
-    fs.mkdirSync(path.join(this.tempFixtureDir, 'deploy'), { recursive: true });
-    fs.mkdirSync(path.join(this.tempFixtureDir, 'revert'), { recursive: true });
-    fs.mkdirSync(path.join(this.tempFixtureDir, 'verify'), { recursive: true });
-  }
 
   async setupTestDatabase(): Promise<TestDatabase> {
     const dbName = `test_cli_${Date.now()}_${Math.random().toString(36).substring(2, 8)}_${this.dbCounter++}`;
@@ -249,21 +231,8 @@ export class CLIDeployTestFixture extends TestFixture {
   }
 
   async cleanup(): Promise<void> {
-    // Close all test database pools FIRST
-    for (const pool of this.pools) {
-      try {
-        await pool.end();
-      } catch (e) {
-        // Ignore errors during pool closure
-      }
-    }
-    
-    // Clear the pools array
+    // Don't close pools here - let pg-cache manage them
     this.pools = [];
-    
-    await teardownPgPools();
-
-    // Clear the databases array
     this.databases = [];
     
     super.cleanup();
