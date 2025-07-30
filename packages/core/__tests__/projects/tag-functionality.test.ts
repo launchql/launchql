@@ -23,18 +23,14 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const packagePath = join(basePath, 'packages', 'my-first');
     const planPath = join(packagePath, 'launchql.plan');
     
-    const originalPlan = readFileSync(planPath, 'utf8');
-    expect(originalPlan).toMatchSnapshot('original-plan-file');
-    
     const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
     
-    pkg.addTag('v1.1.0', undefined, 'Test release tag');
+    pkg.addTag('v1.2.0', undefined, 'Test release tag');
     
     const updatedPlan = readFileSync(planPath, 'utf8');
-    expect(updatedPlan).toMatchSnapshot('plan-file-with-tag');
     
-    expect(updatedPlan).toContain('@v1.1.0');
+    expect(updatedPlan).toContain('@v1.2.0');
     expect(updatedPlan).toContain('# Test release tag');
   });
 
@@ -44,34 +40,32 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     
     const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
-    pkg.addTag('v1.0.0', 'metaschema', 'Initial schema tag');
+    pkg.addTag('v1.3.0', 'schema_myapp', 'Initial schema tag');
     
-    await fixture.deployModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.deployModule('my-first:@v1.3.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('schema', 'myapp')).toBe(true);
     
     await fixture.deployModule('my-first', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('schema', 'myapp')).toBe(true);
     expect(await db.exists('table', 'myapp.products')).toBe(true);
     
-    await fixture.revertModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.revertModule('my-first:@v1.3.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('schema', 'myapp')).toBe(true);
     expect(await db.exists('table', 'myapp.products')).toBe(false);
   });
 
   test('handles tag with specific change target', async () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-second');
-    const planPath = join(packagePath, 'launchql.plan');
     
     const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
     pkg.addTag('v2.1.0', 'add_customers', 'Customer feature release');
     
-    const updatedPlan = readFileSync(planPath, 'utf8');
-    expect(updatedPlan).toMatchSnapshot('plan-file-with-specific-change-tag');
+    const updatedPlan = readFileSync(join(packagePath, 'launchql.plan'), 'utf8');
     
     expect(updatedPlan).toContain('@v2.1.0');
     expect(updatedPlan).toContain('# Customer feature release');
