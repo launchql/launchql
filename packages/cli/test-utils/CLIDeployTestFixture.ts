@@ -155,6 +155,10 @@ export class CLIDeployTestFixture extends TestFixture {
   }
 
 
+  async exec(commandString: string, variables: Record<string, string> = {}): Promise<any[]> {
+    return this.runTerminalCommands(commandString, variables, true);
+  }
+
   async runTerminalCommands(commandString: string, variables: Record<string, string> = {}, executeCommands: boolean = true): Promise<any[]> {
     const results: any[] = [];
     let currentDir = this.tempFixtureDir;
