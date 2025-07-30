@@ -1,24 +1,29 @@
-import { cpSync, mkdirSync,mkdtempSync, rmSync, writeFileSync } from 'fs';
+import { getEnvOptions } from '@launchql/env';
+import { LaunchQLProject, LaunchQLMigrate } from '@launchql/core';
+import { mkdtempSync } from 'fs';
 import { tmpdir } from 'os';
-import { join } from 'path';
 import { Pool } from 'pg';
-import { getPgPool } from 'pg-cache';
-import { PgConfig } from 'pg-env';
+import { getPgPool, teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
+import { ParsedArgs } from 'minimist';
+import { Inquirerer, CLIOptions } from 'inquirerer';
 
-import { LaunchQLMigrate } from '../src/migrate/client';
-import { MigrateTestChange } from './MigrateTestChange';
+import { TestFixture } from './fixtures';
 import { TestDatabase } from './TestDatabase';
-import { FIXTURES_PATH } from './utils';
+import { commands } from '../src/commands';
 
-export class MigrateTestFixture {
-  private tempDirs: string[] = [];
+export class CLIDeployTestFixture extends TestFixture {
   private databases: TestDatabase[] = [];
   private dbCounter = 0;
   private pools: Pool[] = [];
 
+  constructor(...fixturePath: string[]) {
+    super(...fixturePath);
+  }
+
+
   async setupTestDatabase(): Promise<TestDatabase> {
-    const dbName = `test_migrate_${Date.now()}_${Math.random().toString(36).substring(2, 8)}_${this.dbCounter++}`;
+    const dbName = `test_cli_${Date.now()}_${Math.random().toString(36).substring(2, 8)}_${this.dbCounter++}`;
     
     // Get base config from environment using pg-env
     const baseConfig = getPgEnvOptions({
@@ -45,7 +50,7 @@ export class MigrateTestFixture {
       database: dbName
     });
     
-    const config: PgConfig = {
+    const config = {
       host: pgConfig.host,
       port: pgConfig.port,
       user: pgConfig.user,
@@ -61,7 +66,6 @@ export class MigrateTestFixture {
     const pool = getPgPool(pgConfig);
     this.pools.push(pool);
 
-    const fixture = this;
     const db: TestDatabase = {
       name: dbName,
       config,
@@ -151,82 +155,114 @@ export class MigrateTestFixture {
   }
 
 
-  setupFixture(fixturePath: string[]): string {
-    const originalPath = join(FIXTURES_PATH, ...fixturePath);
-    const fixtureName = fixturePath[fixturePath.length - 1]; // Use last element as fixture name
-    const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
-    const fixtureDestPath = join(tempDir, fixtureName);
+  async runTerminalCommands(commandString: string, variables: Record<string, string> = {}, executeCommands: boolean = true): Promise<any[]> {
+    const results: any[] = [];
+    let currentDir = this.tempFixtureDir;
     
-    cpSync(originalPath, fixtureDestPath, { recursive: true });
-    this.tempDirs.push(tempDir);
+    const commands = commandString
+      .split(/\n|;/)
+      .map(cmd => cmd.trim())
+      .filter(cmd => cmd.length > 0);
     
-    return fixtureDestPath;
-  }
-
-  createPlanFile(project: string, changes: MigrateTestChange[]): string {
-    const tempDir = mkdtempSync(join(tmpdir(), 'migrate-test-'));
-    this.tempDirs.push(tempDir);
-
-    const lines = [
-      '%syntax-version=1.0.0',
-      `%project=${project}`,
-      `%uri=https://github.com/test/${project}`,
-      ''
-    ];
-
-    for (const change of changes) {
-      let line = change.name;
-      
-      if (change.dependencies && change.dependencies.length > 0) {
-        line += ` [${change.dependencies.join(' ')}]`;
+    for (const command of commands) {
+      let processedCommand = command;
+      for (const [key, value] of Object.entries(variables)) {
+        processedCommand = processedCommand.replace(new RegExp(`\\$${key}`, 'g'), value);
       }
       
-      line += ` ${change.timestamp || new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')}`;
-      line += ` ${change.planner || 'test'}`;
-      line += ` <${change.email || 'test@example.com'}>`;
+      const tokens = this.tokenizeCommand(processedCommand);
       
-      if (change.comment) {
-        line += ` # ${change.comment}`;
+      if (tokens[0] === 'cd') {
+        const targetDir = tokens[1];
+        if (targetDir.startsWith('/')) {
+          currentDir = targetDir;
+        } else {
+          currentDir = require('path').resolve(currentDir, targetDir);
+        }
+        results.push({ command: processedCommand, type: 'cd', result: { cwd: currentDir } });
+      } else if (tokens[0] === 'lql' || tokens[0] === 'launchql') {
+        // Handle LaunchQL CLI commands
+        const argv = this.parseCliCommand(tokens.slice(1), currentDir);
+        if (executeCommands) {
+          const result = await this.runCliCommand(argv);
+          results.push({ command: processedCommand, type: 'cli', result });
+        } else {
+          results.push({ command: processedCommand, type: 'cli', result: { argv } });
+        }
+      } else {
+        throw new Error(`Unsupported command: ${tokens[0]}`);
       }
-      
-      lines.push(line);
     }
-
-    const planPath = join(tempDir, 'launchql.plan');
-    writeFileSync(planPath, lines.join('\n'));
     
-    return tempDir;
+    return results;
   }
 
-  createScript(dir: string, type: 'deploy' | 'revert' | 'verify', name: string, content: string): void {
-    const scriptDir = join(dir, type);
-    mkdirSync(scriptDir, { recursive: true });
-    writeFileSync(join(scriptDir, `${name}.sql`), content);
+  private tokenizeCommand(command: string): string[] {
+    const re = /("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*'|--[a-zA-Z0-9_-]+|-[a-zA-Z0-9_]+|[^\s]+)|(\s+)/g;
+    const matches = command.match(re);
+    const tokens = matches ? matches.filter(t => t.trim()) : [];
+    return tokens;
+  }
+
+  private parseCliCommand(tokens: string[], cwd: string): ParsedArgs {
+    const argv: ParsedArgs = {
+      _: [],
+      cwd
+    };
+    
+    let i = 0;
+    while (i < tokens.length) {
+      const token = tokens[i];
+      
+      if (token.startsWith('--')) {
+        const key = token.substring(2);
+        if (i + 1 < tokens.length && !tokens[i + 1].startsWith('--')) {
+          argv[key] = tokens[i + 1];
+          i += 2;
+        } else {
+          argv[key] = true;
+          i += 1;
+        }
+      } else {
+        argv._.push(token);
+        i += 1;
+      }
+    }
+    
+    return argv;
+  }
+
+  private async runCliCommand(argv: ParsedArgs): Promise<any> {
+    const prompter = new Inquirerer({
+      input: process.stdin,
+      output: process.stdout,
+      noTty: true
+    });
+
+    const options: CLIOptions & { skipPgTeardown?: boolean } = {
+      noTty: true,
+      input: process.stdin,
+      output: process.stdout,
+      version: '1.0.0',
+      skipPgTeardown: true,
+      minimistOpts: {
+        alias: {
+          v: 'version',
+          h: 'help'
+        }
+      }
+    };
+
+    await commands(argv, prompter, options);
+
+    return { argv };
   }
 
   async cleanup(): Promise<void> {
-    // Close all test database pools FIRST
-    for (const pool of this.pools) {
-      try {
-        await pool.end();
-      } catch (e) {
-        // Ignore errors during pool closure
-      }
-    }
-    
-    // Clear the pools array
+    // Don't close pools here - let pg-cache manage them
     this.pools = [];
-
-    // Remove temporary directories
-    for (const dir of this.tempDirs) {
-      try {
-        rmSync(dir, { recursive: true, force: true });
-      } catch (e) {
-        // Ignore errors during cleanup
-      }
-    }
-    
-    // Clear the databases array
     this.databases = [];
+    
+    super.cleanup();
   }
 }
