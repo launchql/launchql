@@ -63,14 +63,14 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     
     const { LaunchQLPackage } = require('../../src/core/class/launchql');
     const pkg = new LaunchQLPackage(packagePath);
-    pkg.addTag('v2.1.0', 'create_table', 'Table creation release');
+    pkg.addTag('v2.2.0', 'create_table', 'Table creation release');
     
     const updatedPlan = readFileSync(join(packagePath, 'launchql.plan'), 'utf8');
     
-    expect(updatedPlan).toContain('@v2.1.0');
+    expect(updatedPlan).toContain('@v2.2.0');
     expect(updatedPlan).toContain('# Table creation release');
     
-    await fixture.deployModule('my-second:@v2.1.0', db.name, ['sqitch', 'simple-w-tags']);
+    await fixture.deployModule('my-second:@v2.2.0', db.name, ['sqitch', 'simple-w-tags']);
     
     expect(await db.exists('schema', 'metaschema')).toBe(true);
   });
