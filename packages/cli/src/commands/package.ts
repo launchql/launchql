@@ -1,4 +1,4 @@
-import { LaunchQLProject, writePackage } from '@launchql/core';
+import { LaunchQLPackage, writePackage } from '@launchql/core';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 export default async (
@@ -32,7 +32,7 @@ export default async (
 
   let { cwd, plan, pretty, functionDelimiter } = await prompter.prompt(argv, questions);
 
-  const project = new LaunchQLProject(cwd);
+  const project = new LaunchQLPackage(cwd);
 
   project.ensureModule();
 

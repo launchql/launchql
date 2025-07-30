@@ -28,7 +28,7 @@ export function parsePlanFile(planPath: string): ParseResult<ExtendedPlanFile> {
     // Skip comments
     if (trimmed.startsWith('#')) continue;
     
-    // Parse project metadata
+    // Parse package metadata
     if (trimmed.startsWith('%project=')) {
       project = trimmed.substring('%project='.length);
       continue;
@@ -108,7 +108,7 @@ export function parsePlanFile(planPath: string): ParseResult<ExtendedPlanFile> {
   }
   
   return {
-    data: { project, uri, changes, tags },
+    data: { package: project, uri, changes, tags },
     errors: []
   };
 }
@@ -220,17 +220,17 @@ function parseTagLine(line: string, lastChangeName: string | null): Tag | null {
 export function resolveReference(
   ref: string, 
   plan: ExtendedPlanFile,
-  currentProject?: string
+  currentPackage?: string
 ): { change?: string; tag?: string; error?: string } {
   const parsed = parseReference(ref);
   if (!parsed) {
     return { error: `Invalid reference: ${ref}` };
   }
   
-  // Handle project qualifier
-  const planProject = currentProject || plan.project;
-  if (parsed.project && parsed.project !== planProject) {
-    // Cross-project reference - return as-is
+  // Handle package qualifier
+  const planPackage = currentPackage || plan.package;
+  if (parsed.package && parsed.package !== planPackage) {
+    // Cross-package reference - return as-is
     return { change: ref };
   }
   
@@ -250,7 +250,7 @@ export function resolveReference(
   
   // Handle relative references
   if (parsed.relative) {
-    const baseResolved = resolveReference(parsed.relative.base, plan, currentProject);
+    const baseResolved = resolveReference(parsed.relative.base, plan, currentPackage);
     if (baseResolved.error) {
       return baseResolved;
     }
@@ -328,7 +328,7 @@ export function parsePlanFileSimple(planPath: string): PlanFile {
   }
   
   // Return empty plan if no data and no errors
-  return { project: '', uri: '', changes: [] };
+  return { package: '', uri: '', changes: [] };
 }
 
 /**

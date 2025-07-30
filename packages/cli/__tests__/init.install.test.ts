@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
@@ -90,7 +90,7 @@ describe('cmds:install - with initialized workspace and module', () => {
     expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg, version)));
 
     // Snapshot control file
-    const mod = new LaunchQLProject(moduleDir);
+    const mod = new LaunchQLPackage(moduleDir);
     const controlFile = mod.getModuleControlFile();
     expect(controlFile).toMatchSnapshot();
   });
@@ -133,7 +133,7 @@ describe('cmds:install - with initialized workspace and module', () => {
     }
 
     // Snapshot control file after both installs
-    const mod = new LaunchQLProject(moduleDir);
+    const mod = new LaunchQLPackage(moduleDir);
     const controlFile = mod.getModuleControlFile();
     expect(controlFile).toMatchSnapshot();
   });

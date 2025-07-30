@@ -1,5 +1,5 @@
 import { getEnvOptions } from '@launchql/env';
-import { LaunchQLProject, LaunchQLMigrate } from '@launchql/core';
+import { LaunchQLPackage, LaunchQLMigrate } from '@launchql/core';
 import { mkdtempSync } from 'fs';
 import { tmpdir } from 'os';
 import { Pool } from 'pg';

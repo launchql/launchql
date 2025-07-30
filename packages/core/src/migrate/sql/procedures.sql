@@ -20,7 +20,7 @@ DECLARE
     v_actual_change TEXT;
     v_colon_pos INT;
 BEGIN
-    -- Check if change_name contains a project prefix (cross-project dependency)
+    -- Check if change_name contains a package prefix (cross-package dependency)
     v_colon_pos := position(':' in p_change_name);
     
     IF v_colon_pos > 0 THEN
@@ -135,10 +135,10 @@ BEGIN
         SELECT 1 FROM launchql_migrate.dependencies d
         JOIN launchql_migrate.changes c ON c.change_id = d.change_id
         WHERE (
-            -- Local dependency within same project
+            -- Local dependency within same package
             (d.requires = p_change_name AND c.project = p_project)
             OR
-            -- Cross-project dependency
+            -- Cross-package dependency
             (d.requires = p_project || ':' || p_change_name)
         )
     ) THEN
@@ -211,19 +211,19 @@ CREATE FUNCTION launchql_migrate.get_dependents(
     p_project TEXT,
     p_change_name TEXT
 )
-RETURNS TABLE(project TEXT, change_name TEXT, dependency TEXT)
+RETURNS TABLE(package TEXT, change_name TEXT, dependency TEXT)
 LANGUAGE sql STABLE AS $$
-    SELECT c.project, c.change_name, d.requires as dependency
+    SELECT c.package, c.change_name, d.requires as dependency
     FROM launchql_migrate.dependencies d
     JOIN launchql_migrate.changes c ON c.change_id = d.change_id
     WHERE (
-        -- Local dependency within same project
-        (d.requires = p_change_name AND c.project = p_project)
+        -- Local dependency within same package
+        (d.requires = p_change_name AND c.package = p_project)
         OR
-        -- Cross-project dependency
+        -- Cross-package dependency
         (d.requires = p_project || ':' || p_change_name)
     )
-    ORDER BY c.project, c.change_name;
+    ORDER BY c.package, c.change_name;
 $$;
 
 -- Get deployment status

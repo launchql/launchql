@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { join,relative } from 'path';
 
-import { LaunchQLProject } from '../core/class/launchql';
+import { LaunchQLPackage } from '../core/class/launchql';
 import { parsePlanFile } from '../files/plan/parser';
 import { ExtendedPlanFile } from '../files/types';
 
@@ -18,7 +18,7 @@ interface DependencyGraph {
  * Result object returned by dependency resolution functions
  */
 export interface DependencyResult {
-  /** Array of external dependencies that are not part of the current project */
+  /** Array of external dependencies that are not part of the current package */
   external: string[];
   /** Array of modules in topologically sorted order for deployment */
   resolved: string[];
@@ -47,7 +47,7 @@ interface DependencyResolverOptions {
    * Function to transform module names and resolve their dependencies during resolution.
    * Used by getDeps and resolveDependencies to handle project:module syntax and tag resolution.
    * @param module - The module name to transform
-   * @param extname - The current project/extension name for context
+   * @param extname - The current package/extension name for context
    * @returns Object containing the transformed module name, its dependency edges, and whether to return early
    */
   transformModule?: (module: string, extname: string) => { module: string; edges: string[] | undefined; returnEarly?: boolean };
@@ -237,38 +237,38 @@ export const resolveDependencies = (
   // For 'resolve' and 'internal' modes, we need plan file loading
   const planCache: Record<string, ExtendedPlanFile> = {};
   
-  // Helper function to load a plan file for a project
-  const loadPlanFile = (projectName: string): ExtendedPlanFile | null => {
+  // Helper function to load a plan file for a package
+  const loadPlanFile = (packageName: string): ExtendedPlanFile | null => {
     if (!loadPlanFiles) {
       return null;
     }
     
     if (planFileLoader) {
-      return planFileLoader(projectName, extname, packageDir);
+      return planFileLoader(packageName, extname, packageDir);
     }
     
-    if (planCache[projectName]) {
-      return planCache[projectName];
+    if (planCache[packageName]) {
+      return planCache[packageName];
     }
     
     try {
       let planPath: string;
-      if (projectName === extname) {
-        // For the current project
+      if (packageName === extname) {
+        // For the current package
         planPath = join(packageDir, 'launchql.plan');
       } else {
-        // For external projects, use LaunchQLProject to find module path
-        const project = new LaunchQLProject(packageDir);
+        // For external packages, use LaunchQLPackage to find module path
+        const project = new LaunchQLPackage(packageDir);
         const moduleMap = project.getModuleMap();
-        const module = moduleMap[projectName];
+        const module = moduleMap[packageName];
         
         if (!module) {
-          throw new Error(`Module ${projectName} not found in workspace`);
+          throw new Error(`Module ${packageName} not found in workspace`);
         }
         
         const workspacePath = project.getWorkspacePath();
         if (!workspacePath) {
-          throw new Error(`No workspace found for module ${projectName}`);
+          throw new Error(`No workspace found for module ${packageName}`);
         }
         
         planPath = join(workspacePath, module.path, 'launchql.plan');
@@ -276,12 +276,12 @@ export const resolveDependencies = (
       
       const result = parsePlanFile(planPath);
       if (result.data) {
-        planCache[projectName] = result.data;
+        planCache[packageName] = result.data;
         return result.data;
       }
     } catch (error) {
       // Plan file not found or parse error
-      console.warn(`Could not load plan file for project ${projectName}: ${error}`);
+      console.warn(`Could not load plan file for package ${packageName}: ${error}`);
     }
     
     return null;
@@ -418,7 +418,7 @@ export const resolveDependencies = (
         // Has a prefix — could be internal or external
         const [project, localKey] = sqlmodule.split(':', 2);
         if (project === extname) {
-          // Internal reference to current project
+          // Internal reference to current package
           moduleToResolve = localKey;
           edges = deps[makeKey(localKey)];
           if (!edges) {
@@ -463,7 +463,7 @@ export const resolveDependencies = (
       // Has a prefix — must be internal since we already handled external above
       const [project, localKey] = moduleToResolve.split(':', 2);
       if (project === extname) {
-        // Internal reference to current project
+        // Internal reference to current package
         moduleToResolve = localKey;
         edges = deps[makeKey(localKey)];
         if (!edges) {

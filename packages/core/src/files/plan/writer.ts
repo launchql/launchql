@@ -58,10 +58,10 @@ export function writePlanFile(planPath: string, plan: PlanFile): void {
  * Generate content for a plan file
  */
 export function generatePlanFileContent(plan: PlanFile): string {
-  const { project, uri, changes } = plan;
+  const { package: packageName, uri, changes } = plan;
   
   let content = `%syntax-version=1.0.0\n`;
-  content += `%project=${project}\n`;
+  content += `%project=${packageName}\n`;
   
   if (uri) {
     content += `%uri=${uri}\n`;

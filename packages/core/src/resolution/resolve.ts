@@ -62,21 +62,21 @@ export const resolveWithPlan = (
 
 /**
  * Resolves a tag reference to its corresponding change name.
- * Tags provide a way to reference specific points in a project's deployment history.
+ * Tags provide a way to reference specific points in a package's deployment history.
  * 
  * @param planPath - Path to the plan file containing tag definitions
- * @param tagReference - The tag reference to resolve (e.g., "project:@tagName" or "@tagName")
- * @param currentProject - The current project name (used when tag doesn't specify project)
+ * @param tagReference - The tag reference to resolve (e.g., "package:@tagName" or "@tagName")
+ * @param currentPackage - The current package name (used when tag doesn't specify package)
  * @returns The resolved change name
  * @throws Error if tag format is invalid or tag is not found
  * 
  * @example
- * // Resolve a tag in the current project
- * resolveTagToChangeName('/path/to/launchql.plan', '@v1.0.0', 'myproject')
+ * // Resolve a tag in the current package
+ * resolveTagToChangeName('/path/to/launchql.plan', '@v1.0.0', 'mypackage')
  * // Returns: 'schema/v1'
  * 
  * @example
- * // Resolve a tag from another project
+ * // Resolve a tag from another package
  * resolveTagToChangeName('/path/to/launchql.plan', 'auth:@v2.0.0')
  * // Returns: 'users/table'
  */
@@ -90,22 +90,22 @@ export const resolveTagToChangeName = (
     return tagReference;
   }
   
-  // Handle simple tag format (@tagName) by prepending current project
+  // Handle simple tag format (@tagName) by prepending current package
   if (tagReference.startsWith('@') && !tagReference.includes(':')) {
     if (!currentProject) {
       const plan = parsePlanFile(planPath);
       if (!plan.data) {
         throw new Error(`Could not parse plan file: ${planPath}`);
       }
-      currentProject = plan.data.project;
+      currentProject = plan.data.package;
     }
     tagReference = `${currentProject}:${tagReference}`;
   }
   
-  // Parse project:@tagName format
+  // Parse package:@tagName format
   const match = tagReference.match(/^([^:]+):@(.+)$/);
   if (!match) {
-    throw new Error(`Invalid tag format: ${tagReference}. Expected format: project:@tagName or @tagName`);
+    throw new Error(`Invalid tag format: ${tagReference}. Expected format: package:@tagName or @tagName`);
   }
   
   const [, projectName, tagName] = match;

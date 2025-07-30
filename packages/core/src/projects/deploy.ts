@@ -6,7 +6,7 @@ import * as path from 'path';
 import { getPgPool } from 'pg-cache';
 import {PgConfig } from 'pg-env';
 
-import { LaunchQLProject } from '../core/class/launchql';
+import { LaunchQLPackage } from '../core/class/launchql';
 import { LaunchQLMigrate } from '../migrate/client';
 import { packageModule } from '../packaging/package';
 
@@ -33,20 +33,20 @@ export const deployProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  project: LaunchQLProject,
+  packageInstance: LaunchQLPackage,
   toChange?: string
 ): Promise<Extensions> => {
   const mergedOpts = getEnvOptions(opts);
-  log.info(`🔍 Gathering modules from ${project.workspacePath}...`);
-  const modules = project.getModuleMap();
+  log.info(`🔍 Gathering modules from ${packageInstance.workspacePath}...`);
+  const modules = packageInstance.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  const modulePath = path.resolve(project.workspacePath!, modules[name].path);
-  const moduleProject = new LaunchQLProject(modulePath);
+  const modulePath = path.resolve(packageInstance.workspacePath!, modules[name].path);
+  const moduleProject = new LaunchQLPackage(modulePath);
 
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = moduleProject.getModuleExtensions();
@@ -63,13 +63,13 @@ export const deployProject = async (
         log.debug(`> ${msg}`);
         await pgPool.query(msg);
       } else {
-        const modulePath = resolve(project.workspacePath!, modules[extension].path);
+        const modulePath = resolve(packageInstance.workspacePath!, modules[extension].path);
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
         if (mergedOpts.deployment.fast) {
           // Use fast deployment strategy
-          const localProject = new LaunchQLProject(modulePath);
+          const localProject = new LaunchQLPackage(modulePath);
           const cacheKey = getCacheKey(mergedOpts.pg as PgConfig, extension, database);
           
           if (mergedOpts.deployment.cache && deployFastCache[cacheKey]) {
@@ -89,7 +89,7 @@ export const deployProject = async (
             const errorLines = [];
             errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
             errorLines.push(`   Module Path: ${modulePath}`);
-            errorLines.push(`   Workspace Path: ${project.workspacePath}`);
+            errorLines.push(`   Workspace Path: ${packageInstance.workspacePath}`);
             errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
             errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
             

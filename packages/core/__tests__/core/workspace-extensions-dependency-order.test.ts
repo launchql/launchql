@@ -1,6 +1,6 @@
 process.env.LAUNCHQL_DEBUG = 'true';
 
-import { LaunchQLProject } from '../../src/core/class/launchql';
+import { LaunchQLPackage } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
@@ -17,7 +17,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
   describe('with existing fixtures', () => {
     it('returns extensions in dependency order for simple-w-tags workspace', () => {
       const workspacePath = fixture.getFixturePath('simple-w-tags');
-      const project = new LaunchQLProject(workspacePath);
+      const project = new LaunchQLPackage(workspacePath);
       
       const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
@@ -25,7 +25,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
 
     it('returns extensions in dependency order for launchql workspace', () => {
       const workspacePath = fixture.getFixturePath('launchql');
-      const project = new LaunchQLProject(workspacePath);
+      const project = new LaunchQLPackage(workspacePath);
       
       const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
@@ -33,7 +33,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
 
     it('handles workspace with minimal modules', () => {
       const workspacePath = fixture.getFixturePath('simple');
-      const project = new LaunchQLProject(workspacePath);
+      const project = new LaunchQLPackage(workspacePath);
       
       const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
@@ -46,7 +46,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
   describe('with complex existing fixtures', () => {
     it('returns extensions in dependency order for complex workspace', () => {
       const workspacePath = fixture.getFixturePath('launchql');
-      const project = new LaunchQLProject(workspacePath);
+      const project = new LaunchQLPackage(workspacePath);
       
       const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
@@ -57,7 +57,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
 
     it('verifies dependency ordering properties', () => {
       const workspacePath = fixture.getFixturePath('simple-w-tags');
-      const project = new LaunchQLProject(workspacePath);
+      const project = new LaunchQLPackage(workspacePath);
       
       const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();
@@ -73,7 +73,7 @@ describe('getWorkspaceExtensionsInDependencyOrder', () => {
 
     it('handles different fixture types consistently', () => {
       const workspacePath = fixture.getFixturePath('simple');
-      const project = new LaunchQLProject(workspacePath);
+      const project = new LaunchQLPackage(workspacePath);
       
       const result = project.resolveWorkspaceExtensionDependencies();
       expect(result).toMatchSnapshot();

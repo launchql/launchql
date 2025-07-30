@@ -1,4 +1,4 @@
-import { LaunchQLProject } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { getEnvOptions } from '@launchql/env';
 import { execSync } from 'child_process';
@@ -10,7 +10,7 @@ import {
 } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
-import { selectProject } from '../utils/module-utils';
+import { selectPackage } from '../utils/module-utils';
 
 export default async (
   argv: Partial<ParsedArgs>,
@@ -88,9 +88,9 @@ export default async (
     });
   }
 
-  let projectName: string | undefined;
+  let packageName: string | undefined;
   if (recursive) {
-    projectName = await selectProject(argv, prompter, cwd, 'deploy', log);
+    packageName = await selectPackage(argv, prompter, cwd, 'deploy', log);
   }
 
   const cliOverrides = {
@@ -106,17 +106,17 @@ export default async (
   
   const opts = getEnvOptions(cliOverrides);
 
-  const project = new LaunchQLProject(cwd);
+  const project = new LaunchQLPackage(cwd);
   
   let target: string | undefined;
-  if (projectName && argv.to) {
-    target = `${projectName}:${argv.to}`;
-  } else if (projectName) {
-    target = projectName;
-  } else if (argv.project && argv.to) {
-    target = `${argv.project}:${argv.to}`;
-  } else if (argv.project) {
-    target = argv.project as string;
+  if (packageName && argv.to) {
+    target = `${packageName}:${argv.to}`;
+  } else if (packageName) {
+    target = packageName;
+  } else if (argv.package && argv.to) {
+    target = `${argv.package}:${argv.to}`;
+  } else if (argv.package) {
+    target = argv.package as string;
   }
   
   await project.deploy(

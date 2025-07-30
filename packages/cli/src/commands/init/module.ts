@@ -1,4 +1,4 @@
-import { LaunchQLProject, sluggify } from '@launchql/core';
+import { LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { errors, getGitConfigInfo } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
@@ -12,7 +12,7 @@ export default async function runModuleSetup(
   const { email, username } = getGitConfigInfo();
   const { cwd = process.cwd() } = argv;
 
-  const project = new LaunchQLProject(cwd);
+  const project = new LaunchQLPackage(cwd);
 
   if (!project.workspacePath) {
     log.error('Not inside a LaunchQL workspace.');
