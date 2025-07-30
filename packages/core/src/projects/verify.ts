@@ -19,19 +19,19 @@ export const verifyProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  packageInstance: LaunchQLPackage,
+  pkg: LaunchQLPackage,
   options?: { 
   }
 ): Promise<Extensions> => {
-  log.info(`🔍 Gathering modules from ${packageInstance.workspacePath}...`);
-  const modules = packageInstance.getModuleMap();
+  log.info(`🔍 Gathering modules from ${pkg.workspacePath}...`);
+  const modules = pkg.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  const modulePath = path.resolve(packageInstance.workspacePath!, modules[name].path);
+  const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
   const moduleProject = new LaunchQLPackage(modulePath);
 
   log.info(`📦 Resolving dependencies for ${name}...`);
@@ -52,7 +52,7 @@ export const verifyProject = async (
         log.debug(`> ${query}`);
         await pgPool.query(query, [extension]);
       } else {
-        const modulePath = resolve(packageInstance.workspacePath!, modules[extension].path);
+        const modulePath = resolve(pkg.workspacePath!, modules[extension].path);
         log.info(`📂 Verifying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
         log.debug(`→ Command: launchql migrate verify db:pg:${database}`);

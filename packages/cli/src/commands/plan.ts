@@ -20,13 +20,13 @@ export default async (
     log.info(`Using current directory: ${cwd}`);
   }
 
-  const packageInstance = new LaunchQLPackage(cwd);
+  const pkg = new LaunchQLPackage(cwd);
 
-  if (!packageInstance.isInModule()) {
+  if (!pkg.isInModule()) {
     throw new Error('This command must be run inside a LaunchQL module.');
   }
 
-  packageInstance.writeModulePlan({
+  pkg.writeModulePlan({
     packages: true
   });
   

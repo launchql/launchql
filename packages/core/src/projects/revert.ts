@@ -19,7 +19,7 @@ export const revertProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  packageInstance: LaunchQLPackage,
+  pkg: LaunchQLPackage,
   options?: { 
     useTransaction?: boolean;
     /**
@@ -29,15 +29,15 @@ export const revertProject = async (
     toChange?: string;
   }
 ): Promise<Extensions> => {
-  log.info(`🔍 Gathering modules from ${packageInstance.workspacePath}...`);
-  const modules = packageInstance.getModuleMap();
+  log.info(`🔍 Gathering modules from ${pkg.workspacePath}...`);
+  const modules = pkg.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  const modulePath = path.resolve(packageInstance.workspacePath!, modules[name].path);
+  const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
   const moduleProject = new LaunchQLPackage(modulePath);
 
   log.info(`📦 Resolving dependencies for ${name}...`);
@@ -68,7 +68,7 @@ export const revertProject = async (
           }
         }
       } else {
-        const modulePath = resolve(packageInstance.workspacePath!, modules[extension].path);
+        const modulePath = resolve(pkg.workspacePath!, modules[extension].path);
         log.info(`📂 Reverting local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 

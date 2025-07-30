@@ -15,8 +15,8 @@ export async function selectPackage(
   operationName: string,
   log?: Logger
 ): Promise<string | undefined> {
-  const packageInstance = new LaunchQLPackage(cwd);
-  const modules = await packageInstance.getModules();
+  const pkg = new LaunchQLPackage(cwd);
+  const modules = await pkg.getModules();
   const moduleNames = modules.map(mod => mod.getModuleName());
 
   // Check if any modules exist

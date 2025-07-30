@@ -50,7 +50,7 @@ export default async (
     packageName = await selectPackage(argv, prompter, cwd, 'revert', log);
   }
 
-  const packageInstance = new LaunchQLPackage(cwd);
+  const pkg = new LaunchQLPackage(cwd);
   
   const opts = getEnvOptions({ 
     pg: getPgEnvOptions({ database }),
@@ -70,7 +70,7 @@ export default async (
     target = argv.package as string;
   }
   
-  await packageInstance.revert(
+  await pkg.revert(
     opts,
     target,
     recursive

@@ -33,19 +33,19 @@ export const deployProject = async (
   opts: LaunchQLOptions,
   name: string,
   database: string,
-  packageInstance: LaunchQLPackage,
+  pkg: LaunchQLPackage,
   toChange?: string
 ): Promise<Extensions> => {
   const mergedOpts = getEnvOptions(opts);
-  log.info(`🔍 Gathering modules from ${packageInstance.workspacePath}...`);
-  const modules = packageInstance.getModuleMap();
+  log.info(`🔍 Gathering modules from ${pkg.workspacePath}...`);
+  const modules = pkg.getModuleMap();
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
     throw new Error(`Module "${name}" does not exist.`);
   }
 
-  const modulePath = path.resolve(packageInstance.workspacePath!, modules[name].path);
+  const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
   const moduleProject = new LaunchQLPackage(modulePath);
 
   log.info(`📦 Resolving dependencies for ${name}...`);
@@ -63,7 +63,7 @@ export const deployProject = async (
         log.debug(`> ${msg}`);
         await pgPool.query(msg);
       } else {
-        const modulePath = resolve(packageInstance.workspacePath!, modules[extension].path);
+        const modulePath = resolve(pkg.workspacePath!, modules[extension].path);
         log.info(`📂 Deploying local module: ${extension}`);
         log.debug(`→ Path: ${modulePath}`);
 
@@ -73,14 +73,14 @@ export const deployProject = async (
           const cacheKey = getCacheKey(mergedOpts.pg as PgConfig, extension, database);
           
           if (mergedOpts.deployment.cache && deployFastCache[cacheKey]) {
-            log.warn(`⚡ Using cached pkg for ${extension}.`);
+            log.warn(`⚡ Using cached package for ${extension}.`);
             await pgPool.query(deployFastCache[cacheKey].sql);
             continue;
           }
 
-          let pkg;
+          let modulePackage;
           try {
-            pkg = await packageModule(localProject.modulePath, { 
+            modulePackage = await packageModule(localProject.modulePath, { 
               usePlan: mergedOpts.deployment.usePlan, 
               extension: false 
             });
@@ -89,7 +89,7 @@ export const deployProject = async (
             const errorLines = [];
             errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
             errorLines.push(`   Module Path: ${modulePath}`);
-            errorLines.push(`   Workspace Path: ${packageInstance.workspacePath}`);
+            errorLines.push(`   Workspace Path: ${pkg.workspacePath}`);
             errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
             errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
             
@@ -113,12 +113,12 @@ export const deployProject = async (
           }
 
           log.debug(`→ Command: sqitch deploy db:pg:${database}`);
-          log.debug(`> ${pkg.sql}`);
+          log.debug(`> ${modulePackage.sql}`);
 
-          await pgPool.query(pkg.sql);
+          await pgPool.query(modulePackage.sql);
 
           if (mergedOpts.deployment.cache) {
-            deployFastCache[cacheKey] = pkg;
+            deployFastCache[cacheKey] = modulePackage;
           }
         } else {
           // Use new migration system
