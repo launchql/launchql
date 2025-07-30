@@ -72,6 +72,6 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     
     await fixture.deployModule('my-second:@v2.2.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('schema', 'otherschema')).toBe(true);
   });
 });
