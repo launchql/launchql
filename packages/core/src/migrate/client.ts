@@ -112,8 +112,8 @@ export class LaunchQLMigrate {
   /**
    * Resolve toChange parameter, handling tag resolution if needed
    */
-  private resolveToChange(toChange: string | undefined, planPath: string, project: string): string | undefined {
-    return toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, project) : toChange;
+  private resolveToChange(toChange: string | undefined, planPath: string, packageName: string): string | undefined {
+    return toChange && toChange.includes('@') ? resolveTagToChangeName(planPath, toChange, packageName) : toChange;
   }
 
   /**
@@ -206,7 +206,7 @@ export class LaunchQLMigrate {
           const errorLines = [];
           errorLines.push(`Failed to deploy ${change.name}:`);
           errorLines.push(`  Change: ${change.name}`);
-          errorLines.push(`  Project: ${plan.package}`);
+          errorLines.push(`  Package: ${plan.package}`);
           errorLines.push(`  Script Hash: ${scriptHash}`);
           errorLines.push(`  Dependencies: ${resolvedChangeDeps.length > 0 ? resolvedChangeDeps.join(', ') : 'none'}`);
           errorLines.push(`  Error Code: ${error.code || 'N/A'}`);
@@ -421,16 +421,16 @@ export class LaunchQLMigrate {
   /**
    * Get deployment status
    */
-  async status(project?: string): Promise<StatusResult[]> {
+  async status(packageName?: string): Promise<StatusResult[]> {
     await this.initialize();
     
     const result = await this.pool.query(
       'SELECT * FROM launchql_migrate.status($1)',
-      [project]
+      [packageName]
     );
     
     return result.rows.map(row => ({
-      project: row.project,
+      package: row.package,
       totalDeployed: row.total_deployed,
       lastChange: row.last_change,
       lastDeployed: new Date(row.last_deployed)
@@ -440,10 +440,10 @@ export class LaunchQLMigrate {
   /**
    * Check if a change is deployed
    */
-  async isDeployed(project: string, changeName: string): Promise<boolean> {
+  async isDeployed(packageName: string, changeName: string): Promise<boolean> {
     const result = await this.pool.query(
       'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
-      [project, changeName]
+      [packageName, changeName]
     );
     
     return result.rows[0].is_deployed;
@@ -505,7 +505,7 @@ export class LaunchQLMigrate {
             SELECT change_id FROM sqitch.tags
           )
         )
-        INSERT INTO launchql_migrate.changes (change_id, change_name, project, script_hash, deployed_at)
+        INSERT INTO launchql_migrate.changes (change_id, change_name, package, script_hash, deployed_at)
         SELECT 
           encode(sha256((cd.project || cd.change || cd.change_id)::bytea), 'hex'),
           cd.change,
@@ -513,7 +513,7 @@ export class LaunchQLMigrate {
           cd.change_id,
           cd.committed_at
         FROM change_data cd
-        ON CONFLICT (project, change_name) DO NOTHING
+        ON CONFLICT (package, change_name) DO NOTHING
       `);
       
       // Import dependencies
@@ -549,7 +549,7 @@ export class LaunchQLMigrate {
         SELECT 
           c.change_name,
           c.deployed_at,
-          c.project
+          c.package
         FROM launchql_migrate.changes c
         ORDER BY c.deployed_at DESC NULLS LAST
         LIMIT $1
@@ -595,7 +595,7 @@ export class LaunchQLMigrate {
   /**
    * Get all deployed changes for a project
    */
-  async getDeployedChanges(targetDatabase: string, project: string): Promise<any[]> {
+  async getDeployedChanges(targetDatabase: string, packageName: string): Promise<any[]> {
     const targetPool = getPgPool({
       ...this.pgConfig,
       database: targetDatabase
@@ -610,7 +610,7 @@ export class LaunchQLMigrate {
         FROM launchql_migrate.changes c
         WHERE c.package = $1 AND c.deployed_at IS NOT NULL
         ORDER BY c.deployed_at ASC
-      `, [project]);
+      `, [packageName]);
       
       return result.rows;
     } catch (error: any) {
@@ -625,7 +625,7 @@ export class LaunchQLMigrate {
   /**
    * Get dependencies for a change
    */
-  async getDependencies(project: string, changeName: string): Promise<string[]> {
+  async getDependencies(packageName: string, changeName: string): Promise<string[]> {
     await this.initialize();
     
     try {
@@ -634,12 +634,12 @@ export class LaunchQLMigrate {
          FROM launchql_migrate.dependencies d
          JOIN launchql_migrate.changes c ON c.change_id = d.change_id
          WHERE c.package = $1 AND c.change_name = $2`,
-        [project, changeName]
+        [packageName, changeName]
       );
       
       return result.rows.map(row => row.requires);
     } catch (error) {
-      log.error(`Failed to get dependencies for ${project}:${changeName}:`, error);
+      log.error(`Failed to get dependencies for ${packageName}:${changeName}:`, error);
       return [];
     }
   }
