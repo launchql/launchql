@@ -29,13 +29,18 @@ export default async (
 
   let packageName: string | undefined;
   
-  if (pkg.isInModule()) {
+  if (argv.package) {
+    packageName = argv.package as string;
+    log.info(`Using specified package: ${packageName}`);
+  }
+  else if (pkg.isInModule()) {
     packageName = pkg.getModuleName();
     log.info(`Using current module: ${packageName}`);
-  } else if (pkg.isInWorkspace()) {
+  }
+  else if (pkg.isInWorkspace()) {
     packageName = await selectPackage(newArgv, prompter, cwd, 'add tag to', log);
     if (!packageName) {
-      return newArgv;
+      throw new Error('No package selected. Cannot add tag without specifying a target package.');
     }
   } else {
     throw new Error('This command must be run inside a LaunchQL workspace or module.');
