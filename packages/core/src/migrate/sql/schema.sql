@@ -1,9 +1,9 @@
 -- Create schema
 CREATE SCHEMA launchql_migrate;
 
--- 1. Projects (minimal - just name and timestamp)
-CREATE TABLE launchql_migrate.projects (
-    project         TEXT        PRIMARY KEY,
+-- 1. Packages (minimal - just name and timestamp)
+CREATE TABLE launchql_migrate.packages (
+    package         TEXT        PRIMARY KEY,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp()
 );
 
@@ -11,11 +11,11 @@ CREATE TABLE launchql_migrate.projects (
 CREATE TABLE launchql_migrate.changes (
     change_id       TEXT        PRIMARY KEY,
     change_name     TEXT        NOT NULL,
-    project         TEXT        NOT NULL REFERENCES launchql_migrate.projects(project),
+    package         TEXT        NOT NULL REFERENCES launchql_migrate.packages(package),
     script_hash     TEXT        NOT NULL,
     deployed_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
-    UNIQUE(project, change_name),
-    UNIQUE(project, script_hash)
+    UNIQUE(package, change_name),
+    UNIQUE(package, script_hash)
 );
 
 -- 3. Dependencies (what depends on what)
@@ -30,7 +30,7 @@ CREATE TABLE launchql_migrate.events (
     event_id        SERIAL      PRIMARY KEY,
     event_type      TEXT        NOT NULL CHECK (event_type IN ('deploy', 'revert', 'verify')),
     change_name     TEXT        NOT NULL,
-    project         TEXT        NOT NULL,
+    package         TEXT        NOT NULL,
     occurred_at     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
     error_message   TEXT,
     error_code      TEXT
