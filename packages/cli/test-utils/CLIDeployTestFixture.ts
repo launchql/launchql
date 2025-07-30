@@ -280,34 +280,9 @@ export class CLIDeployTestFixture extends TestFixture {
   }
 
   private tokenizeCommand(command: string): string[] {
-    const tokens: string[] = [];
-    let current = '';
-    let inQuotes = false;
-    let quoteChar = '';
-    
-    for (let i = 0; i < command.length; i++) {
-      const char = command[i];
-      
-      if ((char === '"' || char === "'") && !inQuotes) {
-        inQuotes = true;
-        quoteChar = char;
-      } else if (char === quoteChar && inQuotes) {
-        inQuotes = false;
-        quoteChar = '';
-      } else if (char === ' ' && !inQuotes) {
-        if (current) {
-          tokens.push(current);
-          current = '';
-        }
-      } else {
-        current += char;
-      }
-    }
-    
-    if (current) {
-      tokens.push(current);
-    }
-    
+    const re = /("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*'|--[a-zA-Z0-9_-]+|-[a-zA-Z0-9_]+|[^\s]+)|(\s+)/g;
+    const matches = command.match(re);
+    const tokens = matches ? matches.filter(t => t.trim()) : [];
     return tokens;
   }
 
