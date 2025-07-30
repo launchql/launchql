@@ -90,8 +90,23 @@ export default async (
 
   let projectName: string | undefined;
   if (recursive) {
-    projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
-    log.info(`Selected project: ${projectName}`);
+    if (argv.project) {
+      projectName = argv.project as string;
+      log.info(`Using specified project: ${projectName}`);
+      
+      const project = new LaunchQLProject(cwd);
+      const modules = await project.getModules();
+      const moduleNames = modules.map(mod => mod.getModuleName());
+      
+      if (!moduleNames.includes(projectName)) {
+        log.error(`Project '${projectName}' not found. Available projects: ${moduleNames.join(', ')}`);
+        return;
+      }
+    } else {
+      // Fall back to interactive selection
+      projectName = await selectModule(argv, prompter, 'Choose a project to deploy', cwd);
+      log.info(`Selected project: ${projectName}`);
+    }
   }
 
   const cliOverrides = {
@@ -110,10 +125,14 @@ export default async (
   const project = new LaunchQLProject(cwd);
   
   let target: string | undefined;
-  if (projectName && argv.toChange) {
-    target = `${projectName}:${argv.toChange}`;
+  if (projectName && argv.to) {
+    target = `${projectName}:${argv.to}`;
   } else if (projectName) {
     target = projectName;
+  } else if (argv.project && argv.to) {
+    target = `${argv.project}:${argv.to}`;
+  } else if (argv.project) {
+    target = argv.project as string;
   }
   
   await project.deploy(
