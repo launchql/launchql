@@ -16,7 +16,7 @@ import { PgConfig } from 'pg-env';
 
 import { getAvailableExtensions } from '../../extensions/extensions';
 import { generatePlan, writePlan, writePlanFile } from '../../files';
-import { Tag, ExtendedPlanFile } from '../../files/types';
+import { Tag, ExtendedPlanFile, Change } from '../../files/types';
 import { parsePlanFile } from '../../files/plan/parser';
 import { isValidTagName } from '../../files/plan/validators';
 import { getNow as getPlanTimestamp } from '../../files/plan/generator';
@@ -1163,5 +1163,53 @@ export class LaunchQLPackage {
 
       log.success(`✅ Single module verification complete for ${name}.`);
     }
+  }
+
+  async removeFromPlan(toChange?: string): Promise<void> {
+    const log = new Logger('remove');
+    const modulePath = this.getModulePath();
+    if (!modulePath) {
+      throw new Error('Could not resolve module path');
+    }
+    
+    const planPath = path.join(modulePath, 'launchql.plan');
+    const result = parsePlanFile(planPath);
+    
+    if (result.errors.length > 0) {
+      throw new Error(`Failed to parse plan file: ${result.errors.map(e => e.message).join(', ')}`);
+    }
+    
+    const plan = result.data!;
+    let changesToRemove: Change[];
+    
+    if (toChange) {
+      const targetIndex = plan.changes.findIndex(c => c.name === toChange);
+      if (targetIndex === -1) {
+        throw new Error(`Change '${toChange}' not found in plan`);
+      }
+      changesToRemove = plan.changes.slice(targetIndex);
+      plan.changes = plan.changes.slice(0, targetIndex);
+    } else {
+      changesToRemove = [...plan.changes];
+      plan.changes = [];
+    }
+    
+    plan.tags = plan.tags.filter(tag => 
+      !changesToRemove.some(change => change.name === tag.change)
+    );
+    
+    for (const change of changesToRemove) {
+      for (const scriptType of ['deploy', 'revert', 'verify']) {
+        const scriptPath = path.join(modulePath, scriptType, `${change.name}.sql`);
+        if (fs.existsSync(scriptPath)) {
+          fs.unlinkSync(scriptPath);
+          log.info(`Deleted ${scriptType}/${change.name}.sql`);
+        }
+      }
+    }
+    
+    // Write updated plan file
+    writePlanFile(planPath, plan);
+    log.success(`Removed ${changesToRemove.length} changes from plan`);
   }
 }
