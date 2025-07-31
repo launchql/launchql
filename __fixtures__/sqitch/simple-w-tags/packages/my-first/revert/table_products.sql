@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE myapp.products;
+DROP TABLE myfirstapp.products;
 
 COMMIT;

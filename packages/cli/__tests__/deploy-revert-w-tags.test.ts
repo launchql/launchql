@@ -31,27 +31,27 @@ describe('CLI Forked Deployment with Tag Syntax', () => {
   it('handles forked deployment scenario with tag syntax via CLI', async () => {
     await exec(`lql deploy --database $database --package my-third --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(true);
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await testDb.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await testDb.exists('table', 'mythirdapp.customers')).toBe(true);
     
     await exec(`lql revert --database $database --package my-first --to @v1.0.0 --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(false);
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(false);
+    expect(await testDb.exists('schema', 'mythirdapp')).toBe(false);
+    expect(await testDb.exists('table', 'mythirdapp.customers')).toBe(false);
     
     await exec(`lql deploy --database $database --package my-third --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(true);
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await testDb.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await testDb.exists('table', 'mythirdapp.customers')).toBe(true);
     
     await exec(`lql revert --database $database --package my-first --to @v1.0.0 --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(false);
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(false);
+    expect(await testDb.exists('schema', 'mythirdapp')).toBe(false);
+    expect(await testDb.exists('table', 'mythirdapp.customers')).toBe(false);
     
     await exec(`lql deploy --database $database --package my-third --yes`);
     
-    expect(await testDb.exists('schema', 'metaschema')).toBe(true);
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await testDb.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await testDb.exists('table', 'mythirdapp.customers')).toBe(true);
   });
 });

@@ -3,21 +3,21 @@
 exports[`sqitch package dependencies with resolved tags [simple-w-tags/1st] 1`] = `
 {
   "deps": {
-    "/deploy/schema_myapp.sql": [],
+    "/deploy/schema_myfirstapp.sql": [],
     "/deploy/table_products.sql": [
-      "my-first:schema_myapp",
+      "my-first:schema_myfirstapp",
       "my-first:table_users",
     ],
     "/deploy/table_users.sql": [
-      "my-first:schema_myapp",
+      "my-first:schema_myfirstapp",
     ],
   },
   "external": [],
   "resolved": [
-    "schema_myapp",
+    "schema_myfirstapp",
     "table_users",
-    "schema_myapp",
-    "schema_myapp",
+    "schema_myfirstapp",
+    "schema_myfirstapp",
     "table_users",
     "table_products",
   ],

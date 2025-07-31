@@ -29,26 +29,26 @@ describe('Simple with Tags Migration', () => {
       modulePath: join(basePath, 'packages', 'my-first'),
     });
     
-    expect(resultFirst.deployed).toEqual(['schema_myapp', 'table_users', 'table_products']);
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('table', 'myapp.users')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    expect(resultFirst.deployed).toEqual(['schema_myfirstapp', 'table_users', 'table_products']);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
     const resultSecond = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     expect(resultSecond.deployed).toEqual(['create_schema', 'create_table', 'create_another_table']);
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     const resultThird = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(resultThird.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
     expect(createSchemaDeps).toContain('my-first:table_products'); // resolved from my-first:@v1.1.0
@@ -60,7 +60,7 @@ describe('Simple with Tags Migration', () => {
     const deployedChanges = await db.getDeployedChanges();
     expect(deployedChanges).toContainEqual(expect.objectContaining({
       package: 'my-first',
-      change_name: 'schema_myapp'
+      change_name: 'schema_myfirstapp'
     }));
     expect(deployedChanges).toContainEqual(expect.objectContaining({
       package: 'my-first',
@@ -99,24 +99,24 @@ describe('Simple with Tags Migration', () => {
       modulePath: join(basePath, 'packages', 'my-third'),
     });
     
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
     
     const revertResult = await client.revert({
       modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(revertResult.reverted).toEqual(['create_table', 'create_schema']);
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
     
     const redeployResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(redeployResult.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
     expect(createSchemaDeps).toContain('my-first:table_products'); // resolved from my-first:@v1.1.0
@@ -146,8 +146,8 @@ describe('Simple with Tags Migration', () => {
     })).rejects.toThrow(/Cannot revert table_products: required by my-third:create_schema/);
     
     // Verify nothing was reverted
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
     
     // Try to revert my-second:create_another_table which my-third depends on via tag my-second:@v2.1.0
     await expect(client.revert({
@@ -156,8 +156,8 @@ describe('Simple with Tags Migration', () => {
     })).rejects.toThrow(/Cannot revert create_another_table: required by my-third:create_table/);
     
     // Verify nothing was reverted
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
   });
 
   test('complex deploy/revert sequence with tag dependencies', async () => {
@@ -176,19 +176,19 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(deployResult.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     const revertThirdResult = await client.revert({
       modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(revertThirdResult.reverted).toEqual(['create_table', 'create_schema']);
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
     
     const revertFirstResult = await client.revert({
       modulePath: join(basePath, 'packages', 'my-first'),
@@ -196,33 +196,33 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(revertFirstResult.reverted).toEqual(['table_products']);
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('table', 'myapp.users')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(false);
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
     
     const redeployFirstResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-first'),
     });
     
     expect(redeployFirstResult.deployed).toEqual(['table_products']);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
     const deploySecondResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-second'),
     });
     
     expect(deploySecondResult.deployed).toEqual([]);
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     const redeployThirdResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-third'),
     });
     
     expect(redeployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     // Verify final state: my-third dependencies should still be resolved correctly after the complex sequence
     const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
@@ -257,8 +257,8 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(deployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     // Verify initial state: all projects fully deployed
     let deployedChanges = await db.getDeployedChanges();
@@ -276,15 +276,15 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(revertToV1Result.reverted).toEqual(['table_products']);
-    expect(await db.exists('table', 'myapp.users')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(false);
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
+    expect(await db.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
     
     // Verify state after revert to v1.0.0
     deployedChanges = await db.getDeployedChanges();
     const myFirstChanges = deployedChanges.filter(c => c.package === 'my-first');
-    expect(myFirstChanges).toHaveLength(2); // schema_myapp, table_users
-    expect(myFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users']);
+    expect(myFirstChanges).toHaveLength(2); // schema_myfirstapp, table_users
+    expect(myFirstChanges.map(c => c.change_name)).toEqual(['schema_myfirstapp', 'table_users']);
     
     const deploySecondToTagResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-second'),
@@ -292,8 +292,8 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(deploySecondToTagResult.deployed).toEqual([]); // Already at v2.0.0
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     // Verify state remains at my-second v2.0.0 level (all changes deployed)
     deployedChanges = await db.getDeployedChanges();
@@ -307,8 +307,8 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(deploySecondToSchemaResult.deployed).toEqual([]); // Already deployed
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true); // Still exists since we can't revert
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true); // Still exists since we can't revert
     
     // Verify state - my-second remains fully deployed due to fixture limitation
     deployedChanges = await db.getDeployedChanges();
@@ -322,7 +322,7 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(redeployFirstResult.deployed).toEqual(['table_products']);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
     const redeploySecondResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-second'),
@@ -330,7 +330,7 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(redeploySecondResult.deployed).toEqual([]); // Already deployed due to fixture limitation
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     const finalDeployThirdResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-third'),
@@ -338,8 +338,8 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(finalDeployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     // Verify final state: all dependencies correctly resolved
     const createSchemaDeps = await db.getDependencies('my-third', 'create_schema');
@@ -356,7 +356,7 @@ describe('Simple with Tags Migration', () => {
     expect(finalMySecondChanges).toHaveLength(3); // remains fully deployed (create_schema, create_table, create_another_table)
     expect(finalMyThirdChanges).toHaveLength(2); // full deployment (create_schema, create_table)
     
-    expect(finalMyFirstChanges.map(c => c.change_name)).toEqual(['schema_myapp', 'table_users', 'table_products']);
+    expect(finalMyFirstChanges.map(c => c.change_name)).toEqual(['schema_myfirstapp', 'table_users', 'table_products']);
     expect(finalMySecondChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table', 'create_another_table']);
     expect(finalMyThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });
@@ -374,8 +374,8 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(deploySecondToTagResult.deployed).toEqual(['create_schema', 'create_table']);
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
-    expect(await db.exists('table', 'otherschema.users')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     const deploySecondShortFormatResult = await client.deploy({
       modulePath: join(basePath, 'packages', 'my-second'),
@@ -383,8 +383,8 @@ describe('Simple with Tags Migration', () => {
     });
     
     expect(deploySecondShortFormatResult.deployed).toEqual(['create_another_table']);
-    expect(await db.exists('table', 'otherschema.user_interactions')).toBe(true);
-    expect(await db.exists('table', 'otherschema.consent_agreements')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.user_interactions')).toBe(true);
+    expect(await db.exists('table', 'mysecondapp.consent_agreements')).toBe(true);
     
     // Verify both tag formats resolve to the same changes when appropriate
     const deployedChanges = await db.getDeployedChanges();

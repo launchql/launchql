@@ -35,10 +35,10 @@ describe('Forked Deployment with deployModules', () => {
 
 BEGIN;
 
-CREATE TABLE myapp.orders (
+CREATE TABLE myfirstapp.orders (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES myapp.users(id),
-  product_id INTEGER REFERENCES myapp.products(id),
+  user_id INTEGER REFERENCES myfirstapp.users(id),
+  product_id INTEGER REFERENCES myfirstapp.products(id),
   quantity INTEGER NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT now()
 );
@@ -50,28 +50,28 @@ COMMIT;
 
 BEGIN;
 
-DROP TABLE myapp.orders;
+DROP TABLE myfirstapp.orders;
 
 COMMIT;
 `);
     
     writeFileSync(join(verifyDir, 'table_orders.sql'), `-- Verify my-first:table_orders on pg
 
-SELECT 1/count(*) FROM information_schema.tables WHERE table_schema = 'myapp' AND table_name = 'orders';
+SELECT 1/count(*) FROM information_schema.tables WHERE table_schema = 'myfirstapp' AND table_name = 'orders';
 `);
     
     await fixture.deployModule('my-first', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('table', 'myapp.users')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
-    expect(await db.exists('table', 'myapp.orders')).toBe(true);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.orders')).toBe(true);
     
-    const schemas = await db.query('SELECT schema_name FROM information_schema.schemata WHERE schema_name = \'myapp\'');
+    const schemas = await db.query('SELECT schema_name FROM information_schema.schemata WHERE schema_name = \'myfirstapp\'');
     expect(schemas.rows).toHaveLength(1);
-    expect(schemas.rows[0].schema_name).toBe('myapp');
+    expect(schemas.rows[0].schema_name).toBe('myfirstapp');
     
-    const tables = await db.query('SELECT table_name FROM information_schema.tables WHERE table_schema = \'myapp\' ORDER BY table_name');
+    const tables = await db.query('SELECT table_name FROM information_schema.tables WHERE table_schema = \'myfirstapp\' ORDER BY table_name');
     expect(tables.rows).toHaveLength(3);
     expect(tables.rows.map((r: any) => r.table_name)).toEqual(['orders', 'products', 'users']);
     
