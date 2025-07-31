@@ -14,6 +14,12 @@ export default async (
   _options: CLIOptions
 ) => {
   
+  if (!argv.to) {
+    log.error('Error: No change specified');
+    log.info('Usage: lql remove --to <change>');
+    process.exit(1);
+  }
+
   const database = await getTargetDatabase(argv, prompter, {
     message: 'Select database'
   });
@@ -46,18 +52,11 @@ export default async (
     pg: getPgEnvOptions({ database })
   });
   
-  let toChange: string | undefined;
-  if (argv.to) {
-    toChange = argv.to as string;
-  }
+  const toChange = argv.to as string;
   
   await pkg.removeFromPlan(toChange);
 
-  if (toChange) {
-    log.success(`✅ Successfully removed changes from '${toChange}' to end of plan.`);
-  } else {
-    log.success(`✅ Successfully removed all changes from plan.`);
-  }
+  log.success(`✅ Successfully removed changes from '${toChange}' to end of plan.`);
 
   return argv;
 };
