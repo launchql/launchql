@@ -35,7 +35,7 @@ describe('CLI Tag Command', () => {
     
     await exec(`lql deploy --database $database --package my-first --to @v1.2.0 --yes`);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(true);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
   });
 
   it('adds tag to specific change in package', async () => {
@@ -45,7 +45,7 @@ describe('CLI Tag Command', () => {
     
     await exec(`lql revert --database $database --package my-second --to @v2.2.0 --yes`);
     
-    expect(await testDb.exists('schema', 'otherschema')).toBe(true);
+    expect(await testDb.exists('schema', 'mysecondapp')).toBe(true);
   });
 
   it('handles tag with comment', async () => {
@@ -55,7 +55,7 @@ describe('CLI Tag Command', () => {
     
     await exec(`lql deploy --database $database --package my-first --to @v1.3.0 --yes`);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(true);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
   });
 
   it('prevents duplicate tag names', async () => {

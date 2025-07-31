@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE metaschema.customers CASCADE;
+DROP TABLE mythirdapp.customers CASCADE;
 
 COMMIT;

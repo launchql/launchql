@@ -19,8 +19,8 @@ describe('Deployment Scenarios with Undefined Targets', () => {
   test('handles undefined target scenarios for deploy, revert, and verify operations', async () => {
     await fixture.deployModule(undefined as any, db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
 
     await expect(
       fixture.verifyModule(undefined as any, db.name, ['sqitch', 'simple-w-tags'])
@@ -28,23 +28,23 @@ describe('Deployment Scenarios with Undefined Targets', () => {
 
     await fixture.revertModule(undefined as any, db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(false);
 
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
 
     await fixture.revertModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(false);
 
     await fixture.deployModule(undefined as any, db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
 
     await fixture.verifyModule(undefined as any, db.name, ['sqitch', 'simple-w-tags']);
   });

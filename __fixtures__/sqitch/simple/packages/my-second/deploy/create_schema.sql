@@ -2,6 +2,6 @@
 
 BEGIN;
 
-CREATE SCHEMA otherschema;
+CREATE SCHEMA mysecondapp;
 
 COMMIT;

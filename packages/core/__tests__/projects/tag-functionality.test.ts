@@ -40,21 +40,21 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const packagePath = join(basePath, 'packages', 'my-first');
     
     const pkg = new LaunchQLPackage(packagePath);
-    pkg.addTag('v1.3.0', 'schema_myapp', 'Initial schema tag');
+    pkg.addTag('v1.3.0', 'schema_myfirstapp', 'Initial schema tag');
     
     await fixture.deployModule('my-first:@v1.3.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'myapp')).toBe(true);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
     
     await fixture.deployModule('my-first', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
     await fixture.revertModule('my-first:@v1.3.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'myapp')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(false);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(false);
   });
 
   test('handles tag with specific change target', async () => {
@@ -71,6 +71,6 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     
     await fixture.deployModule('my-second:@v2.2.0', db.name, ['sqitch', 'simple-w-tags']);
     
-    expect(await db.exists('schema', 'otherschema')).toBe(true);
+    expect(await db.exists('schema', 'mysecondapp')).toBe(true);
   });
 });

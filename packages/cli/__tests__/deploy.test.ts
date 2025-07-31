@@ -24,16 +24,16 @@ describe('CLI Deploy Command', () => {
   });
 
   it('should deploy single schema via CLI', async () => {
-    const commands = `lql deploy --database ${testDb.name} --package my-first --to schema_myapp --yes`;
+    const commands = `lql deploy --database ${testDb.name} --package my-first --to schema_myfirstapp --yes`;
     
     await fixture.runTerminalCommands(commands, {
       database: testDb.name
     }, true);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(true);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
-    expect(deployedChanges.find((change: any) => change.package === 'my-first' && change.change_name === 'schema_myapp')).toBeTruthy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-first' && change.change_name === 'schema_myfirstapp')).toBeTruthy();
     expect(deployedChanges.find((change: any) => change.package === 'my-second')).toBeFalsy();
     expect(deployedChanges.find((change: any) => change.package === 'my-third')).toBeFalsy();
   });
@@ -45,9 +45,9 @@ describe('CLI Deploy Command', () => {
       database: testDb.name
     }, true);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(true);
-    expect(await testDb.exists('table', 'myapp.users')).toBe(true);
-    expect(await testDb.exists('table', 'myapp.products')).toBe(true);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.products')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
     expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
@@ -67,12 +67,12 @@ describe('CLI Deploy Command', () => {
       database: testDb.name
     }, true);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(true);
-    expect(await testDb.exists('schema', 'otherschema')).toBe(true);
-    expect(await testDb.exists('schema', 'metaschema')).toBe(true);
-    expect(await testDb.exists('table', 'myapp.users')).toBe(true);
-    expect(await testDb.exists('table', 'otherschema.users')).toBe(true);
-    expect(await testDb.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await testDb.exists('schema', 'mysecondapp')).toBe(true);
+    expect(await testDb.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await testDb.exists('table', 'mysecondapp.users')).toBe(true);
+    expect(await testDb.exists('table', 'mythirdapp.customers')).toBe(true);
     
     const deployedChanges = await testDb.getDeployedChanges();
     expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
@@ -86,17 +86,17 @@ describe('CLI Deploy Command', () => {
       database: testDb.name
     }, true);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(true);
-    expect(await testDb.exists('table', 'myapp.users')).toBe(true);
-    expect(await testDb.exists('table', 'myapp.products')).toBe(true);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.products')).toBe(true);
     
     const revertCommands = `lql revert --database $database --yes`;
     await fixture.runTerminalCommands(revertCommands, {
       database: testDb.name
     }, true);
     
-    expect(await testDb.exists('schema', 'myapp')).toBe(false);
-    expect(await testDb.exists('table', 'myapp.users')).toBe(false);
-    expect(await testDb.exists('table', 'myapp.products')).toBe(false);
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(false);
+    expect(await testDb.exists('table', 'myfirstapp.users')).toBe(false);
+    expect(await testDb.exists('table', 'myfirstapp.products')).toBe(false);
   });
 });

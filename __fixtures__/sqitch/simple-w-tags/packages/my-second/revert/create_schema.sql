@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP SCHEMA otherschema CASCADE;
+DROP SCHEMA mysecondapp CASCADE;
 
 COMMIT;

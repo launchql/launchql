@@ -47,7 +47,7 @@ describe('Log-Only Deployment', () => {
     
     // Verify that the actual schema objects were NOT created
     // (because log-only mode doesn't execute the scripts)
-    expect(await db.exists('schema', 'myapp')).toBe(false);
+    expect(await db.exists('schema', 'myfirstapp')).toBe(false);
     
     // Verify that the migration metadata WAS recorded
     // This shows the changes were logged as deployed in the tracking tables
