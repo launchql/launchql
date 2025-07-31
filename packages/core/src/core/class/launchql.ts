@@ -1189,11 +1189,31 @@ export class LaunchQLPackage {
         throw new Error(`Tag '${toChange}' not found in plan`);
       }
       
-      plan.tags = plan.tags.filter(tag => tag.name !== tagName);
+      const tagChangeIndex = plan.changes.findIndex(c => c.name === tagToRemove.change);
+      if (tagChangeIndex === -1) {
+        throw new Error(`Associated change '${tagToRemove.change}' not found for tag '${toChange}'`);
+      }
+      
+      const changesToRemove = plan.changes.slice(tagChangeIndex);
+      plan.changes = plan.changes.slice(0, tagChangeIndex);
+      
+      plan.tags = plan.tags.filter(tag => 
+        tag.name !== tagName && !changesToRemove.some(change => change.name === tag.change)
+      );
+      
+      for (const change of changesToRemove) {
+        for (const scriptType of ['deploy', 'revert', 'verify']) {
+          const scriptPath = path.join(modulePath, scriptType, `${change.name}.sql`);
+          if (fs.existsSync(scriptPath)) {
+            fs.unlinkSync(scriptPath);
+            log.info(`Deleted ${scriptType}/${change.name}.sql`);
+          }
+        }
+      }
       
       // Write updated plan file
       writePlanFile(planPath, plan);
-      log.success(`Removed tag ${toChange} from plan`);
+      log.success(`Removed tag ${toChange} and ${changesToRemove.length} subsequent changes from plan`);
       return;
     }
 

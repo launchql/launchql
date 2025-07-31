@@ -128,6 +128,44 @@ describe('Remove Functionality', () => {
     expect(updatedPlan).not.toContain('@v1.1.0');
   });
 
+  test('removes tag and all subsequent changes and tags chronologically', async () => {
+    const pkg = fixture.getModuleProject([], 'my-first');
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    let planContent = fs.readFileSync(planPath, 'utf8');
+    
+    expect(planContent).toContain('schema_myfirstapp');
+    expect(planContent).toContain('table_users');
+    expect(planContent).toContain('@v1.0.0');
+    expect(planContent).toContain('table_products');
+    expect(planContent).toContain('@v1.1.0');
+    
+    await pkg.removeFromPlan('@v1.0.0');
+    
+    planContent = fs.readFileSync(planPath, 'utf8');
+    
+    expect(planContent).toContain('schema_myfirstapp');
+    
+    expect(planContent).not.toContain('@v1.0.0');
+    expect(planContent).not.toContain('table_users');
+    expect(planContent).not.toContain('table_products');
+    expect(planContent).not.toContain('@v1.1.0');
+    
+    const deployDir = path.join(pkg.getModulePath()!, 'deploy');
+    const revertDir = path.join(pkg.getModulePath()!, 'revert');
+    const verifyDir = path.join(pkg.getModulePath()!, 'verify');
+    
+    expect(fs.existsSync(path.join(deployDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(revertDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(verifyDir, 'schema_myfirstapp.sql'))).toBe(true);
+    
+    expect(fs.existsSync(path.join(deployDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(deployDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'table_products.sql'))).toBe(false);
+  });
+
   test('removes a specific tag when its associated change is removed', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
@@ -143,11 +181,29 @@ describe('Remove Functionality', () => {
     let planContent = fs.readFileSync(planPath, 'utf8');
     expect(planContent).toContain('@v1.0.0');
     expect(planContent).toContain('table_users');
+    expect(planContent).toContain('table_products');
+    expect(planContent).toContain('@v1.1.0');
+    
     await pkg.removeFromPlan('@v1.0.0');
+    
     planContent = fs.readFileSync(planPath, 'utf8');
     expect(planContent).not.toContain('@v1.0.0');
-    expect(planContent).toContain('table_users');
-    expect(planContent).toContain('schema_myfirstapp');
+    expect(planContent).not.toContain('table_users'); // Should be removed as it's the change the tag is associated with
+    expect(planContent).not.toContain('table_products'); // Should be removed as it comes after the tag
+    expect(planContent).not.toContain('@v1.1.0'); // Should be removed as it comes after the tag
+    expect(planContent).toContain('schema_myfirstapp'); // Should remain as it comes before the tag
+    
+    const deployDir = path.join(pkg.getModulePath()!, 'deploy');
+    const revertDir = path.join(pkg.getModulePath()!, 'revert');
+    const verifyDir = path.join(pkg.getModulePath()!, 'verify');
+    
+    expect(fs.existsSync(path.join(deployDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(deployDir, 'table_users.sql'))).toBe(false); // Should be deleted
+    expect(fs.existsSync(path.join(deployDir, 'table_products.sql'))).toBe(false); // Should be deleted
+    expect(fs.existsSync(path.join(revertDir, 'table_users.sql'))).toBe(false); // Should be deleted
+    expect(fs.existsSync(path.join(revertDir, 'table_products.sql'))).toBe(false); // Should be deleted
+    expect(fs.existsSync(path.join(verifyDir, 'table_users.sql'))).toBe(false); // Should be deleted
+    expect(fs.existsSync(path.join(verifyDir, 'table_products.sql'))).toBe(false); // Should be deleted
   });
 
 
