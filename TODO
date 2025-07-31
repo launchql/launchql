@@ -1,5 +1,40 @@
 TODO
 
+
+- [ ] deployment to fixtures was NOT working!!!! so check that out.
+
+- [ ] verify toChange param!
+
+- [ ] 'packages' hard coded?!?!?!
+
+    if (isRoot) {
+      const packagesDir = path.join(this.cwd, 'packages');
+      fs.mkdirSync(packagesDir, { recursive: true });
+      targetPath = path.join(packagesDir, modName);
+    } else {
+
+
+- [ ] does every proj.deploy() use proj.getModuleName()? ^^^^
+- [ ] not just projectName? but also database???? 
+packages/pgsql-test/src/seed/sqitch.ts
+await proj.deploy(
+    getEnvOptions({ 
+        pg: ctx.config,
+        deployment: {
+        fast: false
+        }
+    }),
+    proj.getModuleName(),
+    ctx.config.database
+    );
+
+
+- [ ] fix/manage function sqitch(cwd?: string): SeedAdapter 
+
+
+- [ ] DB_CWD, db.cwd ???? in types/src
+
+
 - [ ] pnpm instead of yarn
 - [ ] Add tests for pg-ast
 - [ ] bring back csv-to-pg
