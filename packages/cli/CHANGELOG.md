@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.5.0...@launchql/cli@4.6.0) (2025-07-31)
+
+
+### Bug Fixes
+
+* correct tag command logic to handle workspace vs module scenarios properly ([84833a6](https://github.com/launchql/launchql/commit/84833a6031e8b962e126e1d783a99decf70ca861))
+* replace workspace:* with specific version ^2.1.13 for @launchql/env dependencies ([2fb68f2](https://github.com/launchql/launchql/commit/2fb68f247fd2aa9d966bafe19986db016c2be3c3))
+* resolve tag command path issues and update test data for proper test isolation ([6bc6fae](https://github.com/launchql/launchql/commit/6bc6fae3f1f1f1207fed64deb8df35ca58f0cf42))
+* resolve TypeScript errors in CLI tests and add core tests for tag functionality ([44fc18d](https://github.com/launchql/launchql/commit/44fc18dc6865e34cc6a9455bcb922b17ced5eb4e))
+* restructure tag command logic to properly handle --package flag in workspace scenarios ([7612519](https://github.com/launchql/launchql/commit/76125193d9e451b1b9b1154b4a13cb60cd2c4a12))
+* update package selection logic and add tests for tag command ([a7ff548](https://github.com/launchql/launchql/commit/a7ff54899804cda653c963c60930054fafdb253e))
+
+
+### Features
+
+* add --log-only flag for deployment logging ([a3071ee](https://github.com/launchql/launchql/commit/a3071ee03780f5d40e772594159840c973f95a85))
+* add tag functionality to LaunchQL packages ([bd1ebaa](https://github.com/launchql/launchql/commit/bd1ebaa0c94552a1210378c103e78a8bc4843d14))
+* create @launchql/env package for consolidated environment management ([004c78e](https://github.com/launchql/launchql/commit/004c78e87ceddfc2d0a3f74e79affe13c8a628d1))
+* merge packages/migrate into packages/core ([0a615a7](https://github.com/launchql/launchql/commit/0a615a7ea28b42bb37b611364384a2e39ac8dfaf))
+
+
+
+
+
 # [4.5.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.4.0...@launchql/cli@4.5.0) (2025-07-15)
 
 **Note:** Version bump only for package @launchql/cli

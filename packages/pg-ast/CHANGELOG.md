@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/launchql/launchql/compare/pg-ast@2.2.0...pg-ast@2.3.0) (2025-07-31)
+
+**Note:** Version bump only for package pg-ast
+
+
+
+
+
 # [2.2.0](https://github.com/launchql/launchql/compare/pg-ast@2.1.0...pg-ast@2.2.0) (2025-07-15)
 
 **Note:** Version bump only for package pg-ast

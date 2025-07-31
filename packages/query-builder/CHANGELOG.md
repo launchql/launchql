@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/launchql/launchql/compare/@launchql/query-builder@2.1.5...@launchql/query-builder@2.2.0) (2025-07-31)
+
+**Note:** Version bump only for package @launchql/query-builder
+
+
+
+
+
 ## [2.1.5](https://github.com/launchql/launchql/compare/@launchql/query-builder@2.1.4...@launchql/query-builder@2.1.5) (2025-05-30)
 
 **Note:** Version bump only for package @launchql/query-builder

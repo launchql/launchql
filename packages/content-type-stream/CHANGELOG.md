@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/launchql/launchql/compare/@launchql/content-type-stream@2.2.0...@launchql/content-type-stream@2.3.0) (2025-07-31)
+
+**Note:** Version bump only for package @launchql/content-type-stream
+
+
+
+
+
 # [2.2.0](https://github.com/launchql/launchql/compare/@launchql/content-type-stream@2.1.6...@launchql/content-type-stream@2.2.0) (2025-06-25)
 
 **Note:** Version bump only for package @launchql/content-type-stream

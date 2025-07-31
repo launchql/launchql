@@ -1,6 +1,6 @@
 {
   "name": "@launchql/core",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Package and Migration Tools",
   "main": "index.js",
@@ -44,18 +44,18 @@
     "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
-    "@launchql/env": "^2.1.13",
-    "@launchql/server-utils": "^2.1.15",
-    "@launchql/templatizer": "^2.2.0",
-    "@launchql/types": "^2.1.13",
+    "@launchql/env": "^2.2.0",
+    "@launchql/server-utils": "^2.2.0",
+    "@launchql/templatizer": "^2.3.0",
+    "@launchql/types": "^2.2.0",
     "@pgsql/types": "^17.6.1",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "csv-to-pg": "^2.0.10",
     "glob": "^11.0.2",
     "parse-package-name": "^1.0.0",
-    "pg-cache": "^1.0.1",
-    "pg-env": "^1.0.1",
+    "pg-cache": "^1.1.0",
+    "pg-env": "^1.1.0",
     "pgsql-deparser": "^17.8.3",
     "pgsql-parser": "^17.7.5",
     "rimraf": "^6.0.1"

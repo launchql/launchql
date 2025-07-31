@@ -1,6 +1,6 @@
 {
   "name": "@launchql/content-type-stream",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "detect content-types via streams",
   "main": "index.js",
@@ -30,9 +30,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "etag-hash": "^2.2.0",
-    "mime-bytes": "^0.2.0",
-    "uuid-hash": "^2.1.4"
+    "etag-hash": "^2.3.0",
+    "mime-bytes": "^0.3.0",
+    "uuid-hash": "^2.2.0"
   },
   "keywords": [
     "content-type",

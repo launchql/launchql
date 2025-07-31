@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.5.0",
+  "version": "4.6.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -41,19 +41,19 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@launchql/core": "^2.5.0",
-    "@launchql/env": "^2.1.13",
-    "@launchql/explorer": "^2.2.1",
-    "@launchql/server": "^2.2.1",
-    "@launchql/server-utils": "^2.1.15",
-    "@launchql/templatizer": "^2.2.0",
-    "@launchql/types": "^2.1.13",
+    "@launchql/core": "^2.6.0",
+    "@launchql/env": "^2.2.0",
+    "@launchql/explorer": "^2.3.0",
+    "@launchql/server": "^2.3.0",
+    "@launchql/server-utils": "^2.2.0",
+    "@launchql/templatizer": "^2.3.0",
+    "@launchql/types": "^2.2.0",
     "chalk": "^4.1.0",
     "inquirerer": "^2.0.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
-    "pg-cache": "^1.0.1",
-    "pg-env": "^1.0.1",
+    "pg-cache": "^1.1.0",
+    "pg-env": "^1.1.0",
     "shelljs": "^0.9.2"
   },
   "resolutions": {

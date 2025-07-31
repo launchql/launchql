@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/launchql/launchql/compare/@launchql/core@2.5.0...@launchql/core@2.6.0) (2025-07-31)
+
+
+### Bug Fixes
+
+* add circular dependency detection to setModuleDependencies ([dd3cfe7](https://github.com/launchql/launchql/commit/dd3cfe7524e87848529180f2b714094a64fc911e))
+* add explicit type casting to deploy procedure call parameters ([7dd527a](https://github.com/launchql/launchql/commit/7dd527a88da9ff90351c72700f8a447d68c934da))
+* add missing afterAll teardown hooks to prevent database connection leaks ([e720460](https://github.com/launchql/launchql/commit/e72046021eb17a2e5a475267aac0075a8b0d829d))
+* add TEXT casting to is_deployed function calls to resolve PostgreSQL parameter type inference ([320c11b](https://github.com/launchql/launchql/commit/320c11be0d01108d97e41b12318a1298c176437e))
+* address event logging and verify method issues ([e325488](https://github.com/launchql/launchql/commit/e325488002472ce5ffee74d6faf0bd4de0997848))
+* address feedback on test style and event logging ([21939af](https://github.com/launchql/launchql/commit/21939af2b5f581388bdc76f71aa32952e8189f99))
+* address user feedback - use process.cwd() in sanitizeStackTrace and add verify event logging ([d8fed1c](https://github.com/launchql/launchql/commit/d8fed1ce12f59bbda870a9abc825c12505c847f9))
+* address user feedback on event logging ([f6c9391](https://github.com/launchql/launchql/commit/f6c93915b9de3b781eb410aa94cfc52d69c3e40c))
+* apply CWD fix to revertProject and verifyProject ([89b3b02](https://github.com/launchql/launchql/commit/89b3b0284d788b7f4744aa8b898c0e41e5fafc02))
+* change extension dropping from CASCADE to RESTRICT with dependency handling ([eeffebe](https://github.com/launchql/launchql/commit/eeffebe8128c29ffa605a51cdc7d16958135b6fb))
+* correct import path for resolveDependencies ([ae28ef9](https://github.com/launchql/launchql/commit/ae28ef9e52fe19d005cbba9eb998407eb8ce7a0f))
+* improve stack trace sanitization for CI compatibility ([de66d56](https://github.com/launchql/launchql/commit/de66d56fdce626a74063ac8820207ccd5b6e5111))
+* improve stack trace sanitization for CI environment ([2d6bc27](https://github.com/launchql/launchql/commit/2d6bc275eef1538ec6692b0d3e33903dae2230f1))
+* make verify failures throw with rich error logging ([b50a5a6](https://github.com/launchql/launchql/commit/b50a5a62312a286fe6ecd7379d80bf24acb3b47b))
+* move tag tests to separate file to avoid pg-cache conflicts ([b789dab](https://github.com/launchql/launchql/commit/b789dab934255a050dad01170ee42bc0fd86e321))
+* pass logOnly parameter through deployment chain and simplify test ([6adca3a](https://github.com/launchql/launchql/commit/6adca3a4cae3934c48d379089dd30851c8ba7e41))
+* properly handle database connection cleanup in tests to prevent Jest open handles ([40d08bc](https://github.com/launchql/launchql/commit/40d08bc563d02a909d0e516b0227af4c184a2ba4))
+* remove obsolete snapshots after test separation ([a1f27d5](https://github.com/launchql/launchql/commit/a1f27d5fd79724a976566b46e122f229d0d8c1b3))
+* remove stack_trace from event logging and clean up related code ([f6f25c5](https://github.com/launchql/launchql/commit/f6f25c56b76629e01342dd424d54aa22816cd660))
+* remove teardownPgPools from individual test cleanup to prevent cache conflicts ([7d59495](https://github.com/launchql/launchql/commit/7d59495139eb034cf4739a7c5177f568faf8e1c3))
+* remove timestamps from snapshots and fix ordering expectations ([37fe832](https://github.com/launchql/launchql/commit/37fe8321e11d3032a4162b6114cf3ad61302348d))
+* remove unused deepmerge import from LaunchQLProject class ([05636fc](https://github.com/launchql/launchql/commit/05636fc046914399e4984cc105591c43a4e4f24c))
+* remove unused deepmerge import from LaunchQLProject class ([30d9370](https://github.com/launchql/launchql/commit/30d93704afcdb9659bb8222f553315ddaab20974))
+* remove useSqitch property from test fixtures ([e0abfc9](https://github.com/launchql/launchql/commit/e0abfc91e3ab63790df38420ed183ad55e1dc728))
+* replace hardcoded 'packages' path with LaunchQLProject workspace resolution ([e720fd0](https://github.com/launchql/launchql/commit/e720fd07d4a7359a727dea14eb35b42ddfd70aa2))
+* replace workspace:* with specific version ^2.1.13 for @launchql/env dependencies ([2fb68f2](https://github.com/launchql/launchql/commit/2fb68f247fd2aa9d966bafe19986db016c2be3c3))
+* resolve database connection leaks in CoreDeployTestFixture ([93b0f88](https://github.com/launchql/launchql/commit/93b0f885e29fc045180066d6638c401f9acd892c))
+* resolve TypeScript errors in CLI tests and add core tests for tag functionality ([44fc18d](https://github.com/launchql/launchql/commit/44fc18dc6865e34cc6a9455bcb922b17ced5eb4e))
+* sanitize stack traces for environment-agnostic snapshots ([42cbf53](https://github.com/launchql/launchql/commit/42cbf5395f056c7b552ec67e5291d07f6d7cc769))
+* update CoreDeployTestFixture import to use merged test-utils ([cfa3f1c](https://github.com/launchql/launchql/commit/cfa3f1c81933dbdd25d9f612e91e4a60b05b67de))
+* update snapshot files to match renamed test files ([b06f945](https://github.com/launchql/launchql/commit/b06f945f74d1db669e1dedfa33ee7414341580b7))
+* update snapshots for resolvedTags field in dependency resolution ([3a1e720](https://github.com/launchql/launchql/commit/3a1e7207b47107f752bd78cc1bda9cc8c565bd52))
+* update tag test to use valid change name from plan file ([2dcb3d7](https://github.com/launchql/launchql/commit/2dcb3d759724d62bf0e728a425c8d9c89d421bf7))
+* update tag tests to use non-conflicting names and remove snapshots ([50dd3bf](https://github.com/launchql/launchql/commit/50dd3bff5ea7c2b89af19c5f477a93b959d80600))
+* update test expectations and snapshots for chronological ordering ([3784e04](https://github.com/launchql/launchql/commit/3784e04d4a1670350e4045a56553611c12c85312))
+* update test imports to use merged test-utils ([393045d](https://github.com/launchql/launchql/commit/393045d2976a919121e55ee30c78ae5c279d4cd2))
+* update test to expect correct schema name 'otherschema' instead of 'metaschema' ([bade572](https://github.com/launchql/launchql/commit/bade57293b451a474bac04963b91b3be9aa3ba4b))
+* use sanitized events in getMigrationState return value ([d16658a](https://github.com/launchql/launchql/commit/d16658a4744f712e74dcecb8d86fdb8e05e4c4ec))
+* use unique tag name v2.2.0 to avoid conflict with existing v2.1.0 tag ([f862cac](https://github.com/launchql/launchql/commit/f862cac246bf4993ddac1cadfdc6305b461d7e2c))
+
+
+### Features
+
+* add --log-only flag for deployment logging ([c1919cc](https://github.com/launchql/launchql/commit/c1919ccb10828ad7f89ff3667225fdd7c935982c))
+* add cross-module tag resolution to revert functionality ([21c5477](https://github.com/launchql/launchql/commit/21c547739e62b7191560c45a340971cb82116783))
+* add deployment failure scenarios test ([0eb1f4e](https://github.com/launchql/launchql/commit/0eb1f4ed71acb3e75a7a725a35479b91df11f394))
+* add deployModules tests with tag dependencies and cross-project scenarios ([bc1fe9c](https://github.com/launchql/launchql/commit/bc1fe9c0e2d4ef9d983ddc1697644cef680066c3))
+* add forked deployment test for my-third project ([36b27fc](https://github.com/launchql/launchql/commit/36b27fc839d255938569fce8e42ec5db670437c1))
+* add getModuleProject helper method to eliminate repetitive module retrieval ([189c908](https://github.com/launchql/launchql/commit/189c9086f17c15875d2566edb2cf958b44f1d102))
+* add migration state snapshots for deployment failure scenarios ([97b95a1](https://github.com/launchql/launchql/commit/97b95a104bbbb3d096ca71eb852cfa3ddab70ed1))
+* add missing migrate test files from packages/migrate ([d4f95ff](https://github.com/launchql/launchql/commit/d4f95ff3d8c615b3b5f8aac235e6d23ece74eb9c))
+* add tag functionality to LaunchQL packages ([bd1ebaa](https://github.com/launchql/launchql/commit/bd1ebaa0c94552a1210378c103e78a8bc4843d14))
+* add toChange parameter support to verify method and create verify-modules test ([e38ea45](https://github.com/launchql/launchql/commit/e38ea45dd59986bb600bc0dbb3423d2e86344353))
+* add verify failure test and remove duplicate event logging ([642d25d](https://github.com/launchql/launchql/commit/642d25d3b27c270fa8ba148674bbd6778a0581c6))
+* complete migration cleanup - add migrate index.ts and remove packages/migrate directory ([800dede](https://github.com/launchql/launchql/commit/800dede97b2ee39f8d2dd0f4013ed9db2578d76c))
+* create @launchql/env package for consolidated environment management ([004c78e](https://github.com/launchql/launchql/commit/004c78e87ceddfc2d0a3f74e79affe13c8a628d1))
+* enhance event logging to persist outside transactions ([12c20ad](https://github.com/launchql/launchql/commit/12c20ad6cc8b17c564b4b19cf9531f8eca8cc8cf))
+* merge packages/migrate into packages/core ([0a615a7](https://github.com/launchql/launchql/commit/0a615a7ea28b42bb37b611364384a2e39ac8dfaf))
+
+
+
+
+
 # [2.5.0](https://github.com/launchql/launchql/compare/@launchql/core@2.4.0...@launchql/core@2.5.0) (2025-07-15)
 
 

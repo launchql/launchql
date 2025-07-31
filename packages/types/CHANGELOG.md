@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/launchql/launchql/compare/@launchql/types@2.1.13...@launchql/types@2.2.0) (2025-07-31)
+
+
+### Features
+
+* add --log-only flag for deployment logging ([a3071ee](https://github.com/launchql/launchql/commit/a3071ee03780f5d40e772594159840c973f95a85))
+
+
+
+
+
 ## [2.1.13](https://github.com/launchql/launchql/compare/@launchql/types@2.1.12...@launchql/types@2.1.13) (2025-06-28)
 
 **Note:** Version bump only for package @launchql/types
