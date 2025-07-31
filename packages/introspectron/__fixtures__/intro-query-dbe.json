@@ -7526,7 +7526,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "mythirdapp",
+              "name": "Metaschema",
               "ofType": null
             },
             "isDeprecated": false,
@@ -68109,7 +68109,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdapp",
+        "name": "Metaschema",
         "description": null,
         "fields": [{
           "name": "tables",
@@ -68120,7 +68120,7 @@
             "name": null,
             "ofType": {
               "kind": "OBJECT",
-              "name": "mythirdappTable",
+              "name": "MetaschemaTable",
               "ofType": null
             }
           },
@@ -68134,7 +68134,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTable",
+        "name": "MetaschemaTable",
         "description": null,
         "fields": [{
             "name": "name",
@@ -68161,7 +68161,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableQuery",
+                "name": "MetaschemaTableQuery",
                 "ofType": null
               }
             },
@@ -68177,7 +68177,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableInflection",
+                "name": "MetaschemaTableInflection",
                 "ofType": null
               }
             },
@@ -68190,7 +68190,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "mythirdappTableRelation",
+              "name": "MetaschemaTableRelation",
               "ofType": null
             },
             "isDeprecated": false,
@@ -68205,7 +68205,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -68221,7 +68221,7 @@
               "name": null,
               "ofType": {
                 "kind": "UNION",
-                "name": "mythirdappConstraint",
+                "name": "MetaschemaConstraint",
                 "ofType": null
               }
             },
@@ -68237,7 +68237,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappForeignKeyConstraint",
+                "name": "MetaschemaForeignKeyConstraint",
                 "ofType": null
               }
             },
@@ -68253,7 +68253,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappPrimaryKeyConstraint",
+                "name": "MetaschemaPrimaryKeyConstraint",
                 "ofType": null
               }
             },
@@ -68269,7 +68269,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappUniqueConstraint",
+                "name": "MetaschemaUniqueConstraint",
                 "ofType": null
               }
             },
@@ -68285,7 +68285,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappCheckConstraint",
+                "name": "MetaschemaCheckConstraint",
                 "ofType": null
               }
             },
@@ -68301,7 +68301,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappExclusionConstraint",
+                "name": "MetaschemaExclusionConstraint",
                 "ofType": null
               }
             },
@@ -68316,7 +68316,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTableQuery",
+        "name": "MetaschemaTableQuery",
         "description": null,
         "fields": [{
             "name": "all",
@@ -68398,7 +68398,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTableInflection",
+        "name": "MetaschemaTableInflection",
         "description": null,
         "fields": [{
             "name": "allRows",
@@ -68740,7 +68740,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTableRelation",
+        "name": "MetaschemaTableRelation",
         "description": null,
         "fields": [{
             "name": "hasOne",
@@ -68751,7 +68751,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableHasRelation",
+                "name": "MetaschemaTableHasRelation",
                 "ofType": null
               }
             },
@@ -68767,7 +68767,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableHasRelation",
+                "name": "MetaschemaTableHasRelation",
                 "ofType": null
               }
             },
@@ -68783,7 +68783,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableHasRelation",
+                "name": "MetaschemaTableHasRelation",
                 "ofType": null
               }
             },
@@ -68799,7 +68799,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableBelongsToRelation",
+                "name": "MetaschemaTableBelongsToRelation",
                 "ofType": null
               }
             },
@@ -68815,7 +68815,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTableManyToManyRelation",
+                "name": "MetaschemaTableManyToManyRelation",
                 "ofType": null
               }
             },
@@ -68830,7 +68830,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTableHasRelation",
+        "name": "MetaschemaTableHasRelation",
         "description": null,
         "fields": [{
             "name": "fieldName",
@@ -68865,7 +68865,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTable",
+                "name": "MetaschemaTable",
                 "ofType": null
               }
             },
@@ -68897,7 +68897,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -68912,7 +68912,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappField",
+        "name": "MetaschemaField",
         "description": null,
         "fields": [{
             "name": "name",
@@ -68939,7 +68939,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappType",
+                "name": "MetaschemaType",
                 "ofType": null
               }
             },
@@ -68954,7 +68954,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappType",
+        "name": "MetaschemaType",
         "description": null,
         "fields": [{
             "name": "pgAlias",
@@ -69064,7 +69064,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTableBelongsToRelation",
+        "name": "MetaschemaTableBelongsToRelation",
         "description": null,
         "fields": [{
             "name": "fieldName",
@@ -69099,7 +69099,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTable",
+                "name": "MetaschemaTable",
                 "ofType": null
               }
             },
@@ -69131,7 +69131,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -69146,7 +69146,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappTableManyToManyRelation",
+        "name": "MetaschemaTableManyToManyRelation",
         "description": null,
         "fields": [{
             "name": "fieldName",
@@ -69184,7 +69184,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "mythirdappField",
+                  "name": "MetaschemaField",
                   "ofType": null
                 }
               }
@@ -69204,7 +69204,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "mythirdappField",
+                  "name": "MetaschemaField",
                   "ofType": null
                 }
               }
@@ -69224,7 +69224,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "mythirdappField",
+                  "name": "MetaschemaField",
                   "ofType": null
                 }
               }
@@ -69244,7 +69244,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "mythirdappField",
+                  "name": "MetaschemaField",
                   "ofType": null
                 }
               }
@@ -69261,7 +69261,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTable",
+                "name": "MetaschemaTable",
                 "ofType": null
               }
             },
@@ -69277,7 +69277,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappTable",
+                "name": "MetaschemaTable",
                 "ofType": null
               }
             },
@@ -69293,7 +69293,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappForeignKeyConstraint",
+                "name": "MetaschemaForeignKeyConstraint",
                 "ofType": null
               }
             },
@@ -69309,7 +69309,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappForeignKeyConstraint",
+                "name": "MetaschemaForeignKeyConstraint",
                 "ofType": null
               }
             },
@@ -69324,7 +69324,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappForeignKeyConstraint",
+        "name": "MetaschemaForeignKeyConstraint",
         "description": null,
         "fields": [{
             "name": "name",
@@ -69351,7 +69351,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -69364,7 +69364,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "mythirdappTable",
+              "name": "MetaschemaTable",
               "ofType": null
             },
             "isDeprecated": false,
@@ -69379,7 +69379,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -69394,7 +69394,7 @@
       },
       {
         "kind": "UNION",
-        "name": "mythirdappConstraint",
+        "name": "MetaschemaConstraint",
         "description": null,
         "fields": null,
         "inputFields": null,
@@ -69402,34 +69402,34 @@
         "enumValues": null,
         "possibleTypes": [{
             "kind": "OBJECT",
-            "name": "mythirdappForeignKeyConstraint",
+            "name": "MetaschemaForeignKeyConstraint",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "mythirdappUniqueConstraint",
+            "name": "MetaschemaUniqueConstraint",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "mythirdappPrimaryKeyConstraint",
+            "name": "MetaschemaPrimaryKeyConstraint",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "mythirdappCheckConstraint",
+            "name": "MetaschemaCheckConstraint",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "mythirdappExclusionConstraint",
+            "name": "MetaschemaExclusionConstraint",
             "ofType": null
           }
         ]
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappUniqueConstraint",
+        "name": "MetaschemaUniqueConstraint",
         "description": null,
         "fields": [{
             "name": "name",
@@ -69456,7 +69456,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -69471,7 +69471,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappPrimaryKeyConstraint",
+        "name": "MetaschemaPrimaryKeyConstraint",
         "description": null,
         "fields": [{
             "name": "name",
@@ -69498,7 +69498,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -69513,7 +69513,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappCheckConstraint",
+        "name": "MetaschemaCheckConstraint",
         "description": null,
         "fields": [{
             "name": "name",
@@ -69540,7 +69540,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },
@@ -69555,7 +69555,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "mythirdappExclusionConstraint",
+        "name": "MetaschemaExclusionConstraint",
         "description": null,
         "fields": [{
             "name": "name",
@@ -69582,7 +69582,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "mythirdappField",
+                "name": "MetaschemaField",
                 "ofType": null
               }
             },

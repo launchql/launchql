@@ -11,7 +11,7 @@ import {
   // @ts-ignore
 } from 'graphile-i18n';
 // @ts-ignore
-import Pgmythirdapp from 'graphile-meta-schema';
+import PgMetaschema from 'graphile-meta-schema';
 // @ts-ignore
 import PgSearch from 'graphile-search-plugin';
 // @ts-ignore
@@ -52,7 +52,7 @@ export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptio
     FulltextFilterPlugin,
     LqlTypesPlugin,
     PostGraphileUploadFieldPlugin,
-    Pgmythirdapp,
+    PgMetaschema,
     PgManyToMany,
     PgSearch
   ];

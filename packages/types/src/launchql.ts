@@ -124,7 +124,7 @@ export interface ApiOptions {
     /** Whether the API is publicly accessible */
     isPublic?: boolean;
     /** Schemas containing metadata tables */
-    mythirdapps?: string[];
+    metaSchemas?: string[];
 }
 
 /**
@@ -238,7 +238,7 @@ export const launchqlDefaults: LaunchQLOptions = {
     roleName: 'administrator',
     defaultDatabaseId: 'hard-coded',
     isPublic: true,
-    mythirdapps: ['collections_public', 'meta_public']
+    metaSchemas: ['collections_public', 'meta_public']
   },
   cdn: {
     bucketName: 'test-bucket',

@@ -106,7 +106,7 @@ export const getEnvVars = (): LaunchQLOptions => {
       ...(API_ENABLE_META && { enableMetaApi: parseEnvBoolean(API_ENABLE_META) }),
       ...(API_IS_PUBLIC && { isPublic: parseEnvBoolean(API_IS_PUBLIC) }),
       ...(API_EXPOSED_SCHEMAS && { exposedSchemas: API_EXPOSED_SCHEMAS.split(',').map(s => s.trim()) }),
-      ...(API_META_SCHEMAS && { mythirdapps: API_META_SCHEMAS.split(',').map(s => s.trim()) }),
+      ...(API_META_SCHEMAS && { metaSchemas: API_META_SCHEMAS.split(',').map(s => s.trim()) }),
       ...(API_ANON_ROLE && { anonRole: API_ANON_ROLE }),
       ...(API_ROLE_NAME && { roleName: API_ROLE_NAME }),
       ...(API_DEFAULT_DATABASE_ID && { defaultDatabaseId: API_DEFAULT_DATABASE_ID }),

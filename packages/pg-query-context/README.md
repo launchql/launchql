@@ -41,7 +41,7 @@ const result = await pgQueryContext({
   client: pool,
   context: {
     'role': 'authenticated',
-    'myfirstapp.user_id': '123e4567-e89b-12d3-a456-426614174000'
+    'myapp.user_id': '123e4567-e89b-12d3-a456-426614174000'
   },
   query: 'SELECT * FROM app_private.do_something_secure($1)',
   variables: ['input-value']

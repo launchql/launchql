@@ -39,7 +39,7 @@ beforeEach(() => db.beforeEach());
 beforeEach(async () => {
   db.setContext({
     role: 'authenticated',
-    'myfirstapp.user_id': '123'
+    'myapp.user_id': '123'
   });
 });
 
@@ -114,12 +114,12 @@ it('does not see the user created in the previous test', async () => {
 
 // ✅ Verifies context is set correctly
 it('returns pg context settings from current_setting() function', async () => {
-  db.setContext({ role: 'authenticated', 'myfirstapp.user_id': '123' });
+  db.setContext({ role: 'authenticated', 'myapp.user_id': '123' });
   
   const GET_CONTEXT = gql`
     query {
       currentRole: currentSetting(name: "role")
-      userId: currentSetting(name: "myfirstapp.user_id")
+      userId: currentSetting(name: "myapp.user_id")
     }
   `;
 
@@ -135,7 +135,7 @@ it('fails to access context-protected data as anonymous', async () => {
   const GET_CONTEXT = gql`
     query {
       currentRole: currentSetting(name: "role")
-      userId: currentSetting(name: "myfirstapp.user_id")
+      userId: currentSetting(name: "myapp.user_id")
     }
   `;
 

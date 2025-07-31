@@ -42,7 +42,7 @@ beforeEach(() => db.beforeEach());
 beforeEach(() => {
   db.setContext({
     role: 'authenticated',
-    'myfirstapp.user_id': '123'
+    'myapp.user_id': '123'
   });
 });
 

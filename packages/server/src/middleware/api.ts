@@ -156,7 +156,7 @@ const getmythirdapp = ({
   databaseId: string;
 }): any => {
   const apiOpts = (opts as any).api || {};
-  const schemata = apiOpts.mythirdapps || [];
+  const schemata = apiOpts.metaSchemas || [];
   const svc = {
     data: {
       api: {
@@ -292,7 +292,7 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
     svc = svcCache.get(key);
   } else {
     const apiOpts = (opts as any).api || {};
-    const allSchemata = apiOpts.mythirdapps || [];
+    const allSchemata = apiOpts.metaSchemas || [];
     const validatedSchemata = await validateSchemata(rootPgPool, allSchemata);
 
     if (validatedSchemata.length === 0) {
