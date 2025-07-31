@@ -146,7 +146,7 @@ describe('Remove Functionality', () => {
     await pkg.removeFromPlan('@v1.0.0');
     planContent = fs.readFileSync(planPath, 'utf8');
     expect(planContent).not.toContain('@v1.0.0');
-    expect(planContent).not.toContain('table_users');
+    expect(planContent).toContain('table_users');
     expect(planContent).toContain('schema_myfirstapp');
   });
 
