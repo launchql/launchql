@@ -1180,12 +1180,21 @@ export class LaunchQLPackage {
     }
     
     const plan = result.data!;
-    
-    const targetIndex = plan.changes.findIndex(c => c.name === toChange);
-    if (targetIndex === -1) {
-      throw new Error(`Change '${toChange}' not found in plan`);
+
+    let resolvedChange = toChange;
+    if (toChange.startsWith('@')) {
+      // Use the tag resolver utility
+      const { resolveTagToChangeName } = require('../../resolution/resolve');
+      resolvedChange = resolveTagToChangeName(planPath, toChange, plan.package);
+      const logTag = new Logger('remove');
+      logTag.info(`Resolved tag ${toChange} to change ${resolvedChange}`);
     }
-    
+
+    const targetIndex = plan.changes.findIndex(c => c.name === resolvedChange);
+    if (targetIndex === -1) {
+      throw new Error(`Change '${resolvedChange}' not found in plan`);
+    }
+
     const changesToRemove = plan.changes.slice(targetIndex);
     plan.changes = plan.changes.slice(0, targetIndex);
     
