@@ -7,6 +7,28 @@ import { getPgPool } from 'pg-cache';
 
 const log = new Logger('server');
 
+const serverUsageText = `
+LaunchQL Server Command:
+
+  lql server [OPTIONS]
+
+  Start LaunchQL GraphQL development server.
+
+Options:
+  --help, -h              Show this help message
+  --port <number>         Server port (default: 5555)
+  --simpleInflection      Use simple inflection (default: true)
+  --oppositeBaseNames     Use opposite base names (default: false)
+  --postgis               Enable PostGIS extension (default: true)
+  --metaApi               Enable Meta API (default: true)
+  --cwd <directory>       Working directory (default: current directory)
+
+Examples:
+  lql server                    Start server with defaults
+  lql server --port 8080        Start server on custom port
+  lql server --no-postgis       Start server without PostGIS
+`;
+
 const questions: Question[] = [
   {
     name: 'simpleInflection',
@@ -55,6 +77,12 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(serverUsageText);
+    process.exit(0);
+  }
+
   log.info('🔧 LaunchQL Server Configuration:\n');
 
   let selectedDb: string | undefined = process.env.PGDATABASE;
