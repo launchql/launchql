@@ -15,7 +15,11 @@ import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
 import { getAvailableExtensions } from '../../extensions/extensions';
-import { generatePlan, writePlan } from '../../files';
+import { generatePlan, writePlan, writePlanFile } from '../../files';
+import { Tag, ExtendedPlanFile } from '../../files/types';
+import { parsePlanFile } from '../../files/plan/parser';
+import { isValidTagName } from '../../files/plan/validators';
+import { getNow as getPlanTimestamp } from '../../files/plan/generator';
 import {
   ExtensionInfo,
   getExtensionInfo,
@@ -569,6 +573,67 @@ export class LaunchQLPackage {
     
     // Use the package-files package to write the plan
     writePlan(planPath, plan);
+  }
+
+  /**
+   * Add a tag to the current module's plan file
+   */
+  addTag(tagName: string, changeName?: string, comment?: string): void {
+    this.ensureModule();
+    
+    if (!this.modulePath) {
+      throw new Error('Module path not found');
+    }
+    
+    // Validate tag name
+    if (!isValidTagName(tagName)) {
+      throw new Error(`Invalid tag name: ${tagName}. Tag names must follow Sqitch naming rules and cannot contain '/'.`);
+    }
+    
+    const planPath = path.join(this.modulePath, 'launchql.plan');
+    
+    // Parse existing plan file
+    const planResult = parsePlanFile(planPath);
+    if (!planResult.data) {
+      throw new Error(`Could not parse plan file: ${planPath}`);
+    }
+    
+    const plan = planResult.data;
+    
+    let targetChange = changeName;
+    if (!targetChange) {
+      if (plan.changes.length === 0) {
+        throw new Error('No changes found in plan file. Cannot add tag without a target change.');
+      }
+      targetChange = plan.changes[plan.changes.length - 1].name;
+    } else {
+      // Validate that the specified change exists
+      const changeExists = plan.changes.some(c => c.name === targetChange);
+      if (!changeExists) {
+        throw new Error(`Change '${targetChange}' not found in plan file.`);
+      }
+    }
+    
+    // Check if tag already exists
+    const existingTag = plan.tags.find(t => t.name === tagName);
+    if (existingTag) {
+      throw new Error(`Tag '${tagName}' already exists and points to change '${existingTag.change}'.`);
+    }
+    
+    // Create new tag
+    const newTag: Tag = {
+      name: tagName,
+      change: targetChange,
+      timestamp: getPlanTimestamp(),
+      planner: 'launchql',
+      email: 'launchql@5b0c196eeb62',
+      comment
+    };
+    
+    plan.tags.push(newTag);
+    
+    // Write updated plan file
+    writePlanFile(planPath, plan);
   }
 
   // ──────────────── Packaging and npm ────────────────

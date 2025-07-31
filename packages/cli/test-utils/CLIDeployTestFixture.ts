@@ -1,9 +1,6 @@
-import { getEnvOptions } from '@launchql/env';
-import { LaunchQLPackage, LaunchQLMigrate } from '@launchql/core';
-import { mkdtempSync } from 'fs';
-import { tmpdir } from 'os';
+import { LaunchQLMigrate } from '@launchql/core';
 import { Pool } from 'pg';
-import { getPgPool, teardownPgPools } from 'pg-cache';
+import { getPgPool } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 import { ParsedArgs } from 'minimist';
 import { Inquirerer, CLIOptions } from 'inquirerer';

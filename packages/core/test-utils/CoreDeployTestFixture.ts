@@ -1,5 +1,4 @@
 import { getEnvOptions } from '@launchql/env';
-import { join } from 'path';
 import { teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 
@@ -94,7 +93,7 @@ export class CoreDeployTestFixture extends TestFixture {
     }
     
     await teardownPgPools();
-    
+
     super.cleanup();
   }
 }

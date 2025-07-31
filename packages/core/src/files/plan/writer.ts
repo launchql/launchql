@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Change, PlanFile, SqitchRow } from '../types';
+import { Change, PlanFile, SqitchRow, Tag, ExtendedPlanFile } from '../types';
 
 export interface PlanWriteOptions {
   outdir: string;
@@ -49,7 +49,7 @@ ${rows
 /**
  * Write a plan file with the provided content
  */
-export function writePlanFile(planPath: string, plan: PlanFile): void {
+export function writePlanFile(planPath: string, plan: ExtendedPlanFile): void {
   const content = generatePlanFileContent(plan);
   fs.writeFileSync(planPath, content);
 }
@@ -57,8 +57,8 @@ export function writePlanFile(planPath: string, plan: PlanFile): void {
 /**
  * Generate content for a plan file
  */
-export function generatePlanFileContent(plan: PlanFile): string {
-  const { package: packageName, uri, changes } = plan;
+export function generatePlanFileContent(plan: ExtendedPlanFile): string {
+  const { package: packageName, uri, changes, tags } = plan;
   
   let content = `%syntax-version=1.0.0\n`;
   content += `%project=${packageName}\n`;
@@ -69,10 +69,16 @@ export function generatePlanFileContent(plan: PlanFile): string {
   
   content += `\n`;
   
-  // Add changes
+  // Add changes and their associated tags
   for (const change of changes) {
     content += generateChangeLineContent(change);
     content += `\n`;
+    
+    const associatedTags = tags.filter(tag => tag.change === change.name);
+    for (const tag of associatedTags) {
+      content += generateTagLineContent(tag);
+      content += `\n`;
+    }
   }
   
   return content;
@@ -90,6 +96,37 @@ export function generateChangeLineContent(change: Change): string {
   if (dependencies && dependencies.length > 0) {
     line += ` [${dependencies.join(' ')}]`;
   }
+  
+  // Add timestamp if present
+  if (timestamp) {
+    line += ` ${timestamp}`;
+    
+    // Add planner if present
+    if (planner) {
+      line += ` ${planner}`;
+      
+      // Add email if present
+      if (email) {
+        line += ` <${email}>`;
+      }
+    }
+  }
+  
+  // Add comment if present
+  if (comment) {
+    line += ` # ${comment}`;
+  }
+  
+  return line;
+}
+
+/**
+ * Generate a line for a tag in a plan file
+ */
+export function generateTagLineContent(tag: Tag): string {
+  const { name, timestamp, planner, email, comment } = tag;
+  
+  let line = `@${name}`;
   
   // Add timestamp if present
   if (timestamp) {
