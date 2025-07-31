@@ -9,11 +9,36 @@ import { selectPackage } from '../utils/module-utils';
 
 const log = new Logger('revert');
 
+const revertUsageText = `
+LaunchQL Revert Command:
+
+  lql revert [OPTIONS]
+
+  Revert database changes and migrations.
+
+Options:
+  --help, -h         Show this help message
+  --recursive        Revert recursively through dependencies
+  --package <name>   Revert specific package
+  --to <target>      Revert to specific change or tag
+  --tx               Use transactions (default: true)
+  --cwd <directory>  Working directory (default: current directory)
+
+Examples:
+  lql revert                    Revert latest changes
+  lql revert --to @v1.0.0      Revert to specific tag
+`;
+
 export default async (
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(revertUsageText);
+    process.exit(0);
+  }
   
   const database = await getTargetDatabase(argv, prompter, {
     message: 'Select database'

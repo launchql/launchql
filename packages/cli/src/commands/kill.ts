@@ -4,11 +4,34 @@ import { getPgPool } from 'pg-cache';
 
 const log = new Logger('db-kill');
 
+const killUsageText = `
+LaunchQL Kill Command:
+
+  lql kill [OPTIONS]
+
+  Terminate database connections and optionally drop databases.
+
+Options:
+  --help, -h              Show this help message
+  --drop                  Drop databases after killing connections (default: true)
+  --no-drop               Only kill connections, don't drop databases
+  --cwd <directory>       Working directory (default: current directory)
+
+Examples:
+  lql kill                Kill connections and drop selected databases
+  lql kill --no-drop      Only kill connections, preserve databases
+`;
+
 export default async (
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(killUsageText);
+    process.exit(0);
+  }
   const db = await getPgPool({
     database: 'postgres'
   });

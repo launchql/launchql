@@ -12,11 +12,43 @@ import {
 import { getTargetDatabase } from '../utils';
 import { selectPackage } from '../utils/module-utils';
 
+const deployUsageText = `
+LaunchQL Deploy Command:
+
+  lql deploy [OPTIONS]
+
+  Deploy database changes and migrations to target database.
+
+Options:
+  --help, -h         Show this help message
+  --createdb         Create database if it doesn't exist
+  --recursive        Deploy recursively through dependencies
+  --package <name>   Target specific package
+  --to <target>      Deploy to specific change or tag
+  --tx               Use transactions (default: true)
+  --fast             Use fast deployment strategy
+  --logOnly          Log-only mode, skip script execution
+  --usePlan          Use deployment plan
+  --cache            Enable caching
+  --cwd <directory>  Working directory (default: current directory)
+
+Examples:
+  lql deploy                              Deploy to selected database
+  lql deploy --createdb                   Deploy with database creation
+  lql deploy --package mypackage --to @v1.0.0  Deploy specific package to tag
+  lql deploy --fast --no-tx              Fast deployment without transactions
+`;
+
 export default async (
   argv: Partial<ParsedArgs>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(deployUsageText);
+    process.exit(0);
+  }
   const pgEnv = getPgEnvOptions();
   const log = new Logger('cli');
 

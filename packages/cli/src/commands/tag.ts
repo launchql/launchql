@@ -7,11 +7,39 @@ import * as path from 'path';
 
 const log = new Logger('tag');
 
+const tagUsageText = `
+LaunchQL Tag Command:
+
+  lql tag [tag_name] [OPTIONS]
+
+  Add tags to changes for versioning.
+
+Arguments:
+  tag_name                Name of the tag to create
+
+Options:
+  --help, -h              Show this help message
+  --package <name>        Target specific package
+  --changeName <name>     Target specific change (default: latest)
+  --comment <text>        Optional tag comment
+  --cwd <directory>       Working directory (default: current directory)
+
+Examples:
+  lql tag v1.0.0                                    Add tag to latest change
+  lql tag v1.0.0 --comment "Initial release"       Add tag with comment
+  lql tag v1.1.0 --package mypackage --changeName my-change  Tag specific change in package
+`;
+
 export default async (
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(tagUsageText);
+    process.exit(0);
+  }
   const { first: tagName, newArgv } = extractFirst(argv);
   
   const cwdResult = await prompter.prompt(newArgv, [

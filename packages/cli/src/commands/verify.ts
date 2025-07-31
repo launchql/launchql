@@ -9,11 +9,35 @@ import { selectPackage } from '../utils/module-utils';
 
 const log = new Logger('verify');
 
+const verifyUsageText = `
+LaunchQL Verify Command:
+
+  lql verify [OPTIONS]
+
+  Verify database state matches expected migrations.
+
+Options:
+  --help, -h         Show this help message
+  --recursive        Verify recursively through dependencies
+  --package <name>   Verify specific package
+  --to <target>      Verify up to specific change or tag
+  --cwd <directory>  Working directory (default: current directory)
+
+Examples:
+  lql verify                    Verify current database state
+  lql verify --package mypackage  Verify specific package
+`;
+
 export default async (
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(verifyUsageText);
+    process.exit(0);
+  }
   const database = await getTargetDatabase(argv, prompter, {
     message: 'Select database'
   });
