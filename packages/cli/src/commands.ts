@@ -61,8 +61,14 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
 
   let { first: command, newArgv } = extractFirst(argv);
 
-  // Show usage if explicitly requested
-  if (argv.help || argv.h || command === 'help') {
+  // Show usage if explicitly requested but no command specified
+  if ((argv.help || argv.h || command === 'help') && !command) {
+    console.log(usageText);
+    process.exit(0);
+  }
+  
+  // Show usage for help command specifically
+  if (command === 'help') {
     console.log(usageText);
     process.exit(0);
   }

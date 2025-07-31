@@ -6,6 +6,27 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const log = new Logger('explorer');
 
+const explorerUsageText = `
+LaunchQL Explorer Command:
+
+  lql explorer [OPTIONS]
+
+  Launch GraphiQL explorer interface.
+
+Options:
+  --help, -h              Show this help message
+  --port <number>         Server port (default: 5555)
+  --origin <url>          CORS origin URL (default: http://localhost:3000)
+  --simpleInflection      Use simple inflection (default: true)
+  --oppositeBaseNames     Use opposite base names (default: false)
+  --postgis               Enable PostGIS extension (default: true)
+  --cwd <directory>       Working directory (default: current directory)
+
+Examples:
+  lql explorer                        Launch explorer with defaults
+  lql explorer --origin http://localhost:4000  Launch explorer with custom origin
+`;
+
 const questions: Question[] = [
   {
     name: 'simpleInflection',
@@ -54,6 +75,12 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(explorerUsageText);
+    process.exit(0);
+  }
+
   log.info('🔧 LaunchQL Explorer Configuration:\n');
 
   const {

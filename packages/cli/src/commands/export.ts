@@ -5,11 +5,34 @@ import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { resolve } from 'path';
 import { getPgPool } from 'pg-cache';
 
+const exportUsageText = `
+LaunchQL Export Command:
+
+  lql export [OPTIONS]
+
+  Export database migrations from existing databases.
+
+Options:
+  --help, -h              Show this help message
+  --author <name>         Project author (default: from git config)
+  --extensionName <name>  Extension name
+  --metaExtensionName <name>  Meta extension name (default: svc)
+  --cwd <directory>       Working directory (default: current directory)
+
+Examples:
+  lql export              Export migrations from selected database
+`;
+
 export default async (
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  // Show usage if explicitly requested
+  if (argv.help || argv.h) {
+    console.log(exportUsageText);
+    process.exit(0);
+  }
   const { email, username } = getGitConfigInfo();
   const cwd = argv.cwd ?? process.cwd();
   const project = new LaunchQLPackage(cwd);
