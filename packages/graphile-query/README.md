@@ -66,7 +66,7 @@ import { getSchema } from 'graphile-query';
 const pool = new Pool();
 const schema = await getSchema(pool, {
   schema: ['app_public'],
-  pgSettings: req => ({ 'myapp.user_id': req.user?.id }),
+  pgSettings: req => ({ 'myfirstapp.user_id': req.user?.id }),
 });
 ```
 

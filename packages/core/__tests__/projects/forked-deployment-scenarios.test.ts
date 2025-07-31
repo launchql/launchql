@@ -21,23 +21,23 @@ describe('Forked Deployment with deployModules - my-third', () => {
   test('handles modified deployment scenario for my-third', async () => {
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
 
     await fixture.revertModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(false);
 
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
 
     await fixture.revertModule('my-first:@v1.0.0', db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(false);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(false);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(false);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(false);
 
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-first');
@@ -53,11 +53,11 @@ describe('Forked Deployment with deployModules - my-third', () => {
 
     await fixture.deployModule('my-third', db.name, ['sqitch', 'simple-w-tags']);
 
-    expect(await db.exists('schema', 'metaschema')).toBe(true);
-    expect(await db.exists('table', 'metaschema.customers')).toBe(true);
-    expect(await db.exists('table', 'myapp.products')).toBe(true);
+    expect(await db.exists('schema', 'mythirdapp')).toBe(true);
+    expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
+    expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
-    const columns = await db.query('SELECT column_name FROM information_schema.columns WHERE table_schema = \'myapp\' AND table_name = \'products\' AND column_name = \'category\'');
+    const columns = await db.query('SELECT column_name FROM information_schema.columns WHERE table_schema = \'myfirstapp\' AND table_name = \'products\' AND column_name = \'category\'');
     expect(columns.rows).toHaveLength(1);
     expect(columns.rows[0].column_name).toBe('category');
 

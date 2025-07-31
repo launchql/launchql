@@ -5,7 +5,7 @@
 BEGIN;
 
 -- Table 1: Users
-CREATE TABLE otherschema.users (
+CREATE TABLE mysecondapp.users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now(),

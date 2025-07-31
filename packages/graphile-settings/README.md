@@ -53,7 +53,7 @@ const settings = getGraphileSettings({
   },
   graphile: {
     schema: ['app_public'],
-    metaSchemas: ['meta_public'],
+    mythirdapps: ['meta_public'],
   },
   features: {
     postgis: true,
@@ -92,7 +92,7 @@ app.listen(settings.port);
 #### `graphile`
 
 * `schema` — (string or string\[]) Required list of main GraphQL schemas
-* `metaSchemas` — (string\[]) Optional list of meta/introspection schemas
+* `mythirdapps` — (string\[]) Optional list of meta/introspection schemas
 * `isPublic` — (boolean) Flag for public GraphQL instance
 * `appendPlugins` — (Plugin\[]) Additional Graphile plugins
 * `graphileBuildOptions` — (PostGraphileOptions.graphileBuildOptions) Extra build options

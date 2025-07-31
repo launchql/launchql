@@ -1,4 +1,4 @@
--- Verify my-first:schema_myapp on pg
+-- Verify my-first:schema_myfirstapp on pg
 
 BEGIN;
 

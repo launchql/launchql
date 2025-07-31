@@ -65,19 +65,19 @@ afterAll(async () => {
 
 describe('Sqitch DB Benchmark', () => {
   it('inserts Alice', async () => {
-    await pg.query(`INSERT INTO myapp.users (username, email) VALUES ('alice', 'alice@example.com')`);
-    const res = await pg.query(`SELECT COUNT(*) FROM myapp.users`);
+    await pg.query(`INSERT INTO myfirstapp.users (username, email) VALUES ('alice', 'alice@example.com')`);
+    const res = await pg.query(`SELECT COUNT(*) FROM myfirstapp.users`);
     expect(res.rows[0].count).toBe('1');
   });
   
   it('starts clean without Alice', async () => {
-    const res = await pg.query(`SELECT * FROM myapp.users WHERE username = 'alice'`);
+    const res = await pg.query(`SELECT * FROM myfirstapp.users WHERE username = 'alice'`);
     expect(res.rows).toHaveLength(0);
   });
   
   it('inserts Bob with email', async () => {
-    await pg.query(`INSERT INTO myapp.users (username, email) VALUES ('bob', 'bob@example.com')`);
-    const res = await pg.query(`SELECT * FROM myapp.users WHERE username = 'bob'`);
+    await pg.query(`INSERT INTO myfirstapp.users (username, email) VALUES ('bob', 'bob@example.com')`);
+    const res = await pg.query(`SELECT * FROM myfirstapp.users WHERE username = 'bob'`);
     expect(res.rows[0].email).toBe('bob@example.com');
   });
 });

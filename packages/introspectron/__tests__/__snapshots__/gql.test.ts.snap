@@ -11448,12 +11448,12 @@ exports[`mutationsDbe 1`] = `
 exports[`queriesDbe 1`] = `
 {
   "_meta": {
-    "model": "Metaschema",
+    "model": "mythirdapp",
     "properties": {},
     "qtype": "getOne",
     "selection": [
       {
-        "model": "MetaschemaTable",
+        "model": "mythirdappTable",
         "name": "tables",
         "properties": {},
         "qtype": "getOne",

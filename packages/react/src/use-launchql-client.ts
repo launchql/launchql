@@ -10,7 +10,7 @@ export function useLaunchqlQuery() {
   return useMemo(() => {
     if (!meta.data || !introspection.data) return null;
     return new QueryBuilder({
-      meta: MetaObject.convertFromMetaSchema({ _meta: meta.data }),
+      meta: MetaObject.convertFrommythirdapp({ _meta: meta.data }),
       introspection: introspection.data
     });
   }, [introspection.data, meta.data]);

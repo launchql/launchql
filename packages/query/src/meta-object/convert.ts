@@ -1,9 +1,9 @@
 // @ts-nocheck
 
-export function convertFromMetaSchema(metaSchema) {
+export function convertFrommythirdapp(mythirdapp) {
   const {
     _meta: { tables }
-  } = metaSchema;
+  } = mythirdapp;
 
   const result = {
     tables: []

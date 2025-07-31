@@ -2,16 +2,16 @@
 
 exports[`my-first extension 1`] = `
 "\\echo Use "CREATE EXTENSION my-first" to load this file. \\quit
-CREATE SCHEMA IF NOT EXISTS myapp;
+CREATE SCHEMA IF NOT EXISTS myfirstapp;
 
-CREATE TABLE myapp.users (
+CREATE TABLE myfirstapp.users (
   id serial PRIMARY KEY,
   username text NOT NULL UNIQUE,
   email text NOT NULL UNIQUE,
   created_at pg_catalog.timestamp DEFAULT now()
 );
 
-CREATE TABLE myapp.products (
+CREATE TABLE myfirstapp.products (
   id serial PRIMARY KEY,
   name text NOT NULL,
   description text,
@@ -24,16 +24,16 @@ CREATE TABLE myapp.products (
 
 exports[`my-first extension via plan 1`] = `
 "\\echo Use "CREATE EXTENSION my-first" to load this file. \\quit
-CREATE SCHEMA IF NOT EXISTS myapp;
+CREATE SCHEMA IF NOT EXISTS myfirstapp;
 
-CREATE TABLE myapp.users (
+CREATE TABLE myfirstapp.users (
   id serial PRIMARY KEY,
   username text NOT NULL UNIQUE,
   email text NOT NULL UNIQUE,
   created_at pg_catalog.timestamp DEFAULT now()
 );
 
-CREATE TABLE myapp.products (
+CREATE TABLE myfirstapp.products (
   id serial PRIMARY KEY,
   name text NOT NULL,
   description text,
@@ -46,18 +46,18 @@ CREATE TABLE myapp.products (
 
 exports[`my-second extension 1`] = `
 "\\echo Use "CREATE EXTENSION my-second" to load this file. \\quit
-CREATE SCHEMA otherschema;
+CREATE SCHEMA mysecondapp;
 
-CREATE TABLE otherschema.users (
+CREATE TABLE mysecondapp.users (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text UNIQUE NOT NULL,
   created_at timestamptz DEFAULT now(),
   last_active_at timestamptz
 );
 
-CREATE TABLE otherschema.user_interactions (
+CREATE TABLE mysecondapp.user_interactions (
   id bigserial PRIMARY KEY,
-  user_id uuid REFERENCES otherschema.users (id)
+  user_id uuid REFERENCES mysecondapp.users (id)
     ON DELETE CASCADE,
   interaction_type text NOT NULL CHECK (interaction_type IN ('click', 'hover', 'scroll', 'input')),
   target text NOT NULL,
@@ -65,9 +65,9 @@ CREATE TABLE otherschema.user_interactions (
   occurred_at timestamptz DEFAULT now()
 );
 
-CREATE TABLE otherschema.consent_agreements (
+CREATE TABLE mysecondapp.consent_agreements (
   id bigserial PRIMARY KEY,
-  user_id uuid REFERENCES otherschema.users (id)
+  user_id uuid REFERENCES mysecondapp.users (id)
     ON DELETE CASCADE,
   consent_type text NOT NULL,
   granted_at timestamptz DEFAULT now(),
@@ -78,18 +78,18 @@ CREATE TABLE otherschema.consent_agreements (
 
 exports[`my-second extension via plan 1`] = `
 "\\echo Use "CREATE EXTENSION my-second" to load this file. \\quit
-CREATE SCHEMA otherschema;
+CREATE SCHEMA mysecondapp;
 
-CREATE TABLE otherschema.users (
+CREATE TABLE mysecondapp.users (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text UNIQUE NOT NULL,
   created_at timestamptz DEFAULT now(),
   last_active_at timestamptz
 );
 
-CREATE TABLE otherschema.user_interactions (
+CREATE TABLE mysecondapp.user_interactions (
   id bigserial PRIMARY KEY,
-  user_id uuid REFERENCES otherschema.users (id)
+  user_id uuid REFERENCES mysecondapp.users (id)
     ON DELETE CASCADE,
   interaction_type text NOT NULL CHECK (interaction_type IN ('click', 'hover', 'scroll', 'input')),
   target text NOT NULL,
@@ -97,9 +97,9 @@ CREATE TABLE otherschema.user_interactions (
   occurred_at timestamptz DEFAULT now()
 );
 
-CREATE TABLE otherschema.consent_agreements (
+CREATE TABLE mysecondapp.consent_agreements (
   id bigserial PRIMARY KEY,
-  user_id uuid REFERENCES otherschema.users (id)
+  user_id uuid REFERENCES mysecondapp.users (id)
     ON DELETE CASCADE,
   consent_type text NOT NULL,
   granted_at timestamptz DEFAULT now(),
@@ -110,9 +110,9 @@ CREATE TABLE otherschema.consent_agreements (
 
 exports[`my-third extension 1`] = `
 "\\echo Use "CREATE EXTENSION my-third" to load this file. \\quit
-CREATE SCHEMA metaschema;
+CREATE SCHEMA mythirdapp;
 
-CREATE TABLE metaschema.customers (
+CREATE TABLE mythirdapp.customers (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text UNIQUE NOT NULL,
   created_at timestamptz DEFAULT now(),
@@ -122,9 +122,9 @@ CREATE TABLE metaschema.customers (
 
 exports[`my-third extension via plan 1`] = `
 "\\echo Use "CREATE EXTENSION my-third" to load this file. \\quit
-CREATE SCHEMA metaschema;
+CREATE SCHEMA mythirdapp;
 
-CREATE TABLE metaschema.customers (
+CREATE TABLE mythirdapp.customers (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text UNIQUE NOT NULL,
   created_at timestamptz DEFAULT now(),

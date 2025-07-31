@@ -146,7 +146,7 @@ const getHardCodedSchemata = ({
   return svc;
 };
 
-const getMetaSchema = ({
+const getmythirdapp = ({
   opts,
   key,
   databaseId
@@ -156,7 +156,7 @@ const getMetaSchema = ({
   databaseId: string;
 }): any => {
   const apiOpts = (opts as any).api || {};
-  const schemata = apiOpts.metaSchemas || [];
+  const schemata = apiOpts.mythirdapps || [];
   const svc = {
     data: {
       api: {
@@ -264,7 +264,7 @@ const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
       return 'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata');
     }
     if (req.get('X-Meta-Schema')) {
-      return 'metaschema:api:' + req.get('X-Database-Id');
+      return 'mythirdapp:api:' + req.get('X-Database-Id');
     }
   }
   return key;
@@ -292,7 +292,7 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
     svc = svcCache.get(key);
   } else {
     const apiOpts = (opts as any).api || {};
-    const allSchemata = apiOpts.metaSchemas || [];
+    const allSchemata = apiOpts.mythirdapps || [];
     const validatedSchemata = await validateSchemata(rootPgPool, allSchemata);
 
     if (validatedSchemata.length === 0) {
@@ -331,7 +331,7 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
           databaseId: req.get('X-Database-Id')
         });
       } else if (req.get('X-Meta-Schema')) {
-        svc = getMetaSchema({
+        svc = getmythirdapp({
           opts,
           key,
           databaseId: req.get('X-Database-Id')

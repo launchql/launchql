@@ -83,7 +83,7 @@ Supports:
 
 * `query`, `any`, `one`, etc. (via `pg-promise`-like helpers)
 * `beforeEach()` / `afterEach()` – for savepoint transaction handling
-* `setContext({...})` – sets Postgres config (e.g., `role`, `myapp.user_id`)
+* `setContext({...})` – sets Postgres config (e.g., `role`, `myfirstapp.user_id`)
 
 **See full `PgTestClient` API docs**: [pgsql-test → PgTestClient API Overview](https://www.npmjs.com/package/pgsql-test#pgtestclient-api-overview)
 

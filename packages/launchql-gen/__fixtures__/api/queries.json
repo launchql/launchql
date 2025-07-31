@@ -790,7 +790,7 @@
     ]
   },
   "_meta": {
-    "model": "Metaschema",
+    "model": "mythirdapp",
     "qtype": "getOne",
     "properties": {},
     "selection": [

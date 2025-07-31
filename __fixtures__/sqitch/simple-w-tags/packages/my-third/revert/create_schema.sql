@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP SCHEMA metaschema CASCADE;
+DROP SCHEMA mythirdapp CASCADE;
 
 COMMIT;

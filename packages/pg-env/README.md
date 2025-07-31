@@ -33,7 +33,7 @@ console.log(config);
 
 // Override specific values
 const customConfig = getPgEnvOptions({
-  database: 'myapp',
+  database: 'myfirstapp',
   port: 5433
 });
 ```
@@ -53,7 +53,7 @@ const config: PgConfig = {
   port: 5432,
   user: 'appuser',
   password: 'secret',
-  database: 'myapp'
+  database: 'myfirstapp'
 };
 
 const envVars = toPgEnvVars(config);

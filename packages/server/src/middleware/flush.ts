@@ -24,7 +24,7 @@ export const flushService = async (opts: LaunchQLOptions, databaseId: string): P
 
   const api = new RegExp(`^api:${databaseId}:.*`);
   const schemata = new RegExp(`^schemata:${databaseId}:.*`);
-  const meta = new RegExp(`^metaschema:api:${databaseId}`);
+  const meta = new RegExp(`^mythirdapp:api:${databaseId}`);
 
   if (!opts.api.isPublic) {
     graphileCache.forEach((_, k: string) => {

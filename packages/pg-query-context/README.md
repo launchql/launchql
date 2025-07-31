@@ -41,7 +41,7 @@ const result = await pgQueryContext({
   client: pool,
   context: {
     'role': 'authenticated',
-    'myapp.user_id': '123e4567-e89b-12d3-a456-426614174000'
+    'myfirstapp.user_id': '123e4567-e89b-12d3-a456-426614174000'
   },
   query: 'SELECT * FROM app_private.do_something_secure($1)',
   variables: ['input-value']
@@ -73,7 +73,7 @@ app.post('/secure-endpoint', async (req, res) => {
     client: pool,
     context: {
       'role': 'authenticated',
-      'myapp.token': authToken,
+      'myfirstapp.token': authToken,
     },
     query: 'SELECT * FROM app_private.verify_token($1)',
     variables: [authToken],
