@@ -1,175 +1,132 @@
 # LaunchQL CLI
 
-**LaunchQL CLI** - Command-line interface for LaunchQL database-first GraphQL development
+> Build secure, role-aware GraphQL backends powered by PostgreSQL with database-first development
 
-## NAME
+LaunchQL CLI is a comprehensive command-line tool that transforms your PostgreSQL database into a powerful GraphQL API. With automated schema generation, sophisticated migration management, and robust deployment capabilities, you can focus on building great applications instead of boilerplate code.
 
-**lql**, **launchql** - LaunchQL command-line interface for managing PostgreSQL-backed GraphQL projects
+## ✨ Features
 
-## SYNOPSIS
+- 🚀 **Database-First Development** - Design your database, get your GraphQL API automatically
+- 🔐 **Built-in Security** - Role-based access control and security policies
+- 📦 **Module System** - Reusable database modules with dependency management  
+- 🔄 **Smart Migrations** - Automated migration generation and deployment
+- 🛠️ **Developer Experience** - Hot-reload development server with GraphiQL explorer
+- 🏗️ **Production Ready** - Deployment plans, versioning, and rollback support
 
-```
-lql [GLOBAL_OPTIONS] <command> [COMMAND_OPTIONS] [ARGUMENTS]
-launchql [GLOBAL_OPTIONS] <command> [COMMAND_OPTIONS] [ARGUMENTS]
-```
+## 🚀 Quick Start
 
-## DESCRIPTION
-
-LaunchQL CLI is a comprehensive command-line tool for building secure, role-aware GraphQL backends powered by PostgreSQL. It provides database-first development with automated schema generation, sophisticated migration management, and robust deployment capabilities.
-
-The CLI supports both interactive prompts and command-line arguments, making it suitable for both development workflows and CI/CD automation.
-
-## GLOBAL OPTIONS
-
-**-h, --help**
-    Display global help information and exit
-
-**-v, --version**
-    Display version information and exit
-
-**--cwd** *DIRECTORY*
-    Working directory (default: current directory)
-
-## COMMANDS
-
-### Core Database Operations
-
-**deploy** - Deploy database changes and migrations
-**verify** - Verify database state and migrations
-**revert** - Revert database changes and migrations
-
-### Project Management
-
-**init** - Initialize LaunchQL workspace or module
-**extension** - Manage module dependencies
-**plan** - Generate module deployment plans
-**package** - Package module for distribution
-
-### Development Tools
-
-**server** - Start LaunchQL GraphQL server
-**explorer** - Launch GraphiQL explorer interface
-**export** - Export database migrations from existing databases
-
-### Database Administration
-
-**kill** - Terminate database connections and optionally drop databases
-**install** - Install LaunchQL modules
-**tag** - Add tags to changes for versioning
-
-### Migration Tools
-
-**migrate** - Migration management subcommands
-    - **init** - Initialize migration tracking
-    - **status** - Show migration status
-    - **list** - List all changes
-    - **deps** - Show change dependencies
-
-## COMMAND HELP
-
-### Global Help
-
-Display general CLI information and available commands:
+### Installation
 
 ```bash
-lql --help
-lql -h
-launchql --help
-launchql -h
+npm install -g @launchql/cli
 ```
 
-### Individual Command Help
-
-Get detailed help for specific commands:
+### Create Your First Project
 
 ```bash
-lql <command> --help
-lql <command> -h
+# Initialize a new workspace
+lql init --workspace
+cd my-project
+
+# Create your first module
+lql init
+
+# Deploy to your database
+lql deploy --createdb
+
+# Start the development server
+lql server
 ```
 
-Examples:
+Visit `http://localhost:5555` to explore your GraphQL API!
+
+## 📖 Core Concepts
+
+### Workspaces and Modules
+
+- **Workspace**: A collection of related database modules
+- **Module**: A self-contained database package with migrations, functions, and types
+- **Dependencies**: Modules can depend on other modules, creating reusable building blocks
+
+### Database-First Workflow
+
+1. **Design** your database schema using SQL migrations
+2. **Deploy** changes with `lql deploy`
+3. **Develop** against the auto-generated GraphQL API
+4. **Version** and **package** your modules for distribution
+
+## 🛠️ Commands
+
+### Getting Started
+
+#### `lql init`
+Initialize a new LaunchQL workspace or module.
+
 ```bash
-lql deploy --help
-lql migrate --help
-lql server -h
+# Create a new workspace
+lql init --workspace
+
+# Create a new module (run inside workspace)
+lql init
 ```
 
-## DETAILED COMMAND REFERENCE
+### Development
 
-### deploy
+#### `lql server`
+Start the GraphQL development server with hot-reload.
 
-Deploy database changes and migrations to target database.
+```bash
+# Start with defaults (port 5555)
+lql server
 
-**SYNOPSIS**
+# Custom port and options
+lql server --port 8080 --no-postgis
 ```
-lql deploy [OPTIONS]
+
+#### `lql explorer`
+Launch GraphiQL explorer for your API.
+
+```bash
+# Launch explorer
+lql explorer
+
+# With custom CORS origin
+lql explorer --origin http://localhost:3000
 ```
 
-**OPTIONS**
-- **--createdb** - Create database if it doesn't exist
-- **--recursive** - Deploy recursively through dependencies
-- **--package** *NAME* - Target specific package
-- **--to** *TARGET* - Deploy to specific change or tag
-- **--tx** - Use transactions (default: true)
-- **--fast** - Use fast deployment strategy
-- **--logOnly** - Log-only mode, skip script execution
-- **--usePlan** - Use deployment plan
-- **--cache** - Enable caching
+### Database Operations
 
-**EXAMPLES**
+#### `lql deploy`
+Deploy your database changes and migrations.
+
 ```bash
 # Deploy to selected database
 lql deploy
 
-# Deploy with database creation
+# Create database if it doesn't exist
 lql deploy --createdb
 
-# Deploy specific package to tag
+# Deploy specific package to a tag
 lql deploy --package mypackage --to @v1.0.0
 
 # Fast deployment without transactions
 lql deploy --fast --no-tx
 ```
 
-### verify
+#### `lql verify`
+Verify your database state matches expected migrations.
 
-Verify database state matches expected migrations.
-
-**SYNOPSIS**
-```
-lql verify [OPTIONS]
-```
-
-**OPTIONS**
-- **--recursive** - Verify recursively through dependencies
-- **--package** *NAME* - Verify specific package
-- **--to** *TARGET* - Verify up to specific change or tag
-
-**EXAMPLES**
 ```bash
-# Verify current database state
+# Verify current state
 lql verify
 
 # Verify specific package
 lql verify --package mypackage
 ```
 
-### revert
+#### `lql revert`
+Safely revert database changes.
 
-Revert database changes and migrations.
-
-**SYNOPSIS**
-```
-lql revert [OPTIONS]
-```
-
-**OPTIONS**
-- **--recursive** - Revert recursively through dependencies
-- **--package** *NAME* - Revert specific package
-- **--to** *TARGET* - Revert to specific change or tag
-- **--tx** - Use transactions (default: true)
-
-**EXAMPLES**
 ```bash
 # Revert latest changes
 lql revert
@@ -178,345 +135,228 @@ lql revert
 lql revert --to @v1.0.0
 ```
 
-### init
+### Migration Management
 
-Initialize LaunchQL workspace or module.
+#### `lql migrate`
+Comprehensive migration management.
 
-**SYNOPSIS**
-```
-lql init [OPTIONS]
-```
-
-**OPTIONS**
-- **--workspace** - Initialize workspace instead of module
-
-**EXAMPLES**
-```bash
-# Initialize new module in existing workspace
-lql init
-
-# Initialize new workspace
-lql init --workspace
-```
-
-### server
-
-Start LaunchQL GraphQL development server.
-
-**SYNOPSIS**
-```
-lql server [OPTIONS]
-```
-
-**OPTIONS**
-- **--port** *NUMBER* - Server port (default: 5555)
-- **--simpleInflection** - Use simple inflection (default: true)
-- **--oppositeBaseNames** - Use opposite base names (default: false)
-- **--postgis** - Enable PostGIS extension (default: true)
-- **--metaApi** - Enable Meta API (default: true)
-
-**EXAMPLES**
-```bash
-# Start server with defaults
-lql server
-
-# Start server on custom port
-lql server --port 8080
-
-# Start server without PostGIS
-lql server --no-postgis
-```
-
-### explorer
-
-Launch GraphiQL explorer interface.
-
-**SYNOPSIS**
-```
-lql explorer [OPTIONS]
-```
-
-**OPTIONS**
-- **--port** *NUMBER* - Server port (default: 5555)
-- **--origin** *URL* - CORS origin URL (default: http://localhost:3000)
-- **--simpleInflection** - Use simple inflection (default: true)
-- **--oppositeBaseNames** - Use opposite base names (default: false)
-- **--postgis** - Enable PostGIS extension (default: true)
-
-**EXAMPLES**
-```bash
-# Launch explorer with defaults
-lql explorer
-
-# Launch explorer with custom origin
-lql explorer --origin http://localhost:4000
-```
-
-### migrate
-
-Migration management subcommands.
-
-**SYNOPSIS**
-```
-lql migrate <subcommand> [OPTIONS]
-```
-
-**SUBCOMMANDS**
-- **init** - Initialize migration tracking in database
-- **status** - Show current migration status
-- **list** - List all changes (deployed and pending)
-- **deps** - Show change dependencies
-
-**OPTIONS**
-- **--help, -h** - Show migrate help message
-- **--cwd** - Working directory (default: current directory)
-
-**EXAMPLES**
 ```bash
 # Initialize migration tracking
 lql migrate init
 
-# Check migration status
+# Check migration status  
 lql migrate status
 
 # List all changes
 lql migrate list
 
-# Show dependencies
+# Show change dependencies
 lql migrate deps
 ```
 
-### kill
+### Module Management
 
-Terminate database connections and optionally drop databases.
+#### `lql install`
+Install LaunchQL modules as dependencies.
 
-**SYNOPSIS**
-```
-lql kill [OPTIONS]
-```
-
-**OPTIONS**
-- **--drop** - Drop databases after killing connections (default: true)
-- **--no-drop** - Only kill connections, don't drop databases
-
-**EXAMPLES**
-```bash
-# Kill connections and drop selected databases
-lql kill
-
-# Only kill connections, preserve databases
-lql kill --no-drop
-```
-
-### install
-
-Install LaunchQL modules into current module.
-
-**SYNOPSIS**
-```
-lql install <package>...
-```
-
-**ARGUMENTS**
-- **package** - One or more package names to install
-
-**EXAMPLES**
 ```bash
 # Install single package
-lql install @launchql/base32
+lql install @launchql/auth
 
 # Install multiple packages
-lql install @launchql/base32 @launchql/utils
+lql install @launchql/auth @launchql/utils
 ```
 
-### tag
+#### `lql extension`
+Interactively manage module dependencies.
 
-Add tags to changes for versioning.
-
-**SYNOPSIS**
-```
-lql tag [tag_name] [OPTIONS]
-```
-
-**ARGUMENTS**
-- **tag_name** - Name of the tag to create
-
-**OPTIONS**
-- **--package** *NAME* - Target specific package
-- **--changeName** *NAME* - Target specific change (default: latest)
-- **--comment** *TEXT* - Optional tag comment
-
-**EXAMPLES**
 ```bash
-# Add tag to latest change
+lql extension
+```
+
+#### `lql tag`
+Version your changes with tags.
+
+```bash
+# Tag latest change
 lql tag v1.0.0
 
-# Add tag with comment
+# Tag with comment
 lql tag v1.0.0 --comment "Initial release"
 
-# Tag specific change in package
+# Tag specific change
 lql tag v1.1.0 --package mypackage --changeName my-change
 ```
 
-### extension
+### Packaging and Distribution
 
-Manage module dependencies interactively.
+#### `lql plan`
+Generate deployment plans for your modules.
 
-**SYNOPSIS**
-```
-lql extension
-```
-
-**DESCRIPTION**
-Interactive command to select which modules the current module depends on.
-
-**EXAMPLES**
 ```bash
-# Manage current module dependencies
-lql extension
-```
-
-### plan
-
-Generate module deployment plans.
-
-**SYNOPSIS**
-```
 lql plan
 ```
 
-**DESCRIPTION**
-Generates deployment plans for the current module, including package dependencies.
+#### `lql package`
+Package your module for distribution.
 
-**EXAMPLES**
-```bash
-# Generate deployment plan
-lql plan
-```
-
-### package
-
-Package module for distribution.
-
-**SYNOPSIS**
-```
-lql package [OPTIONS]
-```
-
-**OPTIONS**
-- **--plan** - Include deployment plan (default: true)
-- **--pretty** - Pretty-print output (default: true)
-- **--functionDelimiter** *DELIMITER* - Function delimiter (default: $EOFCODE$)
-
-**EXAMPLES**
 ```bash
 # Package with defaults
 lql package
 
-# Package without plan
+# Package without deployment plan
 lql package --no-plan
 ```
 
-### export
+### Utilities
 
-Export database migrations from existing databases.
+#### `lql export`
+Export migrations from existing databases.
 
-**SYNOPSIS**
-```
+```bash
 lql export
 ```
 
-**DESCRIPTION**
-Interactive command to export migrations from existing databases. Guides through database selection, schema selection, and migration generation.
+#### `lql kill`
+Clean up database connections and optionally drop databases.
 
-**EXAMPLES**
 ```bash
-# Export migrations interactively
-lql export
+# Kill connections and drop databases
+lql kill
+
+# Only kill connections
+lql kill --no-drop
 ```
 
-## ENVIRONMENT VARIABLES
+## 💡 Common Workflows
 
-LaunchQL CLI respects standard PostgreSQL environment variables:
-
-- **PGHOST** - PostgreSQL host
-- **PGPORT** - PostgreSQL port
-- **PGDATABASE** - Default database name
-- **PGUSER** - PostgreSQL username
-- **PGPASSWORD** - PostgreSQL password
-
-## FILES
-
-- **launchql.config.js** - LaunchQL configuration file
-- **package.json** - Module package configuration
-- **sql/** - SQL migration files
-- **plans/** - Deployment plan files
-
-## EXIT STATUS
-
-- **0** - Success
-- **1** - General error
-- **2** - Invalid command or arguments
-
-## EXAMPLES
-
-### Basic Workflow
+### Starting a New Project
 
 ```bash
-# Initialize new workspace
+# 1. Create workspace
+mkdir my-app && cd my-app
 lql init --workspace
 
-# Initialize new module
-cd packages/
+# 2. Create your first module  
 lql init
 
-# Deploy changes
-lql deploy
+# 3. Add some SQL migrations to sql/ directory
+# 4. Deploy to database
+lql deploy --createdb
 
-# Start development server
+# 5. Start developing
 lql server
 ```
 
-### Advanced Deployment
+### Working with Existing Projects
 
 ```bash
-# Deploy specific package to production
-lql deploy --package myapp --to @production
+# 1. Clone and enter project
+git clone <repo> && cd <project>
 
-# Verify deployment
-lql verify --package myapp --to @production
+# 2. Install dependencies
+lql install
 
-# Revert if needed
-lql revert --package myapp --to @previous-tag
+# 3. Deploy to local database
+lql deploy --createdb
+
+# 4. Start development server
+lql server
 ```
 
-### Development Workflow
+### Production Deployment
 
 ```bash
-# Start explorer for GraphQL development
-lql explorer --port 4000
-
-# Add dependencies to current module
-lql extension
-
-# Generate deployment plan
+# 1. Create deployment plan
 lql plan
 
-# Package for distribution
+# 2. Package module
 lql package
+
+# 3. Deploy to production
+lql deploy --package myapp --to @production
+
+# 4. Verify deployment
+lql verify --package myapp
 ```
 
-## SEE ALSO
+## ⚙️ Configuration
 
-- LaunchQL Documentation: https://github.com/launchql/launchql
-- PostGraphile: https://www.graphile.org/postgraphile/
-- PostgreSQL: https://www.postgresql.org/
+### Environment Variables
 
-## AUTHORS
+LaunchQL respects standard PostgreSQL environment variables:
 
-LaunchQL CLI is developed by the LaunchQL team.
+```bash
+export PGHOST=localhost
+export PGPORT=5432
+export PGDATABASE=myapp
+export PGUSER=postgres
+export PGPASSWORD=password
+```
 
-## REPORTING BUGS
+## 🆘 Getting Help
 
-Report bugs at: https://github.com/launchql/launchql/issues
+### Command Help
+
+```bash
+# Global help
+lql --help
+
+# Command-specific help  
+lql deploy --help
+lql server -h
+```
+
+### Common Options
+
+Most commands support these global options:
+
+- `--help, -h` - Show help information
+- `--version, -v` - Show version information  
+- `--cwd <dir>` - Set working directory
+
+## Related LaunchQL Tooling
+
+### 🧪 Testing
+
+* [launchql/pgsql-test](https://github.com/launchql/launchql/tree/main/packages/pgsql-test): **📊 Isolated testing environments** with per-test transaction rollbacks—ideal for integration tests, complex migrations, and RLS simulation.
+* [launchql/graphile-test](https://github.com/launchql/launchql/tree/main/packages/graphile-test): **🔐 Authentication mocking** for Graphile-focused test helpers and emulating row-level security contexts.
+* [launchql/pg-query-context](https://github.com/launchql/launchql/tree/main/packages/pg-query-context): **🔒 Session context injection** to add session-local context (e.g., `SET LOCAL`) into queries—ideal for setting `role`, `jwt.claims`, and other session settings.
+
+### 🧠 Parsing & AST
+
+* [launchql/pgsql-parser](https://github.com/launchql/pgsql-parser): **🔄 SQL conversion engine** that interprets and converts PostgreSQL syntax.
+* [launchql/libpg-query-node](https://github.com/launchql/libpg-query-node): **🌉 Node.js bindings** for `libpg_query`, converting SQL into parse trees.
+* [launchql/pg-proto-parser](https://github.com/launchql/pg-proto-parser): **📦 Protobuf parser** for parsing PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
+* [@pgsql/enums](https://github.com/launchql/pgsql-parser/tree/main/packages/enums): **🏷️ TypeScript enums** for PostgreSQL AST for safe and ergonomic parsing logic.
+* [@pgsql/types](https://github.com/launchql/pgsql-parser/tree/main/packages/types): **📝 Type definitions** for PostgreSQL AST nodes in TypeScript.
+* [@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils): **🛠️ AST utilities** for constructing and transforming PostgreSQL syntax trees.
+* [launchql/pg-ast](https://github.com/launchql/launchql/tree/main/packages/pg-ast): **🔍 Low-level AST tools** and transformations for Postgres query structures.
+
+### 🚀 API & Dev Tools
+
+* [launchql/server](https://github.com/launchql/launchql/tree/main/packages/server): **⚡ Express-based API server** powered by PostGraphile to expose a secure, scalable GraphQL API over your Postgres database.
+* [launchql/explorer](https://github.com/launchql/launchql/tree/main/packages/explorer): **🔎 Visual API explorer** with GraphiQL for browsing across all databases and schemas—useful for debugging, documentation, and API prototyping.
+
+### 🔁 Streaming & Uploads
+
+* [launchql/s3-streamer](https://github.com/launchql/launchql/tree/main/packages/s3-streamer): **📤 Direct S3 streaming** for large files with support for metadata injection and content validation.
+* [launchql/etag-hash](https://github.com/launchql/launchql/tree/main/packages/etag-hash): **🏷️ S3-compatible ETags** created by streaming and hashing file uploads in chunks.
+* [launchql/etag-stream](https://github.com/launchql/launchql/tree/main/packages/etag-stream): **🔄 ETag computation** via Node stream transformer during upload or transfer.
+* [launchql/uuid-hash](https://github.com/launchql/launchql/tree/main/packages/uuid-hash): **🆔 Deterministic UUIDs** generated from hashed content, great for deduplication and asset referencing.
+* [launchql/uuid-stream](https://github.com/launchql/launchql/tree/main/packages/uuid-stream): **🌊 Streaming UUID generation** based on piped file content—ideal for upload pipelines.
+* [launchql/upload-names](https://github.com/launchql/launchql/tree/main/packages/upload-names): **📂 Collision-resistant filenames** utility for structured and unique file names for uploads.
+
+### 🧰 CLI & Codegen
+
+* [@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL projects—supports database scaffolding, migrations, seeding, code generation, and automation.
+* [launchql/launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
+* [@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
+* [@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query): **🧩 Fluent GraphQL builder** for PostGraphile schemas. ⚡ Schema-aware via introspection, 🧩 composable and ergonomic for building deeply nested queries.
+
+## Disclaimer
+
+AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+
+No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
 
