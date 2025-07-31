@@ -2,6 +2,6 @@
 %project=my-first
 %uri=my-first
 
-schema_myapp 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add schema_myapp
-table_users [schema_myapp] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_users
-table_products [schema_myapp table_users] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_products
+schema_myfirstapp 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add schema_myfirstapp
+table_users [schema_myfirstapp] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_users
+table_products [schema_myfirstapp table_users] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_products

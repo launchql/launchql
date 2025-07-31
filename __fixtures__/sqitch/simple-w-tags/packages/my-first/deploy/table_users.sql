@@ -1,10 +1,10 @@
 -- Deploy my-first:table_users to pg
 
--- requires: my-first:schema_myapp
+-- requires: my-first:schema_myfirstapp
 
 BEGIN;
 
-CREATE TABLE myapp.users (
+CREATE TABLE myfirstapp.users (
   id SERIAL PRIMARY KEY,
   username TEXT NOT NULL UNIQUE,
   email TEXT NOT NULL UNIQUE,

@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE otherschema.users;
+DROP TABLE mysecondapp.users;
 
 COMMIT;

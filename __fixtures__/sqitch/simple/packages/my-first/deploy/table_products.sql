@@ -1,11 +1,11 @@
 -- Deploy my-first:table_products to pg
 
--- requires: my-first:schema_myapp
+-- requires: my-first:schema_myfirstapp
 -- requires: my-first:table_users
 
 BEGIN;
 
-CREATE TABLE myapp.products (
+CREATE TABLE myfirstapp.products (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT,

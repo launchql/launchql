@@ -4,6 +4,6 @@
 
 BEGIN;
 
-CREATE SCHEMA metaschema;
+CREATE SCHEMA mythirdapp;
 
 COMMIT;
