@@ -20,6 +20,7 @@ import { Tag, ExtendedPlanFile, Change } from '../../files/types';
 import { parsePlanFile } from '../../files/plan/parser';
 import { isValidTagName } from '../../files/plan/validators';
 import { getNow as getPlanTimestamp } from '../../files/plan/generator';
+import { resolveTagToChangeName } from '../../resolution/resolve';
 import {
   ExtensionInfo,
   getExtensionInfo,
@@ -1181,18 +1182,24 @@ export class LaunchQLPackage {
     
     const plan = result.data!;
 
-    let resolvedChange = toChange;
     if (toChange.startsWith('@')) {
-      // Use the tag resolver utility
-      const { resolveTagToChangeName } = require('../../resolution/resolve');
-      resolvedChange = resolveTagToChangeName(planPath, toChange, plan.package);
-      const logTag = new Logger('remove');
-      logTag.info(`Resolved tag ${toChange} to change ${resolvedChange}`);
+      const tagName = toChange.substring(1); // Remove the '@' prefix
+      const tagToRemove = plan.tags.find(tag => tag.name === tagName);
+      if (!tagToRemove) {
+        throw new Error(`Tag '${toChange}' not found in plan`);
+      }
+      
+      plan.tags = plan.tags.filter(tag => tag.name !== tagName);
+      
+      // Write updated plan file
+      writePlanFile(planPath, plan);
+      log.success(`Removed tag ${toChange} from plan`);
+      return;
     }
 
-    const targetIndex = plan.changes.findIndex(c => c.name === resolvedChange);
+    const targetIndex = plan.changes.findIndex(c => c.name === toChange);
     if (targetIndex === -1) {
-      throw new Error(`Change '${resolvedChange}' not found in plan`);
+      throw new Error(`Change '${toChange}' not found in plan`);
     }
 
     const changesToRemove = plan.changes.slice(targetIndex);
