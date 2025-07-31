@@ -13,6 +13,7 @@ import kill from './commands/kill';
 import migrate from './commands/migrate';
 import _package from './commands/package';
 import plan from './commands/plan';
+import remove from './commands/remove';
 import revert from './commands/revert';
 import server from './commands/server';
 import tag from './commands/tag';
@@ -36,6 +37,7 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
     deploy: pgt(deploy),
     verify: pgt(verify),
     revert: pgt(revert),
+    remove: pgt(remove),
     init: pgt(init),
     extension: pgt(extension),
     plan: pgt(plan),
