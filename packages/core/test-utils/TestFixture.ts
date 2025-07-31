@@ -3,7 +3,7 @@ import os from 'os';
 import path from 'path';
 
 import { LaunchQLPackage } from '../src';
-import { getFixturePath } from './index';
+import { getFixturePath } from './utils';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
 
