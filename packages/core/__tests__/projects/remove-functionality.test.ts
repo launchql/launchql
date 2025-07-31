@@ -14,7 +14,7 @@ describe('Remove Functionality', () => {
     fixture.cleanup();
   });
 
-  test('removes all changes from plan when no --to parameter is provided', async () => {
+  test('removes all changes from plan when removing from first change', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
     const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
@@ -38,7 +38,7 @@ describe('Remove Functionality', () => {
     expect(fs.existsSync(path.join(verifyDir, 'table_users.sql'))).toBe(true);
     expect(fs.existsSync(path.join(verifyDir, 'table_products.sql'))).toBe(true);
     
-    await pkg.removeFromPlan();
+    await pkg.removeFromPlan('schema_myfirstapp');
     
     const updatedPlan = fs.readFileSync(planPath, 'utf8');
     expect(updatedPlan).not.toContain('schema_myfirstapp');
@@ -99,7 +99,7 @@ describe('Remove Functionality', () => {
   test('handles empty plan gracefully', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    await pkg.removeFromPlan();
+    await pkg.removeFromPlan('schema_myfirstapp');
     
     const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
     const updatedPlan = fs.readFileSync(planPath, 'utf8');
@@ -107,12 +107,9 @@ describe('Remove Functionality', () => {
     expect(updatedPlan).not.toContain('table_users');
     expect(updatedPlan).not.toContain('table_products');
     
-    await expect(pkg.removeFromPlan()).resolves.not.toThrow();
-    
-    const finalPlan = fs.readFileSync(planPath, 'utf8');
-    expect(finalPlan).not.toContain('schema_myfirstapp');
-    expect(finalPlan).not.toContain('table_users');
-    expect(finalPlan).not.toContain('table_products');
+    await expect(pkg.removeFromPlan('nonexistent_change')).rejects.toThrow(
+      "Change 'nonexistent_change' not found in plan"
+    );
   });
 
   test('removes associated tags when removing changes', async () => {
@@ -142,12 +139,19 @@ describe('Remove Functionality', () => {
     fs.unlinkSync(path.join(revertDir, 'table_products.sql'));
     fs.unlinkSync(path.join(verifyDir, 'schema_myfirstapp.sql'));
     
-    await expect(pkg.removeFromPlan()).resolves.not.toThrow();
+    await expect(pkg.removeFromPlan('schema_myfirstapp')).resolves.not.toThrow();
     
     const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
     const updatedPlan = fs.readFileSync(planPath, 'utf8');
     expect(updatedPlan).not.toContain('schema_myfirstapp');
     expect(updatedPlan).not.toContain('table_users');
     expect(updatedPlan).not.toContain('table_products');
+  });
+
+  test('requires toChange parameter to be provided', async () => {
+    const pkg = fixture.getModuleProject([], 'my-first');
+    
+    // @ts-expect-error Testing runtime behavior when parameter is missing
+    await expect(() => pkg.removeFromPlan()).rejects.toThrow();
   });
 });

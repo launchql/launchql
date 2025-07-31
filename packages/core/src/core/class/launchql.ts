@@ -1165,7 +1165,7 @@ export class LaunchQLPackage {
     }
   }
 
-  async removeFromPlan(toChange?: string): Promise<void> {
+  async removeFromPlan(toChange: string): Promise<void> {
     const log = new Logger('remove');
     const modulePath = this.getModulePath();
     if (!modulePath) {
@@ -1180,19 +1180,14 @@ export class LaunchQLPackage {
     }
     
     const plan = result.data!;
-    let changesToRemove: Change[];
     
-    if (toChange) {
-      const targetIndex = plan.changes.findIndex(c => c.name === toChange);
-      if (targetIndex === -1) {
-        throw new Error(`Change '${toChange}' not found in plan`);
-      }
-      changesToRemove = plan.changes.slice(targetIndex);
-      plan.changes = plan.changes.slice(0, targetIndex);
-    } else {
-      changesToRemove = [...plan.changes];
-      plan.changes = [];
+    const targetIndex = plan.changes.findIndex(c => c.name === toChange);
+    if (targetIndex === -1) {
+      throw new Error(`Change '${toChange}' not found in plan`);
     }
+    
+    const changesToRemove = plan.changes.slice(targetIndex);
+    plan.changes = plan.changes.slice(0, targetIndex);
     
     plan.tags = plan.tags.filter(tag => 
       !changesToRemove.some(change => change.name === tag.change)
