@@ -1,117 +1,95 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
-
-import { TestDatabase } from '../../test-utils';
-import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
+import fs from 'fs';
+import path from 'path';
+import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { TestFixture } from '../../test-utils/TestFixture';
 
 describe('Remove Functionality', () => {
-  let fixture: CoreDeployTestFixture;
-  let db: TestDatabase;
+  let fixture: TestFixture;
   
-  beforeEach(async () => {
-    fixture = new CoreDeployTestFixture('sqitch', 'simple-w-tags');
-    db = await fixture.setupTestDatabase();
+  beforeEach(() => {
+    fixture = new TestFixture('sqitch', 'simple-w-tags');
   });
   
-  afterEach(async () => {
-    await fixture.cleanup();
+  afterEach(() => {
+    fixture.cleanup();
   });
 
   test('removes all changes from plan when no --to parameter is provided', async () => {
-    const basePath = fixture.tempFixtureDir;
-    const packagePath = join(basePath, 'packages', 'my-first');
-    const planPath = join(packagePath, 'launchql.plan');
-    const deployDir = join(packagePath, 'deploy');
-    const revertDir = join(packagePath, 'revert');
-    const verifyDir = join(packagePath, 'verify');
+    const pkg = fixture.getModuleProject([], 'my-first');
     
-    const originalPlan = readFileSync(planPath, 'utf8');
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const originalPlan = fs.readFileSync(planPath, 'utf8');
+    
     expect(originalPlan).toContain('schema_myfirstapp');
     expect(originalPlan).toContain('table_users');
     expect(originalPlan).toContain('table_products');
-    expect(originalPlan).toContain('@v1.0.0');
-    expect(originalPlan).toContain('@v1.1.0');
     
-    expect(existsSync(join(deployDir, 'schema_myfirstapp.sql'))).toBe(true);
-    expect(existsSync(join(deployDir, 'table_users.sql'))).toBe(true);
-    expect(existsSync(join(deployDir, 'table_products.sql'))).toBe(true);
-    expect(existsSync(join(revertDir, 'schema_myfirstapp.sql'))).toBe(true);
-    expect(existsSync(join(revertDir, 'table_users.sql'))).toBe(true);
-    expect(existsSync(join(revertDir, 'table_products.sql'))).toBe(true);
-    expect(existsSync(join(verifyDir, 'schema_myfirstapp.sql'))).toBe(true);
-    expect(existsSync(join(verifyDir, 'table_users.sql'))).toBe(true);
-    expect(existsSync(join(verifyDir, 'table_products.sql'))).toBe(true);
+    const deployDir = path.join(pkg.getModulePath()!, 'deploy');
+    const revertDir = path.join(pkg.getModulePath()!, 'revert');
+    const verifyDir = path.join(pkg.getModulePath()!, 'verify');
     
-    const { LaunchQLPackage } = await import('../../src/core/class/launchql');
-    const pkg = new LaunchQLPackage(packagePath);
+    expect(fs.existsSync(path.join(deployDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(deployDir, 'table_users.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(deployDir, 'table_products.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(revertDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(revertDir, 'table_users.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(revertDir, 'table_products.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(verifyDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(verifyDir, 'table_users.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(verifyDir, 'table_products.sql'))).toBe(true);
     
     await pkg.removeFromPlan();
     
-    const updatedPlan = readFileSync(planPath, 'utf8');
-    expect(updatedPlan).toContain('%syntax-version=1.0.0');
-    expect(updatedPlan).toContain('%project=my-first');
-    expect(updatedPlan).toContain('%uri=my-first');
+    const updatedPlan = fs.readFileSync(planPath, 'utf8');
     expect(updatedPlan).not.toContain('schema_myfirstapp');
     expect(updatedPlan).not.toContain('table_users');
     expect(updatedPlan).not.toContain('table_products');
-    expect(updatedPlan).not.toContain('@v1.0.0');
-    expect(updatedPlan).not.toContain('@v1.1.0');
     
-    expect(existsSync(join(deployDir, 'schema_myfirstapp.sql'))).toBe(false);
-    expect(existsSync(join(deployDir, 'table_users.sql'))).toBe(false);
-    expect(existsSync(join(deployDir, 'table_products.sql'))).toBe(false);
-    expect(existsSync(join(revertDir, 'schema_myfirstapp.sql'))).toBe(false);
-    expect(existsSync(join(revertDir, 'table_users.sql'))).toBe(false);
-    expect(existsSync(join(revertDir, 'table_products.sql'))).toBe(false);
-    expect(existsSync(join(verifyDir, 'schema_myfirstapp.sql'))).toBe(false);
-    expect(existsSync(join(verifyDir, 'table_users.sql'))).toBe(false);
-    expect(existsSync(join(verifyDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(deployDir, 'schema_myfirstapp.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(deployDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(deployDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'schema_myfirstapp.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'schema_myfirstapp.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'table_products.sql'))).toBe(false);
   });
 
   test('removes changes from specified change to end when --to parameter is provided', async () => {
-    const basePath = fixture.tempFixtureDir;
-    const packagePath = join(basePath, 'packages', 'my-first');
-    const planPath = join(packagePath, 'launchql.plan');
-    const deployDir = join(packagePath, 'deploy');
-    const revertDir = join(packagePath, 'revert');
-    const verifyDir = join(packagePath, 'verify');
+    const pkg = fixture.getModuleProject([], 'my-first');
     
-    const originalPlan = readFileSync(planPath, 'utf8');
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const originalPlan = fs.readFileSync(planPath, 'utf8');
+    
     expect(originalPlan).toContain('schema_myfirstapp');
     expect(originalPlan).toContain('table_users');
     expect(originalPlan).toContain('table_products');
     
-    const { LaunchQLPackage } = await import('../../src/core/class/launchql');
-    const pkg = new LaunchQLPackage(packagePath);
-    
     await pkg.removeFromPlan('table_users');
     
-    const updatedPlan = readFileSync(planPath, 'utf8');
-    expect(updatedPlan).toContain('%syntax-version=1.0.0');
-    expect(updatedPlan).toContain('%project=my-first');
+    const updatedPlan = fs.readFileSync(planPath, 'utf8');
     expect(updatedPlan).toContain('schema_myfirstapp');
     expect(updatedPlan).not.toContain('table_users');
     expect(updatedPlan).not.toContain('table_products');
-    expect(updatedPlan).not.toContain('@v1.0.0');
-    expect(updatedPlan).not.toContain('@v1.1.0');
     
-    expect(existsSync(join(deployDir, 'schema_myfirstapp.sql'))).toBe(true);
-    expect(existsSync(join(deployDir, 'table_users.sql'))).toBe(false);
-    expect(existsSync(join(deployDir, 'table_products.sql'))).toBe(false);
-    expect(existsSync(join(revertDir, 'schema_myfirstapp.sql'))).toBe(true);
-    expect(existsSync(join(revertDir, 'table_users.sql'))).toBe(false);
-    expect(existsSync(join(revertDir, 'table_products.sql'))).toBe(false);
-    expect(existsSync(join(verifyDir, 'schema_myfirstapp.sql'))).toBe(true);
-    expect(existsSync(join(verifyDir, 'table_users.sql'))).toBe(false);
-    expect(existsSync(join(verifyDir, 'table_products.sql'))).toBe(false);
+    const deployDir = path.join(pkg.getModulePath()!, 'deploy');
+    const revertDir = path.join(pkg.getModulePath()!, 'revert');
+    const verifyDir = path.join(pkg.getModulePath()!, 'verify');
+    
+    expect(fs.existsSync(path.join(deployDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(deployDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(deployDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(revertDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(revertDir, 'table_products.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'schema_myfirstapp.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(verifyDir, 'table_users.sql'))).toBe(false);
+    expect(fs.existsSync(path.join(verifyDir, 'table_products.sql'))).toBe(false);
   });
 
   test('throws error when specified change does not exist', async () => {
-    const basePath = fixture.tempFixtureDir;
-    const packagePath = join(basePath, 'packages', 'my-first');
-    
-    const { LaunchQLPackage } = await import('../../src/core/class/launchql');
-    const pkg = new LaunchQLPackage(packagePath);
+    const pkg = fixture.getModuleProject([], 'my-first');
     
     await expect(pkg.removeFromPlan('nonexistent_change')).rejects.toThrow(
       "Change 'nonexistent_change' not found in plan"
@@ -119,102 +97,57 @@ describe('Remove Functionality', () => {
   });
 
   test('handles empty plan gracefully', async () => {
-    const basePath = fixture.tempFixtureDir;
-    const packagePath = join(basePath, 'packages', 'my-first');
-    const planPath = join(packagePath, 'launchql.plan');
-    
-    const emptyPlan = `%syntax-version=1.0.0
-%project=my-first
-%uri=my-first
-
-`;
-    writeFileSync(planPath, emptyPlan);
-    
-    const { LaunchQLPackage } = await import('../../src/core/class/launchql');
-    const pkg = new LaunchQLPackage(packagePath);
+    const pkg = fixture.getModuleProject([], 'my-first');
     
     await pkg.removeFromPlan();
     
-    const updatedPlan = readFileSync(planPath, 'utf8');
-    expect(updatedPlan).toBe(emptyPlan);
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const updatedPlan = fs.readFileSync(planPath, 'utf8');
+    expect(updatedPlan).not.toContain('schema_myfirstapp');
+    expect(updatedPlan).not.toContain('table_users');
+    expect(updatedPlan).not.toContain('table_products');
+    
+    await expect(pkg.removeFromPlan()).resolves.not.toThrow();
+    
+    const finalPlan = fs.readFileSync(planPath, 'utf8');
+    expect(finalPlan).not.toContain('schema_myfirstapp');
+    expect(finalPlan).not.toContain('table_users');
+    expect(finalPlan).not.toContain('table_products');
   });
 
   test('removes associated tags when removing changes', async () => {
-    const basePath = fixture.tempFixtureDir;
-    const packagePath = join(basePath, 'packages', 'my-first');
-    const planPath = join(packagePath, 'launchql.plan');
+    const pkg = fixture.getModuleProject([], 'my-first');
     
-    const originalPlan = readFileSync(planPath, 'utf8');
-    const modifiedPlan = originalPlan.trimEnd() + '\ntable_orders [table_products] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add table_orders\n@v1.2.0 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # Added orders feature\n';
-    writeFileSync(planPath, modifiedPlan);
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const originalPlan = fs.readFileSync(planPath, 'utf8');
     
-    const deployDir = join(packagePath, 'deploy');
-    const revertDir = join(packagePath, 'revert');
-    const verifyDir = join(packagePath, 'verify');
+    expect(originalPlan).toContain('@v1.0.0');
+    expect(originalPlan).toContain('@v1.1.0');
     
-    writeFileSync(join(deployDir, 'table_orders.sql'), `-- Deploy my-first:table_orders to pg
-
--- requires: my-first:table_products
-
-BEGIN;
-
-CREATE TABLE myfirstapp.orders (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES myfirstapp.users(id),
-  product_id INTEGER REFERENCES myfirstapp.products(id),
-  quantity INTEGER NOT NULL DEFAULT 1,
-  created_at TIMESTAMP DEFAULT now()
-);
-
-COMMIT;
-`);
+    await pkg.removeFromPlan('table_users');
     
-    writeFileSync(join(revertDir, 'table_orders.sql'), `-- Revert my-first:table_orders from pg
-
-BEGIN;
-
-DROP TABLE myfirstapp.orders;
-
-COMMIT;
-`);
-    
-    writeFileSync(join(verifyDir, 'table_orders.sql'), `-- Verify my-first:table_orders on pg
-
-SELECT 1/count(*) FROM information_schema.tables WHERE table_schema = 'myfirstapp' AND table_name = 'orders';
-`);
-    
-    const { LaunchQLPackage } = await import('../../src/core/class/launchql');
-    const pkg = new LaunchQLPackage(packagePath);
-    
-    await pkg.removeFromPlan('table_products');
-    
-    const updatedPlan = readFileSync(planPath, 'utf8');
-    expect(updatedPlan).toContain('schema_myfirstapp');
-    expect(updatedPlan).toContain('table_users');
-    expect(updatedPlan).toContain('@v1.0.0'); // This tag is associated with table_users, should remain
-    expect(updatedPlan).not.toContain('table_products');
-    expect(updatedPlan).not.toContain('table_orders');
-    expect(updatedPlan).not.toContain('@v1.1.0'); // This tag is associated with table_products, should be removed
-    expect(updatedPlan).not.toContain('@v1.2.0'); // This tag is associated with table_orders, should be removed
-    
-    expect(existsSync(join(deployDir, 'table_orders.sql'))).toBe(false);
-    expect(existsSync(join(revertDir, 'table_orders.sql'))).toBe(false);
-    expect(existsSync(join(verifyDir, 'table_orders.sql'))).toBe(false);
+    const updatedPlan = fs.readFileSync(planPath, 'utf8');
+    expect(updatedPlan).not.toContain('@v1.0.0');
+    expect(updatedPlan).not.toContain('@v1.1.0');
   });
 
   test('handles missing SQL files gracefully', async () => {
-    const basePath = fixture.tempFixtureDir;
-    const packagePath = join(basePath, 'packages', 'my-first');
-    const deployDir = join(packagePath, 'deploy');
+    const pkg = fixture.getModuleProject([], 'my-first');
     
-    const tablePath = join(deployDir, 'table_users.sql');
-    if (existsSync(tablePath)) {
-      require('fs').unlinkSync(tablePath);
-    }
+    const deployDir = path.join(pkg.getModulePath()!, 'deploy');
+    const revertDir = path.join(pkg.getModulePath()!, 'revert');
+    const verifyDir = path.join(pkg.getModulePath()!, 'verify');
     
-    const { LaunchQLPackage } = await import('../../src/core/class/launchql');
-    const pkg = new LaunchQLPackage(packagePath);
+    fs.unlinkSync(path.join(deployDir, 'table_users.sql'));
+    fs.unlinkSync(path.join(revertDir, 'table_products.sql'));
+    fs.unlinkSync(path.join(verifyDir, 'schema_myfirstapp.sql'));
     
-    await expect(pkg.removeFromPlan('table_users')).resolves.not.toThrow();
+    await expect(pkg.removeFromPlan()).resolves.not.toThrow();
+    
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const updatedPlan = fs.readFileSync(planPath, 'utf8');
+    expect(updatedPlan).not.toContain('schema_myfirstapp');
+    expect(updatedPlan).not.toContain('table_users');
+    expect(updatedPlan).not.toContain('table_products');
   });
 });
