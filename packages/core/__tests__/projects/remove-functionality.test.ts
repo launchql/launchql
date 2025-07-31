@@ -137,6 +137,19 @@ describe('Remove Functionality', () => {
     planContent = fs.readFileSync(planPath, 'utf8');
     expect(planContent).not.toContain('@v1.0.0');
   });
+  test('removes a specific tag when its tag is passed in as toChange parameter', async () => {
+    const pkg = fixture.getModuleProject([], 'my-first');
+    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    let planContent = fs.readFileSync(planPath, 'utf8');
+    expect(planContent).toContain('@v1.0.0');
+    expect(planContent).toContain('table_users');
+    await pkg.removeFromPlan('@v1.0.0');
+    planContent = fs.readFileSync(planPath, 'utf8');
+    expect(planContent).not.toContain('@v1.0.0');
+    expect(planContent).not.toContain('table_users');
+    expect(planContent).toContain('schema_myfirstapp');
+  });
+
 
   test('handles missing SQL files gracefully', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
