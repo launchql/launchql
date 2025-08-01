@@ -58,7 +58,7 @@
     "graphile-settings": "^2.3.0",
     "graphile-simple-inflector": "^0.1.1",
     "graphql-tag": "2.12.6",
-    "graphql-upload": "^15.0.2",
+    "graphql-upload": "^13.0.0",
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
     "pg-query-context": "^2.2.0",

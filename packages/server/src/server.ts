@@ -8,7 +8,7 @@ import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/env';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import graphqlUploadExpress from 'graphql-upload/public/graphqlUploadExpress.js';
 import { Pool, PoolClient } from 'pg';
 import { getPgPool } from 'pg-cache';
 import requestIp from 'request-ip';
