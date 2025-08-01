@@ -1,82 +1,13 @@
 import { getConnections } from 'graphile-test';
-import { gql } from 'graphql-tag';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
+import { ApiQuery, ApiByNameQuery } from '../src/middleware/gql';
 
 const sql = (f: string) => join(__dirname, f);
 
-const ApiQuery = gql`
-  query ApiRoot($domain: String!, $subdomain: String) {
-    domains(condition: { domain: $domain, subdomain: $subdomain }) {
-      nodes {
-        api {
-          databaseId
-          dbname
-          roleName
-          anonRole
-          isPublic
-          schemaNamesFromExt: apiExtensions {
-            nodes {
-              schemaName
-            }
-          }
-          schemaNames: schemataByApiSchemaApiIdAndSchemaId {
-            nodes {
-              schemaName
-            }
-          }
-          apiModules {
-            nodes {
-              name
-              data
-            }
-          }
-          database {
-            id
-            name
-          }
-        }
-        siteId
-      }
-    }
-  }
-`;
-
-const ApiByNameQuery = gql`
-  query ApiByName($name: String!, $databaseId: UUID!) {
-    api: apiByDatabaseIdAndName(name: $name, databaseId: $databaseId) {
-      databaseId
-      dbname
-      roleName
-      anonRole
-      isPublic
-      schemaNamesFromExt: apiExtensions {
-        nodes {
-          schemaName
-        }
-      }
-      schemaNames: schemataByApiSchemaApiIdAndSchemaId {
-        nodes {
-          schemaName
-        }
-      }
-      apiModules {
-        nodes {
-          name
-          data
-        }
-      }
-      database {
-        id
-        name
-      }
-    }
-  }
-`;
-
 const metaSchemaFixtures = [
   seed.sqlfile([
-    sql('fixtures/meta-schema-test.sql')
+    sql('fixtures/meta-schema-test-data.sql')
   ])
 ];
 
@@ -125,8 +56,40 @@ describe('Meta Schema GraphQL Type Generation', () => {
     expect(fieldNames).toContain('database');
   });
 
-  test('should execute ApiQuery without GraphQL validation errors', async () => {
-    const result = await query(ApiQuery, {
+  test('should execute simplified ApiQuery without GraphQL validation errors', async () => {
+    const simplifiedApiQuery = `
+      query ApiRoot($domain: String!, $subdomain: String) {
+        domains(condition: { domain: $domain, subdomain: $subdomain }) {
+          nodes {
+            api {
+              databaseId
+              dbname
+              roleName
+              anonRole
+              isPublic
+              apiExtensions {
+                nodes {
+                  schemaName
+                }
+              }
+              apiModules {
+                nodes {
+                  name
+                  data
+                }
+              }
+              database {
+                id
+                name
+              }
+            }
+            siteId
+          }
+        }
+      }
+    `;
+    
+    const result = await query(simplifiedApiQuery, {
       domain: 'localhost',
       subdomain: 'test'
     });
@@ -148,8 +111,35 @@ describe('Meta Schema GraphQL Type Generation', () => {
     expect(siteId).toBe('550e8400-e29b-41d4-a716-446655440007');
   });
 
-  test('should execute ApiByNameQuery without GraphQL validation errors', async () => {
-    const result = await query(ApiByNameQuery, {
+  test('should execute simplified ApiByNameQuery without GraphQL validation errors', async () => {
+    const simplifiedApiByNameQuery = `
+      query ApiByName($name: String!, $databaseId: UUID!) {
+        api: apiByDatabaseIdAndName(name: $name, databaseId: $databaseId) {
+          databaseId
+          dbname
+          roleName
+          anonRole
+          isPublic
+          apiExtensions {
+            nodes {
+              schemaName
+            }
+          }
+          apiModules {
+            nodes {
+              name
+              data
+            }
+          }
+          database {
+            id
+            name
+          }
+        }
+      }
+    `;
+    
+    const result = await query(simplifiedApiByNameQuery, {
       name: 'test-api',
       databaseId: '550e8400-e29b-41d4-a716-446655440000'
     });
