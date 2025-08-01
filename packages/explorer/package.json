@@ -45,7 +45,7 @@
     "graphile-build": "^4.14.1",
     "graphile-cache": "^1.1.0",
     "graphile-settings": "^2.3.0",
-    "graphql-upload": "^15.0.2",
+    "graphql-upload": "^13.0.0",
     "pg-cache": "^1.1.0",
     "postgraphile": "^4.14.1"
   },
