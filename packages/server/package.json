@@ -75,6 +75,7 @@
     "@types/pg": "^8.15.2",
     "@types/request-ip": "^0.0.41",
     "@types/rimraf": "^4.0.5",
+    "graphile-test": "^2.2.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
   },
