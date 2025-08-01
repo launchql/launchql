@@ -1,7 +1,6 @@
 import { getConnections } from 'graphile-test';
 import { seed } from 'pgsql-test';
 import { join } from 'path';
-import { ApiQuery, ApiByNameQuery } from '../src/middleware/gql';
 
 const sql = (f: string) => join(__dirname, f);
 
