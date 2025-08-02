@@ -8,7 +8,7 @@ CREATE TABLE myfirstapp.users (
   id serial PRIMARY KEY,
   username text NOT NULL UNIQUE,
   email text NOT NULL UNIQUE,
-  created_at pg_catalog.timestamp DEFAULT now()
+  created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE myfirstapp.products (
@@ -30,7 +30,7 @@ CREATE TABLE myfirstapp.users (
   id serial PRIMARY KEY,
   username text NOT NULL UNIQUE,
   email text NOT NULL UNIQUE,
-  created_at pg_catalog.timestamp DEFAULT now()
+  created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE myfirstapp.products (

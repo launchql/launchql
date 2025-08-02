@@ -8,7 +8,7 @@ import { getEnvOptions } from '@launchql/env';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express,NextFunction, Request, Response } from 'express';
 import { GraphileCache, graphileCache } from 'graphile-cache';
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import graphqlUploadExpress from 'graphql-upload/public/graphqlUploadExpress.js';
 import { getPgPool } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 import { postgraphile } from 'postgraphile';
