@@ -40,6 +40,7 @@ export class LaunchQLInit {
    */
   async bootstrapTestRoles(): Promise<void> {
     try {
+      log.warn('WARNING: This command creates test roles and should NEVER be run on a production database!');
       log.info('Bootstrapping LaunchQL test roles...');
       
       const sqlPath = join(__dirname, 'sql', 'bootstrap-test-roles.sql');

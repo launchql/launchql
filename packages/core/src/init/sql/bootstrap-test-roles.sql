@@ -1,45 +1,15 @@
--- anonymous
-CREATE ROLE anonymous;
+-- app user
+CREATE ROLE app_user LOGIN PASSWORD 'app_password';
 
-ALTER USER anonymous WITH NOCREATEDB;
+GRANT anonymous TO app_user;
 
-ALTER USER anonymous WITH NOSUPERUSER;
+GRANT authenticated TO app_user;
 
-ALTER USER anonymous WITH NOCREATEROLE;
+-- admin user
+CREATE ROLE app_admin LOGIN PASSWORD 'admin_password';
 
-ALTER USER anonymous WITH NOLOGIN;
+GRANT anonymous TO administrator;
 
-ALTER USER anonymous WITH NOREPLICATION;
+GRANT authenticated TO administrator;
 
-ALTER USER anonymous WITH NOBYPASSRLS;
-
--- authenticated
-CREATE ROLE authenticated;
-
-ALTER USER authenticated WITH NOCREATEDB;
-
-ALTER USER authenticated WITH NOSUPERUSER;
-
-ALTER USER authenticated WITH NOCREATEROLE;
-
-ALTER USER authenticated WITH NOLOGIN;
-
-ALTER USER authenticated WITH NOREPLICATION;
-
-ALTER USER authenticated WITH NOBYPASSRLS;
-
--- administrator
-CREATE ROLE administrator;
-
-ALTER USER administrator WITH NOCREATEDB;
-
-ALTER USER administrator WITH NOSUPERUSER;
-
-ALTER USER administrator WITH NOCREATEROLE;
-
-ALTER USER administrator WITH NOLOGIN;
-
-ALTER USER administrator WITH NOREPLICATION;
-
--- they CAN bypass RLS
-ALTER USER administrator WITH BYPASSRLS;
+GRANT administrator TO app_admin;

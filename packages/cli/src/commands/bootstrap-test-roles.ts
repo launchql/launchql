@@ -51,7 +51,6 @@ export default async (
   const init = new LaunchQLInit(pgEnv);
   
   try {
-    log.warn('WARNING: This command creates test roles and should NEVER be run on a production database!');
     await init.bootstrapTestRoles();
     log.success('Bootstrap test roles complete.');
   } finally {
