@@ -56,6 +56,42 @@ export class LaunchQLInit {
   }
 
   /**
+   * Bootstrap database roles with custom username and password
+   */
+  async bootstrapDbRoles(username: string, password: string): Promise<void> {
+    try {
+      log.info(`Bootstrapping LaunchQL database roles for user: ${username}...`);
+      
+      const sql = `
+BEGIN;
+DO $do$
+BEGIN
+    IF NOT EXISTS (
+        SELECT
+        FROM
+            pg_catalog.pg_roles
+        WHERE
+            rolname = '${username}') THEN
+    CREATE ROLE ${username} LOGIN PASSWORD '${password}';
+END IF;
+END
+$do$;
+
+GRANT anonymous TO ${username};
+GRANT authenticated TO ${username};
+COMMIT;
+      `;
+      
+      await this.pool.query(sql);
+      
+      log.success(`Successfully bootstrapped LaunchQL database roles for user: ${username}`);
+    } catch (error) {
+      log.error(`Failed to bootstrap database roles for user ${username}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Close the database connection
    */
   async close(): Promise<void> {
