@@ -63,7 +63,8 @@ jobs:
 
       - name: seed app_user
         run: |
-          yarn lql admin-users add --bootstrap --test --yes
+          yarn lql admin-users bootstrap --yes
+          yarn lql admin-users add --test --yes
         env:
           PGHOST: pg_db
           PGPORT: 5432
