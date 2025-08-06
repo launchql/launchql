@@ -14,6 +14,7 @@ export * from './workspace/utils';
 export * from './files';
 export { cleanSql } from './migrate/clean';
 export { LaunchQLMigrate } from './migrate/client';
+export { LaunchQLInit } from './init/client';
 export { 
   DeployOptions, 
   DeployResult, 

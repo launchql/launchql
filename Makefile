@@ -14,7 +14,7 @@ ssh:
 	docker exec -it postgres /bin/bash
 
 roles:
-	psql < bootstrap-roles.sql
+	yarn lql bootstrap-roles
 
 install:
 	docker exec postgres /sql-bin/install.sh
@@ -31,4 +31,4 @@ openhands:
 		-p 4444:3000 \
 		--add-host host.docker.internal:host-gateway \
 		--name launchql-openhands \
-		docker.all-hands.dev/all-hands-ai/openhands:0.44 
+		docker.all-hands.dev/all-hands-ai/openhands:0.44  

@@ -3,6 +3,8 @@ import { ParsedArgs } from 'minimist';
 import { teardownPgPools } from 'pg-cache';
 
 // Commands
+import bootstrapRoles from './commands/bootstrap-roles';
+import bootstrapTestRoles from './commands/bootstrap-test-roles';
 import clear from './commands/clear';
 import deploy from './commands/deploy';
 import explorer from './commands/explorer';
@@ -35,6 +37,8 @@ const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (.
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
   return {
+    'bootstrap-roles': pgt(bootstrapRoles),
+    'bootstrap-test-roles': pgt(bootstrapTestRoles),
     clear: pgt(clear),
     deploy: pgt(deploy),
     verify: pgt(verify),

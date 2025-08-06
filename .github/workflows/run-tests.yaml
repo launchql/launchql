@@ -60,7 +60,7 @@ jobs:
 
       - name: seed app_user
         run: |
-          psql -f ./bootstrap-roles.sql postgres
+          yarn lql bootstrap-roles --yes
         env:
           PGHOST: pg_db
           PGPORT: 5432
