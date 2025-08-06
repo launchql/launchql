@@ -4,21 +4,21 @@ import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { getPgEnvOptions } from 'pg-env';
 
-const log = new Logger('bootstrap-test-roles');
+const log = new Logger('bootstrap');
 
-const bootstrapTestRolesUsageText = `
-LaunchQL Bootstrap Test Roles Command:
+const bootstrapUsageText = `
+LaunchQL Bootstrap Command:
 
-  lql bootstrap-test-roles [OPTIONS]
+  lql bootstrap [OPTIONS]
 
-  Initialize LaunchQL database roles for testing (roles only, no users).
+  Initialize all LaunchQL database roles (standard roles and test roles).
 
 Options:
   --help, -h              Show this help message
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql bootstrap-test-roles     Bootstrap test roles in selected database
+  lql bootstrap     Bootstrap all roles in selected database
 `;
 
 export default async (
@@ -28,7 +28,7 @@ export default async (
 ) => {
   // Show usage if explicitly requested
   if (argv.help || argv.h) {
-    console.log(bootstrapTestRolesUsageText);
+    console.log(bootstrapUsageText);
     process.exit(0);
   }
 
@@ -38,7 +38,7 @@ export default async (
     {
       type: 'confirm',
       name: 'yes',
-      message: 'Are you sure you want to bootstrap LaunchQL test roles?',
+      message: 'Are you sure you want to bootstrap all LaunchQL roles?',
       default: false
     }
   ]);
@@ -51,9 +51,17 @@ export default async (
   const init = new LaunchQLInit(pgEnv);
   
   try {
-    log.warn('WARNING: This command creates test roles and should NEVER be run on a production database!');
+    log.info('Bootstrapping LaunchQL database...');
+    
+    log.info('Step 1/2: Bootstrapping roles...');
+    await init.bootstrapRoles();
+    log.success('Roles bootstrapped successfully');
+    
+    log.info('Step 2/2: Bootstrapping test roles...');
     await init.bootstrapTestRoles();
-    log.success('Bootstrap test roles complete.');
+    log.success('Test roles bootstrapped successfully');
+    
+    log.success('LaunchQL database bootstrap completed successfully!');
   } finally {
     await init.close();
   }
