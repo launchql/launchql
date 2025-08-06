@@ -58,6 +58,9 @@ jobs:
       - name: build
         run: yarn build
 
+      - name: fix lql permissions
+        run: chmod +x node_modules/.bin/lql
+
       - name: seed app_user
         run: |
           yarn lql bootstrap-roles --yes
