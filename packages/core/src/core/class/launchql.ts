@@ -934,6 +934,7 @@ export class LaunchQLPackage {
                 }
               } catch (deployError) {
                 log.error(`❌ Deployment failed for module ${extension}`);
+                console.error(deployError);
                 throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
               }
             }
