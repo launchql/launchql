@@ -58,9 +58,13 @@ jobs:
       - name: build
         run: yarn build
 
+      - name: fix lql permissions
+        run: chmod +x node_modules/.bin/lql
+
       - name: seed app_user
         run: |
-          psql -f ./bootstrap-roles.sql postgres
+          yarn lql admin-users bootstrap --yes
+          yarn lql admin-users add --test --yes
         env:
           PGHOST: pg_db
           PGPORT: 5432
