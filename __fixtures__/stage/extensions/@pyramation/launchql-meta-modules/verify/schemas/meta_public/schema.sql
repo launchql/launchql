@@ -1,0 +1,1 @@
+-- Verify schemas/meta_public/schema  on pg

@@ -1,0 +1,29 @@
+%syntax-version=1.0.0
+%project=db_meta_modules
+%uri=db_meta_modules
+  
+schemas/meta_private/schema [db_meta:schemas/meta_public/tables/site_themes/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_private/schema
+schemas/meta_public/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/schema
+schemas/meta_public/tables/apis/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/apis/table
+schemas/meta_public/tables/connected_accounts_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/connected_accounts_module/table
+schemas/meta_public/tables/crypto_addresses_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/crypto_addresses_module/table
+schemas/meta_public/tables/crypto_auth_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/crypto_auth_module/table
+schemas/meta_public/tables/default_ids_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/default_ids_module/table
+schemas/meta_public/tables/denormalized_table_field/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/denormalized_table_field/table
+schemas/meta_public/tables/emails_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/emails_module/table
+schemas/meta_public/tables/encrypted_secrets_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/encrypted_secrets_module/table
+schemas/meta_public/tables/field_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/field_module/table
+schemas/meta_public/tables/invites_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/invites_module/table
+schemas/meta_public/tables/levels_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/levels_module/table
+schemas/meta_public/tables/limits_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/limits_module/table
+schemas/meta_public/tables/membership_types_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/membership_types_module/table
+schemas/meta_public/tables/memberships_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/memberships_module/table
+schemas/meta_public/tables/permissions_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/permissions_module/table
+schemas/meta_public/tables/phone_numbers_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/phone_numbers_module/table
+schemas/meta_public/tables/rls_module/table [schemas/meta_public/schema schemas/meta_public/tables/apis/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/rls_module/table
+schemas/meta_public/tables/secrets_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/secrets_module/table
+schemas/meta_public/tables/sites/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/sites/table
+schemas/meta_public/tables/tokens_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/tokens_module/table
+schemas/meta_public/tables/user_auth_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/user_auth_module/table
+schemas/meta_public/tables/users_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/users_module/table
+schemas/meta_public/tables/uuid_module/table [schemas/meta_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/meta_public/tables/uuid_module/table

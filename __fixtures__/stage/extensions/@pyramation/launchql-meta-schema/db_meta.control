@@ -1,0 +1,8 @@
+# db_meta extension
+comment = 'db_meta extension'
+default_version = '0.7.22'
+module_pathname = '$libdir/db_meta'
+requires = 'citext,hstore,launchql-inflection,launchql-ext-jobs,launchql-ext-types,pgcrypto,plpgsql,postgis,uuid-ossp'
+relocatable = false
+superuser = false
+  

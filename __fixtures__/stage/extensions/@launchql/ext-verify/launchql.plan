@@ -1,0 +1,23 @@
+%syntax-version=1.0.0
+%project=launchql-ext-verify
+%uri=launchql-ext-verify
+  
+procedures/get_entity_from_str 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/get_entity_from_str
+procedures/get_schema_from_str 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/get_schema_from_str
+procedures/list_indexes [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/list_indexes
+procedures/list_memberships 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/list_memberships
+procedures/verify_constraint 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_constraint
+procedures/verify_domain [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_domain
+procedures/verify_extension 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_extension
+procedures/verify_function [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_function
+procedures/verify_index [procedures/list_indexes] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_index
+procedures/verify_membership [procedures/list_memberships] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_membership
+procedures/verify_policy [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_policy
+procedures/verify_role 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_role
+procedures/verify_schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_schema
+procedures/verify_security [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_security
+procedures/verify_table_grant [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_table_grant
+procedures/verify_table [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_table
+procedures/verify_trigger [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_trigger
+procedures/verify_type [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_type
+procedures/verify_view [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_view

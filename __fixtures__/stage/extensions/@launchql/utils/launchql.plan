@@ -1,0 +1,8 @@
+%syntax-version=1.0.0
+%project=launchql-utils
+%uri=launchql-utils
+  
+schemas/utils/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/utils/schema
+schemas/utils/procedures/mask_pad [schemas/utils/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/utils/procedures/mask_pad
+schemas/utils/procedures/throw [schemas/utils/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/utils/procedures/throw
+schemas/utils/procedures/ensure_singleton [schemas/utils/schema] 2021-04-25T11:50:15Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/utils/procedures/ensure_singleton

@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=launchql-ext-defaults
+%uri=launchql-ext-defaults
+  
+defaults/public 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add defaults/public

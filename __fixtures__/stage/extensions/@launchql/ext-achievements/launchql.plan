@@ -1,0 +1,20 @@
+%syntax-version=1.0.0
+%project=launchql-achievements
+%uri=launchql-achievements
+  
+schemas/status_private/schema [launchql-jwt-claims:schemas/jwt_public/procedures/current_user_id] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_private/schema
+schemas/status_public/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/schema
+schemas/status_public/tables/user_steps/table [schemas/status_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/user_steps/table
+schemas/status_private/procedures/user_completed_step [schemas/status_private/schema schemas/status_public/tables/user_steps/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_private/procedures/user_completed_step
+schemas/status_private/procedures/user_incompleted_step [schemas/status_private/schema schemas/status_public/tables/user_steps/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_private/procedures/user_incompleted_step
+schemas/status_private/procedures/status_triggers [schemas/status_private/schema schemas/status_private/procedures/user_completed_step schemas/status_private/procedures/user_incompleted_step] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_private/procedures/status_triggers
+schemas/status_public/tables/user_achievements/table [schemas/status_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/user_achievements/table
+schemas/status_private/procedures/upsert_achievement [schemas/status_private/schema schemas/status_public/tables/user_achievements/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_private/procedures/upsert_achievement
+schemas/status_public/tables/levels/table [schemas/status_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/levels/table
+schemas/status_public/tables/level_requirements/table [schemas/status_public/schema schemas/status_public/tables/levels/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/level_requirements/table
+schemas/status_public/procedures/steps_required [schemas/status_public/schema schemas/status_public/tables/level_requirements/table schemas/status_public/tables/user_achievements/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/procedures/steps_required
+schemas/status_public/procedures/user_achieved [schemas/status_public/schema schemas/status_public/procedures/steps_required schemas/status_public/tables/level_requirements/table schemas/status_public/tables/user_achievements/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/procedures/user_achieved
+schemas/status_public/tables/user_achievements/policies/enable_row_level_security [schemas/status_public/schema schemas/status_public/tables/user_achievements/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/user_achievements/policies/enable_row_level_security
+schemas/status_public/tables/user_achievements/policies/user_achievements_policy [schemas/status_public/schema schemas/status_public/tables/user_achievements/table schemas/status_public/tables/user_achievements/policies/enable_row_level_security] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/user_achievements/policies/user_achievements_policy
+schemas/status_public/tables/user_levels/table [schemas/status_public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/user_levels/table
+schemas/status_public/tables/user_steps/triggers/update_achievements_tg [schemas/status_public/schema schemas/status_public/tables/user_steps/table schemas/status_public/tables/user_achievements/table schemas/status_private/procedures/upsert_achievement] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/status_public/tables/user_steps/triggers/update_achievements_tg
