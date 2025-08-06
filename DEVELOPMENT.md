@@ -7,7 +7,7 @@ docker-compose up -d
 Make sure you have the psql client, and then run this:
 
 ```sh
-psql < bootstrap-roles.sql
+yarn lql bootstrap-roles
 ```
 
 Then you can "install" the packages need:
