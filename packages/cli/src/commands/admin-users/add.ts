@@ -12,19 +12,18 @@ LaunchQL Admin Users Add Command:
   lql admin-users add [OPTIONS]
 
   Add database users with LaunchQL roles.
+  Note: You must run 'lql admin-users bootstrap' first to initialize roles.
 
 Options:
   --help, -h              Show this help message
   --username <username>   Username for the database user
   --password <password>   Password for the database user
   --test                  Add test users (app_user, app_admin) with default passwords
-  --bootstrap             Add standard LaunchQL roles first (anonymous, authenticated, administrator)
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
   lql admin-users add --username myuser --password mypass
-  lql admin-users add --test --bootstrap    # Add roles and test users
-  lql admin-users add --test                # Add only test users
+  lql admin-users add --test                # Add test users (requires bootstrap first)
   lql admin-users add                       # Will prompt for username and password
 `;
 
@@ -41,16 +40,10 @@ export default async (
 
   const pgEnv = getPgEnvOptions();
   const isTest = argv.test;
-  const shouldBootstrap = argv.bootstrap;
 
   const init = new LaunchQLInit(pgEnv);
   
   try {
-    if (shouldBootstrap) {
-      log.info('Bootstrapping LaunchQL roles...');
-      await init.bootstrapRoles();
-    }
-
     if (isTest) {
       const { yes: confirmTest } = await prompter.prompt(argv, [
         {

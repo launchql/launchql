@@ -3,18 +3,21 @@ import { ParsedArgs } from 'minimist';
 
 import { extractFirst } from '../utils';
 import add from './admin-users/add';
+import bootstrap from './admin-users/bootstrap';
 import remove from './admin-users/remove';
 
 const subcommandMap: Record<string, Function> = {
   add,
+  bootstrap,
   remove
 };
 
 const adminUsersUsageText = `
 LaunchQL Admin Users Commands:
 
-  lql admin-users add       Add database users with roles
-  lql admin-users remove    Remove database users and revoke roles
+  lql admin-users bootstrap    Initialize LaunchQL roles and permissions (must be run first)
+  lql admin-users add          Add database users with roles
+  lql admin-users remove       Remove database users and revoke roles
 
 Options:
   --help, -h     Show this help message
@@ -24,14 +27,14 @@ Options:
 export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
   let { first: subcommand, newArgv } = extractFirst(argv);
 
-  // Show usage if explicitly requested
-  if (argv.help || argv.h || subcommand === 'help') {
-    console.log(adminUsersUsageText);
-    process.exit(0);
-  }
-
   // Prompt if no subcommand provided
   if (!subcommand) {
+    // Show usage if explicitly requested and no subcommand provided
+    if (argv.help || argv.h) {
+      console.log(adminUsersUsageText);
+      process.exit(0);
+    }
+
     const answer = await prompter.prompt(argv, [
       {
         type: 'autocomplete',
@@ -47,6 +50,11 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
     subcommand = answer.subcommand;
   }
 
+  if (subcommand === 'help') {
+    console.log(adminUsersUsageText);
+    process.exit(0);
+  }
+
   const subcommandFn = subcommandMap[subcommand];
 
   if (!subcommandFn) {
@@ -60,6 +68,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
 
 function getSubcommandDescription(cmd: string): string {
   const descriptions: Record<string, string> = {
+    bootstrap: 'Initialize LaunchQL roles and permissions (must be run first)',
     add: 'Add database users with roles',
     remove: 'Remove database users and revoke roles'
   };
