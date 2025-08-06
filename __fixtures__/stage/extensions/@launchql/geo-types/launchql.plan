@@ -1,0 +1,7 @@
+%syntax-version=1.0.0
+%project=launchql-geo-types
+%uri=launchql-geo-types
+  
+schemas/public/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/schema
+schemas/public/domains/geolocation [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/geolocation
+schemas/public/domains/geopolygon [schemas/public/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/public/domains/geopolygon

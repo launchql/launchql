@@ -1,0 +1,14 @@
+-- Deploy schemas/utils/schema to pg
+
+
+BEGIN;
+
+CREATE SCHEMA utils;
+
+GRANT USAGE ON SCHEMA utils TO public;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA utils
+GRANT EXECUTE ON FUNCTIONS
+TO public;
+
+COMMIT;
