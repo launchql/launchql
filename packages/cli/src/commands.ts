@@ -4,6 +4,7 @@ import { teardownPgPools } from 'pg-cache';
 
 // Commands
 import bootstrap from './commands/bootstrap';
+import bootstrapDbRoles from './commands/bootstrap-db-roles';
 import bootstrapRoles from './commands/bootstrap-roles';
 import bootstrapTestRoles from './commands/bootstrap-test-roles';
 import clear from './commands/clear';
@@ -39,6 +40,7 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
   const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
   return {
     bootstrap: pgt(bootstrap),
+    'bootstrap-db-roles': pgt(bootstrapDbRoles),
     'bootstrap-roles': pgt(bootstrapRoles),
     'bootstrap-test-roles': pgt(bootstrapTestRoles),
     clear: pgt(clear),
