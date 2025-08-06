@@ -92,6 +92,41 @@ COMMIT;
   }
 
   /**
+   * Remove database roles and revoke grants
+   */
+  async removeDbRoles(username: string): Promise<void> {
+    try {
+      log.info(`Removing LaunchQL database roles for user: ${username}...`);
+      
+      const sql = `
+BEGIN;
+DO $do$
+BEGIN
+    IF EXISTS (
+        SELECT
+        FROM
+            pg_catalog.pg_roles
+        WHERE
+            rolname = '${username}') THEN
+    REVOKE anonymous FROM ${username};
+    REVOKE authenticated FROM ${username};
+    DROP ROLE ${username};
+END IF;
+END
+$do$;
+COMMIT;
+      `;
+      
+      await this.pool.query(sql);
+      
+      log.success(`Successfully removed LaunchQL database roles for user: ${username}`);
+    } catch (error) {
+      log.error(`Failed to remove database roles for user ${username}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Close the database connection
    */
   async close(): Promise<void> {
