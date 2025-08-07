@@ -192,9 +192,31 @@ export const resolveExtensionDependencies = (
 };
 
 export interface DependencyResolutionOptions {
+  /**
+   * How to handle tag references:
+   * - 'preserve': Keep tags as-is, as changes in plan files
+   * - 'resolve': Resolve tags to their target changes
+   * - 'internal': Resolve internally but preserve in output
+   */
   tagResolution?: 'preserve' | 'resolve' | 'internal';
+
+  /**
+   * Whether to load and parse plan files for tag resolution
+   * Only applicable when tagResolution is 'resolve' or 'internal'
+   */
   loadPlanFiles?: boolean;
+
+  /**
+   * Custom plan file loader function
+   * Allows overriding the default plan file loading logic
+   */
   planFileLoader?: (projectName: string, currentProject: string, packageDir: string) => ExtendedPlanFile | null;
+
+  /**
+   * Source of dependency graph:
+   * - 'sql' (default): parse deploy/**/*.sql headers
+   * - 'plan': build graph from plan files only
+   */
   source?: 'sql' | 'plan';
 }
 
