@@ -25,6 +25,11 @@ export interface DeployOptions {
   // Add debug mode for enhanced error reporting
   debug?: boolean;
   logOnly?: boolean;
+  /**
+   * When true, construct dependency resolution purely from plan files
+   * rather than scanning deploy/*.sql files.
+   */
+  usePlan?: boolean;
 }
 
 export interface RevertOptions {
