@@ -212,11 +212,9 @@ export interface DependencyResolutionOptions {
    */
   planFileLoader?: (projectName: string, currentProject: string, packageDir: string) => ExtendedPlanFile | null;
 
-  /**
-   * Source of dependency graph:
-   * - 'sql' (default): parse deploy/**/*.sql headers
-   * - 'plan': build graph from plan files only
-   */
+  // Source of dependency graph:
+  // - 'sql' (default): parse deploy/**/*.sql headers
+  // - 'plan': build graph from plan files only
   source?: 'sql' | 'plan';
 }
 
