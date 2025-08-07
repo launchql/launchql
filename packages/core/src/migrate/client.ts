@@ -133,7 +133,8 @@ export class LaunchQLMigrate {
     
     const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
       tagResolution: 'resolve',
-      loadPlanFiles: true
+      loadPlanFiles: true,
+      source: options.usePlan ? 'plan' : 'sql'
     });
     
     const deployed: string[] = [];
