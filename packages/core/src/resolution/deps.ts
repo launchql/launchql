@@ -192,25 +192,10 @@ export const resolveExtensionDependencies = (
 };
 
 export interface DependencyResolutionOptions {
-  /**
-   * How to handle tag references:
-   * - 'preserve': Keep tags as-is, as changes in plan files
-   * - 'resolve': Resolve tags to their target changes
-   * - 'internal': Resolve internally but preserve in output
-   */
   tagResolution?: 'preserve' | 'resolve' | 'internal';
-  
-  /**
-   * Whether to load and parse plan files for tag resolution
-   * Only applicable when tagResolution is 'resolve' or 'internal'
-   */
   loadPlanFiles?: boolean;
-  
-  /**
-   * Custom plan file loader function
-   * Allows overriding the default plan file loading logic
-   */
   planFileLoader?: (projectName: string, currentProject: string, packageDir: string) => ExtendedPlanFile | null;
+  source?: 'sql' | 'plan';
 }
 
 /**
@@ -231,7 +216,8 @@ export const resolveDependencies = (
   const {
     tagResolution = 'preserve',
     loadPlanFiles = true,
-    planFileLoader
+    planFileLoader,
+    source = 'sql'
   } = options;
   
   // For 'resolve' and 'internal' modes, we need plan file loading
@@ -287,26 +273,177 @@ export const resolveDependencies = (
     return null;
   };
   
-  // Helper function to resolve a tag to the change it represents
   const resolveTagToChange = (projectName: string, tagName: string): string | null => {
     const plan = loadPlanFile(projectName);
-    if (!plan) {
-      return null;
-    }
-    
-    // Find the tag
+    if (!plan) return null;
     const tag = plan.tags.find(t => t.name === tagName);
-    if (!tag) {
-      return null;
-    }
-    
-    // Return the change this tag points to
+    if (!tag) return null;
     return tag.change;
   };
   
+  if (source === 'plan') {
+    const plan = loadPlanFile(extname);
+    if (!plan) {
+      throw new Error(`Plan file not found or failed to parse for package ${extname} while using plan-only resolution`);
+    }
+
+    const external: string[] = [];
+    const deps: DependencyGraph = {};
+    const tagMappings: Record<string, string> = {};
+
+    const normalizeInternal = (dep: string): string => {
+      if (/:/.test(dep)) {
+        const [project, localKey] = dep.split(':', 2);
+        if (project === extname) return localKey;
+      }
+      return dep;
+    };
+
+    const resolveTagDep = (projectName: string, tagName: string): string | null => {
+      const change = resolveTagToChange(projectName, tagName);
+      if (!change) return null;
+      return `${projectName}:${change}`;
+    };
+
+    for (const ch of plan.changes) {
+      const key = makeKey(ch.name);
+      deps[key] = [];
+      const changeDeps: string[] = (ch as any).dependencies || [];
+      for (const rawDep of changeDeps) {
+        let dep = rawDep.trim();
+
+        if (dep.includes('@')) {
+          const m = dep.match(/^([^:]+):@(.+)$/);
+          if (m) {
+            const projectName = m[1];
+            const tagName = m[2];
+            const resolved = resolveTagDep(projectName, tagName);
+            if (resolved) {
+              if (tagResolution === 'resolve') dep = resolved;
+              else if (tagResolution === 'internal') tagMappings[dep] = resolved;
+            }
+          } else {
+            const m2 = dep.match(/^@(.+)$/);
+            if (m2) {
+              const tagName = m2[1];
+              const resolved = resolveTagDep(extname, tagName);
+              if (resolved) {
+                if (tagResolution === 'resolve') dep = resolved;
+                else if (tagResolution === 'internal') tagMappings[dep] = resolved;
+              }
+            }
+          }
+        }
+
+        if (/:/.test(dep)) {
+          const [project] = dep.split(':', 2);
+          if (project !== extname) {
+            external.push(dep);
+            if (!deps[dep]) deps[dep] = [];
+            deps[key].push(dep);
+            continue;
+          }
+          deps[key].push(normalizeInternal(dep));
+          continue;
+        }
+
+        deps[key].push(dep);
+      }
+    }
+
+    const transformModule = (sqlmodule: string, extnameLocal: string): { module: string; edges: string[] | undefined; returnEarly?: boolean } => {
+      const originalModule = sqlmodule;
+
+      if (tagResolution === 'preserve') {
+        let moduleToResolve = sqlmodule;
+        let edges = deps[makeKey(sqlmodule)];
+        if (/:/.test(sqlmodule)) {
+          const [project, localKey] = sqlmodule.split(':', 2);
+          if (project === extnameLocal) {
+            moduleToResolve = localKey;
+            edges = deps[makeKey(localKey)];
+            if (!edges) throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+          } else {
+            external.push(sqlmodule);
+            deps[sqlmodule] = deps[sqlmodule] || [];
+            return { module: sqlmodule, edges: [], returnEarly: true };
+          }
+        } else {
+          if (!edges) throw new Error(`Internal module not found: ${sqlmodule}`);
+        }
+        return { module: moduleToResolve, edges };
+      }
+
+      if (/:/.test(originalModule)) {
+        const [project] = originalModule.split(':', 2);
+        if (project !== extnameLocal) {
+          external.push(originalModule);
+          deps[originalModule] = deps[originalModule] || [];
+          return { module: originalModule, edges: [], returnEarly: true };
+        }
+      }
+
+      let moduleToResolve = sqlmodule;
+      if (tagResolution === 'internal' && tagMappings[sqlmodule]) {
+        moduleToResolve = tagMappings[sqlmodule];
+      }
+
+      let edges = deps[makeKey(moduleToResolve)];
+      if (/:/.test(moduleToResolve)) {
+        const [project, localKey] = moduleToResolve.split(':', 2);
+        if (project === extnameLocal) {
+          moduleToResolve = localKey;
+          edges = deps[makeKey(localKey)];
+          if (!edges) throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+        }
+      } else {
+        if (!edges) {
+          edges = deps[makeKey(sqlmodule)];
+          if (!edges) throw new Error(`Internal module not found: ${sqlmodule}`);
+        }
+      }
+
+      if (tagResolution === 'internal' && edges) {
+        const processedEdges = edges.map(dep => {
+          if (/:/.test(dep)) {
+            const [project] = dep.split(':', 2);
+            if (project !== extnameLocal) return dep;
+          }
+          if (tagMappings[dep]) return tagMappings[dep];
+          return dep;
+        });
+        return { module: moduleToResolve, edges: processedEdges };
+      }
+
+      return { module: moduleToResolve, edges };
+    };
+
+    const dep_resolve = createDependencyResolver(deps, external, { transformModule, makeKey, extname });
+
+    let resolved: string[] = [];
+    const unresolved: string[] = [];
+
+    deps[makeKey('_virtual/app')] = Object.keys(deps)
+      .filter((dep) => dep.startsWith('/deploy/'))
+      .map((dep) => dep.replace(/^\/deploy\//, '').replace(/\.sql$/, ''));
+
+    dep_resolve('_virtual/app', resolved, unresolved);
+
+    const idx = resolved.indexOf('_virtual/app');
+    if (idx >= 0) {
+      resolved.splice(idx, 1);
+      delete deps[makeKey('_virtual/app')];
+    }
+
+    const extensions = resolved.filter((module) => module.startsWith('extensions/'));
+    const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
+    resolved = [...extensions, ...normalSql];
+
+    return { external, resolved, deps, resolvedTags: tagMappings };
+  }
+
   const external: string[] = [];
   const deps: DependencyGraph = {};
-  // Keep track of tag mappings for internal resolution
   const tagMappings: Record<string, string> = {};
 
   // Process SQL files and build dependency graph
@@ -521,16 +658,14 @@ export const resolveDependencies = (
     .map((dep) => dep.replace(/^\/deploy\//, '').replace(/\.sql$/, ''));
 
   dep_resolve('_virtual/app', resolved, unresolved);
-  
-  // Remove synthetic root
+
   const index = resolved.indexOf('_virtual/app');
   resolved.splice(index, 1);
   delete deps[makeKey('_virtual/app')];
 
-  // Sort extensions first - exactly as in original
   const extensions = resolved.filter((module) => module.startsWith('extensions/'));
   const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
   resolved = [...extensions, ...normalSql];
 
   return { external, resolved, deps, resolvedTags: tagMappings };
-};
+}
