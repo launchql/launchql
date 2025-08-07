@@ -438,27 +438,9 @@ export const resolveDependencies = (
       return { module: moduleToResolve, edges };
     };
 
-    const dep_resolve = createDependencyResolver(deps, external, { transformModule, makeKey, extname });
-
-    let resolved: string[] = [];
-    const unresolved: string[] = [];
-
-    deps[makeKey('_virtual/app')] = Object.keys(deps)
-      .filter((dep) => dep.startsWith('/deploy/'))
-      .map((dep) => dep.replace(/^\/deploy\//, '').replace(/\.sql$/, ''));
-
-    dep_resolve('_virtual/app', resolved, unresolved);
-
-    const idx = resolved.indexOf('_virtual/app');
-    if (idx >= 0) {
-      resolved.splice(idx, 1);
-      delete deps[makeKey('_virtual/app')];
-    }
-
-    const extensions = resolved.filter((module) => module.startsWith('extensions/'));
-    const normalSql = resolved.filter((module) => !module.startsWith('extensions/'));
-    resolved = [...extensions, ...normalSql];
-
+    // or extension-first resorting. Externals are still tracked in the deps graph and external array.
+    const resolved: string[] = plan.changes.map(ch => ch.name);
+ 
     return { external, resolved, deps, resolvedTags: tagMappings };
   }
 

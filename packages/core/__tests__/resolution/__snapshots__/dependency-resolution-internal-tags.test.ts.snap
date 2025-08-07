@@ -120,9 +120,6 @@ exports[`stage fixture dependency resolution - internal tags resolves internal t
     "launchql-ext-default-roles:@0.0.5",
     "launchql-ext-defaults:defaults/public",
     "launchql-ext-verify:procedures/verify_view",
-    "launchql-ext-default-roles:@0.0.5",
-    "launchql-ext-defaults:defaults/public",
-    "launchql-ext-verify:procedures/verify_view",
   ],
   "resolved": [
     "schemas/unique_names/schema",
