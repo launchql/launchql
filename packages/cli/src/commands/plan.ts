@@ -52,14 +52,14 @@ export default async (
     }
   ];
 
-  const { cwd, includePackages, includeTags } = await prompter.prompt(argv, questions);
+  let { cwd, includePackages, includeTags } = await prompter.prompt(argv, questions);
 
-  const workingDir = cwd || process.cwd();
   if (!cwd) {
-    log.info(`Using current directory: ${workingDir}`);
+    cwd = process.cwd();
+    log.info(`Using current directory: ${cwd}`);
   }
 
-  const pkg = new LaunchQLPackage(workingDir);
+  const pkg = new LaunchQLPackage(cwd);
 
   if (!pkg.isInModule()) {
     throw new Error('This command must be run inside a LaunchQL module.');
