@@ -38,7 +38,7 @@
   ],
   "devDependencies": {
     "pg-proto-parser": "^1.29.1",
-    "pgsql-deparser": "^17.8.1"
+    "pgsql-deparser": "^17.11.1"
   },
   "dependencies": {
     "@pgsql/types": "^17.6.1",
