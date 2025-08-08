@@ -232,78 +232,12 @@ export interface DependencyResolutionOptions {
 // 
 // 
 
-// resolveDependencies: build a dependency graph and determine execution order for a package.
-// - Supports two sources of truth for constructing the graph and order:
-//   - source: 'sql' (default) reads deploy SQL headers to build the graph, then topologically sorts.
-//   - source: 'plan' reads plan files and uses the plan's changes order directly for intra-package sequencing.
-// - Also supports multiple tag resolution strategies that affect how tag-like references (@tag) are handled.
-//
-// Signature
-//   resolveDependencies(packageDir: string, extname: string, options?: DependencyResolutionOptions): DependencyResult
-//
-// Parameters
-// - packageDir: absolute directory for the current package/module being resolved.
-// - extname: the current project/package name (used for normalizing "project:change" references).
-// - options:
-//   - source?: 'sql' | 'plan' (default: 'sql')
-//     - 'sql': parse deploy SQL files to build the dependency graph and compute a topo order.
-//     - 'plan': build the graph from the plan data and honor the plan's change ordering exactly.
-//   - tagResolution?: 'preserve' | 'internal' | 'resolve' (default: 'preserve')
-//     - 'preserve': keep tag tokens intact in deps and resolved results.
-//     - 'internal': resolve tags for internal graph traversal, but preserve original tokens in the returned order;
-//       returns a mapping in resolvedTags that records how each tag was resolved internally.
-//     - 'resolve': fully resolve tags to concrete change names everywhere (deps and resolved).
-//   - loadPlanFiles?: boolean (default: true)
-//     - Allows loading plan files when necessary for tag resolution and plan-driven workflows.
-//   - planFileLoader?: custom loader to override how plans are discovered and parsed.
-//
-// Returns: DependencyResult
-// - external: string[] — cross-package references encountered (e.g., "otherPkg:change").
-// - resolved: string[] — the final order for applying changes within the current package.
-// - deps: Record<string, string[]> — the dependency graph keyed by normalized change/module identifiers.
-// - resolvedTags?: Record<string, string> — mapping of tag tokens to concrete changes when tagResolution='internal'.
-//
-// Behavior overview
-// - Common utilities:
-//   - loadPlanFile(projectName) loads and caches plan files, either by calling planFileLoader or using LaunchQLPackage
-//     to locate the module in the workspace and read launchql.plan. Plan parsing uses parsePlanFile.
-//   - resolveTagToChange(projectName, tagName) looks up a tag in the project's plan and returns the corresponding change.
-//
-// - Plan source ('plan'):
-//   - load the current package's plan; if not found, throw an error (plan-driven mode requires a plan).
-//   - for each change in the plan, create a node in the dependency graph and add edges for any declared dependencies. (important-comment)
-//   - tag handling follows the selected tagResolution mode; cross-package references are recorded in external.
-//   - resolved ordering is exactly the plan's changes order for the current package; no resorting or toposort is applied.
-//   - note: normalization removes "extname:" prefixes for references that point back to the same package.
-//
-// - SQL source ('sql'):
-//   - discover and parse deploy SQL files to build the dependency graph from their header metadata.
-//   - use a synthetic root to feed local changes into a dependency resolver, producing a topological order.
-//   - remove the synthetic root and then apply a final deterministic reordering step that places "extensions/*" entries first.
-//   - tag handling follows the selected tagResolution mode; plan files may be loaded if needed to resolve tags.
-//
-// - Cross-package references:
-//   - any "project:localChange" whose project differs from extname is considered external. These are tracked in the
-//     external array and represented as nodes in the dependency graph so higher layers can coordinate execution.
-//
-// - Error cases:
-//   - missing internal modules or changes referenced but not present.
-//   - cycles detected by the dependency resolver.
-//   - in 'plan' mode, missing plan for the current package.
-//
-// Usage guidance
-// - Choose 'plan' source to honor the authored order in the plan file for intra-package sequencing.
-// - Choose 'sql' source to infer order from SQL headers and toposort, with extension-first resorting.
-// - Select tagResolution based on desired output semantics:
-//   - 'preserve' for minimal transformation,
-//   - 'internal' for resolvable graphs but human-readable returned tokens,
-//   - 'resolve' for concrete names everywhere.
-//
-// Integration notes
-// - Higher-level deploy code is responsible for deciding which source to use. For example, when a "usePlan" option
-//   is set in deployment settings, pass source: 'plan' to this function. Multi-package orchestration (recursive deploys)
-//   should be handled by the caller using the external list and dependency graph information.
-//
+// resolveDependencies overview
+// - Purpose: compute dependency graph and apply order for a package/module.
+// - Sources: 'sql' (parse headers + topo + extensions-first) vs 'plan' (use plan.changes order directly).
+// - Tags: 'preserve' (keep), 'internal' (map for traversal), 'resolve' (replace with change names).
+// - Output: { external, resolved, deps, resolvedTags? }.
+// Detailed notes are placed inline near the relevant code paths below.
 export const resolveDependencies = (
   packageDir: string,
   extname: string,
@@ -369,6 +303,12 @@ export const resolveDependencies = (
     return null;
   };
   
+// Plan-mode branch: use plan.changes order directly; build graph from plan deps (no topo or resort).
+// - Loads the current package plan and throws if missing.
+// - For each change in plan, adds a node; edges come from change.dependencies.
+// - Tag handling per tagResolution: 'preserve' keeps tokens, 'internal' maps for traversal, 'resolve' replaces with change names.
+// - Cross-package refs "pkg:change" are recorded in external and kept as graph nodes for coordination by callers.
+// - Internal refs like "extname:change" are normalized to "change".
   const resolveTagToChange = (projectName: string, tagName: string): string | null => {
     const plan = loadPlanFile(projectName);
     if (!plan) return null;
@@ -730,6 +670,9 @@ export const resolveDependencies = (
   let resolved: string[] = [];
   const unresolved: string[] = [];
 
+  // Synthetic root '_virtual/app' seeds local deploy/* modules into resolver for topo ordering.
+  // Removed after resolution; not present in returned output.
+  // Followed by extension-first reordering for deterministic application in SQL mode only.
   // Add synthetic root node - exactly as in original
   deps[makeKey('_virtual/app')] = Object.keys(deps)
     .filter((dep) => dep.startsWith('/deploy/'))
