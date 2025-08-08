@@ -14,13 +14,13 @@ LaunchQL Plan Command:
 Options:
   --help, -h                     Show this help message
   --packages                     Include packages in plan (default: true)
-  --preferPackageTags            Prefer @tag references for external packages when available (default: true)
+  --useTags                      Prefer @tag references for external packages when available (default: true)
   --cwd <directory>              Working directory (default: current directory)
 
 Examples:
   lql plan                                 Generate deployment plan for current module with defaults
   lql plan --packages false                Disable including external packages
-  lql plan --preferPackageTags false       Do not prefer tags for external packages
+  lql plan --useTags false                 Do not prefer tags for external packages
 `;
 
 export default async (
@@ -44,11 +44,11 @@ export default async (
     },
     {
       type: 'confirm',
-      name: 'preferPackageTags',
+      name: 'useTags',
       message: 'Prefer @tag references for external packages when available?',
       useDefault: true,
       default: true,
-      when: (_a) => typeof argv.preferPackageTags === 'undefined'
+      when: (_a) => typeof argv.useTags === 'undefined' && typeof argv.preferPackageTags === 'undefined'
     },
     {
       type: 'text',
@@ -60,7 +60,7 @@ export default async (
     }
   ];
 
-  const { cwd, packages, preferPackageTags } = await prompter.prompt(argv, questions);
+  const { cwd, packages, useTags } = await prompter.prompt(argv, questions);
 
   const workingDir = cwd || process.cwd();
   if (!cwd) {
@@ -74,12 +74,13 @@ export default async (
   }
 
   const includePackages = typeof packages === 'boolean' ? packages : true;
-  const preferTags = typeof preferPackageTags === 'boolean' ? preferPackageTags : true;
+  const preferTags = typeof useTags === 'boolean'
+    ? useTags
+    : (typeof argv.preferPackageTags === 'boolean' ? argv.preferPackageTags : true);
 
   pkg.writeModulePlan({
     packages: includePackages,
-    preferPackageTags: preferTags,
-    tags: 'preserve'
+    useTags: preferTags
   });
   
   return argv;

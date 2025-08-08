@@ -413,13 +413,14 @@ export class LaunchQLPackage {
     return fs.readFileSync(info.sqlFile, 'utf8');
   }
 
-  generateModulePlan(options: { uri?: string; packages?: boolean; tags?: 'preserve' | 'internal' | 'resolve'; preferPackageTags?: boolean }): string {
+  generateModulePlan(options: { uri?: string; packages?: boolean; tags?: 'preserve' | 'internal' | 'resolve'; preferPackageTags?: boolean; useTags?: boolean }): string {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
 
     // Get raw dependencies and resolved list
-    let { resolved, deps } = resolveDependencies(this.cwd, moduleName, { tagResolution: options.tags ?? 'internal' });
+    const tagResolution = (options.useTags === true) ? 'preserve' : (options.tags ?? 'internal');
+    let { resolved, deps } = resolveDependencies(this.cwd, moduleName, { tagResolution });
 
     // Helper to extract module name from a change reference
     const getModuleName = (change: string): string | null => {
@@ -506,7 +507,7 @@ export class LaunchQLPackage {
 
     // Process external dependencies if needed
     const includePackages = options.packages === true;
-    const preferTags = options.preferPackageTags === true;
+    const preferTags = (options.preferPackageTags === true) || (options.useTags === true);
     if (includePackages && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
 
@@ -582,7 +583,7 @@ export class LaunchQLPackage {
   }
 
   writeModulePlan(
-    options: { uri?: string; packages?: boolean; tags?: 'preserve' | 'internal' | 'resolve'; preferPackageTags?: boolean }
+    options: { uri?: string; packages?: boolean; tags?: 'preserve' | 'internal' | 'resolve'; preferPackageTags?: boolean; useTags?: boolean }
   ): void {
     this.ensureModule();
     const name = this.getModuleName();
