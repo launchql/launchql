@@ -96,3 +96,9 @@ Good Next Steps
 Other
 ---------
 https://www.npmjs.com/package/pg-copy-streams-binary
+
+New
+---
+- [ ] Investigate deployment failure when generating plans without packages and tags
+      - Context: stage fixture (unique-names) pre-generated plan with includePackages=false and includeTags=false currently fails deployment (see test in packages/core/__tests__/migration/stage-deployment-with-plan.test.ts)
+      - Follow-up: decide whether deploying with no external packages/tags should be supported or explicitly disallowed with clearer error messaging
