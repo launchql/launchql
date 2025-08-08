@@ -1,5 +1,5 @@
 import { svcCache } from '@launchql/server-utils';
-import { getNodeEnv } from '@launchql/types';
+import { getNodeEnv } from '@launchql/env';
 import { LaunchQLOptions } from '@launchql/types';
 import { NextFunction,Request, Response } from 'express';
 import { getSchema,GraphileQuery } from 'graphile-query';
