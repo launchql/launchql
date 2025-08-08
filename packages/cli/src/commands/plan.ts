@@ -12,12 +12,15 @@ LaunchQL Plan Command:
   Generate module deployment plans.
 
 Options:
-  --help, -h              Show this help message
-  --packages              Include packages in plan (default: true)
-  --cwd <directory>       Working directory (default: current directory)
+  --help, -h                     Show this help message
+  --includePackages              Include packages in plan (default: true)
+  --includeTags                  Prefer @tag references for external packages when available (default: true)
+  --cwd <directory>              Working directory (default: current directory)
 
 Examples:
-  lql plan                Generate deployment plan for current module
+  lql plan                                 Generate deployment plan for current module with defaults
+  lql plan --includePackages false         Disable including external packages
+  lql plan --includeTags false              Do not prefer tags for external packages
 `;
 
 export default async (
@@ -31,10 +34,25 @@ export default async (
     process.exit(0);
   }
   const questions: Question[] = [
-    // optionally add CLI prompt questions here later
+    {
+      type: 'confirm',
+      name: 'includePackages',
+      message: 'Include packages in plan?',
+      useDefault: true,
+      default: true,
+      when: (_a) => typeof argv.includePackages === 'undefined'
+    },
+    {
+      type: 'confirm',
+      name: 'includeTags',
+      message: 'Prefer @tag references for external packages when available?',
+      useDefault: true,
+      default: true,
+      when: (_a) => typeof argv.includeTags === 'undefined'
+    }
   ];
 
-  let { cwd } = await prompter.prompt(argv, questions);
+  let { cwd, includePackages, includeTags } = await prompter.prompt(argv, questions);
 
   if (!cwd) {
     cwd = process.cwd();
@@ -47,8 +65,12 @@ export default async (
     throw new Error('This command must be run inside a LaunchQL module.');
   }
 
+  const includePackagesFlag = typeof includePackages === 'boolean' ? includePackages : true;
+  const includeTagsFlag = typeof includeTags === 'boolean' ? includeTags : true;
+
   pkg.writeModulePlan({
-    packages: true
+    includePackages: includePackagesFlag,
+    includeTags: includeTagsFlag
   });
   
   return argv;

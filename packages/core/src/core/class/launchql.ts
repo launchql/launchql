@@ -415,13 +415,14 @@ export class LaunchQLPackage {
     return fs.readFileSync(info.sqlFile, 'utf8');
   }
 
-  generateModulePlan(options: { uri?: string; packages?: boolean }): string {
+  generateModulePlan(options: { uri?: string; includePackages?: boolean; includeTags?: boolean }): string {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
 
     // Get raw dependencies and resolved list
-    let { resolved, deps } = resolveDependencies(this.cwd, moduleName, { tagResolution: 'internal' });
+    const tagResolution = options.includeTags === true ? 'preserve' : 'internal';
+    let { resolved, deps } = resolveDependencies(this.cwd, moduleName, { tagResolution });
 
     // Helper to extract module name from a change reference
     const getModuleName = (change: string): string | null => {
@@ -507,28 +508,47 @@ export class LaunchQLPackage {
     deps = normalizedDeps;
 
     // Process external dependencies if needed
-    if (options.packages && this.workspacePath) {
+    const includePackages = options.includePackages === true;
+    const preferTags = options.includeTags === true;
+    if (includePackages && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
-      const external = depData.modules
-        .map((m) => `${m.name}:${m.latest}`);
 
-      // Add external dependencies to the first change if there is one
       if (resolved.length > 0) {
         const firstKey = `/deploy/${resolved[0]}.sql`;
         deps[firstKey] = deps[firstKey] || [];
 
-        // Only add external deps that don't already exist and don't have a tag dependency
-        external.forEach(ext => {
-          const extModuleName = ext.split(':')[0];
-          
-          // Check if we already have a tag dependency for this module
-          const hasTagDependency = deps[firstKey].some(dep => {
-            return dep.startsWith(`${extModuleName}:@`);
-          });
-          
-          // Only add if we don't already have this dependency or a tag dependency for this module
-          if (!hasTagDependency && !deps[firstKey].includes(ext)) {
-            deps[firstKey].push(ext);
+        depData.modules.forEach(m => {
+          const extModuleName = m.name;
+
+          const hasTagDependency = deps[firstKey].some(dep =>
+            dep.startsWith(`${extModuleName}:@`)
+          );
+
+          let depToken = `${extModuleName}:${m.latest}`;
+
+          if (preferTags) {
+            try {
+              const moduleMap = this.getModuleMap();
+              const modInfo = moduleMap[extModuleName];
+              if (modInfo && this.workspacePath) {
+                const planPath = path.join(this.workspacePath, modInfo.path, 'launchql.plan');
+                const parsed = parsePlanFile(planPath);
+                const changes = parsed.data?.changes || [];
+                const tags = parsed.data?.tags || [];
+
+                if (changes.length > 0 && tags.length > 0) {
+                  const lastChangeName = changes[changes.length - 1]?.name;
+                  const lastTag = tags[tags.length - 1];
+                  if (lastTag && lastTag.change === lastChangeName) {
+                    depToken = `${extModuleName}:@${lastTag.name}`;
+                  }
+                }
+              }
+            } catch {}
+          }
+
+          if (!hasTagDependency && !deps[firstKey].includes(depToken)) {
+            deps[firstKey].push(depToken);
           }
         });
       }
@@ -565,7 +585,7 @@ export class LaunchQLPackage {
   }
 
   writeModulePlan(
-    options: { uri?: string; packages?: boolean }
+    options: { uri?: string; includePackages?: boolean; includeTags?: boolean }
   ): void {
     this.ensureModule();
     const name = this.getModuleName();
