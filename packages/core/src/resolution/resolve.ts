@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { getChanges, getExtensionName } from '../files';
 import { parsePlanFile } from '../files/plan/parser';
 import { resolveDependencies } from './deps';
+import { errors } from '@launchql/types';
 
 /**
  * Resolves SQL scripts for deployment or reversion.
@@ -95,7 +96,7 @@ export const resolveTagToChangeName = (
     if (!currentProject) {
       const plan = parsePlanFile(planPath);
       if (!plan.data) {
-        throw new Error(`Could not parse plan file: ${planPath}`);
+        throw errors.PLAN_PARSE_ERROR({ planPath, errors: 'Could not parse plan file' });
       }
       currentProject = plan.data.package;
     }
@@ -105,7 +106,7 @@ export const resolveTagToChangeName = (
   // Parse package:@tagName format
   const match = tagReference.match(/^([^:]+):@(.+)$/);
   if (!match) {
-    throw new Error(`Invalid tag format: ${tagReference}. Expected format: package:@tagName or @tagName`);
+    throw errors.INVALID_NAME({ name: tagReference, type: 'tag', rules: 'Expected format: package:@tagName or @tagName' });
   }
   
   const [, projectName, tagName] = match;
@@ -114,13 +115,13 @@ export const resolveTagToChangeName = (
   const planResult = parsePlanFile(planPath);
   
   if (!planResult.data) {
-    throw new Error(`Could not parse plan file: ${planPath}`);
+    throw errors.PLAN_PARSE_ERROR({ planPath, errors: 'Could not parse plan file' });
   }
   
   // Find the tag in the plan
   const tag = planResult.data.tags?.find((t: any) => t.name === tagName);
   if (!tag) {
-    throw new Error(`Tag ${tagName} not found in project ${projectName}`);
+    throw errors.TAG_NOT_FOUND({ tag: tagName, project: projectName });
   }
   
   return tag.change;

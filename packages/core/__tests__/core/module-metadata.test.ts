@@ -35,7 +35,7 @@ it('throws error when module depends on itself', async () => {
 
   expect(() =>
     project.setModuleDependencies(['plpgsql', 'secrets', 'uuid-ossp'])
-  ).toThrow('Circular reference detected: module "secrets" cannot depend on itself');
+  ).toThrow('Circular reference detected: secrets → secrets');
 
   fixture.cleanup();
 });
@@ -47,7 +47,7 @@ it('throws error with specific circular dependency example from issue', async ()
 
   expect(() =>
     project.setModuleDependencies(['some-native-module', 'secrets'])
-  ).toThrow('Circular reference detected: module "secrets" cannot depend on itself');
+  ).toThrow('Circular reference detected: secrets → secrets');
 
   fixture.cleanup();
 });

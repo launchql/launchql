@@ -315,7 +315,7 @@ describe('Deploy Failure Scenarios', () => {
     
     await expect(client.verify({
       modulePath: tempDir
-    })).rejects.toThrow('Verification failed for 1 change(s): create_simple_table');
+    })).rejects.toThrow('Verification failed: 1 change(s): create_simple_table');
     
     const finalState = await db.getMigrationState();
     

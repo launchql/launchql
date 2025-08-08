@@ -4,6 +4,7 @@ import { dirname,join } from 'path';
 import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
+import { errors } from '@launchql/types';
 
 import { LaunchQLPackage } from '../core/class/launchql';
 import { Change, parsePlanFile, parsePlanFileSimple, readScript } from '../files';
@@ -413,7 +414,7 @@ export class LaunchQLMigrate {
     }
     
     if (failed.length > 0) {
-      throw new Error(`Verification failed for ${failed.length} change(s): ${failed.join(', ')}`);
+      throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${failed.length} change(s): ${failed.join(', ')}` });
     }
     
     return { verified, failed };

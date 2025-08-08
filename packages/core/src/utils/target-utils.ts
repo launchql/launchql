@@ -1,3 +1,5 @@
+import { errors } from '@launchql/types';
+
 export interface ParsedTarget {
   packageName: string;
   toChange?: string;
@@ -14,31 +16,31 @@ export function parseTarget(target: string): ParsedTarget {
     const afterAt = target.substring(atIndex + 2);
     
     if (!afterAt) {
-      throw new Error(`Invalid tag format: ${target}. Expected format: package:@tagName`);
+      throw errors.INVALID_NAME({ name: target, type: 'tag', rules: 'Expected format: package:@tagName' });
     }
     
     // Check if this is a simple package:@tag format
     if (!beforeAt.includes(':')) {
       if (!beforeAt) {
-        throw new Error(`Invalid tag format: ${target}. Expected format: package:@tagName`);
+        throw errors.INVALID_NAME({ name: target, type: 'tag', rules: 'Expected format: package:@tagName' });
       }
       return { packageName: beforeAt, toChange: `@${afterAt}` };
     }
     
-    throw new Error(`Invalid target format: ${target}. Expected formats: package, package:changeName, or package:@tagName`);
+    throw errors.INVALID_NAME({ name: target, type: 'change', rules: 'Expected formats: package, package:changeName, or package:@tagName' });
   }
   
   if (target.includes(':') && !target.includes('@')) {
     const parts = target.split(':');
     
     if (parts.length > 2) {
-      throw new Error(`Invalid target format: ${target}. Expected formats: package, package:changeName, or package:@tagName`);
+      throw errors.INVALID_NAME({ name: target, type: 'change', rules: 'Expected formats: package, package:changeName, or package:@tagName' });
     }
     
     const [packageName, changeName] = parts;
     
     if (!packageName || !changeName) {
-      throw new Error(`Invalid change format: ${target}. Expected format: package:changeName`);
+      throw errors.INVALID_NAME({ name: target, type: 'change', rules: 'Expected format: package:changeName' });
     }
     
     return { packageName, toChange: changeName };
@@ -48,5 +50,5 @@ export function parseTarget(target: string): ParsedTarget {
     return { packageName: target, toChange: undefined };
   }
 
-  throw new Error(`Invalid target format: ${target}. Expected formats: package, package:changeName, or package:@tagName`);
+  throw errors.INVALID_NAME({ name: target, type: 'change', rules: 'Expected formats: package, package:changeName, or package:@tagName' });
 }

@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 
 import { Change, ExtendedPlanFile, ParseError, ParseResult,PlanFile, Tag } from '../types';
 import { isValidChangeName, isValidDependency, isValidTagName, parseReference } from './validators';
+import { errors } from '@launchql/types';
 
 /**
  * Parse a Sqitch plan file with full validation
@@ -324,7 +325,7 @@ export function parsePlanFileSimple(planPath: string): PlanFile {
   // If there are errors, throw with details
   if (result.errors && result.errors.length > 0) {
     const errorMessages = result.errors.map(e => `Line ${e.line}: ${e.message}`).join('\n');
-    throw new Error(`Failed to parse plan file ${planPath}:\n${errorMessages}`);
+    throw errors.PLAN_PARSE_ERROR({ planPath, errors: errorMessages });
   }
   
   // Return empty plan if no data and no errors

@@ -263,7 +263,7 @@ export class LaunchQLPackage {
     
     const modules = this.getModuleMap();
     if (!modules[name]) {
-      throw new Error(`Module "${name}" does not exist.`);
+      throw errors.MODULE_NOT_FOUND({ name });
     }
     
     const modulePath = path.resolve(this.workspacePath!, modules[name].path);
@@ -304,7 +304,7 @@ export class LaunchQLPackage {
     const currentModuleName = this.getModuleName();
     
     if (modules.includes(currentModuleName)) {
-      throw new Error(`Circular reference detected: module "${currentModuleName}" cannot depend on itself`);
+      throw errors.CIRCULAR_DEPENDENCY({ module: currentModuleName, dependency: currentModuleName });
     }
     
     // Check for circular dependencies by examining each module's dependencies
@@ -313,7 +313,7 @@ export class LaunchQLPackage {
     
     const checkCircular = (moduleName: string, path: string[] = []): void => {
       if (visiting.has(moduleName)) {
-        throw new Error(`Circular reference detected: ${path.join(' -> ')} -> ${moduleName}`);
+        throw errors.CIRCULAR_DEPENDENCY({ module: path.join(' -> '), dependency: moduleName });
       }
       if (visited.has(moduleName)) {
         return;
@@ -605,12 +605,12 @@ export class LaunchQLPackage {
     this.ensureModule();
     
     if (!this.modulePath) {
-      throw new Error('Module path not found');
+      throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
     }
     
     // Validate tag name
     if (!isValidTagName(tagName)) {
-      throw new Error(`Invalid tag name: ${tagName}. Tag names must follow Sqitch naming rules and cannot contain '/'.`);
+      throw errors.INVALID_NAME({ name: tagName, type: 'tag', rules: "Tag names must follow Sqitch naming rules and cannot contain '/'" });
     }
     
     const planPath = path.join(this.modulePath, 'launchql.plan');
@@ -618,7 +618,7 @@ export class LaunchQLPackage {
     // Parse existing plan file
     const planResult = parsePlanFile(planPath);
     if (!planResult.data) {
-      throw new Error(`Could not parse plan file: ${planPath}`);
+      throw errors.PLAN_PARSE_ERROR({ planPath, errors: planResult.errors.map(e => e.message).join(', ') });
     }
     
     const plan = planResult.data;
@@ -633,7 +633,7 @@ export class LaunchQLPackage {
       // Validate that the specified change exists
       const changeExists = plan.changes.some(c => c.name === targetChange);
       if (!changeExists) {
-        throw new Error(`Change '${targetChange}' not found in plan file.`);
+        throw errors.CHANGE_NOT_FOUND({ change: targetChange });
       }
     }
     
@@ -953,7 +953,7 @@ export class LaunchQLPackage {
                 });
               
                 if (result.failed) {
-                  throw new Error(`Deployment failed at change: ${result.failed}`);
+                  throw errors.OPERATION_FAILED({ operation: 'Deployment', target: result.failed });
                 }
               } catch (deployError) {
                 log.error(`❌ Deployment failed for module ${extension}`);
@@ -972,12 +972,12 @@ export class LaunchQLPackage {
       log.success(`✅ Deployment complete for ${targetDescription}.`);
     } else {
       if (name === null) {
-        throw new Error('Cannot perform non-recursive operation on workspace. Use recursive=true or specify a target module.');
+        throw errors.WORKSPACE_OPERATION_ERROR({ operation: 'deployment' });
       }
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
-        throw new Error(`Could not resolve module path for ${name}`);
+        throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
       }
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -990,7 +990,7 @@ export class LaunchQLPackage {
       });
 
       if (result.failed) {
-        throw new Error(`Deployment failed at change: ${result.failed}`);
+        throw errors.OPERATION_FAILED({ operation: 'Deployment', target: result.failed });
       }
 
       log.success(`✅ Single module deployment complete for ${name}.`);
@@ -1064,7 +1064,7 @@ export class LaunchQLPackage {
               });
             
               if (result.failed) {
-                throw new Error(`Revert failed at change: ${result.failed}`);
+                throw errors.OPERATION_FAILED({ operation: 'Revert', target: result.failed });
               }
             } catch (revertError) {
               log.error(`❌ Revert failed for module ${extension}`);
@@ -1081,12 +1081,12 @@ export class LaunchQLPackage {
       log.success(`✅ Revert complete for ${targetDescription}.`);
     } else {
       if (name === null) {
-        throw new Error('Cannot perform non-recursive operation on workspace. Use recursive=true or specify a target module.');
+        throw errors.WORKSPACE_OPERATION_ERROR({ operation: 'revert' });
       }
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
-        throw new Error(`Could not resolve module path for ${name}`);
+        throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
       }
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -1097,7 +1097,7 @@ export class LaunchQLPackage {
       });
 
       if (result.failed) {
-        throw new Error(`Revert failed at change: ${result.failed}`);
+        throw errors.OPERATION_FAILED({ operation: 'Revert', target: result.failed });
       }
 
       log.success(`✅ Single module revert complete for ${name}.`);
@@ -1152,7 +1152,7 @@ export class LaunchQLPackage {
               });
             
               if (result.failed.length > 0) {
-                throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+                throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
               }
             } catch (verifyError) {
               log.error(`❌ Verification failed for module ${extension}`);
@@ -1169,12 +1169,12 @@ export class LaunchQLPackage {
       log.success(`✅ Verification complete for ${targetDescription}.`);
     } else {
       if (name === null) {
-        throw new Error('Cannot perform non-recursive operation on workspace. Use recursive=true or specify a target module.');
+        throw errors.WORKSPACE_OPERATION_ERROR({ operation: 'verification' });
       }
       const moduleProject = this.getModuleProject(name);
       const modulePath = moduleProject.getModulePath();
       if (!modulePath) {
-        throw new Error(`Could not resolve module path for ${name}`);
+        throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
       }
 
       const client = new LaunchQLMigrate(opts.pg as PgConfig);
@@ -1184,7 +1184,7 @@ export class LaunchQLPackage {
       });
 
       if (result.failed.length > 0) {
-        throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+        throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
       }
 
       log.success(`✅ Single module verification complete for ${name}.`);
@@ -1195,14 +1195,14 @@ export class LaunchQLPackage {
     const log = new Logger('remove');
     const modulePath = this.getModulePath();
     if (!modulePath) {
-      throw new Error('Could not resolve module path');
+      throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
     }
     
     const planPath = path.join(modulePath, 'launchql.plan');
     const result = parsePlanFile(planPath);
     
     if (result.errors.length > 0) {
-      throw new Error(`Failed to parse plan file: ${result.errors.map(e => e.message).join(', ')}`);
+      throw errors.PLAN_PARSE_ERROR({ planPath, errors: result.errors.map(e => e.message).join(', ') });
     }
     
     const plan = result.data!;
@@ -1211,12 +1211,12 @@ export class LaunchQLPackage {
       const tagName = toChange.substring(1); // Remove the '@' prefix
       const tagToRemove = plan.tags.find(tag => tag.name === tagName);
       if (!tagToRemove) {
-        throw new Error(`Tag '${toChange}' not found in plan`);
+        throw errors.TAG_NOT_FOUND({ tag: toChange });
       }
       
       const tagChangeIndex = plan.changes.findIndex(c => c.name === tagToRemove.change);
       if (tagChangeIndex === -1) {
-        throw new Error(`Associated change '${tagToRemove.change}' not found for tag '${toChange}'`);
+        throw errors.CHANGE_NOT_FOUND({ change: tagToRemove.change, plan: `for tag '${toChange}'` });
       }
       
       const changesToRemove = plan.changes.slice(tagChangeIndex);
@@ -1244,7 +1244,7 @@ export class LaunchQLPackage {
 
     const targetIndex = plan.changes.findIndex(c => c.name === toChange);
     if (targetIndex === -1) {
-      throw new Error(`Change '${toChange}' not found in plan`);
+      throw errors.CHANGE_NOT_FOUND({ change: toChange });
     }
 
     const changesToRemove = plan.changes.slice(targetIndex);

@@ -43,19 +43,19 @@ describe('LaunchQLPackage Target API', () => {
     });
 
     test('throws error for invalid tag format', () => {
-      expect(() => parseTarget('secrets:@')).toThrow('Invalid tag format: secrets:@. Expected format: package:@tagName');
+      expect(() => parseTarget('secrets:@')).toThrow('Invalid tag name: secrets:@. Expected format: package:@tagName');
     });
 
     test('throws error for invalid change format', () => {
-      expect(() => parseTarget('secrets:')).toThrow('Invalid change format: secrets:. Expected format: package:changeName');
+      expect(() => parseTarget('secrets:')).toThrow('Invalid change name: secrets:. Expected format: package:changeName');
     });
 
     test('throws error for invalid format with multiple colons', () => {
-      expect(() => parseTarget('secrets:change:extra')).toThrow('Invalid target format: secrets:change:extra. Expected formats: package, package:changeName, or package:@tagName');
+      expect(() => parseTarget('secrets:change:extra')).toThrow('Invalid change name: secrets:change:extra. Expected formats: package, package:changeName, or package:@tagName');
     });
 
     test('throws error for multi-colon tag format', () => {
-      expect(() => parseTarget('my-third:my-first:@v1.0.0')).toThrow('Invalid target format: my-third:my-first:@v1.0.0. Expected formats: package, package:changeName, or package:@tagName');
+      expect(() => parseTarget('my-third:my-first:@v1.0.0')).toThrow('Invalid change name: my-third:my-first:@v1.0.0. Expected formats: package, package:changeName, or package:@tagName');
     });
   });
 
