@@ -1,7 +1,7 @@
 {
     "packages":[
         "packages/*",
-        "extensions/@launchql/*",
-        "extensions/@pyramation/*"
+        "extensions/*",
+        "extensions/@*/*"
     ]
 }
