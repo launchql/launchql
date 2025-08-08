@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { dirname, resolve } from 'path';
+import { errors } from '@launchql/types';
 
 /**
  * Recursively walks up directories to find a specific file (sync version).
@@ -23,7 +24,7 @@ export const walkUp = (startDir: string, filename: string): string => {
     currentDir = parentDir;
   }
 
-  throw new Error(`File "${filename}" not found in any parent directories.`);
+  throw errors.FILE_NOT_FOUND({ filePath: filename, type: 'configuration' });
 };
 
 export const sluggify = (text: string): string => {

@@ -2,6 +2,7 @@ import { sync as glob } from 'glob';
 import { basename } from 'path';
 
 import { getLatestChange, Module,parseControlFile } from '../files';
+import { errors } from '@launchql/types';
 
 export type ModuleMap = Record<string, Module>;
 
@@ -30,7 +31,7 @@ export const latestChange = (
 ): string => {
   const module = modules[sqlmodule];
   if (!module) {
-    throw new Error(`latestChange() ${sqlmodule} NOT FOUND!`);
+    throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
   }
 
   const planPath = `${basePath}/${module.path}/launchql.plan`;
@@ -47,7 +48,7 @@ export const latestChangeAndVersion = (
 ): { change: string; version: string } => {
   const module = modules[sqlmodule];
   if (!module) {
-    throw new Error(`latestChangeAndVersion() ${sqlmodule} NOT FOUND!`);
+    throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
   }
 
   const planPath = `${basePath}/${module.path}/launchql.plan`;
@@ -66,7 +67,7 @@ export const getExtensionsAndModules = (
 ): { native: string[]; sqitch: string[] } => {
   const module = modules[sqlmodule];
   if (!module) {
-    throw new Error(`getExtensionsAndModules() ${sqlmodule} NOT FOUND!`);
+    throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
   }
 
   const native = module.requires.filter(

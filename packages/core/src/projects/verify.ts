@@ -28,7 +28,7 @@ export const verifyProject = async (
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
-    throw new Error(`Module "${name}" does not exist.`);
+    throw errors.MODULE_NOT_FOUND({ name });
   }
 
   const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
@@ -65,7 +65,7 @@ export const verifyProject = async (
           });
           
           if (result.failed.length > 0) {
-            throw new Error(`Verification failed for ${result.failed.length} changes: ${result.failed.join(', ')}`);
+            throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
           }
         } catch (verifyError) {
           log.error(`❌ Verification failed for module ${extension}`);

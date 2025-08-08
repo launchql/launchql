@@ -39,7 +39,7 @@ describe('resolve tests', () => {
       await resolve(baseFixture.getFixturePath('error-case'));
     } catch (e: unknown) {
       if (e instanceof Error) {
-        expect(e.message).toBe('Internal module not found: schemas/myschema/somethingdoesntexist');
+        expect(e.message).toBe('Module "schemas/myschema/somethingdoesntexist" not found in modules list.');
         failed = true;
       } else {
         throw new Error('Caught an unexpected non-error exception');
@@ -57,7 +57,7 @@ describe('resolve tests', () => {
     } catch (e: unknown) {
       if (e instanceof Error) {
         expect(e.message).toBe(
-          'Circular reference detected schemas/myschema/tables/sometable/table, schemas/myschema/schema'
+          'Circular reference detected: schemas/myschema/tables/sometable/table → schemas/myschema/schema'
         );
         failed = true;
       } else {
