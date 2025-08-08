@@ -96,7 +96,7 @@ describe('CLI Tag Command', () => {
       await exec(`lql tag v1.6.0 --package my-first --changeName nonexistent_change --yes`);
       fail('Expected non-existent change to throw error');
     } catch (error) {
-      expect((error as Error).message).toContain('not found in plan file');
+      expect((error as Error).message).toContain('not found in plan');
     }
   });
 });
