@@ -8,6 +8,7 @@ import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/env';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
+// @ts-ignore
 import graphqlUploadExpress from 'graphql-upload/public/graphqlUploadExpress.js';
 import { Pool, PoolClient } from 'pg';
 import { getPgPool } from 'pg-cache';
@@ -32,7 +33,7 @@ class Server {
   private opts: LaunchQLOptions;
 
   constructor(opts: LaunchQLOptions) {
-    this.opts = opts;
+    this.opts = getEnvOptions(opts);
 
     const app = express();
     const api = createApiMiddleware(opts);
