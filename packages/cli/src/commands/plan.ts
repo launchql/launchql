@@ -48,15 +48,7 @@ export default async (
       message: 'Prefer @tag references for external packages when available?',
       useDefault: true,
       default: true,
-      when: (_a) => typeof argv.useTags === 'undefined' && typeof argv.preferPackageTags === 'undefined'
-    },
-    {
-      type: 'text',
-      name: 'cwd',
-      message: 'Working directory',
-      useDefault: true,
-      default: process.cwd(),
-      when: (_a) => typeof argv.cwd === 'undefined'
+      when: (_a) => typeof argv.useTags === 'undefined'
     }
   ];
 
@@ -74,9 +66,7 @@ export default async (
   }
 
   const includePackages = typeof packages === 'boolean' ? packages : true;
-  const preferTags = typeof useTags === 'boolean'
-    ? useTags
-    : (typeof argv.preferPackageTags === 'boolean' ? argv.preferPackageTags : true);
+  const preferTags = typeof useTags === 'boolean' ? useTags : true;
 
   pkg.writeModulePlan({
     packages: includePackages,
