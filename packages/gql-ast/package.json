@@ -29,8 +29,8 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "graphql": "15.5.2"
+  "peerDependencies": {
+    "graphql": "^15.5.0"
   },
   "keywords": [
     "graphql",
