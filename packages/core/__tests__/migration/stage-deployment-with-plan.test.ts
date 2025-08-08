@@ -45,23 +45,14 @@ describe('Staging Fixture Deployment With Pre-Generated Plan', () => {
     const deployedChanges = await db.getDeployedChanges();
     expect(deployedChanges.some(change => change.package === 'unique-names')).toBe(true);
   });
-  test('deploys or fails to deploy unique-names after generating plan (includePackages=false, includeTags=false)', async () => {
+  test('deploys unique-names after generating plan (includePackages=false, includeTags=false)', async () => {
     const mod = fixture.getModuleProject([], 'unique-names');
     mod.writeModulePlan({ includePackages: false, includeTags: false });
-    let caught: any = null;
-    try {
-      await fixture.deployModule('unique-names', db.name, ['stage']);
-    } catch (e) {
-      caught = e;
-    }
-    if (caught) {
-      expect(caught).toBeDefined();
-    } else {
-      expect(await db.exists('schema', 'unique_names')).toBe(true);
-      expect(await db.exists('table', 'unique_names.words')).toBe(true);
-      const deployedChanges = await db.getDeployedChanges();
-      expect(deployedChanges.some(change => change.package === 'unique-names')).toBe(true);
-    }
+    await fixture.deployModule('unique-names', db.name, ['stage']);
+    expect(await db.exists('schema', 'unique_names')).toBe(true);
+    expect(await db.exists('table', 'unique_names.words')).toBe(true);
+    const deployedChanges = await db.getDeployedChanges();
+    expect(deployedChanges.some(change => change.package === 'unique-names')).toBe(true);
   });
 
 });
