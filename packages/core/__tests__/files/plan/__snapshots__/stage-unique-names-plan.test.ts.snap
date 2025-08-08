@@ -11,7 +11,7 @@ schemas/unique_names/tables/words/fixtures/1589271124916_fixture [schemas/unique
 schemas/unique_names/procedures/generate_name [schemas/unique_names/schema schemas/unique_names/tables/words/table] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add schemas/unique_names/procedures/generate_name"
 `;
 
-exports[`stage fixture plan generation (unique-names) generates a plan for unique-names (with packages and preferPackageTags) 1`] = `
+exports[`stage fixture plan generation (unique-names) generates a plan for unique-names (with packages and includeTags) 1`] = `
 "%syntax-version=1.0.0
 %project=unique-names
 %uri=unique-names

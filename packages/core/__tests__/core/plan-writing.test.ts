@@ -13,7 +13,7 @@ afterEach(() => {
 describe('LaunchQLPackage.writeModulePlan', () => {
   it('writes a clean plan to disk for a module (no projects)', async () => {
     const mod = fixture.getModuleProject(['.'], 'secrets');
-    await mod.writeModulePlan({ packages: false });
+    await mod.writeModulePlan({ includePackages: false });
 
     const plan = mod.getModulePlan();
     expect(plan).toMatchSnapshot();
@@ -21,7 +21,7 @@ describe('LaunchQLPackage.writeModulePlan', () => {
 
   it('writes a clean plan to disk for a module (with projects)', async () => {
     const mod = fixture.getModuleProject(['.'], 'secrets');
-    await mod.writeModulePlan({ packages: true });
+    await mod.writeModulePlan({ includePackages: true });
 
     const plan = mod.getModulePlan();
     expect(plan).toMatchSnapshot();
@@ -29,7 +29,7 @@ describe('LaunchQLPackage.writeModulePlan', () => {
 
   it('writes a plan for a dependency-heavy module (totp)', async () => {
     const mod = fixture.getModuleProject(['.'], 'totp');
-    await mod.writeModulePlan({ packages: true });
+    await mod.writeModulePlan({ includePackages: true });
 
     const plan = mod.getModulePlan();
     expect(plan).toContain('%project=totp');
@@ -40,7 +40,7 @@ describe('LaunchQLPackage.writeModulePlan', () => {
     const mod = fixture.getModuleProject(['.'], 'pg-verify');
 
     mod.setModuleDependencies(['some-native-module', 'pg-utilities']);
-    await mod.writeModulePlan({ packages: true });
+    await mod.writeModulePlan({ includePackages: true });
 
     const result = {
       plan: mod.getModulePlan(),
