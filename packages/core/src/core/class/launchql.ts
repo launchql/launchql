@@ -505,7 +505,9 @@ export class LaunchQLPackage {
     deps = normalizedDeps;
 
     // Process external dependencies if needed
-    if (options.packages && this.workspacePath) {
+    const includePackages = options.packages === true;
+    const preferTags = options.preferPackageTags === true;
+    if (includePackages && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
 
       if (resolved.length > 0) {
@@ -521,7 +523,7 @@ export class LaunchQLPackage {
 
           let depToken = `${extModuleName}:${m.latest}`;
 
-          if (options.preferPackageTags) {
+          if (preferTags) {
             try {
               const moduleMap = this.getModuleMap();
               const modInfo = moduleMap[extModuleName];
