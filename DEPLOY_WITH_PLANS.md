@@ -9,7 +9,7 @@ Scope:
 - A concrete plan to construct the same `resolvedDeps` object from plan files only
 
 References to the specific locations mentioned:
-- Test: packages/core/__tests__/stage-fixture/staging-deployment.test.ts
+- Test: packages/core/__tests__/migration/stage-deployment.test.ts
 - Test fixture: packages/core/test-utils/CoreDeployTestFixture.ts
 - Migration client (deploy): packages/core/src/migrate/client.ts
 - Dependency resolver: packages/core/src/resolution/deps.ts
@@ -144,7 +144,7 @@ Wiring usePlan through to deployment:
 
 Testing strategy (post-implementation):
 - Unit tests in packages/core/__tests__/resolution should pass for both SQL and plan sources.
-- Stage fixture test packages/core/__tests__/stage-fixture/staging-deployment.test.ts should pass with usePlan set to true without requiring additional '-- requires:' lines in SQL files.
+- Stage fixture test packages/core/__tests__/migration/stage-deployment.test.ts should pass with usePlan set to true without requiring additional '-- requires:' lines in SQL files.
 - Add a new unit test to assert that when usePlan/source is 'plan', the resolver does not read SQL files (can be implemented by mocking file system access or by separating the code path clearly).
 
 Notes on compatibility:
