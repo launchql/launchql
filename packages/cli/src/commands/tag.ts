@@ -1,5 +1,6 @@
 import { LaunchQLPackage } from '@launchql/core';
 import { Logger } from '@launchql/logger';
+import { errors } from '@launchql/types';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { extractFirst } from '../utils/argv';
 import { selectPackage } from '../utils/module-utils';
@@ -123,7 +124,7 @@ export default async (
       const moduleMap = pkg.getModuleMap();
       const module = moduleMap[packageName];
       if (!module) {
-        throw new Error(`Module '${packageName}' not found.`);
+        throw errors.MODULE_NOT_FOUND({ name: packageName });
       }
       
       const workspacePath = pkg.getWorkspacePath()!;

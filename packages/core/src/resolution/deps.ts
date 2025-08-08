@@ -5,6 +5,7 @@ import { join,relative } from 'path';
 import { LaunchQLPackage } from '../core/class/launchql';
 import { parsePlanFile } from '../files/plan/parser';
 import { ExtendedPlanFile } from '../files/types';
+import { errors } from '@launchql/types';
 
 /**
  * Represents a dependency graph where keys are module identifiers
@@ -115,7 +116,7 @@ function createDependencyResolver(
         handleExternalDep(sqlmodule, deps, external);
         edges = deps[sqlmodule] || [];
       } else {
-        throw new Error(`Internal module not found: ${sqlmodule}`);
+        throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
       }
     }
 
@@ -129,7 +130,7 @@ function createDependencyResolver(
     for (const dep of edges) {
       if (!resolved.includes(dep)) {
         if (unresolved.includes(dep)) {
-          throw new Error(`Circular reference detected ${moduleToResolve}, ${dep}`);
+          throw errors.CIRCULAR_DEPENDENCY({ module: moduleToResolve, dependency: dep });
         }
         dep_resolve(dep, resolved, unresolved);
       }
@@ -162,7 +163,7 @@ export const resolveExtensionDependencies = (
   modules: Record<string, { requires: string[] }>
 ): { external: string[]; resolved: string[] } => {
   if (!modules[name]) {
-    throw new Error(`module ${name} does not exist!`);
+    throw errors.MODULE_NOT_FOUND({ name });
   }
 
   const external: string[] = [];
@@ -279,7 +280,7 @@ export const resolveDependencies = (
         const module = moduleMap[packageName];
         
         if (!module) {
-          throw new Error(`Module ${packageName} not found in workspace`);
+          throw errors.MODULE_NOT_FOUND({ name: packageName });
         }
         
         const workspacePath = project.getWorkspacePath();
@@ -320,7 +321,7 @@ export const resolveDependencies = (
   if (source === 'plan') {
     const plan = loadPlanFile(extname);
     if (!plan) {
-      throw new Error(`Plan file not found or failed to parse for package ${extname} while using plan-only resolution`);
+      throw errors.PLAN_PARSE_ERROR({ planPath: `${extname}/launchql.plan`, errors: 'Plan file not found or failed to parse while using plan-only resolution' });
     }
 
     const external: string[] = [];
@@ -398,14 +399,14 @@ export const resolveDependencies = (
           if (project === extnameLocal) {
             moduleToResolve = localKey;
             edges = deps[makeKey(localKey)];
-            if (!edges) throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+            if (!edges) throw errors.MODULE_NOT_FOUND({ name: `${localKey} (from ${project}:${localKey})` });
           } else {
             external.push(sqlmodule);
             deps[sqlmodule] = deps[sqlmodule] || [];
             return { module: sqlmodule, edges: [], returnEarly: true };
           }
         } else {
-          if (!edges) throw new Error(`Internal module not found: ${sqlmodule}`);
+          if (!edges) throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
         }
         return { module: moduleToResolve, edges };
       }
@@ -430,12 +431,12 @@ export const resolveDependencies = (
         if (project === extnameLocal) {
           moduleToResolve = localKey;
           edges = deps[makeKey(localKey)];
-          if (!edges) throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+          if (!edges) throw errors.MODULE_NOT_FOUND({ name: `${localKey} (from ${project}:${localKey})` });
         }
       } else {
         if (!edges) {
           edges = deps[makeKey(sqlmodule)];
-          if (!edges) throw new Error(`Internal module not found: ${sqlmodule}`);
+          if (!edges) throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
         }
       }
 
@@ -577,7 +578,7 @@ export const resolveDependencies = (
           moduleToResolve = localKey;
           edges = deps[makeKey(localKey)];
           if (!edges) {
-            throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+            throw errors.MODULE_NOT_FOUND({ name: `${localKey} (from ${project}:${localKey})` });
           }
         } else {
           // External reference — always OK, even if not in deps yet
@@ -588,7 +589,7 @@ export const resolveDependencies = (
       } else {
         // No prefix — must be internal
         if (!edges) {
-          throw new Error(`Internal module not found: ${sqlmodule}`);
+          throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
         }
       }
       
@@ -622,7 +623,7 @@ export const resolveDependencies = (
         moduleToResolve = localKey;
         edges = deps[makeKey(localKey)];
         if (!edges) {
-          throw new Error(`Internal module not found: ${localKey} (from ${project}:${localKey})`);
+          throw errors.MODULE_NOT_FOUND({ name: `${localKey} (from ${project}:${localKey})` });
         }
       }
     } else {
@@ -631,7 +632,7 @@ export const resolveDependencies = (
         // Check if we have edges for the original module
         edges = deps[makeKey(sqlmodule)];
         if (!edges) {
-          throw new Error(`Internal module not found: ${sqlmodule}`);
+          throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
         }
       }
     }

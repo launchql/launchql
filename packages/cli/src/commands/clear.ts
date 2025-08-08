@@ -4,6 +4,7 @@ import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 import { parsePlanFile } from '@launchql/core';
+import { errors } from '@launchql/types';
 import path from 'path';
 
 import { getTargetDatabase } from '../utils';
@@ -53,7 +54,7 @@ export default async (
   const result = parsePlanFile(planPath);
   
   if (result.errors.length > 0) {
-    throw new Error(`Failed to parse plan file: ${result.errors.map(e => e.message).join(', ')}`);
+    throw errors.PLAN_PARSE_ERROR({ planPath, errors: result.errors.map(e => e.message).join(', ') });
   }
   
   const plan = result.data!;

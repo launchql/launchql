@@ -25,7 +25,7 @@ export const errors = {
 
   MODULE_NOT_FOUND: makeError(
     'MODULE_NOT_FOUND',
-    ({ name }) => `Module "${name}" not found.`,
+    ({ name }: { name: string }) => `Module "${name}" not found in modules list.`,
     404
   ),
 
@@ -81,6 +81,69 @@ export const errors = {
     'UNKNOWN_COMMAND',
     ({ cmd }) => `Unknown command: ${cmd}`,
     400
+  ),
+
+  CHANGE_NOT_FOUND: makeError(
+    'CHANGE_NOT_FOUND',
+    ({ change, plan }: { change: string, plan?: string }) => 
+      `Change '${change}' not found in plan${plan ? ` file: ${plan}` : ''}`,
+    404
+  ),
+
+  TAG_NOT_FOUND: makeError(
+    'TAG_NOT_FOUND',
+    ({ tag, project }: { tag: string, project?: string }) => 
+      `Tag '${tag}' not found${project ? ` in project ${project}` : ' in plan'}`,
+    404
+  ),
+
+  PATH_NOT_FOUND: makeError(
+    'PATH_NOT_FOUND',
+    ({ path, type }: { path: string, type: 'module' | 'workspace' | 'file' }) => 
+      `${type} path not found: ${path}`,
+    404
+  ),
+
+  OPERATION_FAILED: makeError(
+    'OPERATION_FAILED',
+    ({ operation, target, reason }: { operation: string, target?: string, reason?: string }) => 
+      `${operation} failed${target ? ` for ${target}` : ''}${reason ? `: ${reason}` : ''}`,
+    500
+  ),
+
+  PLAN_PARSE_ERROR: makeError(
+    'PLAN_PARSE_ERROR',
+    ({ planPath, errors }: { planPath: string, errors: string }) => 
+      `Failed to parse plan file ${planPath}: ${errors}`,
+    400
+  ),
+
+  CIRCULAR_DEPENDENCY: makeError(
+    'CIRCULAR_DEPENDENCY',
+    ({ module, dependency }: { module: string, dependency: string }) => 
+      `Circular reference detected: ${module} → ${dependency}`,
+    400
+  ),
+
+  INVALID_NAME: makeError(
+    'INVALID_NAME',
+    ({ name, type, rules }: { name: string, type: 'tag' | 'change' | 'module', rules?: string }) => 
+      `Invalid ${type} name: ${name}${rules ? `. ${rules}` : ''}`,
+    400
+  ),
+
+  WORKSPACE_OPERATION_ERROR: makeError(
+    'WORKSPACE_OPERATION_ERROR',
+    ({ operation }: { operation: string }) => 
+      `Cannot perform non-recursive ${operation} on workspace. Use recursive=true or specify a target module.`,
+    400
+  ),
+
+  FILE_NOT_FOUND: makeError(
+    'FILE_NOT_FOUND',
+    ({ filePath, type }: { filePath: string, type?: string }) => 
+      `${type ? `${type} file` : 'File'} not found: ${filePath}`,
+    404
   ),
 };
 

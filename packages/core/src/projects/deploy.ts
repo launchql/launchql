@@ -42,7 +42,7 @@ export const deployProject = async (
 
   if (!modules[name]) {
     log.error(`❌ Module "${name}" not found in modules list.`);
-    throw new Error(`Module "${name}" does not exist.`);
+    throw errors.MODULE_NOT_FOUND({ name });
   }
 
   const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
@@ -135,7 +135,7 @@ export const deployProject = async (
             });
             
             if (result.failed) {
-              throw new Error(`Deployment failed at change: ${result.failed}`);
+              throw errors.OPERATION_FAILED({ operation: 'Deployment', target: result.failed });
             }
           } catch (deployError) {
             log.error(`❌ Deployment failed for module ${extension}`);
