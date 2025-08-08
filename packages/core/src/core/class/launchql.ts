@@ -413,13 +413,13 @@ export class LaunchQLPackage {
     return fs.readFileSync(info.sqlFile, 'utf8');
   }
 
-  generateModulePlan(options: { uri?: string; packages?: boolean; useTags?: boolean }): string {
+  generateModulePlan(options: { uri?: string; includePackages?: boolean; includeTags?: boolean }): string {
     this.ensureModule();
     const info = this.getModuleInfo();
     const moduleName = info.extname;
 
     // Get raw dependencies and resolved list
-    const tagResolution = options.useTags === true ? 'preserve' : 'internal';
+    const tagResolution = options.includeTags === true ? 'preserve' : 'internal';
     let { resolved, deps } = resolveDependencies(this.cwd, moduleName, { tagResolution });
 
     // Helper to extract module name from a change reference
@@ -506,8 +506,8 @@ export class LaunchQLPackage {
     deps = normalizedDeps;
 
     // Process external dependencies if needed
-    const includePackages = options.packages === true;
-    const preferTags = options.useTags === true;
+    const includePackages = options.includePackages === true;
+    const preferTags = options.includeTags === true;
     if (includePackages && this.workspacePath) {
       const depData = this.getModuleDependencyChanges(moduleName);
 
@@ -583,7 +583,7 @@ export class LaunchQLPackage {
   }
 
   writeModulePlan(
-    options: { uri?: string; packages?: boolean; useTags?: boolean }
+    options: { uri?: string; includePackages?: boolean; includeTags?: boolean }
   ): void {
     this.ensureModule();
     const name = this.getModuleName();

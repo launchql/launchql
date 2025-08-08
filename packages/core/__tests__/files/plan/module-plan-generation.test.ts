@@ -13,7 +13,7 @@ afterAll(() => {
 describe('sqitch modules', () => {
   it('should be able to create a plan', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'totp');
-    const plan = mod.generateModulePlan({ packages: false });
+    const plan = mod.generateModulePlan({ includePackages: false });
 
     expect(cleanText(plan)).toEqual(
       cleanText(`
@@ -26,7 +26,7 @@ procedures/generate_secret 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62>
 
   it('should be able to create a plan with cross-project requires already in', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'utils');
-    const plan = mod.generateModulePlan({ packages: true });
+    const plan = mod.generateModulePlan({ includePackages: true });
 
     expect(cleanText(plan)).toMatchSnapshot();
     expect(plan).toEqual(
@@ -40,7 +40,7 @@ procedures/myfunction [totp:procedures/generate_secret pg-verify:procedures/veri
 
   it('should create a plan without options for projects and lose dependencies', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'secrets');
-    const plan = mod.generateModulePlan({ packages: false });
+    const plan = mod.generateModulePlan({ includePackages: false });
 
     expect(cleanText(plan)).toEqual(
       cleanText(`
@@ -54,7 +54,7 @@ procedures/secretfunction 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> 
 
   it('should create a plan that references projects', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'secrets');
-    const plan = mod.generateModulePlan({ packages: true });
+    const plan = mod.generateModulePlan({ includePackages: true });
 
     expect(cleanText(plan)).toEqual(
       cleanText(`
@@ -68,7 +68,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
 
   it('can create a module plan using workspace.generateModulePlan()', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'totp');
-    const plan = mod.generateModulePlan({ packages: false });
+    const plan = mod.generateModulePlan({ includePackages: false });
 
     expect(cleanText(plan)).toContain('%project=totp');
     expect(cleanText(plan)).toContain('procedures/generate_secret');
@@ -77,7 +77,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
 
   it('can create a module plan using workspace.generateModulePlan() w/projects', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'totp');
-    const plan = mod.generateModulePlan({ packages: true });
+    const plan = mod.generateModulePlan({ includePackages: true });
 
     expect(cleanText(plan)).toContain('%project=totp');
     expect(cleanText(plan)).toContain('procedures/generate_secret');
@@ -86,7 +86,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
 
   it('ensures plan includes all resolved deploy steps', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'secrets');
-    const plan = mod.generateModulePlan({ packages: false });
+    const plan = mod.generateModulePlan({ includePackages: false });
 
     expect(plan).toMatch(/add procedures\/secretfunction/);
     expect(cleanText(plan)).toMatchSnapshot();
@@ -94,7 +94,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
 
   it('ensures plan includes all resolved deploy steps w/projects', async () => {
     const mod = fixture.getModuleProject(['launchql'], 'secrets');
-    const plan = mod.generateModulePlan({ packages: true });
+    const plan = mod.generateModulePlan({ includePackages: true });
 
     expect(plan).toMatch(/add procedures\/secretfunction/);
     expect(cleanText(plan)).toMatchSnapshot();
@@ -102,7 +102,7 @@ procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/
 
   it('ensures simple plan', async () => {
     const mod = fixture.getModuleProject(['simple'], 'my-first');
-    const plan = mod.generateModulePlan({ packages: true });
+    const plan = mod.generateModulePlan({ includePackages: true });
 
     expect(plan).toMatchSnapshot();
   });

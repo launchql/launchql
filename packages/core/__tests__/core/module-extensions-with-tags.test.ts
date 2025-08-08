@@ -38,7 +38,7 @@ it('getModuleDependencies for my-third', () => {
 describe('generateModulePlan with tags', () => {
   it('generates plan for my-first', () => {
     const project = fixture.getModuleProject(['simple-w-tags'], 'my-first');
-    const plan = project.generateModulePlan({ packages: false });
+    const plan = project.generateModulePlan({ includePackages: false });
     
     // The generateModulePlan method generates from SQL files, not from existing plan
     expect(cleanText(plan)).toMatchSnapshot();
@@ -46,19 +46,19 @@ describe('generateModulePlan with tags', () => {
 
   it('generates plan for my-second with cross-project dependencies', () => {
     const project = fixture.getModuleProject(['simple-w-tags'], 'my-second');
-    const plan = project.generateModulePlan({ packages: true });
+    const plan = project.generateModulePlan({ includePackages: true });
     expect(cleanText(plan)).toMatchSnapshot();
   });
 
   it('generates plan for my-third with multiple cross-project dependencies', () => {
     const project = fixture.getModuleProject(['simple-w-tags'], 'my-third');
-    const plan = project.generateModulePlan({ packages: true });
+    const plan = project.generateModulePlan({ includePackages: true });
     expect(cleanText(plan)).toMatchSnapshot();
   });
 
   it('generates plan without projects flag loses cross-project dependencies', () => {
     const project = fixture.getModuleProject(['simple-w-tags'], 'my-second');
-    const plan = project.generateModulePlan({ packages: false });
+    const plan = project.generateModulePlan({ includePackages: false });
     
     // Should not contain cross-project dependencies when projects: false
     // expect(cleanText(plan)).not.toContain('my-first:');
