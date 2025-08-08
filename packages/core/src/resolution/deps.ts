@@ -218,6 +218,20 @@ export interface DependencyResolutionOptions {
   source?: 'sql' | 'plan';
 }
 
+// 
+// 
+// 
+// 
+// 
+//   - for each change in the plan, create a node in the dependency graph and add edges for any declared dependencies.
+// 
+// 
+// - Cross-package references:
+// 
+// 
+// 
+// 
+
 /**
  * Unified dependency resolution function with configurable options.
  * This is the main entry point for all dependency resolution needs,
