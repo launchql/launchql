@@ -146,7 +146,9 @@ export class LaunchQLPackage {
     const dirs = globs.flatMap(pattern =>
       glob.sync(path.join(this.workspacePath!, pattern))
     );
-    return dirs.map(dir => path.resolve(dir));
+    const resolvedDirs = dirs.map(dir => path.resolve(dir));
+    // Remove duplicates by converting to Set and back to array
+    return [...new Set(resolvedDirs)];
   }
 
   isInsideAllowedDirs(cwd: string): boolean {
