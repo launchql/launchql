@@ -22,9 +22,9 @@ describe('stage fixture plan generation (unique-names)', () => {
     const plan = mod.generateModulePlan({ packages: true });
     expect(cleanText(plan)).toMatchSnapshot();
   });
-  it('generates a plan for unique-names (with packages and preferPackageTags)', async () => {
+  it('generates a plan for unique-names (with packages and useTags)', async () => {
     const mod = fixture.getModuleProject([], 'unique-names');
-    const plan = mod.generateModulePlan({ packages: true, preferPackageTags: true, tags: 'preserve' });
+    const plan = mod.generateModulePlan({ packages: true, useTags: true });
     expect(cleanText(plan)).toMatchSnapshot();
   });
 
