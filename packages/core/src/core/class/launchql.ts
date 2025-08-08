@@ -926,7 +926,8 @@ export class LaunchQLPackage {
                   modulePath,
                   toChange: moduleToChange,
                   useTransaction: opts.deployment.useTx,
-                  logOnly: opts.deployment.logOnly
+                  logOnly: opts.deployment.logOnly,
+                  usePlan: opts.deployment.usePlan
                 });
               
                 if (result.failed) {
@@ -962,7 +963,8 @@ export class LaunchQLPackage {
         modulePath,
         toChange,
         useTransaction: opts.deployment?.useTx,
-        logOnly: opts.deployment?.logOnly
+        logOnly: opts.deployment?.logOnly,
+        usePlan: opts.deployment?.usePlan
       });
 
       if (result.failed) {
