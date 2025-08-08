@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.6.0...@launchql/cli@4.7.0) (2025-08-08)
+
+
+### Bug Fixes
+
+* **cli:** use exact cwd handling pattern in lql plan command ([dca0e50](https://github.com/launchql/launchql/commit/dca0e5030bb5e2ae81eab3e9c6b0977ed2cd3ddc))
+* update tags test expectation for CHANGE_NOT_FOUND error format ([df1f383](https://github.com/launchql/launchql/commit/df1f383a7578bc5275d41e7e0908e9a5f232b715)), closes [#200](https://github.com/launchql/launchql/issues/200)
+
+
+### Features
+
+* add bootstrap-db-roles CLI command with username/password parameters ([81e88ee](https://github.com/launchql/launchql/commit/81e88ee9352ca1edd7a8229a6e70d3e5e308a167))
+* add LaunchQLInit class and CLI commands for bootstrap roles ([202fb2c](https://github.com/launchql/launchql/commit/202fb2cd312de3416521366b2e4ecdfa77a5ab63))
+* add lql bootstrap command that calls both bootstrap-roles and bootstrap-test-roles ([65d2cae](https://github.com/launchql/launchql/commit/65d2caebd8ec7d711df0c68cded789a8417dad0d))
+* **cli): default lql plan to include packages and prefer tags via non-blocking prompts; update usage text; keep advanced tags internal\n\nfix(core:** only prefer package tags when explicitly enabled; preserve prior default behavior in core API ([b770560](https://github.com/launchql/launchql/commit/b77056050337fad4f6387b78a79032a88a95e964))
+* **core/cli:** simplify plan options to useTags; default CLI to packages+useTags (non-blocking). Keep preferPackageTags/tags as aliases for backward compatibility; update usage text ([f3db407](https://github.com/launchql/launchql/commit/f3db407c93f9f48bb57e7a2c9ac153dc30c5ce7c))
+* expand error system with templated error types ([e08e1c1](https://github.com/launchql/launchql/commit/e08e1c1b3c4925807d59831695591a53ca8ebb9b))
+
+
+
+
+
 # [4.6.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.5.0...@launchql/cli@4.6.0) (2025-07-31)
 
 

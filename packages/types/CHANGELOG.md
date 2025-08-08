@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/launchql/launchql/compare/@launchql/types@2.2.0...@launchql/types@2.3.0) (2025-08-08)
+
+
+### Features
+
+* expand error system with templated error types ([e08e1c1](https://github.com/launchql/launchql/commit/e08e1c1b3c4925807d59831695591a53ca8ebb9b))
+
+
+
+
+
 # [2.2.0](https://github.com/launchql/launchql/compare/@launchql/types@2.1.13...@launchql/types@2.2.0) (2025-07-31)
 
 

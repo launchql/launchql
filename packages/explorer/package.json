@@ -1,6 +1,6 @@
 {
   "name": "@launchql/explorer",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Explorer",
   "main": "index.js",
@@ -35,18 +35,18 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/env": "^2.2.0",
-    "@launchql/s3-streamer": "^2.3.0",
-    "@launchql/server-utils": "^2.2.0",
-    "@launchql/types": "^2.2.0",
+    "@launchql/env": "^2.2.1",
+    "@launchql/s3-streamer": "^2.3.1",
+    "@launchql/server-utils": "^2.2.1",
+    "@launchql/types": "^2.3.0",
     "@launchql/upload-names": "^2.2.0",
     "@launchql/url-domains": "^2.2.0",
     "express": "^5.1.0",
     "graphile-build": "^4.14.1",
-    "graphile-cache": "^1.1.0",
-    "graphile-settings": "^2.3.0",
+    "graphile-cache": "^1.1.1",
+    "graphile-settings": "^2.3.1",
     "graphql-upload": "^13.0.0",
-    "pg-cache": "^1.1.0",
+    "pg-cache": "^1.1.1",
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {

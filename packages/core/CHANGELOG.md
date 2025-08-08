@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/launchql/launchql/compare/@launchql/core@2.6.0...@launchql/core@2.7.0) (2025-08-08)
+
+
+### Bug Fixes
+
+* copy init SQL files to dist directory during build ([e124f09](https://github.com/launchql/launchql/commit/e124f091f5d22c82447c4bf049981a90795999ef))
+* **core:** honor plan order in plan mode; ensure dist-safe comments; update stage snapshots ([f88b8c8](https://github.com/launchql/launchql/commit/f88b8c89b378206b32776cab5a557946b350a76a))
+* **core:** replace glob in JSDoc with line comments; add stage fixture tests for resolveDependencies (plan/sql) and update snapshots ([7552cba](https://github.com/launchql/launchql/commit/7552cba5df242f47cfb19ecd2877e2a6b1452cc9))
+* update snapshots for GraphQL dependency changes ([c107b55](https://github.com/launchql/launchql/commit/c107b553733ad98ebfac595550c6bdcded2058ea))
+* update test expectations for new templated error message formats ([0e895a7](https://github.com/launchql/launchql/commit/0e895a780307f903458f063952fad1587dbedc4d)), closes [#200](https://github.com/launchql/launchql/issues/200)
+* update verification error message test expectation ([01ccb46](https://github.com/launchql/launchql/commit/01ccb46d142e428ffd36719952e4a80d3f59f4f7)), closes [#200](https://github.com/launchql/launchql/issues/200)
+* use IF NOT EXISTS for app_user and app_admin role creation ([5328758](https://github.com/launchql/launchql/commit/532875830cbc199b60a63ffcaa10badb8b21c4f3))
+
+
+### Features
+
+* add bootstrapDbRoles method with custom username and password ([ecab17d](https://github.com/launchql/launchql/commit/ecab17d16fd430e36df8214316e08f8a9d162193))
+* add LaunchQLInit class and CLI commands for bootstrap roles ([202fb2c](https://github.com/launchql/launchql/commit/202fb2cd312de3416521366b2e4ecdfa77a5ab63))
+* **cli): default lql plan to include packages and prefer tags via non-blocking prompts; update usage text; keep advanced tags internal\n\nfix(core:** only prefer package tags when explicitly enabled; preserve prior default behavior in core API ([b770560](https://github.com/launchql/launchql/commit/b77056050337fad4f6387b78a79032a88a95e964))
+* **core/cli:** simplify plan options to useTags; default CLI to packages+useTags (non-blocking). Keep preferPackageTags/tags as aliases for backward compatibility; update usage text ([f3db407](https://github.com/launchql/launchql/commit/f3db407c93f9f48bb57e7a2c9ac153dc30c5ce7c))
+* **core:** plan-only dependency resolution; thread usePlan through DeployOptions and LaunchQLMigrate; use plan graph when usePlan=true ([571f37f](https://github.com/launchql/launchql/commit/571f37f5bdc1128398d8750b0bbe6261c31516ac))
+* **core:** prefer [@latest](https://github.com/latest) tag for external packages in plan generation; expose tags option; add stage fixture test (unique-names) for packages+tags ([8656acb](https://github.com/launchql/launchql/commit/8656acb6af508561b616c96422660577eeb50902))
+* **core:** thread usePlan into DeployOptions and LaunchQLMigrate; add plan-only mode to resolveDependencies to avoid SQL scanning when requested ([9c9e4e3](https://github.com/launchql/launchql/commit/9c9e4e3523d220b4b96bbc360dfb50789d69d8e2))
+* expand error system with templated error types ([e08e1c1](https://github.com/launchql/launchql/commit/e08e1c1b3c4925807d59831695591a53ca8ebb9b))
+
+
+
+
+
 # [2.6.0](https://github.com/launchql/launchql/compare/@launchql/core@2.5.0...@launchql/core@2.6.0) (2025-07-31)
 
 

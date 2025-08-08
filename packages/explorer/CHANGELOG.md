@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/launchql/launchql/compare/@launchql/explorer@2.3.0...@launchql/explorer@2.3.1) (2025-08-08)
+
+
+### Bug Fixes
+
+* resolve GraphQL duplicate modules error ([542da44](https://github.com/launchql/launchql/commit/542da447b903c0125d5c604a82c2e5761eae0638))
+
+
+
+
+
 # [2.3.0](https://github.com/launchql/launchql/compare/@launchql/explorer@2.2.1...@launchql/explorer@2.3.0) (2025-07-31)
 
 
