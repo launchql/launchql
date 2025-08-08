@@ -129,4 +129,4 @@ Related Code
 - Core implementation: packages/core/src/resolution/deps.ts → resolveDependencies, DependencyResolutionOptions.
 - Dependency resolver: createDependencyResolver (same file) and its transformModule variants.
 - Upstream caller: packages/core/src/migrate/client.ts (LaunchQLMigrate.deploy).
-- Tests: packages/core/__tests__/resolution/* and packages/core/__tests__/stage-fixture/staging-deployment.test.ts.
+- Tests: packages/core/__tests__/resolution/*, packages/core/__tests__/migration/stage-deployment.test.ts, and packages/core/__tests__/projects/stage-workspace.test.ts.

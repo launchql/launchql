@@ -506,4 +506,4 @@ Linked Locations in Code
 - Consumers in tests:
   - packages/core/__tests__/resolution/dependency-resolution-internal-tags.test.ts
   - packages/core/__tests__/resolution/dependency-resolution-resolved-tags.test.ts
-  - packages/core/__tests__/stage-fixture/staging-deployment.test.ts
+  - packages/core/__tests__/migration/stage-deployment.test.ts
