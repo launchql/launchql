@@ -141,6 +141,9 @@ export class PgTestConnector {
     this.seenDbConfigs.clear();
 
     log.success('✅ All PgTestClients closed, pools disposed, databases dropped.');
+    this.pendingConnects.clear();
+    this.shuttingDown = false;
+
   }
 
   close(): void {
