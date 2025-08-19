@@ -1,6 +1,6 @@
 import { Logger } from '@launchql/logger';
 import { RawStmt } from '@pgsql/types';
-import { mkdirSync, readFileSync, rmSync,writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'fs';
 import { relative } from 'path';
 import { deparse } from 'pgsql-deparser';
 import { parse } from 'pgsql-parser';
@@ -110,7 +110,8 @@ export const writePackage = async ({
   const controlPath = `${packageDir}/${extname}.control`;
   const sqlFileName = `${extname}--${version}.sql`;
 
-  const Makefile = readFileSync(makePath, 'utf-8');
+  const hasMakefile = existsSync(makePath);
+  const Makefile = hasMakefile ? readFileSync(makePath, 'utf-8') : undefined;
   const control = readFileSync(controlPath, 'utf-8');
 
   const { sql, diff, tree1, tree2 } = await packageModule(packageDir, {
@@ -135,8 +136,10 @@ export const writePackage = async ({
     pkg.version = version;
     writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
-    const regex = new RegExp(`${extname}--[0-9.]+.sql`);
-    writeFileSync(makePath, Makefile.replace(regex, sqlFileName));
+    if (hasMakefile && Makefile) {
+      const regex = new RegExp(`${extname}--[0-9.]+.sql`);
+      writeFileSync(makePath, Makefile.replace(regex, sqlFileName));
+    }
   }
 
   if (diff) {

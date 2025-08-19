@@ -406,6 +406,7 @@ export class LaunchQLPackage {
   getModuleMakefile(): string {
     this.ensureModule();
     const info = this.getModuleInfo();
+    if (!fs.existsSync(info.Makefile)) return '';
     return fs.readFileSync(info.Makefile, 'utf8');
   }
 
@@ -676,13 +677,12 @@ export class LaunchQLPackage {
     fs.mkdirSync(fullDist, { recursive: true });
 
     const folders = ['deploy', 'revert', 'sql', 'verify'];
-    const files = ['Makefile', 'package.json', 'launchql.plan', controlFile];
+    const filesRequired = ['package.json', 'launchql.plan', controlFile];
+    const filesOptional = ['Makefile'];
 
-
-    // Add README file regardless of casing
     const readmeFile = fs.readdirSync(modPath).find(f => /^readme\.md$/i.test(f));
     if (readmeFile) {
-      files.push(readmeFile); // Include it in the list of files to copy
+      filesOptional.push(readmeFile);
     }
 
     for (const folder of folders) {
@@ -692,12 +692,19 @@ export class LaunchQLPackage {
       }
     }
 
-    for (const file of files) {
+    for (const file of filesRequired) {
       const src = path.join(modPath, file);
       if (!fs.existsSync(src)) {
         throw new Error(`Missing required file: ${file}`);
       }
       fs.cpSync(src, path.join(fullDist, file));
+    }
+
+    for (const file of filesOptional) {
+      const src = path.join(modPath, file);
+      if (fs.existsSync(src)) {
+        fs.cpSync(src, path.join(fullDist, file));
+      }
     }
   }
 
