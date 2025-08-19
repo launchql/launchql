@@ -78,7 +78,6 @@ export const getConnections = async (
 
   await admin.grantConnect(connOpts.connection.user, config.database);
 
-  // Main admin client (optional unless needed elsewhere)
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
 
@@ -91,7 +90,6 @@ export const getConnections = async (
     });
   }
 
-  // App user connection
   const db = manager.getClient({
     ...config,
     user: connOpts.connection.user,
@@ -100,6 +98,7 @@ export const getConnections = async (
   db.setContext({ role: 'anonymous' });
 
   const teardown = async () => {
+    manager.beginTeardown();
     await teardownPgPools();
     await manager.closeAll();
   };
