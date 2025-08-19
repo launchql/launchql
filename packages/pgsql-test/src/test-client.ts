@@ -1,13 +1,19 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
 
+type PgTestClientOpts = {
+  deferConnect?: boolean;
+  trackConnect?: (p: Promise<any>) => void;
+};
+
 export class PgTestClient {
   public config: PgConfig;
   public client: Client;
   private ctxStmts: string = '';
   private _ended: boolean = false;
+  private connectPromise: Promise<void> | null = null;
 
-  constructor(config: PgConfig) {
+  constructor(config: PgConfig, opts: PgTestClientOpts = {}) {
     this.config = config;
     this.client = new Client({
       host: this.config.host,
@@ -16,12 +22,24 @@ export class PgTestClient {
       user: this.config.user,
       password: this.config.password
     });
-    this.client.connect();
+    if (!opts.deferConnect) {
+      this.connectPromise = this.client.connect();
+      if (opts.trackConnect) opts.trackConnect(this.connectPromise);
+    }
   }
 
-  close(): void {
+  private async ensureConnected(): Promise<void> {
+    if (this.connectPromise) {
+      try {
+        await this.connectPromise;
+      } catch {}
+    }
+  }
+
+  async close(): Promise<void> {
     if (!this._ended) {
       this._ended = true;
+      await this.ensureConnected();
       this.client.end();
     }
   }
@@ -104,7 +122,6 @@ export class PgTestClient {
     return result;
   }  
 
-  // exposing so we can use for graphile-test
   async ctxQuery(): Promise<void> {
     if (this.ctxStmts) {
       await this.client.query(this.ctxStmts);
