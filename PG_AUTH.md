@@ -48,6 +48,32 @@ Audit notes on current usages
   3) closeAll()
 - The “cannot create client while shutting down” error would indicate a call to getConnections() or new client creation during teardown; after the recent fix, CI showed this only when the gate wasn’t reset—now resolved by resetting after cleanup.
 
+Concrete audit findings (file references)
+- Core fixture uses pg-cache teardown in cleanup:
+  - /packages/core/test-utils/CoreDeployTestFixture.ts: cleanup() awaits teardownPgPools(); this path does not create PgTestConnector clients directly, so gating is not required here.
+- Graphile test utilities compose pgsql-test teardown correctly:
+  - /packages/graphile-test/src/get-connections.ts: createConnectionsBase() returns dbTeardown from pgsql-test and calls it after gqlContext.teardown(); no client creation occurs after teardown begins.
+- CLI tests close pools after fixture teardown:
+  - /packages/cli/__tests__/deploy.test.ts: afterAll awaits fixture.cleanup() then calls teardownPgPools(); no new clients created during teardown.
+  - /packages/cli/__tests__/tags.test.ts: same pattern—fixture.cleanup() followed by teardownPgPools().
+  - /packages/cli/__tests__/cli-deploy-fixture.test.ts: top-level afterAll calls teardownPgPools(); per-suite afterAll calls fixture.cleanup(); ordering prevents post-teardown client creation.
+- pgsql-test orchestrates safe teardown sequencing:
+  - /packages/pgsql-test/src/connect.ts: teardown calls manager.beginTeardown() → teardownPgPools() → manager.closeAll(), enabling gating before pool shutdown and awaiting pending connect handshakes.
+- pg-cache lifecycle:
+  - /packages/pg-cache/src/lru.ts: PgPoolCacheManager manages Pool instances and teardownPgPools() disposes them; it does not introduce new clients during shutdown.
+
+Summary of risks checked
+- No tests or utilities were found creating clients after teardown begins.
+- Places that rely only on teardownPgPools() (without pgsql-test gating) are not also creating PgTestConnector clients, so they remain safe.
+- Composition layers (graphile-test) defer to pgsql-test teardown, which engages gating early and prevents the 08P01 race.
+
+Actionable guidance linked to files above
+- If you manage both PgTestConnector and pg-cache in custom fixtures, use the sequence:
+  1) manager.beginTeardown()
+  2) teardownPgPools()
+  3) manager.closeAll()
+- Keep client creation in beforeAll/beforeEach; avoid creating clients or pools within or racing with afterAll/teardown.
+
 Best practices and recommendations
 - Keep client creation in beforeAll/beforeEach and teardown in afterAll/afterEach; do not mix creation inside teardown blocks.
 - Do not open new connections once teardown begins. If a test needs extra work at the end, finish it before teardown starts.
