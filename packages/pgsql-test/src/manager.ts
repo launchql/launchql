@@ -27,8 +27,10 @@ export class PgTestConnector {
   private readonly clients = new Set<PgTestClient>();
   private readonly pgPools = new Map<string, Pool>();
   private readonly seenDbConfigs = new Map<string, PgConfig>();
+  private readonly pendingConnects = new Set<Promise<any>>();
 
   private verbose = false;
+  private shuttingDown = false;
 
   private constructor(verbose = false) {
     this.verbose = verbose;
@@ -56,6 +58,22 @@ export class PgTestConnector {
     return `${config.host}:${config.port}/${config.database}`;
   }
 
+  beginTeardown(): void {
+    this.shuttingDown = true;
+  }
+
+  private registerConnect(p: Promise<any>): void {
+    this.pendingConnects.add(p);
+    p.finally(() => this.pendingConnects.delete(p));
+  }
+
+  private async awaitPendingConnects(): Promise<void> {
+    const arr = Array.from(this.pendingConnects);
+    if (arr.length) {
+      await Promise.allSettled(arr);
+    }
+  }
+
   getPool(config: PgConfig): Pool {
     const key = this.poolKey(config);
     if (!this.pgPools.has(key)) {
@@ -67,7 +85,10 @@ export class PgTestConnector {
   }
 
   getClient(config: PgConfig): PgTestClient {
-    const client = new PgTestClient(config);
+    if (this.shuttingDown) {
+      throw new Error('PgTestConnector is shutting down; no new clients allowed');
+    }
+    const client = new PgTestClient(config, { trackConnect: (p) => this.registerConnect(p) });
     this.clients.add(client);
 
     const key = this.dbKey(config);
@@ -78,6 +99,9 @@ export class PgTestConnector {
   }
 
   async closeAll(): Promise<void> {
+    this.beginTeardown();
+    await this.awaitPendingConnects();
+
     log.info('🧹 Closing all PgTestClients...');
     await Promise.all(
       Array.from(this.clients).map(async (client) => {
@@ -117,6 +141,9 @@ export class PgTestConnector {
     this.seenDbConfigs.clear();
 
     log.success('✅ All PgTestClients closed, pools disposed, databases dropped.');
+    this.pendingConnects.clear();
+    this.shuttingDown = false;
+
   }
 
   close(): void {
@@ -131,8 +158,8 @@ export class PgTestConnector {
     this.seenDbConfigs.delete(key);
   }
 
-  kill(client: PgTestClient): void {
-    client.close();
+  async kill(client: PgTestClient): Promise<void> {
+    await client.close();
     this.drop(client.config);
   }
 }
