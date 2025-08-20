@@ -108,7 +108,7 @@ export default async (
 ) => {
   if (argv.help || argv.h) {
     console.log(versionUsageText);
-    process.exit(0);
+    return argv;
   }
 
   const log = new Logger('version');
@@ -161,8 +161,7 @@ export default async (
   const project = new LaunchQLPackage(cwd);
   
   if (!project.isInWorkspace()) {
-    log.error('This command must be run from a workspace root.');
-    process.exit(1);
+    throw new Error('This command must be run from a workspace root.');
   }
 
   try {
@@ -319,7 +318,7 @@ export default async (
 
   } catch (error) {
     log.error(`Version command failed: ${error}`);
-    process.exit(1);
+    throw error;
   }
 
   return argv;

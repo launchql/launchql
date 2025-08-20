@@ -38,7 +38,7 @@ export default async (
 ) => {
   if (argv.help || argv.h) {
     console.log(validateUsageText);
-    process.exit(0);
+    return argv;
   }
 
   const log = new Logger('validate');
@@ -59,8 +59,7 @@ export default async (
   const project = new LaunchQLPackage(cwd);
 
   if (!project.isInModule()) {
-    log.error('This command must be run inside a LaunchQL module.');
-    process.exit(1);
+    throw new Error('This command must be run inside a LaunchQL module.');
   }
 
   const analysisResult = project.analyzeModule();
@@ -129,11 +128,9 @@ export default async (
   }
 
   if (hasErrors) {
-    log.error('Package validation failed');
-    process.exit(1);
+    throw new Error('Package validation failed');
   } else {
     log.success('Package validation passed');
-    process.exit(0);
   }
 
   return argv;

@@ -33,7 +33,7 @@ export default async (
 ) => {
   if (argv.help || argv.h) {
     console.log(syncUsageText);
-    process.exit(0);
+    return argv;
   }
 
   const log = new Logger('sync');
@@ -54,8 +54,7 @@ export default async (
   const project = new LaunchQLPackage(cwd);
 
   if (!project.isInModule()) {
-    log.error('This command must be run inside a LaunchQL module.');
-    process.exit(1);
+    throw new Error('This command must be run inside a LaunchQL module.');
   }
 
   try {
@@ -64,16 +63,14 @@ export default async (
     
     const pkgJsonPath = path.join(modPath, 'package.json');
     if (!fs.existsSync(pkgJsonPath)) {
-      log.error('package.json not found');
-      process.exit(1);
+      throw new Error('package.json not found');
     }
 
     const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
     const version = pkg.version;
 
     if (!version) {
-      log.error('No version found in package.json');
-      process.exit(1);
+      throw new Error('No version found in package.json');
     }
 
     log.info(`Syncing artifacts for version ${version}`);
@@ -112,7 +109,7 @@ export default async (
 
   } catch (error) {
     log.error(`Sync failed: ${error}`);
-    process.exit(1);
+    throw error;
   }
 
   return argv;
