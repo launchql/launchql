@@ -24,21 +24,21 @@ describe('LaunchQLPackage.analyzeModule', () => {
     expect(result.issues.find(i => i.code === 'missing_sql')?.file).toContain(`sql/my-first--`);
   });
 
-  it('detects plan project name mismatch', () => {
+  it('detects missing control file when renamed away', () => {
     const project = fixture.getModuleProject(['simple'], 'my-first');
     const modPath = project.getModulePath()!;
-    const planPath = path.join(modPath, 'launchql.plan');
+    const controlPath = path.join(modPath, 'my-first.control');
+    const wrongControlPath = path.join(modPath, 'not-my-first.control');
 
-    const original = fs.readFileSync(planPath, 'utf8');
+    fs.renameSync(controlPath, wrongControlPath);
     try {
-      const mutated = original.replace(/^%project\s*=\s*my-first/m, '%project = different-name');
-      fs.writeFileSync(planPath, mutated);
-
       const result = project.analyzeModule();
       const codes = result.issues.map(i => i.code);
-      expect(codes).toContain('plan_project_mismatch');
+      expect(codes).toContain('missing_control');
     } finally {
-      fs.writeFileSync(planPath, original);
+      if (fs.existsSync(wrongControlPath)) {
+        fs.renameSync(wrongControlPath, controlPath);
+      }
     }
   });
 });
