@@ -28,6 +28,7 @@ import {
   getInstalledExtensions,
   writeExtensions,
 } from '../../files';
+import { generateControlFileContent, writeExtensionMakefile } from '../../files/extension/writer';
 import { LaunchQLMigrate } from '../../migrate/client';
 import {
   getExtensionsAndModules,
@@ -39,6 +40,8 @@ import {
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
 import { resolveExtensionDependencies, resolveDependencies } from '../../resolution/deps';
+import { PackageAnalysisIssue, PackageAnalysisResult, RenameOptions } from '../../files/types';
+
 import { parseTarget } from '../../utils/target-utils';
 
 
@@ -1267,5 +1270,158 @@ export class LaunchQLPackage {
     // Write updated plan file
     writePlanFile(planPath, plan);
     log.success(`Removed ${changesToRemove.length} changes from plan`);
+  }
+
+  analyzeModule(): PackageAnalysisResult {
+    this.ensureModule();
+    const info = this.getModuleInfo();
+    const modPath = this.getModulePath()!;
+    const issues: PackageAnalysisIssue[] = [];
+    const exists = (p: string) => fs.existsSync(p);
+    const read = (p: string) => (exists(p) ? fs.readFileSync(p, 'utf8') : undefined);
+    const planPath = path.join(modPath, 'launchql.plan');
+    if (!exists(planPath)) issues.push({ code: 'missing_plan', message: 'Missing launchql.plan', file: planPath });
+    const pkgJsonPath = path.join(modPath, 'package.json');
+    if (!exists(pkgJsonPath)) issues.push({ code: 'missing_package_json', message: 'Missing package.json', file: pkgJsonPath });
+    const makefilePath = info.Makefile;
+    if (!exists(makefilePath)) issues.push({ code: 'missing_makefile', message: 'Missing Makefile', file: makefilePath });
+    const controlPath = info.controlFile;
+    if (!exists(controlPath)) issues.push({ code: 'missing_control', message: 'Missing control file', file: controlPath });
+    const sqlCombined = info.sqlFile ? path.join(modPath, info.sqlFile) : path.join(modPath, 'sql', `${info.extname}--${info.version}.sql`);
+    if (!exists(sqlCombined)) issues.push({ code: 'missing_sql', message: 'Missing combined sql file', file: sqlCombined });
+    const deployDir = path.join(modPath, 'deploy');
+    if (!exists(deployDir)) issues.push({ code: 'missing_deploy_dir', message: 'Missing deploy directory', file: deployDir });
+    const revertDir = path.join(modPath, 'revert');
+    if (!exists(revertDir)) issues.push({ code: 'missing_revert_dir', message: 'Missing revert directory', file: revertDir });
+    const verifyDir = path.join(modPath, 'verify');
+    if (!exists(verifyDir)) issues.push({ code: 'missing_verify_dir', message: 'Missing verify directory', file: verifyDir });
+    if (exists(planPath)) {
+      try {
+        const parsed = parsePlanFile(planPath);
+        const pkgName = parsed.data?.package;
+        if (!pkgName) issues.push({ code: 'plan_missing_project', message: '%project missing', file: planPath });
+        if (pkgName && pkgName !== info.extname) issues.push({ code: 'plan_project_mismatch', message: `launchql.plan %project ${pkgName} != ${info.extname}`, file: planPath });
+        const uri = parsed.data?.uri;
+        if (uri && uri !== info.extname) issues.push({ code: 'plan_uri_mismatch', message: `launchql.plan %uri ${uri} != ${info.extname}`, file: planPath });
+      } catch (e: any) {
+        issues.push({ code: 'plan_parse_error', message: e?.message || 'Plan parse error', file: planPath });
+      }
+    }
+    if (exists(makefilePath)) {
+      const mf = read(makefilePath) || '';
+      const extMatch = mf.match(/^EXTENSION\s*=\s*(.+)$/m);
+      const dataMatch = mf.match(/^DATA\s*=\s*sql\/(.+)\.sql$/m);
+      if (!extMatch) issues.push({ code: 'makefile_missing_extension', message: 'Makefile missing EXTENSION', file: makefilePath });
+      if (!dataMatch) issues.push({ code: 'makefile_missing_data', message: 'Makefile missing DATA', file: makefilePath });
+      if (extMatch && extMatch[1].trim() !== info.extname) issues.push({ code: 'makefile_extension_mismatch', message: `Makefile EXTENSION ${extMatch[1].trim()} != ${info.extname}`, file: makefilePath });
+      const expectedData = `${info.extname}--${info.version}`;
+      if (dataMatch && dataMatch[1].trim() !== expectedData) issues.push({ code: 'makefile_data_mismatch', message: `Makefile DATA sql/${dataMatch[1].trim()}.sql != sql/${expectedData}.sql`, file: makefilePath });
+    }
+    if (exists(controlPath)) {
+      const base = path.basename(controlPath);
+      const expected = `${info.extname}.control`;
+      if (base !== expected) issues.push({ code: 'control_filename_mismatch', message: `Control filename ${base} != ${expected}`, file: controlPath });
+    }
+    return { ok: issues.length === 0, name: info.extname, path: modPath, issues };
+  }
+
+  renameModule(newName: string, opts?: RenameOptions): { changed: string[]; warnings: string[] } {
+    this.ensureModule();
+    const info = this.getModuleInfo();
+    const modPath = this.getModulePath()!;
+    const changed: string[] = [];
+    const warnings: string[] = [];
+    const dry = !!opts?.dryRun;
+    const valid = /^[a-z][a-z0-9_]*$/;
+    if (!valid.test(newName)) {
+      throw errors.INVALID_NAME({ name: newName, type: 'module', rules: 'lowercase letters, digits, underscores; must start with letter' });
+    }
+    const planPath = path.join(modPath, 'launchql.plan');
+    if (fs.existsSync(planPath)) {
+      try {
+        const parsed = parsePlanFile(planPath);
+        if (parsed.data) {
+          parsed.data.package = newName;
+          parsed.data.uri = newName;
+          if (!dry) writePlanFile(planPath, parsed.data);
+          changed.push(planPath);
+        }
+      } catch (e) {
+        warnings.push(`failed to update launchql.plan`);
+      }
+    } else {
+      warnings.push('missing launchql.plan');
+    }
+    const pkgJsonPath = path.join(modPath, 'package.json');
+    if (fs.existsSync(pkgJsonPath) && opts?.syncPackageJsonName) {
+      try {
+        const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+        const oldName = pkg.name as string | undefined;
+        if (oldName) {
+          if (oldName.startsWith('@')) {
+            const parts = oldName.split('/');
+            if (parts.length === 2) pkg.name = `${parts[0]}/${newName}`;
+            else pkg.name = newName;
+          } else {
+            pkg.name = newName;
+          }
+        } else {
+          pkg.name = newName;
+        }
+        if (!dry) fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2));
+        changed.push(pkgJsonPath);
+      } catch {
+        warnings.push('failed to update package.json name');
+      }
+    }
+    const oldControl = info.controlFile;
+    const newControl = path.join(modPath, `${newName}.control`);
+    const version = info.version;
+    const requires = (() => {
+      try {
+        const c = fs.readFileSync(oldControl, 'utf8');
+        const line = c.split('\n').find(l => /^requires/.test(l));
+        if (!line) return [];
+        return line.split('=')[1].split("'")[1].split(',').map(s => s.trim()).filter(Boolean);
+      } catch {
+        return [];
+      }
+    })();
+    if (fs.existsSync(oldControl)) {
+      if (!dry) {
+        const content = generateControlFileContent({ name: newName, version, requires });
+        fs.writeFileSync(newControl, content);
+        if (oldControl !== newControl && fs.existsSync(oldControl)) fs.rmSync(oldControl);
+      }
+      changed.push(newControl);
+    } else {
+      warnings.push('missing control file');
+    }
+    const makefilePath = info.Makefile;
+    if (fs.existsSync(makefilePath)) {
+      if (!dry) writeExtensionMakefile(makefilePath, newName, version);
+      changed.push(makefilePath);
+    } else {
+      warnings.push('missing Makefile');
+    }
+    const oldSql = path.join(modPath, 'sql', `${info.extname}--${version}.sql`);
+    const newSql = path.join(modPath, 'sql', `${newName}--${version}.sql`);
+    if (fs.existsSync(oldSql)) {
+      if (!dry) {
+        if (oldSql !== newSql) {
+          fs.mkdirSync(path.dirname(newSql), { recursive: true });
+          fs.renameSync(oldSql, newSql);
+        }
+      }
+      changed.push(newSql);
+    } else {
+      if (fs.existsSync(newSql)) {
+        changed.push(newSql);
+      } else {
+        warnings.push('missing combined sql file');
+      }
+    }
+    this.clearCache();
+    return { changed, warnings };
   }
 }
