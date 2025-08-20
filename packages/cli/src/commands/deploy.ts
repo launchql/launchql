@@ -28,7 +28,8 @@ Options:
   --tx               Use transactions (default: true)
   --fast             Use fast deployment strategy
   --logOnly          Log-only mode, skip script execution
-  --usePlan          Use deployment plan
+  --usePlan          Use deployment plan (default: true)
+  --no-usePlan       Disable deployment plan, use SQL-based resolution
   --cache            Enable caching
   --cwd <directory>  Working directory (default: current directory)
 
@@ -130,7 +131,7 @@ export default async (
     deployment: {
       useTx: tx,
       fast,
-      usePlan: argv.usePlan,
+      usePlan: argv.usePlan !== false,
       cache: argv.cache,
       logOnly
     }

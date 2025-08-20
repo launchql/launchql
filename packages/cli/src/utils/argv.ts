@@ -55,6 +55,10 @@ export function validateCommonArgs(argv: Partial<ParsedArgs>): ValidatedArgv {
     }
   }
 
+  if (argv['no-usePlan'] !== undefined) {
+    validated.usePlan = false;
+  }
+
   const stringFlags = ['package', 'to', 'database'];
   
   for (const flag of stringFlags) {
