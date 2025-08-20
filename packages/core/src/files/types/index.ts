@@ -1,3 +1,5 @@
+export * from './package';
+
 // Plan file types
 export interface Change {
   name: string;
