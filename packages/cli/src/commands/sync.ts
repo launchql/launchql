@@ -1,9 +1,7 @@
-import { LaunchQLPackage, generateControlFileContent } from '@launchql/core';
+import { LaunchQLPackage } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import fs from 'fs';
-import path from 'path';
 
 const syncUsageText = `
 LaunchQL Sync Command:
@@ -52,64 +50,20 @@ export default async (
   log.debug(`Using directory: ${cwd}`);
 
   const project = new LaunchQLPackage(cwd);
+  const result = project.syncModule();
 
-  if (!project.isInModule()) {
-    throw new Error('This command must be run inside a LaunchQL module.');
+  if (!result.success) {
+    log.error(`Sync failed: ${result.message}`);
+    throw new Error(result.message);
   }
 
-  try {
-    const modPath = project.getModulePath()!;
-    const info = project.getModuleInfo();
-    
-    const pkgJsonPath = path.join(modPath, 'package.json');
-    if (!fs.existsSync(pkgJsonPath)) {
-      throw new Error('package.json not found');
-    }
-
-    const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
-    const version = pkg.version;
-
-    if (!version) {
-      throw new Error('No version found in package.json');
-    }
-
-    log.info(`Syncing artifacts for version ${version}`);
-
-    const controlPath = info.controlFile;
-    const requires = project.getRequiredModules();
-    
-    const controlContent = generateControlFileContent({
-      name: info.extname,
-      version,
-      requires
-    });
-
-    fs.writeFileSync(controlPath, controlContent);
-    log.success(`Updated control file: ${path.relative(modPath, controlPath)}`);
-
-    const sqlDir = path.join(modPath, 'sql');
-    if (!fs.existsSync(sqlDir)) {
-      fs.mkdirSync(sqlDir, { recursive: true });
-    }
-
-    const sqlFile = path.join(sqlDir, `${info.extname}--${version}.sql`);
-    if (!fs.existsSync(sqlFile)) {
-      const sqlContent = `-- ${info.extname} extension version ${version}
--- This file contains the SQL commands to create the extension
-
--- Add your SQL commands here
-`;
-      fs.writeFileSync(sqlFile, sqlContent);
-      log.success(`Created SQL migration file: sql/${info.extname}--${version}.sql`);
+  log.success(result.message);
+  for (const file of result.files) {
+    if (file.includes('--')) {
+      log.success(`Created SQL migration file: ${file}`);
     } else {
-      log.info(`SQL migration file already exists: sql/${info.extname}--${version}.sql`);
+      log.success(`Updated control file: ${file}`);
     }
-
-    log.success('Sync completed successfully');
-
-  } catch (error) {
-    log.error(`Sync failed: ${error}`);
-    throw error;
   }
 
   return argv;

@@ -1424,4 +1424,407 @@ export class LaunchQLPackage {
     this.clearCache();
     return { changed, warnings };
   }
+
+  /**
+   * Validate module consistency before bumping
+   * Returns validation result with issues if any
+   */
+  validateModule(): { ok: boolean; issues: Array<{ code: string; message: string; file?: string }> } {
+    const analysisResult = this.analyzeModule();
+    const issues = [...analysisResult.issues];
+    
+    if (!this.isInModule()) {
+      issues.push({
+        code: 'not_in_module',
+        message: 'This command must be run inside a LaunchQL module.'
+      });
+      return { ok: false, issues };
+    }
+
+    const modPath = this.getModulePath()!;
+    const info = this.getModuleInfo();
+    
+    try {
+      const pkgJsonPath = path.join(modPath, 'package.json');
+      if (!fs.existsSync(pkgJsonPath)) {
+        issues.push({
+          code: 'missing_package_json',
+          message: 'package.json not found',
+          file: pkgJsonPath
+        });
+      } else {
+        const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+        const pkgVersion = pkg.version;
+
+        if (!pkgVersion) {
+          issues.push({
+            code: 'missing_version',
+            message: 'No version found in package.json',
+            file: pkgJsonPath
+          });
+        } else {
+          const controlContent = this.getModuleControlFile();
+          const defaultVersionMatch = controlContent.match(/^default_version\s*=\s*'([^']+)'/m);
+          
+          if (!defaultVersionMatch) {
+            issues.push({
+              code: 'missing_default_version',
+              message: 'Control file missing default_version',
+              file: info.controlFile
+            });
+          } else {
+            const controlVersion = defaultVersionMatch[1];
+            if (controlVersion !== pkgVersion) {
+              issues.push({
+                code: 'version_mismatch',
+                message: `Version mismatch: control file default_version '${controlVersion}' !== package.json version '${pkgVersion}'`,
+                file: info.controlFile
+              });
+            }
+          }
+
+          const sqlFile = path.join(modPath, 'sql', `${info.extname}--${pkgVersion}.sql`);
+          if (!fs.existsSync(sqlFile)) {
+            issues.push({
+              code: 'missing_sql_migration',
+              message: `SQL migration file missing: sql/${info.extname}--${pkgVersion}.sql`,
+              file: sqlFile
+            });
+          }
+
+          const planPath = path.join(modPath, 'launchql.plan');
+          if (fs.existsSync(planPath)) {
+            try {
+              const planContent = fs.readFileSync(planPath, 'utf8');
+              const hasVersionTag = planContent.includes(`@v${pkgVersion}`) || planContent.includes(`@${pkgVersion}`);
+              if (!hasVersionTag) {
+                issues.push({
+                  code: 'missing_version_tag',
+                  message: `launchql.plan missing tag for version ${pkgVersion}`,
+                  file: planPath
+                });
+              }
+            } catch (e) {
+              issues.push({
+                code: 'plan_read_error',
+                message: `Failed to read launchql.plan: ${e}`,
+                file: planPath
+              });
+            }
+          }
+        }
+      }
+    } catch (error) {
+      issues.push({
+        code: 'validation_error',
+        message: `Validation failed: ${error}`
+      });
+    }
+
+    return { ok: issues.length === 0, issues };
+  }
+
+  /**
+   * Synchronize artifacts with the new bumped version
+   * Updates control file and creates SQL migration file
+   */
+  syncModule(version?: string): { success: boolean; message: string; files: string[] } {
+    if (!this.isInModule()) {
+      return {
+        success: false,
+        message: 'This command must be run inside a LaunchQL module.',
+        files: []
+      };
+    }
+
+    const modPath = this.getModulePath()!;
+    const info = this.getModuleInfo();
+    const files: string[] = [];
+    
+    try {
+      let targetVersion = version;
+      
+      if (!targetVersion) {
+        const pkgJsonPath = path.join(modPath, 'package.json');
+        if (!fs.existsSync(pkgJsonPath)) {
+          return {
+            success: false,
+            message: 'package.json not found',
+            files: []
+          };
+        }
+
+        const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+        targetVersion = pkg.version;
+
+        if (!targetVersion) {
+          return {
+            success: false,
+            message: 'No version found in package.json',
+            files: []
+          };
+        }
+      }
+
+      // Update control file
+      const controlPath = info.controlFile;
+      const requires = this.getRequiredModules();
+      
+      const controlContent = generateControlFileContent({
+        name: info.extname,
+        version: targetVersion,
+        requires
+      });
+
+      fs.writeFileSync(controlPath, controlContent);
+      files.push(path.relative(modPath, controlPath));
+
+      // Create SQL migration file if it doesn't exist
+      const sqlDir = path.join(modPath, 'sql');
+      if (!fs.existsSync(sqlDir)) {
+        fs.mkdirSync(sqlDir, { recursive: true });
+      }
+
+      const sqlFile = path.join(sqlDir, `${info.extname}--${targetVersion}.sql`);
+      if (!fs.existsSync(sqlFile)) {
+        const sqlContent = `-- ${info.extname} extension version ${targetVersion}
+-- This file contains the SQL commands to create the extension
+
+-- Add your SQL commands here
+`;
+        fs.writeFileSync(sqlFile, sqlContent);
+        files.push(`sql/${info.extname}--${targetVersion}.sql`);
+      }
+
+      return {
+        success: true,
+        message: `Sync completed successfully for version ${targetVersion}`,
+        files
+      };
+
+    } catch (error) {
+      return {
+        success: false,
+        message: `Sync failed: ${error}`,
+        files
+      };
+    }
+  }
+
+  /**
+   * Version workspace packages like lerna version
+   * Detects changed packages, bumps versions, updates dependencies
+   */
+  versionWorkspace(options: {
+    filter?: string;
+    bump?: 'patch' | 'minor' | 'major' | 'prerelease' | 'exact';
+    exact?: string;
+    dryRun?: boolean;
+  } = {}): { success: boolean; message: string; packages: Array<{ name: string; oldVersion: string; newVersion: string }> } {
+    
+    if (!this.isInWorkspace()) {
+      return {
+        success: false,
+        message: 'This command must be run from a workspace root.',
+        packages: []
+      };
+    }
+
+    try {
+      const workspacePath = this.getWorkspacePath()!;
+      const moduleMap = this.getModuleMap();
+      const changedPackages: Array<{ name: string; path: string; oldVersion: string; newVersion: string }> = [];
+      
+      // Helper function to bump version
+      const bumpVersion = (version: string, bumpType: string, exactVersion?: string): string => {
+        if (bumpType === 'exact' && exactVersion) {
+          return exactVersion;
+        }
+
+        const parts = version.split('.').map(Number);
+        const [major, minor, patch] = parts;
+
+        switch (bumpType) {
+          case 'major':
+            return `${major + 1}.0.0`;
+          case 'minor':
+            return `${major}.${minor + 1}.0`;
+          case 'patch':
+            return `${major}.${minor}.${patch + 1}`;
+          case 'prerelease':
+            return `${major}.${minor}.${patch + 1}-alpha.0`;
+          default:
+            return version;
+        }
+      };
+
+      for (const [moduleName, moduleInfo] of Object.entries(moduleMap)) {
+        if (options.filter && !moduleName.includes(options.filter)) {
+          continue;
+        }
+        
+        const modulePath = path.join(workspacePath, moduleInfo.path);
+        const pkgJsonPath = path.join(modulePath, 'package.json');
+        
+        if (!fs.existsSync(pkgJsonPath)) {
+          continue;
+        }
+        
+        const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+        const currentVersion = pkg.version;
+        
+        if (!currentVersion) {
+          continue;
+        }
+        
+        let changed = true;
+        
+        try {
+          const lastTag = execSync(`git describe --tags --abbrev=0 --match="${moduleName}@*" 2>/dev/null || echo ""`, {
+            cwd: workspacePath,
+            encoding: 'utf8'
+          }).trim();
+          
+          if (lastTag) {
+            const commitsSince = execSync(`git rev-list --count ${lastTag}..HEAD -- ${moduleInfo.path}`, {
+              cwd: workspacePath,
+              encoding: 'utf8'
+            }).trim();
+            
+            changed = parseInt(commitsSince) > 0;
+          }
+        } catch (error) {
+        }
+        
+        if (changed) {
+          const bumpType = options.bump || 'patch';
+          const newVersion = bumpVersion(currentVersion, bumpType, options.exact);
+          
+          changedPackages.push({
+            name: moduleName,
+            path: modulePath,
+            oldVersion: currentVersion,
+            newVersion
+          });
+        }
+      }
+      
+      if (changedPackages.length === 0) {
+        return {
+          success: true,
+          message: 'No packages have changed since last release',
+          packages: []
+        };
+      }
+      
+      if (options.dryRun) {
+        return {
+          success: true,
+          message: `Dry run mode - would update ${changedPackages.length} packages`,
+          packages: changedPackages.map(pkg => ({
+            name: pkg.name,
+            oldVersion: pkg.oldVersion,
+            newVersion: pkg.newVersion
+          }))
+        };
+      }
+      
+      // Update package versions and dependencies
+      const packageUpdates = new Map<string, string>();
+      for (const pkg of changedPackages) {
+        packageUpdates.set(pkg.name, pkg.newVersion);
+      }
+      
+      // Helper function to update dependency ranges
+      const updateDependencyRanges = (pkgJson: any, packageUpdates: Map<string, string>): boolean => {
+        let updated = false;
+        
+        const updateDeps = (deps: Record<string, string> | undefined) => {
+          if (!deps) return;
+          
+          for (const [depName, depVersion] of Object.entries(deps)) {
+            if (packageUpdates.has(depName)) {
+              const newVersion = packageUpdates.get(depName)!;
+              
+              if (depVersion.startsWith('workspace:')) {
+                continue;
+              }
+              
+              if (depVersion.startsWith('^')) {
+                deps[depName] = `^${newVersion}`;
+                updated = true;
+              } else if (depVersion.startsWith('~')) {
+                deps[depName] = `~${newVersion}`;
+                updated = true;
+              }
+            }
+          }
+        };
+
+        updateDeps(pkgJson.dependencies);
+        updateDeps(pkgJson.devDependencies);
+        updateDeps(pkgJson.peerDependencies);
+        
+        return updated;
+      };
+      
+      // Update each package
+      for (const pkg of changedPackages) {
+        const pkgJsonPath = path.join(pkg.path, 'package.json');
+        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+        
+        pkgJson.version = pkg.newVersion;
+        updateDependencyRanges(pkgJson, packageUpdates);
+        
+        fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2) + '\n');
+        
+        try {
+          const moduleProject = new LaunchQLPackage(pkg.path);
+          moduleProject.syncModule(pkg.newVersion);
+        } catch (error) {
+        }
+      }
+      
+      // Git operations
+      const filesToAdd = [];
+      for (const pkg of changedPackages) {
+        filesToAdd.push(path.relative(workspacePath, path.join(pkg.path, 'package.json')));
+        filesToAdd.push(path.relative(workspacePath, path.join(pkg.path, `${pkg.name}.control`)));
+        filesToAdd.push(path.relative(workspacePath, path.join(pkg.path, 'sql', `${pkg.name}--${pkg.newVersion}.sql`)));
+      }
+      
+      for (const file of filesToAdd) {
+        try {
+          execSync(`git add "${file}"`, { cwd: workspacePath });
+        } catch (error) {
+          // Continue if file doesn't exist
+        }
+      }
+      
+      const commitMessage = 'chore(release): publish';
+      execSync(`git commit -m "${commitMessage}"`, { cwd: workspacePath });
+      
+      for (const pkg of changedPackages) {
+        const tag = `${pkg.name}@${pkg.newVersion}`;
+        execSync(`git tag "${tag}"`, { cwd: workspacePath });
+      }
+      
+      return {
+        success: true,
+        message: `Successfully versioned ${changedPackages.length} packages`,
+        packages: changedPackages.map(pkg => ({
+          name: pkg.name,
+          oldVersion: pkg.oldVersion,
+          newVersion: pkg.newVersion
+        }))
+      };
+
+    } catch (error) {
+      return {
+        success: false,
+        message: `Version command failed: ${error}`,
+        packages: []
+      };
+    }
+  }
 }
