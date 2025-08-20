@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.7.2...@launchql/cli@4.8.0) (2025-08-20)
+
+
+### Features
+
+* **core): add analyzeModule and renameModule; feat(cli:** add analyze and rename commands ([90c3fdc](https://github.com/launchql/launchql/commit/90c3fdc888305ace8586e442c1928a34da6ecda5))
+
+
+
+
+
 ## [4.7.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.7.1...@launchql/cli@4.7.2) (2025-08-08)
 
 **Note:** Version bump only for package @launchql/cli

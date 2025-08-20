@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/launchql/launchql/compare/pgsql-test@2.6.3...pgsql-test@2.7.0) (2025-08-20)
+
+
+### Bug Fixes
+
+* ensure teardown is always available in getConnections() ([b51c05c](https://github.com/launchql/launchql/commit/b51c05cb22f6f710ff1abcd9691a48d7e39e8486))
+
+
+
+
+
 ## [2.6.3](https://github.com/launchql/launchql/compare/pgsql-test@2.6.2...pgsql-test@2.6.3) (2025-08-19)
 
 **Note:** Version bump only for package pgsql-test
