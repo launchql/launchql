@@ -81,13 +81,24 @@ export const getConnections = async (
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
 
+  const teardown = async () => {
+    manager.beginTeardown();
+    await teardownPgPools();
+    await manager.closeAll();
+  };
+
   if (seedAdapters.length) {
-    await seed.compose(seedAdapters).seed({
-      connect: connOpts,
-      admin,
-      config: config,
-      pg: manager.getClient(config)
-    });
+    try {
+      await seed.compose(seedAdapters).seed({
+        connect: connOpts,
+        admin,
+        config: config,
+        pg: manager.getClient(config)
+      });
+    } catch (error) {
+      await teardown();
+      throw error;
+    }
   }
 
   const db = manager.getClient({
@@ -96,12 +107,6 @@ export const getConnections = async (
     password: connOpts.connection.password
   });
   db.setContext({ role: 'anonymous' });
-
-  const teardown = async () => {
-    manager.beginTeardown();
-    await teardownPgPools();
-    await manager.closeAll();
-  };
 
   return { pg, db, teardown, manager, admin };
 };
