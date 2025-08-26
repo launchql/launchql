@@ -26,6 +26,7 @@ import {
   getExtensionInfo,
   getExtensionName,
   getInstalledExtensions,
+  parseControlFile,
   writeExtensions,
 } from '../../files';
 import { generateControlFileContent, writeExtensionMakefile } from '../../files/extension/writer';
@@ -35,7 +36,6 @@ import {
   getExtensionsAndModulesChanges,
   latestChange,
   latestChangeAndVersion,
-  listModules,
   ModuleMap
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
@@ -43,6 +43,10 @@ import { resolveExtensionDependencies, resolveDependencies } from '../../resolut
 import { PackageAnalysisIssue, PackageAnalysisResult, RenameOptions } from '../../files/types';
 
 import { parseTarget } from '../../utils/target-utils';
+import { 
+  isInPublishConfigDirectory,
+  isIgnoredByGitignore
+} from '../utils';
 
 
 const logger = new Logger('launchql');
@@ -248,7 +252,43 @@ export class LaunchQLPackage {
     if (!this.workspacePath) return {};
     if (this._moduleMap) return this._moduleMap;
 
-    this._moduleMap = listModules(this.workspacePath);
+    // Find all .control files, excluding node_modules
+    const controlFiles = glob.sync(`${this.workspacePath}/**/*.control`).filter(
+      (file: string) => !/node_modules/.test(file)
+    );
+
+    const moduleMap: ModuleMap = {};
+
+    for (const controlFile of controlFiles) {
+      const controlDir = path.dirname(controlFile);
+      const packageJsonPath = path.join(controlDir, 'package.json');
+
+      // Check if sibling package.json exists
+      if (!fs.existsSync(packageJsonPath)) {
+        continue; // Skip if no sibling package.json
+      }
+
+      // Check if this directory is ignored by .gitignore files
+      if (isIgnoredByGitignore(controlDir, this.workspacePath)) {
+        continue;
+      }
+
+      // Check publishConfig.directory
+      if (isInPublishConfigDirectory(controlFile, packageJsonPath)) {
+        continue; // Skip if in build directory
+      }
+
+      try {
+        const module = parseControlFile(controlFile, this.workspacePath);
+        const moduleName = path.basename(controlFile).split('.control')[0];
+        moduleMap[moduleName] = module;
+      } catch (error) {
+        // Skip invalid control files
+        continue;
+      }
+    }
+
+    this._moduleMap = moduleMap;
     return this._moduleMap;
   }
 

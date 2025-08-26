@@ -1,7 +1,7 @@
 import { join } from 'path';
 
 import { LaunchQLMigrate } from '../../src/migrate/client';
-import { MigrateTestFixture, teardownAllPools,TestDatabase } from '../../test-utils';
+import { MigrateTestFixture, teardownAllPools, TestDatabase } from '../../test-utils';
 
 describe('Simple with Tags Migration', () => {
   let fixture: MigrateTestFixture;
