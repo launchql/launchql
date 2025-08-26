@@ -12,6 +12,9 @@ describe('Simple with Tags Migration', () => {
     fixture = new MigrateTestFixture();
     db = await fixture.setupTestDatabase();
     client = new LaunchQLMigrate(db.config);
+    await db.query(`
+      CREATE EXTENSION IF NOT EXISTS pgcrypto;
+    `);
   });
   
   afterEach(async () => {
@@ -22,7 +25,7 @@ describe('Simple with Tags Migration', () => {
     await teardownAllPools();
   });
 
-  test('deploys my-third module with tag dependencies', async () => {
+  it('deploys my-third module with tag dependencies', async () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     const resultFirst = await client.deploy({
@@ -84,7 +87,7 @@ describe('Simple with Tags Migration', () => {
     }));
   });
 
-  test('handles revert and redeploy with tag dependencies', async () => {
+  it('handles revert and redeploy with tag dependencies', async () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
@@ -123,7 +126,7 @@ describe('Simple with Tags Migration', () => {
     expect(createSchemaDeps).toContain('my-second:create_table'); // resolved from my-second:@v2.0.0
   });
 
-  test('prevents revert of changes with tag-dependent modules', async () => {
+  it('prevents revert of changes with tag-dependent modules', async () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
@@ -160,7 +163,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'mythirdapp')).toBe(true);
   });
 
-  test('complex deploy/revert sequence with tag dependencies', async () => {
+  it('complex deploy/revert sequence with tag dependencies', async () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
@@ -241,7 +244,7 @@ describe('Simple with Tags Migration', () => {
     expect(myThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });
 
-  test('extensive tag-based deploy/revert sequence using toChangeTag', async () => {
+  it('extensive tag-based deploy/revert sequence using toChangeTag', async () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
@@ -361,7 +364,7 @@ describe('Simple with Tags Migration', () => {
     expect(finalMyThirdChanges.map(c => c.change_name)).toEqual(['create_schema', 'create_table']);
   });
 
-  test('supports both tag formats: project:@tagName and @tagName', async () => {
+  it('supports both tag formats: project:@tagName and @tagName', async () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
