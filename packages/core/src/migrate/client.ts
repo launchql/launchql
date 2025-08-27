@@ -135,7 +135,7 @@ export class LaunchQLMigrate {
     const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
       tagResolution: 'resolve',
       loadPlanFiles: true,
-      source: options.usePlan ? 'plan' : 'sql'
+      source: options.usePlan === false ? 'sql' : 'plan'
     });
     
     const deployed: string[] = [];
