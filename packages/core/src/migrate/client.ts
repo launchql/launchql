@@ -132,11 +132,21 @@ export class LaunchQLMigrate {
     const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
-    const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
-      tagResolution: 'resolve',
-      loadPlanFiles: true,
-      source: options.usePlan ? 'plan' : 'sql'
-    });
+    let resolvedDeps: DependencyResult;
+    try {
+      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
+        tagResolution: 'resolve',
+        loadPlanFiles: true,
+        source: 'plan'
+      });
+    } catch (e) {
+      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
+        tagResolution: 'resolve',
+        loadPlanFiles: true,
+        source: 'sql'
+      });
+    }
+
     
     const deployed: string[] = [];
     const skipped: string[] = [];
