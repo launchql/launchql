@@ -175,7 +175,10 @@ export class LaunchQLMigrate {
         
         const changeKey = `/deploy/${change.name}.sql`;
         const resolvedFromDeps = resolvedDeps?.deps[changeKey];
-        const resolvedChangeDeps = (resolvedFromDeps && resolvedFromDeps.length > 0) ? resolvedFromDeps : change.dependencies;
+        const resolvedChangeDeps = (resolvedFromDeps !== undefined) ? resolvedFromDeps : change.dependencies;
+        const qualifiedDeps = (resolvedChangeDeps && resolvedChangeDeps.length > 0)
+          ? Array.from(new Set(resolvedChangeDeps.map((dep) => (dep.includes(':') ? dep : `${plan.package}:${dep}`))))
+          : resolvedChangeDeps;
         
         try {
           // Call the deploy stored procedure
@@ -186,7 +189,7 @@ export class LaunchQLMigrate {
               plan.package,
               change.name,
               scriptHash,
-              resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
+              qualifiedDeps && qualifiedDeps.length > 0 ? qualifiedDeps : null,
               cleanDeploySql,
               logOnly
             ]
@@ -210,7 +213,7 @@ export class LaunchQLMigrate {
           errorLines.push(`  Change: ${change.name}`);
           errorLines.push(`  Package: ${plan.package}`);
           errorLines.push(`  Script Hash: ${scriptHash}`);
-          errorLines.push(`  Dependencies: ${resolvedChangeDeps.length > 0 ? resolvedChangeDeps.join(', ') : 'none'}`);
+          errorLines.push(`  Dependencies: ${qualifiedDeps && qualifiedDeps.length > 0 ? qualifiedDeps.join(', ') : 'none'}`);
           errorLines.push(`  Error Code: ${error.code || 'N/A'}`);
           errorLines.push(`  Error Message: ${error.message || 'N/A'}`);
           
