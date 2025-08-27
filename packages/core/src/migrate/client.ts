@@ -156,7 +156,8 @@ export class LaunchQLMigrate {
         const isDeployed = await this.isDeployed(plan.package, change.name);
         if (isDeployed) {
           log.info(`Skipping already deployed change: ${change.name}`);
-          skipped.push(change.name);
+          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          skipped.push(unqualified);
           continue;
         }
         
@@ -195,7 +196,8 @@ export class LaunchQLMigrate {
             ]
           );
           
-          deployed.push(change.name);
+          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          deployed.push(unqualified);
           log.success(`Successfully ${logOnly ? 'logged' : 'deployed'}: ${change.name}`);
         } catch (error: any) {
           // Log failure event outside of transaction
@@ -265,6 +267,9 @@ export class LaunchQLMigrate {
         }
       }
     });
+      log.info(`Returning deploy result: deployed=${JSON.stringify(deployed)}, skipped=${JSON.stringify(skipped)}, failed=${JSON.stringify(failed)}`);
+      log.debug(`Returning deploy result: ${JSON.stringify({ deployed, skipped, failed })}`);
+
     
     return { deployed, skipped, failed };
   }

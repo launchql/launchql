@@ -59,10 +59,10 @@ describe('Deploy Command', () => {
     
     // Verify dependencies were recorded
     const tableDeps = await db.getDependencies('test-simple', 'table');
-    expect(tableDeps).toContain('schema');
+    expect(tableDeps).toContain('test-simple:schema');
     
     const indexDeps = await db.getDependencies('test-simple', 'index');
-    expect(indexDeps).toContain('table');
+    expect(indexDeps).toContain('test-simple:table');
   });
   
   test('skips already deployed changes', async () => {
