@@ -175,7 +175,7 @@ export class LaunchQLMigrate {
         
         const changeKey = `/deploy/${change.name}.sql`;
         const resolvedFromDeps = resolvedDeps?.deps[changeKey];
-        const resolvedChangeDeps = (resolvedFromDeps && resolvedFromDeps.length > 0) ? resolvedFromDeps : change.dependencies;
+        const resolvedChangeDeps = (resolvedFromDeps !== undefined) ? resolvedFromDeps : change.dependencies;
         
         try {
           // Call the deploy stored procedure
