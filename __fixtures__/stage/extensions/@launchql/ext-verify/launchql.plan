@@ -21,3 +21,4 @@ procedures/verify_table [procedures/get_entity_from_str procedures/get_schema_fr
 procedures/verify_trigger [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_trigger
 procedures/verify_type [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_type
 procedures/verify_view [procedures/get_entity_from_str procedures/get_schema_from_str] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add procedures/verify_view
+@0.1.0 2025-08-26T23:56:48Z launchql <launchql@5b0c196eeb62> # verify

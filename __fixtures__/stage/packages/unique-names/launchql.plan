@@ -2,7 +2,7 @@
 %project=unique-names
 %uri=unique-names
   
-schemas/unique_names/schema [launchql-ext-default-roles:@0.0.5 launchql-ext-defaults:defaults/public launchql-ext-verify:procedures/verify_view] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/unique_names/schema
+schemas/unique_names/schema [launchql-ext-default-roles:@0.0.5 launchql-ext-defaults:defaults/public launchql-ext-verify:@0.1.0] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/unique_names/schema
 schemas/unique_names/tables/words/table [schemas/unique_names/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/unique_names/tables/words/table
 schemas/unique_names/procedures/generate_name [schemas/unique_names/schema schemas/unique_names/tables/words/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/unique_names/procedures/generate_name
 schemas/unique_names/tables/words/fixtures/1589271124916_fixture [schemas/unique_names/schema schemas/unique_names/tables/words/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/unique_names/tables/words/fixtures/1589271124916_fixture
