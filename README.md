@@ -1,3 +1,4 @@
+See FIX_EXPLAIN.md for the deep review of the tag resolution fix (#218 and #219).
 # LaunchQL
 
 <p align="center" width="100%">
