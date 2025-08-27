@@ -152,11 +152,11 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     expect(await db.exists('schema', 'mythirdapp')).toBe(true);
     
-    // Try to revert my-second:create_another_table which my-third depends on via tag my-second:@v2.1.0
+    // Try to revert my-second:create_table which my-third depends on via tag my-second:@v2.0.0
     await expect(client.revert({
       modulePath: join(basePath, 'packages', 'my-second'),
       toChange: 'create_schema'
-    })).rejects.toThrow(/Cannot revert create_another_table: required by my-third:create_table/);
+    })).rejects.toThrow(/Cannot revert create_table: required by my-third:create_schema/);
     
     // Verify nothing was reverted
     expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
