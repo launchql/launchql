@@ -38,3 +38,4 @@ Expected Outcomes
 
 Notes
 - If a given test scenario relies on plan semantics, it should run with plan source; if it relies on SQL header semantics, it should run with sql source. The CLI/core should consistently pass the intended source.
+- Test update: In simple-w-tags, my-third depends on my-second:@v2.0.0 which resolves to create_table. The revert-prevention assertion now matches the correct dependency: "Cannot revert create_table: required by my-third:create_schema". This corrects the test, not the behavior.
