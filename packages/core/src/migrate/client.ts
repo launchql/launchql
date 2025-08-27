@@ -132,20 +132,31 @@ export class LaunchQLMigrate {
     const fullPlanResult = parsePlanFile(planPath);
     const packageDir = dirname(planPath);
     
-    let resolvedDeps: DependencyResult;
-    try {
-      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
-        tagResolution: 'resolve',
-        loadPlanFiles: true,
-        source: 'plan'
-      });
-    } catch (e) {
-      resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
-        tagResolution: 'resolve',
-        loadPlanFiles: true,
-        source: 'sql'
-      });
+    const resolvedDepsPlan = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
+      tagResolution: 'resolve',
+      loadPlanFiles: true,
+      source: 'plan'
+    });
+    const resolvedDepsSql = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
+      tagResolution: 'resolve',
+      loadPlanFiles: true,
+      source: 'sql'
+    });
+    const mergeArrays = (a?: string[], b?: string[]) => {
+      const arr = [...(a || []), ...(b || [])];
+      return arr.length ? Array.from(new Set(arr)) : [];
+    };
+    const mergedDeps: DependencyResult = {
+      external: Array.from(new Set([...(resolvedDepsPlan.external || []), ...(resolvedDepsSql.external || [])])),
+      resolved: Array.from(new Set([...(resolvedDepsPlan.resolved || []), ...(resolvedDepsSql.resolved || [])])),
+      deps: {},
+      resolvedTags: { ...(resolvedDepsPlan.resolvedTags || {}), ...(resolvedDepsSql.resolvedTags || {}) }
+    };
+    const allKeys = Array.from(new Set([...Object.keys(resolvedDepsPlan.deps || {}), ...Object.keys(resolvedDepsSql.deps || {})]));
+    for (const k of allKeys) {
+      mergedDeps.deps[k] = mergeArrays(resolvedDepsPlan.deps[k], resolvedDepsSql.deps[k]);
     }
+    const resolvedDeps = mergedDeps;
 
     
     const deployed: string[] = [];
@@ -186,6 +197,9 @@ export class LaunchQLMigrate {
         const changeKey = `/deploy/${change.name}.sql`;
         const resolvedFromDeps = resolvedDeps?.deps[changeKey];
         const resolvedChangeDeps = (resolvedFromDeps !== undefined) ? resolvedFromDeps : change.dependencies;
+        const qualifiedDeps = (resolvedChangeDeps && resolvedChangeDeps.length > 0)
+          ? Array.from(new Set(resolvedChangeDeps.map(dep => (dep.includes(':') ? dep : `${plan.package}:${dep}`))))
+          : resolvedChangeDeps;
         
         try {
           // Call the deploy stored procedure
@@ -196,7 +210,7 @@ export class LaunchQLMigrate {
               plan.package,
               change.name,
               scriptHash,
-              resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
+              qualifiedDeps && qualifiedDeps.length > 0 ? qualifiedDeps : null,
               cleanDeploySql,
               logOnly
             ]
