@@ -24,3 +24,34 @@ Why this matters for tag resolution
 Summary
 - Qualify and dedupe: dependencies → required for cross-project clarity and to prevent tag leakage.
 - Keep local lists simple: deployed/skipped remain unqualified → they don’t influence DB dependency checks and remain readable/consistent.
+  
+Addendum: ensuring deployed/skipped are from the current package
+
+- What’s true today:
+  - The deploy loop iterates the current plan’s changes; change.name is a local change identifier from plan.package.
+  - Cross-project dependencies are only passed to the DB via the qualified dependency list, not into deployed/skipped.
+
+- The concern:
+  - If a foreign qualified name (otherpkg:change) ever leaked into the “local changes” stream, it could be appended to deployed/skipped.
+
+- Guard (suggested):
+  - Before appending to deployed/skipped, ensure the entry belongs to the current package:
+    - If name has no colon, treat as local.
+    - If qualified, allow only when pkg === plan.package and strip the prefix to keep arrays unqualified; otherwise throw.
+
+Example (near where deployed/skipped are appended in packages/core/src/migrate/client.ts):
+
+  const ensureLocalName = (pkg: string, nm: string) => {
+    if (!nm.includes(':')) return nm;
+    const [p, local] = nm.split(':', 2);
+    if (p === pkg) return local;
+    throw new Error(
+      `Cross-package change in deployed/skipped: ${nm} (current package: ${pkg})`
+    );
+  };
+
+  const localName = ensureLocalName(plan.package, change.name);
+  deployed.push(localName); // similarly for skipped
+
+- Why this answers the question:
+  - It makes it certain that deployed/skipped cannot “pop off” a dep from another package. Only the dependencies list remains cross-project and qualified; local tracking stays strictly local.
