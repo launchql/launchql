@@ -1,3 +1,4 @@
+Note: See FIX_NEEDED.md for the assessment of whether the local-tracking guard is necessary and its performance impact.
 # Tag Resolution Fix — Deep Review (applies to PRs #218 and #219)
 
 Summary
