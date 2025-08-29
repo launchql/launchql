@@ -155,8 +155,15 @@ export class LaunchQLMigrate {
         
         const isDeployed = await this.isDeployed(plan.package, change.name);
         if (isDeployed) {
+        const toUnqualifiedLocal = (pkg: string, nm: string) => {
+          if (!nm.includes(':')) return nm;
+          const [p, local] = nm.split(':', 2);
+          if (p === pkg) return local;
+          throw new Error(`Cross-package change encountered in local tracking: ${nm} (current package: ${pkg})`);
+        };
+
           log.info(`Skipping already deployed change: ${change.name}`);
-          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          const unqualified = toUnqualifiedLocal(plan.package, change.name);
           skipped.push(unqualified);
           continue;
         }
@@ -196,7 +203,7 @@ export class LaunchQLMigrate {
             ]
           );
           
-          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          const unqualified = toUnqualifiedLocal(plan.package, change.name);
           deployed.push(unqualified);
           log.success(`Successfully ${logOnly ? 'logged' : 'deployed'}: ${change.name}`);
         } catch (error: any) {
