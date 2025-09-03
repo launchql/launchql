@@ -32,4 +32,16 @@ describe('CLIDeployTestFixture Migrate', () => {
     
     expect(results).toHaveLength(1);
   });
+
+  it('should emulate terminal commands with database operations usePlan', async () => {
+    const terminalCommands = `
+      lql deploy --recursive --database ${testDb.name} --yes --usePlan --package unique-names
+    `;
+    
+    const results = await fixture.runTerminalCommands(terminalCommands, {
+      database: testDb.name
+    }, true);
+    
+    expect(results).toHaveLength(1);
+  });
 });
