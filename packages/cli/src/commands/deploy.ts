@@ -128,11 +128,11 @@ export default async (
   const cliOverrides = {
     pg: getPgEnvOptions({ database }),
     deployment: {
-      useTx: tx,
-      fast,
-      usePlan: argv.usePlan,
-      cache: argv.cache,
-      logOnly
+      useTx: tx !== false,
+      fast: fast !== false,
+      usePlan: argv.usePlan !== false,
+      cache: argv.cache !== false,
+      logOnly: argv.logOnly !== false,
     }
   };
   
