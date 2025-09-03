@@ -267,9 +267,6 @@ export class LaunchQLMigrate {
         }
       }
     });
-      log.info(`Returning deploy result: deployed=${JSON.stringify(deployed)}, skipped=${JSON.stringify(skipped)}, failed=${JSON.stringify(failed)}`);
-      log.debug(`Returning deploy result: ${JSON.stringify({ deployed, skipped, failed })}`);
-
     
     return { deployed, skipped, failed };
   }
