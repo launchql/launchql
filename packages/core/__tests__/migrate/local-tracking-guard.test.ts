@@ -38,7 +38,7 @@ describe('local tracking guard for deployed/skipped', () => {
     writeFileSync(join(dir, 'deploy', `${changeName}.sql`), 'select 1;');
 
     const migrator = new LaunchQLMigrate(
-      { host: 'localhost', port: 5432, user: 'postgres', database: 'postgres' },
+      { host: 'localhost', port: 5432, user: 'postgres', database: 'postgres', password: 'postgres' } as any,
       {}
     );
 
@@ -46,7 +46,7 @@ describe('local tracking guard for deployed/skipped', () => {
       modulePath: dir,
       useTransaction: false,
       logOnly: true,
-    });
+    } as any);
 
     expect(res.deployed).toContain(changeName);
     expect(res.deployed.every((n) => !n.includes(':'))).toBe(true);
