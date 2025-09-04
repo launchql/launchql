@@ -29,7 +29,8 @@
     "dev:watch": "nodemon --watch src --ext ts --exec ts-node src/run.ts",
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "bucket:create": "ts-node src/scripts/create-bucket.ts"
   },
   "keywords": [
     "server",
@@ -41,6 +42,7 @@
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
     "@launchql/env": "^2.2.1",
+    "@launchql/s3-utils": "^2.2.0",
     "@launchql/server-utils": "^2.2.1",
     "@launchql/types": "^2.3.0",
     "@launchql/upload-names": "^2.2.0",
@@ -48,6 +50,7 @@
     "@pyramation/postgis": "^0.1.1",
     "@pyramation/postgraphile-plugin-fulltext-filter": "^2.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "graphile-build": "^4.14.1",
     "graphile-cache": "^1.1.1",
@@ -69,6 +72,7 @@
     "request-ip": "^3.3.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.876.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/graphql-upload": "^15.0.2",
@@ -79,6 +83,6 @@
     "ts-node": "^10.9.2"
   },
   "resolutions": {
-    "graphql": "15.5.2"
+    "graphql": "15.10.1"
   }
 }

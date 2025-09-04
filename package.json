@@ -52,10 +52,11 @@
   "resolutions": {
     "pg": "^8.16.0",
     "@types/pg": "^8.15.2",
-    "graphql": "15.5.2"
+    "graphql": "15.10.1",
+    "graphql-upload": "^13.0.0"
   },
   "overrides": {
-    "graphql": "15.5.2",
+    "graphql": "15.10.1",
     "graphql-upload": "^13.0.0",
     "@pyramation/postgis": "0.1.1"
   },
