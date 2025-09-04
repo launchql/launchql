@@ -1,14 +1,13 @@
 import { Logger } from '@launchql/logger';
+import { errors } from '@launchql/types';
 import { readFileSync } from 'fs';
 import { dirname,join } from 'path';
 import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
-import { errors } from '@launchql/types';
 
-import { LaunchQLPackage } from '../core/class/launchql';
 import { Change, parsePlanFile, parsePlanFileSimple, readScript } from '../files';
-import { DependencyResult, resolveDependencies } from '../resolution/deps';
+import { resolveDependencies } from '../resolution/deps';
 import { resolveTagToChangeName } from '../resolution/resolve';
 import { cleanSql } from './clean';
 import {
@@ -48,6 +47,13 @@ export class LaunchQLMigrate {
   private hashMethod: HashMethod;
   private eventLogger: EventLogger;
   private initialized: boolean = false;
+
+  private toUnqualifiedLocal(pkg: string, nm: string) {
+    if (!nm.includes(':')) return nm;
+    const [p, local] = nm.split(':', 2);
+    if (p === pkg) return local;
+    throw new Error(`Cross-package change encountered in local tracking: ${nm} (current package: ${pkg})`);
+  }
 
   constructor(config: PgConfig, options: LaunchQLMigrateOptions = {}) {
     this.pgConfig = config;
@@ -156,7 +162,7 @@ export class LaunchQLMigrate {
         const isDeployed = await this.isDeployed(plan.package, change.name);
         if (isDeployed) {
           log.info(`Skipping already deployed change: ${change.name}`);
-          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          const unqualified = this.toUnqualifiedLocal(plan.package, change.name);
           skipped.push(unqualified);
           continue;
         }
@@ -196,7 +202,7 @@ export class LaunchQLMigrate {
             ]
           );
           
-          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          const unqualified = this.toUnqualifiedLocal(plan.package, change.name);
           deployed.push(unqualified);
           log.success(`Successfully ${logOnly ? 'logged' : 'deployed'}: ${change.name}`);
         } catch (error: any) {
@@ -302,7 +308,8 @@ export class LaunchQLMigrate {
         const isDeployed = await this.isDeployed(plan.package, change.name);
         if (!isDeployed) {
           log.info(`Skipping not deployed change: ${change.name}`);
-          skipped.push(change.name);
+          const unqualified = this.toUnqualifiedLocal(plan.package, change.name);
+          skipped.push(unqualified);
           continue;
         }
         
