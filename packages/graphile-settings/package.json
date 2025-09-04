@@ -64,9 +64,6 @@
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
   },
-  "resolutions": {
-    "graphql": "15.5.2"
-  },
   "keywords": [
     "graphile",
     "settings",
