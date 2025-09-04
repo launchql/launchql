@@ -12,6 +12,7 @@ export class TestFixture {
   readonly tempFixtureDir: string;
   readonly getFixturePath: (...paths: string[]) => string;
   readonly getModuleProject: (workspacePath: string[], moduleName: string) => LaunchQLPackage;
+  readonly getWorkspaceProject: (workspacePath: string[]) => LaunchQLPackage;
   
   constructor(...fixturePath: string[]) {
     const originalFixtureDir = getFixturePath(...fixturePath);
@@ -29,6 +30,10 @@ export class TestFixture {
       const meta = moduleMap[moduleName];
       if (!meta) throw new Error(`Module ${moduleName} not found in workspace`);
       return new LaunchQLPackage(this.getFixturePath(...workspacePath, meta.path));
+    };
+
+    this.getWorkspaceProject = (workspacePath: string[]): LaunchQLPackage => {
+      return new LaunchQLPackage(this.getFixturePath(...workspacePath));
     };
   }
   
