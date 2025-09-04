@@ -99,7 +99,7 @@ exports[`stage fixture dependency resolution - internal tags resolves internal t
     "/deploy/schemas/unique_names/schema.sql": [
       "launchql-ext-default-roles:@0.0.5",
       "launchql-ext-defaults:defaults/public",
-      "launchql-ext-verify:procedures/verify_view",
+      "launchql-ext-verify:@0.1.0",
     ],
     "/deploy/schemas/unique_names/tables/words/fixtures/1589271124916_fixture.sql": [
       "schemas/unique_names/schema",
@@ -114,12 +114,12 @@ exports[`stage fixture dependency resolution - internal tags resolves internal t
     ],
     "launchql-ext-default-roles:@0.0.5": [],
     "launchql-ext-defaults:defaults/public": [],
-    "launchql-ext-verify:procedures/verify_view": [],
+    "launchql-ext-verify:@0.1.0": [],
   },
   "external": [
     "launchql-ext-default-roles:@0.0.5",
     "launchql-ext-defaults:defaults/public",
-    "launchql-ext-verify:procedures/verify_view",
+    "launchql-ext-verify:@0.1.0",
   ],
   "resolved": [
     "schemas/unique_names/schema",
@@ -130,6 +130,7 @@ exports[`stage fixture dependency resolution - internal tags resolves internal t
   ],
   "resolvedTags": {
     "launchql-ext-default-roles:@0.0.5": "launchql-ext-default-roles:roles/administrator/role",
+    "launchql-ext-verify:@0.1.0": "launchql-ext-verify:procedures/verify_view",
   },
 }
 `;

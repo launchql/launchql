@@ -26,6 +26,7 @@ import {
   getExtensionInfo,
   getExtensionName,
   getInstalledExtensions,
+  parseControlFile,
   writeExtensions,
 } from '../../files';
 import { generateControlFileContent, writeExtensionMakefile } from '../../files/extension/writer';
@@ -35,7 +36,6 @@ import {
   getExtensionsAndModulesChanges,
   latestChange,
   latestChangeAndVersion,
-  listModules,
   ModuleMap
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
@@ -244,11 +244,55 @@ export class LaunchQLPackage {
     return results;
   }
 
+  /**
+   * List all modules by parsing .control files in the workspace directory.
+   * Handles naming collisions by preferring the shortest path.
+   */
+  listModules(): ModuleMap {
+    if (!this.workspacePath) return {};
+
+    const moduleFiles = glob.sync(`${this.workspacePath}/**/*.control`).filter(
+      (file: string) => !/node_modules/.test(file)
+    );
+
+    // Group files by module name to handle collisions
+    const filesByName = new Map<string, string[]>();
+    
+    moduleFiles.forEach((file: string) => {
+      const moduleName = path.basename(file).split('.control')[0];
+      if (!filesByName.has(moduleName)) {
+        filesByName.set(moduleName, []);
+      }
+      filesByName.get(moduleName)!.push(file);
+    });
+
+    // For each module name, pick the shortest path in case of collisions
+    const selectedFiles = new Map<string, string>();
+    filesByName.forEach((files, moduleName) => {
+      if (files.length === 1) {
+        selectedFiles.set(moduleName, files[0]);
+      } else {
+        // Multiple files with same name - pick shortest path
+        const shortestFile = files.reduce((shortest, current) => 
+          current.length < shortest.length ? current : shortest
+        );
+        selectedFiles.set(moduleName, shortestFile);
+      }
+    });
+
+    // Parse the selected control files
+    return Array.from(selectedFiles.entries()).reduce<ModuleMap>((acc: ModuleMap, [moduleName, file]) => {
+      const module = parseControlFile(file, this.workspacePath!);
+      acc[moduleName] = module;
+      return acc;
+    }, {});
+  }
+
   getModuleMap(): ModuleMap {
     if (!this.workspacePath) return {};
     if (this._moduleMap) return this._moduleMap;
 
-    this._moduleMap = listModules(this.workspacePath);
+    this._moduleMap = this.listModules();
     return this._moduleMap;
   }
 

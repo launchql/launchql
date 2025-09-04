@@ -135,7 +135,7 @@ export class LaunchQLMigrate {
     const resolvedDeps = resolveDependencies(packageDir, fullPlanResult.data?.package || plan.package, {
       tagResolution: 'resolve',
       loadPlanFiles: true,
-      source: options.usePlan ? 'plan' : 'sql'
+      source: options.usePlan === false ? 'sql' : 'plan'
     });
     
     const deployed: string[] = [];
@@ -156,7 +156,8 @@ export class LaunchQLMigrate {
         const isDeployed = await this.isDeployed(plan.package, change.name);
         if (isDeployed) {
           log.info(`Skipping already deployed change: ${change.name}`);
-          skipped.push(change.name);
+          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          skipped.push(unqualified);
           continue;
         }
         
@@ -175,7 +176,10 @@ export class LaunchQLMigrate {
         
         const changeKey = `/deploy/${change.name}.sql`;
         const resolvedFromDeps = resolvedDeps?.deps[changeKey];
-        const resolvedChangeDeps = (resolvedFromDeps && resolvedFromDeps.length > 0) ? resolvedFromDeps : change.dependencies;
+        const resolvedChangeDeps = (resolvedFromDeps !== undefined) ? resolvedFromDeps : change.dependencies;
+        const qualifiedDeps = (resolvedChangeDeps && resolvedChangeDeps.length > 0)
+          ? Array.from(new Set(resolvedChangeDeps.map((dep) => (dep.includes(':') ? dep : `${plan.package}:${dep}`))))
+          : resolvedChangeDeps;
         
         try {
           // Call the deploy stored procedure
@@ -186,13 +190,14 @@ export class LaunchQLMigrate {
               plan.package,
               change.name,
               scriptHash,
-              resolvedChangeDeps.length > 0 ? resolvedChangeDeps : null,
+              qualifiedDeps && qualifiedDeps.length > 0 ? qualifiedDeps : null,
               cleanDeploySql,
               logOnly
             ]
           );
           
-          deployed.push(change.name);
+          const unqualified = change.name.includes(':') ? change.name.split(':')[1] : change.name;
+          deployed.push(unqualified);
           log.success(`Successfully ${logOnly ? 'logged' : 'deployed'}: ${change.name}`);
         } catch (error: any) {
           // Log failure event outside of transaction
@@ -210,7 +215,7 @@ export class LaunchQLMigrate {
           errorLines.push(`  Change: ${change.name}`);
           errorLines.push(`  Package: ${plan.package}`);
           errorLines.push(`  Script Hash: ${scriptHash}`);
-          errorLines.push(`  Dependencies: ${resolvedChangeDeps.length > 0 ? resolvedChangeDeps.join(', ') : 'none'}`);
+          errorLines.push(`  Dependencies: ${qualifiedDeps && qualifiedDeps.length > 0 ? qualifiedDeps.join(', ') : 'none'}`);
           errorLines.push(`  Error Code: ${error.code || 'N/A'}`);
           errorLines.push(`  Error Message: ${error.message || 'N/A'}`);
           

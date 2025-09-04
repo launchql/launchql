@@ -39,16 +39,14 @@ export default async (
       name: 'includePackages',
       message: 'Include packages in plan?',
       useDefault: true,
-      default: true,
-      when: (_a) => typeof argv.includePackages === 'undefined'
+      default: true
     },
     {
       type: 'confirm',
       name: 'includeTags',
       message: 'Prefer @tag references for external packages when available?',
       useDefault: true,
-      default: true,
-      when: (_a) => typeof argv.includeTags === 'undefined'
+      default: true
     }
   ];
 

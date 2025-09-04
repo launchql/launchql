@@ -1,25 +1,7 @@
-import { sync as glob } from 'glob';
-import { basename } from 'path';
-
-import { getLatestChange, Module,parseControlFile } from '../files';
+import { getLatestChange, Module } from '../files';
 import { errors } from '@launchql/types';
 
 export type ModuleMap = Record<string, Module>;
-
-/**
- * List all modules by parsing .control files in the provided directory.
- */
-export const listModules = (workspaceDir: string): ModuleMap => {
-  const moduleFiles = glob(`${workspaceDir}/**/*.control`).filter(
-    (file: string) => !/node_modules/.test(file)
-  );
-
-  return moduleFiles.reduce<ModuleMap>((acc: ModuleMap, file: string) => {
-    const module = parseControlFile(file, workspaceDir);
-    acc[basename(file).split('.control')[0]] = module;
-    return acc;
-  }, {});
-};
 
 /**
  * Get the latest change from the launchql.plan file for a specific module.
