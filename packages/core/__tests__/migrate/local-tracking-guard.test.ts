@@ -3,7 +3,7 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 
 jest.mock('../../src/migrate/utils/transaction', () => ({
-  withTransaction: async (_pool, _opts, fn) => fn({}),
+  withTransaction: async (_pool: any, _opts: any, fn: any) => fn({}),
   executeQuery: jest.fn().mockResolvedValue(undefined),
 }));
 
@@ -11,7 +11,7 @@ jest.mock('pg-cache', () => ({
   getPgPool: () => ({
     query: jest
       .fn()
-      .mockImplementation((sql, params) => {
+      .mockImplementation((sql: string, params?: any[]) => {
         if (typeof sql === 'string' && sql.includes('SELECT EXISTS')) {
           return Promise.resolve({ rows: [{ exists: true }] });
         }
