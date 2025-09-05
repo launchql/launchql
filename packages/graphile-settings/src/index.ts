@@ -1,13 +1,13 @@
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
-import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/env';
+import { LaunchQLOptions } from '@launchql/types';
 import PgPostgis from '@pyramation/postgis';
 // @ts-ignore
 import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
 import { NodePlugin, Plugin } from 'graphile-build';
 import {
   additionalGraphQLContextFromRequest as langAdditional,
-  LangPlugin
+  LangPlugin,
   // @ts-ignore
 } from 'graphile-i18n';
 // @ts-ignore
@@ -17,24 +17,20 @@ import PgSearch from 'graphile-search-plugin';
 // @ts-ignore
 import PgSimpleInflector from 'graphile-simple-inflector';
 import { PostGraphileOptions } from 'postgraphile';
-// @ts-ignore
-import PostGraphileUploadFieldPlugin from 'postgraphile-derived-upload-field';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 // @ts-ignore
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 
 import LqlTypesPlugin from './plugins/types';
+import UploadPostGraphilePlugin from './plugins/upload-postgraphile-plugin';
 import { Uploader } from './resolvers/upload';
 
-export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptions => {
+export const getGraphileSettings = (
+  rawOpts: LaunchQLOptions
+): PostGraphileOptions => {
   const opts = getEnvOptions(rawOpts);
 
-  const {
-    server,
-    graphile,
-    features,
-    cdn
-  } = opts;
+  const { server, graphile, features, cdn } = opts;
 
   // Instantiate uploader with merged cdn opts
   const uploader = new Uploader({
@@ -42,7 +38,7 @@ export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptio
     awsRegion: cdn.awsRegion!,
     awsAccessKey: cdn.awsAccessKey!,
     awsSecretKey: cdn.awsSecretKey!,
-    minioEndpoint: cdn.minioEndpoint
+    minioEndpoint: cdn.minioEndpoint,
   });
 
   const resolveUpload = uploader.resolveUpload.bind(uploader);
@@ -51,10 +47,10 @@ export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptio
     ConnectionFilterPlugin,
     FulltextFilterPlugin,
     LqlTypesPlugin,
-    PostGraphileUploadFieldPlugin,
+    UploadPostGraphilePlugin,
     PgMetaschema,
     PgManyToMany,
-    PgSearch
+    PgSearch,
   ];
 
   if (features?.postgis) {
@@ -74,27 +70,27 @@ export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptio
           name: 'upload',
           namespaceName: 'public',
           type: 'JSON',
-          resolve: resolveUpload
+          resolve: resolveUpload,
         },
         {
           name: 'attachment',
           namespaceName: 'public',
           type: 'String',
-          resolve: resolveUpload
+          resolve: resolveUpload,
         },
         {
           name: 'image',
           namespaceName: 'public',
           type: 'JSON',
-          resolve: resolveUpload
+          resolve: resolveUpload,
         },
         {
           tag: 'upload',
-          resolve: resolveUpload
-        }
+          resolve: resolveUpload,
+        },
       ],
       pgSimplifyOppositeBaseNames: features?.oppositeBaseNames,
-      connectionFilterComputedColumns: false
+      connectionFilterComputedColumns: false,
     },
     appendPlugins: plugins,
     skipPlugins: [NodePlugin],
@@ -121,7 +117,7 @@ export const getGraphileSettings = (rawOpts: LaunchQLOptions): PostGraphileOptio
     additionalGraphQLContextFromRequest: (req, res) => ({
       ...langAdditional(req, res),
       req,
-      res
-    })
+      res,
+    }),
   };
 };
