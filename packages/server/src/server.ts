@@ -1,15 +1,13 @@
-import { Logger } from '@launchql/logger';
-import {
-  healthz,
-  poweredBy,
-  trustProxy
-} from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
+import 'dotenv/config';
+
 import { getEnvOptions } from '@launchql/env';
+import { Logger } from '@launchql/logger';
+import { healthz, poweredBy, trustProxy } from '@launchql/server-utils';
+import { LaunchQLOptions } from '@launchql/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
 // @ts-ignore
-import graphqlUploadExpress from 'graphql-upload/public/graphqlUploadExpress.js';
+import graphqlUpload from 'graphql-upload';
 import { Pool, PoolClient } from 'pg';
 import { getPgPool } from 'pg-cache';
 import requestIp from 'request-ip';
@@ -23,7 +21,8 @@ import { graphile } from './middleware/graphile';
 const log = new Logger('server');
 
 export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
-  const app = new Server(getEnvOptions(rawOpts));
+  const launchqlEnvOptions = getEnvOptions(rawOpts);
+  const app = new Server(launchqlEnvOptions);
   app.addEventListener();
   app.listen();
 };
@@ -42,7 +41,7 @@ class Server {
     healthz(app);
     trustProxy(app, opts.server.trustProxy);
     app.use(poweredBy('launchql'));
-    app.use(graphqlUploadExpress());
+    app.use(graphqlUpload.graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
     app.use(requestIp.mw());
     app.use(api);
@@ -74,7 +73,11 @@ class Server {
     pgPool.connect(this.listenForChanges.bind(this));
   }
 
-  listenForChanges(err: Error | null, client: PoolClient, release: () => void): void {
+  listenForChanges(
+    err: Error | null,
+    client: PoolClient,
+    release: () => void
+  ): void {
     if (err) {
       this.error('Error connecting with notify listener', err);
       setTimeout(() => this.addEventListener(), 5000);
