@@ -838,7 +838,27 @@ export class LaunchQLPackage {
 
   // ──────────────── Package Operations ────────────────
 
-  public resolveWorkspaceExtensionDependencies(): { resolved: string[]; external: string[] } {
+  /**
+   * Get the set of modules that have been deployed to the database
+   */
+  private async getDeployedModules(pgConfig: PgConfig): Promise<Set<string>> {
+    try {
+      const client = new LaunchQLMigrate(pgConfig);
+      await client.initialize();
+      
+      const status = await client.status();
+      return new Set(status.map(s => s.package));
+    } catch (error: any) {
+      if (error.code === '42P01' || error.code === '3F000') {
+        return new Set();
+      }
+      throw error;
+    }
+  }
+
+  public async resolveWorkspaceExtensionDependencies(
+    opts?: { filterDeployed?: boolean; pgConfig?: PgConfig }
+  ): Promise<{ resolved: string[]; external: string[] }> {
     const modules = this.getModuleMap();
     const allModuleNames = Object.keys(modules);
     
@@ -857,9 +877,16 @@ export class LaunchQLPackage {
     
     const { resolved, external } = resolveExtensionDependencies(virtualModuleName, virtualModuleMap);
     
-    // Filter out the virtual module and return the result
+    let filteredResolved = resolved.filter((moduleName: string) => moduleName !== virtualModuleName);
+    
+    // Filter by deployment status if requested
+    if (opts?.filterDeployed && opts?.pgConfig) {
+      const deployedModules = await this.getDeployedModules(opts.pgConfig);
+      filteredResolved = filteredResolved.filter(module => deployedModules.has(module));
+    }
+    
     return {
-      resolved: resolved.filter((moduleName: string) => moduleName !== virtualModuleName),
+      resolved: filteredResolved,
       external: external
     };
   }
@@ -919,7 +946,7 @@ export class LaunchQLPackage {
       
       if (name === null) {
         // When name is null, deploy ALL modules in the workspace
-        extensions = this.resolveWorkspaceExtensionDependencies();
+        extensions = await this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensions = moduleProject.getModuleExtensions();
@@ -1065,12 +1092,17 @@ export class LaunchQLPackage {
       let extensionsToRevert: { resolved: string[]; external: string[] };
       
       if (name === null) {
-        // When name is null, revert ALL modules in the workspace
-        extensionsToRevert = this.resolveWorkspaceExtensionDependencies();
+        // When name is null, revert ALL deployed modules in the workspace
+        extensionsToRevert = await this.resolveWorkspaceExtensionDependencies({
+          filterDeployed: true,
+          pgConfig: opts.pg as PgConfig
+        });
       } else {
-        // Always use workspace-wide resolution in recursive mode
-        // This ensures all dependent modules are reverted before their dependencies.
-        const workspaceExtensions = this.resolveWorkspaceExtensionDependencies();
+        // Always use workspace-wide resolution in recursive mode, but filter to deployed modules
+        const workspaceExtensions = await this.resolveWorkspaceExtensionDependencies({
+          filterDeployed: true,
+          pgConfig: opts.pg as PgConfig
+        });
         extensionsToRevert = truncateExtensionsToTarget(workspaceExtensions, name);
       }
 
@@ -1167,7 +1199,7 @@ export class LaunchQLPackage {
       
       if (name === null) {
         // When name is null, verify ALL modules in the workspace
-        extensions = this.resolveWorkspaceExtensionDependencies();
+        extensions = await this.resolveWorkspaceExtensionDependencies();
       } else {
         const moduleProject = this.getModuleProject(name);
         extensions = moduleProject.getModuleExtensions();
