@@ -22,6 +22,9 @@ import tag from './commands/tag';
 import verify from './commands/verify';
 import analyze from './commands/analyze';
 import renameCmd from './commands/rename';
+import validate from './commands/validate';
+import sync from './commands/sync';
+import version from './commands/version';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 
@@ -55,6 +58,9 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
     migrate: pgt(migrate),
     analyze: pgt(analyze),
     rename: pgt(renameCmd),
+    validate: pgt(validate),
+    sync: pgt(sync),
+    version: pgt(version),
 
     // These manage their own connection lifecycles
     server,
