@@ -45,6 +45,7 @@
     "graphile-build": "^4.14.1",
     "graphile-cache": "^1.1.1",
     "graphile-settings": "^2.3.1",
+    "graphql": "15.5.2",
     "graphql-upload": "^13.0.0",
     "pg-cache": "^1.1.1",
     "postgraphile": "^4.14.1"
@@ -62,8 +63,5 @@
     "ui",
     "launchql",
     "interface"
-  ],
-  "resolutions": {
-    "graphql": "15.5.2"
-  }
+  ]
 }
