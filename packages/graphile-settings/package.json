@@ -53,6 +53,7 @@
     "postgraphile-derived-upload-field": "^0.0.6",
     "postgraphile-plugin-connection-filter": "^2.3.0",
     "postgraphile-plugin-connection-filter-postgis": "^1.0.0-alpha.6",
+    "graphql-upload": "^13.0.0",
     "request-ip": "^3.3.0"
   },
   "devDependencies": {
@@ -65,7 +66,7 @@
     "ts-node": "^10.9.2"
   },
   "resolutions": {
-    "graphql": "15.5.2"
+    "graphql": "15.10.1"
   },
   "keywords": [
     "graphile",
