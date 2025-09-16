@@ -12,7 +12,8 @@ const log = new Logger('revert');
 async function selectDeployedChange(
   database: string,
   prompter: Inquirerer,
-  log: Logger
+  log: Logger,
+  preselectedPackage?: string
 ): Promise<string | undefined> {
   const pgEnv = getPgEnvOptions({ database });
   const client = new LaunchQLMigrate({
@@ -24,24 +25,31 @@ async function selectDeployedChange(
   });
 
   try {
-    const packageStatuses = await client.status();
+    let selectedPackage: string;
     
-    if (packageStatuses.length === 0) {
-      log.warn('No deployed packages found in database');
-      return undefined;
-    }
+    if (preselectedPackage) {
+      selectedPackage = preselectedPackage;
+      log.info(`Using preselected package: ${selectedPackage}`);
+    } else {
+      const packageStatuses = await client.status();
+      
+      if (packageStatuses.length === 0) {
+        log.warn('No deployed packages found in database');
+        return undefined;
+      }
 
-    const packageAnswer = await prompter.prompt({}, [{
-      type: 'autocomplete',
-      name: 'selectedPackage',
-      message: 'Select package to revert from:',
-      options: packageStatuses.map(status => ({
-        name: status.package,
-        value: status.package,
-        description: `${status.totalDeployed} changes, last: ${status.lastChange}`
-      }))
-    }]);
-    const selectedPackage = (packageAnswer as any).selectedPackage;
+      const packageAnswer = await prompter.prompt({}, [{
+        type: 'autocomplete',
+        name: 'selectedPackage',
+        message: 'Select package to revert from:',
+        options: packageStatuses.map(status => ({
+          name: status.package,
+          value: status.package,
+          description: `${status.totalDeployed} changes, last: ${status.lastChange}`
+        }))
+      }]);
+      selectedPackage = (packageAnswer as any).selectedPackage;
+    }
 
     const deployedChanges = await client.getDeployedChanges(database, selectedPackage);
     
@@ -151,7 +159,8 @@ export default async (
   let target: string | undefined;
   
   if (argv.to === true) {
-    target = await selectDeployedChange(database, prompter, log);
+    const preselectedPackage = packageName || argv.package;
+    target = await selectDeployedChange(database, prompter, log, preselectedPackage);
     if (!target) {
       log.info('No target selected, operation cancelled.');
       return argv;
