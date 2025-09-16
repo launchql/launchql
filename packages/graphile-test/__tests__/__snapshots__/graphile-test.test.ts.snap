@@ -4225,7 +4225,18 @@ In some cases, you need to provide options to alter GraphQL's execution behavior
               },
             },
             {
-              "args": [],
+              "args": [
+                {
+                  "defaultValue": "false",
+                  "description": null,
+                  "name": "includeDeprecated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null,
+                  },
+                },
+              ],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,

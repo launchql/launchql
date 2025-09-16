@@ -1,30 +1,27 @@
-import {
-  cors,
-  healthz,
-  poweredBy,
-} from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
 import { getEnvOptions } from '@launchql/env';
+import { cors, healthz, poweredBy } from '@launchql/server-utils';
+import { LaunchQLOptions } from '@launchql/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
-import express, { Express,NextFunction, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import { GraphileCache, graphileCache } from 'graphile-cache';
-import graphqlUploadExpress from 'graphql-upload/public/graphqlUploadExpress.js';
+import graphqlUpload from 'graphql-upload';
+// Scalar
 import { getPgPool } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 import { postgraphile } from 'postgraphile';
 
-import { printDatabases,printSchemas } from './render';
+import { printDatabases, printSchemas } from './render';
 import { getGraphileSettings } from './settings';
 
 export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
   const opts = getEnvOptions(rawOpts);
 
-  const {
-    pg,
-    server
-  } = opts;
+  const { pg, server } = opts;
 
-  const getGraphileInstanceObj = (dbname: string, schemaname: string): GraphileCache => {
+  const getGraphileInstanceObj = (
+    dbname: string,
+    schemaname: string
+  ): GraphileCache => {
     const key = `${dbname}.${schemaname}`;
 
     if (graphileCache.has(key)) {
@@ -34,24 +31,25 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
     const settings = {
       ...getGraphileSettings({
         ...opts,
-        graphile: { schema: schemaname }
+        graphile: { schema: schemaname },
       }),
       graphqlRoute: '/graphql',
-      graphiqlRoute: '/graphiql'
+      graphiqlRoute: '/graphiql',
     };
 
     const pgPool = getPgPool(
       getPgEnvOptions({
         ...opts.pg,
-        database: dbname  
-      }));
+        database: dbname,
+      })
+    );
 
     const handler = postgraphile(pgPool, schemaname, settings);
 
     const obj = {
       pgPool,
       pgPoolKey: dbname,
-      handler
+      handler,
     };
 
     graphileCache.set(key, obj);
@@ -64,7 +62,7 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
   cors(app, server.origin);
   app.use(parseDomains());
   app.use(poweredBy('launchql'));
-  app.use(graphqlUploadExpress());
+  app.use(graphqlUpload.graphqlUploadExpress());
 
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     if (req.urlDomains?.subdomains.length === 1) {
@@ -73,9 +71,10 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
         const pgPool = getPgPool(
           getPgEnvOptions({
             ...opts.pg,
-            database: dbName  
-          }));
-    
+            database: dbName,
+          })
+        );
+
         const results = await pgPool.query(`
           SELECT s.nspname AS table_schema
           FROM pg_catalog.pg_namespace s
@@ -87,7 +86,7 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
             schemas: results.rows,
             req,
             hostname: server.host,
-            port: server.port
+            port: server.port,
           })
         );
         return;
@@ -108,15 +107,14 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
     if (req.urlDomains?.subdomains.length === 2) {
       const [, dbName] = req.urlDomains.subdomains;
       try {
-        
         const pgPool = getPgPool(
           getPgEnvOptions({
             ...opts.pg,
-            database: dbName  
-          }));
+            database: dbName,
+          })
+        );
 
         await pgPool.query('SELECT 1;');
-
       } catch (e: any) {
         if (e.message?.match(/does not exist/)) {
           res.status(404).send('DB Not found');
@@ -162,14 +160,17 @@ export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
         const rootPgPool = getPgPool(
           getPgEnvOptions({
             ...opts.pg,
-            database: opts.pg.user // is this to get postgres?
-          }));
+            database: opts.pg.user, // is this to get postgres?
+          })
+        );
 
         const results = await rootPgPool.query(`
           SELECT * FROM pg_catalog.pg_database
           WHERE datistemplate = FALSE AND datname != 'postgres' AND datname !~ '^pg_'
         `);
-        res.send(printDatabases({ databases: results.rows, req, port: server.port }));
+        res.send(
+          printDatabases({ databases: results.rows, req, port: server.port })
+        );
         return;
       } catch (e: any) {
         if (e.message?.match(/does not exist/)) {

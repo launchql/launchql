@@ -36,13 +36,13 @@
   "dependencies": {
     "@launchql/types": "^2.3.0",
     "graphile-settings": "^2.3.1",
-    "graphql": "15.5.2",
+    "graphql": "15.10.1",
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
   },
   "resolutions": {
-    "graphql": "15.5.2"
+    "graphql": "15.10.1"
   },
   "keywords": [
     "testing",
