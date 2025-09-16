@@ -6,6 +6,7 @@ import { getPgEnvOptions } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
 import { selectPackage } from '../utils/module-utils';
+import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-changes';
 
 const log = new Logger('verify');
 
@@ -21,11 +22,13 @@ Options:
   --recursive        Verify recursively through dependencies
   --package <name>   Verify specific package
   --to <target>      Verify up to specific change or tag
+  --to               Interactive selection of deployed changes
   --cwd <directory>  Working directory (default: current directory)
 
 Examples:
   lql verify                    Verify current database state
   lql verify --package mypackage  Verify specific package
+  lql verify --to              Interactive selection from deployed changes
 `;
 
 export default async (
@@ -49,8 +52,11 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive) {
-    packageName = await selectPackage(argv, prompter, cwd, 'verify', log);
+  if (recursive && argv.to !== true) {
+    packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
+    if (!packageName) {
+      packageName = await selectPackage(argv, prompter, cwd, 'verify', log);
+    }
   }
 
   const project = new LaunchQLPackage(cwd);
@@ -60,7 +66,14 @@ export default async (
   });
   
   let target: string | undefined;
-  if (packageName && argv.to) {
+  
+  if (argv.to === true) {
+    target = await selectDeployedChange(database, argv, prompter, log, 'verify');
+    if (!target) {
+      log.info('No target selected, operation cancelled.');
+      return argv;
+    }
+  } else if (packageName && argv.to) {
     target = `${packageName}:${argv.to}`;
   } else if (packageName) {
     target = packageName;
