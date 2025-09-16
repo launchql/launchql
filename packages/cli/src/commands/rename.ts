@@ -2,13 +2,13 @@ import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import path from 'path';
 import { LaunchQLPackage } from '@launchql/core';
+import { cliError } from '../utils/cli-error';
 
 export default async (argv: Partial<ParsedArgs>, _prompter: Inquirerer) => {
   const cwd = (argv.cwd as string) || process.cwd();
   const to = (argv.to as string) || (argv._ && argv._[0] as string);
   if (!to) {
-    console.error('Missing new name. Use --to <name> or provide as positional argument.');
-    process.exit(1);
+    await cliError('Missing new name. Use --to <name> or provide as positional argument.');
   }
   const dryRun = !!argv['dry-run'] || !!argv.dryRun;
   const syncPkg = !!argv['sync-pkg-name'] || !!argv.syncPkgName;

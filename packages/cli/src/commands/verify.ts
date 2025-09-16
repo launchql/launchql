@@ -5,8 +5,8 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
-import { selectPackage } from '../utils/module-utils';
 import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-changes';
+import { cliError } from '../utils/cli-error';
 
 const log = new Logger('verify');
 
@@ -55,7 +55,7 @@ export default async (
   if (recursive && argv.to !== true) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
     if (!packageName) {
-      packageName = await selectPackage(argv, prompter, cwd, 'verify', log);
+      await cliError('No package found to verify');
     }
   }
 
@@ -70,8 +70,7 @@ export default async (
   if (argv.to === true) {
     target = await selectDeployedChange(database, argv, prompter, log, 'verify');
     if (!target) {
-      log.info('No target selected, operation cancelled.');
-      return argv;
+      await cliError('No target selected, operation cancelled');
     }
   } else if (packageName && argv.to) {
     target = `${packageName}:${argv.to}`;

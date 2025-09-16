@@ -3,10 +3,9 @@ import { Logger } from '@launchql/logger';
 import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
-
 import { getTargetDatabase } from '../utils';
-import { selectPackage } from '../utils/module-utils';
 import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-changes';
+import { cliError } from '../utils/cli-error';
 
 const log = new Logger('revert');
 
@@ -78,7 +77,7 @@ export default async (
   if (recursive && argv.to !== true) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
     if (!packageName) {
-      packageName = await selectPackage(argv, prompter, cwd, 'revert', log);
+      await cliError('No package found to revert');
     }
   }
 
@@ -96,8 +95,7 @@ export default async (
   if (argv.to === true) {
     target = await selectDeployedChange(database, argv, prompter, log, 'revert');
     if (!target) {
-      log.info('No target selected, operation cancelled.');
-      return argv;
+      await cliError('No target selected, operation cancelled');
     }
   } else if (packageName && argv.to) {
     target = `${packageName}:${argv.to}`;
@@ -108,6 +106,8 @@ export default async (
   } else if (argv.package) {
     target = argv.package as string;
   }
+  
+  log.debug('target' + target);
   
   await pkg.revert(
     opts,

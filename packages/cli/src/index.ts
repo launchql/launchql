@@ -17,6 +17,8 @@ const app = new CLI(commands, options);
 app.run().then(()=> {
   // all done!
 }).catch(error => {
-  console.error(error);
+  // Should not reach here with the new CLI error handling pattern
+  // But keep as fallback for unexpected errors
+  console.error('Unexpected error:', error);
   process.exit(1);
 });
