@@ -18,7 +18,7 @@ import { getAvailableExtensions } from '../../extensions/extensions';
 import { generatePlan, writePlan, writePlanFile } from '../../files';
 import { Tag, ExtendedPlanFile, Change } from '../../files/types';
 import { parsePlanFile } from '../../files/plan/parser';
-import { isValidTagName } from '../../files/plan/validators';
+import { isValidTagName, isValidChangeName } from '../../files/plan/validators';
 import { getNow as getPlanTimestamp } from '../../files/plan/generator';
 import { resolveTagToChangeName } from '../../resolution/resolve';
 import {
@@ -704,6 +704,122 @@ export class LaunchQLPackage {
     
     // Write updated plan file
     writePlanFile(planPath, plan);
+  }
+
+  /**
+   * Add a change to the current module's plan file and create SQL files
+   */
+  addChange(changeName: string, dependencies?: string[], comment?: string): void {
+    this.ensureModule();
+    
+    if (!this.modulePath) {
+      throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
+    }
+    
+    // Validate change name
+    if (!isValidChangeName(changeName)) {
+      throw errors.INVALID_NAME({ name: changeName, type: 'change', rules: "Change names must follow Sqitch naming rules" });
+    }
+    
+    const planPath = path.join(this.modulePath, 'launchql.plan');
+    
+    // Parse existing plan file
+    const planResult = parsePlanFile(planPath);
+    if (!planResult.data) {
+      throw errors.PLAN_PARSE_ERROR({ planPath, errors: planResult.errors.map(e => e.message).join(', ') });
+    }
+    
+    const plan = planResult.data;
+    
+    // Check if change already exists
+    const existingChange = plan.changes.find(c => c.name === changeName);
+    if (existingChange) {
+      throw new Error(`Change '${changeName}' already exists in plan.`);
+    }
+    
+    // Validate dependencies exist if provided
+    if (dependencies && dependencies.length > 0) {
+      for (const dep of dependencies) {
+        const depExists = plan.changes.some(c => c.name === dep);
+        if (!depExists) {
+          throw new Error(`Dependency '${dep}' not found in plan. Add dependencies before referencing them.`);
+        }
+      }
+    }
+    
+    // Create new change
+    const newChange: Change = {
+      name: changeName,
+      dependencies: dependencies || [],
+      timestamp: getPlanTimestamp(),
+      planner: 'launchql',
+      email: 'launchql@5b0c196eeb62',
+      comment: comment || `add ${changeName}`
+    };
+    
+    plan.changes.push(newChange);
+    
+    // Write updated plan file
+    writePlanFile(planPath, plan);
+    
+    // Create SQL files
+    this.createSqlFiles(changeName, dependencies || [], comment || `add ${changeName}`);
+  }
+
+  /**
+   * Create deploy/revert/verify SQL files for a change
+   */
+  private createSqlFiles(changeName: string, dependencies: string[], comment: string): void {
+    if (!this.modulePath) {
+      throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
+    }
+
+    const createSqlFile = (type: 'deploy' | 'revert' | 'verify', content: string) => {
+      const dir = path.dirname(changeName);
+      const fileName = path.basename(changeName);
+      const typeDir = path.join(this.modulePath!, type);
+      const targetDir = path.join(typeDir, dir);
+      const filePath = path.join(targetDir, `${fileName}.sql`);
+      
+      fs.mkdirSync(targetDir, { recursive: true });
+      fs.writeFileSync(filePath, content);
+    };
+
+    // Create deploy file
+    const deployContent = `-- Deploy: ${changeName} to pg
+-- made with <3 @ launchql.com
+
+${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join('\n') + '\n' : ''}
+BEGIN;
+
+-- Add your deployment SQL here
+
+COMMIT;
+`;
+
+    // Create revert file  
+    const revertContent = `-- Revert: ${changeName} from pg
+
+BEGIN;
+
+-- Add your revert SQL here
+
+COMMIT;
+`;
+
+    // Create verify file
+    const verifyContent = `-- Verify: ${changeName} on pg
+
+BEGIN;
+
+-- Add your verification SQL here
+
+ROLLBACK;
+`;
+
+    createSqlFile('deploy', deployContent);
+    createSqlFile('revert', revertContent);
+    createSqlFile('verify', verifyContent);
   }
 
   // ──────────────── Packaging and npm ────────────────
