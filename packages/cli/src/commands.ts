@@ -39,7 +39,7 @@ const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (.
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
   return {
-    add: pgt(add),
+    add,
     'admin-users': pgt(adminUsers),
     clear: pgt(clear),
     deploy: pgt(deploy),
