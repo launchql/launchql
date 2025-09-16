@@ -710,18 +710,38 @@ export class LaunchQLPackage {
    * Add a change to the current module's plan file and create SQL files
    */
   addChange(changeName: string, dependencies?: string[], comment?: string): void {
-    this.ensureModule();
-    
-    if (!this.modulePath) {
-      throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
+    // Validate change name first
+    if (!changeName || !changeName.trim()) {
+      throw new Error('Change name is required');
     }
     
-    // Validate change name
     if (!isValidChangeName(changeName)) {
       throw errors.INVALID_NAME({ name: changeName, type: 'change', rules: "Change names must follow Sqitch naming rules" });
     }
     
-    const planPath = path.join(this.modulePath, 'launchql.plan');
+    if (!this.isInWorkspace() && !this.isInModule()) {
+      throw new Error('This command must be run inside a LaunchQL workspace or module.');
+    }
+    
+    if (this.isInModule()) {
+      this.ensureModule();
+      
+      if (!this.modulePath) {
+        throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
+      }
+      
+      this.addChangeToModule(changeName, dependencies, comment);
+      return;
+    }
+    
+    throw new Error('When running from workspace root, please specify --package or run from within a module directory.');
+  }
+  
+  /**
+   * Add change to the current module (internal helper)
+   */
+  private addChangeToModule(changeName: string, dependencies?: string[], comment?: string): void {
+    const planPath = path.join(this.modulePath!, 'launchql.plan');
     
     // Parse existing plan file
     const planResult = parsePlanFile(planPath);
@@ -790,31 +810,19 @@ export class LaunchQLPackage {
 -- made with <3 @ launchql.com
 
 ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join('\n') + '\n' : ''}
-BEGIN;
-
 -- Add your deployment SQL here
-
-COMMIT;
 `;
 
     // Create revert file  
     const revertContent = `-- Revert: ${changeName} from pg
 
-BEGIN;
-
 -- Add your revert SQL here
-
-COMMIT;
 `;
 
     // Create verify file
     const verifyContent = `-- Verify: ${changeName} on pg
 
-BEGIN;
-
 -- Add your verification SQL here
-
-ROLLBACK;
 `;
 
     createSqlFile('deploy', deployContent);
