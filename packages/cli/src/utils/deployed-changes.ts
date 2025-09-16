@@ -11,13 +11,7 @@ export async function selectDeployedChange(
   action: 'revert' | 'verify' = 'revert'
 ): Promise<string | undefined> {
   const pgEnv = getPgEnvOptions({ database });
-  const client = new LaunchQLMigrate({
-    host: pgEnv.host,
-    port: pgEnv.port,
-    user: pgEnv.user,
-    password: pgEnv.password,
-    database: pgEnv.database
-  });
+  const client = new LaunchQLMigrate(pgEnv);
 
   let selectedPackage: string;
 
