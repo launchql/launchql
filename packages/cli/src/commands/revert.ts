@@ -107,8 +107,6 @@ export default async (
     target = argv.package as string;
   }
   
-  log.debug('target' + target);
-  
   await pkg.revert(
     opts,
     target,
