@@ -11,9 +11,9 @@ const log = new Logger('revert');
 
 async function selectDeployedChange(
   database: string,
+  argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
-  log: Logger,
-  preselectedPackage?: string
+  log: Logger
 ): Promise<string | undefined> {
   const pgEnv = getPgEnvOptions({ database });
   const client = new LaunchQLMigrate({
@@ -27,9 +27,9 @@ async function selectDeployedChange(
   try {
     let selectedPackage: string;
     
-    if (preselectedPackage) {
-      selectedPackage = preselectedPackage;
-      log.info(`Using preselected package: ${selectedPackage}`);
+    if (argv.package) {
+      selectedPackage = argv.package;
+      log.info(`Using package from CLI: ${selectedPackage}`);
     } else {
       const packageStatuses = await client.status();
       
@@ -38,9 +38,9 @@ async function selectDeployedChange(
         return undefined;
       }
 
-      const packageAnswer = await prompter.prompt({}, [{
+      const packageAnswer = await prompter.prompt(argv, [{
         type: 'autocomplete',
-        name: 'selectedPackage',
+        name: 'package',
         message: 'Select package to revert from:',
         options: packageStatuses.map(status => ({
           name: status.package,
@@ -48,7 +48,7 @@ async function selectDeployedChange(
           description: `${status.totalDeployed} changes, last: ${status.lastChange}`
         }))
       }]);
-      selectedPackage = (packageAnswer as any).selectedPackage;
+      selectedPackage = (packageAnswer as any).package;
     }
 
     const deployedChanges = await client.getDeployedChanges(database, selectedPackage);
@@ -58,9 +58,9 @@ async function selectDeployedChange(
       return undefined;
     }
 
-    const changeAnswer = await prompter.prompt({}, [{
+    const changeAnswer = await prompter.prompt(argv, [{
       type: 'autocomplete',
-      name: 'selectedChange',
+      name: 'change',
       message: `Select change to revert to in ${selectedPackage}:`,
       options: deployedChanges.map(change => ({
         name: change.change_name,
@@ -68,7 +68,7 @@ async function selectDeployedChange(
         description: `Deployed: ${new Date(change.deployed_at).toLocaleString()}`
       }))
     }]);
-    const selectedChange = (changeAnswer as any).selectedChange;
+    const selectedChange = (changeAnswer as any).change;
 
     return `${selectedPackage}:${selectedChange}`;
     
@@ -143,7 +143,7 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive) {
+  if (recursive && argv.to !== true) {
     packageName = await selectPackage(argv, prompter, cwd, 'revert', log);
   }
 
@@ -159,8 +159,7 @@ export default async (
   let target: string | undefined;
   
   if (argv.to === true) {
-    const preselectedPackage = packageName || argv.package;
-    target = await selectDeployedChange(database, prompter, log, preselectedPackage);
+    target = await selectDeployedChange(database, argv, prompter, log);
     if (!target) {
       log.info('No target selected, operation cancelled.');
       return argv;
