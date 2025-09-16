@@ -24,7 +24,7 @@ import analyze from './commands/analyze';
 import renameCmd from './commands/rename';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
-import { cliError } from './utils/cli-error';
+import { cliExitWithError } from './utils/cli-error';
 
 const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
   try {
@@ -115,7 +115,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
 
   if (!commandFn) {
     console.log(usageText);
-    await cliError(`Unknown command: ${command}`);
+    await cliExitWithError(`Unknown command: ${command}`);
   }
 
   await commandFn(newArgv, prompter, options);

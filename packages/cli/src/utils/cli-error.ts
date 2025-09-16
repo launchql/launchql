@@ -10,7 +10,7 @@ const log = new Logger('cli');
  * 
  * IMPORTANT: This function properly cleans up PostgreSQL connections before exiting.
  */
-export const exitWithError = async (
+export const cliExitWithError = async (
   error: LaunchQLError | Error | string,
   context?: Record<string, any>
 ): Promise<never> => {
@@ -52,23 +52,3 @@ export const exitWithError = async (
 
   process.exit(1);
 };
-
-/**
- * Simple CLI error function that logs an error message and exits with code 1.
- * Handles cleanup of database connections before exiting.
- * 
- * @param message - Error message to display
- * @param context - Optional context for debugging
- */
-export const cliError = (
-  message: string, 
-  context?: Record<string, any>
-): Promise<never> => exitWithError(message, context);
-
-/**
- * Alternative entry point for LaunchQLError instances
- */
-export const cliErrorWithException = (
-  error: LaunchQLError | Error,
-  context?: Record<string, any>
-): Promise<never> => exitWithError(error, context);
