@@ -14,7 +14,7 @@ async function selectDeployedChange(
   prompter: Inquirerer,
   log: Logger
 ): Promise<string | undefined> {
-  const pgEnv = getPgEnvOptions();
+  const pgEnv = getPgEnvOptions({ database });
   const client = new LaunchQLMigrate({
     host: pgEnv.host,
     port: pgEnv.port,
