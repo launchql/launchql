@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { LaunchQLPackage, LaunchQLMigrate, StatusResult } from '@launchql/core';
 import { Logger } from '@launchql/logger';
 import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
@@ -8,6 +8,68 @@ import { getTargetDatabase } from '../utils';
 import { selectPackage } from '../utils/module-utils';
 
 const log = new Logger('revert');
+
+async function selectDeployedChange(
+  database: string,
+  prompter: Inquirerer,
+  log: Logger
+): Promise<string | undefined> {
+  const pgEnv = getPgEnvOptions();
+  const client = new LaunchQLMigrate({
+    host: pgEnv.host,
+    port: pgEnv.port,
+    user: pgEnv.user,
+    password: pgEnv.password,
+    database: pgEnv.database
+  });
+
+  try {
+    const packageStatuses = await client.status();
+    
+    if (packageStatuses.length === 0) {
+      log.warn('No deployed packages found in database');
+      return undefined;
+    }
+
+    const packageAnswer = await prompter.prompt({}, [{
+      type: 'autocomplete',
+      name: 'selectedPackage',
+      message: 'Select package to revert from:',
+      options: packageStatuses.map(status => ({
+        name: status.package,
+        value: status.package,
+        description: `${status.totalDeployed} changes, last: ${status.lastChange}`
+      }))
+    }]);
+    const selectedPackage = (packageAnswer as any).selectedPackage;
+
+    const deployedChanges = await client.getDeployedChanges(database, selectedPackage);
+    
+    if (deployedChanges.length === 0) {
+      log.warn(`No deployed changes found for package ${selectedPackage}`);
+      return undefined;
+    }
+
+    const changeAnswer = await prompter.prompt({}, [{
+      type: 'autocomplete',
+      name: 'selectedChange',
+      message: `Select change to revert to in ${selectedPackage}:`,
+      options: deployedChanges.map(change => ({
+        name: change.change_name,
+        value: change.change_name,
+        description: `Deployed: ${new Date(change.deployed_at).toLocaleString()}`
+      }))
+    }]);
+    const selectedChange = (changeAnswer as any).selectedChange;
+
+    return `${selectedPackage}:${selectedChange}`;
+    
+  } catch (error) {
+    log.error('Failed to query deployed changes:', error);
+    log.info('Falling back to non-interactive mode');
+    return undefined;
+  }
+}
 
 const revertUsageText = `
 LaunchQL Revert Command:
@@ -21,12 +83,14 @@ Options:
   --recursive        Revert recursively through dependencies
   --package <name>   Revert specific package
   --to <target>      Revert to specific change or tag
+  --to               Interactive selection of deployed changes
   --tx               Use transactions (default: true)
   --cwd <directory>  Working directory (default: current directory)
 
 Examples:
   lql revert                    Revert latest changes
   lql revert --to @v1.0.0      Revert to specific tag
+  lql revert --to              Interactive selection from deployed changes
 `;
 
 export default async (
@@ -85,7 +149,14 @@ export default async (
   });
   
   let target: string | undefined;
-  if (packageName && argv.to) {
+  
+  if (argv.to === true) {
+    target = await selectDeployedChange(database, prompter, log);
+    if (!target) {
+      log.info('No target selected, operation cancelled.');
+      return argv;
+    }
+  } else if (packageName && argv.to) {
     target = `${packageName}:${argv.to}`;
   } else if (packageName) {
     target = packageName;
