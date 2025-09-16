@@ -1,4 +1,4 @@
-import { mkdirSync,mkdtempSync, writeFileSync } from 'fs';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
@@ -49,7 +49,27 @@ describe('local tracking guard for deployed/skipped', () => {
     } as any);
 
     expect(res.deployed).toContain(changeName);
-    expect(res.deployed.every((n) => !n.includes(':'))).toBe(true);
+    expect(res.deployed.every((n: string) => !n.includes(':'))).toBe(true);
   });
 
+  it('throws error on cross-package qualified names', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'lql-core-test-'));
+    const packageName = 'pkgA';
+    const changeName = 'change1';
+
+    const plan = [`%project=${packageName}`, `${changeName}`].join('\n');
+
+    mkdirSync(join(dir, 'deploy'), { recursive: true });
+    writeFileSync(join(dir, 'launchql.plan'), plan);
+    writeFileSync(join(dir, 'deploy', `${changeName}.sql`), 'select 1;');
+
+    const migrator = new LaunchQLMigrate(
+      { host: 'localhost', port: 5432, user: 'postgres', database: 'postgres', password: 'postgres' } as any,
+      {}
+    );
+
+    expect(() => {
+      (migrator as any).toUnqualifiedLocal('pkgA', 'pkgB:change1');
+    }).toThrow('Cross-package change encountered in local tracking: pkgB:change1 (current package: pkgA)');
+  });
 });
