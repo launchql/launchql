@@ -3,11 +3,12 @@ import { Logger } from '@launchql/logger';
 import { getEnvOptions } from '@launchql/env';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
-
 import { getTargetDatabase } from '../utils';
-import { selectPackage } from '../utils/module-utils';
+import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-changes';
+import { cliExitWithError } from '../utils/cli-error';
 
 const log = new Logger('revert');
+
 
 const revertUsageText = `
 LaunchQL Revert Command:
@@ -21,12 +22,14 @@ Options:
   --recursive        Revert recursively through dependencies
   --package <name>   Revert specific package
   --to <target>      Revert to specific change or tag
+  --to               Interactive selection of deployed changes
   --tx               Use transactions (default: true)
   --cwd <directory>  Working directory (default: current directory)
 
 Examples:
   lql revert                    Revert latest changes
   lql revert --to @v1.0.0      Revert to specific tag
+  lql revert --to              Interactive selection from deployed changes
 `;
 
 export default async (
@@ -71,8 +74,11 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive) {
-    packageName = await selectPackage(argv, prompter, cwd, 'revert', log);
+  if (recursive && argv.to !== true) {
+    packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
+    if (!packageName) {
+      await cliExitWithError('No package found to revert');
+    }
   }
 
   const pkg = new LaunchQLPackage(cwd);
@@ -85,7 +91,13 @@ export default async (
   });
   
   let target: string | undefined;
-  if (packageName && argv.to) {
+  
+  if (argv.to === true) {
+    target = await selectDeployedChange(database, argv, prompter, log, 'revert');
+    if (!target) {
+      await cliExitWithError('No target selected, operation cancelled');
+    }
+  } else if (packageName && argv.to) {
     target = `${packageName}:${argv.to}`;
   } else if (packageName) {
     target = packageName;

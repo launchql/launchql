@@ -5,6 +5,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
+import { cliExitWithError } from '../utils/cli-error';
 
 const log = new Logger('remove');
 
@@ -15,9 +16,7 @@ export default async (
 ) => {
   
   if (!argv.to) {
-    log.error('Error: No change specified');
-    log.info('Usage: lql remove --to <change>');
-    process.exit(1);
+    await cliExitWithError('No change specified. Usage: lql remove --to <change>');
   }
 
   const database = await getTargetDatabase(argv, prompter, {
