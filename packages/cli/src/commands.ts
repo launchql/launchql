@@ -1,6 +1,7 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { teardownPgPools } from 'pg-cache';
+import { validateCommonArgs } from './utils/argv';
 
 // Commands
 import add from './commands/add';
@@ -123,5 +124,5 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   await commandFn(newArgv, prompter, options);
   prompter.close();
 
-  return argv;
+  return newArgv;
 };
