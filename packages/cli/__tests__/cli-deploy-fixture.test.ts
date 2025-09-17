@@ -66,8 +66,8 @@ describe('CLIDeployTestFixture', () => {
   it('should emulate terminal commands with database operations', async () => {
     const terminalCommands = `
       cd packages/
-      lql deploy --recursive --database ${testDb.name} --yes --package my-first
-      lql revert --recursive --database ${testDb.name} --yes --package my-first
+      lql deploy --no-recursive --database ${testDb.name} --yes --package my-first
+      lql revert --no-recursive --database ${testDb.name} --yes --package my-first
     `;
     
     const results = await fixture.runTerminalCommands(terminalCommands, {
@@ -82,14 +82,14 @@ describe('CLIDeployTestFixture', () => {
     expect(results[1].type).toBe('cli');
     expect(results[1].result.argv._).toContain('deploy');
     expect(results[1].result.argv.database).toBe(testDb.name);
-    expect(results[1].result.argv.recursive).toBe(true);
+    expect(results[1].result.argv.recursive).toBe(false);
     expect(results[1].result.argv.yes).toBe(true);
     expect(results[1].result.argv.package).toBe('my-first');
     
     expect(results[2].type).toBe('cli');
     expect(results[2].result.argv._).toContain('revert');
     expect(results[2].result.argv.database).toBe(testDb.name);
-    expect(results[2].result.argv.recursive).toBe(true);
+    expect(results[2].result.argv.recursive).toBe(false);
     expect(results[2].result.argv.yes).toBe(true);
     expect(results[2].result.argv.package).toBe('my-first');
   });
@@ -97,7 +97,7 @@ describe('CLIDeployTestFixture', () => {
   it('should work with fixture directories like sqitch-w-tags', async () => {
     const commands = `
       cd packages/
-      lql deploy --recursive --database test_db --createdb --yes --package my-first
+      lql deploy --no-recursive --database test_db --createdb --yes --package my-first
     `;
     
     const results = await fixture.runTerminalCommands(commands, {
@@ -112,7 +112,7 @@ describe('CLIDeployTestFixture', () => {
     expect(results[1].type).toBe('cli');
     expect(results[1].result.argv._).toContain('deploy');
     expect(results[1].result.argv.database).toBe('test_db');
-    expect(results[1].result.argv.recursive).toBe(true);
+    expect(results[1].result.argv.recursive).toBe(false);
     expect(results[1].result.argv.yes).toBe(true);
     expect(results[1].result.argv.package).toBe('my-first');
   });

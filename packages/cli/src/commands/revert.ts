@@ -19,7 +19,8 @@ LaunchQL Revert Command:
 
 Options:
   --help, -h         Show this help message
-  --recursive        Revert recursively through dependencies
+  --recursive        Revert recursively through dependencies (default: true)
+  --no-recursive     Disable recursive revert
   --package <name>   Revert specific package
   --to <target>      Revert to specific change or tag
   --to               Interactive selection of deployed changes
@@ -63,6 +64,12 @@ export default async (
       required: false
     }
   ];
+
+  if (argv.recursive === undefined && !argv['no-recursive']) {
+    argv.recursive = true;
+  } else if (argv['no-recursive']) {
+    argv.recursive = false;
+  }
 
   let { yes, recursive, cwd, tx } = await prompter.prompt(argv, questions);
 

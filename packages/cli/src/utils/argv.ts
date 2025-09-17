@@ -46,7 +46,7 @@ export function validateCommonArgs(argv: Partial<ParsedArgs>): ValidatedArgv {
     _: argv._ || []
   };
 
-  const booleanFlags = ['recursive', 'yes', 'tx', 'fast', 'logOnly', 'createdb', 'usePlan', 'cache', 'drop', 'all', 'summary', 'help', 'h'];
+  const booleanFlags = ['recursive', 'no-recursive', 'yes', 'tx', 'fast', 'logOnly', 'createdb', 'usePlan', 'cache', 'drop', 'all', 'summary', 'help', 'h'];
   
   for (const flag of booleanFlags) {
     if (argv[flag] !== undefined && typeof argv[flag] !== 'boolean') {
@@ -62,6 +62,12 @@ export function validateCommonArgs(argv: Partial<ParsedArgs>): ValidatedArgv {
       log.warn(`--${flag} should be a string, converting`);
       validated[flag] = String(argv[flag]);
     }
+  }
+
+  if (validated['no-recursive']) {
+    validated.recursive = false;
+  } else if (validated.recursive === undefined) {
+    validated.recursive = true; // Default to true
   }
 
   return validated;
