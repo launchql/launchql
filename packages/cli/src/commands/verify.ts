@@ -51,7 +51,7 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (argv.to !== true) {
+  if (argv.recursive && argv.to !== true) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
     if (!packageName) {
       await cliExitWithError('No package found to verify');
