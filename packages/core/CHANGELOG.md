@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/launchql/launchql/compare/@launchql/core@2.9.0...@launchql/core@2.10.0) (2025-09-17)
+
+
+### Bug Fixes
+
+* add explicit TypeScript type annotations to mock functions in local-tracking-guard test ([874a53f](https://github.com/launchql/launchql/commit/874a53f2d783b86922486ad7b6a0c636b58183da))
+* resolve TypeScript compilation errors in local-tracking-guard test ([0e1fa0b](https://github.com/launchql/launchql/commit/0e1fa0b94bf463881f8f1bb3cab249d54b142517))
+* use proper mocking patterns instead of real database connections in local-tracking-guard test ([cc7226f](https://github.com/launchql/launchql/commit/cc7226f8d5df1ea21498f01aaa8ef6d3f0be6c1a))
+* use proper pg-env patterns with MigrateTestFixture instead of mocking ([7927856](https://github.com/launchql/launchql/commit/792785637462d148a49cb73ecfd19b41824ec7cd))
+
+
+### Features
+
+* add CLI command for creating database changes ([a44b643](https://github.com/launchql/launchql/commit/a44b643dbba2b93f14aab3828d1c0cc95ee34f6c))
+
+
+
+
+
 # [2.9.0](https://github.com/launchql/launchql/compare/@launchql/core@2.8.0...@launchql/core@2.9.0) (2025-09-04)
 
 **Note:** Version bump only for package @launchql/core

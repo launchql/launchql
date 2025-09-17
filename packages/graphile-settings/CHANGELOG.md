@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/launchql/launchql/compare/graphile-settings@2.3.1...graphile-settings@2.4.0) (2025-09-17)
+
+
+### Features
+
+* add TS version upload postgraphile plugin ([14a5590](https://github.com/launchql/launchql/commit/14a559046bb079702ee7d0fda0ec292da04feb50))
+* **graphile-settings:** use custom graphql postgraphile plugin ([3334817](https://github.com/launchql/launchql/commit/3334817ae26a508351cc7bc43ee8b72cd015d582))
+
+
+
+
+
 ## [2.3.1](https://github.com/launchql/launchql/compare/graphile-settings@2.3.0...graphile-settings@2.3.1) (2025-08-08)
 
 **Note:** Version bump only for package graphile-settings

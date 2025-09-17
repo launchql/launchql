@@ -1,6 +1,6 @@
 {
   "name": "@launchql/env",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "author": "Dan Lynch <Dan Lynch>",
   "description": "LaunchQL environment management",
   "main": "index.js",
@@ -30,7 +30,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "^2.3.0",
+    "@launchql/types": "^2.4.0",
     "deepmerge": "^4.3.1"
   },
   "keywords": [

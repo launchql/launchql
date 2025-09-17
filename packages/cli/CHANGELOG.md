@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.9.0...@launchql/cli@4.10.0) (2025-09-17)
+
+
+### Features
+
+* add CLI command for creating database changes ([a44b643](https://github.com/launchql/launchql/commit/a44b643dbba2b93f14aab3828d1c0cc95ee34f6c))
+
+
+
+
+
 # [4.9.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.8.0...@launchql/cli@4.9.0) (2025-09-04)
 
 **Note:** Version bump only for package @launchql/cli

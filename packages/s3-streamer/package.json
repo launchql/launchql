@@ -1,6 +1,6 @@
 {
   "name": "@launchql/s3-streamer",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "stream files to s3",
   "main": "index.js",
@@ -38,7 +38,7 @@
     "@aws-sdk/client-s3": "^3.600.0",
     "@aws-sdk/lib-storage": "^3.600.0",
     "@launchql/content-type-stream": "^2.3.0",
-    "@launchql/types": "^2.3.0"
+    "@launchql/types": "^2.4.0"
   },
   "keywords": [
     "s3",
