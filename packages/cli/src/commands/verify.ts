@@ -7,6 +7,7 @@ import { getPgEnvOptions } from 'pg-env';
 import { getTargetDatabase } from '../utils';
 import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-changes';
 import { cliExitWithError } from '../utils/cli-error';
+import { validateCommonArgs } from '../utils/argv';
 
 const log = new Logger('verify');
 
@@ -42,17 +43,13 @@ export default async (
     console.log(verifyUsageText);
     process.exit(0);
   }
+  
+  argv = validateCommonArgs(argv);
   const database = await getTargetDatabase(argv, prompter, {
     message: 'Select database'
   });
 
   const questions: Question[] = [];
-
-  if (argv.recursive === undefined && !argv['no-recursive']) {
-    argv.recursive = true;
-  } else if (argv['no-recursive']) {
-    argv.recursive = false;
-  }
 
   let { recursive, cwd } = await prompter.prompt(argv, questions);
 

@@ -11,6 +11,7 @@ import {
 
 import { getTargetDatabase } from '../utils';
 import { selectPackage } from '../utils/module-utils';
+import { validateCommonArgs } from '../utils/argv';
 
 const deployUsageText = `
 LaunchQL Deploy Command:
@@ -50,6 +51,8 @@ export default async (
     console.log(deployUsageText);
     process.exit(0);
   }
+  
+  argv = validateCommonArgs(argv);
   const pgEnv = getPgEnvOptions();
   const log = new Logger('cli');
 
@@ -104,12 +107,6 @@ export default async (
       required: false
     }
   ];
-
-  if (argv.recursive === undefined && !argv['no-recursive']) {
-    argv.recursive = true;
-  } else if (argv['no-recursive']) {
-    argv.recursive = false;
-  }
 
   let { yes, recursive, createdb, cwd, tx, fast, logOnly } = await prompter.prompt(argv, questions);
 
