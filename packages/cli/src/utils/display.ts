@@ -14,6 +14,7 @@ export const usageText = `
          launchql <command> [options]
   
   Core Database Operations:
+    add                Add database changes to plans and create SQL files
     deploy             Deploy database changes and migrations
     verify             Verify database state and migrations
     revert             Revert database changes and migrations

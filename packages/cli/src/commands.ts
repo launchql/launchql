@@ -3,6 +3,7 @@ import { ParsedArgs } from 'minimist';
 import { teardownPgPools } from 'pg-cache';
 
 // Commands
+import add from './commands/add';
 import adminUsers from './commands/admin-users';
 import clear from './commands/clear';
 import deploy from './commands/deploy';
@@ -39,6 +40,7 @@ const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (.
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
   return {
+    add,
     'admin-users': pgt(adminUsers),
     clear: pgt(clear),
     deploy: pgt(deploy),
