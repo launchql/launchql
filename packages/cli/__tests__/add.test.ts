@@ -169,6 +169,26 @@ describe('cmds:add', () => {
     expect(planContent).toContain('api/v1/endpoints');
   });
 
+  it('adds deeply nested path change', async () => {
+    const moduleDir = path.join(fixture.tempDir, 'test-module-deep-nested');
+    await setupModule(moduleDir);
+
+    await runAddTest(
+      {
+        _: ['add', 'schema/myschema/tables/mytable'],
+        cwd: moduleDir
+      },
+      'deeply-nested-path-change'
+    );
+
+    expect(fs.existsSync(path.join(moduleDir, 'deploy', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(moduleDir, 'revert', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(moduleDir, 'verify', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
+
+    const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
+    expect(planContent).toContain('schema/myschema/tables/mytable');
+  });
+
 
   it('shows help when requested', async () => {
     const moduleDir = path.join(fixture.tempDir, 'test-module-help');

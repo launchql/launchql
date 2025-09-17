@@ -85,6 +85,21 @@ describe('Add functionality', () => {
     expect(planContent).toContain('api/v1/endpoints');
   });
 
+  test('addChange with deeply nested path creates directories', () => {
+    const moduleDir = join(fixture.tempDir, 'test-module-deep-nested');
+    setupModule(moduleDir);
+    
+    const pkg = new LaunchQLPackage(moduleDir);
+    pkg.addChange('schema/myschema/tables/mytable');
+    
+    expect(fs.existsSync(join(moduleDir, 'deploy', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
+    expect(fs.existsSync(join(moduleDir, 'revert', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
+    expect(fs.existsSync(join(moduleDir, 'verify', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
+    
+    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    expect(planContent).toContain('schema/myschema/tables/mytable');
+  });
+
   test('addChange validates change name', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-validation');
     setupModule(moduleDir);
