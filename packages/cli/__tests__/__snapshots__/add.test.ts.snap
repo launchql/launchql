@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cmds:add adds change with dependencies: change-with-dependency - argv 1`] = `
+{
+  "_": [
+    "add",
+    "contacts",
+  ],
+  "cwd": "<CWD>",
+  "note": "Adds contacts table",
+  "requires": "users",
+}
+`;
+
+exports[`cmds:add adds change with dependencies: change-with-dependency - files 1`] = `
+[
+  "deploy/contacts.sql",
+  "deploy/users.sql",
+  "launchql.control",
+  "launchql.plan",
+  "revert/contacts.sql",
+  "revert/users.sql",
+  "verify/contacts.sql",
+  "verify/users.sql",
+]
+`;
+
+exports[`cmds:add adds change with dependencies: change-with-dependency - result 1`] = `
+{
+  "_": [
+    "add",
+    "contacts",
+  ],
+  "cwd": "<CWD>",
+  "note": "Adds contacts table",
+  "requires": "users",
+}
+`;
+
+exports[`cmds:add adds change with dependencies: change-with-dependency - transformResults 1`] = `[]`;
+
+exports[`cmds:add adds change with dependencies: change-with-dependency - writeResults 1`] = `[]`;
+
+exports[`cmds:add adds change with dependencies: dependency-change - argv 1`] = `
+{
+  "_": [
+    "add",
+    "users",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add adds change with dependencies: dependency-change - files 1`] = `
+[
+  "deploy/users.sql",
+  "launchql.control",
+  "launchql.plan",
+  "revert/users.sql",
+  "verify/users.sql",
+]
+`;
+
+exports[`cmds:add adds change with dependencies: dependency-change - result 1`] = `
+{
+  "_": [
+    "add",
+    "users",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add adds change with dependencies: dependency-change - transformResults 1`] = `[]`;
+
+exports[`cmds:add adds change with dependencies: dependency-change - writeResults 1`] = `[]`;
+
+exports[`cmds:add adds change with note: change-with-note - argv 1`] = `
+{
+  "_": [
+    "add",
+    "sprockets",
+  ],
+  "cwd": "<CWD>",
+  "note": "Adds the sprockets table",
+}
+`;
+
+exports[`cmds:add adds change with note: change-with-note - files 1`] = `
+[
+  "deploy/sprockets.sql",
+  "launchql.control",
+  "launchql.plan",
+  "revert/sprockets.sql",
+  "verify/sprockets.sql",
+]
+`;
+
+exports[`cmds:add adds change with note: change-with-note - result 1`] = `
+{
+  "_": [
+    "add",
+    "sprockets",
+  ],
+  "cwd": "<CWD>",
+  "note": "Adds the sprockets table",
+}
+`;
+
+exports[`cmds:add adds change with note: change-with-note - transformResults 1`] = `[]`;
+
+exports[`cmds:add adds change with note: change-with-note - writeResults 1`] = `[]`;
+
+exports[`cmds:add adds nested path change: nested-path-change - argv 1`] = `
+{
+  "_": [
+    "add",
+    "api/v1/endpoints",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add adds nested path change: nested-path-change - files 1`] = `
+[
+  "deploy/api/v1/endpoints.sql",
+  "launchql.control",
+  "launchql.plan",
+  "revert/api/v1/endpoints.sql",
+  "verify/api/v1/endpoints.sql",
+]
+`;
+
+exports[`cmds:add adds nested path change: nested-path-change - result 1`] = `
+{
+  "_": [
+    "add",
+    "api/v1/endpoints",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add adds nested path change: nested-path-change - transformResults 1`] = `[]`;
+
+exports[`cmds:add adds nested path change: nested-path-change - writeResults 1`] = `[]`;
+
+exports[`cmds:add adds simple change: simple-change - argv 1`] = `
+{
+  "_": [
+    "add",
+    "widgets",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add adds simple change: simple-change - files 1`] = `
+[
+  "deploy/widgets.sql",
+  "launchql.control",
+  "launchql.plan",
+  "revert/widgets.sql",
+  "verify/widgets.sql",
+]
+`;
+
+exports[`cmds:add adds simple change: simple-change - result 1`] = `
+{
+  "_": [
+    "add",
+    "widgets",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add adds simple change: simple-change - transformResults 1`] = `[]`;
+
+exports[`cmds:add adds simple change: simple-change - writeResults 1`] = `[]`;
+
+exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - argv 1`] = `
+{
+  "_": [
+    "add",
+    "no-transactions",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - files 1`] = `
+[
+  "deploy/no-transactions.sql",
+  "launchql.control",
+  "launchql.plan",
+  "revert/no-transactions.sql",
+  "verify/no-transactions.sql",
+]
+`;
+
+exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - result 1`] = `
+{
+  "_": [
+    "add",
+    "no-transactions",
+  ],
+  "cwd": "<CWD>",
+}
+`;
+
+exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - transformResults 1`] = `[]`;
+
+exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - writeResults 1`] = `[]`;
