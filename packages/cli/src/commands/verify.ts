@@ -51,10 +51,11 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (argv.to === true) {
-  } else if (argv.package) {
-    packageName = argv.package;
-  } else {
+  if (argv.to !== true) {
+    packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
+    if (!packageName) {
+      await cliExitWithError('No package found to verify');
+    }
   }
 
   const project = new LaunchQLPackage(cwd);

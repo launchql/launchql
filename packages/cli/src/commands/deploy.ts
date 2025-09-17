@@ -120,11 +120,7 @@ export default async (
   }
 
   let packageName: string | undefined;
-  if (argv.package) {
-    packageName = argv.package;
-  } else {
-    packageName = await selectPackage(argv, prompter, cwd, 'deploy', log);
-  }
+  packageName = await selectPackage(argv, prompter, cwd, 'deploy', log);
 
   const cliOverrides = {
     pg: getPgEnvOptions({ database }),
