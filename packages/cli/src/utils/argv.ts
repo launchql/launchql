@@ -66,6 +66,7 @@ export function validateCommonArgs(argv: Partial<ParsedArgs>): ValidatedArgv {
 
   if (validated['no-recursive']) {
     validated.recursive = false;
+    delete validated['no-recursive']; // Clean up the flag
   } else if (validated.recursive === undefined) {
     validated.recursive = true; // Default to true
   }

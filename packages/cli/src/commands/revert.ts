@@ -39,13 +39,13 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  argv = validateCommonArgs(argv);
+  
   // Show usage if explicitly requested
   if (argv.help || argv.h) {
     console.log(revertUsageText);
     process.exit(0);
   }
-  
-  argv = validateCommonArgs(argv);
   
   const database = await getTargetDatabase(argv, prompter, {
     message: 'Select database'

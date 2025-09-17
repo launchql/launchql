@@ -46,13 +46,13 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
+  argv = validateCommonArgs(argv);
+  
   // Show usage if explicitly requested
   if (argv.help || argv.h) {
     console.log(deployUsageText);
     process.exit(0);
   }
-  
-  argv = validateCommonArgs(argv);
   const pgEnv = getPgEnvOptions();
   const log = new Logger('cli');
 

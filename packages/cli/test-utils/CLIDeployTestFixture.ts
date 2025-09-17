@@ -230,6 +230,12 @@ export class CLIDeployTestFixture extends TestFixture {
       }
     }
     
+    // Handle --no-recursive flag specifically
+    if (argv['no-recursive']) {
+      argv.recursive = false;
+      delete argv['no-recursive'];
+    }
+    
     return argv;
   }
 
@@ -254,9 +260,9 @@ export class CLIDeployTestFixture extends TestFixture {
       }
     };
 
-    await commands(argv, prompter, options);
+    const processedArgv = await commands(argv, prompter, options);
 
-    return { argv };
+    return { argv: processedArgv };
   }
 
   async cleanup(): Promise<void> {
