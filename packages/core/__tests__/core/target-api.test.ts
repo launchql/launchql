@@ -68,36 +68,33 @@ describe('LaunchQLPackage Target API', () => {
 
     test('deploys with project-only target', async () => {
       const mockDeploy = jest.spyOn(project as any, 'deploy');
-      mockDeploy.mockImplementation(async (opts, target, recursive) => {
+      mockDeploy.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets');
-        expect(recursive).toBe(true);
       });
 
-      await project.deploy({} as any, 'secrets', true);
+      await project.deploy({} as any, 'secrets');
       expect(mockDeploy).toHaveBeenCalled();
       mockDeploy.mockRestore();
     });
 
     test('deploys with project:change target', async () => {
       const mockDeploy = jest.spyOn(project as any, 'deploy');
-      mockDeploy.mockImplementation(async (opts, target, recursive) => {
+      mockDeploy.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets:procedures/secretfunction');
-        expect(recursive).toBe(true);
       });
 
-      await project.deploy({} as any, 'secrets:procedures/secretfunction', true);
+      await project.deploy({} as any, 'secrets:procedures/secretfunction');
       expect(mockDeploy).toHaveBeenCalled();
       mockDeploy.mockRestore();
     });
 
     test('deploys with project:@tag target', async () => {
       const mockDeploy = jest.spyOn(project as any, 'deploy');
-      mockDeploy.mockImplementation(async (opts, target, recursive) => {
+      mockDeploy.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets:@v1.0.0');
-        expect(recursive).toBe(true);
       });
 
-      await project.deploy({} as any, 'secrets:@v1.0.0', true);
+      await project.deploy({} as any, 'secrets:@v1.0.0');
       expect(mockDeploy).toHaveBeenCalled();
       mockDeploy.mockRestore();
     });
@@ -113,36 +110,33 @@ describe('LaunchQLPackage Target API', () => {
 
     test('reverts with project-only target', async () => {
       const mockRevert = jest.spyOn(project as any, 'revert');
-      mockRevert.mockImplementation(async (opts, target, recursive) => {
+      mockRevert.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets');
-        expect(recursive).toBe(true);
       });
 
-      await project.revert({} as any, 'secrets', true);
+      await project.revert({} as any, 'secrets');
       expect(mockRevert).toHaveBeenCalled();
       mockRevert.mockRestore();
     });
 
     test('reverts with project:change target', async () => {
       const mockRevert = jest.spyOn(project as any, 'revert');
-      mockRevert.mockImplementation(async (opts, target, recursive) => {
+      mockRevert.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets:procedures/secretfunction');
-        expect(recursive).toBe(true);
       });
 
-      await project.revert({} as any, 'secrets:procedures/secretfunction', true);
+      await project.revert({} as any, 'secrets:procedures/secretfunction');
       expect(mockRevert).toHaveBeenCalled();
       mockRevert.mockRestore();
     });
 
     test('reverts with project:@tag target', async () => {
       const mockRevert = jest.spyOn(project as any, 'revert');
-      mockRevert.mockImplementation(async (opts, target, recursive) => {
+      mockRevert.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets:@v1.0.0');
-        expect(recursive).toBe(true);
       });
 
-      await project.revert({} as any, 'secrets:@v1.0.0', true);
+      await project.revert({} as any, 'secrets:@v1.0.0');
       expect(mockRevert).toHaveBeenCalled();
       mockRevert.mockRestore();
     });
@@ -158,36 +152,33 @@ describe('LaunchQLPackage Target API', () => {
 
     test('verifies with project-only target', async () => {
       const mockVerify = jest.spyOn(project as any, 'verify');
-      mockVerify.mockImplementation(async (opts, target, recursive) => {
+      mockVerify.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets');
-        expect(recursive).toBe(true);
       });
 
-      await project.verify({} as any, 'secrets', true);
+      await project.verify({} as any, 'secrets');
       expect(mockVerify).toHaveBeenCalled();
       mockVerify.mockRestore();
     });
 
     test('verifies with project:change target', async () => {
       const mockVerify = jest.spyOn(project as any, 'verify');
-      mockVerify.mockImplementation(async (opts, target, recursive) => {
+      mockVerify.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets:procedures/secretfunction');
-        expect(recursive).toBe(true);
       });
 
-      await project.verify({} as any, 'secrets:procedures/secretfunction', true);
+      await project.verify({} as any, 'secrets:procedures/secretfunction');
       expect(mockVerify).toHaveBeenCalled();
       mockVerify.mockRestore();
     });
 
     test('verifies with project:@tag target', async () => {
       const mockVerify = jest.spyOn(project as any, 'verify');
-      mockVerify.mockImplementation(async (opts, target, recursive) => {
+      mockVerify.mockImplementation(async (opts, target) => {
         expect(target).toBe('secrets:@v1.0.0');
-        expect(recursive).toBe(true);
       });
 
-      await project.verify({} as any, 'secrets:@v1.0.0', true);
+      await project.verify({} as any, 'secrets:@v1.0.0');
       expect(mockVerify).toHaveBeenCalled();
       mockVerify.mockRestore();
     });
@@ -203,36 +194,33 @@ describe('LaunchQLPackage Target API', () => {
 
     test('deploy works without target parameter (uses context)', async () => {
       const mockDeploy = jest.spyOn(project as any, 'deploy');
-      mockDeploy.mockImplementation(async (opts, target, recursive) => {
+      mockDeploy.mockImplementation(async (opts, target) => {
         expect(target).toBeUndefined();
-        expect(recursive).toBe(true);
       });
 
-      await project.deploy({} as any, undefined, true);
+      await project.deploy({} as any, undefined);
       expect(mockDeploy).toHaveBeenCalled();
       mockDeploy.mockRestore();
     });
 
     test('revert works without target parameter (uses context)', async () => {
       const mockRevert = jest.spyOn(project as any, 'revert');
-      mockRevert.mockImplementation(async (opts, target, recursive) => {
+      mockRevert.mockImplementation(async (opts, target) => {
         expect(target).toBeUndefined();
-        expect(recursive).toBe(true);
       });
 
-      await project.revert({} as any, undefined, true);
+      await project.revert({} as any, undefined);
       expect(mockRevert).toHaveBeenCalled();
       mockRevert.mockRestore();
     });
 
     test('verify works without target parameter (uses context)', async () => {
       const mockVerify = jest.spyOn(project as any, 'verify');
-      mockVerify.mockImplementation(async (opts, target, recursive) => {
+      mockVerify.mockImplementation(async (opts, target) => {
         expect(target).toBeUndefined();
-        expect(recursive).toBe(true);
       });
 
-      await project.verify({} as any, undefined, true);
+      await project.verify({} as any, undefined);
       expect(mockVerify).toHaveBeenCalled();
       mockVerify.mockRestore();
     });

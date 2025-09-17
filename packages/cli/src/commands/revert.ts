@@ -19,7 +19,6 @@ LaunchQL Revert Command:
 
 Options:
   --help, -h         Show this help message
-  --recursive        Revert recursively through dependencies
   --package <name>   Revert specific package
   --to <target>      Revert to specific change or tag
   --to               Interactive selection of deployed changes
@@ -64,7 +63,7 @@ export default async (
     }
   ];
 
-  let { yes, recursive, cwd, tx } = await prompter.prompt(argv, questions);
+  let { yes, cwd, tx } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -74,7 +73,7 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive && argv.to !== true) {
+  if (argv.to !== true) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
     if (!packageName) {
       await cliExitWithError('No package found to revert');
@@ -109,8 +108,7 @@ export default async (
   
   await pkg.revert(
     opts,
-    target,
-    recursive
+    target
   );
 
   log.success('Revert complete.');

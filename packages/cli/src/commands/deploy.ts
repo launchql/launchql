@@ -22,7 +22,6 @@ LaunchQL Deploy Command:
 Options:
   --help, -h         Show this help message
   --createdb         Create database if it doesn't exist
-  --recursive        Deploy recursively through dependencies
   --package <name>   Target specific package
   --to <target>      Deploy to specific change or tag
   --tx               Use transactions (default: true)
@@ -104,7 +103,7 @@ export default async (
     }
   ];
 
-  let { yes, recursive, createdb, cwd, tx, fast, logOnly } = await prompter.prompt(argv, questions);
+  let { yes, createdb, cwd, tx, fast, logOnly } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -121,9 +120,7 @@ export default async (
   }
 
   let packageName: string | undefined;
-  if (recursive) {
-    packageName = await selectPackage(argv, prompter, cwd, 'deploy', log);
-  }
+  packageName = await selectPackage(argv, prompter, cwd, 'deploy', log);
 
   const cliOverrides = {
     pg: getPgEnvOptions({ database }),
@@ -153,8 +150,7 @@ export default async (
   
   await project.deploy(
     opts,
-    target,
-    recursive
+    target
   );
 
   log.success('Deployment complete.');

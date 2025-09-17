@@ -19,7 +19,6 @@ LaunchQL Verify Command:
 
 Options:
   --help, -h         Show this help message
-  --recursive        Verify recursively through dependencies
   --package <name>   Verify specific package
   --to <target>      Verify up to specific change or tag
   --to               Interactive selection of deployed changes
@@ -47,12 +46,12 @@ export default async (
 
   const questions: Question[] = [];
 
-  let { recursive, cwd } = await prompter.prompt(argv, questions);
+  let { cwd } = await prompter.prompt(argv, questions);
 
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive && argv.to !== true) {
+  if (argv.to !== true) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
     if (!packageName) {
       await cliExitWithError('No package found to verify');
@@ -84,8 +83,7 @@ export default async (
   
   await project.verify(
     opts,
-    target,
-    recursive
+    target
   );
 
   log.success('Verify complete.');

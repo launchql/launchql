@@ -132,12 +132,6 @@ export const errors = {
     400
   ),
 
-  WORKSPACE_OPERATION_ERROR: makeError(
-    'WORKSPACE_OPERATION_ERROR',
-    ({ operation }: { operation: string }) => 
-      `Cannot perform non-recursive ${operation} on workspace. Use recursive=true or specify a target module.`,
-    400
-  ),
 
   FILE_NOT_FOUND: makeError(
     'FILE_NOT_FOUND',

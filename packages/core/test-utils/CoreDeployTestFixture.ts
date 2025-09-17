@@ -44,7 +44,7 @@ export class CoreDeployTestFixture extends TestFixture {
         }
       });
 
-      await project.deploy(opts, target, true);
+      await project.deploy(opts, target);
     } finally {
       process.chdir(originalCwd);
     }
@@ -61,7 +61,7 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      await project.revert(opts, target, true);
+      await project.revert(opts, target);
     } finally {
       process.chdir(originalCwd);
     }
@@ -80,7 +80,7 @@ export class CoreDeployTestFixture extends TestFixture {
         pg: getPgEnvOptions({ database })
       });
 
-      await project.verify(opts, target, true);
+      await project.verify(opts, target);
     } finally {
       process.chdir(originalCwd);
     }

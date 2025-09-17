@@ -920,155 +920,128 @@ export class LaunchQLPackage {
 
   async deploy(
     opts: LaunchQLOptions,
-    target?: string,
-    recursive: boolean = true
+    target?: string
   ): Promise<void> {
     const log = new Logger('deploy');
 
     const { name, toChange } = this.parsePackageTarget(target);
 
-    if (recursive) {
-      // Cache for fast deployment
-      const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
+    // Cache for fast deployment
+    const deployFastCache: Record<string, Awaited<ReturnType<typeof packageModule>>> = {};
 
-      const getCacheKey = (
-        pg: PgConfig,
-        name: string,
-        database: string
-      ): string => {
-        const { host, port, user } = pg ?? {};
-        return `${host}:${port}:${user}:${database}:${name}`;
-      };
+    const getCacheKey = (
+      pg: PgConfig,
+      name: string,
+      database: string
+    ): string => {
+      const { host, port, user } = pg ?? {};
+      return `${host}:${port}:${user}:${database}:${name}`;
+    };
 
-      const modules = this.getModuleMap();
-      
-      let extensions: { resolved: string[]; external: string[] };
-      
-      if (name === null) {
-        // When name is null, deploy ALL modules in the workspace
-        extensions = await this.resolveWorkspaceExtensionDependencies();
-      } else {
-        const moduleProject = this.getModuleProject(name);
-        extensions = moduleProject.getModuleExtensions();
-      }
+    const modules = this.getModuleMap();
+    
+    let extensions: { resolved: string[]; external: string[] };
+    
+    if (name === null) {
+      // When name is null, deploy ALL modules in the workspace
+      extensions = await this.resolveWorkspaceExtensionDependencies();
+    } else {
+      const moduleProject = this.getModuleProject(name);
+      extensions = moduleProject.getModuleExtensions();
+    }
 
-      const pgPool = getPgPool(opts.pg);
+    const pgPool = getPgPool(opts.pg);
 
-      const targetDescription = name === null ? 'all modules' : name;
-      log.success(`🚀 Starting deployment to database ${opts.pg.database}...`);
+    const targetDescription = name === null ? 'all modules' : name;
+    log.success(`🚀 Starting deployment to database ${opts.pg.database}...`);
 
-      for (const extension of extensions.resolved) {
-        try {
-          if (extensions.external.includes(extension)) {
-            const msg = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
-            log.info(`📥 Installing external extension: ${extension}`);
-            await pgPool.query(msg);
-          } else {
-            const modulePath = resolve(this.workspacePath!, modules[extension].path);
-            log.info(`📂 Deploying local module: ${extension}`);
+    for (const extension of extensions.resolved) {
+      try {
+        if (extensions.external.includes(extension)) {
+          const msg = `CREATE EXTENSION IF NOT EXISTS "${extension}" CASCADE;`;
+          log.info(`📥 Installing external extension: ${extension}`);
+          await pgPool.query(msg);
+        } else {
+          const modulePath = resolve(this.workspacePath!, modules[extension].path);
+          log.info(`📂 Deploying local module: ${extension}`);
 
-            if (opts.deployment.fast) {
-              const localProject = this.getModuleProject(extension);
-              const cacheKey = getCacheKey(opts.pg as PgConfig, extension, opts.pg.database);
+          if (opts.deployment.fast) {
+            const localProject = this.getModuleProject(extension);
+            const cacheKey = getCacheKey(opts.pg as PgConfig, extension, opts.pg.database);
+          
+            if (opts.deployment.cache && deployFastCache[cacheKey]) {
+              log.warn(`⚡ Using cached pkg for ${extension}.`);
+              await pgPool.query(deployFastCache[cacheKey].sql);
+              continue;
+            }
+
+            let pkg;
+            try {
+              pkg = await packageModule(localProject.modulePath, { 
+                usePlan: opts.deployment.usePlan, 
+                extension: false 
+              });
+            } catch (err: any) {
+              const errorLines = [];
+              errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
+              errorLines.push(`   Module Path: ${modulePath}`);
+              errorLines.push(`   Workspace Path: ${this.workspacePath}`);
+              errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
+              errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
             
-              if (opts.deployment.cache && deployFastCache[cacheKey]) {
-                log.warn(`⚡ Using cached pkg for ${extension}.`);
-                await pgPool.query(deployFastCache[cacheKey].sql);
-                continue;
+              if (err.code === 'ENOENT') {
+                errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
+              } else if (err.code === 'EACCES') {
+                errorLines.push('💡 Hint: Permission denied. Check file permissions.');
+              } else if (err.message && err.message.includes('launchql.plan')) {
+                errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
               }
+            
+              log.error(errorLines.join('\n'));
+              console.error(err);
+              throw errors.DEPLOYMENT_FAILED({ 
+                type: 'Deployment', 
+                module: extension
+              });
+            }
 
-              let pkg;
-              try {
-                pkg = await packageModule(localProject.modulePath, { 
-                  usePlan: opts.deployment.usePlan, 
-                  extension: false 
-                });
-              } catch (err: any) {
-                const errorLines = [];
-                errorLines.push(`❌ Failed to package module "${extension}" at path: ${modulePath}`);
-                errorLines.push(`   Module Path: ${modulePath}`);
-                errorLines.push(`   Workspace Path: ${this.workspacePath}`);
-                errorLines.push(`   Error Code: ${err.code || 'N/A'}`);
-                errorLines.push(`   Error Message: ${err.message || 'Unknown error'}`);
-              
-                if (err.code === 'ENOENT') {
-                  errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
-                } else if (err.code === 'EACCES') {
-                  errorLines.push('💡 Hint: Permission denied. Check file permissions.');
-                } else if (err.message && err.message.includes('launchql.plan')) {
-                  errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
-                }
-              
-                log.error(errorLines.join('\n'));
-                console.error(err);
-                throw errors.DEPLOYMENT_FAILED({ 
-                  type: 'Deployment', 
-                  module: extension
-                });
-              }
+            await pgPool.query(pkg.sql);
 
-              await pgPool.query(pkg.sql);
-
-              if (opts.deployment.cache) {
-                deployFastCache[cacheKey] = pkg;
+            if (opts.deployment.cache) {
+              deployFastCache[cacheKey] = pkg;
+            }
+          } else {
+            try {
+              const client = new LaunchQLMigrate(opts.pg as PgConfig);
+            
+              // Only apply toChange to the target module, not its dependencies
+              const moduleToChange = extension === name ? toChange : undefined;
+              const result = await client.deploy({
+                modulePath,
+                toChange: moduleToChange,
+                useTransaction: opts.deployment.useTx,
+                logOnly: opts.deployment.logOnly,
+                usePlan: opts.deployment.usePlan
+              });
+            
+              if (result.failed) {
+                throw errors.OPERATION_FAILED({ operation: 'Deployment', target: result.failed });
               }
-            } else {
-              try {
-                const client = new LaunchQLMigrate(opts.pg as PgConfig);
-              
-                // Only apply toChange to the target module, not its dependencies
-                const moduleToChange = extension === name ? toChange : undefined;
-                const result = await client.deploy({
-                  modulePath,
-                  toChange: moduleToChange,
-                  useTransaction: opts.deployment.useTx,
-                  logOnly: opts.deployment.logOnly,
-                  usePlan: opts.deployment.usePlan
-                });
-              
-                if (result.failed) {
-                  throw errors.OPERATION_FAILED({ operation: 'Deployment', target: result.failed });
-                }
-              } catch (deployError) {
-                log.error(`❌ Deployment failed for module ${extension}`);
-                console.error(deployError);
-                throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
-              }
+            } catch (deployError) {
+              log.error(`❌ Deployment failed for module ${extension}`);
+              console.error(deployError);
+              throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
             }
           }
-        } catch (err) {
-          log.error(`🛑 Error during deployment: ${err instanceof Error ? err.message : err}`);
-          console.error(err);
-          throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
         }
+      } catch (err) {
+        log.error(`🛑 Error during deployment: ${err instanceof Error ? err.message : err}`);
+        console.error(err);
+        throw errors.DEPLOYMENT_FAILED({ type: 'Deployment', module: extension });
       }
-
-      log.success(`✅ Deployment complete for ${targetDescription}.`);
-    } else {
-      if (name === null) {
-        throw errors.WORKSPACE_OPERATION_ERROR({ operation: 'deployment' });
-      }
-      const moduleProject = this.getModuleProject(name);
-      const modulePath = moduleProject.getModulePath();
-      if (!modulePath) {
-        throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
-      }
-
-      const client = new LaunchQLMigrate(opts.pg as PgConfig);
-      const result = await client.deploy({
-        modulePath,
-        toChange,
-        useTransaction: opts.deployment?.useTx,
-        logOnly: opts.deployment?.logOnly,
-        usePlan: opts.deployment?.usePlan
-      });
-
-      if (result.failed) {
-        throw errors.OPERATION_FAILED({ operation: 'Deployment', target: result.failed });
-      }
-
-      log.success(`✅ Single module deployment complete for ${name}.`);
     }
+
+    log.success(`✅ Deployment complete for ${targetDescription}.`);
   }
 
   /**
@@ -1078,196 +1051,149 @@ export class LaunchQLPackage {
    */
   async revert(
     opts: LaunchQLOptions,
-    target?: string,
-    recursive: boolean = true
+    target?: string
   ): Promise<void> {
     const log = new Logger('revert');
 
     const { name, toChange } = this.parsePackageTarget(target);
 
-    if (recursive) {
-      const modules = this.getModuleMap();
-      
-      // Mirror deploy logic: find all modules that depend on the target module
-      let extensionsToRevert: { resolved: string[]; external: string[] };
-      
-      if (name === null) {
-        // When name is null, revert ALL deployed modules in the workspace
-        extensionsToRevert = await this.resolveWorkspaceExtensionDependencies({
-          filterDeployed: true,
-          pgConfig: opts.pg as PgConfig
-        });
-      } else {
-        // Always use workspace-wide resolution in recursive mode, but filter to deployed modules
-        const workspaceExtensions = await this.resolveWorkspaceExtensionDependencies({
-          filterDeployed: true,
-          pgConfig: opts.pg as PgConfig
-        });
-        extensionsToRevert = truncateExtensionsToTarget(workspaceExtensions, name);
-      }
+    const modules = this.getModuleMap();
+    
+    // Mirror deploy logic: find all modules that depend on the target module
+    let extensionsToRevert: { resolved: string[]; external: string[] };
+    
+    if (name === null) {
+      // When name is null, revert ALL deployed modules in the workspace
+      extensionsToRevert = await this.resolveWorkspaceExtensionDependencies({
+        filterDeployed: true,
+        pgConfig: opts.pg as PgConfig
+      });
+    } else {
+      // Always use workspace-wide resolution in recursive mode, but filter to deployed modules
+      const workspaceExtensions = await this.resolveWorkspaceExtensionDependencies({
+        filterDeployed: true,
+        pgConfig: opts.pg as PgConfig
+      });
+      extensionsToRevert = truncateExtensionsToTarget(workspaceExtensions, name);
+    }
 
-      const pgPool = getPgPool(opts.pg);
+    const targetDescription = name === null ? 'all modules' : name;
+    log.success(`🔄 Starting revert of ${targetDescription} on database ${opts.pg.database}...`);
 
-      const targetDescription = name === null ? 'all modules' : name;
-      log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
+    const reversedExtensions = [...extensionsToRevert.resolved].reverse();
 
-      const reversedExtensions = [...extensionsToRevert.resolved].reverse();
-
-      for (const extension of reversedExtensions) {
-        try {
-          if (extensionsToRevert.external.includes(extension)) {
-            const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
-            log.warn(`⚠️ Dropping external extension: ${extension}`);
-            try {
-              await pgPool.query(msg);
-            } catch (err: any) {
-              if (err.code === '2BP01') {
-                log.warn(`⚠️ Cannot drop extension ${extension} due to dependencies, skipping`);
-              } else {
-                throw err;
-              }
-            }
-          } else {
-            const modulePath = resolve(this.workspacePath!, modules[extension].path);
-            log.info(`📂 Reverting local module: ${extension}`);
-          
-            try {
-              const client = new LaunchQLMigrate(opts.pg as PgConfig);
-            
-              // Only apply toChange to the target module, not its dependencies
-              const moduleToChange = extension === name ? toChange : undefined;
-              const result = await client.revert({
-                modulePath,
-                toChange: moduleToChange,
-                useTransaction: opts.deployment.useTx
-              });
-            
-              if (result.failed) {
-                throw errors.OPERATION_FAILED({ operation: 'Revert', target: result.failed });
-              }
-            } catch (revertError) {
-              log.error(`❌ Revert failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+    for (const extension of reversedExtensions) {
+      try {
+        if (extensionsToRevert.external.includes(extension)) {
+          const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
+          log.warn(`⚠️ Dropping external extension: ${extension}`);
+          try {
+            const pgPool = getPgPool(opts.pg);
+            await pgPool.query(msg);
+          } catch (err: any) {
+            if (err.code === '2BP01') {
+              log.warn(`⚠️ Cannot drop extension ${extension} due to dependencies, skipping`);
+            } else {
+              throw err;
             }
           }
-        } catch (e) {
-          log.error(`🛑 Error during revert: ${e instanceof Error ? e.message : e}`);
-          console.error(e);
-          throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+        } else {
+          const modulePath = resolve(this.workspacePath!, modules[extension].path);
+          log.info(`📂 Reverting local module: ${extension}`);
+        
+          try {
+            const client = new LaunchQLMigrate(opts.pg as PgConfig);
+          
+            // Only apply toChange to the target module, not its dependencies
+            const moduleToChange = extension === name ? toChange : undefined;
+            const result = await client.revert({
+              modulePath,
+              toChange: moduleToChange,
+              useTransaction: opts.deployment.useTx
+            });
+          
+            if (result.failed) {
+              throw errors.OPERATION_FAILED({ operation: 'Revert', target: result.failed });
+            }
+          } catch (revertError) {
+            log.error(`❌ Revert failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
+          }
         }
+      } catch (e) {
+        log.error(`🛑 Error during revert: ${e instanceof Error ? e.message : e}`);
+        console.error(e);
+        throw errors.DEPLOYMENT_FAILED({ type: 'Revert', module: extension });
       }
-
-      log.success(`✅ Revert complete for ${targetDescription}.`);
-    } else {
-      if (name === null) {
-        throw errors.WORKSPACE_OPERATION_ERROR({ operation: 'revert' });
-      }
-      const moduleProject = this.getModuleProject(name);
-      const modulePath = moduleProject.getModulePath();
-      if (!modulePath) {
-        throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
-      }
-
-      const client = new LaunchQLMigrate(opts.pg as PgConfig);
-      const result = await client.revert({
-        modulePath,
-        toChange,
-        useTransaction: opts.deployment?.useTx
-      });
-
-      if (result.failed) {
-        throw errors.OPERATION_FAILED({ operation: 'Revert', target: result.failed });
-      }
-
-      log.success(`✅ Single module revert complete for ${name}.`);
     }
+
+    log.success(`✅ Revert complete for ${targetDescription}.`);
   }
 
   async verify(
     opts: LaunchQLOptions,
-    target?: string,
-    recursive: boolean = true
+    target?: string
   ): Promise<void> {
     const log = new Logger('verify');
 
     const { name, toChange } = this.parsePackageTarget(target);
 
-    if (recursive) {
-      const modules = this.getModuleMap();
-      
-      let extensions: { resolved: string[]; external: string[] };
-      
-      if (name === null) {
-        // When name is null, verify ALL modules in the workspace
-        extensions = await this.resolveWorkspaceExtensionDependencies();
-      } else {
-        const moduleProject = this.getModuleProject(name);
-        extensions = moduleProject.getModuleExtensions();
-      }
-
-      const pgPool = getPgPool(opts.pg);
-
-      const targetDescription = name === null ? 'all modules' : name;
-      log.success(`🔎 Verifying deployment of ${targetDescription} on database ${opts.pg.database}...`);
-
-      for (const extension of extensions.resolved) {
-        try {
-          if (extensions.external.includes(extension)) {
-            const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
-            log.info(`🔍 Verifying external extension: ${extension}`);
-            await pgPool.query(query, [extension]);
-          } else {
-            const modulePath = resolve(this.workspacePath!, modules[extension].path);
-            log.info(`📂 Verifying local module: ${extension}`);
-
-            try {
-              const client = new LaunchQLMigrate(opts.pg as PgConfig);
-            
-              // Only apply toChange to the target module, not its dependencies
-              const moduleToChange = extension === name ? toChange : undefined;
-              const result = await client.verify({
-                modulePath,
-                toChange: moduleToChange
-              });
-            
-              if (result.failed.length > 0) {
-                throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
-              }
-            } catch (verifyError) {
-              log.error(`❌ Verification failed for module ${extension}`);
-              throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
-            }
-          }
-        } catch (e) {
-          log.error(`🛑 Error during verification: ${e instanceof Error ? e.message : e}`);
-          console.error(e);
-          throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
-        }
-      }
-
-      log.success(`✅ Verification complete for ${targetDescription}.`);
+    const modules = this.getModuleMap();
+    
+    let extensions: { resolved: string[]; external: string[] };
+    
+    if (name === null) {
+      // When name is null, verify ALL modules in the workspace
+      extensions = await this.resolveWorkspaceExtensionDependencies();
     } else {
-      if (name === null) {
-        throw errors.WORKSPACE_OPERATION_ERROR({ operation: 'verification' });
-      }
       const moduleProject = this.getModuleProject(name);
-      const modulePath = moduleProject.getModulePath();
-      if (!modulePath) {
-        throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
-      }
-
-      const client = new LaunchQLMigrate(opts.pg as PgConfig);
-      const result = await client.verify({
-        modulePath,
-        toChange
-      });
-
-      if (result.failed.length > 0) {
-        throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
-      }
-
-      log.success(`✅ Single module verification complete for ${name}.`);
+      extensions = moduleProject.getModuleExtensions();
     }
+
+    const pgPool = getPgPool(opts.pg);
+
+    const targetDescription = name === null ? 'all modules' : name;
+    log.success(`🔎 Verifying deployment of ${targetDescription} on database ${opts.pg.database}...`);
+
+    for (const extension of extensions.resolved) {
+      try {
+        if (extensions.external.includes(extension)) {
+          const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
+          log.info(`🔍 Verifying external extension: ${extension}`);
+          await pgPool.query(query, [extension]);
+          log.success(`✅ External extension verified: ${extension}`);
+        } else {
+          const modulePath = resolve(this.workspacePath!, modules[extension].path);
+          log.info(`📂 Verifying local module: ${extension}`);
+
+          try {
+            const client = new LaunchQLMigrate(opts.pg as PgConfig);
+          
+            // Only apply toChange to the target module, not its dependencies
+            const moduleToChange = extension === name ? toChange : undefined;
+            const result = await client.verify({
+              modulePath,
+              toChange: moduleToChange
+            });
+          
+            if (result.failed.length > 0) {
+              throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
+            }
+
+            log.success(`✅ Verification complete for ${extension}.`);
+          } catch (verifyError) {
+            log.error(`❌ Verification failed for module ${extension}`);
+            throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
+          }
+        }
+      } catch (e) {
+        log.error(`🛑 Error during verification: ${e instanceof Error ? e.message : e}`);
+        console.error(e);
+        throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
+      }
+    }
+
+    log.success(`✅ Verification complete for ${targetDescription}.`);
   }
 
   async removeFromPlan(toChange: string): Promise<void> {
