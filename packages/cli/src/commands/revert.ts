@@ -73,11 +73,10 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (argv.to !== true && !argv.package) {
-    packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
-    if (!packageName) {
-      await cliExitWithError('No package found to revert');
-    }
+  if (argv.to === true) {
+  } else if (argv.package) {
+    packageName = argv.package;
+  } else {
   }
 
   const pkg = new LaunchQLPackage(cwd);

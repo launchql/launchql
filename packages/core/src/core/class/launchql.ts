@@ -1077,8 +1077,10 @@ export class LaunchQLPackage {
       extensionsToRevert = truncateExtensionsToTarget(workspaceExtensions, name);
     }
 
+    const pgPool = getPgPool(opts.pg);
+
     const targetDescription = name === null ? 'all modules' : name;
-    log.success(`🔄 Starting revert of ${targetDescription} on database ${opts.pg.database}...`);
+    log.success(`🧹 Starting revert process on database ${opts.pg.database}...`);
 
     const reversedExtensions = [...extensionsToRevert.resolved].reverse();
 
@@ -1088,7 +1090,6 @@ export class LaunchQLPackage {
           const msg = `DROP EXTENSION IF EXISTS "${extension}" RESTRICT;`;
           log.warn(`⚠️ Dropping external extension: ${extension}`);
           try {
-            const pgPool = getPgPool(opts.pg);
             await pgPool.query(msg);
           } catch (err: any) {
             if (err.code === '2BP01') {
@@ -1100,7 +1101,7 @@ export class LaunchQLPackage {
         } else {
           const modulePath = resolve(this.workspacePath!, modules[extension].path);
           log.info(`📂 Reverting local module: ${extension}`);
-        
+
           try {
             const client = new LaunchQLMigrate(opts.pg as PgConfig);
           
@@ -1161,7 +1162,6 @@ export class LaunchQLPackage {
           const query = `SELECT 1/count(*) FROM pg_available_extensions WHERE name = $1`;
           log.info(`🔍 Verifying external extension: ${extension}`);
           await pgPool.query(query, [extension]);
-          log.success(`✅ External extension verified: ${extension}`);
         } else {
           const modulePath = resolve(this.workspacePath!, modules[extension].path);
           log.info(`📂 Verifying local module: ${extension}`);
@@ -1179,8 +1179,6 @@ export class LaunchQLPackage {
             if (result.failed.length > 0) {
               throw errors.OPERATION_FAILED({ operation: 'Verification', reason: `${result.failed.length} changes: ${result.failed.join(', ')}` });
             }
-
-            log.success(`✅ Verification complete for ${extension}.`);
           } catch (verifyError) {
             log.error(`❌ Verification failed for module ${extension}`);
             throw errors.DEPLOYMENT_FAILED({ type: 'Verify', module: extension });
