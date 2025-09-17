@@ -21,8 +21,8 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql add widgets                                    Add change named 'widgets'
-  lql add sprockets --note "Adds the sprockets table"  Add change with note
+  lql add organizations                                    Add change named 'organizations'
+  lql add brands --note "Adds the brands table"  Add change with note
   lql add contacts --requires users --note "Adds contacts table"  Add with dependency
   lql add be/a/path/like/this                        Add change with nested path
 `;

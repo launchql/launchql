@@ -79,20 +79,20 @@ exports[`cmds:add adds change with note: change-with-note - argv 1`] = `
 {
   "_": [
     "add",
-    "sprockets",
+    "brands",
   ],
   "cwd": "<CWD>",
-  "note": "Adds the sprockets table",
+  "note": "Adds the brands table",
 }
 `;
 
 exports[`cmds:add adds change with note: change-with-note - files 1`] = `
 [
-  "deploy/sprockets.sql",
+  "deploy/brands.sql",
   "launchql.control",
   "launchql.plan",
-  "revert/sprockets.sql",
-  "verify/sprockets.sql",
+  "revert/brands.sql",
+  "verify/brands.sql",
 ]
 `;
 
@@ -100,10 +100,10 @@ exports[`cmds:add adds change with note: change-with-note - result 1`] = `
 {
   "_": [
     "add",
-    "sprockets",
+    "brands",
   ],
   "cwd": "<CWD>",
-  "note": "Adds the sprockets table",
+  "note": "Adds the brands table",
 }
 `;
 
@@ -183,7 +183,7 @@ exports[`cmds:add adds simple change: simple-change - argv 1`] = `
 {
   "_": [
     "add",
-    "widgets",
+    "organizations",
   ],
   "cwd": "<CWD>",
 }
@@ -191,11 +191,11 @@ exports[`cmds:add adds simple change: simple-change - argv 1`] = `
 
 exports[`cmds:add adds simple change: simple-change - files 1`] = `
 [
-  "deploy/widgets.sql",
+  "deploy/organizations.sql",
   "launchql.control",
   "launchql.plan",
-  "revert/widgets.sql",
-  "verify/widgets.sql",
+  "revert/organizations.sql",
+  "verify/organizations.sql",
 ]
 `;
 
@@ -203,7 +203,7 @@ exports[`cmds:add adds simple change: simple-change - result 1`] = `
 {
   "_": [
     "add",
-    "widgets",
+    "organizations",
   ],
   "cwd": "<CWD>",
 }

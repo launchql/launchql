@@ -87,18 +87,18 @@ describe('cmds:add', () => {
 
     await runAddTest(
       {
-        _: ['add', 'widgets'],
+        _: ['add', 'organizations'],
         cwd: moduleDir
       },
       'simple-change'
     );
 
-    expect(fs.existsSync(path.join(moduleDir, 'deploy', 'widgets.sql'))).toBe(true);
-    expect(fs.existsSync(path.join(moduleDir, 'revert', 'widgets.sql'))).toBe(true);
-    expect(fs.existsSync(path.join(moduleDir, 'verify', 'widgets.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(moduleDir, 'deploy', 'organizations.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(moduleDir, 'revert', 'organizations.sql'))).toBe(true);
+    expect(fs.existsSync(path.join(moduleDir, 'verify', 'organizations.sql'))).toBe(true);
 
     const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
-    expect(planContent).toContain('widgets');
+    expect(planContent).toContain('organizations');
   });
 
   it('adds change with note', async () => {
@@ -107,16 +107,16 @@ describe('cmds:add', () => {
 
     await runAddTest(
       {
-        _: ['add', 'sprockets'],
+        _: ['add', 'brands'],
         cwd: moduleDir,
-        note: 'Adds the sprockets table'
+        note: 'Adds the brands table'
       },
       'change-with-note'
     );
 
     const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
-    expect(planContent).toContain('sprockets');
-    expect(planContent).toContain('Adds the sprockets table');
+    expect(planContent).toContain('brands');
+    expect(planContent).toContain('Adds the brands table');
   });
 
   it('adds change with dependencies', async () => {

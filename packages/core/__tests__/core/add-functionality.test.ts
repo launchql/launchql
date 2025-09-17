@@ -41,14 +41,14 @@ describe('Add functionality', () => {
     setupModule(moduleDir);
     
     const pkg = new LaunchQLPackage(moduleDir);
-    pkg.addChange('widgets');
+    pkg.addChange('organizations');
     
     const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
-    expect(planContent).toContain('widgets');
+    expect(planContent).toContain('organizations');
     
-    expect(fs.existsSync(join(moduleDir, 'deploy', 'widgets.sql'))).toBe(true);
-    expect(fs.existsSync(join(moduleDir, 'revert', 'widgets.sql'))).toBe(true);
-    expect(fs.existsSync(join(moduleDir, 'verify', 'widgets.sql'))).toBe(true);
+    expect(fs.existsSync(join(moduleDir, 'deploy', 'organizations.sql'))).toBe(true);
+    expect(fs.existsSync(join(moduleDir, 'revert', 'organizations.sql'))).toBe(true);
+    expect(fs.existsSync(join(moduleDir, 'verify', 'organizations.sql'))).toBe(true);
   });
 
   test('addChange with dependencies validates and includes them', () => {
@@ -118,9 +118,9 @@ describe('Add functionality', () => {
     
     const pkg = new LaunchQLPackage(moduleDir);
     
-    pkg.addChange('widgets');
+    pkg.addChange('organizations');
     
-    expect(() => pkg.addChange('widgets')).toThrow("Change 'widgets' already exists in plan");
+    expect(() => pkg.addChange('organizations')).toThrow("Change 'organizations' already exists in plan");
   });
 
   test('addChange validates dependencies exist', () => {
@@ -138,7 +138,7 @@ describe('Add functionality', () => {
     
     const pkg = new LaunchQLPackage(nonModuleDir);
     
-    expect(() => pkg.addChange('widgets')).toThrow('This command must be run inside a LaunchQL workspace or module');
+    expect(() => pkg.addChange('organizations')).toThrow('This command must be run inside a LaunchQL workspace or module');
   });
 
   test('addChange creates SQL files without transaction statements', () => {
