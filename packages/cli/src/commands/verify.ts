@@ -56,11 +56,19 @@ export default async (
     }
   ];
 
+  const explicitRecursive = argv.recursive === true;
+
   let { cwd, recursive } = await prompter.prompt(argv, questions);
 
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
+  if (explicitRecursive && argv.to !== true) {
+    packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
+    if (!packageName) {
+      await cliExitWithError('No package found to verify');
+    }
+  }
 
   const project = new LaunchQLPackage(cwd);
   

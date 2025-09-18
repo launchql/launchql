@@ -72,6 +72,8 @@ export default async (
     }
   ];
 
+  const explicitRecursive = argv.recursive === true;
+
   let { yes, cwd, recursive, tx } = await prompter.prompt(argv, questions);
 
   if (!yes) {
@@ -82,6 +84,12 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
+  if (explicitRecursive && argv.to !== true) {
+    packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
+    if (!packageName) {
+      await cliExitWithError('No package found to revert');
+    }
+  }
 
   const pkg = new LaunchQLPackage(cwd);
   
