@@ -76,7 +76,7 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive && argv.to !== true && argv.package) {
+  if (argv.package) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
     if (!packageName) {
       await cliExitWithError('No package found to revert');
