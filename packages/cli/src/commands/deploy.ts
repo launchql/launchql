@@ -22,7 +22,7 @@ LaunchQL Deploy Command:
 Options:
   --help, -h         Show this help message
   --createdb         Create database if it doesn't exist
-  --recursive        Deploy recursively through dependencies
+  --no-recursive     Disable recursive deployment through dependencies
   --package <name>   Target specific package
   --to <target>      Deploy to specific change or tag
   --tx               Use transactions (default: true)
@@ -100,6 +100,14 @@ export default async (
       message: 'Log-only mode (skip script execution)?',
       useDefault: true,
       default: false,
+      required: false
+    },
+    {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Deploy recursively through dependencies?',
+      useDefault: true,
+      default: true,
       required: false
     }
   ];

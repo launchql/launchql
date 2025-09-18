@@ -19,7 +19,7 @@ LaunchQL Revert Command:
 
 Options:
   --help, -h         Show this help message
-  --recursive        Revert recursively through dependencies
+  --no-recursive     Disable recursive revert through dependencies
   --package <name>   Revert specific package
   --to <target>      Revert to specific change or tag
   --to               Interactive selection of deployed changes
@@ -58,6 +58,14 @@ export default async (
       name: 'tx',
       type: 'confirm',
       message: 'Use Transaction?',
+      useDefault: true,
+      default: true,
+      required: false
+    },
+    {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Revert recursively through dependencies?',
       useDefault: true,
       default: true,
       required: false

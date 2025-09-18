@@ -66,8 +66,8 @@ describe('CLIDeployTestFixture', () => {
   it('should emulate terminal commands with database operations', async () => {
     const terminalCommands = `
       cd packages/
-      lql deploy --recursive --database ${testDb.name} --yes --package my-first
-      lql revert --recursive --database ${testDb.name} --yes --package my-first
+      lql deploy --database ${testDb.name} --yes --package my-first
+      lql revert --database ${testDb.name} --yes --package my-first
     `;
     
     const results = await fixture.runTerminalCommands(terminalCommands, {
@@ -97,7 +97,7 @@ describe('CLIDeployTestFixture', () => {
   it('should work with fixture directories like sqitch-w-tags', async () => {
     const commands = `
       cd packages/
-      lql deploy --recursive --database test_db --createdb --yes --package my-first
+      lql deploy --database test_db --createdb --yes --package my-first
     `;
     
     const results = await fixture.runTerminalCommands(commands, {

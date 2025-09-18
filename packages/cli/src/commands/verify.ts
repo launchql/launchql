@@ -19,7 +19,7 @@ LaunchQL Verify Command:
 
 Options:
   --help, -h         Show this help message
-  --recursive        Verify recursively through dependencies
+  --no-recursive     Disable recursive verify through dependencies
   --package <name>   Verify specific package
   --to <target>      Verify up to specific change or tag
   --to               Interactive selection of deployed changes
@@ -45,7 +45,16 @@ export default async (
     message: 'Select database'
   });
 
-  const questions: Question[] = [];
+  const questions: Question[] = [
+    {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Verify recursively through dependencies?',
+      useDefault: true,
+      default: true,
+      required: false
+    }
+  ];
 
   let { recursive, cwd } = await prompter.prompt(argv, questions);
 
