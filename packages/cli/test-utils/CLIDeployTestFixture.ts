@@ -236,6 +236,10 @@ export class CLIDeployTestFixture extends TestFixture {
       }
     }
     
+    if (argv.recursive === undefined) {
+      argv.recursive = true;
+    }
+    
     return argv;
   }
 
