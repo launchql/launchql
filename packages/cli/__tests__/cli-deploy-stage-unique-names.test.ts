@@ -23,7 +23,7 @@ describe('CLIDeployTestFixture Migrate', () => {
 
   it('should emulate terminal commands with database operations', async () => {
     const terminalCommands = `
-      lql deploy --recursive --database ${testDb.name} --yes --no-usePlan --package unique-names
+      lql deploy --database ${testDb.name} --yes --no-usePlan --package unique-names
     `;
     
     const results = await fixture.runTerminalCommands(terminalCommands, {
@@ -35,7 +35,7 @@ describe('CLIDeployTestFixture Migrate', () => {
 
   it('should emulate terminal commands with database operations usePlan', async () => {
     const terminalCommands = `
-      lql deploy --recursive --database ${testDb.name} --yes --usePlan --package unique-names
+      lql deploy --database ${testDb.name} --yes --usePlan --package unique-names
     `;
     
     const results = await fixture.runTerminalCommands(terminalCommands, {

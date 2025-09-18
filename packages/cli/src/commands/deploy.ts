@@ -22,7 +22,7 @@ LaunchQL Deploy Command:
 Options:
   --help, -h         Show this help message
   --createdb         Create database if it doesn't exist
-  --recursive        Deploy recursively through dependencies
+  --no-recursive     Disable recursive deployment through dependencies
   --package <name>   Target specific package
   --to <target>      Deploy to specific change or tag
   --tx               Use transactions (default: true)
@@ -79,6 +79,14 @@ export default async (
       required: true
     },
     {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Deploy recursively through dependencies?',
+      useDefault: true,
+      default: true,
+      required: false
+    },
+    {
       name: 'tx',
       type: 'confirm',
       message: 'Use Transaction?',
@@ -104,7 +112,7 @@ export default async (
     }
   ];
 
-  let { yes, recursive, createdb, cwd, tx, fast, logOnly } = await prompter.prompt(argv, questions);
+  let { yes, createdb, cwd, recursive, tx, fast, logOnly } = await prompter.prompt(argv, questions);
 
   if (!yes) {
     log.info('Operation cancelled.');

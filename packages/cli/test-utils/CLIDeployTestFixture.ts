@@ -217,7 +217,13 @@ export class CLIDeployTestFixture extends TestFixture {
       
       if (token.startsWith('--')) {
         const key = token.substring(2);
-        if (i + 1 < tokens.length && !tokens[i + 1].startsWith('--')) {
+        
+        // Handle --no-* flags by setting the base property to false
+        if (key.startsWith('no-')) {
+          const baseKey = key.substring(3);
+          argv[baseKey] = false;
+          i += 1;
+        } else if (i + 1 < tokens.length && !tokens[i + 1].startsWith('--')) {
           argv[key] = tokens[i + 1];
           i += 2;
         } else {
@@ -228,6 +234,10 @@ export class CLIDeployTestFixture extends TestFixture {
         argv._.push(token);
         i += 1;
       }
+    }
+    
+    if (argv.recursive === undefined) {
+      argv.recursive = true;
     }
     
     return argv;
