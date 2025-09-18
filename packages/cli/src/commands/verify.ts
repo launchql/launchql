@@ -45,18 +45,11 @@ export default async (
     message: 'Select database'
   });
 
-  const questions: Question[] = [
-    {
-      name: 'recursive',
-      type: 'confirm',
-      message: 'Verify recursively through dependencies?',
-      useDefault: true,
-      default: true,
-      required: false
-    }
-  ];
+  const questions: Question[] = [];
 
-  let { recursive, cwd } = await prompter.prompt(argv, questions);
+  let { cwd } = await prompter.prompt(argv, questions);
+  
+  const recursive = argv.recursive !== false;
 
   log.debug(`Using current directory: ${cwd}`);
 

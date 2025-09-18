@@ -61,18 +61,12 @@ export default async (
       useDefault: true,
       default: true,
       required: false
-    },
-    {
-      name: 'recursive',
-      type: 'confirm',
-      message: 'Revert recursively through dependencies?',
-      useDefault: true,
-      default: true,
-      required: false
     }
   ];
 
-  let { yes, recursive, cwd, tx } = await prompter.prompt(argv, questions);
+  let { yes, cwd, tx } = await prompter.prompt(argv, questions);
+  
+  const recursive = argv.recursive !== false;
 
   if (!yes) {
     log.info('Operation cancelled.');
@@ -82,7 +76,7 @@ export default async (
   log.debug(`Using current directory: ${cwd}`);
 
   let packageName: string | undefined;
-  if (recursive && argv.to !== true) {
+  if (recursive && argv.to !== true && argv.package) {
     packageName = await selectDeployedPackage(database, argv, prompter, log, 'revert');
     if (!packageName) {
       await cliExitWithError('No package found to revert');
