@@ -45,7 +45,16 @@ export default async (
     message: 'Select database'
   });
 
-  const questions: Question[] = [];
+  const questions: Question[] = [
+    {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Deploy recursively through dependencies?',
+      useDefault: true,
+      default: true,
+      required: false
+    },
+  ];
 
   let { recursive, cwd } = await prompter.prompt(argv, questions);
 

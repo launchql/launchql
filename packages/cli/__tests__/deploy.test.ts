@@ -90,7 +90,7 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'myfirstapp.users')).toBe(true);
     expect(await testDb.exists('table', 'myfirstapp.products')).toBe(true);
     
-    const revertCommands = `lql revert --database $database --yes`;
+    const revertCommands = `lql revert --database $database  --package my-first --yes`;
     await fixture.runTerminalCommands(revertCommands, {
       database: testDb.name
     }, true);
@@ -98,5 +98,23 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('schema', 'myfirstapp')).toBe(false);
     expect(await testDb.exists('table', 'myfirstapp.users')).toBe(false);
     expect(await testDb.exists('table', 'myfirstapp.products')).toBe(false);
+  });
+
+
+  it('should deploy with --no-recursive flag', async () => {
+    const commands = `lql deploy --database ${testDb.name} --package my-first --no-recursive --yes`;
+    
+    await fixture.runTerminalCommands(commands, {
+      database: testDb.name
+    }, true);
+    
+    expect(await testDb.exists('schema', 'myfirstapp')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.users')).toBe(true);
+    expect(await testDb.exists('table', 'myfirstapp.products')).toBe(true);
+    
+    const deployedChanges = await testDb.getDeployedChanges();
+    expect(deployedChanges.some((change: any) => change.package === 'my-first')).toBe(true);
+    expect(deployedChanges.find((change: any) => change.package === 'my-second')).toBeFalsy();
+    expect(deployedChanges.find((change: any) => change.package === 'my-third')).toBeFalsy();
   });
 });
