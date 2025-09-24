@@ -79,6 +79,14 @@ export default async (
       required: true
     },
     {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Deploy recursively through dependencies?',
+      useDefault: true,
+      default: true,
+      required: false
+    },
+    {
       name: 'tx',
       type: 'confirm',
       message: 'Use Transaction?',

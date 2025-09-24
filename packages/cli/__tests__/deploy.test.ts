@@ -90,7 +90,7 @@ describe('CLI Deploy Command', () => {
     expect(await testDb.exists('table', 'myfirstapp.users')).toBe(true);
     expect(await testDb.exists('table', 'myfirstapp.products')).toBe(true);
     
-    const revertCommands = `lql revert --database $database --yes`;
+    const revertCommands = `lql revert --database $database  --package my-first --yes`;
     await fixture.runTerminalCommands(revertCommands, {
       database: testDb.name
     }, true);

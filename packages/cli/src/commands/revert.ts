@@ -55,6 +55,14 @@ export default async (
       required: true
     },
     {
+      name: 'recursive',
+      type: 'confirm',
+      message: 'Deploy recursively through dependencies?',
+      useDefault: true,
+      default: true,
+      required: false
+    },
+    {
       name: 'tx',
       type: 'confirm',
       message: 'Use Transaction?',
@@ -65,7 +73,7 @@ export default async (
   ];
 
   let { yes, recursive, cwd, tx } = await prompter.prompt(argv, questions);
-
+  
   if (!yes) {
     log.info('Operation cancelled.');
     return;
