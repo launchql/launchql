@@ -37,6 +37,7 @@
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.12.7",
+    "@types/semver": "^7.7.0",
     "@types/shelljs": "^0.8.16",
     "ts-node": "^10.9.2"
   },
@@ -54,6 +55,7 @@
     "minimist": "^1.2.8",
     "pg-cache": "^1.2.0",
     "pg-env": "^1.1.0",
+    "semver": "^7.7.2",
     "shelljs": "^0.9.2"
   },
   "resolutions": {
