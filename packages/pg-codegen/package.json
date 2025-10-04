@@ -1,6 +1,6 @@
 {
   "name": "pg-codegen",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Codegen",
   "main": "index.js",
@@ -41,10 +41,10 @@
   "dependencies": {
     "@babel/generator": "^7.26.3",
     "@babel/types": "^7.26.3",
-    "@launchql/server-utils": "^2.3.0",
-    "@launchql/types": "^2.4.0",
+    "@launchql/server-utils": "^2.4.0",
+    "@launchql/types": "^2.5.0",
     "pg": "^8.16.0",
-    "pgsql-test": "^2.9.0"
+    "pgsql-test": "^2.10.0"
   },
   "devDependencies": {
     "@types/pg": "^8.15.2"
