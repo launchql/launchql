@@ -9,6 +9,7 @@ import {
 
 import { DbAdmin } from './admin';
 import { PgTestConnector } from './manager';
+import { getDefaultRole } from './roles';
 import { seed } from './seed';
 import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
@@ -19,7 +20,7 @@ export const getPgRootAdmin = (connOpts: PgTestConnectionOptions = {}) => {
   const opts = getPgEnvOptions({
     database: connOpts.rootDb
   });
-  const admin = new DbAdmin(opts);
+  const admin = new DbAdmin(opts, false, connOpts);
   return admin;
 };
 
@@ -65,7 +66,7 @@ export const getConnections = async (
     connOpts.rootDb
   );
 
-  const admin = new DbAdmin(config as PgConfig);
+  const admin = new DbAdmin(config as PgConfig, false, connOpts);
   
   if (process.env.TEST_DB) {
     config.database = process.env.TEST_DB;
@@ -106,7 +107,7 @@ export const getConnections = async (
     user: connOpts.connection.user,
     password: connOpts.connection.password
   });
-  db.setContext({ role: 'anonymous' });
+  db.setContext({ role: getDefaultRole(connOpts) });
 
   return { pg, db, teardown, manager, admin };
 };
