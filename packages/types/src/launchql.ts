@@ -19,6 +19,22 @@ export interface PgTestConnectionOptions {
     cwd?: string;
     /** Database connection credentials */
     connection?: DatabaseConnectionOptions;
+    /** Role mapping configuration */
+    roles?: RoleMapping;
+}
+
+/**
+ * Role mapping configuration for database security
+ */
+export interface RoleMapping {
+    /** Anonymous (unauthenticated) role name */
+    anonymous?: string;
+    /** Authenticated user role name */
+    authenticated?: string;
+    /** Administrator role name */
+    administrator?: string;
+    /** Default role for new connections */
+    default?: string;
 }
 
 /**
@@ -205,6 +221,12 @@ export const launchqlDefaults: LaunchQLOptions = {
       user: 'app_user',
       password: 'app_password',
       role: 'anonymous'
+    },
+    roles: {
+      anonymous: 'anonymous',
+      authenticated: 'authenticated',
+      administrator: 'administrator',
+      default: 'anonymous'
     }
   },
   pg: {

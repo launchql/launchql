@@ -1,8 +1,10 @@
 import { Logger } from '@launchql/logger';
+import { PgTestConnectionOptions } from '@launchql/types';
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import { getPgEnvOptions, PgConfig } from 'pg-env';
 
+import { getRoleName } from './roles';
 import { SeedAdapter } from './seed/types';
 import { streamSql as stream } from './stream';
 
@@ -11,7 +13,8 @@ const log = new Logger('db-admin');
 export class DbAdmin {
   constructor(
     private config: PgConfig,
-    private verbose: boolean = false
+    private verbose: boolean = false,
+    private roleConfig?: PgTestConnectionOptions
   ) {
     this.config = getPgEnvOptions(config);
   }
@@ -113,13 +116,16 @@ export class DbAdmin {
   }
 
   async createUserRole(user: string, password: string, dbName: string): Promise<void> {
+    const anonRole = getRoleName('anonymous', this.roleConfig);
+    const authRole = getRoleName('authenticated', this.roleConfig);
+    
     const sql = `
       DO $$
       BEGIN
         IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${user}') THEN
           CREATE ROLE ${user} LOGIN PASSWORD '${password}';
-          GRANT anonymous TO ${user};
-          GRANT authenticated TO ${user};
+          GRANT ${anonRole} TO ${user};
+          GRANT ${authRole} TO ${user};
         END IF;
       END $$;
     `.trim();
