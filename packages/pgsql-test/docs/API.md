@@ -745,7 +745,124 @@ const { db, teardown } = await getConnections({
 
 ---
 
+### Option 6: Dual Connection Helper
+
+**API:**
+```typescript
+const { pg, db, connections, teardown } = await getConnections();
+
+// Use the helper to manage both connections
+beforeEach(async () => {
+  await connections.beforeEach();  // Manages both pg and db internally
+});
+
+afterEach(async () => {
+  await connections.afterEach();   // Rolls back both pg and db
+});
+```
+
+**Pros:**
+- ✅ Eliminates duplication when using dual connection strategy
+- ✅ No risk of forgetting to roll back one connection
+- ✅ Clean, single API call
+- ✅ Avoids global scope name collision issues
+- ✅ Backward compatible - `pg` and `db` still available individually
+
+**Cons:**
+- ⚠️ Only useful for Scenario A (dual connection with both rolled back)
+- ⚠️ Not needed for Scenario C (recommended pattern where only `db` is rolled back)
+- ⚠️ Adds another return value to destructure
+- ⚠️ May encourage dual connection anti-pattern
+
+**Default Behavior Impact:**
+- New optional return value: `connections` helper
+- If not destructured, no change to existing behavior
+- When used, calls both `pg.beforeEach()` and `db.beforeEach()` internally
+
+**Implementation Complexity:** ⭐⭐ (Medium)
+- Create a `ConnectionManager` class that wraps both clients
+- Implement `beforeEach()`, `afterEach()`, `begin()`, `commit()`, `rollback()` methods
+- Each method delegates to both underlying clients
+- Return from `getConnections()` alongside existing values
+
+**Implementation Sketch:**
+```typescript
+class ConnectionManager {
+  constructor(private pg: PgTestClient, private db: PgTestClient) {}
+  
+  async beforeEach(): Promise<void> {
+    await this.pg.beforeEach();
+    await this.db.beforeEach();
+  }
+  
+  async afterEach(): Promise<void> {
+    await this.pg.afterEach();
+    await this.db.afterEach();
+  }
+  
+  async begin(): Promise<void> {
+    await this.pg.begin();
+    await this.db.begin();
+  }
+  
+  async commit(): Promise<void> {
+    await this.pg.commit();
+    await this.db.commit();
+  }
+  
+  async rollback(): Promise<void> {
+    await this.pg.rollback();
+    await this.db.rollback();
+  }
+}
+```
+
+**Example Usage:**
+```typescript
+// Scenario A with helper - cleanest dual connection management
+const { pg, db, connections, teardown } = await getConnections();
+
+beforeEach(async () => {
+  await connections.beforeEach();  // Both pg and db start transactions
+});
+
+afterEach(async () => {
+  await connections.afterEach();   // Both pg and db roll back
+});
+
+it('test with proper isolation', async () => {
+  // Insert via pg
+  await pg.query('INSERT INTO users (email) VALUES ($1)', ['alice@example.com']);
+  
+  // Insert via db
+  await db.query('INSERT INTO products (name) VALUES ($1)', ['Laptop']);
+  
+  // Both will be rolled back automatically
+});
+
+// Can still use pg and db individually when needed
+it('test with selective operations', async () => {
+  await connections.beforeEach();
+  
+  await pg.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');  // pg only
+  await db.query('SELECT * FROM products');  // db only
+  
+  await connections.afterEach();
+});
+```
+
+**When to Use:**
+- ✅ Scenario A (strict privilege separation, both connections need rollback)
+- ❌ Scenario C (recommended - only `db` needs rollback, `pg` used in `beforeAll`)
+- ❌ Scenario B (single connection - no need for helper)
+
+**Note:** This helper is specifically for the dual connection rollback pattern. For most use cases, **Scenario C is still recommended** where you only manage `db` transactions and use `pg` sparingly in `beforeAll` for setup.
+
+---
+
 ### Comparison Matrix
+
+**Options 1-5: Role Configuration**
 
 | Criterion | Option 1: `dbRoles` | Option 2: `grantAdmin` | Option 3: `userLevel` | Option 4: Callback | Option 5: Flags |
 |-----------|-------------------|---------------------|---------------------|-------------------|----------------|
@@ -756,6 +873,11 @@ const { db, teardown } = await getConnections({
 | **Common Case** | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
 | **Implementation** | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
 | **TypeScript DX** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+
+**Option 6: Dual Connection Helper** (orthogonal to Options 1-5)
+- **Purpose:** Simplifies Scenario A (dual connection with both rolled back)
+- **Use Case:** Only relevant when using both `pg` and `db` with independent transactions
+- **Recommendation:** Most users should use Scenario C instead, making this helper unnecessary
 
 ### Recommendation Request
 

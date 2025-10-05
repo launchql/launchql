@@ -268,31 +268,33 @@ it('should start clean', async () => {
 
 ## Visibility Between Connections
 
-### Uncommitted Changes Are Visible
+### Uncommitted Changes Are NOT Visible Between Connections
 
-Even though `pg` and `db` are separate connections, they can see each other's **uncommitted** changes within their transactions:
+**IMPORTANT:** `pg` and `db` are separate connections, and they **CANNOT** see each other's uncommitted changes. This is standard PostgreSQL READ COMMITTED isolation behavior:
 
 ```typescript
-it('demonstrates visibility', async () => {
+it('demonstrates isolation', async () => {
   await pg.begin();
   await db.begin();
   
   // Insert via pg (uncommitted)
   await pg.query('INSERT INTO users (email) VALUES ($1)', ['alice@example.com']);
   
-  // db CAN see pg's uncommitted change
+  // db CANNOT see pg's uncommitted change
   const users = await db.any('SELECT * FROM users');
-  expect(users.length).toBe(1);  // ✅ Can see it!
+  expect(users.length).toBe(0);  // ❌ Cannot see uncommitted data!
   
-  // But if pg rolls back, it's gone
-  await pg.rollback();
+  // For db to see the data, pg would need to COMMIT
+  await pg.commit();
   
   const usersAfter = await db.any('SELECT * FROM users');
-  expect(usersAfter.length).toBe(0);  // ✅ Gone after pg rollback
+  expect(usersAfter.length).toBe(1);  // ✅ Now visible (committed)
+  
+  // But COMMIT breaks rollback - the data persists!
 });
 ```
 
-This is standard PostgreSQL behavior: connections can see uncommitted changes from other connections unless isolation levels prevent it (default is READ COMMITTED).
+This is standard PostgreSQL behavior: under READ COMMITTED isolation (the default), connections can only see **COMMITTED** data from other sessions. This is why **single connection strategy is strongly recommended** for most testing scenarios.
 
 ## RLS Testing with setContext()
 
@@ -405,14 +407,15 @@ See [VISIBILITY-EXAMPLE.md](./VISIBILITY-EXAMPLE.md) for detailed examples.
 
 1. **`pg` and `db` are separate, independent connections** with their own transaction states
 2. **Rolling back one does NOT roll back the other** - you must explicitly manage both
-3. **`pg` and `db` CAN read each other's data** - they're separate connections to the same database
-4. **Use `db` for almost everything** - including RLS testing via `setContext()` role switching
-5. **Use `pg` only for true superuser operations** like `CREATE EXTENSION`
-6. **For RLS testing with single connection:**
+3. **`pg` and `db` CANNOT read each other's uncommitted data** - READ COMMITTED isolation prevents this
+4. **For data sharing, COMMIT is required, which breaks rollback** - this is why dual connection is not recommended for data sharing
+5. **Use `db` for almost everything** - including RLS testing via `setContext()` role switching
+6. **Use `pg` only for true superuser operations** like `CREATE EXTENSION` in `beforeAll`
+7. **For RLS testing with single connection:**
    - Use `db.setContext({ role: 'administrator' })` to bypass RLS for setup
    - Use `db.setContext({ role: 'authenticated', ... })` to test with RLS enforced
    - Roll back only `db` in beforeEach/afterEach
-7. **Single connection approach is simpler, faster, and sufficient for most scenarios**
+8. **Single connection approach is simpler, faster, and the only practical approach for data sharing scenarios**
 
 ### Quick Reference
 

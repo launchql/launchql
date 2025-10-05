@@ -31,40 +31,45 @@ afterAll(async () => {
 
 ## How Data Sharing Works
 
-### Visibility Between Connections
+### Visibility Between Connections - CRITICAL LIMITATION
 
-Both connections can see each other's **uncommitted data** because:
-- They connect to the **same database**
+**IMPORTANT:** Both connections **CANNOT** see each other's uncommitted data because:
+- They are separate database sessions (connections)
 - PostgreSQL's default isolation level is **READ COMMITTED**
-- Uncommitted data from one connection is visible to the other
+- Under READ COMMITTED, uncommitted data from one connection is **NOT visible** to another
 
 ```typescript
-it('demonstrates data sharing', async () => {
+it('demonstrates isolation (not sharing)', async () => {
   await pg.begin();
   await db.begin();
   
   // pg inserts data (uncommitted)
   await pg.query('INSERT INTO users (email) VALUES ($1)', ['alice@example.com']);
   
-  // db CAN see pg's uncommitted data
+  // db CANNOT see pg's uncommitted data
   const users = await db.any('SELECT * FROM users');
-  expect(users.length).toBe(1); // ✅ Visible!
+  expect(users.length).toBe(0); // ❌ NOT visible!
   
   // db inserts data (uncommitted)
   await db.query('INSERT INTO products (name) VALUES ($1)', ['Widget']);
   
-  // pg CAN see db's uncommitted data
+  // pg CANNOT see db's uncommitted data
   const products = await pg.any('SELECT * FROM products');
-  expect(products.length).toBe(1); // ✅ Visible!
+  expect(products.length).toBe(0); // ❌ NOT visible!
+  
+  // For data sharing, you'd need to COMMIT, which breaks rollback!
 });
 ```
 
-### Key Point: Independent Transactions
+### Key Point: Independent Transactions and Isolation
 
-**Critical:** Even though they can see each other's data, their **transactions are independent**:
+**Critical implications:**
+- Connections **CANNOT** see each other's uncommitted data (READ COMMITTED isolation)
+- For data sharing during tests, you'd need to COMMIT, which **breaks rollback**
 - Rolling back `pg` does NOT roll back `db`
 - Rolling back `db` does NOT roll back `pg`
 - You must manage each connection's transaction state separately
+- **This makes dual connection pattern impractical for scenarios requiring data sharing**
 
 ## Rollback Combinations Table
 
@@ -218,21 +223,25 @@ it('should enforce RLS policies', async () => {
 
 ## Disadvantages
 
-1. **More complex rollback management** - Must remember to roll back both connections
-2. **Easy to make mistakes** - Forgetting to roll back one connection is a common error
-3. **More verbose setup** - Need to manage two connections and their lifecycles
-4. **Slightly slower** - Two transactions to manage instead of one
+1. **Cannot share data between connections during tests** - READ COMMITTED isolation prevents seeing uncommitted data
+2. **More complex rollback management** - Must remember to roll back both connections
+3. **Easy to make mistakes** - Forgetting to roll back one connection is a common error
+4. **More verbose setup** - Need to manage two connections and their lifecycles
+5. **Slower** - Two transactions to manage instead of one
+6. **Limited practical use** - Data isolation makes this pattern unsuitable for most testing scenarios
 
 ## Summary
 
-**Scenario A is ideal when:**
-- You want strict separation between admin and user contexts
-- You need superuser operations that can't be done by app users
-- You prefer explicit privilege boundaries
-- You're willing to manage two independent transactions
+**Scenario A has very limited applicability due to READ COMMITTED isolation:**
+- Connections cannot share uncommitted data during tests
+- For data sharing, you'd need to COMMIT, which breaks rollback
+- Only useful when you need strict privilege separation WITHOUT data sharing
+- **Scenario C (Hybrid) is strongly recommended instead**
 
 **Trade-offs:**
 - ✅ Clear separation and explicit privileges
 - ✅ No role switching required
+- ❌ Cannot share data between connections (READ COMMITTED isolation)
 - ❌ More complex rollback management
 - ❌ Easy to forget to roll back both connections
+- ❌ Limited practical use cases

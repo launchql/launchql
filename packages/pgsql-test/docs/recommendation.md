@@ -170,22 +170,24 @@ See [scenario-b.md](./scenario-b.md) for full details.
 
 ### Scenario A (Dual Connection)
 
-Both `pg` and `db` can see each other's uncommitted data:
+**IMPORTANT:** `pg` and `db` **CANNOT** see each other's uncommitted data:
 
 ```typescript
 // pg inserts data (uncommitted)
 await pg.query('INSERT INTO users (email) VALUES ($1)', ['alice@example.com']);
 
-// db CAN see it immediately
+// db CANNOT see it (it's uncommitted)
 const users = await db.any('SELECT * FROM users');
-expect(users.length).toBe(1); // ✅ Visible!
+expect(users.length).toBe(0); // ❌ NOT visible until committed!
 ```
 
-**Why?** PostgreSQL's READ COMMITTED isolation level allows connections to see uncommitted data from other connections.
+**Why?** PostgreSQL's READ COMMITTED isolation level means connections can only see **COMMITTED** data from other sessions. Uncommitted changes are isolated.
 
-**Critical:** Even though they see each other's data, their transactions are **independent**:
-- Rolling back pg does NOT roll back db
-- Rolling back db does NOT roll back pg
+**Critical implications:**
+- For `db` to see `pg`'s data, `pg` would need to COMMIT, which **breaks rollback**
+- This makes dual connection pattern impractical for data sharing during tests
+- Transactions are independent: rolling back one does NOT roll back the other
+- **This is a major reason why Scenario C (single connection) is recommended**
 
 ### Scenario B (Single Connection)
 

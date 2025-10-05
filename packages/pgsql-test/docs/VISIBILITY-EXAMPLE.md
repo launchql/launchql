@@ -2,7 +2,7 @@
 
 ## Can pg and db Read Each Other's Data?
 
-**YES** - `pg` and `db` can read each other's uncommitted changes during a test because they're separate connections to the **same database**. PostgreSQL's default isolation level (READ COMMITTED) allows connections to see each other's uncommitted data.
+**IMPORTANT CLARIFICATION** - `pg` and `db` are separate connections to the **same database**, but under PostgreSQL's default isolation level (READ COMMITTED), they can **ONLY see each other's COMMITTED changes**. Uncommitted changes from one connection are NOT visible to another connection until they are committed.
 
 ## Practical Example
 
@@ -42,7 +42,7 @@ afterEach(async () => {
 });
 
 describe('Visibility Between Connections', () => {
-  it('db can see data inserted by pg (uncommitted)', async () => {
+  it('db CANNOT see data inserted by pg (uncommitted)', async () => {
     // Insert via pg (uncommitted - still in transaction)
     await pg.query(`
       INSERT INTO users (email, name) 
@@ -52,11 +52,10 @@ describe('Visibility Between Connections', () => {
     // Query via db - can it see pg's uncommitted insert?
     const users = await db.any('SELECT * FROM users');
     
-    expect(users.length).toBe(1);           // ✅ YES - db can see it!
-    expect(users[0].email).toBe('alice@example.com');
+    expect(users.length).toBe(0);           // ❌ NO - db CANNOT see uncommitted changes!
   });
   
-  it('pg can see data inserted by db (uncommitted)', async () => {
+  it('pg CANNOT see data inserted by db (uncommitted)', async () => {
     // Insert via db (uncommitted)
     await db.query(`
       INSERT INTO users (email, name) 
@@ -66,33 +65,23 @@ describe('Visibility Between Connections', () => {
     // Query via pg - can it see db's uncommitted insert?
     const users = await pg.any('SELECT * FROM users');
     
-    expect(users.length).toBe(1);           // ✅ YES - pg can see it!
-    expect(users[0].email).toBe('bob@example.com');
+    expect(users.length).toBe(0);           // ❌ NO - pg CANNOT see uncommitted changes!
   });
   
-  it('both connections can read data from both sources', async () => {
-    // Insert via pg
+  it('data becomes visible only after COMMIT', async () => {
+    // Insert via pg and COMMIT
     await pg.query(`
       INSERT INTO users (email, name) 
       VALUES ('alice@example.com', 'Alice')
     `);
+    await pg.commit();  // Now it's committed
     
-    // Insert via db
-    await db.query(`
-      INSERT INTO users (email, name) 
-      VALUES ('bob@example.com', 'Bob')
-    `);
+    // Query via db - NOW it can see the committed data
+    const users = await db.any('SELECT * FROM users');
+    expect(users.length).toBe(1);           // ✅ YES - db can see COMMITTED changes
+    expect(users[0].email).toBe('alice@example.com');
     
-    // Both connections can see both inserts
-    const usersViaPg = await pg.any('SELECT * FROM users ORDER BY email');
-    const usersViaDb = await db.any('SELECT * FROM users ORDER BY email');
-    
-    expect(usersViaPg.length).toBe(2);
-    expect(usersViaDb.length).toBe(2);
-    expect(usersViaPg[0].email).toBe('alice@example.com');
-    expect(usersViaPg[1].email).toBe('bob@example.com');
-    expect(usersViaDb[0].email).toBe('alice@example.com');
-    expect(usersViaDb[1].email).toBe('bob@example.com');
+    // But this breaks rollback! Data persists.
   });
   
   it('both connections start clean after rollback', async () => {
@@ -111,13 +100,15 @@ describe('Visibility Between Connections', () => {
 ### PostgreSQL Isolation Levels
 
 PostgreSQL's default isolation level is **READ COMMITTED**, which means:
-- Connections can see committed data from other connections
-- Connections can also see uncommitted data from their own transaction
-- In pgsql-test, since both connections are in active transactions, they can see each other's uncommitted changes
+- Connections can see **COMMITTED** data from other connections
+- Connections can see uncommitted data from their **own** transaction only
+- Separate connections (sessions) **CANNOT** see each other's uncommitted changes
 
-### Implications for Testing
+### Critical Implication for Dual Connection Testing
 
-**If you roll back both connections:**
+**This makes dual connection data sharing problematic!**
+
+If you roll back both connections:
 ```typescript
 beforeEach(async () => {
   await pg.beforeEach();
@@ -131,10 +122,12 @@ afterEach(async () => {
 ```
 
 Then during the test:
-- ✅ `pg` can insert data and `db` can read it
-- ✅ `db` can insert data and `pg` can read it
-- ✅ Both connections see the same database state
-- ✅ Everything gets rolled back at the end
+- ❌ `pg` inserts data → `db` CANNOT see it (uncommitted)
+- ❌ `db` inserts data → `pg` CANNOT see it (uncommitted)
+- ❌ For data sharing, you'd need to COMMIT, which **breaks rollback**
+- ❌ This makes the dual connection pattern impractical for data sharing scenarios
+
+**This is why single connection strategy (Scenario C) is strongly recommended!**
 
 ## So Why Have Both Connections?
 
@@ -265,11 +258,12 @@ beforeAll(async () => {
 
 | Question | Answer |
 |----------|--------|
-| Can `pg` and `db` read each other's data? | ✅ YES - they're separate connections to the same database |
-| If I roll back both, can they see each other's changes? | ✅ YES - during the test, before rollback |
+| Can `pg` and `db` read each other's uncommitted data? | ❌ NO - PostgreSQL READ COMMITTED isolation prevents this |
+| Can they see committed data? | ✅ YES - but COMMIT breaks rollback |
+| If I roll back both, can they share data during tests? | ❌ NO - uncommitted changes are not visible between connections |
 | Can I test RLS with single connection? | ✅ YES - use `setContext({ role: 'administrator' })` for setup, then switch to `authenticated` for testing |
-| When do I need both connections? | ⚠️ Only for true superuser operations like `CREATE EXTENSION` |
-| Should I use a single connection? | ✅ YES - recommended for most scenarios, including RLS testing |
+| When do I need both connections? | ⚠️ Only for true superuser operations like `CREATE EXTENSION` in beforeAll |
+| Should I use a single connection? | ✅ YES - **strongly** recommended for most scenarios, including RLS testing |
 
 ### Decision Tree
 
