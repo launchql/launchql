@@ -1,9 +1,11 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
+import { AuthOptions } from '@launchql/types';
 
 type PgTestClientOpts = {
   deferConnect?: boolean;
   trackConnect?: (p: Promise<any>) => void;
+  auth?: AuthOptions;
 };
 
 export class PgTestClient {
@@ -25,6 +27,9 @@ export class PgTestClient {
     if (!opts.deferConnect) {
       this.connectPromise = this.client.connect();
       if (opts.trackConnect) opts.trackConnect(this.connectPromise);
+      if (opts.auth) {
+        this.connectPromise = this.connectPromise.then(() => this.auth(opts.auth));
+      }
     }
   }
 
@@ -78,6 +83,19 @@ export class PgTestClient {
           : `SELECT set_config('${key}', '${val}', true);`
       )
       .join('\n');
+  }
+
+  async auth(options?: AuthOptions): Promise<void> {
+    const role = options?.role ?? (this.config as any).auth?.role ?? null;
+    const userIdKey =
+      options?.userIdKey ?? (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
+    const userId =
+      options?.userId ?? (this.config as any).auth?.userId ?? null;
+
+    this.setContext({
+      role,
+      [userIdKey]: userId !== null ? String(userId) : null
+    });
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
