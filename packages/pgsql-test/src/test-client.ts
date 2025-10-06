@@ -98,6 +98,13 @@ export class PgTestClient {
     });
   }
 
+  async publish(): Promise<void> {
+    await this.commit();    // make data visible to other sessions
+    await this.begin();     // fresh tx
+    await this.savepoint(); // keep rollback harness
+    await this.ctxQuery();  // reapply all setContext()
+  }
+
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
     const result = await this.query(query, values);
     return result.rows;
