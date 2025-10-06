@@ -8,7 +8,7 @@ import { PostGraphileOptions } from 'postgraphile';
  */
 export interface AuthOptions {
     /** Role to assume (e.g., 'authenticated', 'administrator') */
-    role?: string;
+    role: string;
     /** User ID to set in session context */
     userId?: string | number;
     /** Key name for user ID in session context (defaults to 'jwt.claims.user_id') */

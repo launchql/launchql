@@ -85,15 +85,14 @@ export class PgTestClient {
       .join('\n');
   }
 
-  async auth(options?: AuthOptions): Promise<void> {
-    const role = options?.role ?? (this.config as any).auth?.role ?? null;
+  async auth(options: AuthOptions): Promise<void> {
     const userIdKey =
-      options?.userIdKey ?? (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
+      options.userIdKey ?? (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
     const userId =
-      options?.userId ?? (this.config as any).auth?.userId ?? null;
+      options.userId ?? (this.config as any).auth?.userId ?? null;
 
     this.setContext({
-      role,
+      role: options.role,
       [userIdKey]: userId !== null ? String(userId) : null
     });
   }
