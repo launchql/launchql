@@ -85,6 +85,10 @@ export class PgTestClient {
       .join('\n');
   }
 
+  /**
+   * Set authentication context for the current session.
+   * Configures role and user ID using cascading defaults from options → config.auth → hardcoded.
+   */
   async auth(options: AuthOptions): Promise<void> {
     const userIdKey =
       options.userIdKey ?? (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
@@ -97,6 +101,10 @@ export class PgTestClient {
     });
   }
 
+  /**
+   * Commit current transaction to make data visible to other connections, then start fresh transaction.
+   * Maintains test isolation by creating a savepoint and reapplying session context.
+   */
   async publish(): Promise<void> {
     await this.commit();    // make data visible to other sessions
     await this.begin();     // fresh tx
