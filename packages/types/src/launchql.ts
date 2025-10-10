@@ -7,8 +7,8 @@ import { PostGraphileOptions } from 'postgraphile';
  * Authentication options for test client sessions
  */
 export interface AuthOptions {
-    /** Role to assume (e.g., 'authenticated', 'administrator') */
-    role: string;
+    /** Role to assume (defaults to 'authenticated' from RoleMapping config) */
+    role?: string;
     /** User ID to set in session context */
     userId?: string | number;
     /** Key name for user ID in session context (defaults to 'jwt.claims.user_id') */
