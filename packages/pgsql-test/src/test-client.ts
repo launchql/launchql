@@ -88,16 +88,18 @@ export class PgTestClient {
 
   /**
    * Set authentication context for the current session.
-   * Configures role and user ID using cascading defaults from options → config.auth → hardcoded.
+   * Configures role and user ID using cascading defaults from options → config.auth → RoleMapping.
    */
-  async auth(options: AuthOptions): Promise<void> {
+  async auth(options: AuthOptions = {}): Promise<void> {
+    const role =
+      options.role ?? (this.config as any).auth?.role ?? getRoleName('authenticated', (this.config as any).roles);
     const userIdKey =
       options.userIdKey ?? (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
     const userId =
       options.userId ?? (this.config as any).auth?.userId ?? null;
 
     this.setContext({
-      role: options.role,
+      role,
       [userIdKey]: userId !== null ? String(userId) : null
     });
   }
@@ -111,20 +113,6 @@ export class PgTestClient {
     await this.begin();     // fresh tx
     await this.savepoint(); // keep rollback harness
     await this.ctxQuery();  // reapply all setContext()
-  }
-
-  /**
-   * Authenticate a user by setting role and user ID in session context.
-   * Role defaults to the 'authenticated' role from RoleMapping configuration.
-   */
-  async authUser(userId: string | number, role?: string): Promise<void> {
-    const resolvedRole = role ?? getRoleName('authenticated', (this.config as any).roles);
-    const userIdKey = (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
-
-    this.setContext({
-      role: resolvedRole,
-      [userIdKey]: String(userId)
-    });
   }
 
   /**

@@ -81,7 +81,7 @@ describe('auth() method', () => {
   });
 });
 
-describe('authUser() method', () => {
+describe('auth() with default role', () => {
   beforeEach(async () => {
     await db.beforeEach();
   });
@@ -90,8 +90,8 @@ describe('authUser() method', () => {
     await db.afterEach();
   });
 
-  it('sets user context with default authenticated role', async () => {
-    await db.authUser('test-user-456');
+  it('uses default authenticated role when role not provided', async () => {
+    await db.auth({ userId: 'test-user-456' });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     const expectedRole = getRoleName('authenticated');
@@ -101,9 +101,9 @@ describe('authUser() method', () => {
     expect(userId.rows[0].user_id).toBe('test-user-456');
   });
 
-  it('sets user context with custom role', async () => {
+  it('allows explicit role override', async () => {
     const anonRole = getRoleName('anonymous');
-    await db.authUser('admin-user-789', anonRole);
+    await db.auth({ userId: 'admin-user-789', role: anonRole });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     expect(role.rows[0].role).toBe(anonRole);
@@ -112,8 +112,8 @@ describe('authUser() method', () => {
     expect(userId.rows[0].user_id).toBe('admin-user-789');
   });
 
-  it('handles numeric userId', async () => {
-    await db.authUser(42);
+  it('handles numeric userId with default role', async () => {
+    await db.auth({ userId: 42 });
 
     const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('42');
@@ -162,7 +162,7 @@ describe('clearContext() method', () => {
     expect(userIdBefore.rows[0].user_id).toBe('old-user');
 
     db.clearContext();
-    await db.authUser('new-user');
+    await db.auth({ userId: 'new-user' });
 
     const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('new-user');
