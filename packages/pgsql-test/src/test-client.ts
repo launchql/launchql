@@ -13,6 +13,7 @@ export class PgTestClient {
   public config: PgConfig;
   public client: Client;
   private ctxStmts: string = '';
+  private contextSettings: Record<string, string | null> = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
 
@@ -77,7 +78,9 @@ export class PgTestClient {
   }
 
   setContext(ctx: Record<string, string | null>): void {
-    this.ctxStmts = Object.entries(ctx)
+    Object.assign(this.contextSettings, ctx);
+    
+    this.ctxStmts = Object.entries(this.contextSettings)
       .map(([key, val]) =>
         val === null
           ? `SELECT set_config('${key}', NULL, true);`
@@ -120,7 +123,23 @@ export class PgTestClient {
    */
   clearContext(): void {
     const defaultRole = getRoleName('anonymous', (this.config as any).roles);
-    this.setContext({ role: defaultRole });
+    
+    const nulledSettings: Record<string, string | null> = {};
+    Object.keys(this.contextSettings).forEach(key => {
+      nulledSettings[key] = null;
+    });
+    
+    nulledSettings.role = defaultRole;
+    
+    this.ctxStmts = Object.entries(nulledSettings)
+      .map(([key, val]) =>
+        val === null
+          ? `SELECT set_config('${key}', NULL, true);`
+          : `SELECT set_config('${key}', '${val}', true);`
+      )
+      .join('\n');
+    
+    this.contextSettings = { role: defaultRole };
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
