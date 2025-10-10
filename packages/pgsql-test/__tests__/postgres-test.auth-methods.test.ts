@@ -209,17 +209,23 @@ describe('publish() method', () => {
 
   it('allows rollback after publish', async () => {
     await pg.query(`INSERT INTO test_users (email, name) VALUES ('bob@test.com', 'Bob')`);
-    await pg.publish();
+    await pg.publish();  // Bob is now committed and cannot be rolled back (important-comment)
 
     await pg.query(`INSERT INTO test_users (email, name) VALUES ('charlie@test.com', 'Charlie')`);
 
     const beforeRollback = await pg.any('SELECT * FROM test_users WHERE email IN ($1, $2)', ['bob@test.com', 'charlie@test.com']);
     expect(beforeRollback.length).toBe(2);
 
-    await pg.afterEach();
-    await pg.beforeEach();
+    await pg.rollback();  // Rollback Charlie to the savepoint created by publish() (important-comment)
 
     const afterRollback = await pg.any('SELECT * FROM test_users WHERE email IN ($1, $2)', ['bob@test.com', 'charlie@test.com']);
-    expect(afterRollback.length).toBe(0);
+    expect(afterRollback.length).toBe(1);  // Only Bob remains (was committed via publish) (important-comment)
+    expect(afterRollback[0].email).toBe('bob@test.com');
+    
+    // Clean up Bob so it doesn't leak to other tests
+    await pg.query(`DELETE FROM test_users WHERE email = 'bob@test.com'`);
+    await pg.commit();  // Commit the deletion (important-comment)
+    await pg.begin();  // Start new transaction for outer afterEach (important-comment)
+    await pg.savepoint();  // Create savepoint for outer afterEach (important-comment)
   });
 });
