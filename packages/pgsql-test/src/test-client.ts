@@ -1,6 +1,7 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
 import { AuthOptions } from '@launchql/types';
+import { getRoleName } from './roles';
 
 type PgTestClientOpts = {
   deferConnect?: boolean;
@@ -110,6 +111,27 @@ export class PgTestClient {
     await this.begin();     // fresh tx
     await this.savepoint(); // keep rollback harness
     await this.ctxQuery();  // reapply all setContext()
+  }
+
+  /**
+   * Authenticate a user by setting role and user ID in session context.
+   * Role defaults to the 'authenticated' role from RoleMapping configuration.
+   */
+  async authUser(userId: string | number, role?: string): Promise<void> {
+    const resolvedRole = role ?? getRoleName('authenticated', (this.config as any).roles);
+    const userIdKey = (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
+
+    this.setContext({
+      role: resolvedRole,
+      [userIdKey]: String(userId)
+    });
+  }
+
+  /**
+   * Clear all session context variables.
+   */
+  clearContext(): void {
+    this.setContext({});
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
