@@ -149,6 +149,10 @@ describe('clearContext() method', () => {
     const defaultRole = getRoleName('anonymous');
     const roleAfter = await db.query('SELECT current_setting(\'role\', true) AS role');
     expect(roleAfter.rows[0].role).toBe(defaultRole);
+
+    const userIdAfter = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
+    expect(userIdAfter.rows[0].user_id).toBe('');
+
   });
 
   it('allows setting new context after clearing', async () => {
