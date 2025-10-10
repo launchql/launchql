@@ -128,10 +128,11 @@ export class PgTestClient {
   }
 
   /**
-   * Clear all session context variables.
+   * Clear all session context variables and reset to default anonymous role.
    */
   clearContext(): void {
-    this.setContext({});
+    const defaultRole = getRoleName('anonymous', (this.config as any).roles);
+    this.setContext({ role: defaultRole });
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
