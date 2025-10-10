@@ -18,6 +18,10 @@ beforeAll(async () => {
       name TEXT
     )
   `);
+  
+  // Grant permissions to authenticated role
+  await pg.query(`GRANT ALL ON test_users TO authenticated`);
+  await pg.query(`GRANT ALL ON SEQUENCE test_users_id_seq TO authenticated`);
 });
 
 afterAll(async () => {
@@ -69,11 +73,11 @@ describe('auth() method', () => {
   });
 
   it('sets role without userId', async () => {
-    const adminRole = getRoleName('administrator');
-    await db.auth({ role: adminRole });
+    const authRole = getRoleName('authenticated');
+    await db.auth({ role: authRole });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
-    expect(role.rows[0].role).toBe(adminRole);
+    expect(role.rows[0].role).toBe(authRole);
   });
 });
 
@@ -98,11 +102,11 @@ describe('authUser() method', () => {
   });
 
   it('sets user context with custom role', async () => {
-    const adminRole = getRoleName('administrator');
-    await db.authUser('admin-user-789', adminRole);
+    const anonRole = getRoleName('anonymous');
+    await db.authUser('admin-user-789', anonRole);
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
-    expect(role.rows[0].role).toBe(adminRole);
+    expect(role.rows[0].role).toBe(anonRole);
 
     const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('admin-user-789');
@@ -177,9 +181,6 @@ describe('publish() method', () => {
   });
 
   it('makes data visible to other connections after publish', async () => {
-    const adminRole = getRoleName('administrator');
-    await pg.auth({ role: adminRole });
-
     await pg.query(`INSERT INTO test_users (email, name) VALUES ('alice@test.com', 'Alice')`);
 
     const beforePublish = await db.any('SELECT * FROM test_users WHERE email = $1', ['alice@test.com']);
@@ -195,21 +196,18 @@ describe('publish() method', () => {
 
   it('preserves context after publish', async () => {
     const authRole = getRoleName('authenticated');
-    await pg.auth({ role: authRole, userId: 'test-999' });
+    await db.auth({ role: authRole, userId: 'test-999' });
 
-    await pg.publish();
+    await db.publish();
 
-    const role = await pg.query('SELECT current_setting(\'role\', true) AS role');
+    const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     expect(role.rows[0].role).toBe(authRole);
 
-    const userId = await pg.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
+    const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('test-999');
   });
 
   it('allows rollback after publish', async () => {
-    const adminRole = getRoleName('administrator');
-    await pg.auth({ role: adminRole });
-
     await pg.query(`INSERT INTO test_users (email, name) VALUES ('bob@test.com', 'Bob')`);
     await pg.publish();
 
