@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 import { getPgEnvOptions, PgConfig } from 'pg-env';
 
 import { DbAdmin } from './admin';
-import { PgTestClient } from './test-client';
+import { PgTestClient, PgTestClientOpts } from './test-client';
 
 const log = new Logger('test-connector');
 
@@ -84,7 +84,7 @@ export class PgTestConnector {
     return this.pgPools.get(key)!;
   }
 
-  getClient(config: PgConfig, opts: any = {}): PgTestClient {
+  getClient(config: PgConfig, opts: Partial<PgTestClientOpts> = {}): PgTestClient {
     if (this.shuttingDown) {
       throw new Error('PgTestConnector is shutting down; no new clients allowed');
     }
