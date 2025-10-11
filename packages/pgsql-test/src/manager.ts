@@ -84,11 +84,14 @@ export class PgTestConnector {
     return this.pgPools.get(key)!;
   }
 
-  getClient(config: PgConfig): PgTestClient {
+  getClient(config: PgConfig, opts: any = {}): PgTestClient {
     if (this.shuttingDown) {
       throw new Error('PgTestConnector is shutting down; no new clients allowed');
     }
-    const client = new PgTestClient(config, { trackConnect: (p) => this.registerConnect(p) });
+    const client = new PgTestClient(config, { 
+      trackConnect: (p) => this.registerConnect(p),
+      ...opts
+    });
     this.clients.add(client);
 
     const key = this.dbKey(config);
