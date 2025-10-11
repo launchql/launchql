@@ -3,7 +3,7 @@ import { PgConfig } from 'pg-env';
 import { AuthOptions, PgTestConnectionOptions } from '@launchql/types';
 import { getRoleName } from './roles';
 
-type PgTestClientOpts = {
+export type PgTestClientOpts = {
   deferConnect?: boolean;
   trackConnect?: (p: Promise<any>) => void;
 } & Partial<PgTestConnectionOptions>;
