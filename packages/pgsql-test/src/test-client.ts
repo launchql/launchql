@@ -1,23 +1,24 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
-import { AuthOptions } from '@launchql/types';
+import { AuthOptions, PgTestConnectionOptions } from '@launchql/types';
 import { getRoleName } from './roles';
 
 type PgTestClientOpts = {
   deferConnect?: boolean;
   trackConnect?: (p: Promise<any>) => void;
-  auth?: AuthOptions;
-};
+} & Partial<PgTestConnectionOptions>;
 
 export class PgTestClient {
   public config: PgConfig;
   public client: Client;
+  private opts: PgTestClientOpts;
   private ctxStmts: string = '';
   private contextSettings: Record<string, string | null> = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
 
   constructor(config: PgConfig, opts: PgTestClientOpts = {}) {
+    this.opts = opts;
     this.config = config;
     this.client = new Client({
       host: this.config.host,
@@ -91,15 +92,15 @@ export class PgTestClient {
 
   /**
    * Set authentication context for the current session.
-   * Configures role and user ID using cascading defaults from options → config.auth → RoleMapping.
+   * Configures role and user ID using cascading defaults from options → opts.auth → RoleMapping.
    */
   async auth(options: AuthOptions = {}): Promise<void> {
     const role =
-      options.role ?? (this.config as any).auth?.role ?? getRoleName('authenticated', (this.config as any).roles);
+      options.role ?? this.opts.auth?.role ?? getRoleName('authenticated', this.opts);
     const userIdKey =
-      options.userIdKey ?? (this.config as any).auth?.userIdKey ?? 'jwt.claims.user_id';
+      options.userIdKey ?? this.opts.auth?.userIdKey ?? 'jwt.claims.user_id';
     const userId =
-      options.userId ?? (this.config as any).auth?.userId ?? null;
+      options.userId ?? this.opts.auth?.userId ?? null;
 
     this.setContext({
       role,
@@ -122,7 +123,7 @@ export class PgTestClient {
    * Clear all session context variables and reset to default anonymous role.
    */
   clearContext(): void {
-    const defaultRole = getRoleName('anonymous', (this.config as any).roles);
+    const defaultRole = getRoleName('anonymous', this.opts);
     
     const nulledSettings: Record<string, string | null> = {};
     Object.keys(this.contextSettings).forEach(key => {
