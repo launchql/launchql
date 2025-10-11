@@ -30,9 +30,6 @@ export class PgTestClient {
     if (!opts.deferConnect) {
       this.connectPromise = this.client.connect();
       if (opts.trackConnect) opts.trackConnect(this.connectPromise);
-      if (opts.auth) {
-        this.connectPromise = this.connectPromise.then(() => this.auth(opts.auth));
-      }
     }
   }
 
