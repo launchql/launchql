@@ -1,0 +1,96 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - main
+      - v1
+      - release/*
+    paths:
+      - "docker/**"
+      - ".github/workflows/docker.yaml"
+  pull_request:
+    branches:
+      - main
+      - v1
+    paths:
+      - "docker/**"
+      - ".github/workflows/docker.yaml"
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      process:
+        description: 'Process to build (pgvector | node-sqitch | postgis)'
+        type: choice
+        required: true
+        options:
+          - pgvector
+          - node-sqitch
+          - postgis
+        default: pgvector
+      version:
+        description: 'Specific version to build (must exist in version.yaml)'
+        type: string
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-docker
+  cancel-in-progress: true
+
+jobs:
+  build-push:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    defaults:
+      run:
+        working-directory: docker
+
+    strategy:
+      matrix:
+        process: [pgvector, node-sqitch, postgis]
+      max-parallel: 3
+
+    env:
+      REPO: ghcr.io/${{ github.repository_owner }}
+      PLATFORMS: linux/amd64,linux/arm64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build (no push)
+        if: github.event_name == 'pull_request'
+        run: |
+          make \
+            PROCESS=${{ matrix.process }} \
+            REPO_NAME=$REPO \
+            PLATFORMS="$PLATFORMS" \
+            build-process
+
+      - name: Build and push (all versions)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          make \
+            PROCESS=${{ matrix.process }} \
+            REPO_NAME=$REPO \
+            PLATFORMS="$PLATFORMS" \
+            build-push-process

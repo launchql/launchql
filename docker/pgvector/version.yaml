@@ -1,0 +1,3 @@
+base: postgis
+versions:
+- 13.3-alpine

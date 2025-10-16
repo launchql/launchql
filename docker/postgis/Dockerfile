@@ -1,3 +1,7 @@
-FROM postgres:13.3-alpine
+ARG BASE=postgis
+ARG BASE_VERSION=13.3-alpine
+FROM ${BASE}:${BASE_VERSION}
 
-RUN apk add make
+LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+
+RUN apk add make bash
