@@ -1,4 +1,4 @@
-ARG BASE=postgis
+ARG BASE=postgres
 ARG BASE_VERSION=13.3-alpine
 FROM ${BASE}:${BASE_VERSION}
 
