@@ -59,6 +59,7 @@ build-process-version:
 		--build-arg BASE=$(BASE) \
 		--build-arg BASE_VERSION=$(VERSION) \
 		-t $(REPO_NAME)/$(PROCESS):$(VERSION) \
+		--load \
 		$(PROCESS)
 
 # Build+push only a specific VERSION for $(PROCESS). Intended for internal use by build-push-process.
