@@ -4,4 +4,4 @@ FROM ${BASE}:${BASE_VERSION}
 
 LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
 
-RUN apk add make bash
+RUN apk add --no-cache make bash
