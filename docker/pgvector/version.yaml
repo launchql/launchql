@@ -1,3 +1,8 @@
 base: postgres
 versions:
-- 13.3-alpine
+  - 13.3-alpine
+  - 14.19-alpine
+  - 15.14-alpine
+  - 16.10-alpine
+  - 17.6-alpine
+  - 18.0-alpine

@@ -16,8 +16,8 @@ CONTAINER_NAME?=$(PROCESS)
 ## It will build one image per version listed in $(PROCESS)/version.yaml and tag as <repo>/<process>:<version>
 build-process:
 	@echo "==> Building process: $(PROCESS)"
-	@BASE=$$(sed -n 's/^base:[[:space:]]*//p' $(PROCESS)/version.yaml | head -n1); \
-	VERSIONS=$$(sed -n '/^versions:/,$$p' $(PROCESS)/version.yaml | sed -n 's/^-\s*//p'); \
+	@BASE=$$(sed -n 's/^[[:space:]]*base:[[:space:]]*//p' $(PROCESS)/version.yaml | head -n1); \
+	VERSIONS=$$(sed -n '/^[[:space:]]*versions:/,$$p' $(PROCESS)/version.yaml | sed -n 's/^[[:space:]]*-[[:space:]]*//p'); \
 	if [ -z "$$BASE" ] || [ -z "$$VERSIONS" ]; then \
 		echo "Error: Could not parse base or versions from $(PROCESS)/version.yaml" 1>&2; \
 		exit 1; \
@@ -33,8 +33,8 @@ build-all:
 
 build-push-process:
 	@echo "==> Building+Pushing process: $(PROCESS)"
-	@BASE=$$(sed -n 's/^base:[[:space:]]*//p' $(PROCESS)/version.yaml | head -n1); \
-	VERSIONS=$$(sed -n '/^versions:/,$$p' $(PROCESS)/version.yaml | sed -n 's/^-\s*//p'); \
+	@BASE=$$(sed -n 's/^[[:space:]]*base:[[:space:]]*//p' $(PROCESS)/version.yaml | head -n1); \
+	VERSIONS=$$(sed -n '/^[[:space:]]*versions:/,$$p' $(PROCESS)/version.yaml | sed -n 's/^[[:space:]]*-[[:space:]]*//p'); \
 	if [ -z "$$BASE" ] || [ -z "$$VERSIONS" ]; then \
 		echo "Error: Could not parse base or versions from $(PROCESS)/version.yaml" 1>&2; \
 		exit 1; \
@@ -88,3 +88,4 @@ node-sqitch:
 
 postgis:
 	$(MAKE) PROCESS=postgis build-process
+
