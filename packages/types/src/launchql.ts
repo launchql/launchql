@@ -4,6 +4,18 @@ import { PgConfig } from 'pg-env';
 import { PostGraphileOptions } from 'postgraphile';
 
 /**
+ * Authentication options for test client sessions
+ */
+export interface AuthOptions {
+    /** Role to assume (defaults to 'authenticated' from RoleMapping config) */
+    role?: string;
+    /** User ID to set in session context */
+    userId?: string | number;
+    /** Key name for user ID in session context (defaults to 'jwt.claims.user_id') */
+    userIdKey?: string;
+}
+
+/**
  * Configuration options for PostgreSQL test database connections
  */
 export interface PgTestConnectionOptions {
@@ -21,6 +33,8 @@ export interface PgTestConnectionOptions {
     connection?: DatabaseConnectionOptions;
     /** Role mapping configuration */
     roles?: RoleMapping;
+    /** Default authentication options for db connections */
+    auth?: AuthOptions;
 }
 
 /**

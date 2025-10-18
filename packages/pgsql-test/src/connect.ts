@@ -102,10 +102,15 @@ export const getConnections = async (
     }
   }
 
-  const db = manager.getClient({
+  const dbConfig = {
     ...config,
     user: connOpts.connection.user,
     password: connOpts.connection.password
+  } as PgConfig;
+  
+  const db = manager.getClient(dbConfig, {
+    auth: connOpts.auth,
+    roles: connOpts.roles
   });
   db.setContext({ role: getDefaultRole(connOpts) });
 

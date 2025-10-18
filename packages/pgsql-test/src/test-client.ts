@@ -1,19 +1,24 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
+import { AuthOptions, PgTestConnectionOptions } from '@launchql/types';
+import { getRoleName } from './roles';
 
-type PgTestClientOpts = {
+export type PgTestClientOpts = {
   deferConnect?: boolean;
   trackConnect?: (p: Promise<any>) => void;
-};
+} & Partial<PgTestConnectionOptions>;
 
 export class PgTestClient {
   public config: PgConfig;
   public client: Client;
+  private opts: PgTestClientOpts;
   private ctxStmts: string = '';
+  private contextSettings: Record<string, string | null> = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
 
   constructor(config: PgConfig, opts: PgTestClientOpts = {}) {
+    this.opts = opts;
     this.config = config;
     this.client = new Client({
       host: this.config.host,
@@ -71,13 +76,68 @@ export class PgTestClient {
   }
 
   setContext(ctx: Record<string, string | null>): void {
-    this.ctxStmts = Object.entries(ctx)
+    Object.assign(this.contextSettings, ctx);
+    
+    this.ctxStmts = Object.entries(this.contextSettings)
       .map(([key, val]) =>
         val === null
           ? `SELECT set_config('${key}', NULL, true);`
           : `SELECT set_config('${key}', '${val}', true);`
       )
       .join('\n');
+  }
+
+  /**
+   * Set authentication context for the current session.
+   * Configures role and user ID using cascading defaults from options → opts.auth → RoleMapping.
+   */
+  auth(options: AuthOptions = {}): void {
+    const role =
+      options.role ?? this.opts.auth?.role ?? getRoleName('authenticated', this.opts);
+    const userIdKey =
+      options.userIdKey ?? this.opts.auth?.userIdKey ?? 'jwt.claims.user_id';
+    const userId =
+      options.userId ?? this.opts.auth?.userId ?? null;
+
+    this.setContext({
+      role,
+      [userIdKey]: userId !== null ? String(userId) : null
+    });
+  }
+
+  /**
+   * Commit current transaction to make data visible to other connections, then start fresh transaction.
+   * Maintains test isolation by creating a savepoint and reapplying session context.
+   */
+  async publish(): Promise<void> {
+    await this.commit();    // make data visible to other sessions
+    await this.begin();     // fresh tx
+    await this.savepoint(); // keep rollback harness
+    await this.ctxQuery();  // reapply all setContext()
+  }
+
+  /**
+   * Clear all session context variables and reset to default anonymous role.
+   */
+  clearContext(): void {
+    const defaultRole = getRoleName('anonymous', this.opts);
+    
+    const nulledSettings: Record<string, string | null> = {};
+    Object.keys(this.contextSettings).forEach(key => {
+      nulledSettings[key] = null;
+    });
+    
+    nulledSettings.role = defaultRole;
+    
+    this.ctxStmts = Object.entries(nulledSettings)
+      .map(([key, val]) =>
+        val === null
+          ? `SELECT set_config('${key}', NULL, true);`
+          : `SELECT set_config('${key}', '${val}', true);`
+      )
+      .join('\n');
+    
+    this.contextSettings = { role: defaultRole };
   }
 
   async any<T = any>(query: string, values?: any[]): Promise<T[]> {
