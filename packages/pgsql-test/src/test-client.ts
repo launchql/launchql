@@ -91,7 +91,7 @@ export class PgTestClient {
    * Set authentication context for the current session.
    * Configures role and user ID using cascading defaults from options → opts.auth → RoleMapping.
    */
-  async auth(options: AuthOptions = {}): Promise<void> {
+  auth(options: AuthOptions = {}): void {
     const role =
       options.role ?? this.opts.auth?.role ?? getRoleName('authenticated', this.opts);
     const userIdKey =
