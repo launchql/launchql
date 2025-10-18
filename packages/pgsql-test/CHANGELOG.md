@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/launchql/launchql/compare/pgsql-test@2.10.0...pgsql-test@2.11.0) (2025-10-18)
+
+
+### Bug Fixes
+
+* **pgsql-test:** correct publish rollback test expectations ([15e55dc](https://github.com/launchql/launchql/commit/15e55dc99b152560831b7e8d716ff376e267942e))
+* **pgsql-test:** fix auth method tests - permissions and clearContext ([002ad69](https://github.com/launchql/launchql/commit/002ad6934376bc34ac349164d941302f52c9f755))
+* **pgsql-test:** fix clearContext() to properly clear all session variables ([f17a6f3](https://github.com/launchql/launchql/commit/f17a6f351817ee022432fb770ba7ad7f837de696))
+
+
+### Features
+
+* **pgsql-test:** add auth() method to PgTestClient with default auth options ([bbe09a0](https://github.com/launchql/launchql/commit/bbe09a05165de4113c3b067bb7f2fb224cb3ad88))
+* **pgsql-test:** add authUser() and clearContext() convenience methods ([d7d2c0a](https://github.com/launchql/launchql/commit/d7d2c0a312db620f97e2b19cb60236529e7a31cc))
+* **pgsql-test:** add publish() method for dual-connection data sharing ([8763931](https://github.com/launchql/launchql/commit/87639313624846405bf5d987bd725f69479eb657))
+
+
+
+
+
 # [2.10.0](https://github.com/launchql/launchql/compare/pgsql-test@2.9.0...pgsql-test@2.10.0) (2025-10-04)
 
 **Note:** Version bump only for package pgsql-test
