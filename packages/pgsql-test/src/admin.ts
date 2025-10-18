@@ -115,9 +115,13 @@ export class DbAdmin {
     await this.streamSql(sql, db);
   }
 
+  // TODO: make adminRole a configurable option
+  // ONLY granting admin role for testing purposes, normally the db connection for apps won't have admin role
+  // DO NOT USE THIS FOR PRODUCTION
   async createUserRole(user: string, password: string, dbName: string): Promise<void> {
     const anonRole = getRoleName('anonymous', this.roleConfig);
     const authRole = getRoleName('authenticated', this.roleConfig);
+    const adminRole = getRoleName('administrator', this.roleConfig);
     
     const sql = `
       DO $$
@@ -126,6 +130,7 @@ export class DbAdmin {
           CREATE ROLE ${user} LOGIN PASSWORD '${password}';
           GRANT ${anonRole} TO ${user};
           GRANT ${authRole} TO ${user};
+          GRANT ${adminRole} TO ${user};
         END IF;
       END $$;
     `.trim();
