@@ -126,10 +126,38 @@ export class DbAdmin {
     const sql = `
       DO $$
       BEGIN
+        -- Create role if it doesn't exist
         IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${user}') THEN
           CREATE ROLE ${user} LOGIN PASSWORD '${password}';
+        END IF;
+        
+        -- Grant anonymous role if not already granted
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_auth_members am 
+          JOIN pg_roles r1 ON am.roleid = r1.oid 
+          JOIN pg_roles r2 ON am.member = r2.oid 
+          WHERE r1.rolname = '${anonRole}' AND r2.rolname = '${user}'
+        ) THEN
           GRANT ${anonRole} TO ${user};
+        END IF;
+        
+        -- Grant authenticated role if not already granted
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_auth_members am 
+          JOIN pg_roles r1 ON am.roleid = r1.oid 
+          JOIN pg_roles r2 ON am.member = r2.oid 
+          WHERE r1.rolname = '${authRole}' AND r2.rolname = '${user}'
+        ) THEN
           GRANT ${authRole} TO ${user};
+        END IF;
+        
+        -- Grant administrator role if not already granted
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_auth_members am 
+          JOIN pg_roles r1 ON am.roleid = r1.oid 
+          JOIN pg_roles r2 ON am.member = r2.oid 
+          WHERE r1.rolname = '${adminRole}' AND r2.rolname = '${user}'
+        ) THEN
           GRANT ${adminRole} TO ${user};
         END IF;
       END $$;
