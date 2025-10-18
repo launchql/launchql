@@ -40,7 +40,7 @@ describe('auth() method', () => {
 
   it('sets role and userId', async () => {
     const authRole = getRoleName('authenticated');
-    await db.auth({ role: authRole, userId: '12345' });
+    db.auth({ role: authRole, userId: '12345' });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     expect(role.rows[0].role).toBe(authRole);
@@ -51,7 +51,7 @@ describe('auth() method', () => {
 
   it('sets role with custom userIdKey', async () => {
     const authRole = getRoleName('authenticated');
-    await db.auth({ 
+    db.auth({ 
       role: authRole, 
       userId: 'custom-123',
       userIdKey: 'app.user.id'
@@ -66,7 +66,7 @@ describe('auth() method', () => {
 
   it('handles numeric userId', async () => {
     const authRole = getRoleName('authenticated');
-    await db.auth({ role: authRole, userId: 99999 });
+    db.auth({ role: authRole, userId: 99999 });
 
     const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('99999');
@@ -74,7 +74,7 @@ describe('auth() method', () => {
 
   it('sets role without userId', async () => {
     const authRole = getRoleName('authenticated');
-    await db.auth({ role: authRole });
+    db.auth({ role: authRole });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     expect(role.rows[0].role).toBe(authRole);
@@ -91,7 +91,7 @@ describe('auth() with default role', () => {
   });
 
   it('uses default authenticated role when role not provided', async () => {
-    await db.auth({ userId: 'test-user-456' });
+    db.auth({ userId: 'test-user-456' });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     const expectedRole = getRoleName('authenticated');
@@ -103,7 +103,7 @@ describe('auth() with default role', () => {
 
   it('allows explicit role override', async () => {
     const anonRole = getRoleName('anonymous');
-    await db.auth({ userId: 'admin-user-789', role: anonRole });
+    db.auth({ userId: 'admin-user-789', role: anonRole });
 
     const role = await db.query('SELECT current_setting(\'role\', true) AS role');
     expect(role.rows[0].role).toBe(anonRole);
@@ -113,7 +113,7 @@ describe('auth() with default role', () => {
   });
 
   it('handles numeric userId with default role', async () => {
-    await db.auth({ userId: 42 });
+    db.auth({ userId: 42 });
 
     const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('42');
@@ -166,7 +166,7 @@ describe('clearContext() method', () => {
     expect(userIdBefore.rows[0].user_id).toBe('old-user');
 
     db.clearContext();
-    await db.auth({ userId: 'new-user' });
+    db.auth({ userId: 'new-user' });
 
     const userId = await db.query('SELECT current_setting(\'jwt.claims.user_id\', true) AS user_id');
     expect(userId.rows[0].user_id).toBe('new-user');
@@ -200,7 +200,7 @@ describe('publish() method', () => {
 
   it('preserves context after publish', async () => {
     const authRole = getRoleName('authenticated');
-    await db.auth({ role: authRole, userId: 'test-999' });
+    db.auth({ role: authRole, userId: 'test-999' });
 
     await db.publish();
 
