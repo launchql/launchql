@@ -3,14 +3,43 @@ ARG BASE_VERSION=13.3-alpine
 FROM ${BASE}:${BASE_VERSION}
 
 LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+ARG BASE
+ARG BASE_VERSION
+ARG PGVECTOR_REF="v0.8.1"
+ENV BASE_VERSION=${BASE_VERSION}
+ENV PGVECTOR_REF=${PGVECTOR_REF}
 
-# Install PGVector extension
-RUN apk add --no-cache --virtual .build-deps \
-      git \
-      build-base \
-      postgresql-dev \
-      bash \
-      make && \
-    git clone --branch v0.5.1 https://github.com/pgvector/pgvector.git && \
-    cd pgvector && make && make install && cd .. && rm -rf pgvector && \
-    apk del .build-deps
+# Install PGVector extension with LLVM bitcode enabled.
+# - Detect OS (Alpine vs Debian) and install matching LLVM/clang per pg_config
+RUN set -eux; \
+    : "${BASE_VERSION:?BASE_VERSION not set}"; \
+    if [ -f /etc/alpine-release ]; then \
+      apk add --no-cache --virtual .build-deps git build-base bash make curl ca-certificates; \
+      LLVM_CFG=$(pg_config --configure | tr ' ' '\n' | sed -n 's/^LLVM_CONFIG=\(.*\)$/\1/p' | tr -d '\"\'\'' ); \
+      [ -n "${LLVM_CFG}" ] || { echo "Server not built with LLVM (LLVM_CONFIG missing)" >&2; exit 1; }; \
+      LLVM_VER=$(echo "${LLVM_CFG}" | sed -E 's#.*/llvm-?([0-9]+)/.*#\1#'); \
+      [ -n "${LLVM_VER}" ] || { echo "Could not determine LLVM version from: ${LLVM_CFG}" >&2; exit 1; }; \
+      apk add --no-cache --virtual .clang \
+        "clang${LLVM_VER}" \
+        "llvm${LLVM_VER}" \
+        "llvm${LLVM_VER}-libs" \
+        "llvm${LLVM_VER}-linker-tools"; \
+      git clone --quiet --depth 1 --branch "${PGVECTOR_REF}" https://github.com/pgvector/pgvector.git; \
+      cd pgvector && make && make install; \
+      cd .. && rm -rf pgvector; \
+      apk del .clang .build-deps; \
+    else \
+      export DEBIAN_FRONTEND=noninteractive; \
+      apt-get update; \
+      apt-get install -y --no-install-recommends ca-certificates curl gnupg build-essential git make; \
+      LLVM_CFG=$(pg_config --configure | tr ' ' '\n' | sed -n 's/^LLVM_CONFIG=\(.*\)$/\1/p' | tr -d '\"\'\'' ); \
+      [ -n "${LLVM_CFG}" ] || { echo "Server not built with LLVM (LLVM_CONFIG missing)" >&2; exit 1; }; \
+      LLVM_VER=$(echo "${LLVM_CFG}" | sed -E 's#.*/llvm-?([0-9]+)/.*#\1#'); \
+      [ -n "${LLVM_VER}" ] || { echo "Could not determine LLVM version from: ${LLVM_CFG}" >&2; exit 1; }; \
+      apt-get install -y --no-install-recommends "llvm-${LLVM_VER}" "clang-${LLVM_VER}"; \
+      git clone --quiet --depth 1 --branch "${PGVECTOR_REF}" https://github.com/pgvector/pgvector.git; \
+      cd pgvector && make && make install; \
+      cd .. && rm -rf pgvector; \
+      apt-get purge -y --auto-remove build-essential git make curl gnupg "llvm-${LLVM_VER}" "clang-${LLVM_VER}"; \
+      rm -rf /var/lib/apt/lists/*; \
+    fi
