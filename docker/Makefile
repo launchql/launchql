@@ -8,7 +8,7 @@ PLATFORMS?=linux/arm64
 PROCESS?=pgvector
 
 # Convenience: list of known processes
-PROCESSES:=pgvector node-sqitch postgis
+PROCESSES:=pgvector node-sqitch postgis pgvector-postgis
 
 CONTAINER_NAME?=$(PROCESS)
 
@@ -87,5 +87,7 @@ node-sqitch:
 	$(MAKE) PROCESS=node-sqitch build-process
 
 postgis:
-	$(MAKE) PROCESS=postgis build-process
+    $(MAKE) PROCESS=postgis build-process
 
+pgvector-postgis:
+    $(MAKE) PROCESS=pgvector-postgis build-process

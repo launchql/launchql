@@ -27,6 +27,7 @@ on:
           - pgvector
           - node-sqitch
           - postgis
+          - pgvector-postgis
         default: pgvector
       version:
         description: 'Specific version to build (must exist in version.yaml)'
@@ -52,7 +53,7 @@ jobs:
 
     strategy:
       matrix:
-        process: [pgvector, node-sqitch, postgis]
+        process: [pgvector, node-sqitch, postgis, pgvector-postgis]
       max-parallel: 3
 
     env:

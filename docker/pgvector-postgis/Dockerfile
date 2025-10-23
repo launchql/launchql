@@ -7,7 +7,7 @@ ARG BASE
 ARG BASE_VERSION
 ENV BASE_VERSION=${BASE_VERSION}
 
-# Debian-based install: use PGDG per-PG-major package
+# Debian-based: install both pgvector and postgis from PGDG per-PG-major
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
@@ -20,7 +20,11 @@ RUN set -eux; \
     apt-get update; \
     PG_MAJOR=$(pg_config --version | sed 's/^PostgreSQL \([0-9]\+\).*/\1/'); \
     apt-get install -y --no-install-recommends \
+      postgresql-${PG_MAJOR}-postgis-3 \
+      postgresql-${PG_MAJOR}-postgis-3-scripts \
+      postgis \
       postgresql-${PG_MAJOR}-pgvector \
       make \
       bash; \
     rm -rf /var/lib/apt/lists/*
+
