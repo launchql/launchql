@@ -87,7 +87,7 @@ node-sqitch:
 	$(MAKE) PROCESS=node-sqitch build-process
 
 postgis:
-    $(MAKE) PROCESS=postgis build-process
+	$(MAKE) PROCESS=postgis build-process
 
 pgvector-postgis:
-    $(MAKE) PROCESS=pgvector-postgis build-process
+	$(MAKE) PROCESS=pgvector-postgis build-process
