@@ -15,7 +15,8 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
       ca-certificates curl git python3 make g++; \
     update-ca-certificates || true; \
-    npm i -g yarn@1; \
+    corepack enable; \
+    corepack prepare yarn@1.22.22 --activate; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy full repo (build context must be repo root when building this image)
@@ -37,7 +38,8 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates postgresql-client; \
     update-ca-certificates || true; \
-    npm i -g yarn@1; \
+    corepack enable; \
+    corepack prepare yarn@1.22.22 --activate; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy built repo from builder
@@ -52,4 +54,3 @@ RUN set -eux; \
 
 ENTRYPOINT ["/usr/local/bin/lql"]
 CMD ["--help"]
-

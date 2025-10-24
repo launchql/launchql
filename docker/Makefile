@@ -54,15 +54,7 @@ build-process-version:
 	@test -n "$(BASE)" || { echo "Error: BASE is required"; exit 1; }
 	@test -n "$(VERSION)" || { echo "Error: VERSION is required"; exit 1; }
 	@echo "  -> $(BASE):$(VERSION) => $(REPO_NAME)/$(PROCESS):$(VERSION) (build)"
-	@DOCKERFILE_PATH=$$( \
-		if [ "$(PROCESS)" = "postgis" ]; then \
-			case "$(VERSION)" in \
-				13.*) echo "$(PROCESS)/Dockerfile.legacy" ;; \
-				*)    echo "$(PROCESS)/Dockerfile" ;; \
-			esac; \
-		else \
-			echo "$(PROCESS)/Dockerfile"; \
-		fi ); \
+	@DOCKERFILE_PATH="$(PROCESS)/Dockerfile"; \
 		CONTEXT=$$( \
 		if [ "$(PROCESS)" = "launchql" ]; then \
 			echo ".."; \
@@ -83,15 +75,7 @@ build-push-process-version:
 	@test -n "$(BASE)" || { echo "Error: BASE is required"; exit 1; }
 	@test -n "$(VERSION)" || { echo "Error: VERSION is required"; exit 1; }
 	@echo "  -> $(BASE):$(VERSION) => $(REPO_NAME)/$(PROCESS):$(VERSION) (push)"
-	@DOCKERFILE_PATH=$$( \
-		if [ "$(PROCESS)" = "postgis" ]; then \
-			case "$(VERSION)" in \
-				13.*) echo "$(PROCESS)/Dockerfile.legacy" ;; \
-				*)    echo "$(PROCESS)/Dockerfile" ;; \
-			esac; \
-		else \
-			echo "$(PROCESS)/Dockerfile"; \
-		fi ); \
+	@DOCKERFILE_PATH="$(PROCESS)/Dockerfile"; \
 		CONTEXT=$$( \
 		if [ "$(PROCESS)" = "launchql" ]; then \
 			echo ".."; \
