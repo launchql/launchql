@@ -1,0 +1,4 @@
+base: node
+versions:
+  - 20-bookworm
+
