@@ -8,7 +8,7 @@ PLATFORMS?=linux/arm64
 PROCESS?=pgvector
 
 # Convenience: list of known processes
-PROCESSES:=pgvector node-sqitch postgis pgvector-postgis
+PROCESSES:=pgvector node-sqitch postgis pgvector-postgis launchql
 
 CONTAINER_NAME?=$(PROCESS)
 
@@ -54,12 +54,20 @@ build-process-version:
 	@test -n "$(BASE)" || { echo "Error: BASE is required"; exit 1; }
 	@test -n "$(VERSION)" || { echo "Error: VERSION is required"; exit 1; }
 	@echo "  -> $(BASE):$(VERSION) => $(REPO_NAME)/$(PROCESS):$(VERSION) (build)"
-	@docker buildx build \
+	@DOCKERFILE_PATH="$(PROCESS)/Dockerfile"; \
+		CONTEXT=$$( \
+		if [ "$(PROCESS)" = "launchql" ]; then \
+			echo ".."; \
+		else \
+			echo "$(PROCESS)"; \
+		fi ); \
+		docker buildx build \
 		--platform $(PLATFORMS) \
 		--build-arg BASE=$(BASE) \
 		--build-arg BASE_VERSION=$(VERSION) \
+		--file $$DOCKERFILE_PATH \
 		-t $(REPO_NAME)/$(PROCESS):$(VERSION) \
-		$(PROCESS)
+		$$CONTEXT
 
 # Build+push only a specific VERSION for $(PROCESS). Intended for internal use by build-push-process.
 # Usage (internal): $(MAKE) BASE=<base> VERSION=<version> build-push-process-version
@@ -67,13 +75,21 @@ build-push-process-version:
 	@test -n "$(BASE)" || { echo "Error: BASE is required"; exit 1; }
 	@test -n "$(VERSION)" || { echo "Error: VERSION is required"; exit 1; }
 	@echo "  -> $(BASE):$(VERSION) => $(REPO_NAME)/$(PROCESS):$(VERSION) (push)"
-	@docker buildx build \
+	@DOCKERFILE_PATH="$(PROCESS)/Dockerfile"; \
+		CONTEXT=$$( \
+		if [ "$(PROCESS)" = "launchql" ]; then \
+			echo ".."; \
+		else \
+			echo "$(PROCESS)"; \
+		fi ); \
+		docker buildx build \
 		--platform $(PLATFORMS) \
 		--build-arg BASE=$(BASE) \
 		--build-arg BASE_VERSION=$(VERSION) \
+		--file $$DOCKERFILE_PATH \
 		-t $(REPO_NAME)/$(PROCESS):$(VERSION) \
 		--push \
-		$(PROCESS)
+		$$CONTEXT
 
 # Aliases
 all: build-all
@@ -91,3 +107,6 @@ postgis:
 
 pgvector-postgis:
 	$(MAKE) PROCESS=pgvector-postgis build-process
+
+launchql:
+	$(MAKE) PROCESS=launchql build-process
