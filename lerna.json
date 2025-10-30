@@ -1,12 +1,10 @@
 {
   "lerna": "6",
+  "useWorkspaces": true,
   "conventionalCommits": true,
   "npmClient": "pnpm",
   "npmClientArgs": [
     "--frozen-lockfile"
-  ],
-  "packages": [
-    "packages/*"
   ],
   "version": "independent",
   "registry": "https://registry.npmjs.org",
