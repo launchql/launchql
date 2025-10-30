@@ -36,7 +36,7 @@ make up
 Install modules
 
 ```sh
-yarn install
+pnpm install
 ```
 
 ## install the Postgres extensions
@@ -54,7 +54,7 @@ This basically `ssh`s into the postgres instance with the `packages/` folder mou
 Testing will load all your latest sql changes and create fresh, populated databases for each sqitch module in `packages/`.
 
 ```sh
-yarn test:watch
+pnpm test:watch
 ```
 
 ## building new modules

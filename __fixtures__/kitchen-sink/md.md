@@ -82,10 +82,10 @@ cd packages/myfirstmodule
 skitch maketest
 ```
 
-Then you can use `jest` via `yarn` to test your logic.
+Then you can use `jest` via `pnpm` to test your logic.
 
 ```sh
-yarn test:watch
+pnpm test:watch
 ```
 
 ## what's different
@@ -124,7 +124,7 @@ utility
 You can install an npm module and then bundle it for `plv8`
 
 ```sh
-yarn add my-awesome-npm-module
+pnpm add my-awesome-npm-module
 skitch bundle my-awesome-npm-module awesomeThing
 ```
 

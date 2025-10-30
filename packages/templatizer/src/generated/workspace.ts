@@ -44,10 +44,10 @@ export default [
   "scripts": {
     "clean": "lerna run clean",
     "build": "lerna run build --stream",
-    "build:dev": "lerna run build:dev --stream; yarn symlink",
+    "build:dev": "lerna run build:dev --stream; pnpm run symlink",
     "lint": "lerna run lint --parallel",
     "symlink": "symlink-workspace --logLevel error",
-    "postinstall": "yarn symlink"
+    "postinstall": "pnpm run symlink"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -78,9 +78,9 @@ export default [
     const content = `{
   "lerna": "6",
   "conventionalCommits": true,
-  "npmClient": "yarn",
+  "npmClient": "pnpm",
   "npmClientArgs": [
-    "--no-lockfile"
+    "--frozen-lockfile"
   ],
   "packages": [
     "packages/*"
@@ -226,7 +226,7 @@ GRANT administrator TO app_admin;
 ## install
 
 \`\`\`sh
-npm install ${vars.MODULENAME}
+pnpm install ${vars.MODULENAME}
 \`\`\`
 ## Table of contents
 
@@ -241,17 +241,17 @@ npm install ${vars.MODULENAME}
 When first cloning the repo:
 
 \`\`\`sh
-yarn
+pnpm install
 # build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
+pnpm run build
 \`\`\`
 
 Or if you want to make your dev process smoother, you can run:
 
 \`\`\`sh
-yarn
+pnpm install
 # build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+pnpm run build:dev
 \`\`\`
 
 ## Credits
@@ -390,7 +390,7 @@ installit /sql-packages`;
     const content = `**/node_modules/
 **/.DS_Store
 **/dist
-**/yarn-error.log
+**/pnpm-debug.log
 lerna-debug.log`;
     return { relPath, content };
   },

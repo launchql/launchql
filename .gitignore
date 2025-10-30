@@ -1,7 +1,7 @@
 **/node_modules/
 **/.DS_Store
 **/dist
-**/yarn-error.log
+**/pnpm-debug.log
 lerna-debug.log
 .vscode
 ignore

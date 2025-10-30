@@ -1,9 +1,9 @@
 {
   "lerna": "6",
   "conventionalCommits": true,
-  "npmClient": "yarn",
+  "npmClient": "pnpm",
   "npmClientArgs": [
-    "--no-lockfile"
+    "--frozen-lockfile"
   ],
   "packages": [
     "packages/*"

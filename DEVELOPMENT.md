@@ -20,14 +20,14 @@ docker exec postgres /sql-bin/install.sh
 Then you can run 
 
 ```sh
-yarn
-yarn build
+pnpm install
+pnpm run build
 ```
 
 Then to run a test:
 
 ```sh
 cd packages/core
-yarn test
+pnpm test
 ```
 
