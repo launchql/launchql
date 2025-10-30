@@ -14,8 +14,8 @@ ssh:
 	docker exec -it postgres /bin/bash
 
 roles:
-	yarn lql admin-users bootstrap --yes
-	yarn lql admin-users add --test --yes
+	pnpm exec lql admin-users bootstrap --yes
+	pnpm exec lql admin-users add --test --yes
 
 install:
 	docker exec postgres /sql-bin/install.sh

@@ -31,7 +31,7 @@ So why not just make a `subdomains` object you can trust no matter what?
 ## install
 
 ```sh
-yarn add @launchql/url-domains
+pnpm add @launchql/url-domains
 ```
 
 ### middleware
