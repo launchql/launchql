@@ -29,5 +29,5 @@ before_install:
   - while ! docker exec -it postgritty pg_isready -U postgres -h 127.0.0.1; do echo "$(date) - waiting for database to start"; sleep 1; done
 script:
   - cd $PACKAGE
-  - yarn install
-  - yarn test
+  - pnpm install
+  - pnpm test

@@ -46,19 +46,24 @@ jobs:
       - name: deps
         run: apk update && apk add bash git python3-dev make g++
 
+      - name: setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.12.1 --activate
+
       - name: deps
-        run: yarn
+        run: pnpm install --frozen-lockfile
 
       - name: build
-        run: yarn build
+        run: pnpm run build
 
       - name: launchql/client
-        run: cd ./packages/client && yarn test
+        run: cd ./packages/client && pnpm test
         env:
           TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
 
       - name: launchql/s3-streamer
-        run: cd ./packages/s3-streamer && yarn test
+        run: cd ./packages/s3-streamer && pnpm test
         env:
           MINIO_ENDPOINT: http://minio_cdn:9000
           AWS_ACCESS_KEY: minioadmin
