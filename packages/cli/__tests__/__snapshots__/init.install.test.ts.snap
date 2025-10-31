@@ -26,7 +26,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   },
   "scripts": {
     "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "clean": "rimraf dist/**",
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "lint": "eslint . --fix",
@@ -107,7 +107,7 @@ exports[`cmds:install - with initialized workspace and module installs two modul
   },
   "scripts": {
     "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "clean": "rimraf dist/**",
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "lint": "eslint . --fix",
