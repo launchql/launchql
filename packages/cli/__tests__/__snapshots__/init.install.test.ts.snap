@@ -25,7 +25,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     "url": "https://github.com/undefined/undefined",
   },
   "scripts": {
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "clean": "rimraf dist/**",
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
@@ -106,7 +106,7 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     "url": "https://github.com/undefined/undefined",
   },
   "scripts": {
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "clean": "rimraf dist/**",
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
