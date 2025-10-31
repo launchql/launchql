@@ -23,7 +23,7 @@
     "build": "pnpm -r run build",
     "build:dev": "pnpm -r run build:dev; pnpm run symlink",
     "lint": "pnpm -r run lint",
-    "symlink": "symlink-workspace --logLevel error",
+    "symlink": "node scripts/symlink-workspace.js",
     "postinstall": "pnpm run symlink"
   },
   "devDependencies": {
