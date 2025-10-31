@@ -19,10 +19,10 @@
     "node": ">=18.17.0"
   },
   "scripts": {
-    "clean": "lerna run clean",
-    "build": "lerna run build --stream",
-    "build:dev": "lerna run build:dev --stream; pnpm run symlink",
-    "lint": "lerna run lint --parallel",
+    "clean": "pnpm -r run clean",
+    "build": "pnpm -r run build",
+    "build:dev": "pnpm -r run build:dev; pnpm run symlink",
+    "lint": "pnpm -r run lint",
     "symlink": "symlink-workspace --logLevel error",
     "postinstall": "pnpm run symlink"
   },
