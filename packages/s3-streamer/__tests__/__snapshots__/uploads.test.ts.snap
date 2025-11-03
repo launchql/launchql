@@ -23,9 +23,9 @@ exports[`uploads upload files via class 1`] = `
   ".travis.yml": {
     "contentType": "application/x-yaml",
     "contents": {
-      "etag": "eed1da4a1867d8af5f529e8668d23fd0",
-      "sha": "d92d5fb6cf5a031d7036bed36a8447114a23ad02",
-      "uuid": "f3dc1ee0-18fc-5f9e-af17-ff1ed4698f8c",
+      "etag": "e26e7a0be539681aa951cd610ef612f8",
+      "sha": "a9bed34d31b8814e226d5a5f9a021a8ab90aeac0",
+      "uuid": "57dd113a-94a0-5792-9132-4bb519dd148c",
     },
     "magic": {
       "charset": "utf-8",
@@ -33,7 +33,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""eed1da4a1867d8af5f529e8668d23fd0"",
+      "ETag": ""e26e7a0be539681aa951cd610ef612f8"",
       "Key": "db1/assets/.travis.yml",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/.travis.yml",
     },
@@ -491,9 +491,9 @@ exports[`uploads upload files via class 1`] = `
   "md.md": {
     "contentType": "text/markdown",
     "contents": {
-      "etag": "2524b9c1caad97610a5149886a7e793f",
-      "sha": "62c8208c3f148ada7e1a1a3b8972ac5898dfbf89",
-      "uuid": "89250a3c-a794-5d26-8ee4-d692dff9fc35",
+      "etag": "9086b336429e90603656255396a5d462",
+      "sha": "cfc29a5379baa5e45cff524dfb0510bcbd4ddead",
+      "uuid": "e6e1da03-9405-58ac-914d-be3347e0643a",
     },
     "magic": {
       "charset": "utf-8",
@@ -501,7 +501,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""2524b9c1caad97610a5149886a7e793f"",
+      "ETag": ""9086b336429e90603656255396a5d462"",
       "Key": "db1/assets/md.md",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/md.md",
     },
@@ -671,9 +671,9 @@ exports[`uploads upload files via class 1`] = `
   "shellscript": {
     "contentType": "text/plain",
     "contents": {
-      "etag": "9e73a9fd45d381175f3791bc4f33ec11",
-      "sha": "8301dee1416543a8ed2756efd4eeeaf83690eac4",
-      "uuid": "6baad900-76df-55cb-8d32-a73ec827dc8a",
+      "etag": "a1dd73e5c3542e3b25a99f121eb148e8",
+      "sha": "5bc4b293b825f24bb520352e5f4fde647ab0d51e",
+      "uuid": "4b817ec3-91da-54db-9624-9a78bd190f83",
     },
     "magic": {
       "charset": "utf-8",
@@ -681,7 +681,7 @@ exports[`uploads upload files via class 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""9e73a9fd45d381175f3791bc4f33ec11"",
+      "ETag": ""a1dd73e5c3542e3b25a99f121eb148e8"",
       "Key": "db1/assets/shellscript",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/shellscript",
     },
@@ -982,9 +982,9 @@ exports[`uploads upload files via functions 1`] = `
   ".travis.yml": {
     "contentType": "application/x-yaml",
     "contents": {
-      "etag": "eed1da4a1867d8af5f529e8668d23fd0",
-      "sha": "d92d5fb6cf5a031d7036bed36a8447114a23ad02",
-      "uuid": "f3dc1ee0-18fc-5f9e-af17-ff1ed4698f8c",
+      "etag": "e26e7a0be539681aa951cd610ef612f8",
+      "sha": "a9bed34d31b8814e226d5a5f9a021a8ab90aeac0",
+      "uuid": "57dd113a-94a0-5792-9132-4bb519dd148c",
     },
     "magic": {
       "charset": "utf-8",
@@ -992,7 +992,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""eed1da4a1867d8af5f529e8668d23fd0"",
+      "ETag": ""e26e7a0be539681aa951cd610ef612f8"",
       "Key": "db1/assets/.travis.yml",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/.travis.yml",
     },
@@ -1450,9 +1450,9 @@ exports[`uploads upload files via functions 1`] = `
   "md.md": {
     "contentType": "text/markdown",
     "contents": {
-      "etag": "2524b9c1caad97610a5149886a7e793f",
-      "sha": "62c8208c3f148ada7e1a1a3b8972ac5898dfbf89",
-      "uuid": "89250a3c-a794-5d26-8ee4-d692dff9fc35",
+      "etag": "9086b336429e90603656255396a5d462",
+      "sha": "cfc29a5379baa5e45cff524dfb0510bcbd4ddead",
+      "uuid": "e6e1da03-9405-58ac-914d-be3347e0643a",
     },
     "magic": {
       "charset": "utf-8",
@@ -1460,7 +1460,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""2524b9c1caad97610a5149886a7e793f"",
+      "ETag": ""9086b336429e90603656255396a5d462"",
       "Key": "db1/assets/md.md",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/md.md",
     },
@@ -1630,9 +1630,9 @@ exports[`uploads upload files via functions 1`] = `
   "shellscript": {
     "contentType": "text/plain",
     "contents": {
-      "etag": "9e73a9fd45d381175f3791bc4f33ec11",
-      "sha": "8301dee1416543a8ed2756efd4eeeaf83690eac4",
-      "uuid": "6baad900-76df-55cb-8d32-a73ec827dc8a",
+      "etag": "a1dd73e5c3542e3b25a99f121eb148e8",
+      "sha": "5bc4b293b825f24bb520352e5f4fde647ab0d51e",
+      "uuid": "4b817ec3-91da-54db-9624-9a78bd190f83",
     },
     "magic": {
       "charset": "utf-8",
@@ -1640,7 +1640,7 @@ exports[`uploads upload files via functions 1`] = `
     },
     "upload": {
       "Bucket": "test-bucket",
-      "ETag": ""9e73a9fd45d381175f3791bc4f33ec11"",
+      "ETag": ""a1dd73e5c3542e3b25a99f121eb148e8"",
       "Key": "db1/assets/shellscript",
       "Location": "http://minio_cdn:9000/test-bucket/db1/assets/shellscript",
     },
