@@ -85,7 +85,7 @@ describe('cmds:install - with initialized workspace and module', () => {
       absolute: true
     });
 
-    const relativeFiles = installedFiles.map(f => path.relative(moduleDir, f));
+    const relativeFiles = installedFiles.map((f: string) => path.relative(moduleDir, f));
     expect(relativeFiles).toMatchSnapshot();
     expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg, version)));
 
@@ -126,7 +126,7 @@ describe('cmds:install - with initialized workspace and module', () => {
       absolute: true
     });
 
-    const relativeFiles = installedFiles.map(f => path.relative(moduleDir, f));
+    const relativeFiles = installedFiles.map((f: string) => path.relative(moduleDir, f));
 
     for (const pkg of pkgs) {
       expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg.name, pkg.version)));

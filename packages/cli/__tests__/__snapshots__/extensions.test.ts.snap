@@ -2,17 +2,17 @@
 
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: extension-update - files 1`] = `
 [
-  "__tests__/first.test.ts",
-  ".questions.json",
-  "jest.config.js",
-  "launchql.plan",
-  "Makefile",
-  "my-module.control",
-  "package.json",
-  "README.md",
-  "src/index.ts",
-  "tsconfig.esm.json",
   "tsconfig.json",
+  "tsconfig.esm.json",
+  "package.json",
+  "my-module.control",
+  "launchql.plan",
+  "jest.config.js",
+  "README.md",
+  "Makefile",
+  ".questions.json",
+  "src/index.ts",
+  "__tests__/first.test.ts",
 ]
 `;
 
