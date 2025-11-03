@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/pluralize": "0.0.33",
     "graphile-test": "^2.5.1",
+    "graphql": "15.10.1",
     "introspectron": "^2.11.2"
   },
   "dependencies": {
