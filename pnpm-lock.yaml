@@ -643,6 +643,9 @@ importers:
         specifier: ^2.11.1
         version: 2.11.1(@babel/core@7.28.5)(@pgsql/types@17.6.1)(graphql@15.10.1)
     devDependencies:
+      '@types/babel__generator':
+        specifier: ^7.6.8
+        version: 7.27.0
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6

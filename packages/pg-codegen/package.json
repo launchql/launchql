@@ -50,6 +50,7 @@
     "pgsql-test": "^2.11.11"
   },
   "devDependencies": {
+    "@types/babel__generator": "^7.6.8",
     "@types/pg": "^8.15.2"
   }
 }
