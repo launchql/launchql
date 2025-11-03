@@ -62,8 +62,5 @@
     "ui",
     "launchql",
     "interface"
-  ],
-  "resolutions": {
-    "graphql": "15.10.1"
-  }
+  ]
 }

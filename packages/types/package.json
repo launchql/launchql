@@ -35,9 +35,6 @@
     "pg-env": "^1.1.0",
     "postgraphile": "^4.14.1"
   },
-  "resolutions": {
-    "graphql": "15.10.1"
-  },
   "keywords": [
     "graphql",
     "types",
