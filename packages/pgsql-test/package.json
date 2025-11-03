@@ -62,6 +62,7 @@
   "dependencies": {
     "@launchql/core": "^2.11.1",
     "@launchql/env": "^2.4.1",
+    "@launchql/logger": "^1.1.0",
     "@launchql/server-utils": "^2.4.1",
     "@launchql/types": "^2.6.0",
     "pg": "^8.16.0",

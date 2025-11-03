@@ -30,11 +30,13 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "@types/pg": "^8.15.2",
     "graphile-test": "^2.5.1",
     "pgsql-test": "^2.11.1"
   },
   "dependencies": {
-    "graphql-tag": "2.12.6"
+    "graphql-tag": "2.12.6",
+    "pg": "^8.16.0"
   },
   "keywords": [
     "graphql",
