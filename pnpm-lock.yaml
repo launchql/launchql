@@ -775,12 +775,18 @@ importers:
       '@launchql/s3-utils':
         specifier: ^2.2.0
         version: 2.2.0
+      '@types/glob':
+        specifier: ^8.1.0
+        version: 8.1.0
       dotenv:
         specifier: ^16.5.0
         version: 16.6.1
       envalid:
         specifier: ^8.0.0
         version: 8.1.0
+      glob:
+        specifier: ^11.0.2
+        version: 11.0.3
     publishDirectory: dist
 
   packages/s3-utils:
