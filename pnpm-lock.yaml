@@ -537,6 +537,9 @@ importers:
       graphile-test:
         specifier: ^2.5.1
         version: 2.5.1
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
       introspectron:
         specifier: ^2.11.2
         version: 2.11.2(graphql@15.10.1)
