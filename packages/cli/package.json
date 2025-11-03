@@ -35,9 +35,14 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/js-yaml": "^4.0.9",
+    "@types/minimist": "^1.2.5",
     "@types/node": "^20.12.7",
+    "@types/pg": "^8.15.2",
     "@types/shelljs": "^0.8.16",
+    "glob": "^11.0.2",
+    "pg": "^8.16.0",
     "ts-node": "^10.9.2"
   },
   "dependencies": {

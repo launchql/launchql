@@ -58,7 +58,7 @@ export default [
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
