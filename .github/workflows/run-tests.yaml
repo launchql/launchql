@@ -1,6 +1,8 @@
 name: LaunchQL tests
 on:
   push:
+  pull_request:
+    types: [opened, synchronized, reopened]
   workflow_dispatch:
 
 jobs:
