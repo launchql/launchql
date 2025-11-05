@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.2",
-    "graphile-test": "^2.5.4",
-    "pgsql-test": "^2.11.11"
+    "graphile-test": "workspace:^",
+    "pgsql-test": "workspace:^"
   },
   "dependencies": {
     "graphql-tag": "2.12.6",
