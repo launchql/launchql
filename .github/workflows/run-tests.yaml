@@ -66,7 +66,10 @@ jobs:
         run: pnpm run build
 
       - name: fix lql permissions
-        run: chmod +x node_modules/.bin/lql
+        run: |
+          if [ -f node_modules/.bin/lql ]; then
+            chmod +x node_modules/.bin/lql
+          fi
 
       - name: seed app_user
         run: |
