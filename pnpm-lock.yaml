@@ -59,9 +59,6 @@ importers:
       strip-ansi:
         specifier: ^6
         version: 6.0.1
-      symlink-workspace:
-        specifier: ^1.9.0
-        version: 1.11.0
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.5(@babel/core@7.28.5)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.5))(jest-util@29.7.0)(jest@29.7.0(@types/node@20.19.24)(ts-node@10.9.2(@types/node@20.19.24)(typescript@5.9.3)))(typescript@5.9.3)
@@ -4672,11 +4669,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  mkdirp@3.0.0:
-    resolution: {integrity: sha512-7+JDnNsyCvZXoUJdkMR0oUE2AmAdsNXGTmRbiOjYIwQ6q+bL6NwrozGQdPcmYaNcrhH37F50HHBUzoaBV6FITQ==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   mock-req@0.2.0:
     resolution: {integrity: sha512-IUuwS0W5GjoPyjhuXPQJXpaHfHW7UYFRia8Cchm/xRuyDDclpSQdEoakt3krOpSYvgVlQsbnf0ePDsTRDfp7Dg==}
 
@@ -5508,11 +5500,6 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  rimraf@5.0.0:
-    resolution: {integrity: sha512-Jf9llaP+RvaEVS5nPShYFhtXIrb3LRKP281ib3So0KkeZKo2wIKyq0Re7TOSwanasA423PSr6CCIL4bP6T040g==}
-    engines: {node: '>=14'}
-    hasBin: true
-
   rimraf@6.0.1:
     resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
     engines: {node: 20 || >=22}
@@ -5847,10 +5834,6 @@ packages:
   symbol-observable@1.2.0:
     resolution: {integrity: sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==}
     engines: {node: '>=0.10.0'}
-
-  symlink-workspace@1.11.0:
-    resolution: {integrity: sha512-oD4M6Ir8aBp9ySKrmQ2DzkipDMQ5OYhl8xusVtgo2mqa5Ti1oS6TDa/rrDaNy4Vb4z18bge817SkIXZZzT03sg==}
-    hasBin: true
 
   tar-stream@2.2.0:
     resolution: {integrity: sha512-ujeqbceABgwMZxEJnk2HDY2DlnUZ+9oEcb1KzTVfYHio0UE6dG71n60d8D2I4qNvleWrrXpmjpt7vZeF1LnMZQ==}
@@ -11416,8 +11399,6 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  mkdirp@3.0.0: {}
-
   mock-req@0.2.0: {}
 
   modify-values@1.0.1: {}
@@ -12396,10 +12377,6 @@ snapshots:
     dependencies:
       glob: 9.3.5
 
-  rimraf@5.0.0:
-    dependencies:
-      glob: 10.4.5
-
   rimraf@6.0.1:
     dependencies:
       glob: 11.0.3
@@ -12748,14 +12725,6 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   symbol-observable@1.2.0: {}
-
-  symlink-workspace@1.11.0:
-    dependencies:
-      chalk: 4.1.2
-      glob: 8.1.0
-      minimist: 1.2.8
-      mkdirp: 3.0.0
-      rimraf: 5.0.0
 
   tar-stream@2.2.0:
     dependencies:

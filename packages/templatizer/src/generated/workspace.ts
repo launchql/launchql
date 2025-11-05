@@ -42,12 +42,10 @@ export default [
     "packages/*"
   ],
   "scripts": {
-    "clean": "lerna run clean",
-    "build": "lerna run build --stream",
-    "build:dev": "lerna run build:dev --stream; pnpm run symlink",
-    "lint": "lerna run lint --parallel",
-    "symlink": "symlink-workspace --logLevel error",
-    "postinstall": "pnpm run symlink"
+    "clean": "pnpm -r run clean",
+    "build": "pnpm -r run build",
+    "build:dev": "pnpm -r run build:dev",
+    "lint": "pnpm -r run lint"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -64,7 +62,6 @@ export default [
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
-    "symlink-workspace": "^1.9.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"

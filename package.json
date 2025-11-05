@@ -21,10 +21,8 @@
   "scripts": {
     "clean": "pnpm -r run clean",
     "build": "pnpm -r run build",
-    "build:dev": "pnpm -r run build:dev; pnpm run symlink",
-    "lint": "pnpm -r run lint",
-    "symlink": "node scripts/symlink-workspace.js",
-    "postinstall": "pnpm run symlink"
+    "build:dev": "pnpm -r run build:dev",
+    "lint": "pnpm -r run lint"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -44,7 +42,6 @@
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
-    "symlink-workspace": "^1.9.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
