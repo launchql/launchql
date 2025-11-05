@@ -512,11 +512,11 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       graphile-test:
-        specifier: ^2.5.1
-        version: 2.5.1
+        specifier: workspace:^
+        version: link:../graphile-test/dist
       pgsql-test:
-        specifier: ^2.11.1
-        version: 2.11.1(@babel/core@7.28.5)(@pgsql/types@17.6.1)(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../pgsql-test/dist
     publishDirectory: dist
 
   packages/launchql-gen:
@@ -535,14 +535,14 @@ importers:
         specifier: 0.0.33
         version: 0.0.33
       graphile-test:
-        specifier: ^2.5.1
-        version: 2.5.1
+        specifier: workspace:^
+        version: link:../graphile-test/dist
       graphql:
         specifier: 15.10.1
         version: 15.10.1
       introspectron:
-        specifier: ^2.11.2
-        version: 2.11.2(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../introspectron/dist
     publishDirectory: dist
 
   packages/logger:
@@ -622,26 +622,26 @@ importers:
         specifier: ^7.26.3
         version: 7.28.5
       '@launchql/logger':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: workspace:^
+        version: link:../logger/dist
       '@launchql/server-utils':
-        specifier: ^2.4.1
-        version: 2.4.1(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../server-utils/dist
       '@launchql/types':
-        specifier: ^2.6.0
-        version: 2.6.0(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../types/dist
       pg:
         specifier: ^8.16.0
         version: 8.16.3
       pg-cache:
-        specifier: ^1.3.1
-        version: 1.3.1(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../pg-cache/dist
       pg-env:
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: workspace:^
+        version: link:../pg-env/dist
       pgsql-test:
-        specifier: ^2.11.1
-        version: 2.11.1(@babel/core@7.28.5)(@pgsql/types@17.6.1)(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../pgsql-test/dist
     devDependencies:
       '@types/babel__generator':
         specifier: ^7.6.8
@@ -668,32 +668,32 @@ importers:
   packages/pgsql-test:
     dependencies:
       '@launchql/core':
-        specifier: ^2.11.1
-        version: 2.11.1(@babel/core@7.28.5)(@pgsql/types@17.6.1)(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../core/dist
       '@launchql/env':
-        specifier: ^2.4.1
-        version: 2.4.1(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../env/dist
       '@launchql/logger':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: workspace:^
+        version: link:../logger/dist
       '@launchql/server-utils':
-        specifier: ^2.4.1
-        version: 2.4.1(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../server-utils/dist
       '@launchql/types':
-        specifier: ^2.6.0
-        version: 2.6.0(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../types/dist
       pg:
         specifier: ^8.16.0
         version: 8.16.3
       pg-cache:
-        specifier: ^1.3.1
-        version: 1.3.1(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../pg-cache/dist
       pg-copy-streams:
         specifier: ^6.0.6
         version: 6.0.6
       pg-env:
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: workspace:^
+        version: link:../pg-env/dist
     devDependencies:
       '@types/pg':
         specifier: ^8.15.2
@@ -3738,9 +3738,6 @@ packages:
 
   graphile-simple-inflector@0.1.1:
     resolution: {integrity: sha512-noEIF7ORcHHdHd1iHnqEk8cozLB8LKUHBuCZwUCv98E9Mp2odRAGUjhGsFuAd2wmZDEutersd80dDCOny3dytg==}
-
-  graphile-test@2.5.1:
-    resolution: {integrity: sha512-qH5sW+rG+1Dw51e+umlCl3GWG+dZVooOczChj8jUaDMns6GrdpOCHXcGSf5V8cCJFAZtQXZn5BB1QkbdNqadyQ==}
 
   graphile-utils@4.14.1:
     resolution: {integrity: sha512-FgviZVKO3NS8va2inqUVQQFSnFLEG7FiH64BqSVRHSF8jwSXKcpx5NiRibErNvvIdnuzgVAXQ3W4jcXvMSx0Tg==}
@@ -10156,24 +10153,6 @@ snapshots:
   graphile-simple-inflector@0.1.1:
     dependencies:
       '@babel/runtime': 7.28.4
-
-  graphile-test@2.5.1:
-    dependencies:
-      '@launchql/types': 2.6.0(graphql@15.10.1)
-      graphile-settings: 2.5.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))
-      graphql: 15.10.1
-      mock-req: 0.2.0
-      pg: 8.16.3
-      postgraphile: 4.14.1
-    transitivePeerDependencies:
-      - aws-crt
-      - bufferutil
-      - graphile-build-pg
-      - pg-native
-      - pg-sql2
-      - postgraphile-core
-      - supports-color
-      - utf-8-validate
 
   graphile-utils@4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
     dependencies:

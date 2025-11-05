@@ -31,9 +31,9 @@
   },
   "devDependencies": {
     "@types/pluralize": "0.0.33",
-    "graphile-test": "^2.5.1",
+    "graphile-test": "workspace:^",
     "graphql": "15.10.1",
-    "introspectron": "^2.11.2"
+    "introspectron": "workspace:^"
   },
   "dependencies": {
     "gql-ast": "^2.3.0",

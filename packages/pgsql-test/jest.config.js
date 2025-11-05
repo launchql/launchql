@@ -15,8 +15,4 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   modulePathIgnorePatterns: ['dist/*'],
-  moduleNameMapper: {
-    '^@launchql/logger$': '<rootDir>/../../packages/logger/dist',
-    '^@launchql/(.*)$': '<rootDir>/../../packages/$1/dist',
-  },
 };
