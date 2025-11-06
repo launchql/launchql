@@ -1,8 +1,12 @@
 import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
 import { Logger } from '@launchql/logger';
+// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
 import {
   moduleTemplate,
-  writeRenderedTemplates} from '@launchql/templatizer';
+  writeRenderedTemplates,
+  TemplateSource,
+  loadTemplates
+} from '@launchql/templatizer';
 import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
@@ -105,6 +109,7 @@ export interface InitModuleOptions {
   description: string;
   author: string;
   extensions: string[];
+  templateSource?: TemplateSource;
 }
 
 export class LaunchQLPackage {
@@ -397,7 +402,15 @@ export class LaunchQLPackage {
   initModule(options: InitModuleOptions): void {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
-    writeRenderedTemplates(moduleTemplate, targetPath, options);
+    
+    // Load templates from custom source if provided, otherwise use default
+    let templates = moduleTemplate;
+    if (options.templateSource) {
+      const compiledTemplates = loadTemplates(options.templateSource, 'module');
+      templates = compiledTemplates.map((t: any) => t.render);
+    }
+    
+    writeRenderedTemplates(templates, targetPath, options);
     this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
   }

@@ -14,10 +14,16 @@ Options:
   --help, -h              Show this help message
   --workspace             Initialize workspace instead of module
   --cwd <directory>       Working directory (default: current directory)
+  --repo <repo>           Use templates from GitHub repository (e.g., owner/repo)
+  --template-path <path>   Use templates from local path
+  --from-branch <branch>   Specify branch when using --repo (default: main)
 
 Examples:
-  lql init                Initialize new module in existing workspace
-  lql init --workspace    Initialize new workspace
+  lql init                                  Initialize new module in existing workspace
+  lql init --workspace                       Initialize new workspace
+  lql init --repo owner/repo                Use templates from GitHub repository
+  lql init --template-path ./custom-templates Use templates from local path
+  lql init --repo owner/repo --from-branch develop  Use specific branch
 `;
 
 export default async (
@@ -45,3 +51,4 @@ async function handlePromptFlow(argv: Partial<Record<string, any>>, prompter: In
     return runModuleSetup(argv, prompter);
   }
 }
+

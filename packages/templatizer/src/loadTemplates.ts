@@ -1,0 +1,89 @@
+import { existsSync } from 'fs';
+import { join, resolve } from 'path';
+import { execSync } from 'child_process';
+import { mkdtempSync, rmSync } from 'fs';
+import os from 'os';
+import { compileTemplatesToFunctions } from './templatize/compileTemplatesToFunctions';
+
+export interface TemplateSource {
+  type: 'local' | 'github';
+  path: string;
+  branch?: string;
+}
+
+/**
+ * Load templates from a local path or GitHub repository
+ */
+export function loadTemplates(
+  source: TemplateSource,
+  templateType: 'workspace' | 'module'
+): ReturnType<typeof compileTemplatesToFunctions> {
+  let templateDir: string;
+  let cleanup: (() => void) | null = null;
+
+  if (source.type === 'github') {
+    // Clone GitHub repository to temporary directory
+    const tempDir = mkdtempSync(join(os.tmpdir(), 'lql-template-'));
+    cleanup = () => {
+      rmSync(tempDir, { recursive: true, force: true });
+    };
+
+    try {
+      const repoUrl = source.path.startsWith('http') 
+        ? source.path 
+        : `https://github.com/${source.path}.git`;
+      
+      const branch = source.branch || 'main';
+      
+      // Clone the repository
+      execSync(`git clone --depth 1 --branch ${branch} ${repoUrl} ${tempDir}`, {
+        stdio: 'inherit'
+      });
+
+      // Check if boilerplates directory exists in repo
+      const boilerplatesPath = join(tempDir, 'boilerplates');
+      if (!existsSync(boilerplatesPath)) {
+        throw new Error(`boilerplates directory not found in repository: ${source.path}`);
+      }
+
+      templateDir = join(boilerplatesPath, templateType);
+      
+      if (!existsSync(templateDir)) {
+        throw new Error(`Template type '${templateType}' not found in repository: ${source.path}`);
+      }
+    } catch (error) {
+      if (cleanup) cleanup();
+      throw error;
+    }
+  } else {
+    // Local path - can be either direct path to template directory or boilerplates root
+    const resolvedPath = resolve(source.path);
+    
+    // Check if path points directly to workspace/module directory
+    if (existsSync(join(resolvedPath, '.questions.json'))) {
+      // Direct path to template directory
+      templateDir = resolvedPath;
+    } else {
+      // Path to boilerplates root
+      templateDir = join(resolvedPath, templateType);
+      
+      if (!existsSync(templateDir)) {
+        throw new Error(`Template type '${templateType}' not found at path: ${templateDir}`);
+      }
+    }
+    
+    if (!existsSync(templateDir)) {
+      throw new Error(`Template directory not found: ${templateDir}`);
+    }
+  }
+
+  try {
+    const templates = compileTemplatesToFunctions(templateDir);
+    return templates;
+  } finally {
+    // Cleanup temporary directory if needed
+    if (cleanup) cleanup();
+  }
+}
+
+
