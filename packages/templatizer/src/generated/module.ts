@@ -57,9 +57,9 @@ export default [
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
-    "prepare": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "prepare": "pnpm run build",
+    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
