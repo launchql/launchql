@@ -498,6 +498,9 @@ importers:
 
   packages/introspectron:
     dependencies:
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
       graphql-tag:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)

@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
+import { DocumentNode } from 'graphql';
 
-export const IntrospectionQuery = gql`
+export const IntrospectionQuery: DocumentNode = gql`
   query IntrospectionQuery {
     __schema {
       queryType {

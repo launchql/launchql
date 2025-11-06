@@ -35,6 +35,7 @@
     "pgsql-test": "workspace:^"
   },
   "dependencies": {
+    "graphql": "15.10.1",
     "graphql-tag": "2.12.6",
     "pg": "^8.16.0"
   },
