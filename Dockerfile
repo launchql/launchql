@@ -54,3 +54,4 @@ RUN set -eux; \
 
 ENTRYPOINT ["/usr/local/bin/lql"]
 CMD ["--help"]
+
