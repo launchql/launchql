@@ -1,9 +1,9 @@
 // Auto-generated template module
 
 export default [
-  (vars: Record<string, any>) => {
-    const relPath = `tsconfig.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `tsconfig.json`;
+  const content = `{
   "compilerOptions": {
     "target": "es2022",
     "module": "commonjs",
@@ -20,12 +20,12 @@ export default [
   "exclude": ["dist", "node_modules"]
 }
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `package.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `package.json`;
+  const content = `{
   "name": "${vars.MODULENAME}",
   "version": "0.0.1",
   "author": "${vars.USERFULLNAME} <${vars.USEREMAIL}>",
@@ -34,7 +34,7 @@ export default [
     "type": "git",
     "url": "https://github.com/${vars.USERNAME}/${vars.MODULENAME}"
   },
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
     "access": "restricted"
   },
@@ -67,12 +67,12 @@ export default [
     "typescript": "^5.1.6"
   }
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `lerna.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `lerna.json`;
+  const content = `{
   "lerna": "6",
   "conventionalCommits": true,
   "npmClient": "pnpm",
@@ -87,7 +87,7 @@ export default [
   "command": {
     "create": {
       "homepage": "https://github.com/${vars.USERNAME}/${vars.MODULENAME}",
-      "license": "MIT",
+      "license": "SEE LICENSE IN LICENSE",
       "access": "restricted"
     },
     "publish": {
@@ -96,23 +96,23 @@ export default [
     }
   }
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `launchql.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `launchql.json`;
+  const content = `{
   "packages": [
     "packages/*",
     "extensions/*"
   ]
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `docker-compose.yml`;
-    const content = `services:
+(vars: Record<string, any>) => {
+  const relPath = `docker-compose.yml`;
+  const content = `services:
   postgres:
     container_name: postgres
     image: pyramation/pgvector:13.3-alpine
@@ -140,12 +140,12 @@ export default [
       - "9000"
     command: server /data
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `bootstrap-roles.sql`;
-    const content = `-- anonymous
+(vars: Record<string, any>) => {
+  const relPath = `bootstrap-roles.sql`;
+  const content = `-- anonymous
 CREATE ROLE anonymous;
 
 ALTER USER anonymous WITH NOCREATEDB;
@@ -208,12 +208,12 @@ GRANT authenticated TO administrator;
 GRANT administrator TO app_admin;
 
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `README.md`;
-    const content = `# ${vars.MODULENAME}
+(vars: Record<string, any>) => {
+  const relPath = `README.md`;
+  const content = `# ${vars.MODULENAME}
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
@@ -223,7 +223,7 @@ GRANT administrator TO app_admin;
 ## install
 
 \`\`\`sh
-pnpm install ${vars.MODULENAME}
+npm install ${vars.MODULENAME}
 \`\`\`
 ## Table of contents
 
@@ -262,12 +262,12 @@ AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN 
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `Makefile`;
-    const content = `
+(vars: Record<string, any>) => {
+  const relPath = `Makefile`;
+  const content = `
 up:
 	docker-compose up -d
 
@@ -277,15 +277,19 @@ down:
 ssh:
 	docker exec -it postgres /bin/bash
 
+roles:
+	lql admin-users bootstrap --yes
+	lql admin-users add --test --yes
+
 install:
 	docker exec postgres /sql-bin/install.sh
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `LICENSE`;
-    const content = `The MIT License (MIT)
+(vars: Record<string, any>) => {
+  const relPath = `LICENSE`;
+  const content = `The MIT License (MIT)
 
 Copyright (c) 2025 ${vars.USERFULLNAME} <${vars.USEREMAIL}>
 
@@ -307,45 +311,51 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `bin/install.sh`;
-    const content = `#!/usr/bin/env bash
+(vars: Record<string, any>) => {
+  const relPath = `bin/install.sh`;
+  const content = `#!/usr/bin/env bash
+set -euo pipefail
 
-function installit {
-  DIR=$(pwd)
+# Define colors and styles
+GREEN="\\033[0;32m"
+BOLD="\\033[1m"
+RESET="\\033[0m"
+CYAN="\\033[0;36m"
+YELLOW="\\033[1;33m"
 
-  if [ -d "$1" ]
-  then
-    echo "SQL Module Directory $1 exists."
-    echo $1
-    cd $1
+install_sql_modules() {
+  local base_dir="$1"
+  local label
+  label=$(basename "$base_dir")
 
-    for x in $(find ./ -type f -name "launchql.plan")
-    do
-      orig=$(pwd)
-      dir=$(dirname $x)
-      cd $dir
-      make install
-      cd $orig
-    done
-    cd $DIR
-  else
-    echo "Error: SQL MODULE Directory $1 does not exist, don't worry, moving on."
+  if [[ ! -d "$base_dir" ]]; then
+    echo -e "\${YELLOW}Warning:\${RESET} SQL module directory '\${CYAN}\${base_dir}\${RESET}' does not exist. Skipping..."
+    return
   fi
 
+  echo -e "\${GREEN}Installing SQL modules from:\${RESET} \${CYAN}\${base_dir}\${RESET}"
+  find "$base_dir" -type f -name "sqitch.plan" | while read -r plan_file; do
+    local dir rel_path pkg_name
+    dir=$(dirname "$plan_file")
+    rel_path="\${dir#"$base_dir"/}"         # strip base_dir prefix
+    pkg_name="\${BOLD}\${GREEN}\${rel_path}\${RESET}" # colorize and bold package name
+    echo -e "\${CYAN}→ Installing in:\${RESET} \${pkg_name}"
+    (cd "$dir" && make install)
+  done
 }
 
-installit /sql-extensions
-installit /sql-packages`;
-    return { relPath, content };
-  },
+install_sql_modules "/sql-extensions"
+install_sql_modules "/sql-packages"
+`;
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.questions.json`;
-    const content = `[
+(vars: Record<string, any>) => {
+  const relPath = `.questions.json`;
+  const content = `[
   {
     "name": "${vars.USERFULLNAME}",
     "message": "Enter author full name",
@@ -367,34 +377,34 @@ installit /sql-packages`;
     "required": true
   }
 ]`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.prettierrc.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `.prettierrc.json`;
+  const content = `{
   "trailingComma": "es5",
   "tabWidth": 2,
   "semi": true,
   "useTabs": false,
   "singleQuote": false
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.gitignore`;
-    const content = `**/node_modules/
+(vars: Record<string, any>) => {
+  const relPath = `.gitignore`;
+  const content = `**/node_modules/
 **/.DS_Store
 **/dist
 **/pnpm-debug.log
 lerna-debug.log`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.eslintrc.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `.eslintrc.json`;
+  const content = `{
   "env": {
     "browser": true,
     "es2021": true,
@@ -457,6 +467,6 @@ lerna-debug.log`;
     "@typescript-eslint/no-unsafe-declaration-merging": 0
   }
 }`;
-    return { relPath, content };
-  }
+  return { relPath, content };
+}
 ];
