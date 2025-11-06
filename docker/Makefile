@@ -59,7 +59,6 @@ build-process-version:
 		--build-arg BASE=$(BASE) \
 		--build-arg BASE_VERSION=$(VERSION) \
 		--file $(PROCESS)/Dockerfile \
-		--context $(PROCESS) \
 		-t $(REPO_NAME)/$(PROCESS):$(VERSION) \
 		$(PROCESS)
 
@@ -74,7 +73,6 @@ build-push-process-version:
 		--build-arg BASE=$(BASE) \
 		--build-arg BASE_VERSION=$(VERSION) \
 		--file $(PROCESS)/Dockerfile \
-		--context $(PROCESS) \
 		-t $(REPO_NAME)/$(PROCESS):$(VERSION) \
 		--push \
 		$(PROCESS)
