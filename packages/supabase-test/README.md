@@ -11,9 +11,12 @@
   <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
+  <a href="https://www.npmjs.com/package/supabase-test">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fsupabase-test%2Fpackage.json"/>
+  </a>
 </p>
 
-`supabase-test` is a Supabase-optimized version of `pgsql-test` with Supabase defaults baked in. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for Supabase's local development environment.
+`supabase-test` is a Supabase-optimized version of `pgsql-test` with Supabase defaults baked in. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for Supabase's local development environment. It's also great for GitHub Actions and CI/CD testing.
 
 ## Install
 
@@ -29,19 +32,37 @@ npm install supabase-test
 * 🌱 **Flexible seeding** — run `.sql` files, programmatic seeds, or even load fixtures
 * 🧪 **Compatible with any async runner** — works with `Jest`, `Mocha`, etc.
 * 🧹 **Auto teardown** — no residue, no reboots, just clean exits
-* 🎯 **Supabase defaults** — pre-configured for Supabase local development (port 54322, `supabase_admin` user)
 
-## Supabase Defaults
+### LaunchQL migrations
 
-This package automatically uses Supabase's local development defaults:
+Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is built to pair seamlessly with our TypeScript-based [Sqitch](https://sqitch.org/) engine rewrite:
 
-* **Port:** `54322` (Supabase's default PostgreSQL port)
-* **User:** `supabase_admin`
-* **Password:** `postgres`
+* 🚀 **Lightning-fast migrations** — powered by LaunchQL’s native deployer (10x faster than legacy Sqitch)
+* 🔧 **Composable test scaffolds** — integrate with full LaunchQL stacks or use standalone
 
-These defaults are applied automatically, but can be overridden by passing options to `getConnections()`.
 
-## Quick Start
+## Table of Contents
+
+1. [Install](#install)
+2. [Features](#features)
+3. [Quick Start](#-quick-start)
+4. [`getConnections()` Overview](#getconnections-overview)
+5. [PgTestClient API Overview](#pgtestclient-api-overview)
+6. [Usage Examples](#usage-examples)
+   * [Basic Setup](#-basic-setup)
+   * [Role-Based Context](#-role-based-context)
+   * [Seeding System](#-seeding-system)
+   * [SQL File Seeding](#-sql-file-seeding)
+   * [Programmatic Seeding](#-programmatic-seeding)
+   * [CSV Seeding](#️-csv-seeding)
+   * [JSON Seeding](#️-json-seeding)
+   * [Sqitch Seeding](#️-sqitch-seeding)
+   * [LaunchQL Seeding](#-launchql-seeding)
+7. [`getConnections() Options` ](#getconnections-options)
+8. [Disclaimer](#disclaimer)
+
+
+## ✨ Quick Start
 
 ```ts
 import { getConnections } from 'supabase-test';
@@ -54,30 +75,93 @@ beforeAll(async () => {
 });
 
 afterAll(() => teardown());
-beforeEach(() => db.beforeEach());
-afterEach(() => db.afterEach());
 ```
 
-## Usage
-
-### Basic Setup
+## `getConnections()` Overview
 
 ```ts
 import { getConnections } from 'supabase-test';
 
-let db, teardown;
+// Complete object destructuring
+const { pg, db, admin, teardown, manager } = await getConnections();
+
+// Most common pattern
+const { db, teardown } = await getConnections();
+```
+
+The `getConnections()` helper sets up a fresh PostgreSQL test database and returns a structured object with:
+
+* `pg`: a `PgTestClient` connected as the root or superuser — useful for administrative setup or introspection
+* `db`: a `PgTestClient` connected as the app-level user — used for running tests with RLS and granted permissions
+* `admin`: a `DbAdmin` utility for managing database state, extensions, roles, and templates
+* `teardown()`: a function that shuts down the test environment and database pool
+* `manager`: a shared connection pool manager (`PgTestConnector`) behind both clients
+
+Together, these allow fast, isolated, role-aware test environments with per-test rollback and full control over setup and teardown.
+
+The `PgTestClient` returned by `getConnections()` is a fully-featured wrapper around `pg.Pool`. It provides:
+
+* Automatic transaction and savepoint management for test isolation
+* Easy switching of role-based contexts for RLS testing
+* A clean, high-level API for integration testing PostgreSQL systems
+
+## `PgTestClient` API Overview
+
+```ts
+let pg: PgTestClient;
+let teardown: () => Promise<void>;
+
+beforeAll(async () => {
+  ({ pg, teardown } = await getConnections());
+});
+
+beforeEach(() => pg.beforeEach());
+afterEach(() => pg.afterEach());
+afterAll(() => teardown());
+```
+
+The `PgTestClient` returned by `getConnections()` wraps a `pg.Client` and provides convenient helpers for query execution, test isolation, and context switching.
+
+### Common Methods
+
+* `query(sql, values?)` – Run a raw SQL query and get the `QueryResult`
+* `beforeEach()` – Begins a transaction and sets a savepoint (called at the start of each test)
+* `afterEach()` – Rolls back to the savepoint and commits the outer transaction (cleans up test state)
+* `setContext({ key: value })` – Sets PostgreSQL config variables (like `role`) to simulate RLS contexts
+* `any`, `one`, `oneOrNone`, `many`, `manyOrNone`, `none`, `result` – Typed query helpers for specific result expectations
+
+These methods make it easier to build expressive and isolated integration tests with strong typing and error handling.
+
+The `PgTestClient` returned by `getConnections()` is a fully-featured wrapper around `pg.Pool`. It provides:
+
+* Automatic transaction and savepoint management for test isolation
+* Easy switching of role-based contexts for RLS testing
+* A clean, high-level API for integration testing PostgreSQL systems
+
+## Usage Examples
+
+### ⚡ Basic Setup
+
+```ts
+import { getConnections } from 'supabase-test';
+
+let db; // A fully wrapped PgTestClient using pg.Pool with savepoint-based rollback per test
+let teardown;
 
 beforeAll(async () => {
   ({ db, teardown } = await getConnections());
-  
-  // Setup schema
+
   await db.query(`
     CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT);
+    CREATE TABLE posts (id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id), content TEXT);
+
     INSERT INTO users (name) VALUES ('Alice'), ('Bob');
+    INSERT INTO posts (user_id, content) VALUES (1, 'Hello world!'), (2, 'Graphile is cool!');
   `);
 });
 
 afterAll(() => teardown());
+
 beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 
@@ -87,77 +171,344 @@ test('user count starts at 2', async () => {
 });
 ```
 
-### Overriding Supabase Defaults
+### 🔐 Role-Based Context
 
-You can override the Supabase defaults by passing options:
+
+The `supabase-test` framework provides powerful tools to simulate authentication contexts during tests, which is particularly useful when testing Row-Level Security (RLS) policies.
+
+#### Setting Test Context
+
+Use `setContext()` to simulate different user roles and JWT claims:
 
 ```ts
-import { getConnections } from 'supabase-test';
-
-const { db, teardown } = await getConnections({
-  pg: {
-    port: 5432,  // Override port
-    host: 'custom-host'
-  },
-  db: {
-    connection: {
-      user: 'custom_user',
-      password: 'custom_password'
-    }
-  }
+db.setContext({
+  role: 'authenticated',
+  'jwt.claims.user_id': '123',
+  'jwt.claims.org_id': 'acme'
 });
 ```
 
-### LaunchQL Seeding
+This applies the settings using `SET LOCAL` statements, ensuring they persist only for the current transaction and maintain proper isolation between tests.
 
-By default, `getConnections()` uses LaunchQL seeding from the current directory:
+#### Testing Role-Based Access
+
+```ts
+describe('authenticated role', () => {
+  beforeEach(async () => {
+    db.setContext({ role: 'authenticated' });
+    await db.beforeEach();
+  });
+
+  afterEach(() => db.afterEach());
+
+  it('runs as authenticated', async () => {
+    const res = await db.query(`SELECT current_setting('role', true) AS role`);
+    expect(res.rows[0].role).toBe('authenticated');
+  });
+});
+```
+
+#### Database Connection Options
+
+For non-superuser testing, use the connection options described in the [options](#getconnections-options) section. The `db.connection` property allows you to customize the non-privileged user account for your tests.
+
+Use `setContext()` to simulate Role-Based Access Control (RBAC) during tests. This is useful when testing Row-Level Security (RLS) policies. Your actual server should manage role/user claims via secure tokens (e.g., setting `current_setting('jwt.claims.user_id')`), but this interface helps emulate those behaviors in test environments.
+
+#### Common Testing Scenarios
+
+This approach enables testing various access patterns:
+- Authenticated vs. anonymous user access
+- Per-user data filtering
+- Admin privilege bypass behavior
+- Custom claim-based restrictions (organization membership, admin status)
+
+> **Note:** While this interface helps simulate RBAC for testing, your production server should manage user/role claims via secure authentication tokens, typically by setting values like `current_setting('jwt.claims.user_id')` through proper authentication middleware.
+
+### 🌱 Seeding System
+
+The second argument to `getConnections()` is an optional array of `SeedAdapter` objects:
+
+```ts
+const { db, teardown } = await getConnections(getConnectionOptions, seedAdapters);
+```
+
+This array lets you fully customize how your test database is seeded. You can compose multiple strategies:
+
+* [`seed.sqlfile()`](#-sql-file-seeding) – Execute raw `.sql` files from disk
+* [`seed.fn()`](#-programmatic-seeding) – Run JavaScript/TypeScript logic to programmatically insert data
+* [`seed.csv()`](#️-csv-seeding) – Load tabular data from CSV files
+* [`seed.json()`](#️-json-seeding) – Use in-memory objects as seed data
+* [`seed.sqitch()`](#️-sqitch-seeding) – Deploy a Sqitch-compatible migration project
+* [`seed.launchql()`](#-launchql-seeding) – Apply a LaunchQL module using `deployFast()` (compatible with sqitch)
+
+> ✨ **Default Behavior:** If no `SeedAdapter[]` is passed, LaunchQL seeding is assumed. This makes `supabase-test` zero-config for LaunchQL-based projects.
+
+This composable system allows you to mix-and-match data setup strategies for flexible, realistic, and fast database tests.
+
+### 🔌 SQL File Seeding
+
+Use `.sql` files to set up your database state before tests:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'supabase-test';
+
+const sql = (f: string) => path.join(__dirname, 'sql', f);
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+      seed.sqlfile([
+        sql('schema.sql'),
+        sql('fixtures.sql')
+      ])
+  ]));
+});
+
+afterAll(async () => {
+  await teardown();
+});
+```
+
+### 🧠 Programmatic Seeding
+
+Use JavaScript functions to insert seed data:
+
+```ts
+import { getConnections, seed } from 'supabase-test';
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        INSERT INTO users (name) VALUES ('Seeded User');
+      `);
+    })
+  ]));
+});
+```
+
+## 🗃️ CSV Seeding
+
+You can load tables from CSV files using `seed.csv({ ... })`. CSV headers must match the table column names exactly. This is useful for loading stable fixture data for integration tests or CI environments.
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'supabase-test';
+
+const csv = (file: string) => path.resolve(__dirname, '../csv', file);
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    // Create schema
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        CREATE TABLE users (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL
+        );
+
+        CREATE TABLE posts (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id),
+          content TEXT NOT NULL
+        );
+      `);
+    }),
+    // Load from CSV
+    seed.csv({
+      users: csv('users.csv'),
+      posts: csv('posts.csv')
+    }),
+    // Adjust SERIAL sequences to avoid conflicts
+    seed.fn(async ({ pg }) => {
+      await pg.query(`SELECT setval(pg_get_serial_sequence('users', 'id'), (SELECT MAX(id) FROM users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('posts', 'id'), (SELECT MAX(id) FROM posts));`);
+    })
+  ]));
+});
+
+afterAll(() => teardown());
+
+it('has loaded rows', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM users');
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
+
+## 🗃️ JSON Seeding
+
+You can seed tables using in-memory JSON objects. This is useful when you want fast, inline fixtures without managing external files.
+
+```ts
+import { getConnections, seed } from 'supabase-test';
+
+let db;
+let teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    // Create schema
+    seed.fn(async ({ pg }) => {
+      await pg.query(`
+        CREATE SCHEMA custom;
+        CREATE TABLE custom.users (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL
+        );
+
+        CREATE TABLE custom.posts (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES custom.users(id),
+          content TEXT NOT NULL
+        );
+      `);
+    }),
+    // Seed with in-memory JSON
+    seed.json({
+      'custom.users': [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' }
+      ],
+      'custom.posts': [
+        { id: 1, user_id: 1, content: 'Hello world!' },
+        { id: 2, user_id: 2, content: 'Graphile is cool!' }
+      ]
+    }),
+    // Fix SERIAL sequences
+    seed.fn(async ({ pg }) => {
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.users', 'id'), (SELECT MAX(id) FROM custom.users));`);
+      await pg.query(`SELECT setval(pg_get_serial_sequence('custom.posts', 'id'), (SELECT MAX(id) FROM custom.posts));`);
+    })
+  ]));
+});
+
+afterAll(() => teardown());
+
+it('has loaded rows', async () => {
+  const res = await db.query('SELECT COUNT(*) FROM custom.users');
+  expect(+res.rows[0].count).toBeGreaterThan(0);
+});
+```
+
+## 🏗️ Sqitch Seeding
+
+*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance [TypeScript-based deploy engine.](#-launchql-seeding) that we encourage using for sqitch projects*
+
+You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine:
+
+```ts
+import path from 'path';
+import { getConnections, seed } from 'supabase-test';
+
+const cwd = path.resolve(__dirname, '../path/to/sqitch');
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    seed.sqitch(cwd)
+  ]));
+});
+```
+
+This works for any Sqitch-compatible module, now accelerated by LaunchQL's deployment tooling.
+
+## 🚀 LaunchQL Seeding
+
+If your project uses LaunchQL modules with a precompiled `launchql.plan`, you can use `supabase-test` with **zero configuration**. Just call `getConnections()` — and it *just works*:
 
 ```ts
 import { getConnections } from 'supabase-test';
 
-const { db, teardown } = await getConnections();
-// Automatically deploys LaunchQL module from current directory
+let db, teardown;
+
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections()); // 🚀 LaunchQL deployFast() is used automatically - up to 10x faster than traditional Sqitch!
+});
 ```
 
-### Custom Seeding
+This works out of the box because `supabase-test` uses the high-speed `deployFast()` function by default, applying any compiled LaunchQL schema located in the current working directory (`process.cwd()`).
 
-You can use any of the seeding strategies from `pgsql-test`:
+If you want to specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
+
 
 ```ts
-import { getConnections, seed } from 'supabase-test';
 import path from 'path';
+import { getConnections, seed } from 'supabase-test';
 
-const sql = (f: string) => path.join(__dirname, 'sql', f);
+const cwd = path.resolve(__dirname, '../path/to/launchql');
 
-const { db, teardown } = await getConnections({}, [
-  seed.sqlfile([
-    sql('schema.sql'),
-    sql('fixtures.sql')
-  ])
-]);
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections({}, [
+    seed.launchql(cwd) // uses deployFast() - up to 10x faster than traditional Sqitch!
+  ]));
+});
 ```
 
-## API
+## Why LaunchQL's Approach?
 
-This package re-exports everything from `pgsql-test`, so all the same APIs are available:
+LaunchQL provides the best of both worlds:
 
-* `getConnections()` - Main entry point (with Supabase defaults)
-* `PgTestClient` - Database client with test utilities
-* `seed` - Seeding adapters (sqlfile, csv, json, launchql, sqitch, etc.)
-* `DbAdmin` - Database administration utilities
+1. **Sqitch Compatibility**: Keep your familiar Sqitch syntax and migration approach
+2. **TypeScript Performance**: Our TS-rewritten deployment engine delivers up to 10x faster schema deployments
+3. **Developer Experience**: Tight feedback loops with near-instant schema setup for tests
+4. **CI Optimization**: Dramatically reduced test suite run times with optimized deployment
 
-See the [pgsql-test documentation](https://github.com/launchql/launchql/tree/main/packages/pgsql-test) for complete API details.
+By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
 
-## Differences from pgsql-test
+## `getConnections` Options
 
-The only difference is that `getConnections()` has Supabase defaults pre-configured:
+This table documents the available options for the `getConnections` function. The options are passed as a combination of `pg` and `db` configuration objects.
 
-* Port defaults to `54322` instead of `5432`
-* User defaults to `supabase_admin` instead of `postgres`
-* Password defaults to `postgres` instead of `password`
+### `db` Options (PgTestConnectionOptions)
 
-All other functionality is identical to `pgsql-test`.
+| Option                   | Type       | Default          | Description                                                                 |
+| ------------------------ | ---------- | ---------------- | --------------------------------------------------------------------------- |
+| `db.extensions`          | `string[]` | `[]`             | Array of PostgreSQL extensions to include in the test database              |
+| `db.cwd`                 | `string`   | `process.cwd()`  | Working directory used for LaunchQL/Sqitch projects                         |
+| `db.connection.user`     | `string`   | `'app_user'`     | User for simulating RLS via `setContext()`                                  |
+| `db.connection.password` | `string`   | `'app_password'` | Password for RLS test user                                                  |
+| `db.connection.role`     | `string`   | `'anonymous'`    | Default role used during `setContext()`                                     |
+| `db.template`            | `string`   | `undefined`      | Template database used for faster test DB creation                          |
+| `db.rootDb`              | `string`   | `'postgres'`     | Root database used for administrative operations (e.g., creating databases) |
+| `db.prefix`              | `string`   | `'db-'`          | Prefix used when generating test database names                             |
 
+### `pg` Options (PgConfig)
+
+Environment variables will override these options when available:
+
+* `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`
+
+| Option        | Type     | Default       | Description                                     |
+| ------------- | -------- | ------------- | ----------------------------------------------- |
+| `pg.user`     | `string` | `'postgres'`  | Superuser for PostgreSQL                        |
+| `pg.password` | `string` | `'password'`  | Password for the PostgreSQL superuser           |
+| `pg.host`     | `string` | `'localhost'` | Hostname for PostgreSQL                         |
+| `pg.port`     | `number` | `5423`        | Port for PostgreSQL                             |
+| `pg.database` | `string` | `'postgres'`  | Default database used when connecting initially |
+
+### Usage
+
+```ts
+const { conn, db, teardown } = await getConnections({
+  pg: { user: 'postgres', password: 'secret' },
+  db: {
+    extensions: ['uuid-ossp'],
+    cwd: '/path/to/project',
+    connection: { user: 'test_user', password: 'secret', role: 'authenticated' },
+    template: 'test_template',
+    prefix: 'test_',
+    rootDb: 'postgres'
+  }
+});
+```
 
 ## Related LaunchQL Tooling
 
@@ -203,3 +554,4 @@ All other functionality is identical to `pgsql-test`.
 AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
+
