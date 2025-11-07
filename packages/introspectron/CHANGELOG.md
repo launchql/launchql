@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.7](https://github.com/launchql/launchql/compare/introspectron@2.11.6...introspectron@2.11.7) (2025-11-07)
+
+**Note:** Version bump only for package introspectron
+
+
+
+
+
 ## [2.11.6](https://github.com/launchql/launchql/compare/introspectron@2.11.5...introspectron@2.11.6) (2025-11-07)
 
 **Note:** Version bump only for package introspectron

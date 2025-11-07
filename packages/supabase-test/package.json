@@ -1,6 +1,6 @@
 {
   "name": "supabase-test",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Interweb <developers@interweb.io>",
   "description": "supabase-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests with Supabase defaults baked in",
   "main": "index.js",
@@ -52,9 +52,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "^2.6.0",
-    "pgsql-test": "^2.11.5",
-    "pg-env": "^1.1.0"
+    "@launchql/types": "^2.6.1",
+    "pg-env": "^1.1.0",
+    "pgsql-test": "^2.11.6"
   }
 }
-
