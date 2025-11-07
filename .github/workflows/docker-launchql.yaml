@@ -1,16 +1,16 @@
 name: Docker LaunchQL
 
 on:
-  push:
-    branches:
-      - main
-      - v1
-      - release/*
-  pull_request:
-    branches:
-      - main
-      - v1
-    types: [opened, reopened, synchronize, ready_for_review]
+  # push:
+  #   branches:
+  #     - main
+  #     - v1
+  #     - release/*
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - v1
+  #   types: [opened, reopened, synchronize, ready_for_review]
   workflow_dispatch: {}
 
 concurrency:
