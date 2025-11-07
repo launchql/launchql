@@ -51,8 +51,6 @@ export const getConnections = async (
   // Build connection config: use same user/password as pg config (from env vars or Supabase defaults)
   // Default role is 'anon' (Supabase default), but DB_CONNECTION_ROLE can override it
   const connectionConfig: Partial<PgTestConnectionOptions['connection']> = {
-    user: pgConfig.user!,
-    password: pgConfig.password!,
     role: process.env.DB_CONNECTION_ROLE ?? SUPABASE_DEFAULTS.roles!.default!,
   };
   
