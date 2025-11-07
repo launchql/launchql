@@ -19,9 +19,54 @@ BEGIN
 END
 $do$;
 
-GRANT anonymous TO app_user;
-GRANT authenticated TO app_user;
-GRANT anonymous TO administrator;
-GRANT authenticated TO administrator;
-GRANT administrator TO app_admin;
+DO $do$
+BEGIN
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'anonymous', 'app_user');
+  EXCEPTION
+    WHEN unique_violation THEN
+      -- Membership was granted concurrently; ignore.
+      NULL;
+    WHEN undefined_object THEN
+      -- One of the roles doesn't exist yet; order operations as needed.
+      RAISE NOTICE 'Missing role when granting % to %', 'anonymous', 'app_user';
+  END;
+
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'authenticated', 'app_user');
+  EXCEPTION
+    WHEN unique_violation THEN
+      NULL;
+    WHEN undefined_object THEN
+      RAISE NOTICE 'Missing role when granting % to %', 'authenticated', 'app_user';
+  END;
+
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'anonymous', 'administrator');
+  EXCEPTION
+    WHEN unique_violation THEN
+      NULL;
+    WHEN undefined_object THEN
+      RAISE NOTICE 'Missing role when granting % to %', 'anonymous', 'administrator';
+  END;
+
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'authenticated', 'administrator');
+  EXCEPTION
+    WHEN unique_violation THEN
+      NULL;
+    WHEN undefined_object THEN
+      RAISE NOTICE 'Missing role when granting % to %', 'authenticated', 'administrator';
+  END;
+
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'administrator', 'app_admin');
+  EXCEPTION
+    WHEN unique_violation THEN
+      NULL;
+    WHEN undefined_object THEN
+      RAISE NOTICE 'Missing role when granting % to %', 'administrator', 'app_admin';
+  END;
+END
+$do$;
 COMMIT;

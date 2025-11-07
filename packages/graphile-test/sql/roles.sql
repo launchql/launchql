@@ -42,7 +42,28 @@ ALTER USER authenticated WITH NOCREATEROLE;
 ALTER USER authenticated WITH NOLOGIN;
 ALTER USER authenticated WITH NOREPLICATION;
 ALTER USER authenticated WITH NOBYPASSRLS;
-GRANT anonymous TO administrator;
-GRANT authenticated TO administrator;
+DO $do$
+BEGIN
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'anonymous', 'administrator');
+  EXCEPTION
+    WHEN unique_violation THEN
+      -- Membership was granted concurrently; ignore.
+      NULL;
+    WHEN undefined_object THEN
+      -- One of the roles doesn't exist yet; order operations as needed.
+      RAISE NOTICE 'Missing role when granting % to %', 'anonymous', 'administrator';
+  END;
+
+  BEGIN
+    EXECUTE format('GRANT %I TO %I', 'authenticated', 'administrator');
+  EXCEPTION
+    WHEN unique_violation THEN
+      NULL;
+    WHEN undefined_object THEN
+      RAISE NOTICE 'Missing role when granting % to %', 'authenticated', 'administrator';
+  END;
+END
+$do$;
 COMMIT;
 

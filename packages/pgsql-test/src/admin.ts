@@ -102,10 +102,36 @@ export class DbAdmin {
     }
     this.safeDropDb(template);
   }
-
+  
   async grantRole(role: string, user: string, dbName?: string): Promise<void> {
     const db = dbName ?? this.config.database;
-    const sql = `GRANT ${role} TO ${user};`;
+    const sql = `
+DO $$
+DECLARE
+  v_user TEXT := '${user.replace(/'/g, "''")}';
+  v_role TEXT := '${role.replace(/'/g, "''")}';
+BEGIN
+  -- Pre-check to avoid unnecessary GRANTs; still catch TOCTOU under concurrency
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_auth_members am
+    JOIN pg_roles r1 ON am.roleid = r1.oid
+    JOIN pg_roles r2 ON am.member = r2.oid
+    WHERE r1.rolname = v_role AND r2.rolname = v_user
+  ) THEN
+    BEGIN
+      EXECUTE format('GRANT %I TO %I', v_role, v_user);
+    EXCEPTION
+      WHEN unique_violation THEN
+        -- Concurrent membership grant; safe to ignore
+        NULL;
+      WHEN undefined_object THEN
+        -- Role or user missing; emit notice and continue
+        RAISE NOTICE 'Missing role when granting % to %', v_role, v_user;
+    END;
+  END IF;
+END
+$$;
+    `;
     await this.streamSql(sql, db);
   }
 
@@ -137,35 +163,55 @@ export class DbAdmin {
             -- Role already exists; optionally sync attributes here with ALTER ROLE
             NULL;
         END;
-        
-        -- Grant anonymous role if not already granted
+
+        -- CI/CD concurrency note: GRANT role membership can race on pg_auth_members unique index
+        -- We pre-check membership and still catch unique_violation to handle TOCTOU safely.
         IF NOT EXISTS (
-          SELECT 1 FROM pg_auth_members am 
-          JOIN pg_roles r1 ON am.roleid = r1.oid 
-          JOIN pg_roles r2 ON am.member = r2.oid 
-          WHERE r1.rolname = '${anonRole}' AND r2.rolname = '${user}'
+          SELECT 1 FROM pg_auth_members am
+          JOIN pg_roles r1 ON am.roleid = r1.oid
+          JOIN pg_roles r2 ON am.member = r2.oid
+          WHERE r1.rolname = '${anonRole.replace(/'/g, "''")}' AND r2.rolname = v_user
         ) THEN
-          GRANT ${anonRole} TO ${user};
+          BEGIN
+            EXECUTE format('GRANT %I TO %I', '${anonRole.replace(/'/g, "''")}', v_user);
+          EXCEPTION
+            WHEN unique_violation THEN
+              NULL;
+            WHEN undefined_object THEN
+              RAISE NOTICE 'Missing role when granting % to %', '${anonRole.replace(/'/g, "''")}', v_user;
+          END;
         END IF;
-        
-        -- Grant authenticated role if not already granted
+
         IF NOT EXISTS (
-          SELECT 1 FROM pg_auth_members am 
-          JOIN pg_roles r1 ON am.roleid = r1.oid 
-          JOIN pg_roles r2 ON am.member = r2.oid 
-          WHERE r1.rolname = '${authRole}' AND r2.rolname = '${user}'
+          SELECT 1 FROM pg_auth_members am
+          JOIN pg_roles r1 ON am.roleid = r1.oid
+          JOIN pg_roles r2 ON am.member = r2.oid
+          WHERE r1.rolname = '${authRole.replace(/'/g, "''")}' AND r2.rolname = v_user
         ) THEN
-          GRANT ${authRole} TO ${user};
+          BEGIN
+            EXECUTE format('GRANT %I TO %I', '${authRole.replace(/'/g, "''")}', v_user);
+          EXCEPTION
+            WHEN unique_violation THEN
+              NULL;
+            WHEN undefined_object THEN
+              RAISE NOTICE 'Missing role when granting % to %', '${authRole.replace(/'/g, "''")}', v_user;
+          END;
         END IF;
-        
-        -- Grant administrator role if not already granted
+
         IF NOT EXISTS (
-          SELECT 1 FROM pg_auth_members am 
-          JOIN pg_roles r1 ON am.roleid = r1.oid 
-          JOIN pg_roles r2 ON am.member = r2.oid 
-          WHERE r1.rolname = '${adminRole}' AND r2.rolname = '${user}'
+          SELECT 1 FROM pg_auth_members am
+          JOIN pg_roles r1 ON am.roleid = r1.oid
+          JOIN pg_roles r2 ON am.member = r2.oid
+          WHERE r1.rolname = '${adminRole.replace(/'/g, "''")}' AND r2.rolname = v_user
         ) THEN
-          GRANT ${adminRole} TO ${user};
+          BEGIN
+            EXECUTE format('GRANT %I TO %I', '${adminRole.replace(/'/g, "''")}', v_user);
+          EXCEPTION
+            WHEN unique_violation THEN
+              NULL;
+            WHEN undefined_object THEN
+              RAISE NOTICE 'Missing role when granting % to %', '${adminRole.replace(/'/g, "''")}', v_user;
+          END;
         END IF;
       END $$;
     `.trim();
