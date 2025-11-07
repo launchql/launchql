@@ -1,6 +1,6 @@
 {
   "name": "pg-cache",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL connection pool LRU cache manager",
   "main": "index.js",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@launchql/logger": "^1.1.1",
-    "@launchql/types": "^2.6.1",
+    "@launchql/types": "^2.6.2",
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
     "pg-env": "^1.1.0"

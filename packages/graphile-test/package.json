@@ -1,6 +1,6 @@
 {
   "name": "graphile-test",
-  "version": "2.5.3",
+  "version": "2.5.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile Testing",
   "main": "index.js",
@@ -34,8 +34,8 @@
     "graphql-tag": "2.12.6"
   },
   "dependencies": {
-    "@launchql/types": "^2.6.1",
-    "graphile-settings": "^2.5.2",
+    "@launchql/types": "^2.6.2",
+    "graphile-settings": "^2.5.3",
     "graphql": "15.10.1",
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/launchql/launchql/compare/@launchql/upload-names@2.2.0...@launchql/upload-names@2.2.1) (2025-11-07)
+
+**Note:** Version bump only for package @launchql/upload-names
+
+
+
+
+
 # [2.2.0](https://github.com/launchql/launchql/compare/@launchql/upload-names@2.1.5...@launchql/upload-names@2.2.0) (2025-07-31)
 
 **Note:** Version bump only for package @launchql/upload-names

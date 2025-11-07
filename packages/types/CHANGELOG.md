@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.2](https://github.com/launchql/launchql/compare/@launchql/types@2.6.1...@launchql/types@2.6.2) (2025-11-07)
+
+**Note:** Version bump only for package @launchql/types
+
+
+
+
+
 ## [2.6.1](https://github.com/launchql/launchql/compare/@launchql/types@2.6.0...@launchql/types@2.6.1) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/types
