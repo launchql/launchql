@@ -29,11 +29,13 @@ export class PgTestConnector {
   private readonly seenDbConfigs = new Map<string, PgConfig>();
   private readonly pendingConnects = new Set<Promise<any>>();
 
+  private config: PgConfig;
   private verbose = false;
   private shuttingDown = false;
 
-  private constructor(verbose = false) {
+  private constructor(config: PgConfig, verbose = false) {
     this.verbose = verbose;
+    this.config = config;
 
     SYS_EVENTS.forEach((event) => {
       process.on(event, () => {
@@ -43,9 +45,9 @@ export class PgTestConnector {
     });
   }
 
-  static getInstance(verbose = false): PgTestConnector {
+  static getInstance(config: PgConfig, verbose = false): PgTestConnector {
     if (!PgTestConnector.instance) {
-      PgTestConnector.instance = new PgTestConnector(verbose);
+      PgTestConnector.instance = new PgTestConnector(config, verbose);
     }
     return PgTestConnector.instance;
   }
@@ -129,7 +131,7 @@ export class PgTestConnector {
     await Promise.all(
       Array.from(this.seenDbConfigs.values()).map(async (config) => {
         try {
-          const rootPg = getPgEnvOptions();
+          const rootPg = getPgEnvOptions(this.config);
           const admin = new DbAdmin(
             { ...config, user: rootPg.user, password: rootPg.password },
             this.verbose

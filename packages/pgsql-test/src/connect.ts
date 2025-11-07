@@ -83,7 +83,7 @@ export const getConnections = async (
 
   await admin.grantConnect(connOpts.connection.user, config.database);
 
-  manager = PgTestConnector.getInstance();
+  manager = PgTestConnector.getInstance(config);
   const pg = manager.getClient(config);
 
   let teardownPromise: Promise<void> | null = null;
