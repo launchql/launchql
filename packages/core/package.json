@@ -1,6 +1,6 @@
 {
   "name": "@launchql/core",
-  "version": "2.11.2",
+  "version": "2.11.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Package and Migration Tools",
   "main": "index.js",
