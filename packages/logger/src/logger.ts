@@ -97,13 +97,12 @@ export class Logger {
       typeof arg === 'string' && !hasAnsi(arg) ? color(arg) : arg
     );
 
-    const outputFn =
-      level === 'error' ? console.error :
-        level === 'warn'  ? console.warn  :
-          level === 'debug' ? console.debug :
-            console.log;
+    const stream = level === 'error' ? process.stderr : process.stdout;
+    const output = [timestamp, tag, prefix, ...formattedArgs]
+      .map(arg => String(arg))
+      .join(' ') + '\n';
 
-    outputFn(timestamp, tag, prefix, ...formattedArgs);
+    stream.write(output);
   }
 
   info(...args: any[]) {
