@@ -67,7 +67,7 @@ BEGIN;
 DO $do$
 BEGIN
     IF NOT EXISTS (
-        SELECT
+        SELECT 1
         FROM
             pg_catalog.pg_roles
         WHERE
@@ -103,7 +103,7 @@ BEGIN;
 DO $do$
 BEGIN
     IF EXISTS (
-        SELECT
+        SELECT 1
         FROM
             pg_catalog.pg_roles
         WHERE
