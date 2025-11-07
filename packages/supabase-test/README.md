@@ -1,7 +1,7 @@
 # supabase-test
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/supatest.svg" />
 </p>
 
 <p align="center" width="100%">
@@ -16,7 +16,7 @@
   </a>
 </p>
 
-`supabase-test` is a Supabase-optimized version of `pgsql-test` with Supabase defaults baked in. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for Supabase's local development environment. It's also great for GitHub Actions and CI/CD testing.
+`supabase-test` is a Supabase-optimized version of [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) with Supabase defaults baked in. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for Supabase's local development environment. It's also great for GitHub Actions and CI/CD testing.
 
 ## Install
 
