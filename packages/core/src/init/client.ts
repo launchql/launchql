@@ -65,15 +65,17 @@ export class LaunchQLInit {
       const sql = `
 BEGIN;
 DO $do$
+DECLARE
+  v_username TEXT := '${username.replace(/'/g, "''")}';
+  v_password TEXT := '${password.replace(/'/g, "''")}';
 BEGIN
-    IF NOT EXISTS (
-        SELECT 1
-        FROM
-            pg_catalog.pg_roles
-        WHERE
-            rolname = '${username}') THEN
-    CREATE ROLE ${username} LOGIN PASSWORD '${password}';
-END IF;
+  BEGIN
+    EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_username, v_password);
+  EXCEPTION
+    WHEN duplicate_object THEN
+      -- Role already exists; optionally sync attributes here with ALTER ROLE
+      NULL;
+  END;
 END
 $do$;
 
