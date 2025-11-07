@@ -18,6 +18,8 @@
 
 `pgsql-test` gives you instant, isolated PostgreSQL databases for each test — with automatic transaction rollbacks, context switching, and clean seeding. Forget flaky tests and brittle environments. Write real SQL. Get real coverage. Stay fast.
 
+If you're writing tests for Supabase, check out [`supabase-test`](https://www.npmjs.com/package/supabase-test) for Supabase-optimized defaults.
+
 ## Install
 
 ```sh
