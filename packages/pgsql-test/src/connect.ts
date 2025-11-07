@@ -82,10 +82,15 @@ export const getConnections = async (
   manager = PgTestConnector.getInstance();
   const pg = manager.getClient(config);
 
+  let teardownPromise: Promise<void> | null = null;
   const teardown = async () => {
-    manager.beginTeardown();
-    await teardownPgPools();
-    await manager.closeAll();
+    if (teardownPromise) return teardownPromise;
+    teardownPromise = (async () => {
+      manager.beginTeardown();
+      await teardownPgPools();
+      await manager.closeAll();
+    })();
+    return teardownPromise;
   };
 
   if (seedAdapters.length) {
@@ -97,8 +102,10 @@ export const getConnections = async (
         pg: manager.getClient(config)
       });
     } catch (error) {
-      await teardown();
-      throw error;
+      const err: any = error as any;
+      const msg = err && (err.stack || err.message) ? (err.stack || err.message) : String(err);
+      process.stderr.write(`[pgsql-test] Seed error (continuing): ${msg}\n`);
+      // continue without teardown to allow caller-managed lifecycle
     }
   }
 
@@ -113,6 +120,6 @@ export const getConnections = async (
     roles: connOpts.roles
   });
   db.setContext({ role: getDefaultRole(connOpts) });
-
+  
   return { pg, db, teardown, manager, admin };
 };

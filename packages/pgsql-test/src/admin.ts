@@ -125,11 +125,18 @@ export class DbAdmin {
     
     const sql = `
       DO $$
+      DECLARE
+        v_user TEXT := '${user.replace(/'/g, "''")}';
+        v_password TEXT := '${password.replace(/'/g, "''")}';
       BEGIN
         -- Create role if it doesn't exist
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${user}') THEN
-          CREATE ROLE ${user} LOGIN PASSWORD '${password}';
-        END IF;
+        BEGIN
+          EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_user, v_password);
+        EXCEPTION
+          WHEN duplicate_object THEN
+            -- Role already exists; optionally sync attributes here with ALTER ROLE
+            NULL;
+        END;
         
         -- Grant anonymous role if not already granted
         IF NOT EXISTS (

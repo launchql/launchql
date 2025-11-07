@@ -1,22 +1,21 @@
 BEGIN;
 DO $do$
 BEGIN
-    IF NOT EXISTS (
-        SELECT
-        FROM
-            pg_catalog.pg_roles
-        WHERE
-            rolname = 'app_user') THEN
-    CREATE ROLE app_user LOGIN PASSWORD 'app_password';
-END IF;
-    IF NOT EXISTS (
-        SELECT
-        FROM
-            pg_catalog.pg_roles
-        WHERE
-            rolname = 'app_admin') THEN
-    CREATE ROLE app_admin LOGIN PASSWORD 'admin_password';
-END IF;
+  BEGIN
+    EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', 'app_user', 'app_password');
+  EXCEPTION
+    WHEN duplicate_object THEN
+      -- Role already exists; optionally sync attributes here with ALTER ROLE
+      NULL;
+  END;
+  
+  BEGIN
+    EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', 'app_admin', 'admin_password');
+  EXCEPTION
+    WHEN duplicate_object THEN
+      -- Role already exists; optionally sync attributes here with ALTER ROLE
+      NULL;
+  END;
 END
 $do$;
 
