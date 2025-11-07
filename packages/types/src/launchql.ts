@@ -234,6 +234,7 @@ export const launchqlDefaults: LaunchQLOptions = {
     connection: {
       user: 'app_user',
       password: 'app_password',
+      // TODO: check if this is used vs. roles below...
       role: 'anonymous'
     },
     roles: {

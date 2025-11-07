@@ -2,6 +2,6 @@
 export * from 'pgsql-test';
 
 // Export Supabase-specific getConnections with defaults baked in
-export { getConnections, getPgRootAdmin } from './connect';
+export { getConnections } from './connect';
 export type { GetConnectionOpts, GetConnectionResult } from './connect';
 
