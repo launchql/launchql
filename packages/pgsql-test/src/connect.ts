@@ -16,8 +16,12 @@ import { PgTestClient } from './test-client';
 
 let manager: PgTestConnector;
 
-export const getPgRootAdmin = (connOpts: PgTestConnectionOptions = {}) => {
+export const getPgRootAdmin = (config: PgConfig, connOpts: PgTestConnectionOptions = {}) => {
   const opts = getPgEnvOptions({
+    user: config.user,
+    password: config.password,
+    host: config.host,
+    port: config.port,
     database: connOpts.rootDb
   });
   const admin = new DbAdmin(opts, false, connOpts);
@@ -59,7 +63,7 @@ export const getConnections = async (
   const config: PgConfig = cn.pg as PgConfig;
   const connOpts: PgTestConnectionOptions = cn.db;
 
-  const root = getPgRootAdmin(connOpts);
+  const root = getPgRootAdmin(config, connOpts);
   await root.createUserRole(
     connOpts.connection.user,
     connOpts.connection.password,
