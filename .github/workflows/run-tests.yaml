@@ -43,9 +43,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
     steps:
-       # TODO remove deps on git config
+      # TODO remove deps on git config
       - name: Configure Git (for tests)
         run: |
           git config --global user.name "CI Test User"
@@ -67,8 +67,8 @@ jobs:
 
       - name: seed app_user
         run: |
-          pnpm --filter @launchql/cli exec lql admin-users bootstrap --yes
-          pnpm --filter @launchql/cli exec lql admin-users add --test --yes
+          pnpm --filter @launchql/cli exec node dist/index.js admin-users bootstrap --yes
+          pnpm --filter @launchql/cli exec node dist/index.js admin-users add --test --yes
         env:
           PGHOST: pg_db
           PGPORT: 5432
@@ -146,6 +146,6 @@ jobs:
           AWS_SECRET_KEY: minioadmin
           AWS_REGION: us-east-1
           BUCKET_NAME: test-bucket
-          
+
       - name: launchql/upload-names
         run: cd ./packages/upload-names && pnpm test
