@@ -36,8 +36,14 @@ export function loadTemplates(
       const branch = source.branch || 'main';
       
       // Clone the repository
+      // Disable interactive prompts to prevent GitHub authentication popups for public repos
       execSync(`git clone --depth 1 --branch ${branch} ${repoUrl} ${tempDir}`, {
-        stdio: 'inherit'
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          GIT_TERMINAL_PROMPT: '0',  // Disable interactive terminal prompts
+          GIT_ASKPASS: 'echo',       // Use echo as askpass (returns empty, no auth needed for public repos)
+        }
       });
 
       // Check if boilerplates directory exists in repo
