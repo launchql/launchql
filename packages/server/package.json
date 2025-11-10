@@ -42,6 +42,7 @@
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
     "@launchql/env": "^2.4.3",
+    "@launchql/logger": "workspace:^",
     "@launchql/s3-utils": "^2.2.1",
     "@launchql/server-utils": "^2.4.3",
     "@launchql/types": "^2.6.2",

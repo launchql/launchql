@@ -814,6 +814,9 @@ importers:
       '@launchql/env':
         specifier: ^2.4.3
         version: 2.4.3(graphql@15.10.1)
+      '@launchql/logger':
+        specifier: workspace:^
+        version: link:../logger/dist
       '@launchql/s3-utils':
         specifier: ^2.2.1
         version: 2.2.1
