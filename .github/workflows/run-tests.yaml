@@ -65,6 +65,9 @@ jobs:
       - name: build
         run: pnpm run build
 
+      - name: relink workspace bins
+        run: pnpm install --no-frozen-lockfile
+
       - name: fix lql permissions
         run: |
           if [ -f node_modules/.bin/lql ]; then
