@@ -65,19 +65,10 @@ jobs:
       - name: build
         run: pnpm run build
 
-      - name: relink workspace bins
-        run: pnpm install --no-frozen-lockfile
-
-      - name: fix lql permissions
-        run: |
-          if [ -f node_modules/.bin/lql ]; then
-            chmod +x node_modules/.bin/lql
-          fi
-
       - name: seed app_user
         run: |
-          pnpm exec lql admin-users bootstrap --yes
-          pnpm exec lql admin-users add --test --yes
+          node packages/cli/dist/index.js admin-users bootstrap --yes
+          node packages/cli/dist/index.js admin-users add --test --yes
         env:
           PGHOST: pg_db
           PGPORT: 5432
