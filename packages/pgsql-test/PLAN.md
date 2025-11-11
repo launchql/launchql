@@ -80,9 +80,6 @@ Attach a `seed` property to `PgTestClient` instances at runtime in `connect.ts` 
 
 ```typescript
 interface PgTestClientSeed {
-  // Run any seed adapter(s)
-  run(adapters: SeedAdapter | SeedAdapter[]): Promise<void>;
-  
   // Convenience methods for common formats
   csv(map: CsvSeedMap, opts?: SeedOptions): Promise<void>;
   json(map: JsonSeedMap, opts?: SeedOptions): Promise<void>;
@@ -90,10 +87,6 @@ interface PgTestClientSeed {
   
   // Migration deployment
   launchql(cwd?: string, cache?: boolean): Promise<void>;
-  sqitch(cwd?: string): Promise<void>;
-  
-  // Optional: Create reusable seeder
-  seeder(adapters: SeedAdapter[]): { run(): Promise<void> };
 }
 
 interface SeedOptions {
@@ -195,22 +188,6 @@ await db.seed.json(
 );
 ```
 
-#### Reusable Seeders
-
-```typescript
-const userSeeder = db.seed.seeder([
-  seed.json({ 'app.users': [{ id: 1, name: 'Alice' }] }),
-  seed.fn(async ({ pg }) => {
-    await pg.query(`SELECT setval('app.users_id_seq', 100)`);
-  })
-]);
-
-beforeEach(async () => {
-  await db.beforeEach();
-  await userSeeder.run();
-});
-```
-
 #### CSV with SERIAL Sequence Fix
 
 ```typescript
@@ -275,13 +252,10 @@ export interface SeedRuntime {
 }
 
 export interface PgTestClientSeed {
-  run(adapters: SeedAdapter | SeedAdapter[]): Promise<void>;
   csv(map: CsvSeedMap, opts?: SeedOptions): Promise<void>;
   json(map: JsonSeedMap, opts?: SeedOptions): Promise<void>;
   sqlfile(files: string[]): Promise<void>;
   launchql(cwd?: string, cache?: boolean): Promise<void>;
-  sqitch(cwd?: string): Promise<void>;
-  seeder(adapters: SeedAdapter[]): { run(): Promise<void> };
 }
 
 export function attachSeedAPI(
@@ -289,12 +263,6 @@ export function attachSeedAPI(
   runtime: SeedRuntime
 ): void {
   const seedAPI: PgTestClientSeed = {
-    async run(adapters: SeedAdapter | SeedAdapter[]): Promise<void> {
-      const adapterArray = Array.isArray(adapters) ? adapters : [adapters];
-      const ctx = buildContext(runtime, runtime.currentClient);
-      await seed.compose(adapterArray).seed(ctx);
-    },
-
     async csv(map: CsvSeedMap, opts: SeedOptions = {}): Promise<void> {
       const targetClient = resolveClient(runtime, opts.client);
       await targetClient.ctxQuery();  // Apply session context/role
@@ -327,19 +295,6 @@ export function attachSeedAPI(
     async launchql(cwd?: string, cache: boolean = false): Promise<void> {
       const ctx = buildContext(runtime, runtime.currentClient);
       await seed.launchql(cwd, cache).seed(ctx);
-    },
-
-    async sqitch(cwd?: string): Promise<void> {
-      const ctx = buildContext(runtime, runtime.currentClient);
-      await seed.sqitch(cwd).seed(ctx);
-    },
-
-    seeder(adapters: SeedAdapter[]): { run(): Promise<void> } {
-      return {
-        run: async () => {
-          await seedAPI.run(adapters);
-        }
-      };
     }
   };
 
@@ -562,46 +517,6 @@ describe('Instance seed.csv()', () => {
     
     const users = await db.any('SELECT * FROM custom.users');
     expect(users.length).toBeGreaterThan(0);
-  });
-});
-```
-
-**File: `packages/pgsql-test/__tests__/postgres-test.instance-seed-run.test.ts`**
-
-Test the generic `run()` method and seeders:
-
-```typescript
-describe('Instance seed.run()', () => {
-  it('runs single adapter', async () => {
-    await db.seed.run(seed.json({ 'custom.users': [{ id: 1 }] }));
-  });
-  
-  it('runs multiple adapters', async () => {
-    await db.seed.run([
-      seed.json({ 'custom.users': [{ id: 1 }] }),
-      seed.fn(async ({ pg }) => {
-        await pg.query(`SELECT setval('custom.users_id_seq', 100)`);
-      })
-    ]);
-  });
-  
-  it('creates reusable seeder', async () => {
-    const userSeeder = db.seed.seeder([
-      seed.json({ 'custom.users': [{ id: 1, name: 'Alice' }] })
-    ]);
-    
-    await db.beforeEach();
-    await userSeeder.run();
-    const users = await db.any('SELECT * FROM custom.users');
-    expect(users).toHaveLength(1);
-    await db.afterEach();
-    
-    // Reuse in another test
-    await db.beforeEach();
-    await userSeeder.run();
-    const users2 = await db.any('SELECT * FROM custom.users');
-    expect(users2).toHaveLength(1);
-    await db.afterEach();
   });
 });
 ```
