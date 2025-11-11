@@ -21,17 +21,13 @@ beforeAll(async () => {
         CREATE SCHEMA custom;
         CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
-          email TEXT,
-          bio TEXT
+          name TEXT NOT NULL
         );
 
         CREATE TABLE custom.posts (
           id SERIAL PRIMARY KEY,
           user_id INT REFERENCES custom.users(id),
-          content TEXT NOT NULL,
-          title TEXT,
-          published BOOLEAN
+          content TEXT NOT NULL
         );
       `);
     }),
@@ -39,7 +35,7 @@ beforeAll(async () => {
     // 2. Seed from CSV using COPY FROM STDIN
     seed.csv({
       'custom.users': csv('users.csv'),
-      'custom.posts': csv('posts.csv')
+      'custom.posts': csv('posts-subset-header.csv')
     }),
 
     // 3. Fix SERIAL sequences to match the highest used ID

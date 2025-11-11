@@ -64,6 +64,7 @@
     "@launchql/env": "^2.4.3",
     "@launchql/server-utils": "^2.4.3",
     "@launchql/types": "^2.6.2",
+    "csv-parse": "^6.1.0",
     "pg": "^8.16.0",
     "pg-cache": "^1.3.4",
     "pg-copy-streams": "^6.0.6",

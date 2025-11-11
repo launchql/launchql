@@ -1,4 +1,4 @@
-id,user_id,content
-1,1,Hello world!
-2,2,Graphile is cool!
-3,3,Carol's first post
+id,user_id,content,title,published
+1,1,Hello world!,,
+2,2,Graphile is cool!,,
+3,3,Carol's first post,,

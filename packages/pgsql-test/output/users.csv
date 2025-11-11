@@ -1,4 +1,4 @@
-id,name
-1,Alice
-2,Bob
-3,Carol
+id,name,email,bio
+1,Alice,,
+2,Bob,,
+3,Carol,,
