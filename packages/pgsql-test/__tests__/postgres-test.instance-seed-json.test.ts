@@ -117,6 +117,7 @@ describe('Instance seed.json()', () => {
   describe('with client option', () => {
     beforeEach(async () => {
       await pg.beforeEach();
+      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
       await db.beforeEach();
     });
 
@@ -141,6 +142,7 @@ describe('Instance seed.json()', () => {
   describe('identifier quoting', () => {
     beforeEach(async () => {
       await db.beforeEach();
+      await db.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
     });
 
     afterEach(async () => {
