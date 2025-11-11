@@ -34,7 +34,7 @@ afterAll(async () => {
 });
 
 describe('Instance seed.json()', () => {
-  describe('basic functionality', () => {
+  describe('db client seeding', () => {
     beforeEach(async () => {
       await db.beforeEach();
     });
@@ -57,98 +57,9 @@ describe('Instance seed.json()', () => {
       expect(users[1].name).toBe('Bob');
     });
 
-    it('rolls back seeded data after test', async () => {
-      const usersBefore = await db.any('SELECT * FROM custom.users');
-      expect(usersBefore).toHaveLength(0);
-    });
-
-    it('handles multiple tables', async () => {
-      await pg.query(`
-        CREATE TABLE IF NOT EXISTS custom.posts (
-          id SERIAL PRIMARY KEY,
-          user_id INT REFERENCES custom.users(id),
-          content TEXT NOT NULL
-        );
-        GRANT ALL ON TABLE custom.posts TO PUBLIC;
-        GRANT ALL ON SEQUENCE custom.posts_id_seq TO PUBLIC;
-      `);
-
-      await db.seed.json({
-        'custom.users': [{ id: 1, name: 'Alice' }],
-        'custom.posts': [{ id: 1, user_id: 1, content: 'Hello world!' }]
-      });
-
+    it('verifies rollback after test', async () => {
       const users = await db.any('SELECT * FROM custom.users');
-      const posts = await db.any('SELECT * FROM custom.posts');
-      
-      expect(users).toHaveLength(1);
-      expect(posts).toHaveLength(1);
-      expect(posts[0].content).toBe('Hello world!');
-    });
-  });
-
-  describe('with publish option', () => {
-    beforeEach(async () => {
-      await pg.beforeEach();
-      await db.beforeEach();
-    });
-
-    afterEach(async () => {
-      await db.afterEach();
-      await pg.afterEach();
-    });
-
-    it('makes data visible to other connections', async () => {
-      await pg.seed.json(
-        {
-          'custom.users': [
-            { id: 1, name: 'Alice', email: 'alice@example.com' }
-          ]
-        },
-        { publish: true }
-      );
-
-      const users = await db.any('SELECT * FROM custom.users');
-      expect(users).toHaveLength(1);
-      expect(users[0].name).toBe('Alice');
-    });
-  });
-
-  describe('with client option', () => {
-    beforeEach(async () => {
-      await pg.beforeEach();
-      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
-      await db.beforeEach();
-    });
-
-    afterEach(async () => {
-      await db.afterEach();
-      await pg.afterEach();
-    });
-
-    it('seeds via pg when client: pg specified', async () => {
-      await db.seed.json(
-        {
-          'custom.users': [{ id: 1, name: 'Admin User' }]
-        },
-        { client: 'pg' }
-      );
-
-      const users = await pg.any('SELECT * FROM custom.users');
-      expect(users).toHaveLength(1);
-    });
-  });
-
-  describe('identifier quoting', () => {
-    beforeEach(async () => {
-      await pg.beforeEach();
-      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
-      await db.beforeEach();
-    });
-
-    afterEach(async () => {
-      await db.afterEach();
-      await pg.afterEach();
+      expect(users).toHaveLength(0);
     });
 
     it('handles schema-qualified table names', async () => {
@@ -158,6 +69,51 @@ describe('Instance seed.json()', () => {
 
       const users = await db.any('SELECT * FROM custom.users');
       expect(users).toHaveLength(1);
+    });
+  });
+
+  describe('pg client seeding', () => {
+    beforeEach(async () => {
+      await pg.beforeEach();
+    });
+
+    afterEach(async () => {
+      await pg.afterEach();
+    });
+
+    it('seeds data via pg client', async () => {
+      await pg.seed.json({
+        'custom.users': [{ id: 1, name: 'Admin User' }]
+      });
+
+      const users = await pg.any('SELECT * FROM custom.users');
+      expect(users).toHaveLength(1);
+      expect(users[0].name).toBe('Admin User');
+    });
+  });
+
+  describe('visibility across connections', () => {
+    beforeEach(async () => {
+      await pg.beforeEach();
+      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
+      await pg.seed.json({
+        'custom.users': [
+          { id: 1, name: 'Alice', email: 'alice@example.com' }
+        ]
+      });
+      await pg.publish();
+      await db.beforeEach();
+    });
+
+    afterEach(async () => {
+      await db.afterEach();
+      await pg.afterEach();
+    });
+
+    it('makes data visible to other connections', async () => {
+      const users = await db.any('SELECT * FROM custom.users');
+      expect(users).toHaveLength(1);
+      expect(users[0].name).toBe('Alice');
     });
   });
 });

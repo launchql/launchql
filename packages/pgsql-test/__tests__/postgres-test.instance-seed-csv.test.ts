@@ -39,7 +39,7 @@ afterAll(async () => {
 });
 
 describe('Instance seed.csv()', () => {
-  describe('basic functionality', () => {
+  describe('pg client seeding', () => {
     beforeEach(async () => {
       await pg.beforeEach();
     });
@@ -58,15 +58,48 @@ describe('Instance seed.csv()', () => {
       expect(users[0].name).toBeDefined();
     });
 
-    it('rolls back seeded data after test', async () => {
-      const usersBefore = await pg.any('SELECT * FROM custom.users');
-      expect(usersBefore).toHaveLength(0);
+    it('verifies rollback after test', async () => {
+      const users = await pg.any('SELECT * FROM custom.users');
+      expect(users).toHaveLength(0);
+    });
+
+    it('handles schema-qualified table names', async () => {
+      await pg.seed.csv({
+        'custom.users': csv('users.csv')
+      });
+
+      const users = await pg.any('SELECT * FROM custom.users');
+      expect(users.length).toBeGreaterThan(0);
     });
   });
 
-  describe('with publish option', () => {
+  describe('db client seeding', () => {
+    beforeEach(async () => {
+      await db.beforeEach();
+    });
+
+    afterEach(async () => {
+      await db.afterEach();
+    });
+
+    it('seeds data via db client', async () => {
+      await db.seed.csv({
+        'custom.users': csv('users.csv')
+      });
+
+      const users = await db.any('SELECT * FROM custom.users');
+      expect(users.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('visibility across connections', () => {
     beforeEach(async () => {
       await pg.beforeEach();
+      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
+      await pg.seed.csv({
+        'custom.users': csv('users.csv')
+      });
+      await pg.publish();
       await db.beforeEach();
     });
 
@@ -76,34 +109,7 @@ describe('Instance seed.csv()', () => {
     });
 
     it('makes data visible to other connections', async () => {
-      await pg.seed.csv(
-        {
-          'custom.users': csv('users.csv')
-        },
-        { publish: true }
-      );
-
       const users = await db.any('SELECT * FROM custom.users');
-      expect(users.length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('identifier quoting', () => {
-    beforeEach(async () => {
-      await pg.beforeEach();
-      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
-    });
-
-    afterEach(async () => {
-      await pg.afterEach();
-    });
-
-    it('handles schema-qualified table names', async () => {
-      await pg.seed.csv({
-        'custom.users': csv('users.csv')
-      });
-
-      const users = await pg.any('SELECT * FROM custom.users');
       expect(users.length).toBeGreaterThan(0);
     });
   });

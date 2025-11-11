@@ -4,7 +4,7 @@ import { PgConfig } from 'pg-env';
 import { DbAdmin } from '../admin';
 import { PgTestClient } from '../test-client';
 import { seed } from './index';
-import { CsvSeedMap, JsonSeedMap, SeedContext, SeedOptions } from './types';
+import { CsvSeedMap, JsonSeedMap, SeedContext } from './types';
 
 export interface SeedRuntime {
   connect: PgTestConnectionOptions;
@@ -16,8 +16,8 @@ export interface SeedRuntime {
 }
 
 export interface PgTestClientSeed {
-  csv(map: CsvSeedMap, opts?: SeedOptions): Promise<void>;
-  json(map: JsonSeedMap, opts?: SeedOptions): Promise<void>;
+  csv(map: CsvSeedMap): Promise<void>;
+  json(map: JsonSeedMap): Promise<void>;
   sqlfile(files: string[]): Promise<void>;
   launchql(cwd?: string, cache?: boolean): Promise<void>;
 }
@@ -27,37 +27,25 @@ export function attachSeedAPI(
   runtime: SeedRuntime
 ): void {
   const seedAPI: PgTestClientSeed = {
-    async csv(map: CsvSeedMap, opts: SeedOptions = {}): Promise<void> {
-      const targetClient = resolveClient(runtime, opts.client);
-      await targetClient.ctxQuery();
-      
-      const ctx = buildContext(runtime, targetClient);
+    async csv(map: CsvSeedMap): Promise<void> {
+      await runtime.currentClient.ctxQuery();
+      const ctx = buildContext(runtime);
       await seed.csv(map).seed(ctx);
-      
-      if (opts.publish) {
-        await targetClient.publish();
-      }
     },
 
-    async json(map: JsonSeedMap, opts: SeedOptions = {}): Promise<void> {
-      const targetClient = resolveClient(runtime, opts.client);
-      await targetClient.ctxQuery();
-      
-      const ctx = buildContext(runtime, targetClient);
+    async json(map: JsonSeedMap): Promise<void> {
+      await runtime.currentClient.ctxQuery();
+      const ctx = buildContext(runtime);
       await seed.json(map).seed(ctx);
-      
-      if (opts.publish) {
-        await targetClient.publish();
-      }
     },
 
     async sqlfile(files: string[]): Promise<void> {
-      const ctx = buildContext(runtime, runtime.currentClient);
+      const ctx = buildContext(runtime);
       await seed.sqlfile(files).seed(ctx);
     },
 
     async launchql(cwd?: string, cache: boolean = false): Promise<void> {
-      const ctx = buildContext(runtime, runtime.currentClient);
+      const ctx = buildContext(runtime);
       await seed.launchql(cwd, cache).seed(ctx);
     }
   };
@@ -65,23 +53,12 @@ export function attachSeedAPI(
   (client as any).seed = seedAPI;
 }
 
-function buildContext(runtime: SeedRuntime, targetClient: PgTestClient): SeedContext {
+function buildContext(runtime: SeedRuntime): SeedContext {
   return {
     connect: runtime.connect,
     admin: runtime.admin,
     config: runtime.config,
-    pg: targetClient,
+    pg: runtime.currentClient,
     db: runtime.db
   };
-}
-
-function resolveClient(runtime: SeedRuntime, clientOption?: 'pg' | 'db'): PgTestClient {
-  if (clientOption === 'pg') return runtime.pg;
-  if (clientOption === 'db') {
-    if (!runtime.db) {
-      throw new Error('db client not available in this context');
-    }
-    return runtime.db;
-  }
-  return runtime.currentClient;
 }
