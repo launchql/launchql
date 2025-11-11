@@ -17,12 +17,18 @@ beforeAll(async () => {
     seed.fn(async ({ pg }) => {
       await pg.query(`
         CREATE SCHEMA custom;
+        GRANT USAGE ON SCHEMA custom TO authenticated;
+        GRANT ALL ON SCHEMA custom TO authenticated;
+        
         CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
           name TEXT NOT NULL,
           email TEXT,
           bio TEXT
         );
+        
+        GRANT ALL ON TABLE custom.users TO authenticated;
+        GRANT ALL ON SEQUENCE custom.users_id_seq TO authenticated;
       `);
     })
   ]));
@@ -85,6 +91,7 @@ describe('Instance seed.csv()', () => {
   describe('identifier quoting', () => {
     beforeEach(async () => {
       await pg.beforeEach();
+      await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
     });
 
     afterEach(async () => {

@@ -13,11 +13,17 @@ beforeAll(async () => {
     seed.fn(async ({ pg }) => {
       await pg.query(`
         CREATE SCHEMA custom;
+        GRANT USAGE ON SCHEMA custom TO authenticated;
+        GRANT ALL ON SCHEMA custom TO authenticated;
+        
         CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
           name TEXT NOT NULL,
           email TEXT
         );
+        
+        GRANT ALL ON TABLE custom.users TO authenticated;
+        GRANT ALL ON SEQUENCE custom.users_id_seq TO authenticated;
       `);
     })
   ]));
@@ -62,7 +68,9 @@ describe('Instance seed.json()', () => {
           id SERIAL PRIMARY KEY,
           user_id INT REFERENCES custom.users(id),
           content TEXT NOT NULL
-        )
+        );
+        GRANT ALL ON TABLE custom.posts TO authenticated;
+        GRANT ALL ON SEQUENCE custom.posts_id_seq TO authenticated;
       `);
 
       await db.seed.json({
