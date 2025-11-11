@@ -21,13 +21,17 @@ beforeAll(async () => {
         CREATE SCHEMA custom;
         CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
-          name TEXT NOT NULL
+          name TEXT NOT NULL,
+          email TEXT,
+          bio TEXT
         );
 
         CREATE TABLE custom.posts (
           id SERIAL PRIMARY KEY,
           user_id INT REFERENCES custom.users(id),
-          content TEXT NOT NULL
+          content TEXT NOT NULL,
+          title TEXT,
+          published BOOLEAN
         );
       `);
     }),
