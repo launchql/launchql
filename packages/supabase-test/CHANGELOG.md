@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.10](https://github.com/launchql/launchql/compare/supabase-test@0.0.9...supabase-test@0.0.10) (2025-11-11)
+
+**Note:** Version bump only for package supabase-test
+
+
+
+
+
 ## [0.0.9](https://github.com/launchql/launchql/compare/supabase-test@0.0.8...supabase-test@0.0.9) (2025-11-07)
 
 **Note:** Version bump only for package supabase-test
