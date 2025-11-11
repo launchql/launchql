@@ -11,6 +11,7 @@ import { DbAdmin } from './admin';
 import { PgTestConnector } from './manager';
 import { getDefaultRole } from './roles';
 import { seed } from './seed';
+import { attachSeedAPI, SeedRuntime } from './seed/api';
 import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
 
@@ -124,6 +125,18 @@ export const getConnections = async (
     roles: connOpts.roles
   });
   db.setContext({ role: getDefaultRole(connOpts) });
+  
+  const runtime: SeedRuntime = {
+    connect: connOpts,
+    admin,
+    config,
+    pg,
+    db,
+    currentClient: pg
+  };
+  
+  attachSeedAPI(pg, { ...runtime, currentClient: pg });
+  attachSeedAPI(db, { ...runtime, currentClient: db });
   
   return { pg, db, teardown, manager, admin };
 };

@@ -64,14 +64,22 @@ async function parseCsvHeader(filePath: string): Promise<string[]> {
   });
 }
 
+function quoteIdentifier(identifier: string): string {
+  const parts = identifier.split('.');
+  return parts.map(part => `"${part.replace(/"/g, '""')}"`).join('.');
+}
+
 export async function copyCsvIntoTable(pg: PgTestClient, table: string, filePath: string): Promise<void> {
+  await pg.ctxQuery();
+  
   const client: Client = pg.client;
   
   const columns = await parseCsvHeader(filePath);
   
+  const quotedTable = quoteIdentifier(table);
   const quotedColumns = columns.map(col => `"${col.replace(/"/g, '""')}"`);
   const columnList = quotedColumns.join(', ');
-  const copyCommand = `COPY ${table} (${columnList}) FROM STDIN WITH CSV HEADER`;
+  const copyCommand = `COPY ${quotedTable} (${columnList}) FROM STDIN WITH CSV HEADER`;
   
   log.info(`Using columns: ${columnList}`);
   

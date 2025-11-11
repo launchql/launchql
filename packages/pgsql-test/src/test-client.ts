@@ -2,6 +2,7 @@ import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
 import { AuthOptions, PgTestConnectionOptions } from '@launchql/types';
 import { getRoleName } from './roles';
+import type { PgTestClientSeed } from './seed/api';
 
 export type PgTestClientOpts = {
   deferConnect?: boolean;
@@ -16,6 +17,8 @@ export class PgTestClient {
   private contextSettings: Record<string, string | null> = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
+  
+  seed!: PgTestClientSeed;
 
   constructor(config: PgConfig, opts: PgTestClientOpts = {}) {
     this.opts = opts;
