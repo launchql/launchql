@@ -61,6 +61,7 @@
     "graphile-search-plugin": "^0.1.2",
     "graphile-settings": "^2.5.3",
     "graphile-simple-inflector": "^0.1.1",
+    "graphile-utils": "^4.14.1",
     "pg-cache": "workspace:^",
     "graphql-tag": "2.12.6",
     "graphql-upload": "^13.0.0",
