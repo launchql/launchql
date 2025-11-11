@@ -37,6 +37,7 @@
     "@launchql/types": "^2.6.2",
     "graphile-settings": "^2.5.3",
     "graphql": "15.10.1",
+    "pgsql-test": "workspace:^",
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
