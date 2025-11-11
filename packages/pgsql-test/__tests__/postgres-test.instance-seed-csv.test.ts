@@ -17,8 +17,8 @@ beforeAll(async () => {
     seed.fn(async ({ pg }) => {
       await pg.query(`
         CREATE SCHEMA custom;
-        GRANT USAGE ON SCHEMA custom TO authenticated;
-        GRANT ALL ON SCHEMA custom TO authenticated;
+        GRANT USAGE ON SCHEMA custom TO PUBLIC;
+        GRANT ALL ON SCHEMA custom TO PUBLIC;
         
         CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
@@ -27,8 +27,8 @@ beforeAll(async () => {
           bio TEXT
         );
         
-        GRANT ALL ON TABLE custom.users TO authenticated;
-        GRANT ALL ON SEQUENCE custom.users_id_seq TO authenticated;
+        GRANT ALL ON TABLE custom.users TO PUBLIC;
+        GRANT ALL ON SEQUENCE custom.users_id_seq TO PUBLIC;
       `);
     })
   ]));
