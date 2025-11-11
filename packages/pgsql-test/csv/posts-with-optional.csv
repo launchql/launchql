@@ -1,0 +1,3 @@
+id,user_id,content,title,published
+1,1,Hello world!,My First Post,true
+2,2,Graphile is cool!,GraphQL Rocks,false

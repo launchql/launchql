@@ -1,7 +1,7 @@
 import { pipeline } from 'node:stream/promises';
-import { createInterface } from 'node:readline';
 
 import { Logger } from '@launchql/logger';
+import { parse } from 'csv-parse';
 import { createReadStream, createWriteStream,existsSync } from 'fs';
 import { Client } from 'pg';
 import { from as copyFrom, to as copyTo } from 'pg-copy-streams';
@@ -10,6 +10,8 @@ import { PgTestClient } from '../test-client';
 import { SeedAdapter, SeedContext } from './types';
 
 const log = new Logger('csv');
+
+const VALID_IDENTIFIER = /^[a-z_][a-z0-9_]*$/;
 
 interface CsvSeedMap {
   [tableName: string]: string;
@@ -29,55 +31,53 @@ export function csv(tables: CsvSeedMap): SeedAdapter {
   };
 }
 
-/**
- * Parse and validate CSV header columns
- */
 async function parseCsvHeader(filePath: string): Promise<string[]> {
-  const fileStream = createReadStream(filePath);
-  const rl = createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
+  const file = createReadStream(filePath);
+  const parser = parse({
+    bom: true,
+    to_line: 1,
+    relax_column_count: true,
+    skip_empty_lines: true,
+    trim: true,
   });
 
-  let headerLine: string | null = null;
-  
-  for await (const line of rl) {
-    headerLine = line;
-    break; // Only read the first line
-  }
+  return new Promise<string[]>((resolve, reject) => {
+    const cleanup = (err?: unknown) => {
+      parser.destroy();
+      file.destroy();
+      if (err) reject(err);
+    };
 
-  rl.close();
-  fileStream.destroy();
+    parser.on('readable', () => {
+      const row = parser.read() as string[] | null;
+      if (!row) return;
+      try {
+        const cols = row.map((c) => {
+          const cleaned = c.trim().replace(/\s+/g, '_').toLowerCase();
+          if (!VALID_IDENTIFIER.test(cleaned)) {
+            throw new Error(
+              `Invalid column "${c}" → "${cleaned}". Must match /^[a-z_][a-z0-9_]*$/.`
+            );
+          }
+          return cleaned;
+        });
+        
+        if (cols.length === 0) {
+          throw new Error('CSV header has no columns');
+        }
+        
+        cleanup();
+        resolve(cols);
+      } catch (e) {
+        cleanup(e);
+      }
+    });
 
-  if (!headerLine) {
-    throw new Error('CSV file is empty or has no header');
-  }
+    parser.on('error', cleanup);
+    file.on('error', cleanup);
 
-  if (headerLine.charCodeAt(0) === 0xFEFF) {
-    headerLine = headerLine.slice(1);
-  }
-
-  const columns = headerLine.split(',').map(col => {
-    let cleaned = col.trim();
-    if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
-        (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
-      cleaned = cleaned.slice(1, -1);
-    }
-    return cleaned.toLowerCase();
+    file.pipe(parser);
   });
-
-  const validIdentifier = /^[a-z_][a-z0-9_]*$/;
-  for (const col of columns) {
-    if (!validIdentifier.test(col)) {
-      throw new Error(`Invalid column name in CSV header: "${col}". Column names must be valid SQL identifiers.`);
-    }
-  }
-
-  if (columns.length === 0) {
-    throw new Error('CSV header has no columns');
-  }
-
-  return columns;
 }
 
 export async function copyCsvIntoTable(pg: PgTestClient, table: string, filePath: string): Promise<void> {
