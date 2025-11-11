@@ -25,6 +25,7 @@
     "lint": "pnpm -r run lint"
   },
   "devDependencies": {
+    "@jest/test-sequencer": "^30.2.0",
     "@types/jest": "^29.5.11",
     "@types/jest-in-case": "^1.0.9",
     "@types/node": "^20.12.7",

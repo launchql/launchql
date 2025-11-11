@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@launchql/types": "^2.6.2",
+    "@launchql/logger": "workspace:^",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "lru-cache": "^11.1.0"
