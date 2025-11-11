@@ -11,8 +11,6 @@ import { SeedAdapter, SeedContext } from './types';
 
 const log = new Logger('csv');
 
-const VALID_IDENTIFIER = /^[a-z_][a-z0-9_]*$/;
-
 interface CsvSeedMap {
   [tableName: string]: string;
 }
@@ -36,9 +34,7 @@ async function parseCsvHeader(filePath: string): Promise<string[]> {
   const parser = parse({
     bom: true,
     to_line: 1,
-    relax_column_count: true,
     skip_empty_lines: true,
-    trim: true,
   });
 
   return new Promise<string[]>((resolve, reject) => {
@@ -51,26 +47,14 @@ async function parseCsvHeader(filePath: string): Promise<string[]> {
     parser.on('readable', () => {
       const row = parser.read() as string[] | null;
       if (!row) return;
-      try {
-        const cols = row.map((c) => {
-          const cleaned = c.trim().replace(/\s+/g, '_').toLowerCase();
-          if (!VALID_IDENTIFIER.test(cleaned)) {
-            throw new Error(
-              `Invalid column "${c}" → "${cleaned}". Must match /^[a-z_][a-z0-9_]*$/.`
-            );
-          }
-          return cleaned;
-        });
-        
-        if (cols.length === 0) {
-          throw new Error('CSV header has no columns');
-        }
-        
-        cleanup();
-        resolve(cols);
-      } catch (e) {
-        cleanup(e);
+      
+      if (row.length === 0) {
+        cleanup(new Error('CSV header has no columns'));
+        return;
       }
+      
+      cleanup();
+      resolve(row);
     });
 
     parser.on('error', cleanup);
@@ -85,7 +69,8 @@ export async function copyCsvIntoTable(pg: PgTestClient, table: string, filePath
   
   const columns = await parseCsvHeader(filePath);
   
-  const columnList = columns.join(', ');
+  const quotedColumns = columns.map(col => `"${col.replace(/"/g, '""')}"`);
+  const columnList = quotedColumns.join(', ');
   const copyCommand = `COPY ${table} (${columnList}) FROM STDIN WITH CSV HEADER`;
   
   log.info(`Using columns: ${columnList}`);
