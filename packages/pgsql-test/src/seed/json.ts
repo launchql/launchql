@@ -1,5 +1,5 @@
 import type { Client } from 'pg';
-import type { PgTextClientContext } from '@launchql/types';
+import type { PgTestClientContext } from '@launchql/types';
 
 import { generateContextStatements } from '../context-utils';
 import { SeedAdapter, SeedContext } from './types';
@@ -17,7 +17,7 @@ export interface JsonSeedMap {
  */
 export async function insertJson(
   client: Client,
-  context: PgTextClientContext,
+  context: PgTestClientContext,
   data: JsonSeedMap
 ): Promise<void> {
 

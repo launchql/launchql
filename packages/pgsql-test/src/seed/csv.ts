@@ -1,7 +1,7 @@
 import { pipeline } from 'node:stream/promises';
 
 import { Logger } from '@launchql/logger';
-import type { PgTextClientContext } from '@launchql/types';
+import type { PgTestClientContext } from '@launchql/types';
 import { parse } from 'csv-parse';
 import { createReadStream, createWriteStream,existsSync } from 'fs';
 import { Client } from 'pg';
@@ -26,7 +26,7 @@ export interface CsvSeedMap {
  */
 export async function loadCsvMap(
   client: Client,
-  context: PgTextClientContext,
+  context: PgTestClientContext,
   tables: CsvSeedMap
 ): Promise<void> {
   // Context is applied by PgTestClient.query() via ctxQuery()
