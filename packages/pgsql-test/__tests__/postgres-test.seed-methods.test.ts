@@ -32,9 +32,9 @@ beforeAll(async () => {
           content TEXT
         );
 
-        GRANT USAGE ON SCHEMA custom TO authenticated;
-        GRANT ALL ON ALL TABLES IN SCHEMA custom TO authenticated;
-        GRANT ALL ON ALL SEQUENCES IN SCHEMA custom TO authenticated;
+        GRANT USAGE ON SCHEMA custom TO anonymous, authenticated, administrator;
+        GRANT ALL ON ALL TABLES IN SCHEMA custom TO anonymous, authenticated, administrator;
+        GRANT ALL ON ALL SEQUENCES IN SCHEMA custom TO anonymous, authenticated, administrator;
       `);
     })
   ]));
