@@ -2,6 +2,7 @@ import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
 import { AuthOptions, PgTestConnectionOptions, PgTestClientContext } from '@launchql/types';
 import { getRoleName } from './roles';
+import { generateContextStatements } from './context-utils';
 
 export type PgTestClientOpts = {
   deferConnect?: boolean;
@@ -77,14 +78,7 @@ export class PgTestClient {
 
   setContext(ctx: Record<string, string | null>): void {
     Object.assign(this.contextSettings, ctx);
-    
-    this.ctxStmts = Object.entries(this.contextSettings)
-      .map(([key, val]) =>
-        val === null
-          ? `SELECT set_config('${key}', NULL, true);`
-          : `SELECT set_config('${key}', '${val}', true);`
-      )
-      .join('\n');
+    this.ctxStmts = generateContextStatements(this.contextSettings);
   }
 
   /**
@@ -129,14 +123,7 @@ export class PgTestClient {
     
     nulledSettings.role = defaultRole;
     
-    this.ctxStmts = Object.entries(nulledSettings)
-      .map(([key, val]) =>
-        val === null
-          ? `SELECT set_config('${key}', NULL, true);`
-          : `SELECT set_config('${key}', '${val}', true);`
-      )
-      .join('\n');
-    
+    this.ctxStmts = generateContextStatements(nulledSettings);
     this.contextSettings = { role: defaultRole };
   }
 
