@@ -10,8 +10,9 @@ export interface JsonSeedMap {
 
 /**
  * Standalone helper function to insert JSON data into PostgreSQL tables
+ * Note: Context should be applied by the caller before calling this function
  * @param client - PostgreSQL client instance
- * @param context - Session context to apply before inserting
+ * @param context - Session context (not used, kept for API compatibility)
  * @param data - Map of table names to arrays of row objects
  */
 export async function insertJson(
@@ -19,11 +20,6 @@ export async function insertJson(
   context: PgTextClientContext,
   data: JsonSeedMap
 ): Promise<void> {
-  const ctxStmts = generateContextStatements(context);
-  
-  if (ctxStmts) {
-    await client.query(ctxStmts);
-  }
 
   for (const [table, rows] of Object.entries(data)) {
     if (!Array.isArray(rows) || rows.length === 0) continue;
