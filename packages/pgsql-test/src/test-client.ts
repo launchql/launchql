@@ -3,6 +3,10 @@ import { PgConfig } from 'pg-env';
 import { AuthOptions, PgTestConnectionOptions, PgTestClientContext } from '@launchql/types';
 import { getRoleName } from './roles';
 import { generateContextStatements } from './context-utils';
+import { insertJson, type JsonSeedMap } from './seed/json';
+import { loadCsvMap, type CsvSeedMap } from './seed/csv';
+import { loadSqlFiles } from './seed/sql';
+import { deployLaunchql } from './seed/launchql';
 
 export type PgTestClientOpts = {
   deferConnect?: boolean;
@@ -163,40 +167,41 @@ export class PgTestClient {
     return this.query(query, values);
   }
 
-  async query<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
-    await this.ctxQuery();
-    const result = await this.client.query<T>(query, values);
-    return result;
-  }  
-
   async ctxQuery(): Promise<void> {
     if (this.ctxStmts) {
       await this.client.query(this.ctxStmts);
     }
   }
 
-  async loadJson(data: import('./seed/json').JsonSeedMap): Promise<void> {
-    await this.ctxQuery(); // Apply context before loading data (important-comment)
-    const { insertJson } = await import('./seed/json');
-    await insertJson(this.client, this.contextSettings, data);
+  // NOTE: all queries should call ctxQuery() before executing the query
+
+  async query<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
+    await this.ctxQuery();
+    const result = await this.client.query<T>(query, values);
+    return result;
+  }  
+
+  async loadJson(data: JsonSeedMap): Promise<void> {
+    await this.ctxQuery();
+    await insertJson(this.client, data);
   }
 
-  async loadCsv(tables: import('./seed/csv').CsvSeedMap): Promise<void> {
-    await this.ctxQuery(); // Apply context before loading data (important-comment)
-    const { loadCsvMap } = await import('./seed/csv');
-    await loadCsvMap(this.client, this.contextSettings, tables);
+  async loadCsv(tables: CsvSeedMap): Promise<void> {
+    await this.ctxQuery();
+    await loadCsvMap(this.client, tables);
   }
 
   async loadSql(files: string[]): Promise<void> {
-    await this.ctxQuery(); // Apply context before loading data (important-comment)
-    const { loadSqlFiles } = await import('./seed/sql');
-    await loadSqlFiles(this.client, this.contextSettings, files);
+    await this.ctxQuery();
+    await loadSqlFiles(this.client, files);
   }
 
   async loadLaunchql(cwd?: string, cache: boolean = false): Promise<void> {
-    await this.ctxQuery(); // Apply context before loading data (important-comment)
-    const { deployLaunchql } = await import('./seed/launchql');
-    await deployLaunchql(this.client, this.contextSettings, this.config, cwd, cache);
+    // await this.ctxQuery(); // no point to call ctxQuery() here
+    // because deployLaunchql() has it's own way of getting the client...
+    // so for now, we'll expose this but it's limited
+    
+    await deployLaunchql(this.config, cwd, cache);
   }
 
 }

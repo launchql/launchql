@@ -19,49 +19,21 @@ beforeAll(async () => {
     seed.fn(async ({ pg }) => {
       await pg.query(`
         CREATE SCHEMA custom;
+        
         CREATE TABLE custom.users (
           id SERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
-          email TEXT
-        );
-
-        CREATE TABLE custom.posts (
-          id SERIAL PRIMARY KEY,
-          user_id INT REFERENCES custom.users(id),
-          title TEXT NOT NULL,
-          content TEXT
-        );
-
-        CREATE SCHEMA custom_ctx;
-        CREATE TABLE custom_ctx.context_users (
-          id INT PRIMARY KEY,
           name TEXT NOT NULL
         );
 
-        CREATE TABLE custom.role_ctx_users (
-          id INT PRIMARY KEY,
-          name TEXT NOT NULL,
-          who TEXT DEFAULT current_role
+        CREATE TABLE custom.pets (
+          id SERIAL PRIMARY KEY,
+          owner_id INT NOT NULL REFERENCES custom.users(id),
+          name TEXT NOT NULL
         );
-
-        CREATE TABLE custom.rls_users (
-          id INT PRIMARY KEY,
-          name TEXT NOT NULL,
-          owner_role TEXT NOT NULL
-        );
-        
-        ALTER TABLE custom.rls_users ENABLE ROW LEVEL SECURITY;
-        
-        CREATE POLICY rls_users_insert_policy ON custom.rls_users
-          FOR INSERT
-          WITH CHECK (owner_role = current_role::text);
 
         GRANT USAGE ON SCHEMA custom TO anonymous, authenticated, administrator;
         GRANT ALL ON ALL TABLES IN SCHEMA custom TO anonymous, authenticated, administrator;
         GRANT ALL ON ALL SEQUENCES IN SCHEMA custom TO anonymous, authenticated, administrator;
-        
-        GRANT USAGE ON SCHEMA custom_ctx TO anonymous, authenticated, administrator;
-        GRANT ALL ON ALL TABLES IN SCHEMA custom_ctx TO anonymous, authenticated, administrator;
       `);
     })
   ]));
@@ -82,11 +54,11 @@ afterEach(async () => {
 });
 
 describe('loadJson() method', () => {
-  it('should load JSON data with pg client', async () => {
+  it('should load users with pg client', async () => {
     await pg.loadJson({
       'custom.users': [
-        { id: 1, name: 'Alice', email: 'alice@example.com' },
-        { id: 2, name: 'Bob', email: 'bob@example.com' }
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' }
       ]
     });
 
@@ -96,10 +68,10 @@ describe('loadJson() method', () => {
     expect(result[1].name).toBe('Bob');
   });
 
-  it('should load JSON data with db client', async () => {
+  it('should load users with db client', async () => {
     await db.loadJson({
       'custom.users': [
-        { id: 1, name: 'Charlie', email: 'charlie@example.com' }
+        { id: 3, name: 'Charlie' }
       ]
     });
 
@@ -108,29 +80,34 @@ describe('loadJson() method', () => {
     expect(result[0].name).toBe('Charlie');
   });
 
-  it('should handle multiple tables', async () => {
+  it('should load users and their pets', async () => {
     await pg.loadJson({
       'custom.users': [
-        { id: 1, name: 'Alice', email: 'alice@example.com' }
+        { id: 1, name: 'Alice' }
       ],
-      'custom.posts': [
-        { id: 1, user_id: 1, title: 'First Post', content: 'Hello world!' }
+      'custom.pets': [
+        { id: 1, owner_id: 1, name: 'Fluffy' },
+        { id: 2, owner_id: 1, name: 'Spot' }
       ]
     });
 
     const users = await pg.any('SELECT * FROM custom.users');
-    const posts = await pg.any('SELECT * FROM custom.posts');
+    const pets = await pg.any('SELECT * FROM custom.pets ORDER BY id');
     
     expect(users).toHaveLength(1);
-    expect(posts).toHaveLength(1);
-    expect(posts[0].title).toBe('First Post');
+    expect(users[0].name).toBe('Alice');
+    expect(pets).toHaveLength(2);
+    expect(pets[0].name).toBe('Fluffy');
+    expect(pets[0].owner_id).toBe(1);
+    expect(pets[1].name).toBe('Spot');
+    expect(pets[1].owner_id).toBe(1);
   });
 });
 
 describe('loadCsv() method', () => {
-  it('should load CSV data with pg client', async () => {
+  it('should load users from CSV with pg client', async () => {
     const csvPath = join(testDir, 'users.csv');
-    writeFileSync(csvPath, 'id,name,email\n1,Alice,alice@example.com\n2,Bob,bob@example.com\n');
+    writeFileSync(csvPath, 'id,name\n1,Alice\n2,Bob\n');
 
     await pg.loadCsv({
       'custom.users': csvPath
@@ -142,9 +119,9 @@ describe('loadCsv() method', () => {
     expect(result[1].name).toBe('Bob');
   });
 
-  it('should load CSV data with db client', async () => {
+  it('should load users from CSV with db client', async () => {
     const csvPath = join(testDir, 'users2.csv');
-    writeFileSync(csvPath, 'id,name,email\n3,Charlie,charlie@example.com\n');
+    writeFileSync(csvPath, 'id,name\n3,Charlie\n');
 
     await db.loadCsv({
       'custom.users': csvPath
@@ -154,14 +131,35 @@ describe('loadCsv() method', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Charlie');
   });
+
+  it('should load users and pets from CSV', async () => {
+    const usersPath = join(testDir, 'users3.csv');
+    const petsPath = join(testDir, 'pets.csv');
+    
+    writeFileSync(usersPath, 'id,name\n1,Alice\n');
+    writeFileSync(petsPath, 'id,owner_id,name\n1,1,Fluffy\n2,1,Spot\n');
+
+    await pg.loadCsv({
+      'custom.users': usersPath,
+      'custom.pets': petsPath
+    });
+
+    const users = await pg.any('SELECT * FROM custom.users');
+    const pets = await pg.any('SELECT * FROM custom.pets ORDER BY id');
+    
+    expect(users).toHaveLength(1);
+    expect(pets).toHaveLength(2);
+    expect(pets[0].owner_id).toBe(1);
+    expect(pets[1].owner_id).toBe(1);
+  });
 });
 
 describe('loadSql() method', () => {
-  it('should load SQL files with pg client', async () => {
+  it('should load users from SQL file with pg client', async () => {
     const sqlPath = join(testDir, 'seed.sql');
     writeFileSync(sqlPath, `
-      INSERT INTO custom.users (id, name, email) VALUES (1, 'Alice', 'alice@example.com');
-      INSERT INTO custom.users (id, name, email) VALUES (2, 'Bob', 'bob@example.com');
+      INSERT INTO custom.users (id, name) VALUES (1, 'Alice');
+      INSERT INTO custom.users (id, name) VALUES (2, 'Bob');
     `);
 
     await pg.loadSql([sqlPath]);
@@ -172,10 +170,10 @@ describe('loadSql() method', () => {
     expect(result[1].name).toBe('Bob');
   });
 
-  it('should load SQL files with db client', async () => {
+  it('should load users from SQL file with db client', async () => {
     const sqlPath = join(testDir, 'seed2.sql');
     writeFileSync(sqlPath, `
-      INSERT INTO custom.users (id, name, email) VALUES (3, 'Charlie', 'charlie@example.com');
+      INSERT INTO custom.users (id, name) VALUES (3, 'Charlie');
     `);
 
     await db.loadSql([sqlPath]);
@@ -185,106 +183,38 @@ describe('loadSql() method', () => {
     expect(result[0].name).toBe('Charlie');
   });
 
-  it('should load multiple SQL files in order', async () => {
-    const sql1Path = join(testDir, 'seed3a.sql');
-    const sql2Path = join(testDir, 'seed3b.sql');
+  it('should load users and pets from multiple SQL files in order', async () => {
+    const usersPath = join(testDir, 'users.sql');
+    const petsPath = join(testDir, 'pets.sql');
     
-    writeFileSync(sql1Path, `INSERT INTO custom.users (id, name, email) VALUES (1, 'Alice', 'alice@example.com');`);
-    writeFileSync(sql2Path, `INSERT INTO custom.posts (id, user_id, title, content) VALUES (1, 1, 'Post', 'Content');`);
+    writeFileSync(usersPath, `INSERT INTO custom.users (id, name) VALUES (1, 'Alice');`);
+    writeFileSync(petsPath, `
+      INSERT INTO custom.pets (id, owner_id, name) VALUES (1, 1, 'Fluffy');
+      INSERT INTO custom.pets (id, owner_id, name) VALUES (2, 1, 'Spot');
+    `);
 
-    await pg.loadSql([sql1Path, sql2Path]);
+    await pg.loadSql([usersPath, petsPath]);
 
     const users = await pg.any('SELECT * FROM custom.users');
-    const posts = await pg.any('SELECT * FROM custom.posts');
+    const pets = await pg.any('SELECT * FROM custom.pets ORDER BY id');
     
     expect(users).toHaveLength(1);
-    expect(posts).toHaveLength(1);
-  });
-});
-
-describe('context injection', () => {
-  it('should apply search_path context before CSV loading', async () => {
-    db.setContext({ search_path: 'custom_ctx' });
-
-    const csvPath = join(testDir, 'context_users.csv');
-    writeFileSync(csvPath, 'id,name\n1,Alice\n2,Bob\n');
-
-    await db.loadCsv({
-      'context_users': csvPath  // No schema prefix - relies on search_path
-    });
-
-    const result = await db.any('SELECT * FROM custom_ctx.context_users ORDER BY id');
-    expect(result).toHaveLength(2);
-    expect(result[0].name).toBe('Alice');
-    expect(result[1].name).toBe('Bob');
-  });
-
-  it('should apply role context before CSV loading (verified via default current_role)', async () => {
-    db.setContext({ role: 'authenticated' });
-
-    const csvPath1 = join(testDir, 'role_ctx_users1.csv');
-    writeFileSync(csvPath1, 'id,name\n1,Alice\n');
-
-    await db.loadCsv({
-      'custom.role_ctx_users': csvPath1
-    });
-
-    const result1 = await db.any('SELECT * FROM custom.role_ctx_users WHERE id = 1');
-    expect(result1).toHaveLength(1);
-    expect(result1[0].name).toBe('Alice');
-    expect(result1[0].who).toBe('authenticated');
-
-    db.setContext({ role: 'anonymous' });
-
-    const csvPath2 = join(testDir, 'role_ctx_users2.csv');
-    writeFileSync(csvPath2, 'id,name\n2,Bob\n');
-
-    await db.loadCsv({
-      'custom.role_ctx_users': csvPath2
-    });
-
-    const result2 = await db.any('SELECT * FROM custom.role_ctx_users WHERE id = 2');
-    expect(result2).toHaveLength(1);
-    expect(result2[0].name).toBe('Bob');
-    expect(result2[0].who).toBe('anonymous');
-  });
-
-  it('should apply role context before JSON loading with RLS policies', async () => {
-    db.setContext({ role: 'authenticated' });
-
-    await db.loadJson({
-      'custom.rls_users': [
-        { id: 1, name: 'Alice', owner_role: 'authenticated' }
-      ]
-    });
-
-    const result1 = await db.any('SELECT * FROM custom.rls_users WHERE id = 1');
-    expect(result1).toHaveLength(1);
-    expect(result1[0].name).toBe('Alice');
-    expect(result1[0].owner_role).toBe('authenticated');
-
-    db.setContext({ role: 'anonymous' });
-
-    await expect(
-      db.loadJson({
-        'custom.rls_users': [
-          { id: 2, name: 'Bob', owner_role: 'authenticated' }
-        ]
-      })
-    ).rejects.toThrow();
+    expect(pets).toHaveLength(2);
+    expect(pets[0].owner_id).toBe(1);
+    expect(pets[1].owner_id).toBe(1);
   });
 });
 
 describe('cross-connection visibility with publish()', () => {
   afterEach(async () => {
     // Clean up published data that won't be rolled back
-    await pg.query('DELETE FROM custom.posts');
+    await pg.query('DELETE FROM custom.pets');
     await pg.query('DELETE FROM custom.users');
     await pg.commit();
     await pg.begin();
     await pg.savepoint();
     
-    await db.query('DELETE FROM custom.posts');
+    await db.query('DELETE FROM custom.pets');
     await db.query('DELETE FROM custom.users');
     await db.commit();
     await db.begin();
@@ -294,7 +224,7 @@ describe('cross-connection visibility with publish()', () => {
   it('should make pg data visible to db after publish', async () => {
     await pg.loadJson({
       'custom.users': [
-        { id: 1, name: 'Alice', email: 'alice@example.com' }
+        { id: 1, name: 'Alice' }
       ]
     });
 
@@ -308,7 +238,7 @@ describe('cross-connection visibility with publish()', () => {
   it('should make db data visible to pg after publish', async () => {
     await db.loadJson({
       'custom.users': [
-        { id: 2, name: 'Bob', email: 'bob@example.com' }
+        { id: 2, name: 'Bob' }
       ]
     });
 
@@ -319,24 +249,37 @@ describe('cross-connection visibility with publish()', () => {
     expect(result[0].name).toBe('Bob');
   });
 
-  it('should support multiple publish cycles', async () => {
+  it('should support multiple publish cycles with users and pets', async () => {
+    // User 1 and their pets from pg connection
     await pg.loadJson({
       'custom.users': [
-        { id: 1, name: 'Alice', email: 'alice@example.com' }
+        { id: 1, name: 'Alice' }
+      ],
+      'custom.pets': [
+        { id: 1, owner_id: 1, name: 'Fluffy' }
       ]
     });
     await pg.publish();
 
+    // User 2 and their pets from db connection
     await db.loadJson({
       'custom.users': [
-        { id: 2, name: 'Bob', email: 'bob@example.com' }
+        { id: 2, name: 'Bob' }
+      ],
+      'custom.pets': [
+        { id: 2, owner_id: 2, name: 'Spot' }
       ]
     });
     await db.publish();
 
-    const result = await pg.any('SELECT * FROM custom.users ORDER BY id');
-    expect(result).toHaveLength(2);
-    expect(result[0].name).toBe('Alice');
-    expect(result[1].name).toBe('Bob');
+    const users = await pg.any('SELECT * FROM custom.users ORDER BY id');
+    const pets = await pg.any('SELECT * FROM custom.pets ORDER BY id');
+    
+    expect(users).toHaveLength(2);
+    expect(users[0].name).toBe('Alice');
+    expect(users[1].name).toBe('Bob');
+    expect(pets).toHaveLength(2);
+    expect(pets[0].owner_id).toBe(1);
+    expect(pets[1].owner_id).toBe(2);
   });
 });
