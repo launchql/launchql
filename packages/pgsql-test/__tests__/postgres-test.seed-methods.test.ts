@@ -176,6 +176,21 @@ describe('loadSql() method', () => {
 });
 
 describe('cross-connection visibility with publish()', () => {
+  afterEach(async () => {
+    // Clean up published data that won't be rolled back
+    await pg.query('DELETE FROM custom.posts');
+    await pg.query('DELETE FROM custom.users');
+    await pg.commit();
+    await pg.begin();
+    await pg.savepoint();
+    
+    await db.query('DELETE FROM custom.posts');
+    await db.query('DELETE FROM custom.users');
+    await db.commit();
+    await db.begin();
+    await db.savepoint();
+  });
+
   it('should make pg data visible to db after publish', async () => {
     await pg.loadJson({
       'custom.users': [
