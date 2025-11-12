@@ -5,3 +5,4 @@
 lerna-debug.log
 .vscode
 ignore
+packages/pgsql-test/output/
