@@ -11,6 +11,7 @@ import { DbAdmin } from './admin';
 import { PgTestConnector } from './manager';
 import { getDefaultRole } from './roles';
 import { PgTestClient } from './test-client';
+import { SeedAdapter } from './seed/types';
 
 let manager: PgTestConnector;
 
@@ -53,7 +54,7 @@ export interface GetConnectionResult {
 
 export const getConnections = async (
   cn: GetConnectionOpts = {},
-  runLaunchql: boolean = true
+  seedAdaptersOrRunLaunchql: SeedAdapter[] | boolean = true
 ): Promise<GetConnectionResult> => {
 
   cn = getConnOopts(cn);
@@ -101,7 +102,23 @@ export const getConnections = async (
     return teardownPromise;
   };
 
-  if (runLaunchql) {
+  if (Array.isArray(seedAdaptersOrRunLaunchql)) {
+    try {
+      const ctx = {
+        connect: connOpts,
+        admin,
+        config,
+        pg
+      };
+      for (const adapter of seedAdaptersOrRunLaunchql) {
+        await adapter.seed(ctx);
+      }
+    } catch (error) {
+      const err: any = error as any;
+      const msg = err && (err.stack || err.message) ? (err.stack || err.message) : String(err);
+      process.stderr.write(`[pgsql-test] Seed error (continuing): ${msg}\n`);
+    }
+  } else if (seedAdaptersOrRunLaunchql === true) {
     try {
       await pg.loadLaunchql();
     } catch (error) {
