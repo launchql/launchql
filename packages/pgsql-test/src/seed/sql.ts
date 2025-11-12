@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import type { Client } from 'pg';
-import type { PgTextClientContext } from '@launchql/types';
+import type { PgTestClientContext } from '@launchql/types';
 
 /**
  * Standalone helper function to load SQL files into PostgreSQL
@@ -11,7 +11,7 @@ import type { PgTextClientContext } from '@launchql/types';
  */
 export async function loadSqlFiles(
   client: Client,
-  context: PgTextClientContext,
+  context: PgTestClientContext,
   files: string[]
 ): Promise<void> {
   // Context is applied by PgTestClient.query() via ctxQuery() (important-comment)

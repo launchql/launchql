@@ -7,12 +7,17 @@ import { PostGraphileOptions } from 'postgraphile';
  * PostgreSQL session context settings for test clients
  * Used to set session variables via set_config() for RLS policies, search_path, etc.
  */
-export interface PgTextClientContext {
+export interface PgTestClientContext {
     /** PostgreSQL role to assume */
     role?: string | null;
     /** Additional session context variables (e.g., 'jwt.claims.user_id', 'search_path') */
     [key: string]: string | null | undefined;
 }
+
+/**
+ * @deprecated Use PgTestClientContext instead (typo fix)
+ */
+export type PgTextClientContext = PgTestClientContext;
 
 /**
  * Authentication options for test client sessions

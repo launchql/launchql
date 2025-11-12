@@ -1,6 +1,6 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
-import { AuthOptions, PgTestConnectionOptions, PgTextClientContext } from '@launchql/types';
+import { AuthOptions, PgTestConnectionOptions, PgTestClientContext } from '@launchql/types';
 import { getRoleName } from './roles';
 
 export type PgTestClientOpts = {
@@ -13,7 +13,7 @@ export class PgTestClient {
   public client: Client;
   private opts: PgTestClientOpts;
   private ctxStmts: string = '';
-  private contextSettings: PgTextClientContext = {};
+  private contextSettings: PgTestClientContext = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
 
@@ -189,21 +189,25 @@ export class PgTestClient {
   }
 
   async loadJson(data: import('./seed/json').JsonSeedMap): Promise<void> {
+    await this.ctxQuery(); // Apply context before loading data (important-comment)
     const { insertJson } = await import('./seed/json');
     await insertJson(this.client, this.contextSettings, data);
   }
 
   async loadCsv(tables: import('./seed/csv').CsvSeedMap): Promise<void> {
+    await this.ctxQuery(); // Apply context before loading data (important-comment)
     const { loadCsvMap } = await import('./seed/csv');
     await loadCsvMap(this.client, this.contextSettings, tables);
   }
 
   async loadSql(files: string[]): Promise<void> {
+    await this.ctxQuery(); // Apply context before loading data (important-comment)
     const { loadSqlFiles } = await import('./seed/sql');
     await loadSqlFiles(this.client, this.contextSettings, files);
   }
 
   async loadLaunchql(cwd?: string, cache: boolean = false): Promise<void> {
+    await this.ctxQuery(); // Apply context before loading data (important-comment)
     const { deployLaunchql } = await import('./seed/launchql');
     await deployLaunchql(this.client, this.contextSettings, this.config, cwd, cache);
   }

@@ -175,6 +175,72 @@ describe('loadSql() method', () => {
   });
 });
 
+describe('context injection', () => {
+  it('should apply search_path context before CSV loading', async () => {
+    await pg.query(`
+      CREATE SCHEMA custom_ctx;
+      CREATE TABLE custom_ctx.context_users (
+        id INT PRIMARY KEY,
+        name TEXT NOT NULL
+      );
+      GRANT USAGE ON SCHEMA custom_ctx TO anonymous, authenticated, administrator;
+      GRANT ALL ON ALL TABLES IN SCHEMA custom_ctx TO anonymous, authenticated, administrator;
+    `);
+
+    db.setContext({ search_path: 'custom_ctx' });
+
+    const csvPath = join(testDir, 'context_users.csv');
+    writeFileSync(csvPath, 'id,name\n1,Alice\n2,Bob\n');
+
+    await db.loadCsv({
+      'context_users': csvPath  // No schema prefix - relies on search_path
+    });
+
+    const result = await db.any('SELECT * FROM custom_ctx.context_users ORDER BY id');
+    expect(result).toHaveLength(2);
+    expect(result[0].name).toBe('Alice');
+    expect(result[1].name).toBe('Bob');
+
+    // Clean up
+    await pg.query('DROP SCHEMA custom_ctx CASCADE');
+  });
+
+  it('should apply role context before CSV loading', async () => {
+    await pg.query(`
+      CREATE TABLE custom.rls_users (
+        id INT PRIMARY KEY,
+        name TEXT NOT NULL,
+        owner_role TEXT NOT NULL DEFAULT current_role
+      );
+      
+      ALTER TABLE custom.rls_users ENABLE ROW LEVEL SECURITY;
+      
+      CREATE POLICY rls_users_insert_policy ON custom.rls_users
+        FOR INSERT
+        WITH CHECK (owner_role = current_role::text);
+      
+      GRANT ALL ON custom.rls_users TO anonymous, authenticated, administrator;
+    `);
+
+    db.setContext({ role: 'authenticated' });
+
+    const csvPath = join(testDir, 'rls_users.csv');
+    writeFileSync(csvPath, 'id,name\n1,Alice\n');
+
+    await db.loadCsv({
+      'custom.rls_users': csvPath
+    });
+
+    const result = await db.any('SELECT * FROM custom.rls_users ORDER BY id');
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe('Alice');
+    expect(result[0].owner_role).toBe('authenticated');
+
+    // Clean up
+    await pg.query('DROP TABLE custom.rls_users CASCADE');
+  });
+});
+
 describe('cross-connection visibility with publish()', () => {
   afterEach(async () => {
     // Clean up published data that won't be rolled back

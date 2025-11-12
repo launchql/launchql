@@ -2,7 +2,7 @@ import { LaunchQLPackage } from '@launchql/core';
 import { getEnvOptions } from '@launchql/env';
 import type { Client } from 'pg';
 import type { PgConfig } from 'pg-env';
-import type { PgTextClientContext } from '@launchql/types';
+import type { PgTestClientContext } from '@launchql/types';
 
 import { generateContextStatements } from '../context-utils';
 import { SeedAdapter, SeedContext } from './types';
@@ -18,7 +18,7 @@ import { SeedAdapter, SeedContext } from './types';
  */
 export async function deployLaunchql(
   client: Client,
-  context: PgTextClientContext,
+  context: PgTestClientContext,
   config: PgConfig,
   cwd?: string,
   cache: boolean = false
