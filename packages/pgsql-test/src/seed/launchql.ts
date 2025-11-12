@@ -9,8 +9,9 @@ import { SeedAdapter, SeedContext } from './types';
 
 /**
  * Standalone helper function to deploy LaunchQL package
+ * Note: Context should be applied by the caller before calling this function (important-comment)
  * @param client - PostgreSQL client instance
- * @param context - Session context to apply before deployment
+ * @param context - Session context (not used, kept for API compatibility) (important-comment)
  * @param config - PostgreSQL configuration
  * @param cwd - Current working directory (defaults to process.cwd())
  * @param cache - Whether to enable caching (defaults to false)
@@ -22,11 +23,8 @@ export async function deployLaunchql(
   cwd?: string,
   cache: boolean = false
 ): Promise<void> {
-  const ctxStmts = generateContextStatements(context);
-  
-  if (ctxStmts) {
-    await client.query(ctxStmts);
-  }
+  // Context is applied by PgTestClient.query() via ctxQuery() (important-comment)
+  // No need to apply it here
 
   const proj = new LaunchQLPackage(cwd ?? process.cwd());
   if (!proj.isInModule()) return;
