@@ -1,7 +1,12 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
-import { AuthOptions, PgTestConnectionOptions } from '@launchql/types';
+import { AuthOptions, PgTestConnectionOptions, PgTestClientContext } from '@launchql/types';
 import { getRoleName } from './roles';
+import { generateContextStatements } from './context-utils';
+import { insertJson, type JsonSeedMap } from './seed/json';
+import { loadCsvMap, type CsvSeedMap } from './seed/csv';
+import { loadSqlFiles } from './seed/sql';
+import { deployLaunchql } from './seed/launchql';
 
 export type PgTestClientOpts = {
   deferConnect?: boolean;
@@ -13,7 +18,7 @@ export class PgTestClient {
   public client: Client;
   private opts: PgTestClientOpts;
   private ctxStmts: string = '';
-  private contextSettings: Record<string, string | null> = {};
+  private contextSettings: PgTestClientContext = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
 
@@ -77,14 +82,7 @@ export class PgTestClient {
 
   setContext(ctx: Record<string, string | null>): void {
     Object.assign(this.contextSettings, ctx);
-    
-    this.ctxStmts = Object.entries(this.contextSettings)
-      .map(([key, val]) =>
-        val === null
-          ? `SELECT set_config('${key}', NULL, true);`
-          : `SELECT set_config('${key}', '${val}', true);`
-      )
-      .join('\n');
+    this.ctxStmts = generateContextStatements(this.contextSettings);
   }
 
   /**
@@ -129,14 +127,7 @@ export class PgTestClient {
     
     nulledSettings.role = defaultRole;
     
-    this.ctxStmts = Object.entries(nulledSettings)
-      .map(([key, val]) =>
-        val === null
-          ? `SELECT set_config('${key}', NULL, true);`
-          : `SELECT set_config('${key}', '${val}', true);`
-      )
-      .join('\n');
-    
+    this.ctxStmts = generateContextStatements(nulledSettings);
     this.contextSettings = { role: defaultRole };
   }
 
@@ -176,16 +167,43 @@ export class PgTestClient {
     return this.query(query, values);
   }
 
+  async ctxQuery(): Promise<void> {
+    if (this.ctxStmts) {
+      await this.client.query(this.ctxStmts);
+    }
+  }
+
+  // NOTE: all queries should call ctxQuery() before executing the query
+
   async query<T = any>(query: string, values?: any[]): Promise<QueryResult<T>> {
     await this.ctxQuery();
     const result = await this.client.query<T>(query, values);
     return result;
   }  
 
-  async ctxQuery(): Promise<void> {
-    if (this.ctxStmts) {
-      await this.client.query(this.ctxStmts);
-    }
-  }  
+  async loadJson(data: JsonSeedMap): Promise<void> {
+    await this.ctxQuery();
+    await insertJson(this.client, data);
+  }
+
+  async loadSql(files: string[]): Promise<void> {
+    await this.ctxQuery();
+    await loadSqlFiles(this.client, files);
+  }
+
+  // NON-RLS load/seed methods:
+
+  async loadCsv(tables: CsvSeedMap): Promise<void> {
+    // await this.ctxQuery(); // no point to call ctxQuery() here
+    // because POSTGRES doesn't support row-level security on COPY FROM...
+    await loadCsvMap(this.client, tables);
+  }
+
+  async loadLaunchql(cwd?: string, cache: boolean = false): Promise<void> {
+    // await this.ctxQuery(); // no point to call ctxQuery() here
+    // because deployLaunchql() has it's own way of getting the client...
+    // so for now, we'll expose this but it's limited
+    await deployLaunchql(this.config, cwd, cache);
+  }
 
 }

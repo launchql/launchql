@@ -6,13 +6,48 @@ import { createReadStream, createWriteStream,existsSync } from 'fs';
 import { Client } from 'pg';
 import { from as copyFrom, to as copyTo } from 'pg-copy-streams';
 
-import { PgTestClient } from '../test-client';
+import type { PgTestClient } from '../test-client';
 import { SeedAdapter, SeedContext } from './types';
 
 const log = new Logger('csv');
 
-interface CsvSeedMap {
+export interface CsvSeedMap {
   [tableName: string]: string;
+}
+
+/**
+ * Standalone helper function to load CSV files into PostgreSQL tables
+ * @param client - PostgreSQL client instance
+ * @param tables - Map of table names to CSV file paths
+ */
+export async function loadCsvMap(
+  client: Client,
+  tables: CsvSeedMap
+): Promise<void> {
+  for (const [table, filePath] of Object.entries(tables)) {
+    if (!existsSync(filePath)) {
+      throw new Error(`CSV file not found: ${filePath}`);
+    }
+    log.info(`📥 Seeding "${table}" from ${filePath}`);
+    
+    const columns = await parseCsvHeader(filePath);
+    const quotedColumns = columns.map(col => `"${col.replace(/"/g, '""')}"`);
+    const columnList = quotedColumns.join(', ');
+    const copyCommand = `COPY ${table} (${columnList}) FROM STDIN WITH CSV HEADER`;
+    
+    log.info(`Using columns: ${columnList}`);
+    
+    const stream = client.query(copyFrom(copyCommand));
+    const source = createReadStream(filePath);
+
+    try {
+      await pipeline(source, stream);
+      log.success(`✅ Successfully seeded "${table}"`);
+    } catch (err) {
+      log.error(`❌ COPY failed for "${table}": ${(err as Error).message}`);
+      throw err;
+    }
+  }
 }
 
 export function csv(tables: CsvSeedMap): SeedAdapter {
