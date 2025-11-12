@@ -2,7 +2,6 @@ process.env.LOG_SCOPE = 'pgsql-test';
 
 import path from 'path';
 
-import { seed } from '../src';
 import { getConnections } from '../src/connect';
 import { PgTestClient } from '../src/test-client';
 
@@ -13,25 +12,23 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections({}, [
-    seed.fn(async ({ pg }) => {
-      await pg.query(`
-        CREATE SCHEMA custom;
-        GRANT USAGE ON SCHEMA custom TO PUBLIC;
-        GRANT ALL ON SCHEMA custom TO PUBLIC;
-        
-        CREATE TABLE custom.users (
-          id SERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
-          email TEXT,
-          bio TEXT
-        );
-        
-        GRANT ALL ON TABLE custom.users TO PUBLIC;
-        GRANT ALL ON SEQUENCE custom.users_id_seq TO PUBLIC;
-      `);
-    })
-  ]));
+  ({ pg, db, teardown } = await getConnections({}, false));
+  
+  await pg.query(`
+    CREATE SCHEMA custom;
+    GRANT USAGE ON SCHEMA custom TO PUBLIC;
+    GRANT ALL ON SCHEMA custom TO PUBLIC;
+    
+    CREATE TABLE custom.users (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT,
+      bio TEXT
+    );
+    
+    GRANT ALL ON TABLE custom.users TO PUBLIC;
+    GRANT ALL ON SEQUENCE custom.users_id_seq TO PUBLIC;
+  `);
 });
 
 afterAll(async () => {
@@ -49,7 +46,7 @@ describe('Instance seed.csv()', () => {
     });
 
     it('seeds data from CSV file', async () => {
-      await pg.seed.csv({
+      await pg.loadCsv({
         'custom.users': csv('users.csv')
       });
 
@@ -64,7 +61,7 @@ describe('Instance seed.csv()', () => {
     });
 
     it('handles schema-qualified table names', async () => {
-      await pg.seed.csv({
+      await pg.loadCsv({
         'custom.users': csv('users.csv')
       });
 
@@ -83,7 +80,7 @@ describe('Instance seed.csv()', () => {
     });
 
     it('seeds data via db client', async () => {
-      await db.seed.csv({
+      await db.loadCsv({
         'custom.users': csv('users.csv')
       });
 
@@ -96,7 +93,7 @@ describe('Instance seed.csv()', () => {
     beforeEach(async () => {
       await pg.beforeEach();
       await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
-      await pg.seed.csv({
+      await pg.loadCsv({
         'custom.users': csv('users.csv')
       });
       await pg.publish();

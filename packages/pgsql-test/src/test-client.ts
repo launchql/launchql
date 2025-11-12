@@ -2,11 +2,15 @@ import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
 import { AuthOptions, PgTestConnectionOptions } from '@launchql/types';
 import { getRoleName } from './roles';
-import type { PgTestClientSeed } from './seed/api';
+import { DbAdmin } from './admin';
 
 export type PgTestClientOpts = {
   deferConnect?: boolean;
   trackConnect?: (p: Promise<any>) => void;
+  seedEnv?: {
+    connect: PgTestConnectionOptions;
+    admin: DbAdmin;
+  };
 } & Partial<PgTestConnectionOptions>;
 
 export class PgTestClient {
@@ -17,8 +21,6 @@ export class PgTestClient {
   private contextSettings: Record<string, string | null> = {};
   private _ended: boolean = false;
   private connectPromise: Promise<void> | null = null;
-  
-  seed!: PgTestClientSeed;
 
   constructor(config: PgConfig, opts: PgTestClientOpts = {}) {
     this.opts = opts;
@@ -189,6 +191,47 @@ export class PgTestClient {
     if (this.ctxStmts) {
       await this.client.query(this.ctxStmts);
     }
-  }  
+  }
+
+  async loadJson(data: import('./seed/json').JsonSeedMap): Promise<void> {
+    const { insertJson } = await import('./seed/json');
+    await insertJson(this.client, this.ctxQuery.bind(this), data);
+  }
+
+  async loadCsv(map: import('./seed/csv').CsvSeedMap): Promise<void> {
+    const { loadCsvMap } = await import('./seed/csv');
+    await loadCsvMap(this.client, this.ctxQuery.bind(this), map);
+  }
+
+  async runSqlfiles(files: string[]): Promise<void> {
+    if (!this.opts.seedEnv?.admin) {
+      throw new Error('seedEnv.admin required; construct PgTestClient with opts.seedEnv');
+    }
+    for (const file of files) {
+      this.opts.seedEnv.admin.loadSql(file, this.config.database);
+    }
+  }
+
+  async loadLaunchql(cwd?: string, cache: boolean = false): Promise<void> {
+    if (!this.opts.seedEnv?.connect) {
+      throw new Error('seedEnv.connect required; construct PgTestClient with opts.seedEnv');
+    }
+    const { LaunchQLPackage } = await import('@launchql/core');
+    const { getEnvOptions } = await import('@launchql/env');
+    const proj = new LaunchQLPackage(cwd ?? this.opts.seedEnv.connect.cwd);
+    if (!proj.isInModule()) return;
+    
+    await proj.deploy(
+      getEnvOptions({ 
+        pg: this.config,
+        deployment: {
+          fast: true,
+          usePlan: true,
+          cache
+        }
+      }), 
+      proj.getModuleName()
+    );
+  }
 
 }

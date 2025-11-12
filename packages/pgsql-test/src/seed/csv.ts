@@ -2,31 +2,26 @@ import { pipeline } from 'node:stream/promises';
 
 import { Logger } from '@launchql/logger';
 import { parse } from 'csv-parse';
-import { createReadStream, createWriteStream,existsSync } from 'fs';
+import { createReadStream, createWriteStream, existsSync } from 'fs';
 import { Client } from 'pg';
 import { from as copyFrom, to as copyTo } from 'pg-copy-streams';
 
-import { PgTestClient } from '../test-client';
-import { SeedAdapter, SeedContext } from './types';
-
 const log = new Logger('csv');
 
-interface CsvSeedMap {
-  [tableName: string]: string;
-}
+export type CsvSeedMap = Record<string, string>;
 
-export function csv(tables: CsvSeedMap): SeedAdapter {
-  return {
-    async seed(ctx: SeedContext) {
-      for (const [table, filePath] of Object.entries(tables)) {
-        if (!existsSync(filePath)) {
-          throw new Error(`CSV file not found: ${filePath}`);
-        }
-        log.info(`📥 Seeding "${table}" from ${filePath}`);
-        await copyCsvIntoTable(ctx.pg, table, filePath);
-      }
+export async function loadCsvMap(
+  client: Client,
+  ctxQuery: () => Promise<void>,
+  tables: CsvSeedMap
+): Promise<void> {
+  for (const [table, filePath] of Object.entries(tables)) {
+    if (!existsSync(filePath)) {
+      throw new Error(`CSV file not found: ${filePath}`);
     }
-  };
+    log.info(`📥 Seeding "${table}" from ${filePath}`);
+    await copyCsvIntoTable(client, ctxQuery, table, filePath);
+  }
 }
 
 async function parseCsvHeader(filePath: string): Promise<string[]> {
@@ -69,10 +64,13 @@ function quoteIdentifier(identifier: string): string {
   return parts.map(part => `"${part.replace(/"/g, '""')}"`).join('.');
 }
 
-export async function copyCsvIntoTable(pg: PgTestClient, table: string, filePath: string): Promise<void> {
-  await pg.ctxQuery();
-  
-  const client: Client = pg.client;
+export async function copyCsvIntoTable(
+  client: Client,
+  ctxQuery: () => Promise<void>,
+  table: string,
+  filePath: string
+): Promise<void> {
+  await ctxQuery();
   
   const columns = await parseCsvHeader(filePath);
   
@@ -95,8 +93,11 @@ export async function copyCsvIntoTable(pg: PgTestClient, table: string, filePath
   }
 }
 
-export async function exportTableToCsv(pg: PgTestClient, table: string, filePath: string): Promise<void> {
-  const client: Client = pg.client;
+export async function exportTableToCsv(
+  client: Client,
+  table: string,
+  filePath: string
+): Promise<void> {
   const stream = client.query(copyTo(`COPY ${table} TO STDOUT WITH CSV HEADER`));
   const target = createWriteStream(filePath);
 

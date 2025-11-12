@@ -1,6 +1,5 @@
 process.env.LOG_SCOPE = 'pgsql-test';
 
-import { seed } from '../src';
 import { getConnections } from '../src/connect';
 import { PgTestClient } from '../src/test-client';
 
@@ -9,24 +8,22 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections({}, [
-    seed.fn(async ({ pg }) => {
-      await pg.query(`
-        CREATE SCHEMA custom;
-        GRANT USAGE ON SCHEMA custom TO PUBLIC;
-        GRANT ALL ON SCHEMA custom TO PUBLIC;
-        
-        CREATE TABLE custom.users (
-          id SERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
-          email TEXT
-        );
-        
-        GRANT ALL ON TABLE custom.users TO PUBLIC;
-        GRANT ALL ON SEQUENCE custom.users_id_seq TO PUBLIC;
-      `);
-    })
-  ]));
+  ({ pg, db, teardown } = await getConnections({}, false));
+  
+  await pg.query(`
+    CREATE SCHEMA custom;
+    GRANT USAGE ON SCHEMA custom TO PUBLIC;
+    GRANT ALL ON SCHEMA custom TO PUBLIC;
+    
+    CREATE TABLE custom.users (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT
+    );
+    
+    GRANT ALL ON TABLE custom.users TO PUBLIC;
+    GRANT ALL ON SEQUENCE custom.users_id_seq TO PUBLIC;
+  `);
 });
 
 afterAll(async () => {
@@ -44,7 +41,7 @@ describe('Instance seed.json()', () => {
     });
 
     it('seeds data and rolls back', async () => {
-      await db.seed.json({
+      await db.loadJson({
         'custom.users': [
           { id: 1, name: 'Alice', email: 'alice@example.com' },
           { id: 2, name: 'Bob', email: 'bob@example.com' }
@@ -63,7 +60,7 @@ describe('Instance seed.json()', () => {
     });
 
     it('handles schema-qualified table names', async () => {
-      await db.seed.json({
+      await db.loadJson({
         'custom.users': [{ id: 1, name: 'Test' }]
       });
 
@@ -82,7 +79,7 @@ describe('Instance seed.json()', () => {
     });
 
     it('seeds data via pg client', async () => {
-      await pg.seed.json({
+      await pg.loadJson({
         'custom.users': [{ id: 1, name: 'Admin User' }]
       });
 
@@ -96,7 +93,7 @@ describe('Instance seed.json()', () => {
     beforeEach(async () => {
       await pg.beforeEach();
       await pg.query('TRUNCATE TABLE custom.users RESTART IDENTITY CASCADE');
-      await pg.seed.json({
+      await pg.loadJson({
         'custom.users': [
           { id: 1, name: 'Alice', email: 'alice@example.com' }
         ]

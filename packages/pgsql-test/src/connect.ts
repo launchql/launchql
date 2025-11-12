@@ -10,9 +10,6 @@ import {
 import { DbAdmin } from './admin';
 import { PgTestConnector } from './manager';
 import { getDefaultRole } from './roles';
-import { seed } from './seed';
-import { attachSeedAPI, SeedRuntime } from './seed/api';
-import { SeedAdapter } from './seed/types';
 import { PgTestClient } from './test-client';
 
 let manager: PgTestConnector;
@@ -56,7 +53,7 @@ export interface GetConnectionResult {
 
 export const getConnections = async (
   cn: GetConnectionOpts = {},
-  seedAdapters: SeedAdapter[] = [ seed.launchql() ]
+  runLaunchql: boolean = true
 ): Promise<GetConnectionResult> => {
 
   cn = getConnOopts(cn);
@@ -85,7 +82,13 @@ export const getConnections = async (
   await admin.grantConnect(connOpts.connection.user, config.database);
 
   manager = PgTestConnector.getInstance(config);
-  const pg = manager.getClient(config);
+  
+  const seedEnv = {
+    connect: connOpts,
+    admin
+  };
+  
+  const pg = manager.getClient(config, { seedEnv });
 
   let teardownPromise: Promise<void> | null = null;
   const teardown = async () => {
@@ -98,19 +101,13 @@ export const getConnections = async (
     return teardownPromise;
   };
 
-  if (seedAdapters.length) {
+  if (runLaunchql) {
     try {
-      await seed.compose(seedAdapters).seed({
-        connect: connOpts,
-        admin,
-        config: config,
-        pg: manager.getClient(config)
-      });
+      await pg.loadLaunchql();
     } catch (error) {
       const err: any = error as any;
       const msg = err && (err.stack || err.message) ? (err.stack || err.message) : String(err);
       process.stderr.write(`[pgsql-test] Seed error (continuing): ${msg}\n`);
-      // continue without teardown to allow caller-managed lifecycle
     }
   }
 
@@ -122,21 +119,10 @@ export const getConnections = async (
   
   const db = manager.getClient(dbConfig, {
     auth: connOpts.auth,
-    roles: connOpts.roles
+    roles: connOpts.roles,
+    seedEnv
   });
   db.setContext({ role: getDefaultRole(connOpts) });
-  
-  const runtime: SeedRuntime = {
-    connect: connOpts,
-    admin,
-    config,
-    pg,
-    db,
-    currentClient: pg
-  };
-  
-  attachSeedAPI(pg, { ...runtime, currentClient: pg });
-  attachSeedAPI(db, { ...runtime, currentClient: db });
   
   return { pg, db, teardown, manager, admin };
 };

@@ -9,7 +9,6 @@ export interface SeedContext {
   admin: DbAdmin;
   config: PgConfig;
   pg: PgTestClient;
-  db?: PgTestClient;  // Optional app user client (available at runtime)
 }
 
 export interface SeedAdapter {
