@@ -31,6 +31,10 @@ beforeAll(async () => {
           title TEXT NOT NULL,
           content TEXT
         );
+
+        GRANT USAGE ON SCHEMA custom TO app_user;
+        GRANT ALL ON ALL TABLES IN SCHEMA custom TO app_user;
+        GRANT ALL ON ALL SEQUENCES IN SCHEMA custom TO app_user;
       `);
     })
   ]));
