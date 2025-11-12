@@ -243,9 +243,42 @@ This array lets you fully customize how your test database is seeded. You can co
 
 This composable system allows you to mix-and-match data setup strategies for flexible, realistic, and fast database tests.
 
+#### Two Seeding Patterns
+
+You can seed data using either approach:
+
+**1. Adapter Pattern** (setup phase via `getConnections`)
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.json({ 'users': [{ id: 1, name: 'Alice' }] })
+]);
+```
+
+**2. Direct Load Methods** (runtime via `PgTestClient`)
+```ts
+await db.loadJson({ 'users': [{ id: 1, name: 'Alice' }] });
+await db.loadCsv({ 'users': '/path/to/users.csv' });
+await db.loadSql(['/path/to/schema.sql']);
+```
+
+> **Note:** `loadCsv()` and `loadLaunchql()` do not apply RLS context (PostgreSQL limitation). Use `loadJson()` or `loadSql()` for RLS-aware seeding.
+
 ### 🔌 SQL File Seeding
 
-Use `.sql` files to set up your database state before tests:
+**Adapter Pattern:**
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.sqlfile(['schema.sql', 'fixtures.sql'])
+]);
+```
+
+**Direct Load Method:**
+```ts
+await db.loadSql(['schema.sql', 'fixtures.sql']);
+```
+
+<details>
+<summary>Full example</summary>
 
 ```ts
 import path from 'path';
@@ -270,9 +303,27 @@ afterAll(async () => {
 });
 ```
 
+</details>
+
 ### 🧠 Programmatic Seeding
 
-Use JavaScript functions to insert seed data:
+**Adapter Pattern:**
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.fn(async ({ pg }) => {
+    await pg.query(`INSERT INTO users (name) VALUES ('Seeded User')`);
+  })
+]);
+```
+
+**Direct Load Method:**
+```ts
+// Use any PgTestClient method directly
+await db.query(`INSERT INTO users (name) VALUES ('Seeded User')`);
+```
+
+<details>
+<summary>Full example</summary>
 
 ```ts
 import { getConnections, seed } from 'supabase-test';
@@ -291,7 +342,32 @@ beforeAll(async () => {
 });
 ```
 
+</details>
+
 ## 🗃️ CSV Seeding
+
+**Adapter Pattern:**
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.csv({
+    'users': '/path/to/users.csv',
+    'posts': '/path/to/posts.csv'
+  })
+]);
+```
+
+**Direct Load Method:**
+```ts
+await db.loadCsv({
+  'users': '/path/to/users.csv',
+  'posts': '/path/to/posts.csv'
+});
+```
+
+> **Note:** CSV loading uses PostgreSQL COPY which does not support RLS context.
+
+<details>
+<summary>Full example</summary>
 
 You can load tables from CSV files using `seed.csv({ ... })`. CSV headers must match the table column names exactly. This is useful for loading stable fixture data for integration tests or CI environments.
 
@@ -342,7 +418,34 @@ it('has loaded rows', async () => {
 });
 ```
 
+</details>
+
 ## 🗃️ JSON Seeding
+
+**Adapter Pattern:**
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.json({
+    'custom.users': [
+      { id: 1, name: 'Alice' },
+      { id: 2, name: 'Bob' }
+    ]
+  })
+]);
+```
+
+**Direct Load Method:**
+```ts
+await db.loadJson({
+  'custom.users': [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bob' }
+  ]
+});
+```
+
+<details>
+<summary>Full example</summary>
 
 You can seed tables using in-memory JSON objects. This is useful when you want fast, inline fixtures without managing external files.
 
@@ -397,7 +500,32 @@ it('has loaded rows', async () => {
 });
 ```
 
+</details>
+
 ## 🚀 LaunchQL Seeding
+
+**Zero Configuration (Default):**
+```ts
+// LaunchQL migrate is used automatically
+const { db, teardown } = await getConnections();
+```
+
+**Adapter Pattern (Custom Path):**
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.launchql('/path/to/launchql', true) // with cache
+]);
+```
+
+**Direct Load Method:**
+```ts
+await db.loadLaunchql('/path/to/launchql', true); // with cache
+```
+
+> **Note:** LaunchQL deployment has its own client handling and does not apply RLS context.
+
+<details>
+<summary>Full example</summary>
 
 If your project uses LaunchQL modules with a precompiled `launchql.plan`, you can use `supabase-test` with **zero configuration**. Just call `getConnections()` — and it *just works*:
 
@@ -407,17 +535,13 @@ import { getConnections } from 'supabase-test';
 let db, teardown;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections()); // 🚀 LaunchQL deployFast() is used automatically - up to 10x faster than traditional Sqitch!
+  ({ db, teardown } = await getConnections()); // LaunchQL module is deployed automatically
 });
 ```
 
-*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance TypeScript-based deploy engine that we encourage using for sqitch-based projects*
+LaunchQL uses Sqitch-compatible syntax with a TypeScript-based migration engine. By default, `supabase-test` automatically deploys any LaunchQL module found in the current working directory (`process.cwd()`).
 
-You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine, leveraging a `launchql.plan` file.
-
-This works out of the box because `supabase-test` uses the high-speed `deployFast()` function by default, applying any compiled LaunchQL schema located in the current working directory (`process.cwd()`).
-
-If you want to specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
+To specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
 
 ```ts
 import path from 'path';
@@ -427,10 +551,23 @@ const cwd = path.resolve(__dirname, '../path/to/launchql');
 
 beforeAll(async () => {
   ({ db, teardown } = await getConnections({}, [
-    seed.launchql(cwd) // uses deployFast() - up to 10x faster than traditional Sqitch!
+    seed.launchql(cwd)
   ]));
 });
 ```
+
+</details>
+
+## Why LaunchQL's Approach?
+
+LaunchQL provides the best of both worlds:
+
+1. **Sqitch Compatibility**: Keep your familiar Sqitch syntax and migration approach
+2. **TypeScript Performance**: Our TS-rewritten deployment engine delivers up to 10x faster schema deployments
+3. **Developer Experience**: Tight feedback loops with near-instant schema setup for tests
+4. **CI Optimization**: Dramatically reduced test suite run times with optimized deployment
+
+By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
 
 ## Why LaunchQL's Approach?
 

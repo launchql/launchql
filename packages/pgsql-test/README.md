@@ -508,7 +508,7 @@ it('has loaded rows', async () => {
 
 **Zero Configuration (Default):**
 ```ts
-// LaunchQL deployFast() is used automatically
+// LaunchQL migrate is used automatically
 const { db, teardown } = await getConnections();
 ```
 
@@ -537,17 +537,13 @@ import { getConnections } from 'pgsql-test';
 let db, teardown;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections()); // 🚀 LaunchQL deployFast() is used automatically - up to 10x faster than traditional Sqitch!
+  ({ db, teardown } = await getConnections()); // LaunchQL module is deployed automatically
 });
 ```
 
-*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance TypeScript-based deploy engine that we encourage using for sqitch-based projects*
+LaunchQL uses Sqitch-compatible syntax with a TypeScript-based migration engine. By default, `pgsql-test` automatically deploys any LaunchQL module found in the current working directory (`process.cwd()`).
 
-You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine, leveraging a `launchql.plan` file.
-
-This works out of the box because `pgsql-test` uses the high-speed `deployFast()` function by default, applying any compiled LaunchQL schema located in the current working directory (`process.cwd()`).
-
-If you want to specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
+To specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
 
 ```ts
 import path from 'path';
@@ -557,7 +553,7 @@ const cwd = path.resolve(__dirname, '../path/to/launchql');
 
 beforeAll(async () => {
   ({ db, teardown } = await getConnections({}, [
-    seed.launchql(cwd) // uses deployFast() - up to 10x faster than traditional Sqitch!
+    seed.launchql(cwd)
   ]));
 });
 ```
