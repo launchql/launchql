@@ -8,7 +8,7 @@ fi
 
 
 
-find . -name yarn.lock | grep -v node_modules | xargs rm
+find . -name pnpm-lock.yaml | grep -v node_modules | xargs rm
 git add .
 git commit -am "$1"
 lerna publish

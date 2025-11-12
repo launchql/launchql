@@ -1,9 +1,9 @@
 // Auto-generated template module
 
 export default [
-  (vars: Record<string, any>) => {
-    const relPath = `tsconfig.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `tsconfig.json`;
+  const content = `{
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
@@ -13,12 +13,12 @@ export default [
   "exclude": ["dist", "node_modules", "**/*.spec.*", "**/*.test.*"]
 }
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `tsconfig.esm.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `tsconfig.esm.json`;
+  const content = `{
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist/esm",
@@ -28,12 +28,12 @@ export default [
   }
 }
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `package.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `package.json`;
+  const content = `{
   "name": "${vars.PACKAGE_IDENTIFIER}",
   "version": "0.0.1",
   "author": "${vars.USERFULLNAME} <${vars.USEREMAIL}>",
@@ -42,7 +42,7 @@ export default [
   "module": "esm/index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/${vars.USERNAME}/${vars.REPONAME}",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
     "access": "${vars.ACCESS}",
     "directory": "dist"
@@ -57,21 +57,21 @@ export default [
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
-    "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "prepare": "pnpm run build",
+    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "keywords": []
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `jest.config.js`;
-    const content = `/** @type {import('ts-jest').JestConfigWithTsJest} */
+(vars: Record<string, any>) => {
+  const relPath = `jest.config.js`;
+  const content = `/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
     preset: "ts-jest",
     testEnvironment: "node",
@@ -90,12 +90,12 @@ module.exports = {
     modulePathIgnorePatterns: ["dist/*"]
 };
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `README.md`;
-    const content = `# ${vars.MODULENAME}
+(vars: Record<string, any>) => {
+  const relPath = `README.md`;
+  const content = `# ${vars.MODULENAME}
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
@@ -120,17 +120,17 @@ npm install ${vars.MODULENAME}
 When first cloning the repo:
 
 \`\`\`sh
-yarn
+pnpm install
 # build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
+pnpm run build
 \`\`\`
 
 Or if you want to make your dev process smoother, you can run:
 
 \`\`\`sh
-yarn
+pnpm install
 # build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+pnpm run build:dev
 \`\`\`
 
 ## Credits
@@ -144,28 +144,28 @@ AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN 
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `src/index.ts`;
-    const content = `export default () => {
+(vars: Record<string, any>) => {
+  const relPath = `src/index.ts`;
+  const content = `export default () => {
 
 };`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `__tests__/first.test.ts`;
-    const content = `it('works', () => {
+(vars: Record<string, any>) => {
+  const relPath = `__tests__/first.test.ts`;
+  const content = `it('works', () => {
     console.log('hello test world!');
 })`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.questions.json`;
-    const content = `[
+(vars: Record<string, any>) => {
+  const relPath = `.questions.json`;
+  const content = `[
   {
     "name": "${vars.USERFULLNAME}",
     "message": "Enter author full name",
@@ -207,6 +207,6 @@ No developer or entity involved in creating this software will be liable for any
     "required": true
   }
 ]`;
-    return { relPath, content };
-  }
+  return { relPath, content };
+}
 ];

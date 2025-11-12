@@ -23,19 +23,20 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@types/pluralize": "0.0.33",
-    "graphile-test": "^2.5.4",
-    "introspectron": "^2.11.12"
+    "graphile-test": "workspace:^",
+    "graphql": "15.10.1",
+    "introspectron": "workspace:^"
   },
   "dependencies": {
-    "gql-ast": "^2.3.1",
+    "gql-ast": "workspace:^",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
   },

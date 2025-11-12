@@ -14,14 +14,14 @@ exports[`cmds:add adds change with dependencies: change-with-dependency - argv 1
 
 exports[`cmds:add adds change with dependencies: change-with-dependency - files 1`] = `
 [
-  "deploy/contacts.sql",
-  "deploy/users.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/contacts.sql",
-  "revert/users.sql",
-  "verify/contacts.sql",
+  "launchql.control",
   "verify/users.sql",
+  "verify/contacts.sql",
+  "revert/users.sql",
+  "revert/contacts.sql",
+  "deploy/users.sql",
+  "deploy/contacts.sql",
 ]
 `;
 
@@ -53,11 +53,11 @@ exports[`cmds:add adds change with dependencies: dependency-change - argv 1`] = 
 
 exports[`cmds:add adds change with dependencies: dependency-change - files 1`] = `
 [
-  "deploy/users.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/users.sql",
+  "launchql.control",
   "verify/users.sql",
+  "revert/users.sql",
+  "deploy/users.sql",
 ]
 `;
 
@@ -88,11 +88,11 @@ exports[`cmds:add adds change with note: change-with-note - argv 1`] = `
 
 exports[`cmds:add adds change with note: change-with-note - files 1`] = `
 [
-  "deploy/brands.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/brands.sql",
+  "launchql.control",
   "verify/brands.sql",
+  "revert/brands.sql",
+  "deploy/brands.sql",
 ]
 `;
 
@@ -123,11 +123,11 @@ exports[`cmds:add adds deeply nested path change: deeply-nested-path-change - ar
 
 exports[`cmds:add adds deeply nested path change: deeply-nested-path-change - files 1`] = `
 [
-  "deploy/schema/myschema/tables/mytable.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/schema/myschema/tables/mytable.sql",
+  "launchql.control",
   "verify/schema/myschema/tables/mytable.sql",
+  "revert/schema/myschema/tables/mytable.sql",
+  "deploy/schema/myschema/tables/mytable.sql",
 ]
 `;
 
@@ -157,11 +157,11 @@ exports[`cmds:add adds nested path change: nested-path-change - argv 1`] = `
 
 exports[`cmds:add adds nested path change: nested-path-change - files 1`] = `
 [
-  "deploy/api/v1/endpoints.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/api/v1/endpoints.sql",
+  "launchql.control",
   "verify/api/v1/endpoints.sql",
+  "revert/api/v1/endpoints.sql",
+  "deploy/api/v1/endpoints.sql",
 ]
 `;
 
@@ -191,11 +191,11 @@ exports[`cmds:add adds simple change: simple-change - argv 1`] = `
 
 exports[`cmds:add adds simple change: simple-change - files 1`] = `
 [
-  "deploy/organizations.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/organizations.sql",
+  "launchql.control",
   "verify/organizations.sql",
+  "revert/organizations.sql",
+  "deploy/organizations.sql",
 ]
 `;
 
@@ -225,11 +225,11 @@ exports[`cmds:add verifies SQL files do not contain transaction statements: no-t
 
 exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - files 1`] = `
 [
-  "deploy/no-transactions.sql",
-  "launchql.control",
   "launchql.plan",
-  "revert/no-transactions.sql",
+  "launchql.control",
   "verify/no-transactions.sql",
+  "revert/no-transactions.sql",
+  "deploy/no-transactions.sql",
 ]
 `;
 

@@ -43,9 +43,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
     steps:
-       # TODO remove deps on git config
+      # TODO remove deps on git config
       - name: Configure Git (for tests)
         run: |
           git config --global user.name "CI Test User"
@@ -54,19 +54,21 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
+      - name: setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.12.1 --activate
+
       - name: deps
-        run: yarn
+        run: pnpm install --frozen-lockfile
 
       - name: build
-        run: yarn build
-
-      - name: fix lql permissions
-        run: chmod +x node_modules/.bin/lql
+        run: pnpm run build
 
       - name: seed app_user
         run: |
-          yarn lql admin-users bootstrap --yes
-          yarn lql admin-users add --test --yes
+          pnpm --filter @launchql/cli exec node dist/index.js admin-users bootstrap --yes
+          pnpm --filter @launchql/cli exec node dist/index.js admin-users add --test --yes
         env:
           PGHOST: pg_db
           PGPORT: 5432
@@ -74,16 +76,16 @@ jobs:
           PGPASSWORD: password
 
       - name: mime-bytes
-        run: cd ./packages/mime-bytes && yarn test
+        run: cd ./packages/mime-bytes && pnpm test
 
       - name: launchql/core
-        run: cd ./packages/core && yarn test
+        run: cd ./packages/core && pnpm test
 
       - name: launchql/cli
-        run: cd ./packages/cli && yarn test
+        run: cd ./packages/cli && pnpm test
 
       - name: launchql/client
-        run: cd ./packages/client && yarn test
+        run: cd ./packages/client && pnpm test
         env:
           TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
 
@@ -93,57 +95,57 @@ jobs:
           createdb graphile_test_db
           psql -f sql/test.sql graphile_test_db
           psql -f sql/roles.sql graphile_test_db
-          yarn test
+          pnpm test
 
       - name: pgsql-test
         run: |
           cd ./packages/pgsql-test
-          yarn test
+          pnpm test
 
       - name: launchql/orm
-        run: cd ./packages/orm && yarn test
+        run: cd ./packages/orm && pnpm test
 
       - name: launchql/url-domains
-        run: cd ./packages/url-domains && yarn test
+        run: cd ./packages/url-domains && pnpm test
 
       - name: launchql/uuid-hash
-        run: cd ./packages/uuid-hash && yarn test
+        run: cd ./packages/uuid-hash && pnpm test
 
       - name: launchql/uuid-stream
-        run: cd ./packages/uuid-stream && yarn test
+        run: cd ./packages/uuid-stream && pnpm test
 
       - name: launchql/introspectron
-        run: cd ./packages/introspectron && yarn test
+        run: cd ./packages/introspectron && pnpm test
 
       - name: launchql/query-builder
-        run: cd ./packages/query-builder && yarn test
+        run: cd ./packages/query-builder && pnpm test
 
       - name: launchql/query
-        run: cd ./packages/query && yarn test
+        run: cd ./packages/query && pnpm test
 
       - name: launchql/launchql-gen
-        run: cd ./packages/launchql-gen && yarn test
+        run: cd ./packages/launchql-gen && pnpm test
 
       - name: launchql/pg-ast
-        run: cd ./packages/pg-ast && yarn test
+        run: cd ./packages/pg-ast && pnpm test
 
       - name: launchql/pg-codegen
-        run: cd ./packages/pg-codegen && yarn test
+        run: cd ./packages/pg-codegen && pnpm test
 
       - name: launchql-gen
-        run: cd ./packages/launchql-gen && yarn test
+        run: cd ./packages/launchql-gen && pnpm test
 
       - name: launchql/content-type-stream
-        run: cd ./packages/content-type-stream && yarn test
+        run: cd ./packages/content-type-stream && pnpm test
 
       - name: launchql/s3-streamer
-        run: cd ./packages/s3-streamer && yarn test
+        run: cd ./packages/s3-streamer && pnpm test
         env:
           MINIO_ENDPOINT: http://minio_cdn:9000
           AWS_ACCESS_KEY: minioadmin
           AWS_SECRET_KEY: minioadmin
           AWS_REGION: us-east-1
           BUCKET_NAME: test-bucket
-          
+
       - name: launchql/upload-names
-        run: cd ./packages/upload-names && yarn test
+        run: cd ./packages/upload-names && pnpm test

@@ -23,18 +23,18 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/logger": "^1.1.1",
-    "@launchql/types": "^2.6.2",
+    "@launchql/logger": "workspace:^",
+    "@launchql/types": "workspace:^",
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
-    "pg-env": "^1.1.0"
+    "pg-env": "workspace:^"
   },
   "devDependencies": {
     "@types/pg": "^8.15.2"

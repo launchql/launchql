@@ -34,7 +34,7 @@ export default [
     "type": "git",
     "url": "https://github.com/${vars.USERNAME}/${vars.MODULENAME}"
   },
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
     "access": "restricted"
   },
@@ -42,12 +42,10 @@ export default [
     "packages/*"
   ],
   "scripts": {
-    "clean": "lerna run clean",
-    "build": "lerna run build --stream",
-    "build:dev": "lerna run build:dev --stream; yarn symlink",
-    "lint": "lerna run lint --parallel",
-    "symlink": "symlink-workspace --logLevel error",
-    "postinstall": "yarn symlink"
+    "clean": "pnpm -r run clean",
+    "build": "pnpm -r run build",
+    "build:dev": "pnpm -r run build:dev",
+    "lint": "pnpm -r run lint"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -60,11 +58,10 @@ export default [
     "eslint-plugin-unused-imports": "^4.0.0",
     "eslint": "^8.56.0",
     "jest": "^29.6.2",
-    "lerna": "^6",
+    "lerna": "^8.2.3",
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
-    "symlink-workspace": "^1.9.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
@@ -76,26 +73,26 @@ export default [
   (vars: Record<string, any>) => {
     const relPath = `lerna.json`;
     const content = `{
-  "lerna": "6",
-  "conventionalCommits": true,
-  "npmClient": "yarn",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "independent",
+  "npmClient": "pnpm",
   "npmClientArgs": [
-    "--no-lockfile"
+    "--frozen-lockfile"
   ],
   "packages": [
     "packages/*"
   ],
-  "version": "independent",
   "registry": "https://registry.npmjs.org",
   "command": {
     "create": {
       "homepage": "https://github.com/${vars.USERNAME}/${vars.MODULENAME}",
-      "license": "MIT",
+      "license": "SEE LICENSE IN LICENSE",
       "access": "restricted"
     },
     "publish": {
       "allowBranch": "main",
-      "message": "chore(release): publish"
+      "message": "chore(release): publish",
+      "conventionalCommits": true
     }
   }
 }`;
@@ -241,17 +238,17 @@ npm install ${vars.MODULENAME}
 When first cloning the repo:
 
 \`\`\`sh
-yarn
+pnpm install
 # build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
+pnpm run build
 \`\`\`
 
 Or if you want to make your dev process smoother, you can run:
 
 \`\`\`sh
-yarn
+pnpm install
 # build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
+pnpm run build:dev
 \`\`\`
 
 ## Credits
@@ -279,6 +276,10 @@ down:
 
 ssh:
 	docker exec -it postgres /bin/bash
+
+roles:
+	lql admin-users bootstrap --yes
+	lql admin-users add --test --yes
 
 install:
 	docker exec postgres /sql-bin/install.sh
@@ -316,33 +317,39 @@ SOFTWARE.
   (vars: Record<string, any>) => {
     const relPath = `bin/install.sh`;
     const content = `#!/usr/bin/env bash
+set -euo pipefail
 
-function installit {
-  DIR=$(pwd)
+# Define colors and styles
+GREEN="\\033[0;32m"
+BOLD="\\033[1m"
+RESET="\\033[0m"
+CYAN="\\033[0;36m"
+YELLOW="\\033[1;33m"
 
-  if [ -d "$1" ]
-  then
-    echo "SQL Module Directory $1 exists."
-    echo $1
-    cd $1
+install_sql_modules() {
+  local base_dir="$1"
+  local label
+  label=$(basename "$base_dir")
 
-    for x in $(find ./ -type f -name "launchql.plan")
-    do
-      orig=$(pwd)
-      dir=$(dirname $x)
-      cd $dir
-      make install
-      cd $orig
-    done
-    cd $DIR
-  else
-    echo "Error: SQL MODULE Directory $1 does not exist, don't worry, moving on."
+  if [[ ! -d "$base_dir" ]]; then
+    echo -e "\${YELLOW}Warning:\${RESET} SQL module directory '\${CYAN}\${base_dir}\${RESET}' does not exist. Skipping..."
+    return
   fi
 
+  echo -e "\${GREEN}Installing SQL modules from:\${RESET} \${CYAN}\${base_dir}\${RESET}"
+  find "$base_dir" -type f -name "launchql.plan" | while read -r plan_file; do
+    local dir rel_path pkg_name
+    dir=$(dirname "$plan_file")
+    rel_path="\${dir#"$base_dir"/}"         # strip base_dir prefix
+    pkg_name="\${BOLD}\${GREEN}\${rel_path}\${RESET}" # colorize and bold package name
+    echo -e "\${CYAN}→ Installing in:\${RESET} \${pkg_name}"
+    (cd "$dir" && make install)
+  done
 }
 
-installit /sql-extensions
-installit /sql-packages`;
+install_sql_modules "/sql-extensions"
+install_sql_modules "/sql-packages"
+`;
     return { relPath, content };
   },
 
@@ -390,7 +397,7 @@ installit /sql-packages`;
     const content = `**/node_modules/
 **/.DS_Store
 **/dist
-**/yarn-error.log
+**/pnpm-debug.log
 lerna-debug.log`;
     return { relPath, content };
   },
@@ -461,5 +468,5 @@ lerna-debug.log`;
   }
 }`;
     return { relPath, content };
-  }
+  },
 ];

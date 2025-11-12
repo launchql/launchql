@@ -25,7 +25,7 @@ function getExpectedFiles(pkg: string, version: string): string[] {
     `${basePath}/${extname}.control`,
     `${basePath}/deploy/`,
     `${basePath}/revert/`,
-    `${basePath}/verify/`
+    `${basePath}/verify/`,
   ].map((f) =>
     expect.stringMatching(new RegExp(f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   );
@@ -49,7 +49,7 @@ describe('cmds:install - with initialized workspace and module', () => {
       _: ['init'],
       cwd: fixture.tempDir,
       name: workspaceName,
-      workspace: true
+      workspace: true,
     });
 
     // Step 2: Add module
@@ -58,7 +58,7 @@ describe('cmds:install - with initialized workspace and module', () => {
       cwd: workspaceDir,
       name: moduleName,
       MODULENAME: moduleName,
-      extensions: ['uuid-ossp', 'plpgsql']
+      extensions: ['uuid-ossp', 'plpgsql'],
     });
   });
 
@@ -72,22 +72,28 @@ describe('cmds:install - with initialized workspace and module', () => {
 
     await fixture.runCmd({
       _: ['install', `${pkg}@${version}`],
-      cwd: moduleDir
+      cwd: moduleDir,
     });
 
-    const pkgJson = JSON.parse(fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8'));
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8')
+    );
     expect(pkgJson).toMatchSnapshot();
 
     const installedFiles = glob.sync('**/*', {
       cwd: path.join(workspaceDir, 'extensions'),
       dot: true,
       nodir: true,
-      absolute: true
+      absolute: true,
     });
 
-    const relativeFiles = installedFiles.map(f => path.relative(moduleDir, f));
+    const relativeFiles = installedFiles
+      .map((f: string) => path.relative(moduleDir, f))
+      .sort();
     expect(relativeFiles).toMatchSnapshot();
-    expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg, version)));
+    expect(relativeFiles).toEqual(
+      expect.arrayContaining(getExpectedFiles(pkg, version))
+    );
 
     // Snapshot control file
     const mod = new LaunchQLPackage(moduleDir);
@@ -98,12 +104,12 @@ describe('cmds:install - with initialized workspace and module', () => {
   it('installs two modules', async () => {
     const base32 = {
       name: '@webql/base32',
-      version: '1.2.1'
+      version: '1.2.1',
     };
 
     const utils = {
       name: '@webql/utils',
-      version: '1.1.2'
+      version: '1.1.2',
     };
 
     const pkgs = [base32, utils];
@@ -111,11 +117,13 @@ describe('cmds:install - with initialized workspace and module', () => {
     for (const { name, version } of pkgs) {
       await fixture.runCmd({
         _: ['install', `${name}@${version}`],
-        cwd: moduleDir
+        cwd: moduleDir,
       });
     }
 
-    const pkgJson = JSON.parse(fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8'));
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8')
+    );
     expect(pkgJson).toMatchSnapshot();
 
     const extPath = path.join(workspaceDir, 'extensions');
@@ -123,13 +131,17 @@ describe('cmds:install - with initialized workspace and module', () => {
       cwd: extPath,
       dot: true,
       nodir: true,
-      absolute: true
+      absolute: true,
     });
 
-    const relativeFiles = installedFiles.map(f => path.relative(moduleDir, f));
+    const relativeFiles = installedFiles
+      .map((f: string) => path.relative(moduleDir, f))
+      .sort();
 
     for (const pkg of pkgs) {
-      expect(relativeFiles).toEqual(expect.arrayContaining(getExpectedFiles(pkg.name, pkg.version)));
+      expect(relativeFiles).toEqual(
+        expect.arrayContaining(getExpectedFiles(pkg.name, pkg.version))
+      );
     }
 
     // Snapshot control file after both installs

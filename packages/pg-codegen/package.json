@@ -23,8 +23,8 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "dev": "ts-node ./src/index.ts",
     "lint": "eslint . --fix",
     "test": "jest",
@@ -41,12 +41,16 @@
   "dependencies": {
     "@babel/generator": "^7.26.3",
     "@babel/types": "^7.26.3",
-    "@launchql/server-utils": "^2.4.3",
-    "@launchql/types": "^2.6.2",
+    "@launchql/logger": "workspace:^",
+    "@launchql/server-utils": "workspace:^",
+    "@launchql/types": "workspace:^",
     "pg": "^8.16.0",
-    "pgsql-test": "^2.11.11"
+    "pg-cache": "workspace:^",
+    "pg-env": "workspace:^",
+    "pgsql-test": "workspace:^"
   },
   "devDependencies": {
+    "@types/babel__generator": "^7.6.8",
     "@types/pg": "^8.15.2"
   }
 }

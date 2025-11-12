@@ -8,7 +8,7 @@ LaunchQL CLI is a comprehensive command-line tool that transforms your PostgreSQ
 
 - 🚀 **Database-First Development** - Design your database, get your GraphQL API automatically
 - 🔐 **Built-in Security** - Role-based access control and security policies
-- 📦 **Module System** - Reusable database modules with dependency management  
+- 📦 **Module System** - Reusable database modules with dependency management
 - 🔄 **Smart Migrations** - Automated migration generation and deployment
 - 🛠️ **Developer Experience** - Hot-reload development server with GraphiQL explorer
 - 🏗️ **Production Ready** - Deployment plans, versioning, and rollback support
@@ -60,6 +60,7 @@ Visit `http://localhost:5555` to explore your GraphQL API!
 ### Getting Started
 
 #### `lql init`
+
 Initialize a new LaunchQL workspace or module.
 
 ```bash
@@ -68,11 +69,27 @@ lql init --workspace
 
 # Create a new module (run inside workspace)
 lql init
+
+# Use templates from GitHub repository
+lql init --workspace --repo owner/repo
+lql init --repo owner/repo --from-branch develop
+
+# Use templates from local path
+lql init --workspace --template-path ./custom-templates
+lql init --template-path ./custom-templates/module
 ```
+
+**Options:**
+
+- `--workspace` - Initialize workspace instead of module
+- `--repo <repo>` - Use templates from GitHub repository (e.g., `owner/repo`)
+- `--template-path <path>` - Use templates from local path
+- `--from-branch <branch>` - Specify branch when using `--repo` (default: `main`)
 
 ### Development
 
 #### `lql server`
+
 Start the GraphQL development server with hot-reload.
 
 ```bash
@@ -84,6 +101,7 @@ lql server --port 8080 --no-postgis
 ```
 
 #### `lql explorer`
+
 Launch GraphiQL explorer for your API.
 
 ```bash
@@ -97,6 +115,7 @@ lql explorer --origin http://localhost:3000
 ### Database Operations
 
 #### `lql deploy`
+
 Deploy your database changes and migrations.
 
 ```bash
@@ -114,6 +133,7 @@ lql deploy --fast --no-tx
 ```
 
 #### `lql verify`
+
 Verify your database state matches expected migrations.
 
 ```bash
@@ -125,6 +145,7 @@ lql verify --package mypackage
 ```
 
 #### `lql revert`
+
 Safely revert database changes.
 
 ```bash
@@ -138,13 +159,14 @@ lql revert --to @v1.0.0
 ### Migration Management
 
 #### `lql migrate`
+
 Comprehensive migration management.
 
 ```bash
 # Initialize migration tracking
 lql migrate init
 
-# Check migration status  
+# Check migration status
 lql migrate status
 
 # List all changes
@@ -157,6 +179,7 @@ lql migrate deps
 ### Module Management
 
 #### `lql install`
+
 Install LaunchQL modules as dependencies.
 
 ```bash
@@ -168,6 +191,7 @@ lql install @launchql/auth @launchql/utils
 ```
 
 #### `lql extension`
+
 Interactively manage module dependencies.
 
 ```bash
@@ -175,6 +199,7 @@ lql extension
 ```
 
 #### `lql tag`
+
 Version your changes with tags.
 
 ```bash
@@ -191,6 +216,7 @@ lql tag v1.1.0 --package mypackage --changeName my-change
 ### Packaging and Distribution
 
 #### `lql plan`
+
 Generate deployment plans for your modules.
 
 ```bash
@@ -198,6 +224,7 @@ lql plan
 ```
 
 #### `lql package`
+
 Package your module for distribution.
 
 ```bash
@@ -211,6 +238,7 @@ lql package --no-plan
 ### Utilities
 
 #### `lql export`
+
 Export migrations from existing databases.
 
 ```bash
@@ -218,6 +246,7 @@ lql export
 ```
 
 #### `lql kill`
+
 Clean up database connections and optionally drop databases.
 
 ```bash
@@ -237,7 +266,7 @@ lql kill --no-drop
 mkdir my-app && cd my-app
 lql init --workspace
 
-# 2. Create your first module  
+# 2. Create your first module
 lql init
 
 # 3. Add some SQL migrations to sql/ directory
@@ -247,6 +276,31 @@ lql deploy --createdb
 # 5. Start developing
 lql server
 ```
+
+### Using Custom Templates
+
+You can use custom templates from GitHub repositories or local paths:
+
+```bash
+# Initialize workspace with templates from GitHub
+lql init --workspace --repo owner/repo
+
+# Initialize workspace with templates from local path
+lql init --workspace --template-path ./my-custom-templates
+
+# Initialize module with custom templates
+lql init --template-path ./my-custom-templates
+
+# Use specific branch from GitHub repository
+lql init --workspace --repo owner/repo --from-branch develop
+```
+
+**Template Structure:**
+Custom templates should follow the same structure as the default templates:
+
+- For workspace: `boilerplates/workspace/` directory
+- For module: `boilerplates/module/` directory
+- Or provide direct path to `workspace/` or `module/` directory
 
 ### Working with Existing Projects
 
@@ -302,7 +356,7 @@ export PGPASSWORD=password
 # Global help
 lql --help
 
-# Command-specific help  
+# Command-specific help
 lql deploy --help
 lql server -h
 ```
@@ -312,7 +366,7 @@ lql server -h
 Most commands support these global options:
 
 - `--help, -h` - Show help information
-- `--version, -v` - Show version information  
+- `--version, -v` - Show version information
 - `--cwd <dir>` - Set working directory
 
 ## Related LaunchQL Tooling
@@ -360,4 +414,3 @@ Most commands support these global options:
 AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
-

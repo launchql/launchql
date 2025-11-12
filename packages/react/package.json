@@ -23,14 +23,14 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/query": "^2.3.1",
+    "@launchql/query": "workspace:^",
     "graphql-request": "^7.1.2",
-    "introspectron": "^2.11.12",
+    "introspectron": "workspace:^",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-query": "^3.39.3"

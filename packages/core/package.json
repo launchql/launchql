@@ -25,8 +25,8 @@
     "copy:sql": "copyfiles -f src/migrate/sql/* dist/migrate/sql && copyfiles -f src/migrate/sql/* dist/esm/migrate/sql && copyfiles -f src/init/sql/* dist/init/sql && copyfiles -f src/init/sql/* dist/esm/init/sql",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -41,21 +41,25 @@
   ],
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/rimraf": "^4.0.5"
+    "@types/rimraf": "^4.0.5",
+    "@types/pg": "^8.15.2"
   },
   "dependencies": {
-    "@launchql/env": "^2.4.3",
-    "@launchql/server-utils": "^2.4.3",
-    "@launchql/templatizer": "^2.3.1",
-    "@launchql/types": "^2.6.2",
+    "@launchql/env": "workspace:^",
+    "@launchql/explorer": "workspace:^",
+    "@launchql/logger": "workspace:^",
+    "@launchql/server-utils": "workspace:^",
+    "@launchql/templatizer": "workspace:^",
+    "@launchql/types": "workspace:^",
     "@pgsql/types": "^17.6.1",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
     "csv-to-pg": "^2.0.10",
     "glob": "^11.0.2",
     "parse-package-name": "^1.0.0",
-    "pg-cache": "^1.3.4",
-    "pg-env": "^1.1.0",
+    "pg": "^8.16.0",
+    "pg-cache": "workspace:^",
+    "pg-env": "workspace:^",
     "pgsql-deparser": "^17.11.1",
     "pgsql-parser": "^17.8.2",
     "rimraf": "^6.0.1"

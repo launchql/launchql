@@ -36,7 +36,7 @@ await proj.deploy(
 - [ ] DB_CWD, db.cwd ???? in types/src
 
 
-- [ ] pnpm instead of yarn
+- [x] switch package management to pnpm
 - [ ] Add tests for pg-ast
 - [ ] bring back csv-to-pg
 - [ ] bootstrap-roles.sql and any other "bootstrap" can be included in actual code for onboarding

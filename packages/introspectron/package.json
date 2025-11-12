@@ -23,18 +23,22 @@
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
     "prepare": "npm run build",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "graphile-test": "^2.5.4",
-    "pgsql-test": "^2.11.11"
+    "@types/pg": "^8.15.2",
+    "@jest/test-sequencer": "^29.7.0",
+    "graphile-test": "workspace:^",
+    "pgsql-test": "workspace:^"
   },
   "dependencies": {
-    "graphql-tag": "2.12.6"
+    "graphql": "15.10.1",
+    "graphql-tag": "2.12.6",
+    "pg": "^8.16.0"
   },
   "keywords": [
     "graphql",

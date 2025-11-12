@@ -44,7 +44,7 @@ The following packages now have GraphQL resolutions set to `15.5.2`:
 
 ## Why Resolutions Aren't Sufficient
 
-Yarn's `resolutions` field doesn't always override peer dependency requirements. When packages have conflicting peer dependency ranges, Node.js can still load multiple versions of GraphQL, causing the "duplicate modules" error.
+pnpm's `overrides` field does not always override peer dependency requirements. When packages have conflicting peer dependency ranges, Node.js can still load multiple versions of GraphQL, causing the "duplicate modules" error.
 
 ## Investigation Findings
 
@@ -63,7 +63,7 @@ Yarn's `resolutions` field doesn't always override peer dependency requirements.
 1. **Downgrade graphql-upload**: From `15.0.2` to `13.0.0` (supports GraphQL 15.5.2)
 2. **Handle @pyramation/postgis**: Add to overrides or find alternative package
 3. **Add overrides field**: Stronger enforcement than resolutions
-4. **Clean install**: Remove node_modules and yarn.lock, reinstall
+4. **Clean install**: Remove node_modules and pnpm-lock.yaml, then reinstall with `pnpm install`
 
 ### Option 2: Upgrade GraphQL (Higher Risk)
 - Upgrade to GraphQL 16.x to satisfy `graphql-upload`

@@ -16,7 +16,7 @@ RUN set -eux; \
       ca-certificates curl git python3 make g++; \
     update-ca-certificates || true; \
     corepack enable; \
-    corepack prepare yarn@1.22.22 --activate; \
+    corepack prepare pnpm@9.12.1 --activate; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy full repo (build context must be repo root when building this image)
@@ -24,8 +24,8 @@ COPY . .
 
 # Install and build all workspaces
 RUN set -eux; \
-    yarn install --frozen-lockfile; \
-    yarn build
+    pnpm install --frozen-lockfile; \
+    pnpm run build
 
 ################################################################################
 FROM ${BASE}:${BASE_VERSION} AS launchql
@@ -39,7 +39,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends ca-certificates postgresql-client; \
     update-ca-certificates || true; \
     corepack enable; \
-    corepack prepare yarn@1.22.22 --activate; \
+    corepack prepare pnpm@9.12.1 --activate; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy built repo from builder
