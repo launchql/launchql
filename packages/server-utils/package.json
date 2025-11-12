@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL server utils",
   "main": "index.js",
@@ -30,8 +30,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "workspace:^",
     "@launchql/logger": "workspace:^",
+    "@launchql/types": "workspace:^",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "lru-cache": "^11.1.0"

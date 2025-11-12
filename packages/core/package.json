@@ -1,6 +1,6 @@
 {
   "name": "@launchql/core",
-  "version": "2.11.7",
+  "version": "2.12.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Package and Migration Tools",
   "main": "index.js",
@@ -41,8 +41,8 @@
   ],
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/rimraf": "^4.0.5",
-    "@types/pg": "^8.15.2"
+    "@types/pg": "^8.15.2",
+    "@types/rimraf": "^4.0.5"
   },
   "dependencies": {
     "@launchql/env": "workspace:^",

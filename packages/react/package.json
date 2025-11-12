@@ -1,6 +1,6 @@
 {
   "name": "@launchql/react",
-  "version": "2.11.12",
+  "version": "2.11.13",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL React",
   "main": "index.js",

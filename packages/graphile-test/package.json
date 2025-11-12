@@ -1,6 +1,6 @@
 {
   "name": "graphile-test",
-  "version": "2.5.4",
+  "version": "2.5.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile Testing",
   "main": "index.js",
@@ -37,9 +37,9 @@
     "@launchql/types": "workspace:^",
     "graphile-settings": "workspace:^",
     "graphql": "15.10.1",
-    "pgsql-test": "workspace:^",
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",
+    "pgsql-test": "workspace:^",
     "postgraphile": "^4.14.1"
   },
   "keywords": [
