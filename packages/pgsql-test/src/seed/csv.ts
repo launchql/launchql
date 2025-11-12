@@ -1,13 +1,11 @@
 import { pipeline } from 'node:stream/promises';
 
 import { Logger } from '@launchql/logger';
-import type { PgTestClientContext } from '@launchql/types';
 import { parse } from 'csv-parse';
 import { createReadStream, createWriteStream,existsSync } from 'fs';
 import { Client } from 'pg';
 import { from as copyFrom, to as copyTo } from 'pg-copy-streams';
 
-import { generateContextStatements } from '../context-utils';
 import type { PgTestClient } from '../test-client';
 import { SeedAdapter, SeedContext } from './types';
 
@@ -19,19 +17,13 @@ export interface CsvSeedMap {
 
 /**
  * Standalone helper function to load CSV files into PostgreSQL tables
- * Note: Context should be applied by the caller before calling this function (important-comment)
  * @param client - PostgreSQL client instance
- * @param context - Session context (not used, kept for API compatibility) (important-comment)
  * @param tables - Map of table names to CSV file paths
  */
 export async function loadCsvMap(
   client: Client,
-  context: PgTestClientContext,
   tables: CsvSeedMap
 ): Promise<void> {
-  // Context is applied by PgTestClient.query() via ctxQuery()
-  // No need to apply it here
-
   for (const [table, filePath] of Object.entries(tables)) {
     if (!existsSync(filePath)) {
       throw new Error(`CSV file not found: ${filePath}`);

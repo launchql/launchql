@@ -1,23 +1,16 @@
 import type { Client } from 'pg';
-import type { PgTestClientContext } from '@launchql/types';
-
-import { generateContextStatements } from '../context-utils';
 import { SeedAdapter, SeedContext } from './types';
-
 export interface JsonSeedMap {
   [table: string]: Record<string, any>[];
 }
 
 /**
  * Standalone helper function to insert JSON data into PostgreSQL tables
- * Note: Context should be applied by the caller before calling this function
  * @param client - PostgreSQL client instance
- * @param context - Session context (not used, kept for API compatibility)
  * @param data - Map of table names to arrays of row objects
  */
 export async function insertJson(
   client: Client,
-  context: PgTestClientContext,
   data: JsonSeedMap
 ): Promise<void> {
 

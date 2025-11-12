@@ -58,7 +58,6 @@ Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is b
    * [Programmatic Seeding](#-programmatic-seeding)
    * [CSV Seeding](#️-csv-seeding)
    * [JSON Seeding](#️-json-seeding)
-   * [Sqitch Seeding](#️-sqitch-seeding)
    * [LaunchQL Seeding](#-launchql-seeding)
 7. [`getConnections() Options` ](#getconnections-options)
 8. [Disclaimer](#disclaimer)
@@ -240,8 +239,7 @@ This array lets you fully customize how your test database is seeded. You can co
 * [`seed.fn()`](#-programmatic-seeding) – Run JavaScript/TypeScript logic to programmatically insert data
 * [`seed.csv()`](#️-csv-seeding) – Load tabular data from CSV files
 * [`seed.json()`](#️-json-seeding) – Use in-memory objects as seed data
-* [`seed.sqitch()`](#️-sqitch-seeding) – Deploy a Sqitch-compatible migration project
-* [`seed.launchql()`](#-launchql-seeding) – Apply a LaunchQL module using `deployFast()` (compatible with sqitch)
+* [`seed.launchql()`](#-launchql-seeding) – Apply a LaunchQL project or set of packages (compatible with sqitch)
 
 > ✨ **Default Behavior:** If no `SeedAdapter[]` is passed, LaunchQL seeding is assumed. This makes `pgsql-test` zero-config for LaunchQL-based projects.
 
@@ -401,27 +399,6 @@ it('has loaded rows', async () => {
 });
 ```
 
-## 🏗️ Sqitch Seeding
-
-*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance [TypeScript-based deploy engine.](#-launchql-seeding) that we encourage using for sqitch projects*
-
-You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine:
-
-```ts
-import path from 'path';
-import { getConnections, seed } from 'pgsql-test';
-
-const cwd = path.resolve(__dirname, '../path/to/sqitch');
-
-beforeAll(async () => {
-  ({ db, teardown } = await getConnections({}, [
-    seed.sqitch(cwd)
-  ]));
-});
-```
-
-This works for any Sqitch-compatible module, now accelerated by LaunchQL's deployment tooling.
-
 ## 🚀 LaunchQL Seeding
 
 If your project uses LaunchQL modules with a precompiled `launchql.plan`, you can use `pgsql-test` with **zero configuration**. Just call `getConnections()` — and it *just works*:
@@ -436,10 +413,13 @@ beforeAll(async () => {
 });
 ```
 
+*Note: While compatible with Sqitch syntax, LaunchQL uses its own high-performance TypeScript-based deploy engine that we encourage using for sqitch-based projects*
+
+You can seed your test database using a Sqitch project but with significantly improved performance by leveraging LaunchQL's TypeScript deployment engine, leveraging a `launchql.plan` file.
+
 This works out of the box because `pgsql-test` uses the high-speed `deployFast()` function by default, applying any compiled LaunchQL schema located in the current working directory (`process.cwd()`).
 
 If you want to specify a custom path to your LaunchQL module, use `seed.launchql()` explicitly:
-
 
 ```ts
 import path from 'path';
@@ -474,7 +454,7 @@ This table documents the available options for the `getConnections` function. Th
 | Option                   | Type       | Default          | Description                                                                 |
 | ------------------------ | ---------- | ---------------- | --------------------------------------------------------------------------- |
 | `db.extensions`          | `string[]` | `[]`             | Array of PostgreSQL extensions to include in the test database              |
-| `db.cwd`                 | `string`   | `process.cwd()`  | Working directory used for LaunchQL/Sqitch projects                         |
+| `db.cwd`                 | `string`   | `process.cwd()`  | Working directory used for LaunchQL or Sqitch projects                         |
 | `db.connection.user`     | `string`   | `'app_user'`     | User for simulating RLS via `setContext()`                                  |
 | `db.connection.password` | `string`   | `'app_password'` | Password for RLS test user                                                  |
 | `db.connection.role`     | `string`   | `'anonymous'`    | Default role used during `setContext()`                                     |
