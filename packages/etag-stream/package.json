@@ -35,6 +35,6 @@
     "stream"
   ],
   "dependencies": {
-    "etag-hash": "^2.3.1"
+    "etag-hash": "workspace:^"
   }
 }

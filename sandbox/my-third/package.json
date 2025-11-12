@@ -18,7 +18,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@launchql/core": "^2.0.11",
-    "@launchql/types": "^2.0.4"
+    "@launchql/core": "workspace:^",
+    "@launchql/types": "workspace:^"
   }
 }

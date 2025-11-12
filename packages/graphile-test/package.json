@@ -34,8 +34,8 @@
     "graphql-tag": "2.12.6"
   },
   "dependencies": {
-    "@launchql/types": "^2.6.2",
-    "graphile-settings": "^2.5.3",
+    "@launchql/types": "workspace:^",
+    "graphile-settings": "workspace:^",
     "graphql": "15.10.1",
     "pgsql-test": "workspace:^",
     "mock-req": "^0.2.0",

@@ -19,9 +19,9 @@
     "ollama:setup": "ts-node scripts/setup-ollama.ts"
   },
   "devDependencies": {
-    "@launchql/core": "^2.0.11",
-    "@launchql/types": "^2.0.4",
-    "pgsql-test": "^2.1.18"
+    "@launchql/core": "workspace:^",
+    "@launchql/types": "workspace:^",
+    "pgsql-test": "workspace:^"
   },
   "dependencies": {
     "cross-fetch": "^4.1.0"

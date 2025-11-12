@@ -30,7 +30,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "^2.6.2",
+    "@launchql/types": "workspace:^",
     "@launchql/logger": "workspace:^",
     "cors": "^2.8.5",
     "express": "^5.1.0",

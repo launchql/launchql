@@ -36,7 +36,7 @@
     "introspectron": "workspace:^"
   },
   "dependencies": {
-    "gql-ast": "^2.3.1",
+    "gql-ast": "workspace:^",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
   },

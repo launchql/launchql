@@ -37,6 +37,6 @@
     "uuid"
   ],
   "dependencies": {
-    "uuid-hash": "^2.2.1"
+    "uuid-hash": "workspace:^"
   }
 }

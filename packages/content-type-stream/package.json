@@ -30,9 +30,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "etag-hash": "^2.3.1",
-    "mime-bytes": "^0.3.1",
-    "uuid-hash": "^2.2.1"
+    "etag-hash": "workspace:^",
+    "mime-bytes": "workspace:^",
+    "uuid-hash": "workspace:^"
   },
   "keywords": [
     "content-type",

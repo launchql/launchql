@@ -45,12 +45,12 @@
     "@types/pg": "^8.15.2"
   },
   "dependencies": {
-    "@launchql/env": "^2.4.3",
+    "@launchql/env": "workspace:^",
     "@launchql/explorer": "workspace:^",
     "@launchql/logger": "workspace:^",
     "@launchql/server-utils": "workspace:^",
     "@launchql/templatizer": "workspace:^",
-    "@launchql/types": "^2.6.2",
+    "@launchql/types": "workspace:^",
     "@pgsql/types": "^17.6.1",
     "case": "^1.6.3",
     "chalk": "^4.1.0",
@@ -59,7 +59,7 @@
     "parse-package-name": "^1.0.0",
     "pg": "^8.16.0",
     "pg-cache": "workspace:^",
-    "pg-env": "^1.1.0",
+    "pg-env": "workspace:^",
     "pgsql-deparser": "^17.11.1",
     "pgsql-parser": "^17.8.2",
     "rimraf": "^6.0.1"

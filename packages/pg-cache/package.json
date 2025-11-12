@@ -30,11 +30,11 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/logger": "^1.1.1",
-    "@launchql/types": "^2.6.2",
+    "@launchql/logger": "workspace:^",
+    "@launchql/types": "workspace:^",
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
-    "pg-env": "^1.1.0"
+    "pg-env": "workspace:^"
   },
   "devDependencies": {
     "@types/pg": "^8.15.2"

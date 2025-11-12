@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ajv": "^7.0.4",
-    "gql-ast": "^2.3.1",
+    "gql-ast": "workspace:^",
     "graphql": "15.10.1",
     "inflection": "1.12.0",
     "pluralize": "8.0.0"

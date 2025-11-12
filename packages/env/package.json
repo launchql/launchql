@@ -30,7 +30,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "^2.6.2",
+    "@launchql/types": "workspace:^",
     "deepmerge": "^4.3.1"
   },
   "keywords": [

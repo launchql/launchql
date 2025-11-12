@@ -30,7 +30,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@launchql/s3-utils": "^2.2.1",
+    "@launchql/s3-utils": "workspace:^",
     "@types/glob": "^8.1.0",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",
@@ -39,8 +39,8 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.600.0",
     "@aws-sdk/lib-storage": "^3.600.0",
-    "@launchql/content-type-stream": "^2.3.1",
-    "@launchql/types": "^2.6.2"
+    "@launchql/content-type-stream": "workspace:^",
+    "@launchql/types": "workspace:^"
   },
   "keywords": [
     "s3",

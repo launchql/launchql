@@ -32,7 +32,7 @@
   "dependencies": {
     "deepmerge": "^4.3.1",
     "graphile-build": "^4.14.1",
-    "pg-env": "^1.1.0",
+    "pg-env": "workspace:^",
     "postgraphile": "^4.14.1"
   },
   "keywords": [
