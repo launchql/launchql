@@ -245,6 +245,26 @@ This array lets you fully customize how your test database is seeded. You can co
 
 This composable system allows you to mix-and-match data setup strategies for flexible, realistic, and fast database tests.
 
+#### Two Seeding Patterns
+
+You can seed data using either approach:
+
+**1. Adapter Pattern** (setup phase via `getConnections`)
+```ts
+const { db, teardown } = await getConnections({}, [
+  seed.json({ 'users': [{ id: 1, name: 'Alice' }] })
+]);
+```
+
+**2. Direct Load Methods** (runtime via `PgTestClient`)
+```ts
+await db.loadJson({ 'users': [{ id: 1, name: 'Alice' }] });
+await db.loadCsv({ 'users': '/path/to/users.csv' });
+await db.loadSql(['/path/to/schema.sql']);
+```
+
+> **Note:** `loadCsv()` and `loadLaunchql()` do not apply RLS context (PostgreSQL limitation). Use `loadJson()` or `loadSql()` for RLS-aware seeding.
+
 ### 🔌 SQL File Seeding
 
 Use `.sql` files to set up your database state before tests:
