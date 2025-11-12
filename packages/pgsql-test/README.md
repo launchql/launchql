@@ -575,17 +575,6 @@ LaunchQL provides the best of both worlds:
 
 By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
 
-## Why LaunchQL's Approach?
-
-LaunchQL provides the best of both worlds:
-
-1. **Sqitch Compatibility**: Keep your familiar Sqitch syntax and migration approach
-2. **TypeScript Performance**: Our TS-rewritten deployment engine delivers up to 10x faster schema deployments
-3. **Developer Experience**: Tight feedback loops with near-instant schema setup for tests
-4. **CI Optimization**: Dramatically reduced test suite run times with optimized deployment
-
-By maintaining Sqitch compatibility while supercharging performance, LaunchQL enables you to keep your existing migration patterns while enjoying the speed benefits of our TypeScript engine.
-
 ## `getConnections` Options
 
 This table documents the available options for the `getConnections` function. The options are passed as a combination of `pg` and `db` configuration objects.
