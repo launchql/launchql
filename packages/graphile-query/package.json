@@ -34,6 +34,9 @@
     "pg": "^8.16.0",
     "postgraphile": "^4.14.1"
   },
+  "devDependencies": {
+    "@types/pg": "^8.15.2"
+  },
   "keywords": [
     "graphql",
     "query",
