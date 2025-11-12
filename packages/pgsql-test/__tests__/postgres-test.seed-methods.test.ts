@@ -45,6 +45,25 @@ beforeAll(async () => {
           name TEXT NOT NULL
         );
 
+        ALTER TABLE custom.users ENABLE ROW LEVEL SECURITY;
+        ALTER TABLE custom.pets ENABLE ROW LEVEL SECURITY;
+
+        CREATE POLICY users_select ON custom.users
+          FOR SELECT
+          USING (id = current_setting('jwt.claims.user_id', true)::UUID);
+
+        CREATE POLICY users_insert ON custom.users
+          FOR INSERT
+          WITH CHECK (id = current_setting('jwt.claims.user_id', true)::UUID);
+
+        CREATE POLICY pets_select ON custom.pets
+          FOR SELECT
+          USING (owner_id = current_setting('jwt.claims.user_id', true)::UUID);
+
+        CREATE POLICY pets_insert ON custom.pets
+          FOR INSERT
+          WITH CHECK (owner_id = current_setting('jwt.claims.user_id', true)::UUID);
+
         GRANT USAGE ON SCHEMA custom TO anonymous, authenticated, administrator;
         GRANT ALL ON ALL TABLES IN SCHEMA custom TO anonymous, authenticated, administrator;
         GRANT ALL ON ALL SEQUENCES IN SCHEMA custom TO anonymous, authenticated, administrator;
@@ -80,6 +99,9 @@ describe('loadJson() method', () => {
   });
 
   it('should load users with db client', async () => {
+    db.setContext({ 'jwt.claims.user_id': users[2].id });
+    await db.beforeEach();
+
     await db.loadJson({
       'custom.users': [users[2]]
     });
@@ -124,18 +146,20 @@ describe('loadCsv() method', () => {
     expect(result[1].name).toBe('Bob');
   });
 
-  it('should load users from CSV with db client', async () => {
+  it('should fail to load users from CSV with db client due to RLS', async () => {
+    db.setContext({ 'jwt.claims.user_id': users[2].id });
+    await db.beforeEach();
+
     const csvPath = join(testDir, 'users2.csv');
     const csvContent = 'id,name\n' + `${users[2].id},${users[2].name}\n`;
     writeFileSync(csvPath, csvContent);
 
-    await db.loadCsv({
-      'custom.users': csvPath
-    });
-
-    const result = await db.any('SELECT * FROM custom.users');
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('Charlie');
+    // COPY FROM is not supported with row-level security
+    await expect(
+      db.loadCsv({
+        'custom.users': csvPath
+      })
+    ).rejects.toThrow('COPY FROM not supported with row-level security');
   });
 
   it('should load users and pets from CSV', async () => {
@@ -177,6 +201,9 @@ describe('loadSql() method', () => {
   });
 
   it('should load users from SQL file with db client', async () => {
+    db.setContext({ 'jwt.claims.user_id': users[2].id });
+    await db.beforeEach();
+
     const sqlPath = join(testDir, 'seed2.sql');
     writeFileSync(sqlPath, `INSERT INTO custom.users (id, name) VALUES ('${users[2].id}', '${users[2].name}');`);
 
@@ -232,18 +259,26 @@ describe('cross-connection visibility with publish()', () => {
 
     await pg.publish();
 
+    // db client needs context to see the user due to RLS
+    db.setContext({ 'jwt.claims.user_id': users[0].id });
+    await db.beforeEach();
+
     const result = await db.any('SELECT * FROM custom.users');
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Alice');
   });
 
   it('should make db data visible to pg after publish', async () => {
+    db.setContext({ 'jwt.claims.user_id': users[1].id });
+    await db.beforeEach();
+
     await db.loadJson({
       'custom.users': [users[1]]
     });
 
     await db.publish();
 
+    // pg client (superuser) can see all data
     const result = await pg.any('SELECT * FROM custom.users');
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Bob');
@@ -258,12 +293,16 @@ describe('cross-connection visibility with publish()', () => {
     await pg.publish();
 
     // User 2 and their pets from db connection
+    db.setContext({ 'jwt.claims.user_id': users[1].id });
+    await db.beforeEach();
+
     await db.loadJson({
       'custom.users': [users[1]],
       'custom.pets': [pets[2]]
     });
     await db.publish();
 
+    // pg client (superuser) can see all data
     const resultUsers = await pg.any('SELECT * FROM custom.users ORDER BY name');
     const resultPets = await pg.any('SELECT * FROM custom.pets ORDER BY id');
     

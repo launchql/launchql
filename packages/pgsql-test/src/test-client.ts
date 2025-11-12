@@ -186,21 +186,23 @@ export class PgTestClient {
     await insertJson(this.client, data);
   }
 
-  async loadCsv(tables: CsvSeedMap): Promise<void> {
-    await this.ctxQuery();
-    await loadCsvMap(this.client, tables);
-  }
-
   async loadSql(files: string[]): Promise<void> {
     await this.ctxQuery();
     await loadSqlFiles(this.client, files);
+  }
+
+  // NON-RLS load/seed methods:
+
+  async loadCsv(tables: CsvSeedMap): Promise<void> {
+    // await this.ctxQuery(); // no point to call ctxQuery() here
+    // because POSTGRES doesn't support row-level security on COPY FROM...
+    await loadCsvMap(this.client, tables);
   }
 
   async loadLaunchql(cwd?: string, cache: boolean = false): Promise<void> {
     // await this.ctxQuery(); // no point to call ctxQuery() here
     // because deployLaunchql() has it's own way of getting the client...
     // so for now, we'll expose this but it's limited
-    
     await deployLaunchql(this.config, cwd, cache);
   }
 
