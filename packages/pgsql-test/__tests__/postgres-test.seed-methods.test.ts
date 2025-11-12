@@ -38,10 +38,16 @@ beforeAll(async () => {
           name TEXT NOT NULL
         );
 
+        CREATE TABLE custom.role_ctx_users (
+          id INT PRIMARY KEY,
+          name TEXT NOT NULL,
+          who TEXT DEFAULT current_role
+        );
+
         CREATE TABLE custom.rls_users (
           id INT PRIMARY KEY,
           name TEXT NOT NULL,
-          owner_role TEXT NOT NULL DEFAULT current_role
+          owner_role TEXT NOT NULL
         );
         
         ALTER TABLE custom.rls_users ENABLE ROW LEVEL SECURITY;
@@ -213,20 +219,59 @@ describe('context injection', () => {
     expect(result[1].name).toBe('Bob');
   });
 
-  it('should apply role context before CSV loading', async () => {
+  it('should apply role context before CSV loading (verified via default current_role)', async () => {
     db.setContext({ role: 'authenticated' });
 
-    const csvPath = join(testDir, 'rls_users.csv');
-    writeFileSync(csvPath, 'id,name\n1,Alice\n');
+    const csvPath1 = join(testDir, 'role_ctx_users1.csv');
+    writeFileSync(csvPath1, 'id,name\n1,Alice\n');
 
     await db.loadCsv({
-      'custom.rls_users': csvPath
+      'custom.role_ctx_users': csvPath1
     });
 
-    const result = await db.any('SELECT * FROM custom.rls_users ORDER BY id');
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('Alice');
-    expect(result[0].owner_role).toBe('authenticated');
+    const result1 = await db.any('SELECT * FROM custom.role_ctx_users WHERE id = 1');
+    expect(result1).toHaveLength(1);
+    expect(result1[0].name).toBe('Alice');
+    expect(result1[0].who).toBe('authenticated');
+
+    db.setContext({ role: 'anonymous' });
+
+    const csvPath2 = join(testDir, 'role_ctx_users2.csv');
+    writeFileSync(csvPath2, 'id,name\n2,Bob\n');
+
+    await db.loadCsv({
+      'custom.role_ctx_users': csvPath2
+    });
+
+    const result2 = await db.any('SELECT * FROM custom.role_ctx_users WHERE id = 2');
+    expect(result2).toHaveLength(1);
+    expect(result2[0].name).toBe('Bob');
+    expect(result2[0].who).toBe('anonymous');
+  });
+
+  it('should apply role context before JSON loading with RLS policies', async () => {
+    db.setContext({ role: 'authenticated' });
+
+    await db.loadJson({
+      'custom.rls_users': [
+        { id: 1, name: 'Alice', owner_role: 'authenticated' }
+      ]
+    });
+
+    const result1 = await db.any('SELECT * FROM custom.rls_users WHERE id = 1');
+    expect(result1).toHaveLength(1);
+    expect(result1[0].name).toBe('Alice');
+    expect(result1[0].owner_role).toBe('authenticated');
+
+    db.setContext({ role: 'anonymous' });
+
+    await expect(
+      db.loadJson({
+        'custom.rls_users': [
+          { id: 2, name: 'Bob', owner_role: 'authenticated' }
+        ]
+      })
+    ).rejects.toThrow();
   });
 });
 
