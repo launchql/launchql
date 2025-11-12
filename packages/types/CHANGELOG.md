@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/launchql/launchql/compare/@launchql/types@2.6.3...@launchql/types@2.7.0) (2025-11-12)
+
+### Bug Fixes
+
+- rename PgTextClientContext to PgTestClientContext and implement context injection ([21f352a](https://github.com/launchql/launchql/commit/21f352ad1818f54b28a56f0169d0c0796eaa8eef))
+
+### Features
+
+- add seeding API extension for PgTestClient ([dccfa28](https://github.com/launchql/launchql/commit/dccfa28365f01bbf9be6a563b2d592a83b26424a))
+
 ## [2.6.3](https://github.com/launchql/launchql/compare/@launchql/types@2.6.2...@launchql/types@2.6.3) (2025-11-12)
 
 ### Bug Fixes

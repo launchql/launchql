@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/launchql/launchql/compare/pgsql-test@2.11.13...pgsql-test@2.12.0) (2025-11-12)
+
+### Bug Fixes
+
+- add cleanup for published data in cross-connection tests ([0ad0e74](https://github.com/launchql/launchql/commit/0ad0e741b4da5598d38b842bb5e4cc1896d8b66d))
+- grant permissions to all roles (anonymous, authenticated, administrator) ([37ec1cb](https://github.com/launchql/launchql/commit/37ec1cb475b661e082aa0fcaa409fdef5d730b7b))
+- grant permissions to app_user in seed-methods tests ([bcabc8e](https://github.com/launchql/launchql/commit/bcabc8ed3d0f8faa9f491ac2ba838e0b832c6d75))
+- grant permissions to authenticated role instead of app_user ([d08396f](https://github.com/launchql/launchql/commit/d08396f44c5238a33d9f9fce67c50e0a501cb5c8))
+- move context injection test table setup to beforeAll ([da38955](https://github.com/launchql/launchql/commit/da38955363ccab2c59d632d8e354e7ba8560dee1))
+- remove context application from helper functions ([fae3573](https://github.com/launchql/launchql/commit/fae3573c25cb118c154ff8384820529baa544586))
+- rename PgTextClientContext to PgTestClientContext and implement context injection ([21f352a](https://github.com/launchql/launchql/commit/21f352ad1818f54b28a56f0169d0c0796eaa8eef))
+- update context injection tests to work with PostgreSQL COPY limitations ([dd43988](https://github.com/launchql/launchql/commit/dd439880810633157664d271ff76ebf4ea304506))
+- use generateContextStatements() in setContext() and clearContext() ([c2b9473](https://github.com/launchql/launchql/commit/c2b94731bdbb3b00d10b495087f635ec0041a3d7))
+
+### Features
+
+- add seeding API extension for PgTestClient ([dccfa28](https://github.com/launchql/launchql/commit/dccfa28365f01bbf9be6a563b2d592a83b26424a))
+
 ## [2.11.13](https://github.com/launchql/launchql/compare/pgsql-test@2.11.12...pgsql-test@2.11.13) (2025-11-12)
 
 **Note:** Version bump only for package pgsql-test
