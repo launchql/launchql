@@ -1,6 +1,6 @@
 {
-  "lerna": "6",
-  "conventionalCommits": true,
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "independent",
   "npmClient": "pnpm",
   "npmClientArgs": [
     "--frozen-lockfile"
@@ -8,7 +8,6 @@
   "packages": [
     "packages/*"
   ],
-  "version": "independent",
   "registry": "https://registry.npmjs.org",
   "command": {
     "create": {
@@ -18,7 +17,8 @@
     },
     "publish": {
       "allowBranch": "main",
-      "message": "chore(release): publish"
+      "message": "chore(release): publish",
+      "conventionalCommits": true
     }
   }
 }

@@ -58,7 +58,7 @@ export default [
     "eslint-plugin-unused-imports": "^4.0.0",
     "eslint": "^8.56.0",
     "jest": "^29.6.2",
-    "lerna": "^6",
+    "lerna": "^8.2.3",
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
@@ -73,8 +73,8 @@ export default [
   (vars: Record<string, any>) => {
     const relPath = `lerna.json`;
     const content = `{
-  "lerna": "6",
-  "conventionalCommits": true,
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "independent",
   "npmClient": "pnpm",
   "npmClientArgs": [
     "--frozen-lockfile"
@@ -82,7 +82,6 @@ export default [
   "packages": [
     "packages/*"
   ],
-  "version": "independent",
   "registry": "https://registry.npmjs.org",
   "command": {
     "create": {
@@ -92,7 +91,8 @@ export default [
     },
     "publish": {
       "allowBranch": "main",
-      "message": "chore(release): publish"
+      "message": "chore(release): publish",
+      "conventionalCommits": true
     }
   }
 }`;
