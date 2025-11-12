@@ -4,6 +4,17 @@ import { PgConfig } from 'pg-env';
 import { PostGraphileOptions } from 'postgraphile';
 
 /**
+ * PostgreSQL session context settings for test clients
+ * Used to set session variables via set_config() for RLS policies, search_path, etc.
+ */
+export interface PgTextClientContext {
+    /** PostgreSQL role to assume */
+    role?: string | null;
+    /** Additional session context variables (e.g., 'jwt.claims.user_id', 'search_path') */
+    [key: string]: string | null | undefined;
+}
+
+/**
  * Authentication options for test client sessions
  */
 export interface AuthOptions {
