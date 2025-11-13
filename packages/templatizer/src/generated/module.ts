@@ -17,30 +17,12 @@ export default [
 },
 
 (vars: Record<string, any>) => {
-  const relPath = `tsconfig.esm.json`;
-  const content = `{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist/esm",
-    "module": "es2022",
-    "rootDir": "src/",
-    "declaration": false
-  }
-}
-`;
-  return { relPath, content };
-},
-
-(vars: Record<string, any>) => {
   const relPath = `package.json`;
   const content = `{
   "name": "${vars.PACKAGE_IDENTIFIER}",
   "version": "0.0.1",
   "author": "${vars.USERFULLNAME} <${vars.USEREMAIL}>",
   "description": "${vars.MODULEDESC}",
-  "main": "index.js",
-  "module": "esm/index.js",
-  "types": "index.d.ts",
   "homepage": "https://github.com/${vars.USERNAME}/${vars.REPONAME}",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
@@ -55,16 +37,14 @@ export default [
     "url": "https://github.com/${vars.USERNAME}/${vars.REPONAME}/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
-    "prepare": "pnpm run build",
-    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
-    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "pgsql-test": "^2.12.0"
+  }
 }`;
   return { relPath, content };
 },
@@ -157,9 +137,36 @@ No developer or entity involved in creating this software will be liable for any
 
 (vars: Record<string, any>) => {
   const relPath = `__tests__/first.test.ts`;
-  const content = `it('works', () => {
-    console.log('hello test world!');
-})`;
+  const content = `import { getConnections, PgTestClient } from 'pgsql-test';
+
+let db: PgTestClient;
+let pg: PgTestClient;
+let teardown: () => Promise<void>;
+
+beforeAll(async () => {
+  ({ pg, db, teardown } = await getConnections());
+});
+
+afterAll(async () => {
+  await teardown();
+});
+
+beforeEach(async () => {
+  await db.beforeEach();
+});
+
+afterEach(async () => {
+  await db.afterEach();
+});
+
+describe('first test', () => {
+  it('should pass', async () => {
+    const result = await pg.query('SELECT 1');
+    expect(result.rows[0].count).toBe('1');
+  });
+});
+
+`;
   return { relPath, content };
 },
 
