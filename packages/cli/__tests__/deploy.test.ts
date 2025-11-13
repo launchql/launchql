@@ -1,4 +1,5 @@
 import { CLIDeployTestFixture } from '../test-utils';
+import { teardownPgPools } from 'pg-cache';
 
 jest.setTimeout(30000);
 
@@ -19,7 +20,6 @@ describe('CLI Deploy Command', () => {
 
   afterAll(async () => {
     await fixture.cleanup();
-    const { teardownPgPools } = require('pg-cache');
     await teardownPgPools();
   });
 
