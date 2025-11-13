@@ -73,14 +73,22 @@ Now let's add our first change. Navigate to your module and use `lql add`:
 
 ```bash
 cd packages/pets
-lql add create_pets_table --note "Adds the pets table"
+lql add
 ```
 
-This command does three things:
+LaunchQL prompts you for the change name:
+
+```
+? Change name: create_pets_table
+```
+
+That's it! This command creates everything you need:
 1. Adds the change to `launchql.plan`
 2. Creates `deploy/create_pets_table.sql`
 3. Creates `revert/create_pets_table.sql`
 4. Creates `verify/create_pets_table.sql`
+
+You can also specify the change name and options directly: `lql add create_pets_table --note "Adds the pets table"` if you prefer.
 
 The plan file now looks like this:
 
@@ -185,10 +193,16 @@ Now add a change:
 
 ```bash
 cd packages/adoptions
-lql add create_adoptions_table --requires pets:create_pets_table --note "Tracks pet adoptions"
+lql add
 ```
 
-Notice the `--requires` flag. This creates a cross-module dependency. Edit `deploy/create_adoptions_table.sql`:
+When prompted, enter the change name:
+
+```
+? Change name: create_adoptions_table
+```
+
+LaunchQL creates the migration files. Now edit `deploy/create_adoptions_table.sql` to add the cross-module dependency:
 
 ```sql
 -- Deploy adoptions:create_adoptions_table to pg
@@ -208,6 +222,8 @@ COMMIT;
 ```
 
 The `-- requires: pets:create_pets_table` line creates a cross-module dependency. When you deploy `adoptions`, LaunchQL automatically ensures `pets` is deployed first.
+
+(You can also specify dependencies with the `--requires` flag when running `lql add` if you prefer: `lql add create_adoptions_table --requires pets:create_pets_table`)
 
 This is the hybrid npm + Postgres module concept in action. You're building reusable database components with explicit dependencies, just like npm packages. But instead of JavaScript modules, you're composing PostgreSQL schemas.
 
@@ -321,8 +337,10 @@ Add your first change:
 
 ```bash
 cd packages/pets
-lql add create_pets_table --note "Adds the pets table"
+lql add
 ```
+
+When prompted, enter `create_pets_table` as the change name.
 
 Start building. The tools are designed to get out of your way so you can focus on what matters: turning your ideas into working software.
 
