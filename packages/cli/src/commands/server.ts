@@ -63,6 +63,13 @@ const questions: Question[] = [
     useDefault: true
   },
   {
+    name: 'origin',
+    message: 'CORS origin (exact URL or *)',
+    type: 'text',
+    required: false,
+    // no default to avoid accidentally opening up CORS; pass explicitly or via env
+  },
+  {
     name: 'port',
     message: 'Development server port',
     type: 'number',
@@ -116,7 +123,8 @@ export default async (
     port,
     postgis,
     simpleInflection,
-    metaApi
+    metaApi,
+    origin
   } = await prompter.prompt(argv, questions);
 
   let selectedSchemas: string[] = [];
@@ -179,7 +187,8 @@ export default async (
       ...(metaApi === false && { exposedSchemas: selectedSchemas, authRole, roleName })
     },
     server: {
-      port
+      port,
+      ...(origin ? { origin } : {})
     }
   } as LaunchQLOptions);
 

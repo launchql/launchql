@@ -14,7 +14,8 @@ import requestIp from 'request-ip';
 
 import { createApiMiddleware } from './middleware/api';
 import { createAuthenticateMiddleware } from './middleware/auth';
-import { cors } from './middleware/cors';
+// Use the same CORS helper as Explorer so we respect server.origin
+import { cors } from '@launchql/server-utils';
 import { flush, flushService } from './middleware/flush';
 import { graphile } from './middleware/graphile';
 
@@ -40,12 +41,13 @@ class Server {
 
     healthz(app);
     trustProxy(app, opts.server.trustProxy);
+    // Apply simple, origin-driven CORS like Explorer (reads opts.server.origin)
+    cors(app, opts.server?.origin);
     app.use(poweredBy('launchql'));
     app.use(graphqlUpload.graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
     app.use(requestIp.mw());
     app.use(api);
-    app.use(cors as any);
     app.use(authenticate);
     app.use(graphile(opts));
     app.use(flush);
