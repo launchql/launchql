@@ -30,12 +30,30 @@ This prompts you for a workspace name. Let's call it `pet-app`. LaunchQL creates
 
 ```
 pet-app/
-├── launchql.config.js
+├── bin
+│   └── install.sh
+├── docker-compose.yml
+├── launchql.json
+├── lerna.json
+├── LICENSE
+├── Makefile
+├── package.json
 ├── packages/
-└── package.json
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── README.md
+└── tsconfig.json
 ```
 
-The workspace is a pnpm monorepo. Each module you create will live in `packages/`, and LaunchQL handles the dependency resolution between them.
+The workspace is a pnpm monorepo with everything you need to get started. Each module you create will live in `packages/`, and LaunchQL handles the dependency resolution between them.
+
+If you don't have PostgreSQL running locally, you can use the included `docker-compose.yml`:
+
+```bash
+docker-compose up -d
+```
+
+This spins up a local Postgres instance ready for development.
 
 Now navigate into your workspace and create your first module:
 
@@ -111,8 +129,6 @@ Now edit the generated `deploy/create_pets_table.sql`:
 ```sql
 -- Deploy pets:create_pets_table to pg
 
-BEGIN;
-
 CREATE TABLE pets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -121,8 +137,6 @@ CREATE TABLE pets (
   adopted BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
-
-COMMIT;
 ```
 
 LaunchQL generated the corresponding `revert/create_pets_table.sql`:
@@ -130,11 +144,7 @@ LaunchQL generated the corresponding `revert/create_pets_table.sql`:
 ```sql
 -- Revert pets:create_pets_table from pg
 
-BEGIN;
-
 DROP TABLE pets;
-
-COMMIT;
 ```
 
 And `verify/create_pets_table.sql`:
@@ -142,22 +152,37 @@ And `verify/create_pets_table.sql`:
 ```sql
 -- Verify pets:create_pets_table on pg
 
-SELECT id, name, species, age, adopted, created_at
-FROM pets
-WHERE FALSE;
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_name = 'pets';
 ```
 
-The verify script confirms the table exists with the expected columns. This is developer happiness through codegen—LaunchQL scaffolded the structure, you just fill in the schema.
+The verify script confirms the table exists by checking the information schema. This is developer happiness through codegen—LaunchQL scaffolded the structure, you just fill in the schema.
 
 ## Deploying Your Module
 
-Now comes the magic. First, create a database:
+Now comes the magic. First, make sure your PostgreSQL environment variables are set. You can add this helper function to your shell config (e.g., `~/.zshrc` or `~/.bashrc`):
+
+```bash
+pgenv() {
+  export PGHOST=localhost
+  export PGPORT=5432
+  export PGUSER=postgres
+  export PGPASSWORD=password
+  export PGDATABASE=postgres
+  echo "PostgreSQL environment variables set"
+}
+```
+
+Then run `pgenv` to set your environment, or manually export the `PG*` variables as needed.
+
+Now create a database:
 
 ```bash
 createdb petapp_dev
 ```
 
-Make sure your PostgreSQL environment variables are set (you can export `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD` as needed). Then deploy:
+Deploy your module:
 
 ```bash
 lql deploy --database petapp_dev
@@ -170,7 +195,19 @@ Behind the scenes, LaunchQL resolves the dependency graph and deploys `create_pe
 You can verify the deployment worked:
 
 ```bash
+lql verify
+```
+
+Or check the table directly:
+
+```bash
 psql -d petapp_dev -c "SELECT * FROM pets;"
+```
+
+If you need to roll back:
+
+```bash
+lql revert
 ```
 
 The table exists, with UUID primary keys and proper constraints. You went from zero to a deployed schema in minutes.
@@ -214,8 +251,6 @@ LaunchQL creates the migration files. Now edit `deploy/create_adoptions_table.sq
 -- Deploy adoptions:create_adoptions_table to pg
 -- requires: pets:create_pets_table
 
-BEGIN;
-
 CREATE TABLE adoptions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   pet_id UUID NOT NULL REFERENCES pets(id),
@@ -223,8 +258,6 @@ CREATE TABLE adoptions (
   adoption_date DATE DEFAULT CURRENT_DATE,
   created_at TIMESTAMPTZ DEFAULT now()
 );
-
-COMMIT;
 ```
 
 The `-- requires: pets:create_pets_table` line creates a cross-module dependency. When you deploy `adoptions`, LaunchQL automatically ensures `pets` is deployed first.
@@ -272,9 +305,7 @@ The dependency chain is `my-first` → `my-second` → `my-third`. Individual mi
 -- Deploy my-third:create_schema to pg
 -- requires: my-second:create_table
 
-BEGIN;
 CREATE SCHEMA mythirdapp;
-COMMIT;
 ```
 
 When you deploy `my-third`, LaunchQL deploys all three modules in order. One command, entire workspace deployed.
