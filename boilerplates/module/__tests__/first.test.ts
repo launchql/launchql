@@ -22,8 +22,8 @@ afterEach(async () => {
 
 describe('first test', () => {
   it('should pass', async () => {
-    const result = await pg.query('SELECT 1');
-    expect(result.rows[0].count).toBe('1');
+    const result = await pg.query('SELECT 1 as num');
+    expect(result.rows[0].num).toBe(1);
   });
 });
 

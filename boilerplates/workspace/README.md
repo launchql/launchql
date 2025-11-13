@@ -5,40 +5,18 @@
     __MODULEDESC__
 </p>
 
-## install
-
-```sh
-npm install __MODULENAME__
-```
-## Table of contents
-
-- [__MODULENAME__](#__MODULENAME__)
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
-
 ## Developing
 
-When first cloning the repo:
-
 ```sh
+docker-compose up
 pnpm install
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-pnpm run build
-```
-
-Or if you want to make your dev process smoother, you can run:
-
-```sh
-pnpm install
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-pnpm run build:dev
+cd packages/your-module
+pnpm test:watch
 ```
 
 ## Credits
 
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
+🛠 Built by LaunchQL — checkout [our github ⚛️](https://github.com/launchql)
 
 
 ## Disclaimer

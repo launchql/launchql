@@ -50,9 +50,6 @@ export default [
     "packages/*"
   ],
   "scripts": {
-    "clean": "pnpm -r run clean",
-    "build": "pnpm -r run build",
-    "build:dev": "pnpm -r run build:dev",
     "lint": "pnpm -r run lint"
   },
   "devDependencies": {
@@ -60,7 +57,6 @@ export default [
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
-    "copyfiles": "^2.4.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-unused-imports": "^4.0.0",
@@ -69,8 +65,6 @@ export default [
     "lerna": "^8.2.3",
     "pgsql-test": "^2.12.0",
     "prettier": "^3.0.2",
-    "rimraf": "4.4.1",
-    "strip-ansi": "^6",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
@@ -161,40 +155,18 @@ export default [
     ${vars.MODULEDESC}
 </p>
 
-## install
-
-\`\`\`sh
-npm install ${vars.MODULENAME}
-\`\`\`
-## Table of contents
-
-- [${vars.MODULENAME}](#${vars.MODULENAME})
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
-
 ## Developing
 
-When first cloning the repo:
-
 \`\`\`sh
+docker-compose up
 pnpm install
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-pnpm run build
-\`\`\`
-
-Or if you want to make your dev process smoother, you can run:
-
-\`\`\`sh
-pnpm install
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-pnpm run build:dev
+cd packages/your-module
+pnpm test:watch
 \`\`\`
 
 ## Credits
 
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
+🛠 Built by LaunchQL — checkout [our github ⚛️](https://github.com/launchql)
 
 
 ## Disclaimer
