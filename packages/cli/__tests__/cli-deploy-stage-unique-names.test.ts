@@ -1,9 +1,9 @@
 import { CLIDeployTestFixture } from '../test-utils';
+import { teardownPgPools } from 'pg-cache';
 
 jest.setTimeout(30000);
 
 afterAll(async () => {
-  const { teardownPgPools } = require('pg-cache');
   await teardownPgPools();
 });
 
