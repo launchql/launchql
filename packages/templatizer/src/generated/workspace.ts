@@ -1,9 +1,9 @@
 // Auto-generated template module
 
 export default [
-  (vars: Record<string, any>) => {
-    const relPath = `tsconfig.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `tsconfig.json`;
+  const content = `{
   "compilerOptions": {
     "target": "es2022",
     "module": "commonjs",
@@ -20,12 +20,20 @@ export default [
   "exclude": ["dist", "node_modules"]
 }
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `package.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `pnpm-workspace.yaml`;
+  const content = `packages:
+  - 'packages/*'
+`;
+  return { relPath, content };
+},
+
+(vars: Record<string, any>) => {
+  const relPath = `package.json`;
+  const content = `{
   "name": "${vars.MODULENAME}",
   "version": "0.0.1",
   "author": "${vars.USERFULLNAME} <${vars.USEREMAIL}>",
@@ -59,6 +67,7 @@ export default [
     "eslint": "^8.56.0",
     "jest": "^29.6.2",
     "lerna": "^8.2.3",
+    "pgsql-test": "^2.12.0",
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
@@ -67,12 +76,12 @@ export default [
     "typescript": "^5.1.6"
   }
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `lerna.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `lerna.json`;
+  const content = `{
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "version": "independent",
   "npmClient": "pnpm",
@@ -96,23 +105,23 @@ export default [
     }
   }
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `launchql.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `launchql.json`;
+  const content = `{
   "packages": [
     "packages/*",
     "extensions/*"
   ]
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `docker-compose.yml`;
-    const content = `services:
+(vars: Record<string, any>) => {
+  const relPath = `docker-compose.yml`;
+  const content = `services:
   postgres:
     container_name: postgres
     image: pyramation/pgvector:13.3-alpine
@@ -140,80 +149,12 @@ export default [
       - "9000"
     command: server /data
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `bootstrap-roles.sql`;
-    const content = `-- anonymous
-CREATE ROLE anonymous;
-
-ALTER USER anonymous WITH NOCREATEDB;
-
-ALTER USER anonymous WITH NOSUPERUSER;
-
-ALTER USER anonymous WITH NOCREATEROLE;
-
-ALTER USER anonymous WITH NOLOGIN;
-
-ALTER USER anonymous WITH NOREPLICATION;
-
-ALTER USER anonymous WITH NOBYPASSRLS;
-
--- authenticated
-CREATE ROLE authenticated;
-
-ALTER USER authenticated WITH NOCREATEDB;
-
-ALTER USER authenticated WITH NOSUPERUSER;
-
-ALTER USER authenticated WITH NOCREATEROLE;
-
-ALTER USER authenticated WITH NOLOGIN;
-
-ALTER USER authenticated WITH NOREPLICATION;
-
-ALTER USER authenticated WITH NOBYPASSRLS;
-
--- administrator
-CREATE ROLE administrator;
-
-ALTER USER administrator WITH NOCREATEDB;
-
-ALTER USER administrator WITH NOSUPERUSER;
-
-ALTER USER administrator WITH NOCREATEROLE;
-
-ALTER USER administrator WITH NOLOGIN;
-
-ALTER USER administrator WITH NOREPLICATION;
-
--- they CAN bypass RLS
-ALTER USER administrator WITH BYPASSRLS;
-
--- app user
-CREATE ROLE app_user LOGIN PASSWORD 'app_password';
-
-GRANT anonymous TO app_user;
-
-GRANT authenticated TO app_user;
-
--- admin user
-CREATE ROLE app_admin LOGIN PASSWORD 'admin_password';
-
-GRANT anonymous TO administrator;
-
-GRANT authenticated TO administrator;
-
-GRANT administrator TO app_admin;
-
-`;
-    return { relPath, content };
-  },
-
-  (vars: Record<string, any>) => {
-    const relPath = `README.md`;
-    const content = `# ${vars.MODULENAME}
+(vars: Record<string, any>) => {
+  const relPath = `README.md`;
+  const content = `# ${vars.MODULENAME}
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
@@ -262,12 +203,12 @@ AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN 
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `Makefile`;
-    const content = `
+(vars: Record<string, any>) => {
+  const relPath = `Makefile`;
+  const content = `
 up:
 	docker-compose up -d
 
@@ -284,12 +225,12 @@ roles:
 install:
 	docker exec postgres /sql-bin/install.sh
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `LICENSE`;
-    const content = `The MIT License (MIT)
+(vars: Record<string, any>) => {
+  const relPath = `LICENSE`;
+  const content = `The MIT License (MIT)
 
 Copyright (c) 2025 ${vars.USERFULLNAME} <${vars.USEREMAIL}>
 
@@ -311,12 +252,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `bin/install.sh`;
-    const content = `#!/usr/bin/env bash
+(vars: Record<string, any>) => {
+  const relPath = `bin/install.sh`;
+  const content = `#!/usr/bin/env bash
 set -euo pipefail
 
 # Define colors and styles
@@ -337,7 +278,7 @@ install_sql_modules() {
   fi
 
   echo -e "\${GREEN}Installing SQL modules from:\${RESET} \${CYAN}\${base_dir}\${RESET}"
-  find "$base_dir" -type f -name "launchql.plan" | while read -r plan_file; do
+  find "$base_dir" -type f -name "sqitch.plan" | while read -r plan_file; do
     local dir rel_path pkg_name
     dir=$(dirname "$plan_file")
     rel_path="\${dir#"$base_dir"/}"         # strip base_dir prefix
@@ -350,12 +291,12 @@ install_sql_modules() {
 install_sql_modules "/sql-extensions"
 install_sql_modules "/sql-packages"
 `;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.questions.json`;
-    const content = `[
+(vars: Record<string, any>) => {
+  const relPath = `.questions.json`;
+  const content = `[
   {
     "name": "${vars.USERFULLNAME}",
     "message": "Enter author full name",
@@ -377,34 +318,34 @@ install_sql_modules "/sql-packages"
     "required": true
   }
 ]`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.prettierrc.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `.prettierrc.json`;
+  const content = `{
   "trailingComma": "es5",
   "tabWidth": 2,
   "semi": true,
   "useTabs": false,
   "singleQuote": false
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.gitignore`;
-    const content = `**/node_modules/
+(vars: Record<string, any>) => {
+  const relPath = `.gitignore`;
+  const content = `**/node_modules/
 **/.DS_Store
 **/dist
 **/pnpm-debug.log
 lerna-debug.log`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+},
 
-  (vars: Record<string, any>) => {
-    const relPath = `.eslintrc.json`;
-    const content = `{
+(vars: Record<string, any>) => {
+  const relPath = `.eslintrc.json`;
+  const content = `{
   "env": {
     "browser": true,
     "es2021": true,
@@ -467,6 +408,6 @@ lerna-debug.log`;
     "@typescript-eslint/no-unsafe-declaration-merging": 0
   }
 }`;
-    return { relPath, content };
-  },
+  return { relPath, content };
+}
 ];

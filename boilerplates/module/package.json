@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "author": "__USERFULLNAME__ <__USEREMAIL__>",
   "description": "__MODULEDESC__",
-  "main": "index.js",
-  "module": "esm/index.js",
-  "types": "index.d.ts",
   "homepage": "https://github.com/__USERNAME__/__REPONAME__",
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {
@@ -20,14 +17,12 @@
     "url": "https://github.com/__USERNAME__/__REPONAME__/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
-    "prepare": "pnpm run build",
-    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
-    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "pgsql-test": "^2.12.0"
+  }
 }
