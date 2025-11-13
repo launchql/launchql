@@ -14,7 +14,13 @@ LaunchQL workspaces make this possible by treating database schemas as composabl
 
 Let's build a simple pet adoption application. We'll create a workspace, add a module, and deploy it to Postgres—all with a few commands.
 
-First, initialize a workspace:
+First, install the LaunchQL CLI:
+
+```bash
+npm install -g @launchql/cli
+```
+
+Now initialize a workspace:
 
 ```bash
 lql init --workspace
