@@ -67,6 +67,7 @@ export default [
     "eslint": "^8.56.0",
     "jest": "^29.6.2",
     "lerna": "^8.2.3",
+    "pgsql-test": "^2.12.0",
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
     "strip-ansi": "^6",
