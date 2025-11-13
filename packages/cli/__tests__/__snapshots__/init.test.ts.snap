@@ -29,11 +29,11 @@ exports[`cmds:init initializes module: module-only - argv 1`] = `
 exports[`cmds:init initializes module: module-only - files 1`] = `
 [
   "tsconfig.json",
+  "pnpm-workspace.yaml",
   "package.json",
   "lerna.json",
   "launchql.json",
   "docker-compose.yml",
-  "bootstrap-roles.sql",
   "README.md",
   "Makefile",
   "LICENSE",
@@ -42,7 +42,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   ".gitignore",
   ".eslintrc.json",
   "packages/my-module/tsconfig.json",
-  "packages/my-module/tsconfig.esm.json",
   "packages/my-module/package.json",
   "packages/my-module/my-module.control",
   "packages/my-module/launchql.plan",
@@ -89,11 +88,11 @@ exports[`cmds:init initializes workspace: workspace - argv 1`] = `
 exports[`cmds:init initializes workspace: workspace - files 1`] = `
 [
   "my-workspace/tsconfig.json",
+  "my-workspace/pnpm-workspace.yaml",
   "my-workspace/package.json",
   "my-workspace/lerna.json",
   "my-workspace/launchql.json",
   "my-workspace/docker-compose.yml",
-  "my-workspace/bootstrap-roles.sql",
   "my-workspace/README.md",
   "my-workspace/Makefile",
   "my-workspace/LICENSE",

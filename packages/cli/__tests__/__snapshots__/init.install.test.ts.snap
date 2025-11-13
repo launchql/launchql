@@ -10,11 +10,12 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     "@webql/base32": "1.2.1",
   },
   "description": "undefined",
+  "devDependencies": {
+    "pgsql-test": "^2.12.0",
+  },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
-  "main": "index.js",
-  "module": "esm/index.js",
   "name": "undefined",
   "publishConfig": {
     "access": "undefined",
@@ -25,16 +26,10 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     "url": "https://github.com/undefined/undefined",
   },
   "scripts": {
-    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
-    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
-    "clean": "rimraf dist/**",
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "lint": "eslint . --fix",
-    "prepare": "pnpm run build",
     "test": "jest",
     "test:watch": "jest --watch",
   },
-  "types": "index.d.ts",
   "version": "0.0.1",
 }
 `;
@@ -91,11 +86,12 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     "@webql/utils": "1.1.2",
   },
   "description": "undefined",
+  "devDependencies": {
+    "pgsql-test": "^2.12.0",
+  },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
-  "main": "index.js",
-  "module": "esm/index.js",
   "name": "undefined",
   "publishConfig": {
     "access": "undefined",
@@ -106,16 +102,10 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     "url": "https://github.com/undefined/undefined",
   },
   "scripts": {
-    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
-    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
-    "clean": "rimraf dist/**",
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "lint": "eslint . --fix",
-    "prepare": "pnpm run build",
     "test": "jest",
     "test:watch": "jest --watch",
   },
-  "types": "index.d.ts",
   "version": "0.0.1",
 }
 `;

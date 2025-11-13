@@ -3,7 +3,6 @@
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: extension-update - files 1`] = `
 [
   "tsconfig.json",
-  "tsconfig.esm.json",
   "package.json",
   "my-module.control",
   "launchql.plan",
