@@ -12,7 +12,7 @@ LaunchQL workspaces make this possible by treating database schemas as composabl
 
 ## From Zero to Idea
 
-Let's build a simple application with user authentication and posts. We'll create a workspace, add a module, and deploy it to Postgres—all with a few commands.
+Let's build a simple pet adoption application. We'll create a workspace, add a module, and deploy it to Postgres—all with a few commands.
 
 First, initialize a workspace:
 
@@ -20,10 +20,10 @@ First, initialize a workspace:
 lql init --workspace
 ```
 
-This prompts you for a workspace name. Let's call it `my-app`. LaunchQL creates a directory structure ready for multiple database modules:
+This prompts you for a workspace name. Let's call it `pet-app`. LaunchQL creates a directory structure ready for multiple database modules:
 
 ```
-my-app/
+pet-app/
 ├── launchql.config.js
 ├── packages/
 └── package.json
@@ -34,22 +34,22 @@ The workspace is a pnpm monorepo. Each module you create will live in `packages/
 Now navigate into your workspace and create your first module:
 
 ```bash
-cd my-app
+cd pet-app
 lql init
 ```
 
-LaunchQL prompts you for a module name and which extensions you need. Let's call it `auth-module` and select `uuid-ossp` for UUID support:
+LaunchQL prompts you for a module name and which extensions you need. Let's call it `pets` and select `uuid-ossp` for UUID support:
 
 ```
-? Enter the module name: auth-module
-? Which extensions? uuid-ossp, plpgsql, pgcrypto
+? Enter the module name: pets
+? Which extensions? uuid-ossp, plpgsql
 ```
 
 LaunchQL scaffolds a complete module structure:
 
 ```
-packages/auth-module/
-├── auth-module.control
+packages/pets/
+├── pets.control
 ├── launchql.plan
 ├── deploy/
 ├── revert/
@@ -63,154 +63,161 @@ This is where developer productivity starts to shine. You didn't write boilerpla
 The `.control` file declares your module's metadata and dependencies:
 
 ```
-# auth-module.control
-comment = 'Authentication module'
+# pets.control
+comment = 'Pet adoption module'
 default_version = '0.0.1'
-requires = 'uuid-ossp,plpgsql,pgcrypto'
+requires = 'uuid-ossp,plpgsql'
 ```
 
-The `launchql.plan` file lists your migrations in order:
+Now let's add our first change. Navigate to your module and use `lql add`:
+
+```bash
+cd packages/pets
+lql add create_pets_table --note "Adds the pets table"
+```
+
+This command does three things:
+1. Adds the change to `launchql.plan`
+2. Creates `deploy/create_pets_table.sql`
+3. Creates `revert/create_pets_table.sql`
+4. Creates `verify/create_pets_table.sql`
+
+The plan file now looks like this:
 
 ```
 %syntax-version=1.0.0
-%project=auth-module
-%uri=auth-module
+%project=pets
+%uri=pets
 
-create_schema 2025-11-11T00:00:00Z Author <author@example.com> # Create auth schema
-create_users_table 2025-11-11T00:01:00Z Author <author@example.com> # Users table
+create_pets_table 2025-11-13T00:00:00Z Author <author@example.com> # Adds the pets table
 ```
 
-Now let's write the actual migrations. Create `deploy/create_schema.sql`:
+Now edit the generated `deploy/create_pets_table.sql`:
 
 ```sql
--- Deploy auth-module:create_schema to pg
+-- Deploy pets:create_pets_table to pg
 
 BEGIN;
 
-CREATE SCHEMA auth;
-
-COMMIT;
-```
-
-And `deploy/create_users_table.sql`:
-
-```sql
--- Deploy auth-module:create_users_table to pg
--- requires: auth-module:create_schema
-
-BEGIN;
-
-CREATE TABLE auth.users (
+CREATE TABLE pets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  species TEXT NOT NULL,
+  age INTEGER,
+  adopted BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
 COMMIT;
 ```
 
-Notice the `-- requires:` comment. This declares that `create_users_table` depends on `create_schema`. LaunchQL uses these dependencies to determine the correct deployment order.
-
-Each deploy script needs a corresponding revert script. Create `revert/create_users_table.sql`:
+LaunchQL generated the corresponding `revert/create_pets_table.sql`:
 
 ```sql
--- Revert auth-module:create_users_table from pg
+-- Revert pets:create_pets_table from pg
 
 BEGIN;
 
-DROP TABLE auth.users;
+DROP TABLE pets;
 
 COMMIT;
 ```
 
-And `revert/create_schema.sql`:
+And `verify/create_pets_table.sql`:
 
 ```sql
--- Revert auth-module:create_schema from pg
+-- Verify pets:create_pets_table on pg
 
-BEGIN;
-
-DROP SCHEMA auth;
-
-COMMIT;
+SELECT id, name, species, age, adopted, created_at
+FROM pets
+WHERE FALSE;
 ```
+
+The verify script confirms the table exists with the expected columns. This is developer happiness through codegen—LaunchQL scaffolded the structure, you just fill in the schema.
 
 ## Deploying Your Module
 
-Now comes the magic. First, create a database and navigate to your module:
+Now comes the magic. First, create a database:
 
 ```bash
-cd packages/auth-module
-createdb myapp_dev
+createdb petapp_dev
 ```
 
 Make sure your PostgreSQL environment variables are set (you can export `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD` as needed). Then deploy:
 
 ```bash
-lql deploy --database myapp_dev
+lql deploy --database petapp_dev
 ```
 
 LaunchQL asks if you want to proceed, then deploys your migrations in dependency order, tracks what's been applied, and wraps everything in a transaction for safety.
 
-Behind the scenes, LaunchQL resolves the dependency graph, deploys `create_schema` first, then `create_users_table`. If anything fails, the transaction rolls back and your database stays clean.
+Behind the scenes, LaunchQL resolves the dependency graph and deploys `create_pets_table`. If anything fails, the transaction rolls back and your database stays clean.
 
 You can verify the deployment worked:
 
 ```bash
-psql -d myapp_dev -c "SELECT * FROM auth.users;"
+psql -d petapp_dev -c "SELECT * FROM pets;"
 ```
 
 The table exists, with UUID primary keys and proper constraints. You went from zero to a deployed schema in minutes.
 
 ## Composable Modules Across Projects
 
-The real power emerges when you build multiple modules that depend on each other. Let's say you want to add a posts module that references users from the auth module.
+The real power emerges when you build multiple modules that depend on each other. Let's say you want to add an adoptions module that tracks which pets have been adopted.
 
 Create a second module:
 
 ```bash
+cd ../..  # Back to workspace root
 lql init
 ```
 
-Name it `posts-module` and add `auth-module` as a dependency. Update `posts-module.control`:
+Name it `adoptions` and add `pets` as a dependency. Update `adoptions.control`:
 
 ```
-# posts-module.control
-comment = 'Posts module'
+# adoptions.control
+comment = 'Pet adoptions module'
 default_version = '0.0.1'
-requires = 'uuid-ossp,plpgsql,auth-module'
+requires = 'uuid-ossp,plpgsql,pets'
 ```
 
-Now create `deploy/create_posts_table.sql`:
+Now add a change:
+
+```bash
+cd packages/adoptions
+lql add create_adoptions_table --requires pets:create_pets_table --note "Tracks pet adoptions"
+```
+
+Notice the `--requires` flag. This creates a cross-module dependency. Edit `deploy/create_adoptions_table.sql`:
 
 ```sql
--- Deploy posts-module:create_posts_table to pg
--- requires: auth-module:create_users_table
+-- Deploy adoptions:create_adoptions_table to pg
+-- requires: pets:create_pets_table
 
 BEGIN;
 
-CREATE TABLE posts (
+CREATE TABLE adoptions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id),
-  content TEXT NOT NULL,
+  pet_id UUID NOT NULL REFERENCES pets(id),
+  adopter_name TEXT NOT NULL,
+  adoption_date DATE DEFAULT CURRENT_DATE,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
 COMMIT;
 ```
 
-The `-- requires: auth-module:create_users_table` line creates a cross-module dependency. When you deploy `posts-module`, LaunchQL automatically ensures `auth-module` is deployed first.
+The `-- requires: pets:create_pets_table` line creates a cross-module dependency. When you deploy `adoptions`, LaunchQL automatically ensures `pets` is deployed first.
 
 This is the hybrid npm + Postgres module concept in action. You're building reusable database components with explicit dependencies, just like npm packages. But instead of JavaScript modules, you're composing PostgreSQL schemas.
 
-Deploy the posts module:
+Deploy the adoptions module:
 
 ```bash
-cd packages/posts-module
-lql deploy --database myapp_dev
+lql deploy --database petapp_dev
 ```
 
-LaunchQL detects that `posts-module` depends on `auth-module`, deploys both in the correct order, and tracks the entire dependency graph. You didn't manually deploy `auth-module` first or worry about ordering—the tools got out of the way.
+LaunchQL detects that `adoptions` depends on `pets`, deploys both in the correct order, and tracks the entire dependency graph. You didn't manually deploy `pets` first or worry about ordering—the tools got out of the way.
 
 ## Recursive Deployment: LaunchQL-Native Power
 
@@ -252,29 +259,19 @@ When you deploy `my-third`, LaunchQL deploys all three modules in order. One com
 
 ## Verify and Revert
 
-LaunchQL follows Sqitch's deploy/verify/revert pattern, but with TypeScript performance. Each migration has three scripts:
+LaunchQL follows Sqitch's deploy/verify/revert pattern, but with TypeScript performance. When you ran `lql add`, it created all three scripts for you:
 
 - **Deploy**: Apply the change
 - **Verify**: Confirm the change worked
 - **Revert**: Roll back the change
 
-Create `verify/create_users_table.sql`:
-
-```sql
--- Verify auth-module:create_users_table on pg
-
-SELECT id, email, created_at
-FROM auth.users
-WHERE FALSE;
-```
-
-This query confirms the table exists with the expected columns. If it fails, the verification fails.
-
-Run verification:
+Run verification to confirm your deployment:
 
 ```bash
 lql verify
 ```
+
+This runs all verify scripts to confirm your tables exist with the expected columns. If any verification fails, you'll know immediately.
 
 If you need to roll back a change:
 
@@ -316,8 +313,15 @@ Initialize a workspace:
 
 ```bash
 lql init --workspace
-cd my-app
+cd pet-app
 lql init
+```
+
+Add your first change:
+
+```bash
+cd packages/pets
+lql add create_pets_table --note "Adds the pets table"
 ```
 
 Start building. The tools are designed to get out of your way so you can focus on what matters: turning your ideas into working software.

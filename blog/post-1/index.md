@@ -33,9 +33,9 @@ afterAll(() => teardown());
 beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 
-test('user operations work correctly', async () => {
-  await db.query(`INSERT INTO users (id, name) VALUES (gen_random_uuid(), 'Alice')`);
-  const result = await db.query('SELECT COUNT(*) FROM users');
+test('pet operations work correctly', async () => {
+  await db.query(`INSERT INTO pets (id, name, species) VALUES (gen_random_uuid(), 'Fluffy', 'cat')`);
+  const result = await db.query('SELECT COUNT(*) FROM pets');
   expect(result.rows[0].count).toBe('1');
 });
 ```
@@ -62,10 +62,10 @@ afterAll(() => teardown());
 beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 
-test('auth module deployed correctly', async () => {
+test('pets module deployed correctly', async () => {
   const result = await db.query(`
     SELECT table_name FROM information_schema.tables 
-    WHERE table_schema = 'auth' AND table_name = 'users'
+    WHERE table_name = 'pets'
   `);
   expect(result.rows).toHaveLength(1);
 });
@@ -79,40 +79,7 @@ This zero-configuration approach embodies developer productivity. You don't conf
 
 Row-Level Security is one of Postgres's most powerful features, but it's also one of the hardest to test. You need to simulate different users, different roles, different JWT claims—all while ensuring your policies actually work as intended.
 
-pgsql-test makes this straightforward with role-switching helpers. The `auth()` method lets you simulate any user context:
-
-```typescript
-describe('RLS policies', () => {
-  beforeEach(async () => {
-    await db.auth({ 
-      role: 'authenticated',
-      userId: '123'
-    });
-    await db.beforeEach();
-  });
-
-  afterEach(() => db.afterEach());
-
-  it('users can only see their own posts', async () => {
-    // Insert posts for different users
-    await db.query(`
-      INSERT INTO posts (user_id, content) 
-      VALUES ('123', 'My post'), ('456', 'Other post')
-    `);
-    
-    // Query as user 123
-    const result = await db.query('SELECT * FROM posts');
-    
-    // Should only see own post due to RLS policy
-    expect(result.rows).toHaveLength(1);
-    expect(result.rows[0].content).toBe('My post');
-  });
-});
-```
-
-Behind the scenes, `auth()` uses PostgreSQL's `SET LOCAL` to configure session variables like `role` and `jwt.claims.user_id`. These settings persist for the transaction, giving you realistic RLS behavior without complex setup. You can test authenticated users, anonymous users, admin bypasses, organization-scoped access—any pattern your application uses.
-
-Here's a real example from our test suite showing how context switching works:
+pgsql-test makes this straightforward with role-switching helpers. The `auth()` method lets you simulate any user context. Here's a real example from our test suite showing how context switching works:
 
 ```typescript
 it('sets role and userId', async () => {
@@ -125,6 +92,8 @@ it('sets role and userId', async () => {
   expect(userId.rows[0].user_id).toBe('12345');
 });
 ```
+
+Behind the scenes, `auth()` uses PostgreSQL's `SET LOCAL` to configure session variables like `role` and `jwt.claims.user_id`. These settings persist for the transaction, giving you realistic RLS behavior without complex setup. You can test authenticated users, anonymous users, admin bypasses, organization-scoped access—any pattern your application uses.
 
 The context is scoped to your transaction, so different tests can simulate different users without interfering with each other. This isolation is what makes RLS testing reliable—you're not fighting shared state or worrying about cleanup between tests.
 
@@ -139,7 +108,7 @@ beforeAll(async () => {
   ({ db, teardown } = await getConnections());
   
   // Load fixture data from SQL files
-  await db.loadSql(['fixtures/users.sql', 'fixtures/posts.sql']);
+  await db.loadSql(['fixtures/pets.sql', 'fixtures/adoptions.sql']);
 });
 ```
 
@@ -151,8 +120,8 @@ beforeAll(async () => {
   
   // Load data from CSV files
   await db.loadCsv({
-    'auth.users': './fixtures/users.csv',
-    'posts': './fixtures/posts.csv'
+    'pets': './fixtures/pets.csv',
+    'adoptions': './fixtures/adoptions.csv'
   });
 });
 ```
@@ -162,26 +131,27 @@ These methods make it easy to seed your test database with realistic data. CSV f
 You can also seed data programmatically within tests:
 
 ```typescript
-test('user relationships work', async () => {
+test('pet adoptions work', async () => {
   // Create test data inline
-  const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+  const petId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
   await db.query(`
-    INSERT INTO auth.users (id, email) 
-    VALUES ($1, 'alice@example.com')
-  `, [userId]);
+    INSERT INTO pets (id, name, species, age) 
+    VALUES ($1, 'Buddy', 'dog', 3)
+  `, [petId]);
   
   await db.query(`
-    INSERT INTO posts (id, user_id, content) 
-    VALUES (gen_random_uuid(), $1, 'Hello world')
-  `, [userId]);
+    INSERT INTO adoptions (id, pet_id, adopter_name) 
+    VALUES (gen_random_uuid(), $1, 'Alice')
+  `, [petId]);
   
   const result = await db.query(`
-    SELECT p.content, u.email 
-    FROM posts p 
-    JOIN auth.users u ON p.user_id = u.id
+    SELECT a.adopter_name, p.name, p.species 
+    FROM adoptions a 
+    JOIN pets p ON a.pet_id = p.id
   `);
   
-  expect(result.rows[0].email).toBe('alice@example.com');
+  expect(result.rows[0].adopter_name).toBe('Alice');
+  expect(result.rows[0].name).toBe('Buddy');
 });
 ```
 
@@ -195,19 +165,19 @@ Sometimes you need more control over transaction boundaries. The `publish()` met
 it('makes data visible across connections', async () => {
   // Insert data
   await pg.query(`
-    INSERT INTO users (id, email) 
-    VALUES (gen_random_uuid(), 'alice@test.com')
+    INSERT INTO pets (id, name, species) 
+    VALUES (gen_random_uuid(), 'Fluffy', 'cat')
   `);
   
   // Data not visible to other connections yet
-  const before = await db.query('SELECT * FROM users WHERE email = $1', ['alice@test.com']);
+  const before = await db.query('SELECT * FROM pets WHERE name = $1', ['Fluffy']);
   expect(before.rows).toHaveLength(0);
   
   // Commit the data
   await pg.publish();
   
   // Now visible to other connections
-  const after = await db.query('SELECT * FROM users WHERE email = $1', ['alice@test.com']);
+  const after = await db.query('SELECT * FROM pets WHERE name = $1', ['Fluffy']);
   expect(after.rows).toHaveLength(1);
 });
 ```
@@ -219,22 +189,22 @@ You can also use `rollback()` to return to a savepoint without ending the test:
 ```typescript
 it('allows selective rollback', async () => {
   await pg.query(`
-    INSERT INTO users (id, email) 
-    VALUES (gen_random_uuid(), 'bob@test.com')
+    INSERT INTO pets (id, name, species) 
+    VALUES (gen_random_uuid(), 'Max', 'dog')
   `);
-  await pg.publish();  // Bob is committed
+  await pg.publish();  // Max is committed
   
   await pg.query(`
-    INSERT INTO users (id, email) 
-    VALUES (gen_random_uuid(), 'charlie@test.com')
+    INSERT INTO pets (id, name, species) 
+    VALUES (gen_random_uuid(), 'Luna', 'cat')
   `);
   
-  // Rollback Charlie, keep Bob
+  // Rollback Luna, keep Max
   await pg.rollback();
   
-  const result = await pg.query('SELECT * FROM users');
-  expect(result.rows).toHaveLength(1);  // Only Bob remains
-  expect(result.rows[0].email).toBe('bob@test.com');
+  const result = await pg.query('SELECT * FROM pets');
+  expect(result.rows).toHaveLength(1);  // Only Max remains
+  expect(result.rows[0].name).toBe('Max');
 });
 ```
 
@@ -303,9 +273,11 @@ beforeAll(async () => {
   await db.query(`
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
     
-    CREATE TABLE users (
+    CREATE TABLE pets (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      species TEXT NOT NULL,
+      age INTEGER
     );
   `);
 });
@@ -314,15 +286,15 @@ afterAll(() => teardown());
 beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 
-test('can insert and query users', async () => {
-  await db.query(`INSERT INTO users (name) VALUES ('Alice')`);
-  const result = await db.query('SELECT * FROM users');
+test('can insert and query pets', async () => {
+  await db.query(`INSERT INTO pets (name, species, age) VALUES ('Buddy', 'dog', 3)`);
+  const result = await db.query('SELECT * FROM pets');
   expect(result.rows).toHaveLength(1);
-  expect(result.rows[0].name).toBe('Alice');
+  expect(result.rows[0].name).toBe('Buddy');
 });
 
 test('starts clean', async () => {
-  const result = await db.query('SELECT * FROM users');
+  const result = await db.query('SELECT * FROM pets');
   expect(result.rows).toHaveLength(0);
 });
 ```
