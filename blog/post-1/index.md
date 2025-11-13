@@ -6,6 +6,8 @@ title: 'How pgsql-test Makes Postgres Feel Like Jest'
 description: 'Introducing pgsql-test: TypeScript-native database testing that feels as natural as testing your frontend code.'
 ---
 
+> **Previously:** In [LaunchQL Workspaces](../post-0), we built modular Postgres applications with composable schemas and automatic dependency resolution. Now let's test them.
+
 Postgres is the world's most-loved database for good reason. It's powerful, reliable, and scales with your ambitions. But when it comes to testing, developers often find themselves caught between two worlds: the database-centric approach of tools like pgTap, and the fast, isolated testing patterns they use everywhere else in their stack. We built pgsql-test to bridge that gap—not because testing "hasn't caught up," but because we wanted to create the best possible developer experience for testing Postgres applications.
 
 ## The Developer Experience We Wanted
@@ -32,7 +34,7 @@ beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 
 test('user operations work correctly', async () => {
-  await db.query(`INSERT INTO users (name) VALUES ('Alice')`);
+  await db.query(`INSERT INTO users (id, name) VALUES (gen_random_uuid(), 'Alice')`);
   const result = await db.query('SELECT COUNT(*) FROM users');
   expect(result.rows[0].count).toBe('1');
 });
@@ -42,52 +44,36 @@ Each test runs inside its own transaction with savepoint-based rollback. The `be
 
 In our own test suite, we've measured this isolation overhead at just milliseconds per test. One of our benchmark suites running three tests with full schema deployment and rollback completes in under 100ms total. That's the kind of feedback loop that keeps you in flow.
 
-## Modular Migrations: Build Once, Compose Everywhere
+## Testing LaunchQL Modules: Zero Configuration
 
-One of the most powerful aspects of pgsql-test is how it integrates with LaunchQL's migration framework. LaunchQL treats database schemas as composable modules—each with its own migration plan, dependencies, and version tags. This modular approach means you can build reusable database components that work across multiple projects.
-
-Here's a real example from our test fixtures. We have three modules: `my-first`, `my-second`, and `my-third`. Each declares its dependencies in a `.control` file:
-
-```
-# my-first.control
-requires = 'citext,plpgsql,pgcrypto'
-
-# my-second.control  
-requires = 'citext,plpgsql,pgcrypto,my-first'
-
-# my-third.control
-requires = 'citext,plpgsql,pgcrypto,my-second'
-```
-
-The dependency chain is clear: `my-third` depends on `my-second`, which depends on `my-first`. But dependencies aren't just at the module level—individual migration scripts can declare fine-grained dependencies too:
-
-```sql
--- Deploy my-third:create_schema to pg
--- requires: my-second:create_table
-
-BEGIN;
-CREATE SCHEMA mythirdapp;
-COMMIT;
-```
-
-This cross-module dependency resolution happens automatically. When you deploy `my-third`, LaunchQL's migration engine resolves the entire dependency graph, deploys modules in the correct order, and tracks what's been applied. In tests, this means you can seed a complex multi-module schema with a single line:
+If you're testing a LaunchQL module (like the ones we built in the [previous post](../post-0)), pgsql-test makes it effortless. Just call `getConnections()` with no arguments:
 
 ```typescript
-const { db, teardown } = await getConnections({}, [
-  seed.launchql('/path/to/my-third')
-]);
+import { getConnections } from 'pgsql-test';
+
+let db, teardown;
+
+beforeAll(async () => {
+  // Automatically deploys your LaunchQL module
+  ({ db, teardown } = await getConnections());
+});
+
+afterAll(() => teardown());
+beforeEach(() => db.beforeEach());
+afterEach(() => db.afterEach());
+
+test('auth module deployed correctly', async () => {
+  const result = await db.query(`
+    SELECT table_name FROM information_schema.tables 
+    WHERE table_schema = 'auth' AND table_name = 'users'
+  `);
+  expect(result.rows).toHaveLength(1);
+});
 ```
 
-The framework discovers `my-third`'s dependencies, deploys `my-first`, then `my-second`, then `my-third`—all in milliseconds. You get a fully functioning database with schemas, tables, functions, and policies, ready to test against.
+When you call `getConnections()` from within a LaunchQL module directory, the framework automatically discovers your module, resolves its dependencies, and deploys everything in the correct order. You get a fully functioning database with schemas, tables, functions, and policies—ready to test against.
 
-For LaunchQL projects, this is even simpler. If you're already in a LaunchQL module directory, `getConnections()` with no arguments automatically deploys your module:
-
-```typescript
-// Zero configuration - just works
-const { db, teardown } = await getConnections();
-```
-
-This composability extends to your entire workspace. In a pnpm monorepo with multiple database modules, each module can be developed and tested independently, then composed together in integration tests. The migration framework handles the orchestration, and pgsql-test gives you the isolated environments to test it all.
+This zero-configuration approach embodies developer productivity. You don't configure paths, specify modules, or manage deployment order. The tools get out of the way so you can focus on writing tests.
 
 ## Testing Row-Level Security Like a Real User
 
@@ -142,67 +128,61 @@ it('sets role and userId', async () => {
 
 The context is scoped to your transaction, so different tests can simulate different users without interfering with each other. This isolation is what makes RLS testing reliable—you're not fighting shared state or worrying about cleanup between tests.
 
-## Flexible Seeding: Meet Developers Where They Are
+## Flexible Seeding: Load SQL and CSV Data
 
-Not every project uses LaunchQL migrations. Some teams have SQL files, others use ORMs, and some prefer programmatic seeding. pgsql-test supports all of these approaches through composable seed adapters.
+After your schema is deployed, you often need test data. The `PgTestClient` provides convenient methods for loading SQL files and CSV data:
 
-**SQL Files:** If you have existing schema files, load them directly:
+**Load SQL Files:**
 
 ```typescript
-const { db, teardown } = await getConnections({}, [
-  seed.sqlfile(['schema.sql', 'fixtures.sql'])
-]);
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections());
+  
+  // Load fixture data from SQL files
+  await db.loadSql(['fixtures/users.sql', 'fixtures/posts.sql']);
+});
 ```
 
-**Programmatic Seeding:** For dynamic data or complex setup logic:
+**Load CSV Data:**
 
 ```typescript
-const { db, teardown } = await getConnections({}, [
-  seed.fn(async ({ pg }) => {
-    await pg.query(`
-      CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT);
-      INSERT INTO users (name) VALUES ('Alice'), ('Bob');
-    `);
-  })
-]);
+beforeAll(async () => {
+  ({ db, teardown } = await getConnections());
+  
+  // Load data from CSV files
+  await db.loadCsv({
+    'auth.users': './fixtures/users.csv',
+    'posts': './fixtures/posts.csv'
+  });
+});
 ```
 
-**JSON Data:** For inline fixtures that live with your tests:
+These methods make it easy to seed your test database with realistic data. CSV files are particularly useful for loading large datasets or data exported from production.
+
+You can also seed data programmatically within tests:
 
 ```typescript
-const { db, teardown } = await getConnections({}, [
-  seed.json({
-    'users': [
-      { id: 1, name: 'Alice' },
-      { id: 2, name: 'Bob' }
-    ]
-  })
-]);
-```
-
-**CSV Files:** For larger datasets or data exported from production:
-
-```typescript
-const { db, teardown } = await getConnections({}, [
-  seed.csv({
-    'users': '/path/to/users.csv',
-    'posts': '/path/to/posts.csv'
-  })
-]);
-```
-
-You can compose multiple strategies together. A common pattern is to use LaunchQL for schema deployment, then add test-specific fixtures:
-
-```typescript
-const { db, teardown } = await getConnections({}, [
-  seed.launchql('./my-module'),           // Deploy schema
-  seed.json({                             // Add test data
-    'users': [{ id: 1, name: 'Test User' }]
-  }),
-  seed.fn(async ({ pg }) => {             // Custom setup
-    await pg.query(`SELECT setval('users_id_seq', 1000)`);
-  })
-]);
+test('user relationships work', async () => {
+  // Create test data inline
+  const userId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+  await db.query(`
+    INSERT INTO auth.users (id, email) 
+    VALUES ($1, 'alice@example.com')
+  `, [userId]);
+  
+  await db.query(`
+    INSERT INTO posts (id, user_id, content) 
+    VALUES (gen_random_uuid(), $1, 'Hello world')
+  `, [userId]);
+  
+  const result = await db.query(`
+    SELECT p.content, u.email 
+    FROM posts p 
+    JOIN auth.users u ON p.user_id = u.id
+  `);
+  
+  expect(result.rows[0].email).toBe('alice@example.com');
+});
 ```
 
 This flexibility means pgsql-test works whether you're building a greenfield LaunchQL project or adding tests to an existing codebase.
@@ -214,7 +194,10 @@ Sometimes you need more control over transaction boundaries. The `publish()` met
 ```typescript
 it('makes data visible across connections', async () => {
   // Insert data
-  await pg.query(`INSERT INTO users (email) VALUES ('alice@test.com')`);
+  await pg.query(`
+    INSERT INTO users (id, email) 
+    VALUES (gen_random_uuid(), 'alice@test.com')
+  `);
   
   // Data not visible to other connections yet
   const before = await db.query('SELECT * FROM users WHERE email = $1', ['alice@test.com']);
@@ -235,10 +218,16 @@ You can also use `rollback()` to return to a savepoint without ending the test:
 
 ```typescript
 it('allows selective rollback', async () => {
-  await pg.query(`INSERT INTO users (email) VALUES ('bob@test.com')`);
+  await pg.query(`
+    INSERT INTO users (id, email) 
+    VALUES (gen_random_uuid(), 'bob@test.com')
+  `);
   await pg.publish();  // Bob is committed
   
-  await pg.query(`INSERT INTO users (email) VALUES ('charlie@test.com')`);
+  await pg.query(`
+    INSERT INTO users (id, email) 
+    VALUES (gen_random_uuid(), 'charlie@test.com')
+  `);
   
   // Rollback Charlie, keep Bob
   await pg.rollback();
@@ -312,8 +301,10 @@ beforeAll(async () => {
   ({ db, teardown } = await getConnections());
   
   await db.query(`
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    
     CREATE TABLE users (
-      id SERIAL PRIMARY KEY,
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       name TEXT NOT NULL
     );
   `);
