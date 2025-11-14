@@ -11,7 +11,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   },
   "description": "undefined",
   "devDependencies": {
-    "pgsql-test": "^2.12.2",
+    "pgsql-test": "^2.13.2",
   },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
@@ -92,7 +92,7 @@ exports[`cmds:install - with initialized workspace and module installs two modul
   },
   "description": "undefined",
   "devDependencies": {
-    "pgsql-test": "^2.12.2",
+    "pgsql-test": "^2.13.2",
   },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],

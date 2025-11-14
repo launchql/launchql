@@ -41,7 +41,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   ".prettierrc.json",
   ".gitignore",
   ".eslintrc.json",
-  "packages/my-module/tsconfig.json",
   "packages/my-module/package.json",
   "packages/my-module/my-module.control",
   "packages/my-module/launchql.plan",
@@ -49,8 +48,7 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "packages/my-module/README.md",
   "packages/my-module/Makefile",
   "packages/my-module/.questions.json",
-  "packages/my-module/src/index.ts",
-  "packages/my-module/__tests__/first.test.ts",
+  "packages/my-module/__tests__/basic.test.ts",
   "bin/install.sh",
 ]
 `;
