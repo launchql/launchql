@@ -15,7 +15,7 @@ const subcommandMap: Record<string, Function> = {
 const adminUsersUsageText = `
 Admin Users Commands:
 
-  pgpm admin-users bootstrap    Initialize pgpm roles and permissions (must be run first)
+  pgpm admin-users bootstrap    Initialize postgres roles and permissions (must be run first)
   pgpm admin-users add          Add database users with roles
   pgpm admin-users remove       Remove database users and revoke roles
 
@@ -68,7 +68,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
 
 function getSubcommandDescription(cmd: string): string {
   const descriptions: Record<string, string> = {
-    bootstrap: 'Initialize pgpm roles and permissions (must be run first)',
+    bootstrap: 'Initialize postgres roles and permissions (must be run first)',
     add: 'Add database users with roles',
     remove: 'Remove database users and revoke roles'
   };
