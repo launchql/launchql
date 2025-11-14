@@ -23,7 +23,7 @@
   },
   "keywords": [],
   "devDependencies": {
-    "pgsql-test": "^2.12.2"
+    "pgsql-test": "^2.13.2"
   },
   "pnpm": {
     "overrides": {

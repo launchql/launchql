@@ -63,7 +63,7 @@ export default [
     "eslint-plugin-unused-imports": "^4.3.0",
     "jest": "^29.7.0",
     "lerna": "^8.2.4",
-    "pgsql-test": "^2.12.2",
+    "pgsql-test": "^2.13.2",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",

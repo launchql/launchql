@@ -2,21 +2,6 @@
 
 export default [
 (vars: Record<string, any>) => {
-  const relPath = `tsconfig.json`;
-  const content = `{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src/"
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules", "**/*.spec.*", "**/*.test.*"]
-}
-`;
-  return { relPath, content };
-},
-
-(vars: Record<string, any>) => {
   const relPath = `package.json`;
   const content = `{
   "name": "${vars.PACKAGE_IDENTIFIER}",
@@ -43,7 +28,7 @@ export default [
   },
   "keywords": [],
   "devDependencies": {
-    "pgsql-test": "^2.12.2"
+    "pgsql-test": "^2.13.2"
   },
   "pnpm": {
     "overrides": {
@@ -58,23 +43,19 @@ export default [
   const relPath = `jest.config.js`;
   const content = `/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-    preset: "ts-jest",
-    testEnvironment: "node",
-    transform: {
-        "^.+\\\\.tsx?$": [
-            "ts-jest",
-            {
-                babelConfig: false,
-                tsconfig: "tsconfig.json",
-            },
-        ],
-    },
-    transformIgnorePatterns: [\`/node_modules/*\`],
-    testRegex: "(/__tests__/.*|(\\\\.|/)(test|spec))\\\\.(jsx?|tsx?)$",
-    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-    modulePathIgnorePatterns: ["dist/*"]
-};
-`;
+    preset: 'ts-jest',
+    testEnvironment: 'node',
+  
+    // Match both __tests__ and colocated test files
+    testMatch: ['**/?(*.)+(test|spec).{ts,tsx,js,jsx}'],
+  
+    // Ignore build artifacts and type declarations
+    testPathIgnorePatterns: ['/dist/', '\\\\.d\\\\.ts$'],
+    modulePathIgnorePatterns: ['<rootDir>/dist/'],
+    watchPathIgnorePatterns: ['/dist/'],
+  
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  };`;
   return { relPath, content };
 },
 
@@ -133,15 +114,7 @@ No developer or entity involved in creating this software will be liable for any
 },
 
 (vars: Record<string, any>) => {
-  const relPath = `src/index.ts`;
-  const content = `export default () => {
-
-};`;
-  return { relPath, content };
-},
-
-(vars: Record<string, any>) => {
-  const relPath = `__tests__/first.test.ts`;
+  const relPath = `__tests__/basic.test.ts`;
   const content = `import { getConnections, PgTestClient } from 'pgsql-test';
 
 let db: PgTestClient;
