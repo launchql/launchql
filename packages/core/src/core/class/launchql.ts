@@ -819,7 +819,7 @@ export class LaunchQLPackage {
     };
 
     // Create deploy file
-    const deployContent = `-- Deploy: ${changeName} to pg
+    const deployContent = `-- Deploy: ${changeName}
 -- made with <3 @ launchql.com
 
 ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join('\n') + '\n' : ''}
@@ -827,13 +827,13 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
 `;
 
     // Create revert file  
-    const revertContent = `-- Revert: ${changeName} from pg
+    const revertContent = `-- Revert: ${changeName}
 
 -- Add your revert SQL here
 `;
 
     // Create verify file
-    const verifyContent = `-- Verify: ${changeName} on pg
+    const verifyContent = `-- Verify: ${changeName}
 
 -- Add your verification SQL here
 `;

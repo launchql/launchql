@@ -179,15 +179,15 @@ describe('Add functionality', () => {
     const revertContent = readFileSync(join(moduleDir, 'revert', 'test-headers.sql'), 'utf8');
     const verifyContent = readFileSync(join(moduleDir, 'verify', 'test-headers.sql'), 'utf8');
     
-    expect(deployContent).toContain('-- Deploy: test-headers to pg');
+    expect(deployContent).toContain('-- Deploy: test-headers');
     expect(deployContent).toContain('-- made with <3 @ launchql.com');
     expect(deployContent).toContain('-- requires: users');
     expect(deployContent).toContain('-- Add your deployment SQL here');
     
-    expect(revertContent).toContain('-- Revert: test-headers from pg');
+    expect(revertContent).toContain('-- Revert: test-headers');
     expect(revertContent).toContain('-- Add your revert SQL here');
     
-    expect(verifyContent).toContain('-- Verify: test-headers on pg');
+    expect(verifyContent).toContain('-- Verify: test-headers');
     expect(verifyContent).toContain('-- Add your verification SQL here');
   });
 
