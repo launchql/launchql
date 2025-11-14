@@ -21,8 +21,8 @@ export default async function runModuleSetup(
     throw errors.NOT_IN_WORKSPACE({});
   }
 
-  if (!project.isInsideAllowedDirs(cwd) && !project.isInWorkspace()) {
-    log.error('You must be inside one of the workspace packages.');
+  if (!project.isInsideAllowedDirs(cwd) && !project.isInWorkspace() && !project.isParentOfAllowedDirs(cwd)) {
+    log.error('You must be inside the workspace root or a parent directory of modules (like packages/).');
     throw errors.NOT_IN_WORKSPACE_MODULE({});
   }
 

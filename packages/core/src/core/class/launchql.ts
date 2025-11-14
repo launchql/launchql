@@ -163,24 +163,30 @@ export class LaunchQLPackage {
     return this.allowedDirs.some(dir => cwd.startsWith(dir));
   }
 
+  isParentOfAllowedDirs(cwd: string): boolean {
+    return this.allowedDirs.some(dir => dir.startsWith(cwd + path.sep));
+  }
+
   private createModuleDirectory(modName: string): string {
     this.ensureWorkspace();
 
     const isRoot = path.resolve(this.workspacePath!) === path.resolve(this.cwd);
+    const isParentDir = this.isParentOfAllowedDirs(this.cwd);
+    const isInsideModule = this.isInsideAllowedDirs(this.cwd);
     let targetPath: string;
 
     if (isRoot) {
       const packagesDir = path.join(this.cwd, 'packages');
       fs.mkdirSync(packagesDir, { recursive: true });
       targetPath = path.join(packagesDir, modName);
-    } else {
-
-      if (!this.isInsideAllowedDirs(this.cwd)) {
-        console.error(chalk.red(`Error: You must be inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
-        process.exit(1);
-      }
-
+    } else if (isParentDir) {
       targetPath = path.join(this.cwd, modName);
+    } else if (isInsideModule) {
+      console.error(chalk.red(`Error: Cannot create a module inside an existing module. Please run 'lql init' from the workspace root or from a parent directory like 'packages/'.`));
+      process.exit(1);
+    } else {
+      console.error(chalk.red(`Error: You must be inside the workspace root, a parent directory of modules (like 'packages/'), or inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
+      process.exit(1);
     }
 
     fs.mkdirSync(targetPath, { recursive: true });
