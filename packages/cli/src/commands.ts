@@ -1,65 +1,18 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { teardownPgPools } from 'pg-cache';
+import { createPgpmCommandMap } from 'pgpm';
 
-// Commands
-import add from './commands/add';
-import adminUsers from './commands/admin-users';
-import clear from './commands/clear';
-import deploy from './commands/deploy';
 import explorer from './commands/explorer';
-import _export from './commands/export';
-import extension from './commands/extension';
-import init from './commands/init';
-import install from './commands/install';
-import kill from './commands/kill';
-import migrate from './commands/migrate';
-import _package from './commands/package';
-import plan from './commands/plan';
-import remove from './commands/remove';
-import revert from './commands/revert';
 import server from './commands/server';
-import tag from './commands/tag';
-import verify from './commands/verify';
-import analyze from './commands/analyze';
-import renameCmd from './commands/rename';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 import { cliExitWithError } from './utils/cli-error';
 
-const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
-  try {
-    await fn(...args);
-  } finally {
-    if (!skipTeardown) {
-      await teardownPgPools();
-    }
-  }
-};
-
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
-  const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
+  const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
+  
   return {
-    add,
-    'admin-users': pgt(adminUsers),
-    clear: pgt(clear),
-    deploy: pgt(deploy),
-    verify: pgt(verify),
-    revert: pgt(revert),
-    remove: pgt(remove),
-    init: pgt(init),
-    extension: pgt(extension),
-    plan: pgt(plan),
-    export: pgt(_export),
-    package: pgt(_package),
-    tag: pgt(tag),
-    kill: pgt(kill),
-    install: pgt(install),
-    migrate: pgt(migrate),
-    analyze: pgt(analyze),
-    rename: pgt(renameCmd),
-
-    // These manage their own connection lifecycles
+    ...pgpmCommands,
     server,
     explorer
   };
