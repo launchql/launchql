@@ -9,7 +9,7 @@ const log = new Logger('admin-users-bootstrap');
 const bootstrapUsageText = `
 LaunchQL Admin Users Bootstrap Command:
 
-  lql admin-users bootstrap [OPTIONS]
+  pgpm admin-users bootstrap [OPTIONS]
 
   Initialize LaunchQL roles and permissions. This command must be run before adding users.
   Creates the standard LaunchQL roles: anonymous, authenticated, administrator.
@@ -19,7 +19,7 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql admin-users bootstrap              # Initialize LaunchQL roles
+  pgpm admin-users bootstrap              # Initialize LaunchQL roles
 `;
 
 export default async (

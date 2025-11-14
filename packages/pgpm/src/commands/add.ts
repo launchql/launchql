@@ -8,7 +8,7 @@ import { extractFirst } from '../utils/argv';
 const addUsageText = `
 LaunchQL Add Command:
 
-  lql add [change] [OPTIONS]
+  pgpm add [change] [OPTIONS]
 
   Add a database change to plans and create deploy/revert/verify SQL files.
 
@@ -22,10 +22,10 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql add organizations                                    Add change named 'organizations'
-  lql add brands --note "Adds the brands table"  Add change with note
-  lql add contacts --requires users --note "Adds contacts table"  Add with dependency
-  lql add be/a/path/like/this                        Add change with nested path
+  pgpm add organizations                                    Add change named 'organizations'
+  pgpm add brands --note "Adds the brands table"  Add change with note
+  pgpm add contacts --requires users --note "Adds contacts table"  Add with dependency
+  pgpm add be/a/path/like/this                        Add change with nested path
 `;
 
 export default async (

@@ -9,10 +9,10 @@ const log = new Logger('admin-users-add');
 const addUsageText = `
 LaunchQL Admin Users Add Command:
 
-  lql admin-users add [OPTIONS]
+  pgpm admin-users add [OPTIONS]
 
   Add database users with LaunchQL roles.
-  Note: You must run 'lql admin-users bootstrap' first to initialize roles.
+  Note: You must run 'pgpm admin-users bootstrap' first to initialize roles.
 
 Options:
   --help, -h              Show this help message
@@ -22,9 +22,9 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql admin-users add --username myuser --password mypass
-  lql admin-users add --test                # Add test users (requires bootstrap first)
-  lql admin-users add                       # Will prompt for username and password
+  pgpm admin-users add --username myuser --password mypass
+  pgpm admin-users add --test                # Add test users (requires bootstrap first)
+  pgpm admin-users add                       # Will prompt for username and password
 `;
 
 export default async (

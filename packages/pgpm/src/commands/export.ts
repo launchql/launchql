@@ -8,7 +8,7 @@ import { getPgPool } from 'pg-cache';
 const exportUsageText = `
 LaunchQL Export Command:
 
-  lql export [OPTIONS]
+  pgpm export [OPTIONS]
 
   Export database migrations from existing databases.
 
@@ -20,7 +20,7 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql export              Export migrations from selected database
+  pgpm export              Export migrations from selected database
 `;
 
 export default async (

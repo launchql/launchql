@@ -4,7 +4,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 const packageUsageText = `
 LaunchQL Package Command:
 
-  lql package [OPTIONS]
+  pgpm package [OPTIONS]
 
   Package module for distribution.
 
@@ -16,8 +16,8 @@ Options:
   --cwd <directory>               Working directory (default: current directory)
 
 Examples:
-  lql package                     Package with defaults
-  lql package --no-plan           Package without plan
+  pgpm package                     Package with defaults
+  pgpm package --no-plan           Package without plan
 `;
 
 export default async (

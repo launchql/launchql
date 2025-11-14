@@ -16,7 +16,7 @@ export default async (
 ) => {
   
   if (!argv.to) {
-    await cliExitWithError('No change specified. Usage: lql remove --to <change>');
+    await cliExitWithError('No change specified. Usage: pgpm remove --to <change>');
   }
 
   const database = await getTargetDatabase(argv, prompter, {

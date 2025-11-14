@@ -5,7 +5,7 @@ import { ParsedArgs } from 'minimist';
 const extensionUsageText = `
 LaunchQL Extension Command:
 
-  lql extension [OPTIONS]
+  pgpm extension [OPTIONS]
 
   Manage module dependencies.
 
@@ -14,7 +14,7 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql extension           Manage dependencies for current module
+  pgpm extension           Manage dependencies for current module
 `;
 
 export default async (

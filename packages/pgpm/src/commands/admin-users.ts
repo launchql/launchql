@@ -15,9 +15,9 @@ const subcommandMap: Record<string, Function> = {
 const adminUsersUsageText = `
 LaunchQL Admin Users Commands:
 
-  lql admin-users bootstrap    Initialize LaunchQL roles and permissions (must be run first)
-  lql admin-users add          Add database users with roles
-  lql admin-users remove       Remove database users and revoke roles
+  pgpm admin-users bootstrap    Initialize LaunchQL roles and permissions (must be run first)
+  pgpm admin-users add          Add database users with roles
+  pgpm admin-users remove       Remove database users and revoke roles
 
 Options:
   --help, -h     Show this help message

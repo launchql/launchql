@@ -12,7 +12,7 @@ const log = new Logger('tag');
 const tagUsageText = `
 LaunchQL Tag Command:
 
-  lql tag [tag_name] [OPTIONS]
+  pgpm tag [tag_name] [OPTIONS]
 
   Add tags to changes for versioning.
 
@@ -27,9 +27,9 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql tag v1.0.0                                    Add tag to latest change
-  lql tag v1.0.0 --comment "Initial release"       Add tag with comment
-  lql tag v1.1.0 --package mypackage --changeName my-change  Tag specific change in package
+  pgpm tag v1.0.0                                    Add tag to latest change
+  pgpm tag v1.0.0 --comment "Initial release"       Add tag with comment
+  pgpm tag v1.1.0 --package mypackage --changeName my-change  Tag specific change in package
 `;
 
 export default async (

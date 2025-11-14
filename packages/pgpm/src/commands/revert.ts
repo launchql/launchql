@@ -14,7 +14,7 @@ const log = new Logger('revert');
 const revertUsageText = `
 LaunchQL Revert Command:
 
-  lql revert [OPTIONS]
+  pgpm revert [OPTIONS]
 
   Revert database changes and migrations.
 
@@ -28,9 +28,9 @@ Options:
   --cwd <directory>  Working directory (default: current directory)
 
 Examples:
-  lql revert                    Revert latest changes
-  lql revert --to @v1.0.0      Revert to specific tag
-  lql revert --to              Interactive selection from deployed changes
+  pgpm revert                    Revert latest changes
+  pgpm revert --to @v1.0.0      Revert to specific tag
+  pgpm revert --to              Interactive selection from deployed changes
 `;
 
 export default async (
