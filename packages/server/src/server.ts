@@ -40,12 +40,21 @@ class Server {
 
     healthz(app);
     trustProxy(app, opts.server.trustProxy);
+    // Warn if a global CORS override is set in production
+    const fallbackOrigin = opts.server?.origin?.trim();
+    if (fallbackOrigin && process.env.NODE_ENV === 'production') {
+      if (fallbackOrigin === '*') {
+        log.warn('CORS wildcard ("*") is enabled in production. This effectively allows any web origin and is not recommended.');
+      } else {
+        log.warn(`CORS override origin set to ${fallbackOrigin} in production. Prefer per-API CORS via meta schema.`);
+      }
+    }
+    app.use(cors(fallbackOrigin));
     app.use(poweredBy('launchql'));
     app.use(graphqlUpload.graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
     app.use(requestIp.mw());
     app.use(api);
-    app.use(cors as any);
     app.use(authenticate);
     app.use(graphile(opts));
     app.use(flush);

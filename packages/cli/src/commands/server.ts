@@ -63,6 +63,13 @@ const questions: Question[] = [
     useDefault: true
   },
   {
+    name: 'origin',
+    message: 'CORS origin (exact URL or *)',
+    type: 'text',
+    required: false,
+    // no default to avoid accidentally opening up CORS; pass explicitly or via env
+  },
+  {
     name: 'port',
     message: 'Development server port',
     type: 'number',
@@ -116,8 +123,21 @@ export default async (
     port,
     postgis,
     simpleInflection,
-    metaApi
+    metaApi,
+    origin
   } = await prompter.prompt(argv, questions);
+
+  // Warn when passing CORS override via CLI, especially in production
+  if (origin && origin.trim().length) {
+    const env = (process.env.NODE_ENV || 'development').toLowerCase();
+    if (env === 'production') {
+      if (origin.trim() === '*') {
+        log.warn('CORS wildcard ("*") provided via --origin in production: this effectively disables CORS and is not recommended. Prefer per-API CORS via meta schema.');
+      } else {
+        log.warn(`CORS override (origin=${origin.trim()}) provided via --origin in production. Prefer per-API CORS via meta schema.`);
+      }
+    }
+  }
 
   let selectedSchemas: string[] = [];
   let authRole: string | undefined;
@@ -179,7 +199,8 @@ export default async (
       ...(metaApi === false && { exposedSchemas: selectedSchemas, authRole, roleName })
     },
     server: {
-      port
+      port,
+      ...(origin ? { origin } : {})
     }
   } as LaunchQLOptions);
 
