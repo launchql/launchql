@@ -5,7 +5,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 const log = new Logger('plan');
 
 const planUsageText = `
-LaunchQL Plan Command:
+Plan Command:
 
   pgpm plan [OPTIONS]
 

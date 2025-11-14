@@ -12,7 +12,7 @@ const log = new Logger('revert');
 
 
 const revertUsageText = `
-LaunchQL Revert Command:
+Revert Command:
 
   pgpm revert [OPTIONS]
 

@@ -3,7 +3,7 @@ import { CLIOptions, Inquirerer, OptionValue, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
 const extensionUsageText = `
-LaunchQL Extension Command:
+Extension Command:
 
   pgpm extension [OPTIONS]
 

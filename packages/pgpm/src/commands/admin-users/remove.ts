@@ -7,11 +7,11 @@ import { getPgEnvOptions } from 'pg-env';
 const log = new Logger('admin-users-remove');
 
 const removeUsageText = `
-LaunchQL Admin Users Remove Command:
+Admin Users Remove Command:
 
   pgpm admin-users remove [OPTIONS]
 
-  Remove database users and revoke their LaunchQL roles.
+  Remove database users and revoke their pgpm roles.
 
 Options:
   --help, -h              Show this help message
@@ -47,7 +47,7 @@ export default async (
         {
           type: 'confirm',
           name: 'yes',
-          message: 'Are you sure you want to remove LaunchQL test users (app_user, app_admin)?',
+          message: 'Are you sure you want to remove pgpm test users (app_user, app_admin)?',
           default: false
         }
       ]);

@@ -6,7 +6,7 @@ import { resolve } from 'path';
 import { getPgPool } from 'pg-cache';
 
 const exportUsageText = `
-LaunchQL Export Command:
+Export Command:
 
   pgpm export [OPTIONS]
 

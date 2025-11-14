@@ -7,11 +7,11 @@ import { getPgEnvOptions } from 'pg-env';
 const log = new Logger('admin-users-add');
 
 const addUsageText = `
-LaunchQL Admin Users Add Command:
+Admin Users Add Command:
 
   pgpm admin-users add [OPTIONS]
 
-  Add database users with LaunchQL roles.
+  Add database users with pgpm roles.
   Note: You must run 'pgpm admin-users bootstrap' first to initialize roles.
 
 Options:
@@ -49,7 +49,7 @@ export default async (
         {
           type: 'confirm',
           name: 'yes',
-          message: 'Are you sure you want to add LaunchQL test users? (WARNING: Should NEVER be run on production!)',
+          message: 'Are you sure you want to add pgpm test users? (WARNING: Should NEVER be run on production!)',
           default: false
         }
       ]);

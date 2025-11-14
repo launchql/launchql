@@ -10,7 +10,7 @@ import { selectPackage } from '../utils/module-utils';
 const log = new Logger('tag');
 
 const tagUsageText = `
-LaunchQL Tag Command:
+Tag Command:
 
   pgpm tag [tag_name] [OPTIONS]
 

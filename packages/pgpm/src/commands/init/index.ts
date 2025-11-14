@@ -4,11 +4,11 @@ import runModuleSetup from './module';
 import runWorkspaceSetup from './workspace';
 
 const initUsageText = `
-LaunchQL Init Command:
+Init Command:
 
   pgpm init [OPTIONS]
 
-  Initialize LaunchQL workspace or module.
+  Initialize pgpm workspace or module.
 
 Options:
   --help, -h              Show this help message
