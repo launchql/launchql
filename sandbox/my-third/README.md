@@ -54,8 +54,7 @@ A unified toolkit for building applications and smart contracts in the Interchai
 
 ## Credits
 
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
-
+🛠 Built by LaunchQL — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/launchql)
 
 ## Disclaimer
 
