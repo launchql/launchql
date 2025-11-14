@@ -9,7 +9,6 @@ LaunchQL CLI is a comprehensive command-line tool that transforms your PostgreSQ
 - 🚀 **Database-First Development** - Design your database, get your GraphQL API automatically
 - 🔐 **Built-in Security** - Role-based access control and security policies
 - 📦 **Module System** - Reusable database modules with dependency management
-- 🔄 **Smart Migrations** - Automated migration generation and deployment
 - 🛠️ **Developer Experience** - Hot-reload development server with GraphiQL explorer
 - 🏗️ **Production Ready** - Deployment plans, versioning, and rollback support
 
@@ -404,6 +403,7 @@ Most commands support these global options:
 
 ### 🧰 CLI & Codegen
 
+* [pgpm](https://github.com/launchql/launchql/tree/main/packages/pgpm): **🖥️ PostgreSQL Package Manager** for modular Postgres development. Works with database workspaces, scaffolding, migrations, seeding, and installing database packages.
 * [@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL projects—supports database scaffolding, migrations, seeding, code generation, and automation.
 * [launchql/launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
 * [@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
