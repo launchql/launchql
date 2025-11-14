@@ -6,6 +6,7 @@
 
 ## ✨ Features
 
+- 🚀 **Rapid Development Setup** - Initialize production-ready workspaces with boilerplates including Docker Compose, GitHub Actions CI/CD, e2e testing framework (pgsql-test), and complete TypeScript/ESLint configuration
 - 🏗️ **Module-Native PostgreSQL** - Build your database as composable packages in a workspace monorepo, each with its own plan, dependencies, and version tags
 - 📊 **Dependency-Graph Migrations** - Automatic dependency resolution from plan files or SQL headers, with cross-module references and circular dependency detection
 - 🏷️ **Tag-Aware Versioning** - Deploy to @tags, resolve tags to changes, and reference tags across modules for coordinated releases
@@ -32,6 +33,85 @@ pgpm init
 
 # Deploy to your database
 pgpm deploy --createdb
+```
+
+## 🎯 Rapid Development Environment
+
+`pgpm init` provides production-ready boilerplates that set up a complete development environment in seconds—like `npm init` but more polished and opinionated for PostgreSQL development.
+
+### What You Get with `pgpm init --workspace`
+
+**Infrastructure:**
+- 🐳 **Docker Compose** - Pre-configured PostgreSQL (pyramation/pgvector) and MinIO services
+- 📦 **pnpm Workspace** - Monorepo setup with workspace configuration
+- 🔧 **TypeScript Configuration** - Dual-build setup (CommonJS + ESM)
+
+**Testing & Quality:**
+- 🧪 **E2E Testing Framework** - Pre-configured `pgsql-test` with transaction-based test isolation
+- ✅ **GitHub Actions CI/CD** - Complete workflow with PostgreSQL and MinIO services
+- 🎨 **ESLint & Prettier** - Code quality and formatting pre-configured
+- 📝 **Jest Configuration** - Ready-to-use test runner with TypeScript support
+
+**Development Tools:**
+- 🚀 **VS Code Settings** - Optimized editor configuration
+- 📋 **Makefile** - Common development tasks automated
+- 📄 **README Template** - Documentation structure with LaunchQL branding
+
+### What You Get with `pgpm init` (Module)
+
+**Module Structure:**
+- 📦 **Package Configuration** - Complete package.json with test scripts
+- 🧪 **Test Template** - Working test file using `pgsql-test` with beforeEach/afterEach hooks
+- 🎯 **Jest Setup** - Module-specific test configuration
+- 📝 **README Template** - Module documentation structure
+
+### Example Test Setup (Included)
+
+The boilerplate includes a complete e2e test setup using `pgsql-test`:
+
+```typescript
+import { getConnections, PgTestClient } from 'pgsql-test';
+
+let db: PgTestClient;
+let pg: PgTestClient;
+let teardown: () => Promise<void>;
+
+beforeAll(async () => {
+  ({ pg, db, teardown } = await getConnections());
+});
+
+afterAll(async () => {
+  await teardown();
+});
+
+beforeEach(async () => {
+  await db.beforeEach(); // Transaction-based isolation
+});
+
+afterEach(async () => {
+  await db.afterEach(); // Automatic rollback
+});
+```
+
+This setup provides:
+- **Isolated test databases** - Each test runs in its own transaction
+- **Automatic rollback** - No test pollution between runs
+- **Fast execution** - No need to recreate databases between tests
+- **RLS simulation** - Test row-level security policies
+
+### Custom Templates
+
+You can use custom templates from GitHub repositories or local paths:
+
+```bash
+# From GitHub repository
+pgpm init --workspace --repo owner/repo
+
+# From local path
+pgpm init --workspace --template-path ./my-templates
+
+# Specific branch
+pgpm init --workspace --repo owner/repo --from-branch develop
 ```
 
 ## 🛠️ Commands
@@ -361,6 +441,7 @@ export PGPASSWORD=password
 
 ### Key Advantages
 
+- **Rapid development setup** with production-ready boilerplates (Docker, CI/CD, e2e testing)
 - **Module-native development** with workspace monorepo support
 - **Graph-resolved migrations** with automatic dependency ordering
 - **Cross-module references** for coordinated multi-module deployments
