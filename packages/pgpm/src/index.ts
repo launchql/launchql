@@ -2,6 +2,7 @@
 import { CLI, CLIOptions } from 'inquirerer';
 
 import { commands } from './commands';
+import { readAndParsePackageJson } from './package';
 
 export const options: Partial<CLIOptions> = {
   minimistOpts: {
@@ -13,6 +14,12 @@ export const options: Partial<CLIOptions> = {
 };
 
 if (require.main === module) {
+  if (process.argv.includes('--version') || process.argv.includes('-v')) {
+    const pkg = readAndParsePackageJson();
+    console.log(`${pkg.name}@${pkg.version}`);
+    process.exit(0);
+  }
+
   const app = new CLI(commands, options);
 
   app.run().then(()=> {

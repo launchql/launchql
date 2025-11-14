@@ -23,10 +23,14 @@ function findPackageJson(currentDir: string): any {
 }
 
 export function readAndParsePackageJson() {
-  // Start searching from the current directory
-  const pkgPath = findPackageJson(__dirname);
+  const distPkgPath = join(__dirname, 'package.json');
+  if (existsSync(distPkgPath)) {
+    const str = readFileSync(distPkgPath, 'utf8');
+    return JSON.parse(str);
+  }
 
-  // Read and parse the package.json
+  // Fallback: search upward from current directory
+  const pkgPath = findPackageJson(__dirname);
   const str = readFileSync(pkgPath, 'utf8');
   const pkg = JSON.parse(str);
   return pkg;
