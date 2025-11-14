@@ -8,7 +8,7 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ---
 
-## Course 1: Getting Started with LaunchQL Workspaces
+## Course 1: Modular PostgreSQL Development with Database Packages
 
 **Target Audience:** Developers new to LaunchQL who want to understand workspace and module concepts.
 
@@ -21,43 +21,75 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **What Are LaunchQL Workspaces and Why Use Them?**
-   - Understanding the workspace concept
-   - Benefits of modular PostgreSQL development
-   - Workspace vs module distinction
+#### Lesson 1 — LaunchQL Workspaces: A New Way to Organize PostgreSQL Projects
+*Understanding LaunchQL workspaces and modular PostgreSQL development*
 
-2. **Setting Up Your Development Environment**
-   - Installing Docker and PostgreSQL
-   - Running `docker-compose up -d`
-   - Bootstrapping roles: `psql < bootstrap-roles.sql`
-   - Installing extensions: `docker exec postgres /sql-bin/install.sh`
-   - Setting up pg-env configuration (PGHOST, PGUSER, PGDATABASE)
+- Understanding the workspace concept
+- Benefits of modular PostgreSQL development
+- Workspace vs module distinction
 
-3. **Initializing Your First Workspace**
-   - Command: `lql init --workspace`
-   - Understanding workspace structure
-   - The `launchql.json` configuration file
-   - Package patterns in workspace config
-   - CLI reference: `packages/cli/src/commands/init/workspace.ts`
+#### Lesson 2 — How to Initialize a Workspace for Modular PostgreSQL Development
+*Setting up your development environment*
 
-4. **Creating Your First Database Module**
-   - Command: `lql init` (module mode)
-   - Understanding module structure: deploy/, revert/, verify/
-   - The `launchql.plan` file format
-   - The `.control` file and module metadata
-   - CLI reference: `packages/cli/src/commands/init/module.ts`
+- Installing Docker and PostgreSQL
+- Running `docker-compose up -d`
+- Bootstrapping roles: `psql < bootstrap-roles.sql`
+- Installing extensions: `docker exec postgres /sql-bin/install.sh`
+- Setting up pg-env configuration (PGHOST, PGUSER, PGDATABASE)
+- Command: `lql init --workspace`
+- Understanding workspace structure
+- The `launchql.json` configuration file
+- Package patterns in workspace config
+- CLI reference: `packages/cli/src/commands/init/workspace.ts`
 
-5. **Using Custom Templates for Initialization**
-   - Using `--repo owner/repo` for GitHub templates
-   - Using `--template-path` for local templates
-   - Using `--from-branch` to specify template branch
-   - When and why to customize templates
+#### Lesson 3 — Creating Your First PostgreSQL Database Module
+*Initializing a LaunchQL module with deploy, revert, and verify scripts*
 
-6. **Understanding Module Discovery and the Module Map**
-   - How LaunchQL discovers modules in a workspace
-   - The `getModuleMap()` method
-   - Handling naming collisions (shortest path wins)
-   - API reference: `LaunchQLPackage.getModuleMap()` in `packages/core/src/core/class/launchql.ts`
+- Command: `lql init` (module mode)
+- Understanding module structure: deploy/, revert/, verify/
+- The `launchql.plan` file format
+- The `.control` file and module metadata
+- CLI reference: `packages/cli/src/commands/init/module.ts`
+
+#### Lesson 4 — How Database Package Dependencies Work in PostgreSQL
+*Understanding and managing module dependencies*
+
+- Native PostgreSQL extensions (plpgsql, pgcrypto, postgis)
+- LaunchQL module dependencies
+- The `.control` file `requires` field
+- Dependency resolution order
+- How LaunchQL discovers modules in a workspace
+- The `getModuleMap()` method
+- Handling naming collisions (shortest path wins)
+- API reference: `LaunchQLPackage.getModuleMap()` in `packages/core/src/core/class/launchql.ts`
+
+#### Lesson 5 — Testing PostgreSQL Database Modules Locally
+*Running and verifying database changes in your local environment*
+
+- Using custom templates with `--repo owner/repo` for GitHub templates
+- Using `--template-path` for local templates
+- Using `--from-branch` to specify template branch
+- When and why to customize templates
+- Local testing strategies
+- Verifying module structure
+
+#### Lesson 6 — Running PostgreSQL Module Tests in GitHub Actions
+*Automating module tests in CI/CD pipelines*
+
+- Setting up GitHub Actions for LaunchQL
+- Provisioning PostgreSQL in CI
+- Running module tests automatically
+- Handling test database cleanup
+
+#### Lesson 7 — Scaling Applications with Modular PostgreSQL Packages
+*Best practices for growing your database architecture*
+
+- Module organization strategies
+- Dependency management at scale
+- Publishing and sharing modules
+- Command: `lql package`
+- Understanding the `dist/` directory
+- API reference: `publishToDist()` in `packages/core/src/core/class/launchql.ts`
 
 ---
 
@@ -65,7 +97,7 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 **Target Audience:** Developers who need to add and manage database schema changes.
 
-**Prerequisites:** Completed "Getting Started with LaunchQL Workspaces" or equivalent knowledge.
+**Prerequisites:** Completed "Modular PostgreSQL Development with Database Packages" or equivalent knowledge.
 
 **Code References:**
 - `packages/cli/src/commands/add.ts` - Add command
@@ -75,59 +107,77 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Adding Your First Database Change**
-   - Command: `lql add schema_myapp`
-   - Understanding the three SQL files: deploy, revert, verify
-   - How changes are added to `launchql.plan`
-   - CLI reference: `packages/cli/src/commands/add.ts`
+#### Lesson 1 — How to Add Your First Database Change to a LaunchQL Module
+*Adding database changes with deploy, revert, and verify scripts*
 
-2. **Creating Changes with Nested Paths**
-   - Command: `lql add tables/users`
-   - Organizing changes hierarchically
-   - Best practices for change naming
-   - Example: `schema/app/tables/users`
+- Command: `lql add schema_myapp`
+- Understanding the three SQL files: deploy, revert, verify
+- How changes are added to `launchql.plan`
+- CLI reference: `packages/cli/src/commands/add.ts`
 
-3. **Adding Change Dependencies**
-   - Command: `lql add contacts --requires users`
-   - Understanding dependency resolution
-   - Using multiple `--requires` flags
-   - Dependency syntax in SQL: `-- requires: users`
+#### Lesson 2 — Organizing Database Changes with Nested Paths
+*Creating hierarchical change structures for better organization*
 
-4. **Adding Notes and Documentation to Changes**
-   - Command: `lql add brands --note "Adds the brands table"`
-   - When and why to document changes
-   - Best practices for change descriptions
+- Command: `lql add tables/users`
+- Organizing changes hierarchically
+- Best practices for change naming
+- Example: `schema/app/tables/users`
 
-5. **Writing Deploy Scripts**
-   - Creating forward migration SQL
-   - Using transactions appropriately
-   - Idempotency considerations
-   - Common patterns: CREATE SCHEMA, CREATE TABLE, CREATE FUNCTION
+#### Lesson 3 — Managing Change Dependencies in PostgreSQL Migrations
+*Defining and resolving dependencies between database changes*
 
-6. **Writing Revert Scripts**
-   - Creating rollback SQL
-   - Ensuring clean reversibility
-   - Common patterns: DROP TABLE, DROP SCHEMA
-   - Testing revert scripts locally
+- Command: `lql add contacts --requires users`
+- Understanding dependency resolution
+- Using multiple `--requires` flags
+- Dependency syntax in SQL: `-- requires: users`
 
-7. **Writing Verify Scripts**
-   - Creating verification SQL
-   - What to verify: existence, structure, data integrity
-   - Using assertions and checks
-   - When verify scripts fail vs succeed
+#### Lesson 4 — Documenting Database Changes with Notes and Comments
+*Adding context and documentation to your migrations*
 
-8. **Understanding the Plan File Format**
-   - Plan file syntax: `change: name [dep1 dep2] # comment`
-   - Tag syntax: `@tagname`
-   - How plan order affects deployment
-   - API reference: `parsePlanFile()` in `packages/core/src/files/plan/parser.ts`
+- Command: `lql add brands --note "Adds the brands table"`
+- When and why to document changes
+- Best practices for change descriptions
 
-9. **Generating and Validating Plans**
-   - Command: `lql plan`
-   - Understanding dependency graphs
-   - Detecting circular dependencies
-   - Plan validation utilities
-   - CLI reference: `packages/cli/src/commands/plan.ts`
+#### Lesson 5 — Writing Effective Deploy Scripts for PostgreSQL
+*Creating forward migration SQL with best practices*
+
+- Creating forward migration SQL
+- Using transactions appropriately
+- Idempotency considerations
+- Common patterns: CREATE SCHEMA, CREATE TABLE, CREATE FUNCTION
+
+#### Lesson 6 — Writing Revert Scripts for Safe Rollbacks
+*Ensuring clean reversibility of database changes*
+
+- Creating rollback SQL
+- Ensuring clean reversibility
+- Common patterns: DROP TABLE, DROP SCHEMA
+- Testing revert scripts locally
+
+#### Lesson 7 — Writing Verify Scripts to Validate Database State
+*Creating verification SQL to ensure deployment success*
+
+- Creating verification SQL
+- What to verify: existence, structure, data integrity
+- Using assertions and checks
+- When verify scripts fail vs succeed
+
+#### Lesson 8 — Understanding the LaunchQL Plan File Format
+*Mastering plan file syntax and dependency declarations*
+
+- Plan file syntax: `change: name [dep1 dep2] # comment`
+- Tag syntax: `@tagname`
+- How plan order affects deployment
+- API reference: `parsePlanFile()` in `packages/core/src/files/plan/parser.ts`
+
+#### Lesson 9 — Generating and Validating Deployment Plans
+*Creating dependency graphs and detecting circular dependencies*
+
+- Command: `lql plan`
+- Understanding dependency graphs
+- Detecting circular dependencies
+- Plan validation utilities
+- CLI reference: `packages/cli/src/commands/plan.ts`
 
 ---
 
@@ -146,82 +196,104 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Prerequisites: Setting Up Your Target Database**
-   - Ensuring PostgreSQL is running
-   - Creating target database with `createdb`
-   - Using `--createdb` flag with deploy
-   - Environment variables for database connection
+#### Lesson 1 — Setting Up Your Target Database for LaunchQL Deployments
+*Preparing PostgreSQL databases for migration deployment*
 
-2. **Your First Deployment**
-   - Command: `lql deploy --database mydb --package my-first --yes`
-   - Understanding what happens during deployment
-   - The `launchql_migrate` schema
-   - Tracking deployed changes
-   - CLI reference: `packages/cli/src/commands/deploy.ts`
+- Ensuring PostgreSQL is running
+- Creating target database with `createdb`
+- Using `--createdb` flag with deploy
+- Environment variables for database connection
 
-3. **Deploying to a Specific Change**
-   - Command: `lql deploy --to schema_myapp`
-   - Partial deployments
-   - Understanding deployment targets
-   - Target format: `package:change`
-   - API reference: `parseTarget()` in `packages/core/src/utils/target-utils.ts`
+#### Lesson 2 — How to Deploy Database Changes with LaunchQL
+*Running your first deployment and understanding the migration process*
 
-4. **Working with Tags for Version Control**
-   - Command: `lql tag v1.0.0`
-   - Adding tags to specific changes: `lql tag v1.0.0 --changeName users`
-   - Deploying to a tag: `lql deploy --to @v1.0.0`
-   - Tag naming conventions and validation
-   - CLI reference: `packages/cli/src/commands/tag.ts`
-   - Tests: `packages/cli/__tests__/tags.test.ts`
+- Command: `lql deploy --database mydb --package my-first --yes`
+- Understanding what happens during deployment
+- The `launchql_migrate` schema
+- Tracking deployed changes
+- CLI reference: `packages/cli/src/commands/deploy.ts`
 
-5. **Recursive vs Package-Only Deployment**
-   - Understanding `--recursive` flag (default: true)
-   - Using `--no-recursive` for single package deployment
-   - When to use each approach
-   - Cross-module dependency resolution
-   - Test reference: `packages/cli/__tests__/deploy.test.ts` (--no-recursive case)
+#### Lesson 3 — Deploying to a Specific Change or Checkpoint
+*Partial deployments and deployment targeting*
 
-6. **Transaction Control in Deployments**
-   - Understanding `--tx` flag (default: true)
-   - Transactional vs non-transactional deployment
-   - When to disable transactions
-   - Rollback behavior on errors
-   - API reference: `LaunchQLMigrate.deploy()` with `useTransaction` option
+- Command: `lql deploy --to schema_myapp`
+- Partial deployments
+- Understanding deployment targets
+- Target format: `package:change`
+- API reference: `parseTarget()` in `packages/core/src/utils/target-utils.ts`
 
-7. **Fast Deployment Mode**
-   - Understanding `--fast` flag
-   - Bundling SQL into single script
-   - Trade-offs: speed vs granular tracking
-   - When to use fast mode
-   - API reference: `packageModule()` in `packages/core/src/packaging/package.ts`
+#### Lesson 4 — Using Tags for Database Version Control
+*Tagging changes and deploying to specific versions*
 
-8. **Dry Runs with Log-Only Mode**
-   - Command: `lql deploy --logOnly`
-   - Previewing deployments without execution
-   - Recording metadata without running SQL
-   - Validating deployment plans safely
-   - API reference: `deploy()` with `logOnly` parameter
+- Command: `lql tag v1.0.0`
+- Adding tags to specific changes: `lql tag v1.0.0 --changeName users`
+- Deploying to a tag: `lql deploy --to @v1.0.0`
+- Tag naming conventions and validation
+- CLI reference: `packages/cli/src/commands/tag.ts`
+- Tests: `packages/cli/__tests__/tags.test.ts`
 
-9. **Using Deployment Plans**
-   - Understanding `--usePlan` flag
-   - Plan-based vs SQL-scanning dependency resolution
-   - Performance implications
-   - API reference: `resolveDependencies()` in `packages/core/src/resolution/deps.ts`
+#### Lesson 5 — Recursive vs Package-Only Deployment Strategies
+*Understanding when to deploy dependencies vs single packages*
 
-10. **Reverting Database Changes**
-    - Command: `lql revert --database mydb --package my-first`
-    - Reverting to a specific change: `lql revert --to users`
-    - Reverting to a tag: `lql revert --to @v1.0.0`
-    - Interactive change selection: `lql revert --to`
-    - CLI reference: `packages/cli/src/commands/revert.ts`
+- Understanding `--recursive` flag (default: true)
+- Using `--no-recursive` for single package deployment
+- When to use each approach
+- Cross-module dependency resolution
+- Test reference: `packages/cli/__tests__/deploy.test.ts` (--no-recursive case)
 
-11. **Verifying Deployed State**
-    - Command: `lql verify --database mydb --package my-first`
-    - Verifying up to a specific change
-    - Understanding verification failures
-    - When to run verify (post-deployment, troubleshooting)
-    - CLI reference: `packages/cli/src/commands/verify.ts`
-    - API reference: `LaunchQLMigrate.verify()` in `packages/core/src/migrate/client.ts`
+#### Lesson 6 — Transaction Control in Database Deployments
+*Managing transactional vs non-transactional deployments*
+
+- Understanding `--tx` flag (default: true)
+- Transactional vs non-transactional deployment
+- When to disable transactions
+- Rollback behavior on errors
+- API reference: `LaunchQLMigrate.deploy()` with `useTransaction` option
+
+#### Lesson 7 — Fast Deployment Mode for Production Environments
+*Optimizing deployment speed with bundled SQL scripts*
+
+- Understanding `--fast` flag
+- Bundling SQL into single script
+- Trade-offs: speed vs granular tracking
+- When to use fast mode
+- API reference: `packageModule()` in `packages/core/src/packaging/package.ts`
+
+#### Lesson 8 — Previewing Deployments with Log-Only Mode
+*Dry runs and deployment validation without execution*
+
+- Command: `lql deploy --logOnly`
+- Previewing deployments without execution
+- Recording metadata without running SQL
+- Validating deployment plans safely
+- API reference: `deploy()` with `logOnly` parameter
+
+#### Lesson 9 — Plan-Based vs SQL-Scanning Dependency Resolution
+*Choosing the right dependency resolution strategy*
+
+- Understanding `--usePlan` flag
+- Plan-based vs SQL-scanning dependency resolution
+- Performance implications
+- API reference: `resolveDependencies()` in `packages/core/src/resolution/deps.ts`
+
+#### Lesson 10 — How to Revert Database Changes Safely
+*Rolling back deployments to previous states*
+
+- Command: `lql revert --database mydb --package my-first`
+- Reverting to a specific change: `lql revert --to users`
+- Reverting to a tag: `lql revert --to @v1.0.0`
+- Interactive change selection: `lql revert --to`
+- CLI reference: `packages/cli/src/commands/revert.ts`
+
+#### Lesson 11 — Verifying Database Deployment State
+*Validating that deployments match expected state*
+
+- Command: `lql verify --database mydb --package my-first`
+- Verifying up to a specific change
+- Understanding verification failures
+- When to run verify (post-deployment, troubleshooting)
+- CLI reference: `packages/cli/src/commands/verify.ts`
+- API reference: `LaunchQLMigrate.verify()` in `packages/core/src/migrate/client.ts`
 
 ---
 
@@ -238,54 +310,68 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Initializing Migration Tracking**
-   - Command: `lql migrate init`
-   - Understanding the `launchql_migrate` schema
-   - Tables: packages, changes, dependencies, events
-   - Stored procedures: deploy(), revert(), verify(), status()
-   - CLI reference: `packages/cli/src/commands/migrate/init.ts`
+#### Lesson 1 — Initializing Migration Tracking in PostgreSQL
+*Setting up the launchql_migrate schema for deployment tracking*
 
-2. **Checking Migration Status**
-   - Command: `lql migrate status`
-   - Understanding status output: package, total deployed, last change
-   - Viewing recent changes
-   - Viewing pending changes
-   - CLI reference: `packages/cli/src/commands/migrate/status.ts`
-   - API reference: `LaunchQLMigrate.status()` in `packages/core/src/migrate/client.ts`
+- Command: `lql migrate init`
+- Understanding the `launchql_migrate` schema
+- Tables: packages, changes, dependencies, events
+- Stored procedures: deploy(), revert(), verify(), status()
+- CLI reference: `packages/cli/src/commands/migrate/init.ts`
 
-3. **Listing All Changes**
-   - Command: `lql migrate list`
-   - Viewing deployed vs pending changes
-   - Understanding change status indicators (✅ vs ⏳)
-   - Using `--all` flag for complete listing
-   - CLI reference: `packages/cli/src/commands/migrate/list.ts`
+#### Lesson 2 — Checking Migration Status for Your Database
+*Viewing deployment status and recent changes*
 
-4. **Viewing Change Dependencies**
-   - Command: `lql migrate deps`
-   - Understanding dependency graphs
-   - Identifying cross-package dependencies
-   - Detecting circular dependencies
-   - CLI reference: `packages/cli/src/commands/migrate/deps.ts`
+- Command: `lql migrate status`
+- Understanding status output: package, total deployed, last change
+- Viewing recent changes
+- Viewing pending changes
+- CLI reference: `packages/cli/src/commands/migrate/status.ts`
+- API reference: `LaunchQLMigrate.status()` in `packages/core/src/migrate/client.ts`
 
-5. **Querying Deployment History Programmatically**
-   - Using `LaunchQLMigrate.getDeployedChanges()`
-   - Using `LaunchQLMigrate.getPendingChanges()`
-   - Using `LaunchQLMigrate.getRecentChanges()`
-   - Using `LaunchQLMigrate.isDeployed()`
-   - API reference: `packages/core/src/migrate/client.ts`
+#### Lesson 3 — Listing All Database Changes and Their Status
+*Viewing deployed vs pending changes across packages*
 
-6. **Understanding Migration Events**
-   - The `launchql_migrate.events` table
-   - Event types: deploy, revert, verify
-   - Event persistence (survives rollbacks)
-   - Debugging failed deployments with event logs
+- Command: `lql migrate list`
+- Viewing deployed vs pending changes
+- Understanding change status indicators (✅ vs ⏳)
+- Using `--all` flag for complete listing
+- CLI reference: `packages/cli/src/commands/migrate/list.ts`
 
-7. **Script Hash Verification**
-   - Understanding script hashes (SHA256)
-   - Content-based vs AST-based hashing
-   - Detecting unauthorized script modifications
-   - Using `DEPLOYMENT_HASH_METHOD` environment variable
-   - API reference: `calculateScriptHash()` in `packages/core/src/migrate/client.ts`
+#### Lesson 4 — Visualizing Change Dependencies and Graphs
+*Understanding dependency relationships between changes*
+
+- Command: `lql migrate deps`
+- Understanding dependency graphs
+- Identifying cross-package dependencies
+- Detecting circular dependencies
+- CLI reference: `packages/cli/src/commands/migrate/deps.ts`
+
+#### Lesson 5 — Querying Deployment History Programmatically
+*Using LaunchQLMigrate API methods for custom tooling*
+
+- Using `LaunchQLMigrate.getDeployedChanges()`
+- Using `LaunchQLMigrate.getPendingChanges()`
+- Using `LaunchQLMigrate.getRecentChanges()`
+- Using `LaunchQLMigrate.isDeployed()`
+- API reference: `packages/core/src/migrate/client.ts`
+
+#### Lesson 6 — Understanding Migration Events and Audit Logs
+*Tracking deployment events that survive rollbacks*
+
+- The `launchql_migrate.events` table
+- Event types: deploy, revert, verify
+- Event persistence (survives rollbacks)
+- Debugging failed deployments with event logs
+
+#### Lesson 7 — Script Hash Verification for Security
+*Detecting unauthorized modifications to deployed scripts*
+
+- Understanding script hashes (SHA256)
+- Content-based vs AST-based hashing
+- Detecting unauthorized script modifications
+- Using `DEPLOYMENT_HASH_METHOD` environment variable
+- API reference: `calculateScriptHash()` in `packages/core/src/migrate/client.ts`
 
 ---
 
@@ -293,7 +379,7 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 **Target Audience:** Developers building modular database applications with shared dependencies.
 
-**Prerequisites:** Completed "Getting Started with LaunchQL Workspaces" or equivalent knowledge.
+**Prerequisites:** Completed "Modular PostgreSQL Development with Database Packages" or equivalent knowledge.
 
 **Code References:**
 - `packages/cli/src/commands/extension.ts` - Extension command
@@ -303,41 +389,53 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Understanding Module Dependencies**
-   - Native PostgreSQL extensions (plpgsql, pgcrypto, postgis)
-   - LaunchQL module dependencies
-   - The `.control` file `requires` field
-   - Dependency resolution order
+#### Lesson 1 — Understanding PostgreSQL Extensions and LaunchQL Modules
+*Native extensions vs LaunchQL module dependencies*
 
-2. **Adding Extensions to a Module**
-   - Command: `lql extension`
-   - Interactive extension selection
-   - Updating the `.control` file
-   - API reference: `setModuleDependencies()` in `packages/core/src/core/class/launchql.ts`
+- Native PostgreSQL extensions (plpgsql, pgcrypto, postgis)
+- LaunchQL module dependencies
+- The `.control` file `requires` field
+- Dependency resolution order
 
-3. **Installing Module Dependencies**
-   - Command: `lql install <package>`
-   - Understanding workspace module discovery
-   - Installing from local workspace
-   - API reference: `installModules()` in `packages/core/src/core/class/launchql.ts`
+#### Lesson 2 — Adding Extensions to Your LaunchQL Module
+*Managing module dependencies with the extension command*
 
-4. **Resolving Extension Dependencies**
-   - Understanding dependency trees
-   - Transitive dependencies
-   - Circular dependency detection
-   - API reference: `resolveExtensionDependencies()` in `packages/core/src/resolution/deps.ts`
+- Command: `lql extension`
+- Interactive extension selection
+- Updating the `.control` file
+- API reference: `setModuleDependencies()` in `packages/core/src/core/class/launchql.ts`
 
-5. **Working with Cross-Module Dependencies**
-   - Referencing changes from other modules
-   - Dependency syntax: `other-module:change-name`
-   - Ensuring proper deployment order
-   - Test reference: `packages/core/__tests__/resolution/sql-script-resolution-cross-dependencies.test.ts`
+#### Lesson 3 — Installing Module Dependencies from Your Workspace
+*Installing LaunchQL modules from local workspace*
 
-6. **Publishing Modules to Distribution**
-   - Command: `lql package`
-   - Understanding the `dist/` directory
-   - Bundled SQL files and Makefiles
-   - API reference: `publishToDist()` in `packages/core/src/core/class/launchql.ts`
+- Command: `lql install <package>`
+- Understanding workspace module discovery
+- Installing from local workspace
+- API reference: `installModules()` in `packages/core/src/core/class/launchql.ts`
+
+#### Lesson 4 — Resolving Extension Dependency Trees
+*Understanding transitive dependencies and circular detection*
+
+- Understanding dependency trees
+- Transitive dependencies
+- Circular dependency detection
+- API reference: `resolveExtensionDependencies()` in `packages/core/src/resolution/deps.ts`
+
+#### Lesson 5 — Working with Cross-Module Dependencies
+*Referencing changes from other modules in your workspace*
+
+- Referencing changes from other modules
+- Dependency syntax: `other-module:change-name`
+- Ensuring proper deployment order
+- Test reference: `packages/core/__tests__/resolution/sql-script-resolution-cross-dependencies.test.ts`
+
+#### Lesson 6 — Publishing Modules to Distribution
+*Packaging modules for sharing and deployment*
+
+- Command: `lql package`
+- Understanding the `dist/` directory
+- Bundled SQL files and Makefiles
+- API reference: `publishToDist()` in `packages/core/src/core/class/launchql.ts`
 
 ---
 
@@ -355,56 +453,70 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Starting Your First GraphQL Server**
-   - Command: `lql server`
-   - Selecting target database
-   - Understanding default configuration
-   - Server port and basic options
-   - CLI reference: `packages/cli/src/commands/server.ts`
+#### Lesson 1 — Starting Your First GraphQL Server with LaunchQL
+*Launching a PostGraphile-powered GraphQL API*
 
-2. **Configuring Server Options**
-   - Using `--port` for custom port
-   - Using `--simpleInflection` for naming conventions
-   - Using `--oppositeBaseNames` for relationship naming
-   - Using `--postgis` for PostGIS support
-   - Using `--metaApi` for dynamic API configuration
+- Command: `lql server`
+- Selecting target database
+- Understanding default configuration
+- Server port and basic options
+- CLI reference: `packages/cli/src/commands/server.ts`
 
-3. **Launching the GraphiQL Explorer**
-   - Command: `lql explorer`
-   - Understanding the GraphiQL interface
-   - Setting CORS origin with `--origin`
-   - Interactive query building
-   - CLI reference: `packages/cli/src/commands/explorer.ts`
+#### Lesson 2 — Configuring GraphQL Server Options
+*Customizing PostGraphile settings for your API*
 
-4. **Understanding PostGraphile Plugins**
-   - Connection filter plugin
-   - PostGIS plugin
-   - Fulltext filter plugin
-   - Many-to-many plugin
-   - i18n plugin
-   - Meta-schema plugin
-   - Configuration reference: `packages/graphile-settings/`
+- Using `--port` for custom port
+- Using `--simpleInflection` for naming conventions
+- Using `--oppositeBaseNames` for relationship naming
+- Using `--postgis` for PostGIS support
+- Using `--metaApi` for dynamic API configuration
 
-5. **Working with Row-Level Security (RLS)**
-   - Understanding RLS policies in PostgreSQL
-   - How PostGraphile respects RLS
-   - Setting authentication context
-   - Role-based access control
-   - Middleware reference: `packages/server/src/middleware/auth.ts`
+#### Lesson 3 — Exploring Your GraphQL API with GraphiQL
+*Using the interactive GraphiQL interface*
 
-6. **Dynamic API Configuration with Meta Schema**
-   - Enabling Meta API mode
-   - Storing API configurations in PostgreSQL
-   - Multi-tenant API routing
-   - Domain/subdomain-based APIs
-   - API reference: `packages/server/src/middleware/api.ts`
+- Command: `lql explorer`
+- Understanding the GraphiQL interface
+- Setting CORS origin with `--origin`
+- Interactive query building
+- CLI reference: `packages/cli/src/commands/explorer.ts`
 
-7. **File Upload Streaming to S3**
-   - Understanding the upload pipeline
-   - Content-type detection with `mime-bytes`
-   - ETag calculation for S3 compatibility
-   - UUID generation from content
-   - Package reference: `packages/s3-streamer/`
+#### Lesson 4 — Understanding PostGraphile Plugins
+*Extending your GraphQL API with powerful plugins*
+
+- Connection filter plugin
+- PostGIS plugin
+- Fulltext filter plugin
+- Many-to-many plugin
+- i18n plugin
+- Meta-schema plugin
+- Configuration reference: `packages/graphile-settings/`
+
+#### Lesson 5 — Implementing Row-Level Security (RLS) in Your GraphQL API
+*Securing your API with PostgreSQL RLS policies*
+
+- Understanding RLS policies in PostgreSQL
+- How PostGraphile respects RLS
+- Setting authentication context
+- Role-based access control
+- Middleware reference: `packages/server/src/middleware/auth.ts`
+
+#### Lesson 6 — Building Multi-Tenant APIs with Meta Schema
+*Dynamic API configuration for multi-tenant applications*
+
+- Enabling Meta API mode
+- Storing API configurations in PostgreSQL
+- Multi-tenant API routing
+- Domain/subdomain-based APIs
+- API reference: `packages/server/src/middleware/api.ts`
+
+#### Lesson 7 — Streaming File Uploads to S3 from GraphQL
+*Handling file uploads with S3 integration*
+
+- Understanding the upload pipeline
+- Content-type detection with `mime-bytes`
+- ETag calculation for S3 compatibility
+- UUID generation from content
+- Package reference: `packages/s3-streamer/`
 
 ---
 
@@ -422,41 +534,53 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Understanding Schema Introspection**
-   - What is introspectron?
-   - Connecting to PostgreSQL for schema analysis
-   - Generating SDK from schema
-   - Package reference: `packages/introspectron/`
+#### Lesson 1 — Understanding PostgreSQL Schema Introspection
+*What is introspectron and how it analyzes your database*
 
-2. **Introspecting Your Database Schema**
-   - Running introspection against a database
-   - Understanding introspection output
-   - Schema metadata and relationships
-   - Test reference: `packages/introspectron/__tests__/introspect.test.ts`
+- What is introspectron?
+- Connecting to PostgreSQL for schema analysis
+- Generating SDK from schema
+- Package reference: `packages/introspectron/`
 
-3. **Generating GraphQL Queries**
-   - Using `@launchql/launchql-gen`
-   - Auto-generating queries and mutations
-   - Using `gql-ast` for AST manipulation
-   - Package reference: `packages/launchql-gen/`
+#### Lesson 2 — Introspecting Your Database Schema
+*Running introspection to extract schema metadata*
 
-4. **Generating TypeScript Types**
-   - Using `@launchql/pg-codegen`
-   - Generating types from PostgreSQL schemas
-   - Using `@babel/generator` for code generation
-   - Package reference: `packages/pg-codegen/`
+- Running introspection against a database
+- Understanding introspection output
+- Schema metadata and relationships
+- Test reference: `packages/introspectron/__tests__/introspect.test.ts`
 
-5. **Integrating Codegen into Your Workflow**
-   - When to regenerate types
-   - Automating codegen in build scripts
-   - Version control considerations
-   - Keeping generated code in sync with schema
+#### Lesson 3 — Auto-Generating GraphQL Queries from Your Schema
+*Creating type-safe GraphQL queries automatically*
 
-6. **Working with Generated GraphQL Queries**
-   - Using generated queries in client applications
-   - Type safety with TypeScript
-   - Customizing generated queries
-   - Best practices for query organization
+- Using `@launchql/launchql-gen`
+- Auto-generating queries and mutations
+- Using `gql-ast` for AST manipulation
+- Package reference: `packages/launchql-gen/`
+
+#### Lesson 4 — Generating TypeScript Types from PostgreSQL Schemas
+*Creating TypeScript interfaces from database tables*
+
+- Using `@launchql/pg-codegen`
+- Generating types from PostgreSQL schemas
+- Using `@babel/generator` for code generation
+- Package reference: `packages/pg-codegen/`
+
+#### Lesson 5 — Integrating Code Generation into Your Development Workflow
+*Automating codegen in your build process*
+
+- When to regenerate types
+- Automating codegen in build scripts
+- Version control considerations
+- Keeping generated code in sync with schema
+
+#### Lesson 6 — Working with Generated GraphQL Queries in TypeScript
+*Using generated queries in client applications*
+
+- Using generated queries in client applications
+- Type safety with TypeScript
+- Customizing generated queries
+- Best practices for query organization
 
 ---
 
@@ -474,62 +598,84 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Why End-to-End Testing Is Essential for PostgreSQL Applications**
-   - Testing database logic vs application logic
-   - Ensuring RLS policies work correctly
-   - Catching schema migration issues early
-   - Testing complex queries and transactions
+#### Lesson 1 — Why End-to-End Testing Is Essential for PostgreSQL Applications
+*Understanding the importance of database testing*
 
-2. **Setting Up the PostgreSQL Test Environment**
-   - Installing `@launchql/pgsql-test`
-   - Configuring test database connection
-   - Understanding test database isolation
-   - Using Docker for test databases
+- Testing database logic vs application logic
+- Ensuring RLS policies work correctly
+- Catching schema migration issues early
+- Testing complex queries and transactions
 
-3. **Creating Your First Database Test**
-   - Using `PgTestClient`
-   - Writing a basic CRUD test
-   - Understanding test lifecycle
-   - Package reference: `packages/pgsql-test/src/test-client.ts`
+#### Lesson 2 — How to Spin Up Ephemeral PostgreSQL Databases for Testing
+*Setting up isolated test databases with Docker*
 
-4. **Transaction-Based Test Isolation**
-   - Understanding `beforeEach()` and `afterEach()`
-   - Automatic rollback with savepoints
-   - Ensuring test independence
-   - API reference: `PgTestClient.beforeEach()` and `afterEach()`
+- Installing `@launchql/pgsql-test`
+- Configuring test database connection
+- Understanding test database isolation
+- Using Docker for test databases
 
-5. **Testing Row-Level Security (RLS) Policies**
-   - Setting authentication context with `auth()`
-   - Simulating different users and roles
-   - Verifying RLS policy enforcement
-   - Testing policy edge cases
-   - API reference: `PgTestClient.auth()` in `packages/pgsql-test/src/test-client.ts`
+#### Lesson 3 — Writing Reliable PostgreSQL Tests for CRUD and Query Logic
+*Creating your first database test with PgTestClient*
 
-6. **Seeding Test Data**
-   - Using SQL INSERT statements
-   - Loading data from JSON files
-   - Loading data from CSV files
-   - Programmatic data seeding
-   - Using `publish()` to commit seed data
+- Using `PgTestClient`
+- Writing a basic CRUD test
+- Understanding test lifecycle
+- Package reference: `packages/pgsql-test/src/test-client.ts`
 
-7. **Testing Complex Queries and Transactions**
-   - Testing multi-step transactions
-   - Testing concurrent operations
-   - Testing query performance
-   - Using `clearContext()` to reset session variables
+#### Lesson 4 — How to Test Row-Level Security (RLS) in PostgreSQL
+*Verifying RLS policies with authentication contexts*
 
-8. **Advanced RLS Testing: Simulating Multiple Users**
-   - Testing user isolation
-   - Testing role-based access
-   - Testing multi-tenant scenarios
-   - Switching between user contexts in tests
+- Setting authentication context with `auth()`
+- Simulating different users and roles
+- Verifying RLS policy enforcement
+- Testing policy edge cases
+- API reference: `PgTestClient.auth()` in `packages/pgsql-test/src/test-client.ts`
 
-9. **Managing Test Database Connections**
-   - Understanding `PgTestConnector`
-   - Connection pooling in tests
-   - Cleaning up connections with `closeAll()`
-   - Teardown best practices
-   - API reference: `packages/pgsql-test/src/manager.ts`
+#### Lesson 5 — Advanced PostgreSQL Testing: Transactions, Roles, and Concurrency
+*Testing complex database scenarios with transaction isolation*
+
+- Understanding `beforeEach()` and `afterEach()`
+- Automatic rollback with savepoints
+- Ensuring test independence
+- Testing multi-step transactions
+- Testing concurrent operations
+- API reference: `PgTestClient.beforeEach()` and `afterEach()`
+
+#### Lesson 6 — Seeding PostgreSQL Databases for Test Environments (SQL, JSON, CSV, Programmatic)
+*Loading test data from multiple sources*
+
+- Using SQL INSERT statements
+- Loading data from JSON files
+- Loading data from CSV files
+- Programmatic data seeding
+- Using `publish()` to commit seed data
+
+#### Lesson 7 — Advanced RLS Testing Scenarios: Simulating Many Users and Roles
+*Testing multi-user and multi-tenant scenarios*
+
+- Testing user isolation
+- Testing role-based access
+- Testing multi-tenant scenarios
+- Switching between user contexts in tests
+- Using `clearContext()` to reset session variables
+
+#### Lesson 8 — Running PostgreSQL Tests Automatically in GitHub Actions
+*Setting up CI/CD for database tests*
+
+- Provisioning PostgreSQL in GitHub Actions
+- Using Docker containers in CI
+- Bootstrapping roles and extensions
+- Running test suites automatically
+- Workflow reference: `.github/workflows/run-tests.yaml`
+
+#### Lesson 9 — Integrating PostgreSQL Testing into a Modern Developer Workflow
+*Best practices for database testing in production applications*
+
+- Managing test database connections with `PgTestConnector`
+- Connection pooling in tests
+- Cleaning up connections with `closeAll()`
+- Teardown best practices
+- API reference: `packages/pgsql-test/src/manager.ts`
 
 ---
 
@@ -545,59 +691,79 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **The Core Challenges of Testing Supabase Databases**
-   - Supabase-specific schemas: auth, storage, functions
-   - Testing with system tables
-   - Local vs cloud testing
-   - Isolation challenges
+#### Lesson 1 — The Core Challenges of Testing Supabase Databases
+*Understanding Supabase-specific testing requirements*
 
-2. **Setting Up Local Supabase Testing**
-   - Using Supabase CLI for local development
-   - Configuring test database connection
-   - Understanding Supabase schema structure
-   - Package reference: `packages/supabase-test/`
+- Supabase-specific schemas: auth, storage, functions
+- Testing with system tables
+- Local vs cloud testing
+- Isolation challenges
 
-3. **Testing with Isolated PostgreSQL Databases**
-   - Creating ephemeral test databases
-   - Applying Supabase migrations
-   - Ensuring test independence
-   - Cleanup strategies
+#### Lesson 2 — How to Test a Supabase Database Locally
+*Setting up local Supabase testing environment*
 
-4. **Testing RLS Policies in Supabase Projects**
-   - Supabase RLS policy patterns
-   - Testing auth.users integration
-   - Testing JWT claims
-   - Simulating authenticated users
+- Using Supabase CLI for local development
+- Configuring test database connection
+- Understanding Supabase schema structure
+- Package reference: `packages/supabase-test/`
 
-5. **Seeding Supabase System Tables**
-   - Seeding `auth.users` table
-   - Seeding storage buckets and objects
-   - Seeding function configurations
-   - Best practices for system table seeding
+#### Lesson 3 — Running Supabase Tests with Isolated PostgreSQL Databases
+*Creating ephemeral test databases for Supabase*
 
-6. **Testing Storage Integration**
-   - Testing storage policies
-   - Testing file upload/download
-   - Testing storage triggers
-   - Mocking storage operations
+- Creating ephemeral test databases
+- Applying Supabase migrations
+- Ensuring test independence
+- Cleanup strategies
 
-7. **Testing Supabase Functions and Triggers**
-   - Testing database functions
-   - Testing triggers and event handlers
-   - Testing edge functions (if applicable)
-   - Debugging function failures
+#### Lesson 4 — How to Test RLS Policies in Supabase Projects
+*Testing Supabase RLS policies with auth integration*
 
-8. **Fast TypeScript Workflows for Supabase Testing**
-   - Integrating with Jest/Vitest
-   - Type-safe test helpers
-   - Reusable test fixtures
-   - Optimizing test performance
+- Supabase RLS policy patterns
+- Testing auth.users integration
+- Testing JWT claims
+- Simulating authenticated users
 
-9. **End-to-End Testing Strategies for Production-Grade Supabase Apps**
-   - Testing complete user flows
-   - Testing real-time subscriptions
-   - Testing auth flows
-   - CI/CD integration
+#### Lesson 5 — Seeding Supabase Projects: auth.users, Storage, and Core System Tables
+*Populating Supabase system tables for testing*
+
+- Seeding `auth.users` table
+- Seeding storage buckets and objects
+- Seeding function configurations
+- Best practices for system table seeding
+
+#### Lesson 6 — Testing Core Supabase Schemas: Storage, Functions, and Built‑in Policies
+*Verifying Supabase storage and function integration*
+
+- Testing storage policies
+- Testing file upload/download
+- Testing storage triggers
+- Mocking storage operations
+- Testing database functions
+- Testing triggers and event handlers
+
+#### Lesson 7 — Running Supabase Database Tests in GitHub Actions
+*Automating Supabase tests in CI/CD*
+
+- Setting up Supabase in GitHub Actions
+- Provisioning Supabase services
+- Running automated tests
+- Handling Supabase-specific CI requirements
+
+#### Lesson 8 — Fast TypeScript Workflows for Supabase Database Testing
+*Optimizing test performance and developer experience*
+
+- Integrating with Jest/Vitest
+- Type-safe test helpers
+- Reusable test fixtures
+- Optimizing test performance
+
+#### Lesson 9 — End-to-End Testing Strategies for Production-Grade Supabase Apps
+*Testing complete user flows in Supabase applications*
+
+- Testing complete user flows
+- Testing real-time subscriptions
+- Testing auth flows
+- CI/CD integration
 
 ---
 
@@ -614,60 +780,78 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Understanding LaunchQL in CI Environments**
-   - Ephemeral databases for CI
-   - Service containers (PostgreSQL, MinIO)
-   - Environment variable management
-   - Secrets handling
+#### Lesson 1 — Understanding LaunchQL in CI Environments
+*Ephemeral databases and service containers for CI*
 
-2. **Provisioning PostgreSQL for CI**
-   - Using Docker containers in GitHub Actions
-   - Using `pyramation/pgvector:13.3-alpine` image
-   - Bootstrapping roles in CI
-   - Installing extensions in CI
-   - Workflow reference: `.github/workflows/run-tests.yaml`
+- Ephemeral databases for CI
+- Service containers (PostgreSQL, MinIO)
+- Environment variable management
+- Secrets handling
 
-3. **Running Migrations in CI**
-   - Using `lql deploy` in CI scripts
-   - Handling database creation
-   - Transaction control in CI
-   - Verifying deployments
+#### Lesson 2 — Provisioning PostgreSQL for GitHub Actions
+*Setting up PostgreSQL containers in CI pipelines*
 
-4. **Running Tests in CI**
-   - Running package test suites
-   - Parallel vs sequential execution
-   - Handling test database cleanup
-   - Collecting test artifacts
+- Using Docker containers in GitHub Actions
+- Using `pyramation/pgvector:13.3-alpine` image
+- Bootstrapping roles in CI
+- Installing extensions in CI
+- Workflow reference: `.github/workflows/run-tests.yaml`
 
-5. **Seeding Data for CI Tests**
-   - Automated data seeding scripts
-   - Using SQL files for seed data
-   - Using JSON/CSV for seed data
-   - Seed data version control
+#### Lesson 3 — Running Database Migrations in CI Pipelines
+*Automating deployments in continuous integration*
 
-6. **Managing Secrets and Environment Variables**
-   - GitHub Secrets for database credentials
-   - Using `list_secrets` to access secrets
-   - Environment-specific configuration
-   - Secure credential handling
+- Using `lql deploy` in CI scripts
+- Handling database creation
+- Transaction control in CI
+- Verifying deployments
 
-7. **Environment Promotion Patterns**
-   - Development → Staging → Production
-   - Using tags for version control
-   - Deployment approval workflows
-   - Rollback strategies
+#### Lesson 4 — Running PostgreSQL Tests in CI
+*Automating test execution in GitHub Actions*
 
-8. **Monitoring and Logging**
-   - Viewing CI job logs
-   - Debugging failed deployments
-   - Event log analysis
-   - Performance monitoring
+- Running package test suites
+- Parallel vs sequential execution
+- Handling test database cleanup
+- Collecting test artifacts
 
-9. **Optimizing CI Performance**
-   - Caching dependencies
-   - Parallel test execution
-   - Fast deployment mode in CI
-   - Incremental migrations
+#### Lesson 5 — Seeding Test Data in CI Environments
+*Automating test data loading for CI tests*
+
+- Automated data seeding scripts
+- Using SQL files for seed data
+- Using JSON/CSV for seed data
+- Seed data version control
+
+#### Lesson 6 — Managing Secrets and Environment Variables in CI
+*Secure credential handling for database connections*
+
+- GitHub Secrets for database credentials
+- Using `list_secrets` to access secrets
+- Environment-specific configuration
+- Secure credential handling
+
+#### Lesson 7 — Environment Promotion Patterns for Database Deployments
+*Deploying from development to staging to production*
+
+- Development → Staging → Production
+- Using tags for version control
+- Deployment approval workflows
+- Rollback strategies
+
+#### Lesson 8 — Monitoring and Debugging CI Deployments
+*Viewing logs and debugging failed deployments*
+
+- Viewing CI job logs
+- Debugging failed deployments
+- Event log analysis
+- Performance monitoring
+
+#### Lesson 9 — Optimizing CI Performance for LaunchQL Projects
+*Speeding up CI pipelines with caching and parallelization*
+
+- Caching dependencies
+- Parallel test execution
+- Fast deployment mode in CI
+- Incremental migrations
 
 ---
 
@@ -685,64 +869,82 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 
 ### Lessons
 
-1. **Analyzing Package Health**
-   - Command: `lql analyze`
-   - Understanding analysis output
-   - Detecting common issues
-   - Package quality metrics
-   - CLI reference: `packages/cli/src/commands/analyze.ts`
+#### Lesson 1 — Analyzing Package Health and Quality Metrics
+*Detecting common issues in LaunchQL packages*
 
-2. **Renaming Changes Safely**
-   - Command: `lql rename`
-   - Understanding rename implications
-   - Updating dependencies
-   - Maintaining deployment history
-   - CLI reference: `packages/cli/src/commands/rename.ts`
+- Command: `lql analyze`
+- Understanding analysis output
+- Detecting common issues
+- Package quality metrics
+- CLI reference: `packages/cli/src/commands/analyze.ts`
 
-3. **Removing Changes from Plans**
-   - Command: `lql remove`
-   - Understanding removal vs revert
-   - Cleaning up plan files
-   - Handling deployed changes
-   - CLI reference: `packages/cli/src/commands/remove.ts`
+#### Lesson 2 — Renaming Changes Safely in LaunchQL
+*Updating change names while maintaining deployment history*
 
-4. **Exporting Module Definitions**
-   - Command: `lql export`
-   - Understanding export formats
-   - Sharing modules across projects
-   - CLI reference: `packages/cli/src/commands/export.ts`
+- Command: `lql rename`
+- Understanding rename implications
+- Updating dependencies
+- Maintaining deployment history
+- CLI reference: `packages/cli/src/commands/rename.ts`
 
-5. **Working with Forked Deployments**
-   - Understanding deployment forks
-   - Handling divergent histories
-   - Merging deployment branches
-   - Test reference: `packages/core/__tests__/projects/forked-deployment-scenarios.test.ts`
+#### Lesson 3 — Removing Changes from Plan Files
+*Cleaning up plan files and handling deployed changes*
 
-6. **Revert Truncation Scenarios**
-   - Understanding truncation in reverts
-   - Partial rollbacks
-   - Dependency-aware reversion
-   - Test reference: `packages/core/__tests__/projects/revert-truncation-scenarios.test.ts`
+- Command: `lql remove`
+- Understanding removal vs revert
+- Cleaning up plan files
+- Handling deployed changes
+- CLI reference: `packages/cli/src/commands/remove.ts`
 
-7. **Migrating from Sqitch**
-   - Understanding Sqitch compatibility
-   - Using `importFromSqitch()`
-   - Migration strategy
-   - Validation and testing
-   - API reference: `LaunchQLMigrate.importFromSqitch()` in `packages/core/src/migrate/client.ts`
+#### Lesson 4 — Exporting Module Definitions for Sharing
+*Packaging modules for distribution across projects*
 
-8. **Custom Template Development**
-   - Creating custom workspace templates
-   - Creating custom module templates
-   - Template variables and rendering
-   - Sharing templates via GitHub
-   - Package reference: `packages/templatizer/`
+- Command: `lql export`
+- Understanding export formats
+- Sharing modules across projects
+- CLI reference: `packages/cli/src/commands/export.ts`
 
-9. **Performance Optimization Strategies**
-   - Using AST-based vs content-based hashing
-   - Caching deployment plans
-   - Fast deployment mode trade-offs
-   - Connection pooling best practices
+#### Lesson 5 — Working with Forked Deployment Scenarios
+*Handling divergent deployment histories*
+
+- Understanding deployment forks
+- Handling divergent histories
+- Merging deployment branches
+- Test reference: `packages/core/__tests__/projects/forked-deployment-scenarios.test.ts`
+
+#### Lesson 6 — Revert Truncation Scenarios and Partial Rollbacks
+*Understanding truncation in complex revert scenarios*
+
+- Understanding truncation in reverts
+- Partial rollbacks
+- Dependency-aware reversion
+- Test reference: `packages/core/__tests__/projects/revert-truncation-scenarios.test.ts`
+
+#### Lesson 7 — Migrating from Sqitch to LaunchQL
+*Importing existing Sqitch deployments*
+
+- Understanding Sqitch compatibility
+- Using `importFromSqitch()`
+- Migration strategy
+- Validation and testing
+- API reference: `LaunchQLMigrate.importFromSqitch()` in `packages/core/src/migrate/client.ts`
+
+#### Lesson 8 — Building Custom Templates for Workspaces and Modules
+*Creating reusable templates for your organization*
+
+- Creating custom workspace templates
+- Creating custom module templates
+- Template variables and rendering
+- Sharing templates via GitHub
+- Package reference: `packages/templatizer/`
+
+#### Lesson 9 — Performance Optimization Strategies for Large Deployments
+*Optimizing deployment speed and reliability*
+
+- Using AST-based vs content-based hashing
+- Caching deployment plans
+- Fast deployment mode trade-offs
+- Connection pooling best practices
 
 ---
 
@@ -753,7 +955,7 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 **Goal:** Learn the fundamentals of LaunchQL workspace and module management.
 
 **Sequence:**
-1. Course 1: Getting Started with LaunchQL Workspaces
+1. Course 1: Modular PostgreSQL Development with Database Packages
 2. Course 2: Working with Database Changes (Lessons 1-4)
 3. Course 3: Database Deployments and Migrations (Lessons 1-3)
 4. Course 5: Module Dependencies and Extensions (Lessons 1-2)
@@ -794,9 +996,9 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 **Goal:** Build and deploy GraphQL APIs backed by PostgreSQL.
 
 **Sequence:**
-1. Course 1: Getting Started with LaunchQL Workspaces
+1. Course 1: Modular PostgreSQL Development with Database Packages
 2. Course 3: Database Deployments and Migrations (Lessons 1-3)
-3. Course 6: GraphQL API Development (all lessons)
+3. Course 6: GraphQL API Development with LaunchQL (all lessons)
 4. Course 7: Code Generation and Introspection (all lessons)
 
 **Estimated Time:** 8-10 hours
@@ -819,7 +1021,7 @@ Courses are organized by feature area, allowing learners to jump directly to wha
 ## Blog Post Groupings
 
 ### Blog Post 1: "Introducing LaunchQL: Modular PostgreSQL Development"
-- Announce Course 1: Getting Started with LaunchQL Workspaces
+- Announce Course 1: Modular PostgreSQL Development with Database Packages
 - Announce Course 2: Working with Database Changes
 - Target: Developers new to LaunchQL
 
