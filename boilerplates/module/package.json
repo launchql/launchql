@@ -1,5 +1,5 @@
 {
-  "name": "__PACKAGE_IDENTIFIER__",
+  "name": "__MODULENAME__",
   "version": "0.0.1",
   "author": "__USERFULLNAME__ <__USEREMAIL__>",
   "description": "__MODULEDESC__",

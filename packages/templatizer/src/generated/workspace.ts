@@ -286,15 +286,21 @@ install_sql_modules "/sql-packages"
   },
   {
     "name": "${vars.MODULENAME}",
-    "message": "Enter the module name",
+    "message": "Enter the workspace name",
     "required": true
+  },
+  {
+    "name": "${vars.MODULEDESC}",
+    "message": "Enter the workspace description",
+    "required": false
   },
   {
     "name": "${vars.USERNAME}",
     "message": "Enter your github username",
     "required": true
   }
-]`;
+]
+`;
   return { relPath, content };
 },
 

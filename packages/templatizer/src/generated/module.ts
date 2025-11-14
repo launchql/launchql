@@ -4,7 +4,7 @@ export default [
 (vars: Record<string, any>) => {
   const relPath = `package.json`;
   const content = `{
-  "name": "${vars.PACKAGE_IDENTIFIER}",
+  "name": "${vars.MODULENAME}",
   "version": "0.0.1",
   "author": "${vars.USERFULLNAME} <${vars.USEREMAIL}>",
   "description": "${vars.MODULEDESC}",
@@ -35,7 +35,8 @@ export default [
       "graphql": "14.7.0"
     }
   }
-}`;
+}
+`;
   return { relPath, content };
 },
 
