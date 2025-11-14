@@ -1,5 +1,6 @@
-import { CLIDeployTestFixture } from '../test-utils';
 import { teardownPgPools } from 'pg-cache';
+
+import { CLIDeployTestFixture } from '../test-utils';
 
 jest.setTimeout(30000);
 
@@ -12,8 +13,8 @@ describe('CLIDeployTestFixture Migrate', () => {
   let testDb: any;
 
   beforeAll(async () => {
-    fixture = new CLIDeployTestFixture('stage')
-    testDb = await fixture.setupTestDatabase()
+    fixture = new CLIDeployTestFixture('stage');
+    testDb = await fixture.setupTestDatabase();
   });
 
   afterAll(async () => {

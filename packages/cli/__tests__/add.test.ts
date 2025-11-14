@@ -1,9 +1,8 @@
-import { LaunchQLPackage } from '@launchql/core';
+import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import * as path from 'path';
-import * as fs from 'fs';
 
 import { commands } from '../src/commands';
 import { setupTests, TestEnvironment, TestFixture } from '../test-utils';

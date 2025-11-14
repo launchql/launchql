@@ -5,8 +5,7 @@ import { createPgpmCommandMap } from 'pgpm';
 import explorer from './commands/explorer';
 import server from './commands/server';
 import { readAndParsePackageJson } from './package';
-import { extractFirst, usageText } from './utils';
-import { cliExitWithError } from './utils/cli-error';
+import { extractFirst, usageText, cliExitWithError } from './utils';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
