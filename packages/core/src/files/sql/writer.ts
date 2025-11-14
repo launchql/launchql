@@ -51,7 +51,7 @@ const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
   
   const sqlContent = opts.replacer(row.content);
   
-  const content = `-- Deploy: ${deploy} to pg
+  const content = `-- Deploy: ${deploy}
 -- made with <3 @ launchql.com
 
 ${opts.replacer(
@@ -89,7 +89,7 @@ const writeVerify = (row: SqitchRow, opts: SqlWriteOptions): void => {
   
   const sqlContent = opts.replacer(row.verify);
   
-  const content = opts.replacer(`-- Verify: ${deploy} on pg
+  const content = opts.replacer(`-- Verify: ${deploy}
 
 ${useTx ? 'BEGIN;' : ''}
 ${sqlContent}
@@ -121,7 +121,7 @@ const writeRevert = (row: SqitchRow, opts: SqlWriteOptions): void => {
   
   const sqlContent = opts.replacer(row.revert);
   
-  const content = `-- Revert: ${deploy} from pg
+  const content = `-- Revert: ${deploy}
 
 ${useTx ? 'BEGIN;' : ''}
 ${sqlContent}
