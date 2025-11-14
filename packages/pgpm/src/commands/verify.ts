@@ -11,7 +11,7 @@ import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-c
 const log = new Logger('verify');
 
 const verifyUsageText = `
-LaunchQL Verify Command:
+Verify Command:
 
   pgpm verify [OPTIONS]
 

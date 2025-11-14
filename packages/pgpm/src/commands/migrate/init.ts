@@ -24,7 +24,7 @@ export default async (
     {
       name: 'yes',
       type: 'confirm',
-      message: `Initialize LaunchQL migration schema in database "${database}"?`,
+      message: `Initialize pgpm migration schema in database "${database}"?`,
       required: true
     }
   ];

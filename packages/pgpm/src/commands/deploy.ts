@@ -13,7 +13,7 @@ import { getTargetDatabase } from '../utils';
 import { selectPackage } from '../utils/module-utils';
 
 const deployUsageText = `
-LaunchQL Deploy Command:
+Deploy Command:
 
   pgpm deploy [OPTIONS]
 

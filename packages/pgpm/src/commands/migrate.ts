@@ -16,7 +16,7 @@ const subcommandMap: Record<string, Function> = {
 };
 
 const migrateUsageText = `
-LaunchQL Migrate Commands:
+Migrate Commands:
 
   launchql migrate init      Initialize migration tracking in database
   launchql migrate status    Show current migration status

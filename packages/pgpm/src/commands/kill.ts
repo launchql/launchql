@@ -5,7 +5,7 @@ import { getPgPool } from 'pg-cache';
 const log = new Logger('db-kill');
 
 const killUsageText = `
-LaunchQL Kill Command:
+Kill Command:
 
   pgpm kill [OPTIONS]
 

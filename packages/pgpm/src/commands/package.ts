@@ -2,7 +2,7 @@ import { LaunchQLPackage, writePackage } from '@launchql/core';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const packageUsageText = `
-LaunchQL Package Command:
+Package Command:
 
   pgpm package [OPTIONS]
 

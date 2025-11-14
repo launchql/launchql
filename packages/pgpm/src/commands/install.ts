@@ -3,11 +3,11 @@ import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
 const installUsageText = `
-LaunchQL Install Command:
+Install Command:
 
   pgpm install <package>...
 
-  Install LaunchQL modules into current module.
+  Install pgpm modules into current module.
 
 Arguments:
   package                 One or more package names to install
@@ -17,8 +17,8 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  pgpm install @launchql/base32                    Install single package
-  pgpm install @launchql/base32 @launchql/utils   Install multiple packages
+  pgpm install pgpm/base32                    Install single package
+  pgpm install pgpm/base32 pgpm/utils   Install multiple packages
 `;
 
 export default async (
@@ -40,7 +40,7 @@ export default async (
   }
 
   if (argv._.length === 0) {
-    throw new Error('You must provide a package name to install, e.g. `@launchql/base32`');
+    throw new Error('You must provide a package name to install, e.g. `pgpm/base32`');
   }
 
   await project.installModules(...argv._);

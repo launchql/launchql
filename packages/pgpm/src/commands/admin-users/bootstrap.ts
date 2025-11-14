@@ -7,19 +7,19 @@ import { getPgEnvOptions } from 'pg-env';
 const log = new Logger('admin-users-bootstrap');
 
 const bootstrapUsageText = `
-LaunchQL Admin Users Bootstrap Command:
+Admin Users Bootstrap Command:
 
   pgpm admin-users bootstrap [OPTIONS]
 
-  Initialize LaunchQL roles and permissions. This command must be run before adding users.
-  Creates the standard LaunchQL roles: anonymous, authenticated, administrator.
+  Initialize pgpm roles and permissions. This command must be run before adding users.
+  Creates the standard pgpm roles: anonymous, authenticated, administrator.
 
 Options:
   --help, -h              Show this help message
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  pgpm admin-users bootstrap              # Initialize LaunchQL roles
+  pgpm admin-users bootstrap              # Initialize pgpm roles
 `;
 
 export default async (
@@ -39,7 +39,7 @@ export default async (
     {
       type: 'confirm',
       name: 'yes',
-      message: 'Are you sure you want to initialize LaunchQL roles and permissions?',
+      message: 'Are you sure you want to initialize pgpm roles and permissions?',
       default: false
     }
   ]);
@@ -53,7 +53,7 @@ export default async (
   
   try {
     await init.bootstrapRoles();
-    log.success('LaunchQL roles and permissions initialized successfully.');
+    log.success('pgpm roles and permissions initialized successfully.');
   } finally {
     await init.close();
   }

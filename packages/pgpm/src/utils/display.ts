@@ -54,7 +54,7 @@ export const usageText = `
   Examples:
     pgpm deploy --help       Show deploy command options
     pgpm init --workspace    Initialize new workspace
-    pgpm install @launchql/auth  Install a database module
+    pgpm install pgpm/auth  Install a database module
   `;
 
 export function displayUsage() {

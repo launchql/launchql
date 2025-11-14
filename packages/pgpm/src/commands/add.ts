@@ -6,7 +6,7 @@ import * as path from 'path';
 import { extractFirst } from '../utils/argv';
 
 const addUsageText = `
-LaunchQL Add Command:
+Add Command:
 
   pgpm add [change] [OPTIONS]
 
