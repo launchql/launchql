@@ -1,30 +1,29 @@
 BEGIN;
 DO $do$
 BEGIN
-    IF NOT EXISTS (
-        SELECT
-        FROM
-            pg_catalog.pg_roles
-        WHERE
-            rolname = 'administrator') THEN
+  BEGIN
     CREATE ROLE administrator;
-END IF;
-    IF NOT EXISTS (
-        SELECT
-        FROM
-            pg_catalog.pg_roles
-        WHERE
-            rolname = 'anonymous') THEN
+  EXCEPTION
+    WHEN duplicate_object THEN
+      -- Role was created concurrently; ignore.
+      NULL;
+  END;
+
+  BEGIN
     CREATE ROLE anonymous;
-END IF;
-    IF NOT EXISTS (
-        SELECT
-        FROM
-            pg_catalog.pg_roles
-        WHERE
-            rolname = 'authenticated') THEN
+  EXCEPTION
+    WHEN duplicate_object THEN
+      -- Role was created concurrently; ignore.
+      NULL;
+  END;
+
+  BEGIN
     CREATE ROLE authenticated;
-END IF;
+  EXCEPTION
+    WHEN duplicate_object THEN
+      -- Role was created concurrently; ignore.
+      NULL;
+  END;
 END
 $do$;
 ALTER USER administrator WITH NOCREATEDB;
