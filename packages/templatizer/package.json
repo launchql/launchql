@@ -1,6 +1,6 @@
 {
   "name": "@launchql/templatizer",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "make templates",
   "main": "index.js",
