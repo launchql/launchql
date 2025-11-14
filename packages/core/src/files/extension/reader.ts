@@ -69,23 +69,31 @@ export const getExtensionInfo = (packageDir: string): ExtensionInfo => {
 
 /**
  * Get a list of extensions required by an extension from its control file.
+ * Returns an empty array if the file doesn't exist or has no requires line.
  */
 export const getInstalledExtensions = (controlFilePath: string): string[] => {
   try {
-    const requiresLine = readFileSync(controlFilePath, 'utf-8')
-      .split('\n')
-      .find((line) => /^requires/.test(line));
-
-    if (!requiresLine) {
-      throw new Error('No "requires" line found in the control file.');
+    const contents = readFileSync(controlFilePath, 'utf-8');
+    
+    const match = contents.match(/^\s*requires\s*=\s*'([^']*)'/m);
+    
+    if (!match) {
+      return [];
     }
 
-    return requiresLine
-      .split('=')[1]
-      .split("'")[1]
+    const requiresValue = match[1];
+    if (!requiresValue || requiresValue.trim() === '') {
+      return [];
+    }
+
+    return requiresValue
       .split(',')
-      .map((ext) => ext.trim());
-  } catch (e) {
-    throw new Error('Error parsing "requires" from control file.');
+      .map((ext) => ext.trim())
+      .filter((ext) => ext.length > 0);
+  } catch (e: any) {
+    if (e.code === 'ENOENT') {
+      return [];
+    }
+    throw new Error(`Error reading control file at ${controlFilePath}: ${e.message}`);
   }
 };
