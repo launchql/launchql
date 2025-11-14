@@ -212,4 +212,37 @@ describe('Add functionality', () => {
     expect(planContent).toContain('user-permissions');
     expect(planContent).toContain('Links users to permissions');
   });
+
+  test('addChange allows cross-module dependencies', () => {
+    const moduleDir = join(fixture.tempDir, 'test-module-cross-deps');
+    setupModule(moduleDir);
+    
+    const pkg = new LaunchQLPackage(moduleDir);
+    
+    pkg.addChange('adoption-history', ['pets:tables/pets'], 'Adds adoption history table');
+    
+    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    expect(planContent).toContain('adoption-history');
+    expect(planContent).toContain('[pets:tables/pets]');
+    
+    const deployContent = readFileSync(join(moduleDir, 'deploy', 'adoption-history.sql'), 'utf8');
+    expect(deployContent).toContain('-- requires: pets:tables/pets');
+  });
+
+  test('addChange validates local dependencies but not cross-module ones', () => {
+    const moduleDir = join(fixture.tempDir, 'test-module-mixed-deps');
+    setupModule(moduleDir);
+    
+    const pkg = new LaunchQLPackage(moduleDir);
+    
+    pkg.addChange('users');
+    
+    expect(() => pkg.addChange('contacts', ['nonexistent', 'pets:tables/pets'])).toThrow("Dependency 'nonexistent' not found in plan");
+    
+    pkg.addChange('contacts', ['users', 'pets:tables/pets'], 'Mixed local and cross-module deps');
+    
+    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    expect(planContent).toContain('contacts');
+    expect(planContent).toContain('[users pets:tables/pets]');
+  });
 });

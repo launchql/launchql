@@ -22,7 +22,7 @@ import { getAvailableExtensions } from '../../extensions/extensions';
 import { generatePlan, writePlan, writePlanFile } from '../../files';
 import { Tag, ExtendedPlanFile, Change } from '../../files/types';
 import { parsePlanFile } from '../../files/plan/parser';
-import { isValidTagName, isValidChangeName } from '../../files/plan/validators';
+import { isValidTagName, isValidChangeName, parseReference } from '../../files/plan/validators';
 import { getNow as getPlanTimestamp } from '../../files/plan/generator';
 import { resolveTagToChangeName } from '../../resolution/resolve';
 import {
@@ -772,7 +772,16 @@ export class LaunchQLPackage {
     
     // Validate dependencies exist if provided
     if (dependencies && dependencies.length > 0) {
+      const currentPackage = plan.package;
+      
       for (const dep of dependencies) {
+        // Parse the dependency to check if it's a cross-module reference
+        const parsed = parseReference(dep);
+        
+        if (parsed && parsed.package && parsed.package !== currentPackage) {
+          continue;
+        }
+        
         const depExists = plan.changes.some(c => c.name === dep);
         if (!depExists) {
           throw new Error(`Dependency '${dep}' not found in plan. Add dependencies before referencing them.`);
