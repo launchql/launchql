@@ -1,13 +1,13 @@
 import { LaunchQLMigrate } from '@launchql/core';
+import { CLIOptions,Inquirerer } from 'inquirerer';
+import { ParsedArgs } from 'minimist';
 import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
-import { ParsedArgs } from 'minimist';
-import { Inquirerer, CLIOptions } from 'inquirerer';
 
+import { commands } from '../src/commands';
 import { TestFixture } from './fixtures';
 import { TestDatabase } from './TestDatabase';
-import { commands } from '../src/commands';
 
 export class CLIDeployTestFixture extends TestFixture {
   private databases: TestDatabase[] = [];

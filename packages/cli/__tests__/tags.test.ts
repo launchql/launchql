@@ -1,5 +1,6 @@
-import { CLIDeployTestFixture } from '../test-utils';
 import { teardownPgPools } from 'pg-cache';
+
+import { CLIDeployTestFixture } from '../test-utils';
 
 jest.setTimeout(30000);
 
