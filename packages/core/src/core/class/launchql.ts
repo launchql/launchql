@@ -118,6 +118,7 @@ export class LaunchQLPackage {
   public modulePath?: string;
   public config?: LaunchQLWorkspaceConfig;
   public allowedDirs: string[] = [];
+  public allowedParentDirs: string[] = [];
 
   private _moduleMap?: ModuleMap;
   private _moduleInfo?: ExtensionInfo;
@@ -134,6 +135,7 @@ export class LaunchQLPackage {
     if (this.workspacePath) {
       this.config = this.loadConfigSync();
       this.allowedDirs = this.loadAllowedDirs();
+      this.allowedParentDirs = this.loadAllowedParentDirs();
     }
   }
 
@@ -159,12 +161,25 @@ export class LaunchQLPackage {
     return [...new Set(resolvedDirs)];
   }
 
+  private loadAllowedParentDirs(): string[] {
+    const globs: string[] = this.config?.packages ?? [];
+    const parentDirs = globs.map(pattern => {
+      // Remove glob characters (*, **, ?, etc.) to get the base path
+      const basePath = pattern.replace(/[*?[\]{}]/g, '').replace(/\/$/, '');
+      return path.resolve(this.workspacePath!, basePath);
+    });
+    // Remove duplicates by converting to Set and back to array
+    return [...new Set(parentDirs)];
+  }
+
   isInsideAllowedDirs(cwd: string): boolean {
     return this.allowedDirs.some(dir => cwd.startsWith(dir));
   }
 
   isParentOfAllowedDirs(cwd: string): boolean {
-    return this.allowedDirs.some(dir => dir.startsWith(cwd + path.sep));
+    const resolvedCwd = path.resolve(cwd);
+    return this.allowedDirs.some(dir => dir.startsWith(resolvedCwd + path.sep)) ||
+           this.allowedParentDirs.some(dir => path.resolve(dir) === resolvedCwd);
   }
 
   private createModuleDirectory(modName: string): string {

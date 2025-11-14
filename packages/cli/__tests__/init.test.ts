@@ -238,5 +238,238 @@ describe('cmds:init', () => {
       60000
     );
   });
+
+  describe('init from packages/ folder', () => {
+    it('initializes module from packages/ folder (empty workspace)', async () => {
+      const { mockInput, mockOutput } = environment;
+      const prompter = new Inquirerer({
+        input: mockInput,
+        output: mockOutput,
+        noTty: true
+      });
+
+      const wsName = 'ws-packages-empty';
+      const wsRoot = path.join(fixture.tempDir, wsName);
+
+      await commands({
+        _: ['init'],
+        cwd: fixture.tempDir,
+        name: wsName,
+        workspace: true
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const packagesDir = path.join(wsRoot, 'packages');
+      const modName = 'mod-from-packages-empty';
+
+      await commands({
+        _: ['init'],
+        cwd: packagesDir,
+        MODULENAME: modName,
+        name: modName,
+        extensions: ['plpgsql'],
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const modDir = path.join(packagesDir, modName);
+      expect(existsSync(modDir)).toBe(true);
+      expect(existsSync(path.join(modDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(modDir, 'package.json'))).toBe(true);
+    });
+
+    it('initializes module from packages/ folder (with existing modules)', async () => {
+      const { mockInput, mockOutput } = environment;
+      const prompter = new Inquirerer({
+        input: mockInput,
+        output: mockOutput,
+        noTty: true
+      });
+
+      const wsName = 'ws-packages-existing';
+      const wsRoot = path.join(fixture.tempDir, wsName);
+
+      await commands({
+        _: ['init'],
+        cwd: fixture.tempDir,
+        name: wsName,
+        workspace: true
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const firstMod = 'first-mod';
+      await commands({
+        _: ['init'],
+        cwd: wsRoot,
+        MODULENAME: firstMod,
+        name: firstMod,
+        extensions: ['plpgsql']
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const packagesDir = path.join(wsRoot, 'packages');
+      const secondMod = 'second-mod';
+
+      await commands({
+        _: ['init'],
+        cwd: packagesDir,
+        MODULENAME: secondMod,
+        name: secondMod,
+        extensions: ['plpgsql'],
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const secondModDir = path.join(packagesDir, secondMod);
+      expect(existsSync(secondModDir)).toBe(true);
+      expect(existsSync(path.join(secondModDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(secondModDir, 'package.json'))).toBe(true);
+    });
+  });
+
+  describe('prevent nested module creation', () => {
+    it('prevents nested module creation inside existing module', async () => {
+      const { mockInput, mockOutput } = environment;
+      const prompter = new Inquirerer({
+        input: mockInput,
+        output: mockOutput,
+        noTty: true
+      });
+
+      const wsName = 'ws-nested-prevent';
+      const wsRoot = path.join(fixture.tempDir, wsName);
+
+      await commands({
+        _: ['init'],
+        cwd: fixture.tempDir,
+        name: wsName,
+        workspace: true
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const baseMod = 'base-mod';
+      await commands({
+        _: ['init'],
+        cwd: wsRoot,
+        MODULENAME: baseMod,
+        name: baseMod,
+        extensions: ['plpgsql']
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const insideDir = path.join(wsRoot, 'packages', baseMod);
+      const nestedName = 'nested-mod';
+
+      const exitSpy = jest.spyOn(process, 'exit').mockImplementation(((code?: number) => {
+        throw new Error(`PROCESS_EXIT:${code}`);
+      }) as any);
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      await expect(commands({
+        _: ['init'],
+        cwd: insideDir,
+        MODULENAME: nestedName,
+        name: nestedName,
+        extensions: ['plpgsql'],
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      })).rejects.toThrow(/PROCESS_EXIT:1/);
+
+      expect(errorSpy).toHaveBeenCalled();
+      const errorCalls = errorSpy.mock.calls.map(call => call.join(' '));
+      const hasNestedError = errorCalls.some(call => call.includes('Cannot create a module inside an existing module'));
+      expect(hasNestedError).toBe(true);
+
+      const nestedDir = path.join(insideDir, nestedName);
+      expect(existsSync(nestedDir)).toBe(false);
+
+      exitSpy.mockRestore();
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe('workspace root behavior', () => {
+    it('initializes module from workspace root (existing behavior)', async () => {
+      const { mockInput, mockOutput } = environment;
+      const prompter = new Inquirerer({
+        input: mockInput,
+        output: mockOutput,
+        noTty: true
+      });
+
+      const wsName = 'ws-root-test';
+      const wsRoot = path.join(fixture.tempDir, wsName);
+
+      await commands({
+        _: ['init'],
+        cwd: fixture.tempDir,
+        name: wsName,
+        workspace: true
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const modName = 'mod-from-root';
+      await commands({
+        _: ['init'],
+        cwd: wsRoot,
+        MODULENAME: modName,
+        name: modName,
+        extensions: ['plpgsql']
+      }, prompter, {
+        noTty: true,
+        input: mockInput,
+        output: mockOutput,
+        version: '1.0.0',
+        minimistOpts: {}
+      });
+
+      const modDir = path.join(wsRoot, 'packages', modName);
+      expect(existsSync(modDir)).toBe(true);
+      expect(existsSync(path.join(modDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(modDir, 'package.json'))).toBe(true);
+    });
+  });
 });
 
