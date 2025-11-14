@@ -11,12 +11,17 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   },
   "description": "undefined",
   "devDependencies": {
-    "pgsql-test": "^2.12.0",
+    "pgsql-test": "^2.12.2",
   },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
   "name": "undefined",
+  "pnpm": {
+    "overrides": {
+      "graphql": "14.7.0",
+    },
+  },
   "publishConfig": {
     "access": "undefined",
     "directory": "dist",
@@ -87,12 +92,17 @@ exports[`cmds:install - with initialized workspace and module installs two modul
   },
   "description": "undefined",
   "devDependencies": {
-    "pgsql-test": "^2.12.0",
+    "pgsql-test": "^2.12.2",
   },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
   "name": "undefined",
+  "pnpm": {
+    "overrides": {
+      "graphql": "14.7.0",
+    },
+  },
   "publishConfig": {
     "access": "undefined",
     "directory": "dist",
