@@ -43,7 +43,12 @@ export default [
   },
   "keywords": [],
   "devDependencies": {
-    "pgsql-test": "^2.12.0"
+    "pgsql-test": "^2.12.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "graphql": "14.7.0"
+    }
   }
 }`;
   return { relPath, content };
