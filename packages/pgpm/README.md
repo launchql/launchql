@@ -6,10 +6,11 @@
 
 ## ✨ Features
 
-- 📦 **Module System** - Reusable database modules with dependency management
-- 🔄 **Smart Migrations** - Automated migration generation and deployment
-- 🏗️ **Production Ready** - Deployment plans, versioning, and rollback support
-- 🚀 **Database-First Development** - Design your database with SQL migrations
+- 🏗️ **Module-Native PostgreSQL** - Build your database as composable packages in a workspace monorepo, each with its own plan, dependencies, and version tags
+- 📊 **Dependency-Graph Migrations** - Automatic dependency resolution from plan files or SQL headers, with cross-module references and circular dependency detection
+- 🏷️ **Tag-Aware Versioning** - Deploy to @tags, resolve tags to changes, and reference tags across modules for coordinated releases
+- ✅ **Reproducible Deployments** - Script hashing (content or AST-based), event log that survives rollbacks, and verify/revert commands
+- ⚡ **Flexible Deployment Modes** - Transactional or non-transactional, fast bundled execution, log-only dry runs, and plan-driven or SQL-header-driven resolution
 
 ## 🚀 Quick Start
 
@@ -174,15 +175,17 @@ pgpm migrate deps
 
 #### `pgpm install`
 
-Install LaunchQL modules as dependencies.
+Install database modules as dependencies. Fetches packages from npm and extracts them to your workspace's `extensions/` directory, then updates your module's `.control` file with the dependencies.
 
 ```bash
-# Install single package
+# Install single package from npm
 pgpm install @launchql/auth
 
 # Install multiple packages
 pgpm install @launchql/auth @launchql/utils
 ```
+
+**Note:** This installs npm packages that contain database modules and adds them to your local workspace, not a remote registry.
 
 #### `pgpm extension`
 
@@ -266,9 +269,6 @@ pgpm init
 # 3. Add some SQL migrations to sql/ directory
 # 4. Deploy to database
 pgpm deploy --createdb
-
-# 5. Start developing
-pgpm server
 ```
 
 ### Using Custom Templates
@@ -307,9 +307,6 @@ pgpm install
 
 # 3. Deploy to local database
 pgpm deploy --createdb
-
-# 4. Start development server
-pgpm server
 ```
 
 ### Production Deployment
@@ -342,6 +339,35 @@ export PGUSER=postgres
 export PGPASSWORD=password
 ```
 
+## 🔍 How pgpm Differs from Other Migration Tools
+
+### vs Flyway / Liquibase
+
+**Workspace-First Architecture:** pgpm organizes multiple database modules in a single workspace with automatic discovery, while Flyway and Liquibase typically manage a single migration chain per project.
+
+**Cross-Module Dependencies:** pgpm allows modules to reference changes from other modules (e.g., `auth:users` or `auth:@v1.0.0`), enabling true modular database development. Traditional tools require manual coordination between projects.
+
+**Dependency Graph Resolution:** pgpm builds a dependency graph from plan files or SQL headers and performs topological sorting to determine deployment order. Flyway and Liquibase rely on sequential numbering or timestamps.
+
+### vs Sqitch
+
+**Tag-Aware System:** While Sqitch has tags, pgpm makes them first-class with cross-module tag references and multiple resolution modes (preserve, resolve, internal).
+
+**Module Packaging:** pgpm modules can be packaged and distributed via npm, then installed into other workspaces. Sqitch doesn't have a built-in packaging system.
+
+**Flexible Resolution:** pgpm supports both plan-driven (use plan file order) and SQL-header-driven (parse `-- requires:` comments) dependency resolution, while Sqitch primarily uses plan files.
+
+**Script Hashing:** pgpm offers both content-based and AST-based hashing for detecting changes, while Sqitch uses content hashing only.
+
+### Key Advantages
+
+- **Module-native development** with workspace monorepo support
+- **Graph-resolved migrations** with automatic dependency ordering
+- **Cross-module references** for coordinated multi-module deployments
+- **Tag-aware versioning** with cross-module tag resolution
+- **Reproducible deployments** with script hashing and event logging
+- **Flexible deployment modes** (transactional, fast, log-only, plan-driven)
+
 ## 🆘 Getting Help
 
 ### Command Help
@@ -352,7 +378,7 @@ pgpm --help
 
 # Command-specific help
 pgpm deploy --help
-pgpm server -h
+pgpm verify --help
 ```
 
 ### Common Options
