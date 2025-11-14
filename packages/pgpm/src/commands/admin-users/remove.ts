@@ -11,7 +11,7 @@ Admin Users Remove Command:
 
   pgpm admin-users remove [OPTIONS]
 
-  Remove database users and revoke their pgpm roles.
+  Remove database users and revoke their postgres roles.
 
 Options:
   --help, -h              Show this help message
@@ -47,7 +47,7 @@ export default async (
         {
           type: 'confirm',
           name: 'yes',
-          message: 'Are you sure you want to remove pgpm test users (app_user, app_admin)?',
+          message: 'Are you sure you want to remove test users (app_user, app_admin)?',
           default: false
         }
       ]);
