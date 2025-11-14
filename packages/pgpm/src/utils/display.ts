@@ -10,8 +10,7 @@ export function displayVersion() {
 }
 
 export const usageText = `
-  Usage: lql <command> [options]
-         launchql <command> [options]
+  Usage: pgpm <command> [options]
   
   Core Database Operations:
     add                Add database changes to plans and create SQL files
@@ -25,13 +24,7 @@ export const usageText = `
     plan               Generate module deployment plans
     package            Package module for distribution
   
-  Development Tools:
-    server             Start LaunchQL GraphQL server
-    explorer           Launch GraphiQL explorer interface
-    export             Export database migrations from existing databases
-  
   Database Administration:
-    kill               Terminate database connections and optionally drop databases
     install            Install LaunchQL modules
     tag                Add tags to changes for versioning
     clear              Clear all changes from the plan
@@ -45,6 +38,7 @@ export const usageText = `
       deps             Show change dependencies
   
   Other Commands:
+    export             Export database migrations from existing databases
     analyze            Analyze module dependencies
     rename             Rename changes in the plan
     remove             Remove changes from the plan
@@ -55,13 +49,13 @@ export const usageText = `
     --cwd <directory>  Working directory (default: current directory)
   
   Individual Command Help:
-    lql <command> --help    Display detailed help for specific command
-    lql <command> -h        Display detailed help for specific command
+    pgpm <command> --help    Display detailed help for specific command
+    pgpm <command> -h        Display detailed help for specific command
   
   Examples:
-    lql deploy --help       Show deploy command options
-    lql server --port 8080  Start server on port 8080
-    lql init --workspace    Initialize new workspace
+    pgpm deploy --help       Show deploy command options
+    pgpm init --workspace    Initialize new workspace
+    pgpm add my-change       Add a new change to the plan
   `;
 
 export function displayUsage() {

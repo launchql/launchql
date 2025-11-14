@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/cli",
-  "version": "4.14.3",
+  "name": "pgpm",
+  "version": "0.0.2",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "description": "LaunchQL CLI",
+  "description": "PostgreSQL Package Manager - Database migration and package management CLI",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -13,8 +13,7 @@
     "directory": "dist"
   },
   "bin": {
-    "lql": "index.js",
-    "launchql": "index.js"
+    "pgpm": "index.js"
   },
   "repository": {
     "type": "git",
@@ -48,10 +47,7 @@
   "dependencies": {
     "@launchql/core": "workspace:^",
     "@launchql/env": "workspace:^",
-    "@launchql/explorer": "workspace:^",
     "@launchql/logger": "workspace:^",
-    "@launchql/server": "workspace:^",
-    "@launchql/server-utils": "workspace:^",
     "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
     "chalk": "^4.1.0",
@@ -60,18 +56,18 @@
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
-    "pgpm": "workspace:^",
     "shelljs": "^0.9.2"
   },
   "keywords": [
     "cli",
     "command-line",
     "tool",
-    "launchql",
-    "utilities",
+    "postgres",
+    "postgresql",
     "pg",
     "pgsql",
-    "postgres",
-    "graphile"
+    "migration",
+    "package-manager",
+    "database"
   ]
 }

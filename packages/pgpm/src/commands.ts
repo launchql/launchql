@@ -1,23 +1,59 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { createPgpmCommandMap } from 'pgpm';
+import { teardownPgPools } from 'pg-cache';
 
-import explorer from './commands/explorer';
-import kill from './commands/kill';
-import server from './commands/server';
+// Commands
+import add from './commands/add';
+import adminUsers from './commands/admin-users';
+import clear from './commands/clear';
+import deploy from './commands/deploy';
+import _export from './commands/export';
+import extension from './commands/extension';
+import init from './commands/init';
+import install from './commands/install';
+import migrate from './commands/migrate';
+import _package from './commands/package';
+import plan from './commands/plan';
+import remove from './commands/remove';
+import revert from './commands/revert';
+import tag from './commands/tag';
+import verify from './commands/verify';
+import analyze from './commands/analyze';
+import renameCmd from './commands/rename';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 import { cliExitWithError } from './utils/cli-error';
 
-const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
-  const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
-  
+const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
+  try {
+    await fn(...args);
+  } finally {
+    if (!skipTeardown) {
+      await teardownPgPools();
+    }
+  }
+};
+
+export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
+  const pgt = (fn: Function) => withPgTeardown(fn, skipPgTeardown);
   return {
-    ...pgpmCommands,
-    kill,
-    // These manage their own connection lifecycles
-    server,
-    explorer
+    add,
+    'admin-users': pgt(adminUsers),
+    clear: pgt(clear),
+    deploy: pgt(deploy),
+    verify: pgt(verify),
+    revert: pgt(revert),
+    remove: pgt(remove),
+    init: pgt(init),
+    extension: pgt(extension),
+    plan: pgt(plan),
+    export: pgt(_export),
+    package: pgt(_package),
+    tag: pgt(tag),
+    install: pgt(install),
+    migrate: pgt(migrate),
+    analyze: pgt(analyze),
+    rename: pgt(renameCmd)
   };
 };
 
@@ -42,7 +78,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
     process.exit(0);
   }
 
-  const commandMap = createCommandMap(options?.skipPgTeardown);
+  const commandMap = createPgpmCommandMap(options?.skipPgTeardown);
 
   // Prompt if no command provided
   if (!command) {
