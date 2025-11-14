@@ -523,7 +523,7 @@ export const resolveDependencies = (
       let keyToTest;
 
       if (/:/.test(line)) {
-        m2 = line.match(/^-- Deploy ([^:]*):([\w\/]+) to pg/);
+        m2 = line.match(/^-- Deploy ([^:]*):([\w\/]+)(?:\s+to\s+pg)?/);
         if (m2) {
           const actualProject = m2[1];
           keyToTest = m2[2];
@@ -549,9 +549,9 @@ export const resolveDependencies = (
         }
 
       } else {
-        m2 = line.match(/^-- Deploy (.*) to pg/);
+        m2 = line.match(/^-- Deploy (.*?)(?:\s+to\s+pg)?\s*$/);
         if (m2) {
-          keyToTest = m2[1];
+          keyToTest = m2[1].trim();
           if (key !== makeKey(keyToTest)) {
             throw new Error(
               'deployment script in wrong place or is named wrong internally\n' + line
