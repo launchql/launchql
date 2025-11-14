@@ -127,12 +127,9 @@ superuser = false
     expect(result).toEqual(['pgcrypto', 'postgis']);
   });
 
-  it('should throw error for permission issues', () => {
-    fs.writeFileSync(controlFilePath, 'test content');
-    fs.chmodSync(controlFilePath, 0o000);
+  it('should throw error for non-ENOENT read errors', () => {
+    fs.mkdirSync(controlFilePath);
     
     expect(() => getInstalledExtensions(controlFilePath)).toThrow();
-    
-    fs.chmodSync(controlFilePath, 0o644);
   });
 });
