@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.14.3...@launchql/cli@4.15.0) (2025-11-14)
+
+### Features
+
+- create pgpm CLI tool and refactor @launchql/cli to import from it ([756d44c](https://github.com/launchql/launchql/commit/756d44c430f11c115cbc52db74c9dffadea405eb))
+
 ## [4.14.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.14.2...@launchql/cli@4.14.3) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
