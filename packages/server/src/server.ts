@@ -44,12 +44,12 @@ class Server {
     const fallbackOrigin = opts.server?.origin?.trim();
     if (fallbackOrigin && process.env.NODE_ENV === 'production') {
       if (fallbackOrigin === '*') {
-        log.warn('CORS wildcard ("*") is enabled in production. This effectively allows any web origin and is not recommended.');
+        log.warn('CORS wildcard ("*") is enabled in production; this effectively disables CORS and is not recommended. Prefer per-API CORS via meta schema.');
       } else {
         log.warn(`CORS override origin set to ${fallbackOrigin} in production. Prefer per-API CORS via meta schema.`);
       }
     }
-    app.use(cors(fallbackOrigin));
+    
     app.use(poweredBy('launchql'));
     app.use(graphqlUpload.graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
@@ -58,6 +58,7 @@ class Server {
     app.use(authenticate);
     app.use(graphile(opts));
     app.use(flush);
+    app.use(cors(fallbackOrigin));
 
     this.app = app;
   }

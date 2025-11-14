@@ -24,7 +24,7 @@ export const cors = (fallbackOrigin?: string): RequestHandler => {
         // Reflect whatever Origin the caller sent
         return callback(null, true);
       }
-      if (origin && origin === fallbackOrigin.trim()) {
+      if (origin && origin.trim() === fallbackOrigin.trim()) {
         return callback(null, true);
       }
       // If a strict fallback origin is provided and does not match,
