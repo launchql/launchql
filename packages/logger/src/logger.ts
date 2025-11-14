@@ -33,6 +33,16 @@ export const setLogLevel = (level: LogLevel) => {
   }
 };
 
+// Parse LOG_TIMESTAMP from environment (default: false)
+let showTimestamp: boolean =
+  process.env.LOG_TIMESTAMP?.toLowerCase() === 'true' ||
+  process.env.LOG_TIMESTAMP === '1';
+
+// Update timestamp display at runtime
+export const setShowTimestamp = (show: boolean) => {
+  showTimestamp = show;
+};
+
 // Scope filtering
 interface ScopeFilter {
   include: Set<string>;
@@ -88,7 +98,6 @@ export class Logger {
       return;
     }
 
-    const timestamp = chalk.dim(`[${new Date().toISOString()}]`);
     const tag = chalk.bold(`[${this.scope}]`);
     const color = levelColors[level];
     const prefix = color(`${level.toUpperCase()}:`);
@@ -98,7 +107,10 @@ export class Logger {
     );
 
     const stream = level === 'error' ? process.stderr : process.stdout;
-    const output = [timestamp, tag, prefix, ...formattedArgs]
+    const outputParts = showTimestamp
+      ? [chalk.dim(`[${new Date().toISOString()}]`), tag, prefix, ...formattedArgs]
+      : [tag, prefix, ...formattedArgs];
+    const output = outputParts
       .map(arg => String(arg))
       .join(' ') + '\n';
 
