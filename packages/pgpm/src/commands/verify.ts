@@ -13,7 +13,7 @@ const log = new Logger('verify');
 const verifyUsageText = `
 LaunchQL Verify Command:
 
-  lql verify [OPTIONS]
+  pgpm verify [OPTIONS]
 
   Verify database state matches expected migrations.
 
@@ -26,9 +26,9 @@ Options:
   --cwd <directory>  Working directory (default: current directory)
 
 Examples:
-  lql verify                    Verify current database state
-  lql verify --package mypackage  Verify specific package
-  lql verify --to              Interactive selection from deployed changes
+  pgpm verify                    Verify current database state
+  pgpm verify --package mypackage  Verify specific package
+  pgpm verify --to              Interactive selection from deployed changes
 `;
 
 export default async (

@@ -15,7 +15,7 @@ import { selectPackage } from '../utils/module-utils';
 const deployUsageText = `
 LaunchQL Deploy Command:
 
-  lql deploy [OPTIONS]
+  pgpm deploy [OPTIONS]
 
   Deploy database changes and migrations to target database.
 
@@ -33,10 +33,10 @@ Options:
   --cwd <directory>  Working directory (default: current directory)
 
 Examples:
-  lql deploy                              Deploy to selected database
-  lql deploy --createdb                   Deploy with database creation
-  lql deploy --package mypackage --to @v1.0.0  Deploy specific package to tag
-  lql deploy --fast --no-tx              Fast deployment without transactions
+  pgpm deploy                              Deploy to selected database
+  pgpm deploy --createdb                   Deploy with database creation
+  pgpm deploy --package mypackage --to @v1.0.0  Deploy specific package to tag
+  pgpm deploy --fast --no-tx              Fast deployment without transactions
 `;
 
 export default async (

@@ -7,7 +7,7 @@ const log = new Logger('db-kill');
 const killUsageText = `
 LaunchQL Kill Command:
 
-  lql kill [OPTIONS]
+  pgpm kill [OPTIONS]
 
   Terminate database connections and optionally drop databases.
 
@@ -19,10 +19,10 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql kill                Kill connections and drop selected databases (interactive)
-  lql kill --no-drop      Only kill connections, preserve databases (interactive)
-  lql kill --pattern test_%   Kill connections to databases matching 'test_%' pattern
-  lql kill --pattern %dev --no-drop  Kill connections to databases ending with 'dev' but don't drop
+  pgpm kill                Kill connections and drop selected databases (interactive)
+  pgpm kill --no-drop      Only kill connections, preserve databases (interactive)
+  pgpm kill --pattern test_%   Kill connections to databases matching 'test_%' pattern
+  pgpm kill --pattern %dev --no-drop  Kill connections to databases ending with 'dev' but don't drop
 `;
 
 export default async (

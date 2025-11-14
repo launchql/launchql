@@ -6,7 +6,7 @@ import runWorkspaceSetup from './workspace';
 const initUsageText = `
 LaunchQL Init Command:
 
-  lql init [OPTIONS]
+  pgpm init [OPTIONS]
 
   Initialize LaunchQL workspace or module.
 
@@ -19,11 +19,11 @@ Options:
   --from-branch <branch>   Specify branch when using --repo (default: main)
 
 Examples:
-  lql init                                  Initialize new module in existing workspace
-  lql init --workspace                       Initialize new workspace
-  lql init --repo owner/repo                Use templates from GitHub repository
-  lql init --template-path ./custom-templates Use templates from local path
-  lql init --repo owner/repo --from-branch develop  Use specific branch
+  pgpm init                                  Initialize new module in existing workspace
+  pgpm init --workspace                       Initialize new workspace
+  pgpm init --repo owner/repo                Use templates from GitHub repository
+  pgpm init --template-path ./custom-templates Use templates from local path
+  pgpm init --repo owner/repo --from-branch develop  Use specific branch
 `;
 
 export default async (

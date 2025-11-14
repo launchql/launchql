@@ -9,7 +9,7 @@ const log = new Logger('admin-users-remove');
 const removeUsageText = `
 LaunchQL Admin Users Remove Command:
 
-  lql admin-users remove [OPTIONS]
+  pgpm admin-users remove [OPTIONS]
 
   Remove database users and revoke their LaunchQL roles.
 
@@ -20,9 +20,9 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql admin-users remove --username myuser
-  lql admin-users remove --test             # Remove test users
-  lql admin-users remove                    # Will prompt for username
+  pgpm admin-users remove --username myuser
+  pgpm admin-users remove --test             # Remove test users
+  pgpm admin-users remove                    # Will prompt for username
 `;
 
 export default async (

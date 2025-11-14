@@ -7,7 +7,7 @@ const log = new Logger('plan');
 const planUsageText = `
 LaunchQL Plan Command:
 
-  lql plan [OPTIONS]
+  pgpm plan [OPTIONS]
 
   Generate module deployment plans.
 
@@ -18,9 +18,9 @@ Options:
   --cwd <directory>              Working directory (default: current directory)
 
 Examples:
-  lql plan                                 Generate deployment plan for current module with defaults
-  lql plan --includePackages false         Disable including external packages
-  lql plan --includeTags false              Do not prefer tags for external packages
+  pgpm plan                                 Generate deployment plan for current module with defaults
+  pgpm plan --includePackages false         Disable including external packages
+  pgpm plan --includeTags false              Do not prefer tags for external packages
 `;
 
 export default async (

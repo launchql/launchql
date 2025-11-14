@@ -5,7 +5,7 @@ import { ParsedArgs } from 'minimist';
 const installUsageText = `
 LaunchQL Install Command:
 
-  lql install <package>...
+  pgpm install <package>...
 
   Install LaunchQL modules into current module.
 
@@ -17,8 +17,8 @@ Options:
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
-  lql install @launchql/base32                    Install single package
-  lql install @launchql/base32 @launchql/utils   Install multiple packages
+  pgpm install @launchql/base32                    Install single package
+  pgpm install @launchql/base32 @launchql/utils   Install multiple packages
 `;
 
 export default async (
