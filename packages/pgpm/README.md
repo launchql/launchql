@@ -37,7 +37,7 @@ pgpm deploy --createdb
 
 ### Getting Started
 
-- `pgpm init` - Initialize a new workspace or module
+- `pgpm init` - Initialize a new module
 - `pgpm init --workspace` - Initialize a new workspace
 
 ### Database Operations
