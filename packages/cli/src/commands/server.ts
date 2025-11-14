@@ -127,6 +127,18 @@ export default async (
     origin
   } = await prompter.prompt(argv, questions);
 
+  // Warn when passing CORS override via CLI, especially in production
+  if (origin && origin.trim().length) {
+    const env = (process.env.NODE_ENV || 'development').toLowerCase();
+    if (env === 'production') {
+      if (origin.trim() === '*') {
+        log.warn('CORS wildcard ("*") provided via --origin in production: this effectively disables CORS and is not recommended. Prefer per-API CORS via meta schema.');
+      } else {
+        log.warn(`CORS override (origin=${origin.trim()}) provided via --origin in production. Prefer per-API CORS via meta schema.`);
+      }
+    }
+  }
+
   let selectedSchemas: string[] = [];
   let authRole: string | undefined;
   let roleName: string | undefined;

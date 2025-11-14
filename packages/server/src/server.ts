@@ -14,7 +14,7 @@ import requestIp from 'request-ip';
 
 import { createApiMiddleware } from './middleware/api';
 import { createAuthenticateMiddleware } from './middleware/auth';
-import { cors } from '@launchql/server-utils';
+import { cors } from './middleware/cors';
 import { flush, flushService } from './middleware/flush';
 import { graphile } from './middleware/graphile';
 
@@ -40,7 +40,16 @@ class Server {
 
     healthz(app);
     trustProxy(app, opts.server.trustProxy);
-    cors(app, opts.server?.origin);
+    // Warn if a global CORS override is set in production
+    const fallbackOrigin = opts.server?.origin?.trim();
+    if (fallbackOrigin && process.env.NODE_ENV === 'production') {
+      if (fallbackOrigin === '*') {
+        log.warn('CORS wildcard ("*") is enabled in production. This effectively allows any web origin and is not recommended.');
+      } else {
+        log.warn(`CORS override origin set to ${fallbackOrigin} in production. Prefer per-API CORS via meta schema.`);
+      }
+    }
+    app.use(cors(fallbackOrigin));
     app.use(poweredBy('launchql'));
     app.use(graphqlUpload.graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
