@@ -108,147 +108,147 @@ pgpm deploy --createdb
 
 ### Database Operations
 
-#### `lql deploy`
+#### `pgpm deploy`
 
 Deploy your database changes and migrations.
 
 ```bash
 # Deploy to selected database
-lql deploy
+pgpm deploy
 
 # Create database if it doesn't exist
-lql deploy --createdb
+pgpm deploy --createdb
 
 # Deploy specific package to a tag
-lql deploy --package mypackage --to @v1.0.0
+pgpm deploy --package mypackage --to @v1.0.0
 
 # Fast deployment without transactions
-lql deploy --fast --no-tx
+pgpm deploy --fast --no-tx
 ```
 
-#### `lql verify`
+#### `pgpm verify`
 
 Verify your database state matches expected migrations.
 
 ```bash
 # Verify current state
-lql verify
+pgpm verify
 
 # Verify specific package
-lql verify --package mypackage
+pgpm verify --package mypackage
 ```
 
-#### `lql revert`
+#### `pgpm revert`
 
 Safely revert database changes.
 
 ```bash
 # Revert latest changes
-lql revert
+pgpm revert
 
 # Revert to specific tag
-lql revert --to @v1.0.0
+pgpm revert --to @v1.0.0
 ```
 
 ### Migration Management
 
-#### `lql migrate`
+#### `pgpm migrate`
 
 Comprehensive migration management.
 
 ```bash
 # Initialize migration tracking
-lql migrate init
+pgpm migrate init
 
 # Check migration status
-lql migrate status
+pgpm migrate status
 
 # List all changes
-lql migrate list
+pgpm migrate list
 
 # Show change dependencies
-lql migrate deps
+pgpm migrate deps
 ```
 
 ### Module Management
 
-#### `lql install`
+#### `pgpm install`
 
 Install LaunchQL modules as dependencies.
 
 ```bash
 # Install single package
-lql install @launchql/auth
+pgpm install @launchql/auth
 
 # Install multiple packages
-lql install @launchql/auth @launchql/utils
+pgpm install @launchql/auth @launchql/utils
 ```
 
-#### `lql extension`
+#### `pgpm extension`
 
 Interactively manage module dependencies.
 
 ```bash
-lql extension
+pgpm extension
 ```
 
-#### `lql tag`
+#### `pgpm tag`
 
 Version your changes with tags.
 
 ```bash
 # Tag latest change
-lql tag v1.0.0
+pgpm tag v1.0.0
 
 # Tag with comment
-lql tag v1.0.0 --comment "Initial release"
+pgpm tag v1.0.0 --comment "Initial release"
 
 # Tag specific change
-lql tag v1.1.0 --package mypackage --changeName my-change
+pgpm tag v1.1.0 --package mypackage --changeName my-change
 ```
 
 ### Packaging and Distribution
 
-#### `lql plan`
+#### `pgpm plan`
 
 Generate deployment plans for your modules.
 
 ```bash
-lql plan
+pgpm plan
 ```
 
-#### `lql package`
+#### `pgpm package`
 
 Package your module for distribution.
 
 ```bash
 # Package with defaults
-lql package
+pgpm package
 
 # Package without deployment plan
-lql package --no-plan
+pgpm package --no-plan
 ```
 
 ### Utilities
 
-#### `lql export`
+#### `pgpm export`
 
 Export migrations from existing databases.
 
 ```bash
-lql export
+pgpm export
 ```
 
-#### `lql kill`
+#### `pgpm kill`
 
 Clean up database connections and optionally drop databases.
 
 ```bash
 # Kill connections and drop databases
-lql kill
+pgpm kill
 
 # Only kill connections
-lql kill --no-drop
+pgpm kill --no-drop
 ```
 
 ## 💡 Common Workflows
@@ -258,17 +258,17 @@ lql kill --no-drop
 ```bash
 # 1. Create workspace
 mkdir my-app && cd my-app
-lql init --workspace
+pgpm init --workspace
 
 # 2. Create your first module
-lql init
+pgpm init
 
 # 3. Add some SQL migrations to sql/ directory
 # 4. Deploy to database
-lql deploy --createdb
+pgpm deploy --createdb
 
 # 5. Start developing
-lql server
+pgpm server
 ```
 
 ### Using Custom Templates
@@ -277,16 +277,16 @@ You can use custom templates from GitHub repositories or local paths:
 
 ```bash
 # Initialize workspace with templates from GitHub
-lql init --workspace --repo owner/repo
+pgpm init --workspace --repo owner/repo
 
 # Initialize workspace with templates from local path
-lql init --workspace --template-path ./my-custom-templates
+pgpm init --workspace --template-path ./my-custom-templates
 
 # Initialize module with custom templates
-lql init --template-path ./my-custom-templates
+pgpm init --template-path ./my-custom-templates
 
 # Use specific branch from GitHub repository
-lql init --workspace --repo owner/repo --from-branch develop
+pgpm init --workspace --repo owner/repo --from-branch develop
 ```
 
 **Template Structure:**
@@ -303,29 +303,29 @@ Custom templates should follow the same structure as the default templates:
 git clone <repo> && cd <project>
 
 # 2. Install dependencies
-lql install
+pgpm install
 
 # 3. Deploy to local database
-lql deploy --createdb
+pgpm deploy --createdb
 
 # 4. Start development server
-lql server
+pgpm server
 ```
 
 ### Production Deployment
 
 ```bash
 # 1. Create deployment plan
-lql plan
+pgpm plan
 
 # 2. Package module
-lql package
+pgpm package
 
 # 3. Deploy to production
-lql deploy --package myapp --to @production
+pgpm deploy --package myapp --to @production
 
 # 4. Verify deployment
-lql verify --package myapp
+pgpm verify --package myapp
 ```
 
 ## ⚙️ Configuration
@@ -348,11 +348,11 @@ export PGPASSWORD=password
 
 ```bash
 # Global help
-lql --help
+pgpm --help
 
 # Command-specific help
-lql deploy --help
-lql server -h
+pgpm deploy --help
+pgpm server -h
 ```
 
 ### Common Options
