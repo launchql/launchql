@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "2.4.5",
+  "version": "2.5.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL server utils",
   "main": "index.js",

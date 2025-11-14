@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/launchql/launchql/compare/@launchql/core@2.13.0...@launchql/core@2.14.0) (2025-11-14)
+
+**Note:** Version bump only for package @launchql/core
+
 # [2.13.0](https://github.com/launchql/launchql/compare/@launchql/core@2.12.4...@launchql/core@2.13.0) (2025-11-14)
 
 ### Features
