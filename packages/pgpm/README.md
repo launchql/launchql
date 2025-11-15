@@ -1,15 +1,18 @@
-# pgpm
+# **pgpm — a Postgres Package Manager**
 
-> PostgreSQL Package Manager - Database migration and package management CLI
+**A modern CLI for modular PostgreSQL development.**
 
-`pgpm` is a focused command-line tool for PostgreSQL database migrations and package management. It provides the core functionality for managing database schemas, migrations, and module dependencies without the overhead of server or explorer components.
+`pgpm` is a focused command-line tool for PostgreSQL database migrations and package management. It provides the core functionality for managing database schemas, migrations, and module dependencies.
 
 ## ✨ Features
 
-- 📦 **Module System** - Reusable database modules with dependency management
-- 🔄 **Smart Migrations** - Automated migration generation and deployment
-- 🏗️ **Production Ready** - Deployment plans, versioning, and rollback support
-- 🚀 **Database-First Development** - Design your database with SQL migrations
+- 📦 **Postgres Module System** — Reusable, composable database packages with dependency management, per-module plans, and versioned releases
+- 🔄 **Deterministic Migration Engine** — Version-controlled, plan-driven deployments with rollback support and idempotent execution enforced by dependency and validation safeguards.
+- 📊 **Recursive Module Resolution** — Recursively resolves database package dependencies (just like npm) from plan files or SQL headers, producing a reproducible cross-module migration graph.
+- 🏷️ **Tag-Aware Versioning** - Deploy to @tags, resolve tags to changes, and reference tags across modules for coordinated releases
+- 🐘 **Portable Postgres Development** — Rely on standard SQL migrations for a workflow that runs anywhere Postgres does.
+- 🚀 **Turnkey Module-First Workspaces** — `pgpm init` delivers a ready-to-code Postgres workspace with CI/CD, Docker, end-to-end testing, and modern TS tooling.
+
 
 ## 🚀 Quick Start
 
@@ -89,6 +92,8 @@ cd my-app
 pgpm init
 
 # 3. Add some SQL migrations to sql/ directory
+pgpm add some_change
+
 # 4. Deploy to database
 pgpm deploy --createdb
 ```
@@ -174,14 +179,14 @@ pgpm migrate deps
 
 #### `pgpm install`
 
-Install LaunchQL modules as dependencies.
+Install pgpm modules as dependencies.
 
 ```bash
 # Install single package
-pgpm install @launchql/auth
+pgpm install @pgpm/base32
 
 # Install multiple packages
-pgpm install @launchql/auth @launchql/utils
+pgpm install @pgpm/base32 @pgpm/faker
 ```
 
 #### `pgpm extension`
