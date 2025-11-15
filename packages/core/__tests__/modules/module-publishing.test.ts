@@ -57,7 +57,7 @@ describe('publishToDist()', () => {
 
   it('throws if required file is missing', () => {
     fs.rmSync(path.join(fixture.tempFixtureDir, 'pgpm.plan'));
-    expect(() => mod.publishToDist()).toThrow(/launchql\.plan/);
+    expect(() => mod.publishToDist()).toThrow(/pgpm\.plan/);
   });
 
   it('skips extraneous files and folders', () => {
