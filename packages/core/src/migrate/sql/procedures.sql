@@ -1,15 +1,15 @@
 -- Register a package (auto-called by deploy if needed)
-CREATE PROCEDURE launchql_migrate.register_package(p_package TEXT)
+CREATE PROCEDURE pgpm_migrate.register_package(p_package TEXT)
 LANGUAGE plpgsql AS $$
 BEGIN
-    INSERT INTO launchql_migrate.packages (package) 
+    INSERT INTO pgpm_migrate.packages (package) 
     VALUES (p_package)
     ON CONFLICT (package) DO NOTHING;
 END;
 $$;
 
 -- Check if a change is deployed (handles both local and cross-package dependencies)
-CREATE FUNCTION launchql_migrate.is_deployed(
+CREATE FUNCTION pgpm_migrate.is_deployed(
     p_package TEXT,
     p_change_name TEXT
 )
@@ -34,7 +34,7 @@ BEGIN
     END IF;
     
     RETURN EXISTS (
-        SELECT 1 FROM launchql_migrate.changes 
+        SELECT 1 FROM pgpm_migrate.changes 
         WHERE package = v_actual_package 
         AND change_name = v_actual_change
     );
@@ -42,7 +42,7 @@ END;
 $$;
 
 -- Deploy a change
-CREATE PROCEDURE launchql_migrate.deploy(
+CREATE PROCEDURE pgpm_migrate.deploy(
     p_package TEXT,
     p_change_name TEXT,
     p_script_hash TEXT,
@@ -55,16 +55,16 @@ DECLARE
     v_change_id TEXT;
 BEGIN
     -- Ensure package exists
-    CALL launchql_migrate.register_package(p_package);
+    CALL pgpm_migrate.register_package(p_package);
     
     -- Generate simple ID
     v_change_id := encode(sha256((p_package || p_change_name || p_script_hash)::bytea), 'hex');
     
     -- Check if already deployed
-    IF launchql_migrate.is_deployed(p_package, p_change_name) THEN
+    IF pgpm_migrate.is_deployed(p_package, p_change_name) THEN
         -- Check if it's the same script (by hash)
         IF EXISTS (
-            SELECT 1 FROM launchql_migrate.changes 
+            SELECT 1 FROM pgpm_migrate.changes 
             WHERE package = p_package 
             AND change_name = p_change_name 
             AND script_hash = p_script_hash
@@ -84,7 +84,7 @@ BEGIN
         BEGIN
             SELECT array_agg(req) INTO missing_changes
             FROM unnest(p_requires) AS req
-            WHERE NOT launchql_migrate.is_deployed(p_package, req);
+            WHERE NOT pgpm_migrate.is_deployed(p_package, req);
             
             IF array_length(missing_changes, 1) > 0 THEN
                 RAISE EXCEPTION 'Missing required changes for %: %', p_change_name, array_to_string(missing_changes, ', ');
@@ -102,23 +102,23 @@ BEGIN
     END IF;
     
     -- Record deployment
-    INSERT INTO launchql_migrate.changes (change_id, change_name, package, script_hash)
+    INSERT INTO pgpm_migrate.changes (change_id, change_name, package, script_hash)
     VALUES (v_change_id, p_change_name, p_package, p_script_hash);
     
     -- Record dependencies (INSERTED AFTER SUCCESSFUL DEPLOYMENT)
     IF p_requires IS NOT NULL THEN
-        INSERT INTO launchql_migrate.dependencies (change_id, requires)
+        INSERT INTO pgpm_migrate.dependencies (change_id, requires)
         SELECT v_change_id, req FROM unnest(p_requires) AS req;
     END IF;
     
     -- Log success
-    INSERT INTO launchql_migrate.events (event_type, change_name, package)
+    INSERT INTO pgpm_migrate.events (event_type, change_name, package)
     VALUES ('deploy', p_change_name, p_package);
 END;
 $$;
 
 -- Revert a change
-CREATE PROCEDURE launchql_migrate.revert(
+CREATE PROCEDURE pgpm_migrate.revert(
     p_package TEXT,
     p_change_name TEXT,
     p_revert_sql TEXT
@@ -126,14 +126,14 @@ CREATE PROCEDURE launchql_migrate.revert(
 LANGUAGE plpgsql AS $$
 BEGIN
     -- Check if deployed
-    IF NOT launchql_migrate.is_deployed(p_package, p_change_name) THEN
+    IF NOT pgpm_migrate.is_deployed(p_package, p_change_name) THEN
         RAISE EXCEPTION 'Change % not deployed in package %', p_change_name, p_package;
     END IF;
     
     -- Check if other changes depend on this (including cross-package dependencies)
     IF EXISTS (
-        SELECT 1 FROM launchql_migrate.dependencies d
-        JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+        SELECT 1 FROM pgpm_migrate.dependencies d
+        JOIN pgpm_migrate.changes c ON c.change_id = d.change_id
         WHERE (
             -- Local dependency within same package
             (d.requires = p_change_name AND c.package = p_package)
@@ -153,8 +153,8 @@ BEGIN
                 END, 
                 ', '
             ) INTO dependent_changes
-            FROM launchql_migrate.dependencies d
-            JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+            FROM pgpm_migrate.dependencies d
+            JOIN pgpm_migrate.changes c ON c.change_id = d.change_id
             WHERE (
                 (d.requires = p_change_name AND c.package = p_package)
                 OR
@@ -169,17 +169,17 @@ BEGIN
     EXECUTE p_revert_sql;
     
     -- Remove from deployed
-    DELETE FROM launchql_migrate.changes 
+    DELETE FROM pgpm_migrate.changes 
     WHERE package = p_package AND change_name = p_change_name;
     
     -- Log revert
-    INSERT INTO launchql_migrate.events (event_type, change_name, package)
+    INSERT INTO pgpm_migrate.events (event_type, change_name, package)
     VALUES ('revert', p_change_name, p_package);
 END;
 $$;
 
 -- Verify a change
-CREATE FUNCTION launchql_migrate.verify(
+CREATE FUNCTION pgpm_migrate.verify(
     p_package TEXT,
     p_change_name TEXT,
     p_verify_sql TEXT
@@ -195,27 +195,27 @@ END;
 $$;
 
 -- List deployed changes
-CREATE FUNCTION launchql_migrate.deployed_changes(
+CREATE FUNCTION pgpm_migrate.deployed_changes(
     p_package TEXT DEFAULT NULL
 )
 RETURNS TABLE(package TEXT, change_name TEXT, deployed_at TIMESTAMPTZ)
 LANGUAGE sql STABLE AS $$
     SELECT package, change_name, deployed_at 
-    FROM launchql_migrate.changes 
+    FROM pgpm_migrate.changes 
     WHERE p_package IS NULL OR package = p_package
     ORDER BY deployed_at;
 $$;
 
 -- Get changes that depend on a given change
-CREATE FUNCTION launchql_migrate.get_dependents(
+CREATE FUNCTION pgpm_migrate.get_dependents(
     p_package TEXT,
     p_change_name TEXT
 )
 RETURNS TABLE(package TEXT, change_name TEXT, dependency TEXT)
 LANGUAGE sql STABLE AS $$
     SELECT c.package, c.change_name, d.requires as dependency
-    FROM launchql_migrate.dependencies d
-    JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+    FROM pgpm_migrate.dependencies d
+    JOIN pgpm_migrate.changes c ON c.change_id = d.change_id
     WHERE (
         -- Local dependency within same package
         (d.requires = p_change_name AND c.package = p_package)
@@ -227,7 +227,7 @@ LANGUAGE sql STABLE AS $$
 $$;
 
 -- Get deployment status
-CREATE FUNCTION launchql_migrate.status(
+CREATE FUNCTION pgpm_migrate.status(
     p_package TEXT DEFAULT NULL
 )
 RETURNS TABLE(
@@ -242,7 +242,7 @@ LANGUAGE sql STABLE AS $$
             package,
             change_name,
             deployed_at
-        FROM launchql_migrate.changes
+        FROM pgpm_migrate.changes
         WHERE p_package IS NULL OR package = p_package
         ORDER BY package, deployed_at DESC
     )
@@ -251,7 +251,7 @@ LANGUAGE sql STABLE AS $$
         COUNT(*)::INTEGER AS total_deployed,
         l.change_name AS last_change,
         l.deployed_at AS last_deployed
-    FROM launchql_migrate.changes c
+    FROM pgpm_migrate.changes c
     JOIN latest l ON l.package = c.package
     WHERE p_package IS NULL OR c.package = p_package
     GROUP BY c.package, l.change_name, l.deployed_at;

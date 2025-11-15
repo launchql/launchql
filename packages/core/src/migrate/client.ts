@@ -84,11 +84,11 @@ export class LaunchQLMigrate {
     try {
       log.info('Checking LaunchQL migration schema...');
       
-      // Check if launchql_migrate schema exists
+      // Check if pgpm_migrate schema exists
       const result = await this.pool.query(`
         SELECT schema_name 
         FROM information_schema.schemata 
-        WHERE schema_name = 'launchql_migrate'
+        WHERE schema_name = 'pgpm_migrate'
       `);
       
       if (result.rows.length === 0) {
@@ -191,7 +191,7 @@ export class LaunchQLMigrate {
           // Call the deploy stored procedure
           await executeQuery(
             context,
-            'CALL launchql_migrate.deploy($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT[], $5::TEXT, $6::BOOLEAN)',
+            'CALL pgpm_migrate.deploy($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT[], $5::TEXT, $6::BOOLEAN)',
             [
               plan.package,
               change.name,
@@ -327,7 +327,7 @@ export class LaunchQLMigrate {
           // Call the revert stored procedure
           await executeQuery(
             context,
-            'CALL launchql_migrate.revert($1, $2, $3)',
+            'CALL pgpm_migrate.revert($1, $2, $3)',
             [plan.package, change.name, cleanRevertSql]
           );
           
@@ -396,7 +396,7 @@ export class LaunchQLMigrate {
         try {
           // Call the verify function
           const result = await targetPool.query(
-            'SELECT launchql_migrate.verify($1, $2, $3) as verified',
+            'SELECT pgpm_migrate.verify($1, $2, $3) as verified',
             [plan.package, change.name, cleanVerifySql]
           );
           
@@ -439,7 +439,7 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const result = await this.pool.query(
-      'SELECT * FROM launchql_migrate.status($1)',
+      'SELECT * FROM pgpm_migrate.status($1)',
       [packageName]
     );
     
@@ -456,7 +456,7 @@ export class LaunchQLMigrate {
    */
   async isDeployed(packageName: string, changeName: string): Promise<boolean> {
     const result = await this.pool.query(
-      'SELECT launchql_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
+      'SELECT pgpm_migrate.is_deployed($1::TEXT, $2::TEXT) as is_deployed',
       [packageName, changeName]
     );
     
@@ -499,7 +499,7 @@ export class LaunchQLMigrate {
       // Import packages
       log.info('Importing Sqitch packages...');
       await this.pool.query(`
-        INSERT INTO launchql_migrate.packages (package, created_at)
+        INSERT INTO pgpm_migrate.packages (package, created_at)
         SELECT DISTINCT project, now()
         FROM sqitch.projects
         ON CONFLICT (package) DO NOTHING
@@ -519,7 +519,7 @@ export class LaunchQLMigrate {
             SELECT change_id FROM sqitch.tags
           )
         )
-        INSERT INTO launchql_migrate.changes (change_id, change_name, package, script_hash, deployed_at)
+        INSERT INTO pgpm_migrate.changes (change_id, change_name, package, script_hash, deployed_at)
         SELECT 
           encode(sha256((cd.project || cd.change || cd.change_id)::bytea), 'hex'),
           cd.change,
@@ -533,11 +533,11 @@ export class LaunchQLMigrate {
       // Import dependencies
       log.info('Importing Sqitch dependencies...');
       await this.pool.query(`
-        INSERT INTO launchql_migrate.dependencies (change_id, requires)
+        INSERT INTO pgpm_migrate.dependencies (change_id, requires)
         SELECT 
           c.change_id,
           d.dependency
-        FROM launchql_migrate.changes c
+        FROM pgpm_migrate.changes c
         JOIN sqitch.dependencies d ON d.change_id = c.script_hash
         ON CONFLICT DO NOTHING
       `);
@@ -564,7 +564,7 @@ export class LaunchQLMigrate {
           c.change_name,
           c.deployed_at,
           c.package
-        FROM launchql_migrate.changes c
+        FROM pgpm_migrate.changes c
         ORDER BY c.deployed_at DESC NULLS LAST
         LIMIT $1
       `, [limit]);
@@ -591,7 +591,7 @@ export class LaunchQLMigrate {
     try {
       const deployedResult = await targetPool.query(`
         SELECT c.change_name
-        FROM launchql_migrate.changes c
+        FROM pgpm_migrate.changes c
         WHERE c.package = $1 AND c.deployed_at IS NOT NULL
       `, [plan.package]);
       
@@ -621,7 +621,7 @@ export class LaunchQLMigrate {
           c.change_name,
           c.deployed_at,
           c.script_hash
-        FROM launchql_migrate.changes c
+        FROM pgpm_migrate.changes c
         WHERE c.package = $1 AND c.deployed_at IS NOT NULL
         ORDER BY c.deployed_at ASC
       `, [packageName]);
@@ -645,8 +645,8 @@ export class LaunchQLMigrate {
     try {
       const result = await this.pool.query(
         `SELECT d.requires 
-         FROM launchql_migrate.dependencies d
-         JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+         FROM pgpm_migrate.dependencies d
+         JOIN pgpm_migrate.changes c ON c.change_id = d.change_id
          WHERE c.package = $1 AND c.change_name = $2`,
         [packageName, changeName]
       );

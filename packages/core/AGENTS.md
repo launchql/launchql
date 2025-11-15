@@ -209,7 +209,7 @@ async verify(options: VerifyOptions): Promise<VerifyResult>
 - `getDependencies(packageName: string, changeName: string)` - Get change dependencies
 
 **Migration Schema:**
-- `initialize(): Promise<void>` - Create launchql_migrate schema
+- `initialize(): Promise<void>` - Create pgpm_migrate schema
 - `hasSqitchTables(): Promise<boolean>` - Check for existing Sqitch tables
 - `importFromSqitch(): Promise<void>` - Import from existing Sqitch deployment
 
