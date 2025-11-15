@@ -33,7 +33,7 @@ export const resolve = (
 };
 
 /**
- * Resolves SQL scripts based on the `launchql.plan` file.
+ * Resolves SQL scripts based on the `pgpm.plan` file.
  *
  * @param pkgDir - The package directory (defaults to the current working directory).
  * @param scriptType - The type of script to resolve (`deploy` or `revert`).
@@ -44,7 +44,7 @@ export const resolveWithPlan = (
   scriptType: 'deploy' | 'revert' = 'deploy'
 ): string => {
   const sqlfile: string[] = [];
-  const planPath = `${pkgDir}/launchql.plan`;
+  const planPath = `${pkgDir}/pgpm.plan`;
   
   let resolved = getChanges(planPath);
 
@@ -73,12 +73,12 @@ export const resolveWithPlan = (
  * 
  * @example
  * // Resolve a tag in the current package
- * resolveTagToChangeName('/path/to/launchql.plan', '@v1.0.0', 'mypackage')
+ * resolveTagToChangeName('/path/to/pgpm.plan', '@v1.0.0', 'mypackage')
  * // Returns: 'schema/v1'
  * 
  * @example
  * // Resolve a tag from another package
- * resolveTagToChangeName('/path/to/launchql.plan', 'auth:@v2.0.0')
+ * resolveTagToChangeName('/path/to/pgpm.plan', 'auth:@v2.0.0')
  * // Returns: 'users/table'
  */
 export const resolveTagToChangeName = (

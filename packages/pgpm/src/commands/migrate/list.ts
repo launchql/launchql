@@ -13,10 +13,10 @@ const log = new Logger('migrate-list');
 
 export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions) => {
   const cwd = argv.cwd || process.cwd();
-  const planPath = join(cwd, 'launchql.plan');
+  const planPath = join(cwd, 'pgpm.plan');
   
   if (!existsSync(planPath)) {
-    log.error(`No launchql.plan found in ${cwd}`);
+    log.error(`No pgpm.plan found in ${cwd}`);
     process.exit(1);
   }
 

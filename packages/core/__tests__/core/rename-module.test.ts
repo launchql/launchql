@@ -18,7 +18,7 @@ describe('LaunchQLPackage.renameModule', () => {
     const res = project.renameModule('renamed_mod', { dryRun: true });
 
     expect(Array.isArray(res.changed)).toBe(true);
-    expect(res.changed.find(f => f.endsWith('launchql.plan'))).toBeTruthy();
+    expect(res.changed.find(f => f.endsWith('pgpm.plan'))).toBeTruthy();
     expect(res.changed.find(f => f.endsWith('Makefile'))).toBeTruthy();
     expect(res.changed.find(f => f.endsWith('renamed_mod.control'))).toBeTruthy();
 

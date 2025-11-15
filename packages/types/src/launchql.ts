@@ -241,7 +241,7 @@ export interface LaunchQLOptions {
 /**
  * Default configuration values for LaunchQL framework
  */
-export const launchqlDefaults: LaunchQLOptions = {
+export const pgpmDefaults: LaunchQLOptions = {
   db: {
     rootDb: 'postgres',
     prefix: 'db-',

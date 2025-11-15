@@ -130,7 +130,7 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { modulePath, toChange, useTransaction = true, debug = false, logOnly = false } = options;
-    const planPath = join(modulePath, 'launchql.plan');
+    const planPath = join(modulePath, 'pgpm.plan');
     const plan = parsePlanFileSimple(planPath);
     const resolvedToChange = this.resolveToChange(toChange, planPath, plan.package);
     const changes = getChangesInOrder(planPath);
@@ -284,7 +284,7 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { modulePath, toChange, useTransaction = true } = options;
-    const planPath = join(modulePath, 'launchql.plan');
+    const planPath = join(modulePath, 'pgpm.plan');
     const plan = parsePlanFileSimple(planPath);
     const resolvedToChange = this.resolveToChange(toChange, planPath, plan.package);
     const changes = getChangesInOrder(planPath, true); // Reverse order for revert
@@ -360,7 +360,7 @@ export class LaunchQLMigrate {
     await this.initialize();
     
     const { modulePath, toChange } = options;
-    const planPath = join(modulePath, 'launchql.plan');
+    const planPath = join(modulePath, 'pgpm.plan');
     const plan = parsePlanFileSimple(planPath);
     const resolvedToChange = this.resolveToChange(toChange, planPath, plan.package);
     const changes = getChangesInOrder(planPath);

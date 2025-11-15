@@ -26,7 +26,7 @@ describe('Add functionality', () => {
 %uri=https://github.com/test/test-module
 
 `;
-    writeFileSync(join(moduleDir, 'launchql.plan'), planContent);
+    writeFileSync(join(moduleDir, 'pgpm.plan'), planContent);
     
     const controlContent = `{
   "name": "test-module",
@@ -43,7 +43,7 @@ describe('Add functionality', () => {
     const pkg = new LaunchQLPackage(moduleDir);
     pkg.addChange('organizations');
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('organizations');
     
     expect(fs.existsSync(join(moduleDir, 'deploy', 'organizations.sql'))).toBe(true);
@@ -61,7 +61,7 @@ describe('Add functionality', () => {
     
     pkg.addChange('contacts', ['users'], 'Adds contacts table');
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('users');
     expect(planContent).toContain('contacts');
     expect(planContent).toContain('Adds contacts table');
@@ -81,7 +81,7 @@ describe('Add functionality', () => {
     expect(fs.existsSync(join(moduleDir, 'revert', 'api', 'v1', 'endpoints.sql'))).toBe(true);
     expect(fs.existsSync(join(moduleDir, 'verify', 'api', 'v1', 'endpoints.sql'))).toBe(true);
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('api/v1/endpoints');
   });
 
@@ -96,7 +96,7 @@ describe('Add functionality', () => {
     expect(fs.existsSync(join(moduleDir, 'revert', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
     expect(fs.existsSync(join(moduleDir, 'verify', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('schema/myschema/tables/mytable');
   });
 
@@ -208,7 +208,7 @@ describe('Add functionality', () => {
     expect(deployContent).toContain('-- requires: roles');
     expect(deployContent).toContain('-- requires: permissions');
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('user-permissions');
     expect(planContent).toContain('Links users to permissions');
   });
@@ -221,7 +221,7 @@ describe('Add functionality', () => {
     
     pkg.addChange('adoption-history', ['pets:tables/pets'], 'Adds adoption history table');
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('adoption-history');
     expect(planContent).toContain('[pets:tables/pets]');
     
@@ -241,7 +241,7 @@ describe('Add functionality', () => {
     
     pkg.addChange('contacts', ['users', 'pets:tables/pets'], 'Mixed local and cross-module deps');
     
-    const planContent = readFileSync(join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('contacts');
     expect(planContent).toContain('[users pets:tables/pets]');
   });

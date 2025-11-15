@@ -43,7 +43,7 @@ ${rows
     .join('\n')}
 `);
 
-  fs.writeFileSync(path.join(dir, 'launchql.plan'), plan);
+  fs.writeFileSync(path.join(dir, 'pgpm.plan'), plan);
 }
 
 /**

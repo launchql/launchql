@@ -108,7 +108,7 @@ export default [
 },
 
 (vars: Record<string, any>) => {
-  const relPath = `launchql.json`;
+  const relPath = `pgpm.json`;
   const content = `{
   "packages": [
     "packages/*",

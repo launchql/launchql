@@ -94,7 +94,7 @@ describe('LaunchQLPackage.analyzeModule', () => {
   it('detects plan %uri mismatch', () => {
     const project = fixture.getModuleProject(['simple'], 'my-first');
     const modPath = project.getModulePath()!;
-    const planPath = path.join(modPath, 'launchql.plan');
+    const planPath = path.join(modPath, 'pgpm.plan');
     const original = fs.readFileSync(planPath, 'utf8');
     try {
       const parsed = parsePlanFile(planPath);

@@ -24,7 +24,7 @@ describe('Header format compatibility', () => {
 schema 2024-01-01T00:00:00Z Test User <test@example.com> # Add schema
 tables/users [schema] 2024-01-02T00:00:00Z Test User <test@example.com> # Add users table
 `;
-    writeFileSync(join(moduleDir, 'launchql.plan'), planContent);
+    writeFileSync(join(moduleDir, 'pgpm.plan'), planContent);
     
     if (headerFormat === 'old') {
       const schemaContent = `-- Deploy test-module:schema to pg
@@ -111,7 +111,7 @@ CREATE TABLE app.users (id serial primary key);
 
 init 2024-01-01T00:00:00Z Test User <test@example.com> # Initialize
 `;
-    writeFileSync(join(moduleDir, 'launchql.plan'), planContent);
+    writeFileSync(join(moduleDir, 'pgpm.plan'), planContent);
     
     const initContent = `-- Deploy init
 
@@ -134,7 +134,7 @@ SELECT 1;
 
 init 2024-01-01T00:00:00Z Test User <test@example.com> # Initialize
 `;
-    writeFileSync(join(moduleDir, 'launchql.plan'), planContent);
+    writeFileSync(join(moduleDir, 'pgpm.plan'), planContent);
     
     const initContent = `-- Deploy init to pg
 

@@ -50,7 +50,7 @@ export default async (
     throw new Error('Could not resolve module path');
   }
   
-  const planPath = path.join(modulePath, 'launchql.plan');
+  const planPath = path.join(modulePath, 'pgpm.plan');
   const result = parsePlanFile(planPath);
   
   if (result.errors.length > 0) {
