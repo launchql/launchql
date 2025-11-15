@@ -132,4 +132,18 @@ superuser = false
     
     expect(() => getInstalledExtensions(controlFilePath)).toThrow();
   });
+
+  it('should handle control file without requires line (regression test for #291)', () => {
+    const content = `# test extension
+comment = 'test extension'
+default_version = '1.0.0'
+module_pathname = '$libdir/test'
+relocatable = false
+superuser = false
+`;
+    fs.writeFileSync(controlFilePath, content);
+    
+    const result = getInstalledExtensions(controlFilePath);
+    expect(result).toEqual([]);
+  });
 });
