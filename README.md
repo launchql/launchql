@@ -34,12 +34,7 @@ pgpm init
 
 # Deploy to your database
 pgpm deploy --createdb
-
-# Start the GraphQL API server
-pgpm server
 ```
-
-Visit `http://localhost:5555` to explore your auto-generated GraphQL API with GraphiQL!
 
 ## What is LaunchQL?
 
@@ -152,9 +147,6 @@ pgpm add functions/authenticate
 
 # Deploy to database
 pgpm deploy --createdb
-
-# Start development server
-pgpm server
 ```
 
 ### Installing Database Packages
