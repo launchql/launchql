@@ -23,7 +23,7 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
   test('adds tag to package and generates correct plan file', async () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-first');
-    const planPath = join(packagePath, 'launchql.plan');
+    const planPath = join(packagePath, 'pgpm.plan');
     
     const pkg = new LaunchQLPackage(packagePath);
     
@@ -64,7 +64,7 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const pkg = new LaunchQLPackage(packagePath);
     pkg.addTag('v2.2.0', 'create_table', 'Table creation release');
     
-    const updatedPlan = readFileSync(join(packagePath, 'launchql.plan'), 'utf8');
+    const updatedPlan = readFileSync(join(packagePath, 'pgpm.plan'), 'utf8');
     
     expect(updatedPlan).toContain('@v2.2.0');
     expect(updatedPlan).toContain('# Table creation release');

@@ -30,8 +30,8 @@ export const loadConfigFileSync = (configPath: string): LaunchQLOptions => {
  */
 export const loadConfigSyncFromDir = (dir: string): LaunchQLOptions => {
   const configFiles = [
-    'launchql.config.js',
-    'launchql.json'
+    'pgpm.config.js',
+    'pgpm.json'
   ];
   
   for (const filename of configFiles) {
@@ -41,7 +41,7 @@ export const loadConfigSyncFromDir = (dir: string): LaunchQLOptions => {
     }
   }
   
-  throw new Error('No launchql config file found. Expected one of: ' + configFiles.join(', '));
+  throw new Error('No pgpm config file found. Expected one of: ' + configFiles.join(', '));
 };
 
 /**
@@ -49,7 +49,7 @@ export const loadConfigSyncFromDir = (dir: string): LaunchQLOptions => {
  * Enhanced version that uses the robust config loading logic
  */
 export const loadConfigSync = (cwd: string = process.cwd()): LaunchQLOptions => {
-  const configFiles = ['launchql.config.js', 'launchql.json'];
+  const configFiles = ['pgpm.config.js', 'pgpm.json'];
   
   for (const filename of configFiles) {
     try {
@@ -67,7 +67,7 @@ export const loadConfigSync = (cwd: string = process.cwd()): LaunchQLOptions => 
  * Moved from LaunchQLPackage class for better reusability
  */
 export const resolveLaunchqlPath = (cwd: string = process.cwd()): string | undefined => {
-  const configFiles = ['launchql.config.js', 'launchql.json'];
+  const configFiles = ['pgpm.config.js', 'pgpm.json'];
   
   for (const filename of configFiles) {
     try {

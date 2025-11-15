@@ -192,7 +192,7 @@ export class MigrateTestFixture {
       lines.push(line);
     }
 
-    const planPath = join(tempDir, 'launchql.plan');
+    const planPath = join(tempDir, 'pgpm.plan');
     writeFileSync(planPath, lines.join('\n'));
     
     return tempDir;

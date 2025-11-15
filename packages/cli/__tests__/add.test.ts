@@ -70,7 +70,7 @@ describe('cmds:add', () => {
 %uri=https://github.com/test/test-module
 
 `;
-    fs.writeFileSync(path.join(moduleDir, 'launchql.plan'), planContent);
+    fs.writeFileSync(path.join(moduleDir, 'pgpm.plan'), planContent);
     
     const controlContent = `{
   "name": "test-module",
@@ -96,7 +96,7 @@ describe('cmds:add', () => {
     expect(fs.existsSync(path.join(moduleDir, 'revert', 'organizations.sql'))).toBe(true);
     expect(fs.existsSync(path.join(moduleDir, 'verify', 'organizations.sql'))).toBe(true);
 
-    const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = fs.readFileSync(path.join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('organizations');
   });
 
@@ -113,7 +113,7 @@ describe('cmds:add', () => {
       'change-with-note'
     );
 
-    const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = fs.readFileSync(path.join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('brands');
     expect(planContent).toContain('Adds the brands table');
   });
@@ -140,7 +140,7 @@ describe('cmds:add', () => {
       'change-with-dependency'
     );
 
-    const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = fs.readFileSync(path.join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('users');
     expect(planContent).toContain('contacts');
 
@@ -164,7 +164,7 @@ describe('cmds:add', () => {
     expect(fs.existsSync(path.join(moduleDir, 'revert', 'api', 'v1', 'endpoints.sql'))).toBe(true);
     expect(fs.existsSync(path.join(moduleDir, 'verify', 'api', 'v1', 'endpoints.sql'))).toBe(true);
 
-    const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = fs.readFileSync(path.join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('api/v1/endpoints');
   });
 
@@ -184,7 +184,7 @@ describe('cmds:add', () => {
     expect(fs.existsSync(path.join(moduleDir, 'revert', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
     expect(fs.existsSync(path.join(moduleDir, 'verify', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
 
-    const planContent = fs.readFileSync(path.join(moduleDir, 'launchql.plan'), 'utf8');
+    const planContent = fs.readFileSync(path.join(moduleDir, 'pgpm.plan'), 'utf8');
     expect(planContent).toContain('schema/myschema/tables/mytable');
   });
 

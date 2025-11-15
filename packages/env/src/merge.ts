@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
-import { launchqlDefaults, LaunchQLOptions, PgTestConnectionOptions, DeploymentOptions } from '@launchql/types';
+import { pgpmDefaults, LaunchQLOptions, PgTestConnectionOptions, DeploymentOptions } from '@launchql/types';
 import { loadConfigSync } from './config';
 import { getEnvVars } from './env';
 
 export const getEnvOptions = (overrides: LaunchQLOptions = {}, cwd: string = process.cwd()): LaunchQLOptions => {
-  const defaults = launchqlDefaults;
+  const defaults = pgpmDefaults;
   const configOptions = loadConfigSync(cwd);
   const envOptions = getEnvVars();
   

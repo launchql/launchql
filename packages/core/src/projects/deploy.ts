@@ -98,8 +98,8 @@ export const deployProject = async (
               errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
             } else if (err.code === 'EACCES') {
               errorLines.push('💡 Hint: Permission denied. Check file permissions.');
-            } else if (err.message && err.message.includes('launchql.plan')) {
-              errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
+            } else if (err.message && err.message.includes('pgpm.plan')) {
+              errorLines.push('💡 Hint: pgpm.plan file issue. Check if the plan file exists and is valid.');
             }
             
             // Log the consolidated error message

@@ -19,7 +19,7 @@ function getExpectedFiles(pkg: string, version: string): string[] {
 
   return [
     `${basePath}/package.json`,
-    `${basePath}/launchql.plan`,
+    `${basePath}/pgpm.plan`,
     `${basePath}/Makefile`,
     `${basePath}/sql/${extname}--${version}.sql`,
     `${basePath}/${extname}.control`,

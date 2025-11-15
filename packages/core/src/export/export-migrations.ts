@@ -255,7 +255,7 @@ const preparePackage = async ({
   mkdirSync(sqitchDir, { recursive: true });
   process.chdir(sqitchDir);
 
-  const plan = glob(path.join(sqitchDir, 'launchql.plan'));
+  const plan = glob(path.join(sqitchDir, 'pgpm.plan'));
   if (!plan.length) {
     project.initModule({
       name,

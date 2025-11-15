@@ -21,7 +21,7 @@ describe('Config Loading', () => {
     };
     
     fs.writeFileSync(
-      path.join(tempDir, 'launchql.json'),
+      path.join(tempDir, 'pgpm.json'),
       JSON.stringify(configContent, null, 2)
     );
 
@@ -42,7 +42,7 @@ module.exports = {
 };`;
     
     fs.writeFileSync(
-      path.join(tempDir, 'launchql.config.js'),
+      path.join(tempDir, 'pgpm.config.js'),
       configContent
     );
 
@@ -64,12 +64,12 @@ module.exports = {
 };`;
     
     fs.writeFileSync(
-      path.join(tempDir, 'launchql.json'),
+      path.join(tempDir, 'pgpm.json'),
       JSON.stringify(jsonConfig, null, 2)
     );
     
     fs.writeFileSync(
-      path.join(tempDir, 'launchql.config.js'),
+      path.join(tempDir, 'pgpm.config.js'),
       jsConfig
     );
 

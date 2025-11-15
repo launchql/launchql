@@ -18,7 +18,7 @@ describe('Clear Functionality', () => {
   test('clears all changes from plan when plan has changes', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const originalPlan = fs.readFileSync(planPath, 'utf8');
     
     expect(originalPlan).toContain('schema_myfirstapp');
@@ -62,7 +62,7 @@ describe('Clear Functionality', () => {
   test('handles empty plan gracefully', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     
     await pkg.removeFromPlan('schema_myfirstapp');
     
@@ -80,7 +80,7 @@ describe('Clear Functionality', () => {
   test('identifies first change correctly from plan file', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const result = parsePlanFile(planPath);
     
     expect(result.errors.length).toBe(0);
@@ -100,7 +100,7 @@ describe('Clear Functionality', () => {
   test('removes all associated tags when clearing plan', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const originalPlan = fs.readFileSync(planPath, 'utf8');
     
     expect(originalPlan).toContain('@v1.0.0');
@@ -128,7 +128,7 @@ describe('Clear Functionality', () => {
     fs.unlinkSync(path.join(revertDir, 'table_products.sql'));
     fs.unlinkSync(path.join(verifyDir, 'schema_myfirstapp.sql'));
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const result = parsePlanFile(planPath);
     const plan = result.data!;
     const firstChange = plan.changes[0].name;
