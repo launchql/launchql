@@ -67,7 +67,7 @@ describe('cmds:install - with initialized workspace and module', () => {
   });
 
   it('installs a module package', async () => {
-    const pkg = '@webql/base32';
+    const pkg = '@lql-pg/base32';
     const version = '1.2.1';
 
     await fixture.runCmd({
@@ -103,12 +103,12 @@ describe('cmds:install - with initialized workspace and module', () => {
 
   it('installs two modules', async () => {
     const base32 = {
-      name: '@webql/base32',
+      name: '@lql-pg/base32',
       version: '1.2.1',
     };
 
     const utils = {
-      name: '@webql/utils',
+      name: '@lql-pg/utils',
       version: '1.1.2',
     };
 
