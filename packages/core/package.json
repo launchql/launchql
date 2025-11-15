@@ -24,7 +24,7 @@
     "copy:pkg": "copyfiles -f ../../LICENSE README.md package.json dist",
     "copy:sql": "copyfiles -f src/migrate/sql/* dist/migrate/sql && copyfiles -f src/migrate/sql/* dist/esm/migrate/sql && copyfiles -f src/init/sql/* dist/init/sql && copyfiles -f src/init/sql/* dist/esm/init/sql",
     "clean": "rimraf dist/**",
-    "prepare": "npm run build",
+    "prepack": "npm run build",
     "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",

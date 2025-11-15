@@ -17,11 +17,11 @@ Then you can "install" the packages need:
 docker exec postgres /sql-bin/install.sh
 ```
 
-Then you can run 
+Then you can run
 
 ```sh
 pnpm install
-pnpm run build
+pnpm build
 ```
 
 Then to run a test:
@@ -30,4 +30,3 @@ Then to run a test:
 cd packages/core
 pnpm test
 ```
-
