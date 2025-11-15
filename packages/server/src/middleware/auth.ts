@@ -1,12 +1,30 @@
 import { LaunchQLOptions } from '@launchql/types';
-import { NextFunction, Request, RequestHandler,Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
 
-export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHandler => {
+import { ApiStructure } from '../types';
 
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const api = req.api;
+type AuthRequest = Request & {
+  api?: ApiStructure;
+  clientIp?: string;
+  token?: {
+    id: string;
+    user_id: string;
+    [key: string]: any;
+  };
+};
+
+export const createAuthenticateMiddleware = (
+  opts: LaunchQLOptions
+): RequestHandler => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const authRequest = req as AuthRequest;
+    const api = authRequest.api;
     if (!api) {
       res.status(500).send('Missing API info');
       return;
@@ -14,7 +32,7 @@ export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHand
 
     const pool = getPgPool({
       ...opts.pg,
-      database: api.dbname
+      database: api.dbname,
     });
     const rlsModule = api.rlsModule;
 
@@ -31,14 +49,14 @@ export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHand
 
       if (authType?.toLowerCase() === 'bearer' && authToken) {
         const context: Record<string, any> = {
-          'jwt.claims.ip_address': req.clientIp,
+          'jwt.claims.ip_address': authRequest.clientIp,
         };
 
-        if (req.get('origin')) {
-          context['jwt.claims.origin'] = req.get('origin');
+        if (authRequest.get('origin')) {
+          context['jwt.claims.origin'] = authRequest.get('origin');
         }
-        if (req.get('User-Agent')) {
-          context['jwt.claims.user_agent'] = req.get('User-Agent');
+        if (authRequest.get('User-Agent')) {
+          context['jwt.claims.user_agent'] = authRequest.get('User-Agent');
         }
 
         try {
@@ -72,7 +90,7 @@ export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHand
         }
       }
 
-      req.token = token;
+      authRequest.token = token;
     }
 
     next();

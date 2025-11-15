@@ -1,9 +1,11 @@
 import gql from 'graphql-tag';
 
+type GraphQLDocument = ReturnType<typeof gql>;
+
 // DO NOT CHANGE TO domainBySubdomainAndDomain(domain: $domain, subdomain: $subdomain)
 // condition is the way to handle since it will pass in null properly
 // e.g. subdomain.domain or domain both work
-export const ApiQuery = gql`
+export const ApiQuery: GraphQLDocument = gql`
   query ApiRoot($domain: String!, $subdomain: String) {
     domains(condition: { domain: $domain, subdomain: $subdomain }) {
       nodes {
@@ -56,7 +58,7 @@ export const ApiQuery = gql`
   }
 `;
 
-export const ApiByNameQuery = gql`
+export const ApiByNameQuery: GraphQLDocument = gql`
   query ApiByName($name: String!, $databaseId: UUID!) {
     api: apiByDatabaseIdAndName(name: $name, databaseId: $databaseId) {
       databaseId
@@ -105,7 +107,7 @@ export const ApiByNameQuery = gql`
   }
 `;
 
-export const ListOfAllDomainsOfDb = gql`
+export const ListOfAllDomainsOfDb: GraphQLDocument = gql`
   query ListApisByDatabaseId {
     apis {
       nodes {

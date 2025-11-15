@@ -1,8 +1,8 @@
-import { svcCache } from '@launchql/server-utils';
 import { getNodeEnv } from '@launchql/env';
+import { svcCache } from '@launchql/server-utils';
 import { LaunchQLOptions } from '@launchql/types';
-import { NextFunction,Request, Response } from 'express';
-import { getSchema,GraphileQuery } from 'graphile-query';
+import { NextFunction, Request, Response } from 'express';
+import { getSchema, GraphileQuery } from 'graphile-query';
 import { getGraphileSettings } from 'graphile-settings';
 import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
@@ -15,18 +15,41 @@ import errorPage404Message from '../errors/404-message';
 import { ApiStructure, Domain, SchemaNode, Service, Site } from '../types';
 import { ApiByNameQuery, ApiQuery, ListOfAllDomainsOfDb } from './gql';
 
+type LaunchQLToken = {
+  id: string;
+  user_id: string;
+  [key: string]: any;
+};
+
+type ApiRequest = Request & {
+  api?: ApiStructure;
+  svc_key?: string;
+  clientIp?: string;
+  databaseId?: string;
+  token?: LaunchQLToken;
+  urlDomains: {
+    domain: string | null;
+    subdomains: string[];
+  };
+};
+
 const transformServiceToApi = (svc: Service): ApiStructure => {
   const api = svc.data.api;
-  const schemaNames = api.schemaNamesFromExt?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
-  const additionalSchemas = api.schemaNames?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
-  
+  const schemaNames =
+    api.schemaNamesFromExt?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
+  const additionalSchemas =
+    api.schemaNames?.nodes?.map((n: SchemaNode) => n.schemaName) || [];
+
   let domains: string[] = [];
   if (api.database?.sites?.nodes) {
     domains = api.database.sites.nodes.reduce((acc: string[], site: Site) => {
       if (site.domains?.nodes && site.domains.nodes.length) {
         const siteUrls = site.domains.nodes.map((domain: Domain) => {
-          const hostname = domain.subdomain ? `${domain.subdomain}.${domain.domain}` : domain.domain;
-          const protocol = domain.domain === 'localhost' ? 'http://' : 'https://';
+          const hostname = domain.subdomain
+            ? `${domain.subdomain}.${domain.domain}`
+            : domain.domain;
+          const protocol =
+            domain.domain === 'localhost' ? 'http://' : 'https://';
           return protocol + hostname;
         });
         return [...acc, ...siteUrls];
@@ -34,20 +57,21 @@ const transformServiceToApi = (svc: Service): ApiStructure => {
       return acc;
     }, []);
   }
-  
+
   return {
     dbname: api.dbname,
     anonRole: api.anonRole,
     roleName: api.roleName,
     schema: [...schemaNames, ...additionalSchemas],
-    apiModules: api.apiModules?.nodes?.map(node => ({
-      name: node.name,
-      data: node.data
-    })) || [],
+    apiModules:
+      api.apiModules?.nodes?.map((node) => ({
+        name: node.name,
+        data: node.data,
+      })) || [],
     rlsModule: api.rlsModule,
     domains,
     databaseId: api.databaseId,
-    isPublic: api.isPublic
+    isPublic: api.isPublic,
   };
 };
 
@@ -65,7 +89,12 @@ export const getSubdomain = (reqDomains: string[]): string | null => {
 };
 
 export const createApiMiddleware = (opts: any) => {
-  return async (req: any, res: Response, next: NextFunction): Promise<void> => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const apiRequest = req as ApiRequest;
     if (opts.api?.enableMetaApi === false) {
       const schemas = opts.api.exposedSchemas;
       const anonRole = opts.api.anonRole;
@@ -79,31 +108,45 @@ export const createApiMiddleware = (opts: any) => {
         apiModules: [],
         domains: [],
         databaseId,
-        isPublic: false
+        isPublic: false,
       };
-      req.api = api;
-      req.databaseId = databaseId;
+      apiRequest.api = api;
+      apiRequest.databaseId = databaseId;
       return next();
     }
     try {
-      const svc = await getApiConfig(opts, req);
+      const svc = await getApiConfig(opts, apiRequest);
 
       if (svc?.errorHtml) {
-        res.status(404).send(errorPage404Message('API not found', svc.errorHtml));
+        res
+          .status(404)
+          .send(errorPage404Message('API not found', svc.errorHtml));
         return;
       } else if (!svc) {
-        res.status(404).send(errorPage404Message('API service not found for the given domain/subdomain.'));
+        res
+          .status(404)
+          .send(
+            errorPage404Message(
+              'API service not found for the given domain/subdomain.'
+            )
+          );
         return;
       }
       const api = transformServiceToApi(svc);
-      req.api = api;
-      req.databaseId = api.databaseId;
+      apiRequest.api = api;
+      apiRequest.databaseId = api.databaseId;
       next();
     } catch (e: any) {
       if (e.code === 'NO_VALID_SCHEMAS') {
         res.status(404).send(errorPage404Message(e.message));
       } else if (e.message.match(/does not exist/)) {
-        res.status(404).send(errorPage404Message('The resource you\'re looking for does not exist.'));
+        res
+          .status(404)
+          .send(
+            errorPage404Message(
+              "The resource you're looking for does not exist."
+            )
+          );
       } else {
         console.error(e);
         res.status(500).send(errorPage50x);
@@ -116,9 +159,9 @@ const getHardCodedSchemata = ({
   opts,
   schemata,
   databaseId,
-  key
+  key,
 }: {
-  opts: LaunchQLOptions,
+  opts: LaunchQLOptions;
   schemata: string;
   databaseId: string;
   key: string;
@@ -135,12 +178,12 @@ const getHardCodedSchemata = ({
           nodes: schemata
             .split(',')
             .map((schema) => schema.trim())
-            .map((schemaName) => ({ schemaName }))
+            .map((schemaName) => ({ schemaName })),
         },
         schemaNames: { nodes: [] as Array<{ schemaName: string }> },
-        apiModules: [] as Array<any>
-      }
-    }
+        apiModules: [] as Array<any>,
+      },
+    },
   };
   svcCache.set(key, svc);
   return svc;
@@ -149,9 +192,9 @@ const getHardCodedSchemata = ({
 const getMetaSchema = ({
   opts,
   key,
-  databaseId
+  databaseId,
 }: {
-  opts: LaunchQLOptions,
+  opts: LaunchQLOptions;
   key: string;
   databaseId: string;
 }): any => {
@@ -166,12 +209,12 @@ const getMetaSchema = ({
         anonRole: 'administrator',
         roleName: 'administrator',
         schemaNamesFromExt: {
-          nodes: schemata.map((schemaName: string) => ({ schemaName }))
+          nodes: schemata.map((schemaName: string) => ({ schemaName })),
         },
         schemaNames: { nodes: [] as Array<{ schemaName: string }> },
-        apiModules: [] as Array<any>
-      }
-    }
+        apiModules: [] as Array<any>,
+      },
+    },
   };
   svcCache.set(key, svc);
   return svc;
@@ -182,9 +225,9 @@ const queryServiceByDomainAndSubdomain = async ({
   key,
   client,
   domain,
-  subdomain
+  subdomain,
 }: {
-  opts: LaunchQLOptions,
+  opts: LaunchQLOptions;
   key: string;
   client: any;
   domain: string;
@@ -193,7 +236,7 @@ const queryServiceByDomainAndSubdomain = async ({
   const result = await client.query({
     role: 'administrator',
     query: ApiQuery,
-    variables: { domain, subdomain }
+    variables: { domain, subdomain },
   });
 
   if (result.errors?.length) {
@@ -219,9 +262,9 @@ const queryServiceByApiName = async ({
   key,
   client,
   databaseId,
-  name
+  name,
 }: {
-  opts: LaunchQLOptions,
+  opts: LaunchQLOptions;
   key: string;
   client: any;
   databaseId: string;
@@ -230,7 +273,7 @@ const queryServiceByApiName = async ({
   const result = await client.query({
     role: 'administrator',
     query: ApiByNameQuery,
-    variables: { databaseId, name }
+    variables: { databaseId, name },
   });
 
   if (result.errors?.length) {
@@ -248,7 +291,7 @@ const queryServiceByApiName = async ({
   return null;
 };
 
-const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
+const getSvcKey = (opts: LaunchQLOptions, req: ApiRequest): string => {
   const domain = req.urlDomains.domain;
   const key = req.urlDomains.subdomains
     .filter((name: string) => !['www'].includes(name))
@@ -261,7 +304,9 @@ const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
       return 'api:' + req.get('X-Database-Id') + ':' + req.get('X-Api-Name');
     }
     if (req.get('X-Schemata')) {
-      return 'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata');
+      return (
+        'schemata:' + req.get('X-Database-Id') + ':' + req.get('X-Schemata')
+      );
     }
     if (req.get('X-Meta-Schema')) {
       return 'metaschema:api:' + req.get('X-Database-Id');
@@ -270,7 +315,10 @@ const getSvcKey = (opts: LaunchQLOptions, req: any): string => {
   return key;
 };
 
-const validateSchemata = async (pool: Pool, schemata: string[]): Promise<string[]> => {
+const validateSchemata = async (
+  pool: Pool,
+  schemata: string[]
+): Promise<string[]> => {
   const result = await pool.query(
     `SELECT schema_name FROM information_schema.schemata WHERE schema_name = ANY($1::text[])`,
     [schemata]
@@ -278,7 +326,10 @@ const validateSchemata = async (pool: Pool, schemata: string[]): Promise<string[
   return result.rows.map((row: { schema_name: string }) => row.schema_name);
 };
 
-export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise<any> => {
+export const getApiConfig = async (
+  opts: LaunchQLOptions,
+  req: ApiRequest
+): Promise<any> => {
   const rootPgPool = getPgPool(opts.pg);
   // @ts-ignore
   const subdomain = getSubdomain(req.urlDomains.subdomains);
@@ -304,8 +355,8 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
 
     const settings = getGraphileSettings({
       graphile: {
-        schema: validatedSchemata
-      }
+        schema: validatedSchemata,
+      },
     });
 
     // @ts-ignore
@@ -320,7 +371,7 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
           opts,
           key,
           schemata: req.get('X-Schemata'),
-          databaseId: req.get('X-Database-Id')
+          databaseId: req.get('X-Database-Id'),
         });
       } else if (req.get('X-Api-Name')) {
         svc = await queryServiceByApiName({
@@ -328,13 +379,13 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
           key,
           client,
           name: req.get('X-Api-Name'),
-          databaseId: req.get('X-Database-Id')
+          databaseId: req.get('X-Database-Id'),
         });
       } else if (req.get('X-Meta-Schema')) {
         svc = getMetaSchema({
           opts,
           key,
-          databaseId: req.get('X-Database-Id')
+          databaseId: req.get('X-Database-Id'),
         });
       } else {
         svc = await queryServiceByDomainAndSubdomain({
@@ -342,7 +393,7 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
           key,
           client,
           domain,
-          subdomain
+          subdomain,
         });
       }
     } else {
@@ -351,12 +402,11 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
         key,
         client,
         domain,
-        subdomain
+        subdomain,
       });
 
       if (!svc) {
         if (getNodeEnv() === 'development') {
-
           // TODO ONLY DO THIS IN DEV MODE
           const fallbackResult = await client.query({
             role: 'administrator',
@@ -365,29 +415,32 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
             // variables: { databaseId }
           });
 
-          if (!fallbackResult.errors?.length && fallbackResult.data?.apis?.nodes?.length) {
+          if (
+            !fallbackResult.errors?.length &&
+            fallbackResult.data?.apis?.nodes?.length
+          ) {
             const port = getPortFromRequest(req);
 
-            const allDomains = fallbackResult.data.apis.nodes.flatMap((api: any) =>
-              api.domains.nodes.map((d: any) => ({
-                domain: d.domain,
-                subdomain: d.subdomain,
-                href: d.subdomain
-                  ? `http://${d.subdomain}.${d.domain}${port}/graphiql`
-                  : `http://${d.domain}${port}/graphiql`
-              }))
-
+            const allDomains = fallbackResult.data.apis.nodes.flatMap(
+              (api: any) =>
+                api.domains.nodes.map((d: any) => ({
+                  domain: d.domain,
+                  subdomain: d.subdomain,
+                  href: d.subdomain
+                    ? `http://${d.subdomain}.${d.domain}${port}/graphiql`
+                    : `http://${d.domain}${port}/graphiql`,
+                }))
             );
 
             const linksHtml = allDomains.length
               ? `<ul class="mt-4 pl-5 list-disc space-y-1">` +
-              allDomains
-                .map(
-                  (d: any) =>
-                    `<li><a href="${d.href}" class="text-brand hover:underline">${d.href}</a></li>`
-                )
-                .join('') +
-              `</ul>`
+                allDomains
+                  .map(
+                    (d: any) =>
+                      `<li><a href="${d.href}" class="text-brand hover:underline">${d.href}</a></li>`
+                  )
+                  .join('') +
+                `</ul>`
               : `<p class="text-gray-600">No APIs are currently registered for this database.</p>`;
 
             const errorHtml = `
@@ -398,12 +451,11 @@ export const getApiConfig = async (opts: LaunchQLOptions, req: Request): Promise
         `.trim();
 
             return {
-              errorHtml
+              errorHtml,
             };
           }
         }
       }
-
     }
   }
   return svc;
