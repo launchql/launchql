@@ -118,6 +118,7 @@ export class LaunchQLPackage {
   public modulePath?: string;
   public config?: LaunchQLWorkspaceConfig;
   public allowedDirs: string[] = [];
+  public allowedParentDirs: string[] = [];
 
   private _moduleMap?: ModuleMap;
   private _moduleInfo?: ExtensionInfo;
@@ -134,6 +135,7 @@ export class LaunchQLPackage {
     if (this.workspacePath) {
       this.config = this.loadConfigSync();
       this.allowedDirs = this.loadAllowedDirs();
+      this.allowedParentDirs = this.loadAllowedParentDirs();
     }
   }
 
@@ -159,28 +161,47 @@ export class LaunchQLPackage {
     return [...new Set(resolvedDirs)];
   }
 
+  private loadAllowedParentDirs(): string[] {
+    const globs: string[] = this.config?.packages ?? [];
+    const parentDirs = globs.map(pattern => {
+      // Remove glob characters (*, **, ?, etc.) to get the base path
+      const basePath = pattern.replace(/[*?[\]{}]/g, '').replace(/\/$/, '');
+      return path.resolve(this.workspacePath!, basePath);
+    });
+    // Remove duplicates by converting to Set and back to array
+    return [...new Set(parentDirs)];
+  }
+
   isInsideAllowedDirs(cwd: string): boolean {
     return this.allowedDirs.some(dir => cwd.startsWith(dir));
+  }
+
+  isParentOfAllowedDirs(cwd: string): boolean {
+    const resolvedCwd = path.resolve(cwd);
+    return this.allowedDirs.some(dir => dir.startsWith(resolvedCwd + path.sep)) ||
+           this.allowedParentDirs.some(dir => path.resolve(dir) === resolvedCwd);
   }
 
   private createModuleDirectory(modName: string): string {
     this.ensureWorkspace();
 
     const isRoot = path.resolve(this.workspacePath!) === path.resolve(this.cwd);
+    const isParentDir = this.isParentOfAllowedDirs(this.cwd);
+    const isInsideModule = this.isInsideAllowedDirs(this.cwd);
     let targetPath: string;
 
     if (isRoot) {
       const packagesDir = path.join(this.cwd, 'packages');
       fs.mkdirSync(packagesDir, { recursive: true });
       targetPath = path.join(packagesDir, modName);
-    } else {
-
-      if (!this.isInsideAllowedDirs(this.cwd)) {
-        console.error(chalk.red(`Error: You must be inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
-        process.exit(1);
-      }
-
+    } else if (isParentDir) {
       targetPath = path.join(this.cwd, modName);
+    } else if (isInsideModule) {
+      console.error(chalk.red(`Error: Cannot create a module inside an existing module. Please run 'lql init' from the workspace root or from a parent directory like 'packages/'.`));
+      process.exit(1);
+    } else {
+      console.error(chalk.red(`Error: You must be inside the workspace root, a parent directory of modules (like 'packages/'), or inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
+      process.exit(1);
     }
 
     fs.mkdirSync(targetPath, { recursive: true });
