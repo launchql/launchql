@@ -96,7 +96,7 @@ export class MigrateTestFixture {
       async getDeployedChanges() {
         const result = await pool.query(
           `SELECT package, change_name, deployed_at 
-           FROM launchql_migrate.changes 
+           FROM pgpm_migrate.changes 
            ORDER BY deployed_at`
         );
         return result.rows;
@@ -105,13 +105,13 @@ export class MigrateTestFixture {
       async getMigrationState() {
         const changes = await pool.query(`
           SELECT package, change_name, script_hash, deployed_at
-          FROM launchql_migrate.changes 
+          FROM pgpm_migrate.changes 
           ORDER BY deployed_at
         `);
         
         const events = await pool.query(`
           SELECT package, change_name, event_type, occurred_at, error_message, error_code
-          FROM launchql_migrate.events 
+          FROM pgpm_migrate.events 
           ORDER BY occurred_at
         `);
         
@@ -132,8 +132,8 @@ export class MigrateTestFixture {
       async getDependencies(packageName: string, changeName: string) {
         const result = await pool.query(
           `SELECT d.requires 
-           FROM launchql_migrate.dependencies d
-           JOIN launchql_migrate.changes c ON c.change_id = d.change_id
+           FROM pgpm_migrate.dependencies d
+           JOIN pgpm_migrate.changes c ON c.change_id = d.change_id
            WHERE c.package = $1 AND c.change_name = $2`,
           [packageName, changeName]
         );

@@ -23,7 +23,7 @@ jest.mock('pg-cache', () => ({
         if (typeof sql === 'string' && sql.includes('SELECT EXISTS')) {
           return Promise.resolve({ rows: [{ exists: true }] });
         }
-        if (typeof sql === 'string' && sql.includes('SELECT launchql_migrate.is_deployed')) {
+        if (typeof sql === 'string' && sql.includes('SELECT pgpm_migrate.is_deployed')) {
           return Promise.resolve({ rows: [{ is_deployed: false }] });
         }
         return Promise.resolve({ rows: [] });

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document analyzes the behavior of LaunchQL's migration system when SQL changes fail during deployment, specifically examining the state of the `launchql_migrate` schema and tables.
+This document analyzes the behavior of LaunchQL's migration system when SQL changes fail during deployment, specifically examining the state of the `pgpm_migrate` schema and tables.
 
 ## Key Findings
 
@@ -13,8 +13,8 @@ When a deployment fails in transaction mode:
 - **Complete Rollback**: All changes are automatically rolled back
 - **Database State**: Clean (as if deployment never happened)
 - **Migration Tracking**: 
-  - `launchql_migrate.changes`: 0 rows
-  - `launchql_migrate.events`: 0 rows
+  - `pgpm_migrate.changes`: 0 rows
+  - `pgpm_migrate.events`: 0 rows
 - **Behavior**: Entire deployment is wrapped in a single transaction
 
 **Snapshot Evidence:**
@@ -34,8 +34,8 @@ When a deployment fails in non-transaction mode:
 - **Partial Deployment**: Successful changes remain deployed
 - **Database State**: Mixed (successful changes persist)
 - **Migration Tracking**:
-  - `launchql_migrate.changes`: Contains successful deployments
-  - `launchql_migrate.events`: Contains `deploy` events for successful changes
+  - `pgpm_migrate.changes`: Contains successful deployments
+  - `pgpm_migrate.events`: Contains `deploy` events for successful changes
 - **Behavior**: Each change deployed individually
 
 **Snapshot Evidence:**
@@ -78,15 +78,15 @@ When a deployment fails in non-transaction mode:
 
 ### Failure Event Logging
 
-**Critical Discovery**: Failure events are NOT logged to the `launchql_migrate.events` table. Only successful deployments create entries with `event_type: 'deploy'`.
+**Critical Discovery**: Failure events are NOT logged to the `pgpm_migrate.events` table. Only successful deployments create entries with `event_type: 'deploy'`.
 
 - Failed deployments are logged to application logs but not persisted in the migration tracking tables
-- The `launchql_migrate.events` table only contains successful deployment records
+- The `pgpm_migrate.events` table only contains successful deployment records
 - This means you cannot query the migration tables to see deployment failure history
 
 ### Schema Structure
 
-The `launchql_migrate.events` table supports failure tracking with:
+The `pgpm_migrate.events` table supports failure tracking with:
 ```sql
 event_type TEXT NOT NULL CHECK (event_type IN ('deploy', 'revert', 'fail'))
 ```
@@ -104,7 +104,7 @@ However, in practice, only `'deploy'` events are currently being logged.
 ### For Development/Testing
 
 - Non-transaction mode can be useful for incremental rollout scenarios where partial success is acceptable
-- Always verify the state of `launchql_migrate.changes` after deployment failures
+- Always verify the state of `pgpm_migrate.changes` after deployment failures
 
 ## Test Coverage
 
