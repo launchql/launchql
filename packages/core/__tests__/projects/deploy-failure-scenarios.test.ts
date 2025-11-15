@@ -195,8 +195,8 @@ describe('Deploy Failure Scenarios', () => {
     /*
      * KEY INSIGHT: Transaction mode provides complete rollback
      * 
-     * - launchql_migrate.changes: 0 rows (complete rollback)
-     * - launchql_migrate.events: 1 failure event (logged outside transaction)
+     * - pgpm_migrate.changes: 0 rows (complete rollback)
+     * - pgpm_migrate.events: 1 failure event (logged outside transaction)
      * - Database objects: none (clean state)
      * 
      * RECOMMENDATION: Use transaction mode (default) for atomic deployments
@@ -266,8 +266,8 @@ describe('Deploy Failure Scenarios', () => {
     /*
      * KEY INSIGHT: Non-transaction mode provides partial deployment
      * 
-     * - launchql_migrate.changes: 2 rows (partial success)
-     * - launchql_migrate.events: 2 success + 1 failure event
+     * - pgpm_migrate.changes: 2 rows (partial success)
+     * - pgpm_migrate.events: 2 success + 1 failure event
      * - Database objects: schema + table exist (mixed state)
      * 
      * IMPORTANT: Deployment stops immediately at first failure, just like transaction mode.

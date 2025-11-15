@@ -24,7 +24,7 @@ export class EventLogger {
   async logEvent(entry: EventLogEntry): Promise<void> {
     try {
       await this.pool.query(`
-        INSERT INTO launchql_migrate.events 
+        INSERT INTO pgpm_migrate.events 
         (event_type, change_name, package, error_message, error_code)
         VALUES ($1::TEXT, $2::TEXT, $3::TEXT, $4::TEXT, $5::TEXT)
       `, [

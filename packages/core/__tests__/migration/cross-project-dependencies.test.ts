@@ -102,7 +102,7 @@ describe('Cross-Project Dependencies', () => {
     
     // Query dependents using the SQL function
     const result = await db.query(
-      `SELECT * FROM launchql_migrate.get_dependents($1, $2)`,
+      `SELECT * FROM pgpm_migrate.get_dependents($1, $2)`,
       ['project-a', 'base_schema']
     );
     

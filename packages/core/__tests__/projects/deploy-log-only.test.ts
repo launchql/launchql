@@ -53,7 +53,7 @@ describe('Log-Only Deployment', () => {
     // This shows the changes were logged as deployed in the tracking tables
     const deploymentRecords = await db.query(`
       SELECT change_name, package 
-        FROM launchql_migrate.changes 
+        FROM pgpm_migrate.changes 
     `);
 
     // All 8 changes from the test fixture should be recorded as deployed
