@@ -13,12 +13,6 @@
 
 **LaunchQL** is a complete ecosystem for modular PostgreSQL development. Design your database schema, manage it with our package manager, and get a production-ready GraphQL API automatically. Build composable database modules, version them like npm packages, and deploy with confidence.
 
-## ⚠️ In Beta
-
-Expect breaking changes, shifting APIs, and fast iteration as we build toward a stable release.
-
-If you're experimenting or exploring, feel free to dive in — but for production use, proceed with caution and track updates regularly.
-
 ## 🚀 Quick Start
 
 ```bash
