@@ -1,6 +1,6 @@
 {
   "name": "mime-bytes",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Lightning-fast file type detection using magic bytes (file signatures) with a focus on stream processing and minimal memory usage",
   "main": "index.js",

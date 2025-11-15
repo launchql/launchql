@@ -1,6 +1,6 @@
 {
   "name": "@launchql/url-domains",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "url domains",
   "main": "index.js",

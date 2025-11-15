@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.10](https://github.com/launchql/launchql/compare/graphile-cache@1.3.9...graphile-cache@1.3.10) (2025-11-15)
+
+### Bug Fixes
+
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
 ## [1.3.9](https://github.com/launchql/launchql/compare/graphile-cache@1.3.8...graphile-cache@1.3.9) (2025-11-14)
 
 **Note:** Version bump only for package graphile-cache

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/launchql/launchql-2.0/compare/my-second@0.1.0...my-second@0.1.1) (2025-11-15)
+
+### Bug Fixes
+
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql-2.0/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
 # 0.1.0 (2025-11-12)
 
 ### Bug Fixes

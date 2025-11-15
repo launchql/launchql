@@ -1,6 +1,6 @@
 {
   "name": "pgsql-test",
-  "version": "2.13.4",
+  "version": "2.13.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pgsql-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests — giving developers realistic test coverage without external state pollution",
   "main": "index.js",

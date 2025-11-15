@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.5](https://github.com/launchql/launchql/compare/@launchql/core@2.14.4...@launchql/core@2.14.5) (2025-11-15)
+
+### Bug Fixes
+
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
 ## [2.14.4](https://github.com/launchql/launchql/compare/@launchql/core@2.14.3...@launchql/core@2.14.4) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/core

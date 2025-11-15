@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/launchql/launchql/compare/stream-to-etag@2.3.3...stream-to-etag@2.3.4) (2025-11-15)
+
+### Bug Fixes
+
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
 ## [2.3.3](https://github.com/launchql/launchql/compare/stream-to-etag@2.3.2...stream-to-etag@2.3.3) (2025-11-14)
 
 **Note:** Version bump only for package stream-to-etag

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/launchql/launchql/compare/pg-env@1.1.1...pg-env@1.1.2) (2025-11-15)
+
+### Bug Fixes
+
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
 ## [1.1.1](https://github.com/launchql/launchql/compare/pg-env@1.1.0...pg-env@1.1.1) (2025-11-12)
 
 ### Bug Fixes
