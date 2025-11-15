@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { basename, dirname, relative } from 'path';
 
 import { parsePlanFileSimple } from '../plan';
@@ -39,34 +39,14 @@ export function parseControlFile(filePath: string, basePath: string): Module {
 }
 
 /**
- * Resolve the plan file path, checking for both pgpm.plan and launchql.plan (for backward compatibility).
- * Prefers pgpm.plan if both exist.
- */
-const resolvePlanPath = (packageDir: string): string => {
-  const pgpmPlan = `${packageDir}/pgpm.plan`;
-  const launchqlPlan = `${packageDir}/launchql.plan`;
-  
-  if (existsSync(pgpmPlan)) {
-    return pgpmPlan;
-  }
-  
-  if (existsSync(launchqlPlan)) {
-    return launchqlPlan;
-  }
-  
-  throw new Error(`No plan file found in ${packageDir}. Expected pgpm.plan or launchql.plan`);
-};
-
-/**
- * Parse the plan file to get the extension name.
- * Supports both pgpm.plan (new) and launchql.plan (legacy) for backward compatibility.
+ * Parse the pgpm.plan file to get the extension name.
  */
 export const getExtensionName = (packageDir: string): string => {
-  const planPath = resolvePlanPath(packageDir);
+  const planPath = `${packageDir}/pgpm.plan`;
   const plan = parsePlanFileSimple(planPath);
   
   if (!plan.package) {
-    throw new Error(`No package name found in plan file: ${planPath}`);
+    throw new Error('No package name found in pgpm.plan!');
   }
 
   return plan.package;
