@@ -124,6 +124,23 @@ Low-level tools for parsing, transforming, and generating PostgreSQL SQL.
 
 ## Common Workflows
 
+### Development
+
+```bash
+# Run linting across all packages
+pnpm lint
+
+# Run linting for a specific package
+cd packages/cli
+pnpm lint
+
+# Build all packages
+pnpm build
+
+# Clean build artifacts
+pnpm clean
+```
+
 ### Starting a New Project
 
 ```bash
