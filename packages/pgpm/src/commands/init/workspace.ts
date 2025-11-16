@@ -18,7 +18,8 @@ export default async function runWorkspaceSetup(
   const boilerplateOptions = {
     repo: argv.repo as string | undefined,
     branch: argv.fromBranch as string | undefined,
-    boilerplate: argv.boilerplate as string | undefined
+    boilerplate: argv.boilerplate as string | undefined,
+    templatePath: argv.templatePath as string | undefined
   };
 
   log.info('Loading boilerplate...');
