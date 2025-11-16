@@ -25,14 +25,17 @@ npm install -g pgpm
 ### Create Your First Project
 
 ```bash
-# Initialize a new workspace
+# 1. Create workspace
 pgpm init --workspace
-cd my-project
+cd my-app
 
-# Create your first module
+# 2. Create your first module
 pgpm init
 
-# Deploy to your database
+# 3. Add some SQL migrations to sql/ directory
+pgpm add some_change
+
+# 4. Deploy to database
 pgpm deploy --createdb
 ```
 
@@ -109,6 +112,19 @@ pgpm install
 
 # 3. Deploy to local database
 pgpm deploy --createdb
+```
+
+### Testing a pgpm module in a workspace
+
+```bash
+# 1. Install dependencies
+pgpm install
+
+# 2. Enter the packages/<yourmodule>
+cd packages/yourmodule
+
+# 3. Test the module in watch mode
+pnpm test:watch
 ```
 
 ### Database Operations
