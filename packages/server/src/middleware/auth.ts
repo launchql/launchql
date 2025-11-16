@@ -2,18 +2,7 @@ import { LaunchQLOptions } from '@launchql/types';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
-
-import { ApiStructure } from '../types';
-
-type AuthRequest = Request & {
-  api?: ApiStructure;
-  clientIp?: string;
-  token?: {
-    id: string;
-    user_id: string;
-    [key: string]: any;
-  };
-};
+import './types'; // for Request type
 
 export const createAuthenticateMiddleware = (
   opts: LaunchQLOptions
@@ -23,8 +12,7 @@ export const createAuthenticateMiddleware = (
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    const authRequest = req as AuthRequest;
-    const api = authRequest.api;
+    const api = req.api;
     if (!api) {
       res.status(500).send('Missing API info');
       return;
@@ -49,14 +37,14 @@ export const createAuthenticateMiddleware = (
 
       if (authType?.toLowerCase() === 'bearer' && authToken) {
         const context: Record<string, any> = {
-          'jwt.claims.ip_address': authRequest.clientIp,
+          'jwt.claims.ip_address': req.clientIp,
         };
 
-        if (authRequest.get('origin')) {
-          context['jwt.claims.origin'] = authRequest.get('origin');
+        if (req.get('origin')) {
+          context['jwt.claims.origin'] = req.get('origin');
         }
-        if (authRequest.get('User-Agent')) {
-          context['jwt.claims.user_agent'] = authRequest.get('User-Agent');
+        if (req.get('User-Agent')) {
+          context['jwt.claims.user_agent'] = req.get('User-Agent');
         }
 
         try {
@@ -90,7 +78,7 @@ export const createAuthenticateMiddleware = (
         }
       }
 
-      authRequest.token = token;
+      req.token = token;
     }
 
     next();
