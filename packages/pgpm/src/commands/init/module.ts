@@ -125,7 +125,9 @@ export default async function runModuleSetup(
     ...answersWithoutExtensions,
     name: modName,
     description: description || `${modName} module`,
-    author: author || '',
+    author: author || `${username} <${email}>`,
+    USERFULLNAME: username,
+    USEREMAIL: email,
     extensions,
     templateSource
   } as any);
