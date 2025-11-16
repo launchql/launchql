@@ -1,9 +1,10 @@
 import { LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { type TemplateSource } from '@launchql/templatizer';
 import { errors, getGitConfigInfo } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
+import { loadBoilerplate } from '../../utils/boilerplate';
+import { copyAndRenderTemplates } from '../../utils/template-renderer';
+import { join } from 'path';
 
 const log = new Logger('module-init');
 
@@ -26,62 +27,68 @@ export default async function runModuleSetup(
     throw errors.NOT_IN_WORKSPACE_MODULE({});
   }
 
-  const availExtensions = project.getAvailableModules();
+  const boilerplateOptions = {
+    repo: argv.repo as string | undefined,
+    branch: argv.fromBranch as string | undefined,
+    boilerplate: argv.boilerplate as string | undefined
+  };
 
-  const moduleQuestions: Question[] = [
-    {
-      name: 'MODULENAME',
-      message: 'Enter the module name',
-      required: true,
-      type: 'text',
-    },
-    {
-      name: 'extensions',
-      message: 'Which extensions?',
-      options: availExtensions,
-      type: 'checkbox',
-      allowCustomOptions: true,
-      required: true,
-    },
-  ];
+  log.info('Loading boilerplate...');
+  const { boilerplatePath, questions, cleanup } = loadBoilerplate('module', boilerplateOptions);
 
-  const answers = await prompter.prompt(argv, moduleQuestions);
-  const modName = sluggify(answers.MODULENAME);
+  try {
+    const availExtensions = project.getAvailableModules();
 
-  const extensions = answers.extensions
-    .filter((opt: OptionValue) => opt.selected)
-    .map((opt: OptionValue) => opt.name);
+    const enhancedQuestions = questions.map(q => {
+      if (q.name === 'extensions' && !q.options) {
+        return {
+          ...q,
+          options: availExtensions,
+          allowCustomOptions: true
+        };
+      }
+      return q;
+    });
 
-  // Determine template source
-  let templateSource: TemplateSource | undefined;
-  
-  if (argv.repo) {
-    templateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
+    const answers = await prompter.prompt(argv, enhancedQuestions);
+
+    const modName = answers.name ? sluggify(answers.name) : sluggify(answers.MODULENAME || 'new-module');
+
+    let extensions: string[] = [];
+    if (answers.extensions) {
+      extensions = Array.isArray(answers.extensions)
+        ? answers.extensions
+            .filter((opt: OptionValue | string) => typeof opt === 'string' || opt.selected)
+            .map((opt: OptionValue | string) => typeof opt === 'string' ? opt : opt.name)
+        : [];
+    }
+
+    const context: Record<string, any> = {
+      ...answers,
+      name: modName,
+      USERFULLNAME: username,
+      USEREMAIL: email,
+      ...(extensions.length > 0 && { extensions: extensions.join(', ') })
     };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-  } else if (argv.templatePath) {
-    templateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
+
+    // Determine target path
+    const targetPath = project.isInWorkspace() 
+      ? join(project.workspacePath!, modName)
+      : join(cwd, modName);
+
+    log.info(`Rendering templates to: ${targetPath}`);
+    copyAndRenderTemplates(boilerplatePath, targetPath, context);
+
+    project.initModule({
+      name: modName,
+      extensions,
+      skipTemplates: true // Skip template rendering since we already did it
+    });
+
+    log.success(`Initialized module: ${modName}`);
+    return { ...argv, ...answers, name: modName };
+  } finally {
+    cleanup();
   }
-
-  project.initModule({
-    ...argv,
-    ...answers,
-    name: modName,
-    // @ts-ignore
-    USERFULLNAME: username,
-    USEREMAIL: email,
-    extensions,
-    templateSource
-  });
-
-  log.success(`Initialized module: ${modName}`);
-  return { ...argv, ...answers };
 }
 

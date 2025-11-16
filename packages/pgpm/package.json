@@ -48,7 +48,6 @@
     "@launchql/core": "workspace:^",
     "@launchql/env": "workspace:^",
     "@launchql/logger": "workspace:^",
-    "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
     "chalk": "^4.1.0",
     "inquirerer": "^2.0.8",
