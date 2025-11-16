@@ -246,6 +246,29 @@ importers:
         version: 4.0.5
     publishDirectory: dist
 
+  packages/create-gen-app:
+    dependencies:
+      inquirerer:
+        specifier: ^2.0.8
+        version: 2.0.8
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+    devDependencies:
+      '@types/node':
+        specifier: ^20.12.7
+        version: 20.19.24
+      '@types/rimraf':
+        specifier: ^4.0.5
+        version: 4.0.5
+      strip-ansi:
+        specifier: ^6
+        version: 6.0.1
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@20.19.24)(typescript@5.9.3)
+    publishDirectory: dist
+
   packages/env:
     dependencies:
       '@launchql/types':
