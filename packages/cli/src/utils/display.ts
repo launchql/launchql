@@ -28,6 +28,7 @@ export const usageText = `
   Development Tools:
     server             Start LaunchQL GraphQL server
     explorer           Launch GraphiQL explorer interface
+    docker             Manage PostgreSQL Docker containers (start/stop)
     export             Export database migrations from existing databases
   
   Database Administration:
