@@ -13,9 +13,6 @@
 - 🐘 **Portable Postgres Development** — Rely on standard SQL migrations for a workflow that runs anywhere Postgres does.
 - 🚀 **Turnkey Module-First Workspaces** — `pgpm init` delivers a ready-to-code Postgres workspace with CI/CD, Docker, end-to-end testing, and modern TS tooling.
 
-
-Here’s a version that keeps it **light**, **simple**, and **zero-fluff**, but still feels tight and confident:
-
 ## 🚀 Quick Start
 
 ### Install & Setup
