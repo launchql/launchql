@@ -62,12 +62,10 @@ export default async function runWorkspaceSetup(
     cleanup = result.cleanup;
     const compiledTemplates = loadTemplates(source, 'workspace');
     templates = compiledTemplates.map((t: any) => t.render);
-  } else {
-    templateDir = path.join(__dirname, '../../../../../boilerplates/workspace');
   }
 
   let additionalQuestions: Question[] = [];
-  if (templateDir) {
+  if (templateDir && (argv.repo || argv.templatePath)) {
     try {
       const templateQuestions = loadTemplateQuestions(templateDir);
       if (templateQuestions.length > 0) {

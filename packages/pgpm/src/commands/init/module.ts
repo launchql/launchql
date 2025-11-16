@@ -76,12 +76,10 @@ export default async function runModuleSetup(
     const result = resolveTemplateDirectory(templateSource, 'module');
     templateDir = result.templateDir;
     cleanup = result.cleanup;
-  } else {
-    templateDir = path.join(__dirname, '../../../../../boilerplates/module');
   }
 
   let additionalQuestions: Question[] = [];
-  if (templateDir) {
+  if (templateDir && (argv.repo || argv.templatePath)) {
     try {
       const templateQuestions = loadTemplateQuestions(templateDir);
       if (templateQuestions.length > 0) {
