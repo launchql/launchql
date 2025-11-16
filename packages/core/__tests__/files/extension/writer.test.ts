@@ -19,7 +19,7 @@ describe('extension writer', () => {
     );
 
     fs.writeFileSync(
-      path.join(packageDir, 'launchql.plan'),
+      path.join(packageDir, 'pgpm.plan'),
       '%project=test-module\n\nschema 2024-01-01T00:00:00Z Test User <test@example.com> # Add schema\n'
     );
   });
