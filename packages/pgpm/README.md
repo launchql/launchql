@@ -137,8 +137,8 @@ psql -d mydb1 -c "SELECT faker.city('MI');"
 ### Testing a pgpm module in a workspace
 
 ```bash
-# 1. Install dependencies
-pgpm install
+# 1. Install workspace dependencies
+pnpm install
 
 # 2. Enter the packages/<yourmodule>
 cd packages/yourmodule
