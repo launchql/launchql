@@ -60,7 +60,7 @@ Visit `http://localhost:5555` to explore your GraphQL API!
 
 #### `lql init`
 
-Initialize a new LaunchQL workspace or module.
+Initialize a new LaunchQL workspace or module using default templates from templatizer.
 
 ```bash
 # Create a new workspace
@@ -68,22 +68,11 @@ lql init --workspace
 
 # Create a new module (run inside workspace)
 lql init
-
-# Use templates from GitHub repository
-lql init --workspace --repo owner/repo
-lql init --repo owner/repo --from-branch develop
-
-# Use templates from local path
-lql init --workspace --template-path ./custom-templates
-lql init --template-path ./custom-templates/module
 ```
 
 **Options:**
 
 - `--workspace` - Initialize workspace instead of module
-- `--repo <repo>` - Use templates from GitHub repository (e.g., `owner/repo`)
-- `--template-path <path>` - Use templates from local path
-- `--from-branch <branch>` - Specify branch when using `--repo` (default: `main`)
 
 ### Development
 
@@ -275,31 +264,6 @@ lql deploy --createdb
 # 5. Start developing
 lql server
 ```
-
-### Using Custom Templates
-
-You can use custom templates from GitHub repositories or local paths:
-
-```bash
-# Initialize workspace with templates from GitHub
-lql init --workspace --repo owner/repo
-
-# Initialize workspace with templates from local path
-lql init --workspace --template-path ./my-custom-templates
-
-# Initialize module with custom templates
-lql init --template-path ./my-custom-templates
-
-# Use specific branch from GitHub repository
-lql init --workspace --repo owner/repo --from-branch develop
-```
-
-**Template Structure:**
-Custom templates should follow the same structure as the default templates:
-
-- For workspace: `boilerplates/workspace/` directory
-- For module: `boilerplates/module/` directory
-- Or provide direct path to `workspace/` or `module/` directory
 
 ### Working with Existing Projects
 

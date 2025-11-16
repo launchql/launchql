@@ -118,7 +118,7 @@ export default async (
 
 ### 2. Init Command
 **File:** `src/commands/init.ts`
-**Purpose:** Initialize new LaunchQL workspace or module
+**Purpose:** Initialize new LaunchQL workspace or module using default templates from templatizer
 
 **Subcommands:**
 - **Workspace Init:** `src/commands/init/workspace.ts`
@@ -130,22 +130,9 @@ lql init --workspace    # Initialize workspace
 lql init               # Initialize module (in workspace)
 ```
 
-**Template Options:**
-- `--repo <repo>` - Use templates from GitHub repository (e.g., `owner/repo`)
-- `--template-path <path>` - Use templates from local path
-- `--from-branch <branch>` - Specify branch when using `--repo` (default: `main`)
-
-**Examples:**
-```bash
-lql init --workspace --repo launchql/launchql
-lql init --workspace --template-path ./custom-templates
-lql init --repo owner/repo --from-branch develop
-```
-
 **Implementation:**
-- Supports loading templates from GitHub repositories or local paths
+- Uses default templates from `@launchql/templatizer`
 - Automatically detects template type (workspace vs module)
-- Uses `loadTemplates()` from `@launchql/templatizer` to load custom templates
 
 ### 3. Server Command
 **File:** `src/commands/server.ts`
@@ -335,7 +322,7 @@ try {
 ### Development Commands
 | Command | Purpose | Key Options |
 |---------|---------|-------------|
-| `init` | Initialize workspace/module | `--workspace`, `--repo`, `--template-path`, `--from-branch` |
+| `init` | Initialize workspace/module | `--workspace` |
 | `server` | Start development server | `--port`, `--no-postgis` |
 | `explorer` | Launch GraphiQL explorer | `--origin` |
 

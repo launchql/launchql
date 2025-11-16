@@ -292,31 +292,6 @@ pgpm deploy --createdb
 pgpm server
 ```
 
-### Using Custom Templates
-
-You can use custom templates from GitHub repositories or local paths:
-
-```bash
-# Initialize workspace with templates from GitHub
-pgpm init --workspace --repo owner/repo
-
-# Initialize workspace with templates from local path
-pgpm init --workspace --template-path ./my-custom-templates
-
-# Initialize module with custom templates
-pgpm init --template-path ./my-custom-templates
-
-# Use specific branch from GitHub repository
-pgpm init --workspace --repo owner/repo --from-branch develop
-```
-
-**Template Structure:**
-Custom templates should follow the same structure as the default templates:
-
-- For workspace: `boilerplates/workspace/` directory
-- For module: `boilerplates/module/` directory
-- Or provide direct path to `workspace/` or `module/` directory
-
 ### Working with Existing Projects
 
 ```bash

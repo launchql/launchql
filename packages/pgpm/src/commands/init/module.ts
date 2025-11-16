@@ -1,7 +1,5 @@
 import { LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { type TemplateSource } from '@launchql/templatizer';
 import { errors, getGitConfigInfo } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
 
@@ -52,24 +50,7 @@ export default async function runModuleSetup(
     .filter((opt: OptionValue) => opt.selected)
     .map((opt: OptionValue) => opt.name);
 
-  // Determine template source
-  let templateSource: TemplateSource | undefined;
-  
-  if (argv.repo) {
-    templateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
-    };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-  } else if (argv.templatePath) {
-    templateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
-  }
-
+  // Use default module template from templatizer
   project.initModule({
     ...argv,
     ...answers,
@@ -77,8 +58,7 @@ export default async function runModuleSetup(
     // @ts-ignore
     USERFULLNAME: username,
     USEREMAIL: email,
-    extensions,
-    templateSource
+    extensions
   });
 
   log.success(`Initialized module: ${modName}`);
