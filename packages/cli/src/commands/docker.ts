@@ -6,7 +6,6 @@ import { cliExitWithError,extractFirst } from '../utils';
 const dockerUsageText = `
 Docker Command:
 
-  lql docker <subcommand> [OPTIONS]
   pgpm docker <subcommand> [OPTIONS]
 
   Manage PostgreSQL Docker containers for local development.
@@ -25,11 +24,10 @@ Options:
   --recreate         Remove and recreate container on start
 
 Examples:
-  lql docker start                           Start default PostgreSQL container
-  lql docker start --port 5433               Start on custom port
-  lql docker start --recreate                Remove and recreate container
-  lql docker stop                            Stop PostgreSQL container
-  pgpm docker start                          Start using pgpm CLI
+  pgpm docker start                           Start default PostgreSQL container
+  pgpm docker start --port 5433               Start on custom port
+  pgpm docker start --recreate                Remove and recreate container
+  pgpm docker stop                            Stop PostgreSQL container
 `;
 
 interface DockerRunOptions {
