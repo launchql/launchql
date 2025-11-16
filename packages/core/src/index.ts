@@ -27,3 +27,14 @@ export {
   VerifyResult} from './migrate/types';
 export { hashFile, hashString } from './migrate/utils/hash';
 export { executeQuery,TransactionContext, TransactionOptions, withTransaction } from './migrate/utils/transaction';
+export { 
+  ensurePgpmHome,
+  getPgpmHomePath,
+  getPgpmStateFilePath,
+  getPgpmStateValue,
+  initializePgpmHome,
+  pgpmHomeExists,
+  readPgpmState,
+  updatePgpmState,
+  writePgpmState
+} from './utils/pgpm-home';
