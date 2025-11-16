@@ -107,7 +107,9 @@ export default async function runModuleSetup(
   let description = '';
   let author = '';
   
-  for (const [key, value] of Object.entries(answers)) {
+  const { extensions: _, ...answersWithoutExtensions } = answers;
+  
+  for (const [key, value] of Object.entries(answersWithoutExtensions)) {
     if (typeof value === 'string') {
       const keyUpper = key.toUpperCase();
       if (!description && keyUpper.includes('DESC')) {
@@ -120,12 +122,12 @@ export default async function runModuleSetup(
   }
 
   project.initModule({
+    ...answersWithoutExtensions,
     name: modName,
     description: description || `${modName} module`,
     author: author || '',
     extensions,
-    templateSource,
-    ...answers
+    templateSource
   } as any);
 
   log.success(`Initialized module: ${modName}`);
