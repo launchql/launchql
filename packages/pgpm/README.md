@@ -14,28 +14,39 @@
 - 🚀 **Turnkey Module-First Workspaces** — `pgpm init` delivers a ready-to-code Postgres workspace with CI/CD, Docker, end-to-end testing, and modern TS tooling.
 
 
+Here’s a version that keeps it **light**, **simple**, and **zero-fluff**, but still feels tight and confident:
+
 ## 🚀 Quick Start
 
-### Installation
+### Install & Setup
 
 ```bash
+# Install pgpm globally
 npm install -g pgpm
+
+# Start local Postgres (via Docker) and export env vars
+pgpm docker start
+eval "$(pgpm env)"
 ```
+
+> **Tip:** Already running Postgres? Skip the Docker step and just export your PG* vars.
+
+---
 
 ### Create Your First Project
 
 ```bash
-# 1. Create workspace
+# 1. Create a workspace
 pgpm init --workspace
 cd my-app
 
 # 2. Create your first module
 pgpm init
 
-# 3. Add some SQL migrations to sql/ directory
+# 3. Add a database change
 pgpm add some_change
 
-# 4. Deploy to database
+# 4. Deploy everything
 pgpm deploy --createdb
 ```
 
@@ -45,6 +56,12 @@ pgpm deploy --createdb
 
 - `pgpm init` - Initialize a new module
 - `pgpm init --workspace` - Initialize a new workspace
+
+### Development Setup
+
+- `pgpm docker start` - Start PostgreSQL container (via Docker)
+- `pgpm docker stop` - Stop PostgreSQL container
+- `pgpm env` - Print PostgreSQL environment variables for shell export
 
 ### Database Operations
 

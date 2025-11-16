@@ -15,18 +15,35 @@
 
 ## 🚀 Quick Start
 
+### Install & Setup
+
 ```bash
-# Install pgpm - our PostgreSQL package manager
+# Install pgpm globally
 npm install -g pgpm
 
-# Create a new workspace
-pgpm init --workspace
-cd my-project
+# Start local Postgres (via Docker) and export env vars
+pgpm docker start
+eval "$(pgpm env)"
+```
 
-# Create your first database module
+> **Tip:** Already running Postgres? Skip the Docker step and just export your PG* vars.
+
+---
+
+### Create Your First Project
+
+```bash
+# 1. Create a workspace
+pgpm init --workspace
+cd my-app
+
+# 2. Create your first module
 pgpm init
 
-# Deploy to your database
+# 3. Add a database change
+pgpm add some_change
+
+# 4. Deploy everything
 pgpm deploy --createdb
 ```
 
