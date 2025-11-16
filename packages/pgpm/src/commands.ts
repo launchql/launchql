@@ -26,7 +26,7 @@ import verify from './commands/verify';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 import { cliExitWithError } from './utils/cli-error';
-import { VersionTracker } from './utils/version-tracker';
+import { checkForUpdates } from './utils/update-checker';
 
 const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
   try {
@@ -117,17 +117,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   }
 
   const pkg = readAndParsePackageJson();
-  const versionTracker = new VersionTracker(pkg.name, pkg.version);
-
-  versionTracker.incrementCommandCount();
-
-  if (versionTracker.shouldCheckForUpdates()) {
-    const updateInfo = await versionTracker.checkForUpdates();
-    if (updateInfo.hasUpdate) {
-      console.log(`\n⚠️  A new version of ${pkg.name} is available: ${updateInfo.latestVersion} (current: ${pkg.version})`);
-      console.log(`   Run 'pgpm upgrade' to update.\n`);
-    }
-  }
+  await checkForUpdates(pkg.name, pkg.version, command);
 
   await commandFn(newArgv, prompter, options);
   prompter.close();

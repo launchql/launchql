@@ -7,7 +7,7 @@ import server from './commands/server';
 import upgrade from './commands/upgrade';
 import { readAndParsePackageJson } from './package';
 import { cliExitWithError,extractFirst, usageText } from './utils';
-import { VersionTracker } from './utils/version-tracker';
+import { checkForUpdates } from './utils/update-checker';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
@@ -76,17 +76,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   }
 
   const pkg = readAndParsePackageJson();
-  const versionTracker = new VersionTracker(pkg.name, pkg.version);
-
-  versionTracker.incrementCommandCount();
-
-  if (versionTracker.shouldCheckForUpdates()) {
-    const updateInfo = await versionTracker.checkForUpdates();
-    if (updateInfo.hasUpdate) {
-      console.log(`\n⚠️  A new version of ${pkg.name} is available: ${updateInfo.latestVersion} (current: ${pkg.version})`);
-      console.log(`   Run 'lql upgrade' to update.\n`);
-    }
-  }
+  await checkForUpdates(pkg.name, pkg.version, command);
 
   await commandFn(newArgv, prompter, options);
   prompter.close();
