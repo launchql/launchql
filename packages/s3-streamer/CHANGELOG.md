@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/launchql/launchql/compare/@launchql/s3-streamer@2.5.7...@launchql/s3-streamer@2.6.0) (2025-11-16)
+
+**Note:** Version bump only for package @launchql/s3-streamer
+
 ## [2.5.7](https://github.com/launchql/launchql/compare/@launchql/s3-streamer@2.5.6...@launchql/s3-streamer@2.5.7) (2025-11-15)
 
 ### Bug Fixes

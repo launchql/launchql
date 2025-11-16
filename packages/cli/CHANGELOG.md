@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.16.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.15.2...@launchql/cli@4.16.0) (2025-11-16)
+
+**Note:** Version bump only for package @launchql/cli
+
 ## [4.15.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.15.1...@launchql/cli@4.15.2) (2025-11-15)
 
 ### Bug Fixes

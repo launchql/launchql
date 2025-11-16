@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/launchql/launchql/compare/pg-cache@1.3.10...pg-cache@1.4.0) (2025-11-16)
+
+**Note:** Version bump only for package pg-cache
+
 ## [1.3.10](https://github.com/launchql/launchql/compare/pg-cache@1.3.9...pg-cache@1.3.10) (2025-11-15)
 
 ### Bug Fixes

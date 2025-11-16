@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/launchql/launchql-2.0/compare/my-third@0.2.5...my-third@0.3.0) (2025-11-16)
+
+**Note:** Version bump only for package my-third
+
 ## [0.2.5](https://github.com/launchql/launchql-2.0/compare/my-third@0.2.4...my-third@0.2.5) (2025-11-15)
 
 ### Bug Fixes
