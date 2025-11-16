@@ -19,11 +19,11 @@ afterEach(() => {
 
 describe('installModule()', () => {
   it('installs a package and updates package.json dependencies', async () => {
-    await mod.installModules('@webql/base32@1.2.1');
+    await mod.installModules('@pgpm-testing/base32@1.0.0');
 
     const extDir = path.join(
             mod.getWorkspacePath()!,
-            'extensions/@webql/base32'
+            'extensions/@pgpm-testing/base32'
     );
 
     const files = glob.sync('**/*', {
@@ -32,13 +32,13 @@ describe('installModule()', () => {
     });
 
     expect(files.sort()).toMatchSnapshot();
-    expect(fs.existsSync(path.join(extDir, 'launchql.plan'))).toBe(true);
+    expect(fs.existsSync(path.join(extDir, 'pgpm.plan'))).toBe(true);
 
     const pkgJson = JSON.parse(
       fs.readFileSync(path.join(mod.getModulePath()!, 'package.json'), 'utf-8')
     );
     expect(pkgJson.dependencies).toBeDefined();
-    expect(pkgJson.dependencies['@webql/base32']).toBe('1.2.1');
+    expect(pkgJson.dependencies['@pgpm-testing/base32']).toBe('1.0.0');
 
     const controlFileContent = mod.getModuleControlFile();
     expect(controlFileContent).toMatchSnapshot();
@@ -47,7 +47,7 @@ describe('installModule()', () => {
   it('throws if package.json does not exist in module', async () => {
     fs.rmSync(path.join(mod.getModulePath()!, 'package.json'));
     await expect(
-      mod.installModules('@webql/base32@1.2.1')
+      mod.installModules('@pgpm-testing/base32@1.0.0')
     ).rejects.toThrow(/No package\.json found/);
   });
 });

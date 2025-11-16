@@ -46,7 +46,7 @@ describe('LaunchQLMigrate.deploy tag fallback bug reproduction', () => {
     ].join('\n');
 
     mkdirSync(join(dir, 'deploy'), { recursive: true });
-    writeFileSync(join(dir, 'launchql.plan'), plan);
+    writeFileSync(join(dir, 'pgpm.plan'), plan);
     writeFileSync(join(dir, 'deploy', `${changeName}.sql`), 'select 1;');
 
     const migrator = new LaunchQLMigrate(

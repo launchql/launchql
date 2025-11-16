@@ -5,32 +5,6 @@ import * as path from 'path';
 
 import { TestFixture } from '../test-utils';
 
-function getExpectedFiles(pkg: string, version: string): string[] {
-  const parts = pkg.split('/');
-  const isScoped = pkg.startsWith('@');
-  const scope = isScoped ? parts[0].slice(1) : null;
-  const name = isScoped ? parts[1] : parts[0];
-
-  const basePath = isScoped
-    ? `../../extensions/@${scope}/${name}`
-    : `../../extensions/${name}`;
-
-  const extname = isScoped ? `${scope}-${name}` : name;
-
-  return [
-    `${basePath}/package.json`,
-    `${basePath}/launchql.plan`,
-    `${basePath}/Makefile`,
-    `${basePath}/sql/${extname}--${version}.sql`,
-    `${basePath}/${extname}.control`,
-    `${basePath}/deploy/`,
-    `${basePath}/revert/`,
-    `${basePath}/verify/`,
-  ].map((f) =>
-    expect.stringMatching(new RegExp(f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
-  );
-}
-
 describe('cmds:install - with initialized workspace and module', () => {
   let fixture: TestFixture;
   let workspaceDir: string;
@@ -67,8 +41,8 @@ describe('cmds:install - with initialized workspace and module', () => {
   });
 
   it('installs a module package', async () => {
-    const pkg = '@webql/base32';
-    const version = '1.2.1';
+    const pkg = '@pgpm-testing/base32';
+    const version = '1.0.0';
 
     await fixture.runCmd({
       _: ['install', `${pkg}@${version}`],
@@ -90,10 +64,8 @@ describe('cmds:install - with initialized workspace and module', () => {
     const relativeFiles = installedFiles
       .map((f: string) => path.relative(moduleDir, f))
       .sort();
+
     expect(relativeFiles).toMatchSnapshot();
-    expect(relativeFiles).toEqual(
-      expect.arrayContaining(getExpectedFiles(pkg, version))
-    );
 
     // Snapshot control file
     const mod = new LaunchQLPackage(moduleDir);
@@ -103,13 +75,13 @@ describe('cmds:install - with initialized workspace and module', () => {
 
   it('installs two modules', async () => {
     const base32 = {
-      name: '@webql/base32',
-      version: '1.2.1',
+      name: '@pgpm-testing/base32',
+      version: '1.0.0',
     };
 
     const utils = {
-      name: '@webql/utils',
-      version: '1.1.2',
+      name: '@pgpm-testing/utils',
+      version: '1.0.0',
     };
 
     const pkgs = [base32, utils];
@@ -134,15 +106,12 @@ describe('cmds:install - with initialized workspace and module', () => {
       absolute: true,
     });
 
+    
     const relativeFiles = installedFiles
-      .map((f: string) => path.relative(moduleDir, f))
-      .sort();
-
-    for (const pkg of pkgs) {
-      expect(relativeFiles).toEqual(
-        expect.arrayContaining(getExpectedFiles(pkg.name, pkg.version))
-      );
-    }
+    .map((f: string) => path.relative(moduleDir, f))
+    .sort();
+    
+    expect(relativeFiles).toMatchSnapshot();
 
     // Snapshot control file after both installs
     const mod = new LaunchQLPackage(moduleDir);

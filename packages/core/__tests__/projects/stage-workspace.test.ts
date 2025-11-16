@@ -168,7 +168,7 @@ describe('Staging Fixture Tests', () => {
   });
 
   describe('Dependency Resolution', () => {
-    it('resolves module dependencies correctly from launchql.plan files', async () => {
+    it('resolves module dependencies correctly from pgpm.plan files', async () => {
       const cwd = fixture.getFixturePath();
       const project = new LaunchQLPackage(cwd);
 

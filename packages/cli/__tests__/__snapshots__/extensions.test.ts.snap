@@ -2,9 +2,9 @@
 
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: extension-update - files 1`] = `
 [
+  "pgpm.plan",
   "package.json",
   "my-module.control",
-  "launchql.plan",
   "jest.config.js",
   "README.md",
   "Makefile",

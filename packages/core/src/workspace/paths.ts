@@ -2,14 +2,14 @@ import { walkUp } from './utils';
 
 
 const PROJECT_FILES = {
-  PLAN: 'launchql.plan',
-  LAUNCHQL: 'launchql.json',
+  PLAN: 'pgpm.plan',
+  LAUNCHQL: 'pgpm.json',
 };
 
 /**
- * Finds the module path by looking for launchql.plan.
+ * Finds the module path by looking for pgpm.plan.
  * @param cwd - Current working directory.
- * @returns A promise that resolves to the directory path containing `launchql.plan`.
+ * @returns A promise that resolves to the directory path containing `pgpm.plan`.
  */
 export const modulePath = (cwd: string = process.cwd()): string => {
   return walkUp(cwd, PROJECT_FILES.PLAN);
@@ -18,7 +18,7 @@ export const modulePath = (cwd: string = process.cwd()): string => {
 /**
  * Finds the LaunchQL project path.
  * @param cwd - Current working directory.
- * @returns A promise that resolves to the directory path containing `launchql.json`.
+ * @returns A promise that resolves to the directory path containing `pgpm.json`.
  */
 export const launchqlPath = (cwd: string = process.cwd()): string => {
   return walkUp(cwd, PROJECT_FILES.LAUNCHQL);

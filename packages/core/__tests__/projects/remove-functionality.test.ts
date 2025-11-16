@@ -17,7 +17,7 @@ describe('Remove Functionality', () => {
   test('removes all changes from plan when removing from first change', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const originalPlan = fs.readFileSync(planPath, 'utf8');
     
     expect(originalPlan).toContain('schema_myfirstapp');
@@ -59,7 +59,7 @@ describe('Remove Functionality', () => {
   test('removes changes from specified change to end when --to parameter is provided', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const originalPlan = fs.readFileSync(planPath, 'utf8');
     
     expect(originalPlan).toContain('schema_myfirstapp');
@@ -101,7 +101,7 @@ describe('Remove Functionality', () => {
     
     await pkg.removeFromPlan('schema_myfirstapp');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const updatedPlan = fs.readFileSync(planPath, 'utf8');
     expect(updatedPlan).not.toContain('schema_myfirstapp');
     expect(updatedPlan).not.toContain('table_users');
@@ -115,7 +115,7 @@ describe('Remove Functionality', () => {
   test('removes associated tags when removing changes', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const originalPlan = fs.readFileSync(planPath, 'utf8');
     
     expect(originalPlan).toContain('@v1.0.0');
@@ -130,7 +130,7 @@ describe('Remove Functionality', () => {
 
   test('removes tag and all subsequent changes and tags chronologically', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     let planContent = fs.readFileSync(planPath, 'utf8');
     
     expect(planContent).toContain('schema_myfirstapp');
@@ -168,7 +168,7 @@ describe('Remove Functionality', () => {
 
   test('removes a specific tag when its associated change is removed', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     let planContent = fs.readFileSync(planPath, 'utf8');
     expect(planContent).toContain('@v1.0.0');
     await pkg.removeFromPlan('schema_myfirstapp');
@@ -177,7 +177,7 @@ describe('Remove Functionality', () => {
   });
   test('removes a specific tag when its tag is passed in as toChange parameter', async () => {
     const pkg = fixture.getModuleProject([], 'my-first');
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     let planContent = fs.readFileSync(planPath, 'utf8');
     expect(planContent).toContain('@v1.0.0');
     expect(planContent).toContain('table_users');
@@ -220,7 +220,7 @@ describe('Remove Functionality', () => {
     
     await expect(pkg.removeFromPlan('schema_myfirstapp')).resolves.not.toThrow();
     
-    const planPath = path.join(pkg.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(pkg.getModulePath()!, 'pgpm.plan');
     const updatedPlan = fs.readFileSync(planPath, 'utf8');
     expect(updatedPlan).not.toContain('schema_myfirstapp');
     expect(updatedPlan).not.toContain('table_users');

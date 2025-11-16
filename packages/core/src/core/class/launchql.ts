@@ -141,7 +141,7 @@ export class LaunchQLPackage {
 
   private resolveSqitchPath(): string | undefined {
     try {
-      return walkUp(this.cwd, 'launchql.plan');
+      return walkUp(this.cwd, 'pgpm.plan');
     } catch {
       return undefined;
     }
@@ -402,13 +402,13 @@ export class LaunchQLPackage {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create launchql.plan file using package-files package
+    // Create pgpm.plan file using package-files package
     const plan = generatePlan({
       moduleName: modName,
       uri: modName,
       entries: []
     });
-    writePlan(path.join(targetPath, 'launchql.plan'), plan);
+    writePlan(path.join(targetPath, 'pgpm.plan'), plan);
     
     // Create deploy, revert, and verify directories
     const dirs = ['deploy', 'revert', 'verify'];
@@ -474,7 +474,7 @@ export class LaunchQLPackage {
 
   getModulePlan(): string {
     this.ensureModule();
-    const planPath = path.join(this.getModulePath()!, 'launchql.plan');
+    const planPath = path.join(this.getModulePath()!, 'pgpm.plan');
     return fs.readFileSync(planPath, 'utf8');
   }
 
@@ -612,7 +612,7 @@ export class LaunchQLPackage {
               const moduleMap = this.getModuleMap();
               const modInfo = moduleMap[extModuleName];
               if (modInfo && this.workspacePath) {
-                const planPath = path.join(this.workspacePath, modInfo.path, 'launchql.plan');
+                const planPath = path.join(this.workspacePath, modInfo.path, 'pgpm.plan');
                 const parsed = parsePlanFile(planPath);
                 const changes = parsed.data?.changes || [];
                 const tags = parsed.data?.tags || [];
@@ -673,7 +673,7 @@ export class LaunchQLPackage {
     const plan = this.generateModulePlan(options);
     const moduleMap = this.getModuleMap();
     const mod = moduleMap[name];
-    const planPath = path.join(this.workspacePath!, mod.path, 'launchql.plan');
+    const planPath = path.join(this.workspacePath!, mod.path, 'pgpm.plan');
     
     // Use the package-files package to write the plan
     writePlan(planPath, plan);
@@ -694,7 +694,7 @@ export class LaunchQLPackage {
       throw errors.INVALID_NAME({ name: tagName, type: 'tag', rules: "Tag names must follow Sqitch naming rules and cannot contain '/'" });
     }
     
-    const planPath = path.join(this.modulePath, 'launchql.plan');
+    const planPath = path.join(this.modulePath, 'pgpm.plan');
     
     // Parse existing plan file
     const planResult = parsePlanFile(planPath);
@@ -775,7 +775,7 @@ export class LaunchQLPackage {
    * Add change to the current module (internal helper)
    */
   private addChangeToModule(changeName: string, dependencies?: string[], comment?: string): void {
-    const planPath = path.join(this.modulePath!, 'launchql.plan');
+    const planPath = path.join(this.modulePath!, 'pgpm.plan');
     
     // Parse existing plan file
     const planResult = parsePlanFile(planPath);
@@ -890,7 +890,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
     fs.mkdirSync(fullDist, { recursive: true });
 
     const folders = ['deploy', 'revert', 'sql', 'verify'];
-    const files = ['Makefile', 'package.json', 'launchql.plan', controlFile];
+    const files = ['Makefile', 'package.json', 'pgpm.plan', controlFile];
 
 
     // Add README file regardless of casing
@@ -948,7 +948,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
           stdio: 'inherit'
         });
   
-        const matches = glob.sync('./extensions/**/launchql.plan');
+        const matches = glob.sync('./extensions/**/pgpm.plan');
         const installs = matches.map((conf) => {
           const fullConf = resolve(conf);
           const extDir = dirname(fullConf);
@@ -1162,8 +1162,8 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
                   errorLines.push('💡 Hint: File or directory not found. Check if the module path is correct.');
                 } else if (err.code === 'EACCES') {
                   errorLines.push('💡 Hint: Permission denied. Check file permissions.');
-                } else if (err.message && err.message.includes('launchql.plan')) {
-                  errorLines.push('💡 Hint: launchql.plan file issue. Check if the plan file exists and is valid.');
+                } else if (err.message && err.message.includes('pgpm.plan')) {
+                  errorLines.push('💡 Hint: pgpm.plan file issue. Check if the plan file exists and is valid.');
                 }
               
                 log.error(errorLines.join('\n'));
@@ -1444,7 +1444,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
       throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
     }
     
-    const planPath = path.join(modulePath, 'launchql.plan');
+    const planPath = path.join(modulePath, 'pgpm.plan');
     const result = parsePlanFile(planPath);
     
     if (result.errors.length > 0) {
@@ -1522,8 +1522,8 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
     const issues: PackageAnalysisIssue[] = [];
     const exists = (p: string) => fs.existsSync(p);
     const read = (p: string) => (exists(p) ? fs.readFileSync(p, 'utf8') : undefined);
-    const planPath = path.join(modPath, 'launchql.plan');
-    if (!exists(planPath)) issues.push({ code: 'missing_plan', message: 'Missing launchql.plan', file: planPath });
+    const planPath = path.join(modPath, 'pgpm.plan');
+    if (!exists(planPath)) issues.push({ code: 'missing_plan', message: 'Missing pgpm.plan', file: planPath });
     const pkgJsonPath = path.join(modPath, 'package.json');
     if (!exists(pkgJsonPath)) issues.push({ code: 'missing_package_json', message: 'Missing package.json', file: pkgJsonPath });
     const makefilePath = info.Makefile;
@@ -1543,9 +1543,9 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
         const parsed = parsePlanFile(planPath);
         const pkgName = parsed.data?.package;
         if (!pkgName) issues.push({ code: 'plan_missing_project', message: '%project missing', file: planPath });
-        if (pkgName && pkgName !== info.extname) issues.push({ code: 'plan_project_mismatch', message: `launchql.plan %project ${pkgName} != ${info.extname}`, file: planPath });
+        if (pkgName && pkgName !== info.extname) issues.push({ code: 'plan_project_mismatch', message: `pgpm.plan %project ${pkgName} != ${info.extname}`, file: planPath });
         const uri = parsed.data?.uri;
-        if (uri && uri !== info.extname) issues.push({ code: 'plan_uri_mismatch', message: `launchql.plan %uri ${uri} != ${info.extname}`, file: planPath });
+        if (uri && uri !== info.extname) issues.push({ code: 'plan_uri_mismatch', message: `pgpm.plan %uri ${uri} != ${info.extname}`, file: planPath });
       } catch (e: any) {
         issues.push({ code: 'plan_parse_error', message: e?.message || 'Plan parse error', file: planPath });
       }
@@ -1579,7 +1579,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
     if (!valid.test(newName)) {
       throw errors.INVALID_NAME({ name: newName, type: 'module', rules: 'lowercase letters, digits, underscores; must start with letter' });
     }
-    const planPath = path.join(modPath, 'launchql.plan');
+    const planPath = path.join(modPath, 'pgpm.plan');
     if (fs.existsSync(planPath)) {
       try {
         const parsed = parsePlanFile(planPath);
@@ -1590,10 +1590,10 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
           changed.push(planPath);
         }
       } catch (e) {
-        warnings.push(`failed to update launchql.plan`);
+        warnings.push(`failed to update pgpm.plan`);
       }
     } else {
-      warnings.push('missing launchql.plan');
+      warnings.push('missing pgpm.plan');
     }
     const pkgJsonPath = path.join(modPath, 'package.json');
     if (fs.existsSync(pkgJsonPath) && opts?.syncPackageJsonName) {

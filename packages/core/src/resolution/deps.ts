@@ -272,7 +272,7 @@ export const resolveDependencies = (
       let planPath: string;
       if (packageName === extname) {
         // For the current package
-        planPath = join(packageDir, 'launchql.plan');
+        planPath = join(packageDir, 'pgpm.plan');
       } else {
         // For external packages, use LaunchQLPackage to find module path
         const project = new LaunchQLPackage(packageDir);
@@ -288,7 +288,7 @@ export const resolveDependencies = (
           throw new Error(`No workspace found for module ${packageName}`);
         }
         
-        planPath = join(workspacePath, module.path, 'launchql.plan');
+        planPath = join(workspacePath, module.path, 'pgpm.plan');
       }
       
       const result = parsePlanFile(planPath);
@@ -321,7 +321,7 @@ export const resolveDependencies = (
   if (source === 'plan') {
     const plan = loadPlanFile(extname);
     if (!plan) {
-      throw errors.PLAN_PARSE_ERROR({ planPath: `${extname}/launchql.plan`, errors: 'Plan file not found or failed to parse while using plan-only resolution' });
+      throw errors.PLAN_PARSE_ERROR({ planPath: `${extname}/pgpm.plan`, errors: 'Plan file not found or failed to parse while using plan-only resolution' });
     }
 
     const external: string[] = [];

@@ -119,7 +119,7 @@ describe('cmds:init', () => {
       const workspaceDir = path.join(fixture.tempDir, 'test-workspace-template');
       expect(existsSync(workspaceDir)).toBe(true);
       expect(existsSync(path.join(workspaceDir, 'package.json'))).toBe(true);
-      expect(existsSync(path.join(workspaceDir, 'launchql.json'))).toBe(true);
+      expect(existsSync(path.join(workspaceDir, 'pgpm.json'))).toBe(true);
     });
 
     it('initializes module with --template-path', async () => {
@@ -165,7 +165,7 @@ describe('cmds:init', () => {
       const moduleDir = path.join(workspaceDir, 'packages', 'test-module-template');
       expect(existsSync(moduleDir)).toBe(true);
       expect(existsSync(path.join(moduleDir, 'package.json'))).toBe(true);
-      expect(existsSync(path.join(moduleDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(moduleDir, 'pgpm.plan'))).toBe(true);
     });
 
     // Skip GitHub tests in CI unless network access is explicitly allowed
@@ -283,7 +283,7 @@ describe('cmds:init', () => {
 
       const modDir = path.join(packagesDir, modName);
       expect(existsSync(modDir)).toBe(true);
-      expect(existsSync(path.join(modDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(modDir, 'pgpm.plan'))).toBe(true);
       expect(existsSync(path.join(modDir, 'package.json'))).toBe(true);
     });
 
@@ -345,7 +345,7 @@ describe('cmds:init', () => {
 
       const secondModDir = path.join(packagesDir, secondMod);
       expect(existsSync(secondModDir)).toBe(true);
-      expect(existsSync(path.join(secondModDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(secondModDir, 'pgpm.plan'))).toBe(true);
       expect(existsSync(path.join(secondModDir, 'package.json'))).toBe(true);
     });
   });
@@ -467,7 +467,7 @@ describe('cmds:init', () => {
 
       const modDir = path.join(wsRoot, 'packages', modName);
       expect(existsSync(modDir)).toBe(true);
-      expect(existsSync(path.join(modDir, 'launchql.plan'))).toBe(true);
+      expect(existsSync(path.join(modDir, 'pgpm.plan'))).toBe(true);
       expect(existsSync(path.join(modDir, 'package.json'))).toBe(true);
     });
   });

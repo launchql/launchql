@@ -39,14 +39,14 @@ export function parseControlFile(filePath: string, basePath: string): Module {
 }
 
 /**
- * Parse the launchql.plan file to get the extension name.
+ * Parse the pgpm.plan file to get the extension name.
  */
 export const getExtensionName = (packageDir: string): string => {
-  const planPath = `${packageDir}/launchql.plan`;
+  const planPath = `${packageDir}/pgpm.plan`;
   const plan = parsePlanFileSimple(planPath);
   
   if (!plan.package) {
-    throw new Error('No package name found in launchql.plan!');
+    throw new Error('No package name found in pgpm.plan!');
   }
 
   return plan.package;

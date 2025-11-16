@@ -4,7 +4,7 @@ import { errors } from '@launchql/types';
 export type ModuleMap = Record<string, Module>;
 
 /**
- * Get the latest change from the launchql.plan file for a specific module.
+ * Get the latest change from the pgpm.plan file for a specific module.
  */
 export const latestChange = (
   sqlmodule: string,
@@ -16,7 +16,7 @@ export const latestChange = (
     throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
   }
 
-  const planPath = `${basePath}/${module.path}/launchql.plan`;
+  const planPath = `${basePath}/${module.path}/pgpm.plan`;
   return getLatestChange(planPath);
 };
 
@@ -33,7 +33,7 @@ export const latestChangeAndVersion = (
     throw errors.MODULE_NOT_FOUND({ name: sqlmodule });
   }
 
-  const planPath = `${basePath}/${module.path}/launchql.plan`;
+  const planPath = `${basePath}/${module.path}/pgpm.plan`;
   const change = getLatestChange(planPath);
   const pkg = require(`${basePath}/${module.path}/package.json`);
 
