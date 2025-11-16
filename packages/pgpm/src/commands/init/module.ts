@@ -41,7 +41,7 @@ export default async function runModuleSetup(
     const availExtensions = project.getAvailableModules();
 
     const enhancedQuestions = questions.map(q => {
-      if (q.name === 'extensions' && !q.options) {
+      if (q.name === 'extensions' && !('options' in q && q.options)) {
         return {
           ...q,
           options: availExtensions,
