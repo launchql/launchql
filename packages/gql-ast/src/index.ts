@@ -20,12 +20,12 @@ import {
   StringValueNode,
   TypeNode,
   VariableDefinitionNode,
-  VariableNode,
+  VariableNode
 } from 'graphql';
 
 export const document = ({ definitions }: { definitions: DefinitionNode[] }): DocumentNode => ({
   kind: 'Document',
-  definitions,
+  definitions
 });
 
 export const operationDefinition = ({
@@ -33,7 +33,7 @@ export const operationDefinition = ({
   name,
   variableDefinitions = [],
   directives = [],
-  selectionSet,
+  selectionSet
 }: {
   operation: OperationTypeNode;
   name: string;
@@ -45,17 +45,17 @@ export const operationDefinition = ({
   operation,
   name: {
     kind: 'Name',
-    value: name,
+    value: name
   },
   variableDefinitions,
   directives,
-  selectionSet,
+  selectionSet
 });
 
 export const variableDefinition = ({
   variable,
   type,
-  directives,
+  directives
 }: {
   variable: VariableNode;
   type: TypeNode;
@@ -64,74 +64,74 @@ export const variableDefinition = ({
   kind: 'VariableDefinition',
   variable,
   type,
-  directives: directives || [],
+  directives: directives || []
 });
 
 export const selectionSet = ({ selections }: { selections: readonly FieldNode[] }): SelectionSetNode => ({
   kind: 'SelectionSet',
-  selections,
+  selections
 });
 
 export const listType = ({ type }: { type: TypeNode }): ListTypeNode => ({
   kind: 'ListType',
-  type,
+  type
 });
 
 export const nonNullType = ({ type }: { type: NamedTypeNode | ListTypeNode }): TypeNode => ({
   kind: 'NonNullType',
-  type,
+  type
 });
 
 export const namedType = ({ type }: { type: string }): NamedTypeNode => ({
   kind: 'NamedType',
   name: {
     kind: 'Name',
-    value: type,
-  },
+    value: type
+  }
 });
 
 export const variable = ({ name }: { name: string }): VariableNode => ({
   kind: 'Variable',
   name: {
     kind: 'Name',
-    value: name,
-  },
+    value: name
+  }
 });
 
 export const objectValue = ({ fields }: { fields: ObjectFieldNode[] }): ObjectValueNode => ({
   kind: 'ObjectValue',
-  fields,
+  fields
 });
 
 export const stringValue = ({ value }: { value: string }): StringValueNode => ({
   kind: 'StringValue',
-  value,
+  value
 });
 
 export const intValue = ({ value }: { value: string }): IntValueNode => ({
   kind: 'IntValue',
-  value,
+  value
 });
 
 export const booleanValue = ({ value }: { value: boolean }): BooleanValueNode => ({
   kind: 'BooleanValue',
-  value,
+  value
 });
 
 export const listValue = ({ values }: { values: any[] }): ListValueNode => ({
   kind: 'ListValue',
-  values,
+  values
 });
 
 export const nullValue = (): NullValueNode => ({
-  kind: 'NullValue',
+  kind: 'NullValue'
 });
 
 export const fragmentDefinition = ({
   name,
   typeCondition,
   directives = [],
-  selectionSet,
+  selectionSet
 }: {
   name: string;
   typeCondition: NamedTypeNode;
@@ -141,27 +141,27 @@ export const fragmentDefinition = ({
   kind: 'FragmentDefinition',
   name: {
     kind: 'Name',
-    value: name,
+    value: name
   },
   typeCondition,
   directives,
-  selectionSet,
+  selectionSet
 });
 
 export const objectField = ({ name, value }: { name: string; value: any }): ObjectFieldNode => ({
   kind: 'ObjectField',
   name: {
     kind: 'Name',
-    value: name,
+    value: name
   },
-  value,
+  value
 });
 
 export const field = ({
   name,
   args = [],
   directives = [],
-  selectionSet,
+  selectionSet
 }: {
   name: string;
   args?: ArgumentNode[];
@@ -171,18 +171,18 @@ export const field = ({
   kind: 'Field',
   name: {
     kind: 'Name',
-    value: name,
+    value: name
   },
   arguments: args,
   directives,
-  selectionSet,
+  selectionSet
 });
 
 export const argument = ({ name, value }: { name: string; value: any }): ArgumentNode => ({
   kind: 'Argument',
   name: {
     kind: 'Name',
-    value: name,
+    value: name
   },
-  value,
+  value
 });

@@ -42,6 +42,10 @@
       "error",
       "always"
     ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
     "simple-import-sort/imports": 1,
     "simple-import-sort/exports": 1,
     "unused-imports/no-unused-imports": 1,
