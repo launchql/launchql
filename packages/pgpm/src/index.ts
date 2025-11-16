@@ -12,6 +12,7 @@ export { default as adminUsers } from './commands/admin-users';
 export { default as analyze } from './commands/analyze';
 export { default as clear } from './commands/clear';
 export { default as deploy } from './commands/deploy';
+export { default as env } from './commands/env';
 export { default as _export } from './commands/export';
 export { default as extension } from './commands/extension';
 export { default as install } from './commands/install';
@@ -24,7 +25,6 @@ export { default as renameCmd } from './commands/rename';
 export { default as revert } from './commands/revert';
 export { default as tag } from './commands/tag';
 export { default as verify } from './commands/verify';
-
 export * from './utils';
 
 export const options: Partial<CLIOptions> = {
