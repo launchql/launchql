@@ -19,7 +19,7 @@ afterEach(() => {
 
 describe('installModule()', () => {
   it('installs a package and updates package.json dependencies', async () => {
-    await mod.installModules('@lql-pg/base32@0.3.0');
+    await mod.installModules('@lql-pg/base32@0.4.0');
 
     const extDir = path.join(
             mod.getWorkspacePath()!,
@@ -32,13 +32,13 @@ describe('installModule()', () => {
     });
 
     expect(files.sort()).toMatchSnapshot();
-    expect(fs.existsSync(path.join(extDir, 'launchql.plan'))).toBe(true);
+    expect(fs.existsSync(path.join(extDir, 'pgpm.plan'))).toBe(true);
 
     const pkgJson = JSON.parse(
       fs.readFileSync(path.join(mod.getModulePath()!, 'package.json'), 'utf-8')
     );
     expect(pkgJson.dependencies).toBeDefined();
-    expect(pkgJson.dependencies['@lql-pg/base32']).toBe('0.3.0');
+    expect(pkgJson.dependencies['@lql-pg/base32']).toBe('0.4.0');
 
     const controlFileContent = mod.getModuleControlFile();
     expect(controlFileContent).toMatchSnapshot();
@@ -47,7 +47,7 @@ describe('installModule()', () => {
   it('throws if package.json does not exist in module', async () => {
     fs.rmSync(path.join(mod.getModulePath()!, 'package.json'));
     await expect(
-      mod.installModules('@lql-pg/base32@0.3.0')
+      mod.installModules('@lql-pg/base32@0.4.0')
     ).rejects.toThrow(/No package\.json found/);
   });
 });

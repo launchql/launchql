@@ -14,7 +14,7 @@ exports[`cmds:add adds change with dependencies: change-with-dependency - argv 1
 
 exports[`cmds:add adds change with dependencies: change-with-dependency - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/users.sql",
   "verify/contacts.sql",
@@ -53,7 +53,7 @@ exports[`cmds:add adds change with dependencies: dependency-change - argv 1`] = 
 
 exports[`cmds:add adds change with dependencies: dependency-change - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/users.sql",
   "revert/users.sql",
@@ -88,7 +88,7 @@ exports[`cmds:add adds change with note: change-with-note - argv 1`] = `
 
 exports[`cmds:add adds change with note: change-with-note - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/brands.sql",
   "revert/brands.sql",
@@ -123,7 +123,7 @@ exports[`cmds:add adds deeply nested path change: deeply-nested-path-change - ar
 
 exports[`cmds:add adds deeply nested path change: deeply-nested-path-change - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/schema/myschema/tables/mytable.sql",
   "revert/schema/myschema/tables/mytable.sql",
@@ -157,7 +157,7 @@ exports[`cmds:add adds nested path change: nested-path-change - argv 1`] = `
 
 exports[`cmds:add adds nested path change: nested-path-change - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/api/v1/endpoints.sql",
   "revert/api/v1/endpoints.sql",
@@ -191,7 +191,7 @@ exports[`cmds:add adds simple change: simple-change - argv 1`] = `
 
 exports[`cmds:add adds simple change: simple-change - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/organizations.sql",
   "revert/organizations.sql",
@@ -225,7 +225,7 @@ exports[`cmds:add verifies SQL files do not contain transaction statements: no-t
 
 exports[`cmds:add verifies SQL files do not contain transaction statements: no-transaction-statements - files 1`] = `
 [
-  "launchql.plan",
+  "pgpm.plan",
   "launchql.control",
   "verify/no-transactions.sql",
   "revert/no-transactions.sql",

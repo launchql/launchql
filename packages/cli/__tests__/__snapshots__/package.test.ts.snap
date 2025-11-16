@@ -3,8 +3,8 @@
 exports[`cmds:package updates module with \`extension\` and \`package\` commands in copied fixture workspace: extension-update - files 1`] = `
 [
   "secrets.control",
+  "pgpm.plan",
   "package.json",
-  "launchql.plan",
   "Makefile",
   "verify/procedures/secretfunction.sql",
   "sql/secrets--0.0.1.sql",
