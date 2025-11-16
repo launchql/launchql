@@ -5,33 +5,20 @@ import { getGraphileSettings as getSettings } from 'graphile-settings';
 import type { IncomingMessage } from 'http';
 import { getPgPool } from 'pg-cache';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
+import './types'; // for Request type
 
 import PublicKeySignature, {
   PublicKeyChallengeConfig,
 } from '../plugins/PublicKeySignature';
-import { ApiStructure } from '../types';
-
-type GraphileRequest = Request & {
-  api?: ApiStructure;
-  svc_key?: string;
-  clientIp?: string;
-  databaseId?: string;
-  token?: {
-    id: string;
-    user_id: string;
-    [key: string]: any;
-  };
-};
 
 export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const graphileRequest = req as GraphileRequest;
     try {
-      const api = graphileRequest.api;
+      const api = req.api;
       if (!api) {
         return res.status(500).send('Missing API info');
       }
-      const key = graphileRequest.svc_key;
+      const key = req.svc_key;
       if (!key) {
         return res.status(500).send('Missing service cache key');
       }
@@ -64,7 +51,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
       options.appendPlugins.push(...lOpts.graphile.appendPlugins);
 
       options.pgSettings = async function pgSettings(request: IncomingMessage) {
-        const gqlReq = request as GraphileRequest;
+        const gqlReq = request as Request;
         const context: Record<string, any> = {
           [`jwt.claims.database_id`]: gqlReq.databaseId,
           [`jwt.claims.ip_address`]: gqlReq.clientIp,

@@ -14,6 +14,7 @@ import errorPage404Message from '../errors/404-message';
  */
 import { ApiStructure, Domain, SchemaNode, Service, Site } from '../types';
 import { ApiByNameQuery, ApiQuery, ListOfAllDomainsOfDb } from './gql';
+import './types'; // for Request type
 
 const transformServiceToApi = (svc: Service): ApiStructure => {
   const api = svc.data.api;
@@ -76,7 +77,6 @@ export const createApiMiddleware = (opts: any) => {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    const apiRequest = req as Request;
     if (opts.api?.enableMetaApi === false) {
       const schemas = opts.api.exposedSchemas;
       const anonRole = opts.api.anonRole;
@@ -92,12 +92,12 @@ export const createApiMiddleware = (opts: any) => {
         databaseId,
         isPublic: false,
       };
-      apiRequest.api = api;
-      apiRequest.databaseId = databaseId;
+      req.api = api;
+      req.databaseId = databaseId;
       return next();
     }
     try {
-      const svc = await getApiConfig(opts, apiRequest);
+      const svc = await getApiConfig(opts, req);
 
       if (svc?.errorHtml) {
         res
@@ -115,8 +115,8 @@ export const createApiMiddleware = (opts: any) => {
         return;
       }
       const api = transformServiceToApi(svc);
-      apiRequest.api = api;
-      apiRequest.databaseId = api.databaseId;
+      req.api = api;
+      req.databaseId = api.databaseId;
       next();
     } catch (e: any) {
       if (e.code === 'NO_VALID_SCHEMAS') {

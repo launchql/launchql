@@ -1,8 +1,8 @@
 import { parseUrl } from '@launchql/url-domains';
 import corsPlugin from 'cors';
-import type { Request, Response, NextFunction, RequestHandler } from 'express';
-
+import type { Request, RequestHandler } from 'express';
 import { CorsModuleData } from '../types';
+import './types'; // for Request type
 
 /**
  * Unified CORS middleware for LaunchQL API
