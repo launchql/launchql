@@ -4,8 +4,10 @@ import { createPgpmCommandMap } from 'pgpm';
 
 import explorer from './commands/explorer';
 import server from './commands/server';
+import upgrade from './commands/upgrade';
 import { readAndParsePackageJson } from './package';
 import { cliExitWithError,extractFirst, usageText } from './utils';
+import { VersionTracker } from './utils/version-tracker';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
@@ -13,7 +15,8 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
   return {
     ...pgpmCommands,
     server,
-    explorer
+    explorer,
+    upgrade
   };
 };
 
@@ -70,6 +73,19 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   if (!commandFn) {
     console.log(usageText);
     await cliExitWithError(`Unknown command: ${command}`);
+  }
+
+  const pkg = readAndParsePackageJson();
+  const versionTracker = new VersionTracker(pkg.name, pkg.version);
+
+  versionTracker.incrementCommandCount();
+
+  if (versionTracker.shouldCheckForUpdates()) {
+    const updateInfo = await versionTracker.checkForUpdates();
+    if (updateInfo.hasUpdate) {
+      console.log(`\n⚠️  A new version of ${pkg.name} is available: ${updateInfo.latestVersion} (current: ${pkg.version})`);
+      console.log(`   Run 'lql upgrade' to update.\n`);
+    }
   }
 
   await commandFn(newArgv, prompter, options);

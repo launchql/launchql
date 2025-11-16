@@ -25,6 +25,7 @@ export { default as remove } from './commands/remove';
 export { default as renameCmd } from './commands/rename';
 export { default as revert } from './commands/revert';
 export { default as tag } from './commands/tag';
+export { default as upgrade } from './commands/upgrade';
 export { default as verify } from './commands/verify';
 export * from './utils';
 

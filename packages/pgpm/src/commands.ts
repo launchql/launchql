@@ -21,10 +21,12 @@ import remove from './commands/remove';
 import renameCmd from './commands/rename';
 import revert from './commands/revert';
 import tag from './commands/tag';
+import upgrade from './commands/upgrade';
 import verify from './commands/verify';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 import { cliExitWithError } from './utils/cli-error';
+import { VersionTracker } from './utils/version-tracker';
 
 const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
   try {
@@ -58,7 +60,8 @@ export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<st
     install: pgt(install),
     migrate: pgt(migrate),
     analyze: pgt(analyze),
-    rename: pgt(renameCmd)
+    rename: pgt(renameCmd),
+    upgrade
   };
 };
 
@@ -111,6 +114,19 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   if (!commandFn) {
     console.log(usageText);
     await cliExitWithError(`Unknown command: ${command}`);
+  }
+
+  const pkg = readAndParsePackageJson();
+  const versionTracker = new VersionTracker(pkg.name, pkg.version);
+
+  versionTracker.incrementCommandCount();
+
+  if (versionTracker.shouldCheckForUpdates()) {
+    const updateInfo = await versionTracker.checkForUpdates();
+    if (updateInfo.hasUpdate) {
+      console.log(`\n⚠️  A new version of ${pkg.name} is available: ${updateInfo.latestVersion} (current: ${pkg.version})`);
+      console.log(`   Run 'pgpm upgrade' to update.\n`);
+    }
   }
 
   await commandFn(newArgv, prompter, options);
