@@ -15,24 +15,6 @@ import errorPage404Message from '../errors/404-message';
 import { ApiStructure, Domain, SchemaNode, Service, Site } from '../types';
 import { ApiByNameQuery, ApiQuery, ListOfAllDomainsOfDb } from './gql';
 
-type LaunchQLToken = {
-  id: string;
-  user_id: string;
-  [key: string]: any;
-};
-
-type ApiRequest = Request & {
-  api?: ApiStructure;
-  svc_key?: string;
-  clientIp?: string;
-  databaseId?: string;
-  token?: LaunchQLToken;
-  urlDomains: {
-    domain: string | null;
-    subdomains: string[];
-  };
-};
-
 const transformServiceToApi = (svc: Service): ApiStructure => {
   const api = svc.data.api;
   const schemaNames =
@@ -94,7 +76,7 @@ export const createApiMiddleware = (opts: any) => {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    const apiRequest = req as ApiRequest;
+    const apiRequest = req as Request;
     if (opts.api?.enableMetaApi === false) {
       const schemas = opts.api.exposedSchemas;
       const anonRole = opts.api.anonRole;
@@ -291,9 +273,9 @@ const queryServiceByApiName = async ({
   return null;
 };
 
-const getSvcKey = (opts: LaunchQLOptions, req: ApiRequest): string => {
+const getSvcKey = (opts: LaunchQLOptions, req: Request): string => {
   const domain = req.urlDomains.domain;
-  const key = req.urlDomains.subdomains
+  const key = (req.urlDomains.subdomains as string[])
     .filter((name: string) => !['www'].includes(name))
     .concat(domain)
     .join('.');
@@ -328,7 +310,7 @@ const validateSchemata = async (
 
 export const getApiConfig = async (
   opts: LaunchQLOptions,
-  req: ApiRequest
+  req: Request
 ): Promise<any> => {
   const rootPgPool = getPgPool(opts.pg);
   // @ts-ignore
