@@ -5,7 +5,7 @@ import * as os from 'os';
 /**
  * PGPM Home Directory Management
  * 
- * This module manages the optional .pgpm/ folder in the user's home directory.
+ * This class manages an optional state directory for PGPM.
  * 
  * Design Principles:
  * - Attempt creation gracefully
@@ -14,150 +14,178 @@ import * as os from 'os';
  * - Only provides benefits if it exists
  */
 
-const PGPM_DIR = '.pgpm';
 const STATE_FILE = 'state.json';
 
-/**
- * Get the path to the .pgpm directory in the user's home directory
- */
-export function getPgpmHomePath(): string | null {
-  try {
-    const homeDir = os.homedir();
-    if (!homeDir) return null;
-    return path.join(homeDir, PGPM_DIR);
-  } catch {
-    return null;
-  }
+export interface PgpmHomeOptions {
+  /**
+   * State directory path. Defaults to ~/.pgpm
+   */
+  stateDir?: string;
 }
 
 /**
- * Get the path to the state.json file
+ * PgpmHome manages optional state storage for PGPM CLI
+ * 
+ * All methods handle failures gracefully and return null/false on error.
+ * The system continues to work normally without the state directory.
+ * 
+ * @example
+ * ```typescript
+ * const pgpmHome = new PgpmHome({ stateDir: '~/.pgpm' });
+ * 
+ * // Initialize (optional - will be attempted automatically when needed)
+ * pgpmHome.initialize();
+ * 
+ * // Read state
+ * const state = pgpmHome.readState();
+ * 
+ * // Write state
+ * pgpmHome.writeState({ key: 'value' });
+ * 
+ * // Update specific keys
+ * pgpmHome.updateState({ lastRun: new Date().toISOString() });
+ * 
+ * // Get specific value
+ * const value = pgpmHome.get('key');
+ * ```
  */
-export function getPgpmStateFilePath(): string | null {
-  try {
-    const pgpmPath = getPgpmHomePath();
-    if (!pgpmPath) return null;
-    return path.join(pgpmPath, STATE_FILE);
-  } catch {
-    return null;
-  }
-}
+export class PgpmHome {
+  private stateDir: string;
+  private stateFilePath: string;
 
-/**
- * Check if the .pgpm directory exists
- */
-export function pgpmHomeExists(): boolean {
-  try {
-    const pgpmPath = getPgpmHomePath();
-    if (!pgpmPath) return false;
-    return fs.existsSync(pgpmPath);
-  } catch {
-    return false;
+  constructor(options: PgpmHomeOptions = {}) {
+    this.stateDir = this.resolveStateDir(options.stateDir);
+    this.stateFilePath = path.join(this.stateDir, STATE_FILE);
   }
-}
 
-/**
- * Attempt to create the .pgpm directory if it doesn't exist
- * Returns true if directory exists (either already existed or was created)
- * Returns false if creation failed or path is unavailable
- */
-export function ensurePgpmHome(): boolean {
-  try {
-    const pgpmPath = getPgpmHomePath();
-    if (!pgpmPath) return false;
-    
-    if (fs.existsSync(pgpmPath)) {
-      return true;
+  /**
+   * Resolve the state directory path
+   * Defaults to ~/.pgpm if not specified
+   */
+  private resolveStateDir(stateDir?: string): string {
+    if (stateDir) {
+      // Expand ~ to home directory
+      if (stateDir.startsWith('~/')) {
+        try {
+          const homeDir = os.homedir();
+          return path.join(homeDir, stateDir.slice(2));
+        } catch {
+          return stateDir;
+        }
+      }
+      return stateDir;
     }
-    
-    fs.mkdirSync(pgpmPath, { recursive: true, mode: 0o755 });
-    return true;
-  } catch {
-    return false;
-  }
-}
 
-/**
- * Read state from state.json file
- * Returns null if file doesn't exist or can't be read
- */
-export function readPgpmState(): Record<string, any> | null {
-  try {
-    const stateFilePath = getPgpmStateFilePath();
-    if (!stateFilePath) return null;
-    
-    if (!fs.existsSync(stateFilePath)) return null;
-    
-    const content = fs.readFileSync(stateFilePath, 'utf-8');
-    return JSON.parse(content);
-  } catch {
-    return null;
+    try {
+      const homeDir = os.homedir();
+      return path.join(homeDir, '.pgpm');
+    } catch {
+      return '.pgpm';
+    }
   }
-}
 
-/**
- * Write state to state.json file
- * Returns true if successful, false otherwise
- * Will attempt to create .pgpm directory if it doesn't exist
- */
-export function writePgpmState(state: Record<string, any>): boolean {
-  try {
-    if (!ensurePgpmHome()) return false;
+  /**
+   * Check if the state directory exists
+   */
+  exists(): boolean {
+    try {
+      return fs.existsSync(this.stateDir);
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Attempt to create the state directory if it doesn't exist
+   * Returns true if directory exists (either already existed or was created)
+   * Returns false if creation failed
+   */
+  ensure(): boolean {
+    try {
+      if (fs.existsSync(this.stateDir)) {
+        return true;
+      }
+      
+      fs.mkdirSync(this.stateDir, { recursive: true, mode: 0o755 });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Read state from state.json file
+   * Returns null if file doesn't exist or can't be read
+   */
+  readState<T = Record<string, any>>(): T | null {
+    try {
+      if (!fs.existsSync(this.stateFilePath)) return null;
+      
+      const content = fs.readFileSync(this.stateFilePath, 'utf-8');
+      return JSON.parse(content) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Write state to state.json file
+   * Returns true if successful, false otherwise
+   * Will attempt to create state directory if it doesn't exist
+   */
+  writeState(state: Record<string, any>): boolean {
+    try {
+      if (!this.ensure()) return false;
+      
+      const content = JSON.stringify(state, null, 2);
+      fs.writeFileSync(this.stateFilePath, content, 'utf-8');
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Update specific keys in the state file
+   * Returns true if successful, false otherwise
+   */
+  updateState(updates: Record<string, any>): boolean {
+    try {
+      const currentState = this.readState() || {};
+      const newState = { ...currentState, ...updates };
+      return this.writeState(newState);
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Get a specific value from the state file
+   * Returns null if key doesn't exist or state can't be read
+   */
+  get(key: string): any {
+    try {
+      const state = this.readState();
+      if (!state) return null;
+      return state[key] ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Initialize the state directory and state file if they don't exist
+   * This is a convenience method that attempts both operations
+   * Returns an object indicating what was successful
+   */
+  initialize(): { dirCreated: boolean; stateInitialized: boolean } {
+    const dirCreated = this.ensure();
     
-    const stateFilePath = getPgpmStateFilePath();
-    if (!stateFilePath) return false;
-    
-    const content = JSON.stringify(state, null, 2);
-    fs.writeFileSync(stateFilePath, content, 'utf-8');
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Update specific keys in the state file
- * Returns true if successful, false otherwise
- */
-export function updatePgpmState(updates: Record<string, any>): boolean {
-  try {
-    const currentState = readPgpmState() || {};
-    const newState = { ...currentState, ...updates };
-    return writePgpmState(newState);
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Get a specific value from the state file
- * Returns null if key doesn't exist or state can't be read
- */
-export function getPgpmStateValue(key: string): any {
-  try {
-    const state = readPgpmState();
-    if (!state) return null;
-    return state[key] ?? null;
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Initialize the .pgpm directory and state file if they don't exist
- * This is a convenience function that attempts both operations
- * Returns an object indicating what was successful
- */
-export function initializePgpmHome(): { dirCreated: boolean; stateInitialized: boolean } {
-  const dirCreated = ensurePgpmHome();
-  
-  let stateInitialized = false;
-  if (dirCreated) {
-    const stateFilePath = getPgpmStateFilePath();
-    if (stateFilePath) {
+    let stateInitialized = false;
+    if (dirCreated) {
       try {
-        if (!fs.existsSync(stateFilePath)) {
-          stateInitialized = writePgpmState({
+        if (!fs.existsSync(this.stateFilePath)) {
+          stateInitialized = this.writeState({
             created: new Date().toISOString(),
             version: '1.0.0'
           });
@@ -168,7 +196,21 @@ export function initializePgpmHome(): { dirCreated: boolean; stateInitialized: b
         stateInitialized = false;
       }
     }
+    
+    return { dirCreated, stateInitialized };
   }
-  
-  return { dirCreated, stateInitialized };
+
+  /**
+   * Get the resolved state directory path
+   */
+  getStateDir(): string {
+    return this.stateDir;
+  }
+
+  /**
+   * Get the state file path
+   */
+  getStateFilePath(): string {
+    return this.stateFilePath;
+  }
 }

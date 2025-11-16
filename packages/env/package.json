@@ -31,7 +31,9 @@
   },
   "dependencies": {
     "@launchql/types": "workspace:^",
-    "deepmerge": "^4.3.1"
+    "@types/js-yaml": "^4.0.9",
+    "deepmerge": "^4.3.1",
+    "js-yaml": "^4.1.0"
   },
   "keywords": [
     "environment",
