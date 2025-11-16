@@ -414,20 +414,8 @@ export class LaunchQLPackage {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
     
-    // Create basic module structure
     this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
-    
-    const controlContent = generateControlFileContent({
-      name: options.name,
-      description: options.description || options.name,
-      version: '0.1.0',
-      author: options.author || 'Unknown',
-      requires: options.extensions
-    });
-    fs.writeFileSync(path.join(targetPath, `${options.name}.control`), controlContent);
-    
-    writeExtensionMakefile(targetPath, options.name);
   }
 
   // ──────────────── Dependency Analysis ────────────────
