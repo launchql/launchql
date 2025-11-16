@@ -12,6 +12,7 @@ export { default as adminUsers } from './commands/admin-users';
 export { default as analyze } from './commands/analyze';
 export { default as clear } from './commands/clear';
 export { default as deploy } from './commands/deploy';
+export { default as docker } from './commands/docker';
 export { default as env } from './commands/env';
 export { default as _export } from './commands/export';
 export { default as extension } from './commands/extension';
