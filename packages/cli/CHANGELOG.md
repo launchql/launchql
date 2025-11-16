@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.17.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.16.1...@launchql/cli@4.17.0) (2025-11-16)
+
+### Features
+
+- **cli:** add docker command for managing PostgreSQL containers ([810cbdf](https://github.com/launchql/launchql/commit/810cbdf5deb77ae91e89c29419c3c699dc38683e))
+
 ## [4.16.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.16.0...@launchql/cli@4.16.1) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/cli
