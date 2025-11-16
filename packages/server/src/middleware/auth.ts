@@ -1,11 +1,17 @@
 import { LaunchQLOptions } from '@launchql/types';
-import { NextFunction, Request, RequestHandler,Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
+import './types'; // for Request type
 
-export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHandler => {
-
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createAuthenticateMiddleware = (
+  opts: LaunchQLOptions
+): RequestHandler => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     const api = req.api;
     if (!api) {
       res.status(500).send('Missing API info');
@@ -14,7 +20,7 @@ export const createAuthenticateMiddleware = (opts: LaunchQLOptions): RequestHand
 
     const pool = getPgPool({
       ...opts.pg,
-      database: api.dbname
+      database: api.dbname,
     });
     const rlsModule = api.rlsModule;
 

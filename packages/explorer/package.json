@@ -45,6 +45,7 @@
     "graphile-build": "^4.14.1",
     "graphile-cache": "workspace:^",
     "graphile-settings": "workspace:^",
+    "graphql": "15.10.1",
     "graphql-upload": "^13.0.0",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
