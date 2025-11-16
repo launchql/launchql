@@ -7,9 +7,9 @@ module.exports = {
       'ts-jest',
       {
         babelConfig: false,
-        tsconfig: 'tsconfig.json',
-      },
-    ],
+        tsconfig: 'tsconfig.json'
+      }
+    ]
   },
   transformIgnorePatterns: [`/node_modules/*`],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
