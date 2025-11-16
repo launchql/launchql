@@ -30,7 +30,7 @@ eval "$(pgpm env)"
 
 ---
 
-### Create Your First Project
+### Create a Workspace and Install a Package
 
 ```bash
 # 1. Create a workspace
@@ -39,13 +39,48 @@ cd my-app
 
 # 2. Create your first module
 pgpm init
+cd packages/your-module
 
-# 3. Add a database change
-pgpm add some_change
+# 3. Install a package 
+pgpm install @pgpm/faker
 
 # 4. Deploy everything
+pgpm deploy --createdb --database mydb1
+psql -d mydb1 -c "SELECT faker.city('MI');"
+>  Ann Arbor
+```
+
+### Starting a New Project and Adding a Change
+
+```bash
+# 1. Create workspace
+pgpm init --workspace
+cd my-app
+
+# 2. Create your first module
+pgpm init
+cd packages/new-module
+
+# 3. Add some SQL migrations to sql/ directory
+pgpm add some_change
+
+# 4. Deploy to database
 pgpm deploy --createdb
 ```
+
+### Testing a pgpm module in a workspace
+
+```bash
+# 1. Install dependencies
+pgpm install
+
+# 2. Enter the packages/<yourmodule>
+cd packages/yourmodule
+
+# 3. Test the module in watch mode
+pnpm test:watch
+```
+
 
 ## What is LaunchQL?
 

@@ -30,7 +30,7 @@ eval "$(pgpm env)"
 
 ---
 
-### Create Your First Project
+### Create a Workspace and Install a Package
 
 ```bash
 # 1. Create a workspace
@@ -39,12 +39,15 @@ cd my-app
 
 # 2. Create your first module
 pgpm init
+cd packages/your-module
 
-# 3. Add a database change
-pgpm add some_change
+# 3. Install a package 
+pgpm install @pgpm/faker
 
 # 4. Deploy everything
-pgpm deploy --createdb
+pgpm deploy --createdb --database mydb1
+psql -d mydb1 -c "SELECT faker.city('MI');"
+>  Ann Arbor
 ```
 
 ## 🛠️ Commands
@@ -98,7 +101,7 @@ pgpm deploy --createdb
 
 ## 💡 Common Workflows
 
-### Starting a New Project
+### Starting a New Project and Adding a Change
 
 ```bash
 # 1. Create workspace
@@ -107,6 +110,7 @@ cd my-app
 
 # 2. Create your first module
 pgpm init
+cd packages/new-module
 
 # 3. Add some SQL migrations to sql/ directory
 pgpm add some_change
@@ -118,14 +122,16 @@ pgpm deploy --createdb
 ### Working with Existing Projects
 
 ```bash
-# 1. Clone and enter project
-git clone <repo> && cd <project>
+# 1. Navigate to your module
+cd packages/your-module
 
-# 2. Install dependencies
-pgpm install
+# 2. Install a package 
+pgpm install @pgpm/faker
 
-# 3. Deploy to local database
-pgpm deploy --createdb
+# 3. Deploy all installed modules
+pgpm deploy --createdb --database mydb1
+psql -d mydb1 -c "SELECT faker.city('MI');"
+>  Ann Arbor
 ```
 
 ### Testing a pgpm module in a workspace
@@ -286,89 +292,18 @@ pgpm kill
 pgpm kill --no-drop
 ```
 
-## 💡 Common Workflows
-
-### Starting a New Project
-
-```bash
-# 1. Create workspace
-mkdir my-app && cd my-app
-pgpm init --workspace
-
-# 2. Create your first module
-pgpm init
-
-# 3. Add some SQL migrations to sql/ directory
-# 4. Deploy to database
-pgpm deploy --createdb
-
-# 5. Start developing
-pgpm server
-```
-
-### Using Custom Templates
-
-You can use custom templates from GitHub repositories or local paths:
-
-```bash
-# Initialize workspace with templates from GitHub
-pgpm init --workspace --repo owner/repo
-
-# Initialize workspace with templates from local path
-pgpm init --workspace --template-path ./my-custom-templates
-
-# Initialize module with custom templates
-pgpm init --template-path ./my-custom-templates
-
-# Use specific branch from GitHub repository
-pgpm init --workspace --repo owner/repo --from-branch develop
-```
-
-**Template Structure:**
-Custom templates should follow the same structure as the default templates:
-
-- For workspace: `boilerplates/workspace/` directory
-- For module: `boilerplates/module/` directory
-- Or provide direct path to `workspace/` or `module/` directory
-
-### Working with Existing Projects
-
-```bash
-# 1. Clone and enter project
-git clone <repo> && cd <project>
-
-# 2. Install dependencies
-pgpm install
-
-# 3. Deploy to local database
-pgpm deploy --createdb
-
-# 4. Start development server
-pgpm server
-```
-
-### Production Deployment
-
-```bash
-# 1. Create deployment plan
-pgpm plan
-
-# 2. Package module
-pgpm package
-
-# 3. Deploy to production
-pgpm deploy --package myapp --to @production
-
-# 4. Verify deployment
-pgpm verify --package myapp
-```
-
 ## ⚙️ Configuration
 
 ### Environment Variables
 
-LaunchQL respects standard PostgreSQL environment variables:
+`pgpm` uses standard PostgreSQL environment variables (`PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`). 
 
+**Quick setup** (recommended):
+```bash
+eval "$(pgpm env)"
+```
+
+**Manual setup** (if you prefer):
 ```bash
 export PGHOST=localhost
 export PGPORT=5432
@@ -377,7 +312,12 @@ export PGUSER=postgres
 export PGPASSWORD=password
 ```
 
-## 🆘 Getting Help
+**Supabase local development:**
+```bash
+eval "$(pgpm env --supabase)"
+```
+
+## Getting Help
 
 ### Command Help
 
@@ -387,7 +327,7 @@ pgpm --help
 
 # Command-specific help
 pgpm deploy --help
-pgpm server -h
+pgpm tag -h
 ```
 
 ### Common Options
