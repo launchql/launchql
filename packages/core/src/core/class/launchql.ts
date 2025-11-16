@@ -410,9 +410,37 @@ export class LaunchQLPackage {
     });
   }
 
-  initModule(options: InitModuleOptions): void {
+  async initModule(options: InitModuleOptions): Promise<void> {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
+    
+    const { cloneRepo, extractVariables, replaceVariables } = await import('create-gen-app');
+    const { getGitConfigInfo } = await import('@launchql/types');
+    const { email, username } = getGitConfigInfo();
+    
+    try {
+      const tempDir = await cloneRepo('https://github.com/launchql/pgpm-boilerplates');
+      const templateDir = path.join(tempDir, 'module');
+      
+      const extractedVars = await extractVariables(templateDir);
+      
+      // Prepare answers for variable replacement
+      const answers = {
+        MODULENAME: options.name,
+        MODULE_NAME: options.name,
+        USERFULLNAME: username || options.author || 'Unknown',
+        USEREMAIL: email || '',
+        DESCRIPTION: options.description || options.name,
+        EXTENSIONS: options.extensions.join(', ')
+      };
+      
+      await replaceVariables(templateDir, targetPath, extractedVars, answers);
+    } catch (error) {
+      logger.error(`Failed to generate module from template: ${error instanceof Error ? error.message : String(error)}`);
+      this.initModuleSqitch(options.name, targetPath);
+      writeExtensions(targetPath, options.extensions);
+      return;
+    }
     
     this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);

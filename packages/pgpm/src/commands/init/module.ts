@@ -94,7 +94,7 @@ export default async function runModuleSetup(
       throw error;
     }
   } else {
-    project.initModule({
+    await project.initModule({
       ...argv,
       ...answers,
       name: modName,
