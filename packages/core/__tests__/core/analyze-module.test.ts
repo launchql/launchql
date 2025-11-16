@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import { TestFixture } from '../../test-utils';
+
 import { parsePlanFile } from '../../src/files/plan/parser';
 import { writePlanFile } from '../../src/files/plan/writer';
+import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
 

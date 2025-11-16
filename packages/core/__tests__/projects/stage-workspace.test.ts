@@ -1,7 +1,7 @@
 import { LaunchQLPackage, PackageContext } from '../../src/core/class/launchql';
-import { TestFixture } from '../../test-utils/TestFixture';
-import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 import { TestDatabase } from '../../test-utils';
+import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
+import { TestFixture } from '../../test-utils/TestFixture';
 
 describe('Staging Fixture Tests', () => {
   let fixture: TestFixture;

@@ -6,7 +6,7 @@ import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import {
   getPgEnvOptions,
-  getSpawnEnvWithPg,
+  getSpawnEnvWithPg
 } from 'pg-env';
 
 import { getTargetDatabase } from '../utils';
@@ -140,7 +140,7 @@ export default async (
       fast: fast !== false,
       usePlan: argv.usePlan !== false,
       cache: argv.cache !== false,
-      logOnly: argv.logOnly !== false,
+      logOnly: argv.logOnly !== false
     }
   };
   

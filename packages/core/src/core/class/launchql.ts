@@ -1,12 +1,5 @@
 import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import {
-  moduleTemplate,
-  writeRenderedTemplates,
-  TemplateSource,
-  loadTemplates
-} from '@launchql/templatizer';
 import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
@@ -20,20 +13,20 @@ import { PgConfig } from 'pg-env';
 
 import { getAvailableExtensions } from '../../extensions/extensions';
 import { generatePlan, writePlan, writePlanFile } from '../../files';
-import { Tag, ExtendedPlanFile, Change } from '../../files/types';
-import { parsePlanFile } from '../../files/plan/parser';
-import { isValidTagName, isValidChangeName, parseReference } from '../../files/plan/validators';
-import { getNow as getPlanTimestamp } from '../../files/plan/generator';
-import { resolveTagToChangeName } from '../../resolution/resolve';
 import {
   ExtensionInfo,
   getExtensionInfo,
   getExtensionName,
   getInstalledExtensions,
   parseControlFile,
-  writeExtensions,
+  writeExtensions
 } from '../../files';
 import { generateControlFileContent, writeExtensionMakefile } from '../../files/extension/writer';
+import { getNow as getPlanTimestamp } from '../../files/plan/generator';
+import { parsePlanFile } from '../../files/plan/parser';
+import { isValidChangeName, isValidTagName, parseReference } from '../../files/plan/validators';
+import { Change, Tag } from '../../files/types';
+import { PackageAnalysisIssue, PackageAnalysisResult, RenameOptions } from '../../files/types';
 import { LaunchQLMigrate } from '../../migrate/client';
 import {
   getExtensionsAndModules,
@@ -43,9 +36,7 @@ import {
   ModuleMap
 } from '../../modules/modules';
 import { packageModule } from '../../packaging/package';
-import { resolveExtensionDependencies, resolveDependencies } from '../../resolution/deps';
-import { PackageAnalysisIssue, PackageAnalysisResult, RenameOptions } from '../../files/types';
-
+import { resolveDependencies,resolveExtensionDependencies } from '../../resolution/deps';
 import { parseTarget } from '../../utils/target-utils';
 
 
@@ -95,7 +86,7 @@ const truncateExtensionsToTarget = (
     resolved: workspaceExtensions.resolved.slice(targetIndex),
     external: workspaceExtensions.external
   };
-}
+};
 
 export enum PackageContext {
   Outside = 'outside',
@@ -109,7 +100,6 @@ export interface InitModuleOptions {
   description: string;
   author: string;
   extensions: string[];
-  templateSource?: TemplateSource;
 }
 
 export class LaunchQLPackage {
@@ -424,16 +414,20 @@ export class LaunchQLPackage {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
     
-    // Load templates from custom source if provided, otherwise use default
-    let templates = moduleTemplate;
-    if (options.templateSource) {
-      const compiledTemplates = loadTemplates(options.templateSource, 'module');
-      templates = compiledTemplates.map((t: any) => t.render);
-    }
-    
-    writeRenderedTemplates(templates, targetPath, options);
+    // Create basic module structure
     this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
+    
+    const controlContent = generateControlFileContent({
+      name: options.name,
+      description: options.description || options.name,
+      version: '0.1.0',
+      author: options.author || 'Unknown',
+      requires: options.extensions
+    });
+    fs.writeFileSync(path.join(targetPath, `${options.name}.control`), controlContent);
+    
+    writeExtensionMakefile(targetPath, options.name);
   }
 
   // ──────────────── Dependency Analysis ────────────────
@@ -750,7 +744,7 @@ export class LaunchQLPackage {
     }
     
     if (!isValidChangeName(changeName)) {
-      throw errors.INVALID_NAME({ name: changeName, type: 'change', rules: "Change names must follow Sqitch naming rules" });
+      throw errors.INVALID_NAME({ name: changeName, type: 'change', rules: 'Change names must follow Sqitch naming rules' });
     }
     
     if (!this.isInWorkspace() && !this.isInModule()) {

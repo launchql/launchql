@@ -1,18 +1,18 @@
-import { mkdtempSync, writeFileSync, mkdirSync } from 'fs';
+import { mkdirSync,mkdtempSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
 jest.mock('../../src/migrate/utils/transaction', () => ({
   withTransaction: async (_pool: any, _opts: any, fn: any) => fn({}),
-  executeQuery: jest.fn().mockResolvedValue(undefined),
+  executeQuery: jest.fn().mockResolvedValue(undefined)
 }));
 
 jest.mock('../../src/resolution/deps', () => ({
   resolveDependencies: (): any => ({
     deps: {
-      '/deploy/schemas_unique_names_schema.sql': [],
-    },
-  }),
+      '/deploy/schemas_unique_names_schema.sql': []
+    }
+  })
 }));
 
 jest.mock('pg-cache', () => ({
@@ -27,8 +27,8 @@ jest.mock('pg-cache', () => ({
           return Promise.resolve({ rows: [{ is_deployed: false }] });
         }
         return Promise.resolve({ rows: [] });
-      }),
-  }),
+      })
+  })
 }));
 
 import { LaunchQLMigrate } from '../../src/migrate/client';
@@ -42,7 +42,7 @@ describe('LaunchQLMigrate.deploy tag fallback bug reproduction', () => {
 
     const plan = [
       `%project=${packageName}`,
-      `${changeName} [launchql-ext-default-roles:@0.0.5]`,
+      `${changeName} [launchql-ext-default-roles:@0.0.5]`
     ].join('\n');
 
     mkdirSync(join(dir, 'deploy'), { recursive: true });
@@ -57,7 +57,7 @@ describe('LaunchQLMigrate.deploy tag fallback bug reproduction', () => {
     await migrator.deploy({
       modulePath: dir,
       useTransaction: false,
-      logOnly: true,
+      logOnly: true
     } as any);
 
     const calls = (executeQuery as jest.Mock).mock.calls;

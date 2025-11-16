@@ -14,16 +14,13 @@ Options:
   --help, -h              Show this help message
   --workspace             Initialize workspace instead of module
   --cwd <directory>       Working directory (default: current directory)
-  --repo <repo>           Use templates from GitHub repository (e.g., owner/repo)
-  --template-path <path>   Use templates from local path
-  --from-branch <branch>   Specify branch when using --repo (default: main)
+  --template <url>        Template repository URL or GitHub shorthand (e.g., owner/repo)
 
 Examples:
   pgpm init                                  Initialize new module in existing workspace
-  pgpm init --workspace                       Initialize new workspace
-  pgpm init --repo owner/repo                Use templates from GitHub repository
-  pgpm init --template-path ./custom-templates Use templates from local path
-  pgpm init --repo owner/repo --from-branch develop  Use specific branch
+  pgpm init --workspace                      Initialize new workspace
+  pgpm init --template owner/repo            Use templates from GitHub repository
+  pgpm init --template https://github.com/owner/repo.git  Use full GitHub URL
 `;
 
 export default async (
@@ -31,7 +28,6 @@ export default async (
   prompter: Inquirerer,
   _options: CLIOptions
 ) => {
-  // Show usage if explicitly requested
   if (argv.help || argv.h) {
     console.log(initUsageText);
     process.exit(0);
@@ -51,4 +47,3 @@ async function handlePromptFlow(argv: Partial<Record<string, any>>, prompter: In
     return runModuleSetup(argv, prompter);
   }
 }
-

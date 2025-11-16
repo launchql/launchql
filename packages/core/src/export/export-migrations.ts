@@ -261,7 +261,7 @@ const preparePackage = async ({
       name,
       description: name,
       author,
-      extensions,
+      extensions
     });
   } else {
     rmSync(path.resolve(sqitchDir, 'deploy'), { recursive: true, force: true });

@@ -1,8 +1,9 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { writeExtensions, generateControlFileContent } from '../../../src/files/extension/writer';
+
 import { getInstalledExtensions } from '../../../src/files/extension/reader';
+import { generateControlFileContent,writeExtensions } from '../../../src/files/extension/writer';
 
 describe('extension writer', () => {
   let tempDir: string;

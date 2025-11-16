@@ -29,7 +29,7 @@ describe('local tracking guard for deployed/skipped', () => {
 
     const result = await client.deploy({
       modulePath: tempDir,
-      logOnly: true,
+      logOnly: true
     });
 
     expect(result.deployed).toContain('change1');

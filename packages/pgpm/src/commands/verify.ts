@@ -53,7 +53,7 @@ export default async (
       useDefault: true,
       default: true,
       required: false
-    },
+    }
   ];
 
   let { recursive, cwd } = await prompter.prompt(argv, questions);

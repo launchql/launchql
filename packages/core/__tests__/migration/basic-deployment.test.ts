@@ -48,7 +48,7 @@ describe('Deploy Command', () => {
     
     // Deploy all changes
     const result = await client.deploy({
-      modulePath: fixturePath,
+      modulePath: fixturePath
     });
     
     expect(result.deployed).toEqual(['schema', 'table', 'index']);
@@ -79,7 +79,7 @@ describe('Deploy Command', () => {
     
     // Second deployment - should skip already deployed
     const result2 = await client.deploy({
-      modulePath: fixturePath,
+      modulePath: fixturePath
     });
     
     expect(result2.deployed).toEqual(['index']);

@@ -17,7 +17,7 @@ export const cleanTree = (tree: any): any => {
   return transformProps(tree, {
     stmt_len: noop,
     stmt_location: noop,
-    location: noop,
+    location: noop
   });
 };
 
@@ -78,7 +78,7 @@ export const packageModule = async (
       tree1?: string;
       tree2?: string;
     } = {
-      sql: `${topLine}${finalSql}`,
+      sql: `${topLine}${finalSql}`
     };
 
     const diff =
@@ -101,7 +101,7 @@ export const writePackage = async ({
   version,
   extension = true,
   usePlan = true,
-  packageDir,
+  packageDir
 }: WritePackageOptions): Promise<void> => {
   const pkgPath = `${packageDir}/package.json`;
   const pkg = require(pkgPath);
@@ -115,7 +115,7 @@ export const writePackage = async ({
 
   const { sql, diff, tree1, tree2 } = await packageModule(packageDir, {
     extension,
-    usePlan,
+    usePlan
   });
 
   const outPath = extension ? `${packageDir}/sql` : `${packageDir}/out`;

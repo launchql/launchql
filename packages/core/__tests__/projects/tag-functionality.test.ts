@@ -1,10 +1,11 @@
 process.env.LAUNCHQL_DEBUG = 'true';
 
-import { TestDatabase } from '../../test-utils';
-import { teardownPgPools } from 'pg-cache';
 import { readFileSync } from 'fs';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
 import { join } from 'path';
+import { teardownPgPools } from 'pg-cache';
+
+import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { TestDatabase } from '../../test-utils';
 import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 
 describe('Tag functionality with CoreDeployTestFixture', () => {

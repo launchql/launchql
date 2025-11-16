@@ -34,7 +34,7 @@ export function parseControlFile(filePath: string, basePath: string): Module {
   return {
     path: dirname(relative(basePath, filePath)),
     requires,
-    version,
+    version
   };
 }
 

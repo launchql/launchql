@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
-import { TestFixture } from '../../test-utils/TestFixture';
+
 import { parsePlanFile } from '../../src/files/plan/parser';
+import { TestFixture } from '../../test-utils/TestFixture';
 
 describe('Clear Functionality', () => {
   let fixture: TestFixture;

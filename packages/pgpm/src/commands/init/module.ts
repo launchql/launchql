@@ -1,9 +1,9 @@
 import { LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { type TemplateSource } from '@launchql/templatizer';
 import { errors, getGitConfigInfo } from '@launchql/types';
+import { createGen } from 'create-gen-app';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
+import path from 'path';
 
 const log = new Logger('module-init');
 
@@ -33,7 +33,13 @@ export default async function runModuleSetup(
       name: 'MODULENAME',
       message: 'Enter the module name',
       required: true,
-      type: 'text',
+      type: 'text'
+    },
+    {
+      name: 'description',
+      message: 'Enter module description',
+      required: false,
+      type: 'text'
     },
     {
       name: 'extensions',
@@ -41,8 +47,14 @@ export default async function runModuleSetup(
       options: availExtensions,
       type: 'checkbox',
       allowCustomOptions: true,
-      required: true,
+      required: true
     },
+    {
+      name: 'template',
+      message: 'Template repository URL (leave empty for default)',
+      required: false,
+      type: 'text'
+    }
   ];
 
   const answers = await prompter.prompt(argv, moduleQuestions);
@@ -52,36 +64,47 @@ export default async function runModuleSetup(
     .filter((opt: OptionValue) => opt.selected)
     .map((opt: OptionValue) => opt.name);
 
-  // Determine template source
-  let templateSource: TemplateSource | undefined;
-  
-  if (argv.repo) {
-    templateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
-    };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-  } else if (argv.templatePath) {
-    templateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
+  const templateUrl = answers.template || argv.template;
+
+  if (templateUrl) {
+    log.info(`Creating module from template: ${templateUrl}`);
+
+    const targetPath = path.join(cwd, modName);
+
+    try {
+      await createGen({
+        templateUrl,
+        outputDir: targetPath,
+        argv: {
+          ...argv,
+          ...answers,
+          MODULENAME: modName,
+          MODULE_NAME: modName,
+          USERFULLNAME: username,
+          USEREMAIL: email,
+          DESCRIPTION: answers.description || modName,
+          EXTENSIONS: extensions.join(', ')
+        },
+        noTty: false
+      });
+
+      log.success(`Created module from template: ${modName}`);
+    } catch (error) {
+      log.error(`Failed to create module from template: ${error instanceof Error ? error.message : String(error)}`);
+      throw error;
+    }
+  } else {
+    project.initModule({
+      ...argv,
+      ...answers,
+      name: modName,
+      description: answers.description || modName,
+      author: username || email || 'Unknown',
+      extensions
+    });
+
+    log.success(`Initialized module: ${modName}`);
   }
 
-  project.initModule({
-    ...argv,
-    ...answers,
-    name: modName,
-    // @ts-ignore
-    USERFULLNAME: username,
-    USEREMAIL: email,
-    extensions,
-    templateSource
-  });
-
-  log.success(`Initialized module: ${modName}`);
   return { ...argv, ...answers };
 }
-

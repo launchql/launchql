@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Change, PlanFile, SqitchRow, Tag, ExtendedPlanFile } from '../types';
+import { Change, ExtendedPlanFile, SqitchRow, Tag } from '../types';
 
 export interface PlanWriteOptions {
   outdir: string;

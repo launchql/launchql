@@ -1,9 +1,9 @@
+import { LaunchQLPackage } from '../../src/core/class/launchql';
 import {
   getExtensionsAndModules,
   getExtensionsAndModulesChanges,
   latestChange
 } from '../../src/modules/modules';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
@@ -36,7 +36,7 @@ describe('sqitch modules', () => {
     const deps = await getExtensionsAndModules('utils', modules);
     expect(deps).toEqual({
       native: ['plpgsql', 'uuid-ossp'],
-      sqitch: ['totp', 'pg-verify'],
+      sqitch: ['totp', 'pg-verify']
     });
   });
 

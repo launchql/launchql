@@ -2,6 +2,7 @@ process.env.LAUNCHQL_DEBUG = 'true';
 
 import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
+
 import { TestDatabase } from '../../test-utils';
 import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 

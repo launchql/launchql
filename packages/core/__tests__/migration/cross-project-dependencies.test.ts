@@ -27,7 +27,7 @@ describe('Cross-Project Dependencies', () => {
     
     // First deploy project-a
     const resultA = await client.deploy({
-      modulePath: join(basePath, 'project-a'),
+      modulePath: join(basePath, 'project-a')
     });
     
     expect(resultA.deployed).toEqual(['base_schema', 'base_types']);
@@ -35,7 +35,7 @@ describe('Cross-Project Dependencies', () => {
     
     // Then deploy project-b which depends on project-a
     const resultB = await client.deploy({
-      modulePath: join(basePath, 'project-b'),
+      modulePath: join(basePath, 'project-b')
     });
     
     expect(resultB.deployed).toEqual(['app_schema', 'app_tables']);
@@ -55,7 +55,7 @@ describe('Cross-Project Dependencies', () => {
     
     // Try to deploy project-b without project-a
     await expect(client.deploy({
-      modulePath: join(basePath, 'project-b'),
+      modulePath: join(basePath, 'project-b')
     })).rejects.toThrow(/project-a:base_schema/);
     
     // Verify nothing was deployed
@@ -68,11 +68,11 @@ describe('Cross-Project Dependencies', () => {
     
     // Deploy both projects
     await client.deploy({
-      modulePath: join(basePath, 'project-a'),
+      modulePath: join(basePath, 'project-a')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'project-b'),
+      modulePath: join(basePath, 'project-b')
     });
     
     // Try to revert project-a:base_types which project-b depends on
@@ -93,11 +93,11 @@ describe('Cross-Project Dependencies', () => {
     
     // Deploy both projects
     await client.deploy({
-      modulePath: join(basePath, 'project-a'),
+      modulePath: join(basePath, 'project-a')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'project-b'),
+      modulePath: join(basePath, 'project-b')
     });
     
     // Query dependents using the SQL function
@@ -146,15 +146,15 @@ describe('Cross-Project Dependencies', () => {
     
     // Deploy in order
     await client.deploy({
-      modulePath: projectA,
+      modulePath: projectA
     });
     
     await client.deploy({
-      modulePath: projectB,
+      modulePath: projectB
     });
     
     await client.deploy({
-      modulePath: projectC,
+      modulePath: projectC
     });
     
     // Verify all deployed

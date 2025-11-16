@@ -1,7 +1,8 @@
+import { mkdirSync,writeFileSync } from 'fs';
+import { join } from 'path';
+
 import { resolveDependencies } from '../../src/resolution/deps';
 import { TestFixture } from '../../test-utils';
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
 
 describe('Header format compatibility', () => {
   let fixture: TestFixture;

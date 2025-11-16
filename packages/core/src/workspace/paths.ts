@@ -3,7 +3,7 @@ import { walkUp } from './utils';
 
 const PROJECT_FILES = {
   PLAN: 'pgpm.plan',
-  LAUNCHQL: 'pgpm.json',
+  LAUNCHQL: 'pgpm.json'
 };
 
 /**

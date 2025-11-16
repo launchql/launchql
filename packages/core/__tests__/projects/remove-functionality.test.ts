@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+
 import { TestFixture } from '../../test-utils/TestFixture';
 
 describe('Remove Functionality', () => {

@@ -25,7 +25,7 @@ export const getAvailableExtensions = (
     'postgis',
     'postgres_fdw',
     'unaccent',
-    'uuid-ossp',
+    'uuid-ossp'
   ];
 
   return Object.keys(modules).reduce<string[]>((acc, module) => {

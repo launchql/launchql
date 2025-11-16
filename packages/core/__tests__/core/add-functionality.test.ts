@@ -1,8 +1,9 @@
+import {mkdirSync, readFileSync, writeFileSync } from 'fs';
+import * as fs from 'fs';
+import { join } from 'path';
+
 import { LaunchQLPackage } from '../../src/core/class/launchql';
 import { TestFixture } from '../../test-utils';
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { join } from 'path';
-import * as fs from 'fs';
 
 describe('Add functionality', () => {
   let fixture: TestFixture;

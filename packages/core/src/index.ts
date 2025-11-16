@@ -12,9 +12,9 @@ export * from './workspace/utils';
 
 // Export package-files functionality (now integrated into core)
 export * from './files';
+export { LaunchQLInit } from './init/client';
 export { cleanSql } from './migrate/clean';
 export { LaunchQLMigrate } from './migrate/client';
-export { LaunchQLInit } from './init/client';
 export { 
   DeployOptions, 
   DeployResult, 

@@ -29,7 +29,7 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     const resultFirst = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     expect(resultFirst.deployed).toEqual(['schema_myfirstapp', 'table_users', 'table_products']);
@@ -38,7 +38,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
     const resultSecond = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-second'),
+      modulePath: join(basePath, 'packages', 'my-second')
     });
     
     expect(resultSecond.deployed).toEqual(['create_schema', 'create_table', 'create_another_table']);
@@ -46,7 +46,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     const resultThird = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(resultThird.deployed).toEqual(['create_schema', 'create_table']);
@@ -91,15 +91,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-second'),
+      modulePath: join(basePath, 'packages', 'my-second')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(await db.exists('schema', 'myfirstapp')).toBe(true);
@@ -107,14 +107,14 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'mythirdapp')).toBe(true);
     
     const revertResult = await client.revert({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(revertResult.reverted).toEqual(['create_table', 'create_schema']);
     expect(await db.exists('schema', 'mythirdapp')).toBe(false);
     
     const redeployResult = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(redeployResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -130,15 +130,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-second'),
+      modulePath: join(basePath, 'packages', 'my-second')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     // Try to revert my-first:table_products which my-third depends on via tag my-first:@v1.1.0
@@ -167,15 +167,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-second'),
+      modulePath: join(basePath, 'packages', 'my-second')
     });
     
     const deployResult = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(deployResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -187,7 +187,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'mythirdapp.customers')).toBe(true);
     
     const revertThirdResult = await client.revert({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(revertThirdResult.reverted).toEqual(['create_table', 'create_schema']);
@@ -205,14 +205,14 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('schema', 'mythirdapp')).toBe(false);
     
     const redeployFirstResult = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     expect(redeployFirstResult.deployed).toEqual(['table_products']);
     expect(await db.exists('table', 'myfirstapp.products')).toBe(true);
     
     const deploySecondResult = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-second'),
+      modulePath: join(basePath, 'packages', 'my-second')
     });
     
     expect(deploySecondResult.deployed).toEqual([]);
@@ -220,7 +220,7 @@ describe('Simple with Tags Migration', () => {
     expect(await db.exists('table', 'mysecondapp.users')).toBe(true);
     
     const redeployThirdResult = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(redeployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -248,15 +248,15 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-second'),
+      modulePath: join(basePath, 'packages', 'my-second')
     });
     
     const deployThirdResult = await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     expect(deployThirdResult.deployed).toEqual(['create_schema', 'create_table']);
@@ -270,7 +270,7 @@ describe('Simple with Tags Migration', () => {
     expect(deployedChanges.filter(c => c.package === 'my-third')).toHaveLength(2);
     
     await client.revert({
-      modulePath: join(basePath, 'packages', 'my-third'),
+      modulePath: join(basePath, 'packages', 'my-third')
     });
     
     const revertToV1Result = await client.revert({
@@ -368,7 +368,7 @@ describe('Simple with Tags Migration', () => {
     const basePath = fixture.setupFixture(['sqitch', 'simple-w-tags']);
     
     await client.deploy({
-      modulePath: join(basePath, 'packages', 'my-first'),
+      modulePath: join(basePath, 'packages', 'my-first')
     });
     
     const deploySecondToTagResult = await client.deploy({

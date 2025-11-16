@@ -1,5 +1,5 @@
-import { resolveExtensionDependencies, resolveDependencies } from '../../src/resolution/deps';
 import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { resolveDependencies,resolveExtensionDependencies } from '../../src/resolution/deps';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;

@@ -1,5 +1,6 @@
-import { getLatestChange, Module } from '../files';
 import { errors } from '@launchql/types';
+
+import { getLatestChange, Module } from '../files';
 
 export type ModuleMap = Record<string, Module>;
 
