@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/launchql/launchql/compare/graphile-cache@1.4.0...graphile-cache@1.4.1) (2025-11-16)
+
+**Note:** Version bump only for package graphile-cache
+
 # [1.4.0](https://github.com/launchql/launchql/compare/graphile-cache@1.3.10...graphile-cache@1.4.0) (2025-11-16)
 
 **Note:** Version bump only for package graphile-cache

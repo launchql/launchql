@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.1](https://github.com/launchql/launchql/compare/graphile-settings@2.6.0...graphile-settings@2.6.1) (2025-11-16)
+
+**Note:** Version bump only for package graphile-settings
+
 # [2.6.0](https://github.com/launchql/launchql/compare/graphile-settings@2.5.8...graphile-settings@2.6.0) (2025-11-16)
 
 **Note:** Version bump only for package graphile-settings

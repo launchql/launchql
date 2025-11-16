@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/launchql/launchql/compare/@launchql/logger@1.1.4...@launchql/logger@1.1.5) (2025-11-16)
+
+### Bug Fixes
+
+- disable trailing commas in ESLint config and auto-fix across workspace ([5c18ced](https://github.com/launchql/launchql/commit/5c18ced81763044709d88dfacacb34ca1c5ec5e2))
+
 ## [1.1.4](https://github.com/launchql/launchql/compare/@launchql/logger@1.1.3...@launchql/logger@1.1.4) (2025-11-15)
 
 ### Bug Fixes

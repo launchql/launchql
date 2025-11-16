@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.1](https://github.com/launchql/launchql/compare/@launchql/core@2.15.0...@launchql/core@2.15.1) (2025-11-16)
+
+### Bug Fixes
+
+- handle missing requires line in .control file during install ([7ed402a](https://github.com/launchql/launchql/commit/7ed402a305289638dcfd48cb4d4c19bec484d518)), closes [#291](https://github.com/launchql/launchql/issues/291)
+
 # [2.15.0](https://github.com/launchql/launchql/compare/@launchql/core@2.14.5...@launchql/core@2.15.0) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/core

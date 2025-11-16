@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/launchql/launchql/compare/@launchql/server@2.7.0...@launchql/server@2.7.1) (2025-11-16)
+
+### Bug Fixes
+
+- ts build broken for launchql server ([f7ede06](https://github.com/launchql/launchql/commit/f7ede06b07a60d0370809b7d24afd03593b7f8bd))
+
 # [2.7.0](https://github.com/launchql/launchql/compare/@launchql/server@2.6.3...@launchql/server@2.7.0) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/server
