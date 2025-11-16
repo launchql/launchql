@@ -12,12 +12,13 @@ export interface TemplateSource {
 }
 
 /**
- * Load templates from a local path or GitHub repository
+ * Resolve the template directory path from a template source
+ * Returns the directory path and an optional cleanup function
  */
-export function loadTemplates(
+export function resolveTemplateDirectory(
   source: TemplateSource,
   templateType: 'workspace' | 'module'
-): ReturnType<typeof compileTemplatesToFunctions> {
+): { templateDir: string; cleanup: (() => void) | null } {
   let templateDir: string;
   let cleanup: (() => void) | null = null;
 
@@ -82,6 +83,18 @@ export function loadTemplates(
       throw new Error(`Template directory not found: ${templateDir}`);
     }
   }
+
+  return { templateDir, cleanup };
+}
+
+/**
+ * Load templates from a local path or GitHub repository
+ */
+export function loadTemplates(
+  source: TemplateSource,
+  templateType: 'workspace' | 'module'
+): ReturnType<typeof compileTemplatesToFunctions> {
+  const { templateDir, cleanup } = resolveTemplateDirectory(source, templateType);
 
   try {
     const templates = compileTemplatesToFunctions(templateDir);
