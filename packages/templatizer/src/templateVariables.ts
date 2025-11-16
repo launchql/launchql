@@ -49,7 +49,12 @@ export function extractTemplateVariables(templateDir: string): Set<string> {
 
 /**
  * Load and parse .questions.json from a template directory
- * Returns empty array if file doesn't exist
+ * Returns empty array if file doesn't exist or if questions look like template placeholders
+ * 
+ * Note: .questions.json files in boilerplates often contain template variables like
+ * "__USERFULLNAME__" which are meant to be rendered into generated projects, not used
+ * as init-time questions. We filter these out by checking if ALL question names are
+ * wrapped in double underscores (template placeholder pattern).
  */
 export function loadTemplateQuestions(templateDir: string): TemplateQuestion[] {
   const questionsPath = join(templateDir, '.questions.json');
@@ -64,6 +69,14 @@ export function loadTemplateQuestions(templateDir: string): TemplateQuestion[] {
     
     if (!Array.isArray(questions)) {
       console.warn(`Warning: .questions.json in ${templateDir} is not an array`);
+      return [];
+    }
+
+    const allAreTemplatePlaceholders = questions.every(q => 
+      typeof q.name === 'string' && /^__[A-Z0-9_]+__$/.test(q.name)
+    );
+
+    if (allAreTemplatePlaceholders) {
       return [];
     }
 

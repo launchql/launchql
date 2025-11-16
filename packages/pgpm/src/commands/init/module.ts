@@ -79,7 +79,7 @@ export default async function runModuleSetup(
   }
 
   let additionalQuestions: Question[] = [];
-  if (templateDir && (argv.repo || argv.templatePath)) {
+  if (templateDir) {
     try {
       const templateQuestions = loadTemplateQuestions(templateDir);
       if (templateQuestions.length > 0) {
