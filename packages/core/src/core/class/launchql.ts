@@ -22,6 +22,8 @@ import {
   writeExtensions
 } from '../../files';
 import { generateControlFileContent, writeExtensionMakefile } from '../../files/extension/writer';
+import { cloneRepo, extractVariables, replaceVariables } from 'create-gen-app';
+import { getGitConfigInfo } from '@launchql/types';
 import { getNow as getPlanTimestamp } from '../../files/plan/generator';
 import { parsePlanFile } from '../../files/plan/parser';
 import { isValidChangeName, isValidTagName, parseReference } from '../../files/plan/validators';
@@ -414,8 +416,6 @@ export class LaunchQLPackage {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
     
-    const { cloneRepo, extractVariables, replaceVariables } = await import('create-gen-app');
-    const { getGitConfigInfo } = await import('@launchql/types');
     const { email, username } = getGitConfigInfo();
     
     try {
@@ -424,7 +424,6 @@ export class LaunchQLPackage {
       
       const extractedVars = await extractVariables(templateDir);
       
-      // Prepare answers for variable replacement
       const answers = {
         MODULENAME: options.name,
         MODULE_NAME: options.name,
