@@ -11,7 +11,12 @@
   },
   {
     "name": "__MODULENAME__",
-    "message": "Enter the module name",
+    "message": "Enter the workspace name",
+    "required": true
+  },
+  {
+    "name": "__MODULEDESC__",
+    "message": "Enter the workspace description",
     "required": true
   },
   {

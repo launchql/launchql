@@ -1,9 +1,10 @@
 import { LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { type TemplateSource } from '@launchql/templatizer';
-import { errors, getGitConfigInfo } from '@launchql/types';
+import { errors } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
+import { mkdirSync } from 'fs';
+import path from 'path';
+import { buildInitSession } from './session';
 
 const log = new Logger('module-init');
 
@@ -11,7 +12,6 @@ export default async function runModuleSetup(
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer
 ) {
-  const { email, username } = getGitConfigInfo();
   const { cwd = process.cwd() } = argv;
 
   const project = new LaunchQLPackage(cwd);
@@ -28,60 +28,54 @@ export default async function runModuleSetup(
 
   const availExtensions = project.getAvailableModules();
 
-  const moduleQuestions: Question[] = [
-    {
-      name: 'MODULENAME',
-      message: 'Enter the module name',
-      required: true,
-      type: 'text',
-    },
-    {
-      name: 'extensions',
-      message: 'Which extensions?',
-      options: availExtensions,
-      type: 'checkbox',
-      allowCustomOptions: true,
-      required: true,
-    },
-  ];
+  const extensionsQuestion: Question = {
+    name: 'extensions',
+    message: 'Which extensions?',
+    options: availExtensions,
+    type: 'checkbox',
+    allowCustomOptions: true,
+    required: true,
+  };
 
-  const answers = await prompter.prompt(argv, moduleQuestions);
-  const modName = sluggify(answers.MODULENAME);
+  const result = await buildInitSession({
+    type: 'module',
+    argv,
+    prompter,
+    cwd,
+    additionalQuestions: [extensionsQuestion]
+  });
 
-  const extensions = answers.extensions
-    .filter((opt: OptionValue) => opt.selected)
-    .map((opt: OptionValue) => opt.name);
-
-  // Determine template source
-  let templateSource: TemplateSource | undefined;
-  
-  if (argv.repo) {
-    templateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
-    };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-  } else if (argv.templatePath) {
-    templateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
+  if (result.dryRun) {
+    log.info('Dry run completed, no files were written');
+    return { ...argv, ...result.vars };
   }
 
+  const modName = sluggify(result.vars.MODULENAME || result.vars.name || path.basename(cwd));
+  const targetPath = path.join(cwd, modName);
+
+  if (result.targetDir !== targetPath) {
+    mkdirSync(targetPath, { recursive: true });
+  }
+
+  const extensions = result.vars.extensions
+    ? result.vars.extensions
+        .filter((opt: OptionValue) => opt.selected)
+        .map((opt: OptionValue) => opt.name)
+    : [];
+
   project.initModule({
-    ...argv,
-    ...answers,
     name: modName,
-    // @ts-ignore
-    USERFULLNAME: username,
-    USEREMAIL: email,
+    description: result.vars.MODULEDESC || result.vars.description || `${modName} module`,
+    author: result.vars.USERFULLNAME || result.vars.author || 'Unknown',
     extensions,
-    templateSource
+    templateSource: argv.repo || argv.templatePath ? {
+      type: argv.repo ? 'github' : 'local',
+      path: argv.repo || argv.templatePath,
+      branch: argv.fromBranch
+    } : undefined
   });
 
   log.success(`Initialized module: ${modName}`);
-  return { ...argv, ...answers };
+  return { ...argv, ...result.vars };
 }
 
