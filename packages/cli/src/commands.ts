@@ -2,16 +2,18 @@ import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { createPgpmCommandMap } from 'pgpm';
 
+import docker from './commands/docker';
 import explorer from './commands/explorer';
 import server from './commands/server';
 import { readAndParsePackageJson } from './package';
-import { extractFirst, usageText, cliExitWithError } from './utils';
+import { cliExitWithError,extractFirst, usageText } from './utils';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
   
   return {
     ...pgpmCommands,
+    docker,
     server,
     explorer
   };
