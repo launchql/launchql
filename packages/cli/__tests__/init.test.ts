@@ -6,7 +6,7 @@ import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 
 import { commands } from '../src/commands';
-import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
+import { setupTests, TestEnvironment, TestFixture, withInitDefaults } from '../test-utils';
 
 const beforeEachSetup = setupTests();
 
@@ -28,6 +28,7 @@ describe('cmds:init', () => {
 
   const runInitTest = async (argv: ParsedArgs, label: string) => {
     const { mockInput, mockOutput, writeResults, transformResults } = environment;
+    const fullArgv = withInitDefaults({ ...argv });
 
     const prompter = new Inquirerer({
       input: mockInput,
@@ -35,7 +36,7 @@ describe('cmds:init', () => {
       noTty: true
     });
 
-    const result = await commands(argv, prompter, {
+    const result = await commands(fullArgv, prompter, {
       noTty: true,
       input: mockInput,
       output: mockOutput,
@@ -44,16 +45,16 @@ describe('cmds:init', () => {
     });
 
     const absoluteFiles = glob('**/*', {
-      cwd: argv.cwd,
+      cwd: fullArgv.cwd,
       dot: true,
       nodir: true,
       absolute: true
     });
 
-    const relativeFiles = absoluteFiles.map(file => path.relative(argv.cwd, file));
-    argv.cwd = '<CWD>';
+    const relativeFiles = absoluteFiles.map(file => path.relative(fullArgv.cwd, file));
+    fullArgv.cwd = '<CWD>';
 
-    expect(argv).toMatchSnapshot(`${label} - argv`);
+    expect(fullArgv).toMatchSnapshot(`${label} - argv`);
     expect(result).toMatchSnapshot(`${label} - result`);
     expect(writeResults).toMatchSnapshot(`${label} - writeResults`);
     expect(transformResults).toMatchSnapshot(`${label} - transformResults`);
@@ -100,13 +101,13 @@ describe('cmds:init', () => {
         noTty: true
       });
 
-      const argv: ParsedArgs = {
+      const argv: ParsedArgs = withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: 'test-workspace-template',
         workspace: true,
         templatePath: path.join(__dirname, '../../../boilerplates'),
-      };
+      });
 
       await commands(argv, prompter, {
         noTty: true,
@@ -133,12 +134,12 @@ describe('cmds:init', () => {
       });
 
       // Create workspace first
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: 'test-workspace-for-module',
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -147,14 +148,14 @@ describe('cmds:init', () => {
       });
 
       // Now initialize module with custom template
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: workspaceDir,
         name: 'test-module-template',
         MODULENAME: 'test-module-template',
         extensions: ['plpgsql'],
         templatePath: path.join(__dirname, '../../../boilerplates'),
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -181,13 +182,13 @@ describe('cmds:init', () => {
           noTty: true
         });
 
-        const argv: ParsedArgs = {
+        const argv: ParsedArgs = withInitDefaults({
           _: ['init'],
           cwd: fixture.tempDir,
           name: 'test-workspace-repo',
           workspace: true,
           repo: 'launchql/launchql',
-        };
+        });
 
         await commands(argv, prompter, {
           noTty: true,
@@ -214,14 +215,14 @@ describe('cmds:init', () => {
           noTty: true
         });
 
-        const argv: ParsedArgs = {
+        const argv: ParsedArgs = withInitDefaults({
           _: ['init'],
           cwd: fixture.tempDir,
           name: 'test-workspace-branch',
           workspace: true,
           repo: 'launchql/launchql',
           fromBranch: 'main',
-        };
+        });
 
         await commands(argv, prompter, {
           noTty: true,
@@ -251,12 +252,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-packages-empty';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -267,13 +268,13 @@ describe('cmds:init', () => {
       const packagesDir = path.join(wsRoot, 'packages');
       const modName = 'mod-from-packages-empty';
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: packagesDir,
         MODULENAME: modName,
         name: modName,
         extensions: ['plpgsql'],
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -298,12 +299,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-packages-existing';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -312,13 +313,13 @@ describe('cmds:init', () => {
       });
 
       const firstMod = 'first-mod';
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
         MODULENAME: firstMod,
         name: firstMod,
         extensions: ['plpgsql']
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -329,13 +330,13 @@ describe('cmds:init', () => {
       const packagesDir = path.join(wsRoot, 'packages');
       const secondMod = 'second-mod';
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: packagesDir,
         MODULENAME: secondMod,
         name: secondMod,
         extensions: ['plpgsql'],
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -362,12 +363,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-nested-prevent';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -376,13 +377,13 @@ describe('cmds:init', () => {
       });
 
       const baseMod = 'base-mod';
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
         MODULENAME: baseMod,
         name: baseMod,
         extensions: ['plpgsql']
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -398,13 +399,13 @@ describe('cmds:init', () => {
       }) as any);
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      await expect(commands({
+      await expect(commands(withInitDefaults({
         _: ['init'],
         cwd: insideDir,
         MODULENAME: nestedName,
         name: nestedName,
         extensions: ['plpgsql'],
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -437,12 +438,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-root-test';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -451,13 +452,13 @@ describe('cmds:init', () => {
       });
 
       const modName = 'mod-from-root';
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
         MODULENAME: modName,
         name: modName,
         extensions: ['plpgsql']
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,

@@ -9,6 +9,53 @@ import { setupTests,TestEnvironment } from './cli';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
 
+const DEFAULT_AUTHOR_NAME = 'CI Test User';
+const DEFAULT_AUTHOR_EMAIL = 'ci@example.com';
+const DEFAULT_GITHUB_USERNAME = 'ci-user';
+const DEFAULT_LICENSE = 'MIT';
+const DEFAULT_ACCESS = 'restricted';
+
+function getDefaultWorkspaceAnswers(argv: ParsedArgs) {
+  const moduleName = argv.MODULENAME ?? 'my-module';
+  return {
+    USERFULLNAME: DEFAULT_AUTHOR_NAME,
+    USEREMAIL: DEFAULT_AUTHOR_EMAIL,
+    MODULENAME: moduleName,
+    USERNAME: DEFAULT_GITHUB_USERNAME,
+    LICENSE: DEFAULT_LICENSE
+  };
+}
+
+function getDefaultModuleAnswers(argv: ParsedArgs) {
+  const moduleName = argv.MODULENAME ?? argv.name ?? 'my-module';
+  return {
+    USERFULLNAME: DEFAULT_AUTHOR_NAME,
+    USEREMAIL: DEFAULT_AUTHOR_EMAIL,
+    MODULENAME: moduleName,
+    MODULEDESC: argv.MODULEDESC ?? `${moduleName} description`,
+    REPONAME: argv.REPONAME ?? `${moduleName}-repo`,
+    USERNAME: DEFAULT_GITHUB_USERNAME,
+    ACCESS: argv.ACCESS ?? DEFAULT_ACCESS,
+    LICENSE: argv.LICENSE ?? DEFAULT_LICENSE
+  };
+}
+
+export function withInitDefaults(argv: ParsedArgs): ParsedArgs {
+  if (!argv?._?.includes('init')) {
+    return argv;
+  }
+
+  if (argv.workspace) {
+    const defaults = getDefaultWorkspaceAnswers(argv);
+    const moduleName = defaults.MODULENAME;
+    return { ...defaults, ...argv, MODULENAME: moduleName };
+  }
+
+  const moduleDefaults = getDefaultModuleAnswers(argv);
+  const moduleName = moduleDefaults.MODULENAME;
+  return { ...moduleDefaults, ...argv, MODULENAME: moduleName };
+}
+
 export const FIXTURES_PATH = path.resolve(__dirname, '../../../__fixtures__');
 
 export const getFixturePath = (...paths: string[]) =>
@@ -46,6 +93,7 @@ export class TestFixture {
   }
 
   async runCmd(argv: ParsedArgs) {
+    argv = withInitDefaults(argv);
     const {
       mockInput,
       mockOutput,

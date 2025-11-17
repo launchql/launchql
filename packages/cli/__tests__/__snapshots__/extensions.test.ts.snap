@@ -8,7 +8,6 @@ exports[`cmds:extension runs \`extension\` command after workspace and module se
   "jest.config.js",
   "README.md",
   "Makefile",
-  ".questions.json",
   "__tests__/basic.test.ts",
 ]
 `;

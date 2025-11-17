@@ -190,6 +190,21 @@ describe('first test', () => {
     ],
     "type": "list",
     "required": true
+  },
+  {
+    "name": "${vars.LICENSE}",
+    "message": "Choose a license",
+    "choices": [
+      "MIT",
+      "Apache-2.0",
+      "GPL-3.0",
+      "BSD-3-Clause",
+      "ISC",
+      "Unlicense"
+    ],
+    "type": "list",
+    "required": true,
+    "default": "MIT"
   }
 ]`;
   return { relPath, content };

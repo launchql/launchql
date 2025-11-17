@@ -5,7 +5,7 @@ import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 
 import { commands } from '../src/commands';
-import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
+import { setupTests, TestEnvironment, TestFixture, withInitDefaults } from '../test-utils';
 
 const beforeEachSetup = setupTests();
 
@@ -29,8 +29,11 @@ describe('cmds:extension', () => {
       noTty: true
     });
 
+    const commandArgv =
+      argv?._?.includes('init') ? withInitDefaults({ ...argv }) : argv;
+
     // @ts-ignore
-    return commands(argv, prompter, {});
+    return commands(commandArgv, prompter, {});
   };
 
   it('runs `extension` command after workspace and module setup', async () => {

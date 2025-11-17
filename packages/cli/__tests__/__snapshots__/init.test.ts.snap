@@ -13,7 +13,14 @@ superuser = false
 
 exports[`cmds:init initializes module: module-only - argv 1`] = `
 {
+  "ACCESS": "restricted",
+  "LICENSE": "MIT",
+  "MODULEDESC": "my-module description",
   "MODULENAME": "my-module",
+  "REPONAME": "my-module-repo",
+  "USEREMAIL": "ci@example.com",
+  "USERFULLNAME": "CI Test User",
+  "USERNAME": "ci-user",
   "_": [
     "init",
   ],
@@ -37,7 +44,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "README.md",
   "Makefile",
   "LICENSE",
-  ".questions.json",
   ".prettierrc.json",
   ".gitignore",
   ".eslintrc.json",
@@ -47,7 +53,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "packages/my-module/jest.config.js",
   "packages/my-module/README.md",
   "packages/my-module/Makefile",
-  "packages/my-module/.questions.json",
   "packages/my-module/__tests__/basic.test.ts",
   "bin/install.sh",
 ]
@@ -55,7 +60,14 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
 
 exports[`cmds:init initializes module: module-only - result 1`] = `
 {
+  "ACCESS": "restricted",
+  "LICENSE": "MIT",
+  "MODULEDESC": "my-module description",
   "MODULENAME": "my-module",
+  "REPONAME": "my-module-repo",
+  "USEREMAIL": "ci@example.com",
+  "USERFULLNAME": "CI Test User",
+  "USERNAME": "ci-user",
   "_": [
     "init",
   ],
@@ -74,6 +86,11 @@ exports[`cmds:init initializes module: module-only - writeResults 1`] = `[]`;
 
 exports[`cmds:init initializes workspace: workspace - argv 1`] = `
 {
+  "LICENSE": "MIT",
+  "MODULENAME": "my-module",
+  "USEREMAIL": "ci@example.com",
+  "USERFULLNAME": "CI Test User",
+  "USERNAME": "ci-user",
   "_": [
     "init",
   ],
@@ -94,7 +111,6 @@ exports[`cmds:init initializes workspace: workspace - files 1`] = `
   "my-workspace/README.md",
   "my-workspace/Makefile",
   "my-workspace/LICENSE",
-  "my-workspace/.questions.json",
   "my-workspace/.prettierrc.json",
   "my-workspace/.gitignore",
   "my-workspace/.eslintrc.json",
@@ -104,6 +120,11 @@ exports[`cmds:init initializes workspace: workspace - files 1`] = `
 
 exports[`cmds:init initializes workspace: workspace - result 1`] = `
 {
+  "LICENSE": "MIT",
+  "MODULENAME": "my-module",
+  "USEREMAIL": "ci@example.com",
+  "USERFULLNAME": "CI Test User",
+  "USERNAME": "ci-user",
   "_": [
     "init",
   ],

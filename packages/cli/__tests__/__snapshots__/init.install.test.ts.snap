@@ -4,16 +4,16 @@ exports[`cmds:install - with initialized workspace and module installs a module 
 {
   "author": "CI Test User <ci@example.com>",
   "bugs": {
-    "url": "https://github.com/undefined/undefined/issues",
+    "url": "https://github.com/ci-user/my-module-repo/issues",
   },
   "dependencies": {
     "@pgpm-testing/base32": "1.0.0",
   },
-  "description": "undefined",
+  "description": "my-module description",
   "devDependencies": {
     "pgsql-test": "^2.13.2",
   },
-  "homepage": "https://github.com/undefined/undefined",
+  "homepage": "https://github.com/ci-user/my-module-repo",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
   "name": "undefined",
@@ -23,12 +23,12 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     },
   },
   "publishConfig": {
-    "access": "undefined",
+    "access": "restricted",
     "directory": "dist",
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/undefined/undefined",
+    "url": "https://github.com/ci-user/my-module-repo",
   },
   "scripts": {
     "lint": "eslint . --fix",
@@ -146,17 +146,17 @@ exports[`cmds:install - with initialized workspace and module installs two modul
 {
   "author": "CI Test User <ci@example.com>",
   "bugs": {
-    "url": "https://github.com/undefined/undefined/issues",
+    "url": "https://github.com/ci-user/my-module-repo/issues",
   },
   "dependencies": {
     "@pgpm-testing/base32": "1.0.0",
     "@pgpm-testing/utils": "1.0.0",
   },
-  "description": "undefined",
+  "description": "my-module description",
   "devDependencies": {
     "pgsql-test": "^2.13.2",
   },
-  "homepage": "https://github.com/undefined/undefined",
+  "homepage": "https://github.com/ci-user/my-module-repo",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
   "name": "undefined",
@@ -166,12 +166,12 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     },
   },
   "publishConfig": {
-    "access": "undefined",
+    "access": "restricted",
     "directory": "dist",
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/undefined/undefined",
+    "url": "https://github.com/ci-user/my-module-repo",
   },
   "scripts": {
     "lint": "eslint . --fix",
