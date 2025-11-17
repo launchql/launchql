@@ -32,6 +32,17 @@ export default [
 },
 
 (vars: Record<string, any>) => {
+  const relPath = `pgpm.json`;
+  const content = `{
+  "packages": [
+    "packages/*",
+    "extensions/*"
+  ]
+}`;
+  return { relPath, content };
+},
+
+(vars: Record<string, any>) => {
   const relPath = `package.json`;
   const content = `{
   "name": "${vars.MODULENAME}",
@@ -103,17 +114,6 @@ export default [
       "conventionalCommits": true
     }
   }
-}`;
-  return { relPath, content };
-},
-
-(vars: Record<string, any>) => {
-  const relPath = `pgpm.json`;
-  const content = `{
-  "packages": [
-    "packages/*",
-    "extensions/*"
-  ]
 }`;
   return { relPath, content };
 },
@@ -293,6 +293,21 @@ install_sql_modules "/sql-packages"
     "name": "${vars.USERNAME}",
     "message": "Enter your github username",
     "required": true
+  },
+  {
+    "name": "${vars.LICENSE}",
+    "message": "Choose a license",
+    "choices": [
+      "MIT",
+      "Apache-2.0",
+      "GPL-3.0",
+      "BSD-3-Clause",
+      "ISC",
+      "Unlicense"
+    ],
+    "type": "list",
+    "required": true,
+    "default": "MIT"
   }
 ]`;
   return { relPath, content };

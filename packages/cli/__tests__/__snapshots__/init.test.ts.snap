@@ -37,7 +37,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "README.md",
   "Makefile",
   "LICENSE",
-  ".questions.json",
   ".prettierrc.json",
   ".gitignore",
   ".eslintrc.json",
@@ -47,7 +46,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "packages/my-module/jest.config.js",
   "packages/my-module/README.md",
   "packages/my-module/Makefile",
-  "packages/my-module/.questions.json",
   "packages/my-module/__tests__/basic.test.ts",
   "bin/install.sh",
 ]
@@ -94,7 +92,6 @@ exports[`cmds:init initializes workspace: workspace - files 1`] = `
   "my-workspace/README.md",
   "my-workspace/Makefile",
   "my-workspace/LICENSE",
-  "my-workspace/.questions.json",
   "my-workspace/.prettierrc.json",
   "my-workspace/.gitignore",
   "my-workspace/.eslintrc.json",
