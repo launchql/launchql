@@ -48,6 +48,15 @@ export default async function runModuleSetup(
   const availExtensions = project.getAvailableModules();
 
   const defaultModuleName = argv.MODULENAME ?? argv.name ?? 'my-module';
+  const hasCliFullName = typeof argv.USERFULLNAME === 'string' && argv.USERFULLNAME.length > 0;
+  const hasCliEmail = typeof argv.USEREMAIL === 'string' && argv.USEREMAIL.length > 0;
+  const hasCliModuleName = typeof argv.MODULENAME === 'string' && argv.MODULENAME.length > 0;
+  const hasCliModuleDesc = typeof argv.MODULEDESC === 'string' && argv.MODULEDESC.length > 0;
+  const hasCliRepoName = typeof argv.REPONAME === 'string' && argv.REPONAME.length > 0;
+  const hasCliGithub = typeof argv.USERNAME === 'string' && argv.USERNAME.length > 0;
+  const hasCliAccess = typeof argv.ACCESS === 'string' && argv.ACCESS.length > 0;
+  const hasCliLicense = typeof argv.LICENSE === 'string' && argv.LICENSE.length > 0;
+
   const moduleQuestions: Question[] = [
     {
       name: 'USERFULLNAME',
@@ -55,7 +64,7 @@ export default async function runModuleSetup(
       required: true,
       type: 'text',
       default: argv.USERFULLNAME ?? gitUsername,
-      useDefault: Boolean(argv.USERFULLNAME ?? gitUsername)
+      useDefault: hasCliFullName
     },
     {
       name: 'USEREMAIL',
@@ -63,7 +72,7 @@ export default async function runModuleSetup(
       required: true,
       type: 'text',
       default: argv.USEREMAIL ?? gitEmail,
-      useDefault: Boolean(argv.USEREMAIL ?? gitEmail)
+      useDefault: hasCliEmail
     },
     {
       name: 'MODULENAME',
@@ -71,7 +80,7 @@ export default async function runModuleSetup(
       required: true,
       type: 'text',
       default: defaultModuleName,
-      useDefault: Boolean(defaultModuleName)
+      useDefault: hasCliModuleName
     },
     {
       name: 'MODULEDESC',
@@ -79,7 +88,7 @@ export default async function runModuleSetup(
       required: true,
       type: 'text',
       default: argv.MODULEDESC,
-      useDefault: Boolean(argv.MODULEDESC)
+      useDefault: hasCliModuleDesc
     },
     {
       name: 'REPONAME',
@@ -87,7 +96,7 @@ export default async function runModuleSetup(
       required: true,
       type: 'text',
       default: argv.REPONAME ?? defaultModuleName,
-      useDefault: Boolean(argv.REPONAME ?? defaultModuleName)
+      useDefault: hasCliRepoName
     },
     {
       name: 'USERNAME',
@@ -95,7 +104,7 @@ export default async function runModuleSetup(
       required: true,
       type: 'text',
       default: argv.USERNAME ?? gitUsername,
-      useDefault: Boolean(argv.USERNAME ?? gitUsername)
+      useDefault: hasCliGithub
     },
     {
       name: 'ACCESS',
@@ -104,7 +113,7 @@ export default async function runModuleSetup(
       type: 'autocomplete',
       options: ACCESS_CHOICES as unknown as string[],
       default: argv.ACCESS ?? DEFAULT_ACCESS,
-      useDefault: true
+      useDefault: hasCliAccess
     },
     {
       name: 'LICENSE',
@@ -113,7 +122,7 @@ export default async function runModuleSetup(
       type: 'autocomplete',
       options: LICENSE_CHOICES as unknown as string[],
       default: argv.LICENSE ?? DEFAULT_LICENSE,
-      useDefault: true
+      useDefault: hasCliLicense
     },
     {
       name: 'extensions',
@@ -156,6 +165,10 @@ export default async function runModuleSetup(
     USERFULLNAME: answers.USERFULLNAME || gitUsername,
     USEREMAIL: answers.USEREMAIL || gitEmail,
     MODULENAME: modName,
+    MODULEDESC:
+      answers.MODULEDESC ||
+      argv.MODULEDESC ||
+      `${modName} description`,
     REPONAME: resolvedRepoName,
     USERNAME: answers.USERNAME || gitUsername,
     ACCESS: answers.ACCESS || DEFAULT_ACCESS,
@@ -166,6 +179,8 @@ export default async function runModuleSetup(
     ...argv,
     ...finalAnswers,
     name: modName,
+    description: finalAnswers.MODULEDESC,
+    author: finalAnswers.USERFULLNAME || gitUsername || 'Unknown Author',
     extensions,
     templateSource
   });

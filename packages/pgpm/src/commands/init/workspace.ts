@@ -32,6 +32,11 @@ export default async function runWorkspaceSetup(
 ) {
   const { username: gitUsername, email: gitEmail } = getAuthorDefaults();
   const defaultModuleName = argv.MODULENAME ?? (argv.name ? sluggify(String(argv.name)) : 'my-module');
+  const hasCliFullName = typeof argv.USERFULLNAME === 'string' && argv.USERFULLNAME.length > 0;
+  const hasCliEmail = typeof argv.USEREMAIL === 'string' && argv.USEREMAIL.length > 0;
+  const hasCliGithub = typeof argv.USERNAME === 'string' && argv.USERNAME.length > 0;
+  const hasCliModuleName = typeof argv.MODULENAME === 'string' && argv.MODULENAME.length > 0;
+  const hasCliLicense = typeof argv.LICENSE === 'string' && argv.LICENSE.length > 0;
 
   const workspaceQuestions: Question[] = [
     {
@@ -40,7 +45,7 @@ export default async function runWorkspaceSetup(
       required: true,
       type: 'text',
       default: argv.USERFULLNAME ?? gitUsername,
-      useDefault: Boolean(argv.USERFULLNAME ?? gitUsername)
+      useDefault: hasCliFullName
     },
     {
       name: 'USEREMAIL',
@@ -48,7 +53,7 @@ export default async function runWorkspaceSetup(
       required: true,
       type: 'text',
       default: argv.USEREMAIL ?? gitEmail,
-      useDefault: Boolean(argv.USEREMAIL ?? gitEmail)
+      useDefault: hasCliEmail
     },
     {
       name: 'name',
@@ -62,7 +67,7 @@ export default async function runWorkspaceSetup(
       required: true,
       type: 'text',
       default: defaultModuleName,
-      useDefault: Boolean(defaultModuleName)
+      useDefault: hasCliModuleName
     },
     {
       name: 'USERNAME',
@@ -70,7 +75,7 @@ export default async function runWorkspaceSetup(
       required: true,
       type: 'text',
       default: argv.USERNAME ?? gitUsername,
-      useDefault: Boolean(argv.USERNAME ?? gitUsername)
+      useDefault: hasCliGithub
     },
     {
       name: 'LICENSE',
@@ -79,7 +84,7 @@ export default async function runWorkspaceSetup(
       type: 'autocomplete',
       options: LICENSE_CHOICES as unknown as string[],
       default: argv.LICENSE ?? DEFAULT_LICENSE,
-      useDefault: true
+      useDefault: hasCliLicense
     }
   ];
 
