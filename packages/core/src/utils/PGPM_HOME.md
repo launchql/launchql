@@ -73,6 +73,8 @@ const pgpmHome = new PgpmHome({ stateDir: resolved.stateDir });
 const dbConfig = resolved.options.db;
 ```
 
+Supported config file formats: `.js`, `.cjs`, `.json`
+
 ## Configuration Precedence
 
 The state directory can be configured through multiple sources (highest to lowest precedence):

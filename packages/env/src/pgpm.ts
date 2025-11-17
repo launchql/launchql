@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
-import * as yaml from 'js-yaml';
 import deepmerge from 'deepmerge';
 import { LaunchQLOptions } from '@launchql/types';
 import { walkUp } from './utils';
@@ -127,7 +126,7 @@ function expandHome(filepath: string): string {
 }
 
 /**
- * Load a config file with support for .js, .cjs, .json, .yaml, .yml
+ * Load a config file with support for .js, .cjs, .json
  * Returns empty object on failure (graceful)
  */
 function loadConfigFile(configPath: string): LaunchQLOptions {
@@ -148,11 +147,6 @@ function loadConfigFile(configPath: string): LaunchQLOptions {
         const configModule = require(configPath);
         return configModule.default || configModule;
       
-      case '.yaml':
-      case '.yml':
-        const yamlContent = fs.readFileSync(configPath, 'utf8');
-        return (yaml.load(yamlContent) as LaunchQLOptions) || {};
-      
       default:
         return {};
     }
@@ -163,10 +157,10 @@ function loadConfigFile(configPath: string): LaunchQLOptions {
 
 /**
  * Load user/global config from config directory
- * Tries config.yml, config.yaml, config.json, config.js in that order
+ * Tries config.json, config.js, config.cjs in that order
  */
 function loadUserConfig(configDir: string): { config: LaunchQLOptions; path?: string } {
-  const configFiles = ['config.yml', 'config.yaml', 'config.json', 'config.js', 'config.cjs'];
+  const configFiles = ['config.json', 'config.js', 'config.cjs'];
   
   for (const filename of configFiles) {
     const configPath = path.join(configDir, filename);
@@ -182,18 +176,14 @@ function loadUserConfig(configDir: string): { config: LaunchQLOptions; path?: st
 
 /**
  * Load project-local config from current working directory
- * Walks up directories to find pgpm.config.(js|cjs|json|yaml|yml) or pgpm.(json|yaml|yml)
+ * Walks up directories to find pgpm.config.(js|cjs|json) or pgpm.json
  */
 function loadProjectConfig(cwd: string): { config: LaunchQLOptions; path?: string } {
   const configFiles = [
     'pgpm.config.js',
     'pgpm.config.cjs',
     'pgpm.config.json',
-    'pgpm.config.yaml',
-    'pgpm.config.yml',
-    'pgpm.json',
-    'pgpm.yaml',
-    'pgpm.yml'
+    'pgpm.json'
   ];
   
   for (const filename of configFiles) {
