@@ -159,8 +159,7 @@ $$;
         BEGIN
           EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_user, v_password);
         EXCEPTION
-          WHEN duplicate_object THEN
-            -- Role already exists; optionally sync attributes here with ALTER ROLE
+          WHEN duplicate_object OR unique_violation THEN
             NULL;
         END;
 
