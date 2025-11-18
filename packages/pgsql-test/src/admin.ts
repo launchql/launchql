@@ -155,13 +155,14 @@ $$;
         v_user TEXT := '${user.replace(/'/g, "''")}';
         v_password TEXT := '${password.replace(/'/g, "''")}';
       BEGIN
-        -- Create role if it doesn't exist
-        BEGIN
-          EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_user, v_password);
-        EXCEPTION
-          WHEN duplicate_object OR unique_violation THEN
-            NULL;
-        END;
+        IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = v_user) THEN
+          BEGIN
+            EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_user, v_password);
+          EXCEPTION
+            WHEN duplicate_object OR unique_violation THEN
+              NULL;
+          END;
+        END IF;
 
         -- CI/CD concurrency note: GRANT role membership can race on pg_auth_members unique index
         -- We pre-check membership and still catch unique_violation to handle TOCTOU safely.

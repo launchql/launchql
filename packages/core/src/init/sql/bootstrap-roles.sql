@@ -1,29 +1,32 @@
 BEGIN;
 DO $do$
 BEGIN
-  -- anonymous
-  BEGIN
-    EXECUTE format('CREATE ROLE %I', 'anonymous');
-  EXCEPTION
-    WHEN duplicate_object OR unique_violation THEN
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'anonymous') THEN
+    BEGIN
+      EXECUTE format('CREATE ROLE %I', 'anonymous');
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
   
-  -- authenticated
-  BEGIN
-    EXECUTE format('CREATE ROLE %I', 'authenticated');
-  EXCEPTION
-    WHEN duplicate_object OR unique_violation THEN
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'authenticated') THEN
+    BEGIN
+      EXECUTE format('CREATE ROLE %I', 'authenticated');
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
   
-  -- administrator
-  BEGIN
-    EXECUTE format('CREATE ROLE %I', 'administrator');
-  EXCEPTION
-    WHEN duplicate_object OR unique_violation THEN
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'administrator') THEN
+    BEGIN
+      EXECUTE format('CREATE ROLE %I', 'administrator');
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
 END
 $do$;
 
