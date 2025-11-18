@@ -3,28 +3,31 @@ DO $do$
 BEGIN
   -- anonymous
   BEGIN
+    PERFORM pg_advisory_xact_lock(42, hashtext('anonymous'));
     EXECUTE format('CREATE ROLE %I', 'anonymous');
   EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
+    WHEN duplicate_object OR unique_violation THEN
+      -- Role already exists (duplicate_object) or concurrent creation hit unique index (unique_violation)
       NULL;
   END;
   
   -- authenticated
   BEGIN
+    PERFORM pg_advisory_xact_lock(42, hashtext('authenticated'));
     EXECUTE format('CREATE ROLE %I', 'authenticated');
   EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
+    WHEN duplicate_object OR unique_violation THEN
+      -- Role already exists (duplicate_object) or concurrent creation hit unique index (unique_violation)
       NULL;
   END;
   
   -- administrator
   BEGIN
+    PERFORM pg_advisory_xact_lock(42, hashtext('administrator'));
     EXECUTE format('CREATE ROLE %I', 'administrator');
   EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
+    WHEN duplicate_object OR unique_violation THEN
+      -- Role already exists (duplicate_object) or concurrent creation hit unique index (unique_violation)
       NULL;
   END;
 END

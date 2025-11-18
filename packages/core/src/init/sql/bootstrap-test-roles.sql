@@ -2,18 +2,18 @@ BEGIN;
 DO $do$
 BEGIN
   BEGIN
+    PERFORM pg_advisory_xact_lock(42, hashtext('app_user'));
     EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', 'app_user', 'app_password');
   EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
+    WHEN duplicate_object OR unique_violation THEN
       NULL;
   END;
   
   BEGIN
+    PERFORM pg_advisory_xact_lock(42, hashtext('app_admin'));
     EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', 'app_admin', 'admin_password');
   EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
+    WHEN duplicate_object OR unique_violation THEN
       NULL;
   END;
 END
