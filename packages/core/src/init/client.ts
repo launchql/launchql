@@ -69,42 +69,53 @@ DECLARE
   v_username TEXT := '${username.replace(/'/g, "''")}';
   v_password TEXT := '${password.replace(/'/g, "''")}';
 BEGIN
-  BEGIN
-    PERFORM pg_advisory_xact_lock(42, hashtext(v_username));
-    EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_username, v_password);
-  EXCEPTION
-    WHEN duplicate_object OR unique_violation THEN
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = v_username) THEN
+    BEGIN
+      PERFORM pg_advisory_xact_lock(42, hashtext(v_username));
+      EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', v_username, v_password);
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
 END
 $do$;
 
--- Robust GRANTs under concurrency: GRANT can race on pg_auth_members unique index.
--- Catch unique_violation (23505) and continue so CI/CD concurrent jobs don't fail.
 DO $do$
 DECLARE
   v_username TEXT := '${username.replace(/'/g, "''")}';
 BEGIN
-  BEGIN
-    EXECUTE format('GRANT %I TO %I', 'anonymous', v_username);
-  EXCEPTION
-    WHEN unique_violation THEN
-      -- Membership was granted concurrently; ignore.
-      NULL;
-    WHEN undefined_object THEN
-      -- One of the roles doesn't exist yet; order operations as needed.
-      RAISE NOTICE 'Missing role when granting % to %', 'anonymous', v_username;
-  END;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_auth_members am
+    JOIN pg_roles r1 ON am.roleid = r1.oid
+    JOIN pg_roles r2 ON am.member = r2.oid
+    WHERE r1.rolname = 'anonymous' AND r2.rolname = v_username
+  ) THEN
+    BEGIN
+      EXECUTE format('GRANT %I TO %I', 'anonymous', v_username);
+    EXCEPTION
+      WHEN unique_violation THEN
+        NULL;
+      WHEN undefined_object THEN
+        RAISE NOTICE 'Missing role when granting % to %', 'anonymous', v_username;
+    END;
+  END IF;
 
-  BEGIN
-    EXECUTE format('GRANT %I TO %I', 'authenticated', v_username);
-  EXCEPTION
-    WHEN unique_violation THEN
-      -- Membership was granted concurrently; ignore.
-      NULL;
-    WHEN undefined_object THEN
-      RAISE NOTICE 'Missing role when granting % to %', 'authenticated', v_username;
-  END;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_auth_members am
+    JOIN pg_roles r1 ON am.roleid = r1.oid
+    JOIN pg_roles r2 ON am.member = r2.oid
+    WHERE r1.rolname = 'authenticated' AND r2.rolname = v_username
+  ) THEN
+    BEGIN
+      EXECUTE format('GRANT %I TO %I', 'authenticated', v_username);
+    EXCEPTION
+      WHEN unique_violation THEN
+        NULL;
+      WHEN undefined_object THEN
+        RAISE NOTICE 'Missing role when granting % to %', 'authenticated', v_username;
+    END;
+  END IF;
 END
 $do$;
 COMMIT;
