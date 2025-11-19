@@ -6,6 +6,8 @@ import type { IncomingMessage } from 'http';
 import { getPgPool } from 'pg-cache';
 import { postgraphile, PostGraphileOptions } from 'postgraphile';
 import './types'; // for Request type
+import { getSchema } from 'graphile-query';
+import { printSchema } from 'graphql';
 
 import PublicKeySignature, {
   PublicKeyChallengeConfig,
@@ -18,14 +20,16 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
       if (!api) {
         return res.status(500).send('Missing API info');
       }
+      // Allow missing service cache key for the schema export endpoint since it does not use the cached handler
+      const isSchemaExport = req.method === 'GET' && req.path === '/get-schema';
       const key = req.svc_key;
-      if (!key) {
+      if (!key && !isSchemaExport) {
         return res.status(500).send('Missing service cache key');
       }
       const { dbname, anonRole, roleName, schema } = api;
 
-      if (graphileCache.has(key)) {
-        const { handler } = graphileCache.get(key)!;
+      if (graphileCache.has(key as any)) {
+        const { handler } = graphileCache.get(key as any)!;
         return handler(req, res, next);
       }
 
@@ -36,6 +40,26 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
           schema: schema,
         },
       });
+
+      // Serve GraphQL Schema SDL
+      if (isSchemaExport) {
+        const pgPool = getPgPool({
+          ...lOpts.pg,
+          database: dbname
+        });
+        const gqlSchema = await getSchema(pgPool as any, {
+          ...options,
+          schema
+        });
+        const sdl = printSchema(gqlSchema);
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        return res.status(200).send(sdl);
+      }
+
+      if (graphileCache.has(key as any)) {
+        const { handler } = graphileCache.get(key as any)!;
+        return handler(req, res, next);
+      }
 
       const pubkey_challenge = api.apiModules.find(
         (mod: any) => mod.name === 'pubkey_challenge'
@@ -95,7 +119,7 @@ export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
       });
       const handler = postgraphile(pgPool, schema, opts);
 
-      graphileCache.set(key, {
+      graphileCache.set(key as any, {
         pgPool,
         pgPoolKey: dbname,
         handler,

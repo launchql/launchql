@@ -78,7 +78,7 @@ export const createAuthenticateMiddleware = (
         }
       }
 
-      req.token = token;
+      (req as any).token = token;
     }
 
     next();

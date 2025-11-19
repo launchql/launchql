@@ -77,6 +77,31 @@ export const createApiMiddleware = (opts: any) => {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
+    // Fast path: allow schema export endpoint to bypass meta service resolution
+    if (req.method === 'GET' && req.path === '/get-schema') {
+      const defaultSchemas: string[] = Array.isArray(opts.graphile?.schema)
+        ? opts.graphile.schema
+        : (opts.graphile?.schema ? [opts.graphile.schema] : []);
+      const schemas: string[] = opts.api?.exposedSchemas ?? defaultSchemas;
+      const anonRole: string = opts.api?.anonRole ?? 'anonymous';
+      const roleName: string = opts.api?.roleName ?? 'administrator';
+      const databaseId: string = opts.api?.defaultDatabaseId ?? (opts.pg?.database ?? '');
+      const api: ApiStructure = {
+        dbname: opts.pg?.database ?? '',
+        anonRole,
+        roleName,
+        schema: schemas,
+        apiModules: [],
+        domains: [],
+        databaseId,
+        isPublic: false
+      };
+      req.api = api;
+      req.databaseId = databaseId;
+      (req as any).svc_key = getSvcKey(opts, req);
+      return next();
+    }
+
     if (opts.api?.enableMetaApi === false) {
       const schemas = opts.api.exposedSchemas;
       const anonRole = opts.api.anonRole;
@@ -94,6 +119,7 @@ export const createApiMiddleware = (opts: any) => {
       };
       req.api = api;
       req.databaseId = databaseId;
+      (req as any).svc_key = getSvcKey(opts, req);
       return next();
     }
     try {
@@ -318,7 +344,7 @@ export const getApiConfig = async (
   const domain: string = req.urlDomains.domain as string;
 
   const key = getSvcKey(opts, req);
-  req.svc_key = key;
+  (req as any).svc_key = key;
 
   let svc;
   if (svcCache.has(key)) {
