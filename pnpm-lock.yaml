@@ -74,6 +74,32 @@ importers:
         specifier: ^5.1.6
         version: 5.9.3
 
+  graphile/graphile-search-plugin:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphql-tag:
+        specifier: 2.12.6
+        version: 2.12.6(graphql@15.10.1)
+    devDependencies:
+      '@pyramation/postgraphile-plugin-fulltext-filter':
+        specifier: 2.0.0
+        version: 2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
+      graphile-simple-inflector:
+        specifier: ^0.1.1
+        version: 0.1.1
+      graphile-test:
+        specifier: workspace:^
+        version: link:../../packages/graphile-test/dist
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+      postgraphile-plugin-connection-filter:
+        specifier: ^2.0.0
+        version: 2.3.0
+    publishDirectory: dist
+
   packages/cli:
     dependencies:
       '@launchql/core':
