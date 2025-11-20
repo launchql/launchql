@@ -149,3 +149,6 @@ jobs:
 
       - name: launchql/upload-names
         run: cd ./packages/upload-names && pnpm test
+
+      - name: graphile/graphile-search-plugin
+        run: cd ./graphile/graphile-search-plugin && pnpm test
