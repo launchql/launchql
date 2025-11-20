@@ -1,8 +1,18 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-  setupFiles: ['<rootDir>/node_modules/regenerator-runtime/runtime'],
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?)$',
-  testURL: 'http://localhost',
+  preset: 'ts-jest',
+  testEnvironment: 'node',
   transform: {
-    '^.+\\.jsx?$': 'babel-jest'
-  }
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        babelConfig: false,
+        tsconfig: 'tsconfig.json'
+      }
+    ]
+  },
+  transformIgnorePatterns: [`/node_modules/*`],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  modulePathIgnorePatterns: ['dist/*']
 };
