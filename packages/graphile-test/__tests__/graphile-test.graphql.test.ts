@@ -28,7 +28,7 @@ beforeAll(async () => {
         sql('test.sql'),
         sql('grants.sql')
       ])
-    ],
+    ]
   );
 
   ({ db, query, teardown } = connections);
