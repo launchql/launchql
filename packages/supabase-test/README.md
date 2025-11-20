@@ -18,6 +18,8 @@
 
 `supabase-test` is a Supabase-optimized version of [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) with Supabase defaults baked in. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for Supabase's local development environment. It's also great for GitHub Actions and CI/CD testing.
 
+Explore a full working example (including GitHub Actions CI/CD) in the [`supabase-test-suite`](https://github.com/launchql/supabase-test-suite) repo.
+
 ## Install
 
 ```sh
