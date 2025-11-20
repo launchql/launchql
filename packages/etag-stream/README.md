@@ -48,6 +48,26 @@ createReadStream(local).pipe(stream);
 
 ETags compatible with s3, thanks to the author of [this post](https://stackoverflow.com/questions/12186993/what-is-the-algorithm-to-compute-the-amazon-s3-etag-for-a-file-larger-than-5gb#answer-19896823) for the breakdown of the algorithm.
 
+## Education and Tutorials
+
+ 1. 🚀 [Quickstart: Getting Up and Running](https://launchql.com/learn/quickstart)
+Get started with modular databases in minutes. Install prerequisites and deploy your first module.
+
+ 2. 📦 [Modular PostgreSQL Development with Database Packages](https://launchql.com/learn/modular-postgres)
+Learn to organize PostgreSQL projects with pgpm workspaces and reusable database modules.
+
+ 3. ✏️ [Authoring Database Changes](https://launchql.com/learn/authoring-database-changes)
+Master the workflow for adding, organizing, and managing database changes with pgpm.
+
+ 4. 🧪 [End-to-End PostgreSQL Testing with TypeScript](https://launchql.com/learn/e2e-postgres-testing)
+Master end-to-end PostgreSQL testing with ephemeral databases, RLS testing, and CI/CD automation.
+
+ 5. ⚡ [Supabase Testing](https://launchql.com/learn/supabase)
+TypeScript-native testing for Supabase with modern workflows.
+
+ 6. 🔧 [Troubleshooting](https://launchql.com/learn/troubleshooting)
+Common issues and solutions for pgpm, PostgreSQL, and testing.
+
 ## Related LaunchQL Tooling
 
 ### 🧪 Testing
@@ -88,6 +108,11 @@ ETags compatible with s3, thanks to the author of [this post](https://stackoverf
 * [launchql/launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
 * [@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
 * [@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query): **🧩 Fluent GraphQL builder** for PostGraphile schemas. ⚡ Schema-aware via introspection, 🧩 composable and ergonomic for building deeply nested queries.
+
+## Credits
+
+🛠 Built by LaunchQL — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/launchql)
+
 
 ## Disclaimer
 

@@ -22,6 +22,26 @@ LaunchQL Core is the main package for LaunchQL, providing tools for database mig
 - Reading and writing SQL scripts
 - Resolving dependencies between migrations
 
+## Education and Tutorials
+
+ 1. 🚀 [Quickstart: Getting Up and Running](https://launchql.com/learn/quickstart)
+Get started with modular databases in minutes. Install prerequisites and deploy your first module.
+
+ 2. 📦 [Modular PostgreSQL Development with Database Packages](https://launchql.com/learn/modular-postgres)
+Learn to organize PostgreSQL projects with pgpm workspaces and reusable database modules.
+
+ 3. ✏️ [Authoring Database Changes](https://launchql.com/learn/authoring-database-changes)
+Master the workflow for adding, organizing, and managing database changes with pgpm.
+
+ 4. 🧪 [End-to-End PostgreSQL Testing with TypeScript](https://launchql.com/learn/e2e-postgres-testing)
+Master end-to-end PostgreSQL testing with ephemeral databases, RLS testing, and CI/CD automation.
+
+ 5. ⚡ [Supabase Testing](https://launchql.com/learn/supabase)
+TypeScript-native testing for Supabase with modern workflows.
+
+ 6. 🔧 [Troubleshooting](https://launchql.com/learn/troubleshooting)
+Common issues and solutions for pgpm, PostgreSQL, and testing.
+
 ## Related LaunchQL Tooling
 
 ### 🧪 Testing
@@ -57,14 +77,19 @@ LaunchQL Core is the main package for LaunchQL, providing tools for database mig
 
 ### 🧰 CLI & Codegen
 
-* [@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL packages—supports database scaffolding, migrations, seeding, code generation, and automation.
+* [pgpm](https://github.com/launchql/launchql/tree/main/packages/pgpm): **🖥️ PostgreSQL Package Manager** for modular Postgres development. Works with database workspaces, scaffolding, migrations, seeding, and installing database packages.
+* [@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL projects—supports database scaffolding, migrations, seeding, code generation, and automation.
 * [launchql/launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
 * [@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
 * [@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query): **🧩 Fluent GraphQL builder** for PostGraphile schemas. ⚡ Schema-aware via introspection, 🧩 composable and ergonomic for building deeply nested queries.
+
+## Credits
+
+🛠 Built by LaunchQL — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/launchql)
+
 
 ## Disclaimer
 
 AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
-

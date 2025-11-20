@@ -18,8 +18,6 @@
 
 `pgsql-test` gives you instant, isolated PostgreSQL databases for each test — with automatic transaction rollbacks, context switching, and clean seeding. Forget flaky tests and brittle environments. Write real SQL. Get real coverage. Stay fast.
 
-If you're writing tests for Supabase, check out [`supabase-test`](https://www.npmjs.com/package/supabase-test) for Supabase-optimized defaults.
-
 ## Install
 
 ```sh
@@ -35,13 +33,17 @@ npm install pgsql-test
 * 🧪 **Compatible with any async runner** — works with `Jest`, `Mocha`, etc.
 * 🧹 **Auto teardown** — no residue, no reboots, just clean exits
 
-### LaunchQL migrations
+### Tutorials
 
-Part of the [LaunchQL](https://github.com/launchql) ecosystem, `pgsql-test` is built to pair seamlessly with our TypeScript-based [Sqitch](https://sqitch.org/) engine rewrite:
+📚 **[Learn how to test PG with pgsql-test →](https://launchql.com/learn/e2e-postgres-testing)**
 
-* 🚀 **Lightning-fast migrations** — powered by LaunchQL’s native deployer (10x faster than legacy Sqitch)
-* 🔧 **Composable test scaffolds** — integrate with full LaunchQL stacks or use standalone
+### Using with Supabase
 
+If you're writing tests for Supabase, check out [`supabase-test`](https://www.npmjs.com/package/supabase-test) for Supabase-optimized defaults.
+
+### pgpm migrations
+
+Part of the [pgpm](https://pgpm.io) ecosystem, `pgsql-test` is built to pair seamlessly with our TypeScript-based package manager and migration tool. `pgpm` gives you modular Postgres packages, deterministic plans, and tag-aware releases—perfect for authoring the migrations that `pgsql-test` runs.
 
 ## Table of Contents
 
@@ -629,6 +631,26 @@ const { conn, db, teardown } = await getConnections({
 });
 ```
 
+## Education and Tutorials
+
+ 1. 🚀 [Quickstart: Getting Up and Running](https://launchql.com/learn/quickstart)
+Get started with modular databases in minutes. Install prerequisites and deploy your first module.
+
+ 2. 📦 [Modular PostgreSQL Development with Database Packages](https://launchql.com/learn/modular-postgres)
+Learn to organize PostgreSQL projects with pgpm workspaces and reusable database modules.
+
+ 3. ✏️ [Authoring Database Changes](https://launchql.com/learn/authoring-database-changes)
+Master the workflow for adding, organizing, and managing database changes with pgpm.
+
+ 4. 🧪 [End-to-End PostgreSQL Testing with TypeScript](https://launchql.com/learn/e2e-postgres-testing)
+Master end-to-end PostgreSQL testing with ephemeral databases, RLS testing, and CI/CD automation.
+
+ 5. ⚡ [Supabase Testing](https://launchql.com/learn/supabase)
+TypeScript-native testing for Supabase with modern workflows.
+
+ 6. 🔧 [Troubleshooting](https://launchql.com/learn/troubleshooting)
+Common issues and solutions for pgpm, PostgreSQL, and testing.
+
 ## Related LaunchQL Tooling
 
 ### 🧪 Testing
@@ -669,6 +691,11 @@ const { conn, db, teardown } = await getConnections({
 * [launchql/launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
 * [@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
 * [@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query): **🧩 Fluent GraphQL builder** for PostGraphile schemas. ⚡ Schema-aware via introspection, 🧩 composable and ergonomic for building deeply nested queries.
+
+## Credits
+
+🛠 Built by LaunchQL — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/launchql)
+
 
 ## Disclaimer
 
