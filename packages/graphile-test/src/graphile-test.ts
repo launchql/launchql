@@ -13,7 +13,8 @@ export const GraphQLTest = (
 ): GraphQLTestContext => {
   const {
     schemas,
-    authRole
+    authRole,
+    graphile
   } = input;
 
   let schema: GraphQLSchema;
@@ -22,7 +23,31 @@ export const GraphQLTest = (
   const pgPool = conn.manager.getPool(conn.pg.config);
 
   const setup = async () => {
-    options = getGraphileSettings({ graphile: { schema: schemas } });
+
+    // Get base settings from graphile-settings
+    const baseOptions = getGraphileSettings({ graphile: { schema: schemas } });
+    
+    // Merge custom graphile options
+    options = {
+      ...baseOptions,
+      // Merge appendPlugins if provided
+      ...(graphile?.appendPlugins && {
+        appendPlugins: [
+          ...(baseOptions.appendPlugins || []),
+          ...graphile.appendPlugins
+        ]
+      }),
+      // Merge graphileBuildOptions if provided
+      ...(graphile?.graphileBuildOptions && {
+        graphileBuildOptions: {
+          ...baseOptions.graphileBuildOptions,
+          ...graphile.graphileBuildOptions
+        }
+      }),
+      // Apply overrideSettings if provided
+      ...(graphile?.overrideSettings || {})
+    };
+
     schema = await createPostGraphileSchema(pgPool, schemas, options);
   };
 

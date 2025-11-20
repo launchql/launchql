@@ -1,3 +1,4 @@
+import type { GraphileOptions } from '@launchql/types';
 import { DocumentNode, GraphQLError } from 'graphql';
 
 export interface GraphQLQueryOptions<TVariables = Record<string, any>> {
@@ -18,6 +19,7 @@ export interface GetConnectionsInput {
   useRoot?: boolean;
   schemas: string[];
   authRole?: string;
+  graphile?: GraphileOptions;
 }
 
 export interface GraphQLQueryOptions<TVariables = Record<string, any>> {

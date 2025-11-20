@@ -1,0 +1,58 @@
+{
+  "name": "graphile-search-plugin",
+  "version": "0.1.2",
+  "description": "generate search conditions for your tsvector columns",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/pyramation/graphile-search-plugin#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepack": "pnpm run build",
+    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyramation/graphile-search-plugin"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "launchql",
+    "plugin",
+    "postgres",
+    "graphql"
+  ],
+  "bugs": {
+    "url": "https://github.com/pyramation/graphile-search-plugin/issues"
+  },
+  "devDependencies": {
+    "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",
+    "graphile-simple-inflector": "^0.1.1",
+    "graphile-test": "workspace:^",
+    "pgsql-test": "workspace:^",
+    "postgraphile-plugin-connection-filter": "^2.0.0"
+  },
+  "dependencies": {
+    "graphile-build": "^4.14.1",
+    "graphql-tag": "2.12.6"
+  }
+}
