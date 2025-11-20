@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/launchql/launchql/compare/@launchql/templatizer@2.5.0...@launchql/templatizer@2.5.1) (2025-11-20)
+
+**Note:** Version bump only for package @launchql/templatizer
+
 # [2.5.0](https://github.com/launchql/launchql/compare/@launchql/templatizer@2.4.7...@launchql/templatizer@2.5.0) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/templatizer

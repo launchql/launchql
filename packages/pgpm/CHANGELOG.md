@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.7](https://github.com/launchql/launchql/compare/pgpm@0.2.6...pgpm@0.2.7) (2025-11-20)
+
+**Note:** Version bump only for package pgpm
+
 ## [0.2.6](https://github.com/launchql/launchql/compare/pgpm@0.2.5...pgpm@0.2.6) (2025-11-16)
 
 **Note:** Version bump only for package pgpm
