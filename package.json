@@ -13,7 +13,8 @@
   },
   "workspaces": [
     "packages/*",
-    "sandbox/*"
+    "sandbox/*",
+    "graphile/*"
   ],
   "engines": {
     "node": ">=18.17.0"
