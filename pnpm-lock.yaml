@@ -89,9 +89,6 @@ importers:
       graphile-simple-inflector:
         specifier: ^0.1.1
         version: 0.1.1
-      graphile-test:
-        specifier: workspace:^
-        version: link:../../packages/graphile-test/dist
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist

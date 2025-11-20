@@ -47,7 +47,6 @@
   "devDependencies": {
     "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",
     "graphile-simple-inflector": "^0.1.1",
-    "graphile-test": "workspace:^",
     "pgsql-test": "workspace:^",
     "postgraphile-plugin-connection-filter": "^2.0.0"
   },
