@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.8.0 (2025-11-21)
+
+### Features
+
+- add launchql-test package with all plugins pre-configured ([902328a](https://github.com/launchql/launchql/commit/902328ad3e9dae7f075ffe7c3327f29d9ad9fcef))
+
 ## [2.7.2](https://github.com/launchql/launchql/compare/graphile-test@2.7.1...graphile-test@2.7.2) (2025-11-20)
 
 **Note:** Version bump only for package graphile-test

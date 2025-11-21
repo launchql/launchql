@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/launchql/launchql/compare/graphile-test@2.7.2...graphile-test@2.8.0) (2025-11-21)
+
+### Features
+
+- **graphile-test:** add graphile options support to GetConnectionsInput ([bc56a73](https://github.com/launchql/launchql/commit/bc56a7325033c753a6ac590964ec8557e8ba66bd))
+- **graphile-test:** implement graphile options merging in GraphQLTest ([f906d97](https://github.com/launchql/launchql/commit/f906d97b520f62b352bbeafa2e00c9477ad35f2d))
+
 ## [2.7.2](https://github.com/launchql/launchql/compare/graphile-test@2.7.1...graphile-test@2.7.2) (2025-11-20)
 
 **Note:** Version bump only for package graphile-test
