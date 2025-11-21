@@ -455,8 +455,8 @@ importers:
         specifier: workspace:^
         version: link:../graphile-query/dist
       graphile-search-plugin:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: workspace:^
+        version: link:../../graphile/graphile-search-plugin/dist
       graphile-simple-inflector:
         specifier: ^0.1.1
         version: 0.1.1
@@ -1019,8 +1019,8 @@ importers:
         specifier: workspace:^
         version: link:../graphile-query/dist
       graphile-search-plugin:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: workspace:^
+        version: link:../../graphile/graphile-search-plugin/dist
       graphile-settings:
         specifier: workspace:^
         version: link:../graphile-settings/dist
@@ -3793,9 +3793,6 @@ packages:
 
   graphile-meta-schema@0.2.5:
     resolution: {integrity: sha512-qKx4+VLfrNauHrJqZ7G6wzdMEj53eHtepVTAe/QeRrvMOCSEr8SiE0Ja4bj6jjL/jCYI7NoicBMnowBnoNOZeA==}
-
-  graphile-search-plugin@0.1.2:
-    resolution: {integrity: sha512-4pb0rqzc2H3tuzqx/iRcpWU1FXvqEJU/ZT3DfGzDKFusjR6qHcOd3JIcxMXEctln/pEt2NM1U+O4I5a3nFG0UA==}
 
   graphile-simple-inflector@0.1.1:
     resolution: {integrity: sha512-noEIF7ORcHHdHd1iHnqEk8cozLB8LKUHBuCZwUCv98E9Mp2odRAGUjhGsFuAd2wmZDEutersd80dDCOny3dytg==}
@@ -9676,10 +9673,6 @@ snapshots:
       - graphile-build
       - graphile-build-pg
       - supports-color
-
-  graphile-search-plugin@0.1.2:
-    dependencies:
-      '@babel/runtime': 7.28.4
 
   graphile-simple-inflector@0.1.1:
     dependencies:
