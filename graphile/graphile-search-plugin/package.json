@@ -1,6 +1,6 @@
 {
   "name": "graphile-search-plugin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "generate search conditions for your tsvector columns",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-search-plugin#readme",
