@@ -1,4 +1,3 @@
-import { getGraphileSettings } from 'graphile-settings';
 import type { GraphQLSchema } from 'graphql';
 import { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
 import { createPostGraphileSchema, PostGraphileOptions } from 'postgraphile';
@@ -23,30 +22,20 @@ export const GraphQLTest = (
   const pgPool = conn.manager.getPool(conn.pg.config);
 
   const setup = async () => {
-
-    // Get base settings from graphile-settings
-    const baseOptions = getGraphileSettings({ graphile: { schema: schemas } });
-    
-    // Merge custom graphile options
+    // Bare-bones configuration - no defaults, only use what's explicitly provided
+    // This gives full control over PostGraphile configuration
     options = {
-      ...baseOptions,
-      // Merge appendPlugins if provided
+      schema: schemas,
+      // Only apply graphile options if explicitly provided
       ...(graphile?.appendPlugins && {
-        appendPlugins: [
-          ...(baseOptions.appendPlugins || []),
-          ...graphile.appendPlugins
-        ]
+        appendPlugins: graphile.appendPlugins
       }),
-      // Merge graphileBuildOptions if provided
       ...(graphile?.graphileBuildOptions && {
-        graphileBuildOptions: {
-          ...baseOptions.graphileBuildOptions,
-          ...graphile.graphileBuildOptions
-        }
+        graphileBuildOptions: graphile.graphileBuildOptions
       }),
-      // Apply overrideSettings if provided
+      // Apply any overrideSettings if provided
       ...(graphile?.overrideSettings || {})
-    };
+    } as PostGraphileOptions;
 
     schema = await createPostGraphileSchema(pgPool, schemas, options);
   };

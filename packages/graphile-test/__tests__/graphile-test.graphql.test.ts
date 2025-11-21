@@ -64,7 +64,7 @@ it('creates a user and fetches it', async () => {
 
   const GET_USERS = gql`
     query {
-      users {
+      allUsers {
         nodes {
           id
           username
@@ -89,7 +89,7 @@ it('creates a user and fetches it', async () => {
   const fetchRes: any = await query(GET_USERS);
 
   expect(
-    fetchRes.data.users.nodes.some((u: any) => u.username === newUsername)
+    fetchRes.data.allUsers.nodes.some((u: any) => u.username === newUsername)
   ).toBe(true);
 });
 

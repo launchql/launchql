@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "@launchql/types": "workspace:^",
-    "graphile-settings": "workspace:^",
     "graphql": "15.10.1",
     "mock-req": "^0.2.0",
     "pg": "^8.16.0",

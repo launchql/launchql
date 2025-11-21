@@ -67,7 +67,7 @@ it('handles duplicate insert via internal PostGraphile savepoint', async () => {
 
   const GET_USERS = gql`
     query {
-      users {
+      allUsers {
         nodes {
           id
           username
@@ -101,5 +101,5 @@ it('handles duplicate insert via internal PostGraphile savepoint', async () => {
   const followup = await query(GET_USERS);
   expect(snapshot(followup)).toMatchSnapshot('queryAfterDuplicateInsert');
   expect(followup.errors).toBeUndefined();
-  expect(followup.data?.users?.nodes.some((u: any) => u.username === 'dupeuser')).toBe(true);
+  expect(followup.data?.allUsers?.nodes.some((u: any) => u.username === 'dupeuser')).toBe(true);
 });

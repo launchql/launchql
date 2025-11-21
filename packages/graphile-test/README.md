@@ -20,6 +20,8 @@
 
 It provides a seamless setup for isolated, seeded, role-aware Postgres databases and injects GraphQL helpers for snapshot testing, role context, and mutation/query assertions.
 
+**Note:** This is a bare-bones package with no defaults or settings applied. For a batteries-included version with all LaunchQL plugins pre-configured, use [`launchql-test`](https://github.com/launchql/launchql/tree/main/packages/launchql-test) instead.
+
 ## 🚀 Features
 
 * 🔁 **Per-test rollback** via savepoints for isolation

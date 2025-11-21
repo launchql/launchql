@@ -16,7 +16,7 @@ exports[`creates a user and fetches it: createUser 1`] = `
 exports[`does not see the user created in the previous test: usersAfterRollback 1`] = `
 {
   "data": {
-    "users": {
+    "allUsers": {
       "nodes": [],
     },
   },

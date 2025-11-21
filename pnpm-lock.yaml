@@ -519,9 +519,6 @@ importers:
       '@launchql/types':
         specifier: workspace:^
         version: link:../types/dist
-      graphile-settings:
-        specifier: workspace:^
-        version: link:../graphile-settings/dist
       graphql:
         specifier: 15.10.1
         version: 15.10.1
@@ -564,9 +561,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
-      graphile-test:
+      launchql-test:
         specifier: workspace:^
-        version: link:../graphile-test/dist
+        version: link:../launchql-test/dist
       pgsql-test:
         specifier: workspace:^
         version: link:../pgsql-test/dist
@@ -587,15 +584,50 @@ importers:
       '@types/pluralize':
         specifier: 0.0.33
         version: 0.0.33
-      graphile-test:
-        specifier: workspace:^
-        version: link:../graphile-test/dist
       graphql:
         specifier: 15.10.1
         version: 15.10.1
       introspectron:
         specifier: workspace:^
         version: link:../introspectron/dist
+      launchql-test:
+        specifier: workspace:^
+        version: link:../launchql-test/dist
+    publishDirectory: dist
+
+  packages/launchql-test:
+    dependencies:
+      '@launchql/types':
+        specifier: workspace:^
+        version: link:../types/dist
+      graphile-settings:
+        specifier: workspace:^
+        version: link:../graphile-settings/dist
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      mock-req:
+        specifier: ^0.2.0
+        version: 0.2.0
+      pg:
+        specifier: ^8.16.0
+        version: 8.16.3
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../pgsql-test/dist
+      postgraphile:
+        specifier: ^4.14.1
+        version: 4.14.1
+    devDependencies:
+      '@types/pg':
+        specifier: ^8.15.2
+        version: 8.15.6
+      graphql-tag:
+        specifier: 2.12.6
+        version: 2.12.6(graphql@15.10.1)
     publishDirectory: dist
 
   packages/logger:
