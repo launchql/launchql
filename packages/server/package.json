@@ -58,7 +58,7 @@
     "graphile-i18n": "^0.0.3",
     "graphile-meta-schema": "^0.2.5",
     "graphile-query": "workspace:^",
-    "graphile-search-plugin": "^0.1.2",
+    "graphile-search-plugin": "workspace:^",
     "graphile-settings": "workspace:^",
     "graphile-simple-inflector": "^0.1.1",
     "graphile-utils": "^4.14.1",
