@@ -44,7 +44,7 @@
     "graphile-meta-schema": "^0.2.5",
     "graphile-query": "workspace:^",
     "graphile-search-plugin": "workspace:^",
-    "graphile-simple-inflector": "^0.1.1",
+    "graphile-simple-inflector": "workspace:^",
     "graphql": "15.10.1",
     "graphql-tag": "2.12.6",
     "graphql-upload": "^13.0.0",

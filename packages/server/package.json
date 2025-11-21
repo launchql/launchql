@@ -60,7 +60,7 @@
     "graphile-query": "workspace:^",
     "graphile-search-plugin": "workspace:^",
     "graphile-settings": "workspace:^",
-    "graphile-simple-inflector": "^0.1.1",
+    "graphile-simple-inflector": "workspace:^",
     "graphile-utils": "^4.14.1",
     "graphql": "15.10.1",
     "graphql-tag": "2.12.6",
