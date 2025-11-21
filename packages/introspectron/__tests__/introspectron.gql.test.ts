@@ -1,6 +1,6 @@
 process.env.LOG_SCOPE = 'introspectron';
 
-import { getConnections, GraphQLQueryFn, seed } from 'graphile-test';
+import { getConnections, GraphQLQueryFn, seed } from 'launchql-test';
 import { join } from 'path';
 
 import { IntrospectionQuery } from '../src';
