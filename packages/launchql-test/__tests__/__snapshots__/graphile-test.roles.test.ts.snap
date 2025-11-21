@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`creates a user and fetches it: createUser 1`] = `
+{
+  "data": {
+    "createUser": {
+      "user": {
+        "id": "[ID]",
+        "username": "testuser1",
+      },
+    },
+  },
+}
+`;
+
+exports[`does not see the user created in the previous test: usersAfterRollback 1`] = `
+{
+  "data": {
+    "users": {
+      "nodes": [],
+    },
+  },
+}
+`;
+
+exports[`fails to access context-protected data as anonymous: unauthorizedContext 1`] = `
+{
+  "data": {
+    "currentRole": null,
+    "userId": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for function current_setting",
+      "path": [
+        "currentRole",
+      ],
+    },
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 3,
+        },
+      ],
+      "message": "current transaction is aborted, commands ignored until end of transaction block",
+      "path": [
+        "userId",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`returns pg context settings from current_setting() function: pgContext 1`] = `
+{
+  "data": {
+    "currentRole": "authenticated",
+    "userId": "123",
+  },
+}
+`;
