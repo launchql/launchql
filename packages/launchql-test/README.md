@@ -1,4 +1,4 @@
-# graphile-test
+# launchql-test
 
 <p align="center" width="100%">
   <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
@@ -11,16 +11,14 @@
   <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
-  <a href="https://www.npmjs.com/package/graphile-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fgraphile-test%2Fpackage.json"/>
+  <a href="https://www.npmjs.com/package/launchql-test">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Flaunchql-test%2Fpackage.json"/>
   </a>
 </p>
 
-`graphile-test` builds on top of [`pgsql-test`](https://github.com/launchql/launchql/tree/main/packages/pgsql-test) to provide robust GraphQL testing utilities for PostGraphile-based projects.
+`launchql-test` builds on top of [`pgsql-test`](https://github.com/launchql/launchql/tree/main/packages/pgsql-test) to provide robust GraphQL testing utilities for PostGraphile-based projects **with all LaunchQL plugins pre-configured**.
 
-It provides a seamless setup for isolated, seeded, role-aware Postgres databases and injects GraphQL helpers for snapshot testing, role context, and mutation/query assertions.
-
-**Note:** This is a bare-bones package with no defaults or settings applied. For a batteries-included version with all LaunchQL plugins pre-configured, use [`launchql-test`](https://github.com/launchql/launchql/tree/main/packages/launchql-test) instead.
+It provides a seamless setup for isolated, seeded, role-aware Postgres databases and injects GraphQL helpers for snapshot testing, role context, and mutation/query assertions. This package includes all the default plugins from `graphile-settings` (connection filters, full-text search, PostGIS, uploads, i18n, etc.) for a batteries-included testing experience.
 
 ## 🚀 Features
 
@@ -34,13 +32,13 @@ It provides a seamless setup for isolated, seeded, role-aware Postgres databases
 ## 📦 Install
 
 ```bash
-npm install graphile-test
+npm install launchql-test
 ```
 
 ## ✨ Quick Start
 
 ```ts
-import { getConnections, seed } from 'graphile-test';
+import { getConnections, seed } from 'launchql-test';
 
 let db, query, teardown;
 
@@ -220,7 +218,8 @@ Common issues and solutions for pgpm, PostgreSQL, and testing.
 
 * [launchql/pgsql-test](https://github.com/launchql/launchql/tree/main/packages/pgsql-test): **📊 Isolated testing environments** with per-test transaction rollbacks—ideal for integration tests, complex migrations, and RLS simulation.
 * [launchql/supabase-test](https://github.com/launchql/launchql/tree/main/packages/supabase-test): **🧪 Supabase-native test harness** preconfigured for the local Supabase stack—per-test rollbacks, JWT/role context helpers, and CI/GitHub Actions ready.
-* [launchql/graphile-test](https://github.com/launchql/launchql/tree/main/packages/graphile-test): **🔐 Authentication mocking** for Graphile-focused test helpers and emulating row-level security contexts.
+* [launchql/graphile-test](https://github.com/launchql/launchql/tree/main/packages/graphile-test): **🔐 Bare-bones Graphile testing** - no defaults or settings applied, full control over PostGraphile configuration.
+* [launchql/launchql-test](https://github.com/launchql/launchql/tree/main/packages/launchql-test): **🔐 Batteries-included Graphile testing** - all LaunchQL plugins pre-configured via graphile-settings.
 * [launchql/pg-query-context](https://github.com/launchql/launchql/tree/main/packages/pg-query-context): **🔒 Session context injection** to add session-local context (e.g., `SET LOCAL`) into queries—ideal for setting `role`, `jwt.claims`, and other session settings.
 
 ### 🧠 Parsing & AST

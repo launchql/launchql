@@ -6,7 +6,7 @@ import type { PgTestClient } from 'pgsql-test/test-client';
 
 import { snapshot } from '../src';
 import { getConnections } from '../src/get-connections';
-import type { GraphQLQueryFn } from '../src/types';
+import type { GraphQLQueryFn } from 'graphile-test';
 import { IntrospectionQuery } from '../test-utils/queries';
 import { logDbSessionInfo } from '../test-utils/utils';
 
@@ -36,24 +36,8 @@ beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 afterAll(() => teardown());
 
-it('introspection query works', async () => {
+it('introspection query snapshot', async () => {
   await logDbSessionInfo(db);
   const res = await query(IntrospectionQuery);
-  
-  // Bare-bones test: just verify introspection works, don't validate plugin-generated fields
-  expect(res.data).not.toBeNull();
-  expect(res.data).not.toBeUndefined();
-  expect(res.errors).toBeUndefined();
-  expect(res.data?.__schema).toBeDefined();
-  expect(res.data?.__schema?.queryType).toBeDefined();
-  
-  // Verify we can query the basic table (allUsers is default PostGraphile behavior)
-  const queryType = res.data?.__schema?.queryType;
-  const types = res.data?.__schema?.types || [];
-  const queryTypeDef = types.find((t: any) => t.name === queryType?.name);
-  const fields = queryTypeDef?.fields || [];
-  
-  // Should have allUsers field (default PostGraphile behavior)
-  const allUsersField = fields.find((f: any) => f.name === 'allUsers');
-  expect(allUsersField).toBeDefined();
+  expect(snapshot(res)).toMatchSnapshot('introspection');
 });

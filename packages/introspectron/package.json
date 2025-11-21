@@ -32,7 +32,7 @@
   "devDependencies": {
     "@jest/test-sequencer": "^29.7.0",
     "@types/pg": "^8.15.2",
-    "graphile-test": "workspace:^",
+    "launchql-test": "workspace:^",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 process.env.LOG_SCOPE = 'launchql-codegen';
 
-import { getConnections, GraphQLQueryFn, seed } from 'graphile-test';
+import { getConnections, GraphQLQueryFn, seed } from 'launchql-test';
 import { print } from 'graphql';
 import { IntrospectionQuery, IntrospectionQueryResult, parseGraphQuery } from 'introspectron';
 import { join } from 'path';
@@ -8,7 +8,7 @@ import { join } from 'path';
 import { generate, GqlMap } from '../src';
 import { generateKeyedObjFromIntrospection } from '../test-utils/generate-from-introspection';
 
-const sql = (f: string) => join(__dirname, '/../sql', f);
+const sql = (f: string) => join(__dirname, '../sql', f);
 
 let teardown: () => Promise<void>;
 let query: GraphQLQueryFn;

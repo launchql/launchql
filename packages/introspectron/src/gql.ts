@@ -85,7 +85,7 @@ export const parseGraphQuery = (introQuery: IntrospectionQueryResult) => {
   }, {} as Record<string, IntrospectionType>);
 
   const queriesRoot = types.find((t) => t.name === 'Query')!;
-  const mutationsRoot = types.find((t) => t.name === 'Mutation')!;
+  const mutationsRoot = types.find((t) => t.name === 'Mutation');
 
   const getInputForQueries = (input: IntrospectionTypeRef, context: ParseContext = {}): ParseContext => {
     if (input.kind === 'NON_NULL') {
@@ -160,7 +160,7 @@ export const parseGraphQuery = (introQuery: IntrospectionQueryResult) => {
     return context;
   };
 
-  const mutations = mutationsRoot.fields!.reduce((m, mutation) => {
+  const mutations = (mutationsRoot?.fields || []).reduce((m, mutation) => {
     let mutationType = 'other';
     if (/^Create/.test(mutation.type.name!)) mutationType = 'create';
     else if (/^Update/.test(mutation.type.name!)) mutationType = 'patch';

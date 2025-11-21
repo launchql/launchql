@@ -7,7 +7,7 @@ import type { PgTestClient } from 'pgsql-test/test-client';
 
 import { snapshot } from '../src';
 import { getConnections } from '../src/get-connections';
-import type { GraphQLQueryFn } from '../src/types';
+import type { GraphQLQueryFn } from 'graphile-test';
 import { logDbSessionInfo } from '../test-utils/utils';
 
 const schemas = ['app_public'];
@@ -64,7 +64,7 @@ it('creates a user and fetches it', async () => {
 
   const GET_USERS = gql`
     query {
-      allUsers {
+      users {
         nodes {
           id
           username
@@ -89,7 +89,7 @@ it('creates a user and fetches it', async () => {
   const fetchRes: any = await query(GET_USERS);
 
   expect(
-    fetchRes.data.allUsers.nodes.some((u: any) => u.username === newUsername)
+    fetchRes.data.users.nodes.some((u: any) => u.username === newUsername)
   ).toBe(true);
 });
 

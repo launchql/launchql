@@ -38,7 +38,7 @@ exports[`handles duplicate insert via internal PostGraphile savepoint: firstInse
 exports[`handles duplicate insert via internal PostGraphile savepoint: queryAfterDuplicateInsert 1`] = `
 {
   "data": {
-    "allUsers": {
+    "users": {
       "nodes": [
         {
           "id": "[ID]",

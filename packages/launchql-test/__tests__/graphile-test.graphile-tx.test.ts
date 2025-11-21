@@ -7,7 +7,7 @@ import type { PgTestClient } from 'pgsql-test/test-client';
 
 import { snapshot } from '../src';
 import { getConnections } from '../src/get-connections';
-import type { GraphQLQueryFn } from '../src/types';
+import type { GraphQLQueryFn } from 'graphile-test';
 import { logDbSessionInfo } from '../test-utils/utils';
 
 const schemas = ['app_public'];
@@ -67,7 +67,7 @@ it('handles duplicate insert via internal PostGraphile savepoint', async () => {
 
   const GET_USERS = gql`
     query {
-      allUsers {
+      users {
         nodes {
           id
           username
@@ -101,5 +101,5 @@ it('handles duplicate insert via internal PostGraphile savepoint', async () => {
   const followup = await query(GET_USERS);
   expect(snapshot(followup)).toMatchSnapshot('queryAfterDuplicateInsert');
   expect(followup.errors).toBeUndefined();
-  expect(followup.data?.allUsers?.nodes.some((u: any) => u.username === 'dupeuser')).toBe(true);
+  expect(followup.data?.users?.nodes.some((u: any) => u.username === 'dupeuser')).toBe(true);
 });

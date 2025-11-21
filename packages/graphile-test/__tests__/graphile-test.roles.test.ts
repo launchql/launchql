@@ -65,7 +65,7 @@ it('creates a user and fetches it', async () => {
 
   const GET_USERS = gql`
     query {
-      users {
+      allUsers {
         nodes {
           id
           username
@@ -89,7 +89,7 @@ it('creates a user and fetches it', async () => {
   const fetchRes: any = await query(GET_USERS);
 
   expect(
-    fetchRes.data.users.nodes.some((u: any) => u.username === newUsername)
+    fetchRes.data.allUsers.nodes.some((u: any) => u.username === newUsername)
   ).toBe(true);
 });
 
@@ -97,7 +97,7 @@ it('creates a user and fetches it', async () => {
 it('does not see the user created in the previous test', async () => {
   const GET_USERS = gql`
     query {
-      users {
+      allUsers {
         nodes {
           id
           username
@@ -109,7 +109,7 @@ it('does not see the user created in the previous test', async () => {
   const fetchRes: any = await query(GET_USERS);
 
   expect(snapshot(fetchRes)).toMatchSnapshot('usersAfterRollback');
-  expect(fetchRes.data.users.nodes).toHaveLength(0);
+  expect(fetchRes.data.allUsers.nodes).toHaveLength(0);
 });
 
 // ✅ Verifies context is set correctly
