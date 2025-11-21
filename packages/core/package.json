@@ -46,7 +46,6 @@
   },
   "dependencies": {
     "@launchql/env": "workspace:^",
-    "@launchql/explorer": "workspace:^",
     "@launchql/logger": "workspace:^",
     "@launchql/server-utils": "workspace:^",
     "@launchql/templatizer": "workspace:^",
