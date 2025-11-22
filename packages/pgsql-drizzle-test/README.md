@@ -14,13 +14,17 @@ import { getConnections } from 'pgsql-test';
 const { db } = await getConnections();
 db.auth({ userId: '123' }); // This context is never applied!
 
-const drizzleDb = drizzle(db); // Drizzle bypasses PgTestClient
+const drizzleDb = drizzle(db.client); // Drizzle bypasses PgTestClient
 const result = await drizzleDb.select().from(users); // No RLS context applied
 ```
 
-## The Solution
+## Two Solutions Available
 
-This package provides a specialized wrapper that ensures all Drizzle queries go through `PgTestClient`'s context management:
+This package provides **two approaches** to solve this problem. Choose the one that best fits your needs:
+
+### Approach 1: Wrapper-Based (Recommended)
+
+Uses a `DrizzleTestClient` wrapper that intercepts queries and provides helper methods:
 
 ```typescript
 import { drizzle } from 'pgsql-drizzle-test';
@@ -29,9 +33,51 @@ import { getConnections } from 'pgsql-test';
 const { db } = await getConnections();
 const drizzleDb = drizzle(db);
 
-// Now context works!
+// Set context via helper methods
 drizzleDb.$auth({ userId: '123' });
 const result = await drizzleDb.select().from(users); // RLS context applied ✓
+```
+
+**Pros:**
+- Clean API with helper methods (`$auth`, `$setContext`, etc.)
+- Explicit about using the wrapper
+- Type-safe helper methods
+
+**Cons:**
+- Different import pattern than standard Drizzle
+- Requires using wrapper-specific API
+
+### Approach 2: Proxy-Based (Standard Drizzle Pattern)
+
+Patches `db.client.query()` to work with the standard Drizzle pattern:
+
+```typescript
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { getConnectionsWithProxy } from 'pgsql-drizzle-test/variation2';
+
+const { db } = await getConnectionsWithProxy();
+
+// Set context on db directly (standard pgsql-test API)
+db.setContext({ role: 'authenticated', 'jwt.claims.user_id': '123' });
+
+// Use standard Drizzle pattern - no wrapper needed!
+const drizzleDb = drizzle(db.client);
+const result = await drizzleDb.select().from(users); // RLS context applied ✓
+```
+
+**Pros:**
+- Uses standard Drizzle import and pattern
+- Familiar API for users of other ORMs
+- Works with `db.setContext()` and `db.auth()` directly
+
+**Cons:**
+- Patches `db.client.query()` internally (monkey-patching)
+- May run SET LOCAL statements multiple times if mixing `db.query()` and `db.client.query()`
+
+## Installation
+
+```bash
+npm install pgsql-drizzle-test drizzle-orm pg
 ```
 
 ## Installation
@@ -42,7 +88,9 @@ npm install pgsql-drizzle-test drizzle-orm pg
 
 ## Usage
 
-### Basic Example
+### Approach 1: Wrapper-Based (Default)
+
+#### Basic Example
 
 ```typescript
 import { drizzle } from 'pgsql-drizzle-test';
@@ -89,7 +137,7 @@ describe('Drizzle with RLS', () => {
 });
 ```
 
-### Using with Schema
+#### Using with Schema
 
 ```typescript
 import { drizzle } from 'pgsql-drizzle-test';
@@ -98,6 +146,99 @@ import * as schema from './schema';
 
 const { db, teardown } = await getConnections();
 const drizzleDb = drizzle(db, { schema });
+
+// Now you can use relational queries
+const usersWithPosts = await drizzleDb.query.users.findMany({
+  with: {
+    posts: true
+  }
+});
+```
+
+### Approach 2: Proxy-Based (Standard Pattern)
+
+#### Basic Example
+
+```typescript
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { getConnectionsWithProxy } from 'pgsql-drizzle-test/variation2';
+import { pgTable, serial, text } from 'drizzle-orm/pg-core';
+
+// Define your schema
+const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  userId: text('user_id')
+});
+
+let db, pg, teardown;
+
+beforeAll(async () => {
+  ({ db, pg, teardown } = await getConnectionsWithProxy());
+  
+  // Setup schema using pg (superuser)
+  await pg.query(`
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      user_id TEXT NOT NULL
+    );
+    
+    GRANT ALL ON TABLE users TO authenticated;
+    GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO authenticated;
+    
+    ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+    
+    CREATE POLICY users_policy ON users
+      FOR ALL TO authenticated
+      USING (user_id = current_setting('jwt.claims.user_id', true));
+  `);
+});
+
+afterAll(async () => {
+  await teardown();
+});
+
+beforeEach(async () => {
+  await db.beforeEach();
+});
+
+afterEach(async () => {
+  await db.afterEach();
+});
+
+describe('Drizzle with RLS (proxy approach)', () => {
+  it('should respect authentication context', async () => {
+    // Set context on db (standard pgsql-test API)
+    db.setContext({ 
+      role: 'authenticated', 
+      'jwt.claims.user_id': '123' 
+    });
+    
+    // Use standard Drizzle pattern
+    const drizzleDb = drizzle(db.client);
+    
+    // All queries will include the context (SET LOCAL statements)
+    const result = await drizzleDb.select().from(users);
+    expect(result).toBeDefined();
+  });
+});
+```
+
+#### Using with Schema
+
+```typescript
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { getConnectionsWithProxy } from 'pgsql-drizzle-test/variation2';
+import * as schema from './schema';
+
+const { db, teardown } = await getConnectionsWithProxy();
+
+// Set context on db
+db.auth({ userId: '123', role: 'authenticated' });
+
+// Use standard Drizzle pattern with schema
+const drizzleDb = drizzle(db.client, { schema });
 
 // Now you can use relational queries
 const usersWithPosts = await drizzleDb.query.users.findMany({
