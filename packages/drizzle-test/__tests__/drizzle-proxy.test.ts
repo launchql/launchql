@@ -11,7 +11,7 @@ const users = pgTable('users', {
   userId: text('user_id')
 });
 
-describe('drizzle-test', () => {
+describe('drizzle-orm-test', () => {
   let db: PgTestClient;
   let pg: PgTestClient;
   let teardown: () => Promise<void>;

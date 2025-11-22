@@ -1,5 +1,5 @@
 /**
- * drizzle-test
+ * drizzle-orm-test
  * 
  * Drop-in replacement for pgsql-test that enables Drizzle ORM to work seamlessly
  * with context management and RLS testing.
@@ -11,7 +11,7 @@
  * @example
  * ```typescript
  * import { drizzle } from 'drizzle-orm/node-postgres';
- * import { getConnections, PgTestClient } from 'drizzle-test';
+ * import { getConnections, PgTestClient } from 'drizzle-orm-test';
  * 
  * let db: PgTestClient;
  * let pg: PgTestClient;

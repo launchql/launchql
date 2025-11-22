@@ -1,4 +1,4 @@
-# drizzle-test
+# drizzle-orm-test
 
 <p align="center" width="100%">
   <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
@@ -11,8 +11,8 @@
   <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
-  <a href="https://www.npmjs.com/package/drizzle-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fdrizzle-test%2Fpackage.json"/>
+  <a href="https://www.npmjs.com/package/drizzle-orm-test">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fdrizzle-orm-test%2Fpackage.json"/>
   </a>
 </p>
 
@@ -21,7 +21,7 @@ Drop-in replacement for [`pgsql-test`](https://www.npmjs.com/package/pgsql-test)
 ## Install
 
 ```bash
-npm install drizzle-test drizzle-orm pg
+npm install drizzle-orm-test drizzle-orm pg
 ```
 
 ## Features
@@ -40,7 +40,7 @@ npm install drizzle-test drizzle-orm pg
 
 ```typescript
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { getConnections, PgTestClient } from 'drizzle-test';
+import { getConnections, PgTestClient } from 'drizzle-orm-test';
 import { pgTable, serial, text } from 'drizzle-orm/pg-core';
 
 // Define your schema
@@ -110,7 +110,7 @@ describe('Drizzle with RLS', () => {
 
 ```typescript
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { getConnections } from 'drizzle-test';
+import { getConnections } from 'drizzle-orm-test';
 import * as schema from './schema';
 
 const { db, teardown } = await getConnections();
@@ -134,7 +134,7 @@ const usersWithPosts = await drizzleDb.query.users.findMany({
 
 ## API
 
-> **Note:** For seeding documentation, see the [pgsql-test README](https://www.npmjs.com/package/pgsql-test) directly. The seeding API is identical since `drizzle-test` uses the same `getConnections()` function and seed adapters.
+> **Note:** For seeding documentation, see the [pgsql-test README](https://www.npmjs.com/package/pgsql-test) directly. The seeding API is identical since `drizzle-orm-test` uses the same `getConnections()` function and seed adapters.
 
 ### `getConnections(cn?, seedAdapters?)`
 
@@ -170,7 +170,7 @@ Re-exported from `pgsql-test` for convenience. See [pgsql-test documentation](ht
 
 ```typescript
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { getConnections } from 'drizzle-test';
+import { getConnections } from 'drizzle-orm-test';
 import { eq } from 'drizzle-orm';
 
 describe('RLS Policies', () => {
@@ -263,7 +263,7 @@ describe('RLS Policies', () => {
 
 ```typescript
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { getConnections } from 'drizzle-test';
+import { getConnections } from 'drizzle-orm-test';
 
 let db1, db2, teardown;
 
@@ -342,11 +342,11 @@ const result = await drizzleDb.select().from(users); // No RLS context applied â
 
 ## The Solution
 
-`drizzle-test` is a drop-in replacement for `pgsql-test` that patches `db.client.query()` to automatically apply context before each query. This allows you to use the standard Drizzle pattern while maintaining full RLS support.
+`drizzle-orm-test` is a drop-in replacement for `pgsql-test` that patches `db.client.query()` to automatically apply context before each query. This allows you to use the standard Drizzle pattern while maintaining full RLS support.
 
 ```typescript
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { getConnections, PgTestClient } from 'drizzle-test';
+import { getConnections, PgTestClient } from 'drizzle-orm-test';
 
 const { db } = await getConnections();
 db.setContext({ userId: '123' }); // Context is applied!
@@ -357,7 +357,7 @@ const result = await drizzleDb.select().from(users); // RLS context applied âœ“
 
 ## How It Works
 
-`drizzle-test` patches `db.client.query()` to automatically execute SET LOCAL statements before each query. This ensures that:
+`drizzle-orm-test` patches `db.client.query()` to automatically execute SET LOCAL statements before each query. This ensures that:
 
 1. **Context is applied**: Role and JWT claims are set via `SET LOCAL` before every Drizzle query
 2. **RLS policies work**: PostgreSQL Row-Level Security policies can check `current_setting('jwt.claims.*')` 
@@ -374,8 +374,8 @@ If you're already using `pgsql-test`, migration is simple:
 // Before (pgsql-test)
 import { getConnections, PgTestClient } from 'pgsql-test';
 
-// After (drizzle-test)
-import { getConnections, PgTestClient } from 'drizzle-test';
+// After (drizzle-orm-test)
+import { getConnections, PgTestClient } from 'drizzle-orm-test';
 
 // Everything else stays the same!
 // Now you can also use Drizzle ORM with full RLS support

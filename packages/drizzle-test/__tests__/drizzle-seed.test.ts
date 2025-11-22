@@ -1,4 +1,4 @@
-process.env.LOG_SCOPE = 'drizzle-test';
+process.env.LOG_SCOPE = 'drizzle-orm-test';
 import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
@@ -39,7 +39,7 @@ const pets = [
 ];
 
 beforeAll(async () => {
-  testDir = join(tmpdir(), `drizzle-test-${Date.now()}`);
+  testDir = join(tmpdir(), `drizzle-orm-test-${Date.now()}`);
   mkdirSync(testDir, { recursive: true });
 
   ({ pg, db, teardown } = await getConnections({}, [
