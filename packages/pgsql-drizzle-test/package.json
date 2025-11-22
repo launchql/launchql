@@ -46,7 +46,8 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/pg": "^8.15.2"
+    "@types/pg": "^8.15.2",
+    "drizzle-orm": "^0.44.7"
   },
   "dependencies": {
     "pgsql-test": "workspace:^"
