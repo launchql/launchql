@@ -116,7 +116,10 @@ import * as schema from './schema';
 const { db, teardown } = await getConnections();
 
 // Set context on db
-db.auth({ userId: '123', role: 'authenticated' });
+db.setContext({ 
+  role: 'authenticated', 
+  'jwt.claims.user_id': '123' 
+});
 
 // Use standard Drizzle pattern with schema
 const drizzleDb = drizzle(db.client, { schema });
@@ -331,7 +334,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { getConnections } from 'pgsql-test';
 
 const { db } = await getConnections();
-db.auth({ userId: '123' }); // This context is never applied!
+db.setContext({ userId: '123' }); // This context is never applied!
 
 const drizzleDb = drizzle(db.client); // Drizzle bypasses PgTestClient
 const result = await drizzleDb.select().from(users); // No RLS context applied ❌
@@ -346,7 +349,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { getConnections, PgTestClient } from 'drizzle-test';
 
 const { db } = await getConnections();
-db.auth({ userId: '123' }); // Context is applied!
+db.setContext({ userId: '123' }); // Context is applied!
 
 const drizzleDb = drizzle(db.client); // Standard Drizzle pattern
 const result = await drizzleDb.select().from(users); // RLS context applied ✓
