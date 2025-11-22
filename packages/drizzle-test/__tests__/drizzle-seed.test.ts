@@ -194,11 +194,18 @@ describe('loadCsv() method with Drizzle', () => {
     const csvContent = 'id,name\n' + `${users[2].id},${users[2].name}\n`;
     writeFileSync(csvPath, csvContent);
 
+    // Use savepoint to handle expected failure without aborting transaction
+    const savepointName = 'csv_rls_test';
+    await db.savepoint(savepointName);
+    
     await expect(
       db.loadCsv({
         'custom.users': csvPath
       })
     ).rejects.toThrow('COPY FROM not supported with row-level security');
+    
+    // Rollback to savepoint to clear the error state
+    await db.rollback(savepointName);
   });
 
   it('should load users and pets from CSV and query via Drizzle', async () => {
