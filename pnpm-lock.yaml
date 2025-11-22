@@ -269,6 +269,23 @@ importers:
         version: 4.0.5
     publishDirectory: dist
 
+  packages/drizzle-test:
+    dependencies:
+      pg:
+        specifier: ^8.16.0
+        version: 8.16.3
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../pgsql-test/dist
+    devDependencies:
+      '@types/pg':
+        specifier: ^8.15.2
+        version: 8.15.6
+      drizzle-orm:
+        specifier: ^0.44.7
+        version: 0.44.7(@types/pg@8.15.6)(pg@8.16.3)
+    publishDirectory: dist
+
   packages/env:
     dependencies:
       '@launchql/types':
@@ -813,23 +830,6 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
-    publishDirectory: dist
-
-  packages/pgsql-drizzle-test:
-    dependencies:
-      pg:
-        specifier: ^8.16.0
-        version: 8.16.3
-      pgsql-test:
-        specifier: workspace:^
-        version: link:../pgsql-test/dist
-    devDependencies:
-      '@types/pg':
-        specifier: ^8.15.2
-        version: 8.15.6
-      drizzle-orm:
-        specifier: ^0.44.7
-        version: 0.44.7(@types/pg@8.15.6)(pg@8.16.3)
     publishDirectory: dist
 
   packages/pgsql-test:
