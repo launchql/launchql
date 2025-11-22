@@ -83,7 +83,7 @@ Master end-to-end PostgreSQL testing with ephemeral databases, RLS testing, and 
  5. ⚡ [Supabase Testing](https://launchql.com/learn/supabase)
 Use TypeScript-first tools to test Supabase projects with realistic RLS, policies, and auth contexts.
 
- 6. ⚡ [Drizzle ORM Testing](https://launchql.com/learn/drizzle-testing)
+ 6. 💧 [Drizzle ORM Testing](https://launchql.com/learn/drizzle-testing)
 Run full-stack tests with Drizzle ORM, including database setup, teardown, and RLS enforcement.
 
  7. 🔧 [Troubleshooting](https://launchql.com/learn/troubleshooting)
