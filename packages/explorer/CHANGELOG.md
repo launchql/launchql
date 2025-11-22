@@ -3,13 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [2.7.6](https://github.com/launchql/launchql/compare/@launchql/explorer@2.7.5...@launchql/explorer@2.7.6) (2025-11-22)
+## [2.7.7](https://github.com/launchql/launchql/compare/@launchql/explorer@2.7.5...@launchql/explorer@2.7.7) (2025-11-22)
 
 **Note:** Version bump only for package @launchql/explorer
 
+## [2.7.6](https://github.com/launchql/launchql/compare/@launchql/explorer@2.7.5...@launchql/explorer@2.7.6) (2025-11-22)
 
-
-
+**Note:** Version bump only for package @launchql/explorer
 
 ## [2.7.5](https://github.com/launchql/launchql/compare/@launchql/explorer@2.7.4...@launchql/explorer@2.7.5) (2025-11-21)
 

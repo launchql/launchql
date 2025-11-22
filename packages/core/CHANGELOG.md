@@ -3,16 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [2.16.0](https://github.com/launchql/launchql/compare/@launchql/core@2.15.4...@launchql/core@2.16.0) (2025-11-22)
-
+# [2.17.0](https://github.com/launchql/launchql/compare/@launchql/core@2.15.4...@launchql/core@2.17.0) (2025-11-22)
 
 ### Features
 
-* **core:** add file creation logging to pgpm add command ([67e9083](https://github.com/launchql/launchql/commit/67e9083756bb7d869a32bcf2f58b337fed63d510))
+- **core:** add file creation logging to pgpm add command ([67e9083](https://github.com/launchql/launchql/commit/67e9083756bb7d869a32bcf2f58b337fed63d510))
 
+# [2.16.0](https://github.com/launchql/launchql/compare/@launchql/core@2.15.4...@launchql/core@2.16.0) (2025-11-22)
 
+### Features
 
-
+- **core:** add file creation logging to pgpm add command ([67e9083](https://github.com/launchql/launchql/commit/67e9083756bb7d869a32bcf2f58b337fed63d510))
 
 ## [2.15.4](https://github.com/launchql/launchql/compare/@launchql/core@2.15.3...@launchql/core@2.15.4) (2025-11-21)
 

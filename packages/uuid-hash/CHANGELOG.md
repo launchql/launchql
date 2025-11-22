@@ -3,13 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [2.2.6](https://github.com/launchql/launchql/compare/uuid-hash@2.2.5...uuid-hash@2.2.6) (2025-11-22)
+## [2.2.7](https://github.com/launchql/launchql/compare/uuid-hash@2.2.5...uuid-hash@2.2.7) (2025-11-22)
 
 **Note:** Version bump only for package uuid-hash
 
+## [2.2.6](https://github.com/launchql/launchql/compare/uuid-hash@2.2.5...uuid-hash@2.2.6) (2025-11-22)
 
-
-
+**Note:** Version bump only for package uuid-hash
 
 ## [2.2.5](https://github.com/launchql/launchql/compare/uuid-hash@2.2.4...uuid-hash@2.2.5) (2025-11-20)
 
