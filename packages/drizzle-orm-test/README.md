@@ -16,12 +16,14 @@
   </a>
 </p>
 
-Drop-in replacement for [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) that enables Drizzle ORM to work seamlessly with context management and RLS (Row-Level Security) testing.
+`drizzle-orm-test` is a Drizzle ORM-optimized version of [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) designed to work work seamlessly with context management and RLS (Row-Level Security) testing. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for local-first development environment. It's also great for GitHub Actions and CI/CD testing.
+
+Explore a full working example (including GitHub Actions CI/CD) in the [`drizzle-test-suite`](https://github.com/launchql/drizzle-test-suite) repo.
 
 ## Install
 
 ```bash
-npm install drizzle-orm-test drizzle-orm pg
+npm install drizzle-orm-test
 ```
 
 ## Features
@@ -33,6 +35,11 @@ npm install drizzle-orm-test drizzle-orm pg
 * 🌱 **Flexible seeding** — run `.sql` files, programmatic seeds, or even load fixtures
 * 🧪 **Compatible with any async runner** — works with `Jest`, `Mocha`, etc.
 * 🧹 **Auto teardown** — no residue, no reboots, just clean exits
+
+### Tutorials
+
+📚 **[Learn how to test with Drizzle ORM →](https://launchql.com/learn/drizzle-testing)**
+
 
 ## Usage
 
@@ -396,9 +403,12 @@ Master the workflow for adding, organizing, and managing database changes with p
 Master end-to-end PostgreSQL testing with ephemeral databases, RLS testing, and CI/CD automation.
 
  5. ⚡ [Supabase Testing](https://launchql.com/learn/supabase)
-TypeScript-native testing for Supabase with modern workflows.
+Use TypeScript-first tools to test Supabase projects with realistic RLS, policies, and auth contexts.
 
- 6. 🔧 [Troubleshooting](https://launchql.com/learn/troubleshooting)
+ 6. ⚡ [Drizzle ORM Testing](https://launchql.com/learn/drizzle-testing)
+Run full-stack tests with Drizzle ORM, including database setup, teardown, and RLS enforcement.
+
+ 7. 🔧 [Troubleshooting](https://launchql.com/learn/troubleshooting)
 Common issues and solutions for pgpm, PostgreSQL, and testing.
 
 ## Related LaunchQL Tooling
