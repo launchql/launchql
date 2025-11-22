@@ -19,24 +19,31 @@ const posts = pgTable('posts', {
 
 describe('pgsql-drizzle-test', () => {
   let db: PgTestClient;
+  let pg: PgTestClient;
   let teardown: () => Promise<void>;
 
   beforeAll(async () => {
-    ({ db, teardown } = await getConnections());
+    ({ pg, db, teardown } = await getConnections());
 
-    // Setup schema
-    await db.query(`
+    // Setup schema using pg (superuser) with proper grants
+    await pg.query(`
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
         user_id TEXT
       );
 
+      GRANT ALL ON TABLE users TO authenticated;
+      GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO authenticated;
+
       CREATE TABLE posts (
         id SERIAL PRIMARY KEY,
         user_id TEXT NOT NULL,
         content TEXT NOT NULL
       );
+
+      GRANT ALL ON TABLE posts TO authenticated;
+      GRANT USAGE, SELECT ON SEQUENCE posts_id_seq TO authenticated;
     `);
   });
 
