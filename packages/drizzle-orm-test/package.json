@@ -1,6 +1,6 @@
 {
   "name": "drizzle-orm-test",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Drop-in replacement for pgsql-test that enables Drizzle ORM to work seamlessly with context management and RLS testing",
   "main": "index.js",
@@ -50,11 +50,10 @@
     "drizzle-orm": "^0.44.7"
   },
   "dependencies": {
-    "pgsql-test": "^2.14.4"
+    "pgsql-test": "workspace:^"
   },
   "peerDependencies": {
     "drizzle-orm": ">=0.30.0",
     "pg": "^8.16.0"
-  },
-  "gitHead": "a7b3a706bd5392fae8644951d00c61302e26279a"
+  }
 }

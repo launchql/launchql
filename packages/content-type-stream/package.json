@@ -1,6 +1,6 @@
 {
   "name": "@launchql/content-type-stream",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "detect content-types via streams",
   "main": "index.js",

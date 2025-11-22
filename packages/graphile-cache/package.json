@@ -1,6 +1,6 @@
 {
   "name": "graphile-cache",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile LRU cache with automatic pool cleanup integration",
   "main": "index.js",

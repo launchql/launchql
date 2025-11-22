@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.6](https://github.com/launchql/launchql/compare/@launchql/react@2.13.5...@launchql/react@2.13.6) (2025-11-22)
+
+**Note:** Version bump only for package @launchql/react
+
+
+
+
+
 ## [2.13.5](https://github.com/launchql/launchql/compare/@launchql/react@2.13.4...@launchql/react@2.13.5) (2025-11-21)
 
 **Note:** Version bump only for package @launchql/react

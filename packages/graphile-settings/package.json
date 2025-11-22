@@ -1,6 +1,6 @@
 {
   "name": "graphile-settings",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile settings",
   "main": "index.js",

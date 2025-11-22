@@ -1,6 +1,6 @@
 {
   "name": "gql-ast",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "GraphQL ASTs",
   "main": "index.js",

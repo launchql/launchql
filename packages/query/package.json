@@ -1,6 +1,6 @@
 {
   "name": "@launchql/query",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "description": "LaunchQL Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
