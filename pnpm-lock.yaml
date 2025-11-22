@@ -817,9 +817,6 @@ importers:
 
   packages/pgsql-drizzle-test:
     dependencies:
-      drizzle-orm:
-        specifier: '>=0.30.0'
-        version: 0.44.7(@types/pg@8.15.6)(pg@8.16.3)
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -830,6 +827,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      drizzle-orm:
+        specifier: ^0.44.7
+        version: 0.44.7(@types/pg@8.15.6)(pg@8.16.3)
     publishDirectory: dist
 
   packages/pgsql-test:
