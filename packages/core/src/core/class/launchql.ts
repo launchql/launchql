@@ -837,6 +837,8 @@ export class LaunchQLPackage {
       throw errors.PATH_NOT_FOUND({ path: 'module path', type: 'module' });
     }
 
+    const createdFiles: string[] = [];
+
     const createSqlFile = (type: 'deploy' | 'revert' | 'verify', content: string) => {
       const dir = path.dirname(changeName);
       const fileName = path.basename(changeName);
@@ -846,6 +848,10 @@ export class LaunchQLPackage {
       
       fs.mkdirSync(targetDir, { recursive: true });
       fs.writeFileSync(filePath, content);
+      
+      // Track the relative path from module root
+      const relativePath = path.relative(this.modulePath!, filePath);
+      createdFiles.push(relativePath);
     };
 
     // Create deploy file
@@ -871,6 +877,13 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
     createSqlFile('deploy', deployContent);
     createSqlFile('revert', revertContent);
     createSqlFile('verify', verifyContent);
+
+    // Log created files to stdout
+    process.stdout.write('\n✔ Files created\n\n');
+    createdFiles.forEach(file => {
+      process.stdout.write(`   create  ${file}\n`);
+    });
+    process.stdout.write('\n✨ All set!\n\n');
   }
 
   // ──────────────── Packaging and npm ────────────────
