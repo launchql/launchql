@@ -40,9 +40,7 @@
     "sqitch"
   ],
   "devDependencies": {
-    "@types/glob": "^9.0.0",
-    "@types/pg": "^8.15.2",
-    "@types/rimraf": "^4.0.5"
+    "@types/pg": "^8.15.2"
   },
   "dependencies": {
     "@launchql/env": "workspace:^",

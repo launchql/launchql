@@ -31,7 +31,6 @@
     "@types/jest": "^30.0.0",
     "@types/jest-in-case": "^1.0.9",
     "@types/node": "^20.12.7",
-    "@types/rimraf": "^4.0.5",
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
     "copyfiles": "^2.4.1",
@@ -44,7 +43,6 @@
     "lerna": "^8.2.3",
     "prettier": "^3.0.2",
     "rimraf": "6.1.2",
-    "strip-ansi": "^6",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"

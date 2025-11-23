@@ -22,9 +22,6 @@ importers:
       '@types/node':
         specifier: ^20.12.7
         version: 20.19.25
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.47.0
         version: 8.47.0(@typescript-eslint/parser@8.47.0(eslint@9.39.1)(typescript@5.9.3))(eslint@9.39.1)(typescript@5.9.3)
@@ -61,9 +58,6 @@ importers:
       rimraf:
         specifier: 6.1.2
         version: 6.1.2
-      strip-ansi:
-        specifier: ^6
-        version: 6.0.1
       ts-jest:
         specifier: ^29.1.1
         version: 29.4.5(@babel/core@7.28.5)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@30.2.0(@babel/core@7.28.5))(jest-util@30.2.0)(jest@30.2.0(@types/node@20.19.25)(ts-node@10.9.2(@types/node@20.19.25)(typescript@5.9.3)))(typescript@5.9.3)
@@ -151,9 +145,6 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0
     devDependencies:
-      '@types/glob':
-        specifier: ^9.0.0
-        version: 9.0.0
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
@@ -258,15 +249,9 @@ importers:
         specifier: ^6.1.2
         version: 6.1.2
     devDependencies:
-      '@types/glob':
-        specifier: ^9.0.0
-        version: 9.0.0
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
     publishDirectory: dist
 
   packages/drizzle-orm-test:
@@ -304,6 +289,10 @@ importers:
       etag-hash:
         specifier: workspace:^
         version: link:../etag-hash/dist
+    devDependencies:
+      glob:
+        specifier: ^13.0.0
+        version: 13.0.0
     publishDirectory: dist
 
   packages/explorer:
@@ -360,9 +349,6 @@ importers:
       '@types/graphql-upload':
         specifier: ^8.0.12
         version: 8.0.12
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -399,9 +385,6 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -517,9 +500,6 @@ importers:
       '@types/request-ip':
         specifier: ^0.0.41
         version: 0.0.41
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -653,9 +633,6 @@ importers:
 
   packages/mime-bytes:
     devDependencies:
-      '@types/glob':
-        specifier: ^9.0.0
-        version: 9.0.0
       glob:
         specifier: ^13.0.0
         version: 13.0.0
@@ -803,9 +780,6 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0
     devDependencies:
-      '@types/glob':
-        specifier: ^9.0.0
-        version: 9.0.0
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
@@ -865,9 +839,6 @@ importers:
         specifier: workspace:^
         version: link:../pg-env/dist
     devDependencies:
-      '@types/csv-parse':
-        specifier: ^1.2.5
-        version: 1.2.5
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
@@ -948,12 +919,9 @@ importers:
       '@launchql/s3-utils':
         specifier: workspace:^
         version: link:../s3-utils/dist
-      '@types/glob':
-        specifier: ^9.0.0
-        version: 9.0.0
       dotenv:
-        specifier: ^16.5.0
-        version: 16.6.1
+        specifier: ^17.2.3
+        version: 17.2.3
       envalid:
         specifier: ^8.0.0
         version: 8.1.1
@@ -1012,7 +980,7 @@ importers:
         specifier: ^2.8.5
         version: 2.8.5
       dotenv:
-        specifier: ^17.2.1
+        specifier: ^17.2.3
         version: 17.2.3
       express:
         specifier: ^5.1.0
@@ -1099,9 +1067,6 @@ importers:
       '@types/request-ip':
         specifier: ^0.0.41
         version: 0.0.41
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -1175,15 +1140,9 @@ importers:
         specifier: ^6.1.2
         version: 6.1.2
     devDependencies:
-      '@types/glob':
-        specifier: ^9.0.0
-        version: 9.0.0
       '@types/node':
         specifier: ^20.12.7
         version: 20.19.25
-      '@types/rimraf':
-        specifier: ^4.0.5
-        version: 4.0.5
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
@@ -2421,10 +2380,6 @@ packages:
   '@types/cors@2.8.19':
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
 
-  '@types/csv-parse@1.2.5':
-    resolution: {integrity: sha512-3PoFyWeuFGqale09vFydLQ6IGdvD+mizcXcB8s6ImWv+830IF0HckvewgcGVfGnTFImqvfvhpYZYod2QqGGGdg==}
-    deprecated: This is a stub types definition. csv-parse provides its own type definitions, so you do not need this installed.
-
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -2433,10 +2388,6 @@ packages:
 
   '@types/express@5.0.5':
     resolution: {integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==}
-
-  '@types/glob@9.0.0':
-    resolution: {integrity: sha512-00UxlRaIUvYm4R4W9WYkN8/J+kV8fmOQ7okeH6YFtGWFMt3odD45tpG5yA5wnL7HE6lLgjaTW5n14ju2hl2NNA==}
-    deprecated: This is a stub types definition. glob provides its own type definitions, so you do not need this installed.
 
   '@types/graphql-upload@8.0.12':
     resolution: {integrity: sha512-M0ZPZqNUzKNB16q5woEzgG/Q8DjICV80K7JvDSRnDmDFfrRdfFX/n6PbmqAN7gCzECcHVnw1gk6N4Cg0FwxCqA==}
@@ -2527,10 +2478,6 @@ packages:
 
   '@types/request-ip@0.0.41':
     resolution: {integrity: sha512-Qzz0PM2nSZej4lsLzzNfADIORZhhxO7PED0fXpg4FjXiHuJ/lMyUg+YFF5q8x9HPZH3Gl6N+NOM8QZjItNgGKg==}
-
-  '@types/rimraf@4.0.5':
-    resolution: {integrity: sha512-DTCZoIQotB2SUJnYgrEx43cQIUYOlNZz0AZPbKU4PSLYTUdML5Gox0++z4F9kQocxStrCmRNhi4x5x/UlwtKUA==}
-    deprecated: This is a stub types definition. rimraf provides its own type definitions, so you do not need this installed.
 
   '@types/send@0.17.6':
     resolution: {integrity: sha512-Uqt8rPBE8SY0RK8JB1EzVOIZ32uqy8HwdxCnoCOsYrvnswqmFZ/k+9Ikidlk/ImhsdvBsloHbAlewb2IEBV/Og==}
@@ -3426,10 +3373,6 @@ packages:
 
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
-    engines: {node: '>=12'}
-
-  dotenv@16.6.1:
-    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
 
   dotenv@17.2.3:
@@ -8256,10 +8199,6 @@ snapshots:
     dependencies:
       '@types/node': 20.19.25
 
-  '@types/csv-parse@1.2.5':
-    dependencies:
-      csv-parse: 6.1.0
-
   '@types/estree@1.0.8': {}
 
   '@types/express-serve-static-core@5.1.0':
@@ -8274,10 +8213,6 @@ snapshots:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 5.1.0
       '@types/serve-static': 1.15.10
-
-  '@types/glob@9.0.0':
-    dependencies:
-      glob: 13.0.0
 
   '@types/graphql-upload@8.0.12':
     dependencies:
@@ -8384,10 +8319,6 @@ snapshots:
   '@types/request-ip@0.0.41':
     dependencies:
       '@types/node': 20.19.25
-
-  '@types/rimraf@4.0.5':
-    dependencies:
-      rimraf: 6.1.2
 
   '@types/send@0.17.6':
     dependencies:
@@ -9286,11 +9217,9 @@ snapshots:
 
   dotenv-expand@11.0.7:
     dependencies:
-      dotenv: 16.6.1
+      dotenv: 16.4.7
 
   dotenv@16.4.7: {}
-
-  dotenv@16.6.1: {}
 
   dotenv@17.2.3: {}
 

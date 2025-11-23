@@ -31,8 +31,6 @@
   },
   "keywords": [],
   "devDependencies": {
-    "@types/glob": "^9.0.0",
     "glob": "^13.0.0"
-  },
-  "gitHead": "63685fd0c6912d528be3aa21aeef58af130291f1"
+  }
 }

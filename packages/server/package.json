@@ -51,7 +51,7 @@
     "@pyramation/postgis": "^0.1.1",
     "@pyramation/postgraphile-plugin-fulltext-filter": "^2.0.0",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "graphile-build": "^4.14.1",
     "graphile-cache": "workspace:^",
@@ -82,7 +82,6 @@
     "@types/graphql-upload": "^8.0.12",
     "@types/pg": "^8.15.2",
     "@types/request-ip": "^0.0.41",
-    "@types/rimraf": "^4.0.5",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
   }
