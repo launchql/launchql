@@ -297,7 +297,8 @@ export const pgpmDefaults: LaunchQLOptions = {
     bucketName: 'test-bucket',
     awsRegion: 'us-east-1',
     awsAccessKey: 'minioadmin',
-    awsSecretKey: 'minioadmin'
+    awsSecretKey: 'minioadmin',
+    minioEndpoint: 'http://localhost:9000'
   },
   deployment: {
     useTx: true,

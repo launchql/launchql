@@ -30,9 +30,8 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "@launchql/env": "workspace:^",
     "@launchql/s3-utils": "workspace:^",
-    "dotenv": "^17.2.3",
-    "envalid": "^8.0.0",
     "glob": "^13.0.0"
   },
   "dependencies": {
