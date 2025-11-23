@@ -59,8 +59,8 @@ importers:
         specifier: ^3.0.2
         version: 3.6.2
       rimraf:
-        specifier: 4.4.1
-        version: 4.4.1
+        specifier: 6.1.2
+        version: 6.1.2
       strip-ansi:
         specifier: ^6
         version: 6.0.1
@@ -127,8 +127,8 @@ importers:
         specifier: workspace:^
         version: link:../types/dist
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.6.2
+        version: 5.6.2
       inquirerer:
         specifier: ^2.0.8
         version: 2.1.0
@@ -152,8 +152,8 @@ importers:
         version: 0.10.0
     devDependencies:
       '@types/glob':
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^9.0.0
+        version: 9.0.0
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
@@ -170,8 +170,8 @@ importers:
         specifier: ^0.8.16
         version: 0.8.17
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -228,14 +228,14 @@ importers:
         specifier: ^1.6.3
         version: 1.6.3
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.6.2
+        version: 5.6.2
       csv-to-pg:
         specifier: ^2.0.10
         version: 2.0.10(@babel/core@7.28.5)
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
       parse-package-name:
         specifier: ^1.0.0
         version: 1.0.0
@@ -249,18 +249,18 @@ importers:
         specifier: workspace:^
         version: link:../pg-env/dist
       pgsql-deparser:
-        specifier: ^17.12.0
-        version: 17.12.0
+        specifier: ^17.12.1
+        version: 17.12.1
       pgsql-parser:
-        specifier: ^17.9.0
-        version: 17.9.0
+        specifier: ^17.9.1
+        version: 17.9.1
       rimraf:
-        specifier: ^6.0.1
+        specifier: ^6.1.2
         version: 6.1.2
     devDependencies:
       '@types/glob':
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^9.0.0
+        version: 9.0.0
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
@@ -647,18 +647,18 @@ importers:
   packages/logger:
     dependencies:
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.6.2
+        version: 5.6.2
     publishDirectory: dist
 
   packages/mime-bytes:
     devDependencies:
       '@types/glob':
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^9.0.0
+        version: 9.0.0
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
     publishDirectory: dist
 
   packages/orm:
@@ -678,15 +678,15 @@ importers:
         specifier: ^17.6.1
         version: 17.6.1
       nested-obj:
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.1.1
+        version: 0.1.1
     devDependencies:
       pg-proto-parser:
-        specifier: ^1.30.0
-        version: 1.30.0
+        specifier: ^1.30.1
+        version: 1.30.1
       pgsql-deparser:
-        specifier: ^17.12.0
-        version: 17.12.0
+        specifier: ^17.12.1
+        version: 17.12.1
     publishDirectory: dist
 
   packages/pg-cache:
@@ -782,8 +782,8 @@ importers:
         specifier: workspace:^
         version: link:../types/dist
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.6.2
+        version: 5.6.2
       inquirerer:
         specifier: ^2.0.8
         version: 2.1.0
@@ -804,8 +804,8 @@ importers:
         version: 0.10.0
     devDependencies:
       '@types/glob':
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^9.0.0
+        version: 9.0.0
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
@@ -822,8 +822,8 @@ importers:
         specifier: ^0.8.16
         version: 0.8.17
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -850,8 +850,8 @@ importers:
         specifier: workspace:^
         version: link:../types/dist
       csv-parse:
-        specifier: ^5.5.5
-        version: 5.6.0
+        specifier: ^6.1.0
+        version: 6.1.0
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -859,14 +859,14 @@ importers:
         specifier: workspace:^
         version: link:../pg-cache/dist
       pg-copy-streams:
-        specifier: ^6.0.6
-        version: 6.0.6
+        specifier: ^7.0.0
+        version: 7.0.0
       pg-env:
         specifier: workspace:^
         version: link:../pg-env/dist
     devDependencies:
       '@types/csv-parse':
-        specifier: ^1.2.4
+        specifier: ^1.2.5
         version: 1.2.5
       '@types/pg':
         specifier: ^8.15.2
@@ -949,8 +949,8 @@ importers:
         specifier: workspace:^
         version: link:../s3-utils/dist
       '@types/glob':
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^9.0.0
+        version: 9.0.0
       dotenv:
         specifier: ^16.5.0
         version: 16.6.1
@@ -958,8 +958,8 @@ importers:
         specifier: ^8.0.0
         version: 8.1.1
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
     publishDirectory: dist
 
   packages/s3-utils:
@@ -1144,6 +1144,10 @@ importers:
       etag-hash:
         specifier: workspace:^
         version: link:../etag-hash/dist
+    devDependencies:
+      glob:
+        specifier: ^13.0.0
+        version: 13.0.0
     publishDirectory: dist
 
   packages/supabase-test:
@@ -1165,15 +1169,15 @@ importers:
         specifier: ^1.6.3
         version: 1.6.3
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
       rimraf:
-        specifier: ^6.0.1
+        specifier: ^6.1.2
         version: 6.1.2
     devDependencies:
       '@types/glob':
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^9.0.0
+        version: 9.0.0
       '@types/node':
         specifier: ^20.12.7
         version: 20.19.25
@@ -1204,8 +1208,8 @@ importers:
   packages/upload-names:
     devDependencies:
       glob:
-        specifier: ^11.0.2
-        version: 11.1.0
+        specifier: ^13.0.0
+        version: 13.0.0
     publishDirectory: dist
 
   packages/url-domains:
@@ -1445,20 +1449,8 @@ packages:
     resolution: {integrity: sha512-2+1thGUUWWjLTYTHZWK1n8Yga0ijBz1XAhUXcKy81rd5g6yh7hGqMp45v7cadSbEHc9G3OTv45SyneRN3ps4DQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-environment-visitor@7.24.7':
-    resolution: {integrity: sha512-DoiN84+4Gnd0ncbBOM9AZENV4a5ZiL39HYMyZJGZ/AZEykHYdJw0wW3kdcsh9/Kn+BRXHLkkklZ51ecPKmI1CQ==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-function-name@7.24.7':
-    resolution: {integrity: sha512-FyoJTsj/PEUWu1/TYRiXTIHc8lbw+TDYkZuoE43opPS5TrI7MyONBE1oNvfguEXAD9yhQRrVBnXdXzSLQl9XnA==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-globals@7.28.0':
     resolution: {integrity: sha512-+W6cISkXFa1jXsDEdYA8HeevQT/FULhxzR99pxphltZcVaugps53THCeiWA8SguxxpSp3gKPiuYfSWopkLQ4hw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-hoist-variables@7.24.7':
-    resolution: {integrity: sha512-MJJwhkoGy5c4ehfoRyrJ/owKeMl19U54h27YYftT0o2teQ3FJ3nQUf/I3LlJsX4l3qlw7WRXUmiyajvHXoTubQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-module-imports@7.27.1':
@@ -1473,10 +1465,6 @@ packages:
 
   '@babel/helper-plugin-utils@7.27.1':
     resolution: {integrity: sha512-1gn1Up5YXka3YYAHGKpbideQ5Yjf1tDa9qYcgysz+cNCXukyLl6DjPXhD3VRwSb8c0J9tA4b2+rHEZtc6R0tlw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-split-export-declaration@7.24.7':
-    resolution: {integrity: sha512-oy5V7pD+UvfkEATUKvIjvIAH/xCzfsFVw7ygW2SI6NClZzquT+mwdTfgfdbUiceh6iQO0CHtCPsyze/MZ2YbAA==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-string-parser@7.27.1':
@@ -1603,16 +1591,8 @@ packages:
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/traverse@7.24.1':
-    resolution: {integrity: sha512-xuU6o9m68KeqZbQuDt2TcKSxUw/mrsvavlEqQ1leZ/B+C9tk6E4sRWy97WaXgvq5E+nU3cXMxv3WKOCanVMCmQ==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/traverse@7.28.5':
     resolution: {integrity: sha512-TCCj4t55U90khlYkVV/0TfkJkAkUg3jZFA3Neb7unZT8CPok7iiRfaX0F+WnqWqt7OxhOn0uBKXCw4lbL8W0aQ==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.24.0':
-    resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.28.5':
@@ -2454,8 +2434,9 @@ packages:
   '@types/express@5.0.5':
     resolution: {integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==}
 
-  '@types/glob@8.1.0':
-    resolution: {integrity: sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w==}
+  '@types/glob@9.0.0':
+    resolution: {integrity: sha512-00UxlRaIUvYm4R4W9WYkN8/J+kV8fmOQ7okeH6YFtGWFMt3odD45tpG5yA5wnL7HE6lLgjaTW5n14ju2hl2NNA==}
+    deprecated: This is a stub types definition. glob provides its own type definitions, so you do not need this installed.
 
   '@types/graphql-upload@8.0.12':
     resolution: {integrity: sha512-M0ZPZqNUzKNB16q5woEzgG/Q8DjICV80K7JvDSRnDmDFfrRdfFX/n6PbmqAN7gCzECcHVnw1gk6N4Cg0FwxCqA==}
@@ -2507,9 +2488,6 @@ packages:
 
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
-
-  '@types/minimatch@5.1.2':
-    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
 
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
@@ -3078,6 +3056,10 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
+  chalk@5.6.2:
+    resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
   char-regex@1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
     engines: {node: '>=10'}
@@ -3308,8 +3290,8 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  csv-parse@5.6.0:
-    resolution: {integrity: sha512-l3nz3euub2QMg5ouu5U09Ew9Wf6/wQ8I++ch1loQ0ljmzhmfZYrH9fflS22i/PQEvsPvxCwxgz5q7UB8K1JO4Q==}
+  csv-parse@6.1.0:
+    resolution: {integrity: sha512-CEE+jwpgLn+MmtCpVcPtiCZpVtB6Z2OKPTr34pycYYoL7sxdOkXDdQ4lRiw6ioC0q6BLqhc6cKweCVvral8yhw==}
 
   csv-parser@2.3.5:
     resolution: {integrity: sha512-LCHolC4AlNwL+5EuD5LH2VVNKpD8QixZW2zzK1XmrVYUaslFY4c5BooERHOCIubG9iv/DAyFjs4x0HvWNZuyWg==}
@@ -4000,10 +3982,6 @@ packages:
   glob@9.3.5:
     resolution: {integrity: sha512-e1LleDykUz2Iu+MTYdkSsuWX8lvAjAcs0Xef0lNIu0S2wOAzuTxCJtcd9S3cijlwYF18EsU3rzb8jPVobxDh9Q==}
     engines: {node: '>=16 || 14 >=14.17'}
-
-  globals@11.12.0:
-    resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
-    engines: {node: '>=4'}
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -4974,8 +4952,8 @@ packages:
   nested-obj@0.0.1:
     resolution: {integrity: sha512-kB1WKTng+IePQhZVs1UXtFaHBx4QEM5a0XKGAzYfCKvdx5DhNjCytNDWMUGpNNpHLotln+tiwcA52kWCIgGq1Q==}
 
-  nested-obj@0.1.0:
-    resolution: {integrity: sha512-xxIAjJiO2K/Xovr3nZjUQ7c9HKlYx876FOmsiP+tSdGj58L6+EYP1+UAV6k7JDqlbzpwrdhPNFIKMBVdxOud4Q==}
+  nested-obj@0.1.1:
+    resolution: {integrity: sha512-QNP5SWqeIxvJeXMLX89eM26jSOeA89pYVAyFK50tS7ZXPdB+WY1MhQGaHvReRu0pFRjZBGojNc66wumsj7ENxw==}
 
   node-fetch@2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
@@ -5095,9 +5073,6 @@ packages:
 
   oblivious-set@1.0.0:
     resolution: {integrity: sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw==}
-
-  obuf@1.1.2:
-    resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
 
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
@@ -5278,8 +5253,8 @@ packages:
   pg-connection-string@2.9.1:
     resolution: {integrity: sha512-nkc6NpDcvPVpZXxrreI/FOtX3XemeLl8E0qFr6F2Lrm/I8WOnaWNhIPK2Z7OHpw7gh5XJThi6j6ppgNoaT1w4w==}
 
-  pg-copy-streams@6.0.6:
-    resolution: {integrity: sha512-Z+Dd2C2NIDTsjyFKmc6a9QLlpM8tjpERx+43RSx0WmL7j3uNChERi3xSvZUL0hWJ1oRUn4S3fhyt3apdSrTyKQ==}
+  pg-copy-streams@7.0.0:
+    resolution: {integrity: sha512-zBvnY6wtaBRE2ae2xXWOOGMaNVPkXh1vhypAkNSKgMdciJeTyIQAHZaEeRAxUjs/p1El5jgzYmwG5u871Zj3dQ==}
 
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
@@ -5290,8 +5265,8 @@ packages:
     peerDependencies:
       pg: '>=8.0'
 
-  pg-proto-parser@1.30.0:
-    resolution: {integrity: sha512-/inuixEVahAQ+ItToi82arFwzrUANd/mrbgwSi/JkIcPaNLzZynCua23a8BmJsrG207uDB8Sfa2bzq5eanX1VA==}
+  pg-proto-parser@1.30.1:
+    resolution: {integrity: sha512-0Ng4SeZT6B43tNVRmnvN0/xp9PUtiO2NfXjRl3J73K2J5Hvkq31gREAOvbn6hGpxvB7mZ6Ib5ZJxQH5oeoJ8kQ==}
 
   pg-protocol@1.10.3:
     resolution: {integrity: sha512-6DIBgBQaTKDJyxnXaLiLR8wBpQQcGWuAESkRBX/t6OwA8YsqP+iVSiond2EDy6Y/dsGk8rh/jtax3js5NeV7JQ==}
@@ -5325,14 +5300,14 @@ packages:
   pgsql-deparser@1.3.1:
     resolution: {integrity: sha512-TQ+cGdpvjoVlPoWjrEUcIvHI32+IGPevJQopAFtfKUIOV8dIQ6HxWCgLriwc6LCGkMnorp2n1jX0k7HVnlzgIg==}
 
-  pgsql-deparser@17.12.0:
-    resolution: {integrity: sha512-s95hCpjaAkjT2bcsU3Jh++7DxqJgrp7aK+uHG3F15RT6eMQ5hNY2AlCf7wdLB/F3vQLxWkwybyRwHt2cLIILaw==}
+  pgsql-deparser@17.12.1:
+    resolution: {integrity: sha512-G27wb4rhXNwaV8+/ni3RlGV+CMk753ErX341c4rY98hI8xPbPI07dYGxT3asur0HW4SyyNZ4cS1vhfwLfxPLaA==}
 
   pgsql-enums@1.1.1:
     resolution: {integrity: sha512-Qfqw/tnSG4+ceC311Gzuf45QYavCbKbXOiXdVyie0n0ukR797sWhJvEUYPCx9MtO/OKEKtkoSQfzW1mq4kKTrg==}
 
-  pgsql-parser@17.9.0:
-    resolution: {integrity: sha512-aVpVbrrBZNq5mM9hcUB06YvShQBE6WG/6nLj+R8FIE3WaS6Q+nOWASUfRnpEspE7p3DiBROpYAdkskpARgYmnw==}
+  pgsql-parser@17.9.1:
+    resolution: {integrity: sha512-k6jtq+/dxRB2HxzrUlzdoDGA1Dim5n2IL2i93pP0UQCWZF3hQYYf09p5DdHBhxazLX8R/nw5NxfXoA4j1hwgxg==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -5855,8 +5830,8 @@ packages:
     resolution: {integrity: sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==}
     engines: {node: '>=0.8.0'}
 
-  strfy-js@3.1.0:
-    resolution: {integrity: sha512-qjdDnLEry5qFp3GkyIVolIZ4LO28hy9bbi/QRjpgtiu8Em9iSl8nyrnEuTInf9epWH27ZDMVg6LhlZHYzp/fdA==}
+  strfy-js@3.1.1:
+    resolution: {integrity: sha512-dlb74GjRp1aMGD1ZAWp90KvjBsAoufdn2k2QSbVL62tw1ry7qTHozqUHpLdCY2EAbdw+cAxCptreEENaTKmx0Q==}
 
   string-length@4.0.2:
     resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}
@@ -6003,10 +5978,6 @@ packages:
 
   tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
-
-  to-fast-properties@2.0.0:
-    resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
-    engines: {node: '>=4'}
 
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
@@ -6890,20 +6861,7 @@ snapshots:
       lru-cache: 5.1.1
       semver: 6.3.1
 
-  '@babel/helper-environment-visitor@7.24.7':
-    dependencies:
-      '@babel/types': 7.28.5
-
-  '@babel/helper-function-name@7.24.7':
-    dependencies:
-      '@babel/template': 7.27.2
-      '@babel/types': 7.28.5
-
   '@babel/helper-globals@7.28.0': {}
-
-  '@babel/helper-hoist-variables@7.24.7':
-    dependencies:
-      '@babel/types': 7.28.5
 
   '@babel/helper-module-imports@7.27.1':
     dependencies:
@@ -6922,10 +6880,6 @@ snapshots:
       - supports-color
 
   '@babel/helper-plugin-utils@7.27.1': {}
-
-  '@babel/helper-split-export-declaration@7.24.7':
-    dependencies:
-      '@babel/types': 7.28.5
 
   '@babel/helper-string-parser@7.27.1': {}
 
@@ -7039,21 +6993,6 @@ snapshots:
       '@babel/parser': 7.28.5
       '@babel/types': 7.28.5
 
-  '@babel/traverse@7.24.1':
-    dependencies:
-      '@babel/code-frame': 7.27.1
-      '@babel/generator': 7.28.5
-      '@babel/helper-environment-visitor': 7.24.7
-      '@babel/helper-function-name': 7.24.7
-      '@babel/helper-hoist-variables': 7.24.7
-      '@babel/helper-split-export-declaration': 7.24.7
-      '@babel/parser': 7.28.5
-      '@babel/types': 7.24.0
-      debug: 4.4.3(supports-color@5.5.0)
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/traverse@7.28.5':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -7065,12 +7004,6 @@ snapshots:
       debug: 4.4.3(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
-
-  '@babel/types@7.24.0':
-    dependencies:
-      '@babel/helper-string-parser': 7.27.1
-      '@babel/helper-validator-identifier': 7.28.5
-      to-fast-properties: 2.0.0
 
   '@babel/types@7.28.5':
     dependencies:
@@ -8325,7 +8258,7 @@ snapshots:
 
   '@types/csv-parse@1.2.5':
     dependencies:
-      csv-parse: 5.6.0
+      csv-parse: 6.1.0
 
   '@types/estree@1.0.8': {}
 
@@ -8342,10 +8275,9 @@ snapshots:
       '@types/express-serve-static-core': 5.1.0
       '@types/serve-static': 1.15.10
 
-  '@types/glob@8.1.0':
+  '@types/glob@9.0.0':
     dependencies:
-      '@types/minimatch': 5.1.2
-      '@types/node': 20.19.25
+      glob: 13.0.0
 
   '@types/graphql-upload@8.0.12':
     dependencies:
@@ -8410,8 +8342,6 @@ snapshots:
 
   '@types/minimatch@3.0.5': {}
 
-  '@types/minimatch@5.1.2': {}
-
   '@types/minimist@1.2.5': {}
 
   '@types/ms@2.1.0': {}
@@ -8457,7 +8387,7 @@ snapshots:
 
   '@types/rimraf@4.0.5':
     dependencies:
-      rimraf: 4.4.1
+      rimraf: 6.1.2
 
   '@types/send@0.17.6':
     dependencies:
@@ -9033,6 +8963,8 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  chalk@5.6.2: {}
+
   char-regex@1.0.2: {}
 
   chardet@0.4.2: {}
@@ -9266,7 +9198,7 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  csv-parse@5.6.0: {}
+  csv-parse@6.1.0: {}
 
   csv-parser@2.3.5:
     dependencies:
@@ -9888,8 +9820,6 @@ snapshots:
       minimatch: 8.0.4
       minipass: 4.2.8
       path-scurry: 1.11.1
-
-  globals@11.12.0: {}
 
   globals@14.0.0: {}
 
@@ -11168,7 +11098,7 @@ snapshots:
 
   nested-obj@0.0.1: {}
 
-  nested-obj@0.1.0: {}
+  nested-obj@0.1.1: {}
 
   node-fetch@2.6.7(encoding@0.1.13):
     dependencies:
@@ -11349,8 +11279,6 @@ snapshots:
   object-path@0.11.8: {}
 
   oblivious-set@1.0.0: {}
-
-  obuf@1.1.2: {}
 
   on-finished@2.4.1:
     dependencies:
@@ -11556,9 +11484,7 @@ snapshots:
 
   pg-connection-string@2.9.1: {}
 
-  pg-copy-streams@6.0.6:
-    dependencies:
-      obuf: 1.1.2
+  pg-copy-streams@7.0.0: {}
 
   pg-int8@1.0.1: {}
 
@@ -11566,17 +11492,17 @@ snapshots:
     dependencies:
       pg: 8.16.3
 
-  pg-proto-parser@1.30.0:
+  pg-proto-parser@1.30.1:
     dependencies:
       '@babel/generator': 7.28.5
       '@babel/parser': 7.28.5
-      '@babel/traverse': 7.24.1
-      '@babel/types': 7.24.0
+      '@babel/traverse': 7.28.5
+      '@babel/types': 7.28.5
       '@launchql/protobufjs': 7.2.6
       case: 1.6.3
       deepmerge: 4.3.1
-      nested-obj: 0.0.1
-      strfy-js: 3.1.0
+      nested-obj: 0.1.1
+      strfy-js: 3.1.1
     transitivePeerDependencies:
       - supports-color
 
@@ -11623,7 +11549,7 @@ snapshots:
       lodash: 4.17.20
       pgsql-enums: 1.1.1
 
-  pgsql-deparser@17.12.0:
+  pgsql-deparser@17.12.1:
     dependencies:
       '@pgsql/types': 17.6.1
 
@@ -11631,11 +11557,11 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.28.4
 
-  pgsql-parser@17.9.0:
+  pgsql-parser@17.9.1:
     dependencies:
       '@pgsql/types': 17.6.1
       libpg-query: 17.6.0
-      pgsql-deparser: 17.12.0
+      pgsql-deparser: 17.12.1
 
   picocolors@1.1.1: {}
 
@@ -12176,7 +12102,7 @@ snapshots:
 
   streamsearch@0.1.2: {}
 
-  strfy-js@3.1.0:
+  strfy-js@3.1.1:
     dependencies:
       minimatch: 10.1.1
 
@@ -12331,8 +12257,6 @@ snapshots:
   tmp@0.2.5: {}
 
   tmpl@1.0.5: {}
-
-  to-fast-properties@2.0.0: {}
 
   to-regex-range@5.0.1:
     dependencies:

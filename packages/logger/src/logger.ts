@@ -10,7 +10,7 @@ const levelPriority: Record<LogLevel, number> = {
   error: 4
 };
 
-const levelColors: Record<LogLevel, chalk.Chalk> = {
+const levelColors: Record<LogLevel, typeof chalk.cyan> = {
   info: chalk.cyan,
   warn: chalk.yellow,
   error: chalk.red,

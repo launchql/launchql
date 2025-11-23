@@ -43,7 +43,7 @@
     "jest-in-case": "^1.0.2",
     "lerna": "^8.2.3",
     "prettier": "^3.0.2",
-    "rimraf": "4.4.1",
+    "rimraf": "6.1.2",
     "strip-ansi": "^6",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",

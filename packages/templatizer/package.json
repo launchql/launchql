@@ -32,14 +32,14 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
+    "@types/glob": "^9.0.0",
     "@types/node": "^20.12.7",
     "@types/rimraf": "^4.0.5",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
     "case": "^1.6.3",
-    "glob": "^11.0.2",
-    "rimraf": "^6.0.1"
+    "glob": "^13.0.0",
+    "rimraf": "^6.1.2"
   }
 }

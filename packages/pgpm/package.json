@@ -34,13 +34,13 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
+    "@types/glob": "^9.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/minimist": "^1.2.5",
     "@types/node": "^20.12.7",
     "@types/pg": "^8.15.2",
     "@types/shelljs": "^0.8.16",
-    "glob": "^11.0.2",
+    "glob": "^13.0.0",
     "pg": "^8.16.0",
     "ts-node": "^10.9.2"
   },
@@ -50,7 +50,7 @@
     "@launchql/logger": "workspace:^",
     "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
-    "chalk": "^4.1.0",
+    "chalk": "^5.6.2",
     "inquirerer": "^2.0.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
