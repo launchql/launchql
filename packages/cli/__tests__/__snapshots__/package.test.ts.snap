@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`cmds:package updates module with \`extension\` and \`package\` commands in copied fixture workspace: extension-update - files 1`] = `
 [

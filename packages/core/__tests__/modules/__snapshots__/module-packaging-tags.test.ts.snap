@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`my-first extension 1`] = `
 "\\echo Use "CREATE EXTENSION my-first" to load this file. \\quit

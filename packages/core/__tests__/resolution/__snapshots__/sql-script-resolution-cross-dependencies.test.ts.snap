@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`resolve works with cross deps resolves sql in proper order 1`] = `
 "-- Deploy my-third:create_schema to pg

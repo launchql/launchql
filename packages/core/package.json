@@ -59,8 +59,8 @@
     "pg": "^8.16.0",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
-    "pgsql-deparser": "^17.11.1",
-    "pgsql-parser": "^17.8.2",
+    "pgsql-deparser": "^17.12.0",
+    "pgsql-parser": "^17.9.0",
     "rimraf": "^6.0.1"
   },
   "peerDependencies": {

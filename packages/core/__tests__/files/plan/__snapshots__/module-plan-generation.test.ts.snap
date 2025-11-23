@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`sqitch modules can create a module plan using workspace.generateModulePlan() 1`] = `
 "%syntax-version=1.0.0
