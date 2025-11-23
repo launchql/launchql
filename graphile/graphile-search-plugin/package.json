@@ -1,10 +1,10 @@
 {
   "name": "graphile-search-plugin",
-  "version": "0.1.4",
+  "version": "0.1.7",
   "description": "generate search conditions for your tsvector columns",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/graphile-search-plugin#readme",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

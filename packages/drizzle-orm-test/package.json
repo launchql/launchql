@@ -1,0 +1,59 @@
+{
+  "name": "drizzle-orm-test",
+  "version": "0.2.4",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "Drop-in replacement for pgsql-test that enables Drizzle ORM to work seamlessly with context management and RLS testing",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "keywords": [
+    "postgres",
+    "postgresql",
+    "drizzle",
+    "drizzle-orm",
+    "testing",
+    "integration-tests",
+    "database-testing",
+    "pg",
+    "rls",
+    "role-based-access",
+    "test-database",
+    "pgsql-test",
+    "jest",
+    "mocha"
+  ],
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepack": "npm run build",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.2",
+    "drizzle-orm": "^0.44.7"
+  },
+  "dependencies": {
+    "pgsql-test": "workspace:^"
+  },
+  "peerDependencies": {
+    "drizzle-orm": ">=0.30.0",
+    "pg": "^8.16.0"
+  }
+}

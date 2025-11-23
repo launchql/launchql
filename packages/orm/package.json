@@ -1,6 +1,6 @@
 {
   "name": "@launchql/orm",
-  "version": "2.2.6",
+  "version": "2.2.8",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL ORM",
   "main": "index.js",

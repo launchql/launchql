@@ -1,13 +1,13 @@
 {
   "name": "mime-bytes",
-  "version": "0.3.5",
+  "version": "0.3.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Lightning-fast file type detection using magic bytes (file signatures) with a focus on stream processing and minimal memory usage",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/launchql/launchql",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "public",
     "directory": "dist"

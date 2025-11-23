@@ -42,7 +42,7 @@ export default [
     "type": "git",
     "url": "https://github.com/${vars.USERNAME}/${vars.MODULENAME}"
   },
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "restricted"
   },
@@ -94,7 +94,7 @@ export default [
   "command": {
     "create": {
       "homepage": "https://github.com/${vars.USERNAME}/${vars.MODULENAME}",
-      "license": "SEE LICENSE IN LICENSE",
+      "license": "MIT",
       "access": "restricted"
     },
     "publish": {

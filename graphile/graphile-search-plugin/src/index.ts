@@ -99,3 +99,5 @@ const PgSearchPlugin = (builder: any, options: PgSearchPluginOptions = {}) => {
 };
 
 export { PgSearchPlugin };
+
+export default PgSearchPlugin;

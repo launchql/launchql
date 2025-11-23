@@ -1,13 +1,13 @@
 {
   "name": "@launchql/cli",
-  "version": "4.17.8",
+  "version": "4.17.11",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/launchql/launchql",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "public",
     "directory": "dist"

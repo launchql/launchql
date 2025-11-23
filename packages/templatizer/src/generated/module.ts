@@ -9,7 +9,7 @@ export default [
   "author": "${vars.USERFULLNAME} <${vars.USEREMAIL}>",
   "description": "${vars.MODULEDESC}",
   "homepage": "https://github.com/${vars.USERNAME}/${vars.REPONAME}",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "${vars.ACCESS}",
     "directory": "dist"

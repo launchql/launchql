@@ -1,6 +1,6 @@
 {
   "name": "uuid-hash",
-  "version": "2.2.5",
+  "version": "2.2.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Es6 class that generates RFC-compliant UUID v5.",
   "main": "index.js",

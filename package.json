@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/launchql/launchql"
   },
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "publishConfig": {
     "access": "restricted"
   },
@@ -23,7 +23,8 @@
     "clean": "pnpm -r run clean",
     "build": "pnpm -r run build",
     "build:dev": "pnpm -r run build:dev",
-    "lint": "pnpm -r run lint"
+    "lint": "pnpm -r run lint",
+    "deps": "pnpm up -r -i -L"
   },
   "devDependencies": {
     "@jest/test-sequencer": "^29.7.0",
