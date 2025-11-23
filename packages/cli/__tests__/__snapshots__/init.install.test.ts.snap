@@ -15,7 +15,7 @@ exports[`cmds:install - with initialized workspace and module installs a module 
   },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "name": "undefined",
   "pnpm": {
     "overrides": {
@@ -158,7 +158,7 @@ exports[`cmds:install - with initialized workspace and module installs two modul
   },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "name": "undefined",
   "pnpm": {
     "overrides": {
