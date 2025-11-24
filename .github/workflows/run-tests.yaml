@@ -152,3 +152,7 @@ jobs:
 
       - name: graphile/graphile-search-plugin
         run: cd ./graphile/graphile-search-plugin && pnpm test
+      - name: graphile/graphile-simple-inflector
+        run: cd ./graphile/graphile-simple-inflector && pnpm test
+      - name: graphile/graphile-i18n
+        run: cd ./graphile/graphile-i18n && pnpm test
