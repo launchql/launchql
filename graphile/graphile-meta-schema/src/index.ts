@@ -1,7 +1,21 @@
-import { makeExtendSchemaPlugin, gql } from 'graphile-utils';
-import m2m from './many-to-many';
+import type { Build, Options, Plugin } from 'graphile-build';
+import { gql, makeExtendSchemaPlugin } from 'graphile-utils';
+import { getNamedType, type GraphQLType } from 'graphql';
+
 import belongsTo from './belongs-to';
 import has from './has';
+import manyToMany from './many-to-many';
+import type {
+  BelongsToRelation,
+  HasRelation,
+  ManyToManyRelation,
+  PgAttribute,
+  PgBuild,
+  PgClass,
+  PgConstraint,
+  PgType,
+  SchemaOptions
+} from './types';
 
 const GIS_TYPES = [
   'Geometry',
@@ -14,38 +28,30 @@ const GIS_TYPES = [
   'GeometryCollection'
 ];
 
-const aliasTypes = type => {
-  switch (type) {
-    case 'int8':
-      return 'bigint';
-    case 'bool':
-      return 'boolean';
-    case 'bpchar':
-      return 'char';
-    case 'float8':
-      return 'float';
-    case 'float4':
-      return 'real';
-    case 'int4':
-      return 'int';
-    case 'int2':
-      return 'smallint';
-    default:
-      return type;
-  }
+const TYPE_ALIASES: Record<string, string> = {
+  int8: 'bigint',
+  bool: 'boolean',
+  bpchar: 'char',
+  float8: 'float',
+  float4: 'real',
+  int4: 'int',
+  int2: 'smallint'
 };
 
-export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
-  (build, schemaOptions) => {
-    /** @type {import('graphile-build-pg').PgIntrospectionResultsByKind} */
-    const introspection = build.pgIntrospectionResultsByKind;
-    const inflection = build.inflection;
+const aliasTypes = (typeName: string): string => TYPE_ALIASES[typeName] ?? typeName;
 
-    /** @type {string[]} */
-    const schemas = schemaOptions.pgSchemas;
+const getTypeName = (graphQLType: GraphQLType): string => getNamedType(graphQLType).name;
 
-    const pgGetGqlTypeByTypeIdAndModifier =
-      build.pgGetGqlTypeByTypeIdAndModifier;
+const PgMetaschemaPlugin: Plugin = makeExtendSchemaPlugin(
+  (build: Build, schemaOptions: Options) => {
+    const pgBuild = build as PgBuild;
+    const pgSchemaOptions = schemaOptions as SchemaOptions;
+
+    const introspection = pgBuild.pgIntrospectionResultsByKind;
+    const inflection = pgBuild.inflection;
+
+    const schemas = pgSchemaOptions.pgSchemas ?? [];
+    const pgGetGqlTypeByTypeIdAndModifier = pgBuild.pgGetGqlTypeByTypeIdAndModifier;
 
     return {
       typeDefs: gql`
@@ -179,104 +185,82 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
         }
       `,
       resolvers: {
-        // TODO determine why check constraints aren't coming through
         MetaschemaCheckConstraint: {
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          fields(constraint) {
+          fields(constraint: PgConstraint): PgAttribute[] {
             return constraint.keyAttributes;
           }
         },
         MetaschemaExclusionConstraint: {
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          fields(constraint) {
+          fields(constraint: PgConstraint): PgAttribute[] {
             return constraint.keyAttributes;
           }
         },
         MetaschemaUniqueConstraint: {
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          fields(constraint) {
+          fields(constraint: PgConstraint): PgAttribute[] {
             return constraint.keyAttributes;
           }
         },
         MetaschemaPrimaryKeyConstraint: {
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          fields(constraint) {
+          fields(constraint: PgConstraint): PgAttribute[] {
             return constraint.keyAttributes;
           }
         },
         MetaschemaForeignKeyConstraint: {
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          fields(constraint) {
+          fields(constraint: PgConstraint): PgAttribute[] {
             return constraint.keyAttributes;
           },
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          refTable(constraint) {
+          refTable(constraint: PgConstraint): PgClass | undefined {
             return constraint.foreignClass;
           },
-          /** @param constraint {import('graphile-build-pg').PgConstraint} */
-          refFields(constraint) {
+          refFields(constraint: PgConstraint): PgAttribute[] {
             return constraint.foreignKeyAttributes;
           }
         },
         MetaschemaType: {
-          /** @param attr {import('graphile-build-pg').PgType} */
-          pgType(type) {
-            // TODO what is the best API here?
-            // 1. we could return original _name, e.g. _citext (= citext[])
-            // 2. we could return original type name and include isArray
+          pgType(type: PgType): string {
             if (type.isPgArray && type.arrayItemType?.name) {
               return type.arrayItemType.name;
             }
             return type.name;
           },
-          pgAlias(type) {
+          pgAlias(type: PgType): string {
             if (type.isPgArray && type.arrayItemType?.name) {
               return aliasTypes(type.arrayItemType.name);
             }
             return aliasTypes(type.name);
           },
-          gqlType(type) {
-            const gqlType = pgGetGqlTypeByTypeIdAndModifier(
-              type.id,
-              type.attrTypeModifier
-            );
-            switch (gqlType.name) {
+          gqlType(type: PgType): string {
+            const gqlType = pgGetGqlTypeByTypeIdAndModifier(type.id, type.attrTypeModifier ?? null);
+            const typeName = getTypeName(gqlType);
+            switch (typeName) {
               case 'GeometryInterface':
               case 'GeometryPoint':
               case 'GeometryPolygon':
                 return 'GeoJSON';
               default:
-                return gqlType;
+                return typeName;
             }
           },
-          subtype(type) {
-            const gqlType = pgGetGqlTypeByTypeIdAndModifier(
-              type.id,
-              type.attrTypeModifier
-            );
-            switch (gqlType.name) {
+          subtype(type: PgType): string | null {
+            const gqlType = pgGetGqlTypeByTypeIdAndModifier(type.id, type.attrTypeModifier ?? null);
+            const typeName = getTypeName(gqlType);
+            switch (typeName) {
               case 'GeometryInterface':
               case 'GeometryPoint':
               case 'GeometryPolygon':
-                return gqlType.name;
+                return typeName;
               default:
                 return null;
             }
           },
-          typmod(type) {
+          typmod(type: PgType): Record<string, number | string | boolean> | null {
             const modifier = type.attrTypeModifier;
             if (!modifier) return null;
 
             if (type.name === 'geography' || type.name === 'geometry') {
-              // Ref: https://github.com/postgis/postgis/blob/2.5.2/liblwgeom/liblwgeom.h.in#L156-L173
-              // #define TYPMOD_GET_SRID(typmod) ((((typmod) & 0x0FFFFF00) - ((typmod) & 0x10000000)) >> 8)
-              // #define TYPMOD_GET_TYPE(typmod) ((typmod & 0x000000FC)>>2)
-              // #define TYPMOD_GET_Z(typmod) ((typmod & 0x00000002)>>1)
-              // #define TYPMOD_GET_M(typmod) (typmod & 0x00000001)
-              const srid =
-                ((modifier & 0x0fffff00) - (modifier & 0x10000000)) >> 8;
+              const srid = ((modifier & 0x0fffff00) - (modifier & 0x10000000)) >> 8;
               const subtype = (modifier & 0x000000fc) >> 2;
-              const hasZ = (modifier & 0x00000002) >> 1 === 1;
+              const hasZ = ((modifier & 0x00000002) >> 1) === 1;
               const hasM = (modifier & 0x00000001) === 1;
               if (subtype < GIS_TYPES.length) {
                 return {
@@ -290,20 +274,18 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
             }
             return { modifier };
           },
-          modifier(type) {
+          modifier(type: PgType): number | null | undefined {
             return type.attrTypeModifier;
           },
-          isArray(type) {
+          isArray(type: PgType): boolean {
             return type.isPgArray;
           }
         },
         MetaschemaField: {
-          /** @param attr {import('graphile-build-pg').PgAttribute} */
-          name(attr) {
+          name(attr: PgAttribute): string {
             return inflection.column(attr);
           },
-          /** @param attr {import('graphile-build-pg').PgAttribute} */
-          type(attr) {
+          type(attr: PgAttribute): PgType {
             if (attr.typeModifier > 0) {
               return {
                 ...attr.type,
@@ -314,7 +296,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           }
         },
         MetaschemaTableInflection: {
-          deleteByPrimaryKey(table) {
+          deleteByPrimaryKey(table: PgClass): string | null {
             if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
             return inflection.deleteByKeys(
               table.primaryKeyConstraint.keyAttributes,
@@ -322,7 +304,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
               table.primaryKeyConstraint
             );
           },
-          updateByPrimaryKey(table) {
+          updateByPrimaryKey(table: PgClass): string | null {
             if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
             return inflection.updateByKeys(
               table.primaryKeyConstraint.keyAttributes,
@@ -330,71 +312,72 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
               table.primaryKeyConstraint
             );
           },
-          createField(table) {
+          createField(table: PgClass): string {
             return inflection.createField(table);
           },
-          createInputType(table) {
+          createInputType(table: PgClass): string {
             return inflection.createInputType(table);
           },
-          allRows(table) {
+          allRows(table: PgClass): string {
             return inflection.allRows(table);
           },
-          allRowsSimple(table) {
+          allRowsSimple(table: PgClass): string {
             return inflection.allRowsSimple(table);
           },
-          tableFieldName(table) {
+          tableFieldName(table: PgClass): string {
             return inflection.tableFieldName(table);
           },
-          tableType(table) {
+          tableType(table: PgClass): string {
             return inflection.tableType(table);
           },
-          orderByType(table) {
+          orderByType(table: PgClass): string {
             return inflection.orderByType(inflection.tableType(table));
           },
-          filterType(table) {
-            if (typeof inflection.filterType === 'function')
-              return inflection.filterType(inflection.tableType(table));
+          filterType(table: PgClass): string | null {
+            if (typeof inflection.filterType === 'function') {
+              return inflection.filterType(inflection.tableType(table)) ?? null;
+            }
             return null;
           },
-          inputType(table) {
+          inputType(table: PgClass): string {
             return inflection.inputType(inflection.tableType(table));
           },
-          patchType(table) {
+          patchType(table: PgClass): string {
             return inflection.patchType(inflection.tableType(table));
           },
-          conditionType(table) {
+          conditionType(table: PgClass): string {
             return inflection.conditionType(inflection.tableType(table));
           },
-          patchField(table) {
+          patchField(table: PgClass): string {
             return inflection.patchField(inflection.tableType(table));
           },
-          edge(table) {
+          edge(table: PgClass): string {
             return inflection.edge(inflection.tableType(table));
           },
-          edgeField(table) {
+          edgeField(table: PgClass): string {
             return inflection.edgeField(table);
           },
-          connection(table) {
+          connection(table: PgClass): string {
             return inflection.connection(inflection.tableType(table));
           },
-          typeName(table) {
+          typeName(table: PgClass): string {
             return inflection._typeName(table);
           },
-          enumType(table) {
+          enumType(table: PgClass): string {
             return inflection.enumType(table);
           },
-          createPayloadType(table) {
+          createPayloadType(table: PgClass): string {
             return inflection.createPayloadType(table);
           },
-          updatePayloadType(table) {
+          updatePayloadType(table: PgClass): string {
             return inflection.updatePayloadType(table);
           },
-          deletePayloadType(table) {
+          deletePayloadType(table: PgClass): string {
             return inflection.deletePayloadType(table);
           }
         },
         MetaschemaTableQuery: {
-          delete(table) {
+          delete(table: PgClass): string | null {
             if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
             return inflection.deleteByKeys(
               table.primaryKeyConstraint.keyAttributes,
@@ -402,7 +385,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
               table.primaryKeyConstraint
             );
           },
-          update(table) {
+          update(table: PgClass): string | null {
             if (!table.primaryKeyConstraint?.keyAttributes?.length) return null;
             return inflection.updateByKeys(
               table.primaryKeyConstraint.keyAttributes,
@@ -410,67 +393,67 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
               table.primaryKeyConstraint
             );
           },
-          create(table) {
+          create(table: PgClass): string {
             return inflection.createField(table);
           },
-          all(table) {
+          all(table: PgClass): string {
             return inflection.allRows(table);
           },
-          one(table) {
+          one(table: PgClass): string {
             return inflection.tableFieldName(table);
           }
         },
         MetaschemaTableRelation: {
-          hasOne(table) {
-            return has(table, build).filter(a => a.type === 'hasOne');
+          hasOne(table: PgClass): HasRelation[] {
+            return has(table, pgBuild).filter((relation) => relation.type === 'hasOne');
           },
-          hasMany(table) {
-            return has(table, build).filter(a => a.type === 'hasMany');
+          hasMany(table: PgClass): HasRelation[] {
+            return has(table, pgBuild).filter((relation) => relation.type === 'hasMany');
           },
-          belongsTo(table) {
-            return belongsTo(table, build);
+          belongsTo(table: PgClass): BelongsToRelation[] {
+            return belongsTo(table, pgBuild);
           },
-          has(table) {
-            return has(table, build);
+          has(table: PgClass): HasRelation[] {
+            return has(table, pgBuild);
           },
-          manyToMany(table) {
-            return m2m(table, build);
+          manyToMany(table: PgClass): ManyToManyRelation[] {
+            return manyToMany(table, pgBuild);
           }
         },
         MetaschemaTableBelongsToRelation: {
-          type() {
+          type(): string {
             return 'BelongsTo';
           }
         },
         MetaschemaTableManyToManyRelation: {
-          type() {
+          type(): string {
             return 'ManyToMany';
           },
-          leftKeyAttributes(relation) {
+          leftKeyAttributes(relation: ManyToManyRelation): PgAttribute[] {
             return relation.leftKeyAttributes;
           },
-          junctionLeftKeyAttributes(relation) {
+          junctionLeftKeyAttributes(relation: ManyToManyRelation): PgAttribute[] {
             return relation.junctionLeftKeyAttributes;
           },
-          junctionRightKeyAttributes(relation) {
+          junctionRightKeyAttributes(relation: ManyToManyRelation): PgAttribute[] {
             return relation.junctionRightKeyAttributes;
           },
-          rightKeyAttributes(relation) {
+          rightKeyAttributes(relation: ManyToManyRelation): PgAttribute[] {
             return relation.rightKeyAttributes;
           },
-          junctionTable(relation) {
+          junctionTable(relation: ManyToManyRelation): PgClass {
             return relation.junctionTable;
           },
-          rightTable(relation) {
+          rightTable(relation: ManyToManyRelation): PgClass {
             return relation.rightTable;
           },
-          junctionLeftConstraint(relation) {
+          junctionLeftConstraint(relation: ManyToManyRelation): PgConstraint {
             return relation.junctionLeftConstraint;
           },
-          junctionRightConstraint(relation) {
+          junctionRightConstraint(relation: ManyToManyRelation): PgConstraint {
             return relation.junctionRightConstraint;
           },
-          fieldName(relation) {
+          fieldName(relation: ManyToManyRelation): string | null {
             if (!inflection.manyToManyRelationByKeys) {
               return null;
             }
@@ -498,58 +481,42 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
           }
         },
         MetaschemaTable: {
-          relations(table) {
+          relations(table: PgClass): PgClass {
             return table;
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          name(table) {
+          name(table: PgClass): string {
             return inflection.tableType(table);
-            // return inflection._tableName(table);
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          fields(table) {
-            return table.attributes.filter(attr => {
-              if (attr.num < 1) return false; // low-level props
-              return true;
-            });
+          fields(table: PgClass): PgAttribute[] {
+            return table.attributes.filter((attr) => attr.num >= 1);
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          inflection(table) {
-            // return table so the MetaschemaTableInflection resolver uses that as input
+          inflection(table: PgClass): PgClass {
             return table;
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          query(table) {
+          query(table: PgClass): PgClass {
             return table;
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          constraints(table) {
+          constraints(table: PgClass): PgConstraint[] {
             return table.constraints;
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          foreignKeyConstraints(table) {
-            return table.constraints.filter(c => c.type === 'f');
+          foreignKeyConstraints(table: PgClass): PgConstraint[] {
+            return table.constraints.filter((constraint) => constraint.type === 'f');
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          primaryKeyConstraints(table) {
-            return table.constraints.filter(c => c.type === 'p');
+          primaryKeyConstraints(table: PgClass): PgConstraint[] {
+            return table.constraints.filter((constraint) => constraint.type === 'p');
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          uniqueConstraints(table) {
-            return table.constraints.filter(c => c.type === 'u');
+          uniqueConstraints(table: PgClass): PgConstraint[] {
+            return table.constraints.filter((constraint) => constraint.type === 'u');
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          checkConstraints(table) {
-            return table.constraints.filter(c => c.type === 'c');
+          checkConstraints(table: PgClass): PgConstraint[] {
+            return table.constraints.filter((constraint) => constraint.type === 'c');
           },
-          /** @param table {import('graphile-build-pg').PgClass} */
-          exclusionConstraints(table) {
-            return table.constraints.filter(c => c.type === 'x');
+          exclusionConstraints(table: PgClass): PgConstraint[] {
+            return table.constraints.filter((constraint) => constraint.type === 'x');
           }
         },
         MetaschemaConstraint: {
-          /** @param obj {import('graphile-build-pg').PgConstraint} */
-          __resolveType(obj) {
+          __resolveType(obj: PgConstraint): string | null {
             switch (obj.type) {
               case 'p':
                 return 'MetaschemaPrimaryKeyConstraint';
@@ -561,22 +528,22 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
                 return 'MetaschemaUniqueConstraint';
               case 'x':
                 return 'MetaschemaExclusionConstraint';
+              default:
+                return null;
             }
           }
         },
         Metaschema: {
-          tables() {
-            return introspection.class.filter(kls => {
-              if (!schemas.includes(kls.namespaceName)) return false;
-              // r = ordinary table, i = index, S = sequence, t = TOAST table, v = view, m = materialized view, c = composite type, f = foreign table, p = partitioned table, I = partitioned index
-              if (kls.classKind !== 'r') return false;
+          tables(): PgClass[] {
+            return introspection.class.filter((table) => {
+              if (!schemas.includes(table.namespaceName)) return false;
+              if (table.classKind !== 'r') return false;
               return true;
             });
           }
         },
         Query: {
-          _meta() {
-            // just placeholder
+          _meta(): Record<string, never> {
             return {};
           }
         }
@@ -584,5 +551,7 @@ export const PgMetaschemaPlugin = makeExtendSchemaPlugin(
     };
   }
 );
+
+export { PgMetaschemaPlugin };
 
 export default PgMetaschemaPlugin;

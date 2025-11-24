@@ -3,34 +3,34 @@
   "version": "0.2.5",
   "description": "graphile meta schema",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/graphile-meta-schema#readme",
+  "homepage": "https://github.com/launchql/launchql",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "main/index.js",
-  "module": "module/index.js",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
   "directories": {
     "lib": "src",
     "test": "__tests__"
   },
   "files": [
-    "main",
-    "module"
+    "dist"
   ],
   "scripts": {
-    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
-    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
-    "build": "npm run build:module && npm run build:main",
-    "prepublish": "npm run build",
-    "lint": "eslint src --fix",
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepack": "pnpm run build",
+    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
+    "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+    "test:watch": "jest --watch"
   },
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pyramation/graphile-meta-schema"
+    "url": "https://github.com/launchql/launchql"
   },
   "keywords": [
     "postgraphile",
@@ -38,33 +38,22 @@
     "plugin",
     "postgres",
     "graphql",
-    "metaschema"
+    "metaschema",
+    "launchql"
   ],
   "bugs": {
-    "url": "https://github.com/pyramation/graphile-meta-schema/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
-    "@babel/cli": "7.11.6",
-    "@babel/core": "7.11.6",
-    "@babel/plugin-proposal-class-properties": "7.10.4",
-    "@babel/plugin-proposal-export-default-from": "7.10.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
-    "@babel/plugin-transform-runtime": "7.11.5",
-    "@babel/preset-env": "7.11.5",
     "@graphile-contrib/pg-many-to-many": "^1.0.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "25.1.0",
-    "eslint": "6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "graphile-test": "0.1.0",
-    "jest": "^24.5.0",
-    "prettier": "^1.19.1",
-    "regenerator-runtime": "^0.13.2"
+    "graphile-test": "workspace:^",
+    "graphql-tag": "2.12.6",
+    "pgsql-test": "workspace:^"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
-    "graphile-utils": "^4.9.0"
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-utils": "^4.14.1",
+    "graphql": "15.10.1"
   }
 }

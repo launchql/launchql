@@ -1,48 +1,48 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`GetBelongsToRelations 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
           "name": "AllType",
-          "relations": Object {
-            "belongsTo": Array [],
+          "relations": {
+            "belongsTo": [],
           },
         },
-        Object {
+        {
           "name": "BoundingBox",
-          "relations": Object {
-            "belongsTo": Array [],
+          "relations": {
+            "belongsTo": [],
           },
         },
-        Object {
+        {
           "name": "PermissionAssignment",
-          "relations": Object {
-            "belongsTo": Array [
-              Object {
+          "relations": {
+            "belongsTo": [
+              {
                 "fieldName": "permissionByPermId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "permId",
                   },
                 ],
-                "references": Object {
+                "references": {
                   "name": "Permission",
                 },
                 "type": "BelongsTo",
               },
-              Object {
+              {
                 "fieldName": "roleByRoleId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "references": Object {
+                "references": {
                   "name": "Role",
                 },
                 "type": "BelongsTo",
@@ -50,25 +50,25 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "Permission",
-          "relations": Object {
-            "belongsTo": Array [],
+          "relations": {
+            "belongsTo": [],
           },
         },
-        Object {
+        {
           "name": "Role",
-          "relations": Object {
-            "belongsTo": Array [
-              Object {
+          "relations": {
+            "belongsTo": [
+              {
                 "fieldName": "userByOrgId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "orgId",
                   },
                 ],
-                "references": Object {
+                "references": {
                   "name": "User",
                 },
                 "type": "BelongsTo",
@@ -76,32 +76,32 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "SubjectAssignment",
-          "relations": Object {
-            "belongsTo": Array [
-              Object {
+          "relations": {
+            "belongsTo": [
+              {
                 "fieldName": "userBySubjId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "subjId",
                   },
                 ],
-                "references": Object {
+                "references": {
                   "name": "User",
                 },
                 "type": "BelongsTo",
               },
-              Object {
+              {
                 "fieldName": "roleByRoleId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "references": Object {
+                "references": {
                   "name": "Role",
                 },
                 "type": "BelongsTo",
@@ -109,19 +109,19 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "UserSetting",
-          "relations": Object {
-            "belongsTo": Array [
-              Object {
+          "relations": {
+            "belongsTo": [
+              {
                 "fieldName": "userByUserId",
                 "isUnique": true,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "userId",
                   },
                 ],
-                "references": Object {
+                "references": {
                   "name": "User",
                 },
                 "type": "BelongsTo",
@@ -129,16 +129,16 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "User",
-          "relations": Object {
-            "belongsTo": Array [],
+          "relations": {
+            "belongsTo": [],
           },
         },
-        Object {
+        {
           "name": "Postcode",
-          "relations": Object {
-            "belongsTo": Array [],
+          "relations": {
+            "belongsTo": [],
           },
         },
       ],
@@ -148,41 +148,41 @@ Object {
 `;
 
 exports[`GetHasManyRelations 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
           "name": "AllType",
-          "relations": Object {
-            "hasMany": Array [],
+          "relations": {
+            "hasMany": [],
           },
         },
-        Object {
+        {
           "name": "BoundingBox",
-          "relations": Object {
-            "hasMany": Array [],
+          "relations": {
+            "hasMany": [],
           },
         },
-        Object {
+        {
           "name": "PermissionAssignment",
-          "relations": Object {
-            "hasMany": Array [],
+          "relations": {
+            "hasMany": [],
           },
         },
-        Object {
+        {
           "name": "Permission",
-          "relations": Object {
-            "hasMany": Array [
-              Object {
+          "relations": {
+            "hasMany": [
+              {
                 "fieldName": "permissionAssignmentsByPermId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "permId",
                   },
                 ],
-                "referencedBy": Object {
+                "referencedBy": {
                   "name": "PermissionAssignment",
                 },
                 "type": "hasMany",
@@ -190,32 +190,32 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "Role",
-          "relations": Object {
-            "hasMany": Array [
-              Object {
+          "relations": {
+            "hasMany": [
+              {
                 "fieldName": "permissionAssignmentsByRoleId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "referencedBy": Object {
+                "referencedBy": {
                   "name": "PermissionAssignment",
                 },
                 "type": "hasMany",
               },
-              Object {
+              {
                 "fieldName": "subjectAssignmentsByRoleId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "referencedBy": Object {
+                "referencedBy": {
                   "name": "SubjectAssignment",
                 },
                 "type": "hasMany",
@@ -223,44 +223,44 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "SubjectAssignment",
-          "relations": Object {
-            "hasMany": Array [],
+          "relations": {
+            "hasMany": [],
           },
         },
-        Object {
+        {
           "name": "UserSetting",
-          "relations": Object {
-            "hasMany": Array [],
+          "relations": {
+            "hasMany": [],
           },
         },
-        Object {
+        {
           "name": "User",
-          "relations": Object {
-            "hasMany": Array [
-              Object {
+          "relations": {
+            "hasMany": [
+              {
                 "fieldName": "rolesByOrgId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "orgId",
                   },
                 ],
-                "referencedBy": Object {
+                "referencedBy": {
                   "name": "Role",
                 },
                 "type": "hasMany",
               },
-              Object {
+              {
                 "fieldName": "subjectAssignmentsBySubjId",
                 "isUnique": false,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "subjId",
                   },
                 ],
-                "referencedBy": Object {
+                "referencedBy": {
                   "name": "SubjectAssignment",
                 },
                 "type": "hasMany",
@@ -268,10 +268,10 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "Postcode",
-          "relations": Object {
-            "hasMany": Array [],
+          "relations": {
+            "hasMany": [],
           },
         },
       ],
@@ -281,65 +281,65 @@ Object {
 `;
 
 exports[`GetHasOneRelations 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
           "name": "AllType",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "BoundingBox",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "PermissionAssignment",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "Permission",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "Role",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "SubjectAssignment",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "UserSetting",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
-        Object {
+        {
           "name": "User",
-          "relations": Object {
-            "hasOne": Array [
-              Object {
+          "relations": {
+            "hasOne": [
+              {
                 "fieldName": "userSettingByUserId",
                 "isUnique": true,
-                "keys": Array [
-                  Object {
+                "keys": [
+                  {
                     "name": "userId",
                   },
                 ],
-                "referencedBy": Object {
+                "referencedBy": {
                   "name": "UserSetting",
                 },
                 "type": "hasOne",
@@ -347,10 +347,10 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "Postcode",
-          "relations": Object {
-            "hasOne": Array [],
+          "relations": {
+            "hasOne": [],
           },
         },
       ],
@@ -360,78 +360,78 @@ Object {
 `;
 
 exports[`GetManyToManyRelations 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
           "name": "AllType",
-          "relations": Object {
-            "manyToMany": Array [],
+          "relations": {
+            "manyToMany": [],
           },
         },
-        Object {
+        {
           "name": "BoundingBox",
-          "relations": Object {
-            "manyToMany": Array [],
+          "relations": {
+            "manyToMany": [],
           },
         },
-        Object {
+        {
           "name": "PermissionAssignment",
-          "relations": Object {
-            "manyToMany": Array [],
+          "relations": {
+            "manyToMany": [],
           },
         },
-        Object {
+        {
           "name": "Permission",
-          "relations": Object {
-            "manyToMany": Array [
-              Object {
+          "relations": {
+            "manyToMany": [
+              {
                 "fieldName": "rolesByPermissionAssignmentPermIdAndRoleId",
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
                       "name": "permId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "Permission",
                   },
                 },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
+                "junctionLeftKeyAttributes": [
+                  {
                     "name": "permId",
                   },
                 ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
                       "name": "roleId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "Role",
                   },
                 },
-                "junctionRightKeyAttributes": Array [
-                  Object {
+                "junctionRightKeyAttributes": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "junctionTable": Object {
+                "junctionTable": {
                   "name": "PermissionAssignment",
                 },
-                "leftKeyAttributes": Array [
-                  Object {
+                "leftKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightKeyAttributes": Array [
-                  Object {
+                "rightKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightTable": Object {
+                "rightTable": {
                   "name": "Role",
                 },
                 "type": "ManyToMany",
@@ -439,106 +439,106 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "Role",
-          "relations": Object {
-            "manyToMany": Array [
-              Object {
+          "relations": {
+            "manyToMany": [
+              {
                 "fieldName": "permissionsByPermissionAssignmentRoleIdAndPermId",
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
                       "name": "roleId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "Role",
                   },
                 },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
+                "junctionLeftKeyAttributes": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
                       "name": "permId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "Permission",
                   },
                 },
-                "junctionRightKeyAttributes": Array [
-                  Object {
+                "junctionRightKeyAttributes": [
+                  {
                     "name": "permId",
                   },
                 ],
-                "junctionTable": Object {
+                "junctionTable": {
                   "name": "PermissionAssignment",
                 },
-                "leftKeyAttributes": Array [
-                  Object {
+                "leftKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightKeyAttributes": Array [
-                  Object {
+                "rightKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightTable": Object {
+                "rightTable": {
                   "name": "Permission",
                 },
                 "type": "ManyToMany",
               },
-              Object {
+              {
                 "fieldName": "usersBySubjectAssignmentRoleIdAndSubjId",
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
                       "name": "roleId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "Role",
                   },
                 },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
+                "junctionLeftKeyAttributes": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
                       "name": "subjId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "User",
                   },
                 },
-                "junctionRightKeyAttributes": Array [
-                  Object {
+                "junctionRightKeyAttributes": [
+                  {
                     "name": "subjId",
                   },
                 ],
-                "junctionTable": Object {
+                "junctionTable": {
                   "name": "SubjectAssignment",
                 },
-                "leftKeyAttributes": Array [
-                  Object {
+                "leftKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightKeyAttributes": Array [
-                  Object {
+                "rightKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightTable": Object {
+                "rightTable": {
                   "name": "User",
                 },
                 "type": "ManyToMany",
@@ -546,68 +546,68 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "SubjectAssignment",
-          "relations": Object {
-            "manyToMany": Array [],
+          "relations": {
+            "manyToMany": [],
           },
         },
-        Object {
+        {
           "name": "UserSetting",
-          "relations": Object {
-            "manyToMany": Array [],
+          "relations": {
+            "manyToMany": [],
           },
         },
-        Object {
+        {
           "name": "User",
-          "relations": Object {
-            "manyToMany": Array [
-              Object {
+          "relations": {
+            "manyToMany": [
+              {
                 "fieldName": "rolesBySubjectAssignmentSubjIdAndRoleId",
-                "junctionLeftConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
                       "name": "subjId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "User",
                   },
                 },
-                "junctionLeftKeyAttributes": Array [
-                  Object {
+                "junctionLeftKeyAttributes": [
+                  {
                     "name": "subjId",
                   },
                 ],
-                "junctionRightConstraint": Object {
-                  "fields": Array [
-                    Object {
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
                       "name": "roleId",
                     },
                   ],
-                  "refTable": Object {
+                  "refTable": {
                     "name": "Role",
                   },
                 },
-                "junctionRightKeyAttributes": Array [
-                  Object {
+                "junctionRightKeyAttributes": [
+                  {
                     "name": "roleId",
                   },
                 ],
-                "junctionTable": Object {
+                "junctionTable": {
                   "name": "SubjectAssignment",
                 },
-                "leftKeyAttributes": Array [
-                  Object {
+                "leftKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightKeyAttributes": Array [
-                  Object {
+                "rightKeyAttributes": [
+                  {
                     "name": "id",
                   },
                 ],
-                "rightTable": Object {
+                "rightTable": {
                   "name": "Role",
                 },
                 "type": "ManyToMany",
@@ -615,10 +615,10 @@ Object {
             ],
           },
         },
-        Object {
+        {
           "name": "Postcode",
-          "relations": Object {
-            "manyToMany": Array [],
+          "relations": {
+            "manyToMany": [],
           },
         },
       ],
@@ -628,12 +628,12 @@ Object {
 `;
 
 exports[`GetMetaInflection 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
-          "inflection": Object {
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "inflection": {
             "allRows": "allAllTypes",
             "allRowsSimple": "allAllTypesList",
             "conditionType": "AllTypeCondition",
@@ -658,7 +658,7 @@ Object {
             "updatePayloadType": "UpdateAllTypePayload",
           },
           "name": "AllType",
-          "query": Object {
+          "query": {
             "all": "allAllTypes",
             "create": "createAllType",
             "delete": null,
@@ -666,8 +666,8 @@ Object {
             "update": null,
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allBoundingBoxes",
             "allRowsSimple": "allBoundingBoxesList",
             "conditionType": "BoundingBoxCondition",
@@ -692,7 +692,7 @@ Object {
             "updatePayloadType": "UpdateBoundingBoxPayload",
           },
           "name": "BoundingBox",
-          "query": Object {
+          "query": {
             "all": "allBoundingBoxes",
             "create": "createBoundingBox",
             "delete": "deleteBoundingBoxById",
@@ -700,8 +700,8 @@ Object {
             "update": "updateBoundingBoxById",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allPermissionAssignments",
             "allRowsSimple": "allPermissionAssignmentsList",
             "conditionType": "PermissionAssignmentCondition",
@@ -726,7 +726,7 @@ Object {
             "updatePayloadType": "UpdatePermissionAssignmentPayload",
           },
           "name": "PermissionAssignment",
-          "query": Object {
+          "query": {
             "all": "allPermissionAssignments",
             "create": "createPermissionAssignment",
             "delete": "deletePermissionAssignmentByPermIdAndRoleId",
@@ -734,8 +734,8 @@ Object {
             "update": "updatePermissionAssignmentByPermIdAndRoleId",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allPermissions",
             "allRowsSimple": "allPermissionsList",
             "conditionType": "PermissionCondition",
@@ -760,7 +760,7 @@ Object {
             "updatePayloadType": "UpdatePermissionPayload",
           },
           "name": "Permission",
-          "query": Object {
+          "query": {
             "all": "allPermissions",
             "create": "createPermission",
             "delete": "deletePermissionById",
@@ -768,8 +768,8 @@ Object {
             "update": "updatePermissionById",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allRoles",
             "allRowsSimple": "allRolesList",
             "conditionType": "RoleCondition",
@@ -794,7 +794,7 @@ Object {
             "updatePayloadType": "UpdateRolePayload",
           },
           "name": "Role",
-          "query": Object {
+          "query": {
             "all": "allRoles",
             "create": "createRole",
             "delete": "deleteRoleById",
@@ -802,8 +802,8 @@ Object {
             "update": "updateRoleById",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allSubjectAssignments",
             "allRowsSimple": "allSubjectAssignmentsList",
             "conditionType": "SubjectAssignmentCondition",
@@ -828,7 +828,7 @@ Object {
             "updatePayloadType": "UpdateSubjectAssignmentPayload",
           },
           "name": "SubjectAssignment",
-          "query": Object {
+          "query": {
             "all": "allSubjectAssignments",
             "create": "createSubjectAssignment",
             "delete": "deleteSubjectAssignmentBySubjIdAndRoleId",
@@ -836,8 +836,8 @@ Object {
             "update": "updateSubjectAssignmentBySubjIdAndRoleId",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allUserSettings",
             "allRowsSimple": "allUserSettingsList",
             "conditionType": "UserSettingCondition",
@@ -862,7 +862,7 @@ Object {
             "updatePayloadType": "UpdateUserSettingPayload",
           },
           "name": "UserSetting",
-          "query": Object {
+          "query": {
             "all": "allUserSettings",
             "create": "createUserSetting",
             "delete": "deleteUserSettingByUserId",
@@ -870,8 +870,8 @@ Object {
             "update": "updateUserSettingByUserId",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allUsers",
             "allRowsSimple": "allUsersList",
             "conditionType": "UserCondition",
@@ -896,7 +896,7 @@ Object {
             "updatePayloadType": "UpdateUserPayload",
           },
           "name": "User",
-          "query": Object {
+          "query": {
             "all": "allUsers",
             "create": "createUser",
             "delete": "deleteUserById",
@@ -904,8 +904,8 @@ Object {
             "update": "updateUserById",
           },
         },
-        Object {
-          "inflection": Object {
+        {
+          "inflection": {
             "allRows": "allPostcodes",
             "allRowsSimple": "allPostcodesList",
             "conditionType": "PostcodeCondition",
@@ -930,7 +930,7 @@ Object {
             "updatePayloadType": "UpdatePostcodePayload",
           },
           "name": "Postcode",
-          "query": Object {
+          "query": {
             "all": "allPostcodes",
             "create": "createPostcode",
             "delete": "deletePostcodeById",
@@ -945,121 +945,121 @@ Object {
 `;
 
 exports[`GetMetaSchema 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
-          "foreignKeyConstraints": Array [],
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "foreignKeyConstraints": [],
           "name": "AllType",
-          "primaryKeyConstraints": Array [],
-          "uniqueConstraints": Array [],
+          "primaryKeyConstraints": [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [],
+        {
+          "foreignKeyConstraints": [],
           "name": "BoundingBox",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "bounding_box_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [
-            Object {
+        {
+          "foreignKeyConstraints": [
+            {
               "name": "permission_assignment_perm_id_fkey",
             },
-            Object {
+            {
               "name": "permission_assignment_role_id_fkey",
             },
           ],
           "name": "PermissionAssignment",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "permission_assignment_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [],
+        {
+          "foreignKeyConstraints": [],
           "name": "Permission",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "permissions_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [
-            Object {
+        {
+          "foreignKeyConstraints": [
+            {
               "name": "roles_org_id_fkey",
             },
           ],
           "name": "Role",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "roles_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [
-            Object {
+        {
+          "foreignKeyConstraints": [
+            {
               "name": "subject_assignment_subj_id_fkey",
             },
-            Object {
+            {
               "name": "subject_assignment_role_id_fkey",
             },
           ],
           "name": "SubjectAssignment",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "subject_assignment_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [
-            Object {
+        {
+          "foreignKeyConstraints": [
+            {
               "name": "user_settings_user_id_fkey",
             },
           ],
           "name": "UserSetting",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "user_settings_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
-        Object {
-          "foreignKeyConstraints": Array [],
+        {
+          "foreignKeyConstraints": [],
           "name": "User",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "users_pkey",
             },
           ],
-          "uniqueConstraints": Array [
-            Object {
+          "uniqueConstraints": [
+            {
               "name": "users_username_key",
             },
           ],
         },
-        Object {
-          "foreignKeyConstraints": Array [],
+        {
+          "foreignKeyConstraints": [],
           "name": "Postcode",
-          "primaryKeyConstraints": Array [
-            Object {
+          "primaryKeyConstraints": [
+            {
               "name": "zip_codes_pkey",
             },
           ],
-          "uniqueConstraints": Array [],
+          "uniqueConstraints": [],
         },
       ],
     },
@@ -1068,16 +1068,16 @@ Object {
 `;
 
 exports[`GetMetaSchemaUnion 1`] = `
-Object {
-  "data": Object {
-    "_meta": Object {
-      "tables": Array [
-        Object {
-          "constraints": Array [],
-          "fields": Array [
-            Object {
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "constraints": [],
+          "fields": [
+            {
               "name": "bigintType",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -1086,9 +1086,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "bigserialType",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -1097,74 +1097,74 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "bitOpt1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 1,
                 "pgAlias": "bit",
                 "pgType": "bit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 1,
                 },
               },
             },
-            Object {
+            {
               "name": "bitOpt2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 2,
                 "pgAlias": "bit",
                 "pgType": "bit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 2,
                 },
               },
             },
-            Object {
+            {
               "name": "bitOpt16Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 16,
                 "pgAlias": "bit",
                 "pgType": "bit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 16,
                 },
               },
             },
-            Object {
+            {
               "name": "bitVaryingOpt1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 1,
                 "pgAlias": "varbit",
                 "pgType": "varbit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 1,
                 },
               },
             },
-            Object {
+            {
               "name": "bitVaryingOpt2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 2,
                 "pgAlias": "varbit",
                 "pgType": "varbit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 2,
                 },
               },
             },
-            Object {
+            {
               "name": "boolType",
-              "type": Object {
+              "type": {
                 "gqlType": "Boolean",
                 "modifier": null,
                 "pgAlias": "boolean",
@@ -1173,9 +1173,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "booleanType",
-              "type": Object {
+              "type": {
                 "gqlType": "Boolean",
                 "modifier": null,
                 "pgAlias": "boolean",
@@ -1184,9 +1184,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "boxType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "box",
@@ -1195,9 +1195,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "byteaType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "bytea",
@@ -1206,126 +1206,126 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "charOpt1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 5,
                 "pgAlias": "char",
                 "pgType": "bpchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 5,
                 },
               },
             },
-            Object {
+            {
               "name": "charOpt140Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 144,
                 "pgAlias": "char",
                 "pgType": "bpchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 144,
                 },
               },
             },
-            Object {
+            {
               "name": "charOpt1000Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1004,
                 "pgAlias": "char",
                 "pgType": "bpchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 1004,
                 },
               },
             },
-            Object {
+            {
               "name": "charType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 5,
                 "pgAlias": "char",
                 "pgType": "bpchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 5,
                 },
               },
             },
-            Object {
+            {
               "name": "characterType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 5,
                 "pgAlias": "char",
                 "pgType": "bpchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 5,
                 },
               },
             },
-            Object {
+            {
               "name": "characterVaryingOpt1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 5,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 5,
                 },
               },
             },
-            Object {
+            {
               "name": "characterVaryingOpt10Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 14,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 14,
                 },
               },
             },
-            Object {
+            {
               "name": "characterVaryingOpt140Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 144,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 144,
                 },
               },
             },
-            Object {
+            {
               "name": "characterVaryingOpt1000Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1004,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 1004,
                 },
               },
             },
-            Object {
+            {
               "name": "characterVaryingType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "varchar",
@@ -1334,9 +1334,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "cidrType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "cidr",
@@ -1345,9 +1345,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "circleType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "circle",
@@ -1356,9 +1356,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "dateType",
-              "type": Object {
+              "type": {
                 "gqlType": "Date",
                 "modifier": null,
                 "pgAlias": "date",
@@ -1367,9 +1367,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "doublePrecisionType",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "float",
@@ -1378,9 +1378,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "float4Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1389,9 +1389,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "float8Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "float",
@@ -1400,9 +1400,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatType",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "float",
@@ -1411,9 +1411,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1422,9 +1422,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1433,9 +1433,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt3Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1444,9 +1444,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt4Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1455,9 +1455,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt5Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1466,9 +1466,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt6Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1477,9 +1477,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt7Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1488,9 +1488,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "floatOpt8Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1499,15 +1499,15 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "geometryPointType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1107460,
                 "pgAlias": "geometry",
                 "pgType": "geometry",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "gisType": "Point",
                   "hasM": false,
                   "hasZ": false,
@@ -1516,15 +1516,15 @@ Object {
                 },
               },
             },
-            Object {
+            {
               "name": "geometryPolygonType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1107468,
                 "pgAlias": "geometry",
                 "pgType": "geometry",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "gisType": "Polygon",
                   "hasM": false,
                   "hasZ": false,
@@ -1533,9 +1533,9 @@ Object {
                 },
               },
             },
-            Object {
+            {
               "name": "inetType",
-              "type": Object {
+              "type": {
                 "gqlType": "InternetAddress",
                 "modifier": null,
                 "pgAlias": "inet",
@@ -1544,9 +1544,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "intType",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -1555,9 +1555,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "int2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "smallint",
@@ -1566,9 +1566,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "int4Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -1577,9 +1577,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "int8Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -1588,87 +1588,87 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "intervalYearType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": 327679,
                 "pgAlias": "interval",
                 "pgType": "interval",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 327679,
                 },
               },
             },
-            Object {
+            {
               "name": "intervalMonthType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": 196607,
                 "pgAlias": "interval",
                 "pgType": "interval",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 196607,
                 },
               },
             },
-            Object {
+            {
               "name": "intervalDayType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": 589823,
                 "pgAlias": "interval",
                 "pgType": "interval",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 589823,
                 },
               },
             },
-            Object {
+            {
               "name": "intervalHourType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": 67174399,
                 "pgAlias": "interval",
                 "pgType": "interval",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 67174399,
                 },
               },
             },
-            Object {
+            {
               "name": "intervalMinuteType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": 134283263,
                 "pgAlias": "interval",
                 "pgType": "interval",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 134283263,
                 },
               },
             },
-            Object {
+            {
               "name": "intervalSecondType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": 268500991,
                 "pgAlias": "interval",
                 "pgType": "interval",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 268500991,
                 },
               },
             },
-            Object {
+            {
               "name": "intervalType",
-              "type": Object {
+              "type": {
                 "gqlType": "Interval",
                 "modifier": null,
                 "pgAlias": "interval",
@@ -1677,9 +1677,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "jsonType",
-              "type": Object {
+              "type": {
                 "gqlType": "JSON",
                 "modifier": null,
                 "pgAlias": "json",
@@ -1688,9 +1688,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "jsonbType",
-              "type": Object {
+              "type": {
                 "gqlType": "JSON",
                 "modifier": null,
                 "pgAlias": "jsonb",
@@ -1699,9 +1699,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "lineType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "line",
@@ -1710,9 +1710,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "lsegType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "lseg",
@@ -1721,9 +1721,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "macaddrType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "macaddr",
@@ -1732,9 +1732,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "moneyType",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "money",
@@ -1743,9 +1743,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "numericType",
-              "type": Object {
+              "type": {
                 "gqlType": "BigFloat",
                 "modifier": null,
                 "pgAlias": "numeric",
@@ -1754,22 +1754,22 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "numericOptType",
-              "type": Object {
+              "type": {
                 "gqlType": "BigFloat",
                 "modifier": 655374,
                 "pgAlias": "numeric",
                 "pgType": "numeric",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 655374,
                 },
               },
             },
-            Object {
+            {
               "name": "pathType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "path",
@@ -1778,9 +1778,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "pgLsnType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "pg_lsn",
@@ -1789,9 +1789,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "pointType",
-              "type": Object {
+              "type": {
                 "gqlType": "Point",
                 "modifier": null,
                 "pgAlias": "point",
@@ -1800,9 +1800,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "polygonType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "polygon",
@@ -1811,9 +1811,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "realType",
-              "type": Object {
+              "type": {
                 "gqlType": "Float",
                 "modifier": null,
                 "pgAlias": "real",
@@ -1822,9 +1822,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "serialType",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -1833,9 +1833,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "serial4Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -1844,9 +1844,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "serial8Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -1855,9 +1855,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "smallintType",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "smallint",
@@ -1866,9 +1866,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "textType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "text",
@@ -1877,22 +1877,22 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "timeOpt2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Time",
                 "modifier": 2,
                 "pgAlias": "time",
                 "pgType": "time",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 2,
                 },
               },
             },
-            Object {
+            {
               "name": "timeType",
-              "type": Object {
+              "type": {
                 "gqlType": "Time",
                 "modifier": null,
                 "pgAlias": "time",
@@ -1901,9 +1901,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "timestampType",
-              "type": Object {
+              "type": {
                 "gqlType": "Datetime",
                 "modifier": null,
                 "pgAlias": "timestamp",
@@ -1912,9 +1912,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "timestamptzType",
-              "type": Object {
+              "type": {
                 "gqlType": "Datetime",
                 "modifier": null,
                 "pgAlias": "timestamptz",
@@ -1923,22 +1923,22 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "timetzOpt2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "Time",
                 "modifier": 2,
                 "pgAlias": "timetz",
                 "pgType": "timetz",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 2,
                 },
               },
             },
-            Object {
+            {
               "name": "timetzType",
-              "type": Object {
+              "type": {
                 "gqlType": "Time",
                 "modifier": null,
                 "pgAlias": "timetz",
@@ -1947,9 +1947,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "tsqueryType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "tsquery",
@@ -1958,9 +1958,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "tsvectorType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "tsvector",
@@ -1969,9 +1969,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "uuidType",
-              "type": Object {
+              "type": {
                 "gqlType": "UUID",
                 "modifier": null,
                 "pgAlias": "uuid",
@@ -1980,48 +1980,48 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "varbit1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 1,
                 "pgAlias": "varbit",
                 "pgType": "varbit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 1,
                 },
               },
             },
-            Object {
+            {
               "name": "varbit2Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 2,
                 "pgAlias": "varbit",
                 "pgType": "varbit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 2,
                 },
               },
             },
-            Object {
+            {
               "name": "varbit16Type",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": 16,
                 "pgAlias": "varbit",
                 "pgType": "varbit",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 16,
                 },
               },
             },
-            Object {
+            {
               "name": "varbitType",
-              "type": Object {
+              "type": {
                 "gqlType": "BitString",
                 "modifier": null,
                 "pgAlias": "varbit",
@@ -2030,48 +2030,48 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "varcharOpt1Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 5,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 5,
                 },
               },
             },
-            Object {
+            {
               "name": "varcharOpt140Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 144,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 144,
                 },
               },
             },
-            Object {
+            {
               "name": "varcharOpt1000Type",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1004,
                 "pgAlias": "varchar",
                 "pgType": "varchar",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "modifier": 1004,
                 },
               },
             },
-            Object {
+            {
               "name": "varcharType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "varchar",
@@ -2080,9 +2080,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "xmlType",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "xml",
@@ -2094,14 +2094,14 @@ Object {
           ],
           "name": "AllType",
         },
-        Object {
-          "constraints": Array [
-            Object {
+        {
+          "constraints": [
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "id",
-                  "type": Object {
+                  "type": {
                     "gqlType": "Int",
                     "modifier": null,
                     "pgAlias": "int",
@@ -2114,10 +2114,10 @@ Object {
               "name": "bounding_box_pkey",
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "id",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2126,9 +2126,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "zip",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2137,15 +2137,15 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "location",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1107460,
                 "pgAlias": "geometry",
                 "pgType": "geometry",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "gisType": "Point",
                   "hasM": false,
                   "hasZ": false,
@@ -2154,15 +2154,15 @@ Object {
                 },
               },
             },
-            Object {
+            {
               "name": "bbox",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1107468,
                 "pgAlias": "geometry",
                 "pgType": "geometry",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "gisType": "Polygon",
                   "hasM": false,
                   "hasZ": false,
@@ -2174,37 +2174,37 @@ Object {
           ],
           "name": "BoundingBox",
         },
-        Object {
-          "constraints": Array [
-            Object {
-              "fields": Array [
-                Object {
+        {
+          "constraints": [
+            {
+              "fields": [
+                {
                   "name": "permId",
                 },
               ],
-              "refFields": Array [
-                Object {
+              "refFields": [
+                {
                   "name": "id",
                 },
               ],
-              "refTable": Object {
-                "fields": Array [
-                  Object {
+              "refTable": {
+                "fields": [
+                  {
                     "name": "id",
                   },
-                  Object {
+                  {
                     "name": "name",
                   },
                 ],
                 "name": "Permission",
               },
             },
-            Object {
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "permId",
-                  "type": Object {
+                  "type": {
                     "gqlType": "BigInt",
                     "modifier": null,
                     "pgAlias": "bigint",
@@ -2213,9 +2213,9 @@ Object {
                     "typmod": null,
                   },
                 },
-                Object {
+                {
                   "name": "roleId",
-                  "type": Object {
+                  "type": {
                     "gqlType": "BigInt",
                     "modifier": null,
                     "pgAlias": "bigint",
@@ -2227,23 +2227,23 @@ Object {
               ],
               "name": "permission_assignment_pkey",
             },
-            Object {
-              "fields": Array [
-                Object {
+            {
+              "fields": [
+                {
                   "name": "roleId",
                 },
               ],
-              "refFields": Array [
-                Object {
+              "refFields": [
+                {
                   "name": "id",
                 },
               ],
-              "refTable": Object {
-                "fields": Array [
-                  Object {
+              "refTable": {
+                "fields": [
+                  {
                     "name": "id",
                   },
-                  Object {
+                  {
                     "name": "orgId",
                   },
                 ],
@@ -2251,10 +2251,10 @@ Object {
               },
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "permId",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -2263,9 +2263,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "roleId",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -2277,14 +2277,14 @@ Object {
           ],
           "name": "PermissionAssignment",
         },
-        Object {
-          "constraints": Array [
-            Object {
+        {
+          "constraints": [
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "id",
-                  "type": Object {
+                  "type": {
                     "gqlType": "Int",
                     "modifier": null,
                     "pgAlias": "int",
@@ -2297,10 +2297,10 @@ Object {
               "name": "permissions_pkey",
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "id",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2309,9 +2309,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "name",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "citext",
@@ -2323,14 +2323,14 @@ Object {
           ],
           "name": "Permission",
         },
-        Object {
-          "constraints": Array [
-            Object {
+        {
+          "constraints": [
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "id",
-                  "type": Object {
+                  "type": {
                     "gqlType": "Int",
                     "modifier": null,
                     "pgAlias": "int",
@@ -2342,23 +2342,23 @@ Object {
               ],
               "name": "roles_pkey",
             },
-            Object {
-              "fields": Array [
-                Object {
+            {
+              "fields": [
+                {
                   "name": "orgId",
                 },
               ],
-              "refFields": Array [
-                Object {
+              "refFields": [
+                {
                   "name": "id",
                 },
               ],
-              "refTable": Object {
-                "fields": Array [
-                  Object {
+              "refTable": {
+                "fields": [
+                  {
                     "name": "id",
                   },
-                  Object {
+                  {
                     "name": "username",
                   },
                 ],
@@ -2366,10 +2366,10 @@ Object {
               },
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "id",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2378,9 +2378,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "orgId",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -2392,37 +2392,37 @@ Object {
           ],
           "name": "Role",
         },
-        Object {
-          "constraints": Array [
-            Object {
-              "fields": Array [
-                Object {
+        {
+          "constraints": [
+            {
+              "fields": [
+                {
                   "name": "subjId",
                 },
               ],
-              "refFields": Array [
-                Object {
+              "refFields": [
+                {
                   "name": "id",
                 },
               ],
-              "refTable": Object {
-                "fields": Array [
-                  Object {
+              "refTable": {
+                "fields": [
+                  {
                     "name": "id",
                   },
-                  Object {
+                  {
                     "name": "username",
                   },
                 ],
                 "name": "User",
               },
             },
-            Object {
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "subjId",
-                  "type": Object {
+                  "type": {
                     "gqlType": "BigInt",
                     "modifier": null,
                     "pgAlias": "bigint",
@@ -2431,9 +2431,9 @@ Object {
                     "typmod": null,
                   },
                 },
-                Object {
+                {
                   "name": "roleId",
-                  "type": Object {
+                  "type": {
                     "gqlType": "BigInt",
                     "modifier": null,
                     "pgAlias": "bigint",
@@ -2445,23 +2445,23 @@ Object {
               ],
               "name": "subject_assignment_pkey",
             },
-            Object {
-              "fields": Array [
-                Object {
+            {
+              "fields": [
+                {
                   "name": "roleId",
                 },
               ],
-              "refFields": Array [
-                Object {
+              "refFields": [
+                {
                   "name": "id",
                 },
               ],
-              "refTable": Object {
-                "fields": Array [
-                  Object {
+              "refTable": {
+                "fields": [
+                  {
                     "name": "id",
                   },
-                  Object {
+                  {
                     "name": "orgId",
                   },
                 ],
@@ -2469,10 +2469,10 @@ Object {
               },
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "subjId",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -2481,9 +2481,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "roleId",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -2495,14 +2495,14 @@ Object {
           ],
           "name": "SubjectAssignment",
         },
-        Object {
-          "constraints": Array [
-            Object {
+        {
+          "constraints": [
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "userId",
-                  "type": Object {
+                  "type": {
                     "gqlType": "BigInt",
                     "modifier": null,
                     "pgAlias": "bigint",
@@ -2514,23 +2514,23 @@ Object {
               ],
               "name": "user_settings_pkey",
             },
-            Object {
-              "fields": Array [
-                Object {
+            {
+              "fields": [
+                {
                   "name": "userId",
                 },
               ],
-              "refFields": Array [
-                Object {
+              "refFields": [
+                {
                   "name": "id",
                 },
               ],
-              "refTable": Object {
-                "fields": Array [
-                  Object {
+              "refTable": {
+                "fields": [
+                  {
                     "name": "id",
                   },
-                  Object {
+                  {
                     "name": "username",
                   },
                 ],
@@ -2538,10 +2538,10 @@ Object {
               },
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "userId",
-              "type": Object {
+              "type": {
                 "gqlType": "BigInt",
                 "modifier": null,
                 "pgAlias": "bigint",
@@ -2550,9 +2550,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "setting1",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "text",
@@ -2564,14 +2564,14 @@ Object {
           ],
           "name": "UserSetting",
         },
-        Object {
-          "constraints": Array [
-            Object {
+        {
+          "constraints": [
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "id",
-                  "type": Object {
+                  "type": {
                     "gqlType": "Int",
                     "modifier": null,
                     "pgAlias": "int",
@@ -2583,12 +2583,12 @@ Object {
               ],
               "name": "users_pkey",
             },
-            Object {
+            {
               "__typename": "MetaschemaUniqueConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "username",
-                  "type": Object {
+                  "type": {
                     "gqlType": "String",
                     "modifier": null,
                     "pgAlias": "citext",
@@ -2601,10 +2601,10 @@ Object {
               "name": "users_username_key",
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "id",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2613,9 +2613,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "username",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": null,
                 "pgAlias": "citext",
@@ -2627,14 +2627,14 @@ Object {
           ],
           "name": "User",
         },
-        Object {
-          "constraints": Array [
-            Object {
+        {
+          "constraints": [
+            {
               "__typename": "MetaschemaPrimaryKeyConstraint",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "name": "id",
-                  "type": Object {
+                  "type": {
                     "gqlType": "Int",
                     "modifier": null,
                     "pgAlias": "int",
@@ -2647,10 +2647,10 @@ Object {
               "name": "zip_codes_pkey",
             },
           ],
-          "fields": Array [
-            Object {
+          "fields": [
+            {
               "name": "id",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2659,9 +2659,9 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "zipCode",
-              "type": Object {
+              "type": {
                 "gqlType": "Int",
                 "modifier": null,
                 "pgAlias": "int",
@@ -2670,15 +2670,15 @@ Object {
                 "typmod": null,
               },
             },
-            Object {
+            {
               "name": "location",
-              "type": Object {
+              "type": {
                 "gqlType": "String",
                 "modifier": 1107460,
                 "pgAlias": "geometry",
                 "pgType": "geometry",
                 "subtype": null,
-                "typmod": Object {
+                "typmod": {
                   "gisType": "Point",
                   "hasM": false,
                   "hasZ": false,

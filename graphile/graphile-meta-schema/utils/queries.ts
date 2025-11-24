@@ -1,6 +1,7 @@
-import { gql } from 'graphile-test';
+import type { DocumentNode } from 'graphql';
+import gql from 'graphql-tag';
 
-export const GetMetaSchemaUnion = gql`
+export const GetMetaSchemaUnion: DocumentNode = gql`
   query MetaQuery {
     _meta {
       tables {
@@ -83,7 +84,7 @@ export const GetMetaSchemaUnion = gql`
   }
 `;
 
-export const GetMetaSchema = gql`
+export const GetMetaSchema: DocumentNode = gql`
   query MetaQuery {
     _meta {
       tables {
@@ -102,7 +103,7 @@ export const GetMetaSchema = gql`
   }
 `;
 
-export const GetMetaInflection = gql`
+export const GetMetaInflection: DocumentNode = gql`
   query MetaQuery {
     _meta {
       tables {
@@ -143,7 +144,7 @@ export const GetMetaInflection = gql`
   }
 `;
 
-export const GetHasOneRelations = gql`
+export const GetHasOneRelations: DocumentNode = gql`
   query HasOneQuery {
     _meta {
       tables {
@@ -166,7 +167,7 @@ export const GetHasOneRelations = gql`
   }
 `;
 
-export const GetHasManyRelations = gql`
+export const GetHasManyRelations: DocumentNode = gql`
   query HasMany {
     _meta {
       tables {
@@ -189,7 +190,7 @@ export const GetHasManyRelations = gql`
   }
 `;
 
-export const GetBelongsToRelations = gql`
+export const GetBelongsToRelations: DocumentNode = gql`
   query BelongsTo {
     _meta {
       tables {
@@ -212,7 +213,7 @@ export const GetBelongsToRelations = gql`
   }
 `;
 
-export const GetManyToManyRelations = gql`
+export const GetManyToManyRelations: DocumentNode = gql`
   query MetaQuery {
     _meta {
       tables {

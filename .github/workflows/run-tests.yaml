@@ -156,3 +156,5 @@ jobs:
         run: cd ./graphile/graphile-simple-inflector && pnpm test
       - name: graphile/graphile-i18n
         run: cd ./graphile/graphile-i18n && pnpm test
+      - name: graphile/graphile-meta-schema
+        run: cd ./graphile/graphile-meta-schema && pnpm test

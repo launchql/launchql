@@ -1,7 +1,7 @@
 # graphile-meta-schema [![Build Status](https://travis-ci.org/pyramation/graphile-meta-schema.svg?branch=master)](https://travis-ci.org/pyramation/graphile-meta-schema)
 
 ```sh
-npm install graphile-meta-schema 
+pnpm add graphile-meta-schema
 ```
 
 ## example query
@@ -71,6 +71,13 @@ query MetaQuery {
 ```
 
 ## testing
+
+```sh
+# requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-meta-schema test
+```
+
+If you want to explore the fixtures manually:
 
 ```sh
 createdb metaschema_example

@@ -9,7 +9,6 @@ import {
   additionalGraphQLContextFromRequest as langAdditional,
   LangPlugin
 } from 'graphile-i18n';
-// @ts-ignore
 import PgMetaschema from 'graphile-meta-schema';
 // @ts-ignore
 import PgSearch from 'graphile-search-plugin';
