@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.7](https://github.com/launchql/launchql/compare/pg-codegen@2.13.6...pg-codegen@2.13.7) (2025-11-24)
+
+**Note:** Version bump only for package pg-codegen
+
 ## [2.13.6](https://github.com/launchql/launchql/compare/pg-codegen@2.13.4...pg-codegen@2.13.6) (2025-11-22)
 
 **Note:** Version bump only for package pg-codegen
