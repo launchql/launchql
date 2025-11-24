@@ -36,7 +36,7 @@
     "@launchql/types": "workspace:^",
     "@launchql/upload-names": "workspace:^",
     "@pyramation/postgis": "^0.1.1",
-    "@pyramation/postgraphile-plugin-fulltext-filter": "^2.0.0",
+    "@pyramation/postgraphile-plugin-fulltext-filter": "workspace:^",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "graphile-build": "^4.14.1",

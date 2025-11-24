@@ -45,7 +45,7 @@
     "url": "https://github.com/pyramation/graphile-search-plugin/issues"
   },
   "devDependencies": {
-    "@pyramation/postgraphile-plugin-fulltext-filter": "2.0.0",
+    "@pyramation/postgraphile-plugin-fulltext-filter": "workspace:^",
     "graphile-simple-inflector": "workspace:^",
     "graphile-test": "workspace:^",
     "pgsql-test": "workspace:^",
