@@ -14,7 +14,6 @@ import {
 import PgMetaschema from 'graphile-meta-schema';
 // @ts-ignore
 import PgSearch from 'graphile-search-plugin';
-// @ts-ignore
 import PgSimpleInflector from 'graphile-simple-inflector';
 import { PostGraphileOptions } from 'postgraphile';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';

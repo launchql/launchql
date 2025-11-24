@@ -9,7 +9,6 @@ import {
   GoalsSearchViaFilter2
 } from '../utils/queries';
 import { PgSearchPlugin } from '../src';
-// @ts-ignore
 import PgSimpleInflector from 'graphile-simple-inflector';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 // @ts-ignore

@@ -81,8 +81,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
       graphile-simple-inflector:
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: workspace:^
+        version: link:../graphile-simple-inflector/dist
       graphile-test:
         specifier: workspace:^
         version: link:../../packages/graphile-test/dist
@@ -92,6 +92,23 @@ importers:
       postgraphile-plugin-connection-filter:
         specifier: ^2.0.0
         version: 2.3.0
+    publishDirectory: dist
+
+  graphile/graphile-simple-inflector:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+    devDependencies:
+      graphile-test:
+        specifier: workspace:^
+        version: link:../../packages/graphile-test/dist
+      graphql-tag:
+        specifier: 2.12.6
+        version: 2.12.6(graphql@15.10.1)
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
   packages/cli:
@@ -458,8 +475,8 @@ importers:
         specifier: workspace:^
         version: link:../../graphile/graphile-search-plugin/dist
       graphile-simple-inflector:
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: workspace:^
+        version: link:../../graphile/graphile-simple-inflector/dist
       graphql:
         specifier: 15.10.1
         version: 15.10.1
@@ -1007,8 +1024,8 @@ importers:
         specifier: workspace:^
         version: link:../graphile-settings/dist
       graphile-simple-inflector:
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: workspace:^
+        version: link:../../graphile/graphile-simple-inflector/dist
       graphile-utils:
         specifier: ^4.14.1
         version: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
@@ -3952,9 +3969,6 @@ packages:
 
   graphile-meta-schema@0.2.5:
     resolution: {integrity: sha512-qKx4+VLfrNauHrJqZ7G6wzdMEj53eHtepVTAe/QeRrvMOCSEr8SiE0Ja4bj6jjL/jCYI7NoicBMnowBnoNOZeA==}
-
-  graphile-simple-inflector@0.1.1:
-    resolution: {integrity: sha512-noEIF7ORcHHdHd1iHnqEk8cozLB8LKUHBuCZwUCv98E9Mp2odRAGUjhGsFuAd2wmZDEutersd80dDCOny3dytg==}
 
   graphile-utils@4.14.1:
     resolution: {integrity: sha512-FgviZVKO3NS8va2inqUVQQFSnFLEG7FiH64BqSVRHSF8jwSXKcpx5NiRibErNvvIdnuzgVAXQ3W4jcXvMSx0Tg==}
@@ -9803,10 +9817,6 @@ snapshots:
       - graphile-build
       - graphile-build-pg
       - supports-color
-
-  graphile-simple-inflector@0.1.1:
-    dependencies:
-      '@babel/runtime': 7.28.4
 
   graphile-utils@4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
     dependencies:
