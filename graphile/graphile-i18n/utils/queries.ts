@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const GetProjectsAndLanguages = gql`
   query GetProjectsAndLanguagesQuery {
-    projects {
+    allProjects {
       nodes {
         id
         name

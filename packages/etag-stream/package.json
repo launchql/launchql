@@ -36,5 +36,8 @@
   ],
   "dependencies": {
     "etag-hash": "workspace:^"
+  },
+  "devDependencies": {
+    "glob": "^13.0.0"
   }
 }

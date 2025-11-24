@@ -30,12 +30,12 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "chalk": "^4.1.0"
+    "yanse": "^0.1.1"
   },
   "keywords": [
     "logger",
     "logging",
-    "chalk",
+    "yanse",
     "console",
     "launchql"
   ]

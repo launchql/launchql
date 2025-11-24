@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`generateModulePlan with tags generates plan for my-first 1`] = `
 "%syntax-version=1.0.0

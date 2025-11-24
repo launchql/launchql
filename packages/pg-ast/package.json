@@ -37,11 +37,11 @@
     "parse"
   ],
   "devDependencies": {
-    "pg-proto-parser": "^1.29.1",
-    "pgsql-deparser": "^17.11.1"
+    "pg-proto-parser": "^1.30.1",
+    "pgsql-deparser": "^17.12.1"
   },
   "dependencies": {
     "@pgsql/types": "^17.6.1",
-    "nested-obj": "0.0.1"
+    "nested-obj": "0.1.1"
   }
 }

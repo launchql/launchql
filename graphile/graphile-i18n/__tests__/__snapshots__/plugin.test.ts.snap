@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`exposes localized strings 1`] = `
 {
   "data": {
-    "projects": {
+    "allProjects": {
       "nodes": [
         {
           "description": "project one",

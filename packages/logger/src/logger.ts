@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import yanse from 'yanse';
 
 export type LogLevel = 'info' | 'warn' | 'error' | 'debug' | 'success';
 
@@ -10,12 +10,12 @@ const levelPriority: Record<LogLevel, number> = {
   error: 4
 };
 
-const levelColors: Record<LogLevel, chalk.Chalk> = {
-  info: chalk.cyan,
-  warn: chalk.yellow,
-  error: chalk.red,
-  debug: chalk.gray,
-  success: chalk.green
+const levelColors: Record<LogLevel, typeof yanse.cyan> = {
+  info: yanse.cyan,
+  warn: yanse.yellow,
+  error: yanse.red,
+  debug: yanse.gray,
+  success: yanse.green
 };
 
 const hasAnsi = (text: string): boolean => {
@@ -98,7 +98,7 @@ export class Logger {
       return;
     }
 
-    const tag = chalk.bold(`[${this.scope}]`);
+    const tag = yanse.bold(`[${this.scope}]`);
     const color = levelColors[level];
     const prefix = color(`${level.toUpperCase()}:`);
 
@@ -108,7 +108,7 @@ export class Logger {
 
     const stream = level === 'error' ? process.stderr : process.stdout;
     const outputParts = showTimestamp
-      ? [chalk.dim(`[${new Date().toISOString()}]`), tag, prefix, ...formattedArgs]
+      ? [yanse.dim(`[${new Date().toISOString()}]`), tag, prefix, ...formattedArgs]
       : [tag, prefix, ...formattedArgs];
     const output = outputParts
       .map(arg => String(arg))
