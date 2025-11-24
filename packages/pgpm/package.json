@@ -1,6 +1,6 @@
 {
   "name": "pgpm",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Package Manager - Database migration and package management CLI",
   "main": "index.js",
@@ -49,13 +49,13 @@
     "@launchql/logger": "workspace:^",
     "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
-    "yanse": "^0.1.1",
     "inquirerer": "^2.0.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
-    "shelljs": "^0.10.0"
+    "shelljs": "^0.10.0",
+    "yanse": "^0.1.1"
   },
   "keywords": [
     "cli",

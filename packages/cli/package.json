@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.17.11",
+  "version": "4.17.12",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -54,14 +54,14 @@
     "@launchql/server-utils": "workspace:^",
     "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
-    "yanse": "^0.1.1",
     "inquirerer": "^2.0.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
     "pgpm": "workspace:^",
-    "shelljs": "^0.10.0"
+    "shelljs": "^0.10.0",
+    "yanse": "^0.1.1"
   },
   "keywords": [
     "cli",

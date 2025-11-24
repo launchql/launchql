@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.8](https://github.com/launchql/launchql/compare/mime-bytes@0.3.7...mime-bytes@0.3.8) (2025-11-24)
+
+**Note:** Version bump only for package mime-bytes
+
 ## [0.3.7](https://github.com/launchql/launchql/compare/mime-bytes@0.3.5...mime-bytes@0.3.7) (2025-11-22)
 
 **Note:** Version bump only for package mime-bytes
