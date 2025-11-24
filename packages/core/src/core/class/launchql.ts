@@ -8,7 +8,7 @@ import {
   loadTemplates
 } from '@launchql/templatizer';
 import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
-import chalk from 'chalk';
+import yanse from 'yanse';
 import { execSync } from 'child_process';
 import fs from 'fs';
 import * as glob from 'glob';
@@ -197,10 +197,10 @@ export class LaunchQLPackage {
     } else if (isParentDir) {
       targetPath = path.join(this.cwd, modName);
     } else if (isInsideModule) {
-      console.error(chalk.red(`Error: Cannot create a module inside an existing module. Please run 'lql init' from the workspace root or from a parent directory like 'packages/'.`));
+      console.error(yanse.red(`Error: Cannot create a module inside an existing module. Please run 'lql init' from the workspace root or from a parent directory like 'packages/'.`));
       process.exit(1);
     } else {
-      console.error(chalk.red(`Error: You must be inside the workspace root, a parent directory of modules (like 'packages/'), or inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
+      console.error(yanse.red(`Error: You must be inside the workspace root, a parent directory of modules (like 'packages/'), or inside one of the workspace packages: ${this.allowedDirs.join(', ')}`));
       process.exit(1);
     }
 

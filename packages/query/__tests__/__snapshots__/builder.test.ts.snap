@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`create with custom selection 1`] = `
 "mutation createActionMutation($id: UUID, $slug: String, $photo: JSON, $shareImage: JSON, $title: String, $titleObjectTemplate: String, $url: String, $description: String, $discoveryHeader: String, $discoveryDescription: String, $notificationText: String, $notificationObjectTemplate: String, $enableNotifications: Boolean, $enableNotificationsText: String, $search: FullText, $location: GeoJSON, $locationRadius: BigFloat, $timeRequired: IntervalInput, $startDate: Datetime, $endDate: Datetime, $approved: Boolean, $published: Boolean, $isPrivate: Boolean, $rewardAmount: BigFloat, $activityFeedText: String, $callToAction: String, $completedActionText: String, $alreadyCompletedActionText: String, $selfVerifiable: Boolean, $isRecurring: Boolean, $recurringInterval: IntervalInput, $oncePerObject: Boolean, $minimumGroupMembers: Int, $limitedToLocation: Boolean, $tags: [String], $groupId: UUID, $ownerId: UUID!, $objectTypeId: Int, $rewardId: UUID, $verifyRewardId: UUID, $photoUpload: Upload, $shareImageUpload: Upload) {

@@ -1,7 +1,7 @@
 import { CLIOptions } from 'inquirerer';
 import readline from 'readline';
 import { Readable, Transform, Writable } from 'stream';
-import stripAnsi from 'strip-ansi';
+import { cleanAnsi } from 'clean-ansi';
 
 export const KEY_SEQUENCES = {
   ENTER: '\u000d',
@@ -79,7 +79,7 @@ export function setupTests(): () => TestEnvironment {
       write: (chunk, encoding, callback) => {
         const str = chunk.toString();
         const humanizedStr = humanizeKeySequences(str);
-        const cleanStr = stripAnsi(humanizedStr);
+        const cleanStr = cleanAnsi(humanizedStr);
         writeResults.push(cleanStr);
         mockWrite(str);
         callback();
@@ -102,7 +102,7 @@ export function setupTests(): () => TestEnvironment {
       transform(chunk, encoding, callback) {
         const data = chunk.toString();
         const humanizedData = humanizeKeySequences(data);
-        const cleanData = stripAnsi(humanizedData);
+        const cleanData = cleanAnsi(humanizedData);
         transformResults.push(cleanData);
         this.push(chunk);
         callback();

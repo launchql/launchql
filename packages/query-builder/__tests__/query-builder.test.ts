@@ -108,7 +108,7 @@ describe('QueryBuilder', () => {
 
   it('should throw an error if no table is specified', () => {
     const builder = new QueryBuilder();
-    expect(() => builder.select(['id']).build()).toThrowError(
+    expect(() => builder.select(['id']).build()).toThrow(
       'Table name or procedure name is not specified.'
     );
   });

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`LaunchQLPackage.writeModulePlan writes a clean plan to disk for a module (no projects) 1`] = `
 "%syntax-version=1.0.0

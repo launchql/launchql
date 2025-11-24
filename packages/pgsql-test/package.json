@@ -56,7 +56,6 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/csv-parse": "^1.2.4",
     "@types/pg": "^8.15.2",
     "@types/pg-copy-streams": "^1.2.5"
   },
@@ -66,10 +65,10 @@
     "@launchql/logger": "workspace:^",
     "@launchql/server-utils": "workspace:^",
     "@launchql/types": "workspace:^",
-    "csv-parse": "^5.5.5",
+    "csv-parse": "^6.1.0",
     "pg": "^8.16.0",
     "pg-cache": "workspace:^",
-    "pg-copy-streams": "^6.0.6",
+    "pg-copy-streams": "^7.0.0",
     "pg-env": "workspace:^"
   }
 }
