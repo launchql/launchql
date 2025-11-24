@@ -1,0 +1,104 @@
+{
+  "name": "@pyramation/postgraphile-plugin-fulltext-filter",
+  "version": "2.0.0",
+  "description": "Full text searching on tsvector fields for use with postgraphile-plugin-connection-filter",
+  "main": "index.js",
+  "repository": {
+    "url": "git+https://github.com/mlipscombe/postgraphile-plugin-fulltext-filter.git",
+    "type": "git"
+  },
+  "author": "Mark Lipscombe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mlipscombe/postgraphile-plugin-fulltext-filter.git"
+  },
+  "scripts": {
+    "test": "scripts/test jest -i",
+    "lint": "eslint index.js src/**/*.js"
+  },
+  "dependencies": {
+    "graphile-build-pg": "^4.2.0",
+    "pg-tsquery": "^8.1.0",
+    "postgraphile-plugin-connection-filter": "^2.0.0"
+  },
+  "peerDependencies": {
+    "postgraphile-core": "^4.2.0",
+    "postgraphile-plugin-connection-filter": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "graphql": "^14.0.2",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "pg": ">=6.1.0 <8",
+    "postgraphile-core": "^4.2.0"
+  },
+  "jest": {
+    "testRegex": "__tests__/.*\\.test\\.js$",
+    "collectCoverageFrom": [
+      "src/*.js",
+      "index.js"
+    ]
+  },
+  "files": [
+    "src"
+  ],
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "extends": [
+      "airbnb-base"
+    ],
+    "env": {
+      "jest": true
+    },
+    "globals": {
+      "expect": false
+    },
+    "rules": {
+      "import/no-unresolved": 0,
+      "import/no-extraneous-dependencies": 0,
+      "import/extensions": 0,
+      "import/prefer-default-export": 0,
+      "max-len": 0,
+      "symbol-description": 0,
+      "no-nested-ternary": 0,
+      "no-alert": 0,
+      "no-console": 0,
+      "no-plusplus": 0,
+      "no-restricted-globals": 0,
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allow": [
+            "_fields",
+            "__fts_ranks"
+          ]
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ],
+      "no-return-assign": [
+        "error",
+        "except-parens"
+      ],
+      "class-methods-use-this": 0,
+      "prefer-destructuring": [
+        "error",
+        {
+          "object": true,
+          "array": false
+        }
+      ]
+    }
+  }
+}

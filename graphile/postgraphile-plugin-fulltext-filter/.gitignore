@@ -1,0 +1,21 @@
+# dependencies
+node_modules
+
+# testing
+coverage
+# production
+build
+.netlify
+dist
+
+# misc
+.DS_Store
+npm-debug.log
+yarn-error.log
+
+#IDE
+.idea/*
+*.swp
+.vscode
+
+.env
