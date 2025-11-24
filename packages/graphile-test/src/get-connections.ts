@@ -11,7 +11,8 @@ import type {
   GraphQLQueryOptions,
   GraphQLQueryUnwrappedFn,
   GraphQLQueryUnwrappedFnObj,
-  GraphQLResponse} from './types';
+  GraphQLResponse,
+  GraphQLTestContext} from './types';
 
 // Core unwrapping utility
 const unwrap = <T>(res: GraphQLResponse<T>): T => {
@@ -49,7 +50,8 @@ const createConnectionsBase = async (
     db,
     teardown,
     baseQuery,
-    baseQueryPositional
+    baseQueryPositional,
+    gqlContext
   };
 };
 
@@ -68,14 +70,16 @@ export const getConnectionsObject = async (
   db: PgTestClient;
   teardown: () => Promise<void>;
   query: GraphQLQueryFnObj;
+  gqlContext: GraphQLTestContext;
 }> => {
-  const { pg, db, teardown, baseQuery } = await createConnectionsBase(input, seedAdapters);
+  const { pg, db, teardown, baseQuery, gqlContext } = await createConnectionsBase(input, seedAdapters);
 
   return {
     pg,
     db,
     teardown,
-    query: baseQuery
+    query: baseQuery,
+    gqlContext
   };
 };
 
