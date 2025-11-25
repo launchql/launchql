@@ -12,8 +12,8 @@
     "clean": "makage clean",
     "copy": "makage assets",
     "prepack": "pnpm run build",
-    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
-    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -41,7 +41,7 @@
     "@types/accept-language-parser": "^1.5.4",
     "@types/pg": "^8.15.2",
     "graphile-test": "workspace:^",
-    "makage": "^0.1.5",
+    "makage": "^0.1.6",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {

@@ -57,6 +57,6 @@
     "pgsql-test": "workspace:^"
   },
   "devDependencies": {
-    "makage": "^0.1.5"
+    "makage": "^0.1.6"
   }
 }

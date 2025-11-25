@@ -14,6 +14,6 @@
   "devDependencies": {
     "@launchql/core": "workspace:^",
     "@launchql/types": "workspace:^",
-    "makage": "^0.1.5"
+    "makage": "^0.1.6"
   }
 }
