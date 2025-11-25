@@ -25,7 +25,7 @@
     "copy:sql": "copyfiles -f src/migrate/sql/* dist/migrate/sql && copyfiles -f src/migrate/sql/* dist/esm/migrate/sql && copyfiles -f src/init/sql/* dist/init/sql && copyfiles -f src/init/sql/* dist/esm/init/sql",
     "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "makage build",
+    "build": "makage build && npm run copy",
     "build:dev": "makage build --dev",
     "lint": "eslint . --fix",
     "test": "jest",
