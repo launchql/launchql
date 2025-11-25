@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.8](https://github.com/launchql/launchql/compare/@launchql/s3-utils@2.2.7...@launchql/s3-utils@2.2.8) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/s3-utils
+
 ## [2.2.7](https://github.com/launchql/launchql/compare/@launchql/s3-utils@2.2.5...@launchql/s3-utils@2.2.7) (2025-11-22)
 
 **Note:** Version bump only for package @launchql/s3-utils

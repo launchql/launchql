@@ -1,6 +1,6 @@
 {
   "name": "pg-ast",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL ASTs in JS",
   "main": "index.js",

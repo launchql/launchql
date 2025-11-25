@@ -1,6 +1,6 @@
 {
   "name": "@launchql/query-builder",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Query Builder",
   "main": "index.js",

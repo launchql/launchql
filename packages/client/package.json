@@ -1,6 +1,6 @@
 {
   "name": "@launchql/client",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Client",
   "main": "index.js",

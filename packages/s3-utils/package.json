@@ -1,6 +1,6 @@
 {
   "name": "@launchql/s3-utils",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "s3 utils",
   "main": "index.js",
