@@ -1,0 +1,64 @@
+{
+  "name": "graphile-i18n",
+  "version": "0.1.0",
+  "description": "Graphile i18n plugin",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/pyramation/graphile-i18n#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepack": "pnpm run build",
+    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pyramation/graphile-i18n"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "launchql",
+    "plugin",
+    "postgres",
+    "graphql"
+  ],
+  "bugs": {
+    "url": "https://github.com/pyramation/graphile-i18n/issues"
+  },
+  "devDependencies": {
+    "@types/accept-language-parser": "^1.5.4",
+    "@types/pg": "^8.15.2",
+    "graphile-test": "workspace:^",
+    "pgsql-test": "workspace:^"
+  },
+  "dependencies": {
+    "accept-language-parser": "^1.5.0",
+    "dataloader": "^2.0.0",
+    "envalid": "^8.0.0",
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-utils": "^4.14.1",
+    "graphql": "15.10.1",
+    "graphql-tag": "2.12.6",
+    "pg": "^8.16.0"
+  }
+}

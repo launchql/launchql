@@ -3,13 +3,20 @@ import { DocumentNode,ExecutionResult, graphql, print } from 'graphql';
 import MockReq from 'mock-req';
 import type { Client, Pool } from 'pg';
 import { GetConnectionOpts, GetConnectionResult } from 'pgsql-test';
-import { PostGraphileOptions,withPostGraphileContext } from 'postgraphile';
+import { PostGraphileOptions, withPostGraphileContext } from 'postgraphile';
 
 import { GetConnectionsInput } from './types';
 
 interface PgSettings {
     [key: string]: string;
 }
+
+type WithContextOptions = PostGraphileOptions & {
+  pgPool: Pool;
+  pgSettings?: PgSettings;
+  req?: MockReq;
+  res?: unknown;
+};
 
 export const runGraphQLInContext = async <T = ExecutionResult>({
   input,
@@ -36,6 +43,8 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
     throw new Error('pgClient is required and must be provided externally.');
   }
 
+  const { res: reqRes, ...restReqOptions } = reqOptions ?? {};
+
   const req = new MockReq({
     url: options.graphqlRoute || '/graphql',
     method: 'POST',
@@ -43,8 +52,9 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
       Accept: 'application/json',
       'Content-Type': 'application/json'
     },
-    ...reqOptions
+    ...restReqOptions
   });
+  const res = reqRes ?? {};
 
   const pgSettingsGenerator = options.pgSettings;
   // @ts-ignore
@@ -53,9 +63,11 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
           ? await pgSettingsGenerator(req)
           : pgSettingsGenerator || {};
 
+  const contextOptions: WithContextOptions = { ...options, pgPool, pgSettings, req, res };
+
   // @ts-ignore
-  return await withPostGraphileContext(   
-    { ...options, pgPool, pgSettings },
+  return await withPostGraphileContext(
+    contextOptions,
     async context => {
 
       const pgConn = input.useRoot ? conn.pg : conn.db;
@@ -64,11 +76,15 @@ export const runGraphQLInContext = async <T = ExecutionResult>({
       await setContextOnClient(pgClient, pgSettings, authRole);
       await pgConn.ctxQuery();
 
+      const additionalContext = typeof options.additionalGraphQLContextFromRequest === 'function'
+        ? await options.additionalGraphQLContextFromRequest(req, res)
+        : {};
+
       const printed = typeof query === 'string' ? query : print(query);
       const result = await graphql({
         schema,
         source: printed,
-        contextValue: { ...context, pgClient },
+        contextValue: { ...context, ...additionalContext, pgClient },
         variableValues: variables ?? null
       });
       return result as T;

@@ -1,0 +1,2697 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`GetBelongsToRelations 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "name": "AllType",
+          "relations": {
+            "belongsTo": [],
+          },
+        },
+        {
+          "name": "BoundingBox",
+          "relations": {
+            "belongsTo": [],
+          },
+        },
+        {
+          "name": "PermissionAssignment",
+          "relations": {
+            "belongsTo": [
+              {
+                "fieldName": "permissionByPermId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "permId",
+                  },
+                ],
+                "references": {
+                  "name": "Permission",
+                },
+                "type": "BelongsTo",
+              },
+              {
+                "fieldName": "roleByRoleId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "references": {
+                  "name": "Role",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        {
+          "name": "Permission",
+          "relations": {
+            "belongsTo": [],
+          },
+        },
+        {
+          "name": "Role",
+          "relations": {
+            "belongsTo": [
+              {
+                "fieldName": "userByOrgId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "orgId",
+                  },
+                ],
+                "references": {
+                  "name": "User",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        {
+          "name": "SubjectAssignment",
+          "relations": {
+            "belongsTo": [
+              {
+                "fieldName": "userBySubjId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "subjId",
+                  },
+                ],
+                "references": {
+                  "name": "User",
+                },
+                "type": "BelongsTo",
+              },
+              {
+                "fieldName": "roleByRoleId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "references": {
+                  "name": "Role",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        {
+          "name": "UserSetting",
+          "relations": {
+            "belongsTo": [
+              {
+                "fieldName": "userByUserId",
+                "isUnique": true,
+                "keys": [
+                  {
+                    "name": "userId",
+                  },
+                ],
+                "references": {
+                  "name": "User",
+                },
+                "type": "BelongsTo",
+              },
+            ],
+          },
+        },
+        {
+          "name": "User",
+          "relations": {
+            "belongsTo": [],
+          },
+        },
+        {
+          "name": "Postcode",
+          "relations": {
+            "belongsTo": [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetHasManyRelations 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "name": "AllType",
+          "relations": {
+            "hasMany": [],
+          },
+        },
+        {
+          "name": "BoundingBox",
+          "relations": {
+            "hasMany": [],
+          },
+        },
+        {
+          "name": "PermissionAssignment",
+          "relations": {
+            "hasMany": [],
+          },
+        },
+        {
+          "name": "Permission",
+          "relations": {
+            "hasMany": [
+              {
+                "fieldName": "permissionAssignmentsByPermId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "permId",
+                  },
+                ],
+                "referencedBy": {
+                  "name": "PermissionAssignment",
+                },
+                "type": "hasMany",
+              },
+            ],
+          },
+        },
+        {
+          "name": "Role",
+          "relations": {
+            "hasMany": [
+              {
+                "fieldName": "permissionAssignmentsByRoleId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "referencedBy": {
+                  "name": "PermissionAssignment",
+                },
+                "type": "hasMany",
+              },
+              {
+                "fieldName": "subjectAssignmentsByRoleId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "referencedBy": {
+                  "name": "SubjectAssignment",
+                },
+                "type": "hasMany",
+              },
+            ],
+          },
+        },
+        {
+          "name": "SubjectAssignment",
+          "relations": {
+            "hasMany": [],
+          },
+        },
+        {
+          "name": "UserSetting",
+          "relations": {
+            "hasMany": [],
+          },
+        },
+        {
+          "name": "User",
+          "relations": {
+            "hasMany": [
+              {
+                "fieldName": "rolesByOrgId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "orgId",
+                  },
+                ],
+                "referencedBy": {
+                  "name": "Role",
+                },
+                "type": "hasMany",
+              },
+              {
+                "fieldName": "subjectAssignmentsBySubjId",
+                "isUnique": false,
+                "keys": [
+                  {
+                    "name": "subjId",
+                  },
+                ],
+                "referencedBy": {
+                  "name": "SubjectAssignment",
+                },
+                "type": "hasMany",
+              },
+            ],
+          },
+        },
+        {
+          "name": "Postcode",
+          "relations": {
+            "hasMany": [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetHasOneRelations 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "name": "AllType",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "BoundingBox",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "PermissionAssignment",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "Permission",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "Role",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "SubjectAssignment",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "UserSetting",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+        {
+          "name": "User",
+          "relations": {
+            "hasOne": [
+              {
+                "fieldName": "userSettingByUserId",
+                "isUnique": true,
+                "keys": [
+                  {
+                    "name": "userId",
+                  },
+                ],
+                "referencedBy": {
+                  "name": "UserSetting",
+                },
+                "type": "hasOne",
+              },
+            ],
+          },
+        },
+        {
+          "name": "Postcode",
+          "relations": {
+            "hasOne": [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetManyToManyRelations 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "name": "AllType",
+          "relations": {
+            "manyToMany": [],
+          },
+        },
+        {
+          "name": "BoundingBox",
+          "relations": {
+            "manyToMany": [],
+          },
+        },
+        {
+          "name": "PermissionAssignment",
+          "relations": {
+            "manyToMany": [],
+          },
+        },
+        {
+          "name": "Permission",
+          "relations": {
+            "manyToMany": [
+              {
+                "fieldName": "rolesByPermissionAssignmentPermIdAndRoleId",
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
+                      "name": "permId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "Permission",
+                  },
+                },
+                "junctionLeftKeyAttributes": [
+                  {
+                    "name": "permId",
+                  },
+                ],
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "Role",
+                  },
+                },
+                "junctionRightKeyAttributes": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionTable": {
+                  "name": "PermissionAssignment",
+                },
+                "leftKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": {
+                  "name": "Role",
+                },
+                "type": "ManyToMany",
+              },
+            ],
+          },
+        },
+        {
+          "name": "Role",
+          "relations": {
+            "manyToMany": [
+              {
+                "fieldName": "permissionsByPermissionAssignmentRoleIdAndPermId",
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "Role",
+                  },
+                },
+                "junctionLeftKeyAttributes": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
+                      "name": "permId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "Permission",
+                  },
+                },
+                "junctionRightKeyAttributes": [
+                  {
+                    "name": "permId",
+                  },
+                ],
+                "junctionTable": {
+                  "name": "PermissionAssignment",
+                },
+                "leftKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": {
+                  "name": "Permission",
+                },
+                "type": "ManyToMany",
+              },
+              {
+                "fieldName": "usersBySubjectAssignmentRoleIdAndSubjId",
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "Role",
+                  },
+                },
+                "junctionLeftKeyAttributes": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
+                      "name": "subjId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "User",
+                  },
+                },
+                "junctionRightKeyAttributes": [
+                  {
+                    "name": "subjId",
+                  },
+                ],
+                "junctionTable": {
+                  "name": "SubjectAssignment",
+                },
+                "leftKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": {
+                  "name": "User",
+                },
+                "type": "ManyToMany",
+              },
+            ],
+          },
+        },
+        {
+          "name": "SubjectAssignment",
+          "relations": {
+            "manyToMany": [],
+          },
+        },
+        {
+          "name": "UserSetting",
+          "relations": {
+            "manyToMany": [],
+          },
+        },
+        {
+          "name": "User",
+          "relations": {
+            "manyToMany": [
+              {
+                "fieldName": "rolesBySubjectAssignmentSubjIdAndRoleId",
+                "junctionLeftConstraint": {
+                  "fields": [
+                    {
+                      "name": "subjId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "User",
+                  },
+                },
+                "junctionLeftKeyAttributes": [
+                  {
+                    "name": "subjId",
+                  },
+                ],
+                "junctionRightConstraint": {
+                  "fields": [
+                    {
+                      "name": "roleId",
+                    },
+                  ],
+                  "refTable": {
+                    "name": "Role",
+                  },
+                },
+                "junctionRightKeyAttributes": [
+                  {
+                    "name": "roleId",
+                  },
+                ],
+                "junctionTable": {
+                  "name": "SubjectAssignment",
+                },
+                "leftKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightKeyAttributes": [
+                  {
+                    "name": "id",
+                  },
+                ],
+                "rightTable": {
+                  "name": "Role",
+                },
+                "type": "ManyToMany",
+              },
+            ],
+          },
+        },
+        {
+          "name": "Postcode",
+          "relations": {
+            "manyToMany": [],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetMetaInflection 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "inflection": {
+            "allRows": "allAllTypes",
+            "allRowsSimple": "allAllTypesList",
+            "conditionType": "AllTypeCondition",
+            "connection": "AllTypesConnection",
+            "createField": "createAllType",
+            "createInputType": "CreateAllTypeInput",
+            "createPayloadType": "CreateAllTypePayload",
+            "deleteByPrimaryKey": null,
+            "deletePayloadType": "DeleteAllTypePayload",
+            "edge": "AllTypesEdge",
+            "edgeField": "allTypeEdge",
+            "enumType": "AllTypes",
+            "filterType": null,
+            "inputType": "AllTypeInput",
+            "orderByType": "AllTypesOrderBy",
+            "patchField": "allTypePatch",
+            "patchType": "AllTypePatch",
+            "tableFieldName": "allType",
+            "tableType": "AllType",
+            "typeName": "all_types",
+            "updateByPrimaryKey": null,
+            "updatePayloadType": "UpdateAllTypePayload",
+          },
+          "name": "AllType",
+          "query": {
+            "all": "allAllTypes",
+            "create": "createAllType",
+            "delete": null,
+            "one": "allType",
+            "update": null,
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allBoundingBoxes",
+            "allRowsSimple": "allBoundingBoxesList",
+            "conditionType": "BoundingBoxCondition",
+            "connection": "BoundingBoxesConnection",
+            "createField": "createBoundingBox",
+            "createInputType": "CreateBoundingBoxInput",
+            "createPayloadType": "CreateBoundingBoxPayload",
+            "deleteByPrimaryKey": "deleteBoundingBoxById",
+            "deletePayloadType": "DeleteBoundingBoxPayload",
+            "edge": "BoundingBoxesEdge",
+            "edgeField": "boundingBoxEdge",
+            "enumType": "BoundingBox",
+            "filterType": null,
+            "inputType": "BoundingBoxInput",
+            "orderByType": "BoundingBoxesOrderBy",
+            "patchField": "boundingBoxPatch",
+            "patchType": "BoundingBoxPatch",
+            "tableFieldName": "boundingBox",
+            "tableType": "BoundingBox",
+            "typeName": "bounding_box",
+            "updateByPrimaryKey": "updateBoundingBoxById",
+            "updatePayloadType": "UpdateBoundingBoxPayload",
+          },
+          "name": "BoundingBox",
+          "query": {
+            "all": "allBoundingBoxes",
+            "create": "createBoundingBox",
+            "delete": "deleteBoundingBoxById",
+            "one": "boundingBox",
+            "update": "updateBoundingBoxById",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allPermissionAssignments",
+            "allRowsSimple": "allPermissionAssignmentsList",
+            "conditionType": "PermissionAssignmentCondition",
+            "connection": "PermissionAssignmentsConnection",
+            "createField": "createPermissionAssignment",
+            "createInputType": "CreatePermissionAssignmentInput",
+            "createPayloadType": "CreatePermissionAssignmentPayload",
+            "deleteByPrimaryKey": "deletePermissionAssignmentByPermIdAndRoleId",
+            "deletePayloadType": "DeletePermissionAssignmentPayload",
+            "edge": "PermissionAssignmentsEdge",
+            "edgeField": "permissionAssignmentEdge",
+            "enumType": "PermissionAssignment",
+            "filterType": null,
+            "inputType": "PermissionAssignmentInput",
+            "orderByType": "PermissionAssignmentsOrderBy",
+            "patchField": "permissionAssignmentPatch",
+            "patchType": "PermissionAssignmentPatch",
+            "tableFieldName": "permissionAssignment",
+            "tableType": "PermissionAssignment",
+            "typeName": "permission_assignment",
+            "updateByPrimaryKey": "updatePermissionAssignmentByPermIdAndRoleId",
+            "updatePayloadType": "UpdatePermissionAssignmentPayload",
+          },
+          "name": "PermissionAssignment",
+          "query": {
+            "all": "allPermissionAssignments",
+            "create": "createPermissionAssignment",
+            "delete": "deletePermissionAssignmentByPermIdAndRoleId",
+            "one": "permissionAssignment",
+            "update": "updatePermissionAssignmentByPermIdAndRoleId",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allPermissions",
+            "allRowsSimple": "allPermissionsList",
+            "conditionType": "PermissionCondition",
+            "connection": "PermissionsConnection",
+            "createField": "createPermission",
+            "createInputType": "CreatePermissionInput",
+            "createPayloadType": "CreatePermissionPayload",
+            "deleteByPrimaryKey": "deletePermissionById",
+            "deletePayloadType": "DeletePermissionPayload",
+            "edge": "PermissionsEdge",
+            "edgeField": "permissionEdge",
+            "enumType": "Permissions",
+            "filterType": null,
+            "inputType": "PermissionInput",
+            "orderByType": "PermissionsOrderBy",
+            "patchField": "permissionPatch",
+            "patchType": "PermissionPatch",
+            "tableFieldName": "permission",
+            "tableType": "Permission",
+            "typeName": "permissions",
+            "updateByPrimaryKey": "updatePermissionById",
+            "updatePayloadType": "UpdatePermissionPayload",
+          },
+          "name": "Permission",
+          "query": {
+            "all": "allPermissions",
+            "create": "createPermission",
+            "delete": "deletePermissionById",
+            "one": "permission",
+            "update": "updatePermissionById",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allRoles",
+            "allRowsSimple": "allRolesList",
+            "conditionType": "RoleCondition",
+            "connection": "RolesConnection",
+            "createField": "createRole",
+            "createInputType": "CreateRoleInput",
+            "createPayloadType": "CreateRolePayload",
+            "deleteByPrimaryKey": "deleteRoleById",
+            "deletePayloadType": "DeleteRolePayload",
+            "edge": "RolesEdge",
+            "edgeField": "roleEdge",
+            "enumType": "Roles",
+            "filterType": null,
+            "inputType": "RoleInput",
+            "orderByType": "RolesOrderBy",
+            "patchField": "rolePatch",
+            "patchType": "RolePatch",
+            "tableFieldName": "role",
+            "tableType": "Role",
+            "typeName": "roles",
+            "updateByPrimaryKey": "updateRoleById",
+            "updatePayloadType": "UpdateRolePayload",
+          },
+          "name": "Role",
+          "query": {
+            "all": "allRoles",
+            "create": "createRole",
+            "delete": "deleteRoleById",
+            "one": "role",
+            "update": "updateRoleById",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allSubjectAssignments",
+            "allRowsSimple": "allSubjectAssignmentsList",
+            "conditionType": "SubjectAssignmentCondition",
+            "connection": "SubjectAssignmentsConnection",
+            "createField": "createSubjectAssignment",
+            "createInputType": "CreateSubjectAssignmentInput",
+            "createPayloadType": "CreateSubjectAssignmentPayload",
+            "deleteByPrimaryKey": "deleteSubjectAssignmentBySubjIdAndRoleId",
+            "deletePayloadType": "DeleteSubjectAssignmentPayload",
+            "edge": "SubjectAssignmentsEdge",
+            "edgeField": "subjectAssignmentEdge",
+            "enumType": "SubjectAssignment",
+            "filterType": null,
+            "inputType": "SubjectAssignmentInput",
+            "orderByType": "SubjectAssignmentsOrderBy",
+            "patchField": "subjectAssignmentPatch",
+            "patchType": "SubjectAssignmentPatch",
+            "tableFieldName": "subjectAssignment",
+            "tableType": "SubjectAssignment",
+            "typeName": "subject_assignment",
+            "updateByPrimaryKey": "updateSubjectAssignmentBySubjIdAndRoleId",
+            "updatePayloadType": "UpdateSubjectAssignmentPayload",
+          },
+          "name": "SubjectAssignment",
+          "query": {
+            "all": "allSubjectAssignments",
+            "create": "createSubjectAssignment",
+            "delete": "deleteSubjectAssignmentBySubjIdAndRoleId",
+            "one": "subjectAssignment",
+            "update": "updateSubjectAssignmentBySubjIdAndRoleId",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allUserSettings",
+            "allRowsSimple": "allUserSettingsList",
+            "conditionType": "UserSettingCondition",
+            "connection": "UserSettingsConnection",
+            "createField": "createUserSetting",
+            "createInputType": "CreateUserSettingInput",
+            "createPayloadType": "CreateUserSettingPayload",
+            "deleteByPrimaryKey": "deleteUserSettingByUserId",
+            "deletePayloadType": "DeleteUserSettingPayload",
+            "edge": "UserSettingsEdge",
+            "edgeField": "userSettingEdge",
+            "enumType": "UserSettings",
+            "filterType": null,
+            "inputType": "UserSettingInput",
+            "orderByType": "UserSettingsOrderBy",
+            "patchField": "userSettingPatch",
+            "patchType": "UserSettingPatch",
+            "tableFieldName": "userSetting",
+            "tableType": "UserSetting",
+            "typeName": "user_settings",
+            "updateByPrimaryKey": "updateUserSettingByUserId",
+            "updatePayloadType": "UpdateUserSettingPayload",
+          },
+          "name": "UserSetting",
+          "query": {
+            "all": "allUserSettings",
+            "create": "createUserSetting",
+            "delete": "deleteUserSettingByUserId",
+            "one": "userSetting",
+            "update": "updateUserSettingByUserId",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allUsers",
+            "allRowsSimple": "allUsersList",
+            "conditionType": "UserCondition",
+            "connection": "UsersConnection",
+            "createField": "createUser",
+            "createInputType": "CreateUserInput",
+            "createPayloadType": "CreateUserPayload",
+            "deleteByPrimaryKey": "deleteUserById",
+            "deletePayloadType": "DeleteUserPayload",
+            "edge": "UsersEdge",
+            "edgeField": "userEdge",
+            "enumType": "Users",
+            "filterType": null,
+            "inputType": "UserInput",
+            "orderByType": "UsersOrderBy",
+            "patchField": "userPatch",
+            "patchType": "UserPatch",
+            "tableFieldName": "user",
+            "tableType": "User",
+            "typeName": "users",
+            "updateByPrimaryKey": "updateUserById",
+            "updatePayloadType": "UpdateUserPayload",
+          },
+          "name": "User",
+          "query": {
+            "all": "allUsers",
+            "create": "createUser",
+            "delete": "deleteUserById",
+            "one": "user",
+            "update": "updateUserById",
+          },
+        },
+        {
+          "inflection": {
+            "allRows": "allPostcodes",
+            "allRowsSimple": "allPostcodesList",
+            "conditionType": "PostcodeCondition",
+            "connection": "PostcodesConnection",
+            "createField": "createPostcode",
+            "createInputType": "CreatePostcodeInput",
+            "createPayloadType": "CreatePostcodePayload",
+            "deleteByPrimaryKey": "deletePostcodeById",
+            "deletePayloadType": "DeletePostcodePayload",
+            "edge": "PostcodesEdge",
+            "edgeField": "postcodeEdge",
+            "enumType": "Postcode",
+            "filterType": null,
+            "inputType": "PostcodeInput",
+            "orderByType": "PostcodesOrderBy",
+            "patchField": "postcodePatch",
+            "patchType": "PostcodePatch",
+            "tableFieldName": "postcode",
+            "tableType": "Postcode",
+            "typeName": "postcode",
+            "updateByPrimaryKey": "updatePostcodeById",
+            "updatePayloadType": "UpdatePostcodePayload",
+          },
+          "name": "Postcode",
+          "query": {
+            "all": "allPostcodes",
+            "create": "createPostcode",
+            "delete": "deletePostcodeById",
+            "one": "postcode",
+            "update": "updatePostcodeById",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetMetaSchema 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "foreignKeyConstraints": [],
+          "name": "AllType",
+          "primaryKeyConstraints": [],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [],
+          "name": "BoundingBox",
+          "primaryKeyConstraints": [
+            {
+              "name": "bounding_box_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [
+            {
+              "name": "permission_assignment_perm_id_fkey",
+            },
+            {
+              "name": "permission_assignment_role_id_fkey",
+            },
+          ],
+          "name": "PermissionAssignment",
+          "primaryKeyConstraints": [
+            {
+              "name": "permission_assignment_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [],
+          "name": "Permission",
+          "primaryKeyConstraints": [
+            {
+              "name": "permissions_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [
+            {
+              "name": "roles_org_id_fkey",
+            },
+          ],
+          "name": "Role",
+          "primaryKeyConstraints": [
+            {
+              "name": "roles_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [
+            {
+              "name": "subject_assignment_subj_id_fkey",
+            },
+            {
+              "name": "subject_assignment_role_id_fkey",
+            },
+          ],
+          "name": "SubjectAssignment",
+          "primaryKeyConstraints": [
+            {
+              "name": "subject_assignment_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [
+            {
+              "name": "user_settings_user_id_fkey",
+            },
+          ],
+          "name": "UserSetting",
+          "primaryKeyConstraints": [
+            {
+              "name": "user_settings_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+        {
+          "foreignKeyConstraints": [],
+          "name": "User",
+          "primaryKeyConstraints": [
+            {
+              "name": "users_pkey",
+            },
+          ],
+          "uniqueConstraints": [
+            {
+              "name": "users_username_key",
+            },
+          ],
+        },
+        {
+          "foreignKeyConstraints": [],
+          "name": "Postcode",
+          "primaryKeyConstraints": [
+            {
+              "name": "zip_codes_pkey",
+            },
+          ],
+          "uniqueConstraints": [],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`GetMetaSchemaUnion 1`] = `
+{
+  "data": {
+    "_meta": {
+      "tables": [
+        {
+          "constraints": [],
+          "fields": [
+            {
+              "name": "bigintType",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "bigserialType",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "bitOpt1Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 1,
+                "pgAlias": "bit",
+                "pgType": "bit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 1,
+                },
+              },
+            },
+            {
+              "name": "bitOpt2Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 2,
+                "pgAlias": "bit",
+                "pgType": "bit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 2,
+                },
+              },
+            },
+            {
+              "name": "bitOpt16Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 16,
+                "pgAlias": "bit",
+                "pgType": "bit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 16,
+                },
+              },
+            },
+            {
+              "name": "bitVaryingOpt1Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 1,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 1,
+                },
+              },
+            },
+            {
+              "name": "bitVaryingOpt2Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 2,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 2,
+                },
+              },
+            },
+            {
+              "name": "boolType",
+              "type": {
+                "gqlType": "Boolean",
+                "modifier": null,
+                "pgAlias": "boolean",
+                "pgType": "bool",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "booleanType",
+              "type": {
+                "gqlType": "Boolean",
+                "modifier": null,
+                "pgAlias": "boolean",
+                "pgType": "bool",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "boxType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "box",
+                "pgType": "box",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "byteaType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "bytea",
+                "pgType": "bytea",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "charOpt1Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 5,
+                },
+              },
+            },
+            {
+              "name": "charOpt140Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 144,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 144,
+                },
+              },
+            },
+            {
+              "name": "charOpt1000Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1004,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 1004,
+                },
+              },
+            },
+            {
+              "name": "charType",
+              "type": {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 5,
+                },
+              },
+            },
+            {
+              "name": "characterType",
+              "type": {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "char",
+                "pgType": "bpchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 5,
+                },
+              },
+            },
+            {
+              "name": "characterVaryingOpt1Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 5,
+                },
+              },
+            },
+            {
+              "name": "characterVaryingOpt10Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 14,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 14,
+                },
+              },
+            },
+            {
+              "name": "characterVaryingOpt140Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 144,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 144,
+                },
+              },
+            },
+            {
+              "name": "characterVaryingOpt1000Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1004,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 1004,
+                },
+              },
+            },
+            {
+              "name": "characterVaryingType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "cidrType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "cidr",
+                "pgType": "cidr",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "circleType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "circle",
+                "pgType": "circle",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "dateType",
+              "type": {
+                "gqlType": "Date",
+                "modifier": null,
+                "pgAlias": "date",
+                "pgType": "date",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "doublePrecisionType",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "float",
+                "pgType": "float8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "float4Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "float8Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "float",
+                "pgType": "float8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatType",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "float",
+                "pgType": "float8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt1Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt2Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt3Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt4Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt5Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt6Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt7Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "floatOpt8Type",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "geometryPointType",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1107460,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": {
+                  "gisType": "Point",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 1,
+                },
+              },
+            },
+            {
+              "name": "geometryPolygonType",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1107468,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": {
+                  "gisType": "Polygon",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 3,
+                },
+              },
+            },
+            {
+              "name": "inetType",
+              "type": {
+                "gqlType": "InternetAddress",
+                "modifier": null,
+                "pgAlias": "inet",
+                "pgType": "inet",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "intType",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "int2Type",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "smallint",
+                "pgType": "int2",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "int4Type",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "int8Type",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "intervalYearType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": 327679,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 327679,
+                },
+              },
+            },
+            {
+              "name": "intervalMonthType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": 196607,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 196607,
+                },
+              },
+            },
+            {
+              "name": "intervalDayType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": 589823,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 589823,
+                },
+              },
+            },
+            {
+              "name": "intervalHourType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": 67174399,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 67174399,
+                },
+              },
+            },
+            {
+              "name": "intervalMinuteType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": 134283263,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 134283263,
+                },
+              },
+            },
+            {
+              "name": "intervalSecondType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": 268500991,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 268500991,
+                },
+              },
+            },
+            {
+              "name": "intervalType",
+              "type": {
+                "gqlType": "Interval",
+                "modifier": null,
+                "pgAlias": "interval",
+                "pgType": "interval",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "jsonType",
+              "type": {
+                "gqlType": "JSON",
+                "modifier": null,
+                "pgAlias": "json",
+                "pgType": "json",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "jsonbType",
+              "type": {
+                "gqlType": "JSON",
+                "modifier": null,
+                "pgAlias": "jsonb",
+                "pgType": "jsonb",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "lineType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "line",
+                "pgType": "line",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "lsegType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "lseg",
+                "pgType": "lseg",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "macaddrType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "macaddr",
+                "pgType": "macaddr",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "moneyType",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "money",
+                "pgType": "money",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "numericType",
+              "type": {
+                "gqlType": "BigFloat",
+                "modifier": null,
+                "pgAlias": "numeric",
+                "pgType": "numeric",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "numericOptType",
+              "type": {
+                "gqlType": "BigFloat",
+                "modifier": 655374,
+                "pgAlias": "numeric",
+                "pgType": "numeric",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 655374,
+                },
+              },
+            },
+            {
+              "name": "pathType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "path",
+                "pgType": "path",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "pgLsnType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "pg_lsn",
+                "pgType": "pg_lsn",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "pointType",
+              "type": {
+                "gqlType": "Point",
+                "modifier": null,
+                "pgAlias": "point",
+                "pgType": "point",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "polygonType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "polygon",
+                "pgType": "polygon",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "realType",
+              "type": {
+                "gqlType": "Float",
+                "modifier": null,
+                "pgAlias": "real",
+                "pgType": "float4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "serialType",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "serial4Type",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "serial8Type",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "smallintType",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "smallint",
+                "pgType": "int2",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "textType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "text",
+                "pgType": "text",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "timeOpt2Type",
+              "type": {
+                "gqlType": "Time",
+                "modifier": 2,
+                "pgAlias": "time",
+                "pgType": "time",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 2,
+                },
+              },
+            },
+            {
+              "name": "timeType",
+              "type": {
+                "gqlType": "Time",
+                "modifier": null,
+                "pgAlias": "time",
+                "pgType": "time",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "timestampType",
+              "type": {
+                "gqlType": "Datetime",
+                "modifier": null,
+                "pgAlias": "timestamp",
+                "pgType": "timestamp",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "timestamptzType",
+              "type": {
+                "gqlType": "Datetime",
+                "modifier": null,
+                "pgAlias": "timestamptz",
+                "pgType": "timestamptz",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "timetzOpt2Type",
+              "type": {
+                "gqlType": "Time",
+                "modifier": 2,
+                "pgAlias": "timetz",
+                "pgType": "timetz",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 2,
+                },
+              },
+            },
+            {
+              "name": "timetzType",
+              "type": {
+                "gqlType": "Time",
+                "modifier": null,
+                "pgAlias": "timetz",
+                "pgType": "timetz",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "tsqueryType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "tsquery",
+                "pgType": "tsquery",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "tsvectorType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "tsvector",
+                "pgType": "tsvector",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "uuidType",
+              "type": {
+                "gqlType": "UUID",
+                "modifier": null,
+                "pgAlias": "uuid",
+                "pgType": "uuid",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "varbit1Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 1,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 1,
+                },
+              },
+            },
+            {
+              "name": "varbit2Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 2,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 2,
+                },
+              },
+            },
+            {
+              "name": "varbit16Type",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": 16,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 16,
+                },
+              },
+            },
+            {
+              "name": "varbitType",
+              "type": {
+                "gqlType": "BitString",
+                "modifier": null,
+                "pgAlias": "varbit",
+                "pgType": "varbit",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "varcharOpt1Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 5,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 5,
+                },
+              },
+            },
+            {
+              "name": "varcharOpt140Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 144,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 144,
+                },
+              },
+            },
+            {
+              "name": "varcharOpt1000Type",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1004,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": {
+                  "modifier": 1004,
+                },
+              },
+            },
+            {
+              "name": "varcharType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "varchar",
+                "pgType": "varchar",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "xmlType",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "xml",
+                "pgType": "xml",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "AllType",
+        },
+        {
+          "constraints": [
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": {
+                    "gqlType": "Int",
+                    "modifier": null,
+                    "pgAlias": "int",
+                    "pgType": "int4",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "bounding_box_pkey",
+            },
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "zip",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "location",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1107460,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": {
+                  "gisType": "Point",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 1,
+                },
+              },
+            },
+            {
+              "name": "bbox",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1107468,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": {
+                  "gisType": "Polygon",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 3,
+                },
+              },
+            },
+          ],
+          "name": "BoundingBox",
+        },
+        {
+          "constraints": [
+            {
+              "fields": [
+                {
+                  "name": "permId",
+                },
+              ],
+              "refFields": [
+                {
+                  "name": "id",
+                },
+              ],
+              "refTable": {
+                "fields": [
+                  {
+                    "name": "id",
+                  },
+                  {
+                    "name": "name",
+                  },
+                ],
+                "name": "Permission",
+              },
+            },
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "permId",
+                  "type": {
+                    "gqlType": "BigInt",
+                    "modifier": null,
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+                {
+                  "name": "roleId",
+                  "type": {
+                    "gqlType": "BigInt",
+                    "modifier": null,
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "permission_assignment_pkey",
+            },
+            {
+              "fields": [
+                {
+                  "name": "roleId",
+                },
+              ],
+              "refFields": [
+                {
+                  "name": "id",
+                },
+              ],
+              "refTable": {
+                "fields": [
+                  {
+                    "name": "id",
+                  },
+                  {
+                    "name": "orgId",
+                  },
+                ],
+                "name": "Role",
+              },
+            },
+          ],
+          "fields": [
+            {
+              "name": "permId",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "roleId",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "PermissionAssignment",
+        },
+        {
+          "constraints": [
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": {
+                    "gqlType": "Int",
+                    "modifier": null,
+                    "pgAlias": "int",
+                    "pgType": "int4",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "permissions_pkey",
+            },
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "name",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "citext",
+                "pgType": "citext",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "Permission",
+        },
+        {
+          "constraints": [
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": {
+                    "gqlType": "Int",
+                    "modifier": null,
+                    "pgAlias": "int",
+                    "pgType": "int4",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "roles_pkey",
+            },
+            {
+              "fields": [
+                {
+                  "name": "orgId",
+                },
+              ],
+              "refFields": [
+                {
+                  "name": "id",
+                },
+              ],
+              "refTable": {
+                "fields": [
+                  {
+                    "name": "id",
+                  },
+                  {
+                    "name": "username",
+                  },
+                ],
+                "name": "User",
+              },
+            },
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "orgId",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "Role",
+        },
+        {
+          "constraints": [
+            {
+              "fields": [
+                {
+                  "name": "subjId",
+                },
+              ],
+              "refFields": [
+                {
+                  "name": "id",
+                },
+              ],
+              "refTable": {
+                "fields": [
+                  {
+                    "name": "id",
+                  },
+                  {
+                    "name": "username",
+                  },
+                ],
+                "name": "User",
+              },
+            },
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "subjId",
+                  "type": {
+                    "gqlType": "BigInt",
+                    "modifier": null,
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+                {
+                  "name": "roleId",
+                  "type": {
+                    "gqlType": "BigInt",
+                    "modifier": null,
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "subject_assignment_pkey",
+            },
+            {
+              "fields": [
+                {
+                  "name": "roleId",
+                },
+              ],
+              "refFields": [
+                {
+                  "name": "id",
+                },
+              ],
+              "refTable": {
+                "fields": [
+                  {
+                    "name": "id",
+                  },
+                  {
+                    "name": "orgId",
+                  },
+                ],
+                "name": "Role",
+              },
+            },
+          ],
+          "fields": [
+            {
+              "name": "subjId",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "roleId",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "SubjectAssignment",
+        },
+        {
+          "constraints": [
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "userId",
+                  "type": {
+                    "gqlType": "BigInt",
+                    "modifier": null,
+                    "pgAlias": "bigint",
+                    "pgType": "int8",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "user_settings_pkey",
+            },
+            {
+              "fields": [
+                {
+                  "name": "userId",
+                },
+              ],
+              "refFields": [
+                {
+                  "name": "id",
+                },
+              ],
+              "refTable": {
+                "fields": [
+                  {
+                    "name": "id",
+                  },
+                  {
+                    "name": "username",
+                  },
+                ],
+                "name": "User",
+              },
+            },
+          ],
+          "fields": [
+            {
+              "name": "userId",
+              "type": {
+                "gqlType": "BigInt",
+                "modifier": null,
+                "pgAlias": "bigint",
+                "pgType": "int8",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "setting1",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "text",
+                "pgType": "text",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "UserSetting",
+        },
+        {
+          "constraints": [
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": {
+                    "gqlType": "Int",
+                    "modifier": null,
+                    "pgAlias": "int",
+                    "pgType": "int4",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "users_pkey",
+            },
+            {
+              "__typename": "MetaschemaUniqueConstraint",
+              "fields": [
+                {
+                  "name": "username",
+                  "type": {
+                    "gqlType": "String",
+                    "modifier": null,
+                    "pgAlias": "citext",
+                    "pgType": "citext",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "users_username_key",
+            },
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "username",
+              "type": {
+                "gqlType": "String",
+                "modifier": null,
+                "pgAlias": "citext",
+                "pgType": "citext",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+          ],
+          "name": "User",
+        },
+        {
+          "constraints": [
+            {
+              "__typename": "MetaschemaPrimaryKeyConstraint",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": {
+                    "gqlType": "Int",
+                    "modifier": null,
+                    "pgAlias": "int",
+                    "pgType": "int4",
+                    "subtype": null,
+                    "typmod": null,
+                  },
+                },
+              ],
+              "name": "zip_codes_pkey",
+            },
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "zipCode",
+              "type": {
+                "gqlType": "Int",
+                "modifier": null,
+                "pgAlias": "int",
+                "pgType": "int4",
+                "subtype": null,
+                "typmod": null,
+              },
+            },
+            {
+              "name": "location",
+              "type": {
+                "gqlType": "String",
+                "modifier": 1107460,
+                "pgAlias": "geometry",
+                "pgType": "geometry",
+                "subtype": null,
+                "typmod": {
+                  "gisType": "Point",
+                  "hasM": false,
+                  "hasZ": false,
+                  "srid": 4326,
+                  "subtype": 1,
+                },
+              },
+            },
+          ],
+          "name": "Postcode",
+        },
+      ],
+    },
+  },
+}
+`;
