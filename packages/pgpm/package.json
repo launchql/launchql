@@ -49,7 +49,7 @@
     "@launchql/logger": "workspace:^",
     "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
-    "inquirerer": "^2.0.8",
+    "inquirerer": "^2.1.7",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",
