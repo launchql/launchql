@@ -4,7 +4,7 @@
   <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
-Simple logger utility with chalk colors for consistent logging across LaunchQL packages.
+Simple logger utility with yanse colors for consistent logging across packages.
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm install @launchql/logger
 
 ## Features
 
-- Colored console output using chalk
+- Colored console output using yanse
 - Consistent log formatting
 - Namespace support for identifying log sources
 - Simple API with log, error, and warn methods
