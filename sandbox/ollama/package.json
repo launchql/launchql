@@ -21,9 +21,11 @@
     "@launchql/core": "workspace:^",
     "@launchql/types": "workspace:^",
     "makage": "^0.1.5",
+    "@types/pg": "^8.15.2",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {
-    "cross-fetch": "^4.1.0"
+    "cross-fetch": "^4.1.0",
+    "pg": "^8.16.0"
   }
 }

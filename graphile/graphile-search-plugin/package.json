@@ -10,6 +10,7 @@
   "types": "index.d.ts",
   "scripts": {
     "clean": "makage clean",
+    "copy": "makage assets",
     "prepack": "pnpm run build",
     "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
     "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",

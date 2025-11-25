@@ -8,12 +8,6 @@
   "types": "index.d.ts",
   "license": "MIT",
   "scripts": {
-    "clean": "makage clean",
-    "copy": "makage assets",
-    "prepack": "npm run build",
-    "build": "makage clean && makage build-ts && makage assets",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
-    "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
