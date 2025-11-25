@@ -8,10 +8,9 @@
   "types": "index.d.ts",
   "license": "MIT",
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage clean && makage build-ts && makage assets",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
@@ -21,9 +20,12 @@
   "devDependencies": {
     "@launchql/core": "workspace:^",
     "@launchql/types": "workspace:^",
+    "makage": "^0.1.5",
+    "@types/pg": "^8.15.2",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {
-    "cross-fetch": "^4.1.0"
+    "cross-fetch": "^4.1.0",
+    "pg": "^8.16.0"
   }
 }

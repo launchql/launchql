@@ -1,5 +1,16 @@
 # graphile-i18n
 
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+</p>
+
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+   <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+</p>
+
 TypeScript rewrite of the Graphile/PostGraphile i18n plugin. Adds language-aware fields sourced from translation tables declared via smart comments.
 
 ## Install

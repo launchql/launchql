@@ -11,6 +11,37 @@ import { DatabaseObject } from './types';
 
 const log = new Logger('pg-codegen');
 
+/**
+ * Writes the generated code files to the specified directory.
+ *
+ * @param outputDir The base directory to write the files.
+ * @param fileTree The file tree containing file paths and content.
+ */
+const writeGeneratedFiles = async (
+  outputDir: string,
+  fileTree: Record<string, string>
+): Promise<void> => {
+  try {
+    // Ensure the output directory exists
+    await fs.mkdir(outputDir, { recursive: true });
+
+    // Write each file to its corresponding path
+    for (const [filePath, content] of Object.entries(fileTree)) {
+      const fullPath = path.join(outputDir, filePath);
+
+      // Ensure the directory for the file exists
+      const dirName = path.dirname(fullPath);
+      await fs.mkdir(dirName, { recursive: true });
+
+      // Write the file content
+      await fs.writeFile(fullPath, content, 'utf8');
+    }
+  } catch (error) {
+    log.error(`Failed to write files to ${outputDir}:`, error);
+    throw error;
+  }
+};
+
 (async () => {
   const env = getPgEnvOptions();
   const pool = getPgPool(env);
@@ -53,34 +84,3 @@ const log = new Logger('pg-codegen');
     log.error('Failed to fetch introspection rows or generate code:', error);
   }
 })();
-
-/**
- * Writes the generated code files to the specified directory.
- *
- * @param outputDir The base directory to write the files.
- * @param fileTree The file tree containing file paths and content.
- */
-const writeGeneratedFiles = async (
-  outputDir: string,
-  fileTree: Record<string, string>
-): Promise<void> => {
-  try {
-    // Ensure the output directory exists
-    await fs.mkdir(outputDir, { recursive: true });
-
-    // Write each file to its corresponding path
-    for (const [filePath, content] of Object.entries(fileTree)) {
-      const fullPath = path.join(outputDir, filePath);
-
-      // Ensure the directory for the file exists
-      const dirName = path.dirname(fullPath);
-      await fs.mkdir(dirName, { recursive: true });
-
-      // Write the file content
-      await fs.writeFile(fullPath, content, 'utf8');
-    }
-  } catch (error) {
-    log.error(`Failed to write files to ${outputDir}:`, error);
-    throw error;
-  }
-};

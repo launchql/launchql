@@ -1,10 +1,23 @@
-# graphile-meta-schema [![Build Status](https://travis-ci.org/pyramation/graphile-meta-schema.svg?branch=master)](https://travis-ci.org/pyramation/graphile-meta-schema)
+# graphile-meta-schema
+
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+</p>
+
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+   <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+</p>
+
+## Install
 
 ```sh
 pnpm add graphile-meta-schema
 ```
 
-## example query
+## Example Query
 
 ```gql
 query MetaQuery {
@@ -70,7 +83,7 @@ query MetaQuery {
 }
 ```
 
-## testing
+## Testing
 
 ```sh
 # requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
