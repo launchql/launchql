@@ -23,9 +23,9 @@
     "copy": "npm run copy:pkg; npm run copy:sql",
     "copy:pkg": "copyfiles -f ../../LICENSE README.md package.json dist",
     "copy:sql": "copyfiles -f src/migrate/sql/* dist/migrate/sql && copyfiles -f src/migrate/sql/* dist/esm/migrate/sql && copyfiles -f src/init/sql/* dist/init/sql && copyfiles -f src/init/sql/* dist/esm/init/sql",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage clean && makage build-ts && makage assets",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
@@ -40,7 +40,9 @@
     "sqitch"
   ],
   "devDependencies": {
-    "@types/pg": "^8.15.2"
+    "@types/pg": "^8.15.2",
+    "makage": "^0.1.5",
+    "copyfiles": "^2.4.1"
   },
   "dependencies": {
     "@launchql/env": "workspace:^",
@@ -58,7 +60,6 @@
     "pg-env": "workspace:^",
     "pgsql-deparser": "^17.12.1",
     "pgsql-parser": "^17.9.1",
-    "rimraf": "^6.1.2",
     "yanse": "^0.1.1"
   },
   "peerDependencies": {

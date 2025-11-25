@@ -36,10 +36,9 @@
     "mocha"
   ],
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage clean && makage build-ts && makage assets",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
@@ -47,7 +46,8 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.2",
-    "drizzle-orm": "^0.44.7"
+    "drizzle-orm": "^0.44.7",
+    "makage": "^0.1.5"
   },
   "dependencies": {
     "pgsql-test": "workspace:^"

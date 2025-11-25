@@ -107,6 +107,9 @@ importers:
       graphile-test:
         specifier: workspace:^
         version: link:../../packages/graphile-test/dist
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -136,6 +139,9 @@ importers:
       graphql-tag:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -159,6 +165,9 @@ importers:
       graphile-test:
         specifier: workspace:^
         version: link:../../packages/graphile-test/dist
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -179,6 +188,9 @@ importers:
       graphql-tag:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -256,6 +268,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -273,6 +288,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/content-type-stream:
@@ -286,6 +304,10 @@ importers:
       uuid-hash:
         specifier: workspace:^
         version: link:../uuid-hash/dist
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/core:
@@ -345,6 +367,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/drizzle-orm-test:
@@ -362,6 +387,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.7
         version: 0.44.7(@types/pg@8.15.6)(pg@8.16.3)
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/env:
@@ -372,9 +400,17 @@ importers:
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/etag-hash:
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/etag-stream:
@@ -386,6 +422,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/explorer:
@@ -442,6 +481,9 @@ importers:
       '@types/graphql-upload':
         specifier: ^8.0.12
         version: 8.0.12
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -455,6 +497,10 @@ importers:
       graphql:
         specifier: 15.10.1
         version: 15.10.1
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/graphile-cache:
@@ -478,6 +524,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -501,6 +550,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/graphile-settings:
@@ -593,6 +645,9 @@ importers:
       '@types/request-ip':
         specifier: ^0.0.41
         version: 0.0.41
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -628,6 +683,9 @@ importers:
       graphql-tag:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/introspectron:
@@ -651,6 +709,9 @@ importers:
       launchql-test:
         specifier: workspace:^
         version: link:../launchql-test/dist
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pgsql-test:
         specifier: workspace:^
         version: link:../pgsql-test/dist
@@ -680,6 +741,9 @@ importers:
       launchql-test:
         specifier: workspace:^
         version: link:../launchql-test/dist
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/launchql-test:
@@ -715,6 +779,9 @@ importers:
       graphql-tag:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/logger:
@@ -722,6 +789,10 @@ importers:
       yanse:
         specifier: ^0.1.1
         version: 0.1.4
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/mime-bytes:
@@ -729,6 +800,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/orm:
@@ -740,6 +814,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/pg-ast:
@@ -751,6 +828,9 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
     devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pg-proto-parser:
         specifier: ^1.30.1
         version: 1.30.1
@@ -780,6 +860,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/pg-codegen:
@@ -818,9 +901,16 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/pg-env:
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/pg-query-context:
@@ -832,6 +922,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/pgpm:
@@ -891,6 +984,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -938,6 +1034,9 @@ importers:
       '@types/pg-copy-streams':
         specifier: ^1.2.5
         version: 1.2.5
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/query:
@@ -957,9 +1056,17 @@ importers:
       pluralize:
         specifier: 8.0.0
         version: 8.0.0
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/query-builder:
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/react:
@@ -992,6 +1099,9 @@ importers:
       '@types/react':
         specifier: ^19.1.3
         version: 19.2.6
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/s3-streamer:
@@ -1018,6 +1128,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/s3-utils:
@@ -1032,6 +1145,9 @@ importers:
       '@types/node':
         specifier: ^18.19.69
         version: 18.19.130
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/server:
@@ -1157,6 +1273,9 @@ importers:
       '@types/request-ip':
         specifier: ^0.0.41
         version: 0.0.41
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -1189,6 +1308,9 @@ importers:
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.5
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
@@ -1203,6 +1325,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/supabase-test:
@@ -1216,6 +1341,10 @@ importers:
       pgsql-test:
         specifier: workspace:^
         version: link:../pgsql-test/dist
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/templatizer:
@@ -1233,6 +1362,9 @@ importers:
       '@types/node':
         specifier: ^20.12.7
         version: 20.19.25
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
@@ -1252,6 +1384,10 @@ importers:
       postgraphile:
         specifier: ^4.14.1
         version: 4.14.1
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/upload-names:
@@ -1259,6 +1395,9 @@ importers:
       glob:
         specifier: ^13.0.0
         version: 13.0.0
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/url-domains:
@@ -1270,9 +1409,16 @@ importers:
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.5
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/uuid-hash:
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
   packages/uuid-stream:
@@ -1280,11 +1426,23 @@ importers:
       uuid-hash:
         specifier: workspace:^
         version: link:../uuid-hash/dist
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
     publishDirectory: dist
 
-  sandbox/my-first: {}
+  sandbox/my-first:
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
 
-  sandbox/my-second: {}
+  sandbox/my-second:
+    devDependencies:
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
 
   sandbox/my-third:
     devDependencies:
@@ -1294,6 +1452,9 @@ importers:
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/types/dist
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
 
   sandbox/ollama:
     dependencies:
@@ -1307,6 +1468,9 @@ importers:
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/types/dist
+      makage:
+        specifier: ^0.1.5
+        version: 0.1.5
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -4745,6 +4909,10 @@ packages:
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
+    hasBin: true
+
+  makage@0.1.5:
+    resolution: {integrity: sha512-rut5LjWcbOk/9PNb4Mlia+1X/mVZ2uynUtW6YiSzB+AArLEht9avS1Cf0X6W8pp1Y4S+yLZz63nkc4zNj13nAQ==}
     hasBin: true
 
   make-dir@2.1.0:
@@ -10851,6 +11019,8 @@ snapshots:
       yallist: 4.0.0
 
   lz-string@1.5.0: {}
+
+  makage@0.1.5: {}
 
   make-dir@2.1.0:
     dependencies:

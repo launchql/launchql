@@ -23,10 +23,9 @@
     "explorer": "./run.js"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage clean && makage build-ts && makage assets",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "dev": "ts-node src/run.ts",
     "dev:watch": "nodemon --watch src --ext ts --exec ts-node src/run.ts",
@@ -54,6 +53,7 @@
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/graphql-upload": "^8.0.12",
+    "makage": "^0.1.5",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
   },
