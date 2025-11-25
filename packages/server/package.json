@@ -56,7 +56,7 @@
     "graphile-build": "^4.14.1",
     "graphile-cache": "workspace:^",
     "graphile-i18n": "workspace:^",
-    "graphile-meta-schema": "^0.2.5",
+    "graphile-meta-schema": "workspace:^",
     "graphile-query": "workspace:^",
     "graphile-search-plugin": "workspace:^",
     "graphile-settings": "workspace:^",

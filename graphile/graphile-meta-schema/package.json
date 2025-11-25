@@ -1,0 +1,60 @@
+{
+  "name": "graphile-meta-schema",
+  "version": "0.2.5",
+  "description": "graphile meta schema",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepack": "pnpm run build",
+    "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
+    "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "plugin",
+    "postgres",
+    "graphql",
+    "metaschema",
+    "launchql"
+  ],
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "devDependencies": {
+    "@graphile-contrib/pg-many-to-many": "^1.0.0",
+    "graphile-test": "workspace:^",
+    "graphql-tag": "2.12.6",
+    "pgsql-test": "workspace:^"
+  },
+  "dependencies": {
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-utils": "^4.14.1",
+    "graphql": "15.10.1"
+  }
+}

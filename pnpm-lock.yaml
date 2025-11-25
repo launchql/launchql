@@ -112,6 +112,35 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-meta-schema:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-utils:
+        specifier: ^4.14.1
+        version: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+    devDependencies:
+      '@graphile-contrib/pg-many-to-many':
+        specifier: ^1.0.0
+        version: 1.0.2
+      graphile-test:
+        specifier: workspace:^
+        version: link:../../packages/graphile-test/dist
+      graphql-tag:
+        specifier: 2.12.6
+        version: 2.12.6(graphql@15.10.1)
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
   graphile/graphile-search-plugin:
     dependencies:
       graphile-build:
@@ -510,8 +539,8 @@ importers:
         specifier: workspace:^
         version: link:../../graphile/graphile-i18n/dist
       graphile-meta-schema:
-        specifier: ^0.2.5
-        version: 0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+        specifier: workspace:^
+        version: link:../../graphile/graphile-meta-schema/dist
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -1056,8 +1085,8 @@ importers:
         specifier: workspace:^
         version: link:../../graphile/graphile-i18n/dist
       graphile-meta-schema:
-        specifier: ^0.2.5
-        version: 0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+        specifier: workspace:^
+        version: link:../../graphile/graphile-meta-schema/dist
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -4007,9 +4036,6 @@ packages:
     engines: {node: '>=8.6'}
     peerDependencies:
       graphql: '>=0.9 <0.14 || ^14.0.2 || ^15.4.0'
-
-  graphile-meta-schema@0.2.5:
-    resolution: {integrity: sha512-qKx4+VLfrNauHrJqZ7G6wzdMEj53eHtepVTAe/QeRrvMOCSEr8SiE0Ja4bj6jjL/jCYI7NoicBMnowBnoNOZeA==}
 
   graphile-utils@4.14.1:
     resolution: {integrity: sha512-FgviZVKO3NS8va2inqUVQQFSnFLEG7FiH64BqSVRHSF8jwSXKcpx5NiRibErNvvIdnuzgVAXQ3W4jcXvMSx0Tg==}
@@ -9822,15 +9848,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  graphile-meta-schema@0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
-    dependencies:
-      '@babel/runtime': 7.28.4
-      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
-    transitivePeerDependencies:
-      - graphile-build
-      - graphile-build-pg
-      - supports-color
-
   graphile-utils@4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
@@ -10312,7 +10329,7 @@ snapshots:
 
   jest-diff@29.7.0:
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       diff-sequences: 29.6.3
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
@@ -10811,7 +10828,7 @@ snapshots:
 
   log-symbols@4.1.0:
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       is-unicode-supported: 0.1.0
 
   long@5.3.2: {}
@@ -11173,7 +11190,7 @@ snapshots:
       '@yarnpkg/parsers': 3.0.2
       '@zkochan/js-yaml': 0.0.7
       axios: 1.13.2
-      chalk: 4.1.0
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       cliui: 8.0.1
