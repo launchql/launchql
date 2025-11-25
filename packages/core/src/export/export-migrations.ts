@@ -1,7 +1,7 @@
 import { LaunchQLOptions } from '@launchql/types';
-import Case from 'case';
 import { mkdirSync, rmSync } from 'fs';
 import { sync as glob } from 'glob';
+import { toSnakeCase } from 'komoji';
 import path from 'path';
 import { getPgPool } from 'pg-cache';
 
@@ -279,7 +279,7 @@ const makeReplacer = ({ schemas, name }: MakeReplacerOptions): ReplacerResult =>
   const replacements: [string, string] = ['launchql-extension-name', name];
   const schemaReplacers: [string, string][] = schemas.map((schema) => [
     schema.schema_name,
-    Case.snake(`${name}_${schema.name}`)
+    toSnakeCase(`${name}_${schema.name}`)
   ]);
 
   const replace: [RegExp, string][] = [...schemaReplacers, replacements].map(
