@@ -7,8 +7,7 @@ import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filte
 import { NodePlugin, Plugin } from 'graphile-build';
 import {
   additionalGraphQLContextFromRequest as langAdditional,
-  LangPlugin,
-  // @ts-ignore
+  LangPlugin
 } from 'graphile-i18n';
 // @ts-ignore
 import PgMetaschema from 'graphile-meta-schema';
@@ -113,10 +112,13 @@ export const getGraphileSettings = (
     retryOnInitFail: async (_error: Error) => {
       return false;
     },
-    additionalGraphQLContextFromRequest: (req, res) => ({
-      ...langAdditional(req, res),
-      req,
-      res,
-    }),
+    additionalGraphQLContextFromRequest: async (req, res) => {
+      const langContext = await langAdditional(req, res);
+      return {
+        ...langContext,
+        req,
+        res,
+      };
+    },
   };
 };
