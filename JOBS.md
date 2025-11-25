@@ -1,5 +1,7 @@
 # jobs
 
+WARNING — this is old, and likely very very out of date.
+
 ## getting started
 
 ### install openfaas on your kubernetes cluster
