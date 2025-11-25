@@ -9,8 +9,8 @@
   "module": "esm/index.js",
   "types": "index.d.ts",
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
+    "copy": "makage assets",
     "prepack": "pnpm run build",
     "build": "pnpm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; pnpm run copy",
     "build:dev": "pnpm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; pnpm run copy",
@@ -42,6 +42,7 @@
     "@graphile-contrib/pg-many-to-many": "^1.0.0",
     "graphile-test": "workspace:^",
     "graphql-tag": "2.12.6",
+    "makage": "^0.1.5",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {
