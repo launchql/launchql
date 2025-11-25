@@ -26,7 +26,8 @@
     "test:watch": "jest --watch"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
