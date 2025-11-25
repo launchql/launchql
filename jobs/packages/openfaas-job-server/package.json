@@ -1,0 +1,71 @@
+{
+  "name": "@launchql/openfaas-job-server",
+  "version": "0.2.2",
+  "description": "openfaas job server",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-server#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "main/index.js",
+  "module": "module/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "files": [
+    "main",
+    "module"
+  ],
+  "bin": {
+    "faas-job-server": "main/run.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/jobs"
+  },
+  "scripts": {
+    "build:main": "BABEL_ENV=production babel src --out-dir main --delete-dir-on-start",
+    "build:module": "MODULE=true babel src --out-dir module --delete-dir-on-start",
+    "build": "npm run build:module && npm run build:main",
+    "prepare": "npm run build",
+    "dev": "NODE_ENV=development babel-node src/run",
+    "watch": "NODE_ENV=development babel-watch src/run",
+    "lint": "eslint src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/jobs/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
+    "@babel/node": "7.10.5",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-export-default-from": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
+    "@babel/plugin-transform-runtime": "7.11.5",
+    "@babel/preset-env": "7.11.5",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "babel-watch": "7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
+    "prettier": "^2.1.2",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.11.2",
+    "@launchql/job-pg": "^0.2.2",
+    "@launchql/job-utils": "^0.2.2",
+    "body-parser": "1.19.0",
+    "envalid": "6.0.2",
+    "express": "4.17.1",
+    "pg": "8.3.3"
+  }
+}
