@@ -10,6 +10,7 @@
   "scripts": {
     "clean": "makage clean",
     "prepack": "npm run build",
+    "copy": "makage assets",
     "build": "makage clean && makage build-ts && makage assets",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
