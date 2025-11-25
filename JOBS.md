@@ -1,6 +1,6 @@
 # jobs
 
-WARNING — this is old, and likely very very out of date.
+WARNING — this is old, and is very very out of date.
 
 ## getting started
 
@@ -63,7 +63,8 @@ pod-logs openfaas-fn example-fn
 ### insert a job
 
 ```sql
-SELECT app_jobs.add_job('example-fn', json_build_object('hello', 'world!'));
+SELECT app_jobs
+    .add_job('example-fn', json_build_object('hello', 'world!'));
 ```
 
 ### insert a scheduled job

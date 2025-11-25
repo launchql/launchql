@@ -5,16 +5,10 @@
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-example#readme",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "main/index.js",
-  "module": "module/index.js",
   "directories": {
     "lib": "src",
     "test": "__tests__"
   },
-  "files": [
-    "main",
-    "module"
-  ],
   "private": true,
   "repository": {
     "type": "git",
