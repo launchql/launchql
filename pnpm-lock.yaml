@@ -538,8 +538,8 @@ importers:
         specifier: workspace:^
         version: link:../../graphile/graphile-i18n/dist
       graphile-meta-schema:
-        specifier: ^0.2.5
-        version: 0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+        specifier: workspace:^
+        version: link:../../graphile/graphile-meta-schema
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -1084,8 +1084,8 @@ importers:
         specifier: workspace:^
         version: link:../../graphile/graphile-i18n/dist
       graphile-meta-schema:
-        specifier: ^0.2.5
-        version: 0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+        specifier: workspace:^
+        version: link:../../graphile/graphile-meta-schema
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -4035,9 +4035,6 @@ packages:
     engines: {node: '>=8.6'}
     peerDependencies:
       graphql: '>=0.9 <0.14 || ^14.0.2 || ^15.4.0'
-
-  graphile-meta-schema@0.2.5:
-    resolution: {integrity: sha512-qKx4+VLfrNauHrJqZ7G6wzdMEj53eHtepVTAe/QeRrvMOCSEr8SiE0Ja4bj6jjL/jCYI7NoicBMnowBnoNOZeA==}
 
   graphile-utils@4.14.1:
     resolution: {integrity: sha512-FgviZVKO3NS8va2inqUVQQFSnFLEG7FiH64BqSVRHSF8jwSXKcpx5NiRibErNvvIdnuzgVAXQ3W4jcXvMSx0Tg==}
@@ -9848,15 +9845,6 @@ snapshots:
       pluralize: 7.0.0
       semver: 7.7.3
     transitivePeerDependencies:
-      - supports-color
-
-  graphile-meta-schema@0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
-    dependencies:
-      '@babel/runtime': 7.28.4
-      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
-    transitivePeerDependencies:
-      - graphile-build
-      - graphile-build-pg
       - supports-color
 
   graphile-utils@4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
