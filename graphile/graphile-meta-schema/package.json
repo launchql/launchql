@@ -4,7 +4,7 @@
   "description": "graphile meta schema",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
