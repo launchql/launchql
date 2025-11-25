@@ -21,11 +21,11 @@
   },
   "scripts": {
     "copy": "npm run copy:pkg; npm run copy:sql",
-    "copy:pkg": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "copy:pkg": "makage assets",
     "copy:sql": "copyfiles -f src/migrate/sql/* dist/migrate/sql && copyfiles -f src/migrate/sql/* dist/esm/migrate/sql && copyfiles -f src/init/sql/* dist/init/sql && copyfiles -f src/init/sql/* dist/esm/init/sql",
     "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "makage clean && makage build-ts && makage assets",
+    "build": "makage clean && makage build-ts && npm run copy",
     "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
