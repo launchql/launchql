@@ -8,13 +8,6 @@
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "directories": {
-    "lib": "src",
-    "test": "__tests__"
-  },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",

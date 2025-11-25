@@ -3,18 +3,11 @@
   "version": "0.1.0",
   "description": "Graphile i18n plugin",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/pyramation/graphile-i18n#readme",
+  "homepage": "https://github.com/launchql/launchql",
   "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "directories": {
-    "lib": "src",
-    "test": "__tests__"
-  },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
     "clean": "rimraf dist/**",
@@ -31,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pyramation/graphile-i18n"
+    "url": "https://github.com/launchql/launchql"
   },
   "keywords": [
     "postgraphile",
@@ -42,7 +35,7 @@
     "graphql"
   ],
   "bugs": {
-    "url": "https://github.com/pyramation/graphile-i18n/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
     "@types/accept-language-parser": "^1.5.4",
