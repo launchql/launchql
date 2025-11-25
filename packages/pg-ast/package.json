@@ -1,6 +1,6 @@
 {
   "name": "pg-ast",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL ASTs in JS",
   "main": "index.js",
@@ -23,8 +23,8 @@
     "clean": "makage clean",
     "copy": "makage assets",
     "prepack": "npm run build",
-    "build": "npm run build:proto && npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
-    "build:dev": "npm run clean && tsc --declarationMap && tsc -p tsconfig.esm.json && npm run copy",
+    "build": "npm run build:proto && makage build",
+    "build:dev": "makage build --dev",
     "build:proto": "ts-node scripts/pg-proto-parser",
     "lint": "eslint . --fix",
     "test": "jest",
@@ -37,7 +37,7 @@
     "parse"
   ],
   "devDependencies": {
-    "makage": "^0.1.5",
+    "makage": "^0.1.6",
     "pg-proto-parser": "^1.30.1",
     "pgsql-deparser": "^17.12.1"
   },

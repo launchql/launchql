@@ -1,6 +1,6 @@
 {
   "name": "graphile-test",
-  "version": "2.8.4",
+  "version": "2.8.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile Testing",
   "main": "index.js",
@@ -22,8 +22,8 @@
   "scripts": {
     "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "makage clean && makage build-ts && makage assets",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/pg": "^8.15.2",
     "graphql-tag": "2.12.6",
-    "makage": "^0.1.5"
+    "makage": "^0.1.6"
   },
   "dependencies": {
     "@launchql/types": "workspace:^",

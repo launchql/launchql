@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.17.12",
+  "version": "4.17.15",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -26,8 +26,8 @@
   "scripts": {
     "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "makage clean && makage build-ts && makage assets",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "dev": "ts-node ./src/index.ts",
     "lint": "eslint . --fix",
     "test": "jest",
@@ -41,7 +41,7 @@
     "@types/shelljs": "^0.8.16",
     "clean-ansi": "0.1.1",
     "glob": "^13.0.0",
-    "makage": "^0.1.5",
+    "makage": "^0.1.6",
     "pg": "^8.16.0",
     "ts-node": "^10.9.2"
   },

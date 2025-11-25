@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.8](https://github.com/launchql/launchql/compare/launchql-test@2.8.7...launchql-test@2.8.8) (2025-11-25)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.7](https://github.com/launchql/launchql/compare/launchql-test@2.8.6...launchql-test@2.8.7) (2025-11-25)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.6](https://github.com/launchql/launchql/compare/launchql-test@2.8.5...launchql-test@2.8.6) (2025-11-25)
+
+**Note:** Version bump only for package launchql-test
+
 ## [2.8.5](https://github.com/launchql/launchql/compare/launchql-test@2.8.4...launchql-test@2.8.5) (2025-11-24)
 
 **Note:** Version bump only for package launchql-test
