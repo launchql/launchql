@@ -387,3 +387,17 @@ import { getConnections, PgTestClient } from 'drizzle-orm-test';
 // Everything else stays the same!
 // Now you can also use Drizzle ORM with full RLS support
 ```
+
+## Snapshot Utilities
+
+The `drizzle-orm-test/utils` module provides utilities for sanitizing query results for snapshot testing. These helpers replace dynamic values (IDs, UUIDs, dates, hashes) with stable placeholders, making snapshots deterministic.
+
+```ts
+import { snapshot } from 'drizzle-orm-test/utils';
+
+const drizzleDb = drizzle(db.client);
+const result = await drizzleDb.select().from(users);
+expect(snapshot(result)).toMatchSnapshot();
+```
+
+See [`pgsql-test` Snapshot Utilities](https://www.npmjs.com/package/pgsql-test#snapshot-utilities) for the full API reference.
