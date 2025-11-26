@@ -153,8 +153,8 @@ jobs:
       - name: graphile/graphile-search-plugin
         run: cd ./graphile/graphile-search-plugin && pnpm test
 
-      - name: graphile/postgraphile-plugin-fulltext-filter
-        run: cd ./graphile/postgraphile-plugin-fulltext-filter && pnpm test
+      - name: graphile/graphile-plugin-fulltext-filter
+        run: cd ./graphile/graphile-plugin-fulltext-filter && pnpm test
 
       - name: graphile/graphile-simple-inflector
         run: cd ./graphile/graphile-simple-inflector && pnpm test
