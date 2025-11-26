@@ -1,12 +1,5 @@
-// Re-export types and utilities from graphile-test (but not get-connections functions)
+// Re-export types from graphile-test (but not get-connections functions)
 export {
-  snapshot,
-  prune,
-  pruneDates,
-  pruneIds,
-  pruneUUIDs,
-  pruneHashes,
-  pruneIdArrays,
   type GraphQLQueryOptions,
   type GraphQLTestContext,
   type GetConnectionsInput,
