@@ -115,7 +115,7 @@ app.listen(settings.port);
 ## 🔌 Included Plugins
 
 * `postgraphile-plugin-connection-filter`
-* `@pyramation/postgraphile-plugin-fulltext-filter`
+* `graphile-plugin-fulltext-filter`
 * `@pyramation/postgis`
 * `postgraphile-plugin-connection-filter-postgis`
 * `postgraphile-derived-upload-field`

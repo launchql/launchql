@@ -1,13 +1,13 @@
 {
-  "name": "graphile-search-plugin",
-  "version": "0.1.11",
-  "description": "generate search conditions for your tsvector columns",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql",
-  "license": "MIT",
+  "name": "graphile-plugin-fulltext-filter",
+  "version": "2.0.0",
+  "description": "Full text searching on tsvector fields for use with postgraphile-plugin-connection-filter",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
+  "author": "Mark Lipscombe",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
   "scripts": {
     "clean": "makage clean",
     "copy": "makage assets",
@@ -32,21 +32,28 @@
     "launchql",
     "plugin",
     "postgres",
-    "graphql"
+    "graphql",
+    "fulltext",
+    "tsvector"
   ],
   "bugs": {
     "url": "https://github.com/launchql/launchql/issues"
   },
+  "dependencies": {
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "pg-tsquery": "^8.1.0",
+    "postgraphile-plugin-connection-filter": "^2.0.0"
+  },
+  "peerDependencies": {
+    "postgraphile-core": "^4.2.0",
+    "postgraphile-plugin-connection-filter": "^2.0.0"
+  },
   "devDependencies": {
-    "graphile-plugin-fulltext-filter": "workspace:^",
-    "graphile-simple-inflector": "workspace:^",
     "graphile-test": "workspace:^",
+    "graphql": "15.10.1",
     "makage": "^0.1.6",
     "pgsql-test": "workspace:^",
     "postgraphile-plugin-connection-filter": "^2.0.0"
-  },
-  "dependencies": {
-    "graphile-build": "^4.14.1",
-    "graphql-tag": "2.12.6"
   }
 }

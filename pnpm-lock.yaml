@@ -144,6 +144,38 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-plugin-fulltext-filter:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      pg-tsquery:
+        specifier: ^8.1.0
+        version: 8.4.2
+      postgraphile-core:
+        specifier: ^4.2.0
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      postgraphile-plugin-connection-filter:
+        specifier: ^2.0.0
+        version: 2.3.0
+    devDependencies:
+      graphile-test:
+        specifier: workspace:^
+        version: link:../../packages/graphile-test/dist
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      makage:
+        specifier: ^0.1.6
+        version: 0.1.6
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
   graphile/graphile-search-plugin:
     dependencies:
       graphile-build:
@@ -153,9 +185,9 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
     devDependencies:
-      '@pyramation/postgraphile-plugin-fulltext-filter':
-        specifier: 2.0.0
-        version: 2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
+      graphile-plugin-fulltext-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-fulltext-filter/dist
       graphile-simple-inflector:
         specifier: workspace:^
         version: link:../graphile-simple-inflector/dist
@@ -486,7 +518,7 @@ importers:
         version: 3.1.11
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
+        version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
     publishDirectory: dist
 
   packages/gql-ast:
@@ -529,7 +561,7 @@ importers:
         version: 3.1.11
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
+        version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
     publishDirectory: dist
 
   packages/graphile-query:
@@ -572,9 +604,6 @@ importers:
       '@pyramation/postgis':
         specifier: ^0.1.1
         version: 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
-      '@pyramation/postgraphile-plugin-fulltext-filter':
-        specifier: ^2.0.0
-        version: 2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -590,6 +619,9 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../../graphile/graphile-meta-schema/dist
+      graphile-plugin-fulltext-filter:
+        specifier: workspace:^
+        version: link:../../graphile/graphile-plugin-fulltext-filter/dist
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -650,7 +682,7 @@ importers:
         version: 3.1.11
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
+        version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
     publishDirectory: dist
 
   packages/graphile-test:
@@ -1176,9 +1208,6 @@ importers:
       '@pyramation/postgis':
         specifier: ^0.1.1
         version: 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
-      '@pyramation/postgraphile-plugin-fulltext-filter':
-        specifier: ^2.0.0
-        version: 2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -1200,6 +1229,9 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../../graphile/graphile-meta-schema/dist
+      graphile-plugin-fulltext-filter:
+        specifier: workspace:^
+        version: link:../../graphile/graphile-plugin-fulltext-filter/dist
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -1278,7 +1310,7 @@ importers:
         version: 3.1.11
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
+        version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
     publishDirectory: dist
 
   packages/server-utils:
@@ -1310,7 +1342,7 @@ importers:
         version: 0.1.6
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
+        version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
     publishDirectory: dist
 
   packages/stream-to-etag:
@@ -2297,12 +2329,6 @@ packages:
       graphql: '>=0.6 <15'
       pg-sql2: '>=2.2.1 <5'
 
-  '@pyramation/postgraphile-plugin-fulltext-filter@2.0.0':
-    resolution: {integrity: sha512-xryIvl8si6iXn07nP72mimHwqKisJlYCryVX5icRQp3jZVSWwL0BZUaeJd0E2fPKguMQqEgxfVb/GFMa2AAITQ==}
-    peerDependencies:
-      postgraphile-core: ^4.2.0
-      postgraphile-plugin-connection-filter: ^2.0.0
-
   '@pyramation/prompt@0.0.1':
     resolution: {integrity: sha512-xIa9eLrx8ceZy3+rijd1/Z/YHSyROoHuMpT+xOjGDOKJ7DhiXT9dXkfzxiRqWzeCRls+R/7ApRN6j4tYxnjkFQ==}
     peerDependencies:
@@ -2708,6 +2734,9 @@ packages:
 
   '@types/node@20.19.25':
     resolution: {integrity: sha512-ZsJzA5thDQMSQO788d7IocwwQbI8B5OPzmqNvpf3NY/+MHDAS759Wo0gd2WQeXYt5AAAQjzcrTVC6SKCuYgoCQ==}
+
+  '@types/node@24.10.1':
+    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3628,10 +3657,6 @@ packages:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
-  dotenv@16.6.1:
-    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
-    engines: {node: '>=12'}
-
   dotenv@17.2.3:
     resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
     engines: {node: '>=12'}
@@ -3749,8 +3774,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  electron-to-chromium@1.5.258:
-    resolution: {integrity: sha512-rHUggNV5jKQ0sSdWwlaRDkFc3/rRJIVnOSe9yR4zrR07m3ZxhP4N27Hlg8VeJGGYgFTxK5NqDmWI4DSH72vIJg==}
+  electron-to-chromium@1.5.259:
+    resolution: {integrity: sha512-I+oLXgpEJzD6Cwuwt1gYjxsDmu/S/Kd41mmLA3O+/uH2pFRO/DvOjUyGozL8j3KeLV6WyZ7ssPwELMsXCcsJAQ==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -6012,8 +6037,8 @@ packages:
     resolution: {integrity: sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==}
     engines: {node: '>=0.8.0'}
 
-  strfy-js@3.0.1:
-    resolution: {integrity: sha512-GVN7Kz2mZ8ZSXyo5neALGObmah+JVw/nr8zNapzNtrObO+tcW0wOmlOBfRdux+XfIaA/87qe5MWXtscE7VeY+g==}
+  strfy-js@3.1.1:
+    resolution: {integrity: sha512-dlb74GjRp1aMGD1ZAWp90KvjBsAoufdn2k2QSbVL62tw1ry7qTHozqUHpLdCY2EAbdw+cAxCptreEENaTKmx0Q==}
 
   string-length@4.0.2:
     resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}
@@ -6310,6 +6335,9 @@ packages:
 
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
   unique-filename@3.0.0:
     resolution: {integrity: sha512-afXhuC55wkAmZ0P18QsVE6kp8JaxrEokN2HGIoIVv2ijHQd419H0+6EigAFcIzXeMIkcIkNBpB3L/DXB3cTS/g==}
@@ -7934,17 +7962,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@pyramation/postgraphile-plugin-fulltext-filter@2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)':
-    dependencies:
-      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      pg-tsquery: 8.4.2
-      postgraphile-core: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      postgraphile-plugin-connection-filter: 2.3.0
-    transitivePeerDependencies:
-      - graphql
-      - pg
-      - supports-color
-
   '@pyramation/prompt@0.0.1(@babel/core@7.28.5)':
     dependencies:
       '@babel/core': 7.28.5
@@ -8530,6 +8547,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@24.10.1':
+    dependencies:
+      undici-types: 7.16.0
+
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/pg-copy-streams@1.2.5':
@@ -9026,7 +9047,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.30
       caniuse-lite: 1.0.30001756
-      electron-to-chromium: 1.5.258
+      electron-to-chromium: 1.5.259
       node-releases: 2.0.27
       update-browserslist-db: 1.1.4(browserslist@4.28.0)
 
@@ -9453,11 +9474,9 @@ snapshots:
 
   dotenv-expand@11.0.7:
     dependencies:
-      dotenv: 16.6.1
+      dotenv: 16.4.7
 
   dotenv@16.4.7: {}
-
-  dotenv@16.6.1: {}
 
   dotenv@17.2.3: {}
 
@@ -9486,7 +9505,7 @@ snapshots:
     dependencies:
       jake: 10.9.4
 
-  electron-to-chromium@1.5.258: {}
+  electron-to-chromium@1.5.259: {}
 
   emittery@0.13.1: {}
 
@@ -10498,7 +10517,7 @@ snapshots:
 
   jest-diff@29.7.0:
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       diff-sequences: 29.6.3
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
@@ -10999,7 +11018,7 @@ snapshots:
 
   log-symbols@4.1.0:
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       is-unicode-supported: 0.1.0
 
   long@5.3.2: {}
@@ -11363,7 +11382,7 @@ snapshots:
       '@yarnpkg/parsers': 3.0.2
       '@zkochan/js-yaml': 0.0.7
       axios: 1.13.2
-      chalk: 4.1.2
+      chalk: 4.1.0
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       cliui: 8.0.1
@@ -11636,7 +11655,7 @@ snapshots:
       case: 1.6.3
       deepmerge: 4.3.1
       nested-obj: 0.1.3
-      strfy-js: 3.0.1
+      strfy-js: 3.1.1
     transitivePeerDependencies:
       - supports-color
 
@@ -12231,9 +12250,9 @@ snapshots:
 
   streamsearch@0.1.2: {}
 
-  strfy-js@3.0.1:
+  strfy-js@3.1.1:
     dependencies:
-      minimatch: 9.0.5
+      minimatch: 10.1.1
 
   string-length@4.0.2:
     dependencies:
@@ -12448,6 +12467,24 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
+  ts-node@10.9.2(@types/node@24.10.1)(typescript@5.9.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.12
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 24.10.1
+      acorn: 8.15.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.9.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+
   tsconfig-paths@4.2.0:
     dependencies:
       json5: 2.2.3
@@ -12507,6 +12544,8 @@ snapshots:
   undici-types@5.26.5: {}
 
   undici-types@6.21.0: {}
+
+  undici-types@7.16.0: {}
 
   unique-filename@3.0.0:
     dependencies:
