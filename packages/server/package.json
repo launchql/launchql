@@ -48,7 +48,7 @@
     "@launchql/upload-names": "workspace:^",
     "@launchql/url-domains": "workspace:^",
     "@pyramation/postgis": "^0.1.1",
-    "@pyramation/postgraphile-plugin-fulltext-filter": "workspace:^",
+    "graphile-plugin-fulltext-filter": "workspace:^",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",

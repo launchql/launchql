@@ -12,7 +12,7 @@ import { PgSearchPlugin } from '../src';
 import PgSimpleInflector from 'graphile-simple-inflector';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 // @ts-ignore
-import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
+import FulltextFilterPlugin from 'graphile-plugin-fulltext-filter';
 
 const SCHEMA = 'app_public';
 const sql = (f: string) => join(__dirname, '../sql', f);

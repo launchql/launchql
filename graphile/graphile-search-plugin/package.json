@@ -38,7 +38,7 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
-    "@pyramation/postgraphile-plugin-fulltext-filter": "workspace:^",
+    "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-simple-inflector": "workspace:^",
     "graphile-test": "workspace:^",
     "makage": "^0.1.6",

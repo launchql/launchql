@@ -3,7 +3,7 @@ import { getEnvOptions } from '@launchql/env';
 import { LaunchQLOptions } from '@launchql/types';
 import PgPostgis from '@pyramation/postgis';
 // @ts-ignore
-import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
+import FulltextFilterPlugin from 'graphile-plugin-fulltext-filter';
 import { NodePlugin, Plugin } from 'graphile-build';
 import {
   additionalGraphQLContextFromRequest as langAdditional,
