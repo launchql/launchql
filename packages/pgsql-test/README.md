@@ -630,3 +630,41 @@ const { conn, db, teardown } = await getConnections({
   }
 });
 ```
+
+## Snapshot Utilities
+
+The `pgsql-test/utils` module provides utilities for sanitizing database query results for snapshot testing. These helpers replace dynamic values (IDs, UUIDs, dates, hashes) with stable placeholders, making snapshots deterministic.
+
+```ts
+import { snapshot } from 'pgsql-test/utils';
+
+const result = await db.any('SELECT * FROM users');
+expect(snapshot(result)).toMatchSnapshot();
+```
+
+### Available Functions
+
+| Function | Description |
+|----------|-------------|
+| `snapshot(obj)` | Recursively prunes all dynamic values from an object or array |
+| `prune(obj)` | Applies all prune functions to a single object |
+| `pruneDates(obj)` | Replaces `Date` objects and date strings (fields ending in `_at` or `At`) with `[DATE]` |
+| `pruneIds(obj)` | Replaces `id` and `*_id` fields with `[ID]` |
+| `pruneIdArrays(obj)` | Replaces `*_ids` array fields with `[UUIDs-N]` |
+| `pruneUUIDs(obj)` | Replaces UUID strings in `uuid` and `queue_name` fields with `[UUID]` |
+| `pruneHashes(obj)` | Replaces `*_hash` fields starting with `$` with `[hash]` |
+
+### Example
+
+```ts
+import { snapshot, pruneIds, pruneDates } from 'pgsql-test/utils';
+
+// Full sanitization
+const users = await db.any('SELECT * FROM users');
+expect(snapshot(users)).toMatchSnapshot();
+
+// Selective sanitization
+const row = await db.one('SELECT id, name, created_at FROM users WHERE id = $1', [1]);
+const sanitized = pruneDates(pruneIds(row));
+// { id: '[ID]', name: 'Alice', created_at: '[DATE]' }
+```

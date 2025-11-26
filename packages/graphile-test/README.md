@@ -193,3 +193,16 @@ expect(result.data.createUser.username).toBe('alice');
 * Use `useRoot: true` to test schema visibility without RLS.
 * Start with `getConnections()` for most use cases.
 * Consider `getConnectionsUnwrapped()` for cleaner test assertions.
+
+## Snapshot Utilities
+
+The `graphile-test/utils` module provides utilities for sanitizing query results for snapshot testing. These helpers replace dynamic values (IDs, UUIDs, dates, hashes) with stable placeholders, making snapshots deterministic.
+
+```ts
+import { snapshot } from 'graphile-test/utils';
+
+const res = await query(`query { allUsers { nodes { id name createdAt } } }`);
+expect(snapshot(res.data)).toMatchSnapshot();
+```
+
+See [`pgsql-test` Snapshot Utilities](https://www.npmjs.com/package/pgsql-test#snapshot-utilities) for the full API reference.
