@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.10](https://github.com/launchql/launchql/compare/graphile-query@2.3.9...graphile-query@2.3.10) (2025-11-27)
+
+**Note:** Version bump only for package graphile-query
+
 ## [2.3.9](https://github.com/launchql/launchql/compare/graphile-query@2.3.8...graphile-query@2.3.9) (2025-11-25)
 
 **Note:** Version bump only for package graphile-query

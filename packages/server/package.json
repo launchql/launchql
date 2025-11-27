@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server",
-  "version": "2.7.11",
+  "version": "2.7.12",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Server",
   "main": "index.js",
@@ -48,7 +48,6 @@
     "@launchql/upload-names": "workspace:^",
     "@launchql/url-domains": "workspace:^",
     "@pyramation/postgis": "^0.1.1",
-    "graphile-plugin-fulltext-filter": "workspace:^",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
@@ -56,6 +55,7 @@
     "graphile-cache": "workspace:^",
     "graphile-i18n": "workspace:^",
     "graphile-meta-schema": "workspace:^",
+    "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-query": "workspace:^",
     "graphile-search-plugin": "workspace:^",
     "graphile-settings": "workspace:^",

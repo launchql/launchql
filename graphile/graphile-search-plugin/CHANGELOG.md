@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.12](https://github.com/launchql/launchql/compare/graphile-search-plugin@0.1.11...graphile-search-plugin@0.1.12) (2025-11-27)
+
+**Note:** Version bump only for package graphile-search-plugin
+
 ## [0.1.11](https://github.com/launchql/launchql/compare/graphile-search-plugin@0.1.10...graphile-search-plugin@0.1.11) (2025-11-25)
 
 **Note:** Version bump only for package graphile-search-plugin
