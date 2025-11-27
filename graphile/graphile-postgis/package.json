@@ -1,66 +1,53 @@
 {
-  "name": "@graphile/postgis",
-  "version": "0.2.0",
-  "description": "PostGIS support for PostGraphile",
-  "main": "dist/index.js",
+  "name": "graphile-postgis",
+  "version": "0.1.0",
+  "description": "Graphile/PostGraphile PostGIS integration plugin",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "test": "scripts/test",
-    "lint": "prettier --list-different 'src/**/*' && tslint --config tslint.json --project tsconfig.json",
-    "postgraphile": "nodemon --watch dist -x 'postgraphile --append-plugins `pwd`/dist/index.js -c graphile_test -s graphile_postgis -p 5123 --enhance-graphiql --watch --dynamic-json --show-error-stack --extended-errors severity,code,detail,hint,position,internalPosition,internalQuery,where,schema,table,column,dataType,constraint,file,line,routine'",
-    "dev": "psql -f __tests__/schema.sql graphile_test && concurrently --kill-others 'npm run watch' 'npm run postgraphile'",
-    "prepack": "rm -Rf dist && npm run build"
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/graphile/postgis.git"
+    "url": "https://github.com/launchql/launchql"
   },
   "keywords": [
-    "postgraphile",
     "graphile",
-    "plugin",
+    "postgraphile",
     "postgis",
-    "gis",
-    "postgresql",
-    "graphql"
+    "postgres",
+    "graphql",
+    "launchql"
   ],
-  "author": "Benjie Gillam <code@benjiegillam.com>",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/graphile/postgis/issues"
-  },
-  "homepage": "https://github.com/graphile/postgis#readme",
-  "peerDependencies": {
-    "graphile-build": "^4.4.0",
-    "graphile-build-pg": "^4.4.0",
-    "graphql": ">=0.6 <16",
-    "pg-sql2": ">=2.2.1 <5"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.5",
-    "@types/jest": "^26.0.22",
-    "concurrently": "^6.0.2",
-    "graphql": "^15",
-    "jest": "^26.6.3",
-    "nodemon": "^1.19.1",
-    "postgraphile": "^4.9.0",
-    "postgraphile-core": "^4.9.0",
-    "prettier": "1.18.2",
-    "ts-jest": "^26.5.4",
-    "tslint": "^5.19.0",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.3"
+    "@types/geojson": "^7946.0.14",
+    "graphile-test": "workspace:^",
+    "makage": "^0.1.6",
+    "pgsql-test": "workspace:^"
   },
   "dependencies": {
-    "debug": "^4.1.1",
-    "jest-serializer-graphql-schema": "^5.0.0-1.1",
-    "tslib": "^1.10.0"
-  },
-  "resolutions": {
-    "graphql": "^15"
-  },
-  "files": [
-    "dist"
-  ]
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-utils": "^4.14.1",
+    "graphql": "15.10.1",
+    "pg": "^8.16.0"
+  }
 }

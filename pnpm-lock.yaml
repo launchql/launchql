@@ -207,14 +207,29 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+<<<<<<< Updated upstream
   graphile/graphile-query:
     dependencies:
+=======
+  graphile/graphile-postgis:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-utils:
+        specifier: ^4.14.1
+        version: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+>>>>>>> Stashed changes
       graphql:
         specifier: 15.10.1
         version: 15.10.1
       pg:
         specifier: ^8.16.0
         version: 8.16.3
+<<<<<<< Updated upstream
       postgraphile:
         specifier: ^4.14.1
         version: 4.14.1
@@ -225,6 +240,21 @@ importers:
       makage:
         specifier: ^0.1.6
         version: 0.1.6
+=======
+    devDependencies:
+      '@types/geojson':
+        specifier: ^7946.0.14
+        version: 7946.0.16
+      graphile-test:
+        specifier: workspace:^
+        version: link:../../packages/graphile-test/dist
+      makage:
+        specifier: ^0.1.6
+        version: 0.1.6
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+>>>>>>> Stashed changes
     publishDirectory: dist
 
   graphile/graphile-search-plugin:
@@ -3518,6 +3548,9 @@ packages:
       {
         integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==,
       }
+
+  '@types/geojson@7946.0.16':
+    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
   '@types/graphql-upload@8.0.12':
     resolution:
@@ -12179,6 +12212,8 @@ snapshots:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 5.1.0
       '@types/serve-static': 1.15.10
+
+  '@types/geojson@7946.0.16': {}
 
   '@types/graphql-upload@8.0.12':
     dependencies:

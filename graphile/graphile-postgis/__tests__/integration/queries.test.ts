@@ -1,39 +1,49 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as pg from "pg";
-import { promisify } from "util";
-import { GraphQLSchema, graphql } from "graphql";
-import { withPgClient } from "../helpers";
-import { createPostGraphileSchema } from "postgraphile-core";
-import PostgisPlugin from "../../src/index";
+import '../../utils/env';
+import { readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
+import { getConnections, seed, snapshot, type GraphQLQueryFn } from 'graphile-test';
+import type { PgTestClient } from 'pgsql-test/test-client';
 
-const readFile = promisify(fs.readFile);
+import PostgisPlugin from '../../src';
+import { sql } from '../../test-utils/helpers';
 
-const queriesDir = `${__dirname}/../fixtures/queries`;
-const queryFileNames = fs.readdirSync(queriesDir);
+const queriesDir = join(__dirname, '../fixtures/queries');
+const queryFileNames = readdirSync(queriesDir);
 
-const schemas = ["graphile_postgis"];
-const options = {
-  appendPlugins: [PostgisPlugin],
-};
+describe('integration queries', () => {
+  let teardown: () => Promise<void>;
+  let query: GraphQLQueryFn;
+  let db: PgTestClient;
 
-let gqlSchema: GraphQLSchema;
+  beforeAll(async () => {
+    const connections = await getConnections(
+      {
+        schemas: ['graphile_postgis'],
+        authRole: 'authenticated',
+        graphile: {
+          overrideSettings: {
+            appendPlugins: [PostgisPlugin]
+          }
+        }
+      },
+      [seed.sqlfile([sql('schema.sql')])]
+    );
 
-beforeAll(async () => {
-  await withPgClient(async (client: pg.PoolClient) => {
-    gqlSchema = await createPostGraphileSchema(client, schemas, options);
+    ({ db, query, teardown } = connections);
+  });
+
+  beforeEach(async () => {
+    await db.beforeEach();
+    db.setContext({ role: 'authenticated' });
+  });
+  afterEach(() => db.afterEach());
+  afterAll(async () => {
+    await teardown();
+  });
+
+  it.each(queryFileNames)('%s', async (queryFileName) => {
+    const queryText = readFileSync(join(queriesDir, queryFileName), 'utf8');
+    const result = await query(queryText);
+    expect(snapshot(result)).toMatchSnapshot();
   });
 });
-
-for (const queryFileName of queryFileNames) {
-  test(queryFileName, async () => {
-    const query = await readFile(
-      path.resolve(queriesDir, queryFileName),
-      "utf8"
-    );
-    const result = await withPgClient(async (client: pg.PoolClient) =>
-      graphql(gqlSchema, query, null, { pgClient: client })
-    );
-    expect(result).toMatchSnapshot();
-  });
-}

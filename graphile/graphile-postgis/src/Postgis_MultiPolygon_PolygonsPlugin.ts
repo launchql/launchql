@@ -1,48 +1,61 @@
-import { Plugin } from "graphile-build";
-import { GIS_SUBTYPE } from "./constants";
-import { getGISTypeName } from "./utils";
+import type { Build, Plugin } from 'graphile-build';
+import type { GraphQLFieldConfigMap } from 'graphql';
+import type { MultiPolygon, Polygon } from 'geojson';
 
-const plugin: Plugin = builder => {
-  builder.hook("GraphQLObjectType:fields", (fields, build, context) => {
-    const {
-      scope: { isPgGISType, pgGISType, pgGISTypeDetails },
-    } = context;
-    if (
-      !isPgGISType ||
-      !pgGISTypeDetails ||
-      pgGISTypeDetails.subtype !== GIS_SUBTYPE.MultiPolygon
-    ) {
-      return fields;
+import { GisSubtype } from './constants';
+import { getGISTypeName } from './utils';
+import type { GisFieldValue, GisGraphQLType, GisScope, PostgisBuild } from './types';
+
+const PostgisMultiPolygonPolygonsPlugin: Plugin = (builder) => {
+  builder.hook(
+    'GraphQLObjectType:fields',
+    (fields: GraphQLFieldConfigMap<GisFieldValue, unknown>, build: Build, context) => {
+      const {
+        scope: { isPgGISType, pgGISType, pgGISTypeDetails }
+      } = context as typeof context & { scope: GisScope };
+      if (
+        !isPgGISType ||
+        !pgGISType ||
+        !pgGISTypeDetails ||
+        pgGISTypeDetails.subtype !== GisSubtype.MultiPolygon
+      ) {
+        return fields;
+      }
+      const {
+        extend,
+        getPostgisTypeByGeometryType,
+        graphql: { GraphQLList }
+      } = build as PostgisBuild;
+      const { hasZ, hasM, srid } = pgGISTypeDetails;
+      const PolygonType = getPostgisTypeByGeometryType(
+        pgGISType,
+        GisSubtype.Polygon,
+        hasZ,
+        hasM,
+        srid
+      ) as GisGraphQLType | null | undefined;
+
+      if (!PolygonType) {
+        return fields;
+      }
+
+      return extend(fields, {
+        polygons: {
+          type: new GraphQLList(PolygonType),
+          resolve(data: GisFieldValue) {
+            const multiPolygon = data.__geojson as MultiPolygon;
+            return multiPolygon.coordinates.map((coord) => ({
+              __gisType: getGISTypeName(GisSubtype.Polygon, hasZ, hasM),
+              __srid: data.__srid,
+              __geojson: {
+                type: 'Polygon',
+                coordinates: coord
+              } as Polygon
+            }));
+          }
+        }
+      });
     }
-    const {
-      extend,
-      getPostgisTypeByGeometryType,
-      graphql: { GraphQLList },
-    } = build;
-    const { hasZ, hasM, srid } = pgGISTypeDetails;
-    const Polygon = getPostgisTypeByGeometryType(
-      pgGISType,
-      GIS_SUBTYPE.Polygon,
-      hasZ,
-      hasM,
-      srid
-    );
-
-    return extend(fields, {
-      polygons: {
-        type: new GraphQLList(Polygon),
-        resolve(data: any) {
-          return data.__geojson.coordinates.map((coord: any) => ({
-            __gisType: getGISTypeName(GIS_SUBTYPE.Polygon, hasZ, hasM),
-            __srid: data.__srid,
-            __geojson: {
-              type: "Polygon",
-              coordinates: coord,
-            },
-          }));
-        },
-      },
-    });
-  });
+  );
 };
-export default plugin;
+export default PostgisMultiPolygonPolygonsPlugin;

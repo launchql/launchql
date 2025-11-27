@@ -1,40 +1,40 @@
-import { Plugin } from "graphile-build";
-import { PgExtension, PgType } from "graphile-build-pg";
-import debug from "./debug";
+import type { Build, Plugin } from 'graphile-build';
+import type { PgExtension, PgType } from 'graphile-build-pg';
 
-const plugin: Plugin = builder => {
-  builder.hook("build", build => {
-    const { pgIntrospectionResultsByKind: introspectionResultsByKind } = build;
+import type { PostgisBuild } from './types';
+
+const PostgisExtensionDetectionPlugin: Plugin = (builder) => {
+  builder.hook('build', (build: Build): PostgisBuild => {
+    const postgisBuild = build as PostgisBuild;
+    const { pgIntrospectionResultsByKind: introspectionResultsByKind } = postgisBuild;
     const pgGISExtension = introspectionResultsByKind.extension.find(
-      (e: PgExtension) => e.name === "postgis"
+      (extension: PgExtension) => extension.name === 'postgis'
     );
     // Check we have the postgis extension
     if (!pgGISExtension) {
-      debug("PostGIS extension not found in database; skipping");
-      return build;
+      console.warn('PostGIS extension not found in database; skipping');
+      return postgisBuild;
     }
     // Extract the geography and geometry types
     const pgGISGeometryType = introspectionResultsByKind.type.find(
-      (t: PgType) =>
-        t.name === "geometry" && t.namespaceId === pgGISExtension.namespaceId
+      (type: PgType) => type.name === 'geometry' && type.namespaceId === pgGISExtension.namespaceId
     );
     const pgGISGeographyType = introspectionResultsByKind.type.find(
-      (t: PgType) =>
-        t.name === "geography" && t.namespaceId === pgGISExtension.namespaceId
+      (type: PgType) => type.name === 'geography' && type.namespaceId === pgGISExtension.namespaceId
     );
     if (!pgGISGeographyType || !pgGISGeometryType) {
       throw new Error(
         "PostGIS is installed, but we couldn't find the geometry/geography types!"
       );
     }
-    return build.extend(build, {
+    return postgisBuild.extend(postgisBuild, {
       pgGISGraphQLTypesByTypeAndSubtype: {},
       pgGISGraphQLInterfaceTypesByType: {},
       pgGISGeometryType,
       pgGISGeographyType,
-      pgGISExtension,
-    });
+      pgGISExtension
+    }) as PostgisBuild;
   });
 };
 
-export default plugin;
+export default PostgisExtensionDetectionPlugin;

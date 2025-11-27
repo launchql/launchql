@@ -1,50 +1,56 @@
-import { Plugin } from "graphile-build";
-import { GIS_SUBTYPE } from "./constants";
+import type { Build, Plugin } from 'graphile-build';
+import type { GraphQLFieldConfigMap } from 'graphql';
+import type { Point } from 'geojson';
 
-const plugin: Plugin = builder => {
-  builder.hook("GraphQLObjectType:fields", (fields, build, context) => {
-    const {
-      scope: { isPgGISType, pgGISType, pgGISTypeDetails },
-    } = context;
-    if (
-      !isPgGISType ||
-      !pgGISTypeDetails ||
-      pgGISTypeDetails.subtype !== GIS_SUBTYPE.Point
-    ) {
-      return fields;
-    }
-    const {
-      extend,
-      graphql: { GraphQLNonNull, GraphQLFloat },
-      inflection,
-    } = build;
-    const xFieldName = inflection.gisXFieldName(pgGISType);
-    const yFieldName = inflection.gisYFieldName(pgGISType);
-    const zFieldName = inflection.gisZFieldName(pgGISType);
-    return extend(fields, {
-      [xFieldName]: {
-        type: new GraphQLNonNull(GraphQLFloat),
-        resolve(data: any) {
-          return data.__geojson.coordinates[0];
-        },
-      },
-      [yFieldName]: {
-        type: new GraphQLNonNull(GraphQLFloat),
-        resolve(data: any) {
-          return data.__geojson.coordinates[1];
-        },
-      },
-      ...(pgGISTypeDetails.hasZ
-        ? {
-            [zFieldName]: {
-              type: new GraphQLNonNull(GraphQLFloat),
-              resolve(data: any) {
-                return data.__geojson.coordinates[2];
-              },
-            },
+import { GisSubtype } from './constants';
+import type { GisFieldValue, GisScope, PostgisBuild } from './types';
+
+const PostgisPointLatitudeLongitudePlugin: Plugin = (builder) => {
+  builder.hook(
+    'GraphQLObjectType:fields',
+    (fields: GraphQLFieldConfigMap<GisFieldValue, unknown>, build: Build, context) => {
+      const {
+        scope: { isPgGISType, pgGISType, pgGISTypeDetails }
+      } = context as typeof context & { scope: GisScope };
+      if (!isPgGISType || !pgGISType || !pgGISTypeDetails || pgGISTypeDetails.subtype !== GisSubtype.Point) {
+        return fields;
+      }
+      const {
+        extend,
+        graphql: { GraphQLNonNull, GraphQLFloat },
+        inflection
+      } = build as PostgisBuild;
+      const xFieldName = inflection.gisXFieldName(pgGISType);
+      const yFieldName = inflection.gisYFieldName(pgGISType);
+      const zFieldName = inflection.gisZFieldName(pgGISType);
+      return extend(fields, {
+        [xFieldName]: {
+          type: new GraphQLNonNull(GraphQLFloat),
+          resolve(data: GisFieldValue) {
+            const point = data.__geojson as Point;
+            return point.coordinates[0];
           }
-        : {}),
-    });
-  });
+        },
+        [yFieldName]: {
+          type: new GraphQLNonNull(GraphQLFloat),
+          resolve(data: GisFieldValue) {
+            const point = data.__geojson as Point;
+            return point.coordinates[1];
+          }
+        },
+        ...(pgGISTypeDetails.hasZ
+          ? {
+              [zFieldName]: {
+                type: new GraphQLNonNull(GraphQLFloat),
+                resolve(data: GisFieldValue) {
+                  const point = data.__geojson as Point;
+                  return point.coordinates[2];
+                }
+              }
+            }
+          : {})
+      });
+    }
+  );
 };
-export default plugin;
+export default PostgisPointLatitudeLongitudePlugin;

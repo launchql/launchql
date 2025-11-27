@@ -1,48 +1,61 @@
-import { Plugin } from "graphile-build";
-import { GIS_SUBTYPE } from "./constants";
-import { getGISTypeName } from "./utils";
+import type { Build, Plugin } from 'graphile-build';
+import type { GraphQLFieldConfigMap } from 'graphql';
+import type { LineString, MultiLineString } from 'geojson';
 
-const plugin: Plugin = builder => {
-  builder.hook("GraphQLObjectType:fields", (fields, build, context) => {
-    const {
-      scope: { isPgGISType, pgGISType, pgGISTypeDetails },
-    } = context;
-    if (
-      !isPgGISType ||
-      !pgGISTypeDetails ||
-      pgGISTypeDetails.subtype !== GIS_SUBTYPE.MultiLineString
-    ) {
-      return fields;
+import { GisSubtype } from './constants';
+import { getGISTypeName } from './utils';
+import type { GisFieldValue, GisGraphQLType, GisScope, PostgisBuild } from './types';
+
+const PostgisMultiLineStringLineStringsPlugin: Plugin = (builder) => {
+  builder.hook(
+    'GraphQLObjectType:fields',
+    (fields: GraphQLFieldConfigMap<GisFieldValue, unknown>, build: Build, context) => {
+      const {
+        scope: { isPgGISType, pgGISType, pgGISTypeDetails }
+      } = context as typeof context & { scope: GisScope };
+      if (
+        !isPgGISType ||
+        !pgGISType ||
+        !pgGISTypeDetails ||
+        pgGISTypeDetails.subtype !== GisSubtype.MultiLineString
+      ) {
+        return fields;
+      }
+      const {
+        extend,
+        getPostgisTypeByGeometryType,
+        graphql: { GraphQLList }
+      } = build as PostgisBuild;
+      const { hasZ, hasM, srid } = pgGISTypeDetails;
+      const LineString = getPostgisTypeByGeometryType(
+        pgGISType,
+        GisSubtype.LineString,
+        hasZ,
+        hasM,
+        srid
+      ) as GisGraphQLType | null | undefined;
+
+      if (!LineString) {
+        return fields;
+      }
+
+      return extend(fields, {
+        lines: {
+          type: new GraphQLList(LineString),
+          resolve(data: GisFieldValue) {
+            const multiLineString = data.__geojson as MultiLineString;
+            return multiLineString.coordinates.map((coord) => ({
+              __gisType: getGISTypeName(GisSubtype.LineString, hasZ, hasM),
+              __srid: data.__srid,
+              __geojson: {
+                type: 'LineString',
+                coordinates: coord
+              } as LineString
+            }));
+          }
+        }
+      });
     }
-    const {
-      extend,
-      getPostgisTypeByGeometryType,
-      graphql: { GraphQLList },
-    } = build;
-    const { hasZ, hasM, srid } = pgGISTypeDetails;
-    const LineString = getPostgisTypeByGeometryType(
-      pgGISType,
-      GIS_SUBTYPE.LineString,
-      hasZ,
-      hasM,
-      srid
-    );
-
-    return extend(fields, {
-      lines: {
-        type: new GraphQLList(LineString),
-        resolve(data: any) {
-          return data.__geojson.coordinates.map((coord: any) => ({
-            __gisType: getGISTypeName(GIS_SUBTYPE.LineString, hasZ, hasM),
-            __srid: data.__srid,
-            __geojson: {
-              type: "LineString",
-              coordinates: coord,
-            },
-          }));
-        },
-      },
-    });
-  });
+  );
 };
-export default plugin;
+export default PostgisMultiLineStringLineStringsPlugin;
