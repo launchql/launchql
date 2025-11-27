@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`geography.graphql 1`] = `
+Object {
+  "data": Object {
+    "allGisDebugs": Object {
+      "nodes": Array [],
+    },
+  },
+}
+`;
+
+exports[`geometry.graphql 1`] = `
+Object {
+  "data": Object {
+    "allGisDebugs": Object {
+      "nodes": Array [],
+    },
+  },
+}
+`;
