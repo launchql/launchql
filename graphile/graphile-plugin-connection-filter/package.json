@@ -2,47 +2,56 @@
   "name": "postgraphile-plugin-connection-filter",
   "version": "2.3.0",
   "description": "Filtering on PostGraphile connections",
-  "main": "dist/index.js",
+  "author": "Matt Bretl",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "format": "prettier --ignore-path ./.eslintignore",
-    "format:all": "yarn format '**/*.{json,md,html,js,jsx,ts,tsx}'",
-    "format:fix": "yarn format:all --write",
-    "format:check": "yarn format:all --list-different",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prepack": "rm -Rf dist && npm run build",
-    "test": "jest -i",
-    "typecheck": "tsc --noEmit"
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/graphile-contrib/postgraphile-plugin-connection-filter.git"
+    "url": "https://github.com/launchql/launchql"
   },
-  "author": "Matt Bretl",
-  "license": "MIT",
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "plugin",
+    "postgres",
+    "graphql",
+    "filters",
+    "launchql"
+  ],
   "bugs": {
-    "url": "https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/issues"
+    "url": "https://github.com/launchql/launchql/issues"
   },
   "dependencies": {
-    "tslib": "^2.4.1"
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphql": "15.10.1"
+  },
+  "peerDependencies": {
+    "postgraphile": "^4.14.1"
   },
   "devDependencies": {
-    "@graphile-contrib/pg-simplify-inflector": "6.1.0",
-    "@types/jest": "29.2.3",
-    "@typescript-eslint/eslint-plugin": "5.45.0",
-    "@typescript-eslint/parser": "5.45.0",
-    "eslint": "8.28.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-jest": "27.1.6",
-    "graphql": "15.8.0",
-    "jest": "29.3.1",
-    "pg": "8.8.0",
-    "postgraphile-core": "4.12.3",
-    "prettier": "2.8.0",
-    "ts-jest": "29.0.3",
-    "typescript": "4.9.3"
-  },
-  "files": [
-    "dist"
-  ]
+    "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
+    "@types/pg": "^8.15.6",
+    "graphile-test": "workspace:^",
+    "makage": "^0.1.6",
+    "pgsql-test": "workspace:^",
+    "pg": "^8.16.0"
+  }
 }

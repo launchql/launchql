@@ -1,9 +1,10 @@
-import type { Plugin } from "graphile-build";
-import type { PgAttribute, PgClass, PgConstraint } from "graphile-build-pg";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Plugin } from 'graphile-build';
+import type { PgAttribute, PgClass, PgConstraint } from 'graphile-build-pg';
+
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
 
 const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
-  builder.hook("inflection", (inflection) => ({
+  builder.hook('inflection', (inflection) => ({
     ...inflection,
     filterForwardRelationExistsFieldName(relationFieldName: string) {
       return `${relationFieldName}Exists`;
@@ -13,7 +14,7 @@ const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
     },
   }));
 
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       describePgEntity,
       extend,
@@ -34,17 +35,17 @@ const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
       Self,
     } = context;
 
-    if (!isPgConnectionFilter || table.kind !== "class") return fields;
+    if (!isPgConnectionFilter || table.kind !== 'class') return fields;
 
     connectionFilterTypesByTypeName[Self.name] = Self;
 
     const forwardRelationSpecs = (
       introspectionResultsByKind.constraint as PgConstraint[]
     )
-      .filter((con) => con.type === "f")
+      .filter((con) => con.type === 'f')
       .filter((con) => con.classId === table.id)
       .reduce((memo: ForwardRelationSpec[], constraint) => {
-        if (omit(constraint, "read") || omit(constraint, "filter")) {
+        if (omit(constraint, 'read') || omit(constraint, 'filter')) {
           return memo;
         }
         const foreignTable = constraint.foreignClassId
@@ -55,7 +56,7 @@ const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
             `Could not find the foreign table (constraint: ${constraint.name})`
           );
         }
-        if (omit(foreignTable, "read") || omit(foreignTable, "filter")) {
+        if (omit(foreignTable, 'read') || omit(foreignTable, 'filter')) {
           return memo;
         }
         const attributes = (
@@ -74,10 +75,10 @@ const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
         const foreignKeyAttributes = constraint.foreignKeyAttributeNums.map(
           (num) => foreignAttributes.filter((attr) => attr.num === num)[0]
         );
-        if (keyAttributes.some((attr) => omit(attr, "read"))) {
+        if (keyAttributes.some((attr) => omit(attr, 'read'))) {
           return memo;
         }
-        if (foreignKeyAttributes.some((attr) => omit(attr, "read"))) {
+        if (foreignKeyAttributes.some((attr) => omit(attr, 'read'))) {
           return memo;
         }
         memo.push({
@@ -153,7 +154,7 @@ const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
             foreignKeyAttributes[i].name
           )}`;
         }),
-        ") and ("
+        ') and ('
       )})`;
 
       const foreignTableTypeName = inflection.tableType(foreignTable);
@@ -202,7 +203,7 @@ const PgConnectionArgFilterForwardRelationsPlugin: Plugin = (builder) => {
             foreignKeyAttributes[i].name
           )}`;
         }),
-        ") and ("
+        ') and ('
       )})`;
 
       const sqlSelectWhereKeysMatch = sql.query`select 1 from ${sqlIdentifier} as ${foreignTableAlias} where ${sqlKeysMatch}`;

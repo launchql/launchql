@@ -1,26 +1,11 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "declarationDir": "./dist",
-    "outDir": "./dist",
+    "outDir": "dist",
+    "rootDir": "src/",
     "declaration": true,
-    "allowJs": false,
-    "target": "es2017",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "pretty": true,
-    "importHelpers": true,
-    "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "strictNullChecks": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "preserveWatchOutput": true,
-    "esModuleInterop": true,
-    "lib": ["es2018", "esnext.asynciterable"]
+    "declarationMap": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules", "__tests__", "**/*.spec.*", "**/*.test.*"]
 }

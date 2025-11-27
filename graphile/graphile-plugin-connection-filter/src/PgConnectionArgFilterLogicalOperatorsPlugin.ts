@@ -1,9 +1,9 @@
-import type { Plugin } from "graphile-build";
-import type { QueryBuilder, SQL } from "graphile-build-pg";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Plugin } from 'graphile-build';
+import type { QueryBuilder, SQL } from 'graphile-build-pg';
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
 
 const PgConnectionArgFilterLogicalOperatorsPlugin: Plugin = (builder) => {
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       graphql: { GraphQLList, GraphQLNonNull },
@@ -36,7 +36,7 @@ const PgConnectionArgFilterLogicalOperatorsPlugin: Plugin = (builder) => {
           .filter((x) => x != null);
         return sqlFragments.length === 0
           ? null
-          : sql.query`(${sql.join(sqlFragments, ") and (")})`;
+          : sql.query`(${sql.join(sqlFragments, ') and (')})`;
       },
       or: (arr: unknown[], sourceAlias: SQL, queryBuilder: QueryBuilder) => {
         const sqlFragments = arr
@@ -46,7 +46,7 @@ const PgConnectionArgFilterLogicalOperatorsPlugin: Plugin = (builder) => {
           .filter((x) => x != null);
         return sqlFragments.length === 0
           ? null
-          : sql.query`(${sql.join(sqlFragments, ") or (")})`;
+          : sql.query`(${sql.join(sqlFragments, ') or (')})`;
       },
       not: (obj: unknown, sourceAlias: SQL, queryBuilder: QueryBuilder) => {
         const sqlFragment = connectionFilterResolve(
@@ -61,7 +61,7 @@ const PgConnectionArgFilterLogicalOperatorsPlugin: Plugin = (builder) => {
 
     const logicalOperatorFields = {
       and: fieldWithHooks(
-        "and",
+        'and',
         {
           description: `Checks for all expressions in this list.`,
           type: new GraphQLList(new GraphQLNonNull(Self)),
@@ -71,7 +71,7 @@ const PgConnectionArgFilterLogicalOperatorsPlugin: Plugin = (builder) => {
         }
       ),
       or: fieldWithHooks(
-        "or",
+        'or',
         {
           description: `Checks for any expressions in this list.`,
           type: new GraphQLList(new GraphQLNonNull(Self)),
@@ -81,7 +81,7 @@ const PgConnectionArgFilterLogicalOperatorsPlugin: Plugin = (builder) => {
         }
       ),
       not: fieldWithHooks(
-        "not",
+        'not',
         {
           description: `Negates the expression.`,
           type: Self,

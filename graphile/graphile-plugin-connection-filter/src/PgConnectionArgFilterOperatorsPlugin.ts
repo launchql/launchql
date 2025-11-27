@@ -1,17 +1,18 @@
-import type { Context, Plugin } from "graphile-build";
-import type { PgType, QueryBuilder, SQL } from "graphile-build-pg";
+import type { Context, Plugin } from 'graphile-build';
+import type { PgType, QueryBuilder, SQL } from 'graphile-build-pg';
 import type {
   GraphQLInputFieldConfigMap,
   GraphQLInputType,
   GraphQLType,
-} from "graphql";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+} from 'graphql';
 
-const PgConnectionArgFilterOperatorsPlugin: Plugin = (
-  builder,
-  { connectionFilterAllowedOperators, connectionFilterOperatorNames }
-) => {
-  builder.hook("build", (build) => {
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
+import type { ConnectionFilterConfig } from './types';
+
+const PgConnectionArgFilterOperatorsPlugin: Plugin = (builder, rawOptions) => {
+  const { connectionFilterAllowedOperators, connectionFilterOperatorNames } =
+    rawOptions as ConnectionFilterConfig;
+  builder.hook('build', (build) => {
     const {
       graphql: {
         getNamedType,
@@ -45,13 +46,13 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
                 ? resolveListItemSqlValue(i, pgType, pgTypeModifier)
                 : gql2pg(i, pgType, pgTypeModifier)
             ),
-            ","
+            ','
           )})`;
 
     const standardOperators: { [fieldName: string]: OperatorSpec } = {
       isNull: {
         description:
-          "Is null (if `true` is specified) or is not null (if `false` is specified).",
+          'Is null (if `true` is specified) or is not null (if `false` is specified).',
         resolveType: () => GraphQLBoolean,
         resolveSqlValue: () => null, // do not parse
         resolve: (i, _v, input) =>
@@ -60,31 +61,31 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
           }`,
       },
       equalTo: {
-        description: "Equal to the specified value.",
+        description: 'Equal to the specified value.',
         resolve: (i, v) => sql.query`${i} = ${v}`,
       },
       notEqualTo: {
-        description: "Not equal to the specified value.",
+        description: 'Not equal to the specified value.',
         resolve: (i, v) => sql.query`${i} <> ${v}`,
       },
       distinctFrom: {
         description:
-          "Not equal to the specified value, treating null like an ordinary value.",
+          'Not equal to the specified value, treating null like an ordinary value.',
         resolve: (i, v) => sql.query`${i} IS DISTINCT FROM ${v}`,
       },
       notDistinctFrom: {
         description:
-          "Equal to the specified value, treating null like an ordinary value.",
+          'Equal to the specified value, treating null like an ordinary value.',
         resolve: (i, v) => sql.query`${i} IS NOT DISTINCT FROM ${v}`,
       },
       in: {
-        description: "Included in the specified list.",
+        description: 'Included in the specified list.',
         resolveType: resolveListType,
         resolveSqlValue: resolveListSqlValue,
         resolve: (i, v) => sql.query`${i} IN ${v}`,
       },
       notIn: {
-        description: "Not included in the specified list.",
+        description: 'Not included in the specified list.',
         resolveType: resolveListType,
         resolveSqlValue: resolveListSqlValue,
         resolve: (i, v) => sql.query`${i} NOT IN ${v}`,
@@ -92,195 +93,195 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
     };
     const sortOperators: { [fieldName: string]: OperatorSpec } = {
       lessThan: {
-        description: "Less than the specified value.",
+        description: 'Less than the specified value.',
         resolve: (i, v) => sql.query`${i} < ${v}`,
       },
       lessThanOrEqualTo: {
-        description: "Less than or equal to the specified value.",
+        description: 'Less than or equal to the specified value.',
         resolve: (i, v) => sql.query`${i} <= ${v}`,
       },
       greaterThan: {
-        description: "Greater than the specified value.",
+        description: 'Greater than the specified value.',
         resolve: (i, v) => sql.query`${i} > ${v}`,
       },
       greaterThanOrEqualTo: {
-        description: "Greater than or equal to the specified value.",
+        description: 'Greater than or equal to the specified value.',
         resolve: (i, v) => sql.query`${i} >= ${v}`,
       },
     };
     const patternMatchingOperators: { [fieldName: string]: OperatorSpec } = {
       includes: {
-        description: "Contains the specified string (case-sensitive).",
+        description: 'Contains the specified string (case-sensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}%`,
         resolve: (i, v) => sql.query`${i} LIKE ${v}`,
       },
       notIncludes: {
-        description: "Does not contain the specified string (case-sensitive).",
+        description: 'Does not contain the specified string (case-sensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}%`,
         resolve: (i, v) => sql.query`${i} NOT LIKE ${v}`,
       },
       includesInsensitive: {
-        description: "Contains the specified string (case-insensitive).",
+        description: 'Contains the specified string (case-insensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}%`,
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} ILIKE ${v}`,
       },
       notIncludesInsensitive: {
         description:
-          "Does not contain the specified string (case-insensitive).",
+          'Does not contain the specified string (case-insensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}%`,
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} NOT ILIKE ${v}`,
       },
       startsWith: {
-        description: "Starts with the specified string (case-sensitive).",
+        description: 'Starts with the specified string (case-sensitive).',
         resolveInput: (input) => `${escapeLikeWildcards(input)}%`,
         resolve: (i, v) => sql.query`${i} LIKE ${v}`,
       },
       notStartsWith: {
         description:
-          "Does not start with the specified string (case-sensitive).",
+          'Does not start with the specified string (case-sensitive).',
         resolveInput: (input) => `${escapeLikeWildcards(input)}%`,
         resolve: (i, v) => sql.query`${i} NOT LIKE ${v}`,
       },
       startsWithInsensitive: {
-        description: "Starts with the specified string (case-insensitive).",
+        description: 'Starts with the specified string (case-insensitive).',
         resolveInput: (input) => `${escapeLikeWildcards(input)}%`,
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} ILIKE ${v}`,
       },
       notStartsWithInsensitive: {
         description:
-          "Does not start with the specified string (case-insensitive).",
+          'Does not start with the specified string (case-insensitive).',
         resolveInput: (input) => `${escapeLikeWildcards(input)}%`,
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} NOT ILIKE ${v}`,
       },
       endsWith: {
-        description: "Ends with the specified string (case-sensitive).",
+        description: 'Ends with the specified string (case-sensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}`,
         resolve: (i, v) => sql.query`${i} LIKE ${v}`,
       },
       notEndsWith: {
-        description: "Does not end with the specified string (case-sensitive).",
+        description: 'Does not end with the specified string (case-sensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}`,
         resolve: (i, v) => sql.query`${i} NOT LIKE ${v}`,
       },
       endsWithInsensitive: {
-        description: "Ends with the specified string (case-insensitive).",
+        description: 'Ends with the specified string (case-insensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}`,
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} ILIKE ${v}`,
       },
       notEndsWithInsensitive: {
         description:
-          "Does not end with the specified string (case-insensitive).",
+          'Does not end with the specified string (case-insensitive).',
         resolveInput: (input) => `%${escapeLikeWildcards(input)}`,
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} NOT ILIKE ${v}`,
       },
       like: {
         description:
-          "Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
+          'Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.',
         resolve: (i, v) => sql.query`${i} LIKE ${v}`,
       },
       notLike: {
         description:
-          "Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
+          'Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.',
         resolve: (i, v) => sql.query`${i} NOT LIKE ${v}`,
       },
       likeInsensitive: {
         description:
-          "Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
+          'Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.',
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} ILIKE ${v}`,
       },
       notLikeInsensitive: {
         description:
-          "Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
+          'Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.',
         resolveSqlIdentifier: (i) => i, // avoid casting citext to text
         resolve: (i, v) => sql.query`${i} NOT ILIKE ${v}`,
       },
     };
     const hstoreOperators: { [fieldName: string]: OperatorSpec } = {
       contains: {
-        description: "Contains the specified KeyValueHash.",
+        description: 'Contains the specified KeyValueHash.',
         resolve: (i, v) => sql.query`${i} @> ${v}`,
       },
       containsKey: {
-        description: "Contains the specified key.",
+        description: 'Contains the specified key.',
         resolveType: () => GraphQLString,
         resolveSqlValue: (input) => sql.query`${sql.value(input)}::text`,
         resolve: (i, v) => sql.query`${i} ? ${v}`,
       },
       containsAllKeys: {
-        name: "containsAllKeys",
-        description: "Contains all of the specified keys.",
+        name: 'containsAllKeys',
+        description: 'Contains all of the specified keys.',
         resolveType: () => new GraphQLList(new GraphQLNonNull(GraphQLString)),
         resolveSqlValue: (input) => sql.value(input),
         resolve: (i, v) => sql.query`${i} ?& ${v}`,
       },
       containsAnyKeys: {
-        name: "containsAnyKeys",
-        description: "Contains any of the specified keys.",
+        name: 'containsAnyKeys',
+        description: 'Contains any of the specified keys.',
         resolveType: () => new GraphQLList(new GraphQLNonNull(GraphQLString)),
         resolveSqlValue: (input) => sql.value(input),
         resolve: (i, v) => sql.query`${i} ?| ${v}`,
       },
       containedBy: {
-        description: "Contained by the specified KeyValueHash.",
+        description: 'Contained by the specified KeyValueHash.',
         resolve: (i, v) => sql.query`${i} <@ ${v}`,
       },
     };
     const jsonbOperators: { [fieldName: string]: OperatorSpec } = {
       contains: {
-        description: "Contains the specified JSON.",
+        description: 'Contains the specified JSON.',
         resolve: (i, v) => sql.query`${i} @> ${v}`,
       },
       containsKey: {
-        description: "Contains the specified key.",
+        description: 'Contains the specified key.',
         resolveType: () => GraphQLString,
         resolveSqlValue: (input) => sql.query`${sql.value(input)}::text`,
         resolve: (i, v) => sql.query`${i} ? ${v}`,
       },
       containsAllKeys: {
-        name: "containsAllKeys",
-        description: "Contains all of the specified keys.",
+        name: 'containsAllKeys',
+        description: 'Contains all of the specified keys.',
         resolveType: () => new GraphQLList(new GraphQLNonNull(GraphQLString)),
         resolveSqlValue: (input) => sql.value(input),
         resolve: (i, v) => sql.query`${i} ?& ${v}`,
       },
       containsAnyKeys: {
-        name: "containsAnyKeys",
-        description: "Contains any of the specified keys.",
+        name: 'containsAnyKeys',
+        description: 'Contains any of the specified keys.',
         resolveType: () => new GraphQLList(new GraphQLNonNull(GraphQLString)),
         resolveSqlValue: (input) => sql.value(input),
         resolve: (i, v) => sql.query`${i} ?| ${v}`,
       },
       containedBy: {
-        description: "Contained by the specified JSON.",
+        description: 'Contained by the specified JSON.',
         resolve: (i, v) => sql.query`${i} <@ ${v}`,
       },
     };
     const inetOperators: { [fieldName: string]: OperatorSpec } = {
       contains: {
-        description: "Contains the specified internet address.",
+        description: 'Contains the specified internet address.',
         resolve: (i, v) => sql.query`${i} >> ${v}`,
       },
       containsOrEqualTo: {
-        description: "Contains or equal to the specified internet address.",
+        description: 'Contains or equal to the specified internet address.',
         resolve: (i, v) => sql.query`${i} >>= ${v}`,
       },
       containedBy: {
-        description: "Contained by the specified internet address.",
+        description: 'Contained by the specified internet address.',
         resolve: (i, v) => sql.query`${i} << ${v}`,
       },
       containedByOrEqualTo: {
-        description: "Contained by or equal to the specified internet address.",
+        description: 'Contained by or equal to the specified internet address.',
         resolve: (i, v) => sql.query`${i} <<= ${v}`,
       },
       containsOrContainedBy: {
-        description: "Contains or contained by the specified internet address.",
+        description: 'Contains or contained by the specified internet address.',
         resolve: (i, v) => sql.query`${i} && ${v}`,
       },
     };
@@ -293,7 +294,7 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
         return null;
       }
       const gqlTypeName = pgGetGqlTypeByTypeIdAndModifier(pgType.id, null).name;
-      if (gqlTypeName === "String") {
+      if (gqlTypeName === 'String') {
         // PostGraphile v4 handles all unknown types as Strings, so we can't trust
         // that the String operators are appropriate. Just return null so that the
         // fallback type name defined below is used.
@@ -302,25 +303,25 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
       return gqlTypeName;
     };
 
-    const _BigFloat = gqlTypeNameFromPgTypeName("numeric") || "BigFloat";
-    const _BigInt = gqlTypeNameFromPgTypeName("int8") || "BigInt";
-    const _BitString = gqlTypeNameFromPgTypeName("varbit") || "BitString";
-    const _Boolean = gqlTypeNameFromPgTypeName("bool") || "Boolean";
-    const _CidrAddress = gqlTypeNameFromPgTypeName("cidr") || "CidrAddress";
-    const _Date = gqlTypeNameFromPgTypeName("date") || "Date";
-    const _Datetime = gqlTypeNameFromPgTypeName("timestamp") || "Datetime";
-    const _Float = gqlTypeNameFromPgTypeName("float4") || "Float";
-    const _Int = gqlTypeNameFromPgTypeName("int2") || "Int";
+    const _BigFloat = gqlTypeNameFromPgTypeName('numeric') || 'BigFloat';
+    const _BigInt = gqlTypeNameFromPgTypeName('int8') || 'BigInt';
+    const _BitString = gqlTypeNameFromPgTypeName('varbit') || 'BitString';
+    const _Boolean = gqlTypeNameFromPgTypeName('bool') || 'Boolean';
+    const _CidrAddress = gqlTypeNameFromPgTypeName('cidr') || 'CidrAddress';
+    const _Date = gqlTypeNameFromPgTypeName('date') || 'Date';
+    const _Datetime = gqlTypeNameFromPgTypeName('timestamp') || 'Datetime';
+    const _Float = gqlTypeNameFromPgTypeName('float4') || 'Float';
+    const _Int = gqlTypeNameFromPgTypeName('int2') || 'Int';
     const _InternetAddress =
-      gqlTypeNameFromPgTypeName("inet") || "InternetAddress";
-    const _Interval = gqlTypeNameFromPgTypeName("interval") || "Interval";
-    const _JSON = gqlTypeNameFromPgTypeName("jsonb") || "JSON";
-    const _KeyValueHash = gqlTypeNameFromPgTypeName("hstore") || "KeyValueHash";
-    const _MacAddress = gqlTypeNameFromPgTypeName("macaddr") || "MacAddress";
-    const _MacAddress8 = gqlTypeNameFromPgTypeName("macaddr8") || "MacAddress8";
-    const _String = gqlTypeNameFromPgTypeName("text") || "String";
-    const _Time = gqlTypeNameFromPgTypeName("time") || "Time";
-    const _UUID = gqlTypeNameFromPgTypeName("uuid") || "UUID";
+      gqlTypeNameFromPgTypeName('inet') || 'InternetAddress';
+    const _Interval = gqlTypeNameFromPgTypeName('interval') || 'Interval';
+    const _JSON = gqlTypeNameFromPgTypeName('jsonb') || 'JSON';
+    const _KeyValueHash = gqlTypeNameFromPgTypeName('hstore') || 'KeyValueHash';
+    const _MacAddress = gqlTypeNameFromPgTypeName('macaddr') || 'MacAddress';
+    const _MacAddress8 = gqlTypeNameFromPgTypeName('macaddr8') || 'MacAddress8';
+    const _String = gqlTypeNameFromPgTypeName('text') || 'String';
+    const _Time = gqlTypeNameFromPgTypeName('time') || 'Time';
+    const _UUID = gqlTypeNameFromPgTypeName('uuid') || 'UUID';
 
     const connectionFilterScalarOperators = {
       [_BigFloat]: { ...standardOperators, ...sortOperators },
@@ -398,7 +399,7 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
       ...Object.entries(standardOperators),
       ...Object.entries(sortOperators),
     ]) {
-      if (name == "isNull") continue;
+      if (name == 'isNull') continue;
 
       const description = `${spec.description.substring(
         0,
@@ -406,7 +407,7 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
       )} (case-insensitive).`;
 
       const resolveSqlIdentifier = (sourceAlias: SQL, pgType: PgType) =>
-        pgType.name === "citext"
+        pgType.name === 'citext'
           ? sourceAlias // already case-insensitive, so no need to call `lower()`
           : sql.query`lower(${sourceAlias})`;
 
@@ -415,7 +416,7 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
         pgType: PgType,
         pgTypeModifier: number | null
       ) =>
-        pgType.name === "citext"
+        pgType.name === 'citext'
           ? gql2pg(input, pgType, pgTypeModifier) // already case-insensitive, so no need to call `lower()`
           : sql.query`lower(${gql2pg(input, pgType, pgTypeModifier)})`;
 
@@ -424,7 +425,7 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
         pgType: PgType,
         pgTypeModifier: number | null
       ) =>
-        name === "in" || name === "notIn"
+        name === 'in' || name === 'notIn'
           ? resolveListSqlValue(
               input,
               pgType,
@@ -452,11 +453,11 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
       ...standardOperators,
       ...sortOperators,
       contains: {
-        description: "Contains the specified range.",
+        description: 'Contains the specified range.',
         resolve: (i, v) => sql.query`${i} @> ${v}`,
       },
       containsElement: {
-        description: "Contains the specified value.",
+        description: 'Contains the specified value.',
         resolveType: (
           _fieldInputType: GraphQLInputType,
           rangeElementInputType: GraphQLInputType
@@ -473,31 +474,31 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
         resolve: (i, v) => sql.query`${i} @> ${v}`,
       },
       containedBy: {
-        description: "Contained by the specified range.",
+        description: 'Contained by the specified range.',
         resolve: (i, v) => sql.query`${i} <@ ${v}`,
       },
       overlaps: {
-        description: "Overlaps the specified range.",
+        description: 'Overlaps the specified range.',
         resolve: (i, v) => sql.query`${i} && ${v}`,
       },
       strictlyLeftOf: {
-        description: "Strictly left of the specified range.",
+        description: 'Strictly left of the specified range.',
         resolve: (i, v) => sql.query`${i} << ${v}`,
       },
       strictlyRightOf: {
-        description: "Strictly right of the specified range.",
+        description: 'Strictly right of the specified range.',
         resolve: (i, v) => sql.query`${i} >> ${v}`,
       },
       notExtendsRightOf: {
-        description: "Does not extend right of the specified range.",
+        description: 'Does not extend right of the specified range.',
         resolve: (i, v) => sql.query`${i} &< ${v}`,
       },
       notExtendsLeftOf: {
-        description: "Does not extend left of the specified range.",
+        description: 'Does not extend left of the specified range.',
         resolve: (i, v) => sql.query`${i} &> ${v}`,
       },
       adjacentTo: {
-        description: "Adjacent to the specified range.",
+        description: 'Adjacent to the specified range.',
         resolve: (i, v) => sql.query`${i} -|- ${v}`,
       },
     };
@@ -520,51 +521,51 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
       notDistinctFrom: standardOperators.notDistinctFrom,
       ...sortOperators,
       contains: {
-        description: "Contains the specified list of values.",
+        description: 'Contains the specified list of values.',
         resolve: (i, v) => sql.query`${i} @> ${v}`,
       },
       containedBy: {
-        description: "Contained by the specified list of values.",
+        description: 'Contained by the specified list of values.',
         resolve: (i, v) => sql.query`${i} <@ ${v}`,
       },
       overlaps: {
-        description: "Overlaps the specified list of values.",
+        description: 'Overlaps the specified list of values.',
         resolve: (i, v) => sql.query`${i} && ${v}`,
       },
       anyEqualTo: {
-        description: "Any array item is equal to the specified value.",
+        description: 'Any array item is equal to the specified value.',
         resolveType: resolveArrayItemType,
         resolveSqlValue: resolveArrayItemSqlValue,
         resolve: (i, v) => sql.query`${v} = ANY (${i})`,
       },
       anyNotEqualTo: {
-        description: "Any array item is not equal to the specified value.",
+        description: 'Any array item is not equal to the specified value.',
         resolveType: resolveArrayItemType,
         resolveSqlValue: resolveArrayItemSqlValue,
         resolve: (i, v) => sql.query`${v} <> ANY (${i})`,
       },
       anyLessThan: {
-        description: "Any array item is less than the specified value.",
+        description: 'Any array item is less than the specified value.',
         resolveType: resolveArrayItemType,
         resolveSqlValue: resolveArrayItemSqlValue,
         resolve: (i, v) => sql.query`${v} > ANY (${i})`,
       },
       anyLessThanOrEqualTo: {
         description:
-          "Any array item is less than or equal to the specified value.",
+          'Any array item is less than or equal to the specified value.',
         resolveType: resolveArrayItemType,
         resolveSqlValue: resolveArrayItemSqlValue,
         resolve: (i, v) => sql.query`${v} >= ANY (${i})`,
       },
       anyGreaterThan: {
-        description: "Any array item is greater than the specified value.",
+        description: 'Any array item is greater than the specified value.',
         resolveType: resolveArrayItemType,
         resolveSqlValue: resolveArrayItemSqlValue,
         resolve: (i, v) => sql.query`${v} < ANY (${i})`,
       },
       anyGreaterThanOrEqualTo: {
         description:
-          "Any array item is greater than or equal to the specified value.",
+          'Any array item is greater than or equal to the specified value.',
         resolveType: resolveArrayItemType,
         resolveSqlValue: resolveArrayItemSqlValue,
         resolve: (i, v) => sql.query`${v} <= ANY (${i})`,
@@ -579,7 +580,7 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
     });
   });
 
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       gql2pg,
@@ -607,11 +608,11 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
       scope: {
         isPgConnectionFilterOperators?: boolean;
         pgConnectionFilterOperatorsCategory?:
-          | "Array"
-          | "Range"
-          | "Enum"
-          | "Domain"
-          | "Scalar";
+          | 'Array'
+          | 'Range'
+          | 'Enum'
+          | 'Domain'
+          | 'Scalar';
       };
     };
     if (
@@ -679,10 +680,10 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
     );
 
     const textPgType = (introspectionResultsByKind.type as PgType[]).find(
-      (t) => t.name === "text"
+      (t) => t.name === 'text'
     );
     const textArrayPgType = (introspectionResultsByKind.type as PgType[]).find(
-      (t) => t.name === "_text"
+      (t) => t.name === '_text'
     );
 
     const resolve: ConnectionFilterResolver = ({
@@ -702,22 +703,22 @@ const PgConnectionArgFilterOperatorsPlugin: Plugin = (
 
       const sqlIdentifier = resolveSqlIdentifier
         ? resolveSqlIdentifier(sourceAlias, pgType, pgTypeModifier)
-        : pgType.name === "citext"
-        ? sql.query`${sourceAlias}::text` // cast column to text for case-sensitive matching
-        : pgType.name === "_citext"
-        ? sql.query`${sourceAlias}::text[]` // cast column to text[] for case-sensitive matching
-        : sourceAlias;
+        : pgType.name === 'citext'
+          ? sql.query`${sourceAlias}::text` // cast column to text for case-sensitive matching
+          : pgType.name === '_citext'
+            ? sql.query`${sourceAlias}::text[]` // cast column to text[] for case-sensitive matching
+            : sourceAlias;
 
       const input = fieldValue;
       const resolvedInput = resolveInput ? resolveInput(input) : input;
 
       const sqlValue = resolveSqlValue
         ? resolveSqlValue(input, pgType, pgTypeModifier)
-        : pgType.name === "citext"
-        ? gql2pg(resolvedInput, textPgType, null) // cast input to text
-        : pgType.name === "_citext"
-        ? gql2pg(resolvedInput, textArrayPgType, null) // cast input to text[]
-        : gql2pg(resolvedInput, pgType, pgTypeModifier);
+        : pgType.name === 'citext'
+          ? gql2pg(resolvedInput, textPgType, null) // cast input to text
+          : pgType.name === '_citext'
+            ? gql2pg(resolvedInput, textArrayPgType, null) // cast input to text[]
+            : gql2pg(resolvedInput, pgType, pgTypeModifier);
 
       return operatorSpec.resolve(
         sqlIdentifier,

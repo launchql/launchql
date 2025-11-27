@@ -1,13 +1,17 @@
-import type { Context, Plugin } from "graphile-build";
-import type { PgClass, PgProc, PgType } from "graphile-build-pg";
-import type { GraphQLInputFieldConfigMap } from "graphql";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Context, Plugin } from 'graphile-build';
+import type { PgClass, PgProc, PgType } from 'graphile-build-pg';
+import type { GraphQLInputFieldConfigMap } from 'graphql';
+
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
+import type { ConnectionFilterConfig } from './types';
 
 const PgConnectionArgFilterRecordFunctionsPlugin: Plugin = (
   builder,
-  { connectionFilterSetofFunctions }
+  rawOptions
 ) => {
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  const { connectionFilterSetofFunctions } =
+    rawOptions as ConnectionFilterConfig;
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       newWithHooks,
@@ -32,12 +36,12 @@ const PgConnectionArgFilterRecordFunctionsPlugin: Plugin = (
       };
     };
 
-    if (!isPgConnectionFilter || proc.kind !== "procedure") return fields;
+    if (!isPgConnectionFilter || proc.kind !== 'procedure') return fields;
 
     connectionFilterTypesByTypeName[Self.name] = Self;
 
     // Must return a `RECORD` type
-    const isRecordLike = proc.returnTypeId === "2249";
+    const isRecordLike = proc.returnTypeId === '2249';
     if (!isRecordLike) return fields;
 
     // Must be marked @filterable OR enabled via plugin option
@@ -45,13 +49,13 @@ const PgConnectionArgFilterRecordFunctionsPlugin: Plugin = (
       return fields;
 
     const argModesWithOutput = [
-      "o", // OUT,
-      "b", // INOUT
-      "t", // TABLE
+      'o', // OUT,
+      'b', // INOUT
+      't', // TABLE
     ];
     const outputArgNames = proc.argTypeIds.reduce((prev: string[], _, idx) => {
       if (argModesWithOutput.includes(proc.argModes[idx])) {
-        prev.push(proc.argNames[idx] || "");
+        prev.push(proc.argNames[idx] || '');
       }
       return prev;
     }, []);

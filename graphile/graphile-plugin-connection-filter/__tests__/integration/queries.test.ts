@@ -1,143 +1,175 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as pg from "pg";
-import { promisify } from "util";
-import { GraphQLSchema, graphql } from "graphql";
-import { withPgClient } from "../helpers";
-import { createPostGraphileSchema } from "postgraphile-core";
-import { PgConnectionArgCondition } from "graphile-build-pg";
-import ConnectionFilterPlugin from "../../src/index";
-import CustomOperatorsPlugin from "./../customOperatorsPlugin";
+import '../../utils/env';
 
-const readFile = promisify(fs.readFile);
+import { readdirSync } from 'fs';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import type { Plugin } from 'graphile-build';
+import { PgConnectionArgCondition } from 'graphile-build-pg';
+import type { GraphQLQueryFnObj } from 'graphile-test';
+import { getConnectionsObject, seed, snapshot } from 'graphile-test';
+import type { PgTestClient } from 'pgsql-test/test-client';
+import type { PostGraphileOptions } from 'postgraphile';
 
-const queriesDir = `${__dirname}/../fixtures/queries`;
-const queryFileNames = fs.readdirSync(queriesDir);
+import ConnectionFilterPlugin from '../../src';
+import CustomOperatorsPlugin from '../../utils/customOperatorsPlugin';
 
-let gqlSchemas: {
-  normal: GraphQLSchema;
-  dynamicJson: GraphQLSchema;
-  networkScalars: GraphQLSchema;
-  relations: GraphQLSchema;
-  simpleCollections: GraphQLSchema;
-  nullAndEmptyAllowed: GraphQLSchema;
-  addConnectionFilterOperator: GraphQLSchema;
+jest.setTimeout(30000);
+
+type ConnectionVariant =
+  | 'addConnectionFilterOperator'
+  | 'dynamicJson'
+  | 'networkScalars'
+  | 'normal'
+  | 'nullAndEmptyAllowed'
+  | 'relations'
+  | 'simpleCollections';
+
+type ConnectionContext = {
+  db: PgTestClient;
+  query: GraphQLQueryFnObj;
+  teardown: () => Promise<void>;
 };
 
-beforeAll(async () => {
-  // Ensure process.env.TEST_DATABASE_URL is set
-  if (!process.env.TEST_DATABASE_URL) {
-    console.error(
-      "ERROR: No test database configured; aborting. To resolve this, ensure environmental variable TEST_DATABASE_URL is set."
-    );
-    process.exit(1);
+const SCHEMA = process.env.SCHEMA ?? 'p';
+const sql = (file: string) => join(__dirname, '../../sql', file);
+const queriesDir = join(__dirname, '../fixtures/queries');
+const queryFileNames = readdirSync(queriesDir);
+
+const baseOverrides: Pick<
+  PostGraphileOptions,
+  'appendPlugins' | 'skipPlugins'
+> = {
+  appendPlugins: [ConnectionFilterPlugin],
+  skipPlugins: [PgConnectionArgCondition],
+};
+
+const seeds = [
+  seed.sqlfile([sql('roles.sql'), sql('schema.sql'), sql('data.sql')]),
+];
+
+const createContext = async (
+  overrideSettings: Partial<PostGraphileOptions> = {},
+  graphileBuildOptions?: Record<string, unknown>
+): Promise<ConnectionContext> => {
+  const { appendPlugins = [], ...rest } = overrideSettings;
+  const appendPluginsMerged = [
+    ...baseOverrides.appendPlugins,
+    ...appendPlugins.filter(
+      (plugin: Plugin) => plugin !== ConnectionFilterPlugin
+    ),
+  ] as Plugin[];
+
+  const connections = await getConnectionsObject(
+    {
+      schemas: [SCHEMA],
+      authRole: 'authenticated',
+      graphile: {
+        overrideSettings: {
+          ...baseOverrides,
+          ...rest,
+          appendPlugins: appendPluginsMerged,
+        },
+        ...(graphileBuildOptions ? { graphileBuildOptions } : {}),
+      },
+    },
+    seeds
+  );
+
+  return {
+    db: connections.db,
+    query: connections.query,
+    teardown: connections.teardown,
+  };
+};
+
+const variantConfigs: Record<
+  ConnectionVariant,
+  {
+    overrideSettings?: Partial<PostGraphileOptions>;
+    graphileBuildOptions?: Record<string, unknown>;
   }
-  // Setup the DB schema and data
-  await withPgClient(async (pgClient) => {
-    await pgClient.query(
-      await readFile(`${__dirname}/../p-schema.sql`, "utf8")
+> = {
+  normal: {},
+  dynamicJson: {
+    overrideSettings: { dynamicJson: true },
+  },
+  networkScalars: {
+    graphileBuildOptions: {
+      pgUseCustomNetworkScalars: true,
+    },
+  },
+  relations: {
+    graphileBuildOptions: {
+      connectionFilterRelations: true,
+    },
+  },
+  simpleCollections: {
+    overrideSettings: { simpleCollections: 'only' },
+  },
+  nullAndEmptyAllowed: {
+    graphileBuildOptions: {
+      connectionFilterAllowNullInput: true,
+      connectionFilterAllowEmptyObjectInput: true,
+    },
+  },
+  addConnectionFilterOperator: {
+    overrideSettings: { appendPlugins: [CustomOperatorsPlugin] },
+  },
+};
+
+const variantByQueryFile: Record<string, ConnectionVariant> = {
+  'addConnectionFilterOperator.graphql': 'addConnectionFilterOperator',
+  'dynamicJsonTrue.graphql': 'dynamicJson',
+  'types.cidr.graphql': 'networkScalars',
+  'types.macaddr.graphql': 'networkScalars',
+  'arrayTypes.cidrArray.graphql': 'networkScalars',
+  'arrayTypes.macaddrArray.graphql': 'networkScalars',
+  'relations.graphql': 'relations',
+  'simpleCollections.graphql': 'simpleCollections',
+  'nullAndEmptyAllowed.graphql': 'nullAndEmptyAllowed',
+};
+
+const contexts: Partial<Record<ConnectionVariant, ConnectionContext>> = {};
+
+beforeAll(async () => {
+  for (const variant of Object.keys(variantConfigs) as ConnectionVariant[]) {
+    const config = variantConfigs[variant];
+    contexts[variant] = await createContext(
+      config.overrideSettings,
+      config.graphileBuildOptions
     );
-    await pgClient.query(await readFile(`${__dirname}/../p-data.sql`, "utf8"));
-  });
-  // Get GraphQL schema instances that we can query.
-  gqlSchemas = await withPgClient(async (pgClient) => {
-    // Different fixtures need different schemas with different configurations.
-    // Make all of the different schemas with different configurations that we
-    // need and wait for them to be created in parallel.
-    const [
-      normal,
-      dynamicJson,
-      networkScalars,
-      relations,
-      simpleCollections,
-      nullAndEmptyAllowed,
-      addConnectionFilterOperator,
-    ] = await Promise.all([
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin],
-      }),
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin],
-        dynamicJson: true,
-      }),
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin],
-        graphileBuildOptions: {
-          pgUseCustomNetworkScalars: true,
-        },
-      }),
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin],
-        graphileBuildOptions: {
-          connectionFilterRelations: true,
-        },
-      }),
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin],
-        simpleCollections: "only",
-      }),
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin],
-        graphileBuildOptions: {
-          connectionFilterAllowNullInput: true,
-          connectionFilterAllowEmptyObjectInput: true,
-        },
-      }),
-      createPostGraphileSchema(pgClient, ["p"], {
-        skipPlugins: [PgConnectionArgCondition],
-        appendPlugins: [ConnectionFilterPlugin, CustomOperatorsPlugin],
-      }),
-    ]);
-    return {
-      normal,
-      dynamicJson,
-      networkScalars,
-      relations,
-      simpleCollections,
-      nullAndEmptyAllowed,
-      addConnectionFilterOperator,
-    };
-  });
+  }
+});
+
+afterAll(async () => {
+  await Promise.all(
+    Object.values(contexts).map(async (ctx) => {
+      if (ctx) {
+        await ctx.teardown();
+      }
+    })
+  );
 });
 
 for (const queryFileName of queryFileNames) {
   // eslint-disable-next-line jest/valid-title
   test(queryFileName, async () => {
-    // Read the query from the file system.
-    const query = await readFile(
-      path.resolve(queriesDir, queryFileName),
-      "utf8"
-    );
-    // Get the appropriate GraphQL schema for this fixture. We want to test
-    // some specific fixtures against a schema configured slightly
-    // differently.
-    const gqlSchemaByQueryFileName: {
-      [queryFileName: string]: GraphQLSchema;
-    } = {
-      "addConnectionFilterOperator.graphql":
-        gqlSchemas.addConnectionFilterOperator,
-      "dynamicJsonTrue.graphql": gqlSchemas.dynamicJson,
-      "types.cidr.graphql": gqlSchemas.networkScalars,
-      "types.macaddr.graphql": gqlSchemas.networkScalars,
-      "arrayTypes.cidrArray.graphql": gqlSchemas.networkScalars,
-      "arrayTypes.macaddrArray.graphql": gqlSchemas.networkScalars,
-      "relations.graphql": gqlSchemas.relations,
-      "simpleCollections.graphql": gqlSchemas.simpleCollections,
-      "nullAndEmptyAllowed.graphql": gqlSchemas.nullAndEmptyAllowed,
-    };
-    const gqlSchema =
-      queryFileName in gqlSchemaByQueryFileName
-        ? gqlSchemaByQueryFileName[queryFileName]
-        : gqlSchemas.normal;
-    const result = await withPgClient(async (client: pg.PoolClient) =>
-      graphql(gqlSchema, query, null, { pgClient: client })
-    );
-    expect(result).toMatchSnapshot();
+    const variant = variantByQueryFile[queryFileName] ?? 'normal';
+    const ctx = contexts[variant];
+
+    if (!ctx) {
+      throw new Error(`Missing connection context for variant ${variant}`);
+    }
+
+    await ctx.db.beforeEach();
+    ctx.db.setContext({ role: 'authenticated' });
+
+    try {
+      const query = await readFile(join(queriesDir, queryFileName), 'utf8');
+      const result = await ctx.query({ query });
+      expect(snapshot(result)).toMatchSnapshot();
+    } finally {
+      await ctx.db.afterEach();
+    }
   });
 }

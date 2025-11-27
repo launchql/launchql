@@ -1,7 +1,7 @@
-import type { Plugin } from "graphile-build";
+import type { Plugin } from 'graphile-build';
 
 const ConnectionArgFilterPlugin: Plugin = (builder) => {
-  builder.hook("inflection", (inflection) => {
+  builder.hook('inflection', (inflection) => {
     return Object.assign(inflection, {
       filterType(typeName: string) {
         return `${typeName}Filter`;

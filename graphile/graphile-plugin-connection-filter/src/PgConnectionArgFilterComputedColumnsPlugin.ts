@@ -1,12 +1,16 @@
-import type { Plugin } from "graphile-build";
-import type { PgClass, PgProc, PgType } from "graphile-build-pg";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Plugin } from 'graphile-build';
+import type { PgClass, PgProc, PgType } from 'graphile-build-pg';
+
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
+import type { ConnectionFilterConfig } from './types';
 
 const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
   builder,
-  { connectionFilterComputedColumns }
+  rawOptions
 ) => {
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  const { connectionFilterComputedColumns } =
+    rawOptions as ConnectionFilterConfig;
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       newWithHooks,
@@ -25,7 +29,7 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
       Self,
     } = context;
 
-    if (!isPgConnectionFilter || !table || table.kind !== "class") {
+    if (!isPgConnectionFilter || !table || table.kind !== 'class') {
       return fields;
     }
 
@@ -39,8 +43,8 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
         return memo;
 
       // Must not be omitted
-      if (omit(proc, "execute")) return memo;
-      if (omit(proc, "filter")) return memo;
+      if (omit(proc, 'execute')) return memo;
+      if (omit(proc, 'filter')) return memo;
 
       // Must be a computed column
       const computedColumnDetails = getComputedColumnDetails(
@@ -55,8 +59,8 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
       const inputArgsCount = proc.argTypeIds.filter(
         (_typeId, idx) =>
           proc.argModes.length === 0 || // all args are `in`
-          proc.argModes[idx] === "i" || // this arg is `in`
-          proc.argModes[idx] === "b" // this arg is `inout`
+          proc.argModes[idx] === 'i' || // this arg is `in`
+          proc.argModes[idx] === 'b' // this arg is `inout`
       ).length;
       const nonOptionalArgumentsCount = inputArgsCount - proc.argDefaultsNum;
       if (nonOptionalArgumentsCount > 1) {
@@ -69,9 +73,9 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
       const returnTypeTable =
         introspectionResultsByKind.classById[returnType.classId];
       if (returnTypeTable) return memo;
-      const isRecordLike = returnType.id === "2249";
+      const isRecordLike = returnType.id === '2249';
       if (isRecordLike) return memo;
-      const isVoid = String(returnType.id) === "2278";
+      const isVoid = String(returnType.id) === '2278';
       if (isVoid) return memo;
 
       // Looks good
@@ -126,7 +130,7 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
         proc.namespace.name
       )}.${sql.identifier(proc.name)}(${sourceAlias})`;
       const pgType = introspectionResultsByKind.typeById[proc.returnTypeId];
-      const pgTypeModifier = null;
+      const pgTypeModifier: number | null = null;
       const filterTypeName = operatorsTypeNameByFieldName[fieldName];
 
       return connectionFilterResolve(
@@ -157,8 +161,8 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
     const argTypes = proc.argTypeIds.reduce((prev: PgType[], typeId, idx) => {
       if (
         proc.argModes.length === 0 || // all args are `in`
-        proc.argModes[idx] === "i" || // this arg is `in`
-        proc.argModes[idx] === "b" // this arg is `inout`
+        proc.argModes[idx] === 'i' || // this arg is `in`
+        proc.argModes[idx] === 'b' // this arg is `inout`
       ) {
         prev.push(build.pgIntrospectionResultsByKind.typeById[typeId]);
       }
@@ -168,7 +172,7 @@ const PgConnectionArgFilterComputedColumnsPlugin: Plugin = (
       argTypes
         .slice(1)
         .some(
-          (type) => type.type === "c" && type.class && type.class.isSelectable
+          (type) => type.type === 'c' && type.class && type.class.isSelectable
         )
     ) {
       // Accepts two input tables? Skip.

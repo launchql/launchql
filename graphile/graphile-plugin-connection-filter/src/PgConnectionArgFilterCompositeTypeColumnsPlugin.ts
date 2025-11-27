@@ -1,12 +1,16 @@
-import type { Plugin } from "graphile-build";
-import type { PgAttribute } from "graphile-build-pg";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Plugin } from 'graphile-build';
+import type { PgAttribute } from 'graphile-build-pg';
+
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
+import type { ConnectionFilterConfig } from './types';
 
 const PgConnectionArgFilterCompositeTypeColumnsPlugin: Plugin = (
   builder,
-  { connectionFilterAllowedFieldTypes }
+  rawOptions
 ) => {
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  const { connectionFilterAllowedFieldTypes } =
+    rawOptions as ConnectionFilterConfig;
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       newWithHooks,
@@ -27,7 +31,7 @@ const PgConnectionArgFilterCompositeTypeColumnsPlugin: Plugin = (
       Self,
     } = context;
 
-    if (!isPgConnectionFilter || table.kind !== "class") return fields;
+    if (!isPgConnectionFilter || table.kind !== 'class') return fields;
 
     connectionFilterTypesByTypeName[Self.name] = Self;
 
@@ -36,11 +40,11 @@ const PgConnectionArgFilterCompositeTypeColumnsPlugin: Plugin = (
     )
       .filter((attr) => attr.classId === table.id)
       .filter((attr) => pgColumnFilter(attr, build, context))
-      .filter((attr) => !omit(attr, "filter"))
+      .filter((attr) => !omit(attr, 'filter'))
       .filter(
         (attr) =>
           attr.type &&
-          attr.type.type === "c" &&
+          attr.type.type === 'c' &&
           attr.type.class &&
           !attr.type.class.isSelectable
       ) // keep only the composite type columns

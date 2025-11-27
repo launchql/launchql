@@ -1,12 +1,19 @@
-import type { Plugin } from "graphile-build";
-import type { PgAttribute, PgClass, PgConstraint } from "graphile-build-pg";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Plugin } from 'graphile-build';
+import type { PgAttribute, PgClass, PgConstraint } from 'graphile-build-pg';
+
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
+import type { ConnectionFilterConfig } from './types';
 
 const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
   builder,
-  { pgSimpleCollections, pgOmitListSuffix, connectionFilterUseListInflectors }
+  rawOptions
 ) => {
-  const hasConnections = pgSimpleCollections !== "only";
+  const {
+    pgSimpleCollections,
+    pgOmitListSuffix,
+    connectionFilterUseListInflectors,
+  } = rawOptions as ConnectionFilterConfig;
+  const hasConnections = pgSimpleCollections !== 'only';
   const simpleInflectorsAreShorter = pgOmitListSuffix === true;
   if (
     simpleInflectorsAreShorter &&
@@ -22,7 +29,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
       ? hasConnections
       : !connectionFilterUseListInflectors;
 
-  builder.hook("inflection", (inflection) => {
+  builder.hook('inflection', (inflection) => {
     return Object.assign(inflection, {
       filterManyType(table: PgClass, foreignTable: PgClass): string {
         return (this as any).upperCamelCase(
@@ -46,7 +53,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
     });
   });
 
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       describePgEntity,
       extend,
@@ -67,19 +74,19 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
       Self,
     } = context;
 
-    if (!isPgConnectionFilter || table.kind !== "class") return fields;
+    if (!isPgConnectionFilter || table.kind !== 'class') return fields;
 
     connectionFilterTypesByTypeName[Self.name] = Self;
 
     const backwardRelationSpecs = (
       introspectionResultsByKind.constraint as PgConstraint[]
     )
-      .filter((con) => con.type === "f")
+      .filter((con) => con.type === 'f')
       .filter((con) => con.foreignClassId === table.id)
       .reduce((memo: BackwardRelationSpec[], foreignConstraint) => {
         if (
-          omit(foreignConstraint, "read") ||
-          omit(foreignConstraint, "filter")
+          omit(foreignConstraint, 'read') ||
+          omit(foreignConstraint, 'filter')
         ) {
           return memo;
         }
@@ -90,7 +97,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
             `Could not find the foreign table (constraint: ${foreignConstraint.name})`
           );
         }
-        if (omit(foreignTable, "read") || omit(foreignTable, "filter")) {
+        if (omit(foreignTable, 'read') || omit(foreignTable, 'filter')) {
           return memo;
         }
         const attributes = (
@@ -109,10 +116,10 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
         const foreignKeyAttributes = foreignConstraint.keyAttributeNums.map(
           (num) => foreignAttributes.filter((attr) => attr.num === num)[0]
         );
-        if (keyAttributes.some((attr) => omit(attr, "read"))) {
+        if (keyAttributes.some((attr) => omit(attr, 'read'))) {
           return memo;
         }
-        if (foreignKeyAttributes.some((attr) => omit(attr, "read"))) {
+        if (foreignKeyAttributes.some((attr) => omit(attr, 'read'))) {
           return memo;
         }
         const isForeignKeyUnique = !!(
@@ -120,7 +127,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
         ).find(
           (c) =>
             c.classId === foreignTable.id &&
-            (c.type === "p" || c.type === "u") &&
+            (c.type === 'p' || c.type === 'u') &&
             c.keyAttributeNums.length === foreignKeyAttributes.length &&
             c.keyAttributeNums.every(
               (n, i) => foreignKeyAttributes[i].num === n
@@ -203,7 +210,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
             attr.name
           )} = ${sourceAlias}.${sql.identifier(keyAttributes[i].name)}`;
         }),
-        ") and ("
+        ') and ('
       )})`;
       const sqlSelectWhereKeysMatch = sql.query`select 1 from ${sqlIdentifier} as ${foreignTableAlias} where ${sqlKeysMatch}`;
       const sqlFragment = connectionFilterResolve(
@@ -240,7 +247,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
             attr.name
           )} = ${sourceAlias}.${sql.identifier(keyAttributes[i].name)}`;
         }),
-        ") and ("
+        ') and ('
       )})`;
 
       const sqlSelectWhereKeysMatch = sql.query`select 1 from ${sqlIdentifier} as ${foreignTableAlias} where ${sqlKeysMatch}`;
@@ -299,7 +306,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
       if (!ForeignTableFilterType) continue;
 
       if (isOneToMany) {
-        if (!omit(foreignTable, "many")) {
+        if (!omit(foreignTable, 'many')) {
           const filterManyTypeName = inflection.filterManyType(
             table,
             foreignTable
@@ -396,7 +403,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
     return fields;
   });
 
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       newWithHooks,
@@ -429,7 +436,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
 
     const manyFields = {
       every: fieldWithHooks(
-        "every",
+        'every',
         {
           description: `Every related \`${foreignTableTypeName}\` matches the filter criteria. All fields are combined with a logical ‘and.’`,
           type: FilterType,
@@ -439,7 +446,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
         }
       ),
       some: fieldWithHooks(
-        "some",
+        'some',
         {
           description: `Some related \`${foreignTableTypeName}\` matches the filter criteria. All fields are combined with a logical ‘and.’`,
           type: FilterType,
@@ -449,7 +456,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
         }
       ),
       none: fieldWithHooks(
-        "none",
+        'none',
         {
           description: `No related \`${foreignTableTypeName}\` matches the filter criteria. All fields are combined with a logical ‘and.’`,
           type: FilterType,
@@ -470,7 +477,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
       if (fieldValue == null) return null;
 
       if (!parentFieldInfo || !parentFieldInfo.backwardRelationSpec)
-        throw new Error("Did not receive backward relation spec");
+        throw new Error('Did not receive backward relation spec');
       const { keyAttributes, foreignKeyAttributes }: BackwardRelationSpec =
         parentFieldInfo.backwardRelationSpec;
 
@@ -485,7 +492,7 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
             attr.name
           )} = ${sourceAlias}.${sql.identifier(keyAttributes[i].name)}`;
         }),
-        ") and ("
+        ') and ('
       )})`;
       const sqlSelectWhereKeysMatch = sql.query`select 1 from ${sqlIdentifier} as ${foreignTableAlias} where ${sqlKeysMatch}`;
 
@@ -497,11 +504,11 @@ const PgConnectionArgFilterBackwardRelationsPlugin: Plugin = (
       );
       if (sqlFragment == null) {
         return null;
-      } else if (fieldName === "every") {
+      } else if (fieldName === 'every') {
         return sql.query`not exists(${sqlSelectWhereKeysMatch} and not (${sqlFragment}))`;
-      } else if (fieldName === "some") {
+      } else if (fieldName === 'some') {
         return sql.query`exists(${sqlSelectWhereKeysMatch} and (${sqlFragment}))`;
-      } else if (fieldName === "none") {
+      } else if (fieldName === 'none') {
         return sql.query`not exists(${sqlSelectWhereKeysMatch} and (${sqlFragment}))`;
       }
       throw new Error(`Unknown field name: ${fieldName}`);

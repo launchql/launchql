@@ -1,9 +1,9 @@
-import type { Plugin } from "graphile-build";
-import type { PgAttribute } from "graphile-build-pg";
-import { ConnectionFilterResolver } from "./PgConnectionArgFilterPlugin";
+import type { Plugin } from 'graphile-build';
+import type { PgAttribute } from 'graphile-build-pg';
+import { ConnectionFilterResolver } from './PgConnectionArgFilterPlugin';
 
 const PgConnectionArgFilterColumnsPlugin: Plugin = (builder) => {
-  builder.hook("GraphQLInputObjectType:fields", (fields, build, context) => {
+  builder.hook('GraphQLInputObjectType:fields', (fields, build, context) => {
     const {
       extend,
       newWithHooks,
@@ -23,7 +23,7 @@ const PgConnectionArgFilterColumnsPlugin: Plugin = (builder) => {
       Self,
     } = context;
 
-    if (!isPgConnectionFilter || table.kind !== "class") return fields;
+    if (!isPgConnectionFilter || table.kind !== 'class') return fields;
 
     connectionFilterTypesByTypeName[Self.name] = Self;
 
@@ -32,7 +32,7 @@ const PgConnectionArgFilterColumnsPlugin: Plugin = (builder) => {
     )
       .filter((attr) => attr.classId === table.id)
       .filter((attr) => pgColumnFilter(attr, build, context))
-      .filter((attr) => !omit(attr, "filter"))
+      .filter((attr) => !omit(attr, 'filter'))
       .reduce((memo: { [fieldName: string]: PgAttribute }, attr) => {
         const fieldName: string = inflection.column(attr);
         memo[fieldName] = attr;
