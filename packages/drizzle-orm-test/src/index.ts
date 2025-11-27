@@ -81,7 +81,7 @@ export async function getConnections(
 
 // Re-export PgTestClient and other types from pgsql-test for convenience
 export type { GetConnectionOpts, SeedAdapter } from 'pgsql-test';
-export { PgTestClient } from 'pgsql-test';
+export { PgTestClient, snapshot } from 'pgsql-test';
 
 // Re-export the proxy function for advanced use cases
 export { proxyClientQuery } from './proxy-client';

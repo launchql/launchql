@@ -16,7 +16,7 @@
   </a>
 </p>
 
-`launchql-test` builds on top of [`pgsql-test`](https://github.com/launchql/launchql/tree/main/packages/pgsql-test) to provide robust GraphQL testing utilities for PostGraphile-based projects **with all LaunchQL plugins pre-configured**.
+`launchql-test` builds on top of [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) to provide robust GraphQL testing utilities for PostGraphile-based projects **with all LaunchQL plugins pre-configured**.
 
 It provides a seamless setup for isolated, seeded, role-aware Postgres databases and injects GraphQL helpers for snapshot testing, role context, and mutation/query assertions. This package includes all the default plugins from `graphile-settings` (connection filters, full-text search, PostGIS, uploads, i18n, etc.) for a batteries-included testing experience.
 
@@ -191,3 +191,16 @@ expect(result.data.createUser.username).toBe('alice');
 * Use `useRoot: true` to test schema visibility without RLS.
 * Start with `getConnections()` for most use cases.
 * Consider `getConnectionsUnwrapped()` for cleaner test assertions.
+
+## Snapshot Utilities
+
+The `launchql-test/utils` module provides utilities for sanitizing query results for snapshot testing. These helpers replace dynamic values (IDs, UUIDs, dates, hashes) with stable placeholders, making snapshots deterministic.
+
+```ts
+import { snapshot } from 'launchql-test/utils';
+
+const res = await query(`query { allUsers { nodes { id name createdAt } } }`);
+expect(snapshot(res.data)).toMatchSnapshot();
+```
+
+See [`pgsql-test` Snapshot Utilities](https://www.npmjs.com/package/pgsql-test#snapshot-utilities) for the full API reference.

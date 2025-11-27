@@ -8,3 +8,6 @@ export * from './helpers';
 export { getConnections } from './connect';
 export type { GetConnectionOpts, GetConnectionResult } from './connect';
 
+// Re-export snapshot utility
+export { snapshot } from 'pgsql-test';
+

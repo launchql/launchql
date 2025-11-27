@@ -4,7 +4,7 @@ import { join } from 'path';
 import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 
-import { snapshot } from '../src';
+import { snapshot } from '../src/utils';
 import { getConnections } from '../src/get-connections';
 import type { GraphQLQueryFn } from '../src/types';
 import { IntrospectionQuery } from '../test-utils/queries';

@@ -624,3 +624,16 @@ const { conn, db, teardown } = await getConnections({
   }
 });
 ```
+
+## Snapshot Utilities
+
+The `supabase-test/utils` module provides utilities for sanitizing query results for snapshot testing. These helpers replace dynamic values (IDs, UUIDs, dates, hashes) with stable placeholders, making snapshots deterministic.
+
+```ts
+import { snapshot } from 'supabase-test/utils';
+
+const result = await db.any('SELECT * FROM users');
+expect(snapshot(result)).toMatchSnapshot();
+```
+
+See [`pgsql-test` Snapshot Utilities](https://www.npmjs.com/package/pgsql-test#snapshot-utilities) for the full API reference.

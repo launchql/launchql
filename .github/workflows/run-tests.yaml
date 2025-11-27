@@ -91,7 +91,7 @@ jobs:
 
       - name: graphile-test
         run: |
-          cd ./packages/graphile-test
+          cd ./graphile/graphile-test
           createdb graphile_test_db
           psql -f sql/test.sql graphile_test_db
           psql -f sql/roles.sql graphile_test_db
