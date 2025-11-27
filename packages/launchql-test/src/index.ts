@@ -13,4 +13,4 @@ export {
 // Override with our custom implementations that use graphile-settings
 export { GraphQLTest } from './graphile-test';
 export * from './get-connections';
-export { seed } from 'pgsql-test';
+export { seed, snapshot } from 'pgsql-test';
