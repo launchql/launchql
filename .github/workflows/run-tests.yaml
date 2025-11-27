@@ -161,6 +161,8 @@ jobs:
 
       - name: graphile/graphile-i18n
         run: cd ./graphile/graphile-i18n && pnpm test
-        
+
       - name: graphile/graphile-meta-schema
         run: cd ./graphile/graphile-meta-schema && pnpm test
+      - name: graphile/graphile-postgis
+        run: cd ./graphile/graphile-postgis && pnpm test
