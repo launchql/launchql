@@ -1,0 +1,33 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogPolygonzm {
+        ...geogPolygonzm
+      }
+    }
+  }
+}
+
+fragment geogPointzm on GeographyPointZM {
+  geojson
+  latitude
+  longitude
+  height
+}
+
+fragment geogLinestringzm on GeographyLineStringZM {
+  geojson
+  points {
+    ...geogPointzm
+  }
+}
+
+fragment geogPolygonzm on GeographyPolygonZM {
+  exterior {
+    ...geogLinestringzm
+  }
+  geojson
+  interiors {
+    ...geogLinestringzm
+  }
+}

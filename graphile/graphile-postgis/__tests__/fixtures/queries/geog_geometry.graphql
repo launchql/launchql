@@ -1,0 +1,72 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogGeometry {
+        __typename
+        geojson
+        ... on GeographyPoint {
+          ...geogPoint
+        }
+        ... on GeographyLineString {
+          ...geogLinestring
+        }
+        ... on GeographyPolygon {
+          ...geogPolygon
+        }
+        ... on GeographyMultiPoint {
+          ...geogMultipoint
+        }
+        ... on GeographyMultiLineString {
+          ...geogMultilinestring
+        }
+        ... on GeographyMultiPolygon {
+          ...geogMultipolygon
+        }
+      }
+    }
+  }
+}
+
+fragment geogPoint on GeographyPoint {
+  geojson
+  latitude
+  longitude
+}
+
+fragment geogLinestring on GeographyLineString {
+  geojson
+  points {
+    ...geogPoint
+  }
+}
+
+fragment geogPolygon on GeographyPolygon {
+  exterior {
+    ...geogLinestring
+  }
+  geojson
+  interiors {
+    ...geogLinestring
+  }
+}
+
+fragment geogMultipoint on GeographyMultiPoint {
+  geojson
+  points {
+    ...geogPoint
+  }
+}
+
+fragment geogMultilinestring on GeographyMultiLineString {
+  geojson
+  lines {
+    ...geogLinestring
+  }
+}
+
+fragment geogMultipolygon on GeographyMultiPolygon {
+  geojson
+  polygons {
+    ...geogPolygon
+  }
+}

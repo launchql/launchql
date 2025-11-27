@@ -1,0 +1,40 @@
+query {
+  allGisDebugs {
+    nodes {
+      geomMultipolygonz {
+        ...geomMultipolygonz
+      }
+    }
+  }
+}
+
+fragment geomPointz on GeometryPointZ {
+  geojson
+  x
+  y
+  z
+}
+
+fragment geomLinestringz on GeometryLineStringZ {
+  geojson
+  points {
+    ...geomPointz
+  }
+}
+
+fragment geomPolygonz on GeometryPolygonZ {
+  exterior {
+    ...geomLinestringz
+  }
+  geojson
+  interiors {
+    ...geomLinestringz
+  }
+}
+
+fragment geomMultipolygonz on GeometryMultiPolygonZ {
+  geojson
+  polygons {
+    ...geomPolygonz
+  }
+}
