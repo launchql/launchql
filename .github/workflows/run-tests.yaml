@@ -164,3 +164,6 @@ jobs:
         
       - name: graphile/graphile-meta-schema
         run: cd ./graphile/graphile-meta-schema && pnpm test
+
+      - name: graphile/graphile-upload-plugin
+        run: cd ./graphile/graphile-upload-plugin && pnpm test
