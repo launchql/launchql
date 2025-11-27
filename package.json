@@ -49,8 +49,7 @@
   },
   "overrides": {
     "graphql": "15.10.1",
-    "graphql-upload": "^13.0.0",
-    "@pyramation/postgis": "0.1.1"
+    "graphql-upload": "^13.0.0"
   },
   "packageManager": "pnpm@9.12.1",
   "pnpm": {

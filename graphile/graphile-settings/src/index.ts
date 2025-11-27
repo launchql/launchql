@@ -1,8 +1,7 @@
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import { getEnvOptions } from '@launchql/env';
 import { LaunchQLOptions } from '@launchql/types';
-import PgPostgis from '@pyramation/postgis';
-// @ts-ignore
+import PgPostgis from 'graphile-postgis';
 import FulltextFilterPlugin from 'graphile-plugin-fulltext-filter';
 import { NodePlugin, Plugin } from 'graphile-build';
 import {
@@ -10,7 +9,6 @@ import {
   LangPlugin
 } from 'graphile-i18n';
 import PgMetaschema from 'graphile-meta-schema';
-// @ts-ignore
 import PgSearch from 'graphile-search-plugin';
 import PgSimpleInflector from 'graphile-simple-inflector';
 import { PostGraphileOptions } from 'postgraphile';
