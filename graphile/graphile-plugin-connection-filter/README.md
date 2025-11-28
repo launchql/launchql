@@ -1,10 +1,20 @@
-[![Package on npm](https://img.shields.io/npm/v/postgraphile-plugin-connection-filter.svg)](https://www.npmjs.com/package/postgraphile-plugin-connection-filter)
+# graphile-plugin-connection-filter
 
-# postgraphile-plugin-connection-filter
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+</p>
+
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+   <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+   <a href="https://www.npmjs.com/package/graphile-plugin-connection-filter"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=graphile%2Fgraphile-plugin-connection-filter%2Fpackage.json"/></a>
+</p>
 
 Adds a powerful suite of filtering capabilities to a PostGraphile schema.
 
-> **Warning:** Use of this plugin with the default options may make it **astoundingly trivial** for a malicious actor (or a well-intentioned application that generates complex GraphQL queries) to overwhelm your database with expensive queries. See the [Performance and Security](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter#performance-and-security) section below for details.
+> **Warning:** Use of this plugin with the default options may make it **astoundingly trivial** for a malicious actor (or a well-intentioned application that generates complex GraphQL queries) to overwhelm your database with expensive queries. See the [Performance and Security](https://github.com/graphile-contrib/graphile-plugin-connection-filter#performance-and-security) section below for details.
 
 ## Usage
 
@@ -13,20 +23,20 @@ Requires PostGraphile v4.5.0 or higher.
 Install with:
 
 ```
-yarn add postgraphile postgraphile-plugin-connection-filter
+yarn add postgraphile graphile-plugin-connection-filter
 ```
 
 CLI usage via `--append-plugins`:
 
 ```
-postgraphile --append-plugins postgraphile-plugin-connection-filter -c postgres://localhost/my_db ...
+postgraphile --append-plugins graphile-plugin-connection-filter -c postgres://localhost/my_db ...
 ```
 
 Library usage via `appendPlugins`:
 
 ```ts
-import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
-// or: const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter");
+import ConnectionFilterPlugin from "graphile-plugin-connection-filter";
+// or: const ConnectionFilterPlugin = require("graphile-plugin-connection-filter");
 
 const middleware = postgraphile(DATABASE_URL, SCHEMAS, {
   appendPlugins: [ConnectionFilterPlugin],
@@ -53,7 +63,7 @@ Also see the [Production Considerations](https://www.graphile.org/postgraphile/p
 
 ## Features
 
-This plugin supports filtering on almost all PostgreSQL types, including complex types such as domains, ranges, arrays, and composite types. For details on the specific operators supported for each type, see [docs/operators.md](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/blob/master/docs/operators.md).
+This plugin supports filtering on almost all PostgreSQL types, including complex types such as domains, ranges, arrays, and composite types. For details on the specific operators supported for each type, see [docs/operators.md](https://github.com/graphile-contrib/graphile-plugin-connection-filter/blob/master/docs/operators.md).
 
 See also:
 
@@ -64,9 +74,9 @@ See also:
 
 ## Handling `null` and empty objects
 
-By default, this plugin will throw an error when `null` literals or empty objects (`{}`) are included in `filter` input objects. This prevents queries with ambiguous semantics such as `filter: { field: null }` and `filter: { field: { equalTo: null } }` from returning unexpected results. For background on this decision, see https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/issues/58.
+By default, this plugin will throw an error when `null` literals or empty objects (`{}`) are included in `filter` input objects. This prevents queries with ambiguous semantics such as `filter: { field: null }` and `filter: { field: { equalTo: null } }` from returning unexpected results. For background on this decision, see https://github.com/graphile-contrib/graphile-plugin-connection-filter/issues/58.
 
-To allow `null` and `{}` in inputs, use the `connectionFilterAllowNullInput` and `connectionFilterAllowEmptyObjectInput` options documented under [Plugin Options](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter#plugin-options). Please note that even with `connectionFilterAllowNullInput` enabled, `null` is never interpreted as a SQL `NULL`; fields with `null` values are simply ignored when resolving the query.
+To allow `null` and `{}` in inputs, use the `connectionFilterAllowNullInput` and `connectionFilterAllowEmptyObjectInput` options documented under [Plugin Options](https://github.com/graphile-contrib/graphile-plugin-connection-filter#plugin-options). Please note that even with `connectionFilterAllowNullInput` enabled, `null` is never interpreted as a SQL `NULL`; fields with `null` values are simply ignored when resolving the query.
 
 ## Plugin Options
 
@@ -263,7 +273,7 @@ query {
 }
 ```
 
-For an extensive set of examples, see [docs/examples.md](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/blob/master/docs/examples.md).
+For an extensive set of examples, see [docs/examples.md](https://github.com/graphile-contrib/graphile-plugin-connection-filter/blob/master/docs/examples.md).
 
 ## Development
 

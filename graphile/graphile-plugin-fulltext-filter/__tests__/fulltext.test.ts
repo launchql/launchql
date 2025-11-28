@@ -3,7 +3,7 @@ import { getConnectionsObject, seed } from 'graphile-test';
 import { buildClientSchema, getIntrospectionQuery } from 'graphql';
 import { join } from 'path';
 import type { PgTestClient } from 'pgsql-test/test-client';
-import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 
 import PostGraphileFulltextFilterPlugin from '../src';
 
