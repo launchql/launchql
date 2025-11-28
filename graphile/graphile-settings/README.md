@@ -118,7 +118,6 @@ app.listen(settings.port);
 * `graphile-plugin-fulltext-filter`
 * `graphile-postgis`
 * `graphile-plugin-connection-filter-postgis`
-* `postgraphile-derived-upload-field`
 * `graphile-simple-inflector`
 * `graphile-i18n`
 * `graphile-meta-schema`

@@ -430,9 +430,6 @@ importers:
       postgraphile:
         specifier: ^4.14.1
         version: 4.14.1
-      postgraphile-derived-upload-field:
-        specifier: ^0.0.6
-        version: 0.0.6(graphql@15.10.1)
       request-ip:
         specifier: ^3.3.0
         version: 3.3.0
@@ -1420,9 +1417,6 @@ importers:
       postgraphile:
         specifier: ^4.14.1
         version: 4.14.1
-      postgraphile-derived-upload-field:
-        specifier: ^0.0.6
-        version: 0.0.6(graphql@15.10.1)
       request-ip:
         specifier: ^3.3.0
         version: 3.3.0
@@ -4406,12 +4400,6 @@ packages:
     peerDependencies:
       graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
 
-  graphql-upload@11.0.0:
-    resolution: {integrity: sha512-zsrDtu5gCbQFDWsNa5bMB4nf1LpKX9KDgh+f8oL1288ijV4RxeckhVozAjqjXAfRpxOHD1xOESsh6zq8SjdgjA==}
-    engines: {node: ^10.13.0 || ^12.0.0 || >= 13.7.0}
-    peerDependencies:
-      graphql: 0.13.1 - 15
-
   graphql-upload@13.0.0:
     resolution: {integrity: sha512-YKhx8m/uOtKu4Y1UzBFJhbBGJTlk7k4CydlUUiNrtxnwZv0WigbRHP+DVhRNKt7u7DXOtcKZeYJlGtnMXvreXA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >= 16.0.0}
@@ -4707,10 +4695,6 @@ packages:
 
   isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
-    engines: {node: '>=0.10.0'}
-
-  isobject@4.0.0:
-    resolution: {integrity: sha512-S/2fF5wH8SJA/kmwr6HYhK/RI/OkhD84k8ntalo0iJjZikgq1XFvR5M8NPT1x5F7fBwCG3qHfnzeP/Vh/ZxCUA==}
     engines: {node: '>=0.10.0'}
 
   istanbul-lib-coverage@3.2.2:
@@ -5734,9 +5718,6 @@ packages:
     peerDependencies:
       graphql: '>=0.9 <0.14 || ^14.0.2 || ^15.4.0'
       pg: '>=6.1.0 <9'
-
-  postgraphile-derived-upload-field@0.0.6:
-    resolution: {integrity: sha512-mERzzhScCQIhV/V/FQcNX2MZlszCEWwB288AfUqN8sQC9G7uxUrjjb89bLh+OyYUexcZnkhBh0yMydVQPfMDWw==}
 
   postgraphile@4.14.1:
     resolution: {integrity: sha512-4Rz//TtnjyZk6CbrcypWJNFRwXupHK+bHvaYaX2RrtxMJ2lTaoMDYOdEFESdo/POie3CAEbsC8ZBqb9eR/EyVw==}
@@ -10231,15 +10212,6 @@ snapshots:
       graphql: 15.10.1
       tslib: 2.8.1
 
-  graphql-upload@11.0.0(graphql@15.10.1):
-    dependencies:
-      busboy: 0.3.1
-      fs-capacitor: 6.2.0
-      graphql: 15.10.1
-      http-errors: 1.8.1
-      isobject: 4.0.0
-      object-path: 0.11.8
-
   graphql-upload@13.0.0(graphql@15.10.1):
     dependencies:
       busboy: 0.3.1
@@ -10546,8 +10518,6 @@ snapshots:
   isexe@3.1.1: {}
 
   isobject@3.0.1: {}
-
-  isobject@4.0.0: {}
 
   istanbul-lib-coverage@3.2.2: {}
 
@@ -11925,13 +11895,6 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
-
-  postgraphile-derived-upload-field@0.0.6(graphql@15.10.1):
-    dependencies:
-      '@babel/runtime': 7.28.4
-      graphql-upload: 11.0.0(graphql@15.10.1)
-    transitivePeerDependencies:
-      - graphql
 
   postgraphile@4.14.1:
     dependencies:
