@@ -1,0 +1,82 @@
+query timestamptzRange(
+  $val: DatetimeRangeInput = {
+    start: { value: "1999-02-01 00:00", inclusive: true }
+    end: { value: "1999-03-01 00:00", inclusive: false }
+  }
+  $elementVal: Datetime = "1999-02-01 00:00"
+) {
+  adjacentTo: allRangeTypes(
+    filter: { timestamptzRange: { adjacentTo: $val } }
+  ) {
+    ...nodes
+  }
+  containedBy: allRangeTypes(
+    filter: { timestamptzRange: { containedBy: $val } }
+  ) {
+    ...nodes
+  }
+  contains: allRangeTypes(filter: { timestamptzRange: { contains: $val } }) {
+    ...nodes
+  }
+  containsElement: allRangeTypes(
+    filter: { timestamptzRange: { containsElement: $elementVal } }
+  ) {
+    ...nodes
+  }
+  distinctFrom: allRangeTypes(
+    filter: { timestamptzRange: { distinctFrom: $val } }
+  ) {
+    ...nodes
+  }
+  equalTo: allRangeTypes(filter: { timestamptzRange: { equalTo: $val } }) {
+    ...nodes
+  }
+  in: allRangeTypes(filter: { timestamptzRange: { in: [$val] } }) {
+    ...nodes
+  }
+  isNull: allRangeTypes(filter: { timestamptzRange: { isNull: true } }) {
+    ...nodes
+  }
+  notDistinctFrom: allRangeTypes(
+    filter: { timestamptzRange: { notDistinctFrom: $val } }
+  ) {
+    ...nodes
+  }
+  notEqualTo: allRangeTypes(
+    filter: { timestamptzRange: { notEqualTo: $val } }
+  ) {
+    ...nodes
+  }
+  notExtendsLeftOf: allRangeTypes(
+    filter: { timestamptzRange: { notExtendsLeftOf: $val } }
+  ) {
+    ...nodes
+  }
+  notExtendsRightOf: allRangeTypes(
+    filter: { timestamptzRange: { notExtendsRightOf: $val } }
+  ) {
+    ...nodes
+  }
+  notIn: allRangeTypes(filter: { timestamptzRange: { notIn: [$val] } }) {
+    ...nodes
+  }
+  overlaps: allRangeTypes(filter: { timestamptzRange: { overlaps: $val } }) {
+    ...nodes
+  }
+  strictlyLeftOf: allRangeTypes(
+    filter: { timestamptzRange: { strictlyLeftOf: $val } }
+  ) {
+    ...nodes
+  }
+  strictlyRightOf: allRangeTypes(
+    filter: { timestamptzRange: { strictlyRightOf: $val } }
+  ) {
+    ...nodes
+  }
+}
+
+fragment nodes on RangeTypesConnection {
+  nodes {
+    id
+  }
+}

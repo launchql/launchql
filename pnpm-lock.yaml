@@ -176,6 +176,41 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-plugin-connection-filter:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      postgraphile:
+        specifier: ^4.14.1
+        version: 4.14.1
+    devDependencies:
+      '@graphile-contrib/pg-simplify-inflector':
+        specifier: ^6.1.0
+        version: 6.1.0
+      '@types/pg':
+        specifier: ^8.15.6
+        version: 8.15.6
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      makage:
+        specifier: ^0.1.6
+        version: 0.1.8
+      pg:
+        specifier: ^8.16.0
+        version: 8.16.3
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
   graphile/graphile-plugin-fulltext-filter:
     dependencies:
       graphile-build:
@@ -1900,6 +1935,9 @@ packages:
 
   '@graphile-contrib/pg-many-to-many@1.0.2':
     resolution: {integrity: sha512-ChSaSU7/n99Crdlink62cCGqlEYmjUJKizz2Nx0tdGgqSMkf6KTk00D3ILGybScywMcJGjJE2cc6FXYIHVlxCg==}
+
+  '@graphile-contrib/pg-simplify-inflector@6.1.0':
+    resolution: {integrity: sha512-3eI2FP4ulu/fxwkJBNXhR6XEzqVz4wJWFr4LfeyUNNArUtLFx0DpP6YdcARCYgwLExFcIQNE8fnul3JKiciYIw==}
 
   '@graphile/lru@4.11.0':
     resolution: {integrity: sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg==}
@@ -7286,6 +7324,8 @@ snapshots:
       levn: 0.4.1
 
   '@graphile-contrib/pg-many-to-many@1.0.2': {}
+
+  '@graphile-contrib/pg-simplify-inflector@6.1.0': {}
 
   '@graphile/lru@4.11.0':
     dependencies:

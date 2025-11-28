@@ -1,0 +1,71 @@
+# All queries in this file should throw an error
+# (queries are an exact copy of nullAndEmptyAllowed.graphql)
+query {
+  a: allFilterables(filter: null) {
+    totalCount
+  }
+  b: allFilterables(filter: {}) {
+    totalCount
+  }
+  c: allFilterables(filter: { text: null }) {
+    totalCount
+  }
+  d: allFilterables(filter: { text: {} }) {
+    totalCount
+  }
+  e: allFilterables(filter: { text: null, int4: null }) {
+    totalCount
+  }
+  f: allFilterables(filter: { text: {}, int4: {} }) {
+    totalCount
+  }
+  g: allFilterables(filter: { text: null, int4: {} }) {
+    totalCount
+  }
+  h: allFilterables(filter: { text: { equalTo: null } }) {
+    totalCount
+  }
+  i: allFilterables(filter: { text: { equalTo: null, notEqualTo: null } }) {
+    totalCount
+  }
+  j: allFilterables(
+    filter: {
+      text: { equalTo: null, notEqualTo: null }
+      int4: { equalTo: null }
+      numeric: {}
+      bool: null
+    }
+  ) {
+    totalCount
+  }
+  k: allFilterables(filter: { and: null }) {
+    totalCount
+  }
+  l: allFilterables(filter: { and: [{}] }) {
+    totalCount
+  }
+  m: allFilterables(filter: { and: [{}, {}] }) {
+    totalCount
+  }
+  n: allFilterables(filter: { or: null }) {
+    totalCount
+  }
+  o: allFilterables(filter: { or: [{}] }) {
+    totalCount
+  }
+  p: allFilterables(filter: { or: [{}, {}] }) {
+    totalCount
+  }
+  q: allFilterables(filter: { not: null }) {
+    totalCount
+  }
+  r: allFilterables(filter: { not: {} }) {
+    totalCount
+  }
+  s: allFilterables(filter: { not: { text: null } }) {
+    totalCount
+  }
+  t: allFilterables(filter: { not: { text: {} } }) {
+    totalCount
+  }
+}
