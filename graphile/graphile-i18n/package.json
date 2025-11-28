@@ -41,7 +41,7 @@
     "@types/accept-language-parser": "^1.5.4",
     "@types/pg": "^8.15.2",
     "graphile-test": "workspace:^",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {

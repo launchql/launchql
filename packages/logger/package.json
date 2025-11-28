@@ -29,7 +29,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "yanse": "^0.1.1"
+    "yanse": "^0.1.5"
   },
   "keywords": [
     "logger",
@@ -39,6 +39,6 @@
     "launchql"
   ],
   "devDependencies": {
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }

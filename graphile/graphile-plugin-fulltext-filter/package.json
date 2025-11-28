@@ -52,7 +52,7 @@
   "devDependencies": {
     "graphile-test": "workspace:^",
     "graphql": "15.10.1",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "pgsql-test": "workspace:^",
     "postgraphile-plugin-connection-filter": "^2.0.0"
   }

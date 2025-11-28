@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/pg": "^8.15.2",
     "graphql-tag": "2.12.6",
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   },
   "dependencies": {
     "@launchql/types": "workspace:^",

@@ -42,7 +42,7 @@
   "devDependencies": {
     "@types/pg": "^8.15.2",
     "copyfiles": "^2.4.1",
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   },
   "dependencies": {
     "@launchql/env": "workspace:^",
@@ -53,14 +53,14 @@
     "@pgsql/types": "^17.6.1",
     "csv-to-pg": "^2.0.10",
     "glob": "^13.0.0",
-    "komoji": "^0.7.7",
+    "komoji": "^0.7.8",
     "parse-package-name": "^1.0.0",
     "pg": "^8.16.0",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
     "pgsql-deparser": "^17.12.1",
     "pgsql-parser": "^17.9.1",
-    "yanse": "^0.1.1"
+    "yanse": "^0.1.5"
   },
   "peerDependencies": {
     "@pgsql/types": "^17.6.1"

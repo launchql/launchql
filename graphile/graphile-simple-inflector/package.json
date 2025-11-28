@@ -41,7 +41,7 @@
   "devDependencies": {
     "graphile-test": "workspace:^",
     "graphql-tag": "2.12.6",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {

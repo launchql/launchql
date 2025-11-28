@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "ts-node": "^10.9.2"
   },
   "keywords": [

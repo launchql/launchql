@@ -39,6 +39,6 @@
   },
   "devDependencies": {
     "glob": "^13.0.0",
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }

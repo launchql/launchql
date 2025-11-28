@@ -41,7 +41,7 @@
     "@types/shelljs": "^0.8.16",
     "clean-ansi": "0.1.1",
     "glob": "^13.0.0",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "pg": "^8.16.0",
     "ts-node": "^10.9.2"
   },
@@ -54,14 +54,14 @@
     "@launchql/server-utils": "workspace:^",
     "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
-    "inquirerer": "^2.1.7",
+    "inquirerer": "^2.1.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
     "pgpm": "workspace:^",
     "shelljs": "^0.10.0",
-    "yanse": "^0.1.1"
+    "yanse": "^0.1.5"
   },
   "keywords": [
     "cli",

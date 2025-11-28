@@ -36,6 +36,6 @@
     "launchql"
   ],
   "devDependencies": {
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }
