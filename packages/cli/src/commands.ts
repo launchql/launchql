@@ -4,6 +4,7 @@ import { createPgpmCommandMap } from 'pgpm';
 
 import explorer from './commands/explorer';
 import server from './commands/server';
+import getGraphqlSchema from './commands/get-graphql-schema';
 import { readAndParsePackageJson } from './package';
 import { cliExitWithError,extractFirst, usageText } from './utils';
 
@@ -13,7 +14,8 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
   return {
     ...pgpmCommands,
     server,
-    explorer
+    explorer,
+    'get-graphql-schema': getGraphqlSchema
   };
 };
 

@@ -333,6 +333,40 @@ lql deploy --package myapp --to @production
 lql verify --package myapp
 ```
 
+### Get Graphql Schema
+
+Fetch and output your GraphQL schema in SDL.
+
+- Option 1 – Programmatic builder (from database schemas):
+  - Write to file:
+    - `lql get-graphql-schema --database launchql --schemas myapp,public --out ./schema.graphql`
+  - Print to stdout:
+    - `lql get-graphql-schema --database launchql --schemas myapp,public`
+
+- Option 2 – Fetch from running server (via endpoint introspection):
+  - Write to file:
+    - `lql get-graphql-schema --endpoint http://localhost:3000/graphql --headerHost meta8.localhost --out ./schema.graphql`
+  - Print to stdout:
+    - `lql get-graphql-schema --endpoint http://localhost:3000/graphql --headerHost meta8.localhost`
+
+Options:
+- `--database <name>` (Option 1)
+- `--schemas <list>` (Option 1; comma-separated)
+- `--endpoint <url>` (Option 2)
+- `--headerHost <hostname>` (Option 2; optional custom HTTP Host header for vhost-based local setups)
+- `--auth <token>` (Option 2; optional; sets Authorization header)
+- `--header <name: value>` (Option 2; optional; repeatable; adds request headers, last value wins on duplicates)
+- `--out <path>` (optional; if omitted, prints to stdout)
+
+Notes:
+- If your local dev server routes by hostname (e.g., `meta8.localhost`), but is reachable at `http://localhost:<port>`, use:
+  - `lql get-graphql-schema --endpoint http://localhost:3000/graphql --headerHost meta8.localhost`
+- You can repeat `--header` to add multiple headers, e.g.: `--header 'X-Mode: fast' --header 'Authorization: Bearer abc123'`
+
+Tip:
+- For Option 1, include only the schemas you need (e.g., `myapp,public`) to avoid type naming conflicts when multiple schemas contain similarly named tables.
+
+
 ## ⚙️ Configuration
 
 ### Environment Variables
