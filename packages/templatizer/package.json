@@ -1,6 +1,6 @@
 {
   "name": "@launchql/templatizer",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "make templates",
   "main": "index.js",
@@ -32,11 +32,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
     "glob": "^13.0.0",
-    "komoji": "^0.7.7"
+    "komoji": "^0.7.8"
   }
 }

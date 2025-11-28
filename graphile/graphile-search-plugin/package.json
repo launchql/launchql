@@ -1,6 +1,6 @@
 {
   "name": "graphile-search-plugin",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "generate search conditions for your tsvector columns",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",
@@ -38,12 +38,12 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "devDependencies": {
+    "graphile-plugin-connection-filter": "workspace:^",
     "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-simple-inflector": "workspace:^",
     "graphile-test": "workspace:^",
-    "makage": "^0.1.6",
-    "pgsql-test": "workspace:^",
-    "postgraphile-plugin-connection-filter": "^2.0.0"
+    "makage": "^0.1.8",
+    "pgsql-test": "workspace:^"
   },
   "dependencies": {
     "graphile-build": "^4.14.1",

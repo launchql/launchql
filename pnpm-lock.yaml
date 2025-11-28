@@ -50,8 +50,8 @@ importers:
         specifier: ^8.2.3
         version: 8.2.4(@types/node@20.19.25)(encoding@0.1.13)
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       prettier:
         specifier: ^3.0.2
         version: 3.6.2
@@ -87,8 +87,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -137,8 +137,8 @@ importers:
         specifier: workspace:^
         version: link:../graphile-test/dist
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -169,8 +169,43 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
       makage:
+        specifier: ^0.1.8
+        version: 0.1.8
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
+  graphile/graphile-plugin-connection-filter:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      postgraphile:
+        specifier: ^4.14.1
+        version: 4.14.1
+    devDependencies:
+      '@graphile-contrib/pg-simplify-inflector':
+        specifier: ^6.1.0
+        version: 6.1.0
+      '@types/pg':
+        specifier: ^8.15.6
+        version: 8.15.6
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      makage:
         specifier: ^0.1.6
-        version: 0.1.6
+        version: 0.1.8
+      pg:
+        specifier: ^8.16.0
+        version: 8.16.3
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -222,15 +257,15 @@ importers:
       graphile-build-pg:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-connection-filter/dist
       pg-tsquery:
         specifier: ^8.1.0
         version: 8.4.2
       postgraphile-core:
         specifier: ^4.2.0
         version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.0.0
-        version: 2.3.0
     devDependencies:
       graphile-test:
         specifier: workspace:^
@@ -239,8 +274,40 @@ importers:
         specifier: 15.10.1
         version: 15.10.1
       makage:
+        specifier: ^0.1.8
+        version: 0.1.8
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
+  graphile/graphile-postgis:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-utils:
+        specifier: ^4.14.1
+        version: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      pg:
+        specifier: ^8.16.0
+        version: 8.16.3
+    devDependencies:
+      '@types/geojson':
+        specifier: ^7946.0.14
+        version: 7946.0.16
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      makage:
         specifier: ^0.1.6
-        version: 0.1.6
+        version: 0.1.8
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -262,8 +329,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   graphile/graphile-search-plugin:
@@ -275,6 +342,9 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
     devDependencies:
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-connection-filter/dist
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-fulltext-filter/dist
@@ -285,14 +355,11 @@ importers:
         specifier: workspace:^
         version: link:../graphile-test/dist
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.0.0
-        version: 2.3.0
     publishDirectory: dist
 
   graphile/graphile-settings:
@@ -303,18 +370,9 @@ importers:
       '@launchql/env':
         specifier: workspace:^
         version: link:../../packages/env/dist
-      '@launchql/s3-streamer':
-        specifier: workspace:^
-        version: link:../../packages/s3-streamer/dist
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/types/dist
-      '@launchql/upload-names':
-        specifier: workspace:^
-        version: link:../../packages/upload-names/dist
-      '@pyramation/postgis':
-        specifier: ^0.1.1
-        version: 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -330,9 +388,15 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../graphile-meta-schema/dist
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-connection-filter/dist
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-fulltext-filter/dist
+      graphile-postgis:
+        specifier: workspace:^
+        version: link:../graphile-postgis/dist
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -342,6 +406,9 @@ importers:
       graphile-simple-inflector:
         specifier: workspace:^
         version: link:../graphile-simple-inflector/dist
+      graphile-upload-plugin:
+        specifier: workspace:^
+        version: link:../graphile-upload-plugin/dist
       graphql:
         specifier: 15.10.1
         version: 15.10.1
@@ -364,7 +431,7 @@ importers:
         specifier: ^0.0.6
         version: 0.0.6(graphql@15.10.1)
       postgraphile-plugin-connection-filter:
-        specifier: ^2.3.0
+        specifier: ^2.0.0
         version: 2.3.0
       postgraphile-plugin-connection-filter-postgis:
         specifier: ^1.0.0-alpha.6
@@ -386,8 +453,8 @@ importers:
         specifier: ^0.0.41
         version: 0.0.41
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -409,8 +476,8 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -444,8 +511,52 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
       makage:
+        specifier: ^0.1.8
+        version: 0.1.8
+    publishDirectory: dist
+
+  graphile/graphile-upload-plugin:
+    dependencies:
+      '@launchql/s3-streamer':
+        specifier: workspace:^
+        version: link:../../packages/s3-streamer/dist
+      '@launchql/upload-names':
+        specifier: workspace:^
+        version: link:../../packages/upload-names/dist
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+    devDependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.0.0
+        version: 3.940.0
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../../packages/env/dist
+      '@launchql/s3-utils':
+        specifier: workspace:^
+        version: link:../../packages/s3-utils/dist
+      '@types/pg':
+        specifier: ^8.15.2
+        version: 8.15.6
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@15.10.1)
+      makage:
         specifier: ^0.1.6
-        version: 0.1.6
+        version: 0.1.8
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.4.5(@babel/core@7.28.5)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@30.2.0(@babel/core@7.28.5))(jest-util@30.2.0)(jest@30.2.0(@types/node@20.19.25)(ts-node@10.9.2(@types/node@20.19.25)(typescript@5.9.3)))(typescript@5.9.3)
     publishDirectory: dist
 
   packages/cli:
@@ -475,8 +586,8 @@ importers:
         specifier: workspace:^
         version: link:../types/dist
       inquirerer:
-        specifier: ^2.1.7
-        version: 2.1.7
+        specifier: ^2.1.8
+        version: 2.1.9
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.1
@@ -496,8 +607,8 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0
       yanse:
-        specifier: ^0.1.1
-        version: 0.1.4
+        specifier: ^0.1.5
+        version: 0.1.6
     devDependencies:
       '@types/js-yaml':
         specifier: ^4.0.9
@@ -521,8 +632,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -541,8 +652,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/content-type-stream:
@@ -558,8 +669,8 @@ importers:
         version: link:../uuid-hash/dist
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/core:
@@ -589,8 +700,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       komoji:
-        specifier: ^0.7.7
-        version: 0.7.7
+        specifier: ^0.7.8
+        version: 0.7.9
       parse-package-name:
         specifier: ^1.0.0
         version: 1.0.0
@@ -610,8 +721,8 @@ importers:
         specifier: ^17.9.1
         version: 17.9.1
       yanse:
-        specifier: ^0.1.1
-        version: 0.1.4
+        specifier: ^0.1.5
+        version: 0.1.6
     devDependencies:
       '@types/pg':
         specifier: ^8.15.2
@@ -620,8 +731,8 @@ importers:
         specifier: ^2.4.1
         version: 2.4.1
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/drizzle-orm-test:
@@ -640,8 +751,8 @@ importers:
         specifier: ^0.44.7
         version: 0.44.7(@types/pg@8.15.6)(pg@8.16.3)
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/env:
@@ -654,15 +765,15 @@ importers:
         version: 4.3.1
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/etag-hash:
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/etag-stream:
@@ -675,8 +786,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/explorer:
@@ -734,8 +845,8 @@ importers:
         specifier: ^8.0.12
         version: 8.0.12
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -751,8 +862,8 @@ importers:
         version: 15.10.1
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/introspectron:
@@ -777,8 +888,8 @@ importers:
         specifier: workspace:^
         version: link:../launchql-test/dist
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pgsql-test:
         specifier: workspace:^
         version: link:../pgsql-test/dist
@@ -809,8 +920,8 @@ importers:
         specifier: workspace:^
         version: link:../launchql-test/dist
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/launchql-test:
@@ -847,19 +958,19 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/logger:
     dependencies:
       yanse:
-        specifier: ^0.1.1
-        version: 0.1.4
+        specifier: ^0.1.5
+        version: 0.1.6
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/mime-bytes:
@@ -868,8 +979,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/orm:
@@ -882,8 +993,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/pg-ast:
@@ -892,12 +1003,12 @@ importers:
         specifier: ^17.6.1
         version: 17.6.1
       nested-obj:
-        specifier: 0.1.3
-        version: 0.1.3
+        specifier: 0.1.4
+        version: 0.1.4
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pg-proto-parser:
         specifier: ^1.30.1
         version: 1.30.1
@@ -928,8 +1039,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/pg-codegen:
@@ -969,15 +1080,15 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/pg-env:
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/pg-query-context:
@@ -990,8 +1101,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/pgpm:
@@ -1012,8 +1123,8 @@ importers:
         specifier: workspace:^
         version: link:../types/dist
       inquirerer:
-        specifier: ^2.1.7
-        version: 2.1.7
+        specifier: ^2.1.8
+        version: 2.1.9
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.1
@@ -1030,8 +1141,8 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0
       yanse:
-        specifier: ^0.1.1
-        version: 0.1.4
+        specifier: ^0.1.5
+        version: 0.1.6
     devDependencies:
       '@types/js-yaml':
         specifier: ^4.0.9
@@ -1052,8 +1163,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pg:
         specifier: ^8.16.0
         version: 8.16.3
@@ -1102,8 +1213,8 @@ importers:
         specifier: ^1.2.5
         version: 1.2.5
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/query:
@@ -1125,15 +1236,15 @@ importers:
         version: 8.0.0
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/query-builder:
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/react:
@@ -1167,18 +1278,18 @@ importers:
         specifier: ^19.1.3
         version: 19.2.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/s3-streamer:
     dependencies:
       '@aws-sdk/client-s3':
-        specifier: ^3.939.0
-        version: 3.939.0
+        specifier: ^3.940.0
+        version: 3.940.0
       '@aws-sdk/lib-storage':
-        specifier: ^3.939.0
-        version: 3.939.0(@aws-sdk/client-s3@3.939.0)
+        specifier: ^3.940.0
+        version: 3.940.0(@aws-sdk/client-s3@3.940.0)
       '@launchql/content-type-stream':
         specifier: workspace:^
         version: link:../content-type-stream/dist
@@ -1196,25 +1307,25 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/s3-utils:
     dependencies:
       '@aws-sdk/client-s3':
-        specifier: ^3.939.0
-        version: 3.939.0
+        specifier: ^3.940.0
+        version: 3.940.0
       '@aws-sdk/lib-storage':
-        specifier: ^3.939.0
-        version: 3.939.0(@aws-sdk/client-s3@3.939.0)
+        specifier: ^3.940.0
+        version: 3.940.0(@aws-sdk/client-s3@3.940.0)
     devDependencies:
       '@types/node':
         specifier: ^18.19.69
         version: 18.19.130
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/server:
@@ -1243,9 +1354,6 @@ importers:
       '@launchql/url-domains':
         specifier: workspace:^
         version: link:../url-domains/dist
-      '@pyramation/postgis':
-        specifier: ^0.1.1
-        version: 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -1267,6 +1375,9 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../../graphile/graphile-meta-schema/dist
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../../graphile/graphile-plugin-connection-filter/dist
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../../graphile/graphile-plugin-fulltext-filter/dist
@@ -1312,9 +1423,6 @@ importers:
       postgraphile-derived-upload-field:
         specifier: ^0.0.6
         version: 0.0.6(graphql@15.10.1)
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.3.0
-        version: 2.3.0
       postgraphile-plugin-connection-filter-postgis:
         specifier: ^1.0.0-alpha.6
         version: 1.0.0-alpha.6
@@ -1323,8 +1431,8 @@ importers:
         version: 3.3.0
     devDependencies:
       '@aws-sdk/client-s3':
-        specifier: ^3.939.0
-        version: 3.939.0
+        specifier: ^3.940.0
+        version: 3.940.0
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.19
@@ -1341,8 +1449,8 @@ importers:
         specifier: ^0.0.41
         version: 0.0.41
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       nodemon:
         specifier: ^3.1.10
         version: 3.1.11
@@ -1376,8 +1484,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.5
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
@@ -1393,8 +1501,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/supabase-test:
@@ -1410,8 +1518,8 @@ importers:
         version: link:../pgsql-test/dist
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/templatizer:
@@ -1420,15 +1528,15 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       komoji:
-        specifier: ^0.7.7
-        version: 0.7.7
+        specifier: ^0.7.8
+        version: 0.7.9
     devDependencies:
       '@types/node':
         specifier: ^20.12.7
         version: 20.19.25
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.19.25)(typescript@5.9.3)
@@ -1450,8 +1558,8 @@ importers:
         version: 4.14.1
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/upload-names:
@@ -1460,8 +1568,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/url-domains:
@@ -1474,15 +1582,15 @@ importers:
         specifier: ^5.0.1
         version: 5.0.5
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/uuid-hash:
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   packages/uuid-stream:
@@ -1492,21 +1600,21 @@ importers:
         version: link:../uuid-hash/dist
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
     publishDirectory: dist
 
   sandbox/my-first:
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
 
   sandbox/my-second:
     devDependencies:
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
 
   sandbox/my-third:
     devDependencies:
@@ -1517,8 +1625,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/types/dist
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
 
   sandbox/ollama:
     dependencies:
@@ -1539,8 +1647,8 @@ importers:
         specifier: ^8.15.2
         version: 8.15.6
       makage:
-        specifier: ^0.1.6
-        version: 0.1.6
+        specifier: ^0.1.8
+        version: 0.1.8
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
@@ -1570,55 +1678,55 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-s3@3.939.0':
-    resolution: {integrity: sha512-VMiaEDwKUr8w7B8NIFHal8ViPne7Buc+/idDvA3SeY1pDQcK/4saA2CNh1xHzsxQ8YjUbL0DuB3aztr6hU8K5Q==}
+  '@aws-sdk/client-s3@3.940.0':
+    resolution: {integrity: sha512-Wi4qnBT6shRRMXuuTgjMFTU5mu2KFWisgcigEMPptjPGUtJvBVi4PTGgS64qsLoUk/obqDAyOBOfEtRZ2ddC2w==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/client-sso@3.936.0':
-    resolution: {integrity: sha512-0G73S2cDqYwJVvqL08eakj79MZG2QRaB56Ul8/Ps9oQxllr7DMI1IQ/N3j3xjxgpq/U36pkoFZ8aK1n7Sbr3IQ==}
+  '@aws-sdk/client-sso@3.940.0':
+    resolution: {integrity: sha512-SdqJGWVhmIURvCSgkDditHRO+ozubwZk9aCX9MK8qxyOndhobCndW1ozl3hX9psvMAo9Q4bppjuqy/GHWpjB+A==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/core@3.936.0':
-    resolution: {integrity: sha512-eGJ2ySUMvgtOziHhDRDLCrj473RJoL4J1vPjVM3NrKC/fF3/LoHjkut8AAnKmrW6a2uTzNKubigw8dEnpmpERw==}
+  '@aws-sdk/core@3.940.0':
+    resolution: {integrity: sha512-KsGD2FLaX5ngJao1mHxodIVU9VYd1E8810fcYiGwO1PFHDzf5BEkp6D9IdMeQwT8Q6JLYtiiT1Y/o3UCScnGoA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-env@3.936.0':
-    resolution: {integrity: sha512-dKajFuaugEA5i9gCKzOaVy9uTeZcApE+7Z5wdcZ6j40523fY1a56khDAUYkCfwqa7sHci4ccmxBkAo+fW1RChA==}
+  '@aws-sdk/credential-provider-env@3.940.0':
+    resolution: {integrity: sha512-/G3l5/wbZYP2XEQiOoIkRJmlv15f1P3MSd1a0gz27lHEMrOJOGq66rF1Ca4OJLzapWt3Fy9BPrZAepoAX11kMw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-http@3.936.0':
-    resolution: {integrity: sha512-5FguODLXG1tWx/x8fBxH+GVrk7Hey2LbXV5h9SFzYCx/2h50URBm0+9hndg0Rd23+xzYe14F6SI9HA9c1sPnjg==}
+  '@aws-sdk/credential-provider-http@3.940.0':
+    resolution: {integrity: sha512-dOrc03DHElNBD6N9Okt4U0zhrG4Wix5QUBSZPr5VN8SvmjD9dkrrxOkkJaMCl/bzrW7kbQEp7LuBdbxArMmOZQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-ini@3.939.0':
-    resolution: {integrity: sha512-RHQ3xKz5pn5PMuoBYNYLMIdN4iU8gklxcsfJzOflSrwkhb8ukVRS9LjHXUtyE4qQ2J+dfj1QSr4PFOSxvzRZkA==}
+  '@aws-sdk/credential-provider-ini@3.940.0':
+    resolution: {integrity: sha512-gn7PJQEzb/cnInNFTOaDoCN/hOKqMejNmLof1W5VW95Qk0TPO52lH8R4RmJPnRrwFMswOWswTOpR1roKNLIrcw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-login@3.939.0':
-    resolution: {integrity: sha512-SbbzlsH2ZSsu2szyl494QOUS69LZgU8bYlFoDnUxy2L89YzLyR4D9wWlJzKCm4cS1eyNxPsOMkbVVL42JRvdZw==}
+  '@aws-sdk/credential-provider-login@3.940.0':
+    resolution: {integrity: sha512-fOKC3VZkwa9T2l2VFKWRtfHQPQuISqqNl35ZhcXjWKVwRwl/o7THPMkqI4XwgT2noGa7LLYVbWMwnsgSsBqglg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-node@3.939.0':
-    resolution: {integrity: sha512-OAwCqDNlKC3JmWb+N0zFfsPJJ8J5b8ZD63vWHdSf9c7ZlRKpFRD/uePqVMQKOq4h3DO0P0smAPk/m5p66oYLrw==}
+  '@aws-sdk/credential-provider-node@3.940.0':
+    resolution: {integrity: sha512-M8NFAvgvO6xZjiti5kztFiAYmSmSlG3eUfr4ZHSfXYZUA/KUdZU/D6xJyaLnU8cYRWBludb6K9XPKKVwKfqm4g==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-process@3.936.0':
-    resolution: {integrity: sha512-GpA4AcHb96KQK2PSPUyvChvrsEKiLhQ5NWjeef2IZ3Jc8JoosiedYqp6yhZR+S8cTysuvx56WyJIJc8y8OTrLA==}
+  '@aws-sdk/credential-provider-process@3.940.0':
+    resolution: {integrity: sha512-pILBzt5/TYCqRsJb7vZlxmRIe0/T+FZPeml417EK75060ajDGnVJjHcuVdLVIeKoTKm9gmJc9l45gon6PbHyUQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-sso@3.939.0':
-    resolution: {integrity: sha512-gXWI+5xf+2n7kJSqYgDw1VkNLGRe2IYNCjOW/F04/7l8scxOP84SZ634OI9IR/8JWvFwMUjxH4JigPU0j6ZWzQ==}
+  '@aws-sdk/credential-provider-sso@3.940.0':
+    resolution: {integrity: sha512-q6JMHIkBlDCOMnA3RAzf8cGfup+8ukhhb50fNpghMs1SNBGhanmaMbZSgLigBRsPQW7fOk2l8jnzdVLS+BB9Uw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-web-identity@3.939.0':
-    resolution: {integrity: sha512-b/ySLC6DfWwZIAP2Glq9mkJJ/9LIDiKfYN2f9ZenQF+k2lO1i6/QtBuslvLmBJ+mNz0lPRSHW29alyqOpBgeCQ==}
+  '@aws-sdk/credential-provider-web-identity@3.940.0':
+    resolution: {integrity: sha512-9QLTIkDJHHaYL0nyymO41H8g3ui1yz6Y3GmAN1gYQa6plXisuFBnGAbmKVj7zNvjWaOKdF0dV3dd3AFKEDoJ/w==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/lib-storage@3.939.0':
-    resolution: {integrity: sha512-PLpzeX2oA2i29MQ6h7CFN0QMuE3V8AF2kPtyHtd05lwBKcF5qJDriIUSIbvB56XEg/ceWYZaF5lAwSF7JkIitA==}
+  '@aws-sdk/lib-storage@3.940.0':
+    resolution: {integrity: sha512-4pHgz9tuFJNSy/qoTbW5FqXPjoR4B18jB656UsE+TP5GWd7EPx7m4F0EUwIsD3OF5+KPiiyICi8zkxOs7erfQw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      '@aws-sdk/client-s3': ^3.939.0
+      '@aws-sdk/client-s3': ^3.940.0
 
   '@aws-sdk/middleware-bucket-endpoint@3.936.0':
     resolution: {integrity: sha512-XLSVVfAorUxZh6dzF+HTOp4R1B5EQcdpGcPliWr0KUj2jukgjZEcqbBmjyMF/p9bmyQsONX80iURF1HLAlW0qg==}
@@ -1628,8 +1736,8 @@ packages:
     resolution: {integrity: sha512-Eb4ELAC23bEQLJmUMYnPWcjD3FZIsmz2svDiXEcxRkQU9r7NRID7pM7C5NPH94wOfiCk0b2Y8rVyFXW0lGQwbA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-flexible-checksums@3.936.0':
-    resolution: {integrity: sha512-l3GG6CrSQtMCM6fWY7foV3JQv0WJWT+3G6PSP3Ceb/KEE/5Lz5PrYFXTBf+bVoYL1b0bGjGajcgAXpstBmtHtQ==}
+  '@aws-sdk/middleware-flexible-checksums@3.940.0':
+    resolution: {integrity: sha512-WdsxDAVj5qaa5ApAP+JbpCOMHFGSmzjs2Y2OBSbWPeR9Ew7t/Okj+kUub94QJPsgzhvU1/cqNejhsw5VxeFKSQ==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/middleware-host-header@3.936.0':
@@ -1648,32 +1756,32 @@ packages:
     resolution: {integrity: sha512-l4aGbHpXM45YNgXggIux1HgsCVAvvBoqHPkqLnqMl9QVapfuSTjJHfDYDsx1Xxct6/m7qSMUzanBALhiaGO2fA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-sdk-s3@3.939.0':
-    resolution: {integrity: sha512-9WMPAAyuSPvEawZJ5ndZKD+UZuISGS885kFyNyfHCNNWMws8Rohji6nysda2gL8SSpGdbvTBZRjSIzim13bYRg==}
+  '@aws-sdk/middleware-sdk-s3@3.940.0':
+    resolution: {integrity: sha512-JYkLjgS1wLoKHJ40G63+afM1ehmsPsjcmrHirKh8+kSCx4ip7+nL1e/twV4Zicxr8RJi9Y0Ahq5mDvneilDDKQ==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/middleware-ssec@3.936.0':
     resolution: {integrity: sha512-/GLC9lZdVp05ozRik5KsuODR/N7j+W+2TbfdFL3iS+7un+gnP6hC8RDOZd6WhpZp7drXQ9guKiTAxkZQwzS8DA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-user-agent@3.936.0':
-    resolution: {integrity: sha512-YB40IPa7K3iaYX0lSnV9easDOLPLh+fJyUDF3BH8doX4i1AOSsYn86L4lVldmOaSX+DwiaqKHpvk4wPBdcIPWw==}
+  '@aws-sdk/middleware-user-agent@3.940.0':
+    resolution: {integrity: sha512-nJbLrUj6fY+l2W2rIB9P4Qvpiy0tnTdg/dmixRxrU1z3e8wBdspJlyE+AZN4fuVbeL6rrRrO/zxQC1bB3cw5IA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/nested-clients@3.939.0':
-    resolution: {integrity: sha512-QeNsjHBCbsVRbgEt9FZNnrrbMTUuIYML3FX5xFgEJz4aI5uXwMBjYOi5TvAY+Y4CBHY4cp3dd/zSpHu0gX68GQ==}
+  '@aws-sdk/nested-clients@3.940.0':
+    resolution: {integrity: sha512-x0mdv6DkjXqXEcQj3URbCltEzW6hoy/1uIL+i8gExP6YKrnhiZ7SzuB4gPls2UOpK5UqLiqXjhRLfBb1C9i4Dw==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/region-config-resolver@3.936.0':
     resolution: {integrity: sha512-wOKhzzWsshXGduxO4pqSiNyL9oUtk4BEvjWm9aaq6Hmfdoydq6v6t0rAGHWPjFwy9z2haovGRi3C8IxdMB4muw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/signature-v4-multi-region@3.939.0':
-    resolution: {integrity: sha512-pERVG90nneZWIenPvPoOnEcfqpUHiL9KMHf+TtHIWSBcaRL1kWuNm4CfEs7mo4EM0LHbaMgoZma6woIsJ6MOwA==}
+  '@aws-sdk/signature-v4-multi-region@3.940.0':
+    resolution: {integrity: sha512-ugHZEoktD/bG6mdgmhzLDjMP2VrYRAUPRPF1DpCyiZexkH7DCU7XrSJyXMvkcf0DHV+URk0q2sLf/oqn1D2uYw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/token-providers@3.939.0':
-    resolution: {integrity: sha512-paNeLZdr2/sk7XYMZz2OIqFFF3AkA5vUpKYahVDYmMeiMecQTqa/EptA3aVvWa4yWobEF0Kk+WSUPrOIGI3eQg==}
+  '@aws-sdk/token-providers@3.940.0':
+    resolution: {integrity: sha512-k5qbRe/ZFjW9oWEdzLIa2twRVIEx7p/9rutofyrRysrtEnYh3HAWCngAnwbgKMoiwa806UzcTRx0TjyEpnKcCg==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/types@3.936.0':
@@ -1695,8 +1803,8 @@ packages:
   '@aws-sdk/util-user-agent-browser@3.936.0':
     resolution: {integrity: sha512-eZ/XF6NxMtu+iCma58GRNRxSq4lHo6zHQLOZRIeL/ghqYJirqHdenMOwrzPettj60KWlv827RVebP9oNVrwZbw==}
 
-  '@aws-sdk/util-user-agent-node@3.936.0':
-    resolution: {integrity: sha512-XOEc7PF9Op00pWV2AYCGDSu5iHgYjIO53Py2VUQTIvP7SRCaCsXmA33mjBvC2Ms6FhSyWNa4aK4naUGIz0hQcw==}
+  '@aws-sdk/util-user-agent-node@3.940.0':
+    resolution: {integrity: sha512-dlD/F+L/jN26I8Zg5x0oDGJiA+/WEQmnSE27fi5ydvYnpfQLwThtQo9SsNS47XSR/SOULaaoC9qx929rZuo74A==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       aws-crt: '>=1.0.0'
@@ -1938,6 +2046,9 @@ packages:
 
   '@graphile-contrib/pg-many-to-many@1.0.2':
     resolution: {integrity: sha512-ChSaSU7/n99Crdlink62cCGqlEYmjUJKizz2Nx0tdGgqSMkf6KTk00D3ILGybScywMcJGjJE2cc6FXYIHVlxCg==}
+
+  '@graphile-contrib/pg-simplify-inflector@6.1.0':
+    resolution: {integrity: sha512-3eI2FP4ulu/fxwkJBNXhR6XEzqVz4wJWFr4LfeyUNNArUtLFx0DpP6YdcARCYgwLExFcIQNE8fnul3JKiciYIw==}
 
   '@graphile/lru@4.11.0':
     resolution: {integrity: sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg==}
@@ -2367,14 +2478,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@pyramation/postgis@0.1.1':
-    resolution: {integrity: sha512-tzawuoEcQF/CWfjjEB/03/XZ9C+dt+bU6YeydTYIDShM/b6E+lND/74/5AX4KPyTMB66x1Gu41S50wrmxqDnTA==}
-    peerDependencies:
-      graphile-build: ^4.4.0
-      graphile-build-pg: ^4.4.0
-      graphql: '>=0.6 <15'
-      pg-sql2: '>=2.2.1 <5'
-
   '@pyramation/prompt@0.0.1':
     resolution: {integrity: sha512-xIa9eLrx8ceZy3+rijd1/Z/YHSyROoHuMpT+xOjGDOKJ7DhiXT9dXkfzxiRqWzeCRls+R/7ApRN6j4tYxnjkFQ==}
     peerDependencies:
@@ -2720,6 +2823,9 @@ packages:
 
   '@types/express@5.0.5':
     resolution: {integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==}
+
+  '@types/geojson@7946.0.16':
+    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
   '@types/graphql-upload@8.0.12':
     resolution: {integrity: sha512-M0ZPZqNUzKNB16q5woEzgG/Q8DjICV80K7JvDSRnDmDFfrRdfFX/n6PbmqAN7gCzECcHVnw1gk6N4Cg0FwxCqA==}
@@ -4489,8 +4595,8 @@ packages:
     resolution: {integrity: sha512-UjOaSel/iddGZJ5xP/Eixh6dY1XghiBw4XK13rCCIJcJfyhhoul/7KhLLUGtebEj6GDYM6Vnx/mVsjx2L/mFIA==}
     engines: {node: '>=12.0.0'}
 
-  inquirerer@2.1.7:
-    resolution: {integrity: sha512-Bsv9QHkEErOZs39TYKAwJpaMMg+jQtvl7youNuRFyjgLbHC/b7pDWcFESqnPmtVBBEcUmIwM829X8BHYD0peVw==}
+  inquirerer@2.1.9:
+    resolution: {integrity: sha512-Q0DBdouMQ6ZenNiVvrggBOI2kpfWsB5Pw/KLM0N04i5gXe+Z+p6D7FR0y4x+Fvw/yy34cRdpVfU51N7wwPYgNw==}
 
   ip-address@10.1.0:
     resolution: {integrity: sha512-XXADHxXmvT9+CRxhXg56LJovE+bmWnEWB78LB83VZTprKTmaC5QfruXocxzTZ2Kl0DNwKuBdlIhjL8LeY8Sf8Q==}
@@ -4874,8 +4980,8 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  komoji@0.7.7:
-    resolution: {integrity: sha512-7tW4OyqPSiP/xa/RtvtRIfGY5spO4zf3iTPVeaJf/09XNCFJsF0leHlkehFhfjmeSp11WRkLZl0+CdQHguO+BA==}
+  komoji@0.7.9:
+    resolution: {integrity: sha512-J0O8cfuw/T5B8SDmmzPfIm3D3FEeUHlTQ1XSwhL0GNisS9p+0NeLw4LYxEXMHsuL5SEBpa8k/8DbGA7vsmeY7A==}
 
   lerna@8.2.4:
     resolution: {integrity: sha512-0gaVWDIVT7fLfprfwpYcQajb7dBJv3EGavjG7zvJ+TmGx3/wovl5GklnSwM2/WeE0Z2wrIz7ndWhBcDUHVjOcQ==}
@@ -4994,6 +5100,10 @@ packages:
 
   makage@0.1.6:
     resolution: {integrity: sha512-83Wj8K/viAes3XrlqLxuHX/OYw2Xg4SguDgJIjyoOxfhYwK4hKLlO334YPfd5lJnrMhWcW/pAsMcqEwxILZFTQ==}
+    hasBin: true
+
+  makage@0.1.8:
+    resolution: {integrity: sha512-tuiW9YKY1v6hFakrFoNh0+Qn3PafiV6+LY1ZiIFvJQ6VmkbqbWbSZrSj3IdZI24EO5jPIyL2tgiwboBtlRrlbQ==}
     hasBin: true
 
   make-dir@2.1.0:
@@ -5217,8 +5327,8 @@ packages:
   nested-obj@0.0.1:
     resolution: {integrity: sha512-kB1WKTng+IePQhZVs1UXtFaHBx4QEM5a0XKGAzYfCKvdx5DhNjCytNDWMUGpNNpHLotln+tiwcA52kWCIgGq1Q==}
 
-  nested-obj@0.1.3:
-    resolution: {integrity: sha512-xvS1HVzaBJbUvw0VFqa02N3bYOGFJ1pbJbpLRuMN1ur/3APXqtaY3cJe0v1BeMPNdB577OvtJ/rjXOrKOkoJ7Q==}
+  nested-obj@0.1.4:
+    resolution: {integrity: sha512-LfINBgHccDULRxSApd4A7atKiFJDd5k2tpWb5C6DuV5fUnE+USuqUauOA5AiAht2UyDtFVfuzdxiDLp/JwS9ug==}
 
   node-fetch@2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
@@ -6561,8 +6671,8 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
-  yanse@0.1.4:
-    resolution: {integrity: sha512-gaRKNxhJGg3kAvMb2VNS7jyBBXWx6+z+rDcMJfXWyphBpSwiPfz7R/8N3pjgQg5mkPRziGR6NkBKxoHA72YTWg==}
+  yanse@0.1.6:
+    resolution: {integrity: sha512-7nDeQ8fWtK6BWrWH1SxfT1hYrYmq2WUYIo/pScf1OljDT/W9Kmj8C1f0bsAo4t7/lvlXJTnbCUNiDGJPpwdmPw==}
 
   yargs-parser@20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
@@ -6637,29 +6747,29 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
-  '@aws-sdk/client-s3@3.939.0':
+  '@aws-sdk/client-s3@3.940.0':
     dependencies:
       '@aws-crypto/sha1-browser': 5.2.0
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.936.0
-      '@aws-sdk/credential-provider-node': 3.939.0
+      '@aws-sdk/core': 3.940.0
+      '@aws-sdk/credential-provider-node': 3.940.0
       '@aws-sdk/middleware-bucket-endpoint': 3.936.0
       '@aws-sdk/middleware-expect-continue': 3.936.0
-      '@aws-sdk/middleware-flexible-checksums': 3.936.0
+      '@aws-sdk/middleware-flexible-checksums': 3.940.0
       '@aws-sdk/middleware-host-header': 3.936.0
       '@aws-sdk/middleware-location-constraint': 3.936.0
       '@aws-sdk/middleware-logger': 3.936.0
       '@aws-sdk/middleware-recursion-detection': 3.936.0
-      '@aws-sdk/middleware-sdk-s3': 3.939.0
+      '@aws-sdk/middleware-sdk-s3': 3.940.0
       '@aws-sdk/middleware-ssec': 3.936.0
-      '@aws-sdk/middleware-user-agent': 3.936.0
+      '@aws-sdk/middleware-user-agent': 3.940.0
       '@aws-sdk/region-config-resolver': 3.936.0
-      '@aws-sdk/signature-v4-multi-region': 3.939.0
+      '@aws-sdk/signature-v4-multi-region': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-endpoints': 3.936.0
       '@aws-sdk/util-user-agent-browser': 3.936.0
-      '@aws-sdk/util-user-agent-node': 3.936.0
+      '@aws-sdk/util-user-agent-node': 3.940.0
       '@smithy/config-resolver': 4.4.3
       '@smithy/core': 3.18.5
       '@smithy/eventstream-serde-browser': 4.2.5
@@ -6697,20 +6807,20 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/client-sso@3.936.0':
+  '@aws-sdk/client-sso@3.940.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/middleware-host-header': 3.936.0
       '@aws-sdk/middleware-logger': 3.936.0
       '@aws-sdk/middleware-recursion-detection': 3.936.0
-      '@aws-sdk/middleware-user-agent': 3.936.0
+      '@aws-sdk/middleware-user-agent': 3.940.0
       '@aws-sdk/region-config-resolver': 3.936.0
       '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-endpoints': 3.936.0
       '@aws-sdk/util-user-agent-browser': 3.936.0
-      '@aws-sdk/util-user-agent-node': 3.936.0
+      '@aws-sdk/util-user-agent-node': 3.940.0
       '@smithy/config-resolver': 4.4.3
       '@smithy/core': 3.18.5
       '@smithy/fetch-http-handler': 5.3.6
@@ -6740,7 +6850,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/core@3.936.0':
+  '@aws-sdk/core@3.940.0':
     dependencies:
       '@aws-sdk/types': 3.936.0
       '@aws-sdk/xml-builder': 3.930.0
@@ -6756,17 +6866,17 @@ snapshots:
       '@smithy/util-utf8': 4.2.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-env@3.936.0':
+  '@aws-sdk/credential-provider-env@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/property-provider': 4.2.5
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-http@3.936.0':
+  '@aws-sdk/credential-provider-http@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/fetch-http-handler': 5.3.6
       '@smithy/node-http-handler': 4.4.5
@@ -6777,16 +6887,16 @@ snapshots:
       '@smithy/util-stream': 4.5.6
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-ini@3.939.0':
+  '@aws-sdk/credential-provider-ini@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
-      '@aws-sdk/credential-provider-env': 3.936.0
-      '@aws-sdk/credential-provider-http': 3.936.0
-      '@aws-sdk/credential-provider-login': 3.939.0
-      '@aws-sdk/credential-provider-process': 3.936.0
-      '@aws-sdk/credential-provider-sso': 3.939.0
-      '@aws-sdk/credential-provider-web-identity': 3.939.0
-      '@aws-sdk/nested-clients': 3.939.0
+      '@aws-sdk/core': 3.940.0
+      '@aws-sdk/credential-provider-env': 3.940.0
+      '@aws-sdk/credential-provider-http': 3.940.0
+      '@aws-sdk/credential-provider-login': 3.940.0
+      '@aws-sdk/credential-provider-process': 3.940.0
+      '@aws-sdk/credential-provider-sso': 3.940.0
+      '@aws-sdk/credential-provider-web-identity': 3.940.0
+      '@aws-sdk/nested-clients': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/credential-provider-imds': 4.2.5
       '@smithy/property-provider': 4.2.5
@@ -6796,10 +6906,10 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-login@3.939.0':
+  '@aws-sdk/credential-provider-login@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
-      '@aws-sdk/nested-clients': 3.939.0
+      '@aws-sdk/core': 3.940.0
+      '@aws-sdk/nested-clients': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/property-provider': 4.2.5
       '@smithy/protocol-http': 5.3.5
@@ -6809,14 +6919,14 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-node@3.939.0':
+  '@aws-sdk/credential-provider-node@3.940.0':
     dependencies:
-      '@aws-sdk/credential-provider-env': 3.936.0
-      '@aws-sdk/credential-provider-http': 3.936.0
-      '@aws-sdk/credential-provider-ini': 3.939.0
-      '@aws-sdk/credential-provider-process': 3.936.0
-      '@aws-sdk/credential-provider-sso': 3.939.0
-      '@aws-sdk/credential-provider-web-identity': 3.939.0
+      '@aws-sdk/credential-provider-env': 3.940.0
+      '@aws-sdk/credential-provider-http': 3.940.0
+      '@aws-sdk/credential-provider-ini': 3.940.0
+      '@aws-sdk/credential-provider-process': 3.940.0
+      '@aws-sdk/credential-provider-sso': 3.940.0
+      '@aws-sdk/credential-provider-web-identity': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/credential-provider-imds': 4.2.5
       '@smithy/property-provider': 4.2.5
@@ -6826,32 +6936,20 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-process@3.936.0':
+  '@aws-sdk/credential-provider-process@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/property-provider': 4.2.5
       '@smithy/shared-ini-file-loader': 4.4.0
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-sso@3.939.0':
+  '@aws-sdk/credential-provider-sso@3.940.0':
     dependencies:
-      '@aws-sdk/client-sso': 3.936.0
-      '@aws-sdk/core': 3.936.0
-      '@aws-sdk/token-providers': 3.939.0
-      '@aws-sdk/types': 3.936.0
-      '@smithy/property-provider': 4.2.5
-      '@smithy/shared-ini-file-loader': 4.4.0
-      '@smithy/types': 4.9.0
-      tslib: 2.8.1
-    transitivePeerDependencies:
-      - aws-crt
-
-  '@aws-sdk/credential-provider-web-identity@3.939.0':
-    dependencies:
-      '@aws-sdk/core': 3.936.0
-      '@aws-sdk/nested-clients': 3.939.0
+      '@aws-sdk/client-sso': 3.940.0
+      '@aws-sdk/core': 3.940.0
+      '@aws-sdk/token-providers': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/property-provider': 4.2.5
       '@smithy/shared-ini-file-loader': 4.4.0
@@ -6860,9 +6958,21 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/lib-storage@3.939.0(@aws-sdk/client-s3@3.939.0)':
+  '@aws-sdk/credential-provider-web-identity@3.940.0':
     dependencies:
-      '@aws-sdk/client-s3': 3.939.0
+      '@aws-sdk/core': 3.940.0
+      '@aws-sdk/nested-clients': 3.940.0
+      '@aws-sdk/types': 3.936.0
+      '@smithy/property-provider': 4.2.5
+      '@smithy/shared-ini-file-loader': 4.4.0
+      '@smithy/types': 4.9.0
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - aws-crt
+
+  '@aws-sdk/lib-storage@3.940.0(@aws-sdk/client-s3@3.940.0)':
+    dependencies:
+      '@aws-sdk/client-s3': 3.940.0
       '@smithy/abort-controller': 4.2.5
       '@smithy/middleware-endpoint': 4.3.12
       '@smithy/smithy-client': 4.9.8
@@ -6888,12 +6998,12 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-flexible-checksums@3.936.0':
+  '@aws-sdk/middleware-flexible-checksums@3.940.0':
     dependencies:
       '@aws-crypto/crc32': 5.2.0
       '@aws-crypto/crc32c': 5.2.0
       '@aws-crypto/util': 5.2.0
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/is-array-buffer': 4.2.0
       '@smithy/node-config-provider': 4.3.5
@@ -6931,9 +7041,9 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-sdk-s3@3.939.0':
+  '@aws-sdk/middleware-sdk-s3@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-arn-parser': 3.893.0
       '@smithy/core': 3.18.5
@@ -6954,9 +7064,9 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-user-agent@3.936.0':
+  '@aws-sdk/middleware-user-agent@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-endpoints': 3.936.0
       '@smithy/core': 3.18.5
@@ -6964,20 +7074,20 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/nested-clients@3.939.0':
+  '@aws-sdk/nested-clients@3.940.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.936.0
+      '@aws-sdk/core': 3.940.0
       '@aws-sdk/middleware-host-header': 3.936.0
       '@aws-sdk/middleware-logger': 3.936.0
       '@aws-sdk/middleware-recursion-detection': 3.936.0
-      '@aws-sdk/middleware-user-agent': 3.936.0
+      '@aws-sdk/middleware-user-agent': 3.940.0
       '@aws-sdk/region-config-resolver': 3.936.0
       '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-endpoints': 3.936.0
       '@aws-sdk/util-user-agent-browser': 3.936.0
-      '@aws-sdk/util-user-agent-node': 3.936.0
+      '@aws-sdk/util-user-agent-node': 3.940.0
       '@smithy/config-resolver': 4.4.3
       '@smithy/core': 3.18.5
       '@smithy/fetch-http-handler': 5.3.6
@@ -7015,19 +7125,19 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/signature-v4-multi-region@3.939.0':
+  '@aws-sdk/signature-v4-multi-region@3.940.0':
     dependencies:
-      '@aws-sdk/middleware-sdk-s3': 3.939.0
+      '@aws-sdk/middleware-sdk-s3': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/protocol-http': 5.3.5
       '@smithy/signature-v4': 5.3.5
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/token-providers@3.939.0':
+  '@aws-sdk/token-providers@3.940.0':
     dependencies:
-      '@aws-sdk/core': 3.936.0
-      '@aws-sdk/nested-clients': 3.939.0
+      '@aws-sdk/core': 3.940.0
+      '@aws-sdk/nested-clients': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/property-provider': 4.2.5
       '@smithy/shared-ini-file-loader': 4.4.0
@@ -7064,9 +7174,9 @@ snapshots:
       bowser: 2.13.0
       tslib: 2.8.1
 
-  '@aws-sdk/util-user-agent-node@3.936.0':
+  '@aws-sdk/util-user-agent-node@3.940.0':
     dependencies:
-      '@aws-sdk/middleware-user-agent': 3.936.0
+      '@aws-sdk/middleware-user-agent': 3.940.0
       '@aws-sdk/types': 3.936.0
       '@smithy/node-config-provider': 4.3.5
       '@smithy/types': 4.9.0
@@ -7339,6 +7449,8 @@ snapshots:
       levn: 0.4.1
 
   '@graphile-contrib/pg-many-to-many@1.0.2': {}
+
+  '@graphile-contrib/pg-simplify-inflector@6.1.0': {}
 
   '@graphile/lru@4.11.0':
     dependencies:
@@ -8017,17 +8129,6 @@ snapshots:
       '@babel/core': 7.28.5
       '@babel/runtime': 7.28.4
 
-  '@pyramation/postgis@0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))':
-    dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
-      graphile-build: 4.14.1(graphql@15.10.1)
-      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      graphql: 15.10.1
-      pg-sql2: 4.14.1(pg@8.16.3)
-      tslib: 1.14.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@pyramation/prompt@0.0.1(@babel/core@7.28.5)':
     dependencies:
       '@babel/core': 7.28.5
@@ -8541,6 +8642,8 @@ snapshots:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 5.1.0
       '@types/serve-static': 1.15.10
+
+  '@types/geojson@7946.0.16': {}
 
   '@types/graphql-upload@8.0.12':
     dependencies:
@@ -10371,12 +10474,12 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  inquirerer@2.1.7:
+  inquirerer@2.1.9:
     dependencies:
       deepmerge: 4.3.1
       js-yaml: 4.1.1
       minimist: 1.2.8
-      yanse: 0.1.4
+      yanse: 0.1.6
 
   ip-address@10.1.0: {}
 
@@ -10911,7 +11014,7 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  komoji@0.7.7: {}
+  komoji@0.7.9: {}
 
   lerna@8.2.4(@types/node@20.19.25)(encoding@0.1.13):
     dependencies:
@@ -11117,6 +11220,10 @@ snapshots:
   lz-string@1.5.0: {}
 
   makage@0.1.6: {}
+
+  makage@0.1.8:
+    dependencies:
+      nodemon: 3.1.11
 
   make-dir@2.1.0:
     dependencies:
@@ -11325,7 +11432,7 @@ snapshots:
 
   nested-obj@0.0.1: {}
 
-  nested-obj@0.1.3: {}
+  nested-obj@0.1.4: {}
 
   node-fetch@2.6.7(encoding@0.1.13):
     dependencies:
@@ -11728,7 +11835,7 @@ snapshots:
       '@launchql/protobufjs': 7.2.6
       case: 1.6.3
       deepmerge: 4.3.1
-      nested-obj: 0.1.3
+      nested-obj: 0.1.4
       strfy-js: 3.1.1
     transitivePeerDependencies:
       - supports-color
@@ -12796,7 +12903,7 @@ snapshots:
 
   yaml@2.8.1: {}
 
-  yanse@0.1.4: {}
+  yanse@0.1.6: {}
 
   yargs-parser@20.2.9: {}
 

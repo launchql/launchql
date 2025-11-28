@@ -1,6 +1,6 @@
 {
   "name": "gql-ast",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "GraphQL ASTs",
   "main": "index.js",
@@ -39,6 +39,6 @@
     "schema"
   ],
   "devDependencies": {
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }

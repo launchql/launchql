@@ -1,6 +1,6 @@
 {
   "name": "graphile-meta-schema",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "graphile meta schema",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",
@@ -42,7 +42,7 @@
     "@graphile-contrib/pg-many-to-many": "^1.0.0",
     "graphile-test": "workspace:^",
     "graphql-tag": "2.12.6",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "pgsql-test": "workspace:^"
   },
   "dependencies": {

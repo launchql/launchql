@@ -1,6 +1,6 @@
 {
   "name": "pg-query-context",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pg query context",
   "main": "index.js",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.2",
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   },
   "keywords": [
     "postgresql",

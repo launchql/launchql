@@ -1,6 +1,6 @@
 {
   "name": "graphile-cache",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostGraphile LRU cache with automatic pool cleanup integration",
   "main": "index.js",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.2",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2"
   },

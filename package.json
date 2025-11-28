@@ -41,7 +41,7 @@
     "jest": "^30.2.0",
     "jest-in-case": "^1.0.2",
     "lerna": "^8.2.3",
-    "makage": "^0.1.6",
+    "makage": "^0.1.8",
     "prettier": "^3.0.2",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
@@ -49,8 +49,7 @@
   },
   "overrides": {
     "graphql": "15.10.1",
-    "graphql-upload": "^13.0.0",
-    "@pyramation/postgis": "0.1.1"
+    "graphql-upload": "^13.0.0"
   },
   "packageManager": "pnpm@9.12.1",
   "pnpm": {

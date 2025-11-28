@@ -1,0 +1,16 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogPointz {
+        ...geogPointz
+      }
+    }
+  }
+}
+
+fragment geogPointz on GeographyPointZ {
+  geojson
+  latitude
+  longitude
+  height
+}

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.10](https://github.com/launchql/launchql/compare/graphile-meta-schema@0.2.9...graphile-meta-schema@0.2.10) (2025-11-28)
+
+**Note:** Version bump only for package graphile-meta-schema
+
 ## [0.2.9](https://github.com/launchql/launchql/compare/graphile-meta-schema@0.2.8...graphile-meta-schema@0.2.9) (2025-11-27)
 
 **Note:** Version bump only for package graphile-meta-schema

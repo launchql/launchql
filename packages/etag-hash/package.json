@@ -1,6 +1,6 @@
 {
   "name": "etag-hash",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.",
   "main": "index.js",
@@ -38,6 +38,6 @@
     "md5"
   ],
   "devDependencies": {
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }

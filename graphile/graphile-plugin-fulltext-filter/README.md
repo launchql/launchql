@@ -9,9 +9,10 @@
     <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+   <a href="https://www.npmjs.com/package/graphile-plugin-fulltext-filter"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=graphile%2Fgraphile-plugin-fulltext-filter%2Fpackage.json"/></a>
 </p>
 
-Full text searching on `tsvector` fields for use with `postgraphile-plugin-connection-filter`. This plugin implements a full text search operator for `tsvector` columns in PostGraphile v4.
+Full text searching on `tsvector` fields for use with `graphile-plugin-connection-filter`. This plugin implements a full text search operator for `tsvector` columns in PostGraphile v4.
 
 ## Install
 
@@ -24,7 +25,7 @@ pnpm add graphile-plugin-fulltext-filter
 ### CLI
 
 ```bash
-postgraphile --append-plugins postgraphile-plugin-connection-filter,graphile-plugin-fulltext-filter
+postgraphile --append-plugins graphile-plugin-connection-filter,graphile-plugin-fulltext-filter
 ```
 
 See [here](https://www.graphile.org/postgraphile/extending/#loading-additional-plugins) for more information about loading plugins with PostGraphile.
@@ -34,7 +35,7 @@ See [here](https://www.graphile.org/postgraphile/extending/#loading-additional-p
 ```js
 const express = require('express');
 const { postgraphile } = require('postgraphile');
-const PostGraphileConnectionFilterPlugin = require('postgraphile-plugin-connection-filter');
+const PostGraphileConnectionFilterPlugin = require('graphile-plugin-connection-filter');
 const FulltextFilterPlugin = require('graphile-plugin-fulltext-filter');
 
 const app = express();

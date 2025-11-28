@@ -1,7 +1,7 @@
 import streamer from '@launchql/s3-streamer';
 import uploadNames from '@launchql/upload-names';
 
-interface UploaderOptions {
+export interface UploaderOptions {
   bucketName: string;
   awsRegion: string;
   awsSecretKey: string;

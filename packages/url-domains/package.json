@@ -1,6 +1,6 @@
 {
   "name": "@launchql/url-domains",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "url domains",
   "main": "index.js",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   },
   "keywords": []
 }

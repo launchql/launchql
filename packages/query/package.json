@@ -1,6 +1,6 @@
 {
   "name": "@launchql/query",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "description": "LaunchQL Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
@@ -43,6 +43,6 @@
     "database"
   ],
   "devDependencies": {
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }

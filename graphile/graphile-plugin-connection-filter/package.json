@@ -1,0 +1,57 @@
+{
+  "name": "graphile-plugin-connection-filter",
+  "version": "2.3.1",
+  "description": "Filtering on PostGraphile connections",
+  "author": "Matt Bretl",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "plugin",
+    "postgres",
+    "graphql",
+    "filters",
+    "launchql"
+  ],
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "dependencies": {
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphql": "15.10.1"
+  },
+  "peerDependencies": {
+    "postgraphile": "^4.14.1"
+  },
+  "devDependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
+    "@types/pg": "^8.15.6",
+    "graphile-test": "workspace:^",
+    "makage": "^0.1.6",
+    "pg": "^8.16.0",
+    "pgsql-test": "workspace:^"
+  }
+}

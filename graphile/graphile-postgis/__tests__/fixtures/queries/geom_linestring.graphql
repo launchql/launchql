@@ -1,0 +1,22 @@
+query {
+  allGisDebugs {
+    nodes {
+      geomLinestring {
+        ...geomLinestring
+      }
+    }
+  }
+}
+
+fragment geomPoint on GeometryPoint {
+  geojson
+  x
+  y
+}
+
+fragment geomLinestring on GeometryLineString {
+  geojson
+  points {
+    ...geomPoint
+  }
+}

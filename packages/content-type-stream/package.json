@@ -1,6 +1,6 @@
 {
   "name": "@launchql/content-type-stream",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "detect content-types via streams",
   "main": "index.js",
@@ -39,6 +39,6 @@
     "middleware"
   ],
   "devDependencies": {
-    "makage": "^0.1.6"
+    "makage": "^0.1.8"
   }
 }
