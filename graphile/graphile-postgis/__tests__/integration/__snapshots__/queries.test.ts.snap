@@ -1,0 +1,1321 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`integration queries geog.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_geometry.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_geometrym.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_geometryz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_geometryzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_linestring.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_linestringm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_linestringz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_linestringzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multilinestring.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multilinestringm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multilinestringz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multilinestringzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipoint.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipointm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipointz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipointzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipolygon.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipolygonm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipolygonz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_multipolygonzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_point.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_pointm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_pointz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_pointzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_polygon.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_polygonm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_polygonz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geog_polygonzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_geometry.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_geometrym.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_geometryz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_geometryzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_linestring.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_linestringm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_linestringz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_linestringzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multilinestring.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multilinestringm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multilinestringz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multilinestringzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipoint.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipointm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipointz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipointzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipolygon.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipolygonm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipolygonz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_multipolygonzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_point.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_pointm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_pointz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_pointzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_polygon.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_polygonm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_polygonz.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries geom_polygonzm.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries srid.geography.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`integration queries srid.geometry.graphql 1`] = `
+{
+  "data": {
+    "allGisDebugs": null,
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 3,
+          "line": 2,
+        },
+      ],
+      "message": "permission denied for schema graphile_postgis",
+      "path": [
+        "allGisDebugs",
+      ],
+    },
+  ],
+}
+`;

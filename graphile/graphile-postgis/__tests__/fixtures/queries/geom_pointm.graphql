@@ -1,0 +1,15 @@
+query {
+  allGisDebugs {
+    nodes {
+      geomPointm {
+        ...geomPointm
+      }
+    }
+  }
+}
+
+fragment geomPointm on GeometryPointM {
+  geojson
+  x
+  y
+}

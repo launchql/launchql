@@ -1,0 +1,53 @@
+{
+  "name": "graphile-postgis",
+  "version": "0.1.0",
+  "description": "Graphile/PostGraphile PostGIS integration plugin",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "keywords": [
+    "graphile",
+    "postgraphile",
+    "postgis",
+    "postgres",
+    "graphql",
+    "launchql"
+  ],
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.14",
+    "graphile-test": "workspace:^",
+    "makage": "^0.1.6",
+    "pgsql-test": "workspace:^"
+  },
+  "dependencies": {
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-utils": "^4.14.1",
+    "graphql": "15.10.1",
+    "pg": "^8.16.0"
+  }
+}

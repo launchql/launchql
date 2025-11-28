@@ -1,0 +1,15 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogPoint {
+        ...geogPoint
+      }
+    }
+  }
+}
+
+fragment geogPoint on GeographyPoint {
+  geojson
+  latitude
+  longitude
+}

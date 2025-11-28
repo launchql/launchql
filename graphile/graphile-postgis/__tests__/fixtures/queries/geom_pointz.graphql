@@ -1,0 +1,16 @@
+query {
+  allGisDebugs {
+    nodes {
+      geomPointz {
+        ...geomPointz
+      }
+    }
+  }
+}
+
+fragment geomPointz on GeometryPointZ {
+  geojson
+  x
+  y
+  z
+}

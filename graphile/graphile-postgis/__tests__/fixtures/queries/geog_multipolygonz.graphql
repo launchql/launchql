@@ -1,0 +1,40 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogMultipolygonz {
+        ...geogMultipolygonz
+      }
+    }
+  }
+}
+
+fragment geogPointz on GeographyPointZ {
+  geojson
+  latitude
+  longitude
+  height
+}
+
+fragment geogLinestringz on GeographyLineStringZ {
+  geojson
+  points {
+    ...geogPointz
+  }
+}
+
+fragment geogPolygonz on GeographyPolygonZ {
+  exterior {
+    ...geogLinestringz
+  }
+  geojson
+  interiors {
+    ...geogLinestringz
+  }
+}
+
+fragment geogMultipolygonz on GeographyMultiPolygonZ {
+  geojson
+  polygons {
+    ...geogPolygonz
+  }
+}
