@@ -1,6 +1,6 @@
-import * as core from '../../../utils/schemaCore';
+import * as core from '../../../test-utils/schemaCore';
 import { PgConnectionArgCondition } from 'graphile-build-pg';
-import CustomOperatorsPlugin from '../../../utils/customOperatorsPlugin';
+import CustomOperatorsPlugin from '../../../test-utils/customOperatorsPlugin';
 import ConnectionFilterPlugin from '../../../src/index';
 
 test(

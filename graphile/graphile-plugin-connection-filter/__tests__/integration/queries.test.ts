@@ -1,4 +1,4 @@
-import '../../utils/env';
+import '../../test-utils/env';
 
 import { readdirSync } from 'fs';
 import { readFile } from 'fs/promises';
@@ -11,7 +11,7 @@ import type { PgTestClient } from 'pgsql-test/test-client';
 import type { PostGraphileOptions } from 'postgraphile';
 
 import ConnectionFilterPlugin from '../../src';
-import CustomOperatorsPlugin from '../../utils/customOperatorsPlugin';
+import CustomOperatorsPlugin from '../../test-utils/customOperatorsPlugin';
 
 jest.setTimeout(60000);
 

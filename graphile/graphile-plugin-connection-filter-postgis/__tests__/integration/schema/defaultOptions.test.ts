@@ -1,4 +1,4 @@
-import * as core from "../../../utils/schemaCore";
+import * as core from "../../../test-utils/schemaCore";
 import PostgisPlugin from "@graphile/postgis";
 import ConnectionFilterPlugin from "graphile-plugin-connection-filter";
 

@@ -1,4 +1,4 @@
-import * as core from '../../../utils/schemaCore';
+import * as core from '../../../test-utils/schemaCore';
 import { PgConnectionArgCondition } from 'graphile-build-pg';
 import ConnectionFilterPlugin from '../../../src/index';
 import PgSimplify from '@graphile-contrib/pg-simplify-inflector';
