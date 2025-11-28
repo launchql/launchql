@@ -48,9 +48,9 @@ create table p.gis_debug (
   -- geog_pointzm              geography(pointzm),
   -- geog_linestrzm            geography(linestringzm),
   -- geog_polyzm               geography(polygonzm),
-  -- geog_multipointmz         geography(multipointzm),
-  -- geog_multilinestrmz       geography(multilinestringzm),
-  -- geog_multipolymz          geography(multipolygonzm),
+  -- geog_multipointmz         geography(multipointmz),
+  -- geog_multilinestrmz       geography(multilinestringmz),
+  -- geog_multipolymz          geography(multipolygonmz),
   -- geog_geometrycollectionzm geography(geometrycollectionzm),
 
   --------------
@@ -87,15 +87,28 @@ create table p.gis_debug (
   geom_multipointm          geometry(multipointm),
   geom_multilinestrm        geometry(multilinestringm),
   geom_multipolym           geometry(multipolygonm),
-  geom_geometrycollectionm  geometry(geometrycollectionm)
+  geom_geometrycollectionm  geometry(geometrycollectionm),
 
   -- XYZM
   -- geom_geometryzm           geometry(geometryzm),
   -- geom_pointzm              geometry(pointzm),
   -- geom_linestrzm            geometry(linestringzm),
   -- geom_polyzm               geometry(polygonzm),
-  -- geom_multipointzm         geometry(multipointzm),
+  -- geom_multipointzm         geometry(multipointmz),
   -- geom_multilinestrzm       geometry(multilinestringzm),
-  -- geom_multipolyzm          geometry(multipolygonzm),
+  -- geom_multipolymz          geometry(multipolygonmz),
   -- geom_geometrycollectionzm geometry(geometrycollectionzm),
+
+  geog_range geography(geometry)[],
+  geom_range geometry(geometry)[]
+);
+
+comment on table p.gis_debug is E'@omit create,update,delete,filter';
+comment on column p.gis_debug.geog_range is E'@simpleCollections only';
+comment on column p.gis_debug.geom_range is E'@simpleCollections only';
+
+create table p.geom_geoms (
+  id serial primary key,
+  multipolygon_col geometry(multipolygon),
+  linestring_col geometry(linestring)
 );

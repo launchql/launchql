@@ -1,5 +1,71 @@
-module.exports = function PgConnectionArgFilterPostgisOperatorsPlugin(builder) {
-  builder.hook("init", (_, build) => {
+import type { Plugin, SchemaBuilder } from "graphile-build";
+import type { SQL } from "graphile-build-pg";
+import type { GraphQLInputType, GraphQLType } from "graphql";
+
+type AddConnectionFilterOperator = (
+  typeNames: string | string[],
+  operatorName: string,
+  description: string | null,
+  resolveType: (
+    fieldInputType: GraphQLInputType,
+    rangeElementInputType: GraphQLInputType
+  ) => GraphQLType,
+  resolve: (
+    sqlIdentifier: SQL,
+    sqlValue: SQL,
+    input: unknown,
+    parentFieldName: string,
+    queryBuilder: unknown
+  ) => SQL | null,
+  options?: {
+    resolveInput?: (input: unknown) => unknown;
+    resolveSqlIdentifier?: (
+      sqlIdentifier: SQL,
+      pgType: unknown,
+      pgTypeModifier: number | null
+    ) => SQL;
+    resolveSqlValue?: (
+      input: unknown,
+      pgType: unknown,
+      pgTypeModifier: number | null,
+      resolveListItemSqlValue?: unknown
+    ) => SQL | null;
+  }
+) => void;
+
+type GisBuild = {
+  addConnectionFilterOperator: AddConnectionFilterOperator;
+  inflection: {
+    gisInterfaceName: (pgType: unknown) => string;
+    gisType: (
+      pgType: unknown,
+      subtype: number,
+      hasZ: boolean,
+      hasM: boolean
+    ) => string;
+  };
+  pgSql: {
+    identifier: (...sql: Array<string | SQL>) => SQL;
+    raw: (sql: string) => SQL;
+    query: (strings: TemplateStringsArray, ...values: SQL[]) => SQL;
+  };
+  pgGISExtension?: { namespaceName: string };
+  pgGISGeographyType?: { name: string };
+  pgGISGeometryType?: { name: string };
+};
+
+type Spec = {
+  typeNames: string[];
+  operatorName: string;
+  description: string;
+  resolveType: (fieldType: GraphQLType) => GraphQLType;
+  resolve: (sqlIdentifier: SQL, sqlValue: SQL) => SQL;
+};
+
+const PgConnectionArgFilterPostgisOperatorsPlugin: Plugin = (
+  builder: SchemaBuilder
+) => {
+  (builder as any).hook("init", (_: unknown, build: GisBuild) => {
     const {
       addConnectionFilterOperator,
       inflection,
@@ -16,17 +82,23 @@ module.exports = function PgConnectionArgFilterPostgisOperatorsPlugin(builder) {
     const GEOGRAPHY = pgGISGeographyType.name;
     const GEOMETRY = pgGISGeometryType.name;
 
-    const gqlTypeNamesByGisBaseTypeName = {
+    const gqlTypeNamesByGisBaseTypeName: Record<
+      "geography" | "geometry",
+      string[]
+    > = {
       geography: [],
       geometry: [],
     };
+
     gqlTypeNamesByGisBaseTypeName.geography.push(
       inflection.gisInterfaceName(pgGISGeographyType)
     );
     gqlTypeNamesByGisBaseTypeName.geometry.push(
       inflection.gisInterfaceName(pgGISGeometryType)
     );
-    for (const subtype of [0, 1, 2, 3, 4, 5, 6, 7]) {
+
+    const subtypes = [0, 1, 2, 3, 4, 5, 6, 7];
+    for (const subtype of subtypes) {
       for (const hasZ of [false, true]) {
         for (const hasM of [false, true]) {
           gqlTypeNamesByGisBaseTypeName.geography.push(
@@ -39,10 +111,9 @@ module.exports = function PgConnectionArgFilterPostgisOperatorsPlugin(builder) {
       }
     }
 
-    let specs = [];
+    const specs: Spec[] = [];
 
-    // Functions
-    for (const [fn, baseTypeNames, operatorName, description] of [
+    const functionSpecs: Array<[string, string[], string, string]> = [
       [
         "ST_3DIntersects",
         [GEOMETRY],
@@ -121,24 +192,33 @@ module.exports = function PgConnectionArgFilterPostgisOperatorsPlugin(builder) {
         "within",
         "Completely inside the specified geometry.",
       ],
-    ]) {
+    ];
+
+    for (const [
+      fn,
+      baseTypeNames,
+      operatorName,
+      description,
+    ] of functionSpecs) {
       for (const baseTypeName of baseTypeNames) {
         const sqlGisFunction =
           pgGISExtension.namespaceName === "public"
             ? sql.identifier(fn.toLowerCase())
             : sql.identifier(pgGISExtension.namespaceName, fn.toLowerCase());
         specs.push({
-          typeNames: gqlTypeNamesByGisBaseTypeName[baseTypeName],
+          typeNames:
+            gqlTypeNamesByGisBaseTypeName[
+              baseTypeName === GEOGRAPHY ? "geography" : "geometry"
+            ],
           operatorName,
           description,
-          resolveType: fieldType => fieldType,
+          resolveType: (fieldType) => fieldType,
           resolve: (i, v) => sql.query`${sqlGisFunction}(${i}, ${v})`,
         });
       }
     }
 
-    // Operators
-    for (const [op, baseTypeNames, operatorName, description] of [
+    const operatorSpecs: Array<[string, string[], string, string]> = [
       [
         "=",
         [GEOMETRY, GEOGRAPHY],
@@ -217,13 +297,23 @@ module.exports = function PgConnectionArgFilterPostgisOperatorsPlugin(builder) {
         "bboxEquals",
         "Bounding box is the same as the specified geometry's bounding box.",
       ],
-    ]) {
+    ];
+
+    for (const [
+      op,
+      baseTypeNames,
+      operatorName,
+      description,
+    ] of operatorSpecs) {
       for (const baseTypeName of baseTypeNames) {
         specs.push({
-          typeNames: gqlTypeNamesByGisBaseTypeName[baseTypeName],
+          typeNames:
+            gqlTypeNamesByGisBaseTypeName[
+              baseTypeName === GEOGRAPHY ? "geography" : "geometry"
+            ],
           operatorName,
           description,
-          resolveType: fieldType => fieldType,
+          resolveType: (fieldType) => fieldType,
           resolve: (i, v) => sql.query`${i} ${sql.raw(op)} ${v}`,
         });
       }
@@ -231,18 +321,18 @@ module.exports = function PgConnectionArgFilterPostgisOperatorsPlugin(builder) {
 
     specs.sort((a, b) => (a.operatorName > b.operatorName ? 1 : -1));
 
-    specs.forEach(
-      ({ typeNames, operatorName, description, resolveType, resolve }) => {
-        addConnectionFilterOperator(
-          typeNames,
-          operatorName,
-          description,
-          resolveType,
-          resolve
-        );
-      }
-    );
+    for (const spec of specs) {
+      addConnectionFilterOperator(
+        spec.typeNames,
+        spec.operatorName,
+        spec.description,
+        spec.resolveType,
+        spec.resolve
+      );
+    }
 
     return _;
   });
 };
+
+export default PgConnectionArgFilterPostgisOperatorsPlugin;

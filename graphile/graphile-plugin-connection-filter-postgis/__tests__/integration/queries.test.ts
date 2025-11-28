@@ -1,0 +1,74 @@
+import { readdirSync } from "fs";
+import { readFile } from "fs/promises";
+import { join } from "path";
+import type { GraphQLQueryFnObj } from "graphile-test";
+import { getConnectionsObject, seed, snapshot } from "graphile-test";
+import type { PgTestClient } from "pgsql-test/test-client";
+import PostgisPlugin from "@graphile/postgis";
+import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
+
+import PostgisConnectionFilterPlugin from "../../src";
+
+jest.setTimeout(30000);
+
+type ConnectionContext = {
+  db: PgTestClient;
+  query: GraphQLQueryFnObj;
+  teardown: () => Promise<void>;
+};
+
+const SCHEMA = "p";
+const sql = (file: string) => join(__dirname, "../../sql", file);
+const queriesDir = join(__dirname, "../fixtures/queries");
+const queryFileNames = readdirSync(queriesDir);
+
+let ctx: ConnectionContext;
+
+beforeAll(async () => {
+  const connections = await getConnectionsObject(
+    {
+      schemas: [SCHEMA],
+      authRole: "authenticated",
+      graphile: {
+        overrideSettings: {
+          appendPlugins: [
+            PostgisPlugin,
+            ConnectionFilterPlugin,
+            PostgisConnectionFilterPlugin,
+          ],
+        },
+      },
+    },
+    [seed.sqlfile([sql("roles.sql"), sql("schema.sql"), sql("data.sql")])]
+  );
+
+  ctx = {
+    db: connections.db,
+    query: connections.query,
+    teardown: connections.teardown,
+  };
+});
+
+beforeEach(() => ctx.db.beforeEach());
+afterEach(() => ctx.db.afterEach());
+afterAll(async () => {
+  if (ctx) {
+    await ctx.teardown();
+  }
+});
+
+for (const queryFileName of queryFileNames) {
+  // eslint-disable-next-line jest/valid-title
+  test(queryFileName, async () => {
+    const query = await readFile(join(queriesDir, queryFileName), "utf8");
+
+    const result = await ctx.query({
+      query,
+      variables: {
+        point: { type: "Point", coordinates: [30, 10] },
+      },
+    });
+
+    expect(snapshot(result)).toMatchSnapshot();
+  });
+}

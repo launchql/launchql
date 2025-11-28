@@ -1,19 +1,19 @@
-const PostgisOperatorsPlugin = require("./src/PgConnectionArgFilterPostgisOperatorsPlugin.js");
+import type { Plugin } from "graphile-build";
 
-module.exports = function PostGraphileConnectionFilterPostgisPlugin(
+import PostgisOperatorsPlugin from "./PgConnectionArgFilterPostgisOperatorsPlugin";
+import pkg from "../package.json";
+
+const PostGraphileConnectionFilterPostgisPlugin: Plugin = (
   builder,
   options
-) {
-  builder.hook("build", build => {
-    const pkg = require("./package.json");
-
-    // Check dependencies
+) => {
+  builder.hook("build", (build) => {
     if (!build.versions) {
       throw new Error(
         `Plugin ${pkg.name}@${pkg.version} requires graphile-build@^4.1.0 in order to check dependencies (current version: ${build.graphileBuildVersion})`
       );
     }
-    const depends = (name, range) => {
+    const depends = (name: string, range: string) => {
       if (!build.hasVersion(name, range)) {
         throw new Error(
           `Plugin ${pkg.name}@${pkg.version} requires ${name}@${range} (${
@@ -24,11 +24,10 @@ module.exports = function PostGraphileConnectionFilterPostgisPlugin(
         );
       }
     };
+
     depends("graphile-build-pg", "^4.5.0");
     depends("postgraphile-plugin-connection-filter", "^2.0.0");
-    //depends("@graphile/postgis", "0.1.0");
 
-    // Register this plugin
     build.versions = build.extend(build.versions, { [pkg.name]: pkg.version });
 
     return build;
@@ -36,3 +35,6 @@ module.exports = function PostGraphileConnectionFilterPostgisPlugin(
 
   PostgisOperatorsPlugin(builder, options);
 };
+
+export { PostGraphileConnectionFilterPostgisPlugin };
+export default PostGraphileConnectionFilterPostgisPlugin;

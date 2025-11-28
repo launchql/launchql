@@ -2,40 +2,62 @@
   "name": "postgraphile-plugin-connection-filter-postgis",
   "version": "1.0.0-alpha.6",
   "description": "PostGIS filtering options in PostGraphile",
+  "author": "Matt Bretl",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
   "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "lint": "eslint .",
-    "test": "scripts/test"
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mattbretl/postgraphile-plugin-connection-filter-postgis.git"
+    "url": "https://github.com/launchql/launchql"
   },
-  "author": "Matt Bretl",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mattbretl/postgraphile-plugin-connection-filter-postgis/issues"
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "plugin",
+    "postgres",
+    "postgresql",
+    "postgis",
+    "filters",
+    "launchql"
+  ],
+  "dependencies": {
+    "@graphile/postgis": "^0.1.0",
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "postgraphile-plugin-connection-filter": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@graphile/postgis": "^0.1.0",
+    "postgraphile": "^4.14.1",
+    "postgraphile-plugin-connection-filter": "^2.3.0"
   },
   "devDependencies": {
-    "@graphile/postgis": "0.1.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-jest": "^23.8.2",
-    "eslint-plugin-prettier": "^3.1.3",
-    "graphql": "^14.6.0",
-    "jest": "^25.5.0",
-    "pg": "^7.18.2",
-    "postgraphile-core": "4.5.0",
-    "postgraphile-plugin-connection-filter": "2.0.0",
-    "prettier": "1.19.1"
-  },
-  "jest": {
-    "testRegex": "__tests__/.*\\.test\\.js$"
-  },
-  "files": [
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
+    "@types/pg": "^8.15.6",
+    "graphile-test": "workspace:^",
+    "graphql": "15.10.1",
+    "makage": "^0.1.6",
+    "pgsql-test": "workspace:^",
+    "pg": "^8.16.0",
+    "postgraphile": "^4.14.1",
+    "postgraphile-plugin-connection-filter": "^2.3.0"
   }
 }
