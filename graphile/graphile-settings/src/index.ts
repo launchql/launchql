@@ -18,7 +18,7 @@ import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 // @ts-ignore
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 
-import LqlTypesPlugin from './plugins/types';
+import CustomPgTypeMappingsPlugin from 'graphile-pg-type-mappings';
 import UploadPostGraphilePlugin, { Uploader } from 'graphile-upload-plugin';
 
 export const getGraphileSettings = (
@@ -42,7 +42,7 @@ export const getGraphileSettings = (
   const plugins: Plugin[] = [
     ConnectionFilterPlugin,
     FulltextFilterPlugin,
-    LqlTypesPlugin,
+    CustomPgTypeMappingsPlugin,
     UploadPostGraphilePlugin,
     PgMetaschema,
     PgManyToMany,

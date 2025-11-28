@@ -38,6 +38,8 @@
     "graphile-i18n": "workspace:^",
     "graphile-meta-schema": "workspace:^",
     "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-pg-type-mappings": "workspace:^",
+    "graphile-postgis": "workspace:^",
     "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-postgis": "workspace:^",
     "graphile-query": "workspace:^",
