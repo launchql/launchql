@@ -243,6 +243,38 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-postgis:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-utils:
+        specifier: ^4.14.1
+        version: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      pg:
+        specifier: ^8.16.0
+        version: 8.16.3
+    devDependencies:
+      '@types/geojson':
+        specifier: ^7946.0.14
+        version: 7946.0.16
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      makage:
+        specifier: ^0.1.6
+        version: 0.1.8
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
   graphile/graphile-query:
     dependencies:
       graphql:
@@ -303,9 +335,6 @@ importers:
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/types/dist
-      '@pyramation/postgis':
-        specifier: ^0.1.1
-        version: 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -324,6 +353,9 @@ importers:
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-fulltext-filter/dist
+      graphile-postgis:
+        specifier: workspace:^
+        version: link:../graphile-postgis/dist
       graphile-query:
         specifier: workspace:^
         version: link:../graphile-query/dist
@@ -1281,9 +1313,6 @@ importers:
       '@launchql/url-domains':
         specifier: workspace:^
         version: link:../url-domains/dist
-      '@pyramation/postgis':
-        specifier: ^0.1.1
-        version: 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -2400,14 +2429,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@pyramation/postgis@0.1.1':
-    resolution: {integrity: sha512-tzawuoEcQF/CWfjjEB/03/XZ9C+dt+bU6YeydTYIDShM/b6E+lND/74/5AX4KPyTMB66x1Gu41S50wrmxqDnTA==}
-    peerDependencies:
-      graphile-build: ^4.4.0
-      graphile-build-pg: ^4.4.0
-      graphql: '>=0.6 <15'
-      pg-sql2: '>=2.2.1 <5'
-
   '@pyramation/prompt@0.0.1':
     resolution: {integrity: sha512-xIa9eLrx8ceZy3+rijd1/Z/YHSyROoHuMpT+xOjGDOKJ7DhiXT9dXkfzxiRqWzeCRls+R/7ApRN6j4tYxnjkFQ==}
     peerDependencies:
@@ -2750,6 +2771,9 @@ packages:
 
   '@types/express@5.0.5':
     resolution: {integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==}
+
+  '@types/geojson@7946.0.16':
+    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
   '@types/graphql-upload@8.0.12':
     resolution: {integrity: sha512-M0ZPZqNUzKNB16q5woEzgG/Q8DjICV80K7JvDSRnDmDFfrRdfFX/n6PbmqAN7gCzECcHVnw1gk6N4Cg0FwxCqA==}
@@ -8032,17 +8056,6 @@ snapshots:
       '@babel/core': 7.28.5
       '@babel/runtime': 7.28.4
 
-  '@pyramation/postgis@0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))':
-    dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
-      graphile-build: 4.14.1(graphql@15.10.1)
-      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      graphql: 15.10.1
-      pg-sql2: 4.14.1(pg@8.16.3)
-      tslib: 1.14.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@pyramation/prompt@0.0.1(@babel/core@7.28.5)':
     dependencies:
       '@babel/core': 7.28.5
@@ -8552,6 +8565,8 @@ snapshots:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 5.1.0
       '@types/serve-static': 1.15.10
+
+  '@types/geojson@7946.0.16': {}
 
   '@types/graphql-upload@8.0.12':
     dependencies:

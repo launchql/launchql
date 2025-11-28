@@ -1,0 +1,73 @@
+query {
+  allGisDebugs {
+    nodes {
+      geomGeometryz {
+        __typename
+        geojson
+        ... on GeometryPointZ {
+          ...geomPointz
+        }
+        ... on GeometryLineStringZ {
+          ...geomLinestringz
+        }
+        ... on GeometryPolygonZ {
+          ...geomPolygonz
+        }
+        ... on GeometryMultiPointZ {
+          ...geomMultipointz
+        }
+        ... on GeometryMultiLineStringZ {
+          ...geomMultilinestringz
+        }
+        ... on GeometryMultiPolygonZ {
+          ...geomMultipolygonz
+        }
+      }
+    }
+  }
+}
+
+fragment geomPointz on GeometryPointZ {
+  geojson
+  x
+  y
+  z
+}
+
+fragment geomLinestringz on GeometryLineStringZ {
+  geojson
+  points {
+    ...geomPointz
+  }
+}
+
+fragment geomPolygonz on GeometryPolygonZ {
+  exterior {
+    ...geomLinestringz
+  }
+  geojson
+  interiors {
+    ...geomLinestringz
+  }
+}
+
+fragment geomMultipointz on GeometryMultiPointZ {
+  geojson
+  points {
+    ...geomPointz
+  }
+}
+
+fragment geomMultilinestringz on GeometryMultiLineStringZ {
+  geojson
+  lines {
+    ...geomLinestringz
+  }
+}
+
+fragment geomMultipolygonz on GeometryMultiPolygonZ {
+  geojson
+  polygons {
+    ...geomPolygonz
+  }
+}

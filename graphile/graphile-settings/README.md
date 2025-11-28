@@ -116,7 +116,7 @@ app.listen(settings.port);
 
 * `postgraphile-plugin-connection-filter`
 * `graphile-plugin-fulltext-filter`
-* `@pyramation/postgis`
+* `graphile-postgis`
 * `postgraphile-plugin-connection-filter-postgis`
 * `postgraphile-derived-upload-field`
 * `graphile-simple-inflector`

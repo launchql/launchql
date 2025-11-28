@@ -13,25 +13,25 @@ PostGraphile 4.14.1 accepts an extremely broad GraphQL version range:
 ```
 
 ### 2. Conflicting Peer Dependencies
-The npm dependency tree shows conflicts with our GraphQL 15.5.2 resolution:
+The npm dependency tree shows conflicts with our GraphQL 15.10.1 resolution:
 
 ```bash
 npm ls graphql --all
 ```
 
-**Conflicting packages:**
+**Conflicting packages (before fixes):**
 - `graphql-upload@15.0.2` expects `^16.3.0`
-- `@pyramation/postgis` expects `>=0.6 <15`
-- Current resolution: `15.5.2` (conflicts with both)
+- `@pyramation/postgis` expected `>=0.6 <15` (now replaced by workspace `graphile-postgis`)
+- Current resolution: `15.10.1` (conflicted with the original graphql-upload version)
 
 ### 3. Invalid Dependencies Detected
 ```
-graphql@15.5.2 deduped invalid: "^16.3.0" from node_modules/graphql-upload, ">=0.6 <15" from node_modules/@pyramation/postgis
+graphql@15.10.1 deduped invalid: "^16.3.0" from node_modules/graphql-upload
 ```
 
 ## Current Resolutions in Place
 
-The following packages now have GraphQL resolutions set to `15.5.2`:
+The following packages now have GraphQL resolutions set to `15.10.1`:
 - Root workspace (`package.json`)
 - `@launchql/cli`
 - `@launchql/server` 
@@ -51,17 +51,17 @@ pnpm's `overrides` field does not always override peer dependency requirements. 
 ### GraphQL-Upload Version Compatibility
 - `graphql-upload@15.0.2` (current): requires `^16.3.0` ❌
 - `graphql-upload@14.0.0`: requires `^16.3.0` ❌  
-- `graphql-upload@13.0.0`: supports `0.13.1 - 16` ✅ (compatible with 15.5.2)
-- `graphql-upload@11.0.0`: supports `0.13.1 - 15` ✅ (compatible with 15.5.2)
+- `graphql-upload@13.0.0`: supports `0.13.1 - 16` ✅ (compatible with GraphQL 15.x)
+- `graphql-upload@11.0.0`: supports `0.13.1 - 15` ✅ (compatible with GraphQL 15.x)
 
 ### PostGIS Package Compatibility
-- `@pyramation/postgis@0.1.1` (only version): requires `>=0.6 <15` ❌ (incompatible with 15.5.2)
+- Replaced `@pyramation/postgis@0.1.1` (required `>=0.6 <15`) with workspace `graphile-postgis` built against GraphQL 15.x ✅
 
 ## Proposed Solution
 
 ### Option 1: Downgrade Incompatible Packages (Recommended)
-1. **Downgrade graphql-upload**: From `15.0.2` to `13.0.0` (supports GraphQL 15.5.2)
-2. **Handle @pyramation/postgis**: Add to overrides or find alternative package
+1. **Downgrade graphql-upload**: From `15.0.2` to `13.0.0` (supports GraphQL 15.x)
+2. **Replace @pyramation/postgis**: Use workspace `graphile-postgis` instead
 3. **Add overrides field**: Stronger enforcement than resolutions
 4. **Clean install**: Remove node_modules and pnpm-lock.yaml, then reinstall with `pnpm install`
 
@@ -72,14 +72,14 @@ pnpm's `overrides` field does not always override peer dependency requirements. 
 
 ### Option 3: Alternative Packages
 - Replace `graphql-upload` with a compatible alternative
-- Replace `@pyramation/postgis` if no compatible version exists
+- Use `graphile-postgis` (workspace replacement for `@pyramation/postgis`)
 
 ## Next Steps
 
 1. ✅ Document GraphQL dependency conflicts (this file)
-2. 🔄 Downgrade graphql-upload from 15.0.2 to 13.0.0
-3. ⏳ Add overrides field to root package.json
-4. ⏳ Handle @pyramation/postgis incompatibility
+2. ✅ Downgrade graphql-upload from 15.0.2 to 13.0.0
+3. ✅ Add overrides field to root package.json
+4. ✅ Replace @pyramation/postgis with workspace graphile-postgis
 5. ⏳ Clean install and verify no conflicts remain
 6. ⏳ Test `lql server` command to ensure error is resolved
 

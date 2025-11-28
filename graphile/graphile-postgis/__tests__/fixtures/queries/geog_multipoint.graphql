@@ -1,0 +1,22 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogMultipoint {
+        ...geogMultipoint
+      }
+    }
+  }
+}
+
+fragment geogPoint on GeographyPoint {
+  geojson
+  latitude
+  longitude
+}
+
+fragment geogMultipoint on GeographyMultiPoint {
+  geojson
+  points {
+    ...geogPoint
+  }
+}

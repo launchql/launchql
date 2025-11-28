@@ -1,0 +1,23 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogLinestringzm {
+        ...geogLinestringzm
+      }
+    }
+  }
+}
+
+fragment geogPointzm on GeographyPointZM {
+  geojson
+  latitude
+  longitude
+  height
+}
+
+fragment geogLinestringzm on GeographyLineStringZM {
+  geojson
+  points {
+    ...geogPointzm
+  }
+}

@@ -161,7 +161,7 @@ jobs:
 
       - name: graphile/graphile-i18n
         run: cd ./graphile/graphile-i18n && pnpm test
-        
+
       - name: graphile/graphile-meta-schema
         run: cd ./graphile/graphile-meta-schema && pnpm test
 
@@ -173,3 +173,6 @@ jobs:
           AWS_SECRET_KEY: minioadmin
           AWS_REGION: us-east-1
           BUCKET_NAME: test-upload-bucket
+
+      - name: graphile/graphile-postgis
+        run: cd ./graphile/graphile-postgis && pnpm test
