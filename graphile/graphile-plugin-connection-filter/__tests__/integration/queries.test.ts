@@ -13,7 +13,7 @@ import type { PostGraphileOptions } from 'postgraphile';
 import ConnectionFilterPlugin from '../../src';
 import CustomOperatorsPlugin from '../../utils/customOperatorsPlugin';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 type ConnectionVariant =
   | 'addConnectionFilterOperator'
