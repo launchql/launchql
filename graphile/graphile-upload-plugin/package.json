@@ -1,0 +1,58 @@
+{
+  "name": "graphile-upload-plugin",
+  "version": "0.1.0",
+  "description": "Graphile upload plugin for PostGraphile",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "makage clean",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "launchql",
+    "plugin",
+    "postgres",
+    "graphql",
+    "upload"
+  ],
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@launchql/env": "workspace:^",
+    "@launchql/s3-utils": "workspace:^",
+    "@types/pg": "^8.15.2",
+    "graphile-test": "workspace:^",
+    "graphql-tag": "^2.12.6",
+    "makage": "^0.1.6",
+    "pgsql-test": "workspace:^",
+    "ts-jest": "^29.1.0"
+  },
+  "dependencies": {
+    "@launchql/s3-streamer": "workspace:^",
+    "@launchql/upload-names": "workspace:^",
+    "graphile-build": "^4.14.1",
+    "graphql": "15.10.1"
+  }
+}
+

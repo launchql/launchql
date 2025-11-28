@@ -19,8 +19,7 @@ import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 
 import LqlTypesPlugin from './plugins/types';
-import UploadPostGraphilePlugin from './plugins/upload-postgraphile-plugin';
-import { Uploader } from './resolvers/upload';
+import UploadPostGraphilePlugin, { Uploader } from 'graphile-upload-plugin';
 
 export const getGraphileSettings = (
   rawOpts: LaunchQLOptions

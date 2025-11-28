@@ -164,3 +164,12 @@ jobs:
         
       - name: graphile/graphile-meta-schema
         run: cd ./graphile/graphile-meta-schema && pnpm test
+
+      - name: graphile/graphile-upload-plugin
+        run: cd ./graphile/graphile-upload-plugin && pnpm test
+        env:
+          MINIO_ENDPOINT: http://minio_cdn:9000
+          AWS_ACCESS_KEY: minioadmin
+          AWS_SECRET_KEY: minioadmin
+          AWS_REGION: us-east-1
+          BUCKET_NAME: test-upload-bucket
