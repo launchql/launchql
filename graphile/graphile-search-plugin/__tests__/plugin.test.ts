@@ -10,7 +10,7 @@ import {
 } from '../utils/queries';
 import { PgSearchPlugin } from '../src';
 import PgSimpleInflector from 'graphile-simple-inflector';
-import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 // @ts-ignore
 import FulltextFilterPlugin from 'graphile-plugin-fulltext-filter';
 

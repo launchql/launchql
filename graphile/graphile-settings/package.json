@@ -50,7 +50,7 @@
     "pg": "^8.16.0",
     "postgraphile": "^4.14.1",
     "postgraphile-derived-upload-field": "^0.0.6",
-    "postgraphile-plugin-connection-filter": "^2.3.0",
+    "graphile-plugin-connection-filter": "workspace:^",
     "postgraphile-plugin-connection-filter-postgis": "^1.0.0-alpha.6",
     "request-ip": "^3.3.0"
   },

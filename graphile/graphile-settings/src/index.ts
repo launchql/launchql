@@ -12,7 +12,7 @@ import PgMetaschema from 'graphile-meta-schema';
 import PgSearch from 'graphile-search-plugin';
 import PgSimpleInflector from 'graphile-simple-inflector';
 import { PostGraphileOptions } from 'postgraphile';
-import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 // @ts-ignore
 import PgPostgisFilter from 'postgraphile-plugin-connection-filter-postgis';
 

@@ -114,7 +114,7 @@ app.listen(settings.port);
 
 ## 🔌 Included Plugins
 
-* `postgraphile-plugin-connection-filter`
+* `graphile-plugin-connection-filter`
 * `graphile-plugin-fulltext-filter`
 * `graphile-postgis`
 * `postgraphile-plugin-connection-filter-postgis`

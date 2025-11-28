@@ -219,15 +219,15 @@ importers:
       graphile-build-pg:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-connection-filter/dist
       pg-tsquery:
         specifier: ^8.1.0
         version: 8.4.2
       postgraphile-core:
         specifier: ^4.2.0
         version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.0.0
-        version: 2.3.0
     devDependencies:
       graphile-test:
         specifier: workspace:^
@@ -304,6 +304,9 @@ importers:
         specifier: 2.12.6
         version: 2.12.6(graphql@15.10.1)
     devDependencies:
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-connection-filter/dist
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-fulltext-filter/dist
@@ -319,9 +322,6 @@ importers:
       pgsql-test:
         specifier: workspace:^
         version: link:../../packages/pgsql-test/dist
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.0.0
-        version: 2.3.0
     publishDirectory: dist
 
   graphile/graphile-settings:
@@ -350,6 +350,9 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../graphile-meta-schema/dist
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../graphile-plugin-connection-filter/dist
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-fulltext-filter/dist
@@ -389,9 +392,6 @@ importers:
       postgraphile-derived-upload-field:
         specifier: ^0.0.6
         version: 0.0.6(graphql@15.10.1)
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.3.0
-        version: 2.3.0
       postgraphile-plugin-connection-filter-postgis:
         specifier: ^1.0.0-alpha.6
         version: 1.0.0-alpha.6
@@ -1334,6 +1334,9 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../../graphile/graphile-meta-schema/dist
+      graphile-plugin-connection-filter:
+        specifier: workspace:^
+        version: link:../../graphile/graphile-plugin-connection-filter/dist
       graphile-plugin-fulltext-filter:
         specifier: workspace:^
         version: link:../../graphile/graphile-plugin-fulltext-filter/dist
@@ -1379,9 +1382,6 @@ importers:
       postgraphile-derived-upload-field:
         specifier: ^0.0.6
         version: 0.0.6(graphql@15.10.1)
-      postgraphile-plugin-connection-filter:
-        specifier: ^2.3.0
-        version: 2.3.0
       postgraphile-plugin-connection-filter-postgis:
         specifier: ^1.0.0-alpha.6
         version: 1.0.0-alpha.6
@@ -5684,9 +5684,6 @@ packages:
   postgraphile-plugin-connection-filter-postgis@1.0.0-alpha.6:
     resolution: {integrity: sha512-7smLSEsv5Pz38ejLi7wgkWblSlcugrki3WZh4UPNBDUqM3FHqgd+5HWejAmTawSPIMbe2y63YDwGDSlplEES8g==}
     engines: {node: '>=10'}
-
-  postgraphile-plugin-connection-filter@2.3.0:
-    resolution: {integrity: sha512-TR5bq/NOqqtm4xV3D2Qw+CJo0Hanrx1lqh0KZiU78z8YijcLC0NuT3z0nJyCB842nWbx5Wi6p0S+xmrgzRFNgQ==}
 
   postgraphile@4.14.1:
     resolution: {integrity: sha512-4Rz//TtnjyZk6CbrcypWJNFRwXupHK+bHvaYaX2RrtxMJ2lTaoMDYOdEFESdo/POie3CAEbsC8ZBqb9eR/EyVw==}
@@ -11861,10 +11858,6 @@ snapshots:
       - graphql
 
   postgraphile-plugin-connection-filter-postgis@1.0.0-alpha.6: {}
-
-  postgraphile-plugin-connection-filter@2.3.0:
-    dependencies:
-      tslib: 2.8.1
 
   postgraphile@4.14.1:
     dependencies:

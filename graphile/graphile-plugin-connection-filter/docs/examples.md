@@ -207,4 +207,4 @@ query {
 }
 ```
 
-For additional examples, see the [tests](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/blob/master/__tests__/fixtures/queries/).
+For additional examples, see the [tests](https://github.com/graphile-contrib/graphile-plugin-connection-filter/blob/master/__tests__/fixtures/queries/).
