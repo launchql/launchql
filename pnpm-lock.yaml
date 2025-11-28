@@ -392,6 +392,9 @@ importers:
       postgraphile-derived-upload-field:
         specifier: ^0.0.6
         version: 0.0.6(graphql@15.10.1)
+      postgraphile-plugin-connection-filter:
+        specifier: ^2.0.0
+        version: 2.3.0
       postgraphile-plugin-connection-filter-postgis:
         specifier: ^1.0.0-alpha.6
         version: 1.0.0-alpha.6
@@ -5684,6 +5687,9 @@ packages:
   postgraphile-plugin-connection-filter-postgis@1.0.0-alpha.6:
     resolution: {integrity: sha512-7smLSEsv5Pz38ejLi7wgkWblSlcugrki3WZh4UPNBDUqM3FHqgd+5HWejAmTawSPIMbe2y63YDwGDSlplEES8g==}
     engines: {node: '>=10'}
+
+  postgraphile-plugin-connection-filter@2.3.0:
+    resolution: {integrity: sha512-TR5bq/NOqqtm4xV3D2Qw+CJo0Hanrx1lqh0KZiU78z8YijcLC0NuT3z0nJyCB842nWbx5Wi6p0S+xmrgzRFNgQ==}
 
   postgraphile@4.14.1:
     resolution: {integrity: sha512-4Rz//TtnjyZk6CbrcypWJNFRwXupHK+bHvaYaX2RrtxMJ2lTaoMDYOdEFESdo/POie3CAEbsC8ZBqb9eR/EyVw==}
@@ -11858,6 +11864,10 @@ snapshots:
       - graphql
 
   postgraphile-plugin-connection-filter-postgis@1.0.0-alpha.6: {}
+
+  postgraphile-plugin-connection-filter@2.3.0:
+    dependencies:
+      tslib: 2.8.1
 
   postgraphile@4.14.1:
     dependencies:
