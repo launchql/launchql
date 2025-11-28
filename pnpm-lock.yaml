@@ -176,6 +176,29 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-pg-type-mappings:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+    devDependencies:
+      graphile-postgis:
+        specifier: workspace:^
+        version: link:../graphile-postgis/dist
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      graphql-tag:
+        specifier: 2.12.6
+        version: 2.12.6(graphql@15.10.1)
+      makage:
+        specifier: ^0.1.6
+        version: 0.1.8
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+    publishDirectory: dist
+
   graphile/graphile-plugin-connection-filter:
     dependencies:
       graphile-build:
@@ -388,6 +411,9 @@ importers:
       graphile-meta-schema:
         specifier: workspace:^
         version: link:../graphile-meta-schema/dist
+      graphile-pg-type-mappings:
+        specifier: workspace:^
+        version: link:../graphile-pg-type-mappings/dist
       graphile-plugin-connection-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-connection-filter/dist
