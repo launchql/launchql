@@ -1,7 +1,7 @@
 {
   "name": "my-second",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
   "module": "esm/index.js",

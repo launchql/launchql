@@ -1,6 +1,6 @@
 {
   "name": "pg-cache",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL connection pool LRU cache manager",
   "main": "index.js",

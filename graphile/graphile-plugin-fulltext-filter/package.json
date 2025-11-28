@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-fulltext-filter",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Full text searching on tsvector fields for use with graphile-plugin-connection-filter",
   "main": "index.js",
   "module": "esm/index.js",
@@ -42,18 +42,18 @@
   "dependencies": {
     "graphile-build": "^4.14.1",
     "graphile-build-pg": "^4.14.1",
-    "pg-tsquery": "^8.1.0",
-    "graphile-plugin-connection-filter": "workspace:^"
+    "graphile-plugin-connection-filter": "workspace:^",
+    "pg-tsquery": "^8.1.0"
   },
   "peerDependencies": {
-    "postgraphile-core": "^4.2.0",
-    "graphile-plugin-connection-filter": "workspace:^"
+    "graphile-plugin-connection-filter": "workspace:^",
+    "postgraphile-core": "^4.2.0"
   },
   "devDependencies": {
+    "graphile-plugin-connection-filter": "workspace:^",
     "graphile-test": "workspace:^",
     "graphql": "15.10.1",
     "makage": "^0.1.8",
-    "pgsql-test": "workspace:^",
-    "graphile-plugin-connection-filter": "workspace:^"
+    "pgsql-test": "workspace:^"
   }
 }

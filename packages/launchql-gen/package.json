@@ -1,6 +1,6 @@
 {
   "name": "@launchql/codegen",
-  "version": "2.16.12",
+  "version": "2.16.13",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",

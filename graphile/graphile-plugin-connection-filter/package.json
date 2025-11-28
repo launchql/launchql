@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-connection-filter",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Filtering on PostGraphile connections",
   "author": "Matt Bretl",
   "homepage": "https://github.com/launchql/launchql",
@@ -51,7 +51,7 @@
     "@types/pg": "^8.15.6",
     "graphile-test": "workspace:^",
     "makage": "^0.1.6",
-    "pgsql-test": "workspace:^",
-    "pg": "^8.16.0"
+    "pg": "^8.16.0",
+    "pgsql-test": "workspace:^"
   }
 }

@@ -1,3 +1,12 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 2.3.1 (2025-11-28)
+
+**Note:** Version bump only for package graphile-plugin-connection-filter
+
 ## 2.3.0 - 2022-04-03
 
 - Added `connectionFilterUseListInflectors` option to use list inflectors (#177)

@@ -1,6 +1,6 @@
 {
   "name": "graphile-upload-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Graphile upload plugin for PostGraphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",
@@ -55,4 +55,3 @@
     "graphql": "15.10.1"
   }
 }
-

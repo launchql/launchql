@@ -1,6 +1,6 @@
 {
   "name": "pg-query-context",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pg query context",
   "main": "index.js",

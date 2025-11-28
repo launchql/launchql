@@ -1,7 +1,7 @@
 {
   "name": "my-third",
   "private": true,
-  "version": "0.3.11",
+  "version": "0.3.12",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
   "module": "esm/index.js",
