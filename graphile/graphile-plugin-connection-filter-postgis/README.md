@@ -1,6 +1,6 @@
-[![Package on npm](https://img.shields.io/npm/v/postgraphile-plugin-connection-filter-postgis.svg)](https://www.npmjs.com/package/postgraphile-plugin-connection-filter-postgis) [![CircleCI](https://circleci.com/gh/graphile-contrib/postgraphile-plugin-connection-filter-postgis.svg?style=svg)](https://circleci.com/gh/graphile-contrib/postgraphile-plugin-connection-filter-postgis)
+[![Package on npm](https://img.shields.io/npm/v/graphile-plugin-connection-filter-postgis.svg)](https://www.npmjs.com/package/graphile-plugin-connection-filter-postgis) [![CircleCI](https://circleci.com/gh/graphile-contrib/graphile-plugin-connection-filter-postgis.svg?style=svg)](https://circleci.com/gh/graphile-contrib/graphile-plugin-connection-filter-postgis)
 
-# postgraphile-plugin-connection-filter-postgis
+# graphile-plugin-connection-filter-postgis
 This plugin exposes additional PostGIS-related fields on the `filter` argument of Connections.
 
 ## Usage
@@ -8,7 +8,7 @@ This plugin exposes additional PostGIS-related fields on the `filter` argument o
 Requires `postgraphile@^4.5.0` and the following plugins appended prior to this plugin:
 
 - `@graphile/postgis@0.1.0`
-- `postgraphile-plugin-connection-filter@^2.0.0`
+- `graphile-plugin-connection-filter@^2.0.0`
 
 ## Operators
 

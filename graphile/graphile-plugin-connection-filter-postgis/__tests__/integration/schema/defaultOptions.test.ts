@@ -1,11 +1,11 @@
 import * as core from "../../../utils/schemaCore";
 import PostgisPlugin from "@graphile/postgis";
-import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
+import ConnectionFilterPlugin from "graphile-plugin-connection-filter";
 
 import PostgisConnectionFilterPlugin from "../../../src";
 
 test(
-  "prints a schema with the postgraphile-plugin-connection-filter-postgis plugin",
+  "prints a schema with the graphile-plugin-connection-filter-postgis plugin",
   core.test(["p"], {
     appendPlugins: [
       PostgisPlugin,

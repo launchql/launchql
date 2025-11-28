@@ -117,7 +117,7 @@ app.listen(settings.port);
 * `graphile-plugin-connection-filter`
 * `graphile-plugin-fulltext-filter`
 * `graphile-postgis`
-* `postgraphile-plugin-connection-filter-postgis`
+* `graphile-plugin-connection-filter-postgis`
 * `postgraphile-derived-upload-field`
 * `graphile-simple-inflector`
 * `graphile-i18n`

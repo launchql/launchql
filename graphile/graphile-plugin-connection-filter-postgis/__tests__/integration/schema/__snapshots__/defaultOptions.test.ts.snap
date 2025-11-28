@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`prints a schema with the postgraphile-plugin-connection-filter-postgis plugin 1`] = `
+exports[`prints a schema with the graphile-plugin-connection-filter-postgis plugin 1`] = `
 """"A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
