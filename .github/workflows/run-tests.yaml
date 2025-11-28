@@ -176,3 +176,6 @@ jobs:
 
       - name: graphile/graphile-postgis
         run: cd ./graphile/graphile-postgis && pnpm test
+
+      - name: graphile/graphile-pg-type-mappings
+        run: cd ./graphile/graphile-pg-type-mappings && pnpm test
