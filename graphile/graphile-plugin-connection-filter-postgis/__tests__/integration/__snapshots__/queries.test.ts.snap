@@ -1,33 +1,21 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`geography.graphql 1`] = `
+exports[`geography.graphql matches snapshot 1`] = `
 {
-  "errors": [
-    {
-      "locations": [
-        {
-          "column": 5,
-          "line": 3,
-        },
-      ],
-      "message": "Unknown argument "filter" on field "Query.allGisDebugs". Did you mean "after"?",
+  "data": {
+    "allGisDebugs": {
+      "nodes": [],
     },
-  ],
+  },
 }
 `;
 
-exports[`geometry.graphql 1`] = `
+exports[`geometry.graphql matches snapshot 1`] = `
 {
-  "errors": [
-    {
-      "locations": [
-        {
-          "column": 5,
-          "line": 3,
-        },
-      ],
-      "message": "Unknown argument "filter" on field "Query.allGisDebugs". Did you mean "after"?",
+  "data": {
+    "allGisDebugs": {
+      "nodes": [],
     },
-  ],
+  },
 }
 `;

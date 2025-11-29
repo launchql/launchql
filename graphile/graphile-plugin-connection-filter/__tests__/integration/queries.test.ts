@@ -31,6 +31,7 @@ type ConnectionContext = {
 };
 
 const SCHEMA = process.env.SCHEMA ?? 'p';
+const AUTH_ROLE = 'postgres';
 const sql = (file: string) => join(__dirname, '../../sql', file);
 const queriesDir = join(__dirname, '../fixtures/queries');
 const queryFileNames = readdirSync(queriesDir);
@@ -59,10 +60,12 @@ const createContext = async (
     ),
   ] as Plugin[];
 
+  const useRoot = true;
   const connections = await getConnectionsObject(
     {
+      useRoot,
       schemas: [SCHEMA],
-      authRole: 'authenticated',
+      authRole: AUTH_ROLE,
       graphile: {
         overrideSettings: {
           ...baseOverrides,
@@ -75,8 +78,10 @@ const createContext = async (
     seeds
   );
 
+  const session = useRoot ? connections.pg : connections.db;
+
   return {
-    db: connections.db,
+    db: session,
     query: connections.query,
     teardown: connections.teardown,
   };
@@ -153,7 +158,7 @@ afterAll(async () => {
 
 describe.each(queryFileNames)('%s', (queryFileName) => {
   const variant = variantByQueryFile[queryFileName] ?? 'normal';
-  let ctx: ConnectionContext;
+  let ctx!: ConnectionContext;
 
   beforeAll(() => {
     const context = contexts[variant];
@@ -166,10 +171,10 @@ describe.each(queryFileNames)('%s', (queryFileName) => {
   });
 
   beforeEach(() => ctx.db.beforeEach());
-  beforeEach(() => ctx.db.setContext({ role: 'authenticated' }));
+  beforeEach(() => ctx.db.setContext({ role: AUTH_ROLE }));
   afterEach(() => ctx.db.afterEach());
 
-  test('matches snapshot', async () => {
+  it('matches snapshot', async () => {
     const query = await readFile(join(queriesDir, queryFileName), 'utf8');
     const result = await ctx.query({ query });
     expect(snapshot(result)).toMatchSnapshot();

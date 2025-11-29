@@ -18,17 +18,20 @@ type ConnectionContext = {
 };
 
 const SCHEMA = 'p';
+const AUTH_ROLE = 'postgres';
 const sql = (file: string) => join(__dirname, '../../sql', file);
 const queriesDir = join(__dirname, '../fixtures/queries');
 const queryFileNames = readdirSync(queriesDir);
 
-let ctx: ConnectionContext;
+let ctx!: ConnectionContext;
 
 beforeAll(async () => {
+  const useRoot = true;
   const connections = await getConnectionsObject(
     {
+      useRoot,
       schemas: [SCHEMA],
-      authRole: "authenticated",
+      authRole: AUTH_ROLE,
       graphile: {
         overrideSettings: {
           appendPlugins: [
@@ -43,14 +46,14 @@ beforeAll(async () => {
   );
 
   ctx = {
-    db: connections.db,
+    db: useRoot ? connections.pg : connections.db,
     query: connections.query,
     teardown: connections.teardown,
   };
 });
 
 beforeEach(() => ctx.db.beforeEach());
-beforeEach(() => ctx.db.setContext({ role: 'authenticated' }));
+beforeEach(() => ctx.db.setContext({ role: AUTH_ROLE }));
 afterEach(() => ctx.db.afterEach());
 afterAll(async () => {
   if (ctx) {
@@ -59,7 +62,7 @@ afterAll(async () => {
 });
 
 describe.each(queryFileNames)('%s', (queryFileName) => {
-  test('matches snapshot', async () => {
+  it('matches snapshot', async () => {
     const query = await readFile(join(queriesDir, queryFileName), 'utf8');
 
     const result = await ctx.query({
