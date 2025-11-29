@@ -1,13 +1,13 @@
-import { readdirSync } from "fs";
-import { readFile } from "fs/promises";
-import { join } from "path";
-import type { GraphQLQueryFnObj } from "graphile-test";
-import { getConnectionsObject, seed, snapshot } from "graphile-test";
-import type { PgTestClient } from "pgsql-test/test-client";
-import PostgisPlugin from "@graphile/postgis";
-import ConnectionFilterPlugin from "graphile-plugin-connection-filter";
+import { readdirSync } from 'fs';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import type { GraphQLQueryFnObj } from 'graphile-test';
+import { getConnectionsObject, seed, snapshot } from 'graphile-test';
+import type { PgTestClient } from 'pgsql-test/test-client';
+import PostgisPlugin from '@graphile/postgis';
+import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 
-import PostgisConnectionFilterPlugin from "../../src";
+import PostgisConnectionFilterPlugin from '../../src';
 
 jest.setTimeout(30000);
 
@@ -17,9 +17,9 @@ type ConnectionContext = {
   teardown: () => Promise<void>;
 };
 
-const SCHEMA = "p";
-const sql = (file: string) => join(__dirname, "../../sql", file);
-const queriesDir = join(__dirname, "../fixtures/queries");
+const SCHEMA = 'p';
+const sql = (file: string) => join(__dirname, '../../sql', file);
+const queriesDir = join(__dirname, '../fixtures/queries');
 const queryFileNames = readdirSync(queriesDir);
 
 let ctx: ConnectionContext;
@@ -39,7 +39,7 @@ beforeAll(async () => {
         },
       },
     },
-    [seed.sqlfile([sql("roles.sql"), sql("schema.sql"), sql("data.sql")])]
+    [seed.sqlfile([sql('roles.sql'), sql('schema.sql'), sql('data.sql')])]
   );
 
   ctx = {
@@ -50,6 +50,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => ctx.db.beforeEach());
+beforeEach(() => ctx.db.setContext({ role: 'authenticated' }));
 afterEach(() => ctx.db.afterEach());
 afterAll(async () => {
   if (ctx) {
@@ -57,18 +58,17 @@ afterAll(async () => {
   }
 });
 
-for (const queryFileName of queryFileNames) {
-  // eslint-disable-next-line jest/valid-title
-  test(queryFileName, async () => {
-    const query = await readFile(join(queriesDir, queryFileName), "utf8");
+describe.each(queryFileNames)('%s', (queryFileName) => {
+  test('matches snapshot', async () => {
+    const query = await readFile(join(queriesDir, queryFileName), 'utf8');
 
     const result = await ctx.query({
       query,
       variables: {
-        point: { type: "Point", coordinates: [30, 10] },
+        point: { type: 'Point', coordinates: [30, 10] },
       },
     });
 
     expect(snapshot(result)).toMatchSnapshot();
   });
-}
+});

@@ -151,25 +151,27 @@ afterAll(async () => {
   );
 });
 
-for (const queryFileName of queryFileNames) {
-  // eslint-disable-next-line jest/valid-title
-  test(queryFileName, async () => {
-    const variant = variantByQueryFile[queryFileName] ?? 'normal';
-    const ctx = contexts[variant];
+describe.each(queryFileNames)('%s', (queryFileName) => {
+  const variant = variantByQueryFile[queryFileName] ?? 'normal';
+  let ctx: ConnectionContext;
 
-    if (!ctx) {
+  beforeAll(() => {
+    const context = contexts[variant];
+
+    if (!context) {
       throw new Error(`Missing connection context for variant ${variant}`);
     }
 
-    await ctx.db.beforeEach();
-    ctx.db.setContext({ role: 'authenticated' });
-
-    try {
-      const query = await readFile(join(queriesDir, queryFileName), 'utf8');
-      const result = await ctx.query({ query });
-      expect(snapshot(result)).toMatchSnapshot();
-    } finally {
-      await ctx.db.afterEach();
-    }
+    ctx = context;
   });
-}
+
+  beforeEach(() => ctx.db.beforeEach());
+  beforeEach(() => ctx.db.setContext({ role: 'authenticated' }));
+  afterEach(() => ctx.db.afterEach());
+
+  test('matches snapshot', async () => {
+    const query = await readFile(join(queriesDir, queryFileName), 'utf8');
+    const result = await ctx.query({ query });
+    expect(snapshot(result)).toMatchSnapshot();
+  });
+});
