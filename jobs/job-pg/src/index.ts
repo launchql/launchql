@@ -1,82 +1,76 @@
 /* eslint-disable no-console */
 
 import pg from 'pg';
-import env from './env';
+import pgConfig from './env';
+import { getPgPool, teardownPgPools } from 'pg-cache';
 
-// k8s only does SIGINT
-// other events are bad for babel-watch
-const SYS_EVENTS = [
-  // 'SIGUSR2',
-  'SIGINT'
-  // 'SIGTERM',
-  // 'SIGPIPE',
-  // 'SIGHUP',
-  // 'SIGABRT'
-];
+type CloseFn = (...args: any[]) => unknown | Promise<unknown>;
+interface PoolManagerOptions {
+  pgPool?: pg.Pool;
+}
 
-function once(fn, context) {
-  let result;
-  return function () {
-    if (fn) {
-      result = fn.apply(context || this, arguments);
-      fn = null;
+// k8s commonly sends SIGINT to app containers during shutdown
+const SYS_EVENTS: ReadonlyArray<NodeJS.Signals> = ['SIGINT'];
+
+function once<T extends CloseFn>(fn: T, context?: unknown) {
+  let called = false;
+  let result: ReturnType<T>;
+  return function (this: unknown, ...args: Parameters<T>): ReturnType<T> {
+    if (!called) {
+      called = true;
+      // @ts-expect-error allow dynamic context binding
+      result = fn.apply(context ?? this, args);
     }
-    return result;
+    return result as ReturnType<T>;
   };
 }
 
-const getDbString = () =>
-  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
-
-const pgPoolConfig = {
-  connectionString: getDbString()
-};
-
-const end = (pool) => {
-  try {
-    if (pool.ended || pool.ending) {
-      console.error(
-        'DO NOT CLOSE pool, why are you trying to call end() when already ended?'
-      );
-      return;
-    }
-    pool.end();
-    console.log('successfully closed pool.');
-  } catch (e) {
-    process.stderr.write(e);
-  }
-};
+const defaultPool = getPgPool(pgConfig);
 
 class PoolManager {
-  constructor({ pgPool = new pg.Pool(pgPoolConfig) } = {}) {
+  private readonly pgPool: pg.Pool;
+  private readonly callbacks: Array<[CloseFn, unknown?, unknown[]?]> = [];
+  private _closed = false;
+
+  constructor({ pgPool = defaultPool }: PoolManagerOptions = {}) {
     this.pgPool = pgPool;
-    this.callbacks = [];
-    const close = once(async () => {
+    const closeOnce = once(async () => {
       console.log('closing pg pool manager...');
       await this.close();
     }, this);
     SYS_EVENTS.forEach((event) => {
-      process.on(event, close);
+      process.on(event, closeOnce);
     });
   }
-  onClose(fn, context, args) {
+
+  onClose(fn: CloseFn, context?: unknown, args: unknown[] = []) {
     this.callbacks.push([fn, context, args]);
   }
-  getPool() {
+
+  getPool(): pg.Pool {
     return this.pgPool;
   }
-  async close() {
+
+  async close(): Promise<void> {
     if (this._closed) return;
     for (let i = 0; i < this.callbacks.length; i++) {
       const entry = this.callbacks[i];
-      console.log('closing fn', entry[0].name);
-      await entry[0].apply(entry[1], entry[2]);
+      console.log('closing fn', entry[0].name || 'anonymous');
+      // apply optional context/args tuple
+      await entry[0].apply(entry[1], entry[2] as Parameters<CloseFn>);
     }
-    end(this.pgPool);
+    try {
+      // Prefer centralized teardown to keep pg-cache consistent
+      await teardownPgPools();
+      console.log('successfully closed pools via pg-cache.');
+    } catch (e) {
+      process.stderr.write(String(e));
+    }
     this._closed = true;
   }
 }
 
 const mngr = new PoolManager();
 
+export { PoolManager };
 export default mngr;
