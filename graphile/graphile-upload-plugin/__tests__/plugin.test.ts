@@ -1,4 +1,4 @@
-import '../utils/env';
+import '../test-utils/env';
 import { join } from 'path';
 import { createReadStream, writeFileSync, unlinkSync } from 'fs';
 import { tmpdir } from 'os';
@@ -28,7 +28,7 @@ import {
   CreateMediaWithUpload,
   CreateProductWithUpload,
   CreateProfileWithUpload,
-} from '../utils/queries';
+} from '../test-utils/queries';
 import gql from 'graphql-tag';
 
 const SCHEMA = process.env.SCHEMA ?? 'app_public';

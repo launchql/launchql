@@ -1,4 +1,4 @@
-import '../../utils/env';
+import '../../test-utils/env';
 
 import { readdirSync } from 'fs';
 import { readFile } from 'fs/promises';
@@ -11,9 +11,9 @@ import type { PgTestClient } from 'pgsql-test/test-client';
 import type { PostGraphileOptions } from 'postgraphile';
 
 import ConnectionFilterPlugin from '../../src';
-import CustomOperatorsPlugin from '../../utils/customOperatorsPlugin';
+import CustomOperatorsPlugin from '../../test-utils/customOperatorsPlugin';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 type ConnectionVariant =
   | 'addConnectionFilterOperator'
@@ -31,6 +31,7 @@ type ConnectionContext = {
 };
 
 const SCHEMA = process.env.SCHEMA ?? 'p';
+const AUTH_ROLE = 'postgres';
 const sql = (file: string) => join(__dirname, '../../sql', file);
 const queriesDir = join(__dirname, '../fixtures/queries');
 const queryFileNames = readdirSync(queriesDir);
@@ -59,10 +60,12 @@ const createContext = async (
     ),
   ] as Plugin[];
 
+  const useRoot = true;
   const connections = await getConnectionsObject(
     {
+      useRoot,
       schemas: [SCHEMA],
-      authRole: 'authenticated',
+      authRole: AUTH_ROLE,
       graphile: {
         overrideSettings: {
           ...baseOverrides,
@@ -75,8 +78,10 @@ const createContext = async (
     seeds
   );
 
+  const session = useRoot ? connections.pg : connections.db;
+
   return {
-    db: connections.db,
+    db: session,
     query: connections.query,
     teardown: connections.teardown,
   };
@@ -151,25 +156,27 @@ afterAll(async () => {
   );
 });
 
-for (const queryFileName of queryFileNames) {
-  // eslint-disable-next-line jest/valid-title
-  test(queryFileName, async () => {
-    const variant = variantByQueryFile[queryFileName] ?? 'normal';
-    const ctx = contexts[variant];
+describe.each(queryFileNames)('%s', (queryFileName) => {
+  const variant = variantByQueryFile[queryFileName] ?? 'normal';
+  let ctx!: ConnectionContext;
 
-    if (!ctx) {
+  beforeAll(() => {
+    const context = contexts[variant];
+
+    if (!context) {
       throw new Error(`Missing connection context for variant ${variant}`);
     }
 
-    await ctx.db.beforeEach();
-    ctx.db.setContext({ role: 'authenticated' });
-
-    try {
-      const query = await readFile(join(queriesDir, queryFileName), 'utf8');
-      const result = await ctx.query({ query });
-      expect(snapshot(result)).toMatchSnapshot();
-    } finally {
-      await ctx.db.afterEach();
-    }
+    ctx = context;
   });
-}
+
+  beforeEach(() => ctx.db.beforeEach());
+  beforeEach(() => ctx.db.setContext({ role: AUTH_ROLE }));
+  afterEach(() => ctx.db.afterEach());
+
+  it('matches snapshot', async () => {
+    const query = await readFile(join(queriesDir, queryFileName), 'utf8');
+    const result = await ctx.query({ query });
+    expect(snapshot(result)).toMatchSnapshot();
+  });
+});

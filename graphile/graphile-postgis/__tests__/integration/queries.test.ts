@@ -1,4 +1,4 @@
-import '../../utils/env';
+import '../../test-utils/env';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { getConnections, seed, snapshot, type GraphQLQueryFn } from 'graphile-test';

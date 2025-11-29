@@ -1,0 +1,133 @@
+query AllGisDebugs($point: GeoJSON = { type: "Point", coordinates: [30, 10] }) {
+  allGisDebugs(
+    filter: {
+      geog: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogGeometry: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogPoint: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogLinestr: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogPoly: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogMultipoint: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogMultilinestr: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogMultipoly: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogGeometrycollection: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogGeometrym: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogPointm: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogLinestrm: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogPolym: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogMultipointm: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogMultilinestrm: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogMultipolym: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+      geogGeometrycollectionm: {
+        coveredBy: $point
+        covers: $point
+        intersects: $point
+        exactlyEquals: $point
+        bboxIntersects2D: $point
+      }
+    }
+  ) {
+    ...gisDebugConnection
+  }
+}
+
+fragment gisDebugConnection on GisDebugsConnection {
+  nodes {
+    id
+  }
+}

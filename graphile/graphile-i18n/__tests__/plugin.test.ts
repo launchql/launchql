@@ -1,10 +1,10 @@
-import '../utils/env';
+import '../test-utils/env';
 import { join } from 'path';
 import { getConnections, snapshot } from 'graphile-test';
 import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import type { GraphQLQueryFn } from 'graphile-test';
-import { GetProjectsAndLanguages } from '../utils/queries';
+import { GetProjectsAndLanguages } from '../test-utils/queries';
 import LangPlugin, { additionalGraphQLContextFromRequest } from '../src';
 
 const SCHEMA = process.env.SCHEMA ?? 'app_public';

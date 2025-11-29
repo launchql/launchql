@@ -1,4 +1,4 @@
-import '../utils/env';
+import '../test-utils/env';
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
 import { join } from 'path';
 import { getConnections, snapshot, seed, type GraphQLQueryFn } from 'graphile-test';
@@ -12,7 +12,7 @@ import {
   GetMetaInflection,
   GetMetaSchema,
   GetMetaSchemaUnion
-} from '../utils/queries';
+} from '../test-utils/queries';
 import { PgMetaschemaPlugin } from '../src';
 
 const SCHEMA = process.env.SCHEMA ?? 'app_meta';
