@@ -1,7 +1,7 @@
-import env from './env';
 import * as jobs from '@launchql/job-utils';
 import schedule from 'node-schedule';
 import poolManager from '@launchql/job-pg';
+import { getJobSupportAny } from '@launchql/job-utils';
 
 /* eslint-disable no-console */
 
@@ -99,7 +99,7 @@ export default class Scheduler {
     try {
       const job = await jobs.getScheduledJob(client, {
         workerId: this.workerId,
-        supportedTaskNames: env.JOBS_SUPPORT_ANY
+        supportedTaskNames: getJobSupportAny()
           ? null
           : this.supportedTaskNames
       });

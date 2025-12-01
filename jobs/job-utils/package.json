@@ -26,6 +26,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "envalid": "6.0.2"
+    "@launchql/env": "workspace:^",
+    "pg-cache": "workspace:^",
+    "pg-env": "workspace:^"
   }
 }

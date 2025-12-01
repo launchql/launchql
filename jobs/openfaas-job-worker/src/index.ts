@@ -1,7 +1,7 @@
 import poolManager from '@launchql/job-pg';
 import * as jobs from '@launchql/job-utils';
 import { request as req } from './req';
-import env from './env';
+import { getJobSupportAny } from '@launchql/job-utils';
 
 /* eslint-disable no-console */
 export default class Worker {
@@ -66,10 +66,7 @@ export default class Worker {
   }
   async doWork(job) {
     const { payload, task_identifier } = job;
-    if (
-      !env.JOBS_SUPPORT_ANY &&
-      !this.supportedTaskNames.includes(task_identifier)
-    ) {
+    if (!getJobSupportAny() && !this.supportedTaskNames.includes(task_identifier)) {
       throw new Error('Unsupported task');
     }
     await req(task_identifier, {
@@ -89,7 +86,7 @@ export default class Worker {
     try {
       const job = await jobs.getJob(client, {
         workerId: this.workerId,
-        supportedTaskNames: env.JOBS_SUPPORT_ANY
+        supportedTaskNames: getJobSupportAny()
           ? null
           : this.supportedTaskNames
       });

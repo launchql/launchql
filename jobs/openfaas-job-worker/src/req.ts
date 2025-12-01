@@ -1,22 +1,17 @@
-import env from './env';
 import requestLib from 'request';
+import { getOpenFaasGatewayConfig, getOpenFaasDevMap, getNodeEnvironment } from '@launchql/job-utils';
 
 // for completion
-const completeUrl = env.INTERNAL_JOBS_CALLBACK_URL;
+const { gatewayUrl, callbackUrl } = getOpenFaasGatewayConfig();
 
-let hasDevMap = false;
-let DEV_MAP = {};
-
-if (env.NODE_ENV !== 'production' && env.INTERNAL_GATEWAY_DEVELOPMENT_MAP) {
-  hasDevMap = true;
-  DEV_MAP = JSON.parse(env.INTERNAL_GATEWAY_DEVELOPMENT_MAP);
-}
+const isProd = getNodeEnvironment() === 'production';
+const DEV_MAP = !isProd ? getOpenFaasDevMap() : null;
 
 const getFunctionUrl = (fn) => {
-  if (hasDevMap) {
-    return DEV_MAP[fn] || completeUrl;
+  if (DEV_MAP) {
+    return DEV_MAP[fn] || callbackUrl;
   }
-  return `${env.INTERNAL_GATEWAY_URL}/async-function/${fn}`;
+  return `${gatewayUrl}/async-function/${fn}`;
 };
 
 const request = (fn, { body, databaseId, workerId, jobId }) => {
@@ -33,7 +28,7 @@ const request = (fn, { body, databaseId, workerId, jobId }) => {
           'X-Database-Id': databaseId,
 
           // this one is used by OpenFAAS
-          'X-Callback-Url': completeUrl
+          'X-Callback-Url': callbackUrl
         },
         url,
         json: true,

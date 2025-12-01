@@ -1,13 +1,8 @@
-import env from './env';
 import pg from 'pg';
 import * as jobs from '@launchql/job-utils';
+import poolManager from '@launchql/job-pg';
 
-const getDbString = () =>
-  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
-
-const pgPoolConfig = {
-  connectionString: getDbString()
-};
+const pgPoolConfig = null; // deprecated, kept for constructor signature compatibility
 
 function once(fn, context) {
   let result;
@@ -26,7 +21,7 @@ export default class Worker {
   constructor({
     tasks,
     idleDelay = 15000,
-    pgPool = new pg.Pool(pgPoolConfig),
+    pgPool = poolManager.getPool(),
     workerId = 'worker-0'
   }) {
     this.tasks = tasks;

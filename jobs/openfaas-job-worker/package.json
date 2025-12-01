@@ -31,7 +31,6 @@
   "dependencies": {
     "@launchql/job-pg": "^0.2.2",
     "@launchql/job-utils": "^0.2.2",
-    "envalid": "6.0.2",
     "pg": "8.3.3",
     "request": "2.88.2"
   }

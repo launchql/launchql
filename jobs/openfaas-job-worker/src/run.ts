@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import Worker from './index';
-import env from './env';
 import poolManager from '@launchql/job-pg';
+import { getWorkerHostname, getJobSupported } from '@launchql/job-utils';
 
 const pgPool = poolManager.getPool();
 
 const worker = new Worker({
   pgPool,
-  workerId: env.HOSTNAME,
-  tasks: env.JOBS_SUPPORTED
+  workerId: getWorkerHostname(),
+  tasks: getJobSupported()
 });
 
 worker.listen();

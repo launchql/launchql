@@ -1,5 +1,16 @@
-import env from './env';
-const { JOBS_SCHEMA } = env;
+import {
+  getJobSchema,
+  getJobPgConfig,
+  getJobPool,
+  getJobSupportAny,
+  getJobSupported,
+  getWorkerHostname,
+  getSchedulerHostname,
+  getOpenFaasGatewayConfig,
+  getOpenFaasDevMap,
+} from './runtime';
+
+const JOBS_SCHEMA = getJobSchema();
 
 export const failJob = async (client, { workerId, jobId, message }) => {
   console.log(`utils:failJob worker[${workerId}] job[${jobId}] ${message}`);
@@ -74,4 +85,16 @@ export const releaseJobs = async (client, { workerId }) => {
   return await client.query(`SELECT "${JOBS_SCHEMA}".release_jobs($1)`, [
     workerId
   ]);
+};
+
+export {
+  getJobSchema,
+  getJobPgConfig,
+  getJobPool,
+  getJobSupportAny,
+  getJobSupported,
+  getWorkerHostname,
+  getSchedulerHostname,
+  getOpenFaasGatewayConfig,
+  getOpenFaasDevMap,
 };
