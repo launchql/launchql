@@ -27,6 +27,7 @@
   "devDependencies": {},
   "dependencies": {
     "@launchql/env": "workspace:^",
+    "@launchql/jobs-core": "workspace:^",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^"
   }

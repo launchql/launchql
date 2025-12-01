@@ -1,0 +1,37 @@
+{
+  "name": "@launchql/jobs-core",
+  "version": "0.1.0",
+  "description": "Typed DB helpers for LaunchQL jobs (database_jobs)",
+  "author": "LaunchQL",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "scripts": {
+    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
+    "clean": "rimraf dist/**",
+    "prepack": "npm run build",
+    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
+    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "ts-jest": "^29.1.0",
+    "@types/jest": "^29.5.12",
+    "typescript": "^5.4.0"
+  }
+}
+

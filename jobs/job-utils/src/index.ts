@@ -9,82 +9,80 @@ import {
   getOpenFaasGatewayConfig,
   getOpenFaasDevMap,
 } from './runtime';
+import type { Pool, PoolClient } from 'pg';
+import type { JobRow, ScheduledJobRow } from '@launchql/jobs-core';
+import {
+  getJob as coreGetJob,
+  completeJob as coreCompleteJob,
+  failJob as coreFailJob,
+  getScheduledJob as coreGetScheduledJob,
+  runScheduledJob as coreRunScheduledJob,
+  releaseJobs as coreReleaseJobs,
+  releaseScheduledJobs as coreReleaseScheduledJobs,
+} from '@launchql/jobs-core';
 
 const JOBS_SCHEMA = getJobSchema();
 
-export const failJob = async (client, { workerId, jobId, message }) => {
+export const failJob = async (
+  client: Pool | PoolClient,
+  { workerId, jobId, message }: { workerId: string; jobId: number | string; message: string }
+) => {
   console.log(`utils:failJob worker[${workerId}] job[${jobId}] ${message}`);
-  await client.query(`SELECT * FROM "${JOBS_SCHEMA}".fail_job($1, $2, $3);`, [
-    workerId,
-    jobId,
-    message
-  ]);
+  // Delegate to typed core, forcing schema resolution here
+  await coreFailJob((client as any), { workerId, jobId, message, schema: JOBS_SCHEMA });
 };
 
-export const completeJob = async (client, { workerId, jobId }) => {
+export const completeJob = async (
+  client: Pool | PoolClient,
+  { workerId, jobId }: { workerId: string; jobId: number | string }
+) => {
   console.log(`utils:completeJob worker[${workerId}] job[${jobId}]`);
-  await client.query(`SELECT * FROM "${JOBS_SCHEMA}".complete_job($1, $2);`, [
-    workerId,
-    jobId
-  ]);
+  await coreCompleteJob((client as any), { workerId, jobId, schema: JOBS_SCHEMA });
 };
 
-export const getJob = async (client, { workerId, supportedTaskNames }) => {
+export const getJob = async (
+  client: Pool | PoolClient,
+  { workerId, supportedTaskNames }: { workerId: string; supportedTaskNames: string[] | null }
+): Promise<JobRow | null> => {
   console.log(`utils:getJob ${workerId}`);
-  const {
-    rows: [job]
-  } = await client.query(
-    `SELECT * FROM "${JOBS_SCHEMA}".get_job($1, $2::text[]);`,
-    [workerId, supportedTaskNames]
-  );
-  return job;
+  return coreGetJob((client as any), { workerId, supportedTaskNames, schema: JOBS_SCHEMA });
 };
 
 export const getScheduledJob = async (
-  client,
-  { workerId, supportedTaskNames }
-) => {
+  client: Pool | PoolClient,
+  { workerId, supportedTaskNames }: { workerId: string; supportedTaskNames: string[] | null }
+): Promise<ScheduledJobRow | null> => {
   console.log(`utils:getScheduledJob worker[${workerId}]`);
-  const {
-    rows: [job]
-  } = await client.query(
-    `SELECT * FROM "${JOBS_SCHEMA}".get_scheduled_job($1, $2::text[]);`,
-    [workerId, supportedTaskNames]
-  );
-  return job;
+  return coreGetScheduledJob((client as any), { workerId, supportedTaskNames, schema: JOBS_SCHEMA });
 };
 
-export const runScheduledJob = async (client, { jobId }) => {
+export const runScheduledJob = async (
+  client: Pool | PoolClient,
+  { jobId }: { jobId: number | string }
+): Promise<JobRow | null> => {
   console.log(`utils:runScheduledJob job[${jobId}]`);
   try {
-    const {
-      rows: [job]
-    } = await client.query(
-      `SELECT * FROM "${JOBS_SCHEMA}".run_scheduled_job($1);`,
-      [jobId]
-    );
-    return job;
-  } catch (e) {
-    if (e.message === 'ALREADY_SCHEDULED') {
-      return null;
-    }
+    return await coreRunScheduledJob((client as any), { jobId, schema: JOBS_SCHEMA });
+  } catch (e: any) {
+    if (e?.message === 'ALREADY_SCHEDULED') return null;
     throw e;
   }
 };
 
-export const releaseScheduledJobs = async (client, { workerId, ids }) => {
+export const releaseScheduledJobs = async (
+  client: Pool | PoolClient,
+  { workerId, ids }: { workerId: string; ids: Array<number | string> }
+) => {
   console.log(`utils:releaseScheduledJobs worker[${workerId}]`);
-  return await client.query(
-    `SELECT "${JOBS_SCHEMA}".release_scheduled_jobs($1, $2::bigint[])`,
-    [workerId, ids]
-  );
+  return coreReleaseScheduledJobs((client as any), { workerId, ids, schema: JOBS_SCHEMA });
 };
 
-export const releaseJobs = async (client, { workerId }) => {
+export const releaseJobs = async (
+  client: Pool | PoolClient,
+  { workerId }: { workerId: string }
+) => {
   console.log(`utils:releaseJobs worker[${workerId}]`);
-  return await client.query(`SELECT "${JOBS_SCHEMA}".release_jobs($1)`, [
-    workerId
-  ]);
+  return coreReleaseJobs((client as any), { workerId, schema: JOBS_SCHEMA });
 };
 
 export {
