@@ -50,8 +50,8 @@ RUN set -eux; \
     install -d /usr/local/bin; \
     printf '#!/usr/bin/env bash\nnode /app/packages/cli/dist/index.js "$@"\n' > /usr/local/bin/lql; \
     printf '#!/usr/bin/env bash\nnode /app/packages/cli/dist/index.js "$@"\n' > /usr/local/bin/launchql; \
-    chmod +x /usr/local/bin/lql /usr/local/bin/launchql
+    printf '#!/usr/bin/env bash\nnode /app/packages/pgpm/dist/index.js "$@"\n' > /usr/local/bin/pgpm; \
+    chmod +x /usr/local/bin/lql /usr/local/bin/launchql /usr/local/bin/pgpm
 
 ENTRYPOINT ["/usr/local/bin/lql"]
 CMD ["--help"]
-
