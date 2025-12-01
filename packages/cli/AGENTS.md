@@ -143,9 +143,9 @@ lql init --repo owner/repo --from-branch develop
 ```
 
 **Implementation:**
-- Supports loading templates from GitHub repositories or local paths
-- Automatically detects template type (workspace vs module)
-- Uses `loadTemplates()` from `@launchql/templatizer` to load custom templates
+- Uses `create-gen-app` to fetch/cache templates (default repo: `https://github.com/launchql/pgpm-boilerplates`)
+- Supports repo/branch overrides and custom subpaths via flags
+- Shared cache namespace with pgpm for template reuse
 
 ### 3. Server Command
 **File:** `src/commands/server.ts`

@@ -81,7 +81,6 @@ This guide helps AI agents quickly navigate and understand the LaunchQL codebase
 ### 🛠️ Development Tools
 | Package | Purpose | Key Files |
 |---------|---------|-----------|
-| **`templatizer`** | Template rendering system | - |
 | **`logger`** | Logging utilities | - |
 | **`url-domains`** | URL and domain utilities | - |
 | **`server-utils`** | Server utility functions | - |

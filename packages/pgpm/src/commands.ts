@@ -6,6 +6,7 @@ import add from './commands/add';
 import adminUsers from './commands/admin-users';
 import analyze from './commands/analyze';
 import clear from './commands/clear';
+import cache from './commands/cache';
 import deploy from './commands/deploy';
 import docker from './commands/docker';
 import env from './commands/env';
@@ -41,6 +42,7 @@ export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<st
   return {
     add,
     'admin-users': pgt(adminUsers),
+    cache,
     clear: pgt(clear),
     deploy: pgt(deploy),
     docker,

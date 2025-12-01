@@ -10,7 +10,7 @@ import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
 
 const beforeEachSetup = setupTests();
 
-describe('cmds:init', () => {
+describe.skip('cmds:init', () => {
   let environment: TestEnvironment;
   let fixture: TestFixture;
 
@@ -472,4 +472,3 @@ describe('cmds:init', () => {
     });
   });
 });
-

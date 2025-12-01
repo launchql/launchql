@@ -34,7 +34,8 @@ export const usageText = `
     analyze            Analyze database structure
     rename             Rename database changes
     admin-users        Manage admin users
-  
+    cache clean        Clear cached boilerplates/templates
+
   Migration Tools:
     migrate            Migration management subcommands
       init             Initialize migration tracking

@@ -278,28 +278,25 @@ lql server
 
 ### Using Custom Templates
 
-You can use custom templates from GitHub repositories or local paths:
+You can use custom templates from GitHub repositories (default: `https://github.com/launchql/pgpm-boilerplates`) and choose subpaths inside the repo:
 
 ```bash
 # Initialize workspace with templates from GitHub
 lql init --workspace --repo owner/repo
 
-# Initialize workspace with templates from local path
-lql init --workspace --template-path ./my-custom-templates
-
-# Initialize module with custom templates
-lql init --template-path ./my-custom-templates
+# Initialize workspace/module with custom sub-path inside the repo
+lql init --workspace --template-path templates/workspace
+lql init --template-path templates/module
 
 # Use specific branch from GitHub repository
 lql init --workspace --repo owner/repo --from-branch develop
 ```
 
 **Template Structure:**
-Custom templates should follow the same structure as the default templates:
+Custom templates should follow the same structure as the default templates in the repo:
 
-- For workspace: `boilerplates/workspace/` directory
-- For module: `boilerplates/module/` directory
-- Or provide direct path to `workspace/` or `module/` directory
+- Workspace templates live under a `workspace/` directory
+- Module templates live under a `module/` directory
 
 ### Working with Existing Projects
 

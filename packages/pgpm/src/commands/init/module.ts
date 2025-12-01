@@ -1,9 +1,11 @@
 import { LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { type TemplateSource } from '@launchql/templatizer';
 import { errors, getGitConfigInfo } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
+import fs from 'fs';
+import path from 'path';
+
+import { DEFAULT_TEMPLATE_URL, runCreateGenApp } from './create-gen-app';
 
 const log = new Logger('module-init');
 
@@ -52,36 +54,88 @@ export default async function runModuleSetup(
     .filter((opt: OptionValue) => opt.selected)
     .map((opt: OptionValue) => opt.name);
 
-  // Determine template source
-  let templateSource: TemplateSource | undefined;
-  
-  if (argv.repo) {
-    templateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
-    };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-  } else if (argv.templatePath) {
-    templateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
-  }
+  const repo = (argv.repo as string) ?? DEFAULT_TEMPLATE_URL;
+  const branch = (argv.fromBranch as string) ?? (argv['from-branch'] as string);
+  const fromPath = (argv.templatePath as string) ?? (argv['template-path'] as string) ?? 'module';
 
-  project.initModule({
-    ...argv,
-    ...answers,
-    name: modName,
-    // @ts-ignore
-    USERFULLNAME: username,
-    USEREMAIL: email,
-    extensions,
-    templateSource
+  const targetPath = resolveModuleTargetPath(project, cwd, modName);
+  fs.mkdirSync(targetPath, { recursive: true });
+
+  await runCreateGenApp({
+    templateUrl: repo,
+    branch,
+    fromPath,
+    outputDir: targetPath,
+    answers: {
+      '____moduleName____': modName,
+      '____repoName____': modName,
+      '____fullName____': username,
+      '____email____': email,
+      ...(argv.answers || {})
+    },
+    noTty: Boolean(argv['no-tty'] ?? argv.noTty)
   });
+
+  // Ensure core sqitch artifacts exist even if template is missing them
+  ensureSqitchArtifacts(project, targetPath, modName);
+  // Persist selected extensions if possible
+  setModuleDependenciesSafe(project, targetPath, cwd, extensions);
 
   log.success(`Initialized module: ${modName}`);
   return { ...argv, ...answers };
 }
 
+function resolveModuleTargetPath(project: LaunchQLPackage, cwd: string, modName: string): string {
+  const resolvedCwd = path.resolve(cwd);
+  const workspaceRoot = project.workspacePath ? path.resolve(project.workspacePath) : undefined;
+
+  if (workspaceRoot && workspaceRoot === resolvedCwd) {
+    const packagesDir = path.join(resolvedCwd, 'packages');
+    fs.mkdirSync(packagesDir, { recursive: true });
+    return path.join(packagesDir, modName);
+  }
+
+  if (project.isParentOfAllowedDirs(cwd)) {
+    return path.join(resolvedCwd, modName);
+  }
+
+  if (project.isInsideAllowedDirs(cwd)) {
+    log.error('Cannot create a module inside an existing module.');
+    throw errors.NOT_IN_WORKSPACE_MODULE({});
+  }
+
+  log.error('You must be inside the workspace root or a parent directory of modules (like packages/).');
+  throw errors.NOT_IN_WORKSPACE_MODULE({});
+}
+
+function ensureSqitchArtifacts(project: LaunchQLPackage, targetPath: string, modName: string) {
+  // Create pgpm.plan and deploy/revert/verify directories if missing
+  const planPath = path.join(targetPath, 'pgpm.plan');
+  if (!fs.existsSync(planPath)) {
+    project.initModuleSqitch(modName, targetPath);
+  }
+
+  const dirs = ['deploy', 'revert', 'verify'];
+  dirs.forEach(dir => {
+    const dirPath = path.join(targetPath, dir);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+  });
+}
+
+function setModuleDependenciesSafe(
+  project: LaunchQLPackage,
+  targetPath: string,
+  originalCwd: string,
+  extensions: string[]
+) {
+  try {
+    project.resetCwd(targetPath);
+    project.setModuleDependencies(extensions);
+  } catch (err) {
+    log.warn(`Could not persist extensions: ${(err as Error).message}`);
+  } finally {
+    project.resetCwd(originalCwd);
+  }
+}

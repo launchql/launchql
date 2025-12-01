@@ -35,6 +35,7 @@ export const usageText = `
     kill               Terminate database connections and optionally drop databases
     install            Install LaunchQL modules
     tag                Add tags to changes for versioning
+    cache clean        Clear cached boilerplates/templates
   
   Migration Tools:
     migrate            Migration management subcommands

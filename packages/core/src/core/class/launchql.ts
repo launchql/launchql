@@ -1,12 +1,5 @@
 import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import {
-  moduleTemplate,
-  writeRenderedTemplates,
-  TemplateSource,
-  loadTemplates
-} from '@launchql/templatizer';
 import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
 import yanse from 'yanse';
 import { execSync } from 'child_process';
@@ -106,10 +99,10 @@ export enum PackageContext {
 
 export interface InitModuleOptions {
   name: string;
-  description: string;
-  author: string;
+  description?: string;
+  author?: string;
   extensions: string[];
-  templateSource?: TemplateSource;
+  version?: string;
 }
 
 export class LaunchQLPackage {
@@ -401,7 +394,7 @@ export class LaunchQLPackage {
     modules.forEach(module => checkCircular(module, [currentModuleName]));
   }
 
-  private initModuleSqitch(modName: string, targetPath: string): void {
+  initModuleSqitch(modName: string, targetPath: string): void {
     // Create pgpm.plan file using package-files package
     const plan = generatePlan({
       moduleName: modName,
@@ -423,17 +416,48 @@ export class LaunchQLPackage {
   initModule(options: InitModuleOptions): void {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
-    
-    // Load templates from custom source if provided, otherwise use default
-    let templates = moduleTemplate;
-    if (options.templateSource) {
-      const compiledTemplates = loadTemplates(options.templateSource, 'module');
-      templates = compiledTemplates.map((t: any) => t.render);
-    }
-    
-    writeRenderedTemplates(templates, targetPath, options);
+    const version = options.version ?? '0.0.1';
+
     this.initModuleSqitch(options.name, targetPath);
-    writeExtensions(targetPath, options.extensions);
+
+    const pkgPath = path.join(targetPath, 'package.json');
+    if (!fs.existsSync(pkgPath)) {
+      const pkg = {
+        name: options.name,
+        version,
+        description: options.description ?? '',
+        author: options.author ?? ''
+      };
+      fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+    } else {
+      try {
+        const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+        if (!pkg.version) {
+          pkg.version = version;
+          fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+        }
+      } catch {
+        // ignore malformed package.json; leave as is
+      }
+    }
+
+    const sqlDir = path.join(targetPath, 'sql');
+    fs.mkdirSync(sqlDir, { recursive: true });
+    const sqlFilePath = path.join(sqlDir, `${options.name}--${version}.sql`);
+    if (!fs.existsSync(sqlFilePath)) {
+      fs.writeFileSync(sqlFilePath, '');
+    }
+
+    const extInfo = {
+      extname: options.name,
+      packageDir: targetPath,
+      version,
+      Makefile: path.join(targetPath, 'Makefile'),
+      controlFile: path.join(targetPath, `${options.name}.control`),
+      sqlFile: path.join('sql', `${options.name}--${version}.sql`)
+    };
+
+    writeExtensions(targetPath, options.extensions, extInfo);
   }
 
   // ──────────────── Dependency Analysis ────────────────

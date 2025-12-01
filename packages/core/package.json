@@ -48,7 +48,6 @@
     "@launchql/env": "workspace:^",
     "@launchql/logger": "workspace:^",
     "@launchql/server-utils": "workspace:^",
-    "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
     "@pgsql/types": "^17.6.1",
     "csv-to-pg": "^2.0.10",

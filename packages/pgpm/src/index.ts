@@ -10,6 +10,7 @@ export { createPgpmCommandMap };
 export { default as add } from './commands/add';
 export { default as adminUsers } from './commands/admin-users';
 export { default as analyze } from './commands/analyze';
+export { default as cache } from './commands/cache';
 export { default as clear } from './commands/clear';
 export { default as deploy } from './commands/deploy';
 export { default as docker } from './commands/docker';

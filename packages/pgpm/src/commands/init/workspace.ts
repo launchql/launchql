@@ -1,10 +1,10 @@
 import { sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { loadTemplates, type TemplateSource,workspaceTemplate, writeRenderedTemplates } from '@launchql/templatizer';
 import { mkdirSync } from 'fs';
 import { Inquirerer, Question } from 'inquirerer';
 import path from 'path';
+
+import { DEFAULT_TEMPLATE_URL, runCreateGenApp } from './create-gen-app';
 
 const log = new Logger('workspace-init');
 
@@ -22,37 +22,28 @@ export default async function runWorkspaceSetup(
   ];
 
   const answers = await prompter.prompt(argv, workspaceQuestions);
-  const { cwd } = argv;
-  const targetPath = path.join(cwd!, sluggify(answers.name));
+  const cwd = argv.cwd ?? process.cwd();
+  const targetPath = path.join(cwd, sluggify(answers.name));
 
   mkdirSync(targetPath, { recursive: true });
   log.success(`Created workspace directory: ${targetPath}`);
 
-  // Determine template source
-  let templates = workspaceTemplate;
-  
-  if (argv.repo) {
-    const source: TemplateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
-    };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-    const compiledTemplates = loadTemplates(source, 'workspace');
-    templates = compiledTemplates.map((t: any) => t.render);
-  } else if (argv.templatePath) {
-    const source: TemplateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
-    const compiledTemplates = loadTemplates(source, 'workspace');
-    templates = compiledTemplates.map((t: any) => t.render);
-  }
+  const repo = (argv.repo as string) ?? DEFAULT_TEMPLATE_URL;
+  const branch = (argv.fromBranch as string) ?? (argv['from-branch'] as string);
+  const fromPath = (argv.templatePath as string) ?? (argv['template-path'] as string) ?? 'workspace';
 
-  writeRenderedTemplates(templates, targetPath, { ...argv, ...answers });
+  await runCreateGenApp({
+    templateUrl: repo,
+    branch,
+    fromPath,
+    outputDir: targetPath,
+    answers: {
+      '____moduleName____': answers.name,
+      ...(argv.answers || {})
+    },
+    noTty: Boolean(argv['no-tty'] ?? argv.noTty)
+  });
   log.success('Workspace templates rendered.');
 
   return { ...argv, ...answers, cwd: targetPath };
 }
-
