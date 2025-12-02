@@ -68,4 +68,3 @@ The plugin accepts `uploadFieldDefinitions` in `graphileBuildOptions`:
 
 Each definition requires a `resolve` function that processes the upload and returns the value to store in the database.
 
-

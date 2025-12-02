@@ -1,6 +1,21 @@
-[![Package on npm](https://img.shields.io/npm/v/graphile-plugin-connection-filter-postgis.svg)](https://www.npmjs.com/package/graphile-plugin-connection-filter-postgis) [![CircleCI](https://circleci.com/gh/graphile-contrib/graphile-plugin-connection-filter-postgis.svg?style=svg)](https://circleci.com/gh/graphile-contrib/graphile-plugin-connection-filter-postgis)
-
 # graphile-plugin-connection-filter-postgis
+
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+</p>
+
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+    <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
+  </a>
+  <a href="https://www.npmjs.com/package/graphile-plugin-connection-filter-postgis">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=graphile%2Fgraphile-plugin-connection-filter-postgis%2Fpackage.json"/>
+  </a>
+</p>
+
 This plugin exposes additional PostGIS-related fields on the `filter` argument of Connections.
 
 ## Usage
