@@ -121,11 +121,10 @@ app.listen(settings.port);
 * `graphile-plugin-connection-filter`
 * `graphile-plugin-fulltext-filter`
 * `graphile-postgis`
-* `postgraphile-plugin-connection-filter-postgis`
-* `postgraphile-derived-upload-field`
+* `graphile-plugin-connection-filter-postgis`
 * `graphile-simple-inflector`
 * `graphile-i18n`
 * `graphile-meta-schema`
 * `@graphile-contrib/pg-many-to-many`
 * `graphile-search-plugin`
-* `./plugins/types` (custom LaunchQL plugin)
+* `graphile-pg-type-mappings`
