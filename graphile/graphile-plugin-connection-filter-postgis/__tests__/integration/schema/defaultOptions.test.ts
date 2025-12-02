@@ -1,15 +1,15 @@
-import '../../../test-utils/env';
 import { join } from 'path';
 import { Pool } from 'pg';
-import { PgConnectionArgCondition } from 'graphile-build-pg';
 import {
   createPostGraphileSchema,
   type PostGraphileOptions,
 } from 'postgraphile';
 import { getConnections, seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
+import PostgisPlugin from '@graphile/postgis';
+import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 
-import ConnectionFilterPlugin from '../../../src/index';
+import PostgisConnectionFilterPlugin from '../../../src';
 import { printSchemaOrdered } from '../../../test-utils/printSchema';
 
 const SCHEMA = process.env.SCHEMA ?? 'p';
@@ -43,16 +43,16 @@ afterAll(async () => {
 });
 
 it(
-  'prints a schema with the filter plugin and the `connectionFilterComputedColumns: false` option',
+  'prints a schema with the graphile-plugin-connection-filter-postgis plugin',
   async () => {
     const schema = await createSchemaSnapshot({
-      skipPlugins: [PgConnectionArgCondition],
-      appendPlugins: [ConnectionFilterPlugin],
+      appendPlugins: [
+        PostgisPlugin,
+        ConnectionFilterPlugin,
+        PostgisConnectionFilterPlugin,
+      ],
       disableDefaultMutations: true,
       legacyRelations: 'omit',
-      graphileBuildOptions: {
-        connectionFilterComputedColumns: false,
-      },
     });
 
     expect(schema).toMatchSnapshot();

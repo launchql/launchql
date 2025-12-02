@@ -176,3 +176,9 @@ jobs:
 
       - name: graphile/graphile-postgis
         run: cd ./graphile/graphile-postgis && pnpm test
+
+      - name: graphile/graphile-plugin-connection-filter
+        run: cd ./graphile/graphile-plugin-connection-filter && pnpm test
+
+      - name: graphile/graphile-plugin-connection-filter-postgis
+        run: cd ./graphile/graphile-plugin-connection-filter-postgis && pnpm test
