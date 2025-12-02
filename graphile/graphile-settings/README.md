@@ -8,8 +8,12 @@
   <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
     <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/graphile-settings"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=graphile%2Fgraphile-settings%2Fpackage.json"/></a>
+  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+    <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
+  </a>
+  <a href="https://www.npmjs.com/package/graphile-settings">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=graphile%2Fgraphile-settings%2Fpackage.json"/>
+  </a>
 </p>
 
 **`graphile-settings`** is a batteries-included configuration builder for [PostGraphile](https://www.graphile.org/postgraphile/), purpose-built for the [LaunchQL](https://github.com/launchql/launchql) ecosystem. It centralizes plugin setup, schema wiring, and feature flags into a single, composable interface — enabling consistent, high-performance GraphQL APIs across projects.
