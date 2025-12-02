@@ -1,0 +1,561 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CustomPgTypeMappingsPlugin custom type mappings - add and override together should handle both adding new types and overriding defaults 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "timestampField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`CustomPgTypeMappingsPlugin custom type mappings - empty custom mappings should use only default mappings when custom mappings is empty array 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "OBJECT",
+            "name": "CustomType",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`CustomPgTypeMappingsPlugin custom type mappings - multiple custom types should map multiple custom types correctly 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "currencyField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "metadataField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`CustomPgTypeMappingsPlugin custom type mappings - override multiple defaults should override multiple default mappings 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "OBJECT",
+            "name": "CustomType",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`CustomPgTypeMappingsPlugin custom type mappings - using plugin factory with options should handle plugin factory with options 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`CustomPgTypeMappingsPlugin custom type mappings should handle custom type mappings 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "currencyField",
+          "type": {
+            "kind": "OBJECT",
+            "name": "CurrencyType",
+          },
+        },
+        {
+          "name": "metadataField",
+          "type": {
+            "kind": "OBJECT",
+            "name": "MetadataType",
+          },
+        },
+        {
+          "name": "timestampField",
+          "type": {
+            "kind": "OBJECT",
+            "name": "TimestampType",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`CustomPgTypeMappingsPlugin default type mappings should map default types correctly 1`] = `
+{
+  "data": {
+    "__type": {
+      "fields": [
+        {
+          "name": "nodeId",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "id",
+          "type": {
+            "kind": "NON_NULL",
+            "name": null,
+          },
+        },
+        {
+          "name": "emailField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "hostnameField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "urlField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "originField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "String",
+          },
+        },
+        {
+          "name": "multipleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "singleSelectField",
+          "type": {
+            "kind": "SCALAR",
+            "name": "JSON",
+          },
+        },
+        {
+          "name": "customTypeField",
+          "type": {
+            "kind": "OBJECT",
+            "name": "CustomType",
+          },
+        },
+      ],
+    },
+  },
+}
+`;

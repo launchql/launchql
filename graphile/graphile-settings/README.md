@@ -123,4 +123,4 @@ app.listen(settings.port);
 * `graphile-meta-schema`
 * `@graphile-contrib/pg-many-to-many`
 * `graphile-search-plugin`
-* `./plugins/types` (custom LaunchQL plugin)
+* `graphile-pg-type-mappings`
