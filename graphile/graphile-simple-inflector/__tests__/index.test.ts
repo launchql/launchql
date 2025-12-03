@@ -26,7 +26,6 @@ beforeAll(async () => {
     },
     [
       seed.sqlfile([
-        sql('roles.sql'),
         sql('test.sql')
       ])
     ]
