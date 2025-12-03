@@ -4,3 +4,4 @@ export * from './display';
 export * from './cli-error';
 export * from './deployed-changes';
 export * from './module-utils';
+export * from './update-check';

@@ -38,6 +38,7 @@
     "@types/node": "^20.12.7",
     "@types/pg": "^8.15.2",
     "@types/shelljs": "^0.8.16",
+    "@types/semver": "^7.5.8",
     "glob": "^13.0.0",
     "makage": "^0.1.8",
     "pg": "^8.16.0",
@@ -49,13 +50,15 @@
     "@launchql/logger": "workspace:^",
     "@launchql/types": "workspace:^",
     "inquirerer": "^2.1.8",
+    "appstash": "^0.2.4",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
     "shelljs": "^0.10.0",
     "yanse": "^0.1.5",
-    "create-gen-app": "^0.2.2"
+    "create-gen-app": "^0.2.2",
+    "semver": "^7.7.3"
   },
   "keywords": [
     "cli",

@@ -1,6 +1,7 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { createPgpmCommandMap } from 'pgpm';
+import { checkForUpdates } from 'pgpm';
 
 import explorer from './commands/explorer';
 import server from './commands/server';
@@ -20,6 +21,19 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
 };
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions & { skipPgTeardown?: boolean }) => {
+  // Run update check before early exits so version/help also trigger it
+  try {
+    const pkg = readAndParsePackageJson();
+    await checkForUpdates({
+      command: argv._?.[0] as string | undefined,
+      packageName: pkg.name,
+      pkgVersion: pkg.version,
+      toolName: pkg.name === '@launchql/cli' ? 'launchql-cli' : pkg.name
+    });
+  } catch {
+    /* ignore update check errors */
+  }
+
   if (argv.version || argv.v) {
     const pkg = readAndParsePackageJson();
     console.log(pkg.version);

@@ -28,6 +28,7 @@ export { default as revert } from './commands/revert';
 export { default as tag } from './commands/tag';
 export { default as verify } from './commands/verify';
 export * from './utils';
+export { checkForUpdates } from './utils/update-check';
 
 export const options: Partial<CLIOptions> = {
   minimistOpts: {

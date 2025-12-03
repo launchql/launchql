@@ -12,6 +12,7 @@ import docker from './commands/docker';
 import env from './commands/env';
 import _export from './commands/export';
 import extension from './commands/extension';
+import update from './commands/update';
 import init from './commands/init';
 import install from './commands/install';
 import kill from './commands/kill';
@@ -26,6 +27,7 @@ import verify from './commands/verify';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 import { cliExitWithError } from './utils/cli-error';
+import { checkForUpdates } from './utils/update-check';
 
 const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
   try {
@@ -55,6 +57,7 @@ export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<st
     plan: pgt(plan),
     export: pgt(_export),
     package: pgt(_package),
+    update,
     tag: pgt(tag),
     kill: pgt(kill),
     install: pgt(install),
@@ -65,6 +68,19 @@ export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<st
 };
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions & { skipPgTeardown?: boolean }) => {
+  // Fire-and-forget update check (non-blocking) before early exits
+  try {
+    const pkg = readAndParsePackageJson();
+    await checkForUpdates({
+      command: argv._?.[0] as string | undefined,
+      packageName: pkg.name,
+      pkgVersion: pkg.version,
+      toolName: pkg.name === '@launchql/cli' ? 'launchql-cli' : pkg.name
+    });
+  } catch {
+    /* silent */
+  }
+
   if (argv.version || argv.v) {
     const pkg = readAndParsePackageJson();
     console.log(pkg.version);

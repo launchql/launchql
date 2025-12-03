@@ -1133,6 +1133,9 @@ importers:
       '@launchql/types':
         specifier: workspace:^
         version: link:../types/dist
+      appstash:
+        specifier: ^0.2.4
+        version: 0.2.4
       create-gen-app:
         specifier: ^0.2.2
         version: 0.2.2
@@ -1151,6 +1154,9 @@ importers:
       pg-env:
         specifier: workspace:^
         version: link:../pg-env/dist
+      semver:
+        specifier: ^7.7.3
+        version: 7.7.3
       shelljs:
         specifier: ^0.10.0
         version: 0.10.0
@@ -1170,6 +1176,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.6
+      '@types/semver':
+        specifier: ^7.5.8
+        version: 7.7.1
       '@types/shelljs':
         specifier: ^0.8.16
         version: 0.8.17
@@ -2911,6 +2920,9 @@ packages:
 
   '@types/request-ip@0.0.41':
     resolution: {integrity: sha512-Qzz0PM2nSZej4lsLzzNfADIORZhhxO7PED0fXpg4FjXiHuJ/lMyUg+YFF5q8x9HPZH3Gl6N+NOM8QZjItNgGKg==}
+
+  '@types/semver@7.7.1':
+    resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
 
   '@types/send@0.17.6':
     resolution: {integrity: sha512-Uqt8rPBE8SY0RK8JB1EzVOIZ32uqy8HwdxCnoCOsYrvnswqmFZ/k+9Ikidlk/ImhsdvBsloHbAlewb2IEBV/Og==}
@@ -8733,6 +8745,8 @@ snapshots:
   '@types/request-ip@0.0.41':
     dependencies:
       '@types/node': 20.19.25
+
+  '@types/semver@7.7.1': {}
 
   '@types/send@0.17.6':
     dependencies:
