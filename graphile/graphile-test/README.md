@@ -39,6 +39,8 @@ npm install graphile-test
 
 ## ✨ Quick Start
 
+### Using SQL files (traditional approach)
+
 ```ts
 import { getConnections, seed } from 'graphile-test';
 
@@ -62,6 +64,29 @@ it('runs a GraphQL mutation', async () => {
   expect(res.data.createUser.username).toBe('alice');
 });
 ```
+
+### Using pgpm admin-users bootstrap method
+
+Instead of loading `roles.sql`, you can use `bootstrapRoles()` which uses the same method as `pgpm admin-users bootstrap`:
+
+```ts
+import { getConnections, seed, bootstrapRoles } from 'graphile-test';
+
+let db, query, teardown;
+
+beforeAll(async () => {
+  ({ db, query, teardown } = await getConnections({
+    schemas: ['app_public'],
+    authRole: 'authenticated'
+  }, [
+    // Use bootstrapRoles() instead of seed.sqlfile([sql('roles.sql')])
+    bootstrapRoles(),
+    seed.sqlfile(['../sql/test.sql', '../sql/grants.sql'])
+  ]));
+});
+```
+
+**Note:** `bootstrapRoles()` automatically adds role inheritance (`GRANT anonymous/authenticated TO administrator`) which is needed for testing but not included in `bootstrap-roles.sql`.
 
 ## 📘 API
 
