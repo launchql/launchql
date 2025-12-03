@@ -29,7 +29,7 @@ const createSchemaSnapshot = async (
 
 beforeAll(async () => {
   const connections = await getConnections({}, [
-    seed.sqlfile([sql('roles.sql'), sql('schema.sql')]),
+    seed.sqlfile([sql('schema.sql')]),
   ]);
   ({ pg: db, teardown } = connections);
   pool = new Pool(db.config);

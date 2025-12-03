@@ -46,12 +46,3 @@ app.use(
 ## Examples
 
 Look in the tests ;)
-
-## Testing
-
-```sh
-createdb test_database
-psql test_database < sql/roles.sql
-psql test_database < sql/test.sql
-yarn test
-```
