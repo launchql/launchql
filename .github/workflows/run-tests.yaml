@@ -92,9 +92,6 @@ jobs:
       - name: graphile-test
         run: |
           cd ./graphile/graphile-test
-          createdb graphile_test_db
-          psql -f sql/test.sql graphile_test_db
-          psql -f sql/roles.sql graphile_test_db
           pnpm test
 
       - name: pgsql-test
