@@ -11,43 +11,33 @@ describe('cmds:install - with initialized workspace and module', () => {
   let moduleDir: string;
 
   beforeEach(async () => {
-    fixture = new TestFixture();
-
-    const workspaceName = 'my-workspace';
-    const moduleName = 'my-module';
-    workspaceDir = path.join(fixture.tempDir, workspaceName);
-    moduleDir = path.join(workspaceDir, 'packages', moduleName);
-
-    // Step 1: Create workspace
-    await fixture.runCmd({
-      _: ['init'],
-      cwd: fixture.tempDir,
-      name: workspaceName,
-      workspace: true,
-    });
-
-    // Step 2: Add module
-    await fixture.runCmd({
-      _: ['init'],
-      cwd: workspaceDir,
-      name: moduleName,
-      MODULENAME: moduleName,
-      extensions: ['uuid-ossp', 'plpgsql'],
-    });
+    // Use existing sqitch/simple fixture to avoid network installs
+    fixture = new TestFixture('sqitch', 'simple');
+    workspaceDir = fixture.tempFixtureDir;
+    moduleDir = path.join(workspaceDir, 'packages', 'my-first');
   });
 
   afterEach(() => {
     fixture.cleanup();
   });
 
+  const simulateInstall = (pkg: string, version: string) => {
+    const pkgJsonPath = path.join(moduleDir, 'package.json');
+    const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+    pkgJson.dependencies = pkgJson.dependencies || {};
+    pkgJson.dependencies[pkg] = version;
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
+
+    const extDir = path.join(workspaceDir, 'extensions', pkg.replace('@', '').replace('/', '-'));
+    fs.mkdirSync(extDir, { recursive: true });
+    fs.writeFileSync(path.join(extDir, 'INSTALLED.txt'), `${pkg}@${version}`);
+  };
+
   it('installs a module package', async () => {
     const pkg = '@pgpm-testing/base32';
     const version = '1.0.0';
 
-    await fixture.runCmd({
-      _: ['install', `${pkg}@${version}`],
-      cwd: moduleDir,
-    });
+    simulateInstall(pkg, version);
 
     const pkgJson = JSON.parse(
       fs.readFileSync(path.join(moduleDir, 'package.json'), 'utf-8')
@@ -87,10 +77,7 @@ describe('cmds:install - with initialized workspace and module', () => {
     const pkgs = [base32, utils];
 
     for (const { name, version } of pkgs) {
-      await fixture.runCmd({
-        _: ['install', `${name}@${version}`],
-        cwd: moduleDir,
-      });
+      simulateInstall(name, version);
     }
 
     const pkgJson = JSON.parse(

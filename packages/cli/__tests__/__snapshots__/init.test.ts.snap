@@ -33,11 +33,8 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "pgpm.json",
   "package.json",
   "lerna.json",
-  "docker-compose.yml",
   "README.md",
-  "Makefile",
   "LICENSE",
-  ".questions.json",
   ".prettierrc.json",
   ".gitignore",
   ".eslintrc.json",
@@ -47,9 +44,8 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "packages/my-module/jest.config.js",
   "packages/my-module/README.md",
   "packages/my-module/Makefile",
-  "packages/my-module/.questions.json",
   "packages/my-module/__tests__/basic.test.ts",
-  "bin/install.sh",
+  ".github/ci.yaml",
 ]
 `;
 
@@ -72,6 +68,48 @@ exports[`cmds:init initializes module: module-only - transformResults 1`] = `[]`
 
 exports[`cmds:init initializes module: module-only - writeResults 1`] = `[]`;
 
+exports[`cmds:init initializes module: workspace-pre - argv 1`] = `
+{
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "name": "my-workspace",
+  "workspace": true,
+}
+`;
+
+exports[`cmds:init initializes module: workspace-pre - files 1`] = `
+[
+  "my-workspace/tsconfig.json",
+  "my-workspace/pnpm-workspace.yaml",
+  "my-workspace/pgpm.json",
+  "my-workspace/package.json",
+  "my-workspace/lerna.json",
+  "my-workspace/README.md",
+  "my-workspace/LICENSE",
+  "my-workspace/.prettierrc.json",
+  "my-workspace/.gitignore",
+  "my-workspace/.eslintrc.json",
+  "my-workspace/.github/ci.yaml",
+]
+`;
+
+exports[`cmds:init initializes module: workspace-pre - result 1`] = `
+{
+  "_": [
+    "init",
+  ],
+  "cwd": "<CWD>",
+  "name": "my-workspace",
+  "workspace": true,
+}
+`;
+
+exports[`cmds:init initializes module: workspace-pre - transformResults 1`] = `[]`;
+
+exports[`cmds:init initializes module: workspace-pre - writeResults 1`] = `[]`;
+
 exports[`cmds:init initializes workspace: workspace - argv 1`] = `
 {
   "_": [
@@ -90,15 +128,12 @@ exports[`cmds:init initializes workspace: workspace - files 1`] = `
   "my-workspace/pgpm.json",
   "my-workspace/package.json",
   "my-workspace/lerna.json",
-  "my-workspace/docker-compose.yml",
   "my-workspace/README.md",
-  "my-workspace/Makefile",
   "my-workspace/LICENSE",
-  "my-workspace/.questions.json",
   "my-workspace/.prettierrc.json",
   "my-workspace/.gitignore",
   "my-workspace/.eslintrc.json",
-  "my-workspace/bin/install.sh",
+  "my-workspace/.github/ci.yaml",
 ]
 `;
 

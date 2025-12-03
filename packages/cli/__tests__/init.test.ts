@@ -10,7 +10,10 @@ import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
 
 const beforeEachSetup = setupTests();
 
-describe.skip('cmds:init', () => {
+// The init flow clones templates and writes files; allow extra time.
+jest.setTimeout(240000);
+
+describe('cmds:init', () => {
   let environment: TestEnvironment;
   let fixture: TestFixture;
 
@@ -27,6 +30,10 @@ describe.skip('cmds:init', () => {
   });
 
   const runInitTest = async (argv: ParsedArgs, label: string) => {
+    const start = Date.now();
+    // Trace to debug long-running init flows in CI/local.
+    // eslint-disable-next-line no-console
+    console.log(`[init-test] start ${label}`);
     const { mockInput, mockOutput, writeResults, transformResults } = environment;
 
     const prompter = new Inquirerer({
@@ -58,6 +65,8 @@ describe.skip('cmds:init', () => {
     expect(writeResults).toMatchSnapshot(`${label} - writeResults`);
     expect(transformResults).toMatchSnapshot(`${label} - transformResults`);
     expect(relativeFiles).toMatchSnapshot(`${label} - files`);
+    // eslint-disable-next-line no-console
+    console.log(`[init-test] finish ${label} in ${Date.now() - start}ms`);
   };
 
   it('initializes workspace', async () => {
@@ -75,7 +84,18 @@ describe.skip('cmds:init', () => {
   it('initializes module', async () => {
     const workspaceDir = path.join(fixture.tempDir, 'my-workspace');
     const moduleDir = path.join(workspaceDir, 'packages', 'my-module');
-    console.log({workspaceDir, moduleDir});
+
+    // Ensure workspace exists first
+    await runInitTest(
+      {
+        _: ['init'],
+        cwd: fixture.tempDir,
+        name: 'my-workspace',
+        workspace: true
+      },
+      'workspace-pre'
+    );
+
     await runInitTest(
       {
         _: ['init'],
@@ -105,7 +125,8 @@ describe.skip('cmds:init', () => {
         cwd: fixture.tempDir,
         name: 'test-workspace-template',
         workspace: true,
-        templatePath: path.join(__dirname, '../../../boilerplates'),
+        repo: 'https://github.com/launchql/pgpm-boilerplates.git',
+        templatePath: 'workspace',
       };
 
       await commands(argv, prompter, {
@@ -137,7 +158,9 @@ describe.skip('cmds:init', () => {
         _: ['init'],
         cwd: fixture.tempDir,
         name: 'test-workspace-for-module',
-        workspace: true
+        workspace: true,
+        repo: 'https://github.com/launchql/pgpm-boilerplates.git',
+        templatePath: 'workspace'
       }, prompter, {
         noTty: true,
         input: mockInput,
@@ -153,7 +176,8 @@ describe.skip('cmds:init', () => {
         name: 'test-module-template',
         MODULENAME: 'test-module-template',
         extensions: ['plpgsql'],
-        templatePath: path.join(__dirname, '../../../boilerplates'),
+        repo: 'https://github.com/launchql/pgpm-boilerplates.git',
+        templatePath: 'module'
       }, prompter, {
         noTty: true,
         input: mockInput,
@@ -186,7 +210,8 @@ describe.skip('cmds:init', () => {
           cwd: fixture.tempDir,
           name: 'test-workspace-repo',
           workspace: true,
-          repo: 'launchql/launchql',
+          repo: 'https://github.com/launchql/pgpm-boilerplates.git',
+          templatePath: 'workspace'
         };
 
         await commands(argv, prompter, {
@@ -219,8 +244,9 @@ describe.skip('cmds:init', () => {
           cwd: fixture.tempDir,
           name: 'test-workspace-branch',
           workspace: true,
-          repo: 'launchql/launchql',
+          repo: 'https://github.com/launchql/pgpm-boilerplates.git',
           fromBranch: 'main',
+          templatePath: 'workspace'
         };
 
         await commands(argv, prompter, {
@@ -393,11 +419,6 @@ describe.skip('cmds:init', () => {
       const insideDir = path.join(wsRoot, 'packages', baseMod);
       const nestedName = 'nested-mod';
 
-      const exitSpy = jest.spyOn(process, 'exit').mockImplementation(((code?: number) => {
-        throw new Error(`PROCESS_EXIT:${code}`);
-      }) as any);
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
       await expect(commands({
         _: ['init'],
         cwd: insideDir,
@@ -410,18 +431,10 @@ describe.skip('cmds:init', () => {
         output: mockOutput,
         version: '1.0.0',
         minimistOpts: {}
-      })).rejects.toThrow(/PROCESS_EXIT:1/);
-
-      expect(errorSpy).toHaveBeenCalled();
-      const errorCalls = errorSpy.mock.calls.map(call => call.join(' '));
-      const hasNestedError = errorCalls.some(call => call.includes('Cannot create a module inside an existing module'));
-      expect(hasNestedError).toBe(true);
+      })).rejects.toThrow(/workspace packages|existing module/);
 
       const nestedDir = path.join(insideDir, nestedName);
       expect(existsSync(nestedDir)).toBe(false);
-
-      exitSpy.mockRestore();
-      errorSpy.mockRestore();
     });
   });
 

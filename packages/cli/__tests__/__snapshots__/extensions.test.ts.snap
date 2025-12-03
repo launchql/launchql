@@ -4,12 +4,17 @@ exports[`cmds:extension runs \`extension\` command after workspace and module se
 [
   "pgpm.plan",
   "package.json",
-  "my-module.control",
-  "jest.config.js",
-  "README.md",
+  "my-first.control",
   "Makefile",
-  ".questions.json",
-  "__tests__/basic.test.ts",
+  "verify/table_users.sql",
+  "verify/table_products.sql",
+  "verify/schema_myfirstapp.sql",
+  "revert/table_users.sql",
+  "revert/table_products.sql",
+  "revert/schema_myfirstapp.sql",
+  "deploy/table_users.sql",
+  "deploy/table_products.sql",
+  "deploy/schema_myfirstapp.sql",
 ]
 `;
 
@@ -27,38 +32,40 @@ exports[`cmds:extension runs \`extension\` command after workspace and module se
 `;
 
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: initial - control file 1`] = `
-"# my-module extension
-comment = 'my-module extension'
+"# my-first extension
+comment = 'my-first extension'
 default_version = '0.0.1'
-module_pathname = '$libdir/my-module'
-requires = 'mod-1,mod2'
+module_pathname = '$libdir/my-first'
+requires = 'citext,plpgsql,pgcrypto'
 relocatable = false
 superuser = false
-"
+  "
 `;
 
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: initial - module dependencies 1`] = `
 {
   "modules": [],
   "native": [
-    "mod-1",
-    "mod2",
+    "citext",
+    "plpgsql",
+    "pgcrypto",
   ],
 }
 `;
 
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: initial - required modules 1`] = `
 [
-  "mod-1",
-  "mod2",
+  "citext",
+  "plpgsql",
+  "pgcrypto",
 ]
 `;
 
 exports[`cmds:extension runs \`extension\` command after workspace and module setup: updated - control file 1`] = `
-"# my-module extension
-comment = 'my-module extension'
+"# my-first extension
+comment = 'my-first extension'
 default_version = '0.0.1'
-module_pathname = '$libdir/my-module'
+module_pathname = '$libdir/my-first'
 requires = 'plpgsql,module-c'
 relocatable = false
 superuser = false

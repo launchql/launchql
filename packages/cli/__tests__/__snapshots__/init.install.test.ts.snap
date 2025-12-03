@@ -2,7 +2,7 @@
 
 exports[`cmds:install - with initialized workspace and module installs a module package 1`] = `
 {
-  "author": "CI Test User <ci@example.com>",
+  "author": "Dan Lynch <pyramation@gmail.com>",
   "bugs": {
     "url": "https://github.com/undefined/undefined/issues",
   },
@@ -10,18 +10,12 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     "@pgpm-testing/base32": "1.0.0",
   },
   "description": "undefined",
-  "devDependencies": {
-    "pgsql-test": "^2.13.2",
-  },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
   "license": "MIT",
-  "name": "undefined",
-  "pnpm": {
-    "overrides": {
-      "graphql": "14.7.0",
-    },
-  },
+  "main": "index.js",
+  "module": "esm/index.js",
+  "name": "my-first",
   "publishConfig": {
     "access": "undefined",
     "directory": "dist",
@@ -31,120 +25,39 @@ exports[`cmds:install - with initialized workspace and module installs a module 
     "url": "https://github.com/undefined/undefined",
   },
   "scripts": {
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "clean": "makage clean",
     "lint": "eslint . --fix",
+    "prepare": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
   },
+  "types": "index.d.ts",
   "version": "0.0.1",
 }
 `;
 
 exports[`cmds:install - with initialized workspace and module installs a module package 2`] = `
 [
-  "../../extensions/@pgpm-testing/base32/LICENSE",
-  "../../extensions/@pgpm-testing/base32/Makefile",
-  "../../extensions/@pgpm-testing/base32/README.md",
-  "../../extensions/@pgpm-testing/base32/__tests__/__snapshots__/base32.decode.test.ts.snap",
-  "../../extensions/@pgpm-testing/base32/__tests__/__snapshots__/base32.encode.test.ts.snap",
-  "../../extensions/@pgpm-testing/base32/__tests__/base32.decode.test.ts",
-  "../../extensions/@pgpm-testing/base32/__tests__/base32.encode.test.ts",
-  "../../extensions/@pgpm-testing/base32/deploy/schemas/base32/procedures/decode.sql",
-  "../../extensions/@pgpm-testing/base32/deploy/schemas/base32/procedures/encode.sql",
-  "../../extensions/@pgpm-testing/base32/deploy/schemas/base32/schema.sql",
-  "../../extensions/@pgpm-testing/base32/jest.config.js",
-  "../../extensions/@pgpm-testing/base32/launchql-base32.control",
-  "../../extensions/@pgpm-testing/base32/package.json",
-  "../../extensions/@pgpm-testing/base32/pgpm.plan",
-  "../../extensions/@pgpm-testing/base32/revert/schemas/base32/procedures/decode.sql",
-  "../../extensions/@pgpm-testing/base32/revert/schemas/base32/procedures/encode.sql",
-  "../../extensions/@pgpm-testing/base32/revert/schemas/base32/schema.sql",
-  "../../extensions/@pgpm-testing/base32/sql/launchql-base32--0.4.6.sql",
-  "../../extensions/@pgpm-testing/base32/verify/schemas/base32/procedures/decode.sql",
-  "../../extensions/@pgpm-testing/base32/verify/schemas/base32/procedures/encode.sql",
-  "../../extensions/@pgpm-testing/base32/verify/schemas/base32/schema.sql",
-  "../../extensions/@pgpm-testing/verify/LICENSE",
-  "../../extensions/@pgpm-testing/verify/Makefile",
-  "../../extensions/@pgpm-testing/verify/README.md",
-  "../../extensions/@pgpm-testing/verify/__tests__/ext-verify.test.ts",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/get_entity_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/get_schema_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/list_indexes.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/list_memberships.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_constraint.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_domain.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_extension.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_function.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_index.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_membership.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_policy.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_role.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_schema.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_security.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_table.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_table_grant.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_trigger.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_type.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_view.sql",
-  "../../extensions/@pgpm-testing/verify/jest.config.js",
-  "../../extensions/@pgpm-testing/verify/launchql-verify.control",
-  "../../extensions/@pgpm-testing/verify/package.json",
-  "../../extensions/@pgpm-testing/verify/pgpm.plan",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/get_entity_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/get_schema_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/list_indexes.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/list_memberships.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_constraint.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_domain.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_extension.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_function.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_index.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_membership.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_policy.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_role.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_schema.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_security.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_table.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_table_grant.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_trigger.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_type.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_view.sql",
-  "../../extensions/@pgpm-testing/verify/sql/launchql-verify--0.4.6.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/get_entity_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/get_schema_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/list_indexes.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/list_memberships.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_constraint.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_domain.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_extension.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_function.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_index.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_membership.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_policy.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_role.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_schema.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_security.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_table.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_table_grant.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_trigger.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_type.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_view.sql",
+  "../../extensions/pgpm-testing-base32/INSTALLED.txt",
 ]
 `;
 
 exports[`cmds:install - with initialized workspace and module installs a module package 3`] = `
-"# my-module extension
-comment = 'my-module extension'
+"# my-first extension
+comment = 'my-first extension'
 default_version = '0.0.1'
-module_pathname = '$libdir/my-module'
-requires = 'launchql-base32,pgpm-verify,plpgsql,uuid-ossp'
+module_pathname = '$libdir/my-first'
+requires = 'citext,plpgsql,pgcrypto'
 relocatable = false
 superuser = false
-"
+  "
 `;
 
 exports[`cmds:install - with initialized workspace and module installs two modules 1`] = `
 {
-  "author": "CI Test User <ci@example.com>",
+  "author": "Dan Lynch <pyramation@gmail.com>",
   "bugs": {
     "url": "https://github.com/undefined/undefined/issues",
   },
@@ -153,18 +66,12 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     "@pgpm-testing/utils": "1.0.0",
   },
   "description": "undefined",
-  "devDependencies": {
-    "pgsql-test": "^2.13.2",
-  },
   "homepage": "https://github.com/undefined/undefined",
   "keywords": [],
   "license": "MIT",
-  "name": "undefined",
-  "pnpm": {
-    "overrides": {
-      "graphql": "14.7.0",
-    },
-  },
+  "main": "index.js",
+  "module": "esm/index.js",
+  "name": "my-first",
   "publishConfig": {
     "access": "undefined",
     "directory": "dist",
@@ -174,135 +81,33 @@ exports[`cmds:install - with initialized workspace and module installs two modul
     "url": "https://github.com/undefined/undefined",
   },
   "scripts": {
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "clean": "makage clean",
     "lint": "eslint . --fix",
+    "prepare": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
   },
+  "types": "index.d.ts",
   "version": "0.0.1",
 }
 `;
 
 exports[`cmds:install - with initialized workspace and module installs two modules 2`] = `
 [
-  "../../extensions/@pgpm-testing/base32/LICENSE",
-  "../../extensions/@pgpm-testing/base32/Makefile",
-  "../../extensions/@pgpm-testing/base32/README.md",
-  "../../extensions/@pgpm-testing/base32/__tests__/__snapshots__/base32.decode.test.ts.snap",
-  "../../extensions/@pgpm-testing/base32/__tests__/__snapshots__/base32.encode.test.ts.snap",
-  "../../extensions/@pgpm-testing/base32/__tests__/base32.decode.test.ts",
-  "../../extensions/@pgpm-testing/base32/__tests__/base32.encode.test.ts",
-  "../../extensions/@pgpm-testing/base32/deploy/schemas/base32/procedures/decode.sql",
-  "../../extensions/@pgpm-testing/base32/deploy/schemas/base32/procedures/encode.sql",
-  "../../extensions/@pgpm-testing/base32/deploy/schemas/base32/schema.sql",
-  "../../extensions/@pgpm-testing/base32/jest.config.js",
-  "../../extensions/@pgpm-testing/base32/launchql-base32.control",
-  "../../extensions/@pgpm-testing/base32/package.json",
-  "../../extensions/@pgpm-testing/base32/pgpm.plan",
-  "../../extensions/@pgpm-testing/base32/revert/schemas/base32/procedures/decode.sql",
-  "../../extensions/@pgpm-testing/base32/revert/schemas/base32/procedures/encode.sql",
-  "../../extensions/@pgpm-testing/base32/revert/schemas/base32/schema.sql",
-  "../../extensions/@pgpm-testing/base32/sql/launchql-base32--0.4.6.sql",
-  "../../extensions/@pgpm-testing/base32/verify/schemas/base32/procedures/decode.sql",
-  "../../extensions/@pgpm-testing/base32/verify/schemas/base32/procedures/encode.sql",
-  "../../extensions/@pgpm-testing/base32/verify/schemas/base32/schema.sql",
-  "../../extensions/@pgpm-testing/utils/LICENSE",
-  "../../extensions/@pgpm-testing/utils/Makefile",
-  "../../extensions/@pgpm-testing/utils/README.md",
-  "../../extensions/@pgpm-testing/utils/__tests__/__snapshots__/utils.test.ts.snap",
-  "../../extensions/@pgpm-testing/utils/__tests__/utils.test.ts",
-  "../../extensions/@pgpm-testing/utils/deploy/schemas/utils/procedures/ensure_singleton.sql",
-  "../../extensions/@pgpm-testing/utils/deploy/schemas/utils/procedures/mask_pad.sql",
-  "../../extensions/@pgpm-testing/utils/deploy/schemas/utils/procedures/throw.sql",
-  "../../extensions/@pgpm-testing/utils/deploy/schemas/utils/schema.sql",
-  "../../extensions/@pgpm-testing/utils/jest.config.js",
-  "../../extensions/@pgpm-testing/utils/launchql-utils.control",
-  "../../extensions/@pgpm-testing/utils/package.json",
-  "../../extensions/@pgpm-testing/utils/pgpm.plan",
-  "../../extensions/@pgpm-testing/utils/revert/schemas/utils/procedures/ensure_singleton.sql",
-  "../../extensions/@pgpm-testing/utils/revert/schemas/utils/procedures/mask_pad.sql",
-  "../../extensions/@pgpm-testing/utils/revert/schemas/utils/procedures/throw.sql",
-  "../../extensions/@pgpm-testing/utils/revert/schemas/utils/schema.sql",
-  "../../extensions/@pgpm-testing/utils/sql/launchql-utils--0.4.6.sql",
-  "../../extensions/@pgpm-testing/utils/verify/schemas/utils/procedures/ensure_singleton.sql",
-  "../../extensions/@pgpm-testing/utils/verify/schemas/utils/procedures/mask_pad.sql",
-  "../../extensions/@pgpm-testing/utils/verify/schemas/utils/procedures/throw.sql",
-  "../../extensions/@pgpm-testing/utils/verify/schemas/utils/schema.sql",
-  "../../extensions/@pgpm-testing/verify/LICENSE",
-  "../../extensions/@pgpm-testing/verify/Makefile",
-  "../../extensions/@pgpm-testing/verify/README.md",
-  "../../extensions/@pgpm-testing/verify/__tests__/ext-verify.test.ts",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/get_entity_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/get_schema_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/list_indexes.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/list_memberships.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_constraint.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_domain.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_extension.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_function.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_index.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_membership.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_policy.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_role.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_schema.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_security.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_table.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_table_grant.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_trigger.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_type.sql",
-  "../../extensions/@pgpm-testing/verify/deploy/procedures/verify_view.sql",
-  "../../extensions/@pgpm-testing/verify/jest.config.js",
-  "../../extensions/@pgpm-testing/verify/launchql-verify.control",
-  "../../extensions/@pgpm-testing/verify/package.json",
-  "../../extensions/@pgpm-testing/verify/pgpm.plan",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/get_entity_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/get_schema_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/list_indexes.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/list_memberships.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_constraint.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_domain.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_extension.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_function.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_index.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_membership.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_policy.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_role.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_schema.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_security.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_table.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_table_grant.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_trigger.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_type.sql",
-  "../../extensions/@pgpm-testing/verify/revert/procedures/verify_view.sql",
-  "../../extensions/@pgpm-testing/verify/sql/launchql-verify--0.4.6.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/get_entity_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/get_schema_from_str.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/list_indexes.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/list_memberships.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_constraint.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_domain.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_extension.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_function.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_index.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_membership.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_policy.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_role.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_schema.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_security.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_table.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_table_grant.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_trigger.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_type.sql",
-  "../../extensions/@pgpm-testing/verify/verify/procedures/verify_view.sql",
+  "../../extensions/pgpm-testing-base32/INSTALLED.txt",
+  "../../extensions/pgpm-testing-utils/INSTALLED.txt",
 ]
 `;
 
 exports[`cmds:install - with initialized workspace and module installs two modules 3`] = `
-"# my-module extension
-comment = 'my-module extension'
+"# my-first extension
+comment = 'my-first extension'
 default_version = '0.0.1'
-module_pathname = '$libdir/my-module'
-requires = 'launchql-base32,launchql-utils,pgpm-verify,plpgsql,uuid-ossp'
+module_pathname = '$libdir/my-first'
+requires = 'citext,plpgsql,pgcrypto'
 relocatable = false
 superuser = false
-"
+  "
 `;

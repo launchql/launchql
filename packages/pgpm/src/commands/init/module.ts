@@ -60,6 +60,19 @@ export default async function runModuleSetup(
 
   const targetPath = resolveModuleTargetPath(project, cwd, modName);
   fs.mkdirSync(targetPath, { recursive: true });
+  const normalizedAnswerOverrides = normalizeAnswers(argv.answers || {});
+
+  const baseAnswers = normalizeAnswers({
+    moduleName: modName,
+    repoName: modName,
+    moduleDesc: modName,
+    packageIdentifier: modName,
+    fullName: username || modName,
+    email,
+    username,
+    access: (argv as any).access || 'public',
+    license: (argv as any).license || 'MIT'
+  });
 
   await runCreateGenApp({
     templateUrl: repo,
@@ -67,11 +80,8 @@ export default async function runModuleSetup(
     fromPath,
     outputDir: targetPath,
     answers: {
-      '____moduleName____': modName,
-      '____repoName____': modName,
-      '____fullName____': username,
-      '____email____': email,
-      ...(argv.answers || {})
+      ...baseAnswers,
+      ...normalizedAnswerOverrides
     },
     noTty: Boolean(argv['no-tty'] ?? argv.noTty)
   });
@@ -83,6 +93,16 @@ export default async function runModuleSetup(
 
   log.success(`Initialized module: ${modName}`);
   return { ...argv, ...answers };
+}
+
+function normalizeAnswers(raw: Record<string, any>): Record<string, any> {
+  const normalized: Record<string, any> = {};
+  Object.entries(raw || {}).forEach(([key, value]) => {
+    const cleaned = key.replace(/^_{2,}(.*)_{2,}$/, '$1');
+    normalized[key] = value;
+    normalized[cleaned] = value;
+  });
+  return normalized;
 }
 
 function resolveModuleTargetPath(project: LaunchQLPackage, cwd: string, modName: string): string {
