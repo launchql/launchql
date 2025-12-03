@@ -16,13 +16,21 @@
   </a>
 </p>
 
-Simplified naming inflector for Graphile/PostGraphile. It shortens common field names (e.g. `tableByNodeId` → `table`) and makes pluralization behave more predictably for numeric suffixes.
+**`graphile-simple-inflector`** simplifies Graphile/PostGraphile naming by shortening common fields (e.g. `tableByNodeId` → `table`) and keeping pluralization predictable for numeric suffixes.
 
-## Install
+## 🚀 Installation
 
 ```sh
 pnpm add graphile-simple-inflector
 ```
+
+## ✨ Features
+
+- Shorter, predictable field names (`tableByNodeId` → `table`)
+- Smarter pluralization for numeric suffixes
+- Designed to pair with PostGraphile simplify options
+
+## 📦 Usage
 
 When using PostGraphile:
 
@@ -38,7 +46,7 @@ createPostGraphileSchema(pool, ['app_public'], {
 });
 ```
 
-## Testing
+## 🧪 Testing
 
 Tests expect a running PostgreSQL instance (see `utils/env.ts` for defaults). Seed the test database with the provided fixtures or let the test harness create them automatically:
 

@@ -16,15 +16,22 @@
   </a>
 </p>
 
-TypeScript rewrite of the Graphile/PostGraphile i18n plugin. Adds language-aware fields sourced from translation tables declared via smart comments.
+**`graphile-i18n`** is a TypeScript rewrite of the Graphile/PostGraphile i18n plugin. It adds language-aware fields sourced from translation tables declared via smart comments and respects `Accept-Language` with sensible fallbacks.
 
-## Install
+## 🚀 Installation
 
 ```bash
 pnpm add graphile-i18n
 ```
 
-## Usage
+## ✨ Features
+
+- Smart comments (`@i18n`) to wire translation tables
+- `Accept-Language` detection with graceful fallback to base values
+- Works with PostGraphile context via `additionalGraphQLContextFromRequest`
+- TypeScript-first implementation
+
+## 📦 Usage
 
 1. Add a translation table and tag the base table with `@i18n`:
 
@@ -70,7 +77,16 @@ app.use(
 
 Requests with `Accept-Language` headers receive the closest translation; fields fall back to the base table values when a translation is missing.
 
-## Tests
+## 🧰 Configuration Options
+
+All options are provided through `graphileBuildOptions`:
+
+- `langPluginLanguageCodeColumn` — translation table column name, default `lang_code`
+- `langPluginLanguageCodeGqlField` — exposed GraphQL field name, default `langCode`
+- `langPluginAllowedTypes` — allowed base column types for translation, default `['citext', 'text']`
+- `langPluginDefaultLanguages` — fallback language order, default `['en']`
+
+## 🧪 Tests
 
 Tests run against a real Postgres instance using `graphile-test`:
 

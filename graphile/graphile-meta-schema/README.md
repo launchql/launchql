@@ -16,13 +16,41 @@
   </a>
 </p>
 
-## Install
+**`graphile-meta-schema`** exposes a `_meta` GraphQL schema so you can introspect tables, fields, and constraints directly from PostGraphile.
+
+## 🚀 Installation
 
 ```sh
 pnpm add graphile-meta-schema
 ```
 
-## Example Query
+## ✨ Features
+
+- GraphQL meta endpoint for table/field/constraint details
+- Works alongside your existing PostGraphile schemas
+- Ships with fixtures to explore constraint metadata
+
+## 📦 Usage
+
+Register the plugin with PostGraphile (CLI or library):
+
+```ts
+import express from 'express';
+import { postgraphile } from 'postgraphile';
+import PgMetaschemaPlugin from 'graphile-meta-schema';
+
+const app = express();
+
+app.use(
+  postgraphile(process.env.DATABASE_URL, ['app_public'], {
+    appendPlugins: [PgMetaschemaPlugin]
+  })
+);
+```
+
+The plugin adds a `_meta` query root alongside your existing schemas. Use it to inspect fields, constraints, relations, and generated inflection.
+
+### Example Query
 
 ```gql
 query MetaQuery {
@@ -88,7 +116,7 @@ query MetaQuery {
 }
 ```
 
-## Testing
+## 🧪 Testing
 
 ```sh
 # requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)

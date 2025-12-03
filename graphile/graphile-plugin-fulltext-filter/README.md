@@ -16,15 +16,23 @@
   </a>
 </p>
 
-Full text searching on `tsvector` fields for use with `graphile-plugin-connection-filter`. This plugin implements a full text search operator for `tsvector` columns in PostGraphile v4.
+**`graphile-plugin-fulltext-filter`** adds full-text search operators for `tsvector` fields to `graphile-plugin-connection-filter` in PostGraphile v4.
 
-## Install
+## 🚀 Installation
 
 ```sh
 pnpm add graphile-plugin-fulltext-filter
 ```
 
-## Usage
+## ✨ Features
+
+- Adds a `matches` operator for `tsvector` columns in PostGraphile v4
+- Works alongside `graphile-plugin-connection-filter`
+- Generates rank fields for ordering results (`fullTextRank`)
+- CLI and library-friendly setup
+- Uses `pg-tsquery` to safely parse user input
+
+## 📦 Usage
 
 ### CLI
 
@@ -56,7 +64,7 @@ app.use(
 app.listen(5000);
 ```
 
-## Performance
+## ⚡ Performance
 
 All `tsvector` columns that aren't `@omit`'d should have indexes on them:
 
@@ -65,19 +73,19 @@ ALTER TABLE posts ADD COLUMN full_text tsvector;
 CREATE INDEX full_text_idx ON posts USING gin(full_text);
 ```
 
-## Operators
+## 🔎 Operators
 
 This plugin adds the `matches` filter operator to the filter plugin, accepting a GraphQL String input and using the `@@` operator to perform full-text searches on `tsvector` columns.
 
 This plugin uses [pg-tsquery](https://github.com/caub/pg-tsquery) to parse the user input to prevent Postgres throwing on bad user input unnecessarily.
 
-## Fields
+## 🧭 Fields
 
 For each `tsvector` column, a rank column will be automatically added to the GraphQL type for the table by appending `Rank` to the end of the column's name. For example, a column `full_text` will appear as `fullText` in the GraphQL type, and a second column, `fullTextRank` will be added to the type as a `Float`.
 
 This rank field can be used for ordering and is automatically added to the orderBy enum for the table.
 
-## Examples
+## 🧪 Examples
 
 ```graphql
 query {
@@ -93,7 +101,7 @@ query {
 }
 ```
 
-## Testing
+## 🧪 Testing
 
 ```sh
 pnpm test

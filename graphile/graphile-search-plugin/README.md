@@ -16,15 +16,21 @@
   </a>
 </p>
 
-This [PostGraphile](http://postgraphile.org/) schema plugin was built to enable ordering via `ts_rank` of full-text search on all `tsvector` fields, providing auto-generated queries within PostGraphile.
+**`graphile-search-plugin`** enables `ts_rank` ordering and auto-generated full-text search helpers for all `tsvector` fields in PostGraphile schemas.
 
-## Install
+## 🚀 Installation
 
 ```sh
 npm install graphile-search-plugin
 ```
 
-## Usage
+## ✨ Features
+
+- Adds full-text search helpers for `tsvector` columns
+- Enables ordering via `ts_rank` on generated search fields
+- Works with PostGraphile append plugin pipeline
+
+## 📦 Usage
 
 1. Append the new plugins!
 2. Query `search<YourTsvectorColumn>` in the `conditions` field
@@ -43,15 +49,15 @@ app.use(
 );
 ```
 
-## Examples
+## 🧪 Examples
 
 Look in the tests ;)
 
-## Testing
+## 🧪 Testing
 
 ```sh
 createdb test_database
 psql test_database < sql/roles.sql
 psql test_database < sql/test.sql
-yarn test
+pnpm test
 ```

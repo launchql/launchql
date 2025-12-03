@@ -16,9 +16,22 @@
   </a>
 </p>
 
-Custom PostgreSQL type mappings plugin for Graphile/PostGraphile.
+**`graphile-pg-type-mappings`** is a Graphile/PostGraphile plugin that maps custom PostgreSQL types to GraphQL scalars.
 
-This plugin provides custom type mappings for PostgreSQL types to GraphQL types, including:
+## 🚀 Installation
+
+```bash
+npm install graphile-pg-type-mappings
+```
+
+## ✨ Features
+
+- Sensible defaults for common custom Postgres types (`email`, `origin`, `multiple_select`, etc.)
+- Override or extend mappings via `customTypeMappings`
+- Works with PostGraphile v4 as a standard plugin
+- TypeScript definitions for mapping configuration
+
+### Default mappings
 
 - `email` → `String`
 - `hostname` → `String`
@@ -29,13 +42,7 @@ This plugin provides custom type mappings for PostgreSQL types to GraphQL types,
 
 > **Note:** If you need PostGIS types (like `geolocation` or `geopolygon` → `GeoJSON`), you can add them via `customTypeMappings` when using the PostGIS plugin.
 
-## Installation
-
-```bash
-npm install graphile-pg-type-mappings
-```
-
-## Usage
+## 📦 Usage
 
 ### Basic Usage (Default Mappings)
 
@@ -132,7 +139,7 @@ const postgraphileOptions = {
 };
 ```
 
-## API
+## 📘 API
 
 ### `CustomPgTypeMappingsPlugin`
 
