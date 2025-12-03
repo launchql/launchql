@@ -505,6 +505,9 @@ importers:
 
   graphile/graphile-test:
     dependencies:
+      '@launchql/core':
+        specifier: workspace:^
+        version: link:../../packages/core/dist
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/types/dist
