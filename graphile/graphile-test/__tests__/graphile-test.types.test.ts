@@ -5,6 +5,7 @@ import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 
 import { snapshot } from '../src/utils';
+import { bootstrapRoles } from '../src/seed-roles';
 import { getConnectionsObject } from '../src/get-connections';
 import type { GraphQLQueryFnObj } from '../src/types';
 
@@ -22,6 +23,7 @@ beforeAll(async () => {
       authRole: 'authenticated'
     },
     [
+      bootstrapRoles(),
       seed.sqlfile([
         sql('test.sql'),
         sql('grants.sql')

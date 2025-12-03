@@ -4,6 +4,7 @@ import { join } from 'path';
 import { seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 
+import { bootstrapRoles } from '../src/seed-roles';
 import { getConnections } from '../src/get-connections';
 import { logDbSessionInfo } from '../test-utils/utils';
 
@@ -21,6 +22,7 @@ beforeAll(async () => {
       authRole: 'authenticated'
     },
     [
+      bootstrapRoles(),
       seed.sqlfile([
         sql('test.sql'),
         sql('grants.sql')
