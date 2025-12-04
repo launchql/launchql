@@ -16,7 +16,6 @@ beforeAll(async () => {
   ({ pg, teardown } = await getConnections({}, [
     seed.sqlfile([
       sql('test.sql'),
-      sql('roles.sql'),
     ])
   ]));
 

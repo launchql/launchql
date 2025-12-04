@@ -45,7 +45,7 @@ const baseOverrides: Pick<
 };
 
 const seeds = [
-  seed.sqlfile([sql('roles.sql'), sql('schema.sql'), sql('data.sql')]),
+  seed.sqlfile([sql('schema.sql'), sql('data.sql')]),
 ];
 
 const createContext = async (
