@@ -15,7 +15,7 @@ export default async function runWorkspaceSetup(
       name: 'name',
       message: 'Enter workspace name',
       required: true,
-      type: 'text',
+      type: 'text'
     }
   ];
 
@@ -53,6 +53,34 @@ export default async function runWorkspaceSetup(
     }
   }
 
+  // Collect any remaining identity values the templates need
+  const extraQuestions: Question[] = [];
+
+  // Repo name is used in README/badges; default to workspace folder name
+  if (!(argv as any).repoName) {
+    extraQuestions.push({
+      name: 'repoName',
+      message: 'Repository name',
+      required: true,
+      type: 'text',
+      default: sluggify(answers.name)
+    });
+  }
+
+  // License placeholder is required by templates
+  if (!(argv as any).license) {
+    extraQuestions.push({
+      name: 'license',
+      message: 'License',
+      required: true,
+      type: 'text',
+      default: 'MIT'
+    });
+  }
+
+  const extra =
+    extraQuestions.length > 0 ? await prompter.prompt(argv, extraQuestions) : ({} as any);
+
   const templateRepo = (argv.repo as string) ?? DEFAULT_TEMPLATE_REPO;
   const templatePath = (argv.templatePath as string | undefined) ?? 'workspace';
 
@@ -65,6 +93,7 @@ export default async function runWorkspaceSetup(
     answers: {
       ...argv,
       ...answers,
+      ...extra,
       workspaceName: answers.name,
       fullName: username || email || 'LaunchQL User',
       email: email || 'user@example.com',
@@ -72,7 +101,10 @@ export default async function runWorkspaceSetup(
       username: username || 'launchql-user'
     },
     toolName: DEFAULT_TEMPLATE_TOOL_NAME,
-    noTty: Boolean((argv as any).noTty || argv['no-tty'] || process.env.CI === 'true'),
+    // We collect all required answers up-front via our own prompter,
+    // so disable interactive prompts in create-gen-app to avoid
+    // duplicate input handling.
+    noTty: true,
     cwd
   });
 

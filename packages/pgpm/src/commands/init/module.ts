@@ -94,7 +94,8 @@ export default async function runModuleSetup(
     fullName: username || email || 'LaunchQL User',
     repoName: (argv as any).repoName || modName,
     access: (argv as any).access || 'public',
-    license: (argv as any).license || 'MIT'
+    license: (argv as any).license || 'MIT',
+    packageIdentifier: (argv as any).packageIdentifier || modName
   };
 
   await project.initModule({
@@ -107,7 +108,10 @@ export default async function runModuleSetup(
     branch: argv.fromBranch as string | undefined,
     toolName: DEFAULT_TEMPLATE_TOOL_NAME,
     answers: templateAnswers,
-    noTty: Boolean((argv as any).noTty || argv['no-tty'] || process.env.CI === 'true')
+    // All template variables are provided via templateAnswers,
+    // so disable interactive prompts in create-gen-app to avoid
+    // nested TTY handling.
+    noTty: true
   });
 
   log.success(`Initialized module: ${modName}`);
