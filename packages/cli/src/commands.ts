@@ -61,7 +61,9 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
     await checkForUpdates({
       command,
       pkgName: pkg.name,
-      pkgVersion: pkg.version
+      pkgVersion: pkg.version,
+      toolName: 'lql',
+      key: pkg.name
     });
   } catch {
     // ignore update check failures
