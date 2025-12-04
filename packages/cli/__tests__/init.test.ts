@@ -1,3 +1,6 @@
+jest.setTimeout(60000);
+process.env.PGPM_SKIP_UPDATE_CHECK = 'true';
+
 import { LaunchQLPackage } from '@launchql/core';
 import { existsSync } from 'fs';
 import { sync as glob } from 'glob';
@@ -9,6 +12,29 @@ import { commands } from '../src/commands';
 import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
 
 const beforeEachSetup = setupTests();
+const DEFAULT_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
+const addDefaults = (argv: ParsedArgs): ParsedArgs => {
+  const defaults = {
+    fullName: 'Tester',
+    email: 'tester@example.com',
+    moduleName: argv.workspace ? 'starter-module' : argv.name || argv.MODULENAME || 'module',
+    username: 'tester',
+    repoName: (argv.name as string) || (argv.MODULENAME as string) || 'repo-name',
+    license: 'MIT',
+    access: 'public',
+    packageIdentifier: (argv.name as string) || (argv.MODULENAME as string) || 'module',
+    moduleDesc: (argv.name as string) || (argv.MODULENAME as string) || 'module'
+  };
+  return { ...defaults, ...argv };
+};
+const withInitDefaults = (argv: ParsedArgs): ParsedArgs => {
+  const args = addDefaults(argv);
+  return {
+    ...args,
+    repo: args.repo ?? DEFAULT_REPO,
+    templatePath: args.templatePath ?? (args.workspace ? 'workspace' : 'module')
+  };
+};
 
 describe('cmds:init', () => {
   let environment: TestEnvironment;
@@ -35,7 +61,9 @@ describe('cmds:init', () => {
       noTty: true
     });
 
-    const result = await commands(argv, prompter, {
+    const args = withInitDefaults(argv);
+
+    const result = await commands(args, prompter, {
       noTty: true,
       input: mockInput,
       output: mockOutput,
@@ -44,17 +72,25 @@ describe('cmds:init', () => {
     });
 
     const absoluteFiles = glob('**/*', {
-      cwd: argv.cwd,
+      cwd: args.cwd,
       dot: true,
       nodir: true,
       absolute: true
     });
 
-    const relativeFiles = absoluteFiles.map(file => path.relative(argv.cwd, file));
-    argv.cwd = '<CWD>';
+    const relativeFiles = absoluteFiles.map(file => path.relative(args.cwd, file));
+    const snapshotArgs = { ...args, cwd: '<CWD>' };
 
-    expect(argv).toMatchSnapshot(`${label} - argv`);
-    expect(result).toMatchSnapshot(`${label} - result`);
+    const normalizedResult =
+      result && typeof result === 'object'
+        ? {
+            ...result,
+            cwd: typeof (result as any).cwd === 'string' ? '<CWD>' : (result as any).cwd
+          }
+        : result;
+
+    expect(snapshotArgs).toMatchSnapshot(`${label} - argv`);
+    expect(normalizedResult).toMatchSnapshot(`${label} - result`);
     expect(writeResults).toMatchSnapshot(`${label} - writeResults`);
     expect(transformResults).toMatchSnapshot(`${label} - transformResults`);
     expect(relativeFiles).toMatchSnapshot(`${label} - files`);
@@ -75,7 +111,7 @@ describe('cmds:init', () => {
   it('initializes module', async () => {
     const workspaceDir = path.join(fixture.tempDir, 'my-workspace');
     const moduleDir = path.join(workspaceDir, 'packages', 'my-module');
-    console.log({workspaceDir, moduleDir});
+
     await runInitTest(
       {
         _: ['init'],
@@ -100,13 +136,14 @@ describe('cmds:init', () => {
         noTty: true
       });
 
-      const argv: ParsedArgs = {
+      const argv: ParsedArgs = withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: 'test-workspace-template',
         workspace: true,
-        templatePath: path.join(__dirname, '../../../boilerplates'),
-      };
+        templatePath: 'workspace',
+        repo: DEFAULT_REPO
+      });
 
       await commands(argv, prompter, {
         noTty: true,
@@ -133,12 +170,12 @@ describe('cmds:init', () => {
       });
 
       // Create workspace first
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: 'test-workspace-for-module',
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -147,14 +184,15 @@ describe('cmds:init', () => {
       });
 
       // Now initialize module with custom template
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: workspaceDir,
         name: 'test-module-template',
         MODULENAME: 'test-module-template',
         extensions: ['plpgsql'],
-        templatePath: path.join(__dirname, '../../../boilerplates'),
-      }, prompter, {
+        templatePath: 'module',
+        repo: DEFAULT_REPO
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -181,13 +219,12 @@ describe('cmds:init', () => {
           noTty: true
         });
 
-        const argv: ParsedArgs = {
+        const argv: ParsedArgs = withInitDefaults({
           _: ['init'],
           cwd: fixture.tempDir,
           name: 'test-workspace-repo',
-          workspace: true,
-          repo: 'launchql/launchql',
-        };
+          workspace: true
+        });
 
         await commands(argv, prompter, {
           noTty: true,
@@ -214,14 +251,13 @@ describe('cmds:init', () => {
           noTty: true
         });
 
-        const argv: ParsedArgs = {
+        const argv: ParsedArgs = withInitDefaults({
           _: ['init'],
           cwd: fixture.tempDir,
           name: 'test-workspace-branch',
           workspace: true,
-          repo: 'launchql/launchql',
-          fromBranch: 'main',
-        };
+          fromBranch: 'main'
+        });
 
         await commands(argv, prompter, {
           noTty: true,
@@ -251,12 +287,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-packages-empty';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -267,13 +303,13 @@ describe('cmds:init', () => {
       const packagesDir = path.join(wsRoot, 'packages');
       const modName = 'mod-from-packages-empty';
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: packagesDir,
         MODULENAME: modName,
         name: modName,
         extensions: ['plpgsql'],
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -298,12 +334,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-packages-existing';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -312,13 +348,13 @@ describe('cmds:init', () => {
       });
 
       const firstMod = 'first-mod';
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
         MODULENAME: firstMod,
         name: firstMod,
         extensions: ['plpgsql']
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -329,13 +365,13 @@ describe('cmds:init', () => {
       const packagesDir = path.join(wsRoot, 'packages');
       const secondMod = 'second-mod';
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: packagesDir,
         MODULENAME: secondMod,
         name: secondMod,
         extensions: ['plpgsql'],
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -362,12 +398,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-nested-prevent';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -376,13 +412,13 @@ describe('cmds:init', () => {
       });
 
       const baseMod = 'base-mod';
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
         MODULENAME: baseMod,
         name: baseMod,
         extensions: ['plpgsql']
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -398,13 +434,13 @@ describe('cmds:init', () => {
       }) as any);
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      await expect(commands({
+      await expect(commands(withInitDefaults({
         _: ['init'],
         cwd: insideDir,
         MODULENAME: nestedName,
         name: nestedName,
         extensions: ['plpgsql'],
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -437,12 +473,12 @@ describe('cmds:init', () => {
       const wsName = 'ws-root-test';
       const wsRoot = path.join(fixture.tempDir, wsName);
 
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -451,13 +487,13 @@ describe('cmds:init', () => {
       });
 
       const modName = 'mod-from-root';
-      await commands({
+      await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
         MODULENAME: modName,
         name: modName,
         extensions: ['plpgsql']
-      }, prompter, {
+      }), prompter, {
         noTty: true,
         input: mockInput,
         output: mockOutput,
@@ -472,4 +508,3 @@ describe('cmds:init', () => {
     });
   });
 });
-

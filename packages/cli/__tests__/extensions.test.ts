@@ -1,3 +1,6 @@
+jest.setTimeout(60000);
+process.env.PGPM_SKIP_UPDATE_CHECK = 'true';
+
 import { LaunchQLPackage } from '@launchql/core';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
@@ -8,6 +11,7 @@ import { commands } from '../src/commands';
 import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
 
 const beforeEachSetup = setupTests();
+const DEFAULT_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
 
 describe('cmds:extension', () => {
   let environment: TestEnvironment;
@@ -28,6 +32,24 @@ describe('cmds:extension', () => {
       output: environment.mockOutput,
       noTty: true
     });
+
+    const isInit = Array.isArray(argv._) && argv._.includes('init');
+    if (isInit) {
+      argv.repo = argv.repo ?? DEFAULT_REPO;
+      argv.templatePath = argv.templatePath ?? (argv.workspace ? 'workspace' : 'module');
+      const defaults = {
+        fullName: 'Tester',
+        email: 'tester@example.com',
+        moduleName: argv.workspace ? 'starter-module' : argv.name || argv.MODULENAME || 'module',
+        username: 'tester',
+        repoName: (argv.name as string) || (argv.MODULENAME as string) || 'repo-name',
+        license: 'MIT',
+        access: 'public',
+        packageIdentifier: (argv.name as string) || (argv.MODULENAME as string) || 'module',
+        moduleDesc: (argv.name as string) || (argv.MODULENAME as string) || 'module'
+      };
+      Object.assign(argv, defaults, argv);
+    }
 
     // @ts-ignore
     return commands(argv, prompter, {});

@@ -24,6 +24,8 @@ export const usageText = `
     plan               Generate module deployment plans
     package            Package module for distribution
     export             Export database migrations from existing databases
+    update             Update pgpm to the latest version
+    cache              Manage cached templates (clean)
   
   Database Administration:
     kill               Terminate database connections and optionally drop databases

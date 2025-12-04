@@ -24,6 +24,8 @@ export const usageText = `
     extension          Manage module dependencies
     plan               Generate module deployment plans
     package            Package module for distribution
+    update             Update CLI/pgpm (installs pgpm by default)
+    cache              Manage cached templates (clean)
   
   Development Tools:
     server             Start LaunchQL GraphQL server

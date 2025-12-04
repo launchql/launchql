@@ -17,12 +17,23 @@ exports[`cmds:init initializes module: module-only - argv 1`] = `
   "_": [
     "init",
   ],
+  "access": "public",
   "cwd": "<CWD>",
+  "email": "tester@example.com",
   "extensions": [
     "plpgsql",
     "citext",
   ],
+  "fullName": "Tester",
+  "license": "MIT",
+  "moduleDesc": "my-module",
+  "moduleName": "my-module",
   "name": "my-module",
+  "packageIdentifier": "my-module",
+  "repo": "https://github.com/launchql/pgpm-boilerplates.git",
+  "repoName": "my-module",
+  "templatePath": "module",
+  "username": "tester",
 }
 `;
 
@@ -33,11 +44,8 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "pgpm.json",
   "package.json",
   "lerna.json",
-  "docker-compose.yml",
   "README.md",
-  "Makefile",
   "LICENSE",
-  ".questions.json",
   ".prettierrc.json",
   ".gitignore",
   ".eslintrc.json",
@@ -47,9 +55,8 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "packages/my-module/jest.config.js",
   "packages/my-module/README.md",
   "packages/my-module/Makefile",
-  "packages/my-module/.questions.json",
   "packages/my-module/__tests__/basic.test.ts",
-  "bin/install.sh",
+  ".github/ci.yaml",
 ]
 `;
 
@@ -59,12 +66,23 @@ exports[`cmds:init initializes module: module-only - result 1`] = `
   "_": [
     "init",
   ],
+  "access": "public",
   "cwd": "<CWD>",
+  "email": "tester@example.com",
   "extensions": [
     "plpgsql",
     "citext",
   ],
+  "fullName": "Tester",
+  "license": "MIT",
+  "moduleDesc": "my-module",
+  "moduleName": "my-module",
   "name": "my-module",
+  "packageIdentifier": "my-module",
+  "repo": "https://github.com/launchql/pgpm-boilerplates.git",
+  "repoName": "my-module",
+  "templatePath": "module",
+  "username": "tester",
 }
 `;
 
@@ -77,8 +95,19 @@ exports[`cmds:init initializes workspace: workspace - argv 1`] = `
   "_": [
     "init",
   ],
+  "access": "public",
   "cwd": "<CWD>",
+  "email": "tester@example.com",
+  "fullName": "Tester",
+  "license": "MIT",
+  "moduleDesc": "my-workspace",
+  "moduleName": "starter-module",
   "name": "my-workspace",
+  "packageIdentifier": "my-workspace",
+  "repo": "https://github.com/launchql/pgpm-boilerplates.git",
+  "repoName": "my-workspace",
+  "templatePath": "workspace",
+  "username": "tester",
   "workspace": true,
 }
 `;
@@ -90,15 +119,12 @@ exports[`cmds:init initializes workspace: workspace - files 1`] = `
   "my-workspace/pgpm.json",
   "my-workspace/package.json",
   "my-workspace/lerna.json",
-  "my-workspace/docker-compose.yml",
   "my-workspace/README.md",
-  "my-workspace/Makefile",
   "my-workspace/LICENSE",
-  "my-workspace/.questions.json",
   "my-workspace/.prettierrc.json",
   "my-workspace/.gitignore",
   "my-workspace/.eslintrc.json",
-  "my-workspace/bin/install.sh",
+  "my-workspace/.github/ci.yaml",
 ]
 `;
 
@@ -107,8 +133,19 @@ exports[`cmds:init initializes workspace: workspace - result 1`] = `
   "_": [
     "init",
   ],
+  "access": "public",
   "cwd": "<CWD>",
+  "email": "tester@example.com",
+  "fullName": "Tester",
+  "license": "MIT",
+  "moduleDesc": "my-workspace",
+  "moduleName": "starter-module",
   "name": "my-workspace",
+  "packageIdentifier": "my-workspace",
+  "repo": "https://github.com/launchql/pgpm-boilerplates.git",
+  "repoName": "my-workspace",
+  "templatePath": "workspace",
+  "username": "tester",
   "workspace": true,
 }
 `;

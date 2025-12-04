@@ -1,7 +1,5 @@
-import { LaunchQLPackage, sluggify } from '@launchql/core';
+import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import { type TemplateSource } from '@launchql/templatizer';
 import { errors, getGitConfigInfo } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
 
@@ -52,36 +50,38 @@ export default async function runModuleSetup(
     .filter((opt: OptionValue) => opt.selected)
     .map((opt: OptionValue) => opt.name);
 
-  // Determine template source
-  let templateSource: TemplateSource | undefined;
-  
-  if (argv.repo) {
-    templateSource = {
-      type: 'github',
-      path: argv.repo as string,
-      branch: argv.fromBranch as string
-    };
-    log.info(`Loading templates from GitHub repository: ${argv.repo}`);
-  } else if (argv.templatePath) {
-    templateSource = {
-      type: 'local',
-      path: argv.templatePath as string
-    };
-    log.info(`Loading templates from local path: ${argv.templatePath}`);
-  }
+  const templateRepo = (argv.repo as string) ?? DEFAULT_TEMPLATE_REPO;
+  const templatePath = argv.templatePath as string | undefined;
 
-  project.initModule({
+  const templateAnswers = {
     ...argv,
     ...answers,
-    name: modName,
-    // @ts-ignore
     USERFULLNAME: username,
     USEREMAIL: email,
+    username,
+    email,
+    moduleName: modName,
+    MODULEDESC: answers.description || modName,
+    moduleDesc: answers.description || modName,
+    fullName: username || email || 'LaunchQL User',
+    repoName: (argv as any).repoName || modName,
+    access: (argv as any).access || 'public',
+    license: (argv as any).license || 'MIT'
+  };
+
+  await project.initModule({
+    name: modName,
+    description: answers.description || modName,
+    author: username || email || modName,
     extensions,
-    templateSource
+    templateRepo,
+    templatePath,
+    branch: argv.fromBranch as string | undefined,
+    toolName: DEFAULT_TEMPLATE_TOOL_NAME,
+    answers: templateAnswers,
+    noTty: Boolean((argv as any).noTty || argv['no-tty'] || process.env.CI === 'true')
   });
 
   log.success(`Initialized module: ${modName}`);
   return { ...argv, ...answers };
 }
-

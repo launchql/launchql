@@ -1,6 +1,7 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { createPgpmCommandMap } from 'pgpm';
+import { checkForUpdates } from 'pgpm';
 
 import explorer from './commands/explorer';
 import server from './commands/server';
@@ -53,6 +54,17 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
       }
     ]);
     command = answer.command;
+  }
+
+  try {
+    const pkg = readAndParsePackageJson();
+    await checkForUpdates({
+      command,
+      pkgName: pkg.name,
+      pkgVersion: pkg.version
+    });
+  } catch {
+    // ignore update check failures
   }
 
   // Prompt for working directory
