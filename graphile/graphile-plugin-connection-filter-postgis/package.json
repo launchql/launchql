@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-connection-filter-postgis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PostGIS filtering options in PostGraphile",
   "author": "Matt Bretl",
   "homepage": "https://github.com/launchql/launchql",
