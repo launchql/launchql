@@ -9,7 +9,7 @@ export default async function runModuleSetup(
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer
 ) {
-  const { email, username } = getGitConfigInfo();
+  let { email, username } = getGitConfigInfo();
   const { cwd = process.cwd() } = argv;
 
   const project = new LaunchQLPackage(cwd);
@@ -45,6 +45,34 @@ export default async function runModuleSetup(
 
   const answers = await prompter.prompt(argv, moduleQuestions);
   const modName = sluggify(answers.MODULENAME);
+
+  if (!username || !email) {
+    const identityQuestions: Question[] = [];
+
+    if (!username) {
+      identityQuestions.push({
+        name: 'fullName',
+        message: 'Enter your full name',
+        required: true,
+        type: 'text'
+      });
+    }
+
+    if (!email) {
+      identityQuestions.push({
+        name: 'userEmail',
+        message: 'Enter your email address',
+        required: true,
+        type: 'text'
+      });
+    }
+
+    if (identityQuestions.length > 0) {
+      const identityAnswers = await prompter.prompt(argv, identityQuestions);
+      username = username || (identityAnswers as any).fullName;
+      email = email || (identityAnswers as any).userEmail;
+    }
+  }
 
   const extensions = answers.extensions
     .filter((opt: OptionValue) => opt.selected)

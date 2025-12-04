@@ -23,7 +23,35 @@ export default async function runWorkspaceSetup(
   const { cwd = process.cwd() } = argv;
   const targetPath = path.join(cwd, sluggify(answers.name));
 
-  const { email, username } = getGitConfigInfo();
+  let { email, username } = getGitConfigInfo();
+
+  if (!username || !email) {
+    const identityQuestions: Question[] = [];
+
+    if (!username) {
+      identityQuestions.push({
+        name: 'fullName',
+        message: 'Enter your full name',
+        required: true,
+        type: 'text'
+      });
+    }
+
+    if (!email) {
+      identityQuestions.push({
+        name: 'userEmail',
+        message: 'Enter your email address',
+        required: true,
+        type: 'text'
+      });
+    }
+
+    if (identityQuestions.length > 0) {
+      const identityAnswers = await prompter.prompt(argv, identityQuestions);
+      username = username || (identityAnswers as any).fullName;
+      email = email || (identityAnswers as any).userEmail;
+    }
+  }
 
   const templateRepo = (argv.repo as string) ?? DEFAULT_TEMPLATE_REPO;
   const templatePath = (argv.templatePath as string | undefined) ?? 'workspace';
