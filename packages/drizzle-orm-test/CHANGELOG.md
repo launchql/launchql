@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.11](https://github.com/launchql/launchql/compare/drizzle-orm-test@0.2.10...drizzle-orm-test@0.2.11) (2025-12-04)
+
+**Note:** Version bump only for package drizzle-orm-test
+
 ## [0.2.10](https://github.com/launchql/launchql/compare/drizzle-orm-test@0.2.9...drizzle-orm-test@0.2.10) (2025-11-28)
 
 **Note:** Version bump only for package drizzle-orm-test

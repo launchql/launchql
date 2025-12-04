@@ -1,6 +1,6 @@
 {
   "name": "graphile-postgis",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Graphile/PostGraphile PostGIS integration plugin",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",
