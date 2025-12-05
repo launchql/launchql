@@ -16,16 +16,21 @@
   </a>
 </p>
 
-PostGIS helpers for PostGraphile/Graphile. This plugin registers GeoJSON scalars, PostGIS
-geometry/geography GraphQL types, and convenience fields for common spatial types.
+**`graphile-postgis`** registers GeoJSON scalars, PostGIS geometry/geography GraphQL types, and convenience fields for common spatial columns in PostGraphile/Graphile schemas.
 
-## Install
+## 🚀 Installation
 
 ```sh
 pnpm add graphile-postgis
 ```
 
-## Usage
+## ✨ Features
+
+- Registers GeoJSON scalars and PostGIS `geometry` / `geography` GraphQL types
+- Convenience fields for common spatial column types
+- Works with PostGraphile CLI or library usage
+
+## 📦 Usage
 
 ### CLI
 
@@ -45,12 +50,9 @@ const options = {
 };
 ```
 
-## Testing
-
-Tests run against a real Postgres/PostGIS instance using the `graphile-test` and
-`pgsql-test` harnesses. The suite seeds the database from `sql/schema.sql`.
+## 🧪 Testing
 
 ```sh
-psql -U postgres -f sql/schema.sql postgres
-pnpm test --filter graphile-postgis
+# requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-postgis test
 ```

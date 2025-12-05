@@ -16,16 +16,44 @@
   </a>
 </p>
 
-This plugin exposes additional PostGIS-related fields on the `filter` argument of Connections.
+**`graphile-plugin-connection-filter-postgis`** exposes PostGIS-aware operators on the `filter` argument for PostGraphile connections.
 
-## Usage
+## 🚀 Installation
+
+```bash
+npm install graphile-plugin-connection-filter-postgis
+```
+
+## ✨ Features
+
+- Adds PostGIS functions and operators to `graphile-plugin-connection-filter`
+- Supports both `geometry` and `geography` columns
+- Works with PostGraphile v4 filter inputs
+
+## 📦 Usage
 
 Requires `postgraphile@^4.5.0` and the following plugins appended prior to this plugin:
 
 - `@graphile/postgis@0.1.0`
 - `graphile-plugin-connection-filter@^2.0.0`
 
-## Operators
+```ts
+import PostGISFilterPlugin from 'graphile-plugin-connection-filter-postgis';
+import PostGISPlugin from '@graphile/postgis';
+import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
+
+app.use(
+  postgraphile(pgConfig, schemas, {
+    appendPlugins: [
+      PostGISPlugin,
+      ConnectionFilterPlugin,
+      PostGISFilterPlugin
+    ]
+  })
+);
+```
+
+## 🔎 Operators
 
 | PostGIS function | Types | GraphQL field name |
 | --- | --- | --- |
@@ -59,13 +87,11 @@ Requires `postgraphile@^4.5.0` and the following plugins appended prior to this 
 | ~ | geometry | bboxContains |
 | ~= | geometry | bboxEquals |
 
-## Development
+## 🧑‍💻 Development
 
-To establish a test environment, create an empty PostgreSQL database and set a `TEST_DATABASE_URL` environment variable with your database connection string.
+## 🧪 Testing
 
-```bash
-createdb graphile_test
-export TEST_DATABASE_URL=postgres://localhost:5432/graphile_test
-yarn
-yarn test
+```sh
+# requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-plugin-connection-filter-postgis test
 ```

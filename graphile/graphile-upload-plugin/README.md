@@ -16,15 +16,21 @@
   </a>
 </p>
 
-PostGraphile plugin for handling file uploads via GraphQL. Adds `Upload` scalar type and upload field support for PostgreSQL columns.
+**`graphile-upload-plugin`** adds an `Upload` scalar and upload field resolvers for PostGraphile, letting you store uploaded metadata in PostgreSQL columns.
 
-## Install
+## 🚀 Installation
 
 ```bash
 pnpm add graphile-upload-plugin
 ```
 
-## Usage
+## ✨ Features
+
+- Adds the `Upload` scalar to PostGraphile
+- Supports upload resolvers by type or smart comment tag
+- Flexible resolver hook to store files anywhere (S3, local, etc.)
+
+## 📦 Usage
 
 ```ts
 import express from 'express';
@@ -59,7 +65,7 @@ app.use(
 );
 ```
 
-## Configuration
+## 🔧 Configuration
 
 The plugin accepts `uploadFieldDefinitions` in `graphileBuildOptions`:
 
@@ -68,3 +74,9 @@ The plugin accepts `uploadFieldDefinitions` in `graphileBuildOptions`:
 
 Each definition requires a `resolve` function that processes the upload and returns the value to store in the database.
 
+## 🧪 Testing
+
+```sh
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-upload-plugin test
+```

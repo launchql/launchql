@@ -206,3 +206,10 @@ expect(snapshot(res.data)).toMatchSnapshot();
 ```
 
 See [`pgsql-test` Snapshot Utilities](https://www.npmjs.com/package/pgsql-test#snapshot-utilities) for the full API reference.
+
+## 🧪 Testing
+
+```sh
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-test test
+```
