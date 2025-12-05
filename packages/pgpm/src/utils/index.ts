@@ -4,3 +4,6 @@ export * from './display';
 export * from './cli-error';
 export * from './deployed-changes';
 export * from './module-utils';
+export * from './npm-version';
+export * from './update-check';
+export * from './update-config';

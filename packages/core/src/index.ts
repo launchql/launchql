@@ -9,6 +9,7 @@ export * from './resolution/deps';
 export * from './resolution/resolve';
 export * from './workspace/paths';
 export * from './workspace/utils';
+export * from './core/template-scaffold';
 
 // Export package-files functionality (now integrated into core)
 export * from './files';

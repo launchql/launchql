@@ -315,11 +315,6 @@ export const pgpmDefaults: LaunchQLOptions = {
   }
 };
 
-/**
- * Retrieves Git configuration information (username and email) from global Git config
- * @returns Object containing Git username and email
- * @throws Error if Git config cannot be retrieved
- */
 export function getGitConfigInfo(): { username: string; email: string } {
   const isTestEnv =
     process.env.NODE_ENV === 'test' ||
@@ -333,16 +328,24 @@ export function getGitConfigInfo(): { username: string; email: string } {
     };
   }
 
-  try {
-    const username = execSync('git config --global user.name', {
-      encoding: 'utf8'
-    }).trim();
-    const email = execSync('git config --global user.email', {
-      encoding: 'utf8'
-    }).trim();
+  let username = '';
+  let email = '';
 
-    return { username, email };
+  try {
+    username = execSync('git config --global user.name', {
+      encoding: 'utf8'
+    }).trim();
   } catch {
-    throw new Error('Failed to retrieve global git config. Ensure git is configured.');
+    username = '';
   }
+
+  try {
+    email = execSync('git config --global user.email', {
+      encoding: 'utf8'
+    }).trim();
+  } catch {
+    email = '';
+  }
+
+  return { username, email };
 }

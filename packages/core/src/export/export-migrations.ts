@@ -257,7 +257,7 @@ const preparePackage = async ({
 
   const plan = glob(path.join(sqitchDir, 'pgpm.plan'));
   if (!plan.length) {
-    project.initModule({
+    await project.initModule({
       name,
       description: name,
       author,

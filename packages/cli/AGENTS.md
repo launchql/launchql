@@ -145,7 +145,7 @@ lql init --repo owner/repo --from-branch develop
 **Implementation:**
 - Supports loading templates from GitHub repositories or local paths
 - Automatically detects template type (workspace vs module)
-- Uses `loadTemplates()` from `@launchql/templatizer` to load custom templates
+- Uses `create-gen-app` scaffolding with cached boilerplates (via the shared `pgpm` init flow)
 
 ### 3. Server Command
 **File:** `src/commands/server.ts`

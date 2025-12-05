@@ -69,11 +69,11 @@ lql init --workspace
 # Create a new module (run inside workspace)
 lql init
 
-# Use templates from GitHub repository
+# Use templates from GitHub repository (defaults to launchql/pgpm-boilerplates.git)
 lql init --workspace --repo owner/repo
 lql init --repo owner/repo --from-branch develop
 
-# Use templates from local path
+# Use templates from custom paths
 lql init --workspace --template-path ./custom-templates
 lql init --template-path ./custom-templates/module
 ```
@@ -81,9 +81,11 @@ lql init --template-path ./custom-templates/module
 **Options:**
 
 - `--workspace` - Initialize workspace instead of module
-- `--repo <repo>` - Use templates from GitHub repository (e.g., `owner/repo`)
-- `--template-path <path>` - Use templates from local path
-- `--from-branch <branch>` - Specify branch when using `--repo` (default: `main`)
+- `--repo <repo>` - Template repo (default: `https://github.com/launchql/pgpm-boilerplates.git`)
+- `--template-path <path>` - Template sub-path (defaults to `workspace`/`module`) or local path override
+- `--from-branch <branch>` - Branch/tag when cloning the template repo
+
+Templates are cached for one week under the `pgpm` tool namespace. Run `lql cache clean` if you need to refresh the boilerplates.
 
 ### Development
 
@@ -110,6 +112,10 @@ lql explorer
 # With custom CORS origin
 lql explorer --origin http://localhost:3000
 ```
+
+## 🔄 Updates
+
+The CLI performs a lightweight npm version check at most once per week (skipped in CI or when `PGPM_SKIP_UPDATE_CHECK` is set). Use `lql update` to install the latest release (installs `pgpm` by default; pass `--package @launchql/cli` to target the CLI package).
 
 ### Database Operations
 

@@ -98,6 +98,8 @@ psql -d mydb1 -c "SELECT faker.city('MI');"
 - `pgpm analyze` - Analyze database structure
 - `pgpm rename` - Rename database changes
 - `pgpm admin-users` - Manage admin users
+- `pgpm cache clean` - Clear cached template repos used by `pgpm init`
+- `pgpm update` - Install the latest pgpm version from npm
 
 ## 💡 Common Workflows
 
@@ -118,6 +120,12 @@ pgpm add some_change
 # 4. Deploy to database
 pgpm deploy --createdb
 ```
+
+## 🧰 Templates, Caching, and Updates
+
+- `pgpm init` now scaffolds workspaces/modules from `https://github.com/launchql/pgpm-boilerplates.git` using `create-gen-app` with a one-week cache (stored under `~/.pgpm/cache/repos`). Override with `--repo`, `--from-branch`, and `--template-path`, or use a local template path.
+- Run `pgpm cache clean` to wipe the cached boilerplates if you need a fresh pull.
+- The CLI performs a lightweight npm version check at most once per week (skipped in CI or when `PGPM_SKIP_UPDATE_CHECK` is set). Use `pgpm update` to upgrade to the latest release.
 
 ### Working with Existing Projects
 

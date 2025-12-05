@@ -14,9 +14,9 @@ Options:
   --help, -h              Show this help message
   --workspace             Initialize workspace instead of module
   --cwd <directory>       Working directory (default: current directory)
-  --repo <repo>           Use templates from GitHub repository (e.g., owner/repo)
-  --template-path <path>   Use templates from local path
-  --from-branch <branch>   Specify branch when using --repo (default: main)
+  --repo <repo>           Template repo (default: https://github.com/launchql/pgpm-boilerplates.git)
+  --template-path <path>  Template sub-path (default: workspace/module) or local path override
+  --from-branch <branch>  Branch/tag to use when cloning repo
 
 Examples:
   pgpm init                                  Initialize new module in existing workspace
@@ -51,4 +51,3 @@ async function handlePromptFlow(argv: Partial<Record<string, any>>, prompter: In
     return runModuleSetup(argv, prompter);
   }
 }
-
