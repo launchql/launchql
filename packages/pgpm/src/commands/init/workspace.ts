@@ -1,6 +1,5 @@
 import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, scaffoldTemplate, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-import { getGitConfigInfo } from '@launchql/types';
 import { Inquirerer, Question } from 'inquirerer';
 import path from 'path';
 
@@ -22,64 +21,8 @@ export default async function runWorkspaceSetup(
   const answers = await prompter.prompt(argv, workspaceQuestions);
   const { cwd = process.cwd() } = argv;
   const targetPath = path.join(cwd, sluggify(answers.name));
-
-  let { email, username } = getGitConfigInfo();
-
-  if (!username || !email) {
-    const identityQuestions: Question[] = [];
-
-    if (!username) {
-      identityQuestions.push({
-        name: 'fullName',
-        message: 'Enter your full name',
-        required: true,
-        type: 'text'
-      });
-    }
-
-    if (!email) {
-      identityQuestions.push({
-        name: 'userEmail',
-        message: 'Enter your email address',
-        required: true,
-        type: 'text'
-      });
-    }
-
-    if (identityQuestions.length > 0) {
-      const identityAnswers = await prompter.prompt(argv, identityQuestions);
-      username = username || (identityAnswers as any).fullName;
-      email = email || (identityAnswers as any).userEmail;
-    }
-  }
-
-  // Collect any remaining identity values the templates need
-  const extraQuestions: Question[] = [];
-
-  // Repo name is used in README/badges; default to workspace folder name
-  if (!(argv as any).repoName) {
-    extraQuestions.push({
-      name: 'repoName',
-      message: 'Repository name',
-      required: true,
-      type: 'text',
-      default: sluggify(answers.name)
-    });
-  }
-
-  // License placeholder is required by templates
-  if (!(argv as any).license) {
-    extraQuestions.push({
-      name: 'license',
-      message: 'License',
-      required: true,
-      type: 'text',
-      default: 'MIT'
-    });
-  }
-
-  const extra =
-    extraQuestions.length > 0 ? await prompter.prompt(argv, extraQuestions) : ({} as any);
+  // Prevent double-echoed keystrokes by closing our prompter before template prompts.
+  prompter.close();
 
   const templateRepo = (argv.repo as string) ?? DEFAULT_TEMPLATE_REPO;
   const templatePath = (argv.templatePath as string | undefined) ?? 'workspace';
@@ -93,18 +36,10 @@ export default async function runWorkspaceSetup(
     answers: {
       ...argv,
       ...answers,
-      ...extra,
-      workspaceName: answers.name,
-      fullName: username || email || 'LaunchQL User',
-      email: email || 'user@example.com',
-      moduleName: 'starter-module',
-      username: username || 'launchql-user'
+      workspaceName: answers.name
     },
     toolName: DEFAULT_TEMPLATE_TOOL_NAME,
-    // We collect all required answers up-front via our own prompter,
-    // so disable interactive prompts in create-gen-app to avoid
-    // duplicate input handling.
-    noTty: true,
+    noTty: Boolean((argv as any).noTty || argv['no-tty'] || process.env.CI === 'true'),
     cwd
   });
 

@@ -1,6 +1,6 @@
 import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, LaunchQLPackage, sluggify } from '@launchql/core';
 import { Logger } from '@launchql/logger';
-import { errors, getGitConfigInfo } from '@launchql/types';
+import { errors } from '@launchql/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
 
 const log = new Logger('module-init');
@@ -9,7 +9,6 @@ export default async function runModuleSetup(
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer
 ) {
-  let { email, username } = getGitConfigInfo();
   const { cwd = process.cwd() } = argv;
 
   const project = new LaunchQLPackage(cwd);
@@ -45,34 +44,8 @@ export default async function runModuleSetup(
 
   const answers = await prompter.prompt(argv, moduleQuestions);
   const modName = sluggify(answers.moduleName);
-
-  if (!username || !email) {
-    const identityQuestions: Question[] = [];
-
-    if (!username) {
-      identityQuestions.push({
-        name: 'fullName',
-        message: 'Enter your full name',
-        required: true,
-        type: 'text'
-      });
-    }
-
-    if (!email) {
-      identityQuestions.push({
-        name: 'userEmail',
-        message: 'Enter your email address',
-        required: true,
-        type: 'text'
-      });
-    }
-
-    if (identityQuestions.length > 0) {
-      const identityAnswers = await prompter.prompt(argv, identityQuestions);
-      username = username || (identityAnswers as any).fullName;
-      email = email || (identityAnswers as any).userEmail;
-    }
-  }
+  // Avoid overlapping readline listeners with create-gen-app's prompts.
+  prompter.close();
 
   const extensions = answers.extensions
     .filter((opt: OptionValue) => opt.selected)
@@ -84,31 +57,21 @@ export default async function runModuleSetup(
   const templateAnswers = {
     ...argv,
     ...answers,
-    username,
-    email,
     moduleName: modName,
-    moduleDesc: answers.description || modName,
-    fullName: username || email || 'LaunchQL User',
-    repoName: (argv as any).repoName || modName,
-    access: (argv as any).access || 'public',
-    license: (argv as any).license || 'MIT',
     packageIdentifier: (argv as any).packageIdentifier || modName
   };
 
   await project.initModule({
     name: modName,
     description: answers.description || modName,
-    author: username || email || modName,
+    author: answers.author || modName,
     extensions,
     templateRepo,
     templatePath,
     branch: argv.fromBranch as string | undefined,
     toolName: DEFAULT_TEMPLATE_TOOL_NAME,
     answers: templateAnswers,
-    // All template variables are provided via templateAnswers,
-    // so disable interactive prompts in create-gen-app to avoid
-    // nested TTY handling.
-    noTty: true
+    noTty: Boolean((argv as any).noTty || argv['no-tty'] || process.env.CI === 'true')
   });
 
   log.success(`Initialized module: ${modName}`);
