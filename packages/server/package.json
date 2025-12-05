@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server",
-  "version": "2.7.13",
+  "version": "2.7.15",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Server",
   "main": "index.js",
@@ -55,6 +55,7 @@
     "graphile-i18n": "workspace:^",
     "graphile-meta-schema": "workspace:^",
     "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-plugin-connection-filter-postgis": "workspace:^",
     "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-query": "workspace:^",
     "graphile-search-plugin": "workspace:^",
@@ -69,7 +70,6 @@
     "pg-cache": "workspace:^",
     "pg-query-context": "workspace:^",
     "postgraphile": "^4.14.1",
-    "graphile-plugin-connection-filter-postgis": "workspace:^",
     "request-ip": "^3.3.0"
   },
   "devDependencies": {

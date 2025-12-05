@@ -44,7 +44,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql')
           ])
         ]
@@ -97,7 +96,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql'),
             sql('custom-types.sql')
           ])
@@ -149,7 +147,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql'),
             sql('custom-types-partial.sql')
           ])
@@ -202,7 +199,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql')
           ])
         ]
@@ -256,7 +252,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql'),
             sql('timestamp-type.sql')
           ])
@@ -304,7 +299,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql')
           ])
         ]
@@ -357,7 +351,6 @@ describe('CustomPgTypeMappingsPlugin', () => {
         },
         [
           seed.sqlfile([
-            sql('roles.sql'),
             sql('test.sql')
           ])
         ]

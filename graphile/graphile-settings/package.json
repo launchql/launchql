@@ -1,6 +1,6 @@
 {
   "name": "graphile-settings",
-  "version": "2.6.13",
+  "version": "2.6.15",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile settings",
   "main": "index.js",
@@ -37,9 +37,9 @@
     "graphile-build": "^4.14.1",
     "graphile-i18n": "workspace:^",
     "graphile-meta-schema": "workspace:^",
-    "graphile-plugin-connection-filter": "workspace:^",
     "graphile-pg-type-mappings": "workspace:^",
-    "graphile-postgis": "workspace:^",
+    "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-plugin-connection-filter-postgis": "workspace:^",
     "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-postgis": "workspace:^",
     "graphile-query": "workspace:^",
@@ -52,7 +52,6 @@
     "lru-cache": "^11.1.0",
     "pg": "^8.16.0",
     "postgraphile": "^4.14.1",
-    "graphile-plugin-connection-filter-postgis": "workspace:^",
     "request-ip": "^3.3.0"
   },
   "devDependencies": {
