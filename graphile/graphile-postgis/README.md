@@ -52,10 +52,7 @@ const options = {
 
 ## 🧪 Testing
 
-Tests run against a real Postgres/PostGIS instance using the `graphile-test` and
-`pgsql-test` harnesses. The suite seeds the database from `sql/schema.sql`.
-
 ```sh
-psql -U postgres -f sql/schema.sql postgres
-pnpm test --filter graphile-postgis
+# requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-postgis test
 ```

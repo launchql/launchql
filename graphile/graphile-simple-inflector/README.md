@@ -48,11 +48,7 @@ createPostGraphileSchema(pool, ['app_public'], {
 
 ## 🧪 Testing
 
-Tests expect a running PostgreSQL instance (see `utils/env.ts` for defaults). Seed the test database with the provided fixtures or let the test harness create them automatically:
-
 ```sh
-psql -U postgres -f sql/roles.sql postgres
-pnpm test --filter graphile-simple-inflector
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-simple-inflector test
 ```
-
-The included SQL under `sql/` matches the original package's fixtures.

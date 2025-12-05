@@ -179,3 +179,10 @@ This design ensures:
 - No memory leaks from orphaned PostGraphile instances
 - Automatic cleanup without manual intervention
 - Loose coupling between packages
+
+## 🧪 Testing
+
+```sh
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-cache test
+```

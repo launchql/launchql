@@ -73,3 +73,10 @@ The plugin accepts `uploadFieldDefinitions` in `graphileBuildOptions`:
 - **By tag**: Match columns via smart comments (e.g., `@upload`)
 
 Each definition requires a `resolve` function that processes the upload and returns the value to store in the database.
+
+## 🧪 Testing
+
+```sh
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-upload-plugin test
+```

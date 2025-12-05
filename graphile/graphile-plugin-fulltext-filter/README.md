@@ -104,7 +104,6 @@ query {
 ## 🧪 Testing
 
 ```sh
-pnpm test
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-plugin-fulltext-filter test
 ```
-
-Tests expect a running PostgreSQL instance. See test configuration for database connection details.

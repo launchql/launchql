@@ -122,11 +122,3 @@ query MetaQuery {
 # requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
 pnpm --filter graphile-meta-schema test
 ```
-
-If you want to explore the fixtures manually:
-
-```sh
-createdb metaschema_example
-psql metaschema_example < sql/test.sql
-psql metaschema_example < sql/types.sql
-```

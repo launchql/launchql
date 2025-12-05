@@ -89,11 +89,9 @@ app.use(
 
 ## 🧑‍💻 Development
 
-To establish a test environment, create an empty PostgreSQL database and set a `TEST_DATABASE_URL` environment variable with your database connection string.
+## 🧪 Testing
 
-```bash
-createdb graphile_test
-export TEST_DATABASE_URL=postgres://localhost:5432/graphile_test
-pnpm install
-pnpm test
+```sh
+# requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-plugin-connection-filter-postgis test
 ```

@@ -56,8 +56,6 @@ Look in the tests ;)
 ## 🧪 Testing
 
 ```sh
-createdb test_database
-psql test_database < sql/roles.sql
-psql test_database < sql/test.sql
-pnpm test
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-search-plugin test
 ```

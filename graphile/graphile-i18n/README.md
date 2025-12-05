@@ -86,12 +86,9 @@ All options are provided through `graphileBuildOptions`:
 - `langPluginAllowedTypes` — allowed base column types for translation, default `['citext', 'text']`
 - `langPluginDefaultLanguages` — fallback language order, default `['en']`
 
-## 🧪 Tests
+## 🧪 Testing
 
-Tests run against a real Postgres instance using `graphile-test`:
-
-```bash
-pnpm test
+```sh
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-i18n test
 ```
-
-Ensure Postgres is available at `postgres://postgres:password@localhost:5432`.
