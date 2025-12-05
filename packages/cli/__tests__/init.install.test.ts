@@ -34,7 +34,7 @@ describe('cmds:install - with initialized workspace and module', () => {
       _: ['init'],
       cwd: workspaceDir,
       name: moduleName,
-      MODULENAME: moduleName,
+      moduleName: moduleName,
       extensions: ['uuid-ossp', 'plpgsql'],
     });
   });

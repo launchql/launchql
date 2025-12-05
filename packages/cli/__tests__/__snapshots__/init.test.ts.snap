@@ -13,7 +13,6 @@ superuser = false
 
 exports[`cmds:init initializes module: module-only - argv 1`] = `
 {
-  "MODULENAME": "my-module",
   "_": [
     "init",
   ],
@@ -62,7 +61,6 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
 
 exports[`cmds:init initializes module: module-only - result 1`] = `
 {
-  "MODULENAME": "my-module",
   "_": [
     "init",
   ],

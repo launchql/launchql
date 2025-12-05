@@ -28,7 +28,7 @@ export default async function runModuleSetup(
 
   const moduleQuestions: Question[] = [
     {
-      name: 'MODULENAME',
+      name: 'moduleName',
       message: 'Enter the module name',
       required: true,
       type: 'text',
@@ -44,7 +44,7 @@ export default async function runModuleSetup(
   ];
 
   const answers = await prompter.prompt(argv, moduleQuestions);
-  const modName = sluggify(answers.MODULENAME);
+  const modName = sluggify(answers.moduleName);
 
   if (!username || !email) {
     const identityQuestions: Question[] = [];
@@ -84,12 +84,9 @@ export default async function runModuleSetup(
   const templateAnswers = {
     ...argv,
     ...answers,
-    USERFULLNAME: username,
-    USEREMAIL: email,
     username,
     email,
     moduleName: modName,
-    MODULEDESC: answers.description || modName,
     moduleDesc: answers.description || modName,
     fullName: username || email || 'LaunchQL User',
     repoName: (argv as any).repoName || modName,

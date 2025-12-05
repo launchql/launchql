@@ -430,7 +430,7 @@ export class LaunchQLPackage {
     const answers = {
       ...options.answers,
       name: options.name,
-      MODULEDESC: options.description,
+      moduleDesc: options.description,
       description: options.description,
       author: options.author,
       extensions: options.extensions

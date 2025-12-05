@@ -17,13 +17,13 @@ const addDefaults = (argv: ParsedArgs): ParsedArgs => {
   const defaults = {
     fullName: 'Tester',
     email: 'tester@example.com',
-    moduleName: argv.workspace ? 'starter-module' : argv.name || argv.MODULENAME || 'module',
+    moduleName: argv.workspace ? 'starter-module' : argv.name || argv.moduleName || 'module',
     username: 'tester',
-    repoName: (argv.name as string) || (argv.MODULENAME as string) || 'repo-name',
+    repoName: (argv.name as string) || (argv.moduleName as string) || 'repo-name',
     license: 'MIT',
     access: 'public',
-    packageIdentifier: (argv.name as string) || (argv.MODULENAME as string) || 'module',
-    moduleDesc: (argv.name as string) || (argv.MODULENAME as string) || 'module'
+    packageIdentifier: (argv.name as string) || (argv.moduleName as string) || 'module',
+    moduleDesc: (argv.name as string) || (argv.moduleName as string) || 'module'
   };
   return { ...defaults, ...argv };
 };
@@ -117,7 +117,7 @@ describe('cmds:init', () => {
         _: ['init'],
         cwd: workspaceDir,
         name: 'my-module',
-        MODULENAME: 'my-module',
+        moduleName: 'my-module',
         extensions: ['plpgsql', 'citext']
       },
       'module-only'
@@ -188,7 +188,7 @@ describe('cmds:init', () => {
         _: ['init'],
         cwd: workspaceDir,
         name: 'test-module-template',
-        MODULENAME: 'test-module-template',
+        moduleName: 'test-module-template',
         extensions: ['plpgsql'],
         templatePath: 'module',
         repo: DEFAULT_REPO
@@ -306,7 +306,7 @@ describe('cmds:init', () => {
       await commands(withInitDefaults({
         _: ['init'],
         cwd: packagesDir,
-        MODULENAME: modName,
+        moduleName: modName,
         name: modName,
         extensions: ['plpgsql'],
       }), prompter, {
@@ -351,7 +351,7 @@ describe('cmds:init', () => {
       await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
-        MODULENAME: firstMod,
+        moduleName: firstMod,
         name: firstMod,
         extensions: ['plpgsql']
       }), prompter, {
@@ -368,7 +368,7 @@ describe('cmds:init', () => {
       await commands(withInitDefaults({
         _: ['init'],
         cwd: packagesDir,
-        MODULENAME: secondMod,
+        moduleName: secondMod,
         name: secondMod,
         extensions: ['plpgsql'],
       }), prompter, {
@@ -415,7 +415,7 @@ describe('cmds:init', () => {
       await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
-        MODULENAME: baseMod,
+        moduleName: baseMod,
         name: baseMod,
         extensions: ['plpgsql']
       }), prompter, {
@@ -437,7 +437,7 @@ describe('cmds:init', () => {
       await expect(commands(withInitDefaults({
         _: ['init'],
         cwd: insideDir,
-        MODULENAME: nestedName,
+        moduleName: nestedName,
         name: nestedName,
         extensions: ['plpgsql'],
       }), prompter, {
@@ -490,7 +490,7 @@ describe('cmds:init', () => {
       await commands(withInitDefaults({
         _: ['init'],
         cwd: wsRoot,
-        MODULENAME: modName,
+        moduleName: modName,
         name: modName,
         extensions: ['plpgsql']
       }), prompter, {

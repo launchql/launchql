@@ -40,13 +40,13 @@ describe('cmds:extension', () => {
       const defaults = {
         fullName: 'Tester',
         email: 'tester@example.com',
-        moduleName: argv.workspace ? 'starter-module' : argv.name || argv.MODULENAME || 'module',
+        moduleName: argv.workspace ? 'starter-module' : argv.name || argv.moduleName || 'module',
         username: 'tester',
-        repoName: (argv.name as string) || (argv.MODULENAME as string) || 'repo-name',
+        repoName: (argv.name as string) || (argv.moduleName as string) || 'repo-name',
         license: 'MIT',
         access: 'public',
-        packageIdentifier: (argv.name as string) || (argv.MODULENAME as string) || 'module',
-        moduleDesc: (argv.name as string) || (argv.MODULENAME as string) || 'module'
+        packageIdentifier: (argv.name as string) || (argv.moduleName as string) || 'module',
+        moduleDesc: (argv.name as string) || (argv.moduleName as string) || 'module'
       };
       Object.assign(argv, defaults, argv);
     }
@@ -72,7 +72,7 @@ describe('cmds:extension', () => {
       _: ['init'],
       cwd: workspacePath,
       name: 'my-module',
-      MODULENAME: 'my-module',
+      moduleName: 'my-module',
       extensions: ['mod-1', 'mod2']
     });
 
