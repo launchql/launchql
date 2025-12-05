@@ -171,10 +171,6 @@ Closes all caches including the service cache, graphile cache, and all PostgreSQ
 
 Re-exported from `pg-cache` for convenience.
 
-## 🧠 How It Works
-
-When you import this package, it automatically registers a cleanup callback with `pg-cache`. When a PostgreSQL pool is disposed, any PostGraphile instances using that pool are automatically removed from the cache.
-
 ## 🔌 Integration Details
 
 The integration with `pg-cache` happens automatically when this module is imported. The cleanup callback is registered immediately, ensuring that PostGraphile instances are cleaned up whenever their associated PostgreSQL pools are disposed.
