@@ -131,10 +131,3 @@ Supports full context, roles, and settings for advanced scenarios.
 * `query(query, variables?)`
 
 Lightweight version with no role or settings support.
-
-## 🧪 Testing
-
-```sh
-# requires a local Postgres available (defaults to postgres/password@localhost:5432)
-pnpm --filter graphile-query test
-```

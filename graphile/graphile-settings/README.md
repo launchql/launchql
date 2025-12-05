@@ -128,10 +128,3 @@ app.listen(settings.port);
 * `@graphile-contrib/pg-many-to-many`
 * `graphile-search-plugin`
 * `graphile-pg-type-mappings`
-
-## 🧪 Testing
-
-```sh
-# requires a local Postgres available (defaults to postgres/password@localhost:5432)
-pnpm --filter graphile-settings test
-```
