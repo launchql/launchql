@@ -1,32 +1,35 @@
 BEGIN;
 DO $do$
 BEGIN
-  -- anonymous
-  BEGIN
-    EXECUTE format('CREATE ROLE %I', 'anonymous');
-  EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'anonymous') THEN
+    BEGIN
+      PERFORM pg_advisory_xact_lock(42, hashtext('anonymous'));
+      EXECUTE format('CREATE ROLE %I', 'anonymous');
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
   
-  -- authenticated
-  BEGIN
-    EXECUTE format('CREATE ROLE %I', 'authenticated');
-  EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'authenticated') THEN
+    BEGIN
+      PERFORM pg_advisory_xact_lock(42, hashtext('authenticated'));
+      EXECUTE format('CREATE ROLE %I', 'authenticated');
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
   
-  -- administrator
-  BEGIN
-    EXECUTE format('CREATE ROLE %I', 'administrator');
-  EXCEPTION
-    WHEN duplicate_object THEN
-      -- Role already exists; optionally sync attributes here with ALTER ROLE
-      NULL;
-  END;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'administrator') THEN
+    BEGIN
+      PERFORM pg_advisory_xact_lock(42, hashtext('administrator'));
+      EXECUTE format('CREATE ROLE %I', 'administrator');
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN
+        NULL;
+    END;
+  END IF;
 END
 $do$;
 
