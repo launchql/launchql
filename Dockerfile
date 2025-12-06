@@ -15,8 +15,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
       ca-certificates curl git python3 make g++; \
     update-ca-certificates || true; \
-    corepack enable; \
-    corepack prepare pnpm@9.12.1 --activate; \
+    npm install -g pnpm@9.12.1; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy full repo (build context must be repo root when building this image)
@@ -38,8 +37,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates postgresql-client; \
     update-ca-certificates || true; \
-    corepack enable; \
-    corepack prepare pnpm@9.12.1 --activate; \
+    npm install -g pnpm@9.12.1; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy built repo from builder
