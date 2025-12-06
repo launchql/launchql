@@ -51,7 +51,6 @@
     "graphql": "15.10.1",
     "graphql-upload": "^13.0.0"
   },
-  "packageManager": "pnpm@9.12.1",
   "pnpm": {
     "publicHoistPattern": [
       "@jest/test-sequencer"
