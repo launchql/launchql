@@ -1,6 +1,6 @@
 {
   "name": "graphile-search-plugin",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "generate search conditions for your tsvector columns",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",

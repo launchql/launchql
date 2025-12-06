@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.11](https://github.com/launchql/launchql/compare/graphile-test@2.8.10...graphile-test@2.8.11) (2025-12-06)
+
+**Note:** Version bump only for package graphile-test
+
 ## [2.8.10](https://github.com/launchql/launchql/compare/graphile-test@2.8.9...graphile-test@2.8.10) (2025-12-04)
 
 **Note:** Version bump only for package graphile-test

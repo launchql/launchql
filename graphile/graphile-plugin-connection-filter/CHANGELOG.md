@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/launchql/launchql/compare/graphile-plugin-connection-filter@2.3.2...graphile-plugin-connection-filter@2.3.3) (2025-12-06)
+
+**Note:** Version bump only for package graphile-plugin-connection-filter
+
 ## [2.3.2](https://github.com/launchql/launchql/compare/graphile-plugin-connection-filter@2.3.1...graphile-plugin-connection-filter@2.3.2) (2025-12-04)
 
 **Note:** Version bump only for package graphile-plugin-connection-filter

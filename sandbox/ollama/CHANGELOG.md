@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.14](https://github.com/launchql/launchql/compare/my-ollama@0.3.13...my-ollama@0.3.14) (2025-12-06)
+
+**Note:** Version bump only for package my-ollama
+
 ## [0.3.13](https://github.com/launchql/launchql/compare/my-ollama@0.3.12...my-ollama@0.3.13) (2025-12-04)
 
 **Note:** Version bump only for package my-ollama

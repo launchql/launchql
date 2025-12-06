@@ -1,6 +1,6 @@
 {
   "name": "graphile-pg-type-mappings",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Custom PostgreSQL type mappings plugin for Graphile/PostGraphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/launchql",
