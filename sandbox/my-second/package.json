@@ -1,21 +1,18 @@
 {
   "name": "my-second",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.2",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
-    "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
-    "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "makage": "^0.1.8"
+  }
 }

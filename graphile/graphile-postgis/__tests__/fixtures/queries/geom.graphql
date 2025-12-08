@@ -1,0 +1,260 @@
+query {
+  allGisDebugs {
+    nodes {
+      geom {
+        __typename
+        geojson
+        ... on GeometryPoint {
+          ...geomPoint
+        }
+        ... on GeometryLineString {
+          ...geomLinestring
+        }
+        ... on GeometryPolygon {
+          ...geomPolygon
+        }
+        ... on GeometryMultiPoint {
+          ...geomMultipoint
+        }
+        ... on GeometryMultiLineString {
+          ...geomMultilinestring
+        }
+        ... on GeometryMultiPolygon {
+          ...geomMultipolygon
+        }
+        ... on GeometryPointZ {
+          ...geomPointz
+        }
+        ... on GeometryLineStringZ {
+          ...geomLinestringz
+        }
+        ... on GeometryPolygonZ {
+          ...geomPolygonz
+        }
+        ... on GeometryMultiPointZ {
+          ...geomMultipointz
+        }
+        ... on GeometryMultiLineStringZ {
+          ...geomMultilinestringz
+        }
+        ... on GeometryMultiPolygonZ {
+          ...geomMultipolygonz
+        }
+        ... on GeometryPointM {
+          ...geomPointm
+        }
+        ... on GeometryLineStringM {
+          ...geomLinestringm
+        }
+        ... on GeometryPolygonM {
+          ...geomPolygonm
+        }
+        ... on GeometryMultiPointM {
+          ...geomMultipointm
+        }
+        ... on GeometryMultiLineStringM {
+          ...geomMultilinestringm
+        }
+        ... on GeometryMultiPolygonM {
+          ...geomMultipolygonm
+        }
+        ... on GeometryPointZM {
+          ...geomPointzm
+        }
+        ... on GeometryLineStringZM {
+          ...geomLinestringzm
+        }
+        ... on GeometryPolygonZM {
+          ...geomPolygonzm
+        }
+        ... on GeometryMultiPointZM {
+          ...geomMultipointzm
+        }
+        ... on GeometryMultiLineStringZM {
+          ...geomMultilinestringzm
+        }
+        ... on GeometryMultiPolygonZM {
+          ...geomMultipolygonzm
+        }
+      }
+    }
+  }
+}
+
+fragment geomPoint on GeometryPoint {
+  geojson
+  x
+  y
+}
+
+fragment geomLinestring on GeometryLineString {
+  geojson
+  points {
+    ...geomPoint
+  }
+}
+
+fragment geomPolygon on GeometryPolygon {
+  exterior {
+    ...geomLinestring
+  }
+  geojson
+  interiors {
+    ...geomLinestring
+  }
+}
+
+fragment geomMultipoint on GeometryMultiPoint {
+  geojson
+  points {
+    ...geomPoint
+  }
+}
+
+fragment geomMultilinestring on GeometryMultiLineString {
+  geojson
+  lines {
+    ...geomLinestring
+  }
+}
+
+fragment geomMultipolygon on GeometryMultiPolygon {
+  geojson
+  polygons {
+    ...geomPolygon
+  }
+}
+
+fragment geomPointm on GeometryPointM {
+  geojson
+  x
+  y
+}
+
+fragment geomLinestringm on GeometryLineStringM {
+  geojson
+  points {
+    ...geomPointm
+  }
+}
+
+fragment geomPolygonm on GeometryPolygonM {
+  exterior {
+    ...geomLinestringm
+  }
+  geojson
+  interiors {
+    ...geomLinestringm
+  }
+}
+
+fragment geomMultipointm on GeometryMultiPointM {
+  geojson
+  points {
+    ...geomPointm
+  }
+}
+
+fragment geomMultilinestringm on GeometryMultiLineStringM {
+  geojson
+  lines {
+    ...geomLinestringm
+  }
+}
+
+fragment geomMultipolygonm on GeometryMultiPolygonM {
+  geojson
+  polygons {
+    ...geomPolygonm
+  }
+}
+
+fragment geomPointz on GeometryPointZ {
+  geojson
+  x
+  y
+  z
+}
+
+fragment geomLinestringz on GeometryLineStringZ {
+  geojson
+  points {
+    ...geomPointz
+  }
+}
+
+fragment geomPolygonz on GeometryPolygonZ {
+  exterior {
+    ...geomLinestringz
+  }
+  geojson
+  interiors {
+    ...geomLinestringz
+  }
+}
+
+fragment geomMultipointz on GeometryMultiPointZ {
+  geojson
+  points {
+    ...geomPointz
+  }
+}
+
+fragment geomMultilinestringz on GeometryMultiLineStringZ {
+  geojson
+  lines {
+    ...geomLinestringz
+  }
+}
+
+fragment geomMultipolygonz on GeometryMultiPolygonZ {
+  geojson
+  polygons {
+    ...geomPolygonz
+  }
+}
+
+fragment geomPointzm on GeometryPointZM {
+  geojson
+  x
+  y
+  z
+}
+
+fragment geomLinestringzm on GeometryLineStringZM {
+  geojson
+  points {
+    ...geomPointzm
+  }
+}
+
+fragment geomPolygonzm on GeometryPolygonZM {
+  exterior {
+    ...geomLinestringzm
+  }
+  geojson
+  interiors {
+    ...geomLinestringzm
+  }
+}
+
+fragment geomMultipointzm on GeometryMultiPointZM {
+  geojson
+  points {
+    ...geomPointzm
+  }
+}
+
+fragment geomMultilinestringzm on GeometryMultiLineStringZM {
+  geojson
+  lines {
+    ...geomLinestringzm
+  }
+}
+
+fragment geomMultipolygonzm on GeometryMultiPolygonZM {
+  geojson
+  polygons {
+    ...geomPolygonzm
+  }
+}

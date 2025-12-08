@@ -1,0 +1,73 @@
+{
+  "name": "graphile-settings",
+  "version": "2.6.16",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "graphile settings",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "clean": "makage clean",
+    "prepack": "npm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@graphile-contrib/pg-many-to-many": "^1.0.2",
+    "@launchql/env": "workspace:^",
+    "@launchql/types": "workspace:^",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "graphile-build": "^4.14.1",
+    "graphile-i18n": "workspace:^",
+    "graphile-meta-schema": "workspace:^",
+    "graphile-pg-type-mappings": "workspace:^",
+    "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-plugin-connection-filter-postgis": "workspace:^",
+    "graphile-plugin-fulltext-filter": "workspace:^",
+    "graphile-postgis": "workspace:^",
+    "graphile-query": "workspace:^",
+    "graphile-search-plugin": "workspace:^",
+    "graphile-simple-inflector": "workspace:^",
+    "graphile-upload-plugin": "workspace:^",
+    "graphql": "15.10.1",
+    "graphql-tag": "2.12.6",
+    "graphql-upload": "^13.0.0",
+    "lru-cache": "^11.1.0",
+    "pg": "^8.16.0",
+    "postgraphile": "^4.14.1",
+    "request-ip": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/pg": "^8.15.2",
+    "@types/request-ip": "^0.0.41",
+    "makage": "^0.1.8",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  },
+  "keywords": [
+    "graphile",
+    "settings",
+    "configuration",
+    "launchql",
+    "graphql"
+  ]
+}

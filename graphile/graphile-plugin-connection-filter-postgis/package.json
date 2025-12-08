@@ -1,0 +1,63 @@
+{
+  "name": "graphile-plugin-connection-filter-postgis",
+  "version": "1.0.2",
+  "description": "PostGIS filtering options in PostGraphile",
+  "author": "Matt Bretl",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "plugin",
+    "postgres",
+    "postgresql",
+    "postgis",
+    "filters",
+    "launchql"
+  ],
+  "dependencies": {
+    "@graphile/postgis": "^0.1.0",
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-plugin-connection-filter": "workspace:^"
+  },
+  "peerDependencies": {
+    "@graphile/postgis": "^0.1.0",
+    "graphile-plugin-connection-filter": "workspace:^",
+    "postgraphile": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.6",
+    "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-test": "workspace:^",
+    "graphql": "15.10.1",
+    "makage": "^0.1.6",
+    "pg": "^8.16.0",
+    "pgsql-test": "workspace:^",
+    "postgraphile": "^4.14.1"
+  }
+}

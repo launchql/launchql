@@ -19,7 +19,6 @@ const sqlPath = (file: string) => resolve(__dirname, '../sql', file);
  */
 function setupBaseDatabase(config: PgConfig) {
   const admin = new DbAdmin(config);
-  admin.loadSql(sqlPath('roles.sql'), config.database);
   admin.loadSql(sqlPath('test.sql'), config.database);
 }
 

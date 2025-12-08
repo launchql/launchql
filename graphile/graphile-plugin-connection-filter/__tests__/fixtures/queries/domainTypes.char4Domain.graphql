@@ -1,0 +1,147 @@
+query char4Domain($v2: Char4Domain = "Test", $v3: Char4Domain = "tEST") {
+  distinctFrom: allDomainTypes(filter: { char4Domain: { distinctFrom: $v2 } }) {
+    ...nodes
+  }
+  distinctFromInsensitive: allDomainTypes(filter: { char4Domain: { distinctFromInsensitive: $v2 } }) {
+    ...nodes
+  }
+  endsWith: allDomainTypes(filter: { char4Domain: { endsWith: "T" } }) {
+    ...nodes
+  }
+  endsWithInsensitive: allDomainTypes(
+    filter: { char4Domain: { endsWithInsensitive: "T" } }
+  ) {
+    ...nodes
+  }
+  equalTo: allDomainTypes(filter: { char4Domain: { equalTo: $v2 } }) {
+    ...nodes
+  }
+  equalToInsensitive: allDomainTypes(filter: { char4Domain: { equalToInsensitive: $v2 } }) {
+    ...nodes
+  }
+  greaterThan: allDomainTypes(filter: { char4Domain: { greaterThan: $v2 } }) {
+    ...nodes
+  }
+  greaterThanInsensitive: allDomainTypes(filter: { char4Domain: { greaterThanInsensitive: $v2 } }) {
+    ...nodes
+  }
+  greaterThanOrEqualTo: allDomainTypes(
+    filter: { char4Domain: { greaterThanOrEqualTo: $v2 } }
+  ) {
+    ...nodes
+  }
+  greaterThanOrEqualToInsensitive: allDomainTypes(
+    filter: { char4Domain: { greaterThanOrEqualToInsensitive: $v2 } }
+  ) {
+    ...nodes
+  }
+  in: allDomainTypes(filter: { char4Domain: { in: [$v2, $v3] } }) {
+    ...nodes
+  }
+  inInsensitive: allDomainTypes(filter: { char4Domain: { inInsensitive: [$v2, $v3] } }) {
+    ...nodes
+  }
+  includes: allDomainTypes(filter: { char4Domain: { includes: "T" } }) {
+    ...nodes
+  }
+  includesInsensitive: allDomainTypes(
+    filter: { char4Domain: { includesInsensitive: "T" } }
+  ) {
+    ...nodes
+  }
+  isNull: allDomainTypes(filter: { char4Domain: { isNull: true } }) {
+    ...nodes
+  }
+  lessThan: allDomainTypes(filter: { char4Domain: { lessThan: $v2 } }) {
+    ...nodes
+  }
+  lessThanInsensitive: allDomainTypes(filter: { char4Domain: { lessThanInsensitive: $v2 } }) {
+    ...nodes
+  }
+  lessThanOrEqualTo: allDomainTypes(
+    filter: { char4Domain: { lessThanOrEqualTo: $v2 } }
+  ) {
+    ...nodes
+  }
+  lessThanOrEqualToInsensitive: allDomainTypes(
+    filter: { char4Domain: { lessThanOrEqualToInsensitive: $v2 } }
+  ) {
+    ...nodes
+  }
+  like: allDomainTypes(filter: { char4Domain: { like: "%ES%" } }) {
+    ...nodes
+  }
+  likeInsensitive: allDomainTypes(
+    filter: { char4Domain: { likeInsensitive: "%ES%" } }
+  ) {
+    ...nodes
+  }
+  notDistinctFrom: allDomainTypes(
+    filter: { char4Domain: { notDistinctFrom: $v2 } }
+  ) {
+    ...nodes
+  }
+  notDistinctFromInsensitive: allDomainTypes(filter: { char4Domain: { notDistinctFromInsensitive: $v2 } }) {
+    ...nodes
+  }
+  notEndsWith: allDomainTypes(filter: { char4Domain: { notEndsWith: "T" } }) {
+    ...nodes
+  }
+  notEndsWithInsensitive: allDomainTypes(
+    filter: { char4Domain: { notEndsWithInsensitive: "T" } }
+  ) {
+    ...nodes
+  }
+  notEqualTo: allDomainTypes(filter: { char4Domain: { notEqualTo: $v2 } }) {
+    ...nodes
+  }
+  notEqualToInsensitive: allDomainTypes(filter: { char4Domain: { notEqualToInsensitive: $v2 } }) {
+    ...nodes
+  }
+  notIn: allDomainTypes(filter: { char4Domain: { notIn: [$v2] } }) {
+    ...nodes
+  }
+  notInInsensitive: allDomainTypes(filter: { char4Domain: { notInInsensitive: [$v2] } }) {
+    ...nodes
+  }
+  notIncludes: allDomainTypes(filter: { char4Domain: { notIncludes: "T" } }) {
+    ...nodes
+  }
+  notIncludesInsensitive: allDomainTypes(
+    filter: { char4Domain: { notIncludesInsensitive: "T" } }
+  ) {
+    ...nodes
+  }
+  notLike: allDomainTypes(filter: { char4Domain: { notLike: "%ES%" } }) {
+    ...nodes
+  }
+  notLikeInsensitive: allDomainTypes(
+    filter: { char4Domain: { notLikeInsensitive: "%ES%" } }
+  ) {
+    ...nodes
+  }
+  notStartsWith: allDomainTypes(
+    filter: { char4Domain: { notStartsWith: "T" } }
+  ) {
+    ...nodes
+  }
+  notStartsWithInsensitive: allDomainTypes(
+    filter: { char4Domain: { notStartsWithInsensitive: "T" } }
+  ) {
+    ...nodes
+  }
+  startsWith: allDomainTypes(filter: { char4Domain: { startsWith: "T" } }) {
+    ...nodes
+  }
+  startsWithInsensitive: allDomainTypes(
+    filter: { char4Domain: { startsWithInsensitive: "T" } }
+  ) {
+    ...nodes
+  }
+}
+
+fragment nodes on DomainTypesConnection {
+  nodes {
+    id
+  }
+}

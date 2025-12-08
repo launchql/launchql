@@ -1,20 +1,91 @@
-name: LaunchQL tests
+name: LaunchQL matrix tests
 on:
   push:
   pull_request:
     types: [opened, synchronized, reopened]
   workflow_dispatch:
+  workflow_call:
 
 jobs:
-  container-job:
+  launchql-tests:
     runs-on: ubuntu-latest
     container: pyramation/node-sqitch:20.12.0
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: packages/mime-bytes
+            env: {}
+          - package: packages/core
+            env: {}
+          - package: packages/cli
+            env: {}
+          - package: packages/client
+            env:
+              TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
+          - package: packages/pgsql-test
+            env: {}
+          - package: packages/orm
+            env: {}
+          - package: packages/url-domains
+            env: {}
+          - package: packages/uuid-hash
+            env: {}
+          - package: packages/uuid-stream
+            env: {}
+          - package: packages/introspectron
+            env: {}
+          - package: packages/query-builder
+            env: {}
+          - package: packages/query
+            env: {}
+          - package: packages/launchql-gen
+            env: {}
+          - package: packages/pg-ast
+            env: {}
+          - package: packages/pg-codegen
+            env: {}
+          - package: packages/content-type-stream
+            env: {}
+          - package: packages/s3-streamer
+            env:
+              BUCKET_NAME: test-bucket
+          - package: packages/upload-names
+            env: {}
+          - package: graphile/graphile-test
+            env: {}
+          - package: graphile/graphile-search-plugin
+            env: {}
+          - package: graphile/graphile-plugin-fulltext-filter
+            env: {}
+          - package: graphile/graphile-simple-inflector
+            env: {}
+          - package: graphile/graphile-i18n
+            env: {}
+          - package: graphile/graphile-meta-schema
+            env: {}
+          - package: graphile/graphile-upload-plugin
+            env:
+              BUCKET_NAME: test-upload-bucket
+          - package: graphile/graphile-postgis
+            env: {}
+          - package: graphile/graphile-plugin-connection-filter
+            env: {}
+          - package: graphile/graphile-plugin-connection-filter-postgis
+            env: {}
+          - package: graphile/graphile-pg-type-mappings
+            env: {}
 
     env:
       PGHOST: pg_db
       PGPORT: 5432
       PGUSER: postgres
       PGPASSWORD: password
+      MINIO_ENDPOINT: http://minio_cdn:9000
+      AWS_ACCESS_KEY: minioadmin
+      AWS_SECRET_KEY: minioadmin
+      AWS_REGION: us-east-1
 
     services:
       pg_db:
@@ -45,7 +116,6 @@ jobs:
           --health-retries 5
 
     steps:
-      # TODO remove deps on git config
       - name: Configure Git (for tests)
         run: |
           git config --global user.name "CI Test User"
@@ -69,86 +139,7 @@ jobs:
         run: |
           pnpm --filter @launchql/cli exec node dist/index.js admin-users bootstrap --yes
           pnpm --filter @launchql/cli exec node dist/index.js admin-users add --test --yes
-        env:
-          PGHOST: pg_db
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: password
 
-      - name: mime-bytes
-        run: cd ./packages/mime-bytes && pnpm test
-
-      - name: launchql/core
-        run: cd ./packages/core && pnpm test
-
-      - name: launchql/cli
-        run: cd ./packages/cli && pnpm test
-
-      - name: launchql/client
-        run: cd ./packages/client && pnpm test
-        env:
-          TEST_DATABASE_URL: postgres://postgres:password@pg_db:5432/postgres
-
-      - name: graphile-test
-        run: |
-          cd ./packages/graphile-test
-          createdb graphile_test_db
-          psql -f sql/test.sql graphile_test_db
-          psql -f sql/roles.sql graphile_test_db
-          pnpm test
-
-      - name: pgsql-test
-        run: |
-          cd ./packages/pgsql-test
-          pnpm test
-
-      - name: launchql/orm
-        run: cd ./packages/orm && pnpm test
-
-      - name: launchql/url-domains
-        run: cd ./packages/url-domains && pnpm test
-
-      - name: launchql/uuid-hash
-        run: cd ./packages/uuid-hash && pnpm test
-
-      - name: launchql/uuid-stream
-        run: cd ./packages/uuid-stream && pnpm test
-
-      - name: launchql/introspectron
-        run: cd ./packages/introspectron && pnpm test
-
-      - name: launchql/query-builder
-        run: cd ./packages/query-builder && pnpm test
-
-      - name: launchql/query
-        run: cd ./packages/query && pnpm test
-
-      - name: launchql/launchql-gen
-        run: cd ./packages/launchql-gen && pnpm test
-
-      - name: launchql/pg-ast
-        run: cd ./packages/pg-ast && pnpm test
-
-      - name: launchql/pg-codegen
-        run: cd ./packages/pg-codegen && pnpm test
-
-      - name: launchql-gen
-        run: cd ./packages/launchql-gen && pnpm test
-
-      - name: launchql/content-type-stream
-        run: cd ./packages/content-type-stream && pnpm test
-
-      - name: launchql/s3-streamer
-        run: cd ./packages/s3-streamer && pnpm test
-        env:
-          MINIO_ENDPOINT: http://minio_cdn:9000
-          AWS_ACCESS_KEY: minioadmin
-          AWS_SECRET_KEY: minioadmin
-          AWS_REGION: us-east-1
-          BUCKET_NAME: test-bucket
-
-      - name: launchql/upload-names
-        run: cd ./packages/upload-names && pnpm test
-
-      - name: graphile/graphile-search-plugin
-        run: cd ./graphile/graphile-search-plugin && pnpm test
+      - name: Test ${{ matrix.package }}
+        run: cd ./${{ matrix.package }} && pnpm test
+        env: ${{ matrix.env }}

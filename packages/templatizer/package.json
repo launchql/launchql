@@ -1,6 +1,6 @@
 {
   "name": "@launchql/templatizer",
-  "version": "2.5.4",
+  "version": "2.5.7",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "make templates",
   "main": "index.js",
@@ -20,11 +20,10 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "generate": "ts-node scripts/generate.ts",
     "makeTemplates": "ts-node scripts/makeTemplates.ts",
     "lint": "eslint . --fix",
@@ -33,11 +32,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "makage": "^0.1.8",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "case": "^1.6.3",
     "glob": "^13.0.0",
-    "rimraf": "^6.1.2"
+    "komoji": "^0.7.8"
   }
 }

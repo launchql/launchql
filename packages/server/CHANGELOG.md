@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.16](https://github.com/launchql/launchql/compare/@launchql/server@2.7.15...@launchql/server@2.7.16) (2025-12-06)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.15](https://github.com/launchql/launchql/compare/@launchql/server@2.7.14...@launchql/server@2.7.15) (2025-12-04)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.14](https://github.com/launchql/launchql/compare/@launchql/server@2.7.13...@launchql/server@2.7.14) (2025-12-04)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.13](https://github.com/launchql/launchql/compare/@launchql/server@2.7.12...@launchql/server@2.7.13) (2025-11-28)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.12](https://github.com/launchql/launchql/compare/@launchql/server@2.7.11...@launchql/server@2.7.12) (2025-11-27)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.11](https://github.com/launchql/launchql/compare/@launchql/server@2.7.10...@launchql/server@2.7.11) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.10](https://github.com/launchql/launchql/compare/@launchql/server@2.7.9...@launchql/server@2.7.10) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/server
+
+## [2.7.9](https://github.com/launchql/launchql/compare/@launchql/server@2.7.8...@launchql/server@2.7.9) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/server
+
 ## [2.7.8](https://github.com/launchql/launchql/compare/@launchql/server@2.7.7...@launchql/server@2.7.8) (2025-11-24)
 
 **Note:** Version bump only for package @launchql/server

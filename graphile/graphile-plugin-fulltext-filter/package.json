@@ -1,0 +1,59 @@
+{
+  "name": "graphile-plugin-fulltext-filter",
+  "version": "2.0.4",
+  "description": "Full text searching on tsvector fields for use with graphile-plugin-connection-filter",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "author": "Mark Lipscombe",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "scripts": {
+    "clean": "makage clean",
+    "copy": "makage assets",
+    "prepack": "pnpm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "launchql",
+    "plugin",
+    "postgres",
+    "graphql",
+    "fulltext",
+    "tsvector"
+  ],
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "dependencies": {
+    "graphile-build": "^4.14.1",
+    "graphile-build-pg": "^4.14.1",
+    "graphile-plugin-connection-filter": "workspace:^",
+    "pg-tsquery": "^8.1.0"
+  },
+  "peerDependencies": {
+    "graphile-plugin-connection-filter": "workspace:^",
+    "postgraphile-core": "^4.2.0"
+  },
+  "devDependencies": {
+    "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-test": "workspace:^",
+    "graphql": "15.10.1",
+    "makage": "^0.1.8",
+    "pgsql-test": "workspace:^"
+  }
+}

@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.13](https://github.com/launchql/launchql/compare/launchql-test@2.8.12...launchql-test@2.8.13) (2025-12-06)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.12](https://github.com/launchql/launchql/compare/launchql-test@2.8.11...launchql-test@2.8.12) (2025-12-04)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.11](https://github.com/launchql/launchql/compare/launchql-test@2.8.10...launchql-test@2.8.11) (2025-12-04)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.10](https://github.com/launchql/launchql/compare/launchql-test@2.8.9...launchql-test@2.8.10) (2025-11-28)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.9](https://github.com/launchql/launchql/compare/launchql-test@2.8.8...launchql-test@2.8.9) (2025-11-27)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.8](https://github.com/launchql/launchql/compare/launchql-test@2.8.7...launchql-test@2.8.8) (2025-11-25)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.7](https://github.com/launchql/launchql/compare/launchql-test@2.8.6...launchql-test@2.8.7) (2025-11-25)
+
+**Note:** Version bump only for package launchql-test
+
+## [2.8.6](https://github.com/launchql/launchql/compare/launchql-test@2.8.5...launchql-test@2.8.6) (2025-11-25)
+
+**Note:** Version bump only for package launchql-test
+
 ## [2.8.5](https://github.com/launchql/launchql/compare/launchql-test@2.8.4...launchql-test@2.8.5) (2025-11-24)
 
 **Note:** Version bump only for package launchql-test

@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.16](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.15...@launchql/codegen@2.16.16) (2025-12-06)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.15](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.14...@launchql/codegen@2.16.15) (2025-12-04)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.14](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.13...@launchql/codegen@2.16.14) (2025-12-04)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.13](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.12...@launchql/codegen@2.16.13) (2025-11-28)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.12](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.11...@launchql/codegen@2.16.12) (2025-11-27)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.11](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.10...@launchql/codegen@2.16.11) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.10](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.9...@launchql/codegen@2.16.10) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/codegen
+
+## [2.16.9](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.8...@launchql/codegen@2.16.9) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/codegen
+
 ## [2.16.8](https://github.com/launchql/launchql/compare/@launchql/codegen@2.16.7...@launchql/codegen@2.16.8) (2025-11-24)
 
 **Note:** Version bump only for package @launchql/codegen

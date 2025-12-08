@@ -1,0 +1,51 @@
+{
+  "name": "graphile-test",
+  "version": "2.8.11",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "PostGraphile Testing",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "clean": "makage clean",
+    "prepack": "npm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.2",
+    "graphql-tag": "2.12.6",
+    "makage": "^0.1.8"
+  },
+  "dependencies": {
+    "@launchql/types": "workspace:^",
+    "graphql": "15.10.1",
+    "mock-req": "^0.2.0",
+    "pg": "^8.16.0",
+    "pgsql-test": "workspace:^",
+    "postgraphile": "^4.14.1"
+  },
+  "keywords": [
+    "testing",
+    "graphql",
+    "graphile",
+    "launchql",
+    "test"
+  ]
+}

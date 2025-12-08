@@ -1,0 +1,52 @@
+{
+  "name": "graphile-cache",
+  "version": "1.4.11",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "PostGraphile LRU cache with automatic pool cleanup integration",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "clean": "makage clean",
+    "prepack": "npm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@launchql/logger": "workspace:^",
+    "lru-cache": "^11.1.0",
+    "pg": "^8.16.0",
+    "pg-cache": "workspace:^",
+    "postgraphile": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.2",
+    "makage": "^0.1.8",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "cache",
+    "lru",
+    "postgresql",
+    "launchql"
+  ]
+}

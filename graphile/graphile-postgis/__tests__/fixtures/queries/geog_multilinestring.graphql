@@ -1,0 +1,29 @@
+query {
+  allGisDebugs {
+    nodes {
+      geogMultilinestring {
+        ...geogMultilinestring
+      }
+    }
+  }
+}
+
+fragment geogPoint on GeographyPoint {
+  geojson
+  latitude
+  longitude
+}
+
+fragment geogLinestring on GeographyLineString {
+  geojson
+  points {
+    ...geogPoint
+  }
+}
+
+fragment geogMultilinestring on GeographyMultiLineString {
+  geojson
+  lines {
+    ...geogLinestring
+  }
+}

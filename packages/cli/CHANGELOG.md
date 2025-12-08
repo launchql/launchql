@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.17.20](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.19...@launchql/cli@4.17.20) (2025-12-06)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.19](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.18...@launchql/cli@4.17.19) (2025-12-04)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.18](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.17...@launchql/cli@4.17.18) (2025-12-04)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.17](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.16...@launchql/cli@4.17.17) (2025-11-28)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.16](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.15...@launchql/cli@4.17.16) (2025-11-27)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.15](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.14...@launchql/cli@4.17.15) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.14](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.13...@launchql/cli@4.17.14) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.13](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.12...@launchql/cli@4.17.13) (2025-11-25)
+
+**Note:** Version bump only for package @launchql/cli
+
 ## [4.17.12](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.11...@launchql/cli@4.17.12) (2025-11-24)
 
 **Note:** Version bump only for package @launchql/cli
