@@ -130,7 +130,7 @@ jobs:
           corepack prepare pnpm@9.12.1 --activate
 
       - name: deps
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: build
         run: pnpm run build
