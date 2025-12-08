@@ -54,6 +54,7 @@ exports[`cmds:init initializes module: module-only - files 1`] = `
   "packages/my-module/jest.config.js",
   "packages/my-module/README.md",
   "packages/my-module/Makefile",
+  "packages/my-module/LICENSE",
   "packages/my-module/__tests__/basic.test.ts",
   ".github/ci.yaml",
 ]
