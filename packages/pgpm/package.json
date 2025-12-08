@@ -50,7 +50,7 @@
     "@launchql/logger": "workspace:^",
     "@launchql/types": "workspace:^",
     "appstash": "^0.2.4",
-    "create-gen-app": "^0.3.0",
+    "create-gen-app": "^0.3.1",
     "inquirerer": "^2.1.8",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
