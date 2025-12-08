@@ -105,3 +105,15 @@ export const getOpenFaasDevMap = (): Record<string, string> | null => {
 
 export const getNodeEnvironment = getNodeEnv;
 
+// Neutral callback helpers (work for both OpenFaaS and Knative)
+export const getJobsCallbackPort = (): number => {
+  const envCbPort = Number(process.env.INTERNAL_JOBS_CALLBACK_PORT);
+  return Number.isFinite(envCbPort) && envCbPort > 0 ? envCbPort : 12345;
+};
+
+export const getCallbackBaseUrl = (): string => {
+  if (process.env.JOBS_CALLBACK_BASE_URL) return process.env.JOBS_CALLBACK_BASE_URL;
+  const host = process.env.JOBS_CALLBACK_HOST || 'jobs-callback';
+  const port = getJobsCallbackPort();
+  return `http://${host}:${port}/callback`;
+};

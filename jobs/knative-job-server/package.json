@@ -1,13 +1,16 @@
 {
-  "name": "@launchql/job-worker",
+  "name": "@launchql/knative-job-server",
   "version": "0.2.2",
-  "description": "job worker",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-worker#readme",
+  "description": "Knative job server (callback)",
+  "author": "LaunchQL",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-server#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
     "test": "__tests__"
+  },
+  "bin": {
+    "knative-job-server": "src/run.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -24,12 +27,8 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@launchql/job-utils": "^0.2.2",
-    "@launchql/job-pg": "workspace:^",
-    "@launchql/core": "workspace:^",
-    "pg": "8.3.3",
-    "request": "2.88.2"
+    "@launchql/job-callback": "workspace:^"
   }
 }
+

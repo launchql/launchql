@@ -15,7 +15,7 @@ import {
 import { createCallbackServer } from '@launchql/job-callback/src/server';
 
 const start = () => {
-  console.log('starting jobs services...');
+  console.log('starting knative jobs services...');
   const pgPool = poolManager.getPool();
   const callbackPort = getJobsCallbackPort();
   createCallbackServer().listen(callbackPort, () => {
@@ -41,7 +41,7 @@ const start = () => {
 const wait = async () => {
   console.log('waiting for jobs prereqs');
   let failed = 0;
-  let pgClient;
+  let pgClient: pg.Client | undefined;
   try {
     const cfg = getJobPgConfig();
     pgClient = new pg.Client({
@@ -56,23 +56,21 @@ const wait = async () => {
     await pgClient.query(`SELECT * FROM "${schema}".jobs LIMIT 1;`);
   } catch (e) {
     failed = 1;
-    // process.stderr.write(e.message);
     console.log(e);
   } finally {
-    pgClient.end();
+    if (pgClient) pgClient.end();
   }
   if (failed === 1) {
     throw new Error('jobs server boot failed...');
-    // process.exit(failed);
   } else {
     start();
   }
 };
 
 const boot = async () => {
-  console.log('attempting to boot jobs');
+  console.log('attempting to boot knative jobs');
   await retry(
-    async (bail) => {
+    async () => {
       await wait();
     },
     {
@@ -83,3 +81,4 @@ const boot = async () => {
 };
 
 boot();
+

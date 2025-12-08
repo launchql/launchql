@@ -8,9 +8,11 @@ import {
   getSchedulerHostname,
   getOpenFaasGatewayConfig,
   getOpenFaasDevMap,
+  getJobsCallbackPort,
+  getCallbackBaseUrl,
 } from './runtime';
 import type { Pool, PoolClient } from 'pg';
-import type { JobRow, ScheduledJobRow } from '@launchql/jobs-core';
+import type { JobRow, ScheduledJobRow } from '@launchql/core';
 import {
   getJob as coreGetJob,
   completeJob as coreCompleteJob,
@@ -19,7 +21,7 @@ import {
   runScheduledJob as coreRunScheduledJob,
   releaseJobs as coreReleaseJobs,
   releaseScheduledJobs as coreReleaseScheduledJobs,
-} from '@launchql/jobs-core';
+} from '@launchql/core';
 
 const JOBS_SCHEMA = getJobSchema();
 
@@ -95,4 +97,6 @@ export {
   getSchedulerHostname,
   getOpenFaasGatewayConfig,
   getOpenFaasDevMap,
+  getJobsCallbackPort,
+  getCallbackBaseUrl,
 };

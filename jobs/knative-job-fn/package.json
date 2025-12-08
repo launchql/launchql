@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/job-worker",
-  "version": "0.2.2",
-  "description": "job worker",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-worker#readme",
+  "name": "@launchql/knative-job-fn",
+  "version": "0.1.0",
+  "description": "Knative job function template",
+  "author": "LaunchQL",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-fn#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
@@ -24,12 +24,8 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@launchql/job-utils": "^0.2.2",
-    "@launchql/job-pg": "workspace:^",
-    "@launchql/core": "workspace:^",
-    "pg": "8.3.3",
-    "request": "2.88.2"
+    "express": "^4.18.2"
   }
 }
+

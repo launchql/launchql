@@ -1,8 +1,10 @@
 import pg, { Pool, PoolClient } from 'pg';
 import * as jobs from '@launchql/job-utils';
 import poolManager from '@launchql/job-pg';
-import type { JobRow } from '@launchql/jobs-core';
-import { getJob as dbGetJob, completeJob as dbCompleteJob, failJob as dbFailJob } from '@launchql/jobs-core';
+import type { JobRow } from '@launchql/core';
+import { getJob as dbGetJob, completeJob as dbCompleteJob, failJob as dbFailJob } from '@launchql/core';
+import { OpenFaasJobExecutor } from './executors/openfaas';
+import { KnativeJobExecutor } from './executors/knative';
 
 export type TaskHandler = (ctx: { pgPool: Pool; workerId: string }, job: JobRow) => Promise<void>;
 
@@ -85,9 +87,13 @@ export default class Worker {
     this.workerId = workerId ?? jobs.getWorkerHostname();
     this.idleDelay = pollIntervalMs ?? idleDelay ?? 15000;
     this.pgPool = pgPool;
-    this.callbackUrl = callbackUrl ?? jobs.getOpenFaasGatewayConfig().callbackUrl; // placeholder until knative executor
+    // Prefer neutral callback URL if set, otherwise fallback to existing OpenFaaS callback
+    this.callbackUrl =
+      callbackUrl ??
+      jobs.getCallbackBaseUrl() ??
+      jobs.getOpenFaasGatewayConfig().callbackUrl;
 
-    // Choose executor: inline when tasks provided; otherwise a passed executor
+    // Choose executor: inline when tasks provided; otherwise:
     if (executor) {
       this.executor = executor;
     } else if (tasks) {
@@ -95,7 +101,13 @@ export default class Worker {
       inline.bindRuntime(this.pgPool, this.workerId);
       this.executor = inline;
     } else {
-      throw new Error('Worker requires either a tasks map or a JobExecutor');
+      // Select executor via env toggle; default remains OpenFaaS
+      const execName = (process.env.JOBS_EXECUTOR || '').toLowerCase();
+      if (execName === 'knative') {
+        this.executor = new KnativeJobExecutor();
+      } else {
+        this.executor = new OpenFaasJobExecutor();
+      }
     }
 
     const close = () => {

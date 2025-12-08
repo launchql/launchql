@@ -1,17 +1,15 @@
 {
-  "name": "@launchql/job-utils",
-  "version": "0.2.2",
-  "description": "job utils",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-utils#readme",
+  "name": "@launchql/knative-job-example",
+  "version": "0.1.0",
+  "description": "Knative job example",
+  "author": "LaunchQL",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-example#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
     "test": "__tests__"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/launchql/jobs"
@@ -24,11 +22,9 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@launchql/env": "workspace:^",
-    "@launchql/core": "workspace:^",
-    "pg-cache": "workspace:^",
-    "pg-env": "workspace:^"
+    "@launchql/knative-job-fn": "workspace:^",
+    "envalid": "6.0.2"
   }
 }
+
