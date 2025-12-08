@@ -37,16 +37,17 @@ describe('cmds:extension', () => {
     if (isInit) {
       argv.repo = argv.repo ?? DEFAULT_REPO;
       argv.templatePath = argv.templatePath ?? (argv.workspace ? 'workspace' : 'module');
+      const baseName = (argv.moduleName as string) || (argv.name as string) || 'module';
       const defaults = {
         fullName: 'Tester',
         email: 'tester@example.com',
-        moduleName: argv.workspace ? 'starter-module' : argv.name || argv.moduleName || 'module',
+        moduleName: argv.workspace ? 'starter-module' : baseName,
         username: 'tester',
-        repoName: (argv.name as string) || (argv.moduleName as string) || 'repo-name',
+        repoName: baseName,
         license: 'MIT',
         access: 'public',
-        packageIdentifier: (argv.name as string) || (argv.moduleName as string) || 'module',
-        moduleDesc: (argv.name as string) || (argv.moduleName as string) || 'module'
+        packageIdentifier: baseName,
+        moduleDesc: baseName
       };
       Object.assign(argv, defaults, argv);
     }
