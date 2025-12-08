@@ -47,6 +47,24 @@ const resolveFromPath = (templateDir: string, templatePath: string | undefined, 
   return templatePath ?? type;
 };
 
+const isValidTemplateRepo = (templateRoot: string, type: TemplateKind): boolean => {
+  try {
+    const templateDir = path.join(templateRoot, type);
+    if (!fs.existsSync(templateDir) || !fs.statSync(templateDir).isDirectory()) {
+      return false;
+    }
+
+    const requiredFiles =
+      type === 'workspace'
+        ? ['pgpm.json', 'package.json']
+        : ['pgpm.plan', 'package.json'];
+
+    return requiredFiles.every(file => fs.existsSync(path.join(templateDir, file)));
+  } catch {
+    return false;
+  }
+};
+
 export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promise<ScaffoldTemplateResult> {
   const {
     type,
@@ -105,10 +123,16 @@ export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promis
   let cacheUsed = false;
   const cachedPath = cacheManager.get(cacheKey);
 
-  if (cachedPath && !expiredMetadata) {
+  const hasValidCache = cachedPath && !expiredMetadata && isValidTemplateRepo(cachedPath, type);
+
+  if (hasValidCache) {
     templateDir = cachedPath;
     cacheUsed = true;
   } else {
+    if (cachedPath && !expiredMetadata && !isValidTemplateRepo(cachedPath, type)) {
+      cacheManager.clear(cacheKey);
+    }
+
     const tempDest = path.join(cacheManager.getReposDir(), cacheKey);
     gitCloner.clone(normalizedUrl, tempDest, {
       branch,
