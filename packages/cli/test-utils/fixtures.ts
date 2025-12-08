@@ -5,7 +5,8 @@ import os from 'os';
 import path from 'path';
 
 import { commands } from '../src/commands';
-import { setupTests,TestEnvironment } from './cli';
+import { setupTests, TestEnvironment } from './cli';
+import { withInitDefaults } from './init-argv';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
 
@@ -54,24 +55,9 @@ export class TestFixture {
       transformResults
     } = this.environment;
 
-    // Default to local templates to avoid network and keep tests fast
-    const hasInitCommand = Array.isArray(argv._) && argv._.includes('init');
-    if (hasInitCommand) {
-      argv.repo = argv.repo ?? DEFAULT_REPO;
-      argv.templatePath = argv.templatePath ?? (argv.workspace ? 'workspace' : 'module');
-      const defaults = {
-        fullName: 'Tester',
-        email: 'tester@example.com',
-        moduleName: argv.workspace ? 'starter-module' : argv.name || argv.moduleName || 'module',
-        username: 'tester',
-        repoName: (argv.name as string) || (argv.moduleName as string) || 'repo-name',
-        license: 'MIT',
-        access: 'public',
-        packageIdentifier: (argv.name as string) || (argv.moduleName as string) || 'module',
-        moduleDesc: (argv.name as string) || (argv.moduleName as string) || 'module'
-      };
-      Object.assign(argv, defaults, argv);
-    }
+    // Default to remote templates and deterministic identity answers for init
+    // flows so tests are stable and do not rely on local machine config.
+    argv = withInitDefaults(argv, DEFAULT_REPO);
 
     const prompter = new Inquirerer({
       input: mockInput,

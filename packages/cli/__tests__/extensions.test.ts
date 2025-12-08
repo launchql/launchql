@@ -8,10 +8,14 @@ import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 
 import { commands } from '../src/commands';
-import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
+import {
+  setupTests,
+  TestEnvironment,
+  TestFixture,
+  withInitDefaults
+} from '../test-utils';
 
 const beforeEachSetup = setupTests();
-const DEFAULT_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
 
 describe('cmds:extension', () => {
   let environment: TestEnvironment;
@@ -35,21 +39,7 @@ describe('cmds:extension', () => {
 
     const isInit = Array.isArray(argv._) && argv._.includes('init');
     if (isInit) {
-      argv.repo = argv.repo ?? DEFAULT_REPO;
-      argv.templatePath = argv.templatePath ?? (argv.workspace ? 'workspace' : 'module');
-      const baseName = (argv.moduleName as string) || (argv.name as string) || 'module';
-      const defaults = {
-        fullName: 'Tester',
-        email: 'tester@example.com',
-        moduleName: argv.workspace ? 'starter-module' : baseName,
-        username: 'tester',
-        repoName: baseName,
-        license: 'MIT',
-        access: 'public',
-        packageIdentifier: baseName,
-        moduleDesc: baseName
-      };
-      Object.assign(argv, defaults, argv);
+      argv = withInitDefaults(argv);
     }
 
     // @ts-ignore

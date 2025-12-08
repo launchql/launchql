@@ -9,33 +9,14 @@ import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 
 import { commands } from '../src/commands';
-import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
+import {
+  setupTests,
+  TestEnvironment,
+  TestFixture,
+  withInitDefaults
+} from '../test-utils';
 
 const beforeEachSetup = setupTests();
-const DEFAULT_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
-const addDefaults = (argv: ParsedArgs): ParsedArgs => {
-  const baseName = (argv.moduleName as string) || (argv.name as string) || 'module';
-  const defaults = {
-    fullName: 'Tester',
-    email: 'tester@example.com',
-    moduleName: argv.workspace ? 'starter-module' : baseName,
-    username: 'tester',
-    repoName: baseName,
-    license: 'MIT',
-    access: 'public',
-    packageIdentifier: baseName,
-    moduleDesc: baseName
-  };
-  return { ...defaults, ...argv };
-};
-const withInitDefaults = (argv: ParsedArgs): ParsedArgs => {
-  const args = addDefaults(argv);
-  return {
-    ...args,
-    repo: args.repo ?? DEFAULT_REPO,
-    templatePath: args.templatePath ?? (args.workspace ? 'workspace' : 'module')
-  };
-};
 
 describe('cmds:init', () => {
   let environment: TestEnvironment;
@@ -142,8 +123,7 @@ describe('cmds:init', () => {
         cwd: fixture.tempDir,
         name: 'test-workspace-template',
         workspace: true,
-        templatePath: 'workspace',
-        repo: DEFAULT_REPO
+        templatePath: 'workspace'
       });
 
       await commands(argv, prompter, {
@@ -191,8 +171,7 @@ describe('cmds:init', () => {
         name: 'test-module-template',
         moduleName: 'test-module-template',
         extensions: ['plpgsql'],
-        templatePath: 'module',
-        repo: DEFAULT_REPO
+        templatePath: 'module'
       }), prompter, {
         noTty: true,
         input: mockInput,
