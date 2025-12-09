@@ -1,13 +1,16 @@
 {
-  "name": "@launchql/job-utils",
+  "name": "@launchql/openfaas-job-server",
   "version": "0.2.2",
-  "description": "job utils",
+  "description": "openfaas job server",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-utils#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-server#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
     "test": "__tests__"
+  },
+  "bin": {
+    "faas-job-server": "src/run.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -26,6 +29,11 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "envalid": "6.0.2"
+    "@launchql/job-pg": "^0.2.2",
+    "@launchql/job-utils": "^0.2.2",
+    "body-parser": "1.19.0",
+    "envalid": "6.0.2",
+    "express": "4.17.1",
+    "pg": "8.3.3"
   }
 }

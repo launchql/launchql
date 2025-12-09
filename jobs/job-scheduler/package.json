@@ -28,6 +28,7 @@
   "dependencies": {
     "@launchql/job-pg": "^0.2.2",
     "@launchql/job-utils": "^0.2.2",
+    "envalid": "6.0.2",
     "node-schedule": "1.3.2"
   }
 }

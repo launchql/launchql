@@ -1,13 +1,16 @@
 {
-  "name": "@launchql/job-utils",
-  "version": "0.2.2",
-  "description": "job utils",
+  "name": "@launchql/openfaas-job-worker",
+  "version": "0.4.0",
+  "description": "openfaas job worker",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-utils#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-worker#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
     "test": "__tests__"
+  },
+  "bin": {
+    "faas-jobs": "src/run.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -26,6 +29,10 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "envalid": "6.0.2"
+    "@launchql/job-pg": "^0.2.2",
+    "@launchql/job-utils": "^0.2.2",
+    "envalid": "6.0.2",
+    "pg": "8.3.3",
+    "request": "2.88.2"
   }
 }

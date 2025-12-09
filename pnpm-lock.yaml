@@ -596,21 +596,12 @@ importers:
 
   jobs/job-pg:
     dependencies:
-      '@launchql/env':
-        specifier: workspace:^
-        version: link:../../packages/env/dist
-      '@launchql/job-utils':
-        specifier: workspace:^
-        version: link:../job-utils
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
       pg:
         specifier: 8.3.3
         version: 8.3.3
-      pg-cache:
-        specifier: workspace:^
-        version: link:../../packages/pg-cache/dist
-      pg-env:
-        specifier: workspace:^
-        version: link:../../packages/pg-env/dist
 
   jobs/job-scheduler:
     dependencies:
@@ -620,42 +611,30 @@ importers:
       '@launchql/job-utils':
         specifier: ^0.2.2
         version: 0.2.2
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
       node-schedule:
         specifier: 1.3.2
         version: 1.3.2
 
   jobs/job-utils:
     dependencies:
-      '@launchql/core':
-        specifier: workspace:^
-        version: link:../../packages/core/dist
-      '@launchql/env':
-        specifier: workspace:^
-        version: link:../../packages/env/dist
-      pg-cache:
-        specifier: workspace:^
-        version: link:../../packages/pg-cache/dist
-      pg-env:
-        specifier: workspace:^
-        version: link:../../packages/pg-env/dist
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
 
   jobs/job-worker:
     dependencies:
-      '@launchql/core':
-        specifier: workspace:^
-        version: link:../../packages/core/dist
-      '@launchql/job-pg':
-        specifier: workspace:^
-        version: link:../job-pg
       '@launchql/job-utils':
         specifier: ^0.2.2
         version: 0.2.2
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
       pg:
         specifier: 8.3.3
         version: 8.3.3
-      request:
-        specifier: 2.88.2
-        version: 2.88.2
 
   jobs/knative-job-example:
     dependencies:
@@ -723,26 +702,77 @@ importers:
         specifier: 6.0.2
         version: 6.0.2
 
-  jobs/openfaas-job-service:
+  jobs/openfaas-job-fn:
     dependencies:
-      '@launchql/job-callback':
-        specifier: workspace:^
-        version: link:../job-callback
+      body-parser:
+        specifier: 1.19.0
+        version: 1.19.0
+      express:
+        specifier: 4.17.1
+        version: 4.17.1
+
+  jobs/openfaas-job-server:
+    dependencies:
       '@launchql/job-pg':
-        specifier: workspace:^
-        version: link:../job-pg
-      '@launchql/job-scheduler':
-        specifier: workspace:^
-        version: link:../job-scheduler
-      '@launchql/knative-job-worker':
-        specifier: workspace:^
-        version: link:../knative-job-worker
-      async-retry:
-        specifier: 1.3.1
-        version: 1.3.1
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@launchql/job-utils':
+        specifier: ^0.2.2
+        version: 0.2.2
+      body-parser:
+        specifier: 1.19.0
+        version: 1.19.0
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
+      express:
+        specifier: 4.17.1
+        version: 4.17.1
       pg:
         specifier: 8.3.3
         version: 8.3.3
+
+  jobs/openfaas-job-service:
+    dependencies:
+      '@launchql/job-pg':
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@launchql/job-scheduler':
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@launchql/openfaas-job-server':
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@launchql/openfaas-job-worker':
+        specifier: ^0.4.0
+        version: 0.4.0
+      async-retry:
+        specifier: 1.3.1
+        version: 1.3.1
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
+      pg:
+        specifier: 8.3.3
+        version: 8.3.3
+
+  jobs/openfaas-job-worker:
+    dependencies:
+      '@launchql/job-pg':
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@launchql/job-utils':
+        specifier: ^0.2.2
+        version: 0.2.2
+      envalid:
+        specifier: 6.0.2
+        version: 6.0.2
+      pg:
+        specifier: 8.3.3
+        version: 8.3.3
+      request:
+        specifier: 2.88.2
+        version: 2.88.2
 
   packages/cli:
     dependencies:
@@ -2430,11 +2460,22 @@ packages:
   '@launchql/job-pg@0.2.2':
     resolution: {integrity: sha512-zbSp37UC6gOcoWZIS0vOMno5cU4Sv4Qnk6TUQELQyCMHHdnM9vd1i/wcwZQ4hYi/nQt5zDuPQuoWG1UgCnUvDg==}
 
+  '@launchql/job-scheduler@0.2.2':
+    resolution: {integrity: sha512-QmL4WRI3EZ0qga7I5We2C2WO8OG03Sx0WFIqKUPiGhU6v51nFfdm5xBe6qkDRCU2UhCkE1pY26yZ42/XjVeXUA==}
+
   '@launchql/job-utils@0.2.2':
     resolution: {integrity: sha512-59ssZCVUuivI+spcuOh8ln0XuhAYxy/iILV7GqsWgJE3PKEhuegmOdRnO/Z/j1XsG6pp63BJB407WOHkeV3wGA==}
 
   '@launchql/openfaas-job-fn@0.1.3':
     resolution: {integrity: sha512-mZ0wPkT5+K6Rca5NSXG+YGpGGnQxtKaeygdrHoXrzFn2awWyZPD20m1I5w8aS/58T2h4Byc1w46gltnhF0Bg5w==}
+
+  '@launchql/openfaas-job-server@0.2.2':
+    resolution: {integrity: sha512-jLcuNbKTCIBQ/bcvH21qWHgW+8fLbjR1XYebnKy0su49Ncqwcr8xC+y+jAt+Ff1W5wL+7S0R6Nap9h3ZwVC8bA==}
+    hasBin: true
+
+  '@launchql/openfaas-job-worker@0.4.0':
+    resolution: {integrity: sha512-stqVZUtRgcLb2c8GNSbxNs2ahrfd9aEQORmPdZKTcBOjZYojMhMXRTvLxdpcbBTfZvXrxGTbfsFxRxb4OfrI/A==}
+    hasBin: true
 
   '@launchql/protobufjs@7.2.6':
     resolution: {integrity: sha512-vwi1nG2/heVFsIMHQU1KxTjUp5c757CTtRAZn/jutApCkFlle1iv8tzM/DHlSZJKDldxaYqnNYTg0pTyp8Bbtg==}
@@ -8253,6 +8294,14 @@ snapshots:
       envalid: 6.0.2
       pg: 8.3.3
 
+  '@launchql/job-scheduler@0.2.2':
+    dependencies:
+      '@babel/runtime': 7.28.4
+      '@launchql/job-pg': 0.2.2
+      '@launchql/job-utils': 0.2.2
+      envalid: 6.0.2
+      node-schedule: 1.3.2
+
   '@launchql/job-utils@0.2.2':
     dependencies:
       '@babel/runtime': 7.28.4
@@ -8265,6 +8314,27 @@ snapshots:
       express: 4.17.1
     transitivePeerDependencies:
       - supports-color
+
+  '@launchql/openfaas-job-server@0.2.2':
+    dependencies:
+      '@babel/runtime': 7.28.4
+      '@launchql/job-pg': 0.2.2
+      '@launchql/job-utils': 0.2.2
+      body-parser: 1.19.0
+      envalid: 6.0.2
+      express: 4.17.1
+      pg: 8.3.3
+    transitivePeerDependencies:
+      - supports-color
+
+  '@launchql/openfaas-job-worker@0.4.0':
+    dependencies:
+      '@babel/runtime': 7.28.4
+      '@launchql/job-pg': 0.2.2
+      '@launchql/job-utils': 0.2.2
+      envalid: 6.0.2
+      pg: 8.3.3
+      request: 2.88.2
 
   '@launchql/protobufjs@7.2.6':
     dependencies:
@@ -12493,7 +12563,7 @@ snapshots:
   ora@5.3.0:
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.0
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       is-interactive: 1.0.0

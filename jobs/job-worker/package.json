@@ -27,9 +27,7 @@
   "devDependencies": {},
   "dependencies": {
     "@launchql/job-utils": "^0.2.2",
-    "@launchql/job-pg": "workspace:^",
-    "@launchql/core": "workspace:^",
-    "pg": "8.3.3",
-    "request": "2.88.2"
+    "envalid": "6.0.2",
+    "pg": "8.3.3"
   }
 }

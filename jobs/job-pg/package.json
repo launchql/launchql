@@ -26,10 +26,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@launchql/job-utils": "workspace:^",
-    "@launchql/env": "workspace:^",
-    "pg-cache": "workspace:^",
-    "pg-env": "workspace:^",
+    "envalid": "6.0.2",
     "pg": "8.3.3"
   }
 }

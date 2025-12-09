@@ -1,47 +1,13 @@
-import pg, { Pool, PoolClient } from 'pg';
+import env from './env';
+import pg from 'pg';
 import * as jobs from '@launchql/job-utils';
-import poolManager from '@launchql/job-pg';
-import type { JobRow } from '@launchql/core';
-import { getJob as dbGetJob, completeJob as dbCompleteJob, failJob as dbFailJob } from '@launchql/core';
-import { OpenFaasJobExecutor } from './executors/openfaas';
-import { KnativeJobExecutor } from './executors/knative';
 
-export type TaskHandler = (ctx: { pgPool: Pool; workerId: string }, job: JobRow) => Promise<void>;
+const getDbString = () =>
+  `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
 
-export interface WorkerOptions {
-  jobSchema?: string; // defaults to getJobSchema() inside utils
-  queue?: string | null; // reserved for future use
-  pollIntervalMs?: number; // default 15000
-  workerId?: string; // default 'worker-0' or env HOSTNAME
-  supportAny?: boolean; // when true, ignore task filters
-  supported?: string[]; // explicit task identifiers
-  callbackUrl?: string; // included in headers; executor may use it
-}
-
-export interface JobExecutor {
-  execute(job: JobRow, headers: Record<string, string>): Promise<void>;
-}
-
-export class InlineExecutor implements JobExecutor {
-  constructor(private tasks: Record<string, TaskHandler>) {}
-
-  async execute(job: JobRow, _headers: Record<string, string>): Promise<void> {
-    const handler = this.tasks[job.task_identifier];
-    if (!handler) throw new Error('Unsupported task');
-    // Context mirrors previous runtime
-    await handler({ pgPool: this.pgPool!, workerId: this.workerId! } as any, job);
-  }
-
-  // The executor can be provided with context after Worker is constructed
-  private pgPool?: Pool;
-  private workerId?: string;
-  bindRuntime(pgPool: Pool, workerId: string) {
-    this.pgPool = pgPool;
-    this.workerId = workerId;
-  }
-}
-
-const pgPoolConfig = null; // deprecated, kept for constructor signature compatibility
+const pgPoolConfig = {
+  connectionString: getDbString()
+};
 
 function once(fn, context) {
   let result;
@@ -57,59 +23,26 @@ function once(fn, context) {
 /* eslint-disable no-console */
 
 export default class Worker {
-  private pgPool: Pool;
-  private executor: JobExecutor;
-  private idleDelay: number;
-  private workerId: string;
-  private supportedTaskNames: string[];
-  private supportAny: boolean;
-  private jobSchema: string;
-  private callbackUrl?: string;
-  private doNextTimer: NodeJS.Timeout | undefined;
-  private _ended = false;
-
   constructor({
     tasks,
     idleDelay = 15000,
-    pgPool = poolManager.getPool(),
-    workerId,
-    jobSchema,
-    pollIntervalMs,
-    supportAny,
-    supported,
-    callbackUrl,
-    executor,
-  }: { tasks?: Record<string, TaskHandler>; executor?: JobExecutor } & WorkerOptions = {}) {
-    // Resolve options from job-utils runtime for compatibility
-    this.jobSchema = jobSchema ?? jobs.getJobSchema();
-    this.supportAny = supportAny ?? jobs.getJobSupportAny();
-    this.supportedTaskNames = supported ?? (tasks ? Object.keys(tasks) : jobs.getJobSupported());
-    this.workerId = workerId ?? jobs.getWorkerHostname();
-    this.idleDelay = pollIntervalMs ?? idleDelay ?? 15000;
+    pgPool = new pg.Pool(pgPoolConfig),
+    workerId = 'worker-0'
+  }) {
+    this.tasks = tasks;
+    /*
+     * idleDelay: This is how long to wait between polling for jobs.
+     *
+     * Note: this does NOT need to be short, because we use LISTEN/NOTIFY to be
+     * notified when new jobs are added - this is just used in the case where
+     * LISTEN/NOTIFY fails for whatever reason.
+     */
+    this.idleDelay = idleDelay;
+
+    this.supportedTaskNames = Object.keys(this.tasks);
+    this.workerId = workerId;
+    this.doNextTimer = undefined;
     this.pgPool = pgPool;
-    // Prefer neutral callback URL if set, otherwise fallback to existing OpenFaaS callback
-    this.callbackUrl =
-      callbackUrl ??
-      jobs.getCallbackBaseUrl() ??
-      jobs.getOpenFaasGatewayConfig().callbackUrl;
-
-    // Choose executor: inline when tasks provided; otherwise:
-    if (executor) {
-      this.executor = executor;
-    } else if (tasks) {
-      const inline = new InlineExecutor(tasks);
-      inline.bindRuntime(this.pgPool, this.workerId);
-      this.executor = inline;
-    } else {
-      // Select executor via env toggle; default remains OpenFaaS
-      const execName = (process.env.JOBS_EXECUTOR || '').toLowerCase();
-      if (execName === 'knative') {
-        this.executor = new KnativeJobExecutor();
-      } else {
-        this.executor = new OpenFaasJobExecutor();
-      }
-    }
-
     const close = () => {
       console.log('closing connection...');
       this.close();
@@ -117,7 +50,6 @@ export default class Worker {
     process.once('SIGTERM', close);
     process.once('SIGINT', close);
   }
-
   close() {
     if (!this._ended) {
       this.pgPool.end();
@@ -150,24 +82,26 @@ export default class Worker {
     );
     await jobs.completeJob(client, { workerId: this.workerId, jobId: job.id });
   }
-  async doWork(job: JobRow) {
-    const headers: Record<string, string> = {
-      'x-worker-id': this.workerId,
-      'x-job-id': String(job.id),
-      'x-database-id': job.database_id ?? '',
-      // placeholder for future RLS user context
-      'x-current-user-id': '',
-      'x-callback-url': this.callbackUrl ?? '',
-    };
-    await this.executor.execute(job, headers);
+  async doWork(job) {
+    const { task_identifier } = job;
+    const worker = this.tasks[task_identifier];
+    if (!worker) {
+      throw new Error('Unsupported task');
+    }
+    await worker(
+      {
+        pgPool: this.pgPool,
+        workerId: this.workerId
+      },
+      job
+    );
   }
-  async doNext(client: PoolClient) {
+  async doNext(client) {
     this.doNextTimer = clearTimeout(this.doNextTimer);
     try {
-      const job = await dbGetJob(this.pgPool as any, {
+      const job = await jobs.getJob(client, {
         workerId: this.workerId,
-        supportedTaskNames: this.supportAny ? null : this.supportedTaskNames,
-        schema: this.jobSchema,
+        supportedTaskNames: this.supportedTaskNames
       });
       if (!job || !job.id) {
         this.doNextTimer = setTimeout(
@@ -204,12 +138,12 @@ export default class Worker {
     }
   }
   listen() {
-    const listenForChanges = (err: Error | null, client: PoolClient, release: () => void) => {
+    const listenForChanges = (err, client, release) => {
       if (err) {
         console.error('Error connecting with notify listener', err);
         // Try again in 5 seconds
         // should this really be done in the node process?
-        setTimeout(this.listen.bind(this), 5000);
+        setTimeout(this.listen, 5000);
         return;
       }
       client.on('notification', () => {
