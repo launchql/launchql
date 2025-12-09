@@ -6,7 +6,7 @@ import {
 } from 'postgraphile';
 import { getConnections, seed } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
-import PostgisPlugin from '@graphile/postgis';
+import PostgisPlugin from 'graphile-postgis';
 import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 
 import PostgisConnectionFilterPlugin from '../../../src';

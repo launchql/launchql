@@ -34,12 +34,12 @@ npm install graphile-plugin-connection-filter-postgis
 
 Requires `postgraphile@^4.5.0` and the following plugins appended prior to this plugin:
 
-- `@graphile/postgis@0.1.0`
+- `graphile-postgis@^0.1.3`
 - `graphile-plugin-connection-filter@^2.0.0`
 
 ```ts
 import PostGISFilterPlugin from 'graphile-plugin-connection-filter-postgis';
-import PostGISPlugin from '@graphile/postgis';
+import PostGISPlugin from 'graphile-postgis';
 import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 
 app.use(
