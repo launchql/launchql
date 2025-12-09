@@ -1,26 +1,24 @@
 import poolManager from '@launchql/job-pg';
 import * as jobs from '@launchql/job-utils';
+import type { PgClientLike } from '@launchql/job-utils';
+import type { Pool, PoolClient } from 'pg';
 import { request as req } from './req';
 import env from './env';
 
-interface JobRow {
+export interface JobRow {
   id: number | string;
   task_identifier: string;
-  payload?: any;
+  payload?: unknown;
   database_id?: string;
 }
-
-type PgClientLike = {
-  query<T = any>(text: string, params?: any[]): Promise<{ rows: T[] }>;
-};
 
 /* eslint-disable no-console */
 export default class Worker {
   idleDelay: number;
-  supportedTaskNames: string[] | any;
+  supportedTaskNames: string[];
   workerId: string;
-  doNextTimer: any;
-  pgPool: any;
+  doNextTimer?: NodeJS.Timeout;
+  pgPool: Pool;
   _initialized?: boolean;
 
   constructor({
@@ -28,7 +26,12 @@ export default class Worker {
     idleDelay = 15000,
     pgPool = poolManager.getPool(),
     workerId = 'worker-0'
-  }: any) {
+  }: {
+    tasks: string[];
+    idleDelay?: number;
+    pgPool?: Pool;
+    workerId?: string;
+  }) {
     /*
      * idleDelay: This is how long to wait between polling for jobs.
      *
@@ -42,10 +45,9 @@ export default class Worker {
     this.workerId = workerId;
     this.doNextTimer = undefined;
     this.pgPool = pgPool;
-    poolManager.onClose(jobs.releaseJobs, null, [
-      pgPool,
-      { workerId: this.workerId }
-    ]);
+    poolManager.onClose(async () => {
+      await jobs.releaseJobs(pgPool, { workerId: this.workerId });
+    });
   }
   async initialize(client: PgClientLike) {
     if (this._initialized === true) return;
@@ -58,7 +60,11 @@ export default class Worker {
   }
   async handleFatalError(
     client: PgClientLike,
-    { err, fatalError, jobId }: { err?: any; fatalError: any; jobId: any }
+    {
+      err,
+      fatalError,
+      jobId
+    }: { err?: Error; fatalError: unknown; jobId: JobRow['id'] }
   ) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
@@ -70,7 +76,7 @@ export default class Worker {
   }
   async handleError(
     client: PgClientLike,
-    { err, job, duration }: { err: any; job: JobRow; duration: any }
+    { err, job, duration }: { err: Error; job: JobRow; duration: string }
   ) {
     console.error(
       `worker: Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
@@ -85,7 +91,7 @@ export default class Worker {
   }
   async handleSuccess(
     client: PgClientLike,
-    { job, duration }: { job: JobRow; duration: any }
+    { job, duration }: { job: JobRow; duration: string }
   ) {
     console.log(
       `worker: Async task ${job.id} (${job.task_identifier}) to be processed`
@@ -112,17 +118,17 @@ export default class Worker {
     }
 
     console.log('worker: checking for jobs...');
-    this.doNextTimer = clearTimeout(this.doNextTimer);
+    if (this.doNextTimer) {
+      clearTimeout(this.doNextTimer);
+      this.doNextTimer = undefined;
+    }
     try {
-      const job = (await jobs.getJob(
-        client,
-        {
-          workerId: this.workerId,
-          supportedTaskNames: env.JOBS_SUPPORT_ANY
-            ? null
-            : this.supportedTaskNames
-        }
-      )) as JobRow | undefined;
+      const job = (await jobs.getJob<JobRow>(client, {
+        workerId: this.workerId,
+        supportedTaskNames: env.JOBS_SUPPORT_ANY
+          ? null
+          : this.supportedTaskNames
+      })) as JobRow | undefined;
 
       if (!job || !job.id) {
         this.doNextTimer = setTimeout(
@@ -133,11 +139,11 @@ export default class Worker {
       }
       const start = process.hrtime();
 
-      let err: any;
+      let err: Error | null = null;
       try {
         await this.doWork(job);
       } catch (error) {
-        err = error;
+        err = error as Error;
       }
       const durationRaw = process.hrtime(start);
       const duration = ((durationRaw[0] * 1e9 + durationRaw[1]) / 1e6).toFixed(
@@ -150,16 +156,20 @@ export default class Worker {
         } else {
           await this.handleSuccess(client, { job, duration });
         }
-      } catch (fatalError: any) {
+      } catch (fatalError: unknown) {
         await this.handleFatalError(client, { err, fatalError, jobId });
       }
       return this.doNext(client);
-    } catch (err) {
+    } catch (err: unknown) {
       this.doNextTimer = setTimeout(() => this.doNext(client), this.idleDelay);
     }
   }
   listen() {
-    const listenForChanges = (err: any, client: any, release: any) => {
+    const listenForChanges = (
+      err: Error | null,
+      client: PoolClient,
+      release: () => void
+    ) => {
       if (err) {
         console.error('worker: Error connecting with notify listener', err);
         // Try again in 5 seconds
@@ -174,7 +184,7 @@ export default class Worker {
         }
       });
       client.query('LISTEN "jobs:insert"');
-      client.on('error', (e: any) => {
+      client.on('error', (e: unknown) => {
         console.error('worker: Error with database notify listener', e);
         release();
         this.listen();

@@ -22,6 +22,9 @@ importers:
       '@types/node':
         specifier: ^20.12.7
         version: 20.19.25
+      '@types/pg':
+        specifier: ^8.15.2
+        version: 8.15.6
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.48.0
         version: 8.49.0(@typescript-eslint/parser@8.49.0(eslint@9.39.1)(typescript@5.9.3))(eslint@9.39.1)(typescript@5.9.3)

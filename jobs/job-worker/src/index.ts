@@ -1,6 +1,8 @@
 import env from './env';
 import pg from 'pg';
+import type { Pool, PoolClient } from 'pg';
 import * as jobs from '@launchql/job-utils';
+import type { PgClientLike } from '@launchql/job-utils';
 
 const getDbString = () =>
   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
@@ -9,25 +11,28 @@ const pgPoolConfig = {
   connectionString: getDbString()
 };
 
-function once(fn: (...args: any[]) => any, context?: any) {
-  let result: any;
-  return function (this: any, ...args: any[]) {
+function once<T extends (...args: unknown[]) => unknown>(
+  fn: T,
+  context?: unknown
+): (...args: Parameters<T>) => ReturnType<T> | undefined {
+  let result: ReturnType<T> | undefined;
+  return function (this: unknown, ...args: Parameters<T>) {
     if (fn) {
-      result = fn.apply(context || this, args);
-      fn = null as any;
+      result = fn.apply((context ?? this) as never, args) as ReturnType<T>;
+      fn = null as unknown as T;
     }
     return result;
   };
 }
 
-interface JobRow {
+export interface JobRow {
   id: number | string;
   task_identifier: string;
-  payload?: any;
+  payload?: unknown;
 }
 
 export interface WorkerContext {
-  pgPool: any;
+  pgPool: Pool;
   workerId: string;
 }
 
@@ -36,10 +41,6 @@ export type TaskHandler = (
   job: JobRow
 ) => Promise<void> | void;
 
-type PgClientLike = {
-  query<T = any>(text: string, params?: any[]): Promise<{ rows: T[] }>;
-};
-
 /* eslint-disable no-console */
 
 export default class Worker {
@@ -47,16 +48,22 @@ export default class Worker {
   idleDelay: number;
   supportedTaskNames: string[];
   workerId: string;
-  doNextTimer: any;
-  pgPool: any;
+  doNextTimer?: NodeJS.Timeout;
+  pgPool: Pool;
   _ended?: boolean;
 
+  // tasks is required; other options are optional
   constructor({
     tasks,
     idleDelay = 15000,
     pgPool = new (pg as any).Pool(pgPoolConfig),
     workerId = 'worker-0'
-  }: any) {
+  }: {
+    tasks: Record<string, TaskHandler>;
+    idleDelay?: number;
+    pgPool?: Pool;
+    workerId?: string;
+  }) {
     this.tasks = tasks;
     /*
      * idleDelay: This is how long to wait between polling for jobs.
@@ -89,9 +96,9 @@ export default class Worker {
     fatalError,
     jobId
   }: {
-    err?: any;
-    fatalError: any;
-    jobId: any;
+    err?: Error;
+    fatalError: unknown;
+    jobId: JobRow['id'];
   }) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
@@ -102,7 +109,7 @@ export default class Worker {
   }
   async handleError(
     client: PgClientLike,
-    { err, job, duration }: { err: any; job: JobRow; duration: any }
+    { err, job, duration }: { err: Error; job: JobRow; duration: string }
   ) {
     console.error(
       `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
@@ -117,7 +124,7 @@ export default class Worker {
   }
   async handleSuccess(
     client: PgClientLike,
-    { job, duration }: { job: JobRow; duration: any }
+    { job, duration }: { job: JobRow; duration: string }
   ) {
     console.log(
       `Completed task ${job.id} (${job.task_identifier}) with success (${duration}ms)`
@@ -139,15 +146,15 @@ export default class Worker {
     );
   }
   async doNext(client: PgClientLike): Promise<void> {
-    this.doNextTimer = clearTimeout(this.doNextTimer);
+    if (this.doNextTimer) {
+      clearTimeout(this.doNextTimer);
+      this.doNextTimer = undefined;
+    }
     try {
-      const job = (await jobs.getJob(
-        client,
-        {
-          workerId: this.workerId,
-          supportedTaskNames: this.supportedTaskNames
-        }
-      )) as JobRow | undefined;
+      const job = (await jobs.getJob<JobRow>(client, {
+        workerId: this.workerId,
+        supportedTaskNames: this.supportedTaskNames
+      })) as JobRow | undefined;
       if (!job || !job.id) {
         this.doNextTimer = setTimeout(
           () => this.doNext(client),
@@ -157,11 +164,11 @@ export default class Worker {
       }
       const start = process.hrtime();
 
-      let err: any;
+      let err: Error | null = null;
       try {
         await this.doWork(job);
       } catch (error) {
-        err = error;
+        err = error as Error;
       }
       const durationRaw = process.hrtime(start);
       const duration = ((durationRaw[0] * 1e9 + durationRaw[1]) / 1e6).toFixed(
@@ -174,16 +181,20 @@ export default class Worker {
         } else {
           await this.handleSuccess(client, { job, duration });
         }
-      } catch (fatalError: any) {
+      } catch (fatalError: unknown) {
         this.handleFatalError({ err, fatalError, jobId });
       }
       return this.doNext(client);
-    } catch (err) {
+    } catch (err: unknown) {
       this.doNextTimer = setTimeout(() => this.doNext(client), this.idleDelay);
     }
   }
   listen() {
-    const listenForChanges = (err: any, client: any, release: any) => {
+    const listenForChanges = (
+      err: Error | null,
+      client: PoolClient,
+      release: () => void
+    ) => {
       if (err) {
         console.error('Error connecting with notify listener', err);
         // Try again in 5 seconds
@@ -198,7 +209,7 @@ export default class Worker {
         }
       });
       client.query('LISTEN "jobs:insert"');
-      client.on('error', (e: any) => {
+      client.on('error', (e: unknown) => {
         console.error('Error with database notify listener', e);
         release();
         this.listen();

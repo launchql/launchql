@@ -1,10 +1,10 @@
-import Worker from './index';
+import Worker, { WorkerContext, JobRow } from './index';
 
 const worker = new Worker({
   tasks: {
     hello: async (
-      { pgPool, workerId }: { pgPool: any; workerId: string },
-      job: any
+      { pgPool, workerId }: WorkerContext,
+      job: JobRow
     ) => {
       console.log('hello');
       await pgPool.query('select 1');

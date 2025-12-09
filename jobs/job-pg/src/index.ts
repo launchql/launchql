@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import pg from 'pg';
+import { Pool, PoolConfig } from 'pg';
 import env from './env';
 
 // k8s only does SIGINT
@@ -14,68 +14,90 @@ const SYS_EVENTS = [
   // 'SIGABRT'
 ];
 
-function once(fn: (...args: any[]) => any, context?: any) {
-  let result: any;
-  return function (this: any, ...args: any[]) {
-    if (fn) {
-      result = fn.apply(context || this, args);
-      fn = null as any;
+function once<T extends (...args: unknown[]) => unknown>(
+  fn: T,
+  context?: unknown
+): (...args: Parameters<T>) => ReturnType<T> | undefined {
+  let called = false;
+  let result: ReturnType<T> | undefined;
+
+  return function (this: unknown, ...args: Parameters<T>) {
+    if (!called && fn) {
+      // context is just forwarded through, it is not inspected
+      result = fn.apply((context ?? this) as never, args) as ReturnType<T>;
+      called = true;
     }
     return result;
   };
 }
 
-const getDbString = () =>
+const getDbString = (): string =>
   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
 
-const pgPoolConfig = {
+const pgPoolConfig: PoolConfig = {
   connectionString: getDbString()
 };
 
-const end = (pool: any) => {
+const end = (pool: Pool): void => {
   try {
-    if (pool.ended || pool.ending) {
+    // Pool has internal state flags, but they are not part of the public type
+    const state = pool as unknown as {
+      ended?: boolean;
+      ending?: boolean;
+    };
+    if (state.ended || state.ending) {
       console.error(
         'DO NOT CLOSE pool, why are you trying to call end() when already ended?'
       );
       return;
     }
-    pool.end();
+    void pool.end();
     console.log('successfully closed pool.');
   } catch (e) {
     process.stderr.write(String(e));
   }
 };
 
-class PoolManager {
-  pgPool: any;
-  callbacks: [Function, any, any[]?][];
-  _closed?: boolean;
+// Callbacks registered for pool close events can accept arbitrary arguments
+// (we forward whatever was passed to `onClose`).
+type PoolCloseCallback = (...args: any[]) => Promise<void> | void;
 
-  constructor({ pgPool = new (pg as any).Pool(pgPoolConfig) } = {}) {
+class PoolManager {
+  private pgPool: Pool;
+  private callbacks: Array<[PoolCloseCallback, any, any[]]>;
+  private _closed: boolean;
+
+  constructor({ pgPool = new Pool(pgPoolConfig) }: { pgPool?: Pool } = {}) {
     this.pgPool = pgPool;
     this.callbacks = [];
-    const close = once(async () => {
+    this._closed = false;
+
+    const closeOnce = once(async () => {
       console.log('closing pg pool manager...');
       await this.close();
     }, this);
+
     SYS_EVENTS.forEach((event) => {
-      process.on(event, close);
+      process.on(event, closeOnce);
     });
   }
-  onClose(fn: (...args: any[]) => any, context?: any, args: any[] = []) {
+
+  onClose(fn: PoolCloseCallback, context?: any, args: any[] = []): void {
     this.callbacks.push([fn, context, args]);
   }
-  getPool(): any {
+
+  getPool(): Pool {
     return this.pgPool;
   }
+
   async close(): Promise<void> {
     if (this._closed) return;
-    for (let i = 0; i < this.callbacks.length; i++) {
-      const entry = this.callbacks[i];
-      console.log('closing fn', entry[0].name);
-      await entry[0].apply(entry[1], entry[2]);
+
+    for (const [fn, context, args] of this.callbacks) {
+      console.log('closing fn', fn.name);
+      await fn.apply(context, args);
     }
+
     end(this.pgPool);
     this._closed = true;
   }

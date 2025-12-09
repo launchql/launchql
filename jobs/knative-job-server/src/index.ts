@@ -1,49 +1,106 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import type { Pool, PoolClient } from 'pg';
 import * as jobs from '@launchql/job-utils';
 import poolManager from '@launchql/job-pg';
 
-export default (pgPool: any = poolManager.getPool()) => {
-  const app: any = express();
+type JobRequestBody = {
+  message?: string;
+  // allow additional fields without typing everything
+  [key: string]: unknown;
+};
+
+type JobRequest = {
+  get(name: string): string | undefined;
+  body: JobRequestBody;
+  url: string;
+  originalUrl: string;
+};
+
+type JobResponse = {
+  set(headers: Record<string, string>): JobResponse;
+  status(code: number): JobResponse;
+  json(body: unknown): JobResponse;
+  send(body: unknown): JobResponse;
+};
+
+type NextFn = (err?: unknown) => void;
+
+type WithClientHandler = (
+  client: PoolClient,
+  req: JobRequest,
+  res: JobResponse,
+  next: NextFn
+) => Promise<void>;
+
+export default (pgPool: Pool = poolManager.getPool()) => {
+  const app = express();
   app.use(bodyParser.json());
 
   const withClient =
-    (cb: (client: any, req: any, res: any, next: any) => Promise<void>) =>
-    async (req: any, res: any, next: any) => {
-    const client = await pgPool.connect();
-    try {
-      await cb(client, req, res, next);
-    } catch (e) {
-      next(e);
-    } finally {
-      client.release();
-    }
-  };
+    (cb: WithClientHandler) =>
+    async (req: JobRequest, res: JobResponse, next: NextFn) => {
+      const client = (await pgPool.connect()) as PoolClient;
+      try {
+        await cb(client as PoolClient, req, res, next);
+      } catch (e) {
+        next(e);
+      } finally {
+        client.release();
+      }
+    };
 
-  const complete = withClient(async (client: any, req: any, res: any) => {
+  const complete = withClient(async (client, req, res) => {
     const workerId = req.get('X-Worker-Id');
-    const jobId = req.get('X-Job-Id');
-    console.log(`server: Completed task ${jobId} with success`);
-    await jobs.completeJob(client, { workerId, jobId });
+    const jobIdHeader = req.get('X-Job-Id');
+
+    if (!workerId || !jobIdHeader) {
+      console.log(
+        'server: missing worker/job headers on completion callback',
+        { workerId, jobIdHeader }
+      );
+      res.status(400).json({ error: 'Missing X-Worker-Id or X-Job-Id header' });
+      return;
+    }
+
+    console.log(`server: Completed task ${jobIdHeader} with success`);
+    await jobs.completeJob(client, { workerId, jobId: jobIdHeader });
+
     res
       .set({
         'Content-Type': 'application/json'
       })
       .status(200)
-      .send({ workerId, jobId });
+      .send({ workerId, jobId: jobIdHeader });
   });
 
-  const fail = withClient(async (client: any, req: any, res: any) => {
+  const fail = withClient(async (client, req, res) => {
     const workerId = req.get('X-Worker-Id');
-    const jobId = req.get('X-Job-Id');
+    const jobIdHeader = req.get('X-Job-Id');
+
+    if (!workerId || !jobIdHeader) {
+      console.log(
+        'server: missing worker/job headers on failure callback',
+        { workerId, jobIdHeader }
+      );
+      res.status(400).json({ error: 'Missing X-Worker-Id or X-Job-Id header' });
+      return;
+    }
+
     console.log(
-      `server: Failed task ${jobId} with error: \n${req.body.message}\n\n`
+      `server: Failed task ${jobIdHeader} with error: \n${req.body.message}\n\n`
     );
-    await jobs.failJob(client, { workerId, jobId, message: req.body.message });
-    res.status(200).json({ workerId, jobId });
+
+    await jobs.failJob(client, {
+      workerId,
+      jobId: jobIdHeader,
+      message: req.body.message
+    });
+
+    res.status(200).json({ workerId, jobId: jobIdHeader });
   });
 
-  app.post('*', async (req: any, res: any, next: any) => {
+  app.post('*', async (req: JobRequest, res: JobResponse, next: NextFn) => {
     const jobId = req.get('X-Job-Id');
 
     if (typeof jobId === 'undefined') {
@@ -60,7 +117,7 @@ export default (pgPool: any = poolManager.getPool()) => {
     }
   });
 
-  app.use((error: any, req: any, res: any, next: any) => {
+  app.use((error: unknown, req: JobRequest, res: JobResponse, next: NextFn) => {
     // TODO check headers for jobId and call fail?
     res.status(500).json({ error });
   });

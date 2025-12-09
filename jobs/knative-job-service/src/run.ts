@@ -5,7 +5,7 @@ import Scheduler from '@launchql/job-scheduler';
 import Worker from '@launchql/knative-job-worker';
 import server from '@launchql/knative-job-server';
 import poolManager from '@launchql/job-pg';
-import pg from 'pg';
+import { Client } from 'pg';
 import retry from 'async-retry';
 
 export const getDbConnectionString = (): string =>
@@ -40,9 +40,9 @@ export const startJobsServices = () => {
 
 export const waitForJobsPrereqs = async (): Promise<void> => {
   console.log('waiting for jobs prereqs');
-  let client: any = null;
+  let client: Client | null = null;
   try {
-    client = new pg.Client(getDbConnectionString());
+    client = new Client(getDbConnectionString());
     await client.connect();
     await client.query(`SELECT * FROM "${env.JOBS_SCHEMA}".jobs LIMIT 1;`);
   } catch (error) {

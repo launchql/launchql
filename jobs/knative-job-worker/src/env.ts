@@ -1,6 +1,6 @@
 import { cleanEnv, url, str, bool, port, makeValidator } from 'envalid';
 
-const array = makeValidator<any>((x) => x.split(',').filter((i) => i), '');
+const array = makeValidator<string[]>((x) => x.split(',').filter((i) => i), '');
 
 const baseEnv = cleanEnv(
   process.env,
@@ -12,7 +12,7 @@ const baseEnv = cleanEnv(
     PGDATABASE: str({ default: 'jobs' }),
     JOBS_SCHEMA: str({ default: 'app_jobs' }),
     JOBS_SUPPORT_ANY: bool({ default: true }),
-    JOBS_SUPPORTED: array({ default: '' }),
+    JOBS_SUPPORTED: array({ default: '' as unknown as string[] }),
     HOSTNAME: str({
       default: 'worker-0'
     }),
