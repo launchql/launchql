@@ -63,7 +63,8 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
       pkgName: pkg.name,
       pkgVersion: pkg.version,
       toolName: 'lql',
-      key: pkg.name
+      key: pkg.name,
+      updateCommand: `Run npm i -g ${pkg.name}@latest to upgrade.`
     });
   } catch {
     // ignore update check failures

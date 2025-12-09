@@ -14,6 +14,7 @@ export interface CheckForUpdatesOptions extends UpdateConfigOptions {
   pkgVersion?: string;
   command?: string;
   now?: number;
+  updateCommand?: string;
 }
 
 const log = new Logger('update-check');
@@ -66,8 +67,14 @@ export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Pro
     const isOutdated = comparison < 0;
 
     if (isOutdated && existing?.lastPromptedVersion !== latestKnownVersion) {
+      const defaultUpdateCommand =
+        pkgName === UPDATE_PACKAGE_NAME
+          ? 'Run pgpm update to upgrade.'
+          : `Run npm i -g ${pkgName}@latest to upgrade.`;
+      const updateInstruction = options.updateCommand ?? defaultUpdateCommand;
+
       log.warn(
-        `A new version of ${pkgName} is available (current ${pkgVersion}, latest ${latestKnownVersion}). Run pgpm update to upgrade.`
+        `A new version of ${pkgName} is available (current ${pkgVersion}, latest ${latestKnownVersion}). ${updateInstruction}`
       );
 
       await writeUpdateConfig(
