@@ -1,16 +1,15 @@
 name: Docker LaunchQL
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - v1
-  #     - release/*
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - v1
-  #   types: [opened, reopened, synchronize, ready_for_review]
+  push:
+    branches:
+      - main
+      - v1
+      - release/*
+  pull_request:
+    branches:
+      - main
+      - v1
   workflow_dispatch: {}
 
 concurrency:
@@ -28,7 +27,7 @@ jobs:
 
     env:
       REPO: ghcr.io/${{ github.repository_owner }}
-      PLATFORMS: linux/amd64,linux/arm64
+      PLATFORMS: "${{ github.event_name == 'pull_request' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}"
 
     steps:
       - name: Checkout
