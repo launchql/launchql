@@ -1,13 +1,12 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { createPgpmCommandMap } from 'pgpm';
-import { checkForUpdates } from 'pgpm';
+import { checkForUpdates, createInitUsageText, createPgpmCommandMap } from 'pgpm';
 
 import explorer from './commands/explorer';
 import server from './commands/server';
 import getGraphqlSchema from './commands/get-graphql-schema';
 import { readAndParsePackageJson } from './package';
-import { cliExitWithError,extractFirst, usageText } from './utils';
+import { cliExitWithError, extractFirst, usageText } from './utils';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
@@ -26,7 +25,6 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
     console.log(pkg.version);
     process.exit(0);
   }
-
   let { first: command, newArgv } = extractFirst(argv);
 
   // Show usage if explicitly requested but no command specified
@@ -38,6 +36,12 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   // Show usage for help command specifically
   if (command === 'help') {
     console.log(usageText);
+    process.exit(0);
+  }
+
+  // Command-specific help for init
+  if (command === 'init' && (argv.help || argv.h)) {
+    console.log(createInitUsageText('lql', 'LaunchQL'));
     process.exit(0);
   }
 

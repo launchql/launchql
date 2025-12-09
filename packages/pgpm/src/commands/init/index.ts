@@ -3,12 +3,15 @@ import { CLIOptions, Inquirerer } from 'inquirerer';
 import runModuleSetup from './module';
 import runWorkspaceSetup from './workspace';
 
-const initUsageText = `
+export const createInitUsageText = (binaryName: string, productLabel?: string): string => {
+  const displayName = productLabel ?? binaryName;
+
+  return `
 Init Command:
 
-  pgpm init [OPTIONS]
+  ${binaryName} init [OPTIONS]
 
-  Initialize pgpm workspace or module.
+  Initialize ${displayName} workspace or module.
 
 Options:
   --help, -h              Show this help message
@@ -19,12 +22,13 @@ Options:
   --from-branch <branch>  Branch/tag to use when cloning repo
 
 Examples:
-  pgpm init                                  Initialize new module in existing workspace
-  pgpm init --workspace                       Initialize new workspace
-  pgpm init --repo owner/repo                Use templates from GitHub repository
-  pgpm init --template-path ./custom-templates Use templates from local path
-  pgpm init --repo owner/repo --from-branch develop  Use specific branch
+  ${binaryName} init                                   Initialize new module in existing workspace
+  ${binaryName} init --workspace                       Initialize new workspace
+  ${binaryName} init --repo owner/repo                 Use templates from GitHub repository
+  ${binaryName} init --template-path ./custom-templates Use templates from local path
+  ${binaryName} init --repo owner/repo --from-branch develop  Use specific branch
 `;
+};
 
 export default async (
   argv: Partial<Record<string, any>>,
@@ -33,7 +37,7 @@ export default async (
 ) => {
   // Show usage if explicitly requested
   if (argv.help || argv.h) {
-    console.log(initUsageText);
+    console.log(createInitUsageText('pgpm'));
     process.exit(0);
   }
 
