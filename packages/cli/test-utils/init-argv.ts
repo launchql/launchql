@@ -1,6 +1,5 @@
 import { ParsedArgs } from 'minimist';
-
-const DEFAULT_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
+import { DEFAULT_TEMPLATE_REPO } from '@launchql/core';
 
 export const addInitDefaults = (argv: ParsedArgs): ParsedArgs => {
   const baseName = (argv.moduleName as string) || (argv.name as string) || 'module';
@@ -20,7 +19,7 @@ export const addInitDefaults = (argv: ParsedArgs): ParsedArgs => {
   return { ...defaults, ...argv };
 };
 
-export const withInitDefaults = (argv: ParsedArgs, defaultRepo: string = DEFAULT_REPO): ParsedArgs => {
+export const withInitDefaults = (argv: ParsedArgs, defaultRepo: string = DEFAULT_TEMPLATE_REPO): ParsedArgs => {
   const args = addInitDefaults(argv);
   if (!Array.isArray(args._) || !args._.includes('init')) return args;
 
@@ -30,4 +29,3 @@ export const withInitDefaults = (argv: ParsedArgs, defaultRepo: string = DEFAULT
     templatePath: args.templatePath ?? (args.workspace ? 'workspace' : 'module')
   };
 };
-

@@ -3,6 +3,7 @@ import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import os from 'os';
 import path from 'path';
+import { DEFAULT_TEMPLATE_REPO } from '@launchql/core';
 
 import { commands } from '../src/commands';
 import { setupTests, TestEnvironment } from './cli';
@@ -11,7 +12,6 @@ import { withInitDefaults } from './init-argv';
 const { mkdtempSync, rmSync, cpSync } = fs;
 
 export const FIXTURES_PATH = path.resolve(__dirname, '../../../__fixtures__');
-const DEFAULT_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
 
 export const getFixturePath = (...paths: string[]) =>
   path.join(FIXTURES_PATH, ...paths);
@@ -57,7 +57,7 @@ export class TestFixture {
 
     // Default to remote templates and deterministic identity answers for init
     // flows so tests are stable and do not rely on local machine config.
-    argv = withInitDefaults(argv, DEFAULT_REPO);
+    argv = withInitDefaults(argv, DEFAULT_TEMPLATE_REPO);
 
     const prompter = new Inquirerer({
       input: mockInput,
