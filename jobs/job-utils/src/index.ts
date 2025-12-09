@@ -1,18 +1,22 @@
+import type {
+  FailJobParams,
+  CompleteJobParams,
+  GetJobParams,
+  GetScheduledJobParams,
+  RunScheduledJobParams,
+  ReleaseScheduledJobsParams,
+  ReleaseJobsParams
+} from '@launchql/types';
 import env from './env';
 const { JOBS_SCHEMA } = env;
 
-type PgClientLike = {
-  query: (text: string, params?: any[]) => Promise<any>;
-};
-
-type WorkerJobArgs = {
-  workerId: string;
-  jobId: number | string;
+export type PgClientLike = {
+  query<T = any>(text: string, params?: any[]): Promise<{ rows: T[] }>;
 };
 
 export const failJob = async (
   client: PgClientLike,
-  { workerId, jobId, message }: WorkerJobArgs & { message: string }
+  { workerId, jobId, message }: FailJobParams
 ) => {
   console.log(`utils:failJob worker[${workerId}] job[${jobId}] ${message}`);
   await client.query(`SELECT * FROM "${JOBS_SCHEMA}".fail_job($1, $2, $3);`, [
@@ -24,7 +28,7 @@ export const failJob = async (
 
 export const completeJob = async (
   client: PgClientLike,
-  { workerId, jobId }: WorkerJobArgs
+  { workerId, jobId }: CompleteJobParams
 ) => {
   console.log(`utils:completeJob worker[${workerId}] job[${jobId}]`);
   await client.query(`SELECT * FROM "${JOBS_SCHEMA}".complete_job($1, $2);`, [
@@ -33,13 +37,10 @@ export const completeJob = async (
   ]);
 };
 
-export const getJob = async (
+export const getJob = async <T = any>(
   client: PgClientLike,
-  {
-    workerId,
-    supportedTaskNames
-  }: { workerId: string; supportedTaskNames: string[] | null }
-) => {
+  { workerId, supportedTaskNames }: GetJobParams
+): Promise<T | undefined> => {
   console.log(`utils:getJob ${workerId}`);
   const {
     rows: [job]
@@ -50,13 +51,10 @@ export const getJob = async (
   return job;
 };
 
-export const getScheduledJob = async (
+export const getScheduledJob = async <T = any>(
   client: PgClientLike,
-  {
-    workerId,
-    supportedTaskNames
-  }: { workerId: string; supportedTaskNames: string[] | null }
-) => {
+  { workerId, supportedTaskNames }: GetScheduledJobParams
+): Promise<T | undefined> => {
   console.log(`utils:getScheduledJob worker[${workerId}]`);
   const {
     rows: [job]
@@ -69,7 +67,7 @@ export const getScheduledJob = async (
 
 export const runScheduledJob = async (
   client: PgClientLike,
-  { jobId }: { jobId: number | string }
+  { jobId }: RunScheduledJobParams
 ) => {
   console.log(`utils:runScheduledJob job[${jobId}]`);
   try {
@@ -80,8 +78,8 @@ export const runScheduledJob = async (
       [jobId]
     );
     return job;
-  } catch (e: any) {
-    if (e?.message === 'ALREADY_SCHEDULED') {
+  } catch (e) {
+    if (e instanceof Error && e.message === 'ALREADY_SCHEDULED') {
       return null;
     }
     throw e;
@@ -90,18 +88,18 @@ export const runScheduledJob = async (
 
 export const releaseScheduledJobs = async (
   client: PgClientLike,
-  { workerId, ids }: { workerId: string; ids?: (number | string)[] }
+  { workerId, ids }: ReleaseScheduledJobsParams
 ) => {
   console.log(`utils:releaseScheduledJobs worker[${workerId}]`);
   return await client.query(
     `SELECT "${JOBS_SCHEMA}".release_scheduled_jobs($1, $2::bigint[])`,
-    [workerId, ids as any]
+    [workerId, ids]
   );
 };
 
 export const releaseJobs = async (
   client: PgClientLike,
-  { workerId }: { workerId: string }
+  { workerId }: ReleaseJobsParams
 ) => {
   console.log(`utils:releaseJobs worker[${workerId}]`);
   return await client.query(`SELECT "${JOBS_SCHEMA}".release_jobs($1)`, [

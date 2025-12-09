@@ -75,8 +75,11 @@ export interface CompleteJobParams {
 export interface GetJobParams {
   /** Worker ID requesting a job */
   workerId: string;
-  /** Array of task names this worker supports */
-  supportedTaskNames: string[];
+  /**
+   * Array of task names this worker supports.
+   * When `null`, the job system will consider any task as supported.
+   */
+  supportedTaskNames: string[] | null;
 }
 
 /**
@@ -85,8 +88,11 @@ export interface GetJobParams {
 export interface GetScheduledJobParams {
   /** Worker ID requesting a scheduled job */
   workerId: string;
-  /** Array of task names this worker supports */
-  supportedTaskNames: string[];
+  /**
+   * Array of task names this worker supports.
+   * When `null`, the scheduler will consider any task as supported.
+   */
+  supportedTaskNames: string[] | null;
 }
 
 /**
@@ -103,8 +109,11 @@ export interface RunScheduledJobParams {
 export interface ReleaseScheduledJobsParams {
   /** Worker ID releasing the jobs */
   workerId: string;
-  /** Array of job IDs to release */
-  ids: Array<number | string>;
+  /**
+   * Array of job IDs to release.
+   * When omitted, all scheduled jobs for the worker may be released.
+   */
+  ids?: Array<number | string>;
 }
 
 /**

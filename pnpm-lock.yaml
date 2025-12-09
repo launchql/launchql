@@ -137,6 +137,9 @@ importers:
 
   jobs/job-utils:
     dependencies:
+      '@launchql/types':
+        specifier: workspace:^
+        version: link:../../packages/types/dist
       envalid:
         specifier: 6.0.2
         version: 6.0.2

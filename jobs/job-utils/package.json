@@ -29,6 +29,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "@launchql/types": "workspace:^",
     "envalid": "6.0.2"
   }
 }

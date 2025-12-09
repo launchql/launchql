@@ -3,6 +3,17 @@ import * as jobs from '@launchql/job-utils';
 import { request as req } from './req';
 import env from './env';
 
+interface JobRow {
+  id: number | string;
+  task_identifier: string;
+  payload?: any;
+  database_id?: string;
+}
+
+type PgClientLike = {
+  query<T = any>(text: string, params?: any[]): Promise<{ rows: T[] }>;
+};
+
 /* eslint-disable no-console */
 export default class Worker {
   idleDelay: number;
@@ -36,7 +47,7 @@ export default class Worker {
       { workerId: this.workerId }
     ]);
   }
-  async initialize(client: any) {
+  async initialize(client: PgClientLike) {
     if (this._initialized === true) return;
 
     // release any jobs not finished from before if fatal error prevented cleanup
@@ -46,7 +57,7 @@ export default class Worker {
     await this.doNext(client);
   }
   async handleFatalError(
-    client: any,
+    client: PgClientLike,
     { err, fatalError, jobId }: { err?: any; fatalError: any; jobId: any }
   ) {
     const when = err ? `after failure '${err.message}'` : 'after success';
@@ -58,8 +69,8 @@ export default class Worker {
     process.exit(1);
   }
   async handleError(
-    client: any,
-    { err, job, duration }: { err: any; job: any; duration: any }
+    client: PgClientLike,
+    { err, job, duration }: { err: any; job: JobRow; duration: any }
   ) {
     console.error(
       `worker: Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
@@ -73,14 +84,14 @@ export default class Worker {
     });
   }
   async handleSuccess(
-    client: any,
-    { job, duration }: { job: any; duration: any }
+    client: PgClientLike,
+    { job, duration }: { job: JobRow; duration: any }
   ) {
     console.log(
       `worker: Async task ${job.id} (${job.task_identifier}) to be processed`
     );
   }
-  async doWork(job: any) {
+  async doWork(job: JobRow) {
     const { payload, task_identifier } = job;
     if (
       !env.JOBS_SUPPORT_ANY &&
@@ -95,7 +106,7 @@ export default class Worker {
       jobId: job.id
     });
   }
-  async doNext(client: any): Promise<void> {
+  async doNext(client: PgClientLike): Promise<void> {
     if (!this._initialized) {
       return await this.initialize(client);
     }
@@ -103,12 +114,15 @@ export default class Worker {
     console.log('worker: checking for jobs...');
     this.doNextTimer = clearTimeout(this.doNextTimer);
     try {
-      const job = await jobs.getJob(client, {
-        workerId: this.workerId,
-        supportedTaskNames: env.JOBS_SUPPORT_ANY
-          ? null
-          : this.supportedTaskNames
-      });
+      const job = (await jobs.getJob(
+        client,
+        {
+          workerId: this.workerId,
+          supportedTaskNames: env.JOBS_SUPPORT_ANY
+            ? null
+            : this.supportedTaskNames
+        }
+      )) as JobRow | undefined;
 
       if (!job || !job.id) {
         this.doNextTimer = setTimeout(

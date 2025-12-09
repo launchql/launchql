@@ -20,10 +20,30 @@ function once(fn: (...args: any[]) => any, context?: any) {
   };
 }
 
+interface JobRow {
+  id: number | string;
+  task_identifier: string;
+  payload?: any;
+}
+
+export interface WorkerContext {
+  pgPool: any;
+  workerId: string;
+}
+
+export type TaskHandler = (
+  ctx: WorkerContext,
+  job: JobRow
+) => Promise<void> | void;
+
+type PgClientLike = {
+  query<T = any>(text: string, params?: any[]): Promise<{ rows: T[] }>;
+};
+
 /* eslint-disable no-console */
 
 export default class Worker {
-  tasks: Record<string, any>;
+  tasks: Record<string, TaskHandler>;
   idleDelay: number;
   supportedTaskNames: string[];
   workerId: string;
@@ -81,8 +101,8 @@ export default class Worker {
     process.exit(1);
   }
   async handleError(
-    client: any,
-    { err, job, duration }: { err: any; job: any; duration: any }
+    client: PgClientLike,
+    { err, job, duration }: { err: any; job: JobRow; duration: any }
   ) {
     console.error(
       `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
@@ -96,15 +116,15 @@ export default class Worker {
     });
   }
   async handleSuccess(
-    client: any,
-    { job, duration }: { job: any; duration: any }
+    client: PgClientLike,
+    { job, duration }: { job: JobRow; duration: any }
   ) {
     console.log(
       `Completed task ${job.id} (${job.task_identifier}) with success (${duration}ms)`
     );
     await jobs.completeJob(client, { workerId: this.workerId, jobId: job.id });
   }
-  async doWork(job: any) {
+  async doWork(job: JobRow) {
     const { task_identifier } = job;
     const worker = this.tasks[task_identifier];
     if (!worker) {
@@ -118,13 +138,16 @@ export default class Worker {
       job
     );
   }
-  async doNext(client: any): Promise<void> {
+  async doNext(client: PgClientLike): Promise<void> {
     this.doNextTimer = clearTimeout(this.doNextTimer);
     try {
-      const job = await jobs.getJob(client, {
-        workerId: this.workerId,
-        supportedTaskNames: this.supportedTaskNames
-      });
+      const job = (await jobs.getJob(
+        client,
+        {
+          workerId: this.workerId,
+          supportedTaskNames: this.supportedTaskNames
+        }
+      )) as JobRow | undefined;
       if (!job || !job.id) {
         this.doNextTimer = setTimeout(
           () => this.doNext(client),
