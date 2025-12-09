@@ -5,3 +5,4 @@ declare module 'express';
 declare module 'body-parser';
 declare module '@launchql/mjml';
 declare module '@launchql/postmaster';
+declare module '@launchql/knative-job-fn';
