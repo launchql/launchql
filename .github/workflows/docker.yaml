@@ -1,22 +1,22 @@
 name: Docker
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - v1
-  #     - release/*
-  #   paths:
-  #     - "docker/**"
-  #     - ".github/workflows/docker.yaml"
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - v1
-  #   paths:
-  #     - "docker/**"
-  #     - ".github/workflows/docker.yaml"
-  #   types: [opened, reopened, synchronize, ready_for_review]
+  push:
+    branches:
+      - main
+      - v1
+      - release/*
+    paths:
+      - "docker/**"
+      - ".github/workflows/docker.yaml"
+  pull_request:
+    branches:
+      - main
+      - v1
+    paths:
+      - "docker/**"
+      - ".github/workflows/docker.yaml"
+    types: [opened, reopened, synchronize, ready_for_review]
   workflow_dispatch:
     inputs:
       process:
