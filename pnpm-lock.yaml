@@ -236,9 +236,6 @@ importers:
 
   graphile/graphile-plugin-connection-filter-postgis:
     dependencies:
-      '@graphile/postgis':
-        specifier: ^0.1.0
-        version: 0.1.0(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
       graphile-build:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)
@@ -248,6 +245,9 @@ importers:
       graphile-plugin-connection-filter:
         specifier: workspace:^
         version: link:../graphile-plugin-connection-filter/dist
+      graphile-postgis:
+        specifier: workspace:^
+        version: link:../graphile-postgis/dist
     devDependencies:
       '@types/pg':
         specifier: ^8.15.6
@@ -2253,14 +2253,6 @@ packages:
     resolution: {integrity: sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg==}
     engines: {node: '>=8.6'}
 
-  '@graphile/postgis@0.1.0':
-    resolution: {integrity: sha512-67lTNvyTnng2oPU9OoA1NRvbAvS/zyTGQIK+d77OFhNi41NHNZynNVRZ+R/UpotcWVQL6rAmo2w8EkI1o4xfAg==}
-    peerDependencies:
-      graphile-build: ^4.3.0
-      graphile-build-pg: ^4.3.0
-      graphql: '>=0.6 <15'
-      pg-sql2: ^2.2.1
-
   '@graphql-typed-document-node/core@3.2.0':
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
@@ -3028,9 +3020,6 @@ packages:
   '@types/cors@2.8.19':
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
 
-  '@types/debug@4.1.12':
-    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
-
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -3045,10 +3034,6 @@ packages:
 
   '@types/graphql-upload@8.0.12':
     resolution: {integrity: sha512-M0ZPZqNUzKNB16q5woEzgG/Q8DjICV80K7JvDSRnDmDFfrRdfFX/n6PbmqAN7gCzECcHVnw1gk6N4Cg0FwxCqA==}
-
-  '@types/graphql@14.5.0':
-    resolution: {integrity: sha512-MOkzsEp1Jk5bXuAsHsUi6BVv0zCO+7/2PTiZMXWDSsMXvNU6w/PLMQT2vHn8hy2i0JqojPz1Sz6rsFjHtsU0lA==}
-    deprecated: This is a stub types definition. graphql provides its own type definitions, so you do not need this installed.
 
   '@types/http-assert@1.5.6':
     resolution: {integrity: sha512-TTEwmtjgVbYAzZYWyeHPrrtWnfVkm8tQkP8P21uQifPgMRgjrow3XDEYqucuC8SKZJT7pUnhU/JymvjggxO9vw==}
@@ -7983,19 +7968,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@graphile/postgis@0.1.0(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))':
-    dependencies:
-      '@types/debug': 4.1.12
-      '@types/graphql': 14.5.0
-      debug: 4.4.3(supports-color@5.5.0)
-      graphile-build: 4.14.1(graphql@15.10.1)
-      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
-      graphql: 15.10.1
-      pg-sql2: 4.14.1(pg@8.16.3)
-      tslib: 1.14.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@graphql-typed-document-node/core@3.2.0(graphql@15.10.1)':
     dependencies:
       graphql: 15.10.1
@@ -9183,10 +9155,6 @@ snapshots:
     dependencies:
       '@types/node': 20.19.25
 
-  '@types/debug@4.1.12':
-    dependencies:
-      '@types/ms': 2.1.0
-
   '@types/estree@1.0.8': {}
 
   '@types/express-serve-static-core@5.1.0':
@@ -9209,10 +9177,6 @@ snapshots:
       '@types/express': 5.0.6
       '@types/koa': 3.0.1
       fs-capacitor: 8.0.0
-      graphql: 15.10.1
-
-  '@types/graphql@14.5.0':
-    dependencies:
       graphql: 15.10.1
 
   '@types/http-assert@1.5.6': {}

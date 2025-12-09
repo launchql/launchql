@@ -67,7 +67,7 @@ if (cached) {
 }
 ```
 
-### Automatic cleanup when pools disappear
+### Automatic cleanup
 
 The cleanup happens automatically:
 
@@ -96,13 +96,13 @@ import { postgraphile } from 'postgraphile';
 
 function getGraphileInstance(database: string, schema: string): GraphileCache {
   const key = `${database}.${schema}`;
-  
+
   // Check cache first
   const cached = graphileCache.get(key);
   if (cached) {
     return cached;
   }
-  
+
   // Create new instance
   const pgPool = getPgPool({ database });
   const handler = postgraphile(pgPool, schema, {
@@ -110,13 +110,13 @@ function getGraphileInstance(database: string, schema: string): GraphileCache {
     graphiqlRoute: '/graphiql',
     // other options...
   });
-  
+
   const entry: GraphileCache = {
     pgPool,
     pgPoolKey: database,
     handler
   };
-  
+
   // Cache it
   graphileCache.set(key, entry);
   return entry;
