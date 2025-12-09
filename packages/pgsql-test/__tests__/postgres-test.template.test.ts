@@ -32,7 +32,6 @@ function setupTemplateDatabase(): void {
   admin.createSeededTemplate(TEMPLATE_NAME, {
     seed: (ctx) => {
       ctx.admin.loadSql(sql('test.sql'), ctx.config.database);
-      ctx.admin.loadSql(sql('roles.sql'), ctx.config.database);
     }
   });
 }

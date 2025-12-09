@@ -11,7 +11,7 @@ lql admin-users bootstrap --yes
 lql admin-users add --test --yes
 ```
 
-Then you can "install" the packages need:
+Then you can "install" the packages need (optional):
 
 ```sh
 docker exec postgres /sql-bin/install.sh

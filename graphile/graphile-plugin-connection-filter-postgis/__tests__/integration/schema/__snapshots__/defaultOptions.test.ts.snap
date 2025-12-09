@@ -1,0 +1,3085 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`prints a schema with the graphile-plugin-connection-filter-postgis plugin 1`] = `
+""""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""
+The \`GeoJSON\` scalar type represents GeoJSON values as specified by[RFC 7946](https://tools.ietf.org/html/rfc7946).
+"""
+scalar GeoJSON
+
+"""All geography XY types implement this interface"""
+interface GeographyGeometry {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+type GeographyGeometryCollection implements GeographyGeometry & GeographyInterface {
+  geojson: GeoJSON
+  geometries: [GeographyGeometry]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyGeometryCollection fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyGeometryCollectionFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyGeometryCollectionM implements GeographyGeometryM & GeographyInterface {
+  geojson: GeoJSON
+  geometries: [GeographyGeometryM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyGeometryCollectionM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyGeometryCollectionMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyGeometryCollectionZ implements GeographyGeometryZ & GeographyInterface {
+  geojson: GeoJSON
+  geometries: [GeographyGeometryZ]
+  srid: Int!
+}
+
+type GeographyGeometryCollectionZM implements GeographyGeometryZM & GeographyInterface {
+  geojson: GeoJSON
+  geometries: [GeographyGeometryZM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyGeometry fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyGeometryFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+"""All geography XYM types implement this interface"""
+interface GeographyGeometryM {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyGeometryM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyGeometryMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+"""All geography XYZ types implement this interface"""
+interface GeographyGeometryZ {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""All geography XYZM types implement this interface"""
+interface GeographyGeometryZM {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""All geography types implement this interface"""
+interface GeographyInterface {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyInterface fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyInterfaceFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyLineString implements GeographyGeometry & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPoint]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyLineString fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyLineStringFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyLineStringM implements GeographyGeometryM & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPointM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyLineStringM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyLineStringMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyLineStringZ implements GeographyGeometryZ & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPointZ]
+  srid: Int!
+}
+
+type GeographyLineStringZM implements GeographyGeometryZM & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPointZM]
+  srid: Int!
+}
+
+type GeographyMultiLineString implements GeographyGeometry & GeographyInterface {
+  geojson: GeoJSON
+  lines: [GeographyLineString]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyMultiLineString fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyMultiLineStringFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyMultiLineStringM implements GeographyGeometryM & GeographyInterface {
+  geojson: GeoJSON
+  lines: [GeographyLineStringM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyMultiLineStringM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyMultiLineStringMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyMultiLineStringZ implements GeographyGeometryZ & GeographyInterface {
+  geojson: GeoJSON
+  lines: [GeographyLineStringZ]
+  srid: Int!
+}
+
+type GeographyMultiLineStringZM implements GeographyGeometryZM & GeographyInterface {
+  geojson: GeoJSON
+  lines: [GeographyLineStringZM]
+  srid: Int!
+}
+
+type GeographyMultiPoint implements GeographyGeometry & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPoint]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyMultiPoint fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyMultiPointFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyMultiPointM implements GeographyGeometryM & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPointM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyMultiPointM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyMultiPointMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyMultiPointZ implements GeographyGeometryZ & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPointZ]
+  srid: Int!
+}
+
+type GeographyMultiPointZM implements GeographyGeometryZM & GeographyInterface {
+  geojson: GeoJSON
+  points: [GeographyPointZM]
+  srid: Int!
+}
+
+type GeographyMultiPolygon implements GeographyGeometry & GeographyInterface {
+  geojson: GeoJSON
+  polygons: [GeographyPolygon]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyMultiPolygon fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyMultiPolygonFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyMultiPolygonM implements GeographyGeometryM & GeographyInterface {
+  geojson: GeoJSON
+  polygons: [GeographyPolygonM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyMultiPolygonM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyMultiPolygonMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyMultiPolygonZ implements GeographyGeometryZ & GeographyInterface {
+  geojson: GeoJSON
+  polygons: [GeographyPolygonZ]
+  srid: Int!
+}
+
+type GeographyMultiPolygonZM implements GeographyGeometryZM & GeographyInterface {
+  geojson: GeoJSON
+  polygons: [GeographyPolygonZM]
+  srid: Int!
+}
+
+type GeographyPoint implements GeographyGeometry & GeographyInterface {
+  geojson: GeoJSON
+  latitude: Float!
+  longitude: Float!
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyPoint fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyPointFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyPointM implements GeographyGeometryM & GeographyInterface {
+  geojson: GeoJSON
+  latitude: Float!
+  longitude: Float!
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyPointM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyPointMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyPointZ implements GeographyGeometryZ & GeographyInterface {
+  geojson: GeoJSON
+  height: Float!
+  latitude: Float!
+  longitude: Float!
+  srid: Int!
+}
+
+type GeographyPointZM implements GeographyGeometryZM & GeographyInterface {
+  geojson: GeoJSON
+  height: Float!
+  latitude: Float!
+  longitude: Float!
+  srid: Int!
+}
+
+type GeographyPolygon implements GeographyGeometry & GeographyInterface {
+  exterior: GeographyLineString
+  geojson: GeoJSON
+  interiors: [GeographyLineString]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyPolygon fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyPolygonFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyPolygonM implements GeographyGeometryM & GeographyInterface {
+  exterior: GeographyLineStringM
+  geojson: GeoJSON
+  interiors: [GeographyLineStringM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeographyPolygonM fields. All fields are combined with a logical ‘and.’
+"""
+input GeographyPolygonMFilter {
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+}
+
+type GeographyPolygonZ implements GeographyGeometryZ & GeographyInterface {
+  exterior: GeographyLineStringZ
+  geojson: GeoJSON
+  interiors: [GeographyLineStringZ]
+  srid: Int!
+}
+
+type GeographyPolygonZM implements GeographyGeometryZM & GeographyInterface {
+  exterior: GeographyLineStringZM
+  geojson: GeoJSON
+  interiors: [GeographyLineStringZM]
+  srid: Int!
+}
+
+"""All geometry XY types implement this interface"""
+interface GeometryGeometry {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+type GeometryGeometryCollection implements GeometryGeometry & GeometryInterface {
+  geojson: GeoJSON
+  geometries: [GeometryGeometry]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryGeometryCollection fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryGeometryCollectionFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryGeometryCollectionM implements GeometryGeometryM & GeometryInterface {
+  geojson: GeoJSON
+  geometries: [GeometryGeometryM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryGeometryCollectionM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryGeometryCollectionMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryGeometryCollectionZ implements GeometryGeometryZ & GeometryInterface {
+  geojson: GeoJSON
+  geometries: [GeometryGeometryZ]
+  srid: Int!
+}
+
+type GeometryGeometryCollectionZM implements GeometryGeometryZM & GeometryInterface {
+  geojson: GeoJSON
+  geometries: [GeometryGeometryZM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryGeometry fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryGeometryFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+"""All geometry XYM types implement this interface"""
+interface GeometryGeometryM {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryGeometryM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryGeometryMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+"""All geometry XYZ types implement this interface"""
+interface GeometryGeometryZ {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""All geometry XYZM types implement this interface"""
+interface GeometryGeometryZM {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""All geometry types implement this interface"""
+interface GeometryInterface {
+  """Converts the object to GeoJSON"""
+  geojson: GeoJSON
+
+  """Spatial reference identifier (SRID)"""
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryInterface fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryInterfaceFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryLineString implements GeometryGeometry & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPoint]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryLineString fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryLineStringFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryLineStringM implements GeometryGeometryM & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPointM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryLineStringM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryLineStringMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryLineStringZ implements GeometryGeometryZ & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPointZ]
+  srid: Int!
+}
+
+type GeometryLineStringZM implements GeometryGeometryZM & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPointZM]
+  srid: Int!
+}
+
+type GeometryMultiLineString implements GeometryGeometry & GeometryInterface {
+  geojson: GeoJSON
+  lines: [GeometryLineString]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryMultiLineString fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryMultiLineStringFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryMultiLineStringM implements GeometryGeometryM & GeometryInterface {
+  geojson: GeoJSON
+  lines: [GeometryLineStringM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryMultiLineStringM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryMultiLineStringMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryMultiLineStringZ implements GeometryGeometryZ & GeometryInterface {
+  geojson: GeoJSON
+  lines: [GeometryLineStringZ]
+  srid: Int!
+}
+
+type GeometryMultiLineStringZM implements GeometryGeometryZM & GeometryInterface {
+  geojson: GeoJSON
+  lines: [GeometryLineStringZM]
+  srid: Int!
+}
+
+type GeometryMultiPoint implements GeometryGeometry & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPoint]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryMultiPoint fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryMultiPointFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryMultiPointM implements GeometryGeometryM & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPointM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryMultiPointM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryMultiPointMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryMultiPointZ implements GeometryGeometryZ & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPointZ]
+  srid: Int!
+}
+
+type GeometryMultiPointZM implements GeometryGeometryZM & GeometryInterface {
+  geojson: GeoJSON
+  points: [GeometryPointZM]
+  srid: Int!
+}
+
+type GeometryMultiPolygon implements GeometryGeometry & GeometryInterface {
+  geojson: GeoJSON
+  polygons: [GeometryPolygon]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryMultiPolygon fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryMultiPolygonFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryMultiPolygonM implements GeometryGeometryM & GeometryInterface {
+  geojson: GeoJSON
+  polygons: [GeometryPolygonM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryMultiPolygonM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryMultiPolygonMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryMultiPolygonZ implements GeometryGeometryZ & GeometryInterface {
+  geojson: GeoJSON
+  polygons: [GeometryPolygonZ]
+  srid: Int!
+}
+
+type GeometryMultiPolygonZM implements GeometryGeometryZM & GeometryInterface {
+  geojson: GeoJSON
+  polygons: [GeometryPolygonZM]
+  srid: Int!
+}
+
+type GeometryPoint implements GeometryGeometry & GeometryInterface {
+  geojson: GeoJSON
+  srid: Int!
+  x: Float!
+  y: Float!
+}
+
+"""
+A filter to be used against GeometryPoint fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryPointFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryPointM implements GeometryGeometryM & GeometryInterface {
+  geojson: GeoJSON
+  srid: Int!
+  x: Float!
+  y: Float!
+}
+
+"""
+A filter to be used against GeometryPointM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryPointMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryPointZ implements GeometryGeometryZ & GeometryInterface {
+  geojson: GeoJSON
+  srid: Int!
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+type GeometryPointZM implements GeometryGeometryZM & GeometryInterface {
+  geojson: GeoJSON
+  srid: Int!
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+type GeometryPolygon implements GeometryGeometry & GeometryInterface {
+  exterior: GeometryLineString
+  geojson: GeoJSON
+  interiors: [GeometryLineString]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryPolygon fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryPolygonFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryPolygonM implements GeometryGeometryM & GeometryInterface {
+  exterior: GeometryLineStringM
+  geojson: GeoJSON
+  interiors: [GeometryLineStringM]
+  srid: Int!
+}
+
+"""
+A filter to be used against GeometryPolygonM fields. All fields are combined with a logical ‘and.’
+"""
+input GeometryPolygonMFilter {
+  """Bounding box is strictly above the specified geometry's bounding box."""
+  bboxAbove: GeoJSON
+
+  """Bounding box is strictly below the specified geometry's bounding box."""
+  bboxBelow: GeoJSON
+
+  """Bounding box contains the specified geometry's bounding box."""
+  bboxContains: GeoJSON
+
+  """Bounding box is the same as the specified geometry's bounding box."""
+  bboxEquals: GeoJSON
+
+  """2D bounding box intersects the specified geometry's 2D bounding box."""
+  bboxIntersects2D: GeoJSON
+
+  """n-D bounding box intersects the specified geometry's n-D bounding box."""
+  bboxIntersectsND: GeoJSON
+
+  """
+  Bounding box is strictly to the left of the specified geometry's bounding box.
+  """
+  bboxLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is above the specified geometry's bounding box.
+  """
+  bboxOverlapsOrAbove: GeoJSON
+
+  """
+  Bounding box overlaps or is below the specified geometry's bounding box.
+  """
+  bboxOverlapsOrBelow: GeoJSON
+
+  """
+  Bounding box overlaps or is to the left of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrLeftOf: GeoJSON
+
+  """
+  Bounding box overlaps or is to the right of the specified geometry's bounding box.
+  """
+  bboxOverlapsOrRightOf: GeoJSON
+
+  """
+  Bounding box is strictly to the right of the specified geometry's bounding box.
+  """
+  bboxRightOf: GeoJSON
+
+  """
+  No points of the specified geometry lie in the exterior, and at least one point of the interior of the specified geometry lies in the interior.
+  """
+  contains: GeoJSON
+
+  """
+  The specified geometry intersects the interior but not the boundary (or exterior).
+  """
+  containsProperly: GeoJSON
+
+  """No point is outside the specified geometry."""
+  coveredBy: GeoJSON
+
+  """No point in the specified geometry is outside."""
+  covers: GeoJSON
+
+  """They have some, but not all, interior points in common."""
+  crosses: GeoJSON
+
+  """They do not share any space together."""
+  disjoint: GeoJSON
+
+  """They represent the same geometry. Directionality is ignored."""
+  equals: GeoJSON
+
+  """Coordinates and coordinate order are the same as specified geometry."""
+  exactlyEquals: GeoJSON
+
+  """They share any portion of space in 2D."""
+  intersects: GeoJSON
+
+  """They share any portion of space in 3D."""
+  intersects3D: GeoJSON
+
+  """
+  They represent the same geometry and points are in the same directional order.
+  """
+  orderingEquals: GeoJSON
+
+  """
+  They share space, are of the same dimension, but are not completely contained by each other.
+  """
+  overlaps: GeoJSON
+
+  """
+  They have at least one point in common, but their interiors do not intersect.
+  """
+  touches: GeoJSON
+
+  """Completely inside the specified geometry."""
+  within: GeoJSON
+}
+
+type GeometryPolygonZ implements GeometryGeometryZ & GeometryInterface {
+  exterior: GeometryLineStringZ
+  geojson: GeoJSON
+  interiors: [GeometryLineStringZ]
+  srid: Int!
+}
+
+type GeometryPolygonZM implements GeometryGeometryZM & GeometryInterface {
+  exterior: GeometryLineStringZM
+  geojson: GeoJSON
+  interiors: [GeometryLineStringZM]
+  srid: Int!
+}
+
+type GisDebug implements Node {
+  geog: GeographyInterface
+  geogGeometry: GeographyGeometry
+  geogGeometrycollection: GeographyGeometryCollection
+  geogGeometrycollectionm: GeographyGeometryCollectionM
+  geogGeometrym: GeographyGeometryM
+  geogLinestr: GeographyLineString
+  geogLinestrm: GeographyLineStringM
+  geogMultilinestr: GeographyMultiLineString
+  geogMultilinestrm: GeographyMultiLineStringM
+  geogMultipoint: GeographyMultiPoint
+  geogMultipointm: GeographyMultiPointM
+  geogMultipoly: GeographyMultiPolygon
+  geogMultipolym: GeographyMultiPolygonM
+  geogPoint: GeographyPoint
+  geogPointm: GeographyPointM
+  geogPoly: GeographyPolygon
+  geogPolym: GeographyPolygonM
+  geom: GeometryInterface
+  geomGeometry: GeometryGeometry
+  geomGeometrycollection: GeometryGeometryCollection
+  geomGeometrycollectionm: GeometryGeometryCollectionM
+  geomGeometrym: GeometryGeometryM
+  geomLinestr: GeometryLineString
+  geomLinestrm: GeometryLineStringM
+  geomMultilinestr: GeometryMultiLineString
+  geomMultilinestrm: GeometryMultiLineStringM
+  geomMultipoint: GeometryMultiPoint
+  geomMultipointm: GeometryMultiPointM
+  geomMultipoly: GeometryMultiPolygon
+  geomMultipolym: GeometryMultiPolygonM
+  geomPoint: GeometryPoint
+  geomPointm: GeometryPointM
+  geomPoly: GeometryPolygon
+  geomPolym: GeometryPolygonM
+  id: Int!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""
+A condition to be used against \`GisDebug\` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input GisDebugCondition {
+  """Checks for equality with the object’s \`geog\` field."""
+  geog: GeoJSON
+
+  """Checks for equality with the object’s \`geogGeometry\` field."""
+  geogGeometry: GeoJSON
+
+  """Checks for equality with the object’s \`geogGeometrycollection\` field."""
+  geogGeometrycollection: GeoJSON
+
+  """Checks for equality with the object’s \`geogGeometrycollectionm\` field."""
+  geogGeometrycollectionm: GeoJSON
+
+  """Checks for equality with the object’s \`geogGeometrym\` field."""
+  geogGeometrym: GeoJSON
+
+  """Checks for equality with the object’s \`geogLinestr\` field."""
+  geogLinestr: GeoJSON
+
+  """Checks for equality with the object’s \`geogLinestrm\` field."""
+  geogLinestrm: GeoJSON
+
+  """Checks for equality with the object’s \`geogMultilinestr\` field."""
+  geogMultilinestr: GeoJSON
+
+  """Checks for equality with the object’s \`geogMultilinestrm\` field."""
+  geogMultilinestrm: GeoJSON
+
+  """Checks for equality with the object’s \`geogMultipoint\` field."""
+  geogMultipoint: GeoJSON
+
+  """Checks for equality with the object’s \`geogMultipointm\` field."""
+  geogMultipointm: GeoJSON
+
+  """Checks for equality with the object’s \`geogMultipoly\` field."""
+  geogMultipoly: GeoJSON
+
+  """Checks for equality with the object’s \`geogMultipolym\` field."""
+  geogMultipolym: GeoJSON
+
+  """Checks for equality with the object’s \`geogPoint\` field."""
+  geogPoint: GeoJSON
+
+  """Checks for equality with the object’s \`geogPointm\` field."""
+  geogPointm: GeoJSON
+
+  """Checks for equality with the object’s \`geogPoly\` field."""
+  geogPoly: GeoJSON
+
+  """Checks for equality with the object’s \`geogPolym\` field."""
+  geogPolym: GeoJSON
+
+  """Checks for equality with the object’s \`geom\` field."""
+  geom: GeoJSON
+
+  """Checks for equality with the object’s \`geomGeometry\` field."""
+  geomGeometry: GeoJSON
+
+  """Checks for equality with the object’s \`geomGeometrycollection\` field."""
+  geomGeometrycollection: GeoJSON
+
+  """Checks for equality with the object’s \`geomGeometrycollectionm\` field."""
+  geomGeometrycollectionm: GeoJSON
+
+  """Checks for equality with the object’s \`geomGeometrym\` field."""
+  geomGeometrym: GeoJSON
+
+  """Checks for equality with the object’s \`geomLinestr\` field."""
+  geomLinestr: GeoJSON
+
+  """Checks for equality with the object’s \`geomLinestrm\` field."""
+  geomLinestrm: GeoJSON
+
+  """Checks for equality with the object’s \`geomMultilinestr\` field."""
+  geomMultilinestr: GeoJSON
+
+  """Checks for equality with the object’s \`geomMultilinestrm\` field."""
+  geomMultilinestrm: GeoJSON
+
+  """Checks for equality with the object’s \`geomMultipoint\` field."""
+  geomMultipoint: GeoJSON
+
+  """Checks for equality with the object’s \`geomMultipointm\` field."""
+  geomMultipointm: GeoJSON
+
+  """Checks for equality with the object’s \`geomMultipoly\` field."""
+  geomMultipoly: GeoJSON
+
+  """Checks for equality with the object’s \`geomMultipolym\` field."""
+  geomMultipolym: GeoJSON
+
+  """Checks for equality with the object’s \`geomPoint\` field."""
+  geomPoint: GeoJSON
+
+  """Checks for equality with the object’s \`geomPointm\` field."""
+  geomPointm: GeoJSON
+
+  """Checks for equality with the object’s \`geomPoly\` field."""
+  geomPoly: GeoJSON
+
+  """Checks for equality with the object’s \`geomPolym\` field."""
+  geomPolym: GeoJSON
+
+  """Checks for equality with the object’s \`id\` field."""
+  id: Int
+}
+
+"""
+A filter to be used against \`GisDebug\` object types. All fields are combined with a logical ‘and.’
+"""
+input GisDebugFilter {
+  """Checks for all expressions in this list."""
+  and: [GisDebugFilter!]
+
+  """Filter by the object’s \`geog\` field."""
+  geog: GeographyInterfaceFilter
+
+  """Filter by the object’s \`geogGeometry\` field."""
+  geogGeometry: GeographyGeometryFilter
+
+  """Filter by the object’s \`geogGeometrycollection\` field."""
+  geogGeometrycollection: GeographyGeometryCollectionFilter
+
+  """Filter by the object’s \`geogGeometrycollectionm\` field."""
+  geogGeometrycollectionm: GeographyGeometryCollectionMFilter
+
+  """Filter by the object’s \`geogGeometrym\` field."""
+  geogGeometrym: GeographyGeometryMFilter
+
+  """Filter by the object’s \`geogLinestr\` field."""
+  geogLinestr: GeographyLineStringFilter
+
+  """Filter by the object’s \`geogLinestrm\` field."""
+  geogLinestrm: GeographyLineStringMFilter
+
+  """Filter by the object’s \`geogMultilinestr\` field."""
+  geogMultilinestr: GeographyMultiLineStringFilter
+
+  """Filter by the object’s \`geogMultilinestrm\` field."""
+  geogMultilinestrm: GeographyMultiLineStringMFilter
+
+  """Filter by the object’s \`geogMultipoint\` field."""
+  geogMultipoint: GeographyMultiPointFilter
+
+  """Filter by the object’s \`geogMultipointm\` field."""
+  geogMultipointm: GeographyMultiPointMFilter
+
+  """Filter by the object’s \`geogMultipoly\` field."""
+  geogMultipoly: GeographyMultiPolygonFilter
+
+  """Filter by the object’s \`geogMultipolym\` field."""
+  geogMultipolym: GeographyMultiPolygonMFilter
+
+  """Filter by the object’s \`geogPoint\` field."""
+  geogPoint: GeographyPointFilter
+
+  """Filter by the object’s \`geogPointm\` field."""
+  geogPointm: GeographyPointMFilter
+
+  """Filter by the object’s \`geogPoly\` field."""
+  geogPoly: GeographyPolygonFilter
+
+  """Filter by the object’s \`geogPolym\` field."""
+  geogPolym: GeographyPolygonMFilter
+
+  """Filter by the object’s \`geom\` field."""
+  geom: GeometryInterfaceFilter
+
+  """Filter by the object’s \`geomGeometry\` field."""
+  geomGeometry: GeometryGeometryFilter
+
+  """Filter by the object’s \`geomGeometrycollection\` field."""
+  geomGeometrycollection: GeometryGeometryCollectionFilter
+
+  """Filter by the object’s \`geomGeometrycollectionm\` field."""
+  geomGeometrycollectionm: GeometryGeometryCollectionMFilter
+
+  """Filter by the object’s \`geomGeometrym\` field."""
+  geomGeometrym: GeometryGeometryMFilter
+
+  """Filter by the object’s \`geomLinestr\` field."""
+  geomLinestr: GeometryLineStringFilter
+
+  """Filter by the object’s \`geomLinestrm\` field."""
+  geomLinestrm: GeometryLineStringMFilter
+
+  """Filter by the object’s \`geomMultilinestr\` field."""
+  geomMultilinestr: GeometryMultiLineStringFilter
+
+  """Filter by the object’s \`geomMultilinestrm\` field."""
+  geomMultilinestrm: GeometryMultiLineStringMFilter
+
+  """Filter by the object’s \`geomMultipoint\` field."""
+  geomMultipoint: GeometryMultiPointFilter
+
+  """Filter by the object’s \`geomMultipointm\` field."""
+  geomMultipointm: GeometryMultiPointMFilter
+
+  """Filter by the object’s \`geomMultipoly\` field."""
+  geomMultipoly: GeometryMultiPolygonFilter
+
+  """Filter by the object’s \`geomMultipolym\` field."""
+  geomMultipolym: GeometryMultiPolygonMFilter
+
+  """Filter by the object’s \`geomPoint\` field."""
+  geomPoint: GeometryPointFilter
+
+  """Filter by the object’s \`geomPointm\` field."""
+  geomPointm: GeometryPointMFilter
+
+  """Filter by the object’s \`geomPoly\` field."""
+  geomPoly: GeometryPolygonFilter
+
+  """Filter by the object’s \`geomPolym\` field."""
+  geomPolym: GeometryPolygonMFilter
+
+  """Filter by the object’s \`id\` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: GisDebugFilter
+
+  """Checks for any expressions in this list."""
+  or: [GisDebugFilter!]
+}
+
+"""A connection to a list of \`GisDebug\` values."""
+type GisDebugsConnection {
+  """
+  A list of edges which contains the \`GisDebug\` and cursor to aid in pagination.
+  """
+  edges: [GisDebugsEdge!]!
+
+  """A list of \`GisDebug\` objects."""
+  nodes: [GisDebug]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* \`GisDebug\` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A \`GisDebug\` edge in the connection."""
+type GisDebugsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The \`GisDebug\` at the end of the edge."""
+  node: GisDebug
+}
+
+"""Methods to use when ordering \`GisDebug\`."""
+enum GisDebugsOrderBy {
+  GEOG_ASC
+  GEOG_DESC
+  GEOG_GEOMETRYCOLLECTIONM_ASC
+  GEOG_GEOMETRYCOLLECTIONM_DESC
+  GEOG_GEOMETRYCOLLECTION_ASC
+  GEOG_GEOMETRYCOLLECTION_DESC
+  GEOG_GEOMETRYM_ASC
+  GEOG_GEOMETRYM_DESC
+  GEOG_GEOMETRY_ASC
+  GEOG_GEOMETRY_DESC
+  GEOG_LINESTRM_ASC
+  GEOG_LINESTRM_DESC
+  GEOG_LINESTR_ASC
+  GEOG_LINESTR_DESC
+  GEOG_MULTILINESTRM_ASC
+  GEOG_MULTILINESTRM_DESC
+  GEOG_MULTILINESTR_ASC
+  GEOG_MULTILINESTR_DESC
+  GEOG_MULTIPOINTM_ASC
+  GEOG_MULTIPOINTM_DESC
+  GEOG_MULTIPOINT_ASC
+  GEOG_MULTIPOINT_DESC
+  GEOG_MULTIPOLYM_ASC
+  GEOG_MULTIPOLYM_DESC
+  GEOG_MULTIPOLY_ASC
+  GEOG_MULTIPOLY_DESC
+  GEOG_POINTM_ASC
+  GEOG_POINTM_DESC
+  GEOG_POINT_ASC
+  GEOG_POINT_DESC
+  GEOG_POLYM_ASC
+  GEOG_POLYM_DESC
+  GEOG_POLY_ASC
+  GEOG_POLY_DESC
+  GEOM_ASC
+  GEOM_DESC
+  GEOM_GEOMETRYCOLLECTIONM_ASC
+  GEOM_GEOMETRYCOLLECTIONM_DESC
+  GEOM_GEOMETRYCOLLECTION_ASC
+  GEOM_GEOMETRYCOLLECTION_DESC
+  GEOM_GEOMETRYM_ASC
+  GEOM_GEOMETRYM_DESC
+  GEOM_GEOMETRY_ASC
+  GEOM_GEOMETRY_DESC
+  GEOM_LINESTRM_ASC
+  GEOM_LINESTRM_DESC
+  GEOM_LINESTR_ASC
+  GEOM_LINESTR_DESC
+  GEOM_MULTILINESTRM_ASC
+  GEOM_MULTILINESTRM_DESC
+  GEOM_MULTILINESTR_ASC
+  GEOM_MULTILINESTR_DESC
+  GEOM_MULTIPOINTM_ASC
+  GEOM_MULTIPOINTM_DESC
+  GEOM_MULTIPOINT_ASC
+  GEOM_MULTIPOINT_DESC
+  GEOM_MULTIPOLYM_ASC
+  GEOM_MULTIPOLYM_DESC
+  GEOM_MULTIPOLY_ASC
+  GEOM_MULTIPOLY_DESC
+  GEOM_POINTM_ASC
+  GEOM_POINTM_DESC
+  GEOM_POINT_ASC
+  GEOM_POINT_DESC
+  GEOM_POLYM_ASC
+  GEOM_POLYM_DESC
+  GEOM_POLY_ASC
+  GEOM_POLY_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """Equal to the specified value."""
+  equalTo: Int
+
+  """Greater than the specified value."""
+  greaterThan: Int
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Int
+
+  """Included in the specified list."""
+  in: [Int!]
+
+  """
+  Is null (if \`true\` is specified) or is not null (if \`false\` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Int
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Int
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Int
+
+  """Not equal to the specified value."""
+  notEqualTo: Int
+
+  """Not included in the specified list."""
+  notIn: [Int!]
+}
+
+"""An object with a globally unique \`ID\`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+}
+
+"""The root query type which gives access points into the data universe."""
+type Query implements Node {
+  """Reads and enables pagination through a set of \`GisDebug\`."""
+  allGisDebugs(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GisDebugCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GisDebugFilter
+
+    """Only read the first \`n\` values of the set."""
+    first: Int
+
+    """Only read the last \`n\` values of the set."""
+    last: Int
+
+    """
+    Skip the first \`n\` values from our \`after\` cursor, an alternative to cursor
+    based pagination. May not be used with \`last\`.
+    """
+    offset: Int
+
+    """The method to use when ordering \`GisDebug\`."""
+    orderBy: [GisDebugsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GisDebugsConnection
+
+  """Reads a single \`GisDebug\` using its globally unique \`ID\`."""
+  gisDebug(
+    """The globally unique \`ID\` to be used in selecting a single \`GisDebug\`."""
+    nodeId: ID!
+  ): GisDebug
+  gisDebugById(id: Int!): GisDebug
+
+  """Fetches an object given its globally unique \`ID\`."""
+  node(
+    """The globally unique \`ID\`."""
+    nodeId: ID!
+  ): Node
+
+  """
+  The root query type must be a \`Node\` to work well with Relay 1 mutations. This just resolves to \`query\`.
+  """
+  nodeId: ID!
+
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+}
+"
+`;

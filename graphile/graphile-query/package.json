@@ -1,0 +1,47 @@
+{
+  "name": "graphile-query",
+  "version": "2.3.13",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "description": "graphile query",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/launchql/launchql",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/launchql"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/launchql/issues"
+  },
+  "scripts": {
+    "clean": "makage clean",
+    "prepack": "npm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "graphql": "15.10.1",
+    "pg": "^8.16.0",
+    "postgraphile": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.2",
+    "makage": "^0.1.8"
+  },
+  "keywords": [
+    "graphql",
+    "query",
+    "builder",
+    "graphile",
+    "launchql"
+  ]
+}

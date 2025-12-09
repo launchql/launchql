@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`exposes localized strings 1`] = `
+{
+  "data": {
+    "allProjects": {
+      "nodes": [
+        {
+          "description": "project one",
+          "id": "[ID]",
+          "localeStrings": {
+            "description": "proyecto uno",
+            "langCode": "es",
+            "name": "proj 1",
+          },
+          "name": "Proj1",
+        },
+        {
+          "description": "project two",
+          "id": "[ID]",
+          "localeStrings": {
+            "description": "proyecto dos",
+            "langCode": "es",
+            "name": "proj 2",
+          },
+          "name": "Proj2",
+        },
+        {
+          "description": "project three",
+          "id": "[ID]",
+          "localeStrings": {
+            "description": "proyecto tres",
+            "langCode": "es",
+            "name": "proj 3",
+          },
+          "name": "Proj3",
+        },
+      ],
+    },
+  },
+}
+`;

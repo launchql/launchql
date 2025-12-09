@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.14](https://github.com/launchql/launchql/compare/pgsql-test@2.14.13...pgsql-test@2.14.14) (2025-12-06)
+
+**Note:** Version bump only for package pgsql-test
+
+## [2.14.13](https://github.com/launchql/launchql/compare/pgsql-test@2.14.12...pgsql-test@2.14.13) (2025-12-04)
+
+**Note:** Version bump only for package pgsql-test
+
+## [2.14.12](https://github.com/launchql/launchql/compare/pgsql-test@2.14.11...pgsql-test@2.14.12) (2025-11-28)
+
+**Note:** Version bump only for package pgsql-test
+
+## [2.14.11](https://github.com/launchql/launchql/compare/pgsql-test@2.14.10...pgsql-test@2.14.11) (2025-11-27)
+
+**Note:** Version bump only for package pgsql-test
+
+## [2.14.10](https://github.com/launchql/launchql/compare/pgsql-test@2.14.9...pgsql-test@2.14.10) (2025-11-25)
+
+**Note:** Version bump only for package pgsql-test
+
+## [2.14.9](https://github.com/launchql/launchql/compare/pgsql-test@2.14.8...pgsql-test@2.14.9) (2025-11-25)
+
+**Note:** Version bump only for package pgsql-test
+
+## [2.14.8](https://github.com/launchql/launchql/compare/pgsql-test@2.14.7...pgsql-test@2.14.8) (2025-11-25)
+
+**Note:** Version bump only for package pgsql-test
+
 ## [2.14.7](https://github.com/launchql/launchql/compare/pgsql-test@2.14.6...pgsql-test@2.14.7) (2025-11-24)
 
 **Note:** Version bump only for package pgsql-test

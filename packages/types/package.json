@@ -1,6 +1,6 @@
 {
   "name": "@launchql/types",
-  "version": "2.8.4",
+  "version": "2.8.6",
   "author": "Dan Lynch <Dan Lynch>",
   "description": "LaunchQL types",
   "main": "index.js",
@@ -20,11 +20,10 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -41,5 +40,8 @@
     "typescript",
     "launchql",
     "schema"
-  ]
+  ],
+  "devDependencies": {
+    "makage": "^0.1.8"
+  }
 }

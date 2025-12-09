@@ -1,0 +1,10 @@
+SET client_min_messages TO WARNING;
+BEGIN;
+DROP SCHEMA IF EXISTS fulltext_test CASCADE;
+CREATE SCHEMA fulltext_test;
+GRANT USAGE ON SCHEMA fulltext_test TO public;
+GRANT CREATE ON SCHEMA fulltext_test TO public;
+ALTER DEFAULT PRIVILEGES IN SCHEMA fulltext_test GRANT ALL ON TABLES TO public;
+ALTER DEFAULT PRIVILEGES IN SCHEMA fulltext_test GRANT ALL ON SEQUENCES TO public;
+COMMIT;
+

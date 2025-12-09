@@ -1,10 +1,10 @@
-import '../utils/env';
+import '../test-utils/env';
 import { GraphQLQueryFn, getConnections, seed, snapshot } from 'graphile-test';
 import { join } from 'path';
 import type { PgTestClient } from 'pgsql-test/test-client';
 
 import { PgSimpleInflector } from '../src';
-import { IntrospectionQuery } from '../utils/queries';
+import { IntrospectionQuery } from '../test-utils/queries';
 
 const SCHEMA = 'app_public';
 const sql = (file: string) => join(__dirname, '../sql', file);
@@ -26,7 +26,6 @@ beforeAll(async () => {
     },
     [
       seed.sqlfile([
-        sql('roles.sql'),
         sql('test.sql')
       ])
     ]

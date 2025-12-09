@@ -24,6 +24,7 @@
     "build": "pnpm -r run build",
     "build:dev": "pnpm -r run build:dev",
     "lint": "pnpm -r run lint",
+    "internal:deps": "makage update-workspace",
     "deps": "pnpm up -r -i -L"
   },
   "devDependencies": {
@@ -31,9 +32,8 @@
     "@types/jest": "^30.0.0",
     "@types/jest-in-case": "^1.0.9",
     "@types/node": "^20.12.7",
-    "@typescript-eslint/eslint-plugin": "^8.47.0",
-    "@typescript-eslint/parser": "^8.47.0",
-    "copyfiles": "^2.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^12.1.0",
@@ -41,18 +41,16 @@
     "jest": "^30.2.0",
     "jest-in-case": "^1.0.2",
     "lerna": "^8.2.3",
+    "makage": "^0.1.8",
     "prettier": "^3.0.2",
-    "rimraf": "6.1.2",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
   },
   "overrides": {
     "graphql": "15.10.1",
-    "graphql-upload": "^13.0.0",
-    "@pyramation/postgis": "0.1.1"
+    "graphql-upload": "^13.0.0"
   },
-  "packageManager": "pnpm@9.12.1",
   "pnpm": {
     "publicHoistPattern": [
       "@jest/test-sequencer"

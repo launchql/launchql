@@ -1,6 +1,6 @@
 {
   "name": "etag-hash",
-  "version": "2.3.9",
+  "version": "2.3.11",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.",
   "main": "index.js",
@@ -20,11 +20,10 @@
     "url": "https://github.com/launchql/launchql/issues"
   },
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -37,5 +36,8 @@
     "launchql",
     "etag",
     "md5"
-  ]
+  ],
+  "devDependencies": {
+    "makage": "^0.1.8"
+  }
 }

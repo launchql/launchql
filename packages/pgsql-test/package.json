@@ -1,6 +1,6 @@
 {
   "name": "pgsql-test",
-  "version": "2.14.7",
+  "version": "2.14.14",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pgsql-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests — giving developers realistic test coverage without external state pollution",
   "main": "index.js",
@@ -46,18 +46,18 @@
     "pg-client"
   ],
   "scripts": {
-    "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "makage clean",
     "prepack": "npm run build",
-    "build": "npm run clean; tsc -p tsconfig.json; tsc -p tsconfig.esm.json; npm run copy",
-    "build:dev": "npm run clean; tsc -p tsconfig.json --declarationMap; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@types/pg": "^8.15.2",
-    "@types/pg-copy-streams": "^1.2.5"
+    "@types/pg-copy-streams": "^1.2.5",
+    "makage": "^0.1.8"
   },
   "dependencies": {
     "@launchql/core": "workspace:^",
