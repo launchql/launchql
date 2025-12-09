@@ -14,7 +14,8 @@
   "workspaces": [
     "packages/*",
     "sandbox/*",
-    "graphile/*"
+    "graphile/*",
+    "jobs/*"
   ],
   "engines": {
     "node": ">=18.17.0"

@@ -17,6 +17,9 @@
     "url": "https://github.com/launchql/jobs"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w",
+    "prepare": "tsc -p tsconfig.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
@@ -24,6 +27,8 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {},
   "dependencies": {
     "@launchql/env": "workspace:^",

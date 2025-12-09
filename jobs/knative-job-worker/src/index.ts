@@ -2,15 +2,23 @@ import poolManager from '@launchql/job-pg';
 import * as jobs from '@launchql/job-utils';
 import { request as req } from './req';
 import { getJobSupportAny } from '@launchql/job-utils';
+import type { Pool } from 'pg';
 
 /* eslint-disable no-console */
 export default class Worker {
+  private idleDelay: number;
+  private supportedTaskNames: string[];
+  private workerId: string;
+  private doNextTimer: NodeJS.Timeout | undefined;
+  private pgPool: Pool;
+  private _initialized?: boolean;
+
   constructor({
     tasks,
     idleDelay = 15000,
     pgPool = poolManager.getPool(),
     workerId = 'worker-0'
-  }) {
+  }: { tasks?: string[]; idleDelay?: number; pgPool?: Pool; workerId?: string } = {}) {
     /*
      * idleDelay: This is how long to wait between polling for jobs.
      * Note: we use LISTEN/NOTIFY to be notified when new jobs are added —
@@ -22,17 +30,17 @@ export default class Worker {
     this.doNextTimer = undefined;
     this.pgPool = pgPool;
     poolManager.onClose(jobs.releaseJobs, null, [
-      pgPool,
+      this.pgPool,
       { workerId: this.workerId }
     ]);
   }
-  async initialize(client) {
+  async initialize(client: any) {
     if (this._initialized === true) return;
     await jobs.releaseJobs(client, { workerId: this.workerId });
     this._initialized = true;
     await this.doNext(client);
   }
-  async handleFatalError(client, { err, fatalError, jobId }) {
+  async handleFatalError(client: any, { err, fatalError, jobId }: any) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
       `worker: Failed to release job '${jobId}' ${when}; committing seppuku`
@@ -41,7 +49,7 @@ export default class Worker {
     console.error(fatalError);
     process.exit(1);
   }
-  async handleError(client, { err, job, duration }) {
+  async handleError(client: any, { err, job, duration }: any) {
     console.error(
       `worker: Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
       { err, stack: err.stack }
@@ -53,12 +61,12 @@ export default class Worker {
       message: err.message
     });
   }
-  async handleSuccess(client, { job }) {
+  async handleSuccess(client: any, { job, duration }: any) {
     console.log(
       `worker: Async task ${job.id} (${job.task_identifier}) to be processed`
     );
   }
-  async doWork(job) {
+  async doWork(job: any) {
     const { payload, task_identifier } = job;
     if (!getJobSupportAny() && !this.supportedTaskNames.includes(task_identifier)) {
       throw new Error('Unsupported task');
@@ -70,12 +78,13 @@ export default class Worker {
       jobId: job.id
     });
   }
-  async doNext(client) {
+  async doNext(client: any): Promise<void> {
     if (!this._initialized) {
       return await this.initialize(client);
     }
     console.log('worker: checking for jobs...');
-    this.doNextTimer = clearTimeout(this.doNextTimer);
+    if (this.doNextTimer) clearTimeout(this.doNextTimer);
+    this.doNextTimer = undefined;
     try {
       const job = await jobs.getJob(client, {
         workerId: this.workerId,
@@ -84,10 +93,7 @@ export default class Worker {
           : this.supportedTaskNames
       });
       if (!job || !job.id) {
-        this.doNextTimer = setTimeout(
-          () => this.doNext(client),
-          this.idleDelay
-        );
+      this.doNextTimer = setTimeout(() => this.doNext(client), this.idleDelay as number);
         return;
       }
       const start = process.hrtime();
@@ -115,10 +121,10 @@ export default class Worker {
     }
   }
   listen() {
-    const listenForChanges = (err, client, release) => {
+    const listenForChanges = (err: any, client: any, release: any) => {
       if (err) {
         console.error('worker: Error connecting with notify listener', err);
-        setTimeout(this.listen, 5000);
+        setTimeout(this.listen.bind(this), 5000);
         return;
       }
       client.on('notification', () => {
@@ -127,7 +133,7 @@ export default class Worker {
         }
       });
       client.query('LISTEN "jobs:insert"');
-      client.on('error', (e) => {
+      client.on('error', (e: any) => {
         console.error('worker: Error with database notify listener', e);
         release();
         this.listen();
@@ -140,4 +146,3 @@ export default class Worker {
 }
 
 export { Worker };
-

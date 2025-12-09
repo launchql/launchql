@@ -5,8 +5,10 @@
   "author": "LaunchQL",
   "homepage": "https://github.com/launchql/launchql",
   "license": "SEE LICENSE IN LICENSE",
+  "main": "dist/server.js",
+  "types": "dist/server.d.ts",
   "bin": {
-    "job-callback": "src/run.ts"
+    "job-callback": "dist/run.js"
   },
   "directories": {
     "lib": "src",
@@ -20,6 +22,8 @@
     "url": "https://github.com/launchql/jobs"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
@@ -31,4 +35,3 @@
     "pg-cache": "workspace:^"
   }
 }
-

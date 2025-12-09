@@ -16,7 +16,11 @@
     "type": "git",
     "url": "https://github.com/launchql/jobs"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "build:watch": "tsc -b tsconfig.json -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
@@ -24,10 +28,12 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node-schedule": "^1.3.0"
+  },
   "dependencies": {
-    "@launchql/job-pg": "^0.2.2",
-    "@launchql/job-utils": "^0.2.2",
+    "@launchql/job-pg": "workspace:^",
+    "@launchql/job-utils": "workspace:^",
     "node-schedule": "1.3.2"
   }
 }

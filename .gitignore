@@ -7,3 +7,4 @@ lerna-debug.log
 ignore
 packages/pgsql-test/output/
 .claude
+*.tsbuildinfo

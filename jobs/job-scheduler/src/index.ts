@@ -2,16 +2,27 @@ import * as jobs from '@launchql/job-utils';
 import schedule from 'node-schedule';
 import poolManager from '@launchql/job-pg';
 import { getJobSupportAny } from '@launchql/job-utils';
+import type { Pool } from 'pg';
+import type { ScheduledJobRow } from '@launchql/core';
 
 /* eslint-disable no-console */
 
 export default class Scheduler {
+  // fields
+  private idleDelay: number;
+  private supportedTaskNames: string[];
+  private workerId: string;
+  private doNextTimer: NodeJS.Timeout | undefined;
+  private pgPool: Pool;
+  private jobs: Record<string | number, any>;
+  private _initialized?: boolean;
+
   constructor({
     tasks,
     idleDelay = 15000,
     pgPool = poolManager.getPool(),
     workerId = 'scheduler-0'
-  }) {
+  }: { tasks?: string[]; idleDelay?: number; pgPool?: Pool; workerId?: string } = {}) {
     /*
      * idleDelay: This is how long to wait between polling for jobs.
      *
@@ -30,7 +41,7 @@ export default class Scheduler {
       { workerId: this.workerId }
     ]);
   }
-  async initialize(client) {
+  async initialize(client: any) {
     if (this._initialized === true) return;
     await jobs.releaseScheduledJobs(client, {
       workerId: this.workerId
@@ -38,7 +49,7 @@ export default class Scheduler {
     this._initialized = true;
     await this.doNext(client);
   }
-  async handleFatalError(client, { err, fatalError, jobId }) {
+  async handleFatalError(client: any, { err, fatalError, jobId }: any) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
       `Failed to release job '${jobId}' ${when}; committing seppuku`
@@ -47,7 +58,7 @@ export default class Scheduler {
     await poolManager.close();
     process.exit(1);
   }
-  async handleError(client, { err, job, duration }) {
+  async handleError(client: any, { err, job, duration }: any) {
     console.error(
       `scheduler: Failed to initialize scheduler for ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
       { err, stack: err.stack }
@@ -59,12 +70,12 @@ export default class Scheduler {
       ids: [job.id]
     });
   }
-  async handleSuccess(client, { job, duration }) {
+  async handleSuccess(client: any, { job, duration }: any) {
     console.log(
       `scheduler: initialized ${job.id} (${job.task_identifier}) with success (${duration}ms)`
     );
   }
-  async scheduleJob(client, job) {
+  async scheduleJob(client: any, job: ScheduledJobRow & { schedule_info: any }) {
     const { id, task_identifier, schedule_info } = job;
     const j = schedule.scheduleJob(schedule_info, async () => {
       const newjob = await jobs.runScheduledJob(client, {
@@ -90,12 +101,13 @@ export default class Scheduler {
     });
     this.jobs[id] = j;
   }
-  async doNext(client) {
+  async doNext(client: any): Promise<void> {
     if (!this._initialized) {
       return await this.initialize(client);
     }
 
-    this.doNextTimer = clearTimeout(this.doNextTimer);
+    if (this.doNextTimer) clearTimeout(this.doNextTimer);
+    this.doNextTimer = undefined;
     try {
       const job = await jobs.getScheduledJob(client, {
         workerId: this.workerId,
@@ -139,7 +151,7 @@ export default class Scheduler {
     }
   }
   listen() {
-    const listenForChanges = (err, client, release) => {
+    const listenForChanges = (err: any, client: any, release: any) => {
       if (err) {
         console.error('scheduler: Error connecting with notify listener', err);
         // Try again in 5 seconds
@@ -155,7 +167,7 @@ export default class Scheduler {
         }
       });
       client.query('LISTEN "scheduled_jobs:insert"');
-      client.on('error', (e) => {
+      client.on('error', (e: any) => {
         console.error('scheduler: Error with database notify listener', e);
         release();
         this.listen();

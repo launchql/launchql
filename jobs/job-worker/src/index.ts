@@ -1,140 +1,52 @@
-import pg, { Pool, PoolClient } from 'pg';
-import * as jobs from '@launchql/job-utils';
 import poolManager from '@launchql/job-pg';
-import type { JobRow } from '@launchql/core';
-import { getJob as dbGetJob, completeJob as dbCompleteJob, failJob as dbFailJob } from '@launchql/core';
-import { OpenFaasJobExecutor } from './executors/openfaas';
-import { KnativeJobExecutor } from './executors/knative';
-
-export type TaskHandler = (ctx: { pgPool: Pool; workerId: string }, job: JobRow) => Promise<void>;
-
-export interface WorkerOptions {
-  jobSchema?: string; // defaults to getJobSchema() inside utils
-  queue?: string | null; // reserved for future use
-  pollIntervalMs?: number; // default 15000
-  workerId?: string; // default 'worker-0' or env HOSTNAME
-  supportAny?: boolean; // when true, ignore task filters
-  supported?: string[]; // explicit task identifiers
-  callbackUrl?: string; // included in headers; executor may use it
-}
-
-export interface JobExecutor {
-  execute(job: JobRow, headers: Record<string, string>): Promise<void>;
-}
-
-export class InlineExecutor implements JobExecutor {
-  constructor(private tasks: Record<string, TaskHandler>) {}
-
-  async execute(job: JobRow, _headers: Record<string, string>): Promise<void> {
-    const handler = this.tasks[job.task_identifier];
-    if (!handler) throw new Error('Unsupported task');
-    // Context mirrors previous runtime
-    await handler({ pgPool: this.pgPool!, workerId: this.workerId! } as any, job);
-  }
-
-  // The executor can be provided with context after Worker is constructed
-  private pgPool?: Pool;
-  private workerId?: string;
-  bindRuntime(pgPool: Pool, workerId: string) {
-    this.pgPool = pgPool;
-    this.workerId = workerId;
-  }
-}
-
-const pgPoolConfig = null; // deprecated, kept for constructor signature compatibility
-
-function once(fn, context) {
-  let result;
-  return function () {
-    if (fn) {
-      result = fn.apply(context || this, arguments);
-      fn = null;
-    }
-    return result;
-  };
-}
+import * as jobs from '@launchql/job-utils';
+import { request as req } from './req';
+import { getJobSupportAny } from '@launchql/job-utils';
+import type { Pool } from 'pg';
 
 /* eslint-disable no-console */
-
 export default class Worker {
-  private pgPool: Pool;
-  private executor: JobExecutor;
   private idleDelay: number;
-  private workerId: string;
   private supportedTaskNames: string[];
-  private supportAny: boolean;
-  private jobSchema: string;
-  private callbackUrl?: string;
+  private workerId: string;
   private doNextTimer: NodeJS.Timeout | undefined;
-  private _ended = false;
+  private pgPool: Pool;
+  private _initialized?: boolean;
 
   constructor({
     tasks,
     idleDelay = 15000,
     pgPool = poolManager.getPool(),
-    workerId,
-    jobSchema,
-    pollIntervalMs,
-    supportAny,
-    supported,
-    callbackUrl,
-    executor,
-  }: { tasks?: Record<string, TaskHandler>; executor?: JobExecutor } & WorkerOptions = {}) {
-    // Resolve options from job-utils runtime for compatibility
-    this.jobSchema = jobSchema ?? jobs.getJobSchema();
-    this.supportAny = supportAny ?? jobs.getJobSupportAny();
-    this.supportedTaskNames = supported ?? (tasks ? Object.keys(tasks) : jobs.getJobSupported());
-    this.workerId = workerId ?? jobs.getWorkerHostname();
-    this.idleDelay = pollIntervalMs ?? idleDelay ?? 15000;
+    workerId = 'worker-0'
+  }: { tasks?: string[]; idleDelay?: number; pgPool?: Pool; workerId?: string } = {}) {
+    this.idleDelay = idleDelay;
+    this.supportedTaskNames = tasks;
+    this.workerId = workerId;
+    this.doNextTimer = undefined;
     this.pgPool = pgPool;
-    // Prefer neutral callback URL if set, otherwise fallback to existing OpenFaaS callback
-    this.callbackUrl =
-      callbackUrl ??
-      jobs.getCallbackBaseUrl() ??
-      jobs.getOpenFaasGatewayConfig().callbackUrl;
-
-    // Choose executor: inline when tasks provided; otherwise:
-    if (executor) {
-      this.executor = executor;
-    } else if (tasks) {
-      const inline = new InlineExecutor(tasks);
-      inline.bindRuntime(this.pgPool, this.workerId);
-      this.executor = inline;
-    } else {
-      // Select executor via env toggle; default remains OpenFaaS
-      const execName = (process.env.JOBS_EXECUTOR || '').toLowerCase();
-      if (execName === 'knative') {
-        this.executor = new KnativeJobExecutor();
-      } else {
-        this.executor = new OpenFaasJobExecutor();
-      }
-    }
-
-    const close = () => {
-      console.log('closing connection...');
-      this.close();
-    };
-    process.once('SIGTERM', close);
-    process.once('SIGINT', close);
+    poolManager.onClose(jobs.releaseJobs, null, [
+      this.pgPool,
+      { workerId: this.workerId }
+    ]);
   }
-
-  close() {
-    if (!this._ended) {
-      this.pgPool.end();
-    }
-    this._ended = true;
+  async initialize(client: any) {
+    if (this._initialized === true) return;
+    await jobs.releaseJobs(client, { workerId: this.workerId });
+    this._initialized = true;
+    await this.doNext(client);
   }
-  handleFatalError({ err, fatalError, jobId }) {
+  async handleFatalError(client: any, { err, fatalError, jobId }: any) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
-      `Failed to release job '${jobId}' ${when}; committing seppuku`
+      `worker: Failed to release job '${jobId}' ${when}; committing seppuku`
     );
+    await poolManager.close();
     console.error(fatalError);
     process.exit(1);
   }
-  async handleError(client, { err, job, duration }) {
+  async handleError(client: any, { err, job, duration }: any) {
     console.error(
-      `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
+      `worker: Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
       { err, stack: err.stack }
     );
     console.error(err.stack);
@@ -144,40 +56,42 @@ export default class Worker {
       message: err.message
     });
   }
-  async handleSuccess(client, { job, duration }) {
+  async handleSuccess(client: any, { job, duration }: any) {
     console.log(
-      `Completed task ${job.id} (${job.task_identifier}) with success (${duration}ms)`
+      `worker: Async task ${job.id} (${job.task_identifier}) to be processed`
     );
-    await jobs.completeJob(client, { workerId: this.workerId, jobId: job.id });
   }
-  async doWork(job: JobRow) {
-    const headers: Record<string, string> = {
-      'x-worker-id': this.workerId,
-      'x-job-id': String(job.id),
-      'x-database-id': job.database_id ?? '',
-      // placeholder for future RLS user context
-      'x-current-user-id': '',
-      'x-callback-url': this.callbackUrl ?? '',
-    };
-    await this.executor.execute(job, headers);
+  async doWork(job: any) {
+    const { payload, task_identifier } = job;
+    if (!getJobSupportAny() && !this.supportedTaskNames.includes(task_identifier)) {
+      throw new Error('Unsupported task');
+    }
+    await req(task_identifier, {
+      body: payload,
+      databaseId: job.database_id,
+      workerId: this.workerId,
+      jobId: job.id
+    });
   }
-  async doNext(client: PoolClient) {
-    this.doNextTimer = clearTimeout(this.doNextTimer);
+  async doNext(client: any): Promise<void> {
+    if (!this._initialized) {
+      return await this.initialize(client);
+    }
+    console.log('worker: checking for jobs...');
+    if (this.doNextTimer) clearTimeout(this.doNextTimer);
+    this.doNextTimer = undefined;
     try {
-      const job = await dbGetJob(this.pgPool as any, {
+      const job = await jobs.getJob(client, {
         workerId: this.workerId,
-        supportedTaskNames: this.supportAny ? null : this.supportedTaskNames,
-        schema: this.jobSchema,
+        supportedTaskNames: getJobSupportAny()
+          ? null
+          : this.supportedTaskNames
       });
       if (!job || !job.id) {
-        this.doNextTimer = setTimeout(
-          () => this.doNext(client),
-          this.idleDelay
-        );
+        this.doNextTimer = setTimeout(() => this.doNext(client), this.idleDelay as number);
         return;
       }
       const start = process.hrtime();
-
       let err;
       try {
         await this.doWork(job);
@@ -185,9 +99,7 @@ export default class Worker {
         err = error;
       }
       const durationRaw = process.hrtime(start);
-      const duration = ((durationRaw[0] * 1e9 + durationRaw[1]) / 1e6).toFixed(
-        2
-      );
+      const duration = ((durationRaw[0] * 1e9 + durationRaw[1]) / 1e6).toFixed(2);
       const jobId = job.id;
       try {
         if (err) {
@@ -196,35 +108,32 @@ export default class Worker {
           await this.handleSuccess(client, { job, duration });
         }
       } catch (fatalError) {
-        this.handleFatalError({ err, fatalError, jobId });
+        await this.handleFatalError(client, { err, fatalError, jobId });
       }
       return this.doNext(client);
     } catch (err) {
-      this.doNextTimer = setTimeout(() => this.doNext(client), this.idleDelay);
+      this.doNextTimer = setTimeout(() => this.doNext(client), this.idleDelay as number);
     }
   }
   listen() {
-    const listenForChanges = (err: Error | null, client: PoolClient, release: () => void) => {
+    const listenForChanges = (err: any, client: any, release: any) => {
       if (err) {
-        console.error('Error connecting with notify listener', err);
-        // Try again in 5 seconds
-        // should this really be done in the node process?
+        console.error('worker: Error connecting with notify listener', err);
         setTimeout(this.listen.bind(this), 5000);
         return;
       }
       client.on('notification', () => {
         if (this.doNextTimer) {
-          // Must be idle, do something!
           this.doNext(client);
         }
       });
       client.query('LISTEN "jobs:insert"');
-      client.on('error', (e) => {
-        console.error('Error with database notify listener', e);
+      client.on('error', (e: any) => {
+        console.error('worker: Error with database notify listener', e);
         release();
         this.listen();
       });
-      console.log(`${this.workerId} connected and looking for jobs...`);
+      console.log(`worker: ${this.workerId} connected and looking for jobs...`);
       this.doNext(client);
     };
     this.pgPool.connect(listenForChanges);
