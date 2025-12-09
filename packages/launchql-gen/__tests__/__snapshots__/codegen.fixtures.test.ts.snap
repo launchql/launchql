@@ -88,12 +88,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createApiToken(
     input: {apiToken: {userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}
   ) {
-    apiToken {
-      id
-      userId
-      accessToken
-      accessTokenExpiresAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -101,18 +96,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createArticle(
     input: {article: {header: $header, url: $url, image: $image, datePublished: $datePublished, ownerId: $ownerId}}
   ) {
-    article {
-      id
-      header
-      url
-      image
-      datePublished
-      ownerId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -120,28 +104,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createCampaignAction(
     input: {campaignAction: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}
   ) {
-    campaignAction {
-      id
-      name
-      description
-      rewardUnit
-      rewardAmount
-      totalBitcoinLimit
-      actionWeeklyLimit
-      actionDailyLimit
-      userTotalLimit
-      userWeeklyLimit
-      userDailyLimit
-      startDate
-      endDate
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      campaignId
-      partnerId
-      thumbnailId
-    }
+    clientMutationId
   }
 }
 ",
@@ -149,20 +112,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createCampaign(
     input: {campaign: {name: $name, description: $description, startDate: $startDate, endDate: $endDate, partnerId: $partnerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}
   ) {
-    campaign {
-      id
-      name
-      description
-      startDate
-      endDate
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      logoId
-      backgroundImageId
-    }
+    clientMutationId
   }
 }
 ",
@@ -170,17 +120,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createCompletedAction(
     input: {completedAction: {dateCompleted: $dateCompleted, txid: $txid, userId: $userId, actionId: $actionId}}
   ) {
-    completedAction {
-      id
-      dateCompleted
-      txid
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      userId
-      actionId
-    }
+    clientMutationId
   }
 }
 ",
@@ -188,18 +128,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createImage(
     input: {image: {name: $name, url: $url, versions: $versions, versions2: $versions2, versions3: $versions3}}
   ) {
-    image {
-      id
-      name
-      url
-      versions
-      versions2
-      versions3
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -207,19 +136,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createInitiativesPyraRecord(
     input: {initiativesPyraRecord: {name: $name, email: $email, bitcoinAddress: $bitcoinAddress, date: $date, actionsCompleted: $actionsCompleted, actionId: $actionId}}
   ) {
-    initiativesPyraRecord {
-      id
-      name
-      email
-      bitcoinAddress
-      date
-      actionsCompleted
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      actionId
-    }
+    clientMutationId
   }
 }
 ",
@@ -227,19 +144,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createMerchant(
     input: {merchant: {name: $name, bitcoinAddress: $bitcoinAddress, description: $description, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}
   ) {
-    merchant {
-      id
-      name
-      bitcoinAddress
-      description
-      ownerId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      logoId
-      backgroundImageId
-    }
+    clientMutationId
   }
 }
 ",
@@ -247,33 +152,13 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createPartner(
     input: {partner: {name: $name, description: $description, bitcoinAddress: $bitcoinAddress, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}
   ) {
-    partner {
-      id
-      name
-      description
-      bitcoinAddress
-      ownerId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      logoId
-      backgroundImageId
-    }
+    clientMutationId
   }
 }
 ",
   "createPermissionMutation": "mutation createPermissionMutation($name: String, $userId: UUID!) {
   createPermission(input: {permission: {name: $name, userId: $userId}}) {
-    permission {
-      id
-      name
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      userId
-    }
+    clientMutationId
   }
 }
 ",
@@ -281,17 +166,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createProduct(
     input: {product: {name: $name, url: $url, merchantId: $merchantId, iconId: $iconId}}
   ) {
-    product {
-      id
-      name
-      url
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      merchantId
-      iconId
-    }
+    clientMutationId
   }
 }
 ",
@@ -299,19 +174,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createService(
     input: {service: {name: $name, description: $description, type: $type, data: $data, campaignActionId: $campaignActionId, iconId: $iconId}}
   ) {
-    service {
-      id
-      name
-      description
-      type
-      data
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      campaignActionId
-      iconId
-    }
+    clientMutationId
   }
 }
 ",
@@ -319,17 +182,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createShopifyAccount(
     input: {shopifyAccount: {name: $name, shopLink: $shopLink, partnerId: $partnerId, iconId: $iconId}}
   ) {
-    shopifyAccount {
-      id
-      name
-      shopLink
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      iconId
-    }
+    clientMutationId
   }
 }
 ",
@@ -337,27 +190,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createShopifyOrder(
     input: {shopifyOrder: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}
   ) {
-    shopifyOrder {
-      id
-      orderId
-      email
-      orderStatus
-      financialStatus
-      subtotalPrice
-      orderCreatedAt
-      orderClosedAt
-      bitcoinUpdatedAt
-      bitcoinRebate
-      bitcoinAddress
-      paidDate
-      transactionId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      shopifyAccountId
-    }
+    clientMutationId
   }
 }
 ",
@@ -365,13 +198,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createShopifySecret(
     input: {shopifySecret: {shopifyAccountId: $shopifyAccountId, name: $name, value: $value, enc: $enc}}
   ) {
-    shopifySecret {
-      id
-      shopifyAccountId
-      name
-      value
-      enc
-    }
+    clientMutationId
   }
 }
 ",
@@ -379,13 +206,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createUserEncryptedSecret(
     input: {userEncryptedSecret: {userId: $userId, name: $name, value: $value, enc: $enc}}
   ) {
-    userEncryptedSecret {
-      id
-      userId
-      name
-      value
-      enc
-    }
+    clientMutationId
   }
 }
 ",
@@ -393,11 +214,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createUser(
     input: {user: {username: $username, bitcoinAddress: $bitcoinAddress}}
   ) {
-    user {
-      id
-      username
-      bitcoinAddress
-    }
+    clientMutationId
   }
 }
 ",
@@ -405,12 +222,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   createUserSecret(
     input: {userSecret: {userId: $userId, name: $name, value: $value}}
   ) {
-    userSecret {
-      id
-      userId
-      name
-      value
-    }
+    clientMutationId
   }
 }
 ",
@@ -3009,48 +2821,27 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   }
 }
 ",
-  "updateApiTokenByAccessTokenMutation": "mutation updateApiTokenByAccessTokenMutation($userId: UUID, $accessToken: String!, $accessTokenExpiresAt: Datetime) {
+  "updateApiTokenByAccessTokenMutation": "mutation updateApiTokenByAccessTokenMutation($accessToken: String!, $userId: UUID, $accessTokenExpiresAt: Datetime) {
   updateApiTokenByAccessToken(
     input: {accessToken: $accessToken, patch: {userId: $userId, accessTokenExpiresAt: $accessTokenExpiresAt}}
   ) {
-    apiToken {
-      id
-      userId
-      accessToken
-      accessTokenExpiresAt
-    }
+    clientMutationId
   }
 }
 ",
-  "updateApiTokenMutation": "mutation updateApiTokenMutation($userId: UUID, $accessToken: String, $accessTokenExpiresAt: Datetime) {
+  "updateApiTokenMutation": "mutation updateApiTokenMutation($id: UUID!, $userId: UUID, $accessToken: String, $accessTokenExpiresAt: Datetime) {
   updateApiToken(
     input: {id: $id, patch: {userId: $userId, accessToken: $accessToken, accessTokenExpiresAt: $accessTokenExpiresAt}}
   ) {
-    apiToken {
-      id
-      userId
-      accessToken
-      accessTokenExpiresAt
-    }
+    clientMutationId
   }
 }
 ",
-  "updateArticleMutation": "mutation updateArticleMutation($header: String, $url: String, $image: String, $datePublished: Datetime, $ownerId: UUID) {
+  "updateArticleMutation": "mutation updateArticleMutation($id: UUID!, $header: String, $url: String, $image: String, $datePublished: Datetime, $ownerId: UUID) {
   updateArticle(
     input: {id: $id, patch: {header: $header, url: $url, image: $image, datePublished: $datePublished, ownerId: $ownerId}}
   ) {
-    article {
-      id
-      header
-      url
-      image
-      datePublished
-      ownerId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -3058,299 +2849,109 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   updateCampaignActionByName(
     input: {name: $name, patch: {description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}
   ) {
-    campaignAction {
-      id
-      name
-      description
-      rewardUnit
-      rewardAmount
-      totalBitcoinLimit
-      actionWeeklyLimit
-      actionDailyLimit
-      userTotalLimit
-      userWeeklyLimit
-      userDailyLimit
-      startDate
-      endDate
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      campaignId
-      partnerId
-      thumbnailId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateCampaignActionMutation": "mutation updateCampaignActionMutation($name: String, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
+  "updateCampaignActionMutation": "mutation updateCampaignActionMutation($id: UUID!, $name: String, $description: String, $rewardUnit: String, $rewardAmount: BigFloat, $totalBitcoinLimit: BigFloat, $actionWeeklyLimit: Int, $actionDailyLimit: Int, $userTotalLimit: Int, $userWeeklyLimit: Int, $userDailyLimit: Int, $startDate: Datetime, $endDate: Datetime, $campaignId: UUID, $partnerId: UUID, $thumbnailId: UUID) {
   updateCampaignAction(
     input: {id: $id, patch: {name: $name, description: $description, rewardUnit: $rewardUnit, rewardAmount: $rewardAmount, totalBitcoinLimit: $totalBitcoinLimit, actionWeeklyLimit: $actionWeeklyLimit, actionDailyLimit: $actionDailyLimit, userTotalLimit: $userTotalLimit, userWeeklyLimit: $userWeeklyLimit, userDailyLimit: $userDailyLimit, startDate: $startDate, endDate: $endDate, campaignId: $campaignId, partnerId: $partnerId, thumbnailId: $thumbnailId}}
   ) {
-    campaignAction {
-      id
-      name
-      description
-      rewardUnit
-      rewardAmount
-      totalBitcoinLimit
-      actionWeeklyLimit
-      actionDailyLimit
-      userTotalLimit
-      userWeeklyLimit
-      userDailyLimit
-      startDate
-      endDate
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      campaignId
-      partnerId
-      thumbnailId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateCampaignMutation": "mutation updateCampaignMutation($name: String, $description: String, $startDate: Datetime, $endDate: Datetime, $partnerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  "updateCampaignMutation": "mutation updateCampaignMutation($id: UUID!, $name: String, $description: String, $startDate: Datetime, $endDate: Datetime, $partnerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
   updateCampaign(
     input: {id: $id, patch: {name: $name, description: $description, startDate: $startDate, endDate: $endDate, partnerId: $partnerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}
   ) {
-    campaign {
-      id
-      name
-      description
-      startDate
-      endDate
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      logoId
-      backgroundImageId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateCompletedActionMutation": "mutation updateCompletedActionMutation($dateCompleted: Datetime, $txid: String, $userId: UUID, $actionId: UUID) {
+  "updateCompletedActionMutation": "mutation updateCompletedActionMutation($id: UUID!, $dateCompleted: Datetime, $txid: String, $userId: UUID, $actionId: UUID) {
   updateCompletedAction(
     input: {id: $id, patch: {dateCompleted: $dateCompleted, txid: $txid, userId: $userId, actionId: $actionId}}
   ) {
-    completedAction {
-      id
-      dateCompleted
-      txid
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      userId
-      actionId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateImageMutation": "mutation updateImageMutation($name: String, $url: String, $versions: JSON) {
+  "updateImageMutation": "mutation updateImageMutation($id: UUID!, $name: String, $url: String, $versions: JSON) {
   updateImage(
     input: {id: $id, patch: {name: $name, url: $url, versions: $versions}}
   ) {
-    image {
-      id
-      name
-      url
-      versions
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-    }
+    clientMutationId
   }
 }
 ",
-  "updateInitiativesPyraRecordMutation": "mutation updateInitiativesPyraRecordMutation($name: String, $email: String, $bitcoinAddress: String, $date: Datetime, $actionsCompleted: Int, $actionId: UUID) {
+  "updateInitiativesPyraRecordMutation": "mutation updateInitiativesPyraRecordMutation($id: UUID!, $name: String, $email: String, $bitcoinAddress: String, $date: Datetime, $actionsCompleted: Int, $actionId: UUID) {
   updateInitiativesPyraRecord(
     input: {id: $id, patch: {name: $name, email: $email, bitcoinAddress: $bitcoinAddress, date: $date, actionsCompleted: $actionsCompleted, actionId: $actionId}}
   ) {
-    initiativesPyraRecord {
-      id
-      name
-      email
-      bitcoinAddress
-      date
-      actionsCompleted
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      actionId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateMerchantMutation": "mutation updateMerchantMutation($name: String, $bitcoinAddress: String, $description: String, $ownerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  "updateMerchantMutation": "mutation updateMerchantMutation($id: UUID!, $name: String, $bitcoinAddress: String, $description: String, $ownerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
   updateMerchant(
     input: {id: $id, patch: {name: $name, bitcoinAddress: $bitcoinAddress, description: $description, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}
   ) {
-    merchant {
-      id
-      name
-      bitcoinAddress
-      description
-      ownerId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      logoId
-      backgroundImageId
-    }
+    clientMutationId
   }
 }
 ",
-  "updatePartnerMutation": "mutation updatePartnerMutation($name: String, $description: String, $bitcoinAddress: String, $ownerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
+  "updatePartnerMutation": "mutation updatePartnerMutation($id: UUID!, $name: String, $description: String, $bitcoinAddress: String, $ownerId: UUID, $logoId: UUID, $backgroundImageId: UUID) {
   updatePartner(
     input: {id: $id, patch: {name: $name, description: $description, bitcoinAddress: $bitcoinAddress, ownerId: $ownerId, logoId: $logoId, backgroundImageId: $backgroundImageId}}
   ) {
-    partner {
-      id
-      name
-      description
-      bitcoinAddress
-      ownerId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      logoId
-      backgroundImageId
-    }
+    clientMutationId
   }
 }
 ",
-  "updatePermissionMutation": "mutation updatePermissionMutation($name: String, $userId: UUID) {
+  "updatePermissionMutation": "mutation updatePermissionMutation($id: UUID!, $name: String, $userId: UUID) {
   updatePermission(input: {id: $id, patch: {name: $name, userId: $userId}}) {
-    permission {
-      id
-      name
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      userId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateProductMutation": "mutation updateProductMutation($name: String, $url: String, $merchantId: UUID, $iconId: UUID) {
+  "updateProductMutation": "mutation updateProductMutation($id: UUID!, $name: String, $url: String, $merchantId: UUID, $iconId: UUID) {
   updateProduct(
     input: {id: $id, patch: {name: $name, url: $url, merchantId: $merchantId, iconId: $iconId}}
   ) {
-    product {
-      id
-      name
-      url
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      merchantId
-      iconId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateServiceMutation": "mutation updateServiceMutation($name: String, $description: String, $type: String, $data: JSON, $campaignActionId: UUID, $iconId: UUID) {
+  "updateServiceMutation": "mutation updateServiceMutation($id: UUID!, $name: String, $description: String, $type: String, $data: JSON, $campaignActionId: UUID, $iconId: UUID) {
   updateService(
     input: {id: $id, patch: {name: $name, description: $description, type: $type, data: $data, campaignActionId: $campaignActionId, iconId: $iconId}}
   ) {
-    service {
-      id
-      name
-      description
-      type
-      data
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      campaignActionId
-      iconId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateShopifyAccountMutation": "mutation updateShopifyAccountMutation($name: String, $shopLink: String, $partnerId: UUID, $iconId: UUID) {
+  "updateShopifyAccountMutation": "mutation updateShopifyAccountMutation($id: UUID!, $name: String, $shopLink: String, $partnerId: UUID, $iconId: UUID) {
   updateShopifyAccount(
     input: {id: $id, patch: {name: $name, shopLink: $shopLink, partnerId: $partnerId, iconId: $iconId}}
   ) {
-    shopifyAccount {
-      id
-      name
-      shopLink
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      iconId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation": "mutation updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($orderId: Int!, $email: String!, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID, $shopifyAccountId: UUID!) {
+  "updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation": "mutation updateShopifyOrderByOrderIdAndEmailAndShopifyAccountIdMutation($orderId: Int!, $email: String!, $shopifyAccountId: UUID!, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID) {
   updateShopifyOrderByOrderIdAndEmailAndShopifyAccountId(
     input: {orderId: $orderId, email: $email, shopifyAccountId: $shopifyAccountId, patch: {orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, partnerId: $partnerId}}
   ) {
-    shopifyOrder {
-      id
-      orderId
-      email
-      orderStatus
-      financialStatus
-      subtotalPrice
-      orderCreatedAt
-      orderClosedAt
-      bitcoinUpdatedAt
-      bitcoinRebate
-      bitcoinAddress
-      paidDate
-      transactionId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      shopifyAccountId
-    }
+    clientMutationId
   }
 }
 ",
-  "updateShopifyOrderMutation": "mutation updateShopifyOrderMutation($orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID, $shopifyAccountId: UUID) {
+  "updateShopifyOrderMutation": "mutation updateShopifyOrderMutation($id: UUID!, $orderId: Int, $email: String, $orderStatus: String, $financialStatus: String, $subtotalPrice: BigFloat, $orderCreatedAt: Datetime, $orderClosedAt: Datetime, $bitcoinUpdatedAt: Datetime, $bitcoinRebate: BigFloat, $bitcoinAddress: String, $paidDate: Datetime, $transactionId: String, $partnerId: UUID, $shopifyAccountId: UUID) {
   updateShopifyOrder(
     input: {id: $id, patch: {orderId: $orderId, email: $email, orderStatus: $orderStatus, financialStatus: $financialStatus, subtotalPrice: $subtotalPrice, orderCreatedAt: $orderCreatedAt, orderClosedAt: $orderClosedAt, bitcoinUpdatedAt: $bitcoinUpdatedAt, bitcoinRebate: $bitcoinRebate, bitcoinAddress: $bitcoinAddress, paidDate: $paidDate, transactionId: $transactionId, partnerId: $partnerId, shopifyAccountId: $shopifyAccountId}}
   ) {
-    shopifyOrder {
-      id
-      orderId
-      email
-      orderStatus
-      financialStatus
-      subtotalPrice
-      orderCreatedAt
-      orderClosedAt
-      bitcoinUpdatedAt
-      bitcoinRebate
-      bitcoinAddress
-      paidDate
-      transactionId
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-      partnerId
-      shopifyAccountId
-    }
+    clientMutationId
   }
 }
 ",
@@ -3358,39 +2959,23 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   updateShopifySecretByShopifyAccountIdAndName(
     input: {shopifyAccountId: $shopifyAccountId, name: $name, patch: {value: $value, enc: $enc}}
   ) {
-    shopifySecret {
-      id
-      shopifyAccountId
-      name
-      value
-      enc
-    }
+    clientMutationId
   }
 }
 ",
-  "updateShopifySecretMutation": "mutation updateShopifySecretMutation($shopifyAccountId: UUID, $name: String, $value: String, $enc: String) {
+  "updateShopifySecretMutation": "mutation updateShopifySecretMutation($id: UUID!, $shopifyAccountId: UUID, $name: String, $value: String, $enc: String) {
   updateShopifySecret(
     input: {id: $id, patch: {shopifyAccountId: $shopifyAccountId, name: $name, value: $value, enc: $enc}}
   ) {
-    shopifySecret {
-      id
-      shopifyAccountId
-      name
-      value
-      enc
-    }
+    clientMutationId
   }
 }
 ",
-  "updateUserByBitcoinAddressMutation": "mutation updateUserByBitcoinAddressMutation($username: String, $bitcoinAddress: String!) {
+  "updateUserByBitcoinAddressMutation": "mutation updateUserByBitcoinAddressMutation($bitcoinAddress: String!, $username: String) {
   updateUserByBitcoinAddress(
     input: {bitcoinAddress: $bitcoinAddress, patch: {username: $username}}
   ) {
-    user {
-      id
-      username
-      bitcoinAddress
-    }
+    clientMutationId
   }
 }
 ",
@@ -3398,11 +2983,7 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   updateUserByUsername(
     input: {username: $username, patch: {bitcoinAddress: $bitcoinAddress}}
   ) {
-    user {
-      id
-      username
-      bitcoinAddress
-    }
+    clientMutationId
   }
 }
 ",
@@ -3410,39 +2991,23 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   updateUserEncryptedSecretByUserIdAndName(
     input: {userId: $userId, name: $name, patch: {value: $value, enc: $enc}}
   ) {
-    userEncryptedSecret {
-      id
-      userId
-      name
-      value
-      enc
-    }
+    clientMutationId
   }
 }
 ",
-  "updateUserEncryptedSecretMutation": "mutation updateUserEncryptedSecretMutation($userId: UUID, $name: String, $value: String, $enc: String) {
+  "updateUserEncryptedSecretMutation": "mutation updateUserEncryptedSecretMutation($id: UUID!, $userId: UUID, $name: String, $value: String, $enc: String) {
   updateUserEncryptedSecret(
     input: {id: $id, patch: {userId: $userId, name: $name, value: $value, enc: $enc}}
   ) {
-    userEncryptedSecret {
-      id
-      userId
-      name
-      value
-      enc
-    }
+    clientMutationId
   }
 }
 ",
-  "updateUserMutation": "mutation updateUserMutation($username: String, $bitcoinAddress: String) {
+  "updateUserMutation": "mutation updateUserMutation($id: UUID!, $username: String, $bitcoinAddress: String) {
   updateUser(
     input: {id: $id, patch: {username: $username, bitcoinAddress: $bitcoinAddress}}
   ) {
-    user {
-      id
-      username
-      bitcoinAddress
-    }
+    clientMutationId
   }
 }
 ",
@@ -3450,25 +3015,15 @@ exports[`GraphQL Code Generation generate(): full AST map snapshot: full generat
   updateUserSecretByUserIdAndName(
     input: {userId: $userId, name: $name, patch: {value: $value}}
   ) {
-    userSecret {
-      id
-      userId
-      name
-      value
-    }
+    clientMutationId
   }
 }
 ",
-  "updateUserSecretMutation": "mutation updateUserSecretMutation($userId: UUID, $name: String, $value: String) {
+  "updateUserSecretMutation": "mutation updateUserSecretMutation($id: UUID!, $userId: UUID, $name: String, $value: String) {
   updateUserSecret(
     input: {id: $id, patch: {userId: $userId, name: $name, value: $value}}
   ) {
-    userSecret {
-      id
-      userId
-      name
-      value
-    }
+    clientMutationId
   }
 }
 ",
