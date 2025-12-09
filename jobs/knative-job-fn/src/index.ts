@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-const app = express();
+const app: any = express();
 app.use(bodyParser.json());
-app.use((req, res, next) => {
+app.use((req: any, res: any, next: any) => {
   res.set({
     'Content-Type': 'application/json',
     'X-Worker-Id': req.get('X-Worker-Id'),
@@ -14,15 +14,15 @@ app.use((req, res, next) => {
 });
 
 export default {
-  post: function () {
-    return app.post.apply(app, arguments);
+  post: function (...args: any[]) {
+    return app.post.apply(app, args as any);
   },
-  listen: (port, cb = () => {}) => {
+  listen: (port: any, cb: () => void = () => {}) => {
     // NOTE Remember that Express middleware executes in order.
     // You should define error handlers last, after all other middleware.
     // Otherwise, your error handler won't get called
     // eslint-disable-next-line no-unused-vars
-    app.use(async (error, req, res, next) => {
+    app.use(async (error: any, req: any, res: any, next: any) => {
       res.set({
         'Content-Type': 'application/json',
         'X-Job-Error': true

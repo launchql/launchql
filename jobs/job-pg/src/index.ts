@@ -14,12 +14,12 @@ const SYS_EVENTS = [
   // 'SIGABRT'
 ];
 
-function once(fn, context) {
-  let result;
-  return function () {
+function once(fn: (...args: any[]) => any, context?: any) {
+  let result: any;
+  return function (this: any, ...args: any[]) {
     if (fn) {
-      result = fn.apply(context || this, arguments);
-      fn = null;
+      result = fn.apply(context || this, args);
+      fn = null as any;
     }
     return result;
   };
@@ -32,7 +32,7 @@ const pgPoolConfig = {
   connectionString: getDbString()
 };
 
-const end = (pool) => {
+const end = (pool: any) => {
   try {
     if (pool.ended || pool.ending) {
       console.error(
@@ -43,12 +43,16 @@ const end = (pool) => {
     pool.end();
     console.log('successfully closed pool.');
   } catch (e) {
-    process.stderr.write(e);
+    process.stderr.write(String(e));
   }
 };
 
 class PoolManager {
-  constructor({ pgPool = new pg.Pool(pgPoolConfig) } = {}) {
+  pgPool: any;
+  callbacks: [Function, any, any[]?][];
+  _closed?: boolean;
+
+  constructor({ pgPool = new (pg as any).Pool(pgPoolConfig) } = {}) {
     this.pgPool = pgPool;
     this.callbacks = [];
     const close = once(async () => {
@@ -59,13 +63,13 @@ class PoolManager {
       process.on(event, close);
     });
   }
-  onClose(fn, context, args) {
+  onClose(fn: (...args: any[]) => any, context?: any, args: any[] = []) {
     this.callbacks.push([fn, context, args]);
   }
-  getPool() {
+  getPool(): any {
     return this.pgPool;
   }
-  async close() {
+  async close(): Promise<void> {
     if (this._closed) return;
     for (let i = 0; i < this.callbacks.length; i++) {
       const entry = this.callbacks[i];

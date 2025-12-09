@@ -3,11 +3,13 @@ import bodyParser from 'body-parser';
 import * as jobs from '@launchql/job-utils';
 import poolManager from '@launchql/job-pg';
 
-export default (pgPool = poolManager.getPool()) => {
-  const app = express();
+export default (pgPool: any = poolManager.getPool()) => {
+  const app: any = express();
   app.use(bodyParser.json());
 
-  const withClient = (cb) => async (req, res, next) => {
+  const withClient =
+    (cb: (client: any, req: any, res: any, next: any) => Promise<void>) =>
+    async (req: any, res: any, next: any) => {
     const client = await pgPool.connect();
     try {
       await cb(client, req, res, next);
@@ -18,7 +20,7 @@ export default (pgPool = poolManager.getPool()) => {
     }
   };
 
-  const complete = withClient(async (client, req, res) => {
+  const complete = withClient(async (client: any, req: any, res: any) => {
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
     console.log(`server: Completed task ${jobId} with success`);
@@ -31,7 +33,7 @@ export default (pgPool = poolManager.getPool()) => {
       .send({ workerId, jobId });
   });
 
-  const fail = withClient(async (client, req, res) => {
+  const fail = withClient(async (client: any, req: any, res: any) => {
     const workerId = req.get('X-Worker-Id');
     const jobId = req.get('X-Job-Id');
     console.log(
@@ -41,7 +43,7 @@ export default (pgPool = poolManager.getPool()) => {
     res.status(200).json({ workerId, jobId });
   });
 
-  app.post('*', async (req, res, next) => {
+  app.post('*', async (req: any, res: any, next: any) => {
     const jobId = req.get('X-Job-Id');
 
     if (typeof jobId === 'undefined') {
@@ -58,7 +60,7 @@ export default (pgPool = poolManager.getPool()) => {
     }
   });
 
-  app.use((error, req, res, next) => {
+  app.use((error: any, req: any, res: any, next: any) => {
     // TODO check headers for jobId and call fail?
     res.status(500).json({ error });
   });

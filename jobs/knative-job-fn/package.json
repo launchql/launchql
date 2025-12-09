@@ -5,6 +5,7 @@
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-fn#readme",
   "license": "SEE LICENSE IN LICENSE",
+  "main": "dist/index.js",
   "directories": {
     "lib": "src",
     "test": "__tests__"
@@ -19,7 +20,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w"
   },
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"

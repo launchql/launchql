@@ -5,24 +5,34 @@ import requestLib from 'request';
 const completeUrl = env.INTERNAL_JOBS_CALLBACK_URL;
 
 let hasDevMap = false;
-let DEV_MAP = {};
+let DEV_MAP: Record<string, string> = {};
 
-if (env.NODE_ENV !== 'production' && env.INTERNAL_GATEWAY_DEVELOPMENT_MAP) {
+const nodeEnv = (env as any).NODE_ENV;
+
+if (nodeEnv !== 'production' && env.INTERNAL_GATEWAY_DEVELOPMENT_MAP) {
   hasDevMap = true;
-  DEV_MAP = JSON.parse(env.INTERNAL_GATEWAY_DEVELOPMENT_MAP);
+  DEV_MAP = JSON.parse(env.INTERNAL_GATEWAY_DEVELOPMENT_MAP as any);
 }
 
-const getFunctionUrl = (fn) => {
+const getFunctionUrl = (fn: string) => {
   if (hasDevMap) {
     return DEV_MAP[fn] || completeUrl;
   }
   return `${env.KNATIVE_SERVICE_URL}/${fn}`;
 };
 
-const request = (fn, { body, databaseId, workerId, jobId }) => {
+const request = (
+  fn: string,
+  {
+    body,
+    databaseId,
+    workerId,
+    jobId
+  }: { body: any; databaseId: string; workerId: string; jobId: any }
+) => {
   const url = getFunctionUrl(fn);
-  return new Promise((resolve, reject) => {
-    requestLib.post(
+  return new Promise<boolean>((resolve, reject) => {
+    (requestLib as any).post(
       {
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +49,7 @@ const request = (fn, { body, databaseId, workerId, jobId }) => {
         json: true,
         body
       },
-      function (error) {
+      function (error: any) {
         // NOTE should we hit the error URL!??
         // probably not because it would be an error in the actual
         // creation of the job...

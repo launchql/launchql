@@ -2,7 +2,10 @@ import Worker from './index';
 
 const worker = new Worker({
   tasks: {
-    hello: async ({ pgPool, workerId }, job) => {
+    hello: async (
+      { pgPool, workerId }: { pgPool: any; workerId: string },
+      job: any
+    ) => {
       console.log('hello');
       await pgPool.query('select 1');
       console.log(JSON.stringify(job, null, 2));

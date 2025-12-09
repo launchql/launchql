@@ -1,6 +1,6 @@
 import { cleanEnv, url, str, bool, port, makeValidator } from 'envalid';
 
-const array = makeValidator((x) => x.split(',').filter((i) => i), '');
+const array = makeValidator<any>((x) => x.split(',').filter((i) => i), '');
 
 const baseEnv = cleanEnv(
   process.env,

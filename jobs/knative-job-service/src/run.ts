@@ -40,7 +40,7 @@ export const startJobsServices = () => {
 
 export const waitForJobsPrereqs = async (): Promise<void> => {
   console.log('waiting for jobs prereqs');
-  let client: pg.Client | null = null;
+  let client: any = null;
   try {
     client = new pg.Client(getDbConnectionString());
     await client.connect();

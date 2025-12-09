@@ -9,12 +9,12 @@ const pgPoolConfig = {
   connectionString: getDbString()
 };
 
-function once(fn, context) {
-  let result;
-  return function () {
+function once(fn: (...args: any[]) => any, context?: any) {
+  let result: any;
+  return function (this: any, ...args: any[]) {
     if (fn) {
-      result = fn.apply(context || this, arguments);
-      fn = null;
+      result = fn.apply(context || this, args);
+      fn = null as any;
     }
     return result;
   };
@@ -23,12 +23,20 @@ function once(fn, context) {
 /* eslint-disable no-console */
 
 export default class Worker {
+  tasks: Record<string, any>;
+  idleDelay: number;
+  supportedTaskNames: string[];
+  workerId: string;
+  doNextTimer: any;
+  pgPool: any;
+  _ended?: boolean;
+
   constructor({
     tasks,
     idleDelay = 15000,
-    pgPool = new pg.Pool(pgPoolConfig),
+    pgPool = new (pg as any).Pool(pgPoolConfig),
     workerId = 'worker-0'
-  }) {
+  }: any) {
     this.tasks = tasks;
     /*
      * idleDelay: This is how long to wait between polling for jobs.
@@ -56,7 +64,15 @@ export default class Worker {
     }
     this._ended = true;
   }
-  handleFatalError({ err, fatalError, jobId }) {
+  handleFatalError({
+    err,
+    fatalError,
+    jobId
+  }: {
+    err?: any;
+    fatalError: any;
+    jobId: any;
+  }) {
     const when = err ? `after failure '${err.message}'` : 'after success';
     console.error(
       `Failed to release job '${jobId}' ${when}; committing seppuku`
@@ -64,7 +80,10 @@ export default class Worker {
     console.error(fatalError);
     process.exit(1);
   }
-  async handleError(client, { err, job, duration }) {
+  async handleError(
+    client: any,
+    { err, job, duration }: { err: any; job: any; duration: any }
+  ) {
     console.error(
       `Failed task ${job.id} (${job.task_identifier}) with error ${err.message} (${duration}ms)`,
       { err, stack: err.stack }
@@ -76,13 +95,16 @@ export default class Worker {
       message: err.message
     });
   }
-  async handleSuccess(client, { job, duration }) {
+  async handleSuccess(
+    client: any,
+    { job, duration }: { job: any; duration: any }
+  ) {
     console.log(
       `Completed task ${job.id} (${job.task_identifier}) with success (${duration}ms)`
     );
     await jobs.completeJob(client, { workerId: this.workerId, jobId: job.id });
   }
-  async doWork(job) {
+  async doWork(job: any) {
     const { task_identifier } = job;
     const worker = this.tasks[task_identifier];
     if (!worker) {
@@ -96,7 +118,7 @@ export default class Worker {
       job
     );
   }
-  async doNext(client) {
+  async doNext(client: any): Promise<void> {
     this.doNextTimer = clearTimeout(this.doNextTimer);
     try {
       const job = await jobs.getJob(client, {
@@ -112,7 +134,7 @@ export default class Worker {
       }
       const start = process.hrtime();
 
-      let err;
+      let err: any;
       try {
         await this.doWork(job);
       } catch (error) {
@@ -129,7 +151,7 @@ export default class Worker {
         } else {
           await this.handleSuccess(client, { job, duration });
         }
-      } catch (fatalError) {
+      } catch (fatalError: any) {
         this.handleFatalError({ err, fatalError, jobId });
       }
       return this.doNext(client);
@@ -138,7 +160,7 @@ export default class Worker {
     }
   }
   listen() {
-    const listenForChanges = (err, client, release) => {
+    const listenForChanges = (err: any, client: any, release: any) => {
       if (err) {
         console.error('Error connecting with notify listener', err);
         // Try again in 5 seconds
@@ -153,7 +175,7 @@ export default class Worker {
         }
       });
       client.query('LISTEN "jobs:insert"');
-      client.on('error', (e) => {
+      client.on('error', (e: any) => {
         console.error('Error with database notify listener', e);
         release();
         this.listen();

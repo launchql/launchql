@@ -1,7 +1,7 @@
 import app from '@launchql/knative-job-fn';
 import env from './env';
 
-app.post('*', async (req, res, next) => {
+app.post('*', async (req: any, res: any, next: any) => {
   if (req.body.throw) {
     next(new Error('THROWN_ERROR'));
   } else {

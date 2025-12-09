@@ -1,15 +1,13 @@
 declare module 'pg' {
-  export class Client {
-    constructor(connectionString: string);
-    connect(): Promise<void>;
-    query(...args: any[]): Promise<any>;
-    end(): Promise<void>;
-  }
+  const Pg: any;
+  export default Pg;
 }
 
 declare module 'async-retry';
 declare module 'node-schedule';
 declare module 'request';
+declare module 'express';
+declare module 'body-parser';
 
 declare module '@launchql/job-pg';
 declare module '@launchql/job-utils';
