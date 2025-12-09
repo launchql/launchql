@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/openfaas-job-server",
+  "name": "@launchql/knative-job-server",
   "version": "0.2.2",
-  "description": "openfaas job server",
+  "description": "knative job server",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-server#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-server#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
@@ -29,8 +29,8 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@launchql/job-pg": "^0.2.2",
-    "@launchql/job-utils": "^0.2.2",
+    "@launchql/job-pg": "workspace:^",
+    "@launchql/job-utils": "workspace:^",
     "body-parser": "1.19.0",
     "envalid": "6.0.2",
     "express": "4.17.1",

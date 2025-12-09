@@ -1,16 +1,17 @@
 {
-  "name": "@launchql/openfaas-job-service",
-  "version": "0.3.0",
-  "description": "openfaas job service",
+  "name": "@launchql/knative-job-worker",
+  "version": "0.4.0",
+  "description": "knative job worker",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-service#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-worker#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
     "test": "__tests__"
   },
   "bin": {
-    "faas-job-service": "src/run.ts"
+    "faas-jobs": "src/run.ts",
+    "knative-jobs": "src/run.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -29,12 +30,10 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@launchql/job-pg": "^0.2.2",
-    "@launchql/job-scheduler": "^0.2.2",
-    "@launchql/openfaas-job-server": "^0.2.2",
-    "@launchql/openfaas-job-worker": "^0.4.0",
-    "async-retry": "1.3.1",
+    "@launchql/job-pg": "workspace:^",
+    "@launchql/job-utils": "workspace:^",
     "envalid": "6.0.2",
-    "pg": "8.3.3"
+    "pg": "8.3.3",
+    "request": "2.88.2"
   }
 }

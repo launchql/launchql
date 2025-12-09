@@ -1,4 +1,4 @@
-import app from '@launchql/openfaas-job-fn';
+import app from '@launchql/knative-job-fn';
 import env from './env';
 
 app.post('*', async (req, res, next) => {

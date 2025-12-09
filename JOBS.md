@@ -26,7 +26,7 @@ lql deploy --recursive --createdb --database jobs --yes --project launchql-exten
 
 ### deploy job worker
 
-create a deployment that runs `@launchql/openfaas-job-worker` using nodejs in k8s
+create a deployment that runs `@launchql/knative-job-worker` using nodejs in k8s
 
 ```sh
 kubectl apply -f ./k8s/service.yaml
@@ -159,4 +159,3 @@ echo -n $PASSWORD | faas-cli login --username $USER --password-stdin --gateway 1
 ### TODOs
 
 - [ ] check if openfaas is up and running before attempting to request 
-

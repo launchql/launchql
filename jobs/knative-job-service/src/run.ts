@@ -2,18 +2,21 @@
 
 import env from './env';
 import Scheduler from '@launchql/job-scheduler';
-import Worker from '@launchql/openfaas-job-worker';
-import server from '@launchql/openfaas-job-server';
+import Worker from '@launchql/knative-job-worker';
+import server from '@launchql/knative-job-server';
 import poolManager from '@launchql/job-pg';
 import pg from 'pg';
 import retry from 'async-retry';
 
-const getDbString = () =>
+export const getDbConnectionString = (): string =>
   `postgres://${env.PGUSER}:${env.PGPASSWORD}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE}`;
-const start = () => {
+
+export const startJobsServices = () => {
   console.log('starting jobs services...');
   const pgPool = poolManager.getPool();
-  server(pgPool).listen(env.INTERNAL_JOBS_CALLBACK_PORT, () => {
+  const app = server(pgPool);
+
+  const httpServer = app.listen(env.INTERNAL_JOBS_CALLBACK_PORT, () => {
     console.log(`[cb] listening ON ${env.INTERNAL_JOBS_CALLBACK_PORT}`);
 
     const worker = new Worker({
@@ -31,42 +34,41 @@ const start = () => {
     worker.listen();
     scheduler.listen();
   });
+
+  return { pgPool, httpServer };
 };
 
-const wait = async () => {
+export const waitForJobsPrereqs = async (): Promise<void> => {
   console.log('waiting for jobs prereqs');
-  let failed = 0;
-  let pgClient;
+  let client: pg.Client | null = null;
   try {
-    pgClient = new pg.Client(getDbString());
-    await pgClient.connect();
-    await pgClient.query(`SELECT * FROM "${env.JOBS_SCHEMA}".jobs LIMIT 1;`);
-  } catch (e) {
-    failed = 1;
-    // process.stderr.write(e.message);
-    console.log(e);
-  } finally {
-    pgClient.end();
-  }
-  if (failed === 1) {
+    client = new pg.Client(getDbConnectionString());
+    await client.connect();
+    await client.query(`SELECT * FROM "${env.JOBS_SCHEMA}".jobs LIMIT 1;`);
+  } catch (error) {
+    console.log(error);
     throw new Error('jobs server boot failed...');
-    // process.exit(failed);
-  } else {
-    start();
+  } finally {
+    if (client) {
+      client.end();
+    }
   }
 };
 
-const boot = async () => {
+export const bootJobs = async (): Promise<void> => {
   console.log('attempting to boot jobs');
   await retry(
-    async (bail) => {
-      await wait();
+    async () => {
+      await waitForJobsPrereqs();
     },
     {
       retries: 10,
       factor: 2
     }
   );
+  startJobsServices();
 };
 
-boot();
+if (require.main === module) {
+  void bootJobs();
+}

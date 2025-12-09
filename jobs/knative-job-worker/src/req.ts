@@ -16,7 +16,7 @@ const getFunctionUrl = (fn) => {
   if (hasDevMap) {
     return DEV_MAP[fn] || completeUrl;
   }
-  return `${env.INTERNAL_GATEWAY_URL}/async-function/${fn}`;
+  return `${env.KNATIVE_SERVICE_URL}/${fn}`;
 };
 
 const request = (fn, { body, databaseId, workerId, jobId }) => {

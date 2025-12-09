@@ -2,7 +2,7 @@ import { cleanEnv, url, str, bool, port, makeValidator } from 'envalid';
 
 const array = makeValidator((x) => x.split(',').filter((i) => i), '');
 
-export default cleanEnv(
+const baseEnv = cleanEnv(
   process.env,
   {
     PGUSER: str({ default: 'postgres' }),
@@ -16,8 +16,25 @@ export default cleanEnv(
     HOSTNAME: str({
       default: 'worker-0'
     }),
-    INTERNAL_GATEWAY_URL: url(),
     INTERNAL_JOBS_CALLBACK_URL: url()
   },
   { dotEnvPath: null }
 );
+
+const KNATIVE_SERVICE_URL =
+  process.env.KNATIVE_SERVICE_URL || process.env.INTERNAL_GATEWAY_URL;
+
+if (!KNATIVE_SERVICE_URL) {
+  throw new Error(
+    'KNATIVE_SERVICE_URL (or INTERNAL_GATEWAY_URL as fallback) is required for @launchql/knative-job-worker'
+  );
+}
+
+const INTERNAL_GATEWAY_DEVELOPMENT_MAP =
+  process.env.INTERNAL_GATEWAY_DEVELOPMENT_MAP;
+
+export default {
+  ...baseEnv,
+  KNATIVE_SERVICE_URL,
+  INTERNAL_GATEWAY_DEVELOPMENT_MAP
+};

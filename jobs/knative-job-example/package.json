@@ -1,9 +1,9 @@
 {
-  "name": "@launchql/openfaas-job-example",
+  "name": "@launchql/knative-job-example",
   "version": "0.1.3",
   "description": "job example",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/jobs/tree/master/packages/openfaas-job-example#readme",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-example#readme",
   "license": "SEE LICENSE IN LICENSE",
   "directories": {
     "lib": "src",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@launchql/openfaas-job-fn": "^0.1.3",
+    "@launchql/knative-job-fn": "workspace:^",
     "envalid": "6.0.2"
   }
 }
