@@ -89,6 +89,15 @@ importers:
         specifier: ^2.12.6
         version: 2.12.6(graphql@15.10.1)
 
+  functions/simple-email:
+    dependencies:
+      '@launchql/knative-job-fn':
+        specifier: workspace:^
+        version: link:../../jobs/knative-job-fn
+      '@launchql/postmaster':
+        specifier: 0.1.4
+        version: 0.1.4
+
   graphile/graphile-cache:
     dependencies:
       '@launchql/logger':
@@ -710,6 +719,10 @@ importers:
       pg:
         specifier: 8.3.3
         version: 8.3.3
+    devDependencies:
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@24.10.1)(typescript@5.9.3)
 
   jobs/knative-job-worker:
     dependencies:
