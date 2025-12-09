@@ -56,8 +56,7 @@ export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Pro
       await writeUpdateConfig(
         {
           lastCheckedAt: now,
-          latestKnownVersion,
-          lastPromptedVersion: existing?.lastPromptedVersion
+          latestKnownVersion
         },
         { toolName, baseDir, key }
       );
@@ -66,7 +65,7 @@ export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Pro
     const comparison = compareVersions(pkgVersion, latestKnownVersion);
     const isOutdated = comparison < 0;
 
-    if (isOutdated && existing?.lastPromptedVersion !== latestKnownVersion) {
+    if (isOutdated) {
       const defaultUpdateCommand =
         pkgName === UPDATE_PACKAGE_NAME
           ? 'Run pgpm update to upgrade.'
@@ -80,8 +79,7 @@ export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Pro
       await writeUpdateConfig(
         {
           lastCheckedAt: now,
-          latestKnownVersion,
-          lastPromptedVersion: latestKnownVersion
+          latestKnownVersion
         },
         { toolName, baseDir, key }
       );
@@ -89,8 +87,7 @@ export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Pro
 
     return {
       lastCheckedAt: now,
-      latestKnownVersion,
-      lastPromptedVersion: isOutdated ? latestKnownVersion : existing?.lastPromptedVersion
+      latestKnownVersion
     };
   } catch (error) {
     log.debug('Update check skipped due to error:', error);

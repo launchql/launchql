@@ -45,11 +45,11 @@ describe('checkForUpdates', () => {
       baseDir
     });
 
-    expect(result?.lastPromptedVersion).toBe('2.0.0');
+    expect(result?.latestKnownVersion).toBe('2.0.0');
     expect(warnSpy).toHaveBeenCalled();
   });
 
-  it('does not warn repeatedly for the same latest version', async () => {
+  it('warns on every run while a newer version is available', async () => {
     fetchLatestVersion.mockResolvedValue('2.0.0');
 
     await checkForUpdates({
@@ -67,7 +67,7 @@ describe('checkForUpdates', () => {
       baseDir
     });
 
-    expect(second?.lastPromptedVersion).toBe('2.0.0');
-    expect(warnSpy).not.toHaveBeenCalled();
+    expect(second?.latestKnownVersion).toBe('2.0.0');
+    expect(warnSpy).toHaveBeenCalled();
   });
 });
