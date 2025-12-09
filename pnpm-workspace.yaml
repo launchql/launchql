@@ -3,4 +3,4 @@ packages:
   - 'sandbox/*'
   - 'graphile/*'
   - 'jobs/*'
-
+  - 'functions/*'
