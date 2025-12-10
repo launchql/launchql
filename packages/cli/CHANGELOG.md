@@ -3,487 +3,495 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [4.17.20](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.19...@launchql/cli@4.17.20) (2025-12-06)
+## [4.17.22](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.21...@launchql/cli@4.17.22) (2025-12-10)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.19](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.18...@launchql/cli@4.17.19) (2025-12-04)
+## [4.17.21](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.20...@launchql/cli@4.17.21) (2025-12-10)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.18](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.17...@launchql/cli@4.17.18) (2025-12-04)
+## [4.17.20](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.19...@launchql/cli@4.17.20) (2025-12-06)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.17](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.16...@launchql/cli@4.17.17) (2025-11-28)
+## [4.17.19](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.18...@launchql/cli@4.17.19) (2025-12-04)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.16](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.15...@launchql/cli@4.17.16) (2025-11-27)
+## [4.17.18](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.17...@launchql/cli@4.17.18) (2025-12-04)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.15](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.14...@launchql/cli@4.17.15) (2025-11-25)
+## [4.17.17](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.16...@launchql/cli@4.17.17) (2025-11-28)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.14](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.13...@launchql/cli@4.17.14) (2025-11-25)
+## [4.17.16](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.15...@launchql/cli@4.17.16) (2025-11-27)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.13](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.12...@launchql/cli@4.17.13) (2025-11-25)
+## [4.17.15](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.14...@launchql/cli@4.17.15) (2025-11-25)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.12](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.11...@launchql/cli@4.17.12) (2025-11-24)
+## [4.17.14](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.13...@launchql/cli@4.17.14) (2025-11-25)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.11](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.9...@launchql/cli@4.17.11) (2025-11-22)
+## [4.17.13](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.12...@launchql/cli@4.17.13) (2025-11-25)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.10](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.9...@launchql/cli@4.17.10) (2025-11-22)
+## [4.17.12](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.11...@launchql/cli@4.17.12) (2025-11-24)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.9](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.8...@launchql/cli@4.17.9) (2025-11-21)
+## [4.17.11](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.9...@launchql/cli@4.17.11) (2025-11-22)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.8](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.7...@launchql/cli@4.17.8) (2025-11-21)
+## [4.17.10](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.9...@launchql/cli@4.17.10) (2025-11-22)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.7](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.6...@launchql/cli@4.17.7) (2025-11-21)
+## [4.17.9](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.8...@launchql/cli@4.17.9) (2025-11-21)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.6](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.5...@launchql/cli@4.17.6) (2025-11-20)
+## [4.17.8](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.7...@launchql/cli@4.17.8) (2025-11-21)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.5](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.4...@launchql/cli@4.17.5) (2025-11-16)
+## [4.17.7](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.6...@launchql/cli@4.17.7) (2025-11-21)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.4](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.3...@launchql/cli@4.17.4) (2025-11-16)
+## [4.17.6](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.5...@launchql/cli@4.17.6) (2025-11-20)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.2...@launchql/cli@4.17.3) (2025-11-16)
+## [4.17.5](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.4...@launchql/cli@4.17.5) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.1...@launchql/cli@4.17.2) (2025-11-16)
+## [4.17.4](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.3...@launchql/cli@4.17.4) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.17.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.17.0...@launchql/cli@4.17.1) (2025-11-16)
+## [4.17.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.2...@launchql/cli@4.17.3) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.17.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.16.1...@launchql/cli@4.17.0) (2025-11-16)
+## [4.17.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.1...@launchql/cli@4.17.2) (2025-11-16)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.17.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.0...@launchql/cli@4.17.1) (2025-11-16)
+
+**Note:** Version bump only for package @launchql/cli
+
+# [4.17.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.16.1...@launchql/cli@4.17.0) (2025-11-16)
 
 ### Features
 
-- **cli:** add docker command for managing PostgreSQL containers ([810cbdf](https://github.com/launchql/launchql/commit/810cbdf5deb77ae91e89c29419c3c699dc38683e))
+- **cli:** add docker command for managing PostgreSQL containers ([810cbdf](https://github.com/constructive-io/constructive/commit/810cbdf5deb77ae91e89c29419c3c699dc38683e))
 
-## [4.16.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.16.0...@launchql/cli@4.16.1) (2025-11-16)
-
-**Note:** Version bump only for package @launchql/cli
-
-# [4.16.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.15.2...@launchql/cli@4.16.0) (2025-11-16)
+## [4.16.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.16.0...@launchql/cli@4.16.1) (2025-11-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.15.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.15.1...@launchql/cli@4.15.2) (2025-11-15)
+# [4.16.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.15.2...@launchql/cli@4.16.0) (2025-11-16)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [4.15.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.15.1...@launchql/cli@4.15.2) (2025-11-15)
 
 ### Bug Fixes
 
-- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/constructive-io/constructive/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
 
-## [4.15.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.15.0...@launchql/cli@4.15.1) (2025-11-14)
+## [4.15.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.15.0...@launchql/cli@4.15.1) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.15.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.14.3...@launchql/cli@4.15.0) (2025-11-14)
+# [4.15.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.14.3...@launchql/cli@4.15.0) (2025-11-14)
 
 ### Features
 
-- create pgpm CLI tool and refactor @launchql/cli to import from it ([756d44c](https://github.com/launchql/launchql/commit/756d44c430f11c115cbc52db74c9dffadea405eb))
+- create pgpm CLI tool and refactor @launchql/cli to import from it ([756d44c](https://github.com/constructive-io/constructive/commit/756d44c430f11c115cbc52db74c9dffadea405eb))
 
-## [4.14.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.14.2...@launchql/cli@4.14.3) (2025-11-14)
-
-**Note:** Version bump only for package @launchql/cli
-
-## [4.14.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.14.1...@launchql/cli@4.14.2) (2025-11-14)
+## [4.14.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.14.2...@launchql/cli@4.14.3) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.14.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.14.0...@launchql/cli@4.14.1) (2025-11-14)
+## [4.14.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.14.1...@launchql/cli@4.14.2) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.14.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.13.5...@launchql/cli@4.14.0) (2025-11-14)
+## [4.14.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.14.0...@launchql/cli@4.14.1) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.13.5](https://github.com/launchql/launchql/compare/@launchql/cli@4.13.4...@launchql/cli@4.13.5) (2025-11-14)
+# [4.14.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.13.5...@launchql/cli@4.14.0) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.13.4](https://github.com/launchql/launchql/compare/@launchql/cli@4.13.3...@launchql/cli@4.13.4) (2025-11-13)
+## [4.13.5](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.13.4...@launchql/cli@4.13.5) (2025-11-14)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.13.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.13.2...@launchql/cli@4.13.3) (2025-11-13)
+## [4.13.4](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.13.3...@launchql/cli@4.13.4) (2025-11-13)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.13.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.13.1...@launchql/cli@4.13.2) (2025-11-12)
+## [4.13.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.13.2...@launchql/cli@4.13.3) (2025-11-13)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.13.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.13.0...@launchql/cli@4.13.1) (2025-11-12)
+## [4.13.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.13.1...@launchql/cli@4.13.2) (2025-11-12)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.13.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.7...@launchql/cli@4.13.0) (2025-11-12)
+## [4.13.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.13.0...@launchql/cli@4.13.1) (2025-11-12)
+
+**Note:** Version bump only for package @launchql/cli
+
+# [4.13.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.7...@launchql/cli@4.13.0) (2025-11-12)
 
 ### Bug Fixes
 
-- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/launchql/launchql/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
-- add missing dependencies and remove resolutions for pnpm ([8c4a3cd](https://github.com/launchql/launchql/commit/8c4a3cd836dbffc5e86466a95ca086c9e8a5d351))
-- **cli:** add Jest moduleNameMapper for workspace dependencies ([06ae90d](https://github.com/launchql/launchql/commit/06ae90d17dd1aa2bcb761089f48e182e43e297e6))
-- **cli:** add missing pg dependencies and fix template build script ([9c0e242](https://github.com/launchql/launchql/commit/9c0e2427dd2573232aa341e5635801b6ddb77147))
-- **docs:** use asterisk for list markers in CLI README ([aadd06f](https://github.com/launchql/launchql/commit/aadd06f72227cd590c7a66a28194ed4c309e10a5))
-- resolve workspace dependency resolution issues in tests ([b9ea117](https://github.com/launchql/launchql/commit/b9ea11781aebd211a08d1e3c15c0ed6fda4c7930))
+- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/constructive-io/constructive/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
+- add missing dependencies and remove resolutions for pnpm ([8c4a3cd](https://github.com/constructive-io/constructive/commit/8c4a3cd836dbffc5e86466a95ca086c9e8a5d351))
+- **cli:** add Jest moduleNameMapper for workspace dependencies ([06ae90d](https://github.com/constructive-io/constructive/commit/06ae90d17dd1aa2bcb761089f48e182e43e297e6))
+- **cli:** add missing pg dependencies and fix template build script ([9c0e242](https://github.com/constructive-io/constructive/commit/9c0e2427dd2573232aa341e5635801b6ddb77147))
+- **docs:** use asterisk for list markers in CLI README ([aadd06f](https://github.com/constructive-io/constructive/commit/aadd06f72227cd590c7a66a28194ed4c309e10a5))
+- resolve workspace dependency resolution issues in tests ([b9ea117](https://github.com/constructive-io/constructive/commit/b9ea11781aebd211a08d1e3c15c0ed6fda4c7930))
 
 ### Features
 
-- **cli:** add custom template support for init command ([4e2cd3f](https://github.com/launchql/launchql/commit/4e2cd3fd1377860f29b02b59e72af91cb017b225))
+- **cli:** add custom template support for init command ([4e2cd3f](https://github.com/constructive-io/constructive/commit/4e2cd3fd1377860f29b02b59e72af91cb017b225))
 
-## [4.12.7](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.6...@launchql/cli@4.12.7) (2025-11-07)
-
-**Note:** Version bump only for package @launchql/cli
-
-## [4.12.6](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.5...@launchql/cli@4.12.6) (2025-11-07)
+## [4.12.7](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.6...@launchql/cli@4.12.7) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.12.5](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.4...@launchql/cli@4.12.5) (2025-11-07)
+## [4.12.6](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.5...@launchql/cli@4.12.6) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.12.4](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.3...@launchql/cli@4.12.4) (2025-11-07)
+## [4.12.5](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.4...@launchql/cli@4.12.5) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.12.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.2...@launchql/cli@4.12.3) (2025-11-07)
+## [4.12.4](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.3...@launchql/cli@4.12.4) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.12.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.1...@launchql/cli@4.12.2) (2025-11-07)
+## [4.12.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.2...@launchql/cli@4.12.3) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.12.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.12.0...@launchql/cli@4.12.1) (2025-10-18)
+## [4.12.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.1...@launchql/cli@4.12.2) (2025-11-07)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.12.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.11.0...@launchql/cli@4.12.0) (2025-10-04)
+## [4.12.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.12.0...@launchql/cli@4.12.1) (2025-10-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.11.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.10.0...@launchql/cli@4.11.0) (2025-09-24)
+# [4.12.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.11.0...@launchql/cli@4.12.0) (2025-10-04)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.10.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.9.0...@launchql/cli@4.10.0) (2025-09-17)
+# [4.11.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.10.0...@launchql/cli@4.11.0) (2025-09-24)
+
+**Note:** Version bump only for package @launchql/cli
+
+# [4.10.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.9.0...@launchql/cli@4.10.0) (2025-09-17)
 
 ### Features
 
-- add CLI command for creating database changes ([a44b643](https://github.com/launchql/launchql/commit/a44b643dbba2b93f14aab3828d1c0cc95ee34f6c))
+- add CLI command for creating database changes ([a44b643](https://github.com/constructive-io/constructive/commit/a44b643dbba2b93f14aab3828d1c0cc95ee34f6c))
 
-# [4.9.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.8.0...@launchql/cli@4.9.0) (2025-09-04)
+# [4.9.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.8.0...@launchql/cli@4.9.0) (2025-09-04)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.8.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.7.2...@launchql/cli@4.8.0) (2025-08-20)
+# [4.8.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.7.2...@launchql/cli@4.8.0) (2025-08-20)
 
 ### Features
 
-- **core): add analyzeModule and renameModule; feat(cli:** add analyze and rename commands ([90c3fdc](https://github.com/launchql/launchql/commit/90c3fdc888305ace8586e442c1928a34da6ecda5))
+- **core): add analyzeModule and renameModule; feat(cli:** add analyze and rename commands ([90c3fdc](https://github.com/constructive-io/constructive/commit/90c3fdc888305ace8586e442c1928a34da6ecda5))
 
-## [4.7.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.7.1...@launchql/cli@4.7.2) (2025-08-08)
-
-**Note:** Version bump only for package @launchql/cli
-
-## [4.7.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.7.0...@launchql/cli@4.7.1) (2025-08-08)
+## [4.7.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.7.1...@launchql/cli@4.7.2) (2025-08-08)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.7.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.6.0...@launchql/cli@4.7.0) (2025-08-08)
+## [4.7.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.7.0...@launchql/cli@4.7.1) (2025-08-08)
+
+**Note:** Version bump only for package @launchql/cli
+
+# [4.7.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.6.0...@launchql/cli@4.7.0) (2025-08-08)
 
 ### Bug Fixes
 
-- **cli:** use exact cwd handling pattern in lql plan command ([dca0e50](https://github.com/launchql/launchql/commit/dca0e5030bb5e2ae81eab3e9c6b0977ed2cd3ddc))
-- update tags test expectation for CHANGE_NOT_FOUND error format ([df1f383](https://github.com/launchql/launchql/commit/df1f383a7578bc5275d41e7e0908e9a5f232b715)), closes [#200](https://github.com/launchql/launchql/issues/200)
+- **cli:** use exact cwd handling pattern in lql plan command ([dca0e50](https://github.com/constructive-io/constructive/commit/dca0e5030bb5e2ae81eab3e9c6b0977ed2cd3ddc))
+- update tags test expectation for CHANGE_NOT_FOUND error format ([df1f383](https://github.com/constructive-io/constructive/commit/df1f383a7578bc5275d41e7e0908e9a5f232b715)), closes [#200](https://github.com/constructive-io/constructive/issues/200)
 
 ### Features
 
-- add bootstrap-db-roles CLI command with username/password parameters ([81e88ee](https://github.com/launchql/launchql/commit/81e88ee9352ca1edd7a8229a6e70d3e5e308a167))
-- add LaunchQLInit class and CLI commands for bootstrap roles ([202fb2c](https://github.com/launchql/launchql/commit/202fb2cd312de3416521366b2e4ecdfa77a5ab63))
-- add lql bootstrap command that calls both bootstrap-roles and bootstrap-test-roles ([65d2cae](https://github.com/launchql/launchql/commit/65d2caebd8ec7d711df0c68cded789a8417dad0d))
-- **cli): default lql plan to include packages and prefer tags via non-blocking prompts; update usage text; keep advanced tags internal\n\nfix(core:** only prefer package tags when explicitly enabled; preserve prior default behavior in core API ([b770560](https://github.com/launchql/launchql/commit/b77056050337fad4f6387b78a79032a88a95e964))
-- **core/cli:** simplify plan options to useTags; default CLI to packages+useTags (non-blocking). Keep preferPackageTags/tags as aliases for backward compatibility; update usage text ([f3db407](https://github.com/launchql/launchql/commit/f3db407c93f9f48bb57e7a2c9ac153dc30c5ce7c))
-- expand error system with templated error types ([e08e1c1](https://github.com/launchql/launchql/commit/e08e1c1b3c4925807d59831695591a53ca8ebb9b))
+- add bootstrap-db-roles CLI command with username/password parameters ([81e88ee](https://github.com/constructive-io/constructive/commit/81e88ee9352ca1edd7a8229a6e70d3e5e308a167))
+- add LaunchQLInit class and CLI commands for bootstrap roles ([202fb2c](https://github.com/constructive-io/constructive/commit/202fb2cd312de3416521366b2e4ecdfa77a5ab63))
+- add lql bootstrap command that calls both bootstrap-roles and bootstrap-test-roles ([65d2cae](https://github.com/constructive-io/constructive/commit/65d2caebd8ec7d711df0c68cded789a8417dad0d))
+- **cli): default lql plan to include packages and prefer tags via non-blocking prompts; update usage text; keep advanced tags internal\n\nfix(core:** only prefer package tags when explicitly enabled; preserve prior default behavior in core API ([b770560](https://github.com/constructive-io/constructive/commit/b77056050337fad4f6387b78a79032a88a95e964))
+- **core/cli:** simplify plan options to useTags; default CLI to packages+useTags (non-blocking). Keep preferPackageTags/tags as aliases for backward compatibility; update usage text ([f3db407](https://github.com/constructive-io/constructive/commit/f3db407c93f9f48bb57e7a2c9ac153dc30c5ce7c))
+- expand error system with templated error types ([e08e1c1](https://github.com/constructive-io/constructive/commit/e08e1c1b3c4925807d59831695591a53ca8ebb9b))
 
-# [4.6.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.5.0...@launchql/cli@4.6.0) (2025-07-31)
+# [4.6.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.5.0...@launchql/cli@4.6.0) (2025-07-31)
 
 ### Bug Fixes
 
-- correct tag command logic to handle workspace vs module scenarios properly ([84833a6](https://github.com/launchql/launchql/commit/84833a6031e8b962e126e1d783a99decf70ca861))
-- replace workspace:\* with specific version ^2.1.13 for @launchql/env dependencies ([2fb68f2](https://github.com/launchql/launchql/commit/2fb68f247fd2aa9d966bafe19986db016c2be3c3))
-- resolve tag command path issues and update test data for proper test isolation ([6bc6fae](https://github.com/launchql/launchql/commit/6bc6fae3f1f1f1207fed64deb8df35ca58f0cf42))
-- resolve TypeScript errors in CLI tests and add core tests for tag functionality ([44fc18d](https://github.com/launchql/launchql/commit/44fc18dc6865e34cc6a9455bcb922b17ced5eb4e))
-- restructure tag command logic to properly handle --package flag in workspace scenarios ([7612519](https://github.com/launchql/launchql/commit/76125193d9e451b1b9b1154b4a13cb60cd2c4a12))
-- update package selection logic and add tests for tag command ([a7ff548](https://github.com/launchql/launchql/commit/a7ff54899804cda653c963c60930054fafdb253e))
+- correct tag command logic to handle workspace vs module scenarios properly ([84833a6](https://github.com/constructive-io/constructive/commit/84833a6031e8b962e126e1d783a99decf70ca861))
+- replace workspace:\* with specific version ^2.1.13 for @launchql/env dependencies ([2fb68f2](https://github.com/constructive-io/constructive/commit/2fb68f247fd2aa9d966bafe19986db016c2be3c3))
+- resolve tag command path issues and update test data for proper test isolation ([6bc6fae](https://github.com/constructive-io/constructive/commit/6bc6fae3f1f1f1207fed64deb8df35ca58f0cf42))
+- resolve TypeScript errors in CLI tests and add core tests for tag functionality ([44fc18d](https://github.com/constructive-io/constructive/commit/44fc18dc6865e34cc6a9455bcb922b17ced5eb4e))
+- restructure tag command logic to properly handle --package flag in workspace scenarios ([7612519](https://github.com/constructive-io/constructive/commit/76125193d9e451b1b9b1154b4a13cb60cd2c4a12))
+- update package selection logic and add tests for tag command ([a7ff548](https://github.com/constructive-io/constructive/commit/a7ff54899804cda653c963c60930054fafdb253e))
 
 ### Features
 
-- add --log-only flag for deployment logging ([a3071ee](https://github.com/launchql/launchql/commit/a3071ee03780f5d40e772594159840c973f95a85))
-- add tag functionality to LaunchQL packages ([bd1ebaa](https://github.com/launchql/launchql/commit/bd1ebaa0c94552a1210378c103e78a8bc4843d14))
-- create @launchql/env package for consolidated environment management ([004c78e](https://github.com/launchql/launchql/commit/004c78e87ceddfc2d0a3f74e79affe13c8a628d1))
-- merge packages/migrate into packages/core ([0a615a7](https://github.com/launchql/launchql/commit/0a615a7ea28b42bb37b611364384a2e39ac8dfaf))
+- add --log-only flag for deployment logging ([a3071ee](https://github.com/constructive-io/constructive/commit/a3071ee03780f5d40e772594159840c973f95a85))
+- add tag functionality to LaunchQL packages ([bd1ebaa](https://github.com/constructive-io/constructive/commit/bd1ebaa0c94552a1210378c103e78a8bc4843d14))
+- create @launchql/env package for consolidated environment management ([004c78e](https://github.com/constructive-io/constructive/commit/004c78e87ceddfc2d0a3f74e79affe13c8a628d1))
+- merge packages/migrate into packages/core ([0a615a7](https://github.com/constructive-io/constructive/commit/0a615a7ea28b42bb37b611364384a2e39ac8dfaf))
 
-# [4.5.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.4.0...@launchql/cli@4.5.0) (2025-07-15)
-
-**Note:** Version bump only for package @launchql/cli
-
-# [4.4.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.3.1...@launchql/cli@4.4.0) (2025-06-30)
+# [4.5.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.4.0...@launchql/cli@4.5.0) (2025-07-15)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.3.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.3.0...@launchql/cli@4.3.1) (2025-06-28)
+# [4.4.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.3.1...@launchql/cli@4.4.0) (2025-06-30)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.3.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.2.0...@launchql/cli@4.3.0) (2025-06-27)
+## [4.3.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.3.0...@launchql/cli@4.3.1) (2025-06-28)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.2.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.31...@launchql/cli@4.2.0) (2025-06-25)
+# [4.3.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.2.0...@launchql/cli@4.3.0) (2025-06-27)
+
+**Note:** Version bump only for package @launchql/cli
+
+# [4.2.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.31...@launchql/cli@4.2.0) (2025-06-25)
 
 ### Bug Fixes
 
-- add function delimeter ([e099e39](https://github.com/launchql/launchql/commit/e099e3935412fba88fc74325d7cb7013cfe60336))
+- add function delimeter ([e099e39](https://github.com/constructive-io/constructive/commit/e099e3935412fba88fc74325d7cb7013cfe60336))
 
-## [4.1.31](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.30...@launchql/cli@4.1.31) (2025-06-21)
-
-**Note:** Version bump only for package @launchql/cli
-
-## [4.1.30](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.29...@launchql/cli@4.1.30) (2025-05-30)
+## [4.1.31](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.30...@launchql/cli@4.1.31) (2025-06-21)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.29](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.28...@launchql/cli@4.1.29) (2025-05-30)
+## [4.1.30](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.29...@launchql/cli@4.1.30) (2025-05-30)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.28](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.27...@launchql/cli@4.1.28) (2025-05-30)
+## [4.1.29](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.28...@launchql/cli@4.1.29) (2025-05-30)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.27](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.26...@launchql/cli@4.1.27) (2025-05-29)
+## [4.1.28](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.27...@launchql/cli@4.1.28) (2025-05-30)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.26](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.25...@launchql/cli@4.1.26) (2025-05-27)
+## [4.1.27](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.26...@launchql/cli@4.1.27) (2025-05-29)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.25](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.24...@launchql/cli@4.1.25) (2025-05-25)
+## [4.1.26](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.25...@launchql/cli@4.1.26) (2025-05-27)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.24](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.23...@launchql/cli@4.1.24) (2025-05-24)
+## [4.1.25](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.24...@launchql/cli@4.1.25) (2025-05-25)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.23](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.22...@launchql/cli@4.1.23) (2025-05-24)
+## [4.1.24](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.23...@launchql/cli@4.1.24) (2025-05-24)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.22](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.21...@launchql/cli@4.1.22) (2025-05-24)
+## [4.1.23](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.22...@launchql/cli@4.1.23) (2025-05-24)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.21](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.20...@launchql/cli@4.1.21) (2025-05-22)
+## [4.1.22](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.21...@launchql/cli@4.1.22) (2025-05-24)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.20](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.18...@launchql/cli@4.1.20) (2025-05-22)
+## [4.1.21](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.20...@launchql/cli@4.1.21) (2025-05-22)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.18](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.17...@launchql/cli@4.1.18) (2025-05-21)
+## [4.1.20](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.18...@launchql/cli@4.1.20) (2025-05-22)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.17](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.16...@launchql/cli@4.1.17) (2025-05-21)
+## [4.1.18](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.17...@launchql/cli@4.1.18) (2025-05-21)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.16](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.15...@launchql/cli@4.1.16) (2025-05-20)
+## [4.1.17](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.16...@launchql/cli@4.1.17) (2025-05-21)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.15](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.14...@launchql/cli@4.1.15) (2025-05-20)
+## [4.1.16](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.15...@launchql/cli@4.1.16) (2025-05-20)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.14](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.13...@launchql/cli@4.1.14) (2025-05-20)
+## [4.1.15](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.14...@launchql/cli@4.1.15) (2025-05-20)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.13](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.12...@launchql/cli@4.1.13) (2025-05-20)
+## [4.1.14](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.13...@launchql/cli@4.1.14) (2025-05-20)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.12](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.11...@launchql/cli@4.1.12) (2025-05-20)
+## [4.1.13](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.12...@launchql/cli@4.1.13) (2025-05-20)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.11](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.10...@launchql/cli@4.1.11) (2025-05-19)
+## [4.1.12](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.11...@launchql/cli@4.1.12) (2025-05-20)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.10](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.9...@launchql/cli@4.1.10) (2025-05-19)
+## [4.1.11](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.10...@launchql/cli@4.1.11) (2025-05-19)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.9](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.8...@launchql/cli@4.1.9) (2025-05-19)
+## [4.1.10](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.9...@launchql/cli@4.1.10) (2025-05-19)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.8](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.7...@launchql/cli@4.1.8) (2025-05-19)
+## [4.1.9](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.8...@launchql/cli@4.1.9) (2025-05-19)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.7](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.6...@launchql/cli@4.1.7) (2025-05-19)
+## [4.1.8](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.7...@launchql/cli@4.1.8) (2025-05-19)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.6](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.5...@launchql/cli@4.1.6) (2025-05-19)
+## [4.1.7](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.6...@launchql/cli@4.1.7) (2025-05-19)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.5](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.4...@launchql/cli@4.1.5) (2025-05-18)
+## [4.1.6](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.5...@launchql/cli@4.1.6) (2025-05-19)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.4](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.3...@launchql/cli@4.1.4) (2025-05-18)
+## [4.1.5](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.4...@launchql/cli@4.1.5) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.2...@launchql/cli@4.1.3) (2025-05-18)
+## [4.1.4](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.3...@launchql/cli@4.1.4) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.1...@launchql/cli@4.1.2) (2025-05-18)
+## [4.1.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.2...@launchql/cli@4.1.3) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.1.1](https://github.com/launchql/launchql/compare/@launchql/cli@4.1.0...@launchql/cli@4.1.1) (2025-05-18)
+## [4.1.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.1...@launchql/cli@4.1.2) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-# [4.1.0](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.20...@launchql/cli@4.1.0) (2025-05-18)
+## [4.1.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.1.0...@launchql/cli@4.1.1) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.20](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.19...@launchql/cli@4.0.20) (2025-05-18)
+# [4.1.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.20...@launchql/cli@4.1.0) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.19](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.18...@launchql/cli@4.0.19) (2025-05-18)
+## [4.0.20](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.19...@launchql/cli@4.0.20) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.18](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.17...@launchql/cli@4.0.18) (2025-05-18)
+## [4.0.19](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.18...@launchql/cli@4.0.19) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.17](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.16...@launchql/cli@4.0.17) (2025-05-18)
+## [4.0.18](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.17...@launchql/cli@4.0.18) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.16](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.15...@launchql/cli@4.0.16) (2025-05-16)
+## [4.0.17](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.16...@launchql/cli@4.0.17) (2025-05-18)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.15](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.14...@launchql/cli@4.0.15) (2025-05-16)
+## [4.0.16](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.15...@launchql/cli@4.0.16) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.14](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.13...@launchql/cli@4.0.14) (2025-05-16)
+## [4.0.15](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.14...@launchql/cli@4.0.15) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.13](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.12...@launchql/cli@4.0.13) (2025-05-16)
+## [4.0.14](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.13...@launchql/cli@4.0.14) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.12](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.11...@launchql/cli@4.0.12) (2025-05-16)
+## [4.0.13](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.12...@launchql/cli@4.0.13) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.11](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.10...@launchql/cli@4.0.11) (2025-05-16)
+## [4.0.12](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.11...@launchql/cli@4.0.12) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.10](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.9...@launchql/cli@4.0.10) (2025-05-16)
+## [4.0.11](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.10...@launchql/cli@4.0.11) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.9](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.8...@launchql/cli@4.0.9) (2025-05-16)
+## [4.0.10](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.9...@launchql/cli@4.0.10) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.8](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.7...@launchql/cli@4.0.8) (2025-05-16)
+## [4.0.9](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.8...@launchql/cli@4.0.9) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.7](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.6...@launchql/cli@4.0.7) (2025-05-16)
+## [4.0.8](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.7...@launchql/cli@4.0.8) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.6](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.5...@launchql/cli@4.0.6) (2025-05-16)
+## [4.0.7](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.6...@launchql/cli@4.0.7) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.5](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.4...@launchql/cli@4.0.5) (2025-05-16)
+## [4.0.6](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.5...@launchql/cli@4.0.6) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.4](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.3...@launchql/cli@4.0.4) (2025-05-16)
+## [4.0.5](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.4...@launchql/cli@4.0.5) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.3](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.2...@launchql/cli@4.0.3) (2025-05-16)
+## [4.0.4](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.3...@launchql/cli@4.0.4) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.2](https://github.com/launchql/launchql/compare/@launchql/cli@4.0.1...@launchql/cli@4.0.2) (2025-05-16)
+## [4.0.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.2...@launchql/cli@4.0.3) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [4.0.1](https://github.com/launchql/launchql/compare/@launchql/cli@3.1.4...@launchql/cli@4.0.1) (2025-05-16)
+## [4.0.2](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.0.1...@launchql/cli@4.0.2) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli
 
-## [2.0.1](https://github.com/launchql/launchql/compare/@launchql/cli@3.1.4...@launchql/cli@2.0.1) (2025-05-16)
+## [4.0.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@3.1.4...@launchql/cli@4.0.1) (2025-05-16)
+
+**Note:** Version bump only for package @launchql/cli
+
+## [2.0.1](https://github.com/constructive-io/constructive/compare/@launchql/cli@3.1.4...@launchql/cli@2.0.1) (2025-05-16)
 
 **Note:** Version bump only for package @launchql/cli

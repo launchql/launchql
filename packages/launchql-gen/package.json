@@ -1,12 +1,12 @@
 {
   "name": "@launchql/codegen",
-  "version": "2.16.16",
+  "version": "2.16.18",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "scripts": {
     "clean": "makage clean",
@@ -29,6 +29,11 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "@graphql-codegen/core": "^5.0.0",
+    "@graphql-codegen/typescript": "^5.0.5",
+    "@graphql-codegen/typescript-graphql-request": "^6.0.1",
+    "@graphql-codegen/typescript-operations": "^5.0.5",
+    "@graphql-codegen/typescript-react-query": "^6.1.1",
     "@types/pluralize": "0.0.33",
     "graphql": "15.10.1",
     "introspectron": "workspace:^",
@@ -37,6 +42,8 @@
   },
   "dependencies": {
     "gql-ast": "workspace:^",
+    "graphql-request": "^6.1.0",
+    "graphql-tag": "^2.12.6",
     "inflection": "^1.12.0",
     "pluralize": "^8.0.0"
   },

@@ -856,7 +856,7 @@ export class LaunchQLPackage {
 
     // Create deploy file
     const deployContent = `-- Deploy: ${changeName}
--- made with <3 @ launchql.com
+-- made with <3 @ constructive.io
 
 ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join('\n') + '\n' : ''}
 -- Add your deployment SQL here

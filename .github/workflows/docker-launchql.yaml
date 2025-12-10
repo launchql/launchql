@@ -1,4 +1,4 @@
-name: Docker LaunchQL
+name: Constructive Docker
 
 on:
   push:

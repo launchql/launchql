@@ -180,7 +180,7 @@ describe('Add functionality', () => {
     const verifyContent = readFileSync(join(moduleDir, 'verify', 'test-headers.sql'), 'utf8');
     
     expect(deployContent).toContain('-- Deploy: test-headers');
-    expect(deployContent).toContain('-- made with <3 @ launchql.com');
+    expect(deployContent).toContain('-- made with <3 @ constructive.io');
     expect(deployContent).toContain('-- requires: users');
     expect(deployContent).toContain('-- Add your deployment SQL here');
     

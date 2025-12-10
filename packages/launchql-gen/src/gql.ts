@@ -436,10 +436,7 @@ export const getOrderByEnums = ({
 
 export interface GetFragmentArgs {
   operationName: string;
-  query: {
-    model: string;
-    selection: string[];
-  };
+  query: GqlField;
 }
 
 export interface GetFragmentResult {
@@ -456,9 +453,7 @@ export const getFragment = ({
     true
   );
 
-  const selections: FieldNode[] = query.selection.map((field) =>
-    t.field({ name: field })
-  );
+  const selections: FieldNode[] = getSelections(query);
 
   const ast: DocumentNode = t.document({
     definitions: [
@@ -642,16 +637,17 @@ export const createOne = ({
   ];
 
   const selections: FieldNode[] = allAttrs.map((field) =>
-    t.field({ name: field.name })
+    t.field({ name: 'id' })
   );
 
   const ast: DocumentNode = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
-    selections,
+    selections: [t.field({ name: 'clientMutationId' })],
     variableDefinitions,
     modelName,
+    useModel: false,
   });
 
   return { name: mutationName, ast };
@@ -720,7 +716,10 @@ export const patchOne = ({
 
   const patchers = patchByAttrs.map((p) => p.name);
 
-  const variableDefinitions: VariableDefinitionNode[] = patchAttrs.map(
+  const patchAttrVarDefs: VariableDefinitionNode[] = patchAttrs
+    // @ts-ignore
+    .filter((field) => !patchers.includes(field.name))
+    .map(
     // @ts-ignore
     ({ name, type, isArray }) => {
       let gqlType: TypeNode = t.namedType({ type });
@@ -741,6 +740,20 @@ export const patchOne = ({
       });
     }
   );
+
+  const patchByVarDefs: VariableDefinitionNode[] = patchByAttrs.map(({ name, type, isNotNull, isArray, isArrayNotNull }) => {
+    let gqlType: TypeNode = t.namedType({ type });
+    if (isNotNull) {
+      gqlType = t.nonNullType({ type: gqlType });
+    }
+    if (isArray) {
+      gqlType = t.listType({ type: gqlType });
+      if (isArrayNotNull) {
+        gqlType = t.nonNullType({ type: gqlType });
+      }
+    }
+    return t.variableDefinition({ variable: t.variable({ name }), type: gqlType });
+  });
 
   const selectArgs: ArgumentNode[] = [
     t.argument({
@@ -774,18 +787,16 @@ export const patchOne = ({
     }),
   ];
 
-  const selections: FieldNode[] = allAttrs.map((field) =>
-    // @ts-ignore
-    t.field({ name: field.name })
-  );
+  const selections: FieldNode[] = [t.field({ name: 'clientMutationId' })];
 
   const ast: DocumentNode = createGqlMutation({
     operationName,
     mutationName,
     selectArgs,
     selections,
-    variableDefinitions,
+    variableDefinitions: [...patchByVarDefs, ...patchAttrVarDefs],
     modelName,
+    useModel: false,
   });
 
   return { name: mutationName, ast };
@@ -1101,45 +1112,43 @@ export function getSelections(
 ): FieldNode[] {
   const useAll = fields.length === 0;
 
-  return query.selection
-    .map((field) => {
-      if (typeof field === 'string') {
-        if (!useAll && !fields.includes(field)) return null;
-        return t.field({ name: field });
-      }
-
-      if (
-        typeof field === 'object' &&
-        field !== null &&
-        'name' in field &&
-        'selection' in field &&
-        Array.isArray(field.selection)
-      ) {
-        if (!useAll && !fields.includes(field.name)) return null;
-
+  const mapItem = (item: QueryField): FieldNode | null => {
+    if (typeof item === 'string') {
+      if (!useAll && !fields.includes(item)) return null;
+      return t.field({ name: item });
+    }
+    if (
+      typeof item === 'object' &&
+      item !== null &&
+      'name' in item &&
+      'selection' in item &&
+      Array.isArray(item.selection)
+    ) {
+      if (!useAll && !fields.includes(item.name)) return null;
+      const isMany = (item as any).qtype === 'getMany';
+      if (isMany) {
         return t.field({
-          name: field.name,
+          name: item.name,
           args: [
-            t.argument({
-              name: 'first',
-              // @ts-ignore
-              value: t.intValue({ value: 3 }),
-            }),
+            t.argument({ name: 'first', value: t.intValue({ value: '3' as any }) }),
           ],
           selectionSet: t.selectionSet({
             selections: [
               t.field({
                 name: 'nodes',
-                selectionSet: t.selectionSet({
-                  selections: field.selection.map((f) => t.field({ name: f })),
-                }),
+                selectionSet: t.selectionSet({ selections: item.selection.map((s) => mapItem(s)).filter(Boolean) as FieldNode[] }),
               }),
             ],
           }),
         });
       }
+      return t.field({
+        name: item.name,
+        selectionSet: t.selectionSet({ selections: item.selection.map((s) => mapItem(s)).filter(Boolean) as FieldNode[] }),
+      });
+    }
+    return null;
+  };
 
-      return null;
-    })
-    .filter((i): i is FieldNode => Boolean(i));
+  return query.selection.map((field) => mapItem(field)).filter((i): i is FieldNode => Boolean(i));
 }
