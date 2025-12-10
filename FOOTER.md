@@ -32,13 +32,13 @@ Common issues and solutions for pgpm, PostgreSQL, and testing.
 
 ### 🧠 Parsing & AST
 
-* [pgsql-parser](https://github.com/constructive-iopgsql-parser): **🔄 SQL conversion engine** that interprets and converts PostgreSQL syntax.
-* [libpg-query-node](https://github.com/constructive-iolibpg-query-node): **🌉 Node.js bindings** for `libpg_query`, converting SQL into parse trees.
-* [pg-proto-parser](https://github.com/constructive-iopg-proto-parser): **📦 Protobuf parser** for parsing PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
-* [@pgsql/enums](https://github.com/constructive-iopgsql-parser/tree/main/packages/enums): **🏷️ TypeScript enums** for PostgreSQL AST for safe and ergonomic parsing logic.
-* [@pgsql/types](https://github.com/constructive-iopgsql-parser/tree/main/packages/types): **📝 Type definitions** for PostgreSQL AST nodes in TypeScript.
-* [@pgsql/utils](https://github.com/constructive-iopgsql-parser/tree/main/packages/utils): **🛠️ AST utilities** for constructing and transforming PostgreSQL syntax trees.
-* [pg-ast](https://github.com/constructive-io/constructive/tree/main/packages/pg-ast): **🔍 Low-level AST tools** and transformations for Postgres query structures.
+* [pgsql-parser](https://www.npmjs.com/package/pgsql-parser): **🔄 SQL conversion engine** that interprets and converts PostgreSQL syntax.
+* [libpg-query-node](https://www.npmjs.com/package/libpg-query): **🌉 Node.js bindings** for `libpg_query`, converting SQL into parse trees.
+* [pg-proto-parser](https://www.npmjs.com/package/pg-proto-parser): **📦 Protobuf parser** for parsing PostgreSQL Protocol Buffers definitions to generate TypeScript interfaces, utility functions, and JSON mappings for enums.
+* [@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums): **🏷️ TypeScript enums** for PostgreSQL AST for safe and ergonomic parsing logic.
+* [@pgsql/types](https://www.npmjs.com/package/@pgsql/types): **📝 Type definitions** for PostgreSQL AST nodes in TypeScript.
+* [@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils): **🛠️ AST utilities** for constructing and transforming PostgreSQL syntax trees.
+* [pg-ast](https://www.npmjs.com/package/pg-ast): **🔍 Low-level AST tools** and transformations for Postgres query structures.
 
 ### 🚀 API & Dev Tools
 

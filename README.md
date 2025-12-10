@@ -1,7 +1,7 @@
 # Constructive
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructiverefs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
@@ -168,11 +168,11 @@ Stream files directly to S3-compatible storage with automatic content-type detec
 Low-level tools for parsing, transforming, and generating PostgreSQL SQL.
 
 **Packages:**
-- **[pgsql-parser](https://github.com/constructive-iopgsql-parser)** - SQL parsing and deparsing engine
+- **[pgsql-parser](https://github.com/constructive-io/pgpm-modulessql-parser)** - SQL parsing and deparsing engine
 - **[libpg-query-node](https://github.com/constructive-iolibpg-query-node)** - Node.js bindings for libpg_query
 - **[pg-ast](https://github.com/constructive-io/constructive/tree/main/packages/pg-ast)** - AST construction and transformation utilities
-- **[@pgsql/types](https://github.com/constructive-iopgsql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST
-- **[@pgsql/utils](https://github.com/constructive-iopgsql-parser/tree/main/packages/utils)** - AST manipulation utilities
+- **[@pgsql/types](https://github.com/constructive-io/pgpm-modulessql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST
+- **[@pgsql/utils](https://github.com/constructive-io/pgpm-modulessql-parser/tree/main/packages/utils)** - AST manipulation utilities
 
 ## Common Workflows
 
@@ -323,13 +323,13 @@ This architecture eliminates the traditional ORM layer and API boilerplate, lett
 
 ### 🧠 SQL Parsing & AST Manipulation
 
-- **[pgsql-parser](https://github.com/constructive-iopgsql-parser)** - SQL parsing and deparsing engine for PostgreSQL syntax conversion
-- **[libpg-query-node](https://github.com/constructive-iolibpg-query-node)** - Node.js bindings for libpg_query to convert SQL into parse trees
-- **[pg-proto-parser](https://github.com/constructive-iopg-proto-parser)** - Protobuf parser for PostgreSQL Protocol Buffers with TypeScript generation
-- **[pg-ast](https://github.com/constructive-io/constructive/tree/main/packages/pg-ast)** - AST construction and transformation utilities for Postgres query structures
-- **[@pgsql/types](https://github.com/constructive-iopgsql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST nodes
-- **[@pgsql/enums](https://github.com/constructive-iopgsql-parser/tree/main/packages/enums)** - TypeScript enums for PostgreSQL AST for safe parsing logic
-- **[@pgsql/utils](https://github.com/constructive-iopgsql-parser/tree/main/packages/utils)** - AST manipulation utilities for constructing and transforming syntax trees
+- **[pgsql-parser](https://www.npmjs.com/package/pgsql-parser)** - SQL parsing and deparsing engine for PostgreSQL syntax conversion
+- **[libpg-query-node](https://www.npmjs.com/package/libpg-query)** - Node.js bindings for libpg_query to convert SQL into parse trees
+- **[pg-proto-parser](https://www.npmjs.com/package/pg-proto-parser)** - Protobuf parser for PostgreSQL Protocol Buffers with TypeScript generation
+- **[pg-ast](https://www.npmjs.com/package/pg-ast)** - AST construction and transformation utilities for Postgres query structures
+- **[@pgsql/types](https://www.npmjs.com/package/@pgsql/types)** - TypeScript type definitions for PostgreSQL AST nodes
+- **[@pgsql/enums](https://www.npmjs.com/package/@pgsql/enums)** - TypeScript enums for PostgreSQL AST for safe parsing logic
+- **[@pgsql/utils](https://www.npmjs.com/package/@pgsql/utils)** - AST manipulation utilities for constructing and transforming syntax trees
 
 ## Disclaimer
 
