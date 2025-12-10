@@ -1,4 +1,4 @@
-name: LaunchQL matrix tests
+name: Constructive matrix tests
 on:
   push:
   pull_request:
@@ -7,7 +7,7 @@ on:
   workflow_call:
 
 jobs:
-  launchql-tests:
+  constructive-tests:
     runs-on: ubuntu-latest
     container: pyramation/node-sqitch:20.12.0
 
