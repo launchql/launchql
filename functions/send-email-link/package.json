@@ -1,0 +1,25 @@
+{
+  "name": "@launchql/send-email-link-fn",
+  "version": "0.1.0",
+  "description": "Knative function to send email links (invite, password reset, email verification) using LaunchQL jobs",
+  "author": "LaunchQL",
+  "private": true,
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w"
+  },
+  "dependencies": {
+    "@launchql/knative-job-fn": "workspace:^",
+    "@launchql/mjml": "0.1.1",
+    "@launchql/postmaster": "0.1.4",
+    "@launchql/styled-email": "0.1.0",
+    "graphql-request": "^7.1.2",
+    "graphql-tag": "^2.12.6"
+  }
+}
+

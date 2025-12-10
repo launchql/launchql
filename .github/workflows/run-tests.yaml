@@ -1,10 +1,19 @@
 name: Constructive matrix tests
 on:
   push:
+    branches:
+      - main
+      - v1
   pull_request:
-    types: [opened, synchronized, reopened]
+    branches:
+      - main
+      - v1
   workflow_dispatch:
   workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-tests
+  cancel-in-progress: true
 
 jobs:
   constructive-tests:
