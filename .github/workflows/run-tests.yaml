@@ -130,6 +130,9 @@ jobs:
           version: 9
 
       - name: build
+        run: pnpm install
+
+      - name: build
         run: pnpm run build
 
       - name: seed app_user
