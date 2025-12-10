@@ -2,7 +2,7 @@ ARG BASE=node
 ARG BASE_VERSION=20-bookworm
 FROM ${BASE}:${BASE_VERSION} AS build
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 ARG BASE
 ARG BASE_VERSION
 ENV BASE_VERSION=${BASE_VERSION}
@@ -29,7 +29,7 @@ RUN set -eux; \
 ################################################################################
 FROM ${BASE}:${BASE_VERSION} AS launchql
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 WORKDIR /app
 
 # Runtime deps (psql optional but handy for debugging)

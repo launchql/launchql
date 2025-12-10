@@ -201,7 +201,8 @@ export const parseGraphQuery = (introQuery: IntrospectionQueryResult) => {
   }, {} as Record<string, any>);
 
   const queries = queriesRoot.fields!.reduce((m, query) => {
-    if (query.type.kind === 'OBJECT') {
+    const model = getObjectType(query.type);
+    if (model) {
       if (isConnectionQuery(query)) {
         m[query.name] = parseConnectionQuery(context, query, 1);
       } else {
@@ -221,18 +222,34 @@ function parseSelectionObject(context: SelectionContext, model: string, nesting:
   const { HASH } = context;
   throwIfInvalidContext(context);
 
-  const selectionFields = HASH[model].fields!.filter((f) => !isPureObjectType(f.type));
+  const selectionFields = HASH[model].fields!
+    .filter((f) => !isPureObjectType(f.type))
+    .filter((f) => {
+      const objectType = getObjectType(f.type);
+      if (objectType && fieldHasRequiredArgs(f)) return false;
+      return true;
+    });
 
-  return selectionFields.map((f) => {
-    if (f.type.ofType?.kind === 'OBJECT') {
+  const mapped = selectionFields.map((f) => {
+    const objectType = getObjectType(f.type);
+    if (objectType) {
       if (isConnectionQuery(f)) {
         return { name: f.name, ...parseConnectionQuery(context, f, nesting - 1) };
-      } else {
-        return { name: f.name, ...parseSingleQuery(context, f, nesting - 1) };
       }
+      if (isListType(f.type)) {
+        return { name: f.name, selection: parseSelectionScalar(context, objectType) };
+      }
+      return { name: f.name, ...parseSingleQuery(context, f, nesting - 1) };
     }
+    const baseKind = getBaseKind(f.type);
+    if (isListType(f.type)) {
+      if (baseKind === 'SCALAR' || baseKind === 'ENUM') return f.name;
+      return null as any;
+    }
+    if (baseKind === 'UNION' || baseKind === 'INTERFACE') return null as any;
     return f.name;
   });
+  return mapped.filter((x) => x != null);
 }
 
 function parseSelectionScalar(context: SelectionContext, model: string): string[] {
@@ -240,10 +257,21 @@ function parseSelectionScalar(context: SelectionContext, model: string): string[
   throwIfInvalidContext(context);
 
   const selectionFields = HASH[model].fields!.filter(
-    (f) => !isPureObjectType(f.type) && !isConnectionQuery(f)
+    (f) => {
+      if (isPureObjectType(f.type)) return false;
+      if (isConnectionQuery(f)) return false;
+      const objectType = getObjectType(f.type);
+      if (objectType) return false;
+      const baseKind = getBaseKind(f.type);
+      if (isListType(f.type) && !(baseKind === 'SCALAR' || baseKind === 'ENUM')) return false;
+      if (baseKind === 'UNION' || baseKind === 'INTERFACE') return false;
+      return true;
+    }
   );
 
-  return selectionFields.map((f) => f.name);
+  const names = selectionFields.map((f) => f.name);
+  if (names.length === 0) return ['__typename'];
+  return names;
 }
 
 function isConnectionQuery(query: { type: IntrospectionTypeRef; args: IntrospectionInputValue[] }): boolean {
@@ -265,6 +293,27 @@ function getObjectType(type: IntrospectionTypeRef): string | undefined {
   if (type.kind === 'OBJECT') return type.name || undefined;
   if (type.ofType) return getObjectType(type.ofType);
   return undefined;
+}
+
+function isListType(type: IntrospectionTypeRef): boolean {
+  if (type.kind === 'LIST') return true;
+  if (type.ofType) return isListType(type.ofType);
+  return false;
+}
+
+function fieldHasRequiredArgs(field: IntrospectionField): boolean {
+  for (const a of field.args) {
+    if (a.type && a.type.kind === 'NON_NULL' && (a.defaultValue === undefined || a.defaultValue === null)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getBaseKind(type: IntrospectionTypeRef): string {
+  let t: IntrospectionTypeRef | undefined | null = type;
+  while (t && t.ofType) t = t.ofType;
+  return (t?.kind || type.kind) as string;
 }
 
 function throwIfInvalidContext(context: SelectionContext): void {

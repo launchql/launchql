@@ -1,7 +1,7 @@
 # __MODULENAME__
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
+  <img src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/outline-logo.svg" width="250"><br />
     __MODULEDESC__
 </p>
 

@@ -1,9 +1,9 @@
 {
   "name": "graphile-search-plugin",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "generate search conditions for your tsvector columns",
   "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "keywords": [
     "postgraphile",
@@ -35,7 +35,7 @@
     "graphql"
   ],
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "devDependencies": {
     "graphile-plugin-connection-filter": "workspace:^",
