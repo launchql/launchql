@@ -49,6 +49,7 @@
     "@launchql/core": "workspace:^",
     "@launchql/env": "workspace:^",
     "@launchql/explorer": "workspace:^",
+    "@launchql/codegen": "workspace:^",
     "@launchql/logger": "workspace:^",
     "@launchql/server": "workspace:^",
     "@launchql/server-utils": "workspace:^",
