@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.17.22](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.21...@launchql/cli@4.17.22) (2025-12-10)
+
+**Note:** Version bump only for package @launchql/cli
+
 ## [4.17.21](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.20...@launchql/cli@4.17.21) (2025-12-10)
 
 **Note:** Version bump only for package @launchql/cli

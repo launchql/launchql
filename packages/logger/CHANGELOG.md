@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/constructive-io/constructive/compare/@launchql/logger@1.1.12...@launchql/logger@1.1.13) (2025-12-10)
+
+**Note:** Version bump only for package @launchql/logger
+
 ## [1.1.12](https://github.com/constructive-io/constructive/compare/@launchql/logger@1.1.11...@launchql/logger@1.1.12) (2025-11-28)
 
 **Note:** Version bump only for package @launchql/logger

@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-fulltext-filter",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Full text searching on tsvector fields for use with graphile-plugin-connection-filter",
   "main": "index.js",
   "module": "esm/index.js",
