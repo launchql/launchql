@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "PostGIS filtering options in PostGraphile",
   "author": "Matt Bretl",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
@@ -24,10 +24,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "keywords": [
     "postgraphile",

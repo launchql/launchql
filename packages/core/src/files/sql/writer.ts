@@ -52,7 +52,7 @@ const writeDeploy = (row: SqitchRow, opts: SqlWriteOptions): void => {
   const sqlContent = opts.replacer(row.content);
   
   const content = `-- Deploy: ${deploy}
--- made with <3 @ launchql.com
+-- made with <3 @ constructive.io
 
 ${opts.replacer(
     ordered(row?.deps)

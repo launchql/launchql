@@ -78,7 +78,7 @@ Naming & Typing
 
 Migration & History
 -------------------
-- [ ] Get this PR from launchql-gen: https://github.com/launchql/launchql-gen/pull/19
+- [ ] Get this PR from launchql-gen: https://github.com/constructive-io/constructive-gen/pull/19
 - [ ] Move postgraphile-* plugins over (preserve import history)
 - [ ] Import original LaunchQL history (preserve git log)
 

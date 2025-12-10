@@ -2,7 +2,7 @@ ARG BASE=node
 ARG BASE_VERSION=20.12.0-alpine3.19
 FROM ${BASE}:${BASE_VERSION} AS sqitch-build
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 
 # Install system dependencies.
 WORKDIR /work
@@ -53,7 +53,7 @@ ARG BASE=node
 ARG BASE_VERSION=20.12.0-alpine3.19
 FROM ${BASE}:${BASE_VERSION} AS sqitch
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 
 # Install runtime system dependencies and remove unnecesary files.
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
