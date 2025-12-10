@@ -1,15 +1,15 @@
 name: Docker LaunchQL
 
 on:
-  push:
-    branches:
-      - main
-      - v1
-      - release/*
-  pull_request:
-    branches:
-      - main
-      - v1
+  # push:
+  #   branches:
+  #     - main
+  #     - v1
+  #     - release/*
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - v1
   workflow_dispatch: {}
 
 concurrency:
@@ -65,8 +65,7 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: ${{ env.PLATFORMS }}
-          push: true # debug mode
-          ##push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
