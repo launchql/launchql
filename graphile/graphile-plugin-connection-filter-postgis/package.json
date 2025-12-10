@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-connection-filter-postgis",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "PostGIS filtering options in PostGraphile",
   "author": "Matt Bretl",
   "homepage": "https://github.com/launchql/launchql",
@@ -40,14 +40,14 @@
     "launchql"
   ],
   "dependencies": {
-    "graphile-postgis": "workspace:^",
     "graphile-build": "^4.14.1",
     "graphile-build-pg": "^4.14.1",
-    "graphile-plugin-connection-filter": "workspace:^"
+    "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-postgis": "workspace:^"
   },
   "peerDependencies": {
-    "graphile-postgis": "workspace:^",
     "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-postgis": "workspace:^",
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {
