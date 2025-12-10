@@ -14,7 +14,6 @@
     "build:watch": "tsc -p tsconfig.json -w"
   },
   "dependencies": {
-    "@launchql/knative-job-fn": "workspace:^",
-    "@launchql/postmaster": "0.1.4"
+    "@launchql/knative-job-fn": "workspace:^"
   }
 }

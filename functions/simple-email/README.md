@@ -2,10 +2,10 @@
 
 Simple Knative-compatible email function used with the LaunchQL jobs system.
 
-This function is intentionally minimal: it sends an email directly from the job
-payload without querying GraphQL or deriving any additional context. It uses
-`@launchql/postmaster` under the hood, which is typically configured to talk to
-Mailgun or another email provider via environment variables.
+This function is intentionally minimal: it reads an email payload from the job
+body and **logs it only** (dry‑run mode). It does **not** send any email. This
+is useful while wiring up jobs and Knative without needing a real mail
+provider configured.
 
 ## Expected job payload
 
@@ -48,7 +48,8 @@ The function is wrapped by `@launchql/knative-job-fn`, so it expects:
 The handler:
 
 1. Reads the email data directly from the request body.
-2. Calls `@launchql/postmaster.send` with `to`, `subject`, and `html`/`text`.
+2. Logs the email metadata (to/subject/from, and whether html/text are present)
+   and the full payload.
 3. Responds with HTTP 200 and:
 
 ```json
@@ -61,16 +62,10 @@ callback for the worker.
 
 ## Environment variables
 
-This function does **not** depend on any GraphQL configuration. It only needs
-whatever configuration is required by `@launchql/postmaster` for your email
-provider (for example, Mailgun). A common pattern is:
-
-- `MAILGUN_API_KEY`
-- `MAILGUN_DOMAIN`
-- `MAILGUN_FROM`
-
-Consult `@launchql/postmaster` documentation for the exact variables expected
-in your setup.
+This function does **not** depend on any GraphQL or email provider
+configuration. There are currently **no required environment variables** for
+its core behavior; it will simply log the email payload and return a successful
+response.
 
 ## Building locally
 

@@ -1,5 +1,4 @@
 import app from '@launchql/knative-job-fn';
-import { send } from '@launchql/postmaster';
 
 type SimpleEmailPayload = {
   to: string;
@@ -43,46 +42,20 @@ app.post('*', async (req: any, res: any, next: any) => {
       ? payload.replyTo
       : undefined;
 
-    const { MAILGUN_API_KEY, MAILGUN_DOMAIN, MAILGUN_FROM } = process.env;
-
-    if (!MAILGUN_API_KEY || !MAILGUN_DOMAIN || !MAILGUN_FROM) {
-      // Do not fail the job if Mailgun config is missing; just log and return a marker.
-      // This keeps the function safe to run in environments without Mailgun.
-      // Worker will see HTTP 200 and treat the job as handled.
-      // eslint-disable-next-line no-console
-      console.warn(
-        '[simple-email] Missing Mailgun configuration, skipping send',
-        {
-          hasApiKey: Boolean(MAILGUN_API_KEY),
-          hasDomain: Boolean(MAILGUN_DOMAIN),
-          hasFrom: Boolean(MAILGUN_FROM)
-        }
-      );
-      return res.status(200).json({
-        complete: false,
-        skipped: 'missing_mailgun_env'
-      });
-    }
-
-    // Log the email being sent (without full body for safety)
+    // Log the email (dry-run mode, no actual send)
     // eslint-disable-next-line no-console
-    console.log('[simple-email] sending email', {
+    console.log('[simple-email] DRY RUN email', {
       to,
       subject,
-      from: from ?? MAILGUN_FROM,
+      from,
       replyTo,
       hasHtml: Boolean(html),
       hasText: Boolean(text)
     });
 
-    await send({
-      to,
-      subject,
-      html,
-      text,
-      ...(from ? { from } : {}),
-      ...(replyTo ? { replyTo } : {})
-    });
+    // Optionally also log the full payload (for debugging)
+    // eslint-disable-next-line no-console
+    console.log('[simple-email] DRY RUN payload', payload);
 
     res.status(200).json({ complete: true });
   } catch (err) {
@@ -91,3 +64,14 @@ app.post('*', async (req: any, res: any, next: any) => {
 });
 
 export default app;
+
+// When executed directly (e.g. `node dist/index.js` in Knative),
+// start an HTTP server on the provided PORT (default 8080).
+if (require.main === module) {
+  const port = Number(process.env.PORT ?? 8080);
+  // @launchql/knative-job-fn exposes a .listen method that delegates to the underlying Express app
+  (app as any).listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`[simple-email] listening on port ${port}`);
+  });
+}
