@@ -94,9 +94,6 @@ importers:
       '@launchql/knative-job-fn':
         specifier: workspace:^
         version: link:../../jobs/knative-job-fn
-      '@launchql/postmaster':
-        specifier: 0.1.4
-        version: 0.1.4
 
   graphile/graphile-cache:
     dependencies:
