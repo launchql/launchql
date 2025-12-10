@@ -1,17 +1,17 @@
-# LaunchQL
+# Constructive
 
 <p align="center" width="100%">
   <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-   <a href="https://github.com/launchql/launchql/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+   <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
 </p>
 
-**LaunchQL** is a complete ecosystem for modular PostgreSQL development. Design your database schema, manage it with our package manager, and get a production-ready GraphQL API automatically. Build composable database modules, version them like npm packages, and deploy with confidence.
+**Constructive** is a complete ecosystem for modular PostgreSQL development. Design your database schema, manage it with our package manager, and get a production-ready GraphQL API automatically. Build composable database modules, version them like npm packages, and deploy with confidence.
 
 ## 🚀 Quick Start
 
@@ -105,7 +105,7 @@ The heart of LaunchQL's modular approach. pgpm manages database schemas as versi
 - Recursive module resolution across workspaces
 - Export migrations from existing databases
 
-**Learn more:** [pgpm documentation](https://github.com/launchql/launchql/tree/main/packages/pgpm)
+**Learn more:** [pgpm documentation](https://github.com/constructive-io/constructive/tree/main/packages/pgpm)
 
 ### 🖥️ LaunchQL CLI
 
@@ -118,7 +118,7 @@ Full-featured command-line toolkit for managing LaunchQL projects. Provides the 
 - Production deployment with versioning and rollback
 - Built-in security with role-based access control
 
-**Learn more:** [@launchql/cli documentation](https://github.com/launchql/launchql/tree/main/packages/cli)
+**Learn more:** [@launchql/cli documentation](https://github.com/constructive-io/constructive/tree/main/packages/cli)
 
 ### ⚡ GraphQL API Server
 
@@ -132,47 +132,47 @@ Express-based server powered by PostGraphile that automatically exposes your Pos
 - Dynamic API configuration from meta-schema
 - PostGIS, full-text search, and advanced filtering
 
-**Learn more:** [@launchql/server documentation](https://github.com/launchql/launchql/tree/main/packages/server)
+**Learn more:** [@launchql/server documentation](https://github.com/constructive-io/constructive/tree/main/packages/server)
 
 ### 🧪 Testing Infrastructure
 
 Comprehensive testing tools for PostgreSQL applications with isolated test databases, transaction-based rollbacks, and RLS simulation.
 
 **Packages:**
-- **[pgsql-test](https://github.com/launchql/launchql/tree/main/packages/pgsql-test)** - Isolated PostgreSQL test environments with per-test transaction rollbacks
-- **[graphile-test](https://github.com/launchql/launchql/tree/main/packages/graphile-test)** - GraphQL testing utilities for PostGraphile projects
-- **[supabase-test](https://github.com/launchql/launchql/tree/main/packages/supabase-test)** - Supabase-optimized test harness with JWT helpers
+- **[pgsql-test](https://github.com/constructive-io/constructive/tree/main/packages/pgsql-test)** - Isolated PostgreSQL test environments with per-test transaction rollbacks
+- **[graphile-test](https://github.com/constructive-io/constructive/tree/main/packages/graphile-test)** - GraphQL testing utilities for PostGraphile projects
+- **[supabase-test](https://github.com/constructive-io/constructive/tree/main/packages/supabase-test)** - Supabase-optimized test harness with JWT helpers
 
 ### 🧠 Code Generation
 
 Automatically generate TypeScript types, GraphQL queries, and SQL builders from your database schema.
 
 **Packages:**
-- **[introspectron](https://github.com/launchql/launchql/tree/main/packages/introspectron)** - PostgreSQL schema introspection
-- **[launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen)** - Auto-generated GraphQL mutations and queries
-- **[pg-codegen](https://github.com/launchql/launchql/tree/main/packages/pg-codegen)** - TypeScript interfaces and classes from database tables
-- **[@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query)** - Fluent GraphQL query builder for PostGraphile
-- **[@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder)** - TypeScript SQL query builder
+- **[introspectron](https://github.com/constructive-io/constructive/tree/main/packages/introspectron)** - PostgreSQL schema introspection
+- **[launchql-gen](https://github.com/constructive-io/constructive/tree/main/packages/launchql-gen)** - Auto-generated GraphQL mutations and queries
+- **[pg-codegen](https://github.com/constructive-io/constructive/tree/main/packages/pg-codegen)** - TypeScript interfaces and classes from database tables
+- **[@launchql/query](https://github.com/constructive-io/constructive/tree/main/packages/query)** - Fluent GraphQL query builder for PostGraphile
+- **[@launchql/query-builder](https://github.com/constructive-io/constructive/tree/main/packages/query-builder)** - TypeScript SQL query builder
 
 ### 🔁 File Streaming & Uploads
 
 Stream files directly to S3-compatible storage with automatic content-type detection, ETag generation, and metadata extraction.
 
 **Packages:**
-- **[@launchql/s3-streamer](https://github.com/launchql/launchql/tree/main/packages/s3-streamer)** - Direct S3 streaming with metadata injection
-- **[etag-hash](https://github.com/launchql/launchql/tree/main/packages/etag-hash)** - S3-compatible ETag computation
-- **[uuid-hash](https://github.com/launchql/launchql/tree/main/packages/uuid-hash)** - Deterministic UUIDs from content hashing
+- **[@launchql/s3-streamer](https://github.com/constructive-io/constructive/tree/main/packages/s3-streamer)** - Direct S3 streaming with metadata injection
+- **[etag-hash](https://github.com/constructive-io/constructive/tree/main/packages/etag-hash)** - S3-compatible ETag computation
+- **[uuid-hash](https://github.com/constructive-io/constructive/tree/main/packages/uuid-hash)** - Deterministic UUIDs from content hashing
 
 ### 🧠 SQL Parsing & AST
 
 Low-level tools for parsing, transforming, and generating PostgreSQL SQL.
 
 **Packages:**
-- **[pgsql-parser](https://github.com/launchql/pgsql-parser)** - SQL parsing and deparsing engine
-- **[libpg-query-node](https://github.com/launchql/libpg-query-node)** - Node.js bindings for libpg_query
-- **[pg-ast](https://github.com/launchql/launchql/tree/main/packages/pg-ast)** - AST construction and transformation utilities
-- **[@pgsql/types](https://github.com/launchql/pgsql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST
-- **[@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils)** - AST manipulation utilities
+- **[pgsql-parser](https://github.com/constructive-iopgsql-parser)** - SQL parsing and deparsing engine
+- **[libpg-query-node](https://github.com/constructive-iolibpg-query-node)** - Node.js bindings for libpg_query
+- **[pg-ast](https://github.com/constructive-io/constructive/tree/main/packages/pg-ast)** - AST construction and transformation utilities
+- **[@pgsql/types](https://github.com/constructive-iopgsql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST
+- **[@pgsql/utils](https://github.com/constructive-iopgsql-parser/tree/main/packages/utils)** - AST manipulation utilities
 
 ## Common Workflows
 
@@ -286,50 +286,50 @@ This architecture eliminates the traditional ORM layer and API boilerplate, lett
 
 ### 📦 Package Management & Migrations
 
-- **[pgpm](https://github.com/launchql/launchql/tree/main/packages/pgpm)** - PostgreSQL Package Manager for modular database development with npm-style dependency management
-- **[@launchql/cli](https://github.com/launchql/launchql/tree/main/packages/cli)** - Full-featured command-line toolkit for LaunchQL projects with scaffolding, migrations, and deployment
-- **[@launchql/core](https://github.com/launchql/launchql/tree/main/packages/core)** - Core migration engine with module orchestration and dependency resolution
+- **[pgpm](https://github.com/constructive-io/constructive/tree/main/packages/pgpm)** - PostgreSQL Package Manager for modular database development with npm-style dependency management
+- **[@launchql/cli](https://github.com/constructive-io/constructive/tree/main/packages/cli)** - Full-featured command-line toolkit for LaunchQL projects with scaffolding, migrations, and deployment
+- **[@launchql/core](https://github.com/constructive-io/constructive/tree/main/packages/core)** - Core migration engine with module orchestration and dependency resolution
 
 ### 🚀 GraphQL API & Server
 
-- **[@launchql/server](https://github.com/launchql/launchql/tree/main/packages/server)** - Express-based API server powered by PostGraphile with RLS integration and JWT authentication
-- **[@launchql/explorer](https://github.com/launchql/launchql/tree/main/packages/explorer)** - GraphiQL interface for exploring your auto-generated GraphQL API
-- **[@launchql/graphile-settings](https://github.com/launchql/launchql/tree/main/packages/graphile-settings)** - Centralized PostGraphile plugin configuration with connection filters, PostGIS, and full-text search
+- **[@launchql/server](https://github.com/constructive-io/constructive/tree/main/packages/server)** - Express-based API server powered by PostGraphile with RLS integration and JWT authentication
+- **[@launchql/explorer](https://github.com/constructive-io/constructive/tree/main/packages/explorer)** - GraphiQL interface for exploring your auto-generated GraphQL API
+- **[@launchql/graphile-settings](https://github.com/constructive-io/constructive/tree/main/packages/graphile-settings)** - Centralized PostGraphile plugin configuration with connection filters, PostGIS, and full-text search
 
 ### 🧪 Testing & Quality Assurance
 
-- **[pgsql-test](https://github.com/launchql/launchql/tree/main/packages/pgsql-test)** - Isolated PostgreSQL test environments with per-test transaction rollbacks and RLS simulation
-- **[graphile-test](https://github.com/launchql/launchql/tree/main/packages/graphile-test)** - GraphQL testing utilities for PostGraphile projects with snapshot support
-- **[supabase-test](https://github.com/launchql/launchql/tree/main/packages/supabase-test)** - Supabase-optimized test harness with JWT helpers and local stack integration
-- **[pg-query-context](https://github.com/launchql/launchql/tree/main/packages/pg-query-context)** - Session context injection for setting role, JWT claims, and session variables
+- **[pgsql-test](https://github.com/constructive-io/constructive/tree/main/packages/pgsql-test)** - Isolated PostgreSQL test environments with per-test transaction rollbacks and RLS simulation
+- **[graphile-test](https://github.com/constructive-io/constructive/tree/main/packages/graphile-test)** - GraphQL testing utilities for PostGraphile projects with snapshot support
+- **[supabase-test](https://github.com/constructive-io/constructive/tree/main/packages/supabase-test)** - Supabase-optimized test harness with JWT helpers and local stack integration
+- **[pg-query-context](https://github.com/constructive-io/constructive/tree/main/packages/pg-query-context)** - Session context injection for setting role, JWT claims, and session variables
 
 ### 🧠 Code Generation & Introspection
 
-- **[introspectron](https://github.com/launchql/launchql/tree/main/packages/introspectron)** - PostgreSQL schema introspection for generating SDKs and metadata
-- **[launchql-gen](https://github.com/launchql/launchql/tree/main/packages/launchql-gen)** - Auto-generated GraphQL mutations and queries from introspected schemas
-- **[pg-codegen](https://github.com/launchql/launchql/tree/main/packages/pg-codegen)** - TypeScript interfaces and classes generated from PostgreSQL tables
-- **[@launchql/query](https://github.com/launchql/launchql/tree/main/packages/query)** - Fluent GraphQL query builder for PostGraphile schemas with schema-aware introspection
-- **[@launchql/query-builder](https://github.com/launchql/launchql/tree/main/packages/query-builder)** - TypeScript SQL query builder for SELECT, INSERT, UPDATE, DELETE with JOIN and GROUP BY support
+- **[introspectron](https://github.com/constructive-io/constructive/tree/main/packages/introspectron)** - PostgreSQL schema introspection for generating SDKs and metadata
+- **[launchql-gen](https://github.com/constructive-io/constructive/tree/main/packages/launchql-gen)** - Auto-generated GraphQL mutations and queries from introspected schemas
+- **[pg-codegen](https://github.com/constructive-io/constructive/tree/main/packages/pg-codegen)** - TypeScript interfaces and classes generated from PostgreSQL tables
+- **[@launchql/query](https://github.com/constructive-io/constructive/tree/main/packages/query)** - Fluent GraphQL query builder for PostGraphile schemas with schema-aware introspection
+- **[@launchql/query-builder](https://github.com/constructive-io/constructive/tree/main/packages/query-builder)** - TypeScript SQL query builder for SELECT, INSERT, UPDATE, DELETE with JOIN and GROUP BY support
 
 ### 🔁 File Streaming & Storage
 
-- **[@launchql/s3-streamer](https://github.com/launchql/launchql/tree/main/packages/s3-streamer)** - Direct S3 streaming with automatic content-type detection and metadata extraction
-- **[etag-hash](https://github.com/launchql/launchql/tree/main/packages/etag-hash)** - S3-compatible ETag computation for file integrity verification
-- **[etag-stream](https://github.com/launchql/launchql/tree/main/packages/etag-stream)** - Transform stream for computing ETags during upload
-- **[uuid-hash](https://github.com/launchql/launchql/tree/main/packages/uuid-hash)** - Deterministic UUID generation from content hashing for deduplication
-- **[uuid-stream](https://github.com/launchql/launchql/tree/main/packages/uuid-stream)** - Streaming UUID generation based on piped file content
-- **[upload-names](https://github.com/launchql/launchql/tree/main/packages/upload-names)** - Collision-resistant filename generation for structured uploads
-- **[content-type-stream](https://github.com/launchql/launchql/tree/main/packages/content-type-stream)** - MIME type detection via magic bytes during streaming
+- **[@launchql/s3-streamer](https://github.com/constructive-io/constructive/tree/main/packages/s3-streamer)** - Direct S3 streaming with automatic content-type detection and metadata extraction
+- **[etag-hash](https://github.com/constructive-io/constructive/tree/main/packages/etag-hash)** - S3-compatible ETag computation for file integrity verification
+- **[etag-stream](https://github.com/constructive-io/constructive/tree/main/packages/etag-stream)** - Transform stream for computing ETags during upload
+- **[uuid-hash](https://github.com/constructive-io/constructive/tree/main/packages/uuid-hash)** - Deterministic UUID generation from content hashing for deduplication
+- **[uuid-stream](https://github.com/constructive-io/constructive/tree/main/packages/uuid-stream)** - Streaming UUID generation based on piped file content
+- **[upload-names](https://github.com/constructive-io/constructive/tree/main/packages/upload-names)** - Collision-resistant filename generation for structured uploads
+- **[content-type-stream](https://github.com/constructive-io/constructive/tree/main/packages/content-type-stream)** - MIME type detection via magic bytes during streaming
 
 ### 🧠 SQL Parsing & AST Manipulation
 
-- **[pgsql-parser](https://github.com/launchql/pgsql-parser)** - SQL parsing and deparsing engine for PostgreSQL syntax conversion
-- **[libpg-query-node](https://github.com/launchql/libpg-query-node)** - Node.js bindings for libpg_query to convert SQL into parse trees
-- **[pg-proto-parser](https://github.com/launchql/pg-proto-parser)** - Protobuf parser for PostgreSQL Protocol Buffers with TypeScript generation
-- **[pg-ast](https://github.com/launchql/launchql/tree/main/packages/pg-ast)** - AST construction and transformation utilities for Postgres query structures
-- **[@pgsql/types](https://github.com/launchql/pgsql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST nodes
-- **[@pgsql/enums](https://github.com/launchql/pgsql-parser/tree/main/packages/enums)** - TypeScript enums for PostgreSQL AST for safe parsing logic
-- **[@pgsql/utils](https://github.com/launchql/pgsql-parser/tree/main/packages/utils)** - AST manipulation utilities for constructing and transforming syntax trees
+- **[pgsql-parser](https://github.com/constructive-iopgsql-parser)** - SQL parsing and deparsing engine for PostgreSQL syntax conversion
+- **[libpg-query-node](https://github.com/constructive-iolibpg-query-node)** - Node.js bindings for libpg_query to convert SQL into parse trees
+- **[pg-proto-parser](https://github.com/constructive-iopg-proto-parser)** - Protobuf parser for PostgreSQL Protocol Buffers with TypeScript generation
+- **[pg-ast](https://github.com/constructive-io/constructive/tree/main/packages/pg-ast)** - AST construction and transformation utilities for Postgres query structures
+- **[@pgsql/types](https://github.com/constructive-iopgsql-parser/tree/main/packages/types)** - TypeScript type definitions for PostgreSQL AST nodes
+- **[@pgsql/enums](https://github.com/constructive-iopgsql-parser/tree/main/packages/enums)** - TypeScript enums for PostgreSQL AST for safe parsing logic
+- **[@pgsql/utils](https://github.com/constructive-iopgsql-parser/tree/main/packages/utils)** - AST manipulation utilities for constructing and transforming syntax trees
 
 ## Disclaimer
 
