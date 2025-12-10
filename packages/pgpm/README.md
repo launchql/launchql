@@ -34,7 +34,7 @@ eval "$(pgpm env)"
 
 ```bash
 # 1. Create a workspace
-pgpm init --workspace
+pgpm init workspace
 cd my-app
 
 # 2. Create your first module
@@ -55,7 +55,7 @@ psql -d mydb1 -c "SELECT faker.city('MI');"
 ### Getting Started
 
 - `pgpm init` - Initialize a new module
-- `pgpm init --workspace` - Initialize a new workspace
+- `pgpm init workspace` - Initialize a new workspace
 
 ### Development Setup
 
@@ -107,7 +107,7 @@ psql -d mydb1 -c "SELECT faker.city('MI');"
 
 ```bash
 # 1. Create workspace
-pgpm init --workspace
+pgpm init workspace
 cd my-app
 
 # 2. Create your first module

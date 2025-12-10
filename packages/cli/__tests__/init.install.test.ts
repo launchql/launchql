@@ -23,7 +23,7 @@ describe('cmds:install - with initialized workspace and module', () => {
 
     // Step 1: Create workspace
     await fixture.runCmd({
-      _: ['init'],
+      _: ['init', 'workspace'],
       cwd: fixture.tempDir,
       name: workspaceName,
       workspace: true,

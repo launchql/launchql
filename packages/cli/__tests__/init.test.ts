@@ -81,7 +81,7 @@ describe('cmds:init', () => {
   it('initializes workspace', async () => {
     await runInitTest(
       {
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: 'my-workspace',
         workspace: true
@@ -119,7 +119,7 @@ describe('cmds:init', () => {
       });
 
       const argv: ParsedArgs = withInitDefaults({
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: 'test-workspace-template',
         workspace: true,
@@ -152,7 +152,7 @@ describe('cmds:init', () => {
 
       // Create workspace first
       await commands(withInitDefaults({
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: 'test-workspace-for-module',
         workspace: true
@@ -200,7 +200,7 @@ describe('cmds:init', () => {
         });
 
         const argv: ParsedArgs = withInitDefaults({
-          _: ['init'],
+          _: ['init', 'workspace'],
           cwd: fixture.tempDir,
           name: 'test-workspace-repo',
           workspace: true
@@ -232,7 +232,7 @@ describe('cmds:init', () => {
         });
 
         const argv: ParsedArgs = withInitDefaults({
-          _: ['init'],
+          _: ['init', 'workspace'],
           cwd: fixture.tempDir,
           name: 'test-workspace-branch',
           workspace: true,
@@ -268,7 +268,7 @@ describe('cmds:init', () => {
       const wsRoot = path.join(fixture.tempDir, wsName);
 
       await commands(withInitDefaults({
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
@@ -315,7 +315,7 @@ describe('cmds:init', () => {
       const wsRoot = path.join(fixture.tempDir, wsName);
 
       await commands(withInitDefaults({
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
@@ -379,7 +379,7 @@ describe('cmds:init', () => {
       const wsRoot = path.join(fixture.tempDir, wsName);
 
       await commands(withInitDefaults({
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true
@@ -454,7 +454,7 @@ describe('cmds:init', () => {
       const wsRoot = path.join(fixture.tempDir, wsName);
 
       await commands(withInitDefaults({
-        _: ['init'],
+        _: ['init', 'workspace'],
         cwd: fixture.tempDir,
         name: wsName,
         workspace: true

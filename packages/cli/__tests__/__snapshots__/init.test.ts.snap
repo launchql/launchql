@@ -93,6 +93,7 @@ exports[`cmds:init initializes workspace: workspace - argv 1`] = `
 {
   "_": [
     "init",
+    "workspace",
   ],
   "access": "public",
   "cwd": "<CWD>",
@@ -131,6 +132,7 @@ exports[`cmds:init initializes workspace: workspace - result 1`] = `
 {
   "_": [
     "init",
+    "workspace",
   ],
   "access": "public",
   "cwd": "<CWD>",

@@ -9,13 +9,12 @@ export const createInitUsageText = (binaryName: string, productLabel?: string): 
   return `
 Init Command:
 
-  ${binaryName} init [OPTIONS]
+  ${binaryName} init [OPTIONS] [workspace]
 
   Initialize ${displayName} workspace or module.
 
 Options:
   --help, -h              Show this help message
-  --workspace             Initialize workspace instead of module
   --cwd <directory>       Working directory (default: current directory)
   --repo <repo>           Template repo (default: https://github.com/launchql/pgpm-boilerplates.git)
   --template-path <path>  Template sub-path (default: workspace/module) or local path override
@@ -23,7 +22,7 @@ Options:
 
 Examples:
   ${binaryName} init                                   Initialize new module in existing workspace
-  ${binaryName} init --workspace                       Initialize new workspace
+  ${binaryName} init workspace                         Initialize new workspace
   ${binaryName} init --repo owner/repo                 Use templates from GitHub repository
   ${binaryName} init --template-path ./custom-templates Use templates from local path
   ${binaryName} init --repo owner/repo --from-branch develop  Use specific branch
@@ -45,13 +44,15 @@ export default async (
 };
 
 async function handlePromptFlow(argv: Partial<Record<string, any>>, prompter: Inquirerer) {
-  const { workspace } = argv;
+  const firstArg = (argv._?.[0] as string) || undefined;
 
-  switch (workspace) {
-  case true:
-    return runWorkspaceSetup(argv, prompter);
-  case false:
-  default:
-    return runModuleSetup(argv, prompter);
+  if (firstArg === 'workspace') {
+    const nextArgv = {
+      ...argv,
+      _: (argv._ ?? []).slice(1)
+    };
+    return runWorkspaceSetup(nextArgv, prompter);
   }
+
+  return runModuleSetup(argv, prompter);
 }

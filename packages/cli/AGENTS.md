@@ -126,7 +126,7 @@ export default async (
 
 **Usage:**
 ```bash
-lql init --workspace    # Initialize workspace
+lql init workspace     # Initialize workspace
 lql init               # Initialize module (in workspace)
 ```
 
@@ -137,8 +137,8 @@ lql init               # Initialize module (in workspace)
 
 **Examples:**
 ```bash
-lql init --workspace --repo launchql/launchql
-lql init --workspace --template-path ./custom-templates
+lql init workspace --repo launchql/launchql
+lql init workspace --template-path ./custom-templates
 lql init --repo owner/repo --from-branch develop
 ```
 
@@ -335,7 +335,7 @@ try {
 ### Development Commands
 | Command | Purpose | Key Options |
 |---------|---------|-------------|
-| `init` | Initialize workspace/module | `--workspace`, `--repo`, `--template-path`, `--from-branch` |
+| `init` | Initialize workspace/module | `--repo`, `--template-path`, `--from-branch` |
 | `server` | Start development server | `--port`, `--no-postgis` |
 | `explorer` | Launch GraphiQL explorer | `--origin` |
 
@@ -383,7 +383,7 @@ try {
 ### 1. New Project Setup
 ```bash
 # Initialize workspace
-lql init --workspace
+lql init workspace
 cd my-project
 
 # Create first module

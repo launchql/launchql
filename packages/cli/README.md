@@ -24,7 +24,7 @@ npm install -g @launchql/cli
 
 ```bash
 # Initialize a new workspace
-lql init --workspace
+lql init workspace
 cd my-project
 
 # Create your first module
@@ -64,23 +64,22 @@ Initialize a new LaunchQL workspace or module.
 
 ```bash
 # Create a new workspace
-lql init --workspace
+lql init workspace
 
 # Create a new module (run inside workspace)
 lql init
 
 # Use templates from GitHub repository (defaults to launchql/pgpm-boilerplates.git)
-lql init --workspace --repo owner/repo
+lql init workspace --repo owner/repo
 lql init --repo owner/repo --from-branch develop
 
 # Use templates from custom paths
-lql init --workspace --template-path ./custom-templates
+lql init workspace --template-path ./custom-templates
 lql init --template-path ./custom-templates/module
 ```
 
 **Options:**
 
-- `--workspace` - Initialize workspace instead of module
 - `--repo <repo>` - Template repo (default: `https://github.com/launchql/pgpm-boilerplates.git`)
 - `--template-path <path>` - Template sub-path (defaults to `workspace`/`module`) or local path override
 - `--from-branch <branch>` - Branch/tag when cloning the template repo
@@ -269,7 +268,7 @@ lql kill --no-drop
 ```bash
 # 1. Create workspace
 mkdir my-app && cd my-app
-lql init --workspace
+lql init workspace
 
 # 2. Create your first module
 lql init
@@ -288,16 +287,16 @@ You can use custom templates from GitHub repositories or local paths:
 
 ```bash
 # Initialize workspace with templates from GitHub
-lql init --workspace --repo owner/repo
+lql init workspace --repo owner/repo
 
 # Initialize workspace with templates from local path
-lql init --workspace --template-path ./my-custom-templates
+lql init workspace --template-path ./my-custom-templates
 
 # Initialize module with custom templates
 lql init --template-path ./my-custom-templates
 
 # Use specific branch from GitHub repository
-lql init --workspace --repo owner/repo --from-branch develop
+lql init workspace --repo owner/repo --from-branch develop
 ```
 
 **Template Structure:**

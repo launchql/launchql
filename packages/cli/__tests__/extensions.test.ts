@@ -52,7 +52,7 @@ describe('cmds:extension', () => {
 
     // Step 1: Initialize workspace
     await runCommand({
-      _: ['init'],
+      _: ['init', 'workspace'],
       cwd: fixture.tempDir,
       name: 'my-workspace',
       workspace: true

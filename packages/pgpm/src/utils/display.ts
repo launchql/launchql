@@ -55,7 +55,7 @@ export const usageText = `
   
   Examples:
     pgpm deploy --help       Show deploy command options
-    pgpm init --workspace    Initialize new workspace
+    pgpm init workspace      Initialize new workspace
     pgpm install @pgpm/base32  Install a database module
   `;
 

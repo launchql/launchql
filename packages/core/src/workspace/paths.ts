@@ -30,7 +30,7 @@ export const getWorkspacePath = (cwd: string): string => {
   try {
     workspacePath = launchqlPath(cwd);
   } catch (err) {
-    console.error('Error: You must be in a LaunchQL workspace. You can initialize one with the `--workspace` option.');
+    console.error('Error: You must be in a LaunchQL workspace. You can initialize one with `lql init workspace` (or `pgpm init workspace`).');
     process.exit(1);
   }
 

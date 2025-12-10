@@ -57,7 +57,7 @@ export const usageText = `
   Examples:
     lql deploy --help       Show deploy command options
     lql server --port 8080  Start server on port 8080
-    lql init --workspace    Initialize new workspace
+    lql init workspace      Initialize new workspace
   `;
 
 export function displayUsage() {
