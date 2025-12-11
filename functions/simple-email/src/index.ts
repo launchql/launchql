@@ -1,4 +1,5 @@
 import app from '@launchql/knative-job-fn';
+import { send as sendEmail } from '@launchql/postmaster';
 
 type SimpleEmailPayload = {
   to: string;
@@ -37,14 +38,29 @@ app.post('*', async (req: any, res: any, next: any) => {
       throw new Error("Either 'html' or 'text' must be provided");
     }
 
-    const from = isNonEmptyString(payload.from) ? payload.from : undefined;
+    const fromEnv = process.env.MAILGUN_FROM;
+    const from = isNonEmptyString(payload.from)
+      ? payload.from
+      : isNonEmptyString(fromEnv)
+        ? fromEnv
+        : undefined;
+
     const replyTo = isNonEmptyString(payload.replyTo)
       ? payload.replyTo
       : undefined;
 
-    // Log the email (dry-run mode, no actual send)
+    // Send via @launchql/postmaster (Mailgun or configured provider)
+    await sendEmail({
+      to,
+      subject,
+      ...(html && { html }),
+      ...(text && { text }),
+      ...(from && { from }),
+      ...(replyTo && { replyTo })
+    });
+
     // eslint-disable-next-line no-console
-    console.log('[simple-email] DRY RUN email', {
+    console.log('[simple-email] Sent email', {
       to,
       subject,
       from,
@@ -52,10 +68,6 @@ app.post('*', async (req: any, res: any, next: any) => {
       hasHtml: Boolean(html),
       hasText: Boolean(text)
     });
-
-    // Optionally also log the full payload (for debugging)
-    // eslint-disable-next-line no-console
-    console.log('[simple-email] DRY RUN payload', payload);
 
     res.status(200).json({ complete: true });
   } catch (err) {

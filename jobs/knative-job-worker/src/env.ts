@@ -21,8 +21,7 @@ const baseEnv = cleanEnv(
   { dotEnvPath: null }
 );
 
-const KNATIVE_SERVICE_URL =
-  process.env.KNATIVE_SERVICE_URL || process.env.INTERNAL_GATEWAY_URL;
+const KNATIVE_SERVICE_URL = process.env.KNATIVE_SERVICE_URL;
 
 if (!KNATIVE_SERVICE_URL) {
   throw new Error(

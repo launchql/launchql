@@ -18,7 +18,7 @@ const getFunctionUrl = (fn: string): string => {
   if (hasDevMap) {
     return DEV_MAP[fn] || completeUrl;
   }
-  return `${env.KNATIVE_SERVICE_URL}/${fn}`;
+  return `http://${fn}.${env.KNATIVE_SERVICE_URL}`;
 };
 
 interface RequestOptions {
