@@ -2,7 +2,7 @@
   "name": "@launchql/job-utils",
   "version": "0.3.0",
   "description": "job utils",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-utils#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "dist/index.js",

@@ -2,7 +2,7 @@
   "name": "@launchql/codegen",
   "version": "2.17.0",
   "description": "Generate queries and mutations for use with Graphile",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

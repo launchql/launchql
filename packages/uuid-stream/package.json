@@ -1,7 +1,7 @@
 {
   "name": "uuid-stream",
   "version": "2.3.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "A Transform stream that generates RFC-compliant UUID v5.",
   "main": "index.js",
   "module": "esm/index.js",

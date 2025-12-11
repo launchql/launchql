@@ -1,7 +1,7 @@
 {
   "name": "etag-hash",
   "version": "2.4.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.",
   "main": "index.js",
   "module": "esm/index.js",

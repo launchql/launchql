@@ -1,7 +1,7 @@
 {
   "name": "@launchql/core",
   "version": "2.18.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL Package and Migration Tools",
   "main": "index.js",
   "module": "esm/index.js",

@@ -1,7 +1,7 @@
 {
   "name": "pg-codegen",
   "version": "2.14.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL Codegen",
   "main": "index.js",
   "module": "esm/index.js",

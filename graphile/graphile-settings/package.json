@@ -1,7 +1,7 @@
 {
   "name": "graphile-settings",
   "version": "2.7.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "graphile settings",
   "main": "index.js",
   "module": "esm/index.js",

@@ -1,7 +1,7 @@
 {
   "name": "graphile-query",
   "version": "2.4.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "graphile query",
   "main": "index.js",
   "module": "esm/index.js",

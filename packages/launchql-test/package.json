@@ -1,7 +1,7 @@
 {
   "name": "launchql-test",
   "version": "2.9.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL Testing with all plugins loaded",
   "main": "index.js",
   "module": "esm/index.js",

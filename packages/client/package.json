@@ -1,7 +1,7 @@
 {
   "name": "@launchql/client",
   "version": "2.3.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL Client",
   "main": "index.js",
   "module": "esm/index.js",

@@ -2,7 +2,7 @@
   "name": "introspectron",
   "version": "2.14.0",
   "description": "introspect your Postgres database and generate an SDK",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

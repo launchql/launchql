@@ -1,7 +1,7 @@
 {
   "name": "drizzle-orm-test",
   "version": "0.3.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "Drop-in replacement for pgsql-test that enables Drizzle ORM to work seamlessly with context management and RLS testing",
   "main": "index.js",
   "module": "esm/index.js",

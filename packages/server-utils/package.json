@@ -1,7 +1,7 @@
 {
   "name": "@launchql/server-utils",
   "version": "2.7.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL server utils",
   "main": "index.js",
   "module": "esm/index.js",

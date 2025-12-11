@@ -1,7 +1,7 @@
 {
   "name": "@launchql/unique-names",
   "version": "0.0.1",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "undefined",
   "main": "index.js",
   "module": "esm/index.js",

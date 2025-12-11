@@ -1,7 +1,7 @@
 {
   "name": "@launchql/s3-utils",
   "version": "2.3.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "s3 utils",
   "main": "index.js",
   "module": "esm/index.js",

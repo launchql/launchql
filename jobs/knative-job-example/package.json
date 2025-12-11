@@ -2,7 +2,7 @@
   "name": "@launchql/knative-job-example",
   "version": "0.2.0",
   "description": "job example",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-example#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "dist/index.js",

@@ -2,7 +2,7 @@
   "name": "@launchql/query",
   "version": "2.4.0",
   "description": "LaunchQL Query",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

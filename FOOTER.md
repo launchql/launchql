@@ -64,8 +64,7 @@ Common issues and solutions for pgpm, PostgreSQL, and testing.
 
 ## Credits
 
-🛠 Built by Constructive — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/constructive-io)
-
+**🛠 Built by the [Constructive](https://constructive.io) team — creators of modular Postgres tooling for secure, composable backends. If you like our work, contribute on [GitHub](https://github.com/constructive-io).**
 
 ## Disclaimer
 

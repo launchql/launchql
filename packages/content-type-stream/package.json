@@ -1,7 +1,7 @@
 {
   "name": "@launchql/content-type-stream",
   "version": "2.4.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "detect content-types via streams",
   "main": "index.js",
   "module": "esm/index.js",

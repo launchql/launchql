@@ -2,7 +2,7 @@
   "name": "@launchql/knative-job-service",
   "version": "0.4.0",
   "description": "knative job service",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-service#readme",
   "license": "SEE LICENSE IN LICENSE",
   "main": "dist/index.js",

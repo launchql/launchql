@@ -2,7 +2,7 @@
   "name": "graphile-pg-type-mappings",
   "version": "0.3.0",
   "description": "Custom PostgreSQL type mappings plugin for Graphile/PostGraphile",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "main": "index.js",

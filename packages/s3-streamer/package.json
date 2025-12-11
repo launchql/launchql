@@ -1,7 +1,7 @@
 {
   "name": "@launchql/s3-streamer",
   "version": "2.7.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "stream files to s3",
   "main": "index.js",
   "module": "esm/index.js",

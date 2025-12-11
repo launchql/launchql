@@ -1,7 +1,7 @@
 {
   "name": "pg-env",
   "version": "1.2.0",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL environment configuration utilities",
   "main": "index.js",
   "module": "esm/index.js",
