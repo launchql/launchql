@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-utils",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "job utils",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-utils#readme",
@@ -27,7 +27,6 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
     "@launchql/types": "workspace:^",
     "envalid": "6.0.2"

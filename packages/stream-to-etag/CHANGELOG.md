@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.13](https://github.com/constructive-io/constructive/compare/stream-to-etag@2.3.12...stream-to-etag@2.3.13) (2025-12-11)
+
+**Note:** Version bump only for package stream-to-etag
+
 ## [2.3.12](https://github.com/constructive-io/constructive/compare/stream-to-etag@2.3.11...stream-to-etag@2.3.12) (2025-12-10)
 
 **Note:** Version bump only for package stream-to-etag

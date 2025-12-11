@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-connection-filter",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "description": "Filtering on PostGraphile connections",
   "author": "Matt Bretl",
   "homepage": "https://github.com/constructive-io/constructive",

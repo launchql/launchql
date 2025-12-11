@@ -1,6 +1,6 @@
 {
   "name": "pgpm",
-  "version": "0.2.18",
+  "version": "0.3.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Package Manager - Database migration and package management CLI",
   "main": "index.js",

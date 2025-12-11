@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-scheduler",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "job scheduler",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-scheduler#readme",
@@ -27,7 +27,6 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
     "@launchql/job-pg": "workspace:^",
     "@launchql/job-utils": "workspace:^",

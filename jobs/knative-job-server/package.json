@@ -1,6 +1,6 @@
 {
   "name": "@launchql/knative-job-server",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "knative job server",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-server#readme",
@@ -30,7 +30,6 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
     "@launchql/job-pg": "workspace:^",
     "@launchql/job-utils": "workspace:^",

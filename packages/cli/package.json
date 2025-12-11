@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.17.22",
+  "version": "4.18.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL CLI",
   "main": "index.js",

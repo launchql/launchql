@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/constructive-io/constructive/compare/@launchql/types@2.8.7...@launchql/types@2.9.0) (2025-12-11)
+
+### Features
+
+- prompt for user identity if Git config is missing ([188edda](https://github.com/constructive-io/constructive/commit/188edda83196609f00e8269d4199c6f3a9f9f4fa))
+
 ## [2.8.7](https://github.com/constructive-io/constructive/compare/@launchql/types@2.8.6...@launchql/types@2.8.7) (2025-12-10)
 
 **Note:** Version bump only for package @launchql/types

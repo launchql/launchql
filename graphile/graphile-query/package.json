@@ -1,6 +1,6 @@
 {
   "name": "graphile-query",
-  "version": "2.3.14",
+  "version": "2.3.15",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "graphile query",
   "main": "index.js",

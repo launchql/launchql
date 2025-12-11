@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-pg",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "job pg",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-pg#readme",
@@ -27,7 +27,6 @@
   "bugs": {
     "url": "https://github.com/launchql/jobs/issues"
   },
-  "devDependencies": {},
   "dependencies": {
     "envalid": "6.0.2",
     "pg": "8.3.3"

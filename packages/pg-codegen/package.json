@@ -1,6 +1,6 @@
 {
   "name": "pg-codegen",
-  "version": "2.13.15",
+  "version": "2.13.16",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "PostgreSQL Codegen",
   "main": "index.js",

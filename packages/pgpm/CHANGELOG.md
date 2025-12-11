@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/constructive-io/constructive/compare/pgpm@0.2.18...pgpm@0.3.0) (2025-12-11)
+
+### Features
+
+- enhance module and workspace setup with additional prompts ([7edd5fc](https://github.com/constructive-io/constructive/commit/7edd5fca3455b3ad0891c2e706c1f8bacc995c22))
+- prompt for user identity if Git config is missing ([188edda](https://github.com/constructive-io/constructive/commit/188edda83196609f00e8269d4199c6f3a9f9f4fa))
+- **update-check:** add update command instruction to version check warnings ([4fffce8](https://github.com/constructive-io/constructive/commit/4fffce89cf046e9784198e52a071ff999e51cb3e))
+
 ## [0.2.18](https://github.com/constructive-io/constructive/compare/pgpm@0.2.17...pgpm@0.2.18) (2025-12-10)
 
 **Note:** Version bump only for package pgpm

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.18.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.22...@launchql/cli@4.18.0) (2025-12-11)
+
+### Features
+
+- enhance update check in CLI commands ([1caa1eb](https://github.com/constructive-io/constructive/commit/1caa1eb1d756383535071c8a5b834de750078ada))
+- **update-check:** add update command instruction to version check warnings ([4fffce8](https://github.com/constructive-io/constructive/commit/4fffce89cf046e9784198e52a071ff999e51cb3e))
+
 ## [4.17.22](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.17.21...@launchql/cli@4.17.22) (2025-12-10)
 
 **Note:** Version bump only for package @launchql/cli

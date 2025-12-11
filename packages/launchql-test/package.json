@@ -1,6 +1,6 @@
 {
   "name": "launchql-test",
-  "version": "2.8.15",
+  "version": "2.8.16",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Testing with all plugins loaded",
   "main": "index.js",
