@@ -2,38 +2,34 @@
 
 exports[`cmds:install - with initialized workspace and module installs a module package 1`] = `
 {
-  "author": "CI Test User <ci@example.com>",
+  "author": "Tester <tester@example.com>",
   "bugs": {
-    "url": "https://github.com/undefined/undefined/issues",
+    "url": "https://github.com/tester/my-module/issues",
   },
   "dependencies": {
     "@pgpm-testing/base32": "1.0.0",
   },
-  "description": "undefined",
+  "description": "my-module",
   "devDependencies": {
-    "pgsql-test": "^2.13.2",
+    "makage": "0.1.8",
+    "pgsql-test": "^2.14.12",
   },
-  "homepage": "https://github.com/undefined/undefined",
+  "homepage": "https://github.com/tester/my-module",
   "keywords": [],
   "license": "MIT",
-  "name": "undefined",
-  "pnpm": {
-    "overrides": {
-      "graphql": "14.7.0",
-    },
-  },
+  "name": "my-module",
   "publishConfig": {
-    "access": "undefined",
+    "access": "public",
     "directory": "dist",
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/undefined/undefined",
+    "url": "https://github.com/tester/my-module",
   },
   "scripts": {
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "makage test --watch deploy --ext sql",
   },
   "version": "0.0.1",
 }
@@ -144,39 +140,35 @@ superuser = false
 
 exports[`cmds:install - with initialized workspace and module installs two modules 1`] = `
 {
-  "author": "CI Test User <ci@example.com>",
+  "author": "Tester <tester@example.com>",
   "bugs": {
-    "url": "https://github.com/undefined/undefined/issues",
+    "url": "https://github.com/tester/my-module/issues",
   },
   "dependencies": {
     "@pgpm-testing/base32": "1.0.0",
     "@pgpm-testing/utils": "1.0.0",
   },
-  "description": "undefined",
+  "description": "my-module",
   "devDependencies": {
-    "pgsql-test": "^2.13.2",
+    "makage": "0.1.8",
+    "pgsql-test": "^2.14.12",
   },
-  "homepage": "https://github.com/undefined/undefined",
+  "homepage": "https://github.com/tester/my-module",
   "keywords": [],
   "license": "MIT",
-  "name": "undefined",
-  "pnpm": {
-    "overrides": {
-      "graphql": "14.7.0",
-    },
-  },
+  "name": "my-module",
   "publishConfig": {
-    "access": "undefined",
+    "access": "public",
     "directory": "dist",
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/undefined/undefined",
+    "url": "https://github.com/tester/my-module",
   },
   "scripts": {
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "makage test --watch deploy --ext sql",
   },
   "version": "0.0.1",
 }

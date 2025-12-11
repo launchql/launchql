@@ -1,9 +1,9 @@
 {
   "name": "graphile-pg-type-mappings",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "Custom PostgreSQL type mappings plugin for Graphile/PostGraphile",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql",
+  "author": "Constructive <developers@constructive.io>",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "keywords": [
     "graphile",
@@ -36,7 +36,7 @@
     "launchql"
   ],
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "devDependencies": {
     "graphile-postgis": "workspace:^",

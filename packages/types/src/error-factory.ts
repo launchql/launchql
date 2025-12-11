@@ -49,7 +49,7 @@ export const errors = {
 
   NOT_IN_WORKSPACE: makeError(
     'NOT_IN_WORKSPACE',
-    () => `You must be in a LaunchQL workspace. Initialize with --workspace.`,
+    () => `You must be in a LaunchQL workspace. Initialize with "lql init workspace".`,
     400
   ),
 
@@ -154,4 +154,3 @@ export const errors = {
 // throw errors.UNKNOWN_COMMAND({ cmd: 'foo' }, 'Unsupported command "foo"');
 
 // throw errors.CONTEXT_MISSING(();
-

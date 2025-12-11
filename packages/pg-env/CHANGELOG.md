@@ -3,39 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.7](https://github.com/launchql/launchql/compare/pg-env@1.1.6...pg-env@1.1.7) (2025-11-28)
+## [1.2.1](https://github.com/constructive-io/constructive/compare/pg-env@1.2.0...pg-env@1.2.1) (2025-12-11)
 
 **Note:** Version bump only for package pg-env
 
-## [1.1.6](https://github.com/launchql/launchql/compare/pg-env@1.1.5...pg-env@1.1.6) (2025-11-25)
+# [1.2.0](https://github.com/constructive-io/constructive/compare/pg-env@1.1.8...pg-env@1.2.0) (2025-12-11)
 
 **Note:** Version bump only for package pg-env
 
-## [1.1.5](https://github.com/launchql/launchql/compare/pg-env@1.1.3...pg-env@1.1.5) (2025-11-22)
+## [1.1.8](https://github.com/constructive-io/constructive/compare/pg-env@1.1.7...pg-env@1.1.8) (2025-12-10)
 
 **Note:** Version bump only for package pg-env
 
-## [1.1.4](https://github.com/launchql/launchql/compare/pg-env@1.1.3...pg-env@1.1.4) (2025-11-22)
+## [1.1.7](https://github.com/constructive-io/constructive/compare/pg-env@1.1.6...pg-env@1.1.7) (2025-11-28)
 
 **Note:** Version bump only for package pg-env
 
-## [1.1.3](https://github.com/launchql/launchql/compare/pg-env@1.1.2...pg-env@1.1.3) (2025-11-20)
+## [1.1.6](https://github.com/constructive-io/constructive/compare/pg-env@1.1.5...pg-env@1.1.6) (2025-11-25)
 
 **Note:** Version bump only for package pg-env
 
-## [1.1.2](https://github.com/launchql/launchql/compare/pg-env@1.1.1...pg-env@1.1.2) (2025-11-15)
+## [1.1.5](https://github.com/constructive-io/constructive/compare/pg-env@1.1.3...pg-env@1.1.5) (2025-11-22)
+
+**Note:** Version bump only for package pg-env
+
+## [1.1.4](https://github.com/constructive-io/constructive/compare/pg-env@1.1.3...pg-env@1.1.4) (2025-11-22)
+
+**Note:** Version bump only for package pg-env
+
+## [1.1.3](https://github.com/constructive-io/constructive/compare/pg-env@1.1.2...pg-env@1.1.3) (2025-11-20)
+
+**Note:** Version bump only for package pg-env
+
+## [1.1.2](https://github.com/constructive-io/constructive/compare/pg-env@1.1.1...pg-env@1.1.2) (2025-11-15)
 
 ### Bug Fixes
 
-- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/launchql/launchql/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/constructive-io/constructive/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
 
-## [1.1.1](https://github.com/launchql/launchql/compare/pg-env@1.1.0...pg-env@1.1.1) (2025-11-12)
+## [1.1.1](https://github.com/constructive-io/constructive/compare/pg-env@1.1.0...pg-env@1.1.1) (2025-11-12)
 
 ### Bug Fixes
 
-- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/launchql/launchql/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
+- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/constructive-io/constructive/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
 
-# [1.1.0](https://github.com/launchql/launchql/compare/pg-env@1.0.1...pg-env@1.1.0) (2025-07-31)
+# [1.1.0](https://github.com/constructive-io/constructive/compare/pg-env@1.0.1...pg-env@1.1.0) (2025-07-31)
 
 **Note:** Version bump only for package pg-env
 

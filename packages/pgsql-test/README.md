@@ -1,18 +1,18 @@
 # pgsql-test
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+  <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/pgsql-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fpgsql-test%2Fpackage.json"/>
+    <img height="20" src="https://img.shields.io/github/package-json/v/constructive-io/constructive?filename=packages%2Fpgsql-test%2Fpackage.json"/>
   </a>
 </p>
 
@@ -35,7 +35,7 @@ npm install pgsql-test
 
 ### Tutorials
 
-📚 **[Learn how to test PG with pgsql-test →](https://launchql.com/learn/e2e-postgres-testing)**
+📚 **[Learn how to test PG with pgsql-test →](https://constructive.io/learn/e2e-postgres-testing)**
 
 ### Using with Supabase
 

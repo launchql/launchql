@@ -1,12 +1,13 @@
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
-import { createPgpmCommandMap } from 'pgpm';
+import { checkForUpdates, createInitUsageText, createPgpmCommandMap } from 'pgpm';
 
 import explorer from './commands/explorer';
 import server from './commands/server';
 import getGraphqlSchema from './commands/get-graphql-schema';
+import codegen from './commands/codegen';
 import { readAndParsePackageJson } from './package';
-import { cliExitWithError,extractFirst, usageText } from './utils';
+import { cliExitWithError, extractFirst, usageText } from './utils';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
   const pgpmCommands = createPgpmCommandMap(skipPgTeardown);
@@ -15,18 +16,34 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
     ...pgpmCommands,
     server,
     explorer,
-    'get-graphql-schema': getGraphqlSchema
+    'get-graphql-schema': getGraphqlSchema,
+    codegen
   };
 };
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions & { skipPgTeardown?: boolean }) => {
+  let { first: command, newArgv } = extractFirst(argv);
+
+  // Run update check early so it shows on help/version paths too
+  try {
+    const pkg = readAndParsePackageJson();
+    await checkForUpdates({
+      command: command || 'help',
+      pkgName: pkg.name,
+      pkgVersion: pkg.version,
+      toolName: 'lql',
+      key: pkg.name,
+      updateCommand: `Run npm i -g ${pkg.name}@latest to upgrade.`
+    });
+  } catch {
+    // ignore update check failures
+  }
+
   if (argv.version || argv.v) {
     const pkg = readAndParsePackageJson();
     console.log(pkg.version);
     process.exit(0);
   }
-
-  let { first: command, newArgv } = extractFirst(argv);
 
   // Show usage if explicitly requested but no command specified
   if ((argv.help || argv.h || command === 'help') && !command) {
@@ -37,6 +54,12 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   // Show usage for help command specifically
   if (command === 'help') {
     console.log(usageText);
+    process.exit(0);
+  }
+
+  // Command-specific help for init
+  if (command === 'init' && (argv.help || argv.h)) {
+    console.log(createInitUsageText('lql', 'LaunchQL'));
     process.exit(0);
   }
 

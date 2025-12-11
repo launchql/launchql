@@ -1,0 +1,20 @@
+{
+  "name": "@launchql/simple-email-fn",
+  "version": "0.2.1",
+  "description": "Simple Knative email function that sends emails directly from job payload",
+  "author": "LaunchQL",
+  "private": true,
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w"
+  },
+  "dependencies": {
+    "@launchql/knative-job-fn": "workspace:^",
+    "@launchql/postmaster": "0.1.4"
+  }
+}

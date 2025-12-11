@@ -1,24 +1,24 @@
 # supabase-test
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/supatest.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/supatest.svg" />
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+  <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/supabase-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fsupabase-test%2Fpackage.json"/>
+    <img height="20" src="https://img.shields.io/github/package-json/v/constructive-io/constructive?filename=packages%2Fsupabase-test%2Fpackage.json"/>
   </a>
 </p>
 
 `supabase-test` is a Supabase-optimized version of [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) with Supabase defaults baked in. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for Supabase's local development environment. It's also great for GitHub Actions and CI/CD testing.
 
-Explore a full working example (including GitHub Actions CI/CD) in the [`supabase-test-suite`](https://github.com/launchql/supabase-test-suite) repo.
+Explore a full working example (including GitHub Actions CI/CD) in the [`supabase-test-suite`](https://github.com/constructive-iosupabase-test-suite) repo.
 
 ## Install
 
@@ -37,7 +37,7 @@ npm install supabase-test
 
 ### Tutorials
 
-📚 **[Learn how to test with Supabase →](https://launchql.com/learn/supabase)**
+📚 **[Learn how to test with Supabase →](https://constructive.io/learn/supabase)**
 
 ## Table of Contents
 

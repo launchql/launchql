@@ -1,8 +1,8 @@
 {
   "name": "my-second",
   "private": true,
-  "version": "0.2.2",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "version": "0.3.1",
+  "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",

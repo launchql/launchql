@@ -1,12 +1,12 @@
 {
   "name": "pg-env",
-  "version": "1.1.7",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "version": "1.2.1",
+  "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL environment configuration utilities",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "scripts": {
     "clean": "makage clean",

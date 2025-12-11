@@ -1,3 +1,6 @@
+jest.setTimeout(60000);
+process.env.PGPM_SKIP_UPDATE_CHECK = 'true';
+
 import { LaunchQLPackage } from '@launchql/core';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
@@ -5,7 +8,12 @@ import { ParsedArgs } from 'minimist';
 import * as path from 'path';
 
 import { commands } from '../src/commands';
-import { setupTests, TestEnvironment, TestFixture } from '../test-utils';
+import {
+  setupTests,
+  TestEnvironment,
+  TestFixture,
+  withInitDefaults
+} from '../test-utils';
 
 const beforeEachSetup = setupTests();
 
@@ -29,6 +37,11 @@ describe('cmds:extension', () => {
       noTty: true
     });
 
+    const isInit = Array.isArray(argv._) && argv._.includes('init');
+    if (isInit) {
+      argv = withInitDefaults(argv);
+    }
+
     // @ts-ignore
     return commands(argv, prompter, {});
   };
@@ -39,7 +52,7 @@ describe('cmds:extension', () => {
 
     // Step 1: Initialize workspace
     await runCommand({
-      _: ['init'],
+      _: ['init', 'workspace'],
       cwd: fixture.tempDir,
       name: 'my-workspace',
       workspace: true
@@ -50,7 +63,7 @@ describe('cmds:extension', () => {
       _: ['init'],
       cwd: workspacePath,
       name: 'my-module',
-      MODULENAME: 'my-module',
+      moduleName: 'my-module',
       extensions: ['mod-1', 'mod2']
     });
 

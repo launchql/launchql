@@ -2,7 +2,7 @@
   "name": "pg-utilities",
   "version": "0.0.1",
   "description": "PostgreSQL utilities",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "private": true,
   "scripts": {
     "test": "FAST_TEST=1 launchql-templatedb && jest",

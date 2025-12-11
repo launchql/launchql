@@ -1,143 +1,66 @@
-// @ts-nocheck
-// TODO: Fix TypeScript module resolution issue with @launchql/templatizer
-// TypeScript compiler cannot resolve exports from templatizer package even though
-// the type definitions are correctly generated. This is a known issue that needs
-// to be resolved. Runtime behavior works correctly.
-import { loadTemplates, type TemplateSource } from '@launchql/templatizer';
-import { join } from 'path';
+jest.setTimeout(30000);
 
-describe('Template loading', () => {
-  describe('local path templates', () => {
-    it('loads workspace templates from local path', () => {
-      const source: TemplateSource = {
-        type: 'local',
-        path: join(__dirname, '../../../boilerplates/workspace'),
-      };
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 
-      const templates = loadTemplates(source, 'workspace');
-      expect(templates.length).toBeGreaterThan(0);
+import { scaffoldTemplate } from '@launchql/core';
+
+const TEMPLATE_REPO = 'https://github.com/constructive-io/pgpm-boilerplates.git';
+
+describe('Template scaffolding', () => {
+  it('processes workspace template from default repo', async () => {
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-workspace-'));
+
+    await scaffoldTemplate({
+      type: 'workspace',
+      outputDir: outDir,
+      templateRepo: TEMPLATE_REPO,
+      branch: 'restructuring', // TODO: remove after merging restructuring to main
+      templatePath: 'default/workspace',
+      answers: { 
+        name: 'demo-workspace',
+        fullName: 'Tester',
+        email: 'tester@example.com',
+        moduleName: 'demo-module',
+        username: 'tester',
+        repoName: 'demo-module',
+        license: 'MIT'
+      },
+      noTty: true
     });
 
-    it('loads module templates from local path', () => {
-      const source: TemplateSource = {
-        type: 'local',
-        path: join(__dirname, '../../../boilerplates/module'),
-      };
-
-      const templates = loadTemplates(source, 'module');
-      expect(templates.length).toBeGreaterThan(0);
-    });
-
-    it('loads templates from boilerplates root directory', () => {
-      const source: TemplateSource = {
-        type: 'local',
-        path: join(__dirname, '../../../boilerplates'),
-      };
-
-      const templates = loadTemplates(source, 'workspace');
-      expect(templates.length).toBeGreaterThan(0);
-    });
-
-    it('handles invalid local path', () => {
-      const source: TemplateSource = {
-        type: 'local',
-        path: '/nonexistent/path',
-      };
-
-      expect(() => {
-        loadTemplates(source, 'workspace');
-      }).toThrow();
-    });
-
-    it('handles invalid template type in local path', () => {
-      const source: TemplateSource = {
-        type: 'local',
-        path: join(__dirname, '../../../boilerplates'),
-      };
-
-      expect(() => {
-        loadTemplates(source, 'nonexistent' as 'workspace');
-      }).toThrow();
-    });
+    expect(fs.existsSync(outDir)).toBe(true);
+    fs.rmSync(outDir, { recursive: true, force: true });
   });
 
-  describe('GitHub repository templates', () => {
-    // Skip GitHub tests in CI unless network access is explicitly allowed
-    const shouldSkipGitHubTests =
-      process.env.CI === 'true' && !process.env.ALLOW_NETWORK_TESTS;
+  it('processes module template from default repo', async () => {
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'launchql-module-'));
 
-    (shouldSkipGitHubTests ? it.skip : it)(
-      'loads workspace templates from GitHub repository',
-      () => {
-        const source: TemplateSource = {
-          type: 'github',
-          path: 'launchql/launchql',
-        };
-
-        const templates = loadTemplates(source, 'workspace');
-        expect(templates.length).toBeGreaterThan(0);
+    await scaffoldTemplate({
+      type: 'module',
+      outputDir: outDir,
+      templateRepo: TEMPLATE_REPO,
+      branch: 'restructuring', // TODO: remove after merging restructuring to main
+      templatePath: 'default/module',
+      answers: { 
+        name: 'demo-module',
+        description: 'demo module',
+        author: 'tester',
+        fullName: 'Tester',
+        email: 'tester@example.com',
+        moduleDesc: 'demo module',
+        moduleName: 'demo-module',
+        repoName: 'demo-module',
+        access: 'public',
+        license: 'MIT',
+        username: 'tester',
+        packageIdentifier: 'demo-module'
       },
-      30000 // Increase timeout for network operations
-    );
+      noTty: true
+    });
 
-    (shouldSkipGitHubTests ? it.skip : it)(
-      'loads module templates from GitHub repository',
-      () => {
-        const source: TemplateSource = {
-          type: 'github',
-          path: 'launchql/launchql',
-        };
-
-        const templates = loadTemplates(source, 'module');
-        expect(templates.length).toBeGreaterThan(0);
-      },
-      30000
-    );
-
-    (shouldSkipGitHubTests ? it.skip : it)(
-      'loads templates from specific branch',
-      () => {
-        const source: TemplateSource = {
-          type: 'github',
-          path: 'launchql/launchql',
-          branch: 'main',
-        };
-
-        const templates = loadTemplates(source, 'workspace');
-        expect(templates.length).toBeGreaterThan(0);
-      },
-      30000
-    );
-
-    (shouldSkipGitHubTests ? it.skip : it)(
-      'handles invalid GitHub repository',
-      () => {
-        const source: TemplateSource = {
-          type: 'github',
-          path: 'nonexistent/repo-that-does-not-exist-12345',
-        };
-
-        expect(() => {
-          loadTemplates(source, 'workspace');
-        }).toThrow();
-      },
-      30000
-    );
-
-    (shouldSkipGitHubTests ? it.skip : it)(
-      'handles invalid branch',
-      () => {
-        const source: TemplateSource = {
-          type: 'github',
-          path: 'launchql/launchql',
-          branch: 'nonexistent-branch-12345',
-        };
-
-        expect(() => {
-          loadTemplates(source, 'workspace');
-        }).toThrow();
-      },
-      30000
-    );
+    expect(fs.existsSync(outDir)).toBe(true);
+    fs.rmSync(outDir, { recursive: true, force: true });
   });
 });

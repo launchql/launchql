@@ -2,6 +2,7 @@ import { execSync } from 'child_process';
 import type { Plugin } from 'graphile-build';
 import { PgConfig } from 'pg-env';
 import { PostGraphileOptions } from 'postgraphile';
+import { JobsConfig } from './jobs';
 
 /**
  * Authentication options for test client sessions
@@ -236,6 +237,8 @@ export interface LaunchQLOptions {
     deployment?: DeploymentOptions;
     /** Migration and code generation options */
     migrations?: MigrationOptions;
+    /** Job system configuration */
+    jobs?: JobsConfig;
 }
 
 /**
@@ -312,14 +315,59 @@ export const pgpmDefaults: LaunchQLOptions = {
     codegen: {
       useTx: false
     }
+  },
+  jobs: {
+    pg: {
+      host: 'localhost',
+      port: 5432,
+      user: 'postgres',
+      password: 'password',
+      database: 'jobs'
+    },
+    schema: {
+      schema: 'app_jobs'
+    },
+    worker: {
+      host: 'localhost',
+      port: 5432,
+      user: 'postgres',
+      password: 'password',
+      database: 'jobs',
+      schema: 'app_jobs',
+      hostname: 'worker-0',
+      supportAny: true,
+      supported: [],
+      pollInterval: 1000,
+      gracefulShutdown: true
+    },
+    scheduler: {
+      host: 'localhost',
+      port: 5432,
+      user: 'postgres',
+      password: 'password',
+      database: 'jobs',
+      schema: 'app_jobs',
+      hostname: 'scheduler-0',
+      supportAny: true,
+      supported: [],
+      pollInterval: 1000,
+      gracefulShutdown: true
+    },
+    openFaas: {
+      gateway: {
+        gatewayUrl: 'http://gateway:8080',
+        callbackUrl: 'http://callback:12345',
+        callbackPort: 12345
+      },
+      server: {
+        schema: 'app_jobs',
+        port: 3000,
+        host: 'localhost'
+      }
+    }
   }
 };
 
-/**
- * Retrieves Git configuration information (username and email) from global Git config
- * @returns Object containing Git username and email
- * @throws Error if Git config cannot be retrieved
- */
 export function getGitConfigInfo(): { username: string; email: string } {
   const isTestEnv =
     process.env.NODE_ENV === 'test' ||
@@ -333,16 +381,24 @@ export function getGitConfigInfo(): { username: string; email: string } {
     };
   }
 
-  try {
-    const username = execSync('git config --global user.name', {
-      encoding: 'utf8'
-    }).trim();
-    const email = execSync('git config --global user.email', {
-      encoding: 'utf8'
-    }).trim();
+  let username = '';
+  let email = '';
 
-    return { username, email };
+  try {
+    username = execSync('git config --global user.name', {
+      encoding: 'utf8'
+    }).trim();
   } catch {
-    throw new Error('Failed to retrieve global git config. Ensure git is configured.');
+    username = '';
   }
+
+  try {
+    email = execSync('git config --global user.email', {
+      encoding: 'utf8'
+    }).trim();
+  } catch {
+    email = '';
+  }
+
+  return { username, email };
 }

@@ -3,7 +3,7 @@ ARG BASE_VERSION=14
 ARG BARMAN_VERSION=3.14.0
 FROM ${BASE}:${BASE_VERSION}
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 ARG BASE
 ARG BASE_VERSION
 ARG BARMAN_VERSION

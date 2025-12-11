@@ -1,9 +1,9 @@
 {
   "name": "graphile-postgis",
-  "version": "0.1.3",
+  "version": "0.2.1",
   "description": "Graphile/PostGraphile PostGIS integration plugin",
-  "author": "Dan Lynch <pyramation@gmail.com>",
-  "homepage": "https://github.com/launchql/launchql",
+  "author": "Constructive <developers@constructive.io>",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "main": "index.js",
   "module": "esm/index.js",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "keywords": [
     "graphile",
@@ -35,7 +35,7 @@
     "launchql"
   ],
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",

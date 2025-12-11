@@ -1,24 +1,24 @@
 # drizzle-orm-test
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+  <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/drizzle-orm-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fdrizzle-orm-test%2Fpackage.json"/>
+    <img height="20" src="https://img.shields.io/github/package-json/v/constructive-io/constructive?filename=packages%2Fdrizzle-orm-test%2Fpackage.json"/>
   </a>
 </p>
 
 `drizzle-orm-test` is a Drizzle ORM-optimized version of [`pgsql-test`](https://www.npmjs.com/package/pgsql-test) designed to work work seamlessly with context management and RLS (Row-Level Security) testing. It provides instant, isolated PostgreSQL databases for testing with automatic transaction rollbacks, context switching, and clean seeding — configured for local-first development environment. It's also great for GitHub Actions and CI/CD testing.
 
-Explore a full working example (including GitHub Actions CI/CD) in the [`drizzle-test-suite`](https://github.com/launchql/drizzle-test-suite) repo.
+Explore a full working example (including GitHub Actions CI/CD) in the [`drizzle-test-suite`](https://github.com/constructive-iodrizzle-test-suite) repo.
 
 ## Install
 
@@ -38,7 +38,7 @@ npm install drizzle-orm-test
 
 ### Tutorials
 
-📚 **[Learn how to test with Drizzle ORM →](https://launchql.com/learn/drizzle-testing)**
+📚 **[Learn how to test with Drizzle ORM →](https://constructive.io/learn/drizzle-testing)**
 
 
 ## Usage
@@ -160,7 +160,7 @@ Drop-in replacement for `pgsql-test`'s `getConnections` that patches `db.client.
 
 ### `PgTestClient`
 
-Re-exported from `pgsql-test` for convenience. See [pgsql-test documentation](https://github.com/launchql/launchql/tree/main/packages/pgsql-test) for full API.
+Re-exported from `pgsql-test` for convenience. See [pgsql-test documentation](https://github.com/constructive-io/constructive/tree/main/packages/pgsql-test) for full API.
 
 **Key Methods:**
 - `setContext(ctx: Record<string, string>)` - Set context variables (role, JWT claims, etc.)

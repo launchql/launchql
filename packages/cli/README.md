@@ -24,7 +24,7 @@ npm install -g @launchql/cli
 
 ```bash
 # Initialize a new workspace
-lql init --workspace
+lql init workspace
 cd my-project
 
 # Create your first module
@@ -64,26 +64,27 @@ Initialize a new LaunchQL workspace or module.
 
 ```bash
 # Create a new workspace
-lql init --workspace
+lql init workspace
 
 # Create a new module (run inside workspace)
 lql init
 
-# Use templates from GitHub repository
-lql init --workspace --repo owner/repo
+# Use templates from GitHub repository (defaults to launchql/pgpm-boilerplates.git)
+lql init workspace --repo owner/repo
 lql init --repo owner/repo --from-branch develop
 
-# Use templates from local path
-lql init --workspace --template-path ./custom-templates
+# Use templates from custom paths
+lql init workspace --template-path ./custom-templates
 lql init --template-path ./custom-templates/module
 ```
 
 **Options:**
 
-- `--workspace` - Initialize workspace instead of module
-- `--repo <repo>` - Use templates from GitHub repository (e.g., `owner/repo`)
-- `--template-path <path>` - Use templates from local path
-- `--from-branch <branch>` - Specify branch when using `--repo` (default: `main`)
+- `--repo <repo>` - Template repo (default: `https://github.com/constructive-io/pgpm-boilerplates.git`)
+- `--template-path <path>` - Template sub-path (defaults to `workspace`/`module`) or local path override
+- `--from-branch <branch>` - Branch/tag when cloning the template repo
+
+Templates are cached for one week under the `pgpm` tool namespace. Run `lql cache clean` if you need to refresh the boilerplates.
 
 ### Development
 
@@ -110,6 +111,10 @@ lql explorer
 # With custom CORS origin
 lql explorer --origin http://localhost:3000
 ```
+
+## 🔄 Updates
+
+The CLI performs a lightweight npm version check at most once per week (skipped in CI or when `PGPM_SKIP_UPDATE_CHECK` is set). Use `lql update` to install the latest release (installs `pgpm` by default; pass `--package @launchql/cli` to target the CLI package).
 
 ### Database Operations
 
@@ -263,7 +268,7 @@ lql kill --no-drop
 ```bash
 # 1. Create workspace
 mkdir my-app && cd my-app
-lql init --workspace
+lql init workspace
 
 # 2. Create your first module
 lql init
@@ -282,16 +287,16 @@ You can use custom templates from GitHub repositories or local paths:
 
 ```bash
 # Initialize workspace with templates from GitHub
-lql init --workspace --repo owner/repo
+lql init workspace --repo owner/repo
 
 # Initialize workspace with templates from local path
-lql init --workspace --template-path ./my-custom-templates
+lql init workspace --template-path ./my-custom-templates
 
 # Initialize module with custom templates
 lql init --template-path ./my-custom-templates
 
 # Use specific branch from GitHub repository
-lql init --workspace --repo owner/repo --from-branch develop
+lql init workspace --repo owner/repo --from-branch develop
 ```
 
 **Template Structure:**
@@ -401,3 +406,62 @@ Most commands support these global options:
 - `--help, -h` - Show help information
 - `--version, -v` - Show version information
 - `--cwd <dir>` - Set working directory
+### Codegen
+
+Generate types, operations, and SDK from a schema or endpoint.
+
+```bash
+# From SDL file
+lql codegen --schema ./schema.graphql --out ./codegen
+
+# From endpoint with Host override
+lql codegen --endpoint http://localhost:3000/graphql --headerHost meta8.localhost --out ./codegen
+```
+
+Options:
+- `--schema <path>` or `--endpoint <url>`
+- `--out <dir>` output root (default: `packages/launchql-gen/dist`)
+- `--format <gql|ts>` documents format
+- `--convention <dashed|underscore|camelcase|camelUpper>` filenames
+- `--headerHost <host>` optional HTTP Host header for endpoint requests
+- `--auth <token>` Authorization header value (e.g., `Bearer 123`)
+- `--header "Name: Value"` repeatable headers
+- `--emitTypes <bool>` `--emitOperations <bool>` `--emitSdk <bool>` `--emitReactQuery <bool>`
+- `--config ./config.json` Use customized config file 
+
+
+Config file (JSON/YAML):
+
+```bash
+# Use a JSON config to override defaults
+lql codegen --config ./my-options.json
+```
+
+Example `my-options.json`:
+
+```json
+{
+  "input": {
+    "schema": "./schema.graphql",
+    "headers": { "Host": "meta8.localhost" }
+  },
+  "output": {
+    "root": "packages/launchql-gen/dist/codegen-config",
+    "reactQueryFile": "react-query.ts"
+  },
+  "documents": {
+    "format": "gql",
+    "convention": "dashed",
+    "excludePatterns": [".*Module$", ".*By.+And.+$"]
+  },
+  "features": {
+    "emitTypes": true,
+    "emitOperations": true,
+    "emitSdk": true,
+    "emitReactQuery": true
+  },
+  "reactQuery": {
+    "fetcher": "graphql-request"
+  }
+}
+```

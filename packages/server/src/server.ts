@@ -51,6 +51,7 @@ class Server {
     }
     
     app.use(poweredBy('launchql'));
+    app.use(cors(fallbackOrigin));
     app.use(graphqlUpload.graphqlUploadExpress());
     app.use(parseDomains() as RequestHandler);
     app.use(requestIp.mw());
@@ -58,7 +59,6 @@ class Server {
     app.use(authenticate);
     app.use(graphile(opts));
     app.use(flush);
-    app.use(cors(fallbackOrigin));
 
     this.app = app;
   }

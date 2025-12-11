@@ -1,12 +1,5 @@
 import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
 import { Logger } from '@launchql/logger';
-// @ts-ignore - TypeScript module resolution issue with @launchql/templatizer
-import {
-  moduleTemplate,
-  writeRenderedTemplates,
-  TemplateSource,
-  loadTemplates
-} from '@launchql/templatizer';
 import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
 import yanse from 'yanse';
 import { execSync } from 'child_process';
@@ -18,6 +11,7 @@ import path, { dirname, resolve } from 'path';
 import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
+import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TTL_MS, DEFAULT_TEMPLATE_TOOL_NAME, scaffoldTemplate } from '../template-scaffold';
 import { getAvailableExtensions } from '../../extensions/extensions';
 import { generatePlan, writePlan, writePlanFile } from '../../files';
 import { Tag, ExtendedPlanFile, Change } from '../../files/types';
@@ -109,7 +103,13 @@ export interface InitModuleOptions {
   description: string;
   author: string;
   extensions: string[];
-  templateSource?: TemplateSource;
+  branch?: string;
+  templateRepo?: string;
+  templatePath?: string;
+  cacheTtlMs?: number;
+  noTty?: boolean;
+  toolName?: string;
+  answers?: Record<string, any>;
 }
 
 export class LaunchQLPackage {
@@ -402,7 +402,6 @@ export class LaunchQLPackage {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    // Create pgpm.plan file using package-files package
     const plan = generatePlan({
       moduleName: modName,
       uri: modName,
@@ -420,18 +419,33 @@ export class LaunchQLPackage {
     });
   }
 
-  initModule(options: InitModuleOptions): void {
+  async initModule(options: InitModuleOptions): Promise<void> {
     this.ensureWorkspace();
     const targetPath = this.createModuleDirectory(options.name);
     
-    // Load templates from custom source if provided, otherwise use default
-    let templates = moduleTemplate;
-    if (options.templateSource) {
-      const compiledTemplates = loadTemplates(options.templateSource, 'module');
-      templates = compiledTemplates.map((t: any) => t.render);
-    }
-    
-    writeRenderedTemplates(templates, targetPath, options);
+    const answers = {
+      ...options.answers,
+      name: options.name,
+      moduleDesc: options.description,
+      description: options.description,
+      author: options.author,
+      extensions: options.extensions
+    };
+
+    await scaffoldTemplate({
+      type: 'module',
+      outputDir: targetPath,
+      templateRepo: options.templateRepo ?? DEFAULT_TEMPLATE_REPO,
+      branch: options.branch,
+      // Don't set default templatePath - let scaffoldTemplate use metadata-driven resolution
+      templatePath: options.templatePath,
+      answers,
+      noTty: options.noTty ?? false,
+      cacheTtlMs: options.cacheTtlMs ?? DEFAULT_TEMPLATE_TTL_MS,
+      toolName: options.toolName ?? DEFAULT_TEMPLATE_TOOL_NAME,
+      cwd: this.cwd
+    });
+
     this.initModuleSqitch(options.name, targetPath);
     writeExtensions(targetPath, options.extensions);
   }
@@ -856,7 +870,7 @@ export class LaunchQLPackage {
 
     // Create deploy file
     const deployContent = `-- Deploy: ${changeName}
--- made with <3 @ launchql.com
+-- made with <3 @ constructive.io
 
 ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join('\n') + '\n' : ''}
 -- Add your deployment SQL here

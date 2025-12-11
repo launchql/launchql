@@ -5,6 +5,7 @@ import { teardownPgPools } from 'pg-cache';
 import add from './commands/add';
 import adminUsers from './commands/admin-users';
 import analyze from './commands/analyze';
+import cache from './commands/cache';
 import clear from './commands/clear';
 import deploy from './commands/deploy';
 import docker from './commands/docker';
@@ -17,6 +18,7 @@ import kill from './commands/kill';
 import migrate from './commands/migrate';
 import _package from './commands/package';
 import plan from './commands/plan';
+import updateCmd from './commands/update';
 import remove from './commands/remove';
 import renameCmd from './commands/rename';
 import revert from './commands/revert';
@@ -25,6 +27,7 @@ import verify from './commands/verify';
 import { readAndParsePackageJson } from './package';
 import { extractFirst, usageText } from './utils';
 import { cliExitWithError } from './utils/cli-error';
+import { checkForUpdates } from './utils/update-check';
 
 const withPgTeardown = (fn: Function, skipTeardown: boolean = false) => async (...args: any[]) => {
   try {
@@ -58,7 +61,9 @@ export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<st
     install: pgt(install),
     migrate: pgt(migrate),
     analyze: pgt(analyze),
-    rename: pgt(renameCmd)
+    rename: pgt(renameCmd),
+    cache,
+    update: updateCmd
   };
 };
 
@@ -93,6 +98,15 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
       }
     ]);
     command = answer.command;
+  }
+
+  try {
+    await checkForUpdates({
+      command,
+      pkgVersion: readAndParsePackageJson().version
+    });
+  } catch {
+    // ignore update check failures
   }
 
   newArgv = await prompter.prompt(newArgv, [

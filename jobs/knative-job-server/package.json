@@ -1,0 +1,41 @@
+{
+  "name": "@launchql/knative-job-server",
+  "version": "0.3.1",
+  "description": "knative job server",
+  "author": "Constructive <developers@constructive.io>",
+  "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-server#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "bin": {
+    "faas-job-server": "src/run.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/jobs"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w"
+  },
+  "bugs": {
+    "url": "https://github.com/launchql/jobs/issues"
+  },
+  "dependencies": {
+    "@launchql/job-pg": "workspace:^",
+    "@launchql/job-utils": "workspace:^",
+    "body-parser": "1.19.0",
+    "envalid": "6.0.2",
+    "express": "4.17.1",
+    "pg": "8.3.3"
+  }
+}

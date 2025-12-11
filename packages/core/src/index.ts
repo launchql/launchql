@@ -9,6 +9,9 @@ export * from './resolution/deps';
 export * from './resolution/resolve';
 export * from './workspace/paths';
 export * from './workspace/utils';
+export * from './core/template-scaffold';
+export * from './core/boilerplate-types';
+export * from './core/boilerplate-scanner';
 
 // Export package-files functionality (now integrated into core)
 export * from './files';

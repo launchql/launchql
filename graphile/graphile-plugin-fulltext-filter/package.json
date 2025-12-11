@@ -1,12 +1,12 @@
 {
   "name": "graphile-plugin-fulltext-filter",
-  "version": "2.0.4",
+  "version": "2.1.1",
   "description": "Full text searching on tsvector fields for use with graphile-plugin-connection-filter",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
   "author": "Mark Lipscombe",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "scripts": {
     "clean": "makage clean",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "keywords": [
     "postgraphile",
@@ -37,7 +37,7 @@
     "tsvector"
   ],
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "dependencies": {
     "graphile-build": "^4.14.1",

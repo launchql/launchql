@@ -1,12 +1,12 @@
 {
   "name": "@launchql/unique-names",
   "version": "0.0.1",
-  "author": "Dan Lynch <pyramation@gmail.com>",
+  "author": "Constructive <developers@constructive.io>",
   "description": "undefined",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/pg",
+  "homepage": "https://github.com/constructive-io/pgpm-modules",
   "license": "MIT",
   "publishConfig": {
     "access": "restricted",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/pg"
+    "url": "https://github.com/constructive-io/pgpm-modules"
   },
   "bugs": {
-    "url": "https://github.com/launchql/pg/issues"
+    "url": "https://github.com/constructive-io/pgpm-modules/issues"
   },
   "scripts": {
     "clean": "makage clean",
