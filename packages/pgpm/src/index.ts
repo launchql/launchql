@@ -4,6 +4,7 @@ import { CLI, CLIOptions } from 'inquirerer';
 import { join } from 'path';
 
 import { commands, createPgpmCommandMap } from './commands';
+export { createInitUsageText } from './commands/init';
 
 export { createPgpmCommandMap };
 

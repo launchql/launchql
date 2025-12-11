@@ -3,9 +3,11 @@ import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import os from 'os';
 import path from 'path';
+import { DEFAULT_TEMPLATE_REPO } from '@launchql/core';
 
 import { commands } from '../src/commands';
-import { setupTests,TestEnvironment } from './cli';
+import { setupTests, TestEnvironment } from './cli';
+import { withInitDefaults } from './init-argv';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
 
@@ -52,6 +54,10 @@ export class TestFixture {
       writeResults,
       transformResults
     } = this.environment;
+
+    // Default to remote templates and deterministic identity answers for init
+    // flows so tests are stable and do not rely on local machine config.
+    argv = withInitDefaults(argv, DEFAULT_TEMPLATE_REPO);
 
     const prompter = new Inquirerer({
       input: mockInput,

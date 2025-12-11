@@ -24,6 +24,8 @@ export const usageText = `
     extension          Manage module dependencies
     plan               Generate module deployment plans
     package            Package module for distribution
+    update             Update CLI/pgpm (installs pgpm by default)
+    cache              Manage cached templates (clean)
   
   Development Tools:
     server             Start LaunchQL GraphQL server
@@ -55,7 +57,7 @@ export const usageText = `
   Examples:
     lql deploy --help       Show deploy command options
     lql server --port 8080  Start server on port 8080
-    lql init --workspace    Initialize new workspace
+    lql init workspace      Initialize new workspace
   `;
 
 export function displayUsage() {

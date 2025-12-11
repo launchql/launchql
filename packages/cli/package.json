@@ -53,7 +53,6 @@
     "@launchql/logger": "workspace:^",
     "@launchql/server": "workspace:^",
     "@launchql/server-utils": "workspace:^",
-    "@launchql/templatizer": "workspace:^",
     "@launchql/types": "workspace:^",
     "inquirerer": "^2.1.8",
     "js-yaml": "^4.1.0",

@@ -13,7 +13,7 @@ npm install -g @launchql/cli
 Generate a workspace along with its default services configuration:
 
 ```bash
-lql init --workspace # then enter workspace name
+lql init workspace # then enter workspace name
 cd myworkspace
 ```
 

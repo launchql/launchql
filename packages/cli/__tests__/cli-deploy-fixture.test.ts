@@ -44,14 +44,13 @@ describe('CLIDeployTestFixture', () => {
   });
 
   it('should initialize workspace via CLI', async () => {
-    const commands = `lql init test-workspace --workspace`;
+    const commands = `lql init workspace test-workspace`;
     const results = await fixture.runTerminalCommands(commands, {}, false);
     
     expect(results).toHaveLength(1);
     expect(results[0].type).toBe('cli');
     expect(results[0].result.argv._).toContain('init');
     expect(results[0].result.argv._).toContain('test-workspace');
-    expect(results[0].result.argv.workspace).toBe(true);
   });
 
   it('should initialize module via CLI', async () => {

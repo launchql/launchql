@@ -3,28 +3,31 @@ import { CLIOptions, Inquirerer } from 'inquirerer';
 import runModuleSetup from './module';
 import runWorkspaceSetup from './workspace';
 
-const initUsageText = `
+export const createInitUsageText = (binaryName: string, productLabel?: string): string => {
+  const displayName = productLabel ?? binaryName;
+
+  return `
 Init Command:
 
-  pgpm init [OPTIONS]
+  ${binaryName} init [OPTIONS] [workspace]
 
-  Initialize pgpm workspace or module.
+  Initialize ${displayName} workspace or module.
 
 Options:
   --help, -h              Show this help message
-  --workspace             Initialize workspace instead of module
   --cwd <directory>       Working directory (default: current directory)
-  --repo <repo>           Use templates from GitHub repository (e.g., owner/repo)
-  --template-path <path>   Use templates from local path
-  --from-branch <branch>   Specify branch when using --repo (default: main)
+  --repo <repo>           Template repo (default: https://github.com/launchql/pgpm-boilerplates.git)
+  --template-path <path>  Template sub-path (default: workspace/module) or local path override
+  --from-branch <branch>  Branch/tag to use when cloning repo
 
 Examples:
-  pgpm init                                  Initialize new module in existing workspace
-  pgpm init --workspace                       Initialize new workspace
-  pgpm init --repo owner/repo                Use templates from GitHub repository
-  pgpm init --template-path ./custom-templates Use templates from local path
-  pgpm init --repo owner/repo --from-branch develop  Use specific branch
+  ${binaryName} init                                   Initialize new module in existing workspace
+  ${binaryName} init workspace                         Initialize new workspace
+  ${binaryName} init --repo owner/repo                 Use templates from GitHub repository
+  ${binaryName} init --template-path ./custom-templates Use templates from local path
+  ${binaryName} init --repo owner/repo --from-branch develop  Use specific branch
 `;
+};
 
 export default async (
   argv: Partial<Record<string, any>>,
@@ -33,7 +36,7 @@ export default async (
 ) => {
   // Show usage if explicitly requested
   if (argv.help || argv.h) {
-    console.log(initUsageText);
+    console.log(createInitUsageText('pgpm'));
     process.exit(0);
   }
 
@@ -41,14 +44,15 @@ export default async (
 };
 
 async function handlePromptFlow(argv: Partial<Record<string, any>>, prompter: Inquirerer) {
-  const { workspace } = argv;
+  const firstArg = (argv._?.[0] as string) || undefined;
 
-  switch (workspace) {
-  case true:
-    return runWorkspaceSetup(argv, prompter);
-  case false:
-  default:
-    return runModuleSetup(argv, prompter);
+  if (firstArg === 'workspace') {
+    const nextArgv = {
+      ...argv,
+      _: (argv._ ?? []).slice(1)
+    };
+    return runWorkspaceSetup(nextArgv, prompter);
   }
-}
 
+  return runModuleSetup(argv, prompter);
+}
