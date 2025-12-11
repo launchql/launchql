@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-scheduler",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "job scheduler",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-scheduler#readme",

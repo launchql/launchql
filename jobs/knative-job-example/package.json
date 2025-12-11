@@ -1,6 +1,6 @@
 {
   "name": "@launchql/knative-job-example",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "job example",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-example#readme",

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/logger",
-  "version": "1.1.13",
+  "version": "1.2.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Simple logger utility",
   "main": "index.js",

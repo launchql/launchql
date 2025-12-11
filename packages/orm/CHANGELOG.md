@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/constructive-io/constructive/compare/@launchql/orm@2.2.12...@launchql/orm@2.3.0) (2025-12-11)
+
+**Note:** Version bump only for package @launchql/orm
+
 ## [2.2.12](https://github.com/constructive-io/constructive/compare/@launchql/orm@2.2.11...@launchql/orm@2.2.12) (2025-12-11)
 
 **Note:** Version bump only for package @launchql/orm

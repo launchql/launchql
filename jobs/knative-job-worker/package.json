@@ -1,6 +1,6 @@
 {
   "name": "@launchql/knative-job-worker",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "knative job worker",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-worker#readme",

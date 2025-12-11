@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/constructive-io/constructive/compare/launchql-test@2.8.16...launchql-test@2.9.0) (2025-12-11)
+
+**Note:** Version bump only for package launchql-test
+
 ## [2.8.16](https://github.com/constructive-io/constructive/compare/launchql-test@2.8.15...launchql-test@2.8.16) (2025-12-11)
 
 **Note:** Version bump only for package launchql-test

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/constructive-io/constructive/compare/@launchql/server@2.7.19...@launchql/server@2.8.0) (2025-12-11)
+
+**Note:** Version bump only for package @launchql/server
+
 ## [2.7.19](https://github.com/constructive-io/constructive/compare/@launchql/server@2.7.18...@launchql/server@2.7.19) (2025-12-11)
 
 **Note:** Version bump only for package @launchql/server
