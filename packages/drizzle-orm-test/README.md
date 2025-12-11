@@ -12,7 +12,7 @@
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/drizzle-orm-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fdrizzle-orm-test%2Fpackage.json"/>
+    <img height="20" src="https://img.shields.io/github/package-json/v/constructive-io/constructive?filename=packages%2Fdrizzle-orm-test%2Fpackage.json"/>
   </a>
 </p>
 

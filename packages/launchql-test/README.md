@@ -12,7 +12,7 @@
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/launchql-test">
-    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Flaunchql-test%2Fpackage.json"/>
+    <img height="20" src="https://img.shields.io/github/package-json/v/constructive-io/constructive?filename=packages%2Flaunchql-test%2Fpackage.json"/>
   </a>
 </p>
 

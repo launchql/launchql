@@ -58,7 +58,7 @@ Common issues and solutions for pgpm, PostgreSQL, and testing.
 
 * [pgpm](https://github.com/constructive-io/constructive/tree/main/packages/pgpm): **🖥️ PostgreSQL Package Manager** for modular Postgres development. Works with database workspaces, scaffolding, migrations, seeding, and installing database packages.
 * [@launchql/cli](https://github.com/constructive-io/constructive/tree/main/packages/cli): **🖥️ Command-line toolkit** for managing LaunchQL projects—supports database scaffolding, migrations, seeding, code generation, and automation.
-* [launchql/launchql-gen](https://github.com/constructive-io/constructive/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
+* [constructive-io/constructive-gen](https://github.com/constructive-io/constructive/tree/main/packages/launchql-gen): **✨ Auto-generated GraphQL** mutations and queries dynamically built from introspected schema data.
 * [@launchql/query-builder](https://github.com/constructive-io/constructive/tree/main/packages/query-builder): **🏗️ SQL constructor** providing a robust TypeScript-based query builder for dynamic generation of `SELECT`, `INSERT`, `UPDATE`, `DELETE`, and stored procedure calls—supports advanced SQL features like `JOIN`, `GROUP BY`, and schema-qualified queries.
 * [@launchql/query](https://github.com/constructive-io/constructive/tree/main/packages/query): **🧩 Fluent GraphQL builder** for PostGraphile schemas. ⚡ Schema-aware via introspection, 🧩 composable and ergonomic for building deeply nested queries.
 

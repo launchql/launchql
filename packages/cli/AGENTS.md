@@ -137,7 +137,7 @@ lql init               # Initialize module (in workspace)
 
 **Examples:**
 ```bash
-lql init workspace --repo launchql/launchql
+lql init workspace --repo constructive-io/constructive
 lql init workspace --template-path ./custom-templates
 lql init --repo owner/repo --from-branch develop
 ```

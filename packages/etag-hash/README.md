@@ -9,7 +9,7 @@
     <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
    <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-   <a href="https://www.npmjs.com/package/etag-hash"><img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=packages%2Fetag-hash%2Fpackage.json"/></a>
+   <a href="https://www.npmjs.com/package/etag-hash"><img height="20" src="https://img.shields.io/github/package-json/v/constructive-io/constructive?filename=packages%2Fetag-hash%2Fpackage.json"/></a>
 </p>
 
 Es6 class that generates ETag using the same algorithm as S3 via MD5 sum.

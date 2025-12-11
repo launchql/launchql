@@ -138,7 +138,7 @@ spec:
     spec:
       containers:
       - name: simple-email
-        image: ghcr.io/launchql/launchql:<tag>
+        image: ghcr.io/constructive-io/constructive:<tag>
         command: ["node"]
         args: ["functions/simple-email/dist/index.js"]
         ports:

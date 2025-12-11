@@ -43,7 +43,7 @@ make build-push-all
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   --file Dockerfile \
-  -t ghcr.io/launchql/launchql:latest \
+  -t ghcr.io/constructive-io/constructive:latest \
   .
 
 # Or override base/version with build args
@@ -52,7 +52,7 @@ docker buildx build \
   --build-arg BASE=node \
   --build-arg BASE_VERSION=22-bookworm \
   --file Dockerfile \
-  -t ghcr.io/launchql/launchql:22-bookworm \
+  -t ghcr.io/constructive-io/constructive:22-bookworm \
   .
 ```
 
