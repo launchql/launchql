@@ -9,10 +9,7 @@ exports[`generates output 1`] = `
 ",
   "createActiveUserMutation": "mutation createActiveUserMutation($username: String) {
   createActiveUser(input: {activeUser: {username: $username}}) {
-    activeUser {
-      id
-      username
-    }
+    clientMutationId
   }
 }
 ",
@@ -20,25 +17,13 @@ exports[`generates output 1`] = `
   createPost(
     input: {post: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
   ) {
-    post {
-      id
-      userId
-      title
-      body
-      published
-      publishedAt
-    }
+    clientMutationId
   }
 }
 ",
   "createUserMutation": "mutation createUserMutation($username: String!, $email: String) {
   createUser(input: {user: {username: $username, email: $email}}) {
-    user {
-      id
-      username
-      email
-      createdAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -133,20 +118,8 @@ exports[`generates output 1`] = `
 ",
   "getMetaQuery": "query getMetaQuery {
   _meta {
-    tables(first: 3) {
-      nodes {
-        name
-        query
-        inflection
-        relations
-        fields
-        constraints
-        foreignKeyConstraints
-        primaryKeyConstraints
-        uniqueConstraints
-        checkConstraints
-        exclusionConstraints
-      }
+    tables {
+      name
     }
   }
 }
@@ -159,7 +132,12 @@ exports[`generates output 1`] = `
     body
     published
     publishedAt
-    user
+    user {
+      id
+      username
+      email
+      createdAt
+    }
   }
 }
 ",
@@ -198,7 +176,12 @@ exports[`generates output 1`] = `
         body
         published
         publishedAt
-        user
+        user {
+          id
+          username
+          email
+          createdAt
+        }
       }
     }
   }
@@ -229,7 +212,12 @@ exports[`generates output 1`] = `
       body
       published
       publishedAt
-      user
+      user {
+        id
+        username
+        email
+        createdAt
+      }
     }
   }
 }
@@ -244,7 +232,48 @@ exports[`generates output 1`] = `
       body
       published
       publishedAt
-      user
+      user {
+        id
+        username
+        email
+        createdAt
+      }
+    }
+  }
+}
+",
+  "getQueryQuery": "query getQueryQuery {
+  query {
+    query {
+      userCount
+    }
+    activeUsers(first: 3) {
+      nodes {
+        id
+        username
+      }
+    }
+    posts(first: 3) {
+      nodes {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+      }
+    }
+    users(first: 3) {
+      nodes {
+        id
+        username
+        email
+        createdAt
+      }
+    }
+    userCount
+    _meta {
+      __typename
     }
   }
 }
@@ -263,7 +292,6 @@ exports[`generates output 1`] = `
         body
         published
         publishedAt
-        user
       }
     }
   }
@@ -283,7 +311,6 @@ exports[`generates output 1`] = `
         body
         published
         publishedAt
-        user
       }
     }
   }
@@ -330,7 +357,6 @@ exports[`generates output 1`] = `
             body
             published
             publishedAt
-            user
           }
         }
       }
@@ -369,7 +395,6 @@ exports[`generates output 1`] = `
           body
           published
           publishedAt
-          user
         }
       }
     }
@@ -392,7 +417,6 @@ exports[`generates output 1`] = `
           body
           published
           publishedAt
-          user
         }
       }
     }
@@ -406,43 +430,31 @@ exports[`generates output 1`] = `
   body
   published
   publishedAt
-  user
+  user {
+    id
+    username
+    email
+    createdAt
+  }
 }
 ",
-  "updatePostMutation": "mutation updatePostMutation($userId: Int, $title: String, $body: String, $published: Boolean, $publishedAt: Datetime) {
+  "updatePostMutation": "mutation updatePostMutation($id: UUID!, $userId: Int, $title: String, $body: String, $published: Boolean, $publishedAt: Datetime) {
   updatePost(
     input: {id: $id, patch: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
   ) {
-    post {
-      id
-      userId
-      title
-      body
-      published
-      publishedAt
-    }
+    clientMutationId
   }
 }
 ",
   "updateUserByUsernameMutation": "mutation updateUserByUsernameMutation($username: String!, $email: String) {
   updateUserByUsername(input: {username: $username, patch: {email: $email}}) {
-    user {
-      id
-      username
-      email
-      createdAt
-    }
+    clientMutationId
   }
 }
 ",
-  "updateUserMutation": "mutation updateUserMutation($username: String, $email: String) {
+  "updateUserMutation": "mutation updateUserMutation($id: Int!, $username: String, $email: String) {
   updateUser(input: {id: $id, patch: {username: $username, email: $email}}) {
-    user {
-      id
-      username
-      email
-      createdAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -451,7 +463,16 @@ exports[`generates output 1`] = `
   username
   email
   createdAt
-  [object Object]
+  posts(first: 3) {
+    nodes {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+    }
+  }
 }
 ",
 }
@@ -466,10 +487,7 @@ exports[`helper method 1`] = `
 ",
   "createActiveUserMutation": "mutation createActiveUserMutation($username: String) {
   createActiveUser(input: {activeUser: {username: $username}}) {
-    activeUser {
-      id
-      username
-    }
+    clientMutationId
   }
 }
 ",
@@ -477,25 +495,13 @@ exports[`helper method 1`] = `
   createPost(
     input: {post: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
   ) {
-    post {
-      id
-      userId
-      title
-      body
-      published
-      publishedAt
-    }
+    clientMutationId
   }
 }
 ",
   "createUserMutation": "mutation createUserMutation($username: String!, $email: String) {
   createUser(input: {user: {username: $username, email: $email}}) {
-    user {
-      id
-      username
-      email
-      createdAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -590,20 +596,8 @@ exports[`helper method 1`] = `
 ",
   "getMetaQuery": "query getMetaQuery {
   _meta {
-    tables(first: 3) {
-      nodes {
-        name
-        query
-        inflection
-        relations
-        fields
-        constraints
-        foreignKeyConstraints
-        primaryKeyConstraints
-        uniqueConstraints
-        checkConstraints
-        exclusionConstraints
-      }
+    tables {
+      name
     }
   }
 }
@@ -616,7 +610,12 @@ exports[`helper method 1`] = `
     body
     published
     publishedAt
-    user
+    user {
+      id
+      username
+      email
+      createdAt
+    }
   }
 }
 ",
@@ -655,7 +654,12 @@ exports[`helper method 1`] = `
         body
         published
         publishedAt
-        user
+        user {
+          id
+          username
+          email
+          createdAt
+        }
       }
     }
   }
@@ -686,7 +690,12 @@ exports[`helper method 1`] = `
       body
       published
       publishedAt
-      user
+      user {
+        id
+        username
+        email
+        createdAt
+      }
     }
   }
 }
@@ -701,7 +710,48 @@ exports[`helper method 1`] = `
       body
       published
       publishedAt
-      user
+      user {
+        id
+        username
+        email
+        createdAt
+      }
+    }
+  }
+}
+",
+  "getQueryQuery": "query getQueryQuery {
+  query {
+    query {
+      userCount
+    }
+    activeUsers(first: 3) {
+      nodes {
+        id
+        username
+      }
+    }
+    posts(first: 3) {
+      nodes {
+        id
+        userId
+        title
+        body
+        published
+        publishedAt
+      }
+    }
+    users(first: 3) {
+      nodes {
+        id
+        username
+        email
+        createdAt
+      }
+    }
+    userCount
+    _meta {
+      __typename
     }
   }
 }
@@ -720,7 +770,6 @@ exports[`helper method 1`] = `
         body
         published
         publishedAt
-        user
       }
     }
   }
@@ -740,7 +789,6 @@ exports[`helper method 1`] = `
         body
         published
         publishedAt
-        user
       }
     }
   }
@@ -787,7 +835,6 @@ exports[`helper method 1`] = `
             body
             published
             publishedAt
-            user
           }
         }
       }
@@ -826,7 +873,6 @@ exports[`helper method 1`] = `
           body
           published
           publishedAt
-          user
         }
       }
     }
@@ -849,7 +895,6 @@ exports[`helper method 1`] = `
           body
           published
           publishedAt
-          user
         }
       }
     }
@@ -863,43 +908,31 @@ exports[`helper method 1`] = `
   body
   published
   publishedAt
-  user
+  user {
+    id
+    username
+    email
+    createdAt
+  }
 }
 ",
-  "updatePostMutation": "mutation updatePostMutation($userId: Int, $title: String, $body: String, $published: Boolean, $publishedAt: Datetime) {
+  "updatePostMutation": "mutation updatePostMutation($id: UUID!, $userId: Int, $title: String, $body: String, $published: Boolean, $publishedAt: Datetime) {
   updatePost(
     input: {id: $id, patch: {userId: $userId, title: $title, body: $body, published: $published, publishedAt: $publishedAt}}
   ) {
-    post {
-      id
-      userId
-      title
-      body
-      published
-      publishedAt
-    }
+    clientMutationId
   }
 }
 ",
   "updateUserByUsernameMutation": "mutation updateUserByUsernameMutation($username: String!, $email: String) {
   updateUserByUsername(input: {username: $username, patch: {email: $email}}) {
-    user {
-      id
-      username
-      email
-      createdAt
-    }
+    clientMutationId
   }
 }
 ",
-  "updateUserMutation": "mutation updateUserMutation($username: String, $email: String) {
+  "updateUserMutation": "mutation updateUserMutation($id: Int!, $username: String, $email: String) {
   updateUser(input: {id: $id, patch: {username: $username, email: $email}}) {
-    user {
-      id
-      username
-      email
-      createdAt
-    }
+    clientMutationId
   }
 }
 ",
@@ -908,7 +941,16 @@ exports[`helper method 1`] = `
   username
   email
   createdAt
-  [object Object]
+  posts(first: 3) {
+    nodes {
+      id
+      userId
+      title
+      body
+      published
+      publishedAt
+    }
+  }
 }
 ",
 }

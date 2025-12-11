@@ -5,6 +5,7 @@ import { checkForUpdates, createInitUsageText, createPgpmCommandMap } from 'pgpm
 import explorer from './commands/explorer';
 import server from './commands/server';
 import getGraphqlSchema from './commands/get-graphql-schema';
+import codegen from './commands/codegen';
 import { readAndParsePackageJson } from './package';
 import { cliExitWithError, extractFirst, usageText } from './utils';
 
@@ -15,7 +16,8 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
     ...pgpmCommands,
     server,
     explorer,
-    'get-graphql-schema': getGraphqlSchema
+    'get-graphql-schema': getGraphqlSchema,
+    codegen
   };
 };
 

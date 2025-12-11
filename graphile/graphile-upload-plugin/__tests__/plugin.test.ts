@@ -135,7 +135,7 @@ beforeAll(async () => {
       },
      
     },
-    [seed.sqlfile([sql('roles.sql'), sql('test.sql'), sql('grants.sql')])]
+    [seed.sqlfile([sql('test.sql'), sql('grants.sql')])]
   );
 
   ({ db, query, teardown } = connections);

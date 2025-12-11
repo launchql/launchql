@@ -4,7 +4,7 @@ import { join } from 'path';
 import type { GraphQLQueryFnObj } from 'graphile-test';
 import { getConnectionsObject, seed, snapshot } from 'graphile-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
-import PostgisPlugin from '@graphile/postgis';
+import PostgisPlugin from 'graphile-postgis';
 import ConnectionFilterPlugin from 'graphile-plugin-connection-filter';
 
 import PostgisConnectionFilterPlugin from '../../src';
@@ -42,7 +42,7 @@ beforeAll(async () => {
         },
       },
     },
-    [seed.sqlfile([sql('roles.sql'), sql('schema.sql'), sql('data.sql')])]
+    [seed.sqlfile([sql('schema.sql'), sql('data.sql')])]
   );
 
   ctx = {

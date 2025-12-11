@@ -490,6 +490,7 @@ input GeographyPointMFilter {
 
 type GeographyPointZ implements GeographyGeometryZ & GeographyInterface {
   geojson: GeoJSON
+  height: Float!
   latitude: Float!
   longitude: Float!
   srid: Int!
@@ -497,6 +498,7 @@ type GeographyPointZ implements GeographyGeometryZ & GeographyInterface {
 
 type GeographyPointZM implements GeographyGeometryZM & GeographyInterface {
   geojson: GeoJSON
+  height: Float!
   latitude: Float!
   longitude: Float!
   srid: Int!
@@ -2329,6 +2331,7 @@ type GeometryPointZ implements GeometryGeometryZ & GeometryInterface {
   srid: Int!
   x: Float!
   y: Float!
+  z: Float!
 }
 
 type GeometryPointZM implements GeometryGeometryZM & GeometryInterface {
@@ -2336,6 +2339,7 @@ type GeometryPointZM implements GeometryGeometryZM & GeometryInterface {
   srid: Int!
   x: Float!
   y: Float!
+  z: Float!
 }
 
 type GeometryPolygon implements GeometryGeometry & GeometryInterface {

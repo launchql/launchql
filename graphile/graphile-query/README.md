@@ -1,14 +1,14 @@
 # graphile-query
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+  <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/graphile-query">
@@ -16,29 +16,27 @@
   </a>
 </p>
 
-## GraphileQuery: Simple GraphQL Execution with PostGraphile Context
-
-This module provides utilities to execute GraphQL queries against a PostGraphile-generated schema using PostgreSQL connection pooling and contextual role-based settings.
+**`graphile-query`** provides utilities to execute GraphQL queries against a PostGraphile-generated schema using PostgreSQL connection pooling and contextual role-based settings.
 
 It includes two main classes:
 
 * `GraphileQuery`: A flexible query runner that supports `pgSettings`, role-based access control, and custom request context.
 * `GraphileQuerySimple`: A minimal wrapper for GraphQL execution without advanced role or settings logic.
 
-## Features
+## 🚀 Installation
+
+```bash
+npm install graphile-query
+```
+
+## ✨ Features
 
 * Built-in support for PostGraphile context and role-based `pgSettings`
 * Works with pre-built PostGraphile schemas
 * Supports raw string queries or parsed `DocumentNode`s
 * Integrates with PostgreSQL via `pg.Pool`
 
-## Installation
-
-```bash
-npm install graphile-query
-```
-
-## Usage
+## 📦 Usage
 
 Use as a particular role, skipping any auth logic:
 
@@ -114,7 +112,7 @@ const result = await client.query(`
 `);
 ```
 
-## API
+## 📘 API
 
 ### `getSchema(pool, settings)`
 

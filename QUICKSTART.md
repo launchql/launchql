@@ -46,7 +46,7 @@ lql add --change schemas/myschema/tables/mytable --requires schemas/myschema
 
 ```sql
 -- Deploy: schemas/myschema to pg
--- made with <3 @ launchql.com
+-- made with <3 @ constructive.io
 CREATE SCHEMA myschema;
 ```
 
@@ -54,7 +54,7 @@ CREATE SCHEMA myschema;
 
 ```sql
 -- Deploy: schemas/myschema/tables/mytable to pg
--- made with <3 @ launchql.com
+-- made with <3 @ constructive.io
 -- requires: schemas/myschema
 
 CREATE TABLE myschema.mytable (

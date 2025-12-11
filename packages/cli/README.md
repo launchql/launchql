@@ -406,3 +406,62 @@ Most commands support these global options:
 - `--help, -h` - Show help information
 - `--version, -v` - Show version information
 - `--cwd <dir>` - Set working directory
+### Codegen
+
+Generate types, operations, and SDK from a schema or endpoint.
+
+```bash
+# From SDL file
+lql codegen --schema ./schema.graphql --out ./codegen
+
+# From endpoint with Host override
+lql codegen --endpoint http://localhost:3000/graphql --headerHost meta8.localhost --out ./codegen
+```
+
+Options:
+- `--schema <path>` or `--endpoint <url>`
+- `--out <dir>` output root (default: `packages/launchql-gen/dist`)
+- `--format <gql|ts>` documents format
+- `--convention <dashed|underscore|camelcase|camelUpper>` filenames
+- `--headerHost <host>` optional HTTP Host header for endpoint requests
+- `--auth <token>` Authorization header value (e.g., `Bearer 123`)
+- `--header "Name: Value"` repeatable headers
+- `--emitTypes <bool>` `--emitOperations <bool>` `--emitSdk <bool>` `--emitReactQuery <bool>`
+- `--config ./config.json` Use customized config file 
+
+
+Config file (JSON/YAML):
+
+```bash
+# Use a JSON config to override defaults
+lql codegen --config ./my-options.json
+```
+
+Example `my-options.json`:
+
+```json
+{
+  "input": {
+    "schema": "./schema.graphql",
+    "headers": { "Host": "meta8.localhost" }
+  },
+  "output": {
+    "root": "packages/launchql-gen/dist/codegen-config",
+    "reactQueryFile": "react-query.ts"
+  },
+  "documents": {
+    "format": "gql",
+    "convention": "dashed",
+    "excludePatterns": [".*Module$", ".*By.+And.+$"]
+  },
+  "features": {
+    "emitTypes": true,
+    "emitOperations": true,
+    "emitSdk": true,
+    "emitReactQuery": true
+  },
+  "reactQuery": {
+    "fetcher": "graphql-request"
+  }
+}
+```

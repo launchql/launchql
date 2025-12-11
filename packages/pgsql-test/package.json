@@ -1,12 +1,12 @@
 {
   "name": "pgsql-test",
-  "version": "2.14.12",
+  "version": "2.14.15",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "pgsql-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests — giving developers realistic test coverage without external state pollution",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "keywords": [
     "postgres",

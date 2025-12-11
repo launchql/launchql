@@ -23,8 +23,9 @@ it('mutationsDbe', () => {
 
 it('includes custom scalar types', () => {
   const actions = queriesDbe.actions;
-  expect(actions.selection.find((sel) => sel === 'location')).toBeTruthy();
-  expect(actions.selection.find((sel) => sel === 'timeRequired')).toBeTruthy();
+  const names = actions.selection.map((sel) => (typeof sel === 'string' ? sel : sel.name));
+  expect(names.includes('location')).toBeTruthy();
+  expect(names.includes('timeRequired')).toBeTruthy();
 });
 
 // it('write', () => {

@@ -35,7 +35,7 @@ export const pruneDates = (row: AnyObject): AnyObject =>
 export const pruneIds = (row: AnyObject): AnyObject =>
   mapValues(row, (v, k) =>
     (k === 'id' || (typeof k === 'string' && k.endsWith('_id'))) &&
-    (typeof v === 'string' || typeof v === 'number')
+      (typeof v === 'string' || typeof v === 'number')
       ? idReplacement(v)
       : v
   );
@@ -64,21 +64,62 @@ export const pruneUUIDs = (row: AnyObject): AnyObject =>
 export const pruneHashes = (row: AnyObject): AnyObject =>
   mapValues(row, (v, k) =>
     typeof k === 'string' &&
-    k.endsWith('_hash') &&
-    typeof v === 'string' &&
-    v.startsWith('$')
+      k.endsWith('_hash') &&
+      typeof v === 'string' &&
+      v.startsWith('$')
       ? '[hash]'
       : v
   );
 
-export const prune = (obj: AnyObject): AnyObject =>
-  pruneHashes(pruneUUIDs(pruneIds(pruneIdArrays(pruneDates(obj)))));
+export const pruneSchemas = (row: AnyObject): AnyObject =>
+  mapValues(row, (v, k) =>
+    typeof v === 'string' && /^zz-/.test(v) ? '[schemahash]' : v
+  );
 
-export const snapshot = (obj: unknown): unknown => {
-  if (Array.isArray(obj)) {
-    return obj.map(snapshot);
-  } else if (obj && typeof obj === 'object') {
-    return mapValues(prune(obj as AnyObject), snapshot);
-  }
-  return obj;
+export const prunePeoplestamps = (row: AnyObject): AnyObject =>
+  mapValues(row, (v, k) =>
+    k.endsWith('_by') && typeof v === 'string' ? '[peoplestamp]' : v
+  );
+
+export const pruneTokens = (row: AnyObject): AnyObject =>
+  mapValues(row, (v, k) =>
+    (k === 'token' || k.endsWith('_token')) && typeof v === 'string'
+      ? '[token]'
+      : v
+  );
+
+// Compose multiple pruners into a single pruner
+type Pruner = (row: AnyObject) => AnyObject;
+
+export const composePruners = (...pruners: Pruner[]): Pruner =>
+  (row: AnyObject): AnyObject =>
+    pruners.reduce((acc, pruner) => pruner(acc), row);
+
+// Default pruners used by prune/snapshot
+export const defaultPruners: Pruner[] = [
+  pruneTokens,
+  prunePeoplestamps,
+  pruneDates,
+  pruneIdArrays,
+  pruneIds,
+  pruneUUIDs,
+  pruneHashes
+];
+
+export const prune = composePruners(...defaultPruners);
+
+// Factory to create a snapshot function with custom pruners
+export const createSnapshot = (pruners: Pruner[]) => {
+  const pruneFn = composePruners(...pruners);
+  const snap = (obj: unknown): unknown => {
+    if (Array.isArray(obj)) {
+      return obj.map(snap);
+    } else if (obj && typeof obj === 'object') {
+      return mapValues(pruneFn(obj as AnyObject), snap);
+    }
+    return obj;
+  };
+  return snap;
 };
+
+export const snapshot = createSnapshot(defaultPruners);

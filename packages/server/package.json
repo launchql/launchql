@@ -1,12 +1,12 @@
 {
   "name": "@launchql/server",
-  "version": "2.7.13",
+  "version": "2.7.18",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "LaunchQL Server",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "scripts": {
     "clean": "makage clean",
@@ -55,6 +55,7 @@
     "graphile-i18n": "workspace:^",
     "graphile-meta-schema": "workspace:^",
     "graphile-plugin-connection-filter": "workspace:^",
+    "graphile-plugin-connection-filter-postgis": "workspace:^",
     "graphile-plugin-fulltext-filter": "workspace:^",
     "graphile-query": "workspace:^",
     "graphile-search-plugin": "workspace:^",
@@ -69,7 +70,6 @@
     "pg-cache": "workspace:^",
     "pg-query-context": "workspace:^",
     "postgraphile": "^4.14.1",
-    "graphile-plugin-connection-filter-postgis": "workspace:^",
     "request-ip": "^3.3.0"
   },
   "devDependencies": {

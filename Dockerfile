@@ -2,7 +2,7 @@ ARG BASE=node
 ARG BASE_VERSION=20-bookworm
 FROM ${BASE}:${BASE_VERSION} AS build
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 ARG BASE
 ARG BASE_VERSION
 ENV BASE_VERSION=${BASE_VERSION}
@@ -15,8 +15,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
       ca-certificates curl git python3 make g++; \
     update-ca-certificates || true; \
-    corepack enable; \
-    corepack prepare pnpm@9.12.1 --activate; \
+    npm install -g pnpm@10.10.0; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy full repo (build context must be repo root when building this image)
@@ -30,7 +29,7 @@ RUN set -eux; \
 ################################################################################
 FROM ${BASE}:${BASE_VERSION} AS launchql
 
-LABEL org.opencontainers.image.source="https://github.com/launchql/launchql"
+LABEL org.opencontainers.image.source="https://github.com/constructive-io/constructive"
 WORKDIR /app
 
 # Runtime deps (psql optional but handy for debugging)
@@ -38,8 +37,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates postgresql-client; \
     update-ca-certificates || true; \
-    corepack enable; \
-    corepack prepare pnpm@9.12.1 --activate; \
+    npm install -g pnpm@10.10.0; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy built repo from builder

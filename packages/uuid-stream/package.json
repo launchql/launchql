@@ -1,12 +1,12 @@
 {
   "name": "uuid-stream",
-  "version": "2.2.10",
+  "version": "2.2.11",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "A Transform stream that generates RFC-compliant UUID v5.",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/launchql/launchql",
+  "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/launchql/launchql"
+    "url": "https://github.com/constructive-io/constructive"
   },
   "bugs": {
-    "url": "https://github.com/launchql/launchql/issues"
+    "url": "https://github.com/constructive-io/constructive/issues"
   },
   "scripts": {
     "clean": "makage clean",

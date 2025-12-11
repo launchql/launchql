@@ -1,14 +1,14 @@
 # graphile-postgis
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
-  <a href="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml">
-    <img height="20" src="https://github.com/launchql/launchql/actions/workflows/run-tests.yaml/badge.svg" />
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
   </a>
-  <a href="https://github.com/launchql/launchql/blob/main/LICENSE">
+  <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE">
     <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
   </a>
   <a href="https://www.npmjs.com/package/graphile-postgis">
@@ -16,16 +16,21 @@
   </a>
 </p>
 
-PostGIS helpers for PostGraphile/Graphile. This plugin registers GeoJSON scalars, PostGIS
-geometry/geography GraphQL types, and convenience fields for common spatial types.
+**`graphile-postgis`** registers GeoJSON scalars, PostGIS geometry/geography GraphQL types, and convenience fields for common spatial columns in PostGraphile/Graphile schemas.
 
-## Install
+## 🚀 Installation
 
 ```sh
 pnpm add graphile-postgis
 ```
 
-## Usage
+## ✨ Features
+
+- Registers GeoJSON scalars and PostGIS `geometry` / `geography` GraphQL types
+- Convenience fields for common spatial column types
+- Works with PostGraphile CLI or library usage
+
+## 📦 Usage
 
 ### CLI
 
@@ -45,12 +50,9 @@ const options = {
 };
 ```
 
-## Testing
-
-Tests run against a real Postgres/PostGIS instance using the `graphile-test` and
-`pgsql-test` harnesses. The suite seeds the database from `sql/schema.sql`.
+## 🧪 Testing
 
 ```sh
-psql -U postgres -f sql/schema.sql postgres
-pnpm test --filter graphile-postgis
+# requires a local Postgres with PostGIS available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-postgis test
 ```
