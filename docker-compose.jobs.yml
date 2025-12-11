@@ -6,8 +6,6 @@ services:
     # The image entrypoint already runs the LaunchQL CLI (`lql`).
     # We only need to provide the subcommand and flags here.
     entrypoint: ["lql", "server", "--port", "3000", "--origin", "*", "--strictAuth", "false"]
-    depends_on:
-      - postgres
     environment:
       NODE_ENV: development
       # Server
@@ -21,7 +19,7 @@ services:
       PGPORT: "5432"
       PGUSER: postgres
       PGPASSWORD: password
-      PGDATABASE: launchql        # ensure this DB exists and has migrations applied
+      PGDATABASE: launchql
       # API meta configuration (static mode for dev)
       API_ENABLE_META: "true"
       API_EXPOSED_SCHEMAS: "collections_public,meta_public"
@@ -69,7 +67,7 @@ services:
       PGHOST: postgres
       PGPASSWORD: password
       PGPORT: "5432"
-      PGDATABASE: jobs              # ensure this DB exists and has launchql-ext-jobs installed
+      PGDATABASE: launchql
       JOBS_SCHEMA: app_jobs
 
       # Worker configuration
