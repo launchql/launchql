@@ -1,36 +1,44 @@
 # graphile-many-to-many
 
-This Graphile Engine plugin adds connection fields for many-to-many relations.
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/constructive-io/constructive/refs/heads/main/assets/outline-logo.svg" />
+</p>
 
-> Requires `postgraphile@^4.5.0` or `graphile-build-pg@^4.5.0`
+<p align="center" width="100%">
+  <a href="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml">
+    <img height="20" src="https://github.com/constructive-io/constructive/actions/workflows/run-tests.yaml/badge.svg" />
+  </a>
+  <a href="https://github.com/constructive-io/constructive/blob/main/LICENSE">
+    <img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
+  </a>
+  <a href="https://www.npmjs.com/package/graphile-many-to-many">
+    <img height="20" src="https://img.shields.io/github/package-json/v/launchql/launchql?filename=graphile%2Fgraphile-many-to-many%2Fpackage.json"/>
+  </a>
+</p>
 
-Example:
+**`graphile-many-to-many`** adds connection fields for many-to-many relations in PostGraphile v4 / Graphile Engine schemas so join tables automatically expose relay-friendly collections. Requires `postgraphile@^4.5.0` or `graphile-build-pg@^4.5.0`.
 
-```graphql
-{
-  allPeople {
-    nodes {
-      personName
-      # 👇 many-to-many relation
-      teamsByTeamMemberPersonIdAndTeamId {
-        nodes {
-          teamName
-        }
-      }
-    }
-  }
-}
-```
-
-## Usage
-
-Append this plugin and the additional fields will be added to your schema.
-
-### CLI
+## 🚀 Installation
 
 ```bash
-pnpm add postgraphile
 pnpm add graphile-many-to-many
+```
+
+## ✨ Features
+
+- Generates many-to-many connection and simple collection fields from junction tables
+- Works with PostGraphile CLI and library usage
+- Smart comments (`@omit manyToMany`) to suppress specific relations
+- Configurable field names via inflectors or smart comments
+
+## 📦 Usage
+
+Append the plugin and the fields will be added to your schema.
+
+### PostGraphile CLI
+
+```bash
+pnpm add postgraphile graphile-many-to-many
 npx postgraphile --append-plugins graphile-many-to-many
 ```
 
@@ -53,69 +61,42 @@ app.use(
 app.listen(5000);
 ```
 
-## Excluding Fields
+Example query:
 
-To exclude certain many-to-many fields from appearing in your GraphQL schema, you can use `@omit manyToMany` [smart comments](https://www.graphile.org/postgraphile/smart-comments/) on constraints and tables.
-
-Here is an example of using a smart comment on a constraint:
-
+```graphql
+{
+  allPeople {
+    nodes {
+      personName
+      teamsByTeamMemberPersonIdAndTeamId {
+        nodes {
+          teamName
+        }
+      }
+    }
+  }
+}
 ```
-create table p.foo (
-  id serial primary key,
-  name text not null
-);
 
-create table p.bar (
-  id serial primary key,
-  name text not null
-);
+## 🙅‍♀️ Excluding Fields
 
-create table p.qux (
-  foo_id int constraint qux_foo_id_fkey references p.foo (id),
-  bar_id int constraint qux_bar_id_fkey references p.bar (id),
-  primary key (foo_id, bar_id)
-);
+Use `@omit manyToMany` [smart comments](https://www.graphile.org/postgraphile/smart-comments/) on constraints or tables to prevent fields from being generated.
 
--- `Foo` and `Bar` would normally have `barsBy...` and `foosBy...` fields,
--- but this smart comment causes the constraint between `qux` and `bar`
--- to be ignored, preventing the fields from being generated.
+```sql
+-- omit a relation by constraint
 comment on constraint qux_bar_id_fkey on p.qux is E'@omit manyToMany';
-```
 
-Here is an example of using a smart comment on a table:
-
-```
-create table p.foo (
-  id serial primary key,
-  name text not null
-);
-
-create table p.bar (
-  id serial primary key,
-  name text not null
-);
-
-create table p.corge (
-  foo_id int constraint corge_foo_id_fkey references p.foo (id),
-  bar_id int constraint corge_bar_id_fkey references p.bar (id),
-  primary key (foo_id, bar_id)
-);
-
--- `Foo` and `Bar` would normally have `barsBy...` and `foosBy...` fields,
--- but this smart comment causes `corge` to be excluded from consideration
--- as a junction table, preventing the fields from being generated.
+-- or omit the junction table entirely
 comment on table p.corge is E'@omit manyToMany';
 ```
 
-## Inflection
+## 📝 Field Naming
 
-To avoid naming conflicts, this plugin uses a verbose naming convention (e.g. `teamsByTeamMemberTeamId`), similar to how related fields are named by default in PostGraphile v4. You can override this by writing a custom inflector plugin or by using smart comments in your SQL schema.
+Field names are verbose by default (e.g. `teamsByTeamMemberTeamId`) to avoid collisions. You can override them with an inflector plugin or smart comments.
 
-### Inflector Plugin
+### Custom inflector
 
-Writing a custom inflector plugin gives you full control over the GraphQL field names. Here is an example plugin that shortens the field names to just the table name (producing e.g. `teams`):
-
-> :warning: Warning: Simplifying the field names as shown below will lead to field name conflicts if your junction table has multiple foreign keys referencing the same table. You will need to customize the inflector function to resolve the conflicts.
+> Warning: Short names can collide when a junction table references the same target multiple times—customize accordingly.
 
 ```js
 const { makeAddInflectorsPlugin } = require("graphile-utils");
@@ -161,20 +142,19 @@ module.exports = makeAddInflectorsPlugin(
 );
 ```
 
-For more information on custom inflector plugins, see the [makeAddInflectorsPlugin documentation](https://www.graphile.org/postgraphile/make-add-inflectors-plugin/).
-
-### Smart Comments
-
-The `@manyToManyFieldName` and `@manyToManySimpleFieldName` smart comments allow you to override the field names generated by this plugin.
-
-For example, to rename the Connection field from `teamsByTeamMemberTeamId` to `teams`:
+### Smart comments
 
 ```sql
+-- rename the Connection field
 comment on constraint membership_team_id_fkey on p.membership is E'@manyToManyFieldName teams';
+
+-- rename both Connection and simple collection fields (when simple collections are enabled)
+comment on constraint membership_team_id_fkey on p.membership is E'@manyToManyFieldName teams\n@manyToManySimpleFieldName teamsList';
 ```
 
-To rename both the Connection and simple collection fields (assuming simple collections are enabled):
+## 🧪 Testing
 
-```sql
-comment on constraint membership_team_id_fkey on p.membership is E'@manyToManyFieldName teams\n@manyToManySimpleFieldName teamsList';
+```sh
+# requires a local Postgres available (defaults to postgres/password@localhost:5432)
+pnpm --filter graphile-many-to-many test
 ```
