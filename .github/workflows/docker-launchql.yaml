@@ -19,7 +19,15 @@ concurrency:
 jobs:
   build-push-launchql:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest      # x86_64
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm   # native arm
+    runs-on: ${{ matrix.runner }}
 
     permissions:
       contents: read
@@ -27,19 +35,17 @@ jobs:
 
     env:
       REPO: ghcr.io/${{ github.repository_owner }}
-      PLATFORMS: "${{ github.event_name == 'pull_request' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}"
+      IMAGE_NAME: launchql
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to GHCR
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -50,7 +56,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REPO }}/launchql
+          images: ${{ env.REPO }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -59,14 +65,127 @@ jobs:
             type=sha,format=short,prefix=
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push
+      # For pull_request events (if they are re-enabled),
+      # do a quick amd64-only build without pushing.
+      - name: Build (no push, PR only)
+        if: github.event_name == 'pull_request' && matrix.platform == 'linux/amd64'
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
-          platforms: ${{ env.PLATFORMS }}
-          push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # For non-PR events, build one architecture per runner
+      # and push images by digest. These digests are later
+      # assembled into a multi-arch manifest.
+      - name: Build & push by digest
+        if: github.event_name != 'pull_request'
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: ${{ matrix.platform }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Export digest
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ matrix.platform }}
+          path: ${{ runner.temp }}/digests/*
+
+  # Assemble per-architecture images into a single
+  # multi-arch manifest for each tag.
+  publish-launchql-manifest:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    needs: build-push-launchql
+
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      REPO: ghcr.io/${{ github.repository_owner }}
+      IMAGE_NAME: launchql
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: digests-*
+          path: ${{ runner.temp }}/digests
+          merge-multiple: true
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REPO }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=short,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Create and push multi-arch manifests
+        run: |
+          set -euo pipefail
+
+          image="${{ env.REPO }}/${{ env.IMAGE_NAME }}"
+          digest_dir="${{ runner.temp }}/digests"
+
+          if [ ! -d "$digest_dir" ]; then
+            echo "No digests directory found at $digest_dir"
+            exit 1
+          fi
+
+          digests=""
+          for digest_file in "$digest_dir"/*; do
+            digest="$(basename "$digest_file")"
+            digests="$digests $image@sha256:$digest"
+          done
+
+          if [ -z "$digests" ]; then
+            echo "No digests found to create manifest"
+            exit 1
+          fi
+
+          echo "Creating manifests for tags:"
+          echo "${{ steps.meta.outputs.tags }}"
+
+          # metadata-action outputs tags as a newline-separated list
+          echo "${{ steps.meta.outputs.tags }}" | while read -r tag; do
+            [ -z "$tag" ] && continue
+            echo "Creating multi-arch manifest for $tag"
+            docker buildx imagetools create -t "$tag" $digests
+          done
