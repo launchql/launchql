@@ -91,9 +91,8 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: ${{ matrix.platform }}
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ env.REPO }}/${{ env.IMAGE_NAME }},push-by-digest=true,push=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
