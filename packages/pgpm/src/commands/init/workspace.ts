@@ -25,7 +25,8 @@ export default async function runWorkspaceSetup(
   prompter.close();
 
   const templateRepo = (argv.repo as string) ?? DEFAULT_TEMPLATE_REPO;
-  const templatePath = (argv.templatePath as string | undefined) ?? 'workspace';
+  // Don't set default templatePath - let scaffoldTemplate use metadata-driven resolution
+  const templatePath = argv.templatePath as string | undefined;
 
   const scaffoldResult = await scaffoldTemplate({
     type: 'workspace',

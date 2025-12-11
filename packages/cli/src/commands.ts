@@ -22,12 +22,28 @@ const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Funct
 };
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions & { skipPgTeardown?: boolean }) => {
+  let { first: command, newArgv } = extractFirst(argv);
+
+  // Run update check early so it shows on help/version paths too
+  try {
+    const pkg = readAndParsePackageJson();
+    await checkForUpdates({
+      command: command || 'help',
+      pkgName: pkg.name,
+      pkgVersion: pkg.version,
+      toolName: 'lql',
+      key: pkg.name,
+      updateCommand: `Run npm i -g ${pkg.name}@latest to upgrade.`
+    });
+  } catch {
+    // ignore update check failures
+  }
+
   if (argv.version || argv.v) {
     const pkg = readAndParsePackageJson();
     console.log(pkg.version);
     process.exit(0);
   }
-  let { first: command, newArgv } = extractFirst(argv);
 
   // Show usage if explicitly requested but no command specified
   if ((argv.help || argv.h || command === 'help') && !command) {
@@ -60,20 +76,6 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
       }
     ]);
     command = answer.command;
-  }
-
-  try {
-    const pkg = readAndParsePackageJson();
-    await checkForUpdates({
-      command,
-      pkgName: pkg.name,
-      pkgVersion: pkg.version,
-      toolName: 'lql',
-      key: pkg.name,
-      updateCommand: `Run npm i -g ${pkg.name}@latest to upgrade.`
-    });
-  } catch {
-    // ignore update check failures
   }
 
   // Prompt for working directory

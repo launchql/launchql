@@ -6,7 +6,7 @@ import path from 'path';
 
 import { scaffoldTemplate } from '@launchql/core';
 
-const TEMPLATE_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
+const TEMPLATE_REPO = 'https://github.com/constructive-io/pgpm-boilerplates.git';
 
 describe('Template scaffolding', () => {
   it('processes workspace template from default repo', async () => {
@@ -16,7 +16,8 @@ describe('Template scaffolding', () => {
       type: 'workspace',
       outputDir: outDir,
       templateRepo: TEMPLATE_REPO,
-      templatePath: 'workspace',
+      branch: 'restructuring', // TODO: remove after merging restructuring to main
+      templatePath: 'default/workspace',
       answers: { 
         name: 'demo-workspace',
         fullName: 'Tester',
@@ -40,7 +41,8 @@ describe('Template scaffolding', () => {
       type: 'module',
       outputDir: outDir,
       templateRepo: TEMPLATE_REPO,
-      templatePath: 'module',
+      branch: 'restructuring', // TODO: remove after merging restructuring to main
+      templatePath: 'default/module',
       answers: { 
         name: 'demo-module',
         description: 'demo module',

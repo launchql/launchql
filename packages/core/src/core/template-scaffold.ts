@@ -3,6 +3,13 @@ import os from 'os';
 import path from 'path';
 import { CacheManager, GitCloner, Templatizer } from 'create-gen-app';
 
+import { BoilerplateQuestion } from './boilerplate-types';
+import {
+  readBoilerplateConfig,
+  readBoilerplatesConfig,
+  resolveBoilerplateBaseDir
+} from './boilerplate-scanner';
+
 export type TemplateKind = 'workspace' | 'module';
 
 export interface ScaffoldTemplateOptions {
@@ -17,6 +24,8 @@ export interface ScaffoldTemplateOptions {
   toolName?: string;
   cwd?: string;
   cacheBaseDir?: string;
+  /** Override the boilerplate directory (e.g., "default", "supabase") */
+  dir?: string;
 }
 
 export interface ScaffoldTemplateResult {
@@ -24,9 +33,11 @@ export interface ScaffoldTemplateResult {
   cacheExpired: boolean;
   cachePath?: string;
   templateDir: string;
+  /** Questions loaded from .boilerplate.json, if any */
+  questions?: BoilerplateQuestion[];
 }
 
-export const DEFAULT_TEMPLATE_REPO = 'https://github.com/launchql/pgpm-boilerplates.git';
+export const DEFAULT_TEMPLATE_REPO = 'https://github.com/constructive-io/pgpm-boilerplates.git';
 export const DEFAULT_TEMPLATE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 1 week
 export const DEFAULT_TEMPLATE_TOOL_NAME = 'pgpm';
 
@@ -36,15 +47,67 @@ const looksLikePath = (value: string): boolean => {
   return value.startsWith('.') || value.startsWith('/') || value.startsWith('~');
 };
 
-const resolveFromPath = (templateDir: string, templatePath: string | undefined, type: TemplateKind): string => {
-  const candidate = templatePath ?? type;
-  // If the candidate already points to an existing directory, use it directly,
-  // otherwise fall back to the template kind (module/workspace).
-  const candidateDir = path.isAbsolute(candidate) ? candidate : path.join(templateDir, candidate);
-  if (fs.existsSync(candidateDir) && fs.statSync(candidateDir).isDirectory()) {
-    return path.relative(templateDir, candidateDir) || '.';
+/**
+ * Resolve the template path using the new metadata-driven resolution.
+ *
+ * Resolution order:
+ * 1. If explicit `templatePath` is provided, use it directly
+ * 2. If `.boilerplates.json` exists, use its `dir` field to find the base directory
+ * 3. Look for `{baseDir}/{type}` (e.g., "default/module")
+ * 4. Fallback to legacy structure: `{type}` directly in root
+ */
+const resolveFromPath = (
+  templateDir: string,
+  templatePath: string | undefined,
+  type: TemplateKind,
+  dirOverride?: string
+): { fromPath: string; resolvedTemplatePath: string } => {
+  // If explicit templatePath is provided, use it directly
+  if (templatePath) {
+    const candidateDir = path.isAbsolute(templatePath)
+      ? templatePath
+      : path.join(templateDir, templatePath);
+    if (fs.existsSync(candidateDir) && fs.statSync(candidateDir).isDirectory()) {
+      return {
+        fromPath: path.relative(templateDir, candidateDir) || '.',
+        resolvedTemplatePath: candidateDir
+      };
+    }
+    return {
+      fromPath: templatePath,
+      resolvedTemplatePath: path.join(templateDir, templatePath)
+    };
   }
-  return templatePath ?? type;
+
+  // Try new metadata-driven resolution
+  const rootConfig = readBoilerplatesConfig(templateDir);
+  const baseDir = dirOverride ?? rootConfig?.dir;
+
+  if (baseDir) {
+    // New structure: {templateDir}/{baseDir}/{type}
+    const newStructurePath = path.join(templateDir, baseDir, type);
+    if (fs.existsSync(newStructurePath) && fs.statSync(newStructurePath).isDirectory()) {
+      return {
+        fromPath: path.join(baseDir, type),
+        resolvedTemplatePath: newStructurePath
+      };
+    }
+  }
+
+  // Fallback to legacy structure: {templateDir}/{type}
+  const legacyPath = path.join(templateDir, type);
+  if (fs.existsSync(legacyPath) && fs.statSync(legacyPath).isDirectory()) {
+    return {
+      fromPath: type,
+      resolvedTemplatePath: legacyPath
+    };
+  }
+
+  // Default fallback
+  return {
+    fromPath: type,
+    resolvedTemplatePath: path.join(templateDir, type)
+  };
 };
 
 export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promise<ScaffoldTemplateResult> {
@@ -55,12 +118,13 @@ export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promis
     branch,
     templatePath,
     answers,
-  noTty = false,
-  cacheTtlMs = DEFAULT_TEMPLATE_TTL_MS,
-  toolName = DEFAULT_TEMPLATE_TOOL_NAME,
-  cwd,
-  cacheBaseDir
-} = options;
+    noTty = false,
+    cacheTtlMs = DEFAULT_TEMPLATE_TTL_MS,
+    toolName = DEFAULT_TEMPLATE_TOOL_NAME,
+    cwd,
+    cacheBaseDir,
+    dir
+  } = options;
 
   const resolvedRepo = looksLikePath(templateRepo)
     ? path.resolve(cwd ?? process.cwd(), templateRepo)
@@ -68,7 +132,11 @@ export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promis
 
   // Handle local template directories without caching
   if (looksLikePath(templateRepo) && fs.existsSync(resolvedRepo) && fs.statSync(resolvedRepo).isDirectory()) {
-    const fromPath = resolveFromPath(resolvedRepo, templatePath, type);
+    const { fromPath, resolvedTemplatePath } = resolveFromPath(resolvedRepo, templatePath, type, dir);
+
+    // Read boilerplate config for questions
+    const boilerplateConfig = readBoilerplateConfig(resolvedTemplatePath);
+
     await templatizer.process(resolvedRepo, outputDir, {
       argv: answers,
       noTty,
@@ -78,7 +146,8 @@ export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promis
     return {
       cacheUsed: false,
       cacheExpired: false,
-      templateDir: resolvedRepo
+      templateDir: resolvedRepo,
+      questions: boilerplateConfig?.questions
     };
   }
 
@@ -118,7 +187,10 @@ export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promis
     templateDir = tempDest;
   }
 
-  const fromPath = resolveFromPath(templateDir, templatePath, type);
+  const { fromPath, resolvedTemplatePath } = resolveFromPath(templateDir, templatePath, type, dir);
+
+  // Read boilerplate config for questions
+  const boilerplateConfig = readBoilerplateConfig(resolvedTemplatePath);
 
   await templatizer.process(templateDir, outputDir, {
     argv: answers,
@@ -130,6 +202,7 @@ export async function scaffoldTemplate(options: ScaffoldTemplateOptions): Promis
     cacheUsed,
     cacheExpired: Boolean(expiredMetadata),
     cachePath: templateDir,
-    templateDir
+    templateDir,
+    questions: boilerplateConfig?.questions
   };
 }

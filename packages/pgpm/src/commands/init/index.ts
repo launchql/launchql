@@ -16,7 +16,7 @@ Init Command:
 Options:
   --help, -h              Show this help message
   --cwd <directory>       Working directory (default: current directory)
-  --repo <repo>           Template repo (default: https://github.com/launchql/pgpm-boilerplates.git)
+  --repo <repo>           Template repo (default: https://github.com/constructive-io/pgpm-boilerplates.git)
   --template-path <path>  Template sub-path (default: workspace/module) or local path override
   --from-branch <branch>  Branch/tag to use when cloning repo
 

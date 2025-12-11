@@ -437,7 +437,8 @@ export class LaunchQLPackage {
       outputDir: targetPath,
       templateRepo: options.templateRepo ?? DEFAULT_TEMPLATE_REPO,
       branch: options.branch,
-      templatePath: options.templatePath ?? 'module',
+      // Don't set default templatePath - let scaffoldTemplate use metadata-driven resolution
+      templatePath: options.templatePath,
       answers,
       noTty: options.noTty ?? false,
       cacheTtlMs: options.cacheTtlMs ?? DEFAULT_TEMPLATE_TTL_MS,
