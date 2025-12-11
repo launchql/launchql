@@ -174,6 +174,32 @@ importers:
         version: link:../../packages/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-many-to-many:
+    dependencies:
+      graphile-build:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)
+      graphile-build-pg:
+        specifier: ^4.14.1
+        version: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+    devDependencies:
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      graphql:
+        specifier: 15.10.1
+        version: 15.10.1
+      makage:
+        specifier: ^0.1.8
+        version: 0.1.8
+      pgsql-test:
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
+      postgraphile:
+        specifier: ^4.14.1
+        version: 4.14.1
+    publishDirectory: dist
+
   graphile/graphile-meta-schema:
     dependencies:
       graphile-build:

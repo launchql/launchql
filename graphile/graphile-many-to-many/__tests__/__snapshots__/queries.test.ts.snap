@@ -1,0 +1,1062 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`schema=a query=edges.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+                "node": {
+                  "barId": 12,
+                  "barName": "Bar 12",
+                  "nodeId": "WyJiYXJzIiwxMl0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=a query=nodes.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+              {
+                "barId": 12,
+                "barName": "Bar 12",
+                "nodeId": "WyJiYXJzIiwxMl0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=b query=edges.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "createdAt": "2018-01-01T08:00:00-04:00",
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+              {
+                "createdAt": "2018-01-02T08:00:00-04:00",
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+                "node": {
+                  "barId": 12,
+                  "barName": "Bar 12",
+                  "nodeId": "WyJiYXJzIiwxMl0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "createdAt": "2018-01-03T08:00:00-04:00",
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=b query=nodes.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+              {
+                "barId": 12,
+                "barName": "Bar 12",
+                "nodeId": "WyJiYXJzIiwxMl0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=c query=edges.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "junctionsByJBarId": {
+                  "edges": [
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxXV0=",
+                      "node": {
+                        "jBarId": 11,
+                        "jFooId": 1,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDFd",
+                      },
+                    },
+                  ],
+                  "pageInfo": {
+                    "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxXV0=",
+                    "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxXV0=",
+                  },
+                  "totalCount": 1,
+                },
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+                "junctionsByJBarId": {
+                  "edges": [
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsyXV0=",
+                      "node": {
+                        "jBarId": 12,
+                        "jFooId": 1,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDJd",
+                      },
+                    },
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFszXV0=",
+                      "node": {
+                        "jBarId": 12,
+                        "jFooId": 1,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDNd",
+                      },
+                    },
+                  ],
+                  "pageInfo": {
+                    "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFszXV0=",
+                    "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsyXV0=",
+                  },
+                  "totalCount": 2,
+                },
+                "node": {
+                  "barId": 12,
+                  "barName": "Bar 12",
+                  "nodeId": "WyJiYXJzIiwxMl0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "junctionsByJBarId": {
+                  "edges": [
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFs0XV0=",
+                      "node": {
+                        "jBarId": 11,
+                        "jFooId": 2,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDRd",
+                      },
+                    },
+                  ],
+                  "pageInfo": {
+                    "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFs0XV0=",
+                    "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFs0XV0=",
+                  },
+                  "totalCount": 1,
+                },
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=c query=nodes.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+              {
+                "barId": 12,
+                "barName": "Bar 12",
+                "nodeId": "WyJiYXJzIiwxMl0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=d query=edges.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "junctionsByJBarId": {
+                  "edges": [
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxXV0=",
+                      "node": {
+                        "createdAt": "2018-01-01T08:00:00-04:00",
+                        "jBarId": 11,
+                        "jFooId": 1,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDFd",
+                      },
+                    },
+                  ],
+                  "pageInfo": {
+                    "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxXV0=",
+                    "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxXV0=",
+                  },
+                  "totalCount": 1,
+                },
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+                "junctionsByJBarId": {
+                  "edges": [
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsyXV0=",
+                      "node": {
+                        "createdAt": "2018-01-02T08:00:00-04:00",
+                        "jBarId": 12,
+                        "jFooId": 1,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDJd",
+                      },
+                    },
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFszXV0=",
+                      "node": {
+                        "createdAt": "2018-01-04T08:00:00-04:00",
+                        "jBarId": 12,
+                        "jFooId": 1,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDNd",
+                      },
+                    },
+                  ],
+                  "pageInfo": {
+                    "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFszXV0=",
+                    "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsyXV0=",
+                  },
+                  "totalCount": 2,
+                },
+                "node": {
+                  "barId": 12,
+                  "barName": "Bar 12",
+                  "nodeId": "WyJiYXJzIiwxMl0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [
+              {
+                "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+                "junctionsByJBarId": {
+                  "edges": [
+                    {
+                      "cursor": "WyJwcmltYXJ5X2tleV9hc2MiLFs0XV0=",
+                      "node": {
+                        "createdAt": "2018-01-03T08:00:00-04:00",
+                        "jBarId": 11,
+                        "jFooId": 2,
+                        "nodeId": "WyJqdW5jdGlvbnMiLDRd",
+                      },
+                    },
+                  ],
+                  "pageInfo": {
+                    "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFs0XV0=",
+                    "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFs0XV0=",
+                  },
+                  "totalCount": 1,
+                },
+                "node": {
+                  "barId": 11,
+                  "barName": "Bar 11",
+                  "nodeId": "WyJiYXJzIiwxMV0=",
+                },
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "edges": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=d query=nodes.graphql 1`] = `
+{
+  "data": {
+    "allFoos": {
+      "nodes": [
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+              {
+                "barId": 12,
+                "barName": "Bar 12",
+                "nodeId": "WyJiYXJzIiwxMl0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMl1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 2,
+          },
+          "fooId": 1,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [
+              {
+                "barId": 11,
+                "barName": "Bar 11",
+                "nodeId": "WyJiYXJzIiwxMV0=",
+              },
+            ],
+            "pageInfo": {
+              "endCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+              "startCursor": "WyJwcmltYXJ5X2tleV9hc2MiLFsxMV1d",
+            },
+            "totalCount": 1,
+          },
+          "fooId": 2,
+        },
+        {
+          "barsByJunctionJFooIdAndJBarId": {
+            "nodes": [],
+            "pageInfo": {
+              "endCursor": null,
+              "startCursor": null,
+            },
+            "totalCount": 0,
+          },
+          "fooId": 3,
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=e query=multiple-tags-fields.graphql 1`] = `
+{
+  "data": {
+    "allPeople": {
+      "nodes": [
+        {
+          "personName": "Alice",
+          "tags": {
+            "nodes": [
+              {
+                "tagName": "awesome",
+              },
+            ],
+          },
+          "teams": {
+            "nodes": [
+              {
+                "tags": {
+                  "nodes": [
+                    {
+                      "tagName": "strange",
+                    },
+                  ],
+                },
+                "teamName": "Development",
+              },
+            ],
+          },
+        },
+        {
+          "personName": "Bob",
+          "tags": {
+            "nodes": [
+              {
+                "tagName": "strange",
+              },
+            ],
+          },
+          "teams": {
+            "nodes": [
+              {
+                "tags": {
+                  "nodes": [
+                    {
+                      "tagName": "high-performing",
+                    },
+                  ],
+                },
+                "teamName": "Sales",
+              },
+            ],
+          },
+        },
+        {
+          "personName": "Carol",
+          "tags": {
+            "nodes": [
+              {
+                "tagName": "high-performing",
+              },
+            ],
+          },
+          "teams": {
+            "nodes": [
+              {
+                "tags": {
+                  "nodes": [
+                    {
+                      "tagName": "awesome",
+                    },
+                  ],
+                },
+                "teamName": "Marketing",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=f query=f.graphql 1`] = `
+{
+  "data": {
+    "allPeople": {
+      "nodes": [
+        {
+          "followers": {
+            "nodes": [
+              {
+                "name": "Bob",
+              },
+              {
+                "name": "Eve",
+              },
+            ],
+          },
+          "following": {
+            "nodes": [],
+          },
+          "name": "Alice",
+        },
+        {
+          "followers": {
+            "nodes": [
+              {
+                "name": "Eve",
+              },
+            ],
+          },
+          "following": {
+            "nodes": [
+              {
+                "name": "Alice",
+              },
+            ],
+          },
+          "name": "Bob",
+        },
+        {
+          "followers": {
+            "nodes": [],
+          },
+          "following": {
+            "nodes": [
+              {
+                "name": "Alice",
+              },
+              {
+                "name": "Bob",
+              },
+            ],
+          },
+          "name": "Eve",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=p query=edge-fields.graphql 1`] = `
+{
+  "data": {
+    "allTeams": {
+      "nodes": [
+        {
+          "members": {
+            "edges": [
+              {
+                "createdAt": "2018-01-01T08:00:00-04:00",
+                "node": {
+                  "personName": "Person1",
+                },
+              },
+              {
+                "createdAt": "2018-01-03T08:00:00-04:00",
+                "node": {
+                  "personName": "Person2",
+                },
+              },
+            ],
+          },
+          "teamName": "Team1",
+        },
+        {
+          "members": {
+            "edges": [
+              {
+                "createdAt": "2018-01-02T08:00:00-04:00",
+                "node": {
+                  "personName": "Person1",
+                },
+              },
+            ],
+          },
+          "teamName": "Team2",
+        },
+        {
+          "members": {
+            "edges": [],
+          },
+          "teamName": "Team3",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=p query=many-to-many.graphql 1`] = `
+{
+  "data": {
+    "a": {
+      "nodes": [
+        {
+          "personName": "Person1",
+          "teamsByMembershipPersonIdAndTeamId": {
+            "nodes": [
+              {
+                "teamName": "Team1",
+              },
+              {
+                "teamName": "Team2",
+              },
+            ],
+          },
+        },
+        {
+          "personName": "Person2",
+          "teamsByMembershipPersonIdAndTeamId": {
+            "nodes": [
+              {
+                "teamName": "Team1",
+              },
+            ],
+          },
+        },
+        {
+          "personName": "Person3",
+          "teamsByMembershipPersonIdAndTeamId": {
+            "nodes": [],
+          },
+        },
+      ],
+    },
+    "b": {
+      "nodes": [
+        {
+          "members": {
+            "nodes": [
+              {
+                "personName": "Person1",
+              },
+              {
+                "personName": "Person2",
+              },
+            ],
+          },
+          "teamName": "Team1",
+        },
+        {
+          "members": {
+            "nodes": [
+              {
+                "personName": "Person1",
+              },
+            ],
+          },
+          "teamName": "Team2",
+        },
+        {
+          "members": {
+            "nodes": [],
+          },
+          "teamName": "Team3",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=t query=edge-fields.graphql 1`] = `
+{
+  "data": {
+    "allTeams": {
+      "nodes": [
+        {
+          "members": {
+            "edges": [
+              {
+                "membershipsByPersonId": {
+                  "nodes": [
+                    {
+                      "endAt": null,
+                      "startAt": "2018-01-01T08:00:00-04:00",
+                    },
+                  ],
+                },
+                "node": {
+                  "personName": "Person1",
+                },
+              },
+              {
+                "membershipsByPersonId": {
+                  "nodes": [
+                    {
+                      "endAt": null,
+                      "startAt": "2018-01-03T08:00:00-04:00",
+                    },
+                  ],
+                },
+                "node": {
+                  "personName": "Person2",
+                },
+              },
+            ],
+          },
+          "teamName": "Team1",
+        },
+        {
+          "members": {
+            "edges": [
+              {
+                "membershipsByPersonId": {
+                  "nodes": [
+                    {
+                      "endAt": "2018-01-03T08:00:00-04:00",
+                      "startAt": "2018-01-02T08:00:00-04:00",
+                    },
+                    {
+                      "endAt": "2018-01-05T08:00:00-04:00",
+                      "startAt": "2018-01-04T08:00:00-04:00",
+                    },
+                  ],
+                },
+                "node": {
+                  "personName": "Person1",
+                },
+              },
+            ],
+          },
+          "teamName": "Team2",
+        },
+        {
+          "members": {
+            "edges": [],
+          },
+          "teamName": "Team3",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`schema=t query=many-to-many.graphql 1`] = `
+{
+  "data": {
+    "a": {
+      "nodes": [
+        {
+          "personName": "Person1",
+          "teamsByMembershipPersonIdAndTeamId": {
+            "nodes": [
+              {
+                "teamName": "Team1",
+              },
+              {
+                "teamName": "Team2",
+              },
+            ],
+          },
+        },
+        {
+          "personName": "Person2",
+          "teamsByMembershipPersonIdAndTeamId": {
+            "nodes": [
+              {
+                "teamName": "Team1",
+              },
+            ],
+          },
+        },
+        {
+          "personName": "Person3",
+          "teamsByMembershipPersonIdAndTeamId": {
+            "nodes": [],
+          },
+        },
+      ],
+    },
+    "b": {
+      "nodes": [
+        {
+          "members": {
+            "nodes": [
+              {
+                "personName": "Person1",
+              },
+              {
+                "personName": "Person2",
+              },
+            ],
+          },
+          "teamName": "Team1",
+        },
+        {
+          "members": {
+            "nodes": [
+              {
+                "personName": "Person1",
+              },
+            ],
+          },
+          "teamName": "Team2",
+        },
+        {
+          "members": {
+            "nodes": [],
+          },
+          "teamName": "Team3",
+        },
+      ],
+    },
+  },
+}
+`;
