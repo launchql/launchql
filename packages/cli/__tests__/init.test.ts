@@ -123,7 +123,7 @@ describe('cmds:init', () => {
         cwd: fixture.tempDir,
         name: 'test-workspace-template',
         workspace: true,
-        templatePath: 'workspace'
+        templatePath: 'default/workspace'
       });
 
       await commands(argv, prompter, {
@@ -171,7 +171,7 @@ describe('cmds:init', () => {
         name: 'test-module-template',
         moduleName: 'test-module-template',
         extensions: ['plpgsql'],
-        templatePath: 'module'
+        templatePath: 'default/module'
       }), prompter, {
         noTty: true,
         input: mockInput,
@@ -236,7 +236,7 @@ describe('cmds:init', () => {
           cwd: fixture.tempDir,
           name: 'test-workspace-branch',
           workspace: true,
-          fromBranch: 'main'
+          fromBranch: 'restructuring' // TODO: change back to 'main' after restructuring is merged
         });
 
         await commands(argv, prompter, {

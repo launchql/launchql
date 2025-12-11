@@ -80,7 +80,7 @@ lql init --template-path ./custom-templates/module
 
 **Options:**
 
-- `--repo <repo>` - Template repo (default: `https://github.com/launchql/pgpm-boilerplates.git`)
+- `--repo <repo>` - Template repo (default: `https://github.com/constructive-io/pgpm-boilerplates.git`)
 - `--template-path <path>` - Template sub-path (defaults to `workspace`/`module`) or local path override
 - `--from-branch <branch>` - Branch/tag when cloning the template repo
 

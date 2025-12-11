@@ -9,6 +9,7 @@ exports[`cmds:extension runs \`extension\` command after workspace and module se
   "README.md",
   "Makefile",
   "LICENSE",
+  ".boilerplate.json",
   "__tests__/basic.test.ts",
 ]
 `;
