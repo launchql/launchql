@@ -402,16 +402,12 @@ export class LaunchQLPackage {
   }
 
   private initModuleSqitch(modName: string, targetPath: string): void {
-    const planPath = path.join(targetPath, 'pgpm.plan');
-
-    if (!fs.existsSync(planPath)) {
-      const plan = generatePlan({
-        moduleName: modName,
-        uri: modName,
-        entries: []
-      });
-      writePlan(planPath, plan);
-    }
+    const plan = generatePlan({
+      moduleName: modName,
+      uri: modName,
+      entries: []
+    });
+    writePlan(path.join(targetPath, 'pgpm.plan'), plan);
     
     // Create deploy, revert, and verify directories
     const dirs = ['deploy', 'revert', 'verify'];
