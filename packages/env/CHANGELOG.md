@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.1](https://github.com/constructive-io/constructive/compare/@launchql/env@2.6.0...@launchql/env@2.6.1) (2025-12-11)
+
+**Note:** Version bump only for package @launchql/env
+
 # [2.6.0](https://github.com/constructive-io/constructive/compare/@launchql/env@2.5.8...@launchql/env@2.6.0) (2025-12-11)
 
 **Note:** Version bump only for package @launchql/env

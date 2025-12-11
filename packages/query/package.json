@@ -1,6 +1,6 @@
 {
   "name": "@launchql/query",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "LaunchQL Query",
   "author": "Constructive <developers@constructive.io>",
   "main": "index.js",

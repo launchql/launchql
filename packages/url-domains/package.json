@@ -1,6 +1,6 @@
 {
   "name": "@launchql/url-domains",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "url domains",
   "main": "index.js",

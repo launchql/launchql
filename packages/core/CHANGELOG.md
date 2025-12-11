@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.1](https://github.com/constructive-io/constructive/compare/@launchql/core@2.18.0...@launchql/core@2.18.1) (2025-12-11)
+
+**Note:** Version bump only for package @launchql/core
+
 # [2.18.0](https://github.com/constructive-io/constructive/compare/@launchql/core@2.17.8...@launchql/core@2.18.0) (2025-12-11)
 
 **Note:** Version bump only for package @launchql/core

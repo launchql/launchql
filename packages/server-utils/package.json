@@ -1,6 +1,6 @@
 {
   "name": "@launchql/server-utils",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL server utils",
   "main": "index.js",

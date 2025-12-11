@@ -1,6 +1,6 @@
 {
   "name": "mime-bytes",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Lightning-fast file type detection using magic bytes (file signatures) with a focus on stream processing and minimal memory usage",
   "main": "index.js",

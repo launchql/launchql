@@ -1,6 +1,6 @@
 {
   "name": "@launchql/content-type-stream",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "detect content-types via streams",
   "main": "index.js",

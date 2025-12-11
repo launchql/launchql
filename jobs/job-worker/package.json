@@ -1,6 +1,6 @@
 {
   "name": "@launchql/job-worker",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "job worker",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/job-worker#readme",

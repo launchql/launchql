@@ -1,6 +1,6 @@
 {
   "name": "@launchql/types",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL types",
   "main": "index.js",
