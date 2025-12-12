@@ -1,0 +1,38 @@
+{
+  "name": "@pgpm/jobs",
+  "version": "0.13.0",
+  "description": "Core job system for background task processing in PostgreSQL",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "contributors": [
+    "Interweb <developers@interweb.co>"
+  ],
+  "keywords": [
+    "postgresql",
+    "pgpm",
+    "jobs",
+    "background-tasks"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bundle": "pgpm package",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@pgpm/default-roles": "0.13.0",
+    "@pgpm/verify": "0.13.0"
+  },
+  "devDependencies": {
+    "pgpm": "^0.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/pgpm-modules"
+  },
+  "homepage": "https://github.com/launchql/pgpm-modules",
+  "bugs": {
+    "url": "https://github.com/launchql/pgpm-modules/issues"
+  }
+}

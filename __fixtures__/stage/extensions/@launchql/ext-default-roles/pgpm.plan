@@ -1,8 +1,0 @@
-%syntax-version=1.0.0
-%project=launchql-ext-default-roles
-%uri=launchql-ext-default-roles
-  
-roles/anonymous/role 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add roles/anonymous/role
-roles/authenticated/role 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add roles/authenticated/role
-roles/administrator/role [roles/anonymous/role roles/authenticated/role] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add roles/administrator/role
-@0.0.5 2020-10-29T10:36:44Z Dan Lynch <dlynch@Dans-MBP-3> # tag 0.0.5

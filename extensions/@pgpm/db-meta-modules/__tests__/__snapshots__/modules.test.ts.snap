@@ -1,0 +1,258 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`db_meta_modules should have all expected module tables 1`] = `
+{
+  "moduleNames": [
+    "connected_accounts_module",
+    "crypto_addresses_module",
+    "crypto_auth_module",
+    "default_ids_module",
+    "emails_module",
+    "encrypted_secrets_module",
+    "field_module",
+    "invites_module",
+    "levels_module",
+    "limits_module",
+    "membership_types_module",
+    "memberships_module",
+    "permissions_module",
+    "phone_numbers_module",
+    "rls_module",
+    "secrets_module",
+    "tokens_module",
+    "user_auth_module",
+    "users_module",
+    "uuid_module",
+  ],
+}
+`;
+
+exports[`db_meta_modules should verify all module tables exist in meta_public schema 1`] = `
+{
+  "moduleTablesCount": 20,
+  "totalTables": 31,
+}
+`;
+
+exports[`db_meta_modules should verify emails_module table structure 1`] = `
+{
+  "columns": [
+    {
+      "column_default": "uuid_generate_v4()",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": null,
+      "column_name": "database_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "schema_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "private_schema_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "table_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "owner_table_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": null,
+      "column_name": "table_name",
+      "data_type": "text",
+      "is_nullable": "NO",
+    },
+  ],
+}
+`;
+
+exports[`db_meta_modules should verify module table structures have database_id foreign keys 1`] = `
+{
+  "constraintCount": 48020,
+}
+`;
+
+exports[`db_meta_modules should verify module tables have proper foreign key relationships 1`] = `
+{
+  "constraintCount": 64596,
+  "foreignTables": [
+    "apis",
+    "database",
+    "field",
+    "schema",
+    "table",
+  ],
+}
+`;
+
+exports[`db_meta_modules should verify specific module table column defaults 1`] = `
+{
+  "tokensDefaults": [
+    {
+      "column_default": "uuid_generate_v4()",
+      "column_name": "id",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "owned_table_id",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "schema_id",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "table_id",
+    },
+    {
+      "column_default": "'3 days'::interval",
+      "column_name": "tokens_default_expiration",
+    },
+    {
+      "column_default": "'api_tokens'::text",
+      "column_name": "tokens_table",
+    },
+  ],
+  "usersDefaults": [
+    {
+      "column_default": "uuid_generate_v4()",
+      "column_name": "id",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "schema_id",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "table_id",
+    },
+    {
+      "column_default": "'users'::text",
+      "column_name": "table_name",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "type_table_id",
+    },
+    {
+      "column_default": "'role_types'::text",
+      "column_name": "type_table_name",
+    },
+  ],
+}
+`;
+
+exports[`db_meta_modules should verify tokens_module table structure 1`] = `
+{
+  "columns": [
+    {
+      "column_default": "uuid_generate_v4()",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": null,
+      "column_name": "database_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "schema_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "table_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "owned_table_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "'3 days'::interval",
+      "column_name": "tokens_default_expiration",
+      "data_type": "interval",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "'api_tokens'::text",
+      "column_name": "tokens_table",
+      "data_type": "text",
+      "is_nullable": "NO",
+    },
+  ],
+}
+`;
+
+exports[`db_meta_modules should verify users_module table structure 1`] = `
+{
+  "columns": [
+    {
+      "column_default": "uuid_generate_v4()",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": null,
+      "column_name": "database_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "schema_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "table_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "'users'::text",
+      "column_name": "table_name",
+      "data_type": "text",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "uuid_nil()",
+      "column_name": "type_table_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+    },
+    {
+      "column_default": "'role_types'::text",
+      "column_name": "type_table_name",
+      "data_type": "text",
+      "is_nullable": "NO",
+    },
+  ],
+}
+`;

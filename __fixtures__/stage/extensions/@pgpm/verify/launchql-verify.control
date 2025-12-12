@@ -1,0 +1,8 @@
+# launchql-verify extension
+comment = 'launchql-verify extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-verify'
+requires = 'plpgsql'
+relocatable = false
+superuser = false
+  

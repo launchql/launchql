@@ -1,0 +1,8 @@
+# measurements extension
+comment = 'measurements extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/measurements'
+requires = 'plpgsql,uuid-ossp,launchql-verify'
+relocatable = false
+superuser = false
+  

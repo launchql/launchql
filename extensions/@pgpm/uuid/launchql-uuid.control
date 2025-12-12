@@ -1,0 +1,8 @@
+# launchql-uuid extension
+comment = 'launchql-uuid extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-uuid'
+requires = 'pgcrypto,plpgsql,uuid-ossp,hstore,launchql-verify'
+relocatable = false
+superuser = false
+  

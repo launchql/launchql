@@ -1,0 +1,8 @@
+# launchql-stamps extension
+comment = 'launchql-stamps extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-stamps'
+requires = 'plpgsql,launchql-jwt-claims,launchql-verify'
+relocatable = false
+superuser = false
+  

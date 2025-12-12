@@ -1,0 +1,9 @@
+%syntax-version=1.0.0
+%project=launchql-uuid
+%uri=launchql-uuid
+  
+schemas/uuids/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/uuids/schema
+schemas/uuids/procedures/pseudo_order_seed_uuid [schemas/uuids/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/uuids/procedures/pseudo_order_seed_uuid
+schemas/uuids/procedures/pseudo_order_uuid [schemas/uuids/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/uuids/procedures/pseudo_order_uuid
+schemas/uuids/procedures/trigger_set_uuid_related_field [schemas/uuids/schema schemas/uuids/procedures/pseudo_order_seed_uuid] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/uuids/procedures/trigger_set_uuid_related_field
+schemas/uuids/procedures/trigger_set_uuid_seed [schemas/uuids/schema schemas/uuids/procedures/pseudo_order_seed_uuid] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/uuids/procedures/trigger_set_uuid_seed

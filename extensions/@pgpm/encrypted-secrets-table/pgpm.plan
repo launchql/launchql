@@ -1,0 +1,7 @@
+%syntax-version=1.0.0
+%project=launchql-encrypted-secrets-table
+%uri=launchql-encrypted-secrets-table
+  
+schemas/secrets_schema/schema 2020-11-01T21:41:26Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/secrets_schema/schema
+schemas/secrets_schema/tables/secrets_table/table [schemas/secrets_schema/schema] 2020-11-01T21:41:51Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/secrets_schema/tables/secrets_table/table
+schemas/secrets_schema/tables/secrets_table/triggers/hash_secrets [schemas/secrets_schema/schema schemas/secrets_schema/tables/secrets_table/table] 2020-11-01T21:46:08Z Dan Lynch <dlynch@Dans-MBP-3> # add schemas/secrets_schema/tables/secrets_table/triggers/hash_secrets

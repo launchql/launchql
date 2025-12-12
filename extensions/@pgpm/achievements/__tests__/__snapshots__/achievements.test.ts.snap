@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`advanced 1`] = `
+{
+  "advancedRequirements": [
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "invite_users",
+      "priority": 100,
+      "required_count": 12,
+    },
+  ],
+}
+`;
+
+exports[`advanced 2`] = `
+{
+  "newbieRequirements": [],
+}
+`;
+
+exports[`advanced 3`] = `
+{
+  "newbie": {
+    "user_achieved": true,
+  },
+}
+`;
+
+exports[`advanced 4`] = `
+{
+  "advanced": {
+    "user_achieved": false,
+  },
+}
+`;
+
+exports[`advanced part II 1`] = `
+{
+  "advancedRequirements": [
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "invite_users",
+      "priority": 100,
+      "required_count": 12,
+    },
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "complete_action",
+      "priority": 100,
+      "required_count": 5,
+    },
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "apply_for_verifier",
+      "priority": 100,
+      "required_count": 1,
+    },
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "create_action",
+      "priority": 100,
+      "required_count": 2,
+    },
+  ],
+}
+`;
+
+exports[`advanced part II 2`] = `
+{
+  "newbieRequirements": [],
+}
+`;
+
+exports[`advanced part II 3`] = `
+{
+  "newbie": {
+    "user_achieved": true,
+  },
+}
+`;
+
+exports[`advanced part II 4`] = `
+{
+  "advanced": {
+    "user_achieved": false,
+  },
+}
+`;
+
+exports[`advanced part III 1`] = `
+{
+  "advancedRequirements": [],
+}
+`;
+
+exports[`advanced part III 2`] = `
+{
+  "newbieRequirements": [],
+}
+`;
+
+exports[`advanced part III 3`] = `
+{
+  "newbie": {
+    "user_achieved": true,
+  },
+}
+`;
+
+exports[`advanced part III 4`] = `
+{
+  "advanced": {
+    "user_achieved": true,
+  },
+}
+`;
+
+exports[`newbie 1`] = `
+{
+  "advancedRequirements": [
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "invite_users",
+      "priority": 100,
+      "required_count": 15,
+    },
+    {
+      "id": "[ID]",
+      "level": "advanced",
+      "name": "complete_action",
+      "priority": 100,
+      "required_count": 12,
+    },
+  ],
+}
+`;
+
+exports[`newbie 2`] = `
+{
+  "newbieRequirements": [
+    {
+      "id": "[ID]",
+      "level": "newbie",
+      "name": "upload_profile_image",
+      "priority": 100,
+      "required_count": 1,
+    },
+    {
+      "id": "[ID]",
+      "level": "newbie",
+      "name": "complete_action",
+      "priority": 100,
+      "required_count": 2,
+    },
+  ],
+}
+`;
+
+exports[`newbie 3`] = `
+{
+  "newbie": {
+    "user_achieved": false,
+  },
+}
+`;
+
+exports[`newbie 4`] = `
+{
+  "advanced": {
+    "user_achieved": false,
+  },
+}
+`;

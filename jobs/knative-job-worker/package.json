@@ -37,5 +37,8 @@
     "envalid": "6.0.2",
     "pg": "8.3.3",
     "request": "2.88.2"
+  },
+  "devDependencies": {
+    "pgsql-test": "^2.15.2"
   }
 }
