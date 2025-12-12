@@ -1,6 +1,6 @@
 {
   "name": "graphile-many-to-many",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Add connection fields for many-to-many relations",
   "author": "Matt Bretl",
   "homepage": "https://github.com/constructive-io/constructive",
@@ -41,8 +41,8 @@
     "graphile-build-pg": "^4.14.1"
   },
   "devDependencies": {
-    "graphql": "15.10.1",
     "graphile-test": "workspace:^",
+    "graphql": "15.10.1",
     "makage": "^0.1.8",
     "pgsql-test": "workspace:^",
     "postgraphile": "^4.14.1"

@@ -1,6 +1,6 @@
 {
   "name": "@launchql/knative-job-worker",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "knative job worker",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-worker#readme",
