@@ -1,0 +1,8 @@
+# launchql-totp extension
+comment = 'launchql-totp extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-totp'
+requires = 'pgcrypto,plpgsql,launchql-base32,launchql-verify'
+relocatable = false
+superuser = false
+  

@@ -90,9 +90,9 @@ exports[`stage fixture dependency resolution - resolved tags resolves tags to ch
       "schemas/unique_names/tables/words/table",
     ],
     "/deploy/schemas/unique_names/schema.sql": [
-      "launchql-ext-default-roles:roles/administrator/role",
-      "launchql-ext-defaults:defaults/public",
-      "launchql-ext-verify:procedures/verify_view",
+      "launchql-default-roles:roles/administrator/role",
+      "launchql-defaults:defaults/public",
+      "launchql-verify:procedures/verify_view",
     ],
     "/deploy/schemas/unique_names/tables/words/fixtures/1589271124916_fixture.sql": [
       "schemas/unique_names/schema",
@@ -105,14 +105,14 @@ exports[`stage fixture dependency resolution - resolved tags resolves tags to ch
     "/deploy/schemas/unique_names/tables/words/table.sql": [
       "schemas/unique_names/schema",
     ],
-    "launchql-ext-default-roles:roles/administrator/role": [],
-    "launchql-ext-defaults:defaults/public": [],
-    "launchql-ext-verify:procedures/verify_view": [],
+    "launchql-default-roles:roles/administrator/role": [],
+    "launchql-defaults:defaults/public": [],
+    "launchql-verify:procedures/verify_view": [],
   },
   "external": [
-    "launchql-ext-default-roles:roles/administrator/role",
-    "launchql-ext-defaults:defaults/public",
-    "launchql-ext-verify:procedures/verify_view",
+    "launchql-default-roles:roles/administrator/role",
+    "launchql-defaults:defaults/public",
+    "launchql-verify:procedures/verify_view",
   ],
   "resolved": [
     "schemas/unique_names/schema",

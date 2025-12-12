@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`defaults security configurations configuration verification should create snapshot of security configuration 1`] = `
+{
+  "securityState": [
+    {
+      "current_user": "postgres",
+      "database_name": "test-database",
+      "default_func_acl_count": "2",
+      "public_db_connect": false,
+      "public_db_create": false,
+      "public_schema_create": false,
+      "public_schema_usage": true,
+    },
+  ],
+}
+`;

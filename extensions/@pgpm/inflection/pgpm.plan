@@ -1,0 +1,20 @@
+%syntax-version=1.0.0
+%project=launchql-inflection
+%uri=launchql-inflection
+  
+schemas/inflection/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/schema
+schemas/inflection/procedures/no_consecutive_caps [schemas/inflection/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/no_consecutive_caps
+schemas/inflection/procedures/pg_slugify [schemas/inflection/schema schemas/inflection/procedures/no_consecutive_caps] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/pg_slugify
+schemas/inflection/procedures/no_single_underscores [schemas/inflection/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/no_single_underscores
+schemas/inflection/procedures/underscore [schemas/inflection/schema schemas/inflection/procedures/pg_slugify schemas/inflection/procedures/no_single_underscores] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/underscore
+schemas/inflection/procedures/camel [schemas/inflection/schema schemas/inflection/procedures/underscore] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/camel
+schemas/inflection/procedures/dashed [schemas/inflection/schema schemas/inflection/procedures/underscore] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/dashed
+schemas/inflection/procedures/pascal [schemas/inflection/schema schemas/inflection/procedures/camel] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/pascal
+schemas/inflection/tables/inflection_rules/table [schemas/inflection/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/tables/inflection_rules/table
+schemas/inflection/procedures/plural [schemas/inflection/schema schemas/inflection/tables/inflection_rules/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/plural
+schemas/inflection/procedures/uncountable_words [schemas/inflection/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/uncountable_words
+schemas/inflection/procedures/should_skip_uncountable [schemas/inflection/schema schemas/inflection/procedures/uncountable_words] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/should_skip_uncountable
+schemas/inflection/procedures/singular [schemas/inflection/schema schemas/inflection/tables/inflection_rules/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/singular
+schemas/inflection/procedures/slugify [schemas/inflection/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/procedures/slugify
+schemas/inflection/tables/inflection_rules/fixtures/1589249334312_fixture [schemas/inflection/schema schemas/inflection/tables/inflection_rules/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/tables/inflection_rules/fixtures/1589249334312_fixture
+schemas/inflection/tables/inflection_rules/indexes/inflection_rules_type_idx [schemas/inflection/schema schemas/inflection/tables/inflection_rules/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/inflection/tables/inflection_rules/indexes/inflection_rules_type_idx

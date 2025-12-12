@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`newbie 1`] = `
+{
+  "beforeInsert": [],
+}
+`;
+
+exports[`newbie 2`] = `
+{
+  "afterFirstInsert": [
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement",
+      "user_id": "[ID]",
+    },
+  ],
+}
+`;
+
+exports[`newbie 3`] = `
+{
+  "afterUpdateToggleToValue": [
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement",
+      "user_id": "[ID]",
+    },
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement_toggle",
+      "user_id": "[ID]",
+    },
+  ],
+}
+`;
+
+exports[`newbie 4`] = `
+{
+  "afterUpdateToggleToNull": [
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement",
+      "user_id": "[ID]",
+    },
+  ],
+}
+`;
+
+exports[`newbie 5`] = `
+{
+  "afterIsVerifiedIsTrue": [
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement",
+      "user_id": "[ID]",
+    },
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement_toggle_boolean",
+      "user_id": "[ID]",
+    },
+  ],
+}
+`;
+
+exports[`newbie 6`] = `
+{
+  "afterIsVerifiedIsFalse": [
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement",
+      "user_id": "[ID]",
+    },
+  ],
+}
+`;
+
+exports[`newbie 7`] = `
+{
+  "afterIsApprovedTrue": [
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement",
+      "user_id": "[ID]",
+    },
+    {
+      "count": 1,
+      "created_at": "[DATE]",
+      "id": "[ID]",
+      "name": "tg_achievement_boolean",
+      "user_id": "[ID]",
+    },
+  ],
+}
+`;

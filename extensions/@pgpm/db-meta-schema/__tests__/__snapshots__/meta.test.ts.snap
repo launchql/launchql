@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`db_meta functionality should handle complete meta workflow 1`] = `
+{
+  "hash": null,
+  "id": "[ID]",
+  "label": null,
+  "name": "my-meta-db",
+  "owner_id": "[ID]",
+  "private_schema_name": null,
+  "schema_hash": null,
+  "schema_name": null,
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 2`] = `
+{
+  "anon_role": "anonymous",
+  "database_id": "[ID]",
+  "dbname": "test-database",
+  "id": "[ID]",
+  "is_public": true,
+  "name": "public",
+  "role_name": "authenticated",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 3`] = `
+{
+  "anon_role": "administrator",
+  "database_id": "[ID]",
+  "dbname": "test-database",
+  "id": "[ID]",
+  "is_public": true,
+  "name": "admin",
+  "role_name": "administrator",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 4`] = `
+{
+  "apple_touch_icon": null,
+  "database_id": "[ID]",
+  "dbname": "test-database",
+  "description": "Website Description",
+  "favicon": null,
+  "id": "[ID]",
+  "logo": null,
+  "og_image": null,
+  "title": "Website Title",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 5`] = `
+{
+  "api_id": "[ID]",
+  "database_id": "[ID]",
+  "domain": "pgpm.io",
+  "id": "[ID]",
+  "site_id": null,
+  "subdomain": "api",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 6`] = `
+{
+  "api_id": null,
+  "database_id": "[ID]",
+  "domain": "pgpm.io",
+  "id": "[ID]",
+  "site_id": "[ID]",
+  "subdomain": "app",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 7`] = `
+{
+  "api_id": "[ID]",
+  "database_id": "[ID]",
+  "domain": "pgpm.io",
+  "id": "[ID]",
+  "site_id": null,
+  "subdomain": "admin",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 8`] = `
+{
+  "data": {
+    "supportEmail": "support@interweb.co",
+  },
+  "database_id": "[ID]",
+  "id": "[ID]",
+  "name": "legal-emails",
+  "site_id": "[ID]",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 9`] = `
+{
+  "api_id": "[ID]",
+  "data": {
+    "authenticate": "authenticate",
+    "authenticate_schema": "meta_private",
+  },
+  "database_id": "[ID]",
+  "id": "[ID]",
+  "name": "rls_module",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 10`] = `
+{
+  "data": {
+    "auth_schema": "meta_public",
+    "forgot_password": "forgot_password",
+    "reset_password": "reset_password",
+    "send_verification_email": "send_verification_email",
+    "set_password": "set_password",
+    "sign_in": "login",
+    "sign_up": "register",
+    "verify_email": "verify_email",
+  },
+  "database_id": "[ID]",
+  "id": "[ID]",
+  "name": "user_auth_module",
+  "site_id": "[ID]",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 11`] = `
+{
+  "api_id": "[ID]",
+  "database_id": "[ID]",
+  "id": "[ID]",
+  "schema_id": "[ID]",
+}
+`;
+
+exports[`db_meta functionality should handle complete meta workflow 12`] = `
+{
+  "api_id": "[ID]",
+  "database_id": "[ID]",
+  "id": "[ID]",
+  "schema_id": "[ID]",
+}
+`;
