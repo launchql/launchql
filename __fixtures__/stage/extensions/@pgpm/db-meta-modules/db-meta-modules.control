@@ -1,0 +1,8 @@
+# db-meta-modules extension
+comment = 'db-meta-modules extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/db-meta-modules'
+requires = 'plpgsql,db-meta-schema,launchql-verify'
+relocatable = false
+superuser = false
+

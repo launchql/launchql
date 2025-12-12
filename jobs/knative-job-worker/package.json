@@ -1,6 +1,6 @@
 {
   "name": "@launchql/knative-job-worker",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "knative job worker",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/launchql/jobs/tree/master/packages/knative-job-worker#readme",
@@ -37,5 +37,8 @@
     "envalid": "6.0.2",
     "pg": "8.3.3",
     "request": "2.88.2"
+  },
+  "devDependencies": {
+    "pgsql-test": "^2.15.2"
   }
 }

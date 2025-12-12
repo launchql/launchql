@@ -1,0 +1,40 @@
+{
+  "name": "@pgpm/db-meta-schema",
+  "version": "0.13.0",
+  "description": "Database metadata utilities and introspection functions",
+  "author": "Dan Lynch <pyramation@gmail.com>",
+  "contributors": [
+    "Interweb <developers@interweb.co>"
+  ],
+  "keywords": [
+    "postgresql",
+    "pgpm",
+    "metadata",
+    "introspection"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bundle": "pgpm package",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@pgpm/database-jobs": "0.13.0",
+    "@pgpm/inflection": "0.13.0",
+    "@pgpm/types": "0.13.0",
+    "@pgpm/verify": "0.13.0"
+  },
+  "devDependencies": {
+    "pgpm": "^0.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/launchql/pgpm-modules"
+  },
+  "homepage": "https://github.com/launchql/pgpm-modules",
+  "bugs": {
+    "url": "https://github.com/launchql/pgpm-modules/issues"
+  }
+}

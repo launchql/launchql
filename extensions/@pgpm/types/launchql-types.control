@@ -1,0 +1,8 @@
+# launchql-types extension
+comment = 'launchql-types extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-types'
+requires = 'plpgsql,citext,launchql-verify'
+relocatable = false
+superuser = false
+  

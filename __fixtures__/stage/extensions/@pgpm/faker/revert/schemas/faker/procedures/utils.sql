@@ -1,0 +1,51 @@
+-- Revert schemas/faker/procedures/utils from pg
+
+BEGIN;
+
+DROP FUNCTION faker.attachment;
+DROP FUNCTION faker.ip;
+DROP FUNCTION faker.upload;
+DROP FUNCTION faker.url;
+DROP FUNCTION faker.file;
+DROP FUNCTION faker.profilepic(gender text);
+DROP FUNCTION faker.profilepic();
+DROP FUNCTION faker.image;
+DROP FUNCTION faker.image_mime;
+DROP FUNCTION faker.ext;
+DROP FUNCTION faker.mime;
+DROP FUNCTION faker.timestamptz;
+DROP FUNCTION faker.boolean;
+DROP FUNCTION faker.interval(min int, max int);
+DROP FUNCTION faker.interval();
+DROP FUNCTION faker.birthdate;
+DROP FUNCTION faker.date;
+DROP FUNCTION faker.integer;
+DROP FUNCTION faker.float;
+DROP FUNCTION faker.time_unit;
+DROP FUNCTION faker.hostname;
+DROP FUNCTION faker.password;
+DROP FUNCTION faker.token;
+DROP FUNCTION faker.uuid;
+DROP FUNCTION faker.email;
+DROP FUNCTION faker.paragraph;
+DROP FUNCTION faker.sentence;
+DROP FUNCTION faker.tags;
+DROP FUNCTION faker.address;
+DROP FUNCTION faker.state;
+DROP FUNCTION faker.street;
+DROP FUNCTION faker.phone;
+DROP FUNCTION faker.lnglat(city text);
+DROP FUNCTION faker.lnglat(x1 float, y1 float, x2 float, y2 float);
+DROP FUNCTION faker.zip;
+DROP FUNCTION faker.city;
+DROP FUNCTION faker.business;
+DROP FUNCTION faker.fullname;
+DROP FUNCTION faker.surname;
+DROP FUNCTION faker.name;
+DROP FUNCTION faker.username;
+DROP FUNCTION faker.gender;
+DROP FUNCTION faker.word(wordtypes text[]);
+DROP FUNCTION faker.word(wordtype text);
+DROP FUNCTION faker.word_type;
+
+COMMIT;

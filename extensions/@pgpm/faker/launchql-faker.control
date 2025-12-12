@@ -1,0 +1,8 @@
+# launchql-faker extension
+comment = 'launchql-faker extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-faker'
+requires = 'citext,pgcrypto,plpgsql,uuid-ossp,launchql-types,launchql-verify'
+relocatable = false
+superuser = false
+  

@@ -1,5 +1,5 @@
 process.env.KNATIVE_SERVICE_URL =
-  process.env.KNATIVE_SERVICE_URL || 'http://knative.internal';
+  process.env.KNATIVE_SERVICE_URL || 'knative.internal';
 process.env.INTERNAL_JOBS_CALLBACK_URL =
   process.env.INTERNAL_JOBS_CALLBACK_URL ||
   'http://callback.internal/jobs-complete';
@@ -33,9 +33,10 @@ let teardown: () => Promise<void>;
 beforeAll(async () => {
   const modulePath = path.resolve(
     __dirname,
-    '../../../extensions/@launchql/ext-jobs'
+    '../../../extensions/@pgpm/database-jobs'
   );
   ({ db, teardown } = await getConnections({}, [seed.launchql(modulePath)]));
+  db.setContext({ role: 'administrator' });
 });
 
 afterAll(async () => {
@@ -82,7 +83,7 @@ describe('knative worker integration with job queue', () => {
 
     expect(postMock).toHaveBeenCalledTimes(1);
     const [options] = postMock.mock.calls[0];
-    expect(options.url).toBe('http://knative.internal/example-fn');
+    expect(options.url).toBe('http://example-fn.knative.internal');
     expect(options.headers['X-Job-Id']).toBe(job.id);
     expect(options.headers['X-Database-Id']).toBe(databaseId);
   });
@@ -114,4 +115,3 @@ describe('knative worker integration with job queue', () => {
     );
   });
 });
-

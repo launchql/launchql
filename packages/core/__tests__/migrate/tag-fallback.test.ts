@@ -42,7 +42,7 @@ describe('LaunchQLMigrate.deploy tag fallback bug reproduction', () => {
 
     const plan = [
       `%project=${packageName}`,
-      `${changeName} [launchql-ext-default-roles:@0.0.5]`,
+      `${changeName} [launchql-default-roles:@0.0.5]`,
     ].join('\n');
 
     mkdirSync(join(dir, 'deploy'), { recursive: true });

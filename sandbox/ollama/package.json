@@ -1,7 +1,7 @@
 {
   "name": "my-ollama",
   "private": true,
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
   "module": "esm/index.js",

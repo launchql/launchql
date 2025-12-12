@@ -1,0 +1,8 @@
+# launchql-base32 extension
+comment = 'launchql-base32 extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-base32'
+requires = 'pgcrypto,plpgsql,launchql-verify'
+relocatable = false
+superuser = false
+  

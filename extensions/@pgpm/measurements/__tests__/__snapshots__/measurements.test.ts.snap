@@ -1,0 +1,309 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`measurements schema should find dimensionless quantities 1`] = `
+{
+  "dimensionlessQuantities": [
+    {
+      "description": "a dimensionless quantity",
+      "label": "Dimensionless",
+      "name": "Dimensionless",
+      "unit": null,
+    },
+    {
+      "description": "something generally accepted as a medium of exchange, a measure of value, or a means of payment",
+      "label": "Money",
+      "name": "Money",
+      "unit": null,
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should find quantities by unit 1`] = `
+{
+  "meterQuantities": [
+    {
+      "label": "Acceleration",
+      "name": "Acceleration",
+      "unit": "m/s²",
+    },
+    {
+      "label": "Amount Of Substance",
+      "name": "AmountOfSubstance",
+      "unit": "mol",
+    },
+    {
+      "label": "Area",
+      "name": "Area",
+      "unit": "m²",
+    },
+    {
+      "label": "Kinematic Viscosity",
+      "name": "KinematicViscosity",
+      "unit": "m²/s",
+    },
+    {
+      "label": "Length",
+      "name": "Length",
+      "unit": "m",
+    },
+    {
+      "label": "Luminous Flux",
+      "name": "LuminousFlux",
+      "unit": "lm",
+    },
+    {
+      "label": "Parts per Million",
+      "name": "PartsPerMillion",
+      "unit": "ppm",
+    },
+    {
+      "label": "Radiation Dose Effective",
+      "name": "RadiationDoseEffective",
+      "unit": "equivalent) dose of radiation received by a human or some other living organism. The system unit for this quantity is Sv",
+    },
+    {
+      "label": "Torque",
+      "name": "Torque",
+      "unit": "N·m",
+    },
+    {
+      "label": "Velocity",
+      "name": "Velocity",
+      "unit": "m/s",
+    },
+    {
+      "label": "Volume",
+      "name": "Volume",
+      "unit": "m³",
+    },
+    {
+      "label": "Volumetric Density",
+      "name": "VolumetricDensity",
+      "unit": "kg/m³",
+    },
+    {
+      "label": "Volumetric Flow Rate",
+      "name": "VolumetricFlowRate",
+      "unit": "m³/s",
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should handle percentage and parts-per quantities 1`] = `
+{
+  "ratioQuantities": [
+    {
+      "label": "Parts per Billion",
+      "name": "PartsPerBillion",
+      "unit": "ppb",
+      "unit_desc": "parts per billion",
+    },
+    {
+      "label": "Parts per Million",
+      "name": "PartsPerMillion",
+      "unit": "ppm",
+      "unit_desc": "parts per million",
+    },
+    {
+      "label": "Percent",
+      "name": "Percent",
+      "unit": "%",
+      "unit_desc": "percentage",
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should have quantities table with correct structure 1`] = `
+{
+  "columns": [
+    {
+      "column_name": "id",
+      "data_type": "integer",
+      "is_nullable": "NO",
+    },
+    {
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "YES",
+    },
+    {
+      "column_name": "label",
+      "data_type": "text",
+      "is_nullable": "YES",
+    },
+    {
+      "column_name": "unit",
+      "data_type": "text",
+      "is_nullable": "YES",
+    },
+    {
+      "column_name": "unit_desc",
+      "data_type": "text",
+      "is_nullable": "YES",
+    },
+    {
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should retrieve basic physical quantities 1`] = `
+{
+  "basicQuantities": [
+    {
+      "description": "a period of existence or persistence",
+      "id": "[ID]",
+      "label": "Duration",
+      "name": "Duration",
+      "unit": "s",
+      "unit_desc": "second",
+    },
+    {
+      "description": "the amount of electric charge flowing past a specified circuit point per unit time",
+      "id": "[ID]",
+      "label": "Electric Current",
+      "name": "ElectricCurrent",
+      "unit": "A",
+      "unit_desc": "Ampere",
+    },
+    {
+      "description": "the extent of something along its greatest dimension or the extent of space between two objects or places",
+      "id": "[ID]",
+      "label": "Length",
+      "name": "Length",
+      "unit": "m",
+      "unit_desc": "meter",
+    },
+    {
+      "description": "the measure of the quantity of matter that a body or an object contains",
+      "id": "[ID]",
+      "label": "Mass",
+      "name": "Mass",
+      "unit": "kg",
+      "unit_desc": "kilogram",
+    },
+    {
+      "description": "the degree of hotness or coldness of a body or an environment",
+      "id": "[ID]",
+      "label": "Temperature",
+      "name": "Temperature",
+      "unit": "K",
+      "unit_desc": "Kelvin",
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should retrieve derived quantities 1`] = `
+{
+  "derivedQuantities": [
+    {
+      "description": "the rate of change of velocity with respect to time",
+      "id": "[ID]",
+      "label": "Acceleration",
+      "name": "Acceleration",
+      "unit": "m/s²",
+      "unit_desc": "meter per square second",
+    },
+    {
+      "description": "the capacity of a physical system to do work",
+      "id": "[ID]",
+      "label": "Energy",
+      "name": "Energy",
+      "unit": "J",
+      "unit_desc": "Joule",
+    },
+    {
+      "description": "a quantity that tends to produce an acceleration of a body in the direction of its application",
+      "id": "[ID]",
+      "label": "Force",
+      "name": "Force",
+      "unit": "N",
+      "unit_desc": "Newton",
+    },
+    {
+      "description": "the rate at which work is done",
+      "id": "[ID]",
+      "label": "Power",
+      "name": "Power",
+      "unit": "W",
+      "unit_desc": "Watt",
+    },
+    {
+      "description": "a distance traveled divided by the time of travel",
+      "id": "[ID]",
+      "label": "Velocity",
+      "name": "Velocity",
+      "unit": "m/s",
+      "unit_desc": "meter per second",
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should search quantities by description 1`] = `
+{
+  "energyRelated": [
+    {
+      "description": "the amount of energy deposited per unit of mass",
+      "label": "Radiation Dose Absorbed",
+      "name": "RadiationDoseAbsorbed",
+    },
+  ],
+}
+`;
+
+exports[`measurements schema should verify SI base units are present 1`] = `
+{
+  "siBaseUnits": [
+    {
+      "label": "Electric Current",
+      "name": "ElectricCurrent",
+      "unit": "A",
+      "unit_desc": "Ampere",
+    },
+    {
+      "label": "Temperature",
+      "name": "Temperature",
+      "unit": "K",
+      "unit_desc": "Kelvin",
+    },
+    {
+      "label": "Luminous Intensity",
+      "name": "LuminousIntensity",
+      "unit": "cd",
+      "unit_desc": "candela",
+    },
+    {
+      "label": "Mass",
+      "name": "Mass",
+      "unit": "kg",
+      "unit_desc": "kilogram",
+    },
+    {
+      "label": "Length",
+      "name": "Length",
+      "unit": "m",
+      "unit_desc": "meter",
+    },
+    {
+      "label": "Amount Of Substance",
+      "name": "AmountOfSubstance",
+      "unit": "mol",
+      "unit_desc": "molecules, for example of a substance. The system unit for this quantity is "mol" mole",
+    },
+    {
+      "label": "Duration",
+      "name": "Duration",
+      "unit": "s",
+      "unit_desc": "second",
+    },
+  ],
+}
+`;

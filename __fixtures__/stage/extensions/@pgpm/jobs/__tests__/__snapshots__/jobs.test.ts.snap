@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`scheduled jobs schedule jobs 1`] = `
+{
+  "attempts": null,
+  "id": null,
+  "key": null,
+  "last_error": null,
+  "locked_at": null,
+  "locked_by": null,
+  "max_attempts": null,
+  "payload": null,
+  "priority": null,
+  "task_identifier": null,
+}
+`;

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`base32.decode cases INQXI 1`] = `"Cat"`;
+
+exports[`base32.decode cases MNUGK3LJON2HE6LJONTXEZLBOQ====== 1`] = `"chemistryisgreat"`;
+
+exports[`base32.decode cases MY====== 1`] = `"f"`;
+
+exports[`base32.decode cases MZXQ==== 1`] = `"fo"`;
+
+exports[`base32.decode cases MZXW6=== 1`] = `"foo"`;
+
+exports[`base32.decode cases MZXW6YQ= 1`] = `"foob"`;
+
+exports[`base32.decode cases MZXW6YTB 1`] = `"fooba"`;
+
+exports[`base32.decode cases MZXW6YTBOI====== 1`] = `"foobar"`;
+
+exports[`base32.decode cases case: 1 1`] = `""`;
+
+exports[`base32.decode cases mzxw6ytb 1`] = `"fooba"`;

@@ -1,0 +1,8 @@
+# launchql-database-jobs extension
+comment = 'launchql-database-jobs extension'
+default_version = '0.9.0'
+module_pathname = '$libdir/launchql-database-jobs'
+requires = 'plpgsql,uuid-ossp,pgcrypto,launchql-default-roles,launchql-verify'
+relocatable = false
+superuser = false
+  

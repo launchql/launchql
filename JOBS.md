@@ -2,7 +2,7 @@
 
 This document describes the **current** jobs setup using:
 
-- PostgreSQL + `launchql-ext-jobs` (`app_jobs.*`)
+- PostgreSQL + `launchql-database-jobs` (`app_jobs.*`)
 - `@launchql/knative-job-service` + `@launchql/knative-job-worker`
 - Knative functions (example: `simple-email`)
 
@@ -12,7 +12,7 @@ This document describes the **current** jobs setup using:
 
 ## 1. Database: jobs extension
 
-Jobs live entirely in Postgres, provided by the `launchql-ext-jobs` extension.
+Jobs live entirely in Postgres, provided by the `launchql-database-jobs` extension.
 
 Key pieces:
 
@@ -32,7 +32,7 @@ Key pieces:
 Install the extension into your **app database** (the same DB your LaunchQL API uses). In SQL:
 
 ```sql
-CREATE EXTENSION IF NOT EXISTS launchql-ext-jobs;
+CREATE EXTENSION IF NOT EXISTS launchql-database-jobs;
 ```
 
 Once installed you should see:
@@ -68,7 +68,7 @@ From `jobs/knative-job-service/src/env.ts`:
   - `PGHOST` – DB host
   - `PGPASSWORD` – DB password
   - `PGPORT` – DB port (default `5432`)
-  - `PGDATABASE` – the app DB that has `launchql-ext-jobs` installed
+  - `PGDATABASE` – the app DB that has `launchql-database-jobs` installed
   - `JOBS_SCHEMA` – schema for jobs (default `app_jobs`)
 
 - Worker configuration

@@ -1,0 +1,8 @@
+%syntax-version=1.0.0
+%project=launchql-measurements
+%uri=launchql-measurements
+  
+schemas/measurements/schema 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/measurements/schema
+schemas/measurements/tables/quantities/table [schemas/measurements/schema] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/measurements/tables/quantities/table
+schemas/measurements/tables/quantities/fixtures/1601076414018_fixture [schemas/measurements/schema schemas/measurements/tables/quantities/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/measurements/tables/quantities/fixtures/1601076414018_fixture
+schemas/measurements/tables/quantities/fixtures/1601081365273_fixture [schemas/measurements/schema schemas/measurements/tables/quantities/table] 2017-08-11T08:11:51Z skitch <skitch@5b0c196eeb62> # add schemas/measurements/tables/quantities/fixtures/1601081365273_fixture

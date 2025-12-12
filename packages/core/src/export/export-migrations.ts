@@ -107,17 +107,17 @@ const exportMigrationsToDisk = async ({
         'btree_gist',
         'postgis',
         'hstore',
-        'db_meta',
+        'db-meta-schema',
         'launchql-inflection',
         'launchql-uuid',
         'launchql-utils',
-        'launchql-ext-jobs',
+        'launchql-database-jobs',
         'launchql-jwt-claims',
         'launchql-stamps',
         'launchql-base32',
         'launchql-totp',
-        'launchql-ext-types',
-        'launchql-ext-default-roles'
+        'launchql-types',
+        'launchql-default-roles'
       ]
     });
 
@@ -136,7 +136,7 @@ const exportMigrationsToDisk = async ({
       project,
       author,
       outdir,
-      extensions: ['plpgsql', 'db_meta', 'db_meta_modules'],
+      extensions: ['plpgsql', 'db-meta-schema', 'db-meta-modules'],
       name: metaExtensionName
     });
 

@@ -51,23 +51,23 @@ describe('Staging Fixture Tests', () => {
       expect(availableModules).toContain('unique-names');
     });
 
-    it('getModules() returns all modules from extensions/@launchql, extensions/@pyramation, and packages', async () => {
+    it('getModules() returns all modules from extensions/@pgpm and packages', async () => {
       const cwd = fixture.getFixturePath();
       const project = new LaunchQLPackage(cwd);
 
       const modules = await project.getModules();
       expect(Array.isArray(modules)).toBe(true);
       expect(modules.length).toBeGreaterThan(0);
-      
+
       const moduleNames = modules.map(m => m.getModuleName());
-      
+
       expect(moduleNames).toContain('unique-names');
-      
+
       expect(moduleNames.some(name => name.includes('launchql-uuid'))).toBe(true);
       expect(moduleNames.some(name => name.includes('launchql-base32'))).toBe(true);
-      
-      expect(moduleNames.some(name => name.includes('db_meta'))).toBe(true);
-      
+
+      expect(moduleNames.some(name => name.includes('db-meta'))).toBe(true);
+
       modules.forEach(mod => {
         expect(mod.isInModule()).toBe(true);
         expect(mod.getContext()).toBe(PackageContext.ModuleInsideWorkspace);
@@ -115,7 +115,7 @@ describe('Staging Fixture Tests', () => {
 
   describe('Extension Module Detection', () => {
     it('detects extension modules correctly', async () => {
-      const cwd = fixture.getFixturePath('extensions', '@launchql', 'ext-uuid');
+      const cwd = fixture.getFixturePath('extensions', '@pgpm', 'uuid');
       const project = new LaunchQLPackage(cwd);
 
       expect(project.getContext()).toBe(PackageContext.ModuleInsideWorkspace);
@@ -126,7 +126,7 @@ describe('Staging Fixture Tests', () => {
     });
 
     it('gets module info with version and paths for extensions', async () => {
-      const cwd = fixture.getFixturePath('extensions', '@launchql', 'ext-uuid');
+      const cwd = fixture.getFixturePath('extensions', '@pgpm', 'uuid');
       const project = new LaunchQLPackage(cwd);
 
       const info = project.getModuleInfo();
@@ -173,11 +173,11 @@ describe('Staging Fixture Tests', () => {
       const project = new LaunchQLPackage(cwd);
 
       const { native, modules: deps } = project.getModuleDependencies('unique-names');
-      
+
       expect(Array.isArray(deps)).toBe(true);
-      expect(deps.some(dep => dep.includes('launchql-ext-default-roles'))).toBe(true);
-      expect(deps.some(dep => dep.includes('launchql-ext-defaults'))).toBe(true);
-      expect(deps.some(dep => dep.includes('launchql-ext-verify'))).toBe(true);
+      expect(deps.some(dep => dep.includes('launchql-default-roles'))).toBe(true);
+      expect(deps.some(dep => dep.includes('launchql-defaults'))).toBe(true);
+      expect(deps.some(dep => dep.includes('launchql-verify'))).toBe(true);
     });
 
     it('verifies cross-module dependencies work between extensions', async () => {
@@ -202,7 +202,7 @@ describe('Staging Fixture Tests', () => {
       expect(result.modules.length).toBeGreaterThan(0);
       
       const dependencyNames = result.modules.map(dep => dep.name);
-      expect(dependencyNames.some(name => name.includes('launchql-ext-default-roles'))).toBe(true);
+      expect(dependencyNames.some(name => name.includes('launchql-default-roles'))).toBe(true);
       
       result.modules.forEach(dep => {
         expect(dep).toHaveProperty('name');
@@ -221,9 +221,9 @@ describe('Staging Fixture Tests', () => {
       const { native, modules: deps } = project.getModuleDependencies('unique-names');
       
       const dependencyChanges = await project.getModuleDependencyChanges('unique-names');
-      
-      const defaultRolesDep = dependencyChanges.modules.find(dep => 
-        dep.name.includes('launchql-ext-default-roles')
+
+      const defaultRolesDep = dependencyChanges.modules.find(dep =>
+        dep.name.includes('launchql-default-roles')
       );
       
       if (defaultRolesDep) {

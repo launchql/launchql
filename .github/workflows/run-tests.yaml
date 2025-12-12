@@ -70,6 +70,8 @@ jobs:
             env: {}
           - package: graphile/graphile-simple-inflector
             env: {}
+          - package: graphile/graphile-many-to-many
+            env: {}
           - package: graphile/graphile-i18n
             env: {}
           - package: graphile/graphile-meta-schema

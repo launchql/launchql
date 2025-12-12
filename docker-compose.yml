@@ -13,6 +13,8 @@ services:
       - ./bin:/sql-bin
       - ./packages:/sql-packages
       - ./extensions:/sql-extensions
+    networks:
+      - constructive-net
 
   minio:
     container_name: minio
@@ -25,3 +27,9 @@ services:
     expose:
       - "9000"
     command: server /data
+    networks:
+      - constructive-net
+
+networks:
+  constructive-net:
+    name: constructive-net

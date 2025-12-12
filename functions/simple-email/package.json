@@ -1,6 +1,6 @@
 {
   "name": "@launchql/simple-email-fn",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Simple Knative email function that sends emails directly from job payload",
   "author": "LaunchQL",
   "private": true,

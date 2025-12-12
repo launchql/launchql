@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`base32.encode case: 1 1`] = `""`;
+
+exports[`base32.encode f 1`] = `"MY======"`;
+
+exports[`base32.encode fo 1`] = `"MZXQ===="`;
+
+exports[`base32.encode foo 1`] = `"MZXW6==="`;
+
+exports[`base32.encode foob 1`] = `"MZXW6YQ="`;
+
+exports[`base32.encode fooba 1`] = `"MZXW6YTB"`;
+
+exports[`base32.encode foobar 1`] = `"MZXW6YTBOI======"`;
