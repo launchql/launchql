@@ -1,0 +1,100 @@
+services:
+  # LaunchQL API server (GraphQL)
+  launchql-server:
+    container_name: launchql-server
+    image: ghcr.io/constructive-io/launchql:b88e3d1
+    # The image entrypoint already runs the LaunchQL CLI (`lql`).
+    # We only need to provide the subcommand and flags here.
+    entrypoint: ["lql", "server", "--port", "3000", "--origin", "*", "--strictAuth", "false"]
+    environment:
+      NODE_ENV: development
+      # Server
+      PORT: "3000"
+      SERVER_HOST: "0.0.0.0"
+      SERVER_TRUST_PROXY: "true"
+      SERVER_ORIGIN: "*"          # allow all origins in dev
+      SERVER_STRICT_AUTH: "false"
+      # Postgres connection (matches postgres service)
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGDATABASE: launchql
+      # API meta configuration (static mode for dev)
+      API_ENABLE_META: "true"
+      API_EXPOSED_SCHEMAS: "collections_public,meta_public"
+      API_ANON_ROLE: "administrator"
+      API_ROLE_NAME: "administrator"
+      API_DEFAULT_DATABASE_ID: "dbe"
+    ports:
+      - "3000:3000"
+    networks:
+      - constructive-net
+
+  # Simple email function (Knative-style HTTP function)
+  simple-email:
+    container_name: simple-email
+    image: ghcr.io/constructive-io/launchql:b88e3d1
+    # Override the image entrypoint (LaunchQL CLI) and run the Node function directly.
+    entrypoint: ["node", "functions/simple-email/dist/index.js"]
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: info
+      # Mailgun / email provider configuration for @launchql/postmaster
+      # Replace with real credentials for local testing.
+      MAILGUN_API_KEY: "change-me-mailgun-api-key"
+      MAILGUN_DOMAIN: "mg.constructive.io"
+      MAILGUN_FROM: "no-reply@mg.constructive.io"
+    ports:
+      # Expose function locally (optional)
+      - "8081:8080"
+    networks:
+      - constructive-net
+
+  # Jobs runtime: callback server + worker + scheduler
+  knative-job-service:
+    container_name: knative-job-service
+    image: ghcr.io/constructive-io/launchql:b88e3d1
+    # Override the image entrypoint and run the jobs runtime directly.
+    entrypoint: ["node", "jobs/knative-job-service/dist/run.js"]
+    depends_on:
+      - simple-email
+    environment:
+      NODE_ENV: development
+
+      # Postgres (jobs extension lives in this DB)
+      PGUSER: postgres
+      PGHOST: postgres
+      PGPASSWORD: password
+      PGPORT: "5432"
+      PGDATABASE: launchql
+      JOBS_SCHEMA: app_jobs
+
+      # Worker configuration
+      JOBS_SUPPORT_ANY: "false"
+      JOBS_SUPPORTED: "simple-email"
+      HOSTNAME: "knative-job-service-1"
+
+      # Callback HTTP server (job completion callbacks)
+      INTERNAL_JOBS_CALLBACK_PORT: "8080"
+      INTERNAL_JOBS_CALLBACK_URL: "http://knative-job-service:8080"
+
+      # Function gateway base URL (used by worker when no dev map is present)
+      # Not used in dev when INTERNAL_GATEWAY_DEVELOPMENT_MAP is set, but required for validation.
+      KNATIVE_SERVICE_URL: "dev.internal"
+      INTERNAL_GATEWAY_URL: "http://simple-email:8080"
+
+      # Development-only map from task identifier -> function URL
+      # Used by @launchql/knative-job-worker when NODE_ENV !== 'production'.
+      # This lets the worker call the simple-email container directly in docker-compose.
+      INTERNAL_GATEWAY_DEVELOPMENT_MAP: '{"simple-email":"http://simple-email:8080"}'
+
+    ports:
+      - "8080:8080"
+    networks:
+      - constructive-net
+
+networks:
+  constructive-net:
+    external: true
+    name: constructive-net
