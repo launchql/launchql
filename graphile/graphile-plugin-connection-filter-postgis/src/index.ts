@@ -1,7 +1,14 @@
 import type { Plugin } from "graphile-build";
 
 import PostgisOperatorsPlugin from "./PgConnectionArgFilterPostgisOperatorsPlugin";
-import pkg from "../package.json";
+let pkg: any;
+try {
+  // In the built version (dist/), package.json is in the same directory
+  pkg = require("./package.json");
+} catch {
+  // In development (src/), package.json is one level up
+  pkg = require("../package.json");
+}
 
 const PostGraphileConnectionFilterPostgisPlugin: Plugin = (
   builder,

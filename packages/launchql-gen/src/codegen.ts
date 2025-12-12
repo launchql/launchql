@@ -126,6 +126,9 @@ export async function runCodegen(opts: LaunchQLGenOptions, cwd: string) {
 
   if (options.features.emitOperations || options.features.emitSdk) {
     docs = generateKeyedObjFromGqlMap(gqlMap)
+  }
+
+  if (options.features.emitOperations) {
     await writeOperationsDocuments(docs, operationsDir, options.documents.format, options.documents.convention)
   }
 

@@ -11,7 +11,14 @@ import PgConnectionArgFilterOperatorsPlugin from './PgConnectionArgFilterOperato
 import PgConnectionArgFilterPlugin from './PgConnectionArgFilterPlugin';
 import PgConnectionArgFilterRecordFunctionsPlugin from './PgConnectionArgFilterRecordFunctionsPlugin';
 import type { ConnectionFilterConfig, ConnectionFilterOptions } from './types';
-import pkg from '../package.json';
+let pkg: any;
+try {
+  // In the built version (dist/), package.json is in the same directory
+  pkg = require('./package.json');
+} catch {
+  // In development (src/), package.json is one level up
+  pkg = require('../package.json');
+}
 
 const defaultOptions: ConnectionFilterConfig = {
   connectionFilterArrays: true,
