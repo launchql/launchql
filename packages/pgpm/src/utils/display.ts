@@ -3,7 +3,7 @@ import yanse from 'yanse';
 
 // Function to display the version information
 export function displayVersion() {
-  const pkg = findAndRequirePackageJson();
+  const pkg = findAndRequirePackageJson(__dirname);
   console.log(yanse.green(`Name: ${pkg.name}`));
   console.log(yanse.blue(`Version: ${pkg.version}`));
 }

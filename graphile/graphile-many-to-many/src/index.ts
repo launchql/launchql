@@ -7,7 +7,7 @@ import PgManyToManyRelationInflectionPlugin from './PgManyToManyRelationInflecti
 import PgManyToManyRelationPlugin from './PgManyToManyRelationPlugin';
 import type { PgManyToManyOptions } from './types';
 
-const pkg = findAndRequirePackageJson();
+const pkg = findAndRequirePackageJson(__dirname);
 
 const PgManyToManyPlugin: Plugin = (builder: any, options: PgManyToManyOptions = {}) => {
   builder.hook('build', (build: any) => {

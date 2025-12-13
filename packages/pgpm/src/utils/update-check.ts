@@ -29,7 +29,7 @@ const shouldSkip = (command?: string): boolean => {
 export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Promise<UpdateCheckConfig | null> {
   const {
     pkgName = UPDATE_PACKAGE_NAME,
-    pkgVersion = findAndRequirePackageJson().version,
+    pkgVersion = findAndRequirePackageJson(__dirname).version,
     command,
     now = Date.now(),
     key = UPDATE_CHECK_APPSTASH_KEY,

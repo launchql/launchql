@@ -13,7 +13,7 @@ import PgConnectionArgFilterPlugin from './PgConnectionArgFilterPlugin';
 import PgConnectionArgFilterRecordFunctionsPlugin from './PgConnectionArgFilterRecordFunctionsPlugin';
 import type { ConnectionFilterConfig, ConnectionFilterOptions } from './types';
 
-const pkg = findAndRequirePackageJson();
+const pkg = findAndRequirePackageJson(__dirname);
 
 const defaultOptions: ConnectionFilterConfig = {
   connectionFilterArrays: true,

@@ -51,7 +51,7 @@ export default async (
     process.exit(0);
   }
 
-  const pkgJson = findAndRequirePackageJson();
+  const pkgJson = findAndRequirePackageJson(__dirname);
   const pkgName = (argv.package as string) || pkgJson.name || 'pgpm';
   const registry = argv.registry as string | undefined;
   const dryRun = Boolean(argv['dry-run']);

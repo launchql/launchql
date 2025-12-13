@@ -1,7 +1,7 @@
 import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import type { Plugin } from 'graphile-build';
 
-const pkg = findAndRequirePackageJson();
+const pkg = findAndRequirePackageJson(__dirname);
 
 const plugin: Plugin = (builder) => {
   builder.hook('build', (build) => {

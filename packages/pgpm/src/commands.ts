@@ -69,7 +69,7 @@ export const createPgpmCommandMap = (skipPgTeardown: boolean = false): Record<st
 
 export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: CLIOptions & { skipPgTeardown?: boolean }) => {
   if (argv.version || argv.v) {
-    const pkg = findAndRequirePackageJson();
+    const pkg = findAndRequirePackageJson(__dirname);
     console.log(pkg.version);
     process.exit(0);
   }
@@ -103,7 +103,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   try {
     await checkForUpdates({
       command,
-      pkgVersion: findAndRequirePackageJson().version
+      pkgVersion: findAndRequirePackageJson(__dirname).version
     });
   } catch {
     // ignore update check failures

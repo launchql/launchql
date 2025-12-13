@@ -3,7 +3,7 @@ import type { Plugin } from "graphile-build";
 
 import PostgisOperatorsPlugin from "./PgConnectionArgFilterPostgisOperatorsPlugin";
 
-const pkg = findAndRequirePackageJson();
+const pkg = findAndRequirePackageJson(__dirname);
 
 const PostGraphileConnectionFilterPostgisPlugin: Plugin = (
   builder,
