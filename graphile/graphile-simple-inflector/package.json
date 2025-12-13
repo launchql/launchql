@@ -1,6 +1,6 @@
 {
   "name": "graphile-simple-inflector",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Simple inflector plugin for Graphile/PostGraphile",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

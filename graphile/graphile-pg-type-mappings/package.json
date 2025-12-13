@@ -1,6 +1,6 @@
 {
   "name": "graphile-pg-type-mappings",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Custom PostgreSQL type mappings plugin for Graphile/PostGraphile",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/constructive-io/constructive/compare/pgpm@0.4.2...pgpm@0.4.3) (2025-12-13)
+
+### Bug Fixes
+
+- pass \_\_dirname to findAndRequirePackageJson for correct package.json resolution ([8fc4a97](https://github.com/constructive-io/constructive/commit/8fc4a9796bede5b556e42df9f82a627d008e1d20))
+
 ## [0.4.2](https://github.com/constructive-io/constructive/compare/pgpm@0.4.1...pgpm@0.4.2) (2025-12-12)
 
 **Note:** Version bump only for package pgpm

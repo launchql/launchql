@@ -1,6 +1,6 @@
 {
   "name": "@launchql/core",
-  "version": "2.18.2",
+  "version": "2.18.3",
   "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL Package and Migration Tools",
   "main": "index.js",

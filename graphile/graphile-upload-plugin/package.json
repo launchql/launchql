@@ -1,6 +1,6 @@
 {
   "name": "graphile-upload-plugin",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Graphile upload plugin for PostGraphile",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

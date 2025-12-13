@@ -1,6 +1,6 @@
 {
   "name": "@launchql/explorer",
-  "version": "2.8.2",
+  "version": "2.8.3",
   "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL Explorer",
   "main": "index.js",

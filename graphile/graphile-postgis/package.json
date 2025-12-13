@@ -1,6 +1,6 @@
 {
   "name": "graphile-postgis",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Graphile/PostGraphile PostGIS integration plugin",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

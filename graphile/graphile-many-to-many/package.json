@@ -1,6 +1,6 @@
 {
   "name": "graphile-many-to-many",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Add connection fields for many-to-many relations",
   "author": "Matt Bretl",
   "homepage": "https://github.com/constructive-io/constructive",

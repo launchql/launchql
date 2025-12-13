@@ -1,6 +1,6 @@
 {
   "name": "launchql-test",
-  "version": "2.9.2",
+  "version": "2.9.3",
   "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL Testing with all plugins loaded",
   "main": "index.js",
