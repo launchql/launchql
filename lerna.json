@@ -9,6 +9,9 @@
       "license": "MIT",
       "access": "restricted"
     },
+    "version": {
+      "syncWorkspaceLock": true
+    },
     "publish": {
       "allowBranch": "main",
       "message": "chore(release): publish",
