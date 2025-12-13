@@ -11,11 +11,6 @@
   "publishConfig": {
     "access": "restricted"
   },
-  "workspaces": [
-    "packages/*",
-    "sandbox/*",
-    "graphile/*"
-  ],
   "engines": {
     "node": ">=18.17.0"
   },

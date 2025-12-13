@@ -39,6 +39,6 @@
     "request": "2.88.2"
   },
   "devDependencies": {
-    "pgsql-test": "^2.15.2"
+    "pgsql-test": "workspace:^"
   }
 }
