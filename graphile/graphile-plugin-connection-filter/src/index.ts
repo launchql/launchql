@@ -1,3 +1,4 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import type { Plugin } from 'graphile-build';
 
 import ConnectionArgFilterPlugin from './ConnectionArgFilterPlugin';
@@ -11,7 +12,8 @@ import PgConnectionArgFilterOperatorsPlugin from './PgConnectionArgFilterOperato
 import PgConnectionArgFilterPlugin from './PgConnectionArgFilterPlugin';
 import PgConnectionArgFilterRecordFunctionsPlugin from './PgConnectionArgFilterRecordFunctionsPlugin';
 import type { ConnectionFilterConfig, ConnectionFilterOptions } from './types';
-import pkg from '../package.json';
+
+const pkg = findAndRequirePackageJson(__dirname);
 
 const defaultOptions: ConnectionFilterConfig = {
   connectionFilterArrays: true,

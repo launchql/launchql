@@ -51,7 +51,7 @@
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {
-    "@types/express": "^5.0.1",
+    "@types/express": "^5.0.6",
     "@types/graphql-upload": "^8.0.12",
     "makage": "^0.1.8",
     "nodemon": "^3.1.10",

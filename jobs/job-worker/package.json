@@ -30,6 +30,6 @@
   "dependencies": {
     "@launchql/job-utils": "workspace:^",
     "envalid": "6.0.2",
-    "pg": "8.3.3"
+    "pg": "8.16.3"
   }
 }

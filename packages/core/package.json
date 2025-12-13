@@ -40,7 +40,7 @@
     "sqitch"
   ],
   "devDependencies": {
-    "@types/pg": "^8.15.2",
+    "@types/pg": "^8.16.0",
     "copyfiles": "^2.4.1",
     "makage": "^0.1.8"
   },
@@ -49,17 +49,17 @@
     "@launchql/logger": "workspace:^",
     "@launchql/server-utils": "workspace:^",
     "@launchql/types": "workspace:^",
-    "@pgsql/types": "^17.6.1",
-    "create-gen-app": "^0.3.1",
+    "@pgsql/types": "^17.6.2",
+    "create-gen-app": "^0.3.3",
     "csv-to-pg": "^2.0.10",
     "glob": "^13.0.0",
     "komoji": "^0.7.8",
     "parse-package-name": "^1.0.0",
-    "pg": "^8.16.0",
+    "pg": "^8.16.3",
     "pg-cache": "workspace:^",
     "pg-env": "workspace:^",
-    "pgsql-deparser": "^17.12.1",
-    "pgsql-parser": "^17.9.1",
+    "pgsql-deparser": "^17.12.2",
+    "pgsql-parser": "^17.9.2",
     "yanse": "^0.1.5"
   },
   "peerDependencies": {

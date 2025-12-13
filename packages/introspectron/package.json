@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@jest/test-sequencer": "^30.2.0",
-    "@types/pg": "^8.15.2",
+    "@types/pg": "^8.16.0",
     "launchql-test": "workspace:^",
     "makage": "^0.1.8",
     "pgsql-test": "workspace:^"
@@ -38,7 +38,7 @@
   "dependencies": {
     "graphql": "15.10.1",
     "graphql-tag": "2.12.6",
-    "pg": "^8.16.0"
+    "pg": "^8.16.3"
   },
   "keywords": [
     "graphql",

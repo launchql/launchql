@@ -1,10 +1,9 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import yanse from 'yanse';
-
-import { readAndParsePackageJson } from '../package';
 
 // Function to display the version information
 export function displayVersion() {
-  const pkg = readAndParsePackageJson();
+  const pkg = findAndRequirePackageJson(__dirname);
   console.log(yanse.green(`Name: ${pkg.name}`));
   console.log(yanse.blue(`Version: ${pkg.version}`));
 }

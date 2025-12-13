@@ -1,7 +1,9 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import type { Plugin } from "graphile-build";
 
 import PostgisOperatorsPlugin from "./PgConnectionArgFilterPostgisOperatorsPlugin";
-import pkg from "../package.json";
+
+const pkg = findAndRequirePackageJson(__dirname);
 
 const PostGraphileConnectionFilterPostgisPlugin: Plugin = (
   builder,

@@ -1,12 +1,12 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { checkForUpdates, createInitUsageText, createPgpmCommandMap } from 'pgpm';
 
-import explorer from './commands/explorer';
-import server from './commands/server';
-import getGraphqlSchema from './commands/get-graphql-schema';
 import codegen from './commands/codegen';
-import { readAndParsePackageJson } from './package';
+import explorer from './commands/explorer';
+import getGraphqlSchema from './commands/get-graphql-schema';
+import server from './commands/server';
 import { cliExitWithError, extractFirst, usageText } from './utils';
 
 const createCommandMap = (skipPgTeardown: boolean = false): Record<string, Function> => {
@@ -26,7 +26,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
 
   // Run update check early so it shows on help/version paths too
   try {
-    const pkg = readAndParsePackageJson();
+    const pkg = findAndRequirePackageJson(__dirname);
     await checkForUpdates({
       command: command || 'help',
       pkgName: pkg.name,
@@ -40,7 +40,7 @@ export const commands = async (argv: Partial<ParsedArgs>, prompter: Inquirerer, 
   }
 
   if (argv.version || argv.v) {
-    const pkg = readAndParsePackageJson();
+    const pkg = findAndRequirePackageJson(__dirname);
     console.log(pkg.version);
     process.exit(0);
   }

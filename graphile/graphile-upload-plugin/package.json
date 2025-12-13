@@ -38,15 +38,15 @@
     "url": "https://github.com/constructive-io/constructive/issues"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/client-s3": "^3.948.0",
     "@launchql/env": "workspace:^",
     "@launchql/s3-utils": "workspace:^",
-    "@types/pg": "^8.15.2",
+    "@types/pg": "^8.16.0",
     "graphile-test": "workspace:^",
     "graphql-tag": "^2.12.6",
     "makage": "^0.1.6",
     "pgsql-test": "workspace:^",
-    "ts-jest": "^29.1.0"
+    "ts-jest": "^29.4.6"
   },
   "dependencies": {
     "@launchql/s3-streamer": "workspace:^",

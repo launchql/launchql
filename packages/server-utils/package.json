@@ -33,11 +33,11 @@
     "@launchql/types": "workspace:^",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "lru-cache": "^11.1.0"
+    "lru-cache": "^11.2.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.1",
+    "@types/express": "^5.0.6",
     "makage": "^0.1.8",
     "ts-node": "^10.9.2"
   },
