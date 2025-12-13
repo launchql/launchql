@@ -781,8 +781,8 @@ importers:
         version: 2.88.2
     devDependencies:
       pgsql-test:
-        specifier: ^2.15.2
-        version: 2.15.2(@babel/core@7.28.5)(@pgsql/types@17.6.2)(graphql@15.10.1)
+        specifier: workspace:^
+        version: link:../../packages/pgsql-test/dist
 
   packages/cli:
     dependencies:
@@ -2762,17 +2762,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@launchql/core@2.18.2':
-    resolution: {integrity: sha512-xVoWbbGarvj15ve2xujtOiB+zDat8A//hXugH5kDDPriTXp792Xspysrfo2oxQRFiUlpOC5lRY2AAxEsq7UuRg==}
-    peerDependencies:
-      '@pgsql/types': ^17.6.1
-
-  '@launchql/env@2.6.1':
-    resolution: {integrity: sha512-L8IkcN1gzSJZnO3dO/3aL8AdpDFGkPBgb0f8j9nquLXj611PltNoLCNUS2/Q6aTeF7hogycSx5+7+N4LftU8IQ==}
-
-  '@launchql/logger@1.2.1':
-    resolution: {integrity: sha512-ZR2DZtfvWjGHQXXw4Tvmsi8VtJuvXqLbmjcK8ldjI7wbH/3SlYujYpiKJAxU/SdPpAD7/a6QmNdHzMeyfjwDIg==}
-
   '@launchql/mjml@0.1.1':
     resolution: {integrity: sha512-6+OEmECuu5atRZ43ovsMfFs+T4NWNaKbzNG0uA8HYaBSn3kWR7GH3QnmL3lCIeymLtvgua8aZChYvg6SxrQdnw==}
     peerDependencies:
@@ -2786,17 +2775,11 @@ packages:
     resolution: {integrity: sha512-vwi1nG2/heVFsIMHQU1KxTjUp5c757CTtRAZn/jutApCkFlle1iv8tzM/DHlSZJKDldxaYqnNYTg0pTyp8Bbtg==}
     engines: {node: '>=12.0.0'}
 
-  '@launchql/server-utils@2.7.1':
-    resolution: {integrity: sha512-UWsQnRrfbwA5QpllXIHCLS+xsh7SGLh5tA3xqVialJTB07N61NQhb7/xxKkW/X440ZNrD18HHZxLJkiBg9LzeQ==}
-
   '@launchql/styled-email@0.1.0':
     resolution: {integrity: sha512-ISjzsY+3EOH/qAKHPq3evw9QmmEyA8Vw+0pUf+Zf8l4/rAHJJKrSa/uPiaUf2Abi8yAZKyx2uyaZq4ExNNkD+w==}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
-
-  '@launchql/types@2.10.1':
-    resolution: {integrity: sha512-Qxz/Si7DdZdVGlJM0+J4GgNE5yK6hieGeaG5se/OvXaJYVP49vZx4yKXu5lPvx+6MkJ1PQbQxQ5+6+fE/5TR/w==}
 
   '@lerna/create@8.2.4':
     resolution: {integrity: sha512-A8AlzetnS2WIuhijdAzKUyFpR5YbLLfV3luQ4lzBgIBgRfuoBDZeF+RSZPhra+7A6/zTUlrbhKZIOi/MNhqgvQ==}
@@ -4007,10 +3990,6 @@ packages:
     resolution: {integrity: sha512-02qvAaxv8tp7fBa/mw1ga98OGm+eCbqzJOKoRt70sLmfEEi+jyBYVTDGfCL/k06/4EMk/z01gCe7HoCH/f2LTg==}
     engines: {node: '>=18'}
 
-  body-parser@2.2.1:
-    resolution: {integrity: sha512-nfDwkulwiZYQIGwxdy0RUmowMhKcFVcYXUU7m4QlKYim1rUtg83xm2yjZ40QjDuc291AJjjeSc9b++AWHSgSHw==}
-    engines: {node: '>=18'}
-
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
 
@@ -5071,10 +5050,6 @@ packages:
     resolution: {integrity: sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==}
     engines: {node: '>= 18'}
 
-  express@5.2.1:
-    resolution: {integrity: sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==}
-    engines: {node: '>= 18'}
-
   extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
 
@@ -5161,10 +5136,6 @@ packages:
   finalhandler@2.1.0:
     resolution: {integrity: sha512-/t88Ty3d5JWQbWYgaOGCCYfXRwV1+be02WqYYlL6h0lEiUAMPM8o8qKGO01YIkOHzka2up08wvgYD0mDiI+q3Q==}
     engines: {node: '>= 0.8'}
-
-  finalhandler@2.1.1:
-    resolution: {integrity: sha512-S8KoZgRZN+a5rNwqTxlZZePjT/4cnm0ROV70LedRHZ0p8u9fRID0hJUZQpkKLzro8LfmC8sx23bY6tVNxv8pQA==}
-    engines: {node: '>= 18.0.0'}
 
   find-and-require-package-json@0.8.0:
     resolution: {integrity: sha512-8cXwUYP7ApxyYQQgBSyQmyyfz1WHoxHsZ06YM645S2/lCbZmrzjfvsBhTe6af6zeyoHEcYBlWuZW0rWtnnuKfw==}
@@ -5537,10 +5508,6 @@ packages:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
 
-  http-errors@2.0.1:
-    resolution: {integrity: sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==}
-    engines: {node: '>= 0.8'}
-
   http-proxy-agent@2.1.0:
     resolution: {integrity: sha512-qwHbBLV7WviBl0rQsOzH6o5lwyOIvwp/BdFnvVxXORldu5TmjFfjzBcWUWS5kWAZhmv+JtiDhSuQCp4sBfbIgg==}
     engines: {node: '>= 4.5.0'}
@@ -5575,10 +5542,6 @@ packages:
 
   iconv-lite@0.7.0:
     resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
-    engines: {node: '>=0.10.0'}
-
-  iconv-lite@0.7.1:
-    resolution: {integrity: sha512-2Tth85cXwGFHfvRgZWszZSvdo+0Xsqmw8k8ZwxScfcBneNUraK+dxRxRm24nszx80Y0TVio8kKLt5sLE7ZCLlw==}
     engines: {node: '>=0.10.0'}
 
   ieee754@1.2.1:
@@ -7020,9 +6983,6 @@ packages:
   pg-ast@2.3.5:
     resolution: {integrity: sha512-1YnCY5EDcrjl0HIa/w6CFFxkUi7UIvGwWqmqKfV//SK6e+3JuCYUMQ4IQUSO64DYAvUnUhYz0X8yY7pcfRXH9A==}
 
-  pg-cache@1.5.1:
-    resolution: {integrity: sha512-rOKJVSKIrMg7dpTykTVpAJCH34l79h7Rdp6Db2pNHsI0/Bpe3SZbqD/ZUPktiZ1zSIhuZ0gq5x8qms019Qz7Dg==}
-
   pg-cloudflare@1.2.7:
     resolution: {integrity: sha512-YgCtzMH0ptvZJslLM1ffsY4EuGaU0cx4XSdXLRFae8bPP4dS5xL1tNB3k2o/N64cHJpwU7dxKli/nZ2lUa5fLg==}
 
@@ -7031,9 +6991,6 @@ packages:
 
   pg-copy-streams@7.0.0:
     resolution: {integrity: sha512-zBvnY6wtaBRE2ae2xXWOOGMaNVPkXh1vhypAkNSKgMdciJeTyIQAHZaEeRAxUjs/p1El5jgzYmwG5u871Zj3dQ==}
-
-  pg-env@1.2.1:
-    resolution: {integrity: sha512-J1p3sxIoguVtOpkCsloM11R3H/F4OOfvMYc4zFl38Uu0p61w7tvOfy/xsKboH/UwcLieg4cNAPuzbzcDlfI0zA==}
 
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
@@ -7087,9 +7044,6 @@ packages:
 
   pgsql-parser@17.9.2:
     resolution: {integrity: sha512-1S8nva/PkJBr8oBT6xIEVpUPupd4WqqKH9sPGlk3t1hbehF0Fp3O3DskQ3dOZctEsnK62pIrqCImngWkvRzaJA==}
-
-  pgsql-test@2.15.2:
-    resolution: {integrity: sha512-ygCSJASj/2NcB2jYLi6PODdMM0LxC5lY33Zzh5UreLb6UC0Ow6Gl8/o3ylzxCqsPApXkcy/N9cUiVBEky4y6og==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -7296,10 +7250,6 @@ packages:
 
   raw-body@3.0.1:
     resolution: {integrity: sha512-9G8cA+tuMS75+6G/TzW8OtLzmBDMo8p1JRxN5AZ+LAp8uxGA8V8GZm4GQ4/N5QNQEnLmg6SS7wyuSmbKepiKqA==}
-    engines: {node: '>= 0.10'}
-
-  raw-body@3.0.2:
-    resolution: {integrity: sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==}
     engines: {node: '>= 0.10'}
 
   react-dom@19.2.0:
@@ -9784,47 +9734,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@launchql/core@2.18.2(@babel/core@7.28.5)(@pgsql/types@17.6.2)(graphql@15.10.1)':
-    dependencies:
-      '@launchql/env': 2.6.1(graphql@15.10.1)
-      '@launchql/logger': 1.2.1
-      '@launchql/server-utils': 2.7.1(graphql@15.10.1)
-      '@launchql/types': 2.10.1(graphql@15.10.1)
-      '@pgsql/types': 17.6.2
-      create-gen-app: 0.3.3
-      csv-to-pg: 2.0.10(@babel/core@7.28.5)
-      glob: 13.0.0
-      komoji: 0.7.9
-      parse-package-name: 1.0.0
-      pg: 8.16.3
-      pg-cache: 1.5.1(graphql@15.10.1)
-      pg-env: 1.2.1
-      pgsql-deparser: 17.12.2
-      pgsql-parser: 17.9.2
-      yanse: 0.1.6
-    transitivePeerDependencies:
-      - '@babel/core'
-      - bufferutil
-      - graphql
-      - pg-native
-      - supports-color
-      - utf-8-validate
-
-  '@launchql/env@2.6.1(graphql@15.10.1)':
-    dependencies:
-      '@launchql/types': 2.10.1(graphql@15.10.1)
-      deepmerge: 4.3.1
-    transitivePeerDependencies:
-      - bufferutil
-      - graphql
-      - pg-native
-      - supports-color
-      - utf-8-validate
-
-  '@launchql/logger@1.2.1':
-    dependencies:
-      yanse: 0.1.6
-
   '@launchql/mjml@0.1.1(@babel/core@7.28.5)(encoding@0.1.13)(react-dom@19.2.0(react@19.2.0))(react-is@18.3.1)(react@19.2.0)':
     dependencies:
       '@babel/runtime': 7.28.4
@@ -9862,20 +9771,6 @@ snapshots:
       '@types/node': 25.0.1
       long: 5.3.2
 
-  '@launchql/server-utils@2.7.1(graphql@15.10.1)':
-    dependencies:
-      '@launchql/logger': 1.2.1
-      '@launchql/types': 2.10.1(graphql@15.10.1)
-      cors: 2.8.5
-      express: 5.2.1
-      lru-cache: 11.2.4
-    transitivePeerDependencies:
-      - bufferutil
-      - graphql
-      - pg-native
-      - supports-color
-      - utf-8-validate
-
   '@launchql/styled-email@0.1.0(@babel/core@7.28.5)(encoding@0.1.13)(react-dom@19.2.0(react@19.2.0))(react-is@18.3.1)(react@19.2.0)':
     dependencies:
       '@babel/runtime': 7.28.4
@@ -9888,19 +9783,6 @@ snapshots:
       - '@babel/core'
       - encoding
       - react-is
-
-  '@launchql/types@2.10.1(graphql@15.10.1)':
-    dependencies:
-      deepmerge: 4.3.1
-      graphile-build: 4.14.1(graphql@15.10.1)
-      pg-env: 1.2.1
-      postgraphile: 4.14.1
-    transitivePeerDependencies:
-      - bufferutil
-      - graphql
-      - pg-native
-      - supports-color
-      - utf-8-validate
 
   '@lerna/create@8.2.4(@types/node@20.19.25)(encoding@0.1.13)(typescript@5.9.3)':
     dependencies:
@@ -11485,20 +11367,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  body-parser@2.2.1:
-    dependencies:
-      bytes: 3.1.2
-      content-type: 1.0.5
-      debug: 4.4.3(supports-color@5.5.0)
-      http-errors: 2.0.1
-      iconv-lite: 0.7.1
-      on-finished: 2.4.1
-      qs: 6.14.0
-      raw-body: 3.0.2
-      type-is: 2.0.1
-    transitivePeerDependencies:
-      - supports-color
-
   boolbase@1.0.0: {}
 
   bowser@2.13.1: {}
@@ -12586,39 +12454,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  express@5.2.1:
-    dependencies:
-      accepts: 2.0.0
-      body-parser: 2.2.1
-      content-disposition: 1.0.1
-      content-type: 1.0.5
-      cookie: 0.7.2
-      cookie-signature: 1.2.2
-      debug: 4.4.3(supports-color@5.5.0)
-      depd: 2.0.0
-      encodeurl: 2.0.0
-      escape-html: 1.0.3
-      etag: 1.8.1
-      finalhandler: 2.1.1
-      fresh: 2.0.0
-      http-errors: 2.0.1
-      merge-descriptors: 2.0.0
-      mime-types: 3.0.2
-      on-finished: 2.4.1
-      once: 1.4.0
-      parseurl: 1.3.3
-      proxy-addr: 2.0.7
-      qs: 6.14.0
-      range-parser: 1.2.1
-      router: 2.2.0
-      send: 1.2.0
-      serve-static: 2.2.0
-      statuses: 2.0.2
-      type-is: 2.0.1
-      vary: 1.1.2
-    transitivePeerDependencies:
-      - supports-color
-
   extend@3.0.2: {}
 
   external-editor@2.2.0:
@@ -12726,17 +12561,6 @@ snapshots:
       - supports-color
 
   finalhandler@2.1.0:
-    dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
-      encodeurl: 2.0.0
-      escape-html: 1.0.3
-      on-finished: 2.4.1
-      parseurl: 1.3.3
-      statuses: 2.0.2
-    transitivePeerDependencies:
-      - supports-color
-
-  finalhandler@2.1.1:
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
       encodeurl: 2.0.0
@@ -13184,14 +13008,6 @@ snapshots:
       statuses: 2.0.1
       toidentifier: 1.0.1
 
-  http-errors@2.0.1:
-    dependencies:
-      depd: 2.0.0
-      inherits: 2.0.4
-      setprototypeof: 1.2.0
-      statuses: 2.0.2
-      toidentifier: 1.0.1
-
   http-proxy-agent@2.1.0:
     dependencies:
       agent-base: 4.3.0
@@ -13237,10 +13053,6 @@ snapshots:
       safer-buffer: 2.1.2
 
   iconv-lite@0.7.0:
-    dependencies:
-      safer-buffer: 2.1.2
-
-  iconv-lite@0.7.1:
     dependencies:
       safer-buffer: 2.1.2
 
@@ -15257,28 +15069,12 @@ snapshots:
       '@pgsql/types': 17.6.2
       nested-obj: 0.0.1
 
-  pg-cache@1.5.1(graphql@15.10.1):
-    dependencies:
-      '@launchql/logger': 1.2.1
-      '@launchql/types': 2.10.1(graphql@15.10.1)
-      lru-cache: 11.2.4
-      pg: 8.16.3
-      pg-env: 1.2.1
-    transitivePeerDependencies:
-      - bufferutil
-      - graphql
-      - pg-native
-      - supports-color
-      - utf-8-validate
-
   pg-cloudflare@1.2.7:
     optional: true
 
   pg-connection-string@2.9.1: {}
 
   pg-copy-streams@7.0.0: {}
-
-  pg-env@1.2.1: {}
 
   pg-int8@1.0.1: {}
 
@@ -15356,27 +15152,6 @@ snapshots:
       '@pgsql/types': 17.6.2
       libpg-query: 17.7.3
       pgsql-deparser: 17.12.2
-
-  pgsql-test@2.15.2(@babel/core@7.28.5)(@pgsql/types@17.6.2)(graphql@15.10.1):
-    dependencies:
-      '@launchql/core': 2.18.2(@babel/core@7.28.5)(@pgsql/types@17.6.2)(graphql@15.10.1)
-      '@launchql/env': 2.6.1(graphql@15.10.1)
-      '@launchql/logger': 1.2.1
-      '@launchql/server-utils': 2.7.1(graphql@15.10.1)
-      '@launchql/types': 2.10.1(graphql@15.10.1)
-      csv-parse: 6.1.0
-      pg: 8.16.3
-      pg-cache: 1.5.1(graphql@15.10.1)
-      pg-copy-streams: 7.0.0
-      pg-env: 1.2.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@pgsql/types'
-      - bufferutil
-      - graphql
-      - pg-native
-      - supports-color
-      - utf-8-validate
 
   picocolors@1.1.1: {}
 
@@ -15580,13 +15355,6 @@ snapshots:
       bytes: 3.1.2
       http-errors: 2.0.0
       iconv-lite: 0.7.0
-      unpipe: 1.0.0
-
-  raw-body@3.0.2:
-    dependencies:
-      bytes: 3.1.2
-      http-errors: 2.0.1
-      iconv-lite: 0.7.1
       unpipe: 1.0.0
 
   react-dom@19.2.0(react@19.2.0):
