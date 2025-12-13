@@ -2,9 +2,6 @@
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "version": "independent",
   "npmClient": "pnpm",
-  "npmClientArgs": [
-    "--frozen-lockfile"
-  ],
   "registry": "https://registry.npmjs.org",
   "command": {
     "create": {
