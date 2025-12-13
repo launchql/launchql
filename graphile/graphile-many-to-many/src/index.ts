@@ -1,11 +1,13 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import type { Plugin } from 'graphile-build';
 
-import pkg from '../package.json';
 import PgManyToManyRelationEdgeColumnsPlugin from './PgManyToManyRelationEdgeColumnsPlugin';
 import PgManyToManyRelationEdgeTablePlugin from './PgManyToManyRelationEdgeTablePlugin';
 import PgManyToManyRelationInflectionPlugin from './PgManyToManyRelationInflectionPlugin';
 import PgManyToManyRelationPlugin from './PgManyToManyRelationPlugin';
 import type { PgManyToManyOptions } from './types';
+
+const pkg = findAndRequirePackageJson(__dirname);
 
 const PgManyToManyPlugin: Plugin = (builder: any, options: PgManyToManyOptions = {}) => {
   builder.hook('build', (build: any) => {

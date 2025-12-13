@@ -44,10 +44,11 @@
     "pgsql-test": "workspace:^"
   },
   "dependencies": {
+    "find-and-require-package-json": "^0.8.0",
     "graphile-build": "^4.14.1",
     "graphile-build-pg": "^4.14.1",
     "graphile-utils": "^4.14.1",
     "graphql": "15.10.1",
-    "pg": "^8.16.0"
+    "pg": "^8.16.3"
   }
 }

@@ -39,6 +39,7 @@
     "url": "https://github.com/constructive-io/constructive/issues"
   },
   "dependencies": {
+    "find-and-require-package-json": "^0.8.0",
     "graphile-build": "^4.14.1",
     "graphile-build-pg": "^4.14.1",
     "graphql": "15.10.1"
@@ -48,10 +49,10 @@
   },
   "devDependencies": {
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
-    "@types/pg": "^8.15.6",
+    "@types/pg": "^8.16.0",
     "graphile-test": "workspace:^",
     "makage": "^0.1.6",
-    "pg": "^8.16.0",
+    "pg": "^8.16.3",
     "pgsql-test": "workspace:^"
   }
 }

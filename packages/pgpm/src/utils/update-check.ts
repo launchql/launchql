@@ -1,3 +1,4 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import { Logger } from '@launchql/logger';
 import {
   UpdateCheckConfig,
@@ -5,7 +6,6 @@ import {
   UPDATE_CHECK_TTL_MS,
   UPDATE_PACKAGE_NAME
 } from '@launchql/types';
-import { readAndParsePackageJson } from '../package';
 import { compareVersions, fetchLatestVersion } from './npm-version';
 import { readUpdateConfig, shouldCheck, writeUpdateConfig, UpdateConfigOptions } from './update-config';
 
@@ -29,7 +29,7 @@ const shouldSkip = (command?: string): boolean => {
 export async function checkForUpdates(options: CheckForUpdatesOptions = {}): Promise<UpdateCheckConfig | null> {
   const {
     pkgName = UPDATE_PACKAGE_NAME,
-    pkgVersion = readAndParsePackageJson().version,
+    pkgVersion = findAndRequirePackageJson(__dirname).version,
     command,
     now = Date.now(),
     key = UPDATE_CHECK_APPSTASH_KEY,
