@@ -1,7 +1,7 @@
+import { findAndRequirePackageJson } from 'find-and-require-package-json';
 import { Logger } from '@launchql/logger';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { spawn } from 'child_process';
-import { readAndParsePackageJson } from '../package';
 import { fetchLatestVersion } from '../utils/npm-version';
 import { cliExitWithError } from '../utils/cli-error';
 
@@ -51,7 +51,7 @@ export default async (
     process.exit(0);
   }
 
-  const pkgJson = readAndParsePackageJson();
+  const pkgJson = findAndRequirePackageJson();
   const pkgName = (argv.package as string) || pkgJson.name || 'pgpm';
   const registry = argv.registry as string | undefined;
   const dryRun = Boolean(argv['dry-run']);

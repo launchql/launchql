@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/accept-language-parser": "^1.5.4",
-    "@types/pg": "^8.15.2",
+    "@types/pg": "^8.16.0",
     "graphile-test": "workspace:^",
     "makage": "^0.1.8",
     "pgsql-test": "workspace:^"
@@ -53,6 +53,6 @@
     "graphile-utils": "^4.14.1",
     "graphql": "15.10.1",
     "graphql-tag": "2.12.6",
-    "pg": "^8.16.0"
+    "pg": "^8.16.3"
   }
 }

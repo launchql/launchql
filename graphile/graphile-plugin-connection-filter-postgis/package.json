@@ -40,6 +40,7 @@
     "launchql"
   ],
   "dependencies": {
+    "find-and-require-package-json": "^0.6.8",
     "graphile-build": "^4.14.1",
     "graphile-build-pg": "^4.14.1",
     "graphile-plugin-connection-filter": "workspace:^",
@@ -51,12 +52,12 @@
     "postgraphile": "^4.14.1"
   },
   "devDependencies": {
-    "@types/pg": "^8.15.6",
+    "@types/pg": "^8.16.0",
     "graphile-plugin-connection-filter": "workspace:^",
     "graphile-test": "workspace:^",
     "graphql": "15.10.1",
     "makage": "^0.1.6",
-    "pg": "^8.16.0",
+    "pg": "^8.16.3",
     "pgsql-test": "workspace:^",
     "postgraphile": "^4.14.1"
   }

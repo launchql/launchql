@@ -31,12 +31,12 @@
   "dependencies": {
     "@launchql/logger": "workspace:^",
     "@launchql/types": "workspace:^",
-    "lru-cache": "^11.1.0",
-    "pg": "^8.16.0",
+    "lru-cache": "^11.2.4",
+    "pg": "^8.16.3",
     "pg-env": "workspace:^"
   },
   "devDependencies": {
-    "@types/pg": "^8.15.2",
+    "@types/pg": "^8.16.0",
     "makage": "^0.1.8"
   },
   "keywords": [

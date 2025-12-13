@@ -35,7 +35,7 @@
     "@launchql/job-pg": "workspace:^",
     "@launchql/job-utils": "workspace:^",
     "envalid": "6.0.2",
-    "pg": "8.3.3",
+    "pg": "8.16.3",
     "request": "2.88.2"
   },
   "devDependencies": {
