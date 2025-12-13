@@ -39,7 +39,7 @@
     "url": "https://github.com/constructive-io/constructive/issues"
   },
   "dependencies": {
-    "find-and-require-package-json": "^0.6.8",
+    "find-and-require-package-json": "^0.8.0",
     "graphile-build": "^4.14.1",
     "graphile-build-pg": "^4.14.1",
     "graphql": "15.10.1"

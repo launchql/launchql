@@ -46,7 +46,6 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "find-and-require-package-json": "^0.6.8",
     "@launchql/codegen": "workspace:^",
     "@launchql/core": "workspace:^",
     "@launchql/env": "workspace:^",
@@ -55,7 +54,8 @@
     "@launchql/server": "workspace:^",
     "@launchql/server-utils": "workspace:^",
     "@launchql/types": "workspace:^",
-    "inquirerer": "^2.1.10",
+    "find-and-require-package-json": "^0.8.0",
+    "inquirerer": "^2.1.11",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.8",
     "pg-cache": "workspace:^",

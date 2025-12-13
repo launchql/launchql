@@ -180,8 +180,8 @@ importers:
   graphile/graphile-many-to-many:
     dependencies:
       find-and-require-package-json:
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.8.0
+        version: 0.8.0
       graphile-build:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)
@@ -264,8 +264,8 @@ importers:
   graphile/graphile-plugin-connection-filter:
     dependencies:
       find-and-require-package-json:
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.8.0
+        version: 0.8.0
       graphile-build:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)
@@ -302,8 +302,8 @@ importers:
   graphile/graphile-plugin-connection-filter-postgis:
     dependencies:
       find-and-require-package-json:
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.8.0
+        version: 0.8.0
       graphile-build:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)
@@ -375,8 +375,8 @@ importers:
   graphile/graphile-postgis:
     dependencies:
       find-and-require-package-json:
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.8.0
+        version: 0.8.0
       graphile-build:
         specifier: ^4.14.1
         version: 4.14.1(graphql@15.10.1)
@@ -811,11 +811,11 @@ importers:
         specifier: workspace:^
         version: link:../types/dist
       find-and-require-package-json:
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.8.0
+        version: 0.8.0
       inquirerer:
-        specifier: ^2.1.10
-        version: 2.1.10
+        specifier: ^2.1.11
+        version: 2.1.11
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.1
@@ -919,8 +919,8 @@ importers:
         specifier: ^17.6.2
         version: 17.6.2
       create-gen-app:
-        specifier: ^0.3.2
-        version: 0.3.2
+        specifier: ^0.3.3
+        version: 0.3.3
       csv-to-pg:
         specifier: ^2.0.10
         version: 2.0.10(@babel/core@7.28.5)
@@ -1372,14 +1372,14 @@ importers:
         specifier: ^0.2.4
         version: 0.2.4
       create-gen-app:
-        specifier: ^0.3.2
-        version: 0.3.2
+        specifier: ^0.3.3
+        version: 0.3.3
       find-and-require-package-json:
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.8.0
+        version: 0.8.0
       inquirerer:
-        specifier: ^2.1.10
-        version: 2.1.10
+        specifier: ^2.1.11
+        version: 2.1.11
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.1
@@ -4419,8 +4419,8 @@ packages:
       typescript:
         optional: true
 
-  create-gen-app@0.3.2:
-    resolution: {integrity: sha512-egs3/VyeTxd12A+VuN8ahefwzyMpr9FSUjb6rcyvm3PJ36dBy9ErXNC1h+nWhY52Pvc3C8UwO3ycT4QipaHFxA==}
+  create-gen-app@0.3.3:
+    resolution: {integrity: sha512-roP8LcEpNOyCO9p8IPovGitMJnvFmBZEUX6Th33pNdM+5+h0KoORIoUTnF/gYlE9A6xDZSAehlF5BJuppsXj9Q==}
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -5166,8 +5166,8 @@ packages:
     resolution: {integrity: sha512-S8KoZgRZN+a5rNwqTxlZZePjT/4cnm0ROV70LedRHZ0p8u9fRID0hJUZQpkKLzro8LfmC8sx23bY6tVNxv8pQA==}
     engines: {node: '>= 18.0.0'}
 
-  find-and-require-package-json@0.6.8:
-    resolution: {integrity: sha512-F2ZOX3wapH/ZryLfYgHNnqE6kEH23VsReL4Xc2iwMUPhAfc2SasFqBWtG+P4G+b6S/IbKjGvtKS6wqy46aNByQ==}
+  find-and-require-package-json@0.8.0:
+    resolution: {integrity: sha512-8cXwUYP7ApxyYQQgBSyQmyyfz1WHoxHsZ06YM645S2/lCbZmrzjfvsBhTe6af6zeyoHEcYBlWuZW0rWtnnuKfw==}
 
   find-up@2.1.0:
     resolution: {integrity: sha512-NWzkk0jSJtTt08+FBFMvXoeZnOJD+jTtsRmBYbAIzJdX6l7dLgR7CTubCM5/eDdPUBvLCeVasP1brfVR/9/EZQ==}
@@ -5672,8 +5672,8 @@ packages:
     resolution: {integrity: sha512-UjOaSel/iddGZJ5xP/Eixh6dY1XghiBw4XK13rCCIJcJfyhhoul/7KhLLUGtebEj6GDYM6Vnx/mVsjx2L/mFIA==}
     engines: {node: '>=12.0.0'}
 
-  inquirerer@2.1.10:
-    resolution: {integrity: sha512-HPlb/k+8Hz+SkSPzsmHMfnlKxGowtw1UW7P5rDvVvml5olufIqXrfYUECNOxKzE+jhk2VsEIBaCs++cCOADF+w==}
+  inquirerer@2.1.11:
+    resolution: {integrity: sha512-qCbwnUsKQi/m85IcE1buAcTfm/79t1tKnYFA2rTLqUelER/0naIRNoC0XYQv9JVFhEsaqfLFVPhnzCtV0IbcIw==}
 
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
@@ -9791,7 +9791,7 @@ snapshots:
       '@launchql/server-utils': 2.7.1(graphql@15.10.1)
       '@launchql/types': 2.10.1(graphql@15.10.1)
       '@pgsql/types': 17.6.2
-      create-gen-app: 0.3.2
+      create-gen-app: 0.3.3
       csv-to-pg: 2.0.10(@babel/core@7.28.5)
       glob: 13.0.0
       komoji: 0.7.9
@@ -11976,10 +11976,10 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  create-gen-app@0.3.2:
+  create-gen-app@0.3.3:
     dependencies:
       appstash: 0.2.4
-      inquirerer: 2.1.10
+      inquirerer: 2.1.11
 
   create-require@1.1.1: {}
 
@@ -12747,7 +12747,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  find-and-require-package-json@0.6.8: {}
+  find-and-require-package-json@0.8.0: {}
 
   find-up@2.1.0:
     dependencies:
@@ -13371,10 +13371,10 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  inquirerer@2.1.10:
+  inquirerer@2.1.11:
     dependencies:
       deepmerge: 4.3.1
-      find-and-require-package-json: 0.6.8
+      find-and-require-package-json: 0.8.0
       js-yaml: 4.1.1
       minimist: 1.2.8
       yanse: 0.1.6

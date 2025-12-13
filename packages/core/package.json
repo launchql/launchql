@@ -50,7 +50,7 @@
     "@launchql/server-utils": "workspace:^",
     "@launchql/types": "workspace:^",
     "@pgsql/types": "^17.6.2",
-    "create-gen-app": "^0.3.2",
+    "create-gen-app": "^0.3.3",
     "csv-to-pg": "^2.0.10",
     "glob": "^13.0.0",
     "komoji": "^0.7.8",
