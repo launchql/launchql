@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { LaunchQLPackage } from '../src';
+import { PgpmPackage } from '../src';
 import { getFixturePath } from './utils';
 
 const { mkdtempSync, rmSync, cpSync } = fs;
@@ -11,7 +11,7 @@ export class TestFixture {
   readonly tempDir: string;
   readonly tempFixtureDir: string;
   readonly getFixturePath: (...paths: string[]) => string;
-  readonly getModuleProject: (workspacePath: string[], moduleName: string) => LaunchQLPackage;
+  readonly getModuleProject: (workspacePath: string[], moduleName: string) => PgpmPackage;
   
   constructor(...fixturePath: string[]) {
     const originalFixtureDir = getFixturePath(...fixturePath);
@@ -23,12 +23,12 @@ export class TestFixture {
     this.getFixturePath = (...paths: string[]) =>
       path.join(this.tempFixtureDir, ...paths);
   
-    this.getModuleProject = (workspacePath: string[], moduleName: string): LaunchQLPackage => {
-      const workspace = new LaunchQLPackage(this.getFixturePath(...workspacePath));
+    this.getModuleProject = (workspacePath: string[], moduleName: string): PgpmPackage => {
+      const workspace = new PgpmPackage(this.getFixturePath(...workspacePath));
       const moduleMap = workspace.getModuleMap();
       const meta = moduleMap[moduleName];
       if (!meta) throw new Error(`Module ${moduleName} not found in workspace`);
-      return new LaunchQLPackage(this.getFixturePath(...workspacePath, meta.path));
+      return new PgpmPackage(this.getFixturePath(...workspacePath, meta.path));
     };
   }
   

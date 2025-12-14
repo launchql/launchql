@@ -1,7 +1,7 @@
 import { getEnvOptions } from '@pgpmjs/env';
 import { Logger } from '@pgpmjs/logger';
 import { LaunchQLServer as server } from '@launchql/server';
-import { LaunchQLOptions } from '@pgpmjs/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, OptionValue,Question } from 'inquirerer';
 import { getPgPool } from 'pg-cache';
 
@@ -187,7 +187,7 @@ export default async (
     roleName = selectedRoleName;
   }
 
-  const options: LaunchQLOptions = getEnvOptions({
+  const options: PgpmOptions = getEnvOptions({
     pg: { database: selectedDb },
     features: {
       oppositeBaseNames,
@@ -202,7 +202,7 @@ export default async (
       port,
       ...(origin ? { origin } : {})
     }
-  } as LaunchQLOptions);
+  } as PgpmOptions);
 
   log.success('✅ Selected Configuration:');
   for (const [key, value] of Object.entries(options)) {
