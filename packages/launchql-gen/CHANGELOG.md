@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.4](https://github.com/constructive-io/constructive/compare/@launchql/codegen@2.17.3...@launchql/codegen@2.17.4) (2025-12-14)
+
+**Note:** Version bump only for package @launchql/codegen
+
 ## [2.17.3](https://github.com/constructive-io/constructive/compare/@launchql/codegen@2.17.2...@launchql/codegen@2.17.3) (2025-12-13)
 
 **Note:** Version bump only for package @launchql/codegen

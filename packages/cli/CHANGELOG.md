@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.20.0](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.19.3...@launchql/cli@4.20.0) (2025-12-14)
+
+### Bug Fixes
+
+- remove all backward compatibility and update all LaunchQL* references to Pgpm* ([f513aa9](https://github.com/constructive-io/constructive/commit/f513aa972f375819d94c819d1b260df9a12a9a62))
+- update remaining LaunchQL references to PGPM ([9b4aa91](https://github.com/constructive-io/constructive/commit/9b4aa91d7ccadecd3538c395f39c4eb86a57d6c7))
+
+### Features
+
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [4.19.3](https://github.com/constructive-io/constructive/compare/@launchql/cli@4.19.2...@launchql/cli@4.19.3) (2025-12-13)
 
 ### Bug Fixes

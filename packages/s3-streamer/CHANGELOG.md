@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/constructive-io/constructive/compare/@launchql/s3-streamer@2.7.2...@launchql/s3-streamer@2.8.0) (2025-12-14)
+
+### Features
+
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [2.7.2](https://github.com/constructive-io/constructive/compare/@launchql/s3-streamer@2.7.1...@launchql/s3-streamer@2.7.2) (2025-12-13)
 
 **Note:** Version bump only for package @launchql/s3-streamer

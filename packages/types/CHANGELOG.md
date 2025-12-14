@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.11.0 (2025-12-14)
+
+### Bug Fixes
+
+- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/constructive-io/constructive/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
+- add missing dependencies and remove resolutions for pnpm ([8c4a3cd](https://github.com/constructive-io/constructive/commit/8c4a3cd836dbffc5e86466a95ca086c9e8a5d351))
+- remove all backward compatibility and update all LaunchQL* references to Pgpm* ([f513aa9](https://github.com/constructive-io/constructive/commit/f513aa972f375819d94c819d1b260df9a12a9a62))
+- rename PgTextClientContext to PgTestClientContext and implement context injection ([21f352a](https://github.com/constructive-io/constructive/commit/21f352ad1818f54b28a56f0169d0c0796eaa8eef))
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/constructive-io/constructive/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
+### Features
+
+- add --log-only flag for deployment logging ([a3071ee](https://github.com/constructive-io/constructive/commit/a3071ee03780f5d40e772594159840c973f95a85))
+- add seeding API extension for PgTestClient ([dccfa28](https://github.com/constructive-io/constructive/commit/dccfa28365f01bbf9be6a563b2d592a83b26424a))
+- expand error system with templated error types ([e08e1c1](https://github.com/constructive-io/constructive/commit/e08e1c1b3c4925807d59831695591a53ca8ebb9b))
+- **pgsql-test:** add auth() method to PgTestClient with default auth options ([bbe09a0](https://github.com/constructive-io/constructive/commit/bbe09a05165de4113c3b067bb7f2fb224cb3ad88))
+- prompt for user identity if Git config is missing ([188edda](https://github.com/constructive-io/constructive/commit/188edda83196609f00e8269d4199c6f3a9f9f4fa))
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [2.10.1](https://github.com/constructive-io/constructive/compare/@launchql/types@2.10.0...@launchql/types@2.10.1) (2025-12-11)
 
 **Note:** Version bump only for package @launchql/types

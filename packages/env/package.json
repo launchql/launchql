@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/env",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "author": "Dan Lynch <Dan Lynch>",
   "description": "PGPM environment management",
   "main": "index.js",

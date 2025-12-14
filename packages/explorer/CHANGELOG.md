@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/constructive-io/constructive/compare/@launchql/explorer@2.8.3...@launchql/explorer@2.9.0) (2025-12-14)
+
+### Bug Fixes
+
+- remove all backward compatibility and update all LaunchQL* references to Pgpm* ([f513aa9](https://github.com/constructive-io/constructive/commit/f513aa972f375819d94c819d1b260df9a12a9a62))
+
+### Features
+
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [2.8.3](https://github.com/constructive-io/constructive/compare/@launchql/explorer@2.8.2...@launchql/explorer@2.8.3) (2025-12-13)
 
 **Note:** Version bump only for package @launchql/explorer

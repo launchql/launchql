@@ -1,6 +1,6 @@
 {
   "name": "graphile-upload-plugin",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Graphile upload plugin for PostGraphile",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",
@@ -39,8 +39,8 @@
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.948.0",
-    "@pgpmjs/env": "workspace:^",
     "@launchql/s3-utils": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
     "@types/pg": "^8.16.0",
     "graphile-test": "workspace:^",
     "graphql-tag": "^2.12.6",

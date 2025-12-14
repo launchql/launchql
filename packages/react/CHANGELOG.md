@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.4](https://github.com/constructive-io/constructive/compare/@launchql/react@2.14.3...@launchql/react@2.14.4) (2025-12-14)
+
+**Note:** Version bump only for package @launchql/react
+
 ## [2.14.3](https://github.com/constructive-io/constructive/compare/@launchql/react@2.14.2...@launchql/react@2.14.3) (2025-12-13)
 
 **Note:** Version bump only for package @launchql/react

@@ -1,7 +1,7 @@
 {
   "name": "my-third",
   "private": true,
-  "version": "0.4.3",
+  "version": "0.5.0",
   "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
   "module": "esm/index.js",

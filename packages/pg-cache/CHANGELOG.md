@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/constructive-io/constructive/compare/pg-cache@1.5.2...pg-cache@1.6.0) (2025-12-14)
+
+### Features
+
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [1.5.2](https://github.com/constructive-io/constructive/compare/pg-cache@1.5.1...pg-cache@1.5.2) (2025-12-13)
 
 **Note:** Version bump only for package pg-cache

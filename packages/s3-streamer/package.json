@@ -1,6 +1,6 @@
 {
   "name": "@launchql/s3-streamer",
-  "version": "2.7.2",
+  "version": "2.8.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "stream files to s3",
   "main": "index.js",
@@ -29,8 +29,8 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@pgpmjs/env": "workspace:^",
     "@launchql/s3-utils": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
     "glob": "^13.0.0",
     "makage": "^0.1.8"
   },

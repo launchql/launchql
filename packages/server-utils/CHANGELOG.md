@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.8.0 (2025-12-14)
+
+### Bug Fixes
+
+- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/constructive-io/constructive/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
+- resolve workspace dependency resolution issues in tests ([b9ea117](https://github.com/constructive-io/constructive/commit/b9ea11781aebd211a08d1e3c15c0ed6fda4c7930))
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/constructive-io/constructive/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
+### Features
+
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [2.7.2](https://github.com/constructive-io/constructive/compare/@launchql/server-utils@2.7.1...@launchql/server-utils@2.7.2) (2025-12-13)
 
 **Note:** Version bump only for package @launchql/server-utils

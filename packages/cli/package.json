@@ -1,6 +1,6 @@
 {
   "name": "@launchql/cli",
-  "version": "4.19.3",
+  "version": "4.20.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "LaunchQL CLI",
   "main": "index.js",
@@ -47,11 +47,11 @@
   },
   "dependencies": {
     "@launchql/codegen": "workspace:^",
+    "@launchql/explorer": "workspace:^",
+    "@launchql/server": "workspace:^",
     "@pgpmjs/core": "workspace:^",
     "@pgpmjs/env": "workspace:^",
-    "@launchql/explorer": "workspace:^",
     "@pgpmjs/logger": "workspace:^",
-    "@launchql/server": "workspace:^",
     "@pgpmjs/server-utils": "workspace:^",
     "@pgpmjs/types": "workspace:^",
     "find-and-require-package-json": "^0.8.0",

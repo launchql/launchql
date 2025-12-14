@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.4.0 (2025-12-14)
+
+### Bug Fixes
+
+- add explicit tsconfig.json path to build:dev script ([309dba1](https://github.com/constructive-io/constructive/commit/309dba1abd2c461803ffe2015cf82d1d3b1e6ee7))
+- disable trailing commas in ESLint config and auto-fix across workspace ([5c18ced](https://github.com/constructive-io/constructive/commit/5c18ced81763044709d88dfacacb34ca1c5ec5e2))
+- stop pnpm install command from triggering every build ([ce88a6e](https://github.com/constructive-io/constructive/commit/ce88a6ece261ef02201d417bf3a9446a69df6618))
+
+### Features
+
+- rebrand PGPM packages from @launchql/_ to @pgpmjs/_ ([734d865](https://github.com/constructive-io/constructive/commit/734d8655ced175f51567c513ac1ee4c843df98b7))
+
 ## [2.3.2](https://github.com/constructive-io/constructive/compare/@launchql/orm@2.3.1...@launchql/orm@2.3.2) (2025-12-13)
 
 **Note:** Version bump only for package @launchql/orm

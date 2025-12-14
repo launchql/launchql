@@ -1,6 +1,6 @@
 {
   "name": "@launchql/codegen",
-  "version": "2.17.3",
+  "version": "2.17.4",
   "description": "Generate queries and mutations for use with Graphile",
   "author": "Constructive <developers@constructive.io>",
   "main": "index.js",
