@@ -138,7 +138,7 @@ describe('Add functionality', () => {
     
     const pkg = new PgpmPackage(nonModuleDir);
     
-    expect(() => pkg.addChange('organizations')).toThrow('This command must be run inside a LaunchQL workspace or module');
+    expect(() => pkg.addChange('organizations')).toThrow('This command must be run inside a PGPM workspace or module');
   });
 
   test('addChange creates SQL files without transaction statements', () => {
