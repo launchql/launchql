@@ -1,6 +1,6 @@
 import { pipeline } from 'node:stream/promises';
 
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { parse } from 'csv-parse';
 import { createReadStream, createWriteStream,existsSync } from 'fs';
 import { Client } from 'pg';

@@ -1,5 +1,5 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
+import { LaunchQLPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
 import type { PgConfig } from 'pg-env';
 
 import { SeedAdapter, SeedContext } from './types';

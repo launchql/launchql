@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { LaunchQLOptions } from '@launchql/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { walkUp } from './utils';
 
 /**
  * Load configuration file with support for both .js and .json formats
- * Moved from LaunchQLPackage class for better reusability
+ * Moved from PgpmPackage class for better reusability
  */
-export const loadConfigFileSync = (configPath: string): LaunchQLOptions => {
+export const loadConfigFileSync = (configPath: string): PgpmOptions => {
   const ext = path.extname(configPath);
   
   switch (ext) {
@@ -26,9 +26,9 @@ export const loadConfigFileSync = (configPath: string): LaunchQLOptions => {
 
 /**
  * Load configuration from a specific directory
- * Moved from LaunchQLPackage class for better reusability
+ * Moved from PgpmPackage class for better reusability
  */
-export const loadConfigSyncFromDir = (dir: string): LaunchQLOptions => {
+export const loadConfigSyncFromDir = (dir: string): PgpmOptions => {
   const configFiles = [
     'pgpm.config.js',
     'pgpm.json'
@@ -48,7 +48,7 @@ export const loadConfigSyncFromDir = (dir: string): LaunchQLOptions => {
  * Load configuration using walkUp to find config files
  * Enhanced version that uses the robust config loading logic
  */
-export const loadConfigSync = (cwd: string = process.cwd()): LaunchQLOptions => {
+export const loadConfigSync = (cwd: string = process.cwd()): PgpmOptions => {
   const configFiles = ['pgpm.config.js', 'pgpm.json'];
   
   for (const filename of configFiles) {
@@ -63,10 +63,10 @@ export const loadConfigSync = (cwd: string = process.cwd()): LaunchQLOptions => 
 };
 
 /**
- * Resolve the path to the LaunchQL workspace by finding config files
- * Moved from LaunchQLPackage class for better reusability
+ * Resolve the path to the PGPM workspace by finding config files
+ * Moved from PgpmPackage class for better reusability
  */
-export const resolveLaunchqlPath = (cwd: string = process.cwd()): string | undefined => {
+export const resolvePgpmPath = (cwd: string = process.cwd()): string | undefined => {
   const configFiles = ['pgpm.config.js', 'pgpm.json'];
   
   for (const filename of configFiles) {

@@ -1,4 +1,4 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { graphileCache } from 'graphile-cache';
 import { getGraphileSettings as getSettings } from 'graphile-settings';

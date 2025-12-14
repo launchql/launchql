@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { LaunchQLPackage } from '@pgpmjs/core';
 import { CLIOptions, Inquirerer, OptionValue, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 

@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import { dirname, resolve } from 'path';
-import { errors } from '@launchql/types';
+import { errors } from '@pgpmjs/types';
 
 /**
  * Recursively walks up directories to find a specific file (sync version).

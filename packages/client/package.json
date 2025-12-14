@@ -1,5 +1,5 @@
 {
-  "name": "@launchql/client",
+  "name": "@pgpmjs/client",
   "version": "2.3.2",
   "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL Client",
@@ -31,7 +31,8 @@
   "keywords": [
     "client",
     "graphql",
-    "launchql",
+    "pgpm",
+    "pgpmjs",
     "frontend",
     "api"
   ],

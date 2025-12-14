@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { LaunchQLPackage } from '@pgpmjs/core';
 import * as fs from 'fs';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';

@@ -1,5 +1,5 @@
 import { getLatestChange, Module } from '../files';
-import { errors } from '@launchql/types';
+import { errors } from '@pgpmjs/types';
 
 export type ModuleMap = Record<string, Module>;
 

@@ -1,5 +1,5 @@
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { readFileSync } from 'fs';
 import { dirname,join } from 'path';
 import { Pool } from 'pg';
@@ -32,7 +32,7 @@ const log = new Logger('migrate');
 
 export type HashMethod = 'content' | 'ast';
 
-export interface LaunchQLMigrateOptions {
+export interface PgpmMigrateOptions {
   /**
    * Hash method for SQL files:
    * - 'content': Hash the raw file content (fast, but sensitive to formatting changes)
@@ -41,7 +41,7 @@ export interface LaunchQLMigrateOptions {
   hashMethod?: HashMethod;
 }
 
-export class LaunchQLMigrate {
+export class PgpmMigrate {
   private pool: Pool;
   private pgConfig: PgConfig;
   private hashMethod: HashMethod;
@@ -55,7 +55,7 @@ export class LaunchQLMigrate {
     throw new Error(`Cross-package change encountered in local tracking: ${nm} (current package: ${pkg})`);
   }
 
-  constructor(config: PgConfig, options: LaunchQLMigrateOptions = {}) {
+  constructor(config: PgConfig, options: PgpmMigrateOptions = {}) {
     this.pgConfig = config;
     // Use environment variable DEPLOYMENT_HASH_METHOD if available, otherwise use options or default to 'content'
     const envHashMethod = process.env.DEPLOYMENT_HASH_METHOD as HashMethod;

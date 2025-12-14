@@ -1,4 +1,4 @@
-import { errors } from '@launchql/types';
+import { errors } from '@pgpmjs/types';
 
 export interface ParsedTarget {
   packageName: string;

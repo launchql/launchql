@@ -1,4 +1,4 @@
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import fs from 'fs';
 import path from 'path';
 

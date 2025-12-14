@@ -1,4 +1,4 @@
-import type { PgTestClientContext } from '@launchql/types';
+import type { PgTestClientContext } from '@pgpmjs/types';
 
 /**
  * Generate SQL statements to set PostgreSQL session context variables

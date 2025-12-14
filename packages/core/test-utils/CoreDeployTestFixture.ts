@@ -1,4 +1,4 @@
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import { teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 

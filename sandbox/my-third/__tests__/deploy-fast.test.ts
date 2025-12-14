@@ -1,6 +1,6 @@
-import { deployFast, LaunchQLProject } from '@launchql/core';
+import { deployFast, LaunchQLProject } from '@pgpmjs/core';
 import { resolve } from 'path';
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 import { getPgPool } from 'pg-cache';

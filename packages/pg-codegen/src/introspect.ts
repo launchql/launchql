@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { Client } from 'pg';
 
 import { IntrospectionOptions, makeIntrospectionQuery } from './query';

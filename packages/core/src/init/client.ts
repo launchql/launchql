@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Pool } from 'pg';
@@ -7,7 +7,7 @@ import { PgConfig } from 'pg-env';
 
 const log = new Logger('init');
 
-export class LaunchQLInit {
+export class PgpmInit {
   private pool: Pool;
   private pgConfig: PgConfig;
 
@@ -21,14 +21,14 @@ export class LaunchQLInit {
    */
   async bootstrapRoles(): Promise<void> {
     try {
-      log.info('Bootstrapping LaunchQL roles...');
+      log.info('Bootstrapping PGPM roles...');
       
       const sqlPath = join(__dirname, 'sql', 'bootstrap-roles.sql');
       const sql = readFileSync(sqlPath, 'utf-8');
       
       await this.pool.query(sql);
       
-      log.success('Successfully bootstrapped LaunchQL roles');
+      log.success('Successfully bootstrapped PGPM roles');
     } catch (error) {
       log.error('Failed to bootstrap roles:', error);
       throw error;
@@ -41,14 +41,14 @@ export class LaunchQLInit {
   async bootstrapTestRoles(): Promise<void> {
     try {
       log.warn('WARNING: This command creates test roles and should NEVER be run on a production database!');
-      log.info('Bootstrapping LaunchQL test roles...');
+      log.info('Bootstrapping PGPM test roles...');
       
       const sqlPath = join(__dirname, 'sql', 'bootstrap-test-roles.sql');
       const sql = readFileSync(sqlPath, 'utf-8');
       
       await this.pool.query(sql);
       
-      log.success('Successfully bootstrapped LaunchQL test roles');
+      log.success('Successfully bootstrapped PGPM test roles');
     } catch (error) {
       log.error('Failed to bootstrap test roles:', error);
       throw error;
@@ -60,7 +60,7 @@ export class LaunchQLInit {
    */
   async bootstrapDbRoles(username: string, password: string): Promise<void> {
     try {
-      log.info(`Bootstrapping LaunchQL database roles for user: ${username}...`);
+      log.info(`Bootstrapping PGPM database roles for user: ${username}...`);
       
       const sql = `
 BEGIN;
@@ -112,7 +112,7 @@ COMMIT;
       
       await this.pool.query(sql);
       
-      log.success(`Successfully bootstrapped LaunchQL database roles for user: ${username}`);
+      log.success(`Successfully bootstrapped PGPM database roles for user: ${username}`);
     } catch (error) {
       log.error(`Failed to bootstrap database roles for user ${username}:`, error);
       throw error;
@@ -124,7 +124,7 @@ COMMIT;
    */
   async removeDbRoles(username: string): Promise<void> {
     try {
-      log.info(`Removing LaunchQL database roles for user: ${username}...`);
+      log.info(`Removing PGPM database roles for user: ${username}...`);
       
       const sql = `
 BEGIN;
@@ -147,7 +147,7 @@ COMMIT;
       
       await this.pool.query(sql);
       
-      log.success(`Successfully removed LaunchQL database roles for user: ${username}`);
+      log.success(`Successfully removed PGPM database roles for user: ${username}`);
     } catch (error) {
       log.error(`Failed to remove database roles for user ${username}:`, error);
       throw error;

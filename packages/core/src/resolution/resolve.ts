@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { getChanges, getExtensionName } from '../files';
 import { parsePlanFile } from '../files/plan/parser';
 import { resolveDependencies } from './deps';
-import { errors } from '@launchql/types';
+import { errors } from '@pgpmjs/types';
 
 /**
  * Resolves SQL scripts for deployment or reversion.
