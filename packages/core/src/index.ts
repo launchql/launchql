@@ -30,13 +30,3 @@ export {
   VerifyResult} from './migrate/types';
 export { hashFile, hashString } from './migrate/utils/hash';
 export { executeQuery,TransactionContext, TransactionOptions, withTransaction } from './migrate/utils/transaction';
-
-// Backward-compatible re-exports with deprecation warnings
-/** @deprecated Use PgpmPackage instead */
-export { PgpmPackage as LaunchQLPackage } from './core/class/pgpm';
-/** @deprecated Use PgpmMigrate instead */
-export { PgpmMigrate as LaunchQLMigrate } from './migrate/client';
-/** @deprecated Use PgpmInit instead */
-export { PgpmInit as LaunchQLInit } from './init/client';
-/** @deprecated Use PgpmMigrateOptions instead */
-export { PgpmMigrateOptions as LaunchQLMigrateOptions } from './migrate/client';

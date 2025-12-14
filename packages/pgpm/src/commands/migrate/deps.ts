@@ -1,4 +1,4 @@
-import { LaunchQLMigrate } from '@pgpmjs/core';
+import { PgpmMigrate } from '@pgpmjs/core';
 import { parsePlanFile } from '@pgpmjs/core';
 import { Logger } from '@pgpmjs/logger';
 import { existsSync } from 'fs';
@@ -128,7 +128,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
         message: 'Select database to check deployment status'
       });
       
-      const client = new LaunchQLMigrate({
+      const client = new PgpmMigrate({
         host: pgEnv.host,
         port: pgEnv.port,
         user: pgEnv.user,
