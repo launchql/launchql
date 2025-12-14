@@ -1,6 +1,6 @@
-import { Logger } from '@launchql/logger';
-import { svcCache } from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { svcCache } from '@pgpmjs/server-utils';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { NextFunction,Request, Response } from 'express';
 import { graphileCache } from 'graphile-cache';
 import { getPgPool } from 'pg-cache';

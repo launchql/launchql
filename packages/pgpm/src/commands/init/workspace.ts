@@ -1,5 +1,5 @@
-import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, scaffoldTemplate, sluggify } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, scaffoldTemplate, sluggify } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { Inquirerer, Question } from 'inquirerer';
 import path from 'path';
 

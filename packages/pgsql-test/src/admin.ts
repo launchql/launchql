@@ -1,5 +1,5 @@
-import { Logger } from '@launchql/logger';
-import { PgTestConnectionOptions } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { PgTestConnectionOptions } from '@pgpmjs/types';
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import { getPgEnvOptions, PgConfig } from 'pg-env';

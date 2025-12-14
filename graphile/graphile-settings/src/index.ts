@@ -1,6 +1,6 @@
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
-import { getEnvOptions } from '@launchql/env';
-import { LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@pgpmjs/env';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import PgPostgis from 'graphile-postgis';
 import FulltextFilterPlugin from 'graphile-plugin-fulltext-filter';
 import { NodePlugin, Plugin } from 'graphile-build';

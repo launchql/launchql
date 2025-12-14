@@ -28,7 +28,7 @@
     "url": "https://github.com/launchql/jobs/issues"
   },
   "dependencies": {
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "envalid": "6.0.2"
   }
 }

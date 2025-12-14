@@ -6,7 +6,7 @@ import type {
   RunScheduledJobParams,
   ReleaseScheduledJobsParams,
   ReleaseJobsParams
-} from '@launchql/types';
+} from '@pgpmjs/types';
 import env from './env';
 const { JOBS_SCHEMA } = env;
 

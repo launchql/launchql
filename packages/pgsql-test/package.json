@@ -60,11 +60,11 @@
     "makage": "^0.1.8"
   },
   "dependencies": {
-    "@launchql/core": "workspace:^",
-    "@launchql/env": "workspace:^",
-    "@launchql/logger": "workspace:^",
-    "@launchql/server-utils": "workspace:^",
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/core": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
+    "@pgpmjs/logger": "workspace:^",
+    "@pgpmjs/server-utils": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "csv-parse": "^6.1.0",
     "pg": "^8.16.3",
     "pg-cache": "workspace:^",

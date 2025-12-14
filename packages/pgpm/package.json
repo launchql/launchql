@@ -45,10 +45,10 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@launchql/core": "workspace:^",
-    "@launchql/env": "workspace:^",
-    "@launchql/logger": "workspace:^",
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/core": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
+    "@pgpmjs/logger": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "appstash": "^0.2.4",
     "create-gen-app": "^0.3.3",
     "find-and-require-package-json": "^0.8.0",

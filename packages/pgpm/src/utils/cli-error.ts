@@ -1,5 +1,5 @@
-import { Logger } from '@launchql/logger';
-import { LaunchQLError } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { LaunchQLError } from '@pgpmjs/types';
 import { teardownPgPools } from 'pg-cache';
 
 const log = new Logger('cli');

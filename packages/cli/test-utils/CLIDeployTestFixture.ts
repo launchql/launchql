@@ -1,4 +1,4 @@
-import { LaunchQLMigrate } from '@launchql/core';
+import { LaunchQLMigrate } from '@pgpmjs/core';
 import { CLIOptions,Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { Pool } from 'pg';

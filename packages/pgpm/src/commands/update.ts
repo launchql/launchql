@@ -1,5 +1,5 @@
 import { findAndRequirePackageJson } from 'find-and-require-package-json';
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { spawn } from 'child_process';
 import { fetchLatestVersion } from '../utils/npm-version';

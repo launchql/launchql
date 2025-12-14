@@ -18,8 +18,8 @@
     "ollama:setup": "ts-node scripts/setup-ollama.ts"
   },
   "devDependencies": {
-    "@launchql/core": "workspace:^",
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/core": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "@types/pg": "^8.16.0",
     "makage": "^0.1.8",
     "pgsql-test": "workspace:^"

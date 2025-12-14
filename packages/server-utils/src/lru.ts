@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { LRUCache } from 'lru-cache';
 
 const log = new Logger('pg-cache');

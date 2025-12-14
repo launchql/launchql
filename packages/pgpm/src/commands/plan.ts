@@ -1,5 +1,5 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { LaunchQLPackage } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const log = new Logger('plan');

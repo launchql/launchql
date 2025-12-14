@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { Pool } from 'pg';
 import { getPgEnvOptions, PgConfig } from 'pg-env';
 

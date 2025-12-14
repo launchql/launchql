@@ -1,4 +1,4 @@
-import { PgTestConnectionOptions, RoleMapping } from '@launchql/types';
+import { PgTestConnectionOptions, RoleMapping } from '@pgpmjs/types';
 
 /**
  * Default role mapping configuration

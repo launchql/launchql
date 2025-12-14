@@ -2,10 +2,10 @@ import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { join,relative } from 'path';
 
-import { LaunchQLPackage } from '../core/class/launchql';
+import { PgpmPackage } from '../core/class/pgpm';
 import { parsePlanFile } from '../files/plan/parser';
 import { ExtendedPlanFile } from '../files/types';
-import { errors } from '@launchql/types';
+import { errors } from '@pgpmjs/types';
 
 /**
  * Represents a dependency graph where keys are module identifiers
@@ -274,8 +274,8 @@ export const resolveDependencies = (
         // For the current package
         planPath = join(packageDir, 'pgpm.plan');
       } else {
-        // For external packages, use LaunchQLPackage to find module path
-        const project = new LaunchQLPackage(packageDir);
+        // For external packages, use PgpmPackage to find module path
+        const project = new PgpmPackage(packageDir);
         const moduleMap = project.getModuleMap();
         const module = moduleMap[packageName];
         
