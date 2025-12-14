@@ -1,4 +1,4 @@
-import { PgpmOptions } from '@pgpmjs/types';
+import { LaunchQLOptions } from '@launchql/types';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { graphileCache } from 'graphile-cache';
 import { getGraphileSettings as getSettings } from 'graphile-settings';
@@ -11,7 +11,7 @@ import PublicKeySignature, {
   PublicKeyChallengeConfig,
 } from '../plugins/PublicKeySignature';
 
-export const graphile = (lOpts: PgpmOptions): RequestHandler => {
+export const graphile = (lOpts: LaunchQLOptions): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const api = req.api;

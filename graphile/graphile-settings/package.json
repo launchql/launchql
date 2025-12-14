@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
+    "@launchql/types": "workspace:^",
     "@pgpmjs/env": "workspace:^",
     "@pgpmjs/types": "workspace:^",
     "cors": "^2.8.5",
