@@ -41,6 +41,7 @@
   "dependencies": {
     "@graphile-contrib/pg-many-to-many": "^1.0.2",
     "@launchql/s3-utils": "workspace:^",
+    "@launchql/types": "workspace:^",
     "@launchql/upload-names": "workspace:^",
     "@launchql/url-domains": "workspace:^",
     "@pgpmjs/env": "workspace:^",

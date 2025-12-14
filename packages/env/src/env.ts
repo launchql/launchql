@@ -1,5 +1,38 @@
 import { PgpmOptions } from '@pgpmjs/types';
 
+/**
+ * Extended env options that include GraphQL-related fields.
+ * These fields are parsed from environment variables but typed separately
+ * to avoid coupling @pgpmjs/types to GraphQL dependencies.
+ * 
+ * For full type safety with GraphQL options, use LaunchQLOptions from @launchql/types
+ */
+export interface EnvGraphQLOptions {
+  graphile?: {
+    schema?: string | string[];
+  };
+  features?: {
+    simpleInflection?: boolean;
+    oppositeBaseNames?: boolean;
+    postgis?: boolean;
+  };
+  api?: {
+    enableMetaApi?: boolean;
+    isPublic?: boolean;
+    exposedSchemas?: string[];
+    metaSchemas?: string[];
+    anonRole?: string;
+    roleName?: string;
+    defaultDatabaseId?: string;
+  };
+}
+
+/**
+ * Combined environment options type that includes both PGPM core options
+ * and GraphQL-related options parsed from environment variables.
+ */
+export type EnvOptions = PgpmOptions & EnvGraphQLOptions;
+
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);
   return !isNaN(num) ? num : undefined;
@@ -10,7 +43,7 @@ const parseEnvBoolean = (val?: string): boolean | undefined => {
   return ['true', '1', 'yes'].includes(val.toLowerCase());
 };
 
-export const getEnvVars = (): PgpmOptions => {
+export const getEnvVars = (): EnvOptions => {
   const {
     PGROOTDATABASE,
     PGTEMPLATE,

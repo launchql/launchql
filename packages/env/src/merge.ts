@@ -1,9 +1,9 @@
 import deepmerge from 'deepmerge';
 import { pgpmDefaults, PgpmOptions, PgTestConnectionOptions, DeploymentOptions } from '@pgpmjs/types';
 import { loadConfigSync } from './config';
-import { getEnvVars } from './env';
+import { getEnvVars, EnvOptions } from './env';
 
-export const getEnvOptions = (overrides: PgpmOptions = {}, cwd: string = process.cwd()): PgpmOptions => {
+export const getEnvOptions = (overrides: EnvOptions = {}, cwd: string = process.cwd()): EnvOptions => {
   const defaults = pgpmDefaults;
   const configOptions = loadConfigSync(cwd);
   const envOptions = getEnvVars();

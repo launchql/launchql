@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@launchql/s3-streamer": "workspace:^",
+    "@launchql/types": "workspace:^",
     "@launchql/upload-names": "workspace:^",
     "@launchql/url-domains": "workspace:^",
     "@pgpmjs/env": "workspace:^",
