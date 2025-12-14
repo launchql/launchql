@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { ParsedArgs } from 'minimist';
 
 const log = new Logger('argv-utils');

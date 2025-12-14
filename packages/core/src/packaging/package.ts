@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { RawStmt } from '@pgsql/types';
 import { mkdirSync, readFileSync, rmSync,writeFileSync } from 'fs';
 import { relative } from 'path';

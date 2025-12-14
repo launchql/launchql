@@ -1,8 +1,8 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { parsePlanFile } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { LaunchQLPackage } from '@pgpmjs/core';
+import { parsePlanFile } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import path from 'path';
 import { getPgEnvOptions } from 'pg-env';

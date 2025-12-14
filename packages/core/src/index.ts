@@ -1,4 +1,4 @@
-export * from './core/class/launchql';
+export * from './core/class/pgpm';
 export * from './export/export-meta';
 export * from './export/export-migrations';
 export * from './extensions/extensions';
@@ -16,8 +16,8 @@ export * from './core/boilerplate-scanner';
 // Export package-files functionality (now integrated into core)
 export * from './files';
 export { cleanSql } from './migrate/clean';
-export { LaunchQLMigrate } from './migrate/client';
-export { LaunchQLInit } from './init/client';
+export { PgpmMigrate } from './migrate/client';
+export { PgpmInit } from './init/client';
 export { 
   DeployOptions, 
   DeployResult, 
@@ -30,3 +30,13 @@ export {
   VerifyResult} from './migrate/types';
 export { hashFile, hashString } from './migrate/utils/hash';
 export { executeQuery,TransactionContext, TransactionOptions, withTransaction } from './migrate/utils/transaction';
+
+// Backward-compatible re-exports with deprecation warnings
+/** @deprecated Use PgpmPackage instead */
+export { PgpmPackage as LaunchQLPackage } from './core/class/pgpm';
+/** @deprecated Use PgpmMigrate instead */
+export { PgpmMigrate as LaunchQLMigrate } from './migrate/client';
+/** @deprecated Use PgpmInit instead */
+export { PgpmInit as LaunchQLInit } from './init/client';
+/** @deprecated Use PgpmMigrateOptions instead */
+export { PgpmMigrateOptions as LaunchQLMigrateOptions } from './migrate/client';

@@ -1,4 +1,4 @@
-import { LaunchQLPackage, writePackage } from '@launchql/core';
+import { LaunchQLPackage, writePackage } from '@pgpmjs/core';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const packageUsageText = `

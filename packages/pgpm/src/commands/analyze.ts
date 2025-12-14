@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { LaunchQLPackage } from '@pgpmjs/core';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import path from 'path';

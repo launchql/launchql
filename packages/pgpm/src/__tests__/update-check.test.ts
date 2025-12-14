@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { checkForUpdates } from '../utils/update-check';
 
 const actualNpmVersion = jest.requireActual('../utils/npm-version');

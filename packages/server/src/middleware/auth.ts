@@ -1,4 +1,4 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';

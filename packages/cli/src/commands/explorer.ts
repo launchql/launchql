@@ -1,7 +1,7 @@
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import { LaunchQLExplorer as explorer } from '@launchql/explorer';
-import { Logger } from '@launchql/logger';
-import { LaunchQLOptions } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const log = new Logger('explorer');

@@ -1,7 +1,7 @@
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
 import { LaunchQLServer as server } from '@launchql/server';
-import { LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, OptionValue,Question } from 'inquirerer';
 import { getPgPool } from 'pg-cache';
 

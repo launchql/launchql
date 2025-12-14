@@ -34,7 +34,7 @@
     "makage": "^0.1.8"
   },
   "dependencies": {
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "graphql": "15.10.1",
     "mock-req": "^0.2.0",
     "pg": "^8.16.3",

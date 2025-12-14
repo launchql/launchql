@@ -1,6 +1,6 @@
-import { loadConfigSyncFromDir, resolveLaunchqlPath,walkUp } from '@launchql/env';
-import { Logger } from '@launchql/logger';
-import { errors, LaunchQLOptions, LaunchQLWorkspaceConfig } from '@launchql/types';
+import { loadConfigSyncFromDir, resolvePgpmPath,walkUp } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
+import { errors, PgpmOptions, PgpmWorkspaceConfig } from '@pgpmjs/types';
 import yanse from 'yanse';
 import { execSync } from 'child_process';
 import fs from 'fs';
@@ -28,7 +28,7 @@ import {
   writeExtensions,
 } from '../../files';
 import { generateControlFileContent, writeExtensionMakefile } from '../../files/extension/writer';
-import { LaunchQLMigrate } from '../../migrate/client';
+import { PgpmMigrate } from '../../migrate/client';
 import {
   getExtensionsAndModules,
   getExtensionsAndModulesChanges,
@@ -43,7 +43,7 @@ import { PackageAnalysisIssue, PackageAnalysisResult, RenameOptions } from '../.
 import { parseTarget } from '../../utils/target-utils';
 
 
-const logger = new Logger('launchql');
+const logger = new Logger('pgpm');
 
 function getUTCTimestamp(d: Date = new Date()): string {
   return (
@@ -112,11 +112,11 @@ export interface InitModuleOptions {
   answers?: Record<string, any>;
 }
 
-export class LaunchQLPackage {
+export class PgpmPackage {
   public cwd: string;
   public workspacePath?: string;
   public modulePath?: string;
-  public config?: LaunchQLWorkspaceConfig;
+  public config?: PgpmWorkspaceConfig;
   public allowedDirs: string[] = [];
   public allowedParentDirs: string[] = [];
 
@@ -129,7 +129,7 @@ export class LaunchQLPackage {
 
   resetCwd(cwd: string) {
     this.cwd = cwd;
-    this.workspacePath = resolveLaunchqlPath(this.cwd);
+    this.workspacePath = resolvePgpmPath(this.cwd);
     this.modulePath = this.resolveSqitchPath();
 
     if (this.workspacePath) {
@@ -147,8 +147,8 @@ export class LaunchQLPackage {
     }
   }
 
-  private loadConfigSync(): LaunchQLWorkspaceConfig {
-    return loadConfigSyncFromDir(this.workspacePath!) as LaunchQLWorkspaceConfig;
+  private loadConfigSync(): PgpmWorkspaceConfig {
+    return loadConfigSyncFromDir(this.workspacePath!) as PgpmWorkspaceConfig;
   }
 
   private loadAllowedDirs(): string[] {
@@ -254,14 +254,14 @@ export class LaunchQLPackage {
 
   // ──────────────── Workspace-wide ────────────────
 
-  async getModules(): Promise<LaunchQLPackage[]> {
+  async getModules(): Promise<PgpmPackage[]> {
     if (!this.workspacePath || !this.config) return [];
 
     const dirs = this.loadAllowedDirs();
-    const results: LaunchQLPackage[] = [];
+    const results: PgpmPackage[] = [];
 
     for (const dir of dirs) {
-      const proj = new LaunchQLPackage(dir);
+      const proj = new PgpmPackage(dir);
       if (proj.isInModule()) {
         results.push(proj);
       }
@@ -327,7 +327,7 @@ export class LaunchQLPackage {
     return getAvailableExtensions(modules);
   }
 
-  getModuleProject(name: string): LaunchQLPackage {
+  getModuleProject(name: string): PgpmPackage {
     this.ensureWorkspace();
     
     if (this.isInModule() && name === this.getModuleName()) {
@@ -340,7 +340,7 @@ export class LaunchQLPackage {
     }
     
     const modulePath = path.resolve(this.workspacePath!, modules[name].path);
-    return new LaunchQLPackage(modulePath);
+    return new PgpmPackage(modulePath);
   }
 
   // ──────────────── Module-scoped ────────────────
@@ -768,7 +768,7 @@ export class LaunchQLPackage {
     }
     
     if (!this.isInWorkspace() && !this.isInModule()) {
-      throw new Error('This command must be run inside a LaunchQL workspace or module.');
+      throw new Error('This command must be run inside a PGPM workspace or module.');
     }
     
     if (this.isInModule()) {
@@ -1037,7 +1037,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
    */
   private async getDeployedModules(pgConfig: PgConfig): Promise<Set<string>> {
     try {
-      const client = new LaunchQLMigrate(pgConfig);
+      const client = new PgpmMigrate(pgConfig);
       await client.initialize();
       
       const status = await client.status();
@@ -1101,7 +1101,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
         }
         name = null; // Indicates workspace-wide operation
       } else {
-        throw new Error('Not in a LaunchQL workspace or module');
+        throw new Error('Not in a PGPM workspace or module');
       }
     } else {
       const parsed = parseTarget(target);
@@ -1113,7 +1113,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
   }
 
   async deploy(
-    opts: LaunchQLOptions,
+    opts: PgpmOptions,
     target?: string,
     recursive: boolean = true
   ): Promise<void> {
@@ -1208,7 +1208,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
               }
             } else {
               try {
-                const client = new LaunchQLMigrate(opts.pg as PgConfig);
+                const client = new PgpmMigrate(opts.pg as PgConfig);
               
                 // Only apply toChange to the target module, not its dependencies
                 const moduleToChange = extension === name ? toChange : undefined;
@@ -1248,7 +1248,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
         throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
       }
 
-      const client = new LaunchQLMigrate(opts.pg as PgConfig);
+      const client = new PgpmMigrate(opts.pg as PgConfig);
       const result = await client.deploy({
         modulePath,
         toChange,
@@ -1271,7 +1271,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
    * dependencies to prevent database constraint violations.
    */
   async revert(
-    opts: LaunchQLOptions,
+    opts: PgpmOptions,
     target?: string,
     recursive: boolean = true
   ): Promise<void> {
@@ -1326,7 +1326,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
             log.info(`📂 Reverting local module: ${extension}`);
           
             try {
-              const client = new LaunchQLMigrate(opts.pg as PgConfig);
+              const client = new PgpmMigrate(opts.pg as PgConfig);
             
               // Only apply toChange to the target module, not its dependencies
               const moduleToChange = extension === name ? toChange : undefined;
@@ -1362,7 +1362,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
         throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
       }
 
-      const client = new LaunchQLMigrate(opts.pg as PgConfig);
+      const client = new PgpmMigrate(opts.pg as PgConfig);
       const result = await client.revert({
         modulePath,
         toChange,
@@ -1378,7 +1378,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
   }
 
   async verify(
-    opts: LaunchQLOptions,
+    opts: PgpmOptions,
     target?: string,
     recursive: boolean = true
   ): Promise<void> {
@@ -1415,7 +1415,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
             log.info(`📂 Verifying local module: ${extension}`);
 
             try {
-              const client = new LaunchQLMigrate(opts.pg as PgConfig);
+              const client = new PgpmMigrate(opts.pg as PgConfig);
             
               // Only apply toChange to the target module, not its dependencies
               const moduleToChange = extension === name ? toChange : undefined;
@@ -1450,7 +1450,7 @@ ${dependencies.length > 0 ? dependencies.map(dep => `-- requires: ${dep}`).join(
         throw errors.PATH_NOT_FOUND({ path: name, type: 'module' });
       }
 
-      const client = new LaunchQLMigrate(opts.pg as PgConfig);
+      const client = new PgpmMigrate(opts.pg as PgConfig);
       const result = await client.verify({
         modulePath,
         toChange
