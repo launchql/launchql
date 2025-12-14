@@ -2,11 +2,11 @@ import fs from 'fs';
 import * as glob from 'glob';
 import path from 'path';
 
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
-let mod: LaunchQLPackage;
+let mod: PgpmPackage;
 
 beforeEach(() => {
   fixture = new TestFixture('sqitch', 'publish');

@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 
 it('writes module metadata files without modifying fixture', async () => {
   const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
   const dst = fixture.tempFixtureDir;
 
-  const project = new LaunchQLPackage(dst);
+  const project = new PgpmPackage(dst);
 
   expect(() =>
     project.setModuleDependencies(['plpgsql', 'uuid-ossp', 'airpage', 'launchql', 'cosmology'])
@@ -31,7 +31,7 @@ it('writes module metadata files without modifying fixture', async () => {
 it('throws error when module depends on itself', async () => {
   const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
   const dst = fixture.tempFixtureDir;
-  const project = new LaunchQLPackage(dst);
+  const project = new PgpmPackage(dst);
 
   expect(() =>
     project.setModuleDependencies(['plpgsql', 'secrets', 'uuid-ossp'])
@@ -43,7 +43,7 @@ it('throws error when module depends on itself', async () => {
 it('throws error with specific circular dependency example from issue', async () => {
   const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
   const dst = fixture.tempFixtureDir;
-  const project = new LaunchQLPackage(dst);
+  const project = new PgpmPackage(dst);
 
   expect(() =>
     project.setModuleDependencies(['some-native-module', 'secrets'])
@@ -55,7 +55,7 @@ it('throws error with specific circular dependency example from issue', async ()
 it('allows valid dependencies without circular references', async () => {
   const fixture = new TestFixture('sqitch', 'launchql', 'packages', 'secrets');
   const dst = fixture.tempFixtureDir;
-  const project = new LaunchQLPackage(dst);
+  const project = new PgpmPackage(dst);
 
   expect(() =>
     project.setModuleDependencies(['plpgsql', 'uuid-ossp', 'other-module'])

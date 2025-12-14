@@ -31,10 +31,10 @@ jest.mock('pg-cache', () => ({
   }),
 }));
 
-import { LaunchQLMigrate } from '../../src/migrate/client';
+import { PgpmMigrate } from '../../src/migrate/client';
 import { executeQuery } from '../../src/migrate/utils/transaction';
 
-describe('LaunchQLMigrate.deploy tag fallback bug reproduction', () => {
+describe('PgpmMigrate.deploy tag fallback bug reproduction', () => {
   it('should not pass tag tokens when resolver returns an empty deps array (expected behavior after fix)', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'lql-core-test-'));
     const packageName = 'unique-names';
@@ -49,7 +49,7 @@ describe('LaunchQLMigrate.deploy tag fallback bug reproduction', () => {
     writeFileSync(join(dir, 'pgpm.plan'), plan);
     writeFileSync(join(dir, 'deploy', `${changeName}.sql`), 'select 1;');
 
-    const migrator = new LaunchQLMigrate(
+    const migrator = new PgpmMigrate(
       { host: 'localhost', port: 5432, user: 'postgres', database: 'postgres' } as any,
       {}
     );
