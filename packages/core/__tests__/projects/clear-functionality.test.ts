@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils/TestFixture';
 import { parsePlanFile } from '../../src/files/plan/parser';
 

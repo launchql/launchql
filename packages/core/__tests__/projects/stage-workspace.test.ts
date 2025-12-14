@@ -1,4 +1,4 @@
-import { LaunchQLPackage, PackageContext } from '../../src/core/class/launchql';
+import { PgpmPackage, PackageContext } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils/TestFixture';
 import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 import { TestDatabase } from '../../test-utils';
@@ -19,7 +19,7 @@ describe('Staging Fixture Tests', () => {
   describe('Workspace Detection', () => {
     it('detects staging fixture as workspace correctly', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       expect(project.getContext()).toBe(PackageContext.Workspace);
       expect(project.isInWorkspace()).toBe(true);
@@ -28,7 +28,7 @@ describe('Staging Fixture Tests', () => {
 
     it('discovers all modules in workspace', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const modules = await project.getModules();
       expect(Array.isArray(modules)).toBe(true);
@@ -43,7 +43,7 @@ describe('Staging Fixture Tests', () => {
   describe('Module Discovery', () => {
     it('returns available modules from both extensions and packages', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
       
       const availableModules = project.getAvailableModules();
       expect(Array.isArray(availableModules)).toBe(true);
@@ -53,7 +53,7 @@ describe('Staging Fixture Tests', () => {
 
     it('getModules() returns all modules from extensions/@pgpm and packages', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const modules = await project.getModules();
       expect(Array.isArray(modules)).toBe(true);
@@ -76,7 +76,7 @@ describe('Staging Fixture Tests', () => {
 
     it('verifies module metadata and paths are correctly resolved', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const modules = await project.getModules();
       const moduleMap = project.getModuleMap();
@@ -96,7 +96,7 @@ describe('Staging Fixture Tests', () => {
 
     it('detects module inside workspace correctly', async () => {
       const cwd = fixture.getFixturePath('packages', 'unique-names');
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       expect(project.getContext()).toBe(PackageContext.ModuleInsideWorkspace);
       expect(project.isInWorkspace()).toBe(false);
@@ -105,7 +105,7 @@ describe('Staging Fixture Tests', () => {
 
     it('resolves module name from launchql plan', async () => {
       const cwd = fixture.getFixturePath('packages', 'unique-names');
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const name = project.getModuleName();
       expect(typeof name).toBe('string');
@@ -116,7 +116,7 @@ describe('Staging Fixture Tests', () => {
   describe('Extension Module Detection', () => {
     it('detects extension modules correctly', async () => {
       const cwd = fixture.getFixturePath('extensions', '@pgpm', 'uuid');
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       expect(project.getContext()).toBe(PackageContext.ModuleInsideWorkspace);
       expect(project.isInModule()).toBe(true);
@@ -127,7 +127,7 @@ describe('Staging Fixture Tests', () => {
 
     it('gets module info with version and paths for extensions', async () => {
       const cwd = fixture.getFixturePath('extensions', '@pgpm', 'uuid');
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const info = project.getModuleInfo();
       expect(info.extname).toBeTruthy();
@@ -139,7 +139,7 @@ describe('Staging Fixture Tests', () => {
   describe('Module Dependencies', () => {
     it('gets required modules from control file', async () => {
       const cwd = fixture.getFixturePath('packages', 'unique-names');
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const deps = project.getRequiredModules();
       expect(Array.isArray(deps)).toBe(true);
@@ -148,7 +148,7 @@ describe('Staging Fixture Tests', () => {
 
     it('gets module dependencies for workspace modules', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const { native, modules: deps } = project.getModuleDependencies('unique-names');
       expect(native).toBeDefined();
@@ -158,7 +158,7 @@ describe('Staging Fixture Tests', () => {
 
     it('gets dependency changes with versions for internal modules', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
       
       const result = await project.getModuleDependencyChanges('unique-names');
       expect(result).toHaveProperty('native');
@@ -170,7 +170,7 @@ describe('Staging Fixture Tests', () => {
   describe('Dependency Resolution', () => {
     it('resolves module dependencies correctly from pgpm.plan files', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const { native, modules: deps } = project.getModuleDependencies('unique-names');
 
@@ -182,7 +182,7 @@ describe('Staging Fixture Tests', () => {
 
     it('verifies cross-module dependencies work between extensions', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const uuidDeps = project.getModuleDependencies('launchql-uuid');
       expect(uuidDeps.modules).toBeDefined();
@@ -195,7 +195,7 @@ describe('Staging Fixture Tests', () => {
 
     it('tests dependency chain resolution for complex dependencies', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const result = await project.getModuleDependencyChanges('unique-names');
       
@@ -216,7 +216,7 @@ describe('Staging Fixture Tests', () => {
 
     it('resolves dependencies with version tags correctly', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const { native, modules: deps } = project.getModuleDependencies('unique-names');
       
@@ -235,7 +235,7 @@ describe('Staging Fixture Tests', () => {
 
     it('handles internal module dependencies within workspace', async () => {
       const cwd = fixture.getFixturePath();
-      const project = new LaunchQLPackage(cwd);
+      const project = new PgpmPackage(cwd);
 
       const moduleMap = project.getModuleMap();
       const moduleNames = Object.keys(moduleMap);

@@ -14,7 +14,7 @@ afterAll(() => {
   fixture.cleanup();
 });
 
-describe('LaunchQLPackage.analyzeModule', () => {
+describe('PgpmPackage.analyzeModule', () => {
   it('reports issues for a basic fixture (e.g. missing combined SQL)', () => {
     const project = fixture.getModuleProject(['simple'], 'my-first');
     const result = project.analyzeModule();

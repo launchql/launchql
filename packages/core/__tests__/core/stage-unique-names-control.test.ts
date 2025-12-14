@@ -1,18 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 
 describe('stage fixture control/metadata generation (unique-names)', () => {
   let fixture: TestFixture;
   let dst: string;
-  let project: LaunchQLPackage;
+  let project: PgpmPackage;
 
   beforeAll(() => {
     fixture = new TestFixture('stage');
     dst = fixture.tempFixtureDir;
-    project = new LaunchQLPackage(dst);
+    project = new PgpmPackage(dst);
   });
 
   afterAll(() => {

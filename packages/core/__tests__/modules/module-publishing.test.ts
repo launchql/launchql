@@ -2,17 +2,17 @@ import fs from 'fs';
 import * as glob from 'glob';
 import path from 'path';
 
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
 let distDir: string;
-let mod: LaunchQLPackage;
+let mod: PgpmPackage;
 
 beforeEach(() => {
   fixture = new TestFixture('sqitch', 'publish', 'packages', 'totp');
   distDir = path.join(fixture.tempFixtureDir, 'dist');
-  mod = new LaunchQLPackage(fixture.tempFixtureDir);
+  mod = new PgpmPackage(fixture.tempFixtureDir);
 });
 
 afterEach(() => {

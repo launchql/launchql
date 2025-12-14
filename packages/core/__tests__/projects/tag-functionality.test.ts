@@ -3,7 +3,7 @@ process.env.LAUNCHQL_DEBUG = 'true';
 import { TestDatabase } from '../../test-utils';
 import { teardownPgPools } from 'pg-cache';
 import { readFileSync } from 'fs';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { join } from 'path';
 import { CoreDeployTestFixture } from '../../test-utils/CoreDeployTestFixture';
 
@@ -25,7 +25,7 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const packagePath = join(basePath, 'packages', 'my-first');
     const planPath = join(packagePath, 'pgpm.plan');
     
-    const pkg = new LaunchQLPackage(packagePath);
+    const pkg = new PgpmPackage(packagePath);
     
     pkg.addTag('v1.2.0', undefined, 'Test release tag');
     
@@ -39,7 +39,7 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-first');
     
-    const pkg = new LaunchQLPackage(packagePath);
+    const pkg = new PgpmPackage(packagePath);
     pkg.addTag('v1.3.0', 'schema_myfirstapp', 'Initial schema tag');
     
     await fixture.deployModule('my-first:@v1.3.0', db.name, ['sqitch', 'simple-w-tags']);
@@ -61,7 +61,7 @@ describe('Tag functionality with CoreDeployTestFixture', () => {
     const basePath = fixture.tempFixtureDir;
     const packagePath = join(basePath, 'packages', 'my-second');
     
-    const pkg = new LaunchQLPackage(packagePath);
+    const pkg = new PgpmPackage(packagePath);
     pkg.addTag('v2.2.0', 'create_table', 'Table creation release');
     
     const updatedPlan = readFileSync(join(packagePath, 'pgpm.plan'), 'utf8');
