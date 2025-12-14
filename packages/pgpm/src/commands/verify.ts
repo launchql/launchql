@@ -4,7 +4,7 @@ import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
-import { getTargetDatabase } from '../utils';
+import { getTargetDatabase, resolvePackageAlias } from '../utils';
 import { cliExitWithError } from '../utils/cli-error';
 import { selectDeployedChange, selectDeployedPackage } from '../utils/deployed-changes';
 
@@ -62,7 +62,7 @@ export default async (
 
   let packageName: string | undefined;
   if (recursive && argv.to !== true) {
-    packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify');
+    packageName = await selectDeployedPackage(database, argv, prompter, log, 'verify', cwd);
     if (!packageName) {
       await cliExitWithError('No package found to verify');
     }
@@ -77,18 +77,19 @@ export default async (
   let target: string | undefined;
   
   if (argv.to === true) {
-    target = await selectDeployedChange(database, argv, prompter, log, 'verify');
+    target = await selectDeployedChange(database, argv, prompter, log, 'verify', cwd);
     if (!target) {
       await cliExitWithError('No target selected, operation cancelled');
     }
-  } else if (packageName && argv.to) {
+  }else if (packageName && argv.to) {
     target = `${packageName}:${argv.to}`;
   } else if (packageName) {
     target = packageName;
   } else if (argv.package && argv.to) {
-    target = `${argv.package}:${argv.to}`;
+    const resolvedPackage = resolvePackageAlias(argv.package as string, cwd);
+    target = `${resolvedPackage}:${argv.to}`;
   } else if (argv.package) {
-    target = argv.package as string;
+    target = resolvePackageAlias(argv.package as string, cwd);
   }
   
   await project.verify(

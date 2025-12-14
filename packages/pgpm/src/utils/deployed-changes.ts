@@ -3,12 +3,15 @@ import { Logger } from '@pgpmjs/logger';
 import { Inquirerer } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
+import { resolvePackageAlias } from './package-alias';
+
 export async function selectDeployedChange(
   database: string,
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   log: Logger,
-  action: 'revert' | 'verify' = 'revert'
+  action: 'revert' | 'verify' = 'revert',
+  cwd: string = process.cwd()
 ): Promise<string | undefined> {
   const pgEnv = getPgEnvOptions({ database });
   const client = new PgpmMigrate(pgEnv);
@@ -16,7 +19,7 @@ export async function selectDeployedChange(
   let selectedPackage: string;
 
   if (argv.package) {
-    selectedPackage = argv.package;
+    selectedPackage = resolvePackageAlias(argv.package as string, cwd);
   } else {
     const packageStatuses = await client.status();
 
@@ -66,10 +69,11 @@ export async function selectDeployedPackage(
   argv: Partial<Record<string, any>>,
   prompter: Inquirerer,
   log: Logger,
-  action: 'revert' | 'verify' = 'revert'
+  action: 'revert' | 'verify' = 'revert',
+  cwd: string = process.cwd()
 ): Promise<string | undefined> {
   if (argv.package) {
-    return argv.package;
+    return resolvePackageAlias(argv.package as string, cwd);
   }
 
   const pgEnv = getPgEnvOptions({ database });
