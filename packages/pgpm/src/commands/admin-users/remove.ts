@@ -1,4 +1,4 @@
-import { LaunchQLInit } from '@pgpmjs/core';
+import { PgpmInit } from '@pgpmjs/core';
 import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
@@ -39,7 +39,7 @@ export default async (
   const pgEnv = getPgEnvOptions();
   const isTest = argv.test;
 
-  const init = new LaunchQLInit(pgEnv);
+  const init = new PgpmInit(pgEnv);
   
   try {
     if (isTest) {

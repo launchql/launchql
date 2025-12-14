@@ -1,4 +1,4 @@
-import { LaunchQLInit } from '@pgpmjs/core';
+import { PgpmInit } from '@pgpmjs/core';
 import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
@@ -49,7 +49,7 @@ export default async (
     return;
   }
 
-  const init = new LaunchQLInit(pgEnv);
+  const init = new PgpmInit(pgEnv);
   
   try {
     await init.bootstrapRoles();

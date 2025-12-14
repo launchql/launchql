@@ -1,4 +1,4 @@
-import { LaunchQLMigrate } from '@pgpmjs/core';
+import { PgpmMigrate } from '@pgpmjs/core';
 import { Logger } from '@pgpmjs/logger';
 import { Inquirerer } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
@@ -11,7 +11,7 @@ export async function selectDeployedChange(
   action: 'revert' | 'verify' = 'revert'
 ): Promise<string | undefined> {
   const pgEnv = getPgEnvOptions({ database });
-  const client = new LaunchQLMigrate(pgEnv);
+  const client = new PgpmMigrate(pgEnv);
 
   let selectedPackage: string;
 
@@ -73,7 +73,7 @@ export async function selectDeployedPackage(
   }
 
   const pgEnv = getPgEnvOptions({ database });
-  const client = new LaunchQLMigrate(pgEnv);
+  const client = new PgpmMigrate(pgEnv);
 
   const packageStatuses = await client.status();
 

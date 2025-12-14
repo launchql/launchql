@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { getEnvOptions } from '@pgpmjs/env';
 import { Logger } from '@pgpmjs/logger';
 import { healthz, poweredBy, trustProxy } from '@pgpmjs/server-utils';
-import { LaunchQLOptions } from '@pgpmjs/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
 // @ts-ignore
@@ -20,7 +20,7 @@ import { graphile } from './middleware/graphile';
 
 const log = new Logger('server');
 
-export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
+export const LaunchQLServer = (rawOpts: PgpmOptions = {}) => {
   const launchqlEnvOptions = getEnvOptions(rawOpts);
   const app = new Server(launchqlEnvOptions);
   app.addEventListener();
@@ -29,9 +29,9 @@ export const LaunchQLServer = (rawOpts: LaunchQLOptions = {}) => {
 
 class Server {
   private app: Express;
-  private opts: LaunchQLOptions;
+  private opts: PgpmOptions;
 
-  constructor(opts: LaunchQLOptions) {
+  constructor(opts: PgpmOptions) {
     this.opts = getEnvOptions(opts);
 
     const app = express();

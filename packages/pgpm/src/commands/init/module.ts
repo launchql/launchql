@@ -1,4 +1,4 @@
-import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, LaunchQLPackage, sluggify } from '@pgpmjs/core';
+import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, PgpmPackage, sluggify } from '@pgpmjs/core';
 import { Logger } from '@pgpmjs/logger';
 import { errors } from '@pgpmjs/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
@@ -11,7 +11,7 @@ export default async function runModuleSetup(
 ) {
   const { cwd = process.cwd() } = argv;
 
-  const project = new LaunchQLPackage(cwd);
+  const project = new PgpmPackage(cwd);
 
   if (!project.workspacePath) {
     log.error('Not inside a LaunchQL workspace.');

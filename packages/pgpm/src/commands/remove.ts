@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@pgpmjs/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import { getEnvOptions } from '@pgpmjs/env';
 import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
@@ -41,7 +41,7 @@ export default async (
 
   log.debug(`Using current directory: ${cwd}`);
 
-  const pkg = new LaunchQLPackage(cwd);
+  const pkg = new PgpmPackage(cwd);
   
   if (!pkg.isInModule()) {
     throw new Error('Not in a LaunchQL module directory. Please run this command from within a module.');

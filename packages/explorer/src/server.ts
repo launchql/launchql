@@ -1,6 +1,6 @@
 import { getEnvOptions } from '@pgpmjs/env';
 import { cors, healthz, poweredBy } from '@pgpmjs/server-utils';
-import { LaunchQLOptions } from '@pgpmjs/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { GraphileCache, graphileCache } from 'graphile-cache';
@@ -13,7 +13,7 @@ import { postgraphile } from 'postgraphile';
 import { printDatabases, printSchemas } from './render';
 import { getGraphileSettings } from './settings';
 
-export const LaunchQLExplorer = (rawOpts: LaunchQLOptions = {}): Express => {
+export const LaunchQLExplorer = (rawOpts: PgpmOptions = {}): Express => {
   const opts = getEnvOptions(rawOpts);
 
   const { pg, server } = opts;
