@@ -1,4 +1,4 @@
-import { LaunchQLPackage, PackageContext } from '../../src/core/class/launchql';
+import { PgpmPackage, PackageContext } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
@@ -11,10 +11,10 @@ afterAll(() => {
   fixture.cleanup();
 });
 
-describe('LaunchQLPackage', () => {
+describe('PgpmPackage', () => {
   it('detects workspace root context correctly', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     expect(project.getContext()).toBe(PackageContext.Workspace);
     expect(project.isInWorkspace()).toBe(true);
@@ -23,7 +23,7 @@ describe('LaunchQLPackage', () => {
 
   it('detects module inside workspace correctly', async () => {
     const cwd = fixture.getFixturePath('launchql', 'packages', 'secrets');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     expect(project.getContext()).toBe(PackageContext.ModuleInsideWorkspace);
     expect(project.isInWorkspace()).toBe(false);
@@ -32,7 +32,7 @@ describe('LaunchQLPackage', () => {
 
   it('detects standalone module context', async () => {
     const cwd = fixture.getFixturePath('resolve', 'basic');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     expect(project.getContext()).toBe(PackageContext.Module);
     expect(project.isInModule()).toBe(true);
@@ -41,7 +41,7 @@ describe('LaunchQLPackage', () => {
 
   it('returns modules within workspace', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const modules = await project.getModules();
     expect(Array.isArray(modules)).toBe(true);
@@ -53,7 +53,7 @@ describe('LaunchQLPackage', () => {
 
   it('resolves module name from sqitch plan', async () => {
     const cwd = fixture.getFixturePath('launchql', 'packages', 'secrets');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const name = project.getModuleName();
     expect(typeof name).toBe('string');
@@ -62,7 +62,7 @@ describe('LaunchQLPackage', () => {
 
   it('resolves module info with version and paths', async () => {
     const cwd = fixture.getFixturePath('launchql', 'packages', 'secrets');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const info = project.getModuleInfo();
     expect(info.extname).toBeTruthy();
@@ -73,7 +73,7 @@ describe('LaunchQLPackage', () => {
 
   it('gets required modules from control file', async () => {
     const cwd = fixture.getFixturePath('launchql', 'packages', 'secrets');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const deps = project.getRequiredModules();
     expect(Array.isArray(deps)).toBe(true);
@@ -82,7 +82,7 @@ describe('LaunchQLPackage', () => {
 
   it('gets latest change and version for a workspace module', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const modules = project.getModuleMap();
     const modName = Object.keys(modules)[0];
@@ -95,7 +95,7 @@ describe('LaunchQLPackage', () => {
 
   it('gets native and internal module dependencies', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const modules = project.getModuleMap();
     const modName = Object.keys(modules)[0];
@@ -107,7 +107,7 @@ describe('LaunchQLPackage', () => {
 
   it('clears internal caches correctly', async () => {
     const cwd = fixture.getFixturePath('launchql', 'packages', 'secrets');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     const firstCall = project.getModuleInfo();
     project.clearCache();
@@ -118,14 +118,14 @@ describe('LaunchQLPackage', () => {
 
   it('throws on module info if not in module', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
 
     expect(() => project.getModuleInfo()).toThrow('Not inside a module');
   });
 
   it('gets latest change only from sqitch plan', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
     const modules = project.getModuleMap();
     const name = Object.keys(modules)[0];
     const change = project.getLatestChange(name);
@@ -135,7 +135,7 @@ describe('LaunchQLPackage', () => {
 
   it('gets dependency changes with versions for internal modules', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
     const name = Object.keys(project.getModuleMap())[0];
     const result = await project.getModuleDependencyChanges(name);
     expect(result).toHaveProperty('native');
@@ -145,7 +145,7 @@ describe('LaunchQLPackage', () => {
 
   it('returns a list of available modules in workspace', async () => {
     const cwd = fixture.getFixturePath('launchql');
-    const project = new LaunchQLPackage(cwd);
+    const project = new PgpmPackage(cwd);
     const modules = project.getAvailableModules();
     expect(Array.isArray(modules)).toBe(true);
     expect(modules.length).toBeGreaterThan(0);

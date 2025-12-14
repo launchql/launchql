@@ -6,7 +6,7 @@ import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 import { getPgEnvOptions } from 'pg-env';
 
-import { LaunchQLMigrate } from '../src/migrate/client';
+import { PgpmMigrate } from '../src/migrate/client';
 import { MigrateTestChange } from './MigrateTestChange';
 import { TestDatabase } from './TestDatabase';
 import { FIXTURES_PATH } from './utils';
@@ -54,7 +54,7 @@ export class MigrateTestFixture {
     };
 
     // Initialize migrate schema
-    const migrate = new LaunchQLMigrate(config);
+    const migrate = new PgpmMigrate(config);
     await migrate.initialize();
 
     // Get pool for test database operations

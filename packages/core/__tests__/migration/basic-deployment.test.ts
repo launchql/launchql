@@ -1,5 +1,5 @@
 
-import { LaunchQLMigrate } from '../../src/migrate/client';
+import { PgpmMigrate } from '../../src/migrate/client';
 import { MigrateTestFixture, teardownAllPools,TestDatabase } from '../../test-utils';
 
 describe('Deploy Command', () => {
@@ -21,7 +21,7 @@ describe('Deploy Command', () => {
   
   test('deploys single change', async () => {
     const fixturePath = fixture.setupFixture(['migrate', 'simple']);
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     // Deploy only the schema change
     const result = await client.deploy({
@@ -44,7 +44,7 @@ describe('Deploy Command', () => {
   
   test('deploys changes in dependency order', async () => {
     const fixturePath = fixture.setupFixture(['migrate', 'simple']);
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     // Deploy all changes
     const result = await client.deploy({
@@ -67,7 +67,7 @@ describe('Deploy Command', () => {
   
   test('skips already deployed changes', async () => {
     const fixturePath = fixture.setupFixture(['migrate', 'simple']);
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     // First deployment
     const result1 = await client.deploy({
@@ -102,7 +102,7 @@ describe('Deploy Command', () => {
       'CREATE TABLE bad_table (id INT; -- syntax error'
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     await expect(client.deploy({
       modulePath: tempDir,
@@ -135,7 +135,7 @@ describe('Deploy Command', () => {
       'CREATE TABLE another_table (id INT);'
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     await expect(client.deploy({
       modulePath: tempDir,

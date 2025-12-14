@@ -10,7 +10,7 @@ afterEach(() => {
   fixture.cleanup();
 });
 
-describe('LaunchQLPackage.writeModulePlan', () => {
+describe('PgpmPackage.writeModulePlan', () => {
   it('writes a clean plan to disk for a module (no projects)', async () => {
     const mod = fixture.getModuleProject(['.'], 'secrets');
     await mod.writeModulePlan({ includePackages: false });

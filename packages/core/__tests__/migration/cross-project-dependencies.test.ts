@@ -1,17 +1,17 @@
 import { join } from 'path';
 
-import { LaunchQLMigrate } from '../../src/migrate/client';
+import { PgpmMigrate } from '../../src/migrate/client';
 import { MigrateTestFixture, teardownAllPools,TestDatabase } from '../../test-utils';
 
 describe('Cross-Project Dependencies', () => {
   let fixture: MigrateTestFixture;
   let db: TestDatabase;
-  let client: LaunchQLMigrate;
+  let client: PgpmMigrate;
   
   beforeEach(async () => {
     fixture = new MigrateTestFixture();
     db = await fixture.setupTestDatabase();
-    client = new LaunchQLMigrate(db.config);
+    client = new PgpmMigrate(db.config);
   });
   
   afterEach(async () => {
