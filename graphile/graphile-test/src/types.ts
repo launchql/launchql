@@ -1,4 +1,4 @@
-import type { GraphileOptions } from '@pgpmjs/types';
+import type { GraphileOptions } from '@launchql/types';
 import { DocumentNode, GraphQLError } from 'graphql';
 
 export interface GraphQLQueryOptions<TVariables = Record<string, any>> {

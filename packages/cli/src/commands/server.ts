@@ -1,4 +1,4 @@
-import { getEnvOptions } from '@pgpmjs/env';
+import { getEnvOptions } from '@launchql/env';
 import { Logger } from '@pgpmjs/logger';
 import { LaunchQLServer as server } from '@launchql/server';
 import { PgpmOptions } from '@pgpmjs/types';

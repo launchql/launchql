@@ -37,10 +37,10 @@
   "bugs": {
     "url": "https://github.com/constructive-io/constructive/issues"
   },
-  "devDependencies": {
-    "@aws-sdk/client-s3": "^3.948.0",
-    "@launchql/s3-utils": "workspace:^",
-    "@pgpmjs/env": "workspace:^",
+    "devDependencies": {
+      "@aws-sdk/client-s3": "^3.948.0",
+      "@launchql/env": "workspace:^",
+      "@launchql/s3-utils": "workspace:^",
     "@types/pg": "^8.16.0",
     "graphile-test": "workspace:^",
     "graphql-tag": "^2.12.6",

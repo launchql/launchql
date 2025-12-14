@@ -33,8 +33,10 @@
     "graphql-tag": "2.12.6",
     "makage": "^0.1.8"
   },
-  "dependencies": {
-    "@pgpmjs/types": "workspace:^",
+    "dependencies": {
+      "@launchql/env": "workspace:^",
+      "@launchql/types": "workspace:^",
+      "@pgpmjs/types": "workspace:^",
     "graphile-settings": "workspace:^",
     "graphile-test": "workspace:^",
     "graphql": "15.10.1",
