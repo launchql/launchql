@@ -42,7 +42,7 @@ export default async (
   const pkg = new PgpmPackage(cwd);
   
   if (!pkg.isInModule()) {
-    throw new Error('Not in a LaunchQL module directory. Please run this command from within a module.');
+    throw new Error('Not in a PGPM module directory. Please run this command from within a module.');
   }
 
   const modulePath = pkg.getModulePath();

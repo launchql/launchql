@@ -32,7 +32,7 @@ export default async (
   const project = new PgpmPackage(cwd);
 
   if (!project.isInModule()) {
-    throw new Error('You must run this command inside a LaunchQL module.');
+    throw new Error('You must run this command inside a PGPM module.');
   }
 
   const info = project.getModuleInfo();
