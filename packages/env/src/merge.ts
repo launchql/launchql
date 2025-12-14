@@ -1,39 +1,22 @@
 import deepmerge from 'deepmerge';
 import { pgpmDefaults, PgpmOptions, PgTestConnectionOptions, DeploymentOptions } from '@pgpmjs/types';
 import { loadConfigSync } from './config';
-import { getEnvVars, EnvOptions } from './env';
+import { getEnvVars } from './env';
 
 /**
- * Default values for GraphQL/Graphile-related options.
- * These are kept separate from pgpmDefaults to avoid coupling @pgpmjs/types to GraphQL dependencies.
- * Note: These are plain objects with no graphile imports - just default values.
+ * Get core PGPM environment options by merging:
+ * 1. PGPM defaults
+ * 2. Config file options
+ * 3. Environment variables
+ * 4. Runtime overrides
+ * 
+ * For LaunchQL applications that need GraphQL options, use @launchql/env instead.
  */
-const envGraphqlDefaults: Partial<EnvOptions> = {
-  graphile: {
-    schema: [],
-  },
-  features: {
-    simpleInflection: true,
-    oppositeBaseNames: true,
-    postgis: true
-  },
-  api: {
-    enableMetaApi: true,
-    exposedSchemas: [],
-    anonRole: 'administrator',
-    roleName: 'administrator',
-    defaultDatabaseId: 'hard-coded',
-    isPublic: true,
-    metaSchemas: ['collections_public', 'meta_public']
-  }
-};
-
-export const getEnvOptions = (overrides: EnvOptions = {}, cwd: string = process.cwd()): EnvOptions => {
+export const getEnvOptions = (overrides: PgpmOptions = {}, cwd: string = process.cwd()): PgpmOptions => {
   const configOptions = loadConfigSync(cwd);
   const envOptions = getEnvVars();
   
-  // Merge in order: pgpmDefaults (core) -> envGraphqlDefaults (graphql) -> config -> env -> overrides
-  return deepmerge.all([pgpmDefaults, envGraphqlDefaults, configOptions, envOptions, overrides]);
+  return deepmerge.all([pgpmDefaults, configOptions, envOptions, overrides]);
 };
 
 export const getConnEnvOptions = (overrides: Partial<PgTestConnectionOptions> = {}, cwd: string = process.cwd()): PgTestConnectionOptions => {

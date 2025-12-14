@@ -3,7 +3,7 @@ import { join } from 'path';
 import { createReadStream, writeFileSync, unlinkSync } from 'fs';
 import { tmpdir } from 'os';
 import { S3Client } from '@aws-sdk/client-s3';
-import { getEnvOptions } from '@pgpmjs/env';
+import { getEnvOptions } from '@launchql/env';
 import { createS3Bucket } from '@launchql/s3-utils';
 import { getConnections, snapshot, seed } from 'graphile-test';
 import type { PgTestClient } from 'pgsql-test/test-client';

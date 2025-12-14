@@ -1,5 +1,5 @@
 import PgManyToMany from '@graphile-contrib/pg-many-to-many';
-import { getEnvOptions } from '@pgpmjs/env';
+import { getEnvOptions } from '@launchql/env';
 import { LaunchQLOptions } from '@launchql/types';
 import PgPostgis from 'graphile-postgis';
 import FulltextFilterPlugin from 'graphile-plugin-fulltext-filter';

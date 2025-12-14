@@ -461,12 +461,12 @@ importers:
       '@graphile-contrib/pg-many-to-many':
         specifier: ^1.0.2
         version: 1.0.2
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../../packages/launchql-env/dist
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/launchql-types/dist
-      '@pgpmjs/env':
-        specifier: workspace:^
-        version: link:../../packages/env/dist
       '@pgpmjs/types':
         specifier: workspace:^
         version: link:../../packages/types/dist
@@ -579,6 +579,9 @@ importers:
 
   graphile/graphile-test:
     dependencies:
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../../packages/launchql-env/dist
       '@launchql/types':
         specifier: workspace:^
         version: link:../../packages/launchql-types/dist
@@ -630,12 +633,12 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.948.0
         version: 3.948.0
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../../packages/launchql-env/dist
       '@launchql/s3-utils':
         specifier: workspace:^
         version: link:../../packages/s3-utils/dist
-      '@pgpmjs/env':
-        specifier: workspace:^
-        version: link:../../packages/env/dist
       '@types/pg':
         specifier: ^8.16.0
         version: 8.16.0
@@ -795,6 +798,9 @@ importers:
       '@launchql/codegen':
         specifier: workspace:^
         version: link:../launchql-gen/dist
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../launchql-env/dist
       '@launchql/explorer':
         specifier: workspace:^
         version: link:../explorer/dist
@@ -804,9 +810,6 @@ importers:
       '@pgpmjs/core':
         specifier: workspace:^
         version: link:../core/dist
-      '@pgpmjs/env':
-        specifier: workspace:^
-        version: link:../env/dist
       '@pgpmjs/logger':
         specifier: workspace:^
         version: link:../logger/dist
@@ -1026,6 +1029,9 @@ importers:
 
   packages/explorer:
     dependencies:
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../launchql-env/dist
       '@launchql/s3-streamer':
         specifier: workspace:^
         version: link:../s3-streamer/dist
@@ -1038,9 +1044,6 @@ importers:
       '@launchql/url-domains':
         specifier: workspace:^
         version: link:../url-domains/dist
-      '@pgpmjs/env':
-        specifier: workspace:^
-        version: link:../env/dist
       '@pgpmjs/server-utils':
         specifier: workspace:^
         version: link:../server-utils/dist
@@ -1132,6 +1135,23 @@ importers:
         version: link:../pgsql-test/dist
     publishDirectory: dist
 
+  packages/launchql-env:
+    dependencies:
+      '@launchql/types':
+        specifier: workspace:^
+        version: link:../launchql-types/dist
+      '@pgpmjs/env':
+        specifier: workspace:^
+        version: link:../env/dist
+      deepmerge:
+        specifier: ^4.3.1
+        version: 4.3.1
+    devDependencies:
+      makage:
+        specifier: ^0.1.8
+        version: 0.1.8
+    publishDirectory: dist
+
   packages/launchql-gen:
     dependencies:
       gql-ast:
@@ -1184,6 +1204,9 @@ importers:
 
   packages/launchql-test:
     dependencies:
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../launchql-env/dist
       '@launchql/types':
         specifier: workspace:^
         version: link:../launchql-types/dist
@@ -1629,6 +1652,9 @@ importers:
       '@graphile-contrib/pg-many-to-many':
         specifier: ^1.0.2
         version: 1.0.2
+      '@launchql/env':
+        specifier: workspace:^
+        version: link:../launchql-env/dist
       '@launchql/s3-utils':
         specifier: workspace:^
         version: link:../s3-utils/dist
@@ -1641,9 +1667,6 @@ importers:
       '@launchql/url-domains':
         specifier: workspace:^
         version: link:../url-domains/dist
-      '@pgpmjs/env':
-        specifier: workspace:^
-        version: link:../env/dist
       '@pgpmjs/logger':
         specifier: workspace:^
         version: link:../logger/dist

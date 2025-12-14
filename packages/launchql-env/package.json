@@ -1,8 +1,8 @@
 {
-  "name": "graphile-test",
-  "version": "2.10.0",
+  "name": "@launchql/env",
+  "version": "2.7.0",
   "author": "Constructive <developers@constructive.io>",
-  "description": "PostGraphile Testing",
+  "description": "LaunchQL environment configuration with GraphQL/Graphile support",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -28,26 +28,20 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "devDependencies": {
-    "@types/pg": "^8.16.0",
-    "graphql-tag": "2.12.6",
-    "makage": "^0.1.8"
-  },
-    "dependencies": {
-      "@launchql/env": "workspace:^",
-      "@launchql/types": "workspace:^",
-      "@pgpmjs/types": "workspace:^",
-    "graphql": "15.10.1",
-    "mock-req": "^0.2.0",
-    "pg": "^8.16.3",
-    "pgsql-test": "workspace:^",
-    "postgraphile": "^4.14.1"
+  "dependencies": {
+    "@launchql/types": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
+    "deepmerge": "^4.3.1"
   },
   "keywords": [
-    "testing",
-    "graphql",
-    "graphile",
+    "env",
+    "environment",
+    "config",
     "launchql",
-    "test"
-  ]
+    "graphql",
+    "postgraphile"
+  ],
+  "devDependencies": {
+    "makage": "^0.1.8"
+  }
 }

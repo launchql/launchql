@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { getEnvOptions } from '@pgpmjs/env';
+import { getEnvOptions } from '@launchql/env';
 import { Logger } from '@pgpmjs/logger';
 import { healthz, poweredBy, trustProxy } from '@pgpmjs/server-utils';
 import { PgpmOptions } from '@pgpmjs/types';
