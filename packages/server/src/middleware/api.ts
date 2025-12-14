@@ -1,6 +1,6 @@
 import { getNodeEnv } from '@pgpmjs/env';
 import { svcCache } from '@pgpmjs/server-utils';
-import { LaunchQLOptions } from '@pgpmjs/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { NextFunction, Request, Response } from 'express';
 import { getSchema, GraphileQuery } from 'graphile-query';
 import { getGraphileSettings } from 'graphile-settings';
@@ -143,7 +143,7 @@ const getHardCodedSchemata = ({
   databaseId,
   key,
 }: {
-  opts: LaunchQLOptions;
+  opts: PgpmOptions;
   schemata: string;
   databaseId: string;
   key: string;
@@ -176,7 +176,7 @@ const getMetaSchema = ({
   key,
   databaseId,
 }: {
-  opts: LaunchQLOptions;
+  opts: PgpmOptions;
   key: string;
   databaseId: string;
 }): any => {
@@ -209,7 +209,7 @@ const queryServiceByDomainAndSubdomain = async ({
   domain,
   subdomain,
 }: {
-  opts: LaunchQLOptions;
+  opts: PgpmOptions;
   key: string;
   client: any;
   domain: string;
@@ -246,7 +246,7 @@ const queryServiceByApiName = async ({
   databaseId,
   name,
 }: {
-  opts: LaunchQLOptions;
+  opts: PgpmOptions;
   key: string;
   client: any;
   databaseId: string;
@@ -273,7 +273,7 @@ const queryServiceByApiName = async ({
   return null;
 };
 
-const getSvcKey = (opts: LaunchQLOptions, req: Request): string => {
+const getSvcKey = (opts: PgpmOptions, req: Request): string => {
   const domain = req.urlDomains.domain;
   const key = (req.urlDomains.subdomains as string[])
     .filter((name: string) => !['www'].includes(name))
@@ -309,7 +309,7 @@ const validateSchemata = async (
 };
 
 export const getApiConfig = async (
-  opts: LaunchQLOptions,
+  opts: PgpmOptions,
   req: Request
 ): Promise<any> => {
   const rootPgPool = getPgPool(opts.pg);
