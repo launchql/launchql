@@ -1,8 +1,8 @@
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { parseTarget } from '../../src/utils/target-utils';
 import { TestFixture } from '../../test-utils';
 
-describe('LaunchQLPackage Target API', () => {
+describe('PgpmPackage Target API', () => {
   let fixture: TestFixture;
 
   beforeAll(() => {
@@ -60,10 +60,10 @@ describe('LaunchQLPackage Target API', () => {
   });
 
   describe('deploy method with target parameter', () => {
-    let project: LaunchQLPackage;
+    let project: PgpmPackage;
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLPackage(fixturePath);
+      project = new PgpmPackage(fixturePath);
     });
 
     test('deploys with project-only target', async () => {
@@ -104,11 +104,11 @@ describe('LaunchQLPackage Target API', () => {
   });
 
   describe('revert method with target parameter', () => {
-    let project: LaunchQLPackage;
+    let project: PgpmPackage;
 
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLPackage(fixturePath);
+      project = new PgpmPackage(fixturePath);
     });
 
     test('reverts with project-only target', async () => {
@@ -149,11 +149,11 @@ describe('LaunchQLPackage Target API', () => {
   });
 
   describe('verify method with target parameter', () => {
-    let project: LaunchQLPackage;
+    let project: PgpmPackage;
 
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLPackage(fixturePath);
+      project = new PgpmPackage(fixturePath);
     });
 
     test('verifies with project-only target', async () => {
@@ -194,11 +194,11 @@ describe('LaunchQLPackage Target API', () => {
   });
 
   describe('backward compatibility', () => {
-    let project: LaunchQLPackage;
+    let project: PgpmPackage;
 
     beforeEach(() => {
       const fixturePath = fixture.getFixturePath('launchql');
-      project = new LaunchQLPackage(fixturePath);
+      project = new PgpmPackage(fixturePath);
     });
 
     test('deploy works without target parameter (uses context)', async () => {

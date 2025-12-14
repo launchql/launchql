@@ -1,5 +1,5 @@
 import { resolveExtensionDependencies, resolveDependencies } from '../../src/resolution/deps';
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 
 let fixture: TestFixture;
@@ -45,7 +45,7 @@ it('sqitch package dependencies [simple/3rd]', async () => {
 });
 
 it('launchql project extensions dependencies', async () => {
-  const pkg = new LaunchQLPackage(fixture.getFixturePath('launchql'));
+  const pkg = new PgpmPackage(fixture.getFixturePath('launchql'));
   const modules = pkg.listModules();
 
   const utils = await resolveExtensionDependencies('utils', modules);
