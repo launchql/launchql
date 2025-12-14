@@ -74,7 +74,7 @@ export default async (
       throw new Error('No package selected. Cannot add tag without specifying a target package.');
     }
   } else {
-    throw new Error('This command must be run inside a LaunchQL workspace or module.');
+    throw new Error('This command must be run inside a PGPM workspace or module.');
   }
 
   const questions: Question[] = [];

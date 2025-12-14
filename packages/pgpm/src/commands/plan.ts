@@ -60,7 +60,7 @@ export default async (
   const pkg = new PgpmPackage(cwd);
 
   if (!pkg.isInModule()) {
-    throw new Error('This command must be run inside a LaunchQL module.');
+    throw new Error('This command must be run inside a PGPM module.');
   }
 
   const includePackagesFlag = typeof includePackages === 'boolean' ? includePackages : true;
