@@ -1,8 +1,8 @@
 {
-  "name": "@pgpmjs/types",
-  "version": "2.11.0",
+  "name": "@launchql/env",
+  "version": "2.7.0",
   "author": "Constructive <developers@constructive.io>",
-  "description": "PGPM types",
+  "description": "LaunchQL environment configuration with GraphQL/Graphile support",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -29,15 +29,17 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "pg-env": "workspace:^"
+    "@launchql/types": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
+    "deepmerge": "^4.3.1"
   },
   "keywords": [
-    "types",
-    "typescript",
-    "pgpm",
-    "pgpmjs",
-    "postgresql",
-    "migrations"
+    "env",
+    "environment",
+    "config",
+    "launchql",
+    "graphql",
+    "postgraphile"
   ],
   "devDependencies": {
     "makage": "^0.1.8"

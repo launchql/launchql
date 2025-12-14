@@ -28,9 +28,10 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "@graphile-contrib/pg-many-to-many": "^1.0.2",
-    "@pgpmjs/env": "workspace:^",
+    "dependencies": {
+      "@graphile-contrib/pg-many-to-many": "^1.0.2",
+      "@launchql/env": "workspace:^",
+      "@launchql/types": "workspace:^",
     "@pgpmjs/types": "workspace:^",
     "cors": "^2.8.5",
     "express": "^5.1.0",

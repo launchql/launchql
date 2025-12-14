@@ -33,11 +33,12 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "@launchql/s3-streamer": "workspace:^",
-    "@launchql/upload-names": "workspace:^",
-    "@launchql/url-domains": "workspace:^",
-    "@pgpmjs/env": "workspace:^",
+    "dependencies": {
+      "@launchql/env": "workspace:^",
+      "@launchql/s3-streamer": "workspace:^",
+      "@launchql/types": "workspace:^",
+      "@launchql/upload-names": "workspace:^",
+      "@launchql/url-domains": "workspace:^",
     "@pgpmjs/server-utils": "workspace:^",
     "@pgpmjs/types": "workspace:^",
     "express": "^5.1.0",

@@ -1,6 +1,6 @@
+import { LaunchQLOptions } from '@launchql/types';
 import { Logger } from '@pgpmjs/logger';
 import { svcCache } from '@pgpmjs/server-utils';
-import { PgpmOptions } from '@pgpmjs/types';
 import { NextFunction,Request, Response } from 'express';
 import { graphileCache } from 'graphile-cache';
 import { getPgPool } from 'pg-cache';
@@ -19,7 +19,7 @@ export const flush = async (req: Request, res: Response, next: NextFunction): Pr
   return next();
 };
 
-export const flushService = async (opts: PgpmOptions, databaseId: string): Promise<void> => {
+export const flushService = async (opts: LaunchQLOptions, databaseId: string): Promise<void> => {
   const pgPool = getPgPool(opts.pg);
   log.info('flushing db ' + databaseId);
 
