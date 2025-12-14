@@ -4,7 +4,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { scaffoldTemplate } from '@launchql/core';
+import { scaffoldTemplate } from '@pgpmjs/core';
 
 const TEMPLATE_REPO = 'https://github.com/constructive-io/pgpm-boilerplates.git';
 

@@ -1,11 +1,11 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { getPgPool } from 'pg-cache';
 import pgQueryContext from 'pg-query-context';
 import './types'; // for Request type
 
 export const createAuthenticateMiddleware = (
-  opts: LaunchQLOptions
+  opts: PgpmOptions
 ): RequestHandler => {
   return async (
     req: Request,

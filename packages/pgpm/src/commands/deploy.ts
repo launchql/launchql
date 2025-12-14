@@ -1,6 +1,6 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
+import { PgpmPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
 import { execSync } from 'child_process';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
@@ -146,7 +146,7 @@ export default async (
   
   const opts = getEnvOptions(cliOverrides);
 
-  const project = new LaunchQLPackage(cwd);
+  const project = new PgpmPackage(cwd);
   
   let target: string | undefined;
   if (packageName && argv.to) {

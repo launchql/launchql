@@ -1,8 +1,8 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { parsePlanFile } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { PgpmPackage } from '@pgpmjs/core';
+import { parsePlanFile } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import path from 'path';
 import { getPgEnvOptions } from 'pg-env';
@@ -39,10 +39,10 @@ export default async (
 
   log.debug(`Using current directory: ${cwd}`);
 
-  const pkg = new LaunchQLPackage(cwd);
+  const pkg = new PgpmPackage(cwd);
   
   if (!pkg.isInModule()) {
-    throw new Error('Not in a LaunchQL module directory. Please run this command from within a module.');
+    throw new Error('Not in a PGPM module directory. Please run this command from within a module.');
   }
 
   const modulePath = pkg.getModulePath();

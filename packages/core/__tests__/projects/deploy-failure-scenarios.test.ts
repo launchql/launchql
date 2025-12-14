@@ -1,4 +1,4 @@
-import { LaunchQLMigrate } from '../../src/migrate/client';
+import { PgpmMigrate } from '../../src/migrate/client';
 import { MigrateTestFixture, teardownAllPools, TestDatabase } from '../../test-utils';
 
 describe('Deploy Failure Scenarios', () => {
@@ -50,7 +50,7 @@ describe('Deploy Failure Scenarios', () => {
       "INSERT INTO test_users (email) VALUES ('test@example.com');"
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     const initialState = await db.getMigrationState();
     expect(initialState.changeCount).toBe(0);
@@ -112,7 +112,7 @@ describe('Deploy Failure Scenarios', () => {
       "INSERT INTO test_products (sku) VALUES ('PROD-002');"
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     const initialState = await db.getMigrationState();
     expect(initialState.changeCount).toBe(0);
@@ -175,7 +175,7 @@ describe('Deploy Failure Scenarios', () => {
       'INSERT INTO test_schema.orders (amount) VALUES (-100.00);'
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     await expect(client.deploy({
       modulePath: tempDir,
@@ -237,7 +237,7 @@ describe('Deploy Failure Scenarios', () => {
       'INSERT INTO test_schema.orders (amount) VALUES (-100.00);'
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     await expect(client.deploy({
       modulePath: tempDir,
@@ -302,7 +302,7 @@ describe('Deploy Failure Scenarios', () => {
       'SELECT 1 FROM non_existent_table LIMIT 1;'
     );
     
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
     
     await client.deploy({
       modulePath: tempDir,

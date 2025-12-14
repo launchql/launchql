@@ -3,7 +3,7 @@ import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import os from 'os';
 import path from 'path';
-import { DEFAULT_TEMPLATE_REPO } from '@launchql/core';
+import { DEFAULT_TEMPLATE_REPO } from '@pgpmjs/core';
 
 import { commands } from '../src/commands';
 import { setupTests, TestEnvironment } from './cli';

@@ -1,5 +1,5 @@
 {
-  "name": "@launchql/orm",
+  "name": "@pgpmjs/orm",
   "version": "2.3.2",
   "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL ORM",
@@ -35,5 +35,10 @@
     "@types/pg": "^8.16.0",
     "makage": "^0.1.8"
   },
-  "keywords": []
+  "keywords": [
+    "orm",
+    "postgresql",
+    "pgpm",
+    "pgpmjs"
+  ]
 }

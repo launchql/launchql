@@ -1,5 +1,5 @@
 {
-  "name": "@launchql/logger",
+  "name": "@pgpmjs/logger",
   "version": "1.2.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Simple logger utility",
@@ -36,7 +36,8 @@
     "logging",
     "yanse",
     "console",
-    "launchql"
+    "pgpm",
+    "pgpmjs"
   ],
   "devDependencies": {
     "makage": "^0.1.8"

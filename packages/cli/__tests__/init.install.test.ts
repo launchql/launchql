@@ -1,7 +1,7 @@
 jest.setTimeout(60000);
 process.env.PGPM_SKIP_UPDATE_CHECK = 'true';
 
-import { LaunchQLPackage } from '@launchql/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
@@ -71,7 +71,7 @@ describe('cmds:install - with initialized workspace and module', () => {
     expect(relativeFiles).toMatchSnapshot();
 
     // Snapshot control file
-    const mod = new LaunchQLPackage(moduleDir);
+    const mod = new PgpmPackage(moduleDir);
     const controlFile = mod.getModuleControlFile();
     expect(controlFile).toMatchSnapshot();
   });
@@ -117,7 +117,7 @@ describe('cmds:install - with initialized workspace and module', () => {
     expect(relativeFiles).toMatchSnapshot();
 
     // Snapshot control file after both installs
-    const mod = new LaunchQLPackage(moduleDir);
+    const mod = new PgpmPackage(moduleDir);
     const controlFile = mod.getModuleControlFile();
     expect(controlFile).toMatchSnapshot();
   });

@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '../../src/core/class/launchql';
+import { PgpmPackage } from '../../src/core/class/pgpm';
 import { TestFixture } from '../../test-utils';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
@@ -40,7 +40,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     pkg.addChange('organizations');
     
     const planContent = readFileSync(join(moduleDir, 'pgpm.plan'), 'utf8');
@@ -55,7 +55,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-deps');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     pkg.addChange('users');
     
@@ -74,7 +74,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-nested');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     pkg.addChange('api/v1/endpoints');
     
     expect(fs.existsSync(join(moduleDir, 'deploy', 'api', 'v1', 'endpoints.sql'))).toBe(true);
@@ -89,7 +89,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-deep-nested');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     pkg.addChange('schema/myschema/tables/mytable');
     
     expect(fs.existsSync(join(moduleDir, 'deploy', 'schema', 'myschema', 'tables', 'mytable.sql'))).toBe(true);
@@ -104,7 +104,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-validation');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     expect(() => pkg.addChange('')).toThrow('Change name is required');
     expect(() => pkg.addChange('   ')).toThrow('Change name is required');
@@ -116,7 +116,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-duplicates');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     pkg.addChange('organizations');
     
@@ -127,7 +127,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-dep-validation');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     expect(() => pkg.addChange('contacts', ['nonexistent'])).toThrow("Dependency 'nonexistent' not found in plan");
   });
@@ -136,16 +136,16 @@ describe('Add functionality', () => {
     const nonModuleDir = join(fixture.tempDir, 'not-a-module');
     mkdirSync(nonModuleDir, { recursive: true });
     
-    const pkg = new LaunchQLPackage(nonModuleDir);
+    const pkg = new PgpmPackage(nonModuleDir);
     
-    expect(() => pkg.addChange('organizations')).toThrow('This command must be run inside a LaunchQL workspace or module');
+    expect(() => pkg.addChange('organizations')).toThrow('This command must be run inside a PGPM workspace or module');
   });
 
   test('addChange creates SQL files without transaction statements', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-no-transactions');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     pkg.addChange('no-transactions');
     
     const deployContent = readFileSync(join(moduleDir, 'deploy', 'no-transactions.sql'), 'utf8');
@@ -169,7 +169,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-headers');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     pkg.addChange('users');
     
@@ -195,7 +195,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-multi-deps');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     pkg.addChange('users');
     pkg.addChange('roles');
@@ -217,7 +217,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-cross-deps');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     pkg.addChange('adoption-history', ['pets:tables/pets'], 'Adds adoption history table');
     
@@ -233,7 +233,7 @@ describe('Add functionality', () => {
     const moduleDir = join(fixture.tempDir, 'test-module-mixed-deps');
     setupModule(moduleDir);
     
-    const pkg = new LaunchQLPackage(moduleDir);
+    const pkg = new PgpmPackage(moduleDir);
     
     pkg.addChange('users');
     

@@ -1,7 +1,7 @@
 jest.setTimeout(60000);
 process.env.PGPM_SKIP_UPDATE_CHECK = 'true';
 
-import { LaunchQLPackage } from '@launchql/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import { existsSync } from 'fs';
 import { sync as glob } from 'glob';
 import { Inquirerer } from 'inquirerer';
@@ -105,7 +105,7 @@ describe('cmds:init', () => {
       'module-only'
     );
 
-    const lql = new LaunchQLPackage(moduleDir);
+    const lql = new PgpmPackage(moduleDir);
     expect(lql.getModuleControlFile()).toMatchSnapshot();
   });
 

@@ -1,6 +1,6 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
+import { PgpmPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
@@ -68,7 +68,7 @@ export default async (
     }
   }
 
-  const project = new LaunchQLPackage(cwd);
+  const project = new PgpmPackage(cwd);
   
   const opts = getEnvOptions({ 
     pg: getPgEnvOptions({ database })

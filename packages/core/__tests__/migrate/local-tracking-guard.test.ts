@@ -1,4 +1,4 @@
-import { LaunchQLMigrate } from '../../src/migrate/client';
+import { PgpmMigrate } from '../../src/migrate/client';
 import { MigrateTestFixture, teardownAllPools, TestDatabase } from '../../test-utils';
 
 describe('local tracking guard for deployed/skipped', () => {
@@ -25,7 +25,7 @@ describe('local tracking guard for deployed/skipped', () => {
     
     fixture.createScript(tempDir, 'deploy', 'change1', 'SELECT 1;');
 
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
 
     const result = await client.deploy({
       modulePath: tempDir,
@@ -43,7 +43,7 @@ describe('local tracking guard for deployed/skipped', () => {
     
     fixture.createScript(tempDir, 'deploy', 'change1', 'SELECT 1;');
 
-    const client = new LaunchQLMigrate(db.config);
+    const client = new PgpmMigrate(db.config);
 
     expect(() => {
       (client as any).toUnqualifiedLocal('pkgA', 'pkgB:change1');

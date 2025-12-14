@@ -1,6 +1,6 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { PgpmPackage } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
@@ -15,7 +15,7 @@ export async function selectPackage(
   operationName: string,
   log?: Logger
 ): Promise<string | undefined> {
-  const pkg = new LaunchQLPackage(cwd);
+  const pkg = new PgpmPackage(cwd);
   const modules = await pkg.getModules();
   const moduleNames = modules.map(mod => mod.getModuleName());
 

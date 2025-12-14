@@ -175,9 +175,9 @@ export interface ApiOptions {
 }
 
 /**
- * Configuration for LaunchQL workspace
+ * Configuration for PGPM workspace
  */
-export interface LaunchQLWorkspaceConfig {
+export interface PgpmWorkspaceConfig {
   /** Glob patterns for package directories */
   packages: string[];
   /** Optional workspace metadata */
@@ -216,9 +216,9 @@ export interface DeploymentOptions {
 }
 
 /**
- * Main configuration options for the LaunchQL framework
+ * Main configuration options for the PGPM framework
  */
-export interface LaunchQLOptions {
+export interface PgpmOptions {
     /** Test database configuration options */
     db?: Partial<PgTestConnectionOptions>;
     /** PostgreSQL connection configuration */
@@ -242,9 +242,9 @@ export interface LaunchQLOptions {
 }
 
 /**
- * Default configuration values for LaunchQL framework
+ * Default configuration values for PGPM framework
  */
-export const pgpmDefaults: LaunchQLOptions = {
+export const pgpmDefaults: PgpmOptions = {
   db: {
     rootDb: 'postgres',
     prefix: 'db-',

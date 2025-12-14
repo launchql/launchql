@@ -1,5 +1,5 @@
-import { LaunchQLInit } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { PgpmInit } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { getPgEnvOptions } from 'pg-env';
@@ -39,7 +39,7 @@ export default async (
   const pgEnv = getPgEnvOptions();
   const isTest = argv.test;
 
-  const init = new LaunchQLInit(pgEnv);
+  const init = new PgpmInit(pgEnv);
   
   try {
     if (isTest) {

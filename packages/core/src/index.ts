@@ -1,4 +1,4 @@
-export * from './core/class/launchql';
+export * from './core/class/pgpm';
 export * from './export/export-meta';
 export * from './export/export-migrations';
 export * from './extensions/extensions';
@@ -16,8 +16,8 @@ export * from './core/boilerplate-scanner';
 // Export package-files functionality (now integrated into core)
 export * from './files';
 export { cleanSql } from './migrate/clean';
-export { LaunchQLMigrate } from './migrate/client';
-export { LaunchQLInit } from './init/client';
+export { PgpmMigrate } from './migrate/client';
+export { PgpmInit } from './init/client';
 export { 
   DeployOptions, 
   DeployResult, 

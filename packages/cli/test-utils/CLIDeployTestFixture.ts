@@ -1,4 +1,4 @@
-import { LaunchQLMigrate } from '@launchql/core';
+import { PgpmMigrate } from '@pgpmjs/core';
 import { CLIOptions,Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { Pool } from 'pg';
@@ -56,7 +56,7 @@ export class CLIDeployTestFixture extends TestFixture {
     };
 
     // Initialize migrate schema
-    const migrate = new LaunchQLMigrate(config);
+    const migrate = new PgpmMigrate(config);
     await migrate.initialize();
 
     // Get pool for test database operations

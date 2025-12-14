@@ -1,5 +1,5 @@
-import { Logger } from '@launchql/logger';
-import { LaunchQLError } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { PgpmError } from '@pgpmjs/types';
 import { teardownPgPools } from 'pg-cache';
 
 const log = new Logger('cli');
@@ -11,11 +11,11 @@ const log = new Logger('cli');
  * IMPORTANT: This function properly cleans up PostgreSQL connections before exiting.
  */
 export const cliExitWithError = async (
-  error: LaunchQLError | Error | string,
+  error: PgpmError | Error | string,
   context?: Record<string, any>
 ): Promise<never> => {
-  if (error instanceof LaunchQLError) {
-    // For LaunchQLError instances, use structured logging
+  if (error instanceof PgpmError) {
+    // For PgpmError instances, use structured logging
     log.error(`Error: ${error.message}`);
     
     // Log additional context if available

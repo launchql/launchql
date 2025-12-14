@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`LaunchQLPackage.writeModulePlan writes a clean plan to disk for a module (no projects) 1`] = `
+exports[`PgpmPackage.writeModulePlan writes a clean plan to disk for a module (no projects) 1`] = `
 "%syntax-version=1.0.0
 %project=secrets
 %uri=secrets
 procedures/secretfunction 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add procedures/secretfunction"
 `;
 
-exports[`LaunchQLPackage.writeModulePlan writes a clean plan to disk for a module (with projects) 1`] = `
+exports[`PgpmPackage.writeModulePlan writes a clean plan to disk for a module (with projects) 1`] = `
 "%syntax-version=1.0.0
 %project=secrets
 %uri=secrets
 procedures/secretfunction [totp:procedures/generate_secret pg-verify:procedures/verify_view] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add procedures/secretfunction"
 `;
 
-exports[`LaunchQLPackage.writeModulePlan writes a plan for a dependency-heavy module (totp) 1`] = `
+exports[`PgpmPackage.writeModulePlan writes a plan for a dependency-heavy module (totp) 1`] = `
 "%syntax-version=1.0.0
 %project=totp
 %uri=totp
 procedures/generate_secret [pg-verify:procedures/verify_view] 2017-08-11T08:11:51Z launchql <launchql@5b0c196eeb62> # add procedures/generate_secret"
 `;
 
-exports[`LaunchQLPackage.writeModulePlan writes a plan with project references (utils) 1`] = `
+exports[`PgpmPackage.writeModulePlan writes a plan with project references (utils) 1`] = `
 {
   "ctrl": "# pg-verify extension
 comment = 'pg-verify extension'

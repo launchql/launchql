@@ -1,11 +1,11 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import path from 'path';
 
 export default async (argv: Partial<ParsedArgs>, _prompter: Inquirerer) => {
   const cwd = (argv.cwd as string) || process.cwd();
-  const proj = new LaunchQLPackage(path.resolve(cwd));
+  const proj = new PgpmPackage(path.resolve(cwd));
   const result = proj.analyzeModule();
   if (result.ok) {
     console.log(`OK ${result.name}`);

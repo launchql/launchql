@@ -1,7 +1,7 @@
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import { LaunchQLExplorer as explorer } from '@launchql/explorer';
-import { Logger } from '@launchql/logger';
-import { LaunchQLOptions } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { PgpmOptions } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const log = new Logger('explorer');
@@ -91,7 +91,7 @@ export default async (
     simpleInflection
   } = await prompter.prompt(argv, questions);
 
-  const options: LaunchQLOptions = getEnvOptions({
+  const options: PgpmOptions = getEnvOptions({
     features: {
       oppositeBaseNames,
       simpleInflection,

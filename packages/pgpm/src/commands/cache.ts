@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { CacheManager } from 'create-gen-app';
 import { cliExitWithError } from '../utils/cli-error';

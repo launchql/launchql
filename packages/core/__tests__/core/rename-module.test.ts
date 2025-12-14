@@ -12,7 +12,7 @@ afterAll(() => {
   fixture.cleanup();
 });
 
-describe('LaunchQLPackage.renameModule', () => {
+describe('PgpmPackage.renameModule', () => {
   it('performs dry-run rename and reports changed files/warnings', () => {
     const project = fixture.getModuleProject(['simple'], 'my-first');
     const res = project.renameModule('renamed_mod', { dryRun: true });

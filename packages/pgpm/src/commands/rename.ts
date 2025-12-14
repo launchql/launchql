@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import path from 'path';
@@ -13,7 +13,7 @@ export default async (argv: Partial<ParsedArgs>, _prompter: Inquirerer) => {
   }
   const dryRun = !!argv['dry-run'] || !!argv.dryRun;
   const syncPkg = !!argv['sync-pkg-name'] || !!argv.syncPkgName;
-  const proj = new LaunchQLPackage(path.resolve(cwd));
+  const proj = new PgpmPackage(path.resolve(cwd));
   const res = proj.renameModule(to, { dryRun, syncPackageJsonName: syncPkg });
   if (dryRun) {
     console.log('Dry run');

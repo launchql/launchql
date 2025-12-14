@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
@@ -33,10 +33,10 @@ export default async (
   }
   const { cwd = process.cwd() } = argv;
 
-  const project = new LaunchQLPackage(cwd);
+  const project = new PgpmPackage(cwd);
 
   if (!project.isInModule()) {
-    throw new Error('You must run this command inside a LaunchQL module.');
+    throw new Error('You must run this command inside a PGPM module.');
   }
 
   if (argv._.length === 0) {

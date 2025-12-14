@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { LaunchQLPackage } from '../src/core/class/launchql';
+import { PgpmPackage } from '../src/core/class/pgpm';
 
 describe('Config Loading', () => {
   let tempDir: string;
@@ -25,14 +25,14 @@ describe('Config Loading', () => {
       JSON.stringify(configContent, null, 2)
     );
 
-    const project = new LaunchQLPackage(tempDir);
+    const project = new PgpmPackage(tempDir);
     
     expect(project.config).toEqual(configContent);
     expect(project.config?.packages).toEqual(['packages/*', 'extensions/*']);
   });
 
   it('should load JS config with JSDoc types', () => {
-    const configContent = `/** @type {import('@launchql/types').LaunchQLWorkspaceConfig} */
+    const configContent = `/** @type {import('@pgpmjs/types').LaunchQLWorkspaceConfig} */
 module.exports = {
   packages: ['packages/*', 'extensions/*'],
   name: 'test-workspace',
@@ -46,7 +46,7 @@ module.exports = {
       configContent
     );
 
-    const project = new LaunchQLPackage(tempDir);
+    const project = new PgpmPackage(tempDir);
     
     expect(project.config?.packages).toEqual(['packages/*', 'extensions/*']);
     expect(project.config?.name).toBe('test-workspace');
@@ -73,14 +73,14 @@ module.exports = {
       jsConfig
     );
 
-    const project = new LaunchQLPackage(tempDir);
+    const project = new PgpmPackage(tempDir);
     
     expect(project.config?.packages).toEqual(['js-packages/*']);
     expect(project.config?.name).toBe('js-workspace');
   });
 
   it('should have no config when no config file exists', () => {
-    const project = new LaunchQLPackage(tempDir);
+    const project = new PgpmPackage(tempDir);
     expect(project.config).toBeUndefined();
     expect(project.workspacePath).toBeUndefined();
   });

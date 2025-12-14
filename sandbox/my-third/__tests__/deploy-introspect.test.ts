@@ -1,12 +1,12 @@
-import { deployFast, LaunchQLProject } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
+import { deployFast, PgpmPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
 import { getPgPool } from 'pg-cache';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 
 it('GraphQL query', async () => {
     const newDb = 'db-lql-'+randomUUID();
-    const project = new LaunchQLProject(process.env.LQL_LAUNCHQL);
+    const project = new PgpmPackage(process.env.LQL_LAUNCHQL);
     const opts = getEnvOptions({
         pg: {
             database: newDb

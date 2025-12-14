@@ -1,5 +1,5 @@
-import { LaunchQLMigrate } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { PgpmMigrate } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { getPgEnvOptions } from 'pg-env';
@@ -46,7 +46,7 @@ export default async (
     database
   };
   
-  const client = new LaunchQLMigrate(config);
+  const client = new PgpmMigrate(config);
   
   try {
     await client.initialize();

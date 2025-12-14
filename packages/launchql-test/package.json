@@ -34,7 +34,7 @@
     "makage": "^0.1.8"
   },
   "dependencies": {
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "graphile-settings": "workspace:^",
     "graphile-test": "workspace:^",
     "graphql": "15.10.1",

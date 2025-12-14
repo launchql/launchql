@@ -1,4 +1,4 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { PgpmOptions } from '@pgpmjs/types';
 
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);
@@ -10,7 +10,7 @@ const parseEnvBoolean = (val?: string): boolean | undefined => {
   return ['true', '1', 'yes'].includes(val.toLowerCase());
 };
 
-export const getEnvVars = (): LaunchQLOptions => {
+export const getEnvVars = (): PgpmOptions => {
   const {
     PGROOTDATABASE,
     PGTEMPLATE,

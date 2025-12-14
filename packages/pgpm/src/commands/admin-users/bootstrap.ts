@@ -1,5 +1,5 @@
-import { LaunchQLInit } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { PgpmInit } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import { getPgEnvOptions } from 'pg-env';
@@ -49,7 +49,7 @@ export default async (
     return;
   }
 
-  const init = new LaunchQLInit(pgEnv);
+  const init = new PgpmInit(pgEnv);
   
   try {
     await init.bootstrapRoles();

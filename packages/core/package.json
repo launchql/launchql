@@ -1,8 +1,8 @@
 {
-  "name": "@launchql/core",
+  "name": "@pgpmjs/core",
   "version": "2.18.3",
   "author": "Constructive <developers@constructive.io>",
-  "description": "LaunchQL Package and Migration Tools",
+  "description": "PGPM Package and Migration Tools",
   "main": "index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
@@ -35,7 +35,8 @@
     "database",
     "migration",
     "postgresql",
-    "launchql",
+    "pgpm",
+    "pgpmjs",
     "schema",
     "sqitch"
   ],
@@ -45,10 +46,10 @@
     "makage": "^0.1.8"
   },
   "dependencies": {
-    "@launchql/env": "workspace:^",
-    "@launchql/logger": "workspace:^",
-    "@launchql/server-utils": "workspace:^",
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/env": "workspace:^",
+    "@pgpmjs/logger": "workspace:^",
+    "@pgpmjs/server-utils": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "@pgsql/types": "^17.6.2",
     "create-gen-app": "^0.3.3",
     "csv-to-pg": "^2.0.10",

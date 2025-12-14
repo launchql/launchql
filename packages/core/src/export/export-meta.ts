@@ -1,4 +1,4 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { Parser } from 'csv-to-pg';
 import { getPgPool } from 'pg-cache';
 
@@ -217,7 +217,7 @@ const config: Record<string, TableConfig> = {
 };
 
 interface ExportMetaParams {
-  opts: LaunchQLOptions,
+  opts: PgpmOptions,
   dbname: string;
   database_id: string;
 }

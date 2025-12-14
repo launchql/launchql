@@ -1,6 +1,6 @@
 import { Client, QueryResult } from 'pg';
 import { PgConfig } from 'pg-env';
-import { AuthOptions, PgTestConnectionOptions, PgTestClientContext } from '@launchql/types';
+import { AuthOptions, PgTestConnectionOptions, PgTestClientContext } from '@pgpmjs/types';
 import { getRoleName } from './roles';
 import { generateContextStatements } from './context-utils';
 import { insertJson, type JsonSeedMap } from './seed/json';

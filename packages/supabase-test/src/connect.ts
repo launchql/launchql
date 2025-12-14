@@ -4,7 +4,7 @@ import {
   type GetConnectionOpts,
   type GetConnectionResult
 } from 'pgsql-test';
-import type { PgTestConnectionOptions } from '@launchql/types';
+import type { PgTestConnectionOptions } from '@pgpmjs/types';
 
 /**
  * Supabase default connection options

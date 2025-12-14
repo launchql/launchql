@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 
 import { LaunchQLServer as server } from './server';
 

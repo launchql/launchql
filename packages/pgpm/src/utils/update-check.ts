@@ -1,11 +1,11 @@
 import { findAndRequirePackageJson } from 'find-and-require-package-json';
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import {
   UpdateCheckConfig,
   UPDATE_CHECK_APPSTASH_KEY,
   UPDATE_CHECK_TTL_MS,
   UPDATE_PACKAGE_NAME
-} from '@launchql/types';
+} from '@pgpmjs/types';
 import { compareVersions, fetchLatestVersion } from './npm-version';
 import { readUpdateConfig, shouldCheck, writeUpdateConfig, UpdateConfigOptions } from './update-config';
 

@@ -1,6 +1,6 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { PgpmPackage } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 import * as path from 'path';
 
@@ -56,7 +56,7 @@ export default async (
   ]);
   const cwd = (cwdResult as any).cwd || process.cwd();
 
-  const pkg = new LaunchQLPackage(cwd);
+  const pkg = new PgpmPackage(cwd);
 
   let packageName: string | undefined;
   
@@ -74,7 +74,7 @@ export default async (
       throw new Error('No package selected. Cannot add tag without specifying a target package.');
     }
   } else {
-    throw new Error('This command must be run inside a LaunchQL workspace or module.');
+    throw new Error('This command must be run inside a PGPM workspace or module.');
   }
 
   const questions: Question[] = [];
@@ -135,7 +135,7 @@ export default async (
       process.chdir(absoluteModulePath);
       
       try {
-        const modulePkg = new LaunchQLPackage(absoluteModulePath);
+        const modulePkg = new PgpmPackage(absoluteModulePath);
         modulePkg.addTag(finalTagName.trim(), changeName?.trim() || undefined, comment?.trim() || undefined);
         log.info(`Successfully added tag '${finalTagName}' to ${changeName || 'latest change'} in package '${packageName}'`);
       } finally {

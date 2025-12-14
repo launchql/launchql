@@ -1,11 +1,11 @@
-import { deploy, LaunchQLProject } from '@launchql/core';
+import { deploy, PgpmPackage } from '@pgpmjs/core';
 import { resolve } from 'path';
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 
 it('LaunchQL', async () => {
-    const project = new LaunchQLProject(resolve(__dirname+'/../'));
+    const project = new PgpmPackage(resolve(__dirname+'/../'));
     console.log(project);
 
     const plan = project.getModulePlan();

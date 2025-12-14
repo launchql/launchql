@@ -1,6 +1,6 @@
-import { exportMigrations,LaunchQLPackage } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
-import { getGitConfigInfo } from '@launchql/types';
+import { exportMigrations,PgpmPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
+import { getGitConfigInfo } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { resolve } from 'path';
 import { getPgPool } from 'pg-cache';
@@ -35,7 +35,7 @@ export default async (
   }
   const { email, username } = getGitConfigInfo();
   const cwd = argv.cwd ?? process.cwd();
-  const project = new LaunchQLPackage(cwd);
+  const project = new PgpmPackage(cwd);
 
   project.ensureWorkspace();
   project.resetCwd(project.workspacePath);

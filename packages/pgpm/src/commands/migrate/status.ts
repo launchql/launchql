@@ -1,6 +1,6 @@
-import { LaunchQLMigrate } from '@launchql/core';
-import { parsePlanFile } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { PgpmMigrate } from '@pgpmjs/core';
+import { parsePlanFile } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { existsSync } from 'fs';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
@@ -25,7 +25,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
     message: 'Select database to check migration status'
   });
 
-  const client = new LaunchQLMigrate({
+  const client = new PgpmMigrate({
     host: pgEnv.host,
     port: pgEnv.port,
     user: pgEnv.user,
@@ -45,7 +45,7 @@ export default async (argv: Partial<ParsedArgs>, prompter: Inquirerer, options: 
     const plan = planResult.data;
     
     // Switch to target database
-    const targetClient = new LaunchQLMigrate({
+    const targetClient = new PgpmMigrate({
       host: pgEnv.host,
       port: pgEnv.port,
       user: pgEnv.user,

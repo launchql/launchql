@@ -1,4 +1,4 @@
-import { LaunchQLPackage, writePackage } from '@launchql/core';
+import { PgpmPackage, writePackage } from '@pgpmjs/core';
 import { CLIOptions, Inquirerer, Question } from 'inquirerer';
 
 const packageUsageText = `
@@ -56,7 +56,7 @@ export default async (
 
   let { cwd, plan, pretty, functionDelimiter } = await prompter.prompt(argv, questions);
 
-  const project = new LaunchQLPackage(cwd);
+  const project = new PgpmPackage(cwd);
 
   project.ensureModule();
 

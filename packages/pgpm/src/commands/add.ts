@@ -1,4 +1,4 @@
-import { LaunchQLPackage } from '@launchql/core';
+import { PgpmPackage } from '@pgpmjs/core';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 import * as path from 'path';
@@ -59,7 +59,7 @@ export default async (
     dependencies = Array.isArray(argv.requires) ? argv.requires : [argv.requires];
   }
 
-  const pkg = new LaunchQLPackage(path.resolve(cwd));
+  const pkg = new PgpmPackage(path.resolve(cwd));
   pkg.addChange(finalChange, dependencies.length > 0 ? dependencies : undefined, argv.note);
   
   return newArgv;

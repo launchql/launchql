@@ -1,8 +1,8 @@
-import { getEnvOptions } from '@launchql/env';
+import { getEnvOptions } from '@pgpmjs/env';
 import { teardownPgPools } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 
-import { LaunchQLPackage } from '../src/core/class/launchql';
+import { PgpmPackage } from '../src/core/class/pgpm';
 import { MigrateTestFixture } from './MigrateTestFixture';
 import { TestDatabase } from './TestDatabase';
 import { TestFixture } from './TestFixture';
@@ -33,7 +33,7 @@ export class CoreDeployTestFixture extends TestFixture {
     try {
       process.chdir(basePath);
 
-      const project = new LaunchQLPackage(basePath);
+      const project = new PgpmPackage(basePath);
 
       const opts = getEnvOptions({
         pg: getPgEnvOptions({ database }),
@@ -55,7 +55,7 @@ export class CoreDeployTestFixture extends TestFixture {
     const originalCwd = process.cwd();
 
     try {
-      const project = new LaunchQLPackage(basePath);
+      const project = new PgpmPackage(basePath);
 
       const opts = getEnvOptions({
         pg: getPgEnvOptions({ database })
@@ -74,7 +74,7 @@ export class CoreDeployTestFixture extends TestFixture {
     try {
       process.chdir(basePath);
 
-      const project = new LaunchQLPackage(basePath);
+      const project = new PgpmPackage(basePath);
 
       const opts = getEnvOptions({
         pg: getPgEnvOptions({ database })

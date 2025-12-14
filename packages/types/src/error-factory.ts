@@ -1,4 +1,4 @@
-import { LaunchQLError } from './error';
+import { PgpmError } from './error';
 
 type ErrorContext = Record<string, string | number | boolean>;
 
@@ -10,9 +10,9 @@ export const makeError = <T extends ErrorContext>(
   return (
     context: T,
     overrideMessage?: string
-  ): LaunchQLError => {
+  ): PgpmError => {
     const message = overrideMessage || messageFn(context);
-    return new LaunchQLError(code, message, context, httpCode);
+    return new PgpmError(code, message, context, httpCode);
   };
 };
 
@@ -49,7 +49,7 @@ export const errors = {
 
   NOT_IN_WORKSPACE: makeError(
     'NOT_IN_WORKSPACE',
-    () => `You must be in a LaunchQL workspace. Initialize with "lql init workspace".`,
+    () => `You must be in a PGPM workspace. Initialize with "pgpm init workspace".`,
     400
   ),
 

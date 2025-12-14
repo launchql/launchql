@@ -1,5 +1,5 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
+import { PgpmPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
 import type { PgConfig } from 'pg-env';
 
 import { SeedAdapter, SeedContext } from './types';
@@ -15,7 +15,7 @@ export async function deployLaunchql(
   cwd?: string,
   cache: boolean = false
 ): Promise<void> {
-  const proj = new LaunchQLPackage(cwd ?? process.cwd());
+  const proj = new PgpmPackage(cwd ?? process.cwd());
   if (!proj.isInModule()) return;
 
   await proj.deploy(
