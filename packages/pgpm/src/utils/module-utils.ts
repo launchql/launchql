@@ -4,6 +4,8 @@ import { errors } from '@pgpmjs/types';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 
+import { resolvePackageAlias } from './package-alias';
+
 /**
  * Handle package selection for operations that need a specific package
  * Returns the selected package name, or undefined if validation fails or no packages exist
@@ -33,7 +35,8 @@ export async function selectPackage(
 
   // If a specific package was provided, validate it
   if (argv.package) {
-    const packageName = argv.package as string;
+    const inputPackage = argv.package as string;
+    const packageName = resolvePackageAlias(inputPackage, cwd);
     if (log) log.info(`Using specified package: ${packageName}`);
     
     if (!moduleNames.includes(packageName)) {

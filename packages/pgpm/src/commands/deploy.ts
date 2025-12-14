@@ -9,7 +9,7 @@ import {
   getSpawnEnvWithPg,
 } from 'pg-env';
 
-import { getTargetDatabase } from '../utils';
+import { getTargetDatabase, resolvePackageAlias } from '../utils';
 import { selectPackage } from '../utils/module-utils';
 
 const deployUsageText = `
@@ -154,9 +154,10 @@ export default async (
   } else if (packageName) {
     target = packageName;
   } else if (argv.package && argv.to) {
-    target = `${argv.package}:${argv.to}`;
+    const resolvedPackage = resolvePackageAlias(argv.package as string, cwd);
+    target = `${resolvedPackage}:${argv.to}`;
   } else if (argv.package) {
-    target = argv.package as string;
+    target = resolvePackageAlias(argv.package as string, cwd);
   }
   
   await project.deploy(

@@ -6,6 +6,7 @@ import * as path from 'path';
 
 import { extractFirst } from '../utils/argv';
 import { selectPackage } from '../utils/module-utils';
+import { resolvePackageAlias } from '../utils/package-alias';
 
 const log = new Logger('tag');
 
@@ -61,7 +62,7 @@ export default async (
   let packageName: string | undefined;
   
   if (argv.package) {
-    packageName = argv.package as string;
+    packageName = resolvePackageAlias(argv.package as string, cwd);
     log.info(`Using specified package: ${packageName}`);
   }
   else if (pkg.isInModule()) {
