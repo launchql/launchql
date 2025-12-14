@@ -1,9 +1,9 @@
 import 'dotenv/config';
 
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
-import { healthz, poweredBy, trustProxy } from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
+import { healthz, poweredBy, trustProxy } from '@pgpmjs/server-utils';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, RequestHandler } from 'express';
 // @ts-ignore

@@ -1,6 +1,6 @@
-import { exportMigrations,LaunchQLPackage } from '@launchql/core';
-import { getEnvOptions } from '@launchql/env';
-import { getGitConfigInfo } from '@launchql/types';
+import { exportMigrations,LaunchQLPackage } from '@pgpmjs/core';
+import { getEnvOptions } from '@pgpmjs/env';
+import { getGitConfigInfo } from '@pgpmjs/types';
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { resolve } from 'path';
 import { getPgPool } from 'pg-cache';

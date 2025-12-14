@@ -1,4 +1,4 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { Parser } from 'csv-to-pg';
 import { getPgPool } from 'pg-cache';
 

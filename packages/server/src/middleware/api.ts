@@ -1,6 +1,6 @@
-import { getNodeEnv } from '@launchql/env';
-import { svcCache } from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
+import { getNodeEnv } from '@pgpmjs/env';
+import { svcCache } from '@pgpmjs/server-utils';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { NextFunction, Request, Response } from 'express';
 import { getSchema, GraphileQuery } from 'graphile-query';
 import { getGraphileSettings } from 'graphile-settings';

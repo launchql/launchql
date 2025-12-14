@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge';
-import { pgpmDefaults, LaunchQLOptions, PgTestConnectionOptions, DeploymentOptions } from '@launchql/types';
+import { pgpmDefaults, LaunchQLOptions, PgTestConnectionOptions, DeploymentOptions } from '@pgpmjs/types';
 import { loadConfigSync } from './config';
 import { getEnvVars } from './env';
 

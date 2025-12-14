@@ -1,6 +1,6 @@
-import { LaunchQLMigrate } from '@launchql/core';
-import { parsePlanFile } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { LaunchQLMigrate } from '@pgpmjs/core';
+import { parsePlanFile } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { existsSync } from 'fs';
 import { CLIOptions, Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';

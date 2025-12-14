@@ -1,13 +1,13 @@
-import { getEnvOptions } from '@launchql/env';
-import { Logger } from '@launchql/logger';
-import { errors, LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@pgpmjs/env';
+import { Logger } from '@pgpmjs/logger';
+import { errors, PgpmOptions } from '@pgpmjs/types';
 import {resolve } from 'path';
 import * as path from 'path';
 import { getPgPool } from 'pg-cache';
 import {PgConfig } from 'pg-env';
 
-import { LaunchQLPackage } from '../core/class/launchql';
-import { LaunchQLMigrate } from '../migrate/client';
+import { PgpmPackage } from '../core/class/pgpm';
+import { PgpmMigrate } from '../migrate/client';
 import { packageModule } from '../packaging/package';
 
 interface Extensions {
@@ -30,10 +30,10 @@ const getCacheKey = (
 const log = new Logger('deploy');
 
 export const deployProject = async (
-  opts: LaunchQLOptions,
+  opts: PgpmOptions,
   name: string,
   database: string,
-  pkg: LaunchQLPackage,
+  pkg: PgpmPackage,
   toChange?: string
 ): Promise<Extensions> => {
   const mergedOpts = getEnvOptions(opts);
@@ -46,7 +46,7 @@ export const deployProject = async (
   }
 
   const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
-  const moduleProject = new LaunchQLPackage(modulePath);
+  const moduleProject = new PgpmPackage(modulePath);
 
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = moduleProject.getModuleExtensions();
@@ -69,7 +69,7 @@ export const deployProject = async (
 
         if (mergedOpts.deployment.fast) {
           // Use fast deployment strategy
-          const localProject = new LaunchQLPackage(modulePath);
+          const localProject = new PgpmPackage(modulePath);
           const cacheKey = getCacheKey(mergedOpts.pg as PgConfig, extension, database);
           
           if (mergedOpts.deployment.cache && deployFastCache[cacheKey]) {
@@ -125,7 +125,7 @@ export const deployProject = async (
           log.debug(`→ Command: launchql migrate deploy db:pg:${database}`);
           
           try {
-            const client = new LaunchQLMigrate(mergedOpts.pg as PgConfig);
+            const client = new PgpmMigrate(mergedOpts.pg as PgConfig);
             
             const result = await client.deploy({
               modulePath,

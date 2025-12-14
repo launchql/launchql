@@ -1,6 +1,6 @@
-import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, LaunchQLPackage, sluggify } from '@launchql/core';
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { DEFAULT_TEMPLATE_REPO, DEFAULT_TEMPLATE_TOOL_NAME, LaunchQLPackage, sluggify } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { Inquirerer, OptionValue, Question } from 'inquirerer';
 
 const log = new Logger('module-init');

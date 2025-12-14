@@ -1,7 +1,7 @@
 jest.setTimeout(60000);
 process.env.PGPM_SKIP_UPDATE_CHECK = 'true';
 
-import { LaunchQLPackage } from '@launchql/core';
+import { LaunchQLPackage } from '@pgpmjs/core';
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';

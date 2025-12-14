@@ -1,17 +1,17 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { PgpmOptions } from '@pgpmjs/types';
 import { mkdirSync, rmSync } from 'fs';
 import { sync as glob } from 'glob';
 import { toSnakeCase } from 'komoji';
 import path from 'path';
 import { getPgPool } from 'pg-cache';
 
-import { LaunchQLPackage } from '../core/class/launchql';
+import { PgpmPackage } from '../core/class/pgpm';
 import { SqitchRow, SqlWriteOptions,writeSqitchFiles, writeSqitchPlan } from '../files';
 import { exportMeta } from './export-meta';
 
 interface ExportMigrationsToDiskOptions {
-  project: LaunchQLPackage;
-  options: LaunchQLOptions;
+  project: PgpmPackage;
+  options: PgpmOptions;
   database: string;
   databaseId: string;
   author: string;
@@ -22,8 +22,8 @@ interface ExportMigrationsToDiskOptions {
 }
 
 interface ExportOptions {
-  project: LaunchQLPackage;
-  options: LaunchQLOptions;
+  project: PgpmPackage;
+  options: PgpmOptions;
   dbInfo: {
     dbname: string;
     database_ids: string[];
@@ -218,7 +218,7 @@ export const exportMigrations = async ({
 
 
 interface PreparePackageOptions {
-  project: LaunchQLPackage;
+  project: PgpmPackage;
   author: string;
   outdir: string;
   name: string;

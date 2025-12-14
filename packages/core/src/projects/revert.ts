@@ -1,12 +1,12 @@
-import { Logger } from '@launchql/logger';
-import { errors, LaunchQLOptions } from '@launchql/types';
+import { Logger } from '@pgpmjs/logger';
+import { errors, PgpmOptions } from '@pgpmjs/types';
 import {resolve } from 'path';
 import * as path from 'path';
 import { getPgPool } from 'pg-cache';
 import {PgConfig } from 'pg-env';
 
-import { LaunchQLPackage } from '../core/class/launchql';
-import { LaunchQLMigrate } from '../migrate/client';
+import { PgpmPackage } from '../core/class/pgpm';
+import { PgpmMigrate } from '../migrate/client';
 
 interface Extensions {
   resolved: string[];
@@ -16,10 +16,10 @@ interface Extensions {
 const log = new Logger('revert');
 
 export const revertProject = async (
-  opts: LaunchQLOptions,
+  opts: PgpmOptions,
   name: string,
   database: string,
-  pkg: LaunchQLPackage,
+  pkg: PgpmPackage,
   options?: { 
     useTransaction?: boolean;
     /**
@@ -38,7 +38,7 @@ export const revertProject = async (
   }
 
   const modulePath = path.resolve(pkg.workspacePath!, modules[name].path);
-  const moduleProject = new LaunchQLPackage(modulePath);
+  const moduleProject = new PgpmPackage(modulePath);
 
   log.info(`📦 Resolving dependencies for ${name}...`);
   const extensions: Extensions = moduleProject.getModuleExtensions();
@@ -76,7 +76,7 @@ export const revertProject = async (
         log.debug(`→ Command: launchql migrate revert db:pg:${database}`);
         
         try {
-          const client = new LaunchQLMigrate(opts.pg as PgConfig);
+          const client = new PgpmMigrate(opts.pg as PgConfig);
           
           const result = await client.revert({
             modulePath,

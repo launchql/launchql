@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { Client } from 'pg';

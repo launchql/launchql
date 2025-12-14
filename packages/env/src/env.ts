@@ -1,4 +1,4 @@
-import { LaunchQLOptions } from '@launchql/types';
+import { LaunchQLOptions } from '@pgpmjs/types';
 
 const parseEnvNumber = (val?: string): number | undefined => {
   const num = Number(val);

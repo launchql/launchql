@@ -12,8 +12,8 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@launchql/core": "workspace:^",
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/core": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "makage": "^0.1.8"
   }
 }

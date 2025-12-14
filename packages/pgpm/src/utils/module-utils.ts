@@ -1,6 +1,6 @@
-import { LaunchQLPackage } from '@launchql/core';
-import { Logger } from '@launchql/logger';
-import { errors } from '@launchql/types';
+import { LaunchQLPackage } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
+import { errors } from '@pgpmjs/types';
 import { Inquirerer } from 'inquirerer';
 import { ParsedArgs } from 'minimist';
 

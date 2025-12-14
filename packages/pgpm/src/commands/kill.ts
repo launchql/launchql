@@ -1,4 +1,4 @@
-import { Logger } from '@launchql/logger';
+import { Logger } from '@pgpmjs/logger';
 import { CLIOptions, Inquirerer, OptionValue } from 'inquirerer';
 import { getPgPool } from 'pg-cache';
 

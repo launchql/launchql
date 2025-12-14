@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { appstash, resolve as resolveAppstash } from 'appstash';
-import { UpdateCheckConfig, UPDATE_CHECK_APPSTASH_KEY } from '@launchql/types';
+import { UpdateCheckConfig, UPDATE_CHECK_APPSTASH_KEY } from '@pgpmjs/types';
 
 export interface UpdateConfigOptions {
   toolName?: string;

@@ -1,5 +1,5 @@
 import { ParsedArgs } from 'minimist';
-import { DEFAULT_TEMPLATE_REPO } from '@launchql/core';
+import { DEFAULT_TEMPLATE_REPO } from '@pgpmjs/core';
 
 export const addInitDefaults = (argv: ParsedArgs): ParsedArgs => {
   const baseName = (argv.moduleName as string) || (argv.name as string) || 'module';

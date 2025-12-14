@@ -52,7 +52,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@launchql/types": "workspace:^",
+    "@pgpmjs/types": "workspace:^",
     "pg-env": "workspace:^",
     "pgsql-test": "workspace:^"
   },

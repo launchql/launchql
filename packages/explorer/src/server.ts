@@ -1,6 +1,6 @@
-import { getEnvOptions } from '@launchql/env';
-import { cors, healthz, poweredBy } from '@launchql/server-utils';
-import { LaunchQLOptions } from '@launchql/types';
+import { getEnvOptions } from '@pgpmjs/env';
+import { cors, healthz, poweredBy } from '@pgpmjs/server-utils';
+import { LaunchQLOptions } from '@pgpmjs/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { GraphileCache, graphileCache } from 'graphile-cache';

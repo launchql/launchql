@@ -1,5 +1,5 @@
-import { LaunchQLMigrate } from '@launchql/core';
-import { Logger } from '@launchql/logger';
+import { LaunchQLMigrate } from '@pgpmjs/core';
+import { Logger } from '@pgpmjs/logger';
 import { Inquirerer } from 'inquirerer';
 import { getPgEnvOptions } from 'pg-env';
 
