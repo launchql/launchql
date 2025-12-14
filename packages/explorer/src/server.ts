@@ -1,4 +1,4 @@
-import { getEnvOptions } from '@pgpmjs/env';
+import { getEnvOptions } from '@launchql/env';
 import { cors, healthz, poweredBy } from '@pgpmjs/server-utils';
 import { PgpmOptions } from '@pgpmjs/types';
 import { middleware as parseDomains } from '@launchql/url-domains';
