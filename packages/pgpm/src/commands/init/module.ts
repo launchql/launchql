@@ -14,7 +14,7 @@ export default async function runModuleSetup(
   const project = new PgpmPackage(cwd);
 
   if (!project.workspacePath) {
-    log.error('Not inside a LaunchQL workspace.');
+    log.error('Not inside a PGPM workspace.');
     throw errors.NOT_IN_WORKSPACE({});
   }
 

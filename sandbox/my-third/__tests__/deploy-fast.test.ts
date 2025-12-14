@@ -1,4 +1,4 @@
-import { deployFast, LaunchQLProject } from '@pgpmjs/core';
+import { deployFast, PgpmPackage } from '@pgpmjs/core';
 import { resolve } from 'path';
 import { getEnvOptions } from '@pgpmjs/env';
 import { randomUUID } from 'crypto';
@@ -7,7 +7,7 @@ import { getPgPool } from 'pg-cache';
 
 it('LaunchQL', async () => {
     const db = 'db-'+randomUUID();
-    const project = new LaunchQLProject(resolve(__dirname+'/../'));
+    const project = new PgpmPackage(resolve(__dirname+'/../'));
     const opts = getEnvOptions({
         pg: {
             database: db
