@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { PgpmPackage } from '../src/core/class/launchql';
+import { PgpmPackage } from '../src/core/class/pgpm';
 
 describe('Config Loading', () => {
   let tempDir: string;
