@@ -62,6 +62,24 @@ ON CONFLICT (id) DO NOTHING;
 -- STORAGE MODULE CONFIG
 -- =====================================================
 
+-- The deployment's object store: the platform database's platform plane.
+-- Every other plane signs against it with the STORAGE_* credentials and may
+-- not name an endpoint/provider/region of its own.
+INSERT INTO metaschema_public.database (id, owner_id, name, platform)
+VALUES ('f1a7f000-0000-4000-8000-000000000001', NULL, 'platform', true)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO metaschema_modules_public.storage_module (
+  id, database_id, schema_id, buckets_table_id, files_table_id,
+  endpoint, provider, region, scope, private_schema_id
+)
+VALUES (
+  'f1a7f000-0000-4000-8000-000000000002',
+  'f1a7f000-0000-4000-8000-000000000001',
+  '6dbae92a-5450-401b-1ed5-d69e7754940d', 'b0000001-0000-0000-0000-000000000001', 'b0000001-0000-0000-0000-000000000002',
+  'http://localhost:9000', 'minio', 'us-east-1', 'platform', '6dbae92a-5450-401b-1ed5-d69e7754940e'
+) ON CONFLICT (id) DO NOTHING;
+
 INSERT INTO metaschema_modules_public.storage_module (
   id,
   database_id,
@@ -83,10 +101,10 @@ VALUES (
   '6dbae92a-5450-401b-1ed5-d69e7754940d',
   'b0000001-0000-0000-0000-000000000001',
   'b0000001-0000-0000-0000-000000000002',
-  'http://localhost:9000',
   NULL,
-  'minio',
-  'us-east-1',
+  NULL,
+  NULL,
+  NULL,
   ARRAY['*'],
   'app',
   '6dbae92a-5450-401b-1ed5-d69e7754940e',
@@ -187,10 +205,10 @@ VALUES (
   'a2a2a2a2-b3b3-4c4c-d5d5-e6e6e6e6e6e6',
   'b1b1b1b1-0000-0000-0000-000000000001',
   'b1b1b1b1-0000-0000-0000-000000000002',
-  'http://localhost:9000',
   NULL,
-  'minio',
-  'us-east-1',
+  NULL,
+  NULL,
+  NULL,
   ARRAY['*'],
   'app',
   'a2a2a2a2-b3b3-4c4c-d5d5-e6e6e6e6e6f0',
@@ -320,10 +338,10 @@ VALUES (
   'fa22fa22-a3a3-4b4b-c5c5-d6d6d6d6d6d6',
   'fa33fa33-0000-0000-0000-000000000001',
   'fa33fa33-0000-0000-0000-000000000002',
-  'http://localhost:9000',
   NULL,
-  'minio',
-  'us-east-1',
+  NULL,
+  NULL,
+  NULL,
   ARRAY['*'],
   'app',
   'fa22fa22-a3a3-4b4b-c5c5-d6d6d6d6d6d7',

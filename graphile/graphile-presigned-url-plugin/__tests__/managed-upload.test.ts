@@ -74,6 +74,7 @@ function storageModuleRow(overrides: Record<string, unknown> = {}): Record<strin
     public_url_prefix: 'https://cdn.example.com',
     provider: 'minio',
     region: 'us-east-1',
+    connection_overrides: [],
     allowed_origins: null,
     upload_url_expiry_seconds: null,
     download_url_expiry_seconds: null,

@@ -60,6 +60,12 @@ export interface StorageModuleConfig {
   provider: string | null;
   /** Object-store region */
   region: string | null;
+  /**
+   * Coordinates (endpoint/provider/region) this module's row sets differently
+   * from the platform plane. Signing refuses them: the credentials only
+   * belong to the platform object store.
+   */
+  connectionOverrides: string[];
   /** CORS allowed origins (per-database override, NULL = use global fallback) */
   allowedOrigins: string[] | null;
 

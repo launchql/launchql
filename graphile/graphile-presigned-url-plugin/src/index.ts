@@ -47,6 +47,7 @@ export {
   resolveS3ForDatabase,
   StorageBucketNotReconciledError,
   StorageConnectionNotConfiguredError,
+  StorageConnectionOverrideError,
 } from './physical-bucket';
 export { createPresignedUrlPlugin,PresignedUrlPlugin } from './plugin';
 export { PresignedUrlPreset } from './preset';

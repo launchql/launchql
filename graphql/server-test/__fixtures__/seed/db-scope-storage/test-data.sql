@@ -59,6 +59,24 @@ VALUES (
   'ce554000-0000-4000-8000-000000000001'
 ) ON CONFLICT (id) DO NOTHING;
 
+-- The deployment's object store: the platform database's platform plane.
+-- Every other plane signs against it with the STORAGE_* credentials and may
+-- not name an endpoint/provider/region of its own.
+INSERT INTO metaschema_public.database (id, owner_id, name, platform)
+VALUES ('f1a7f000-0000-4000-8000-000000000001', NULL, 'platform', true)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO metaschema_modules_public.storage_module (
+  id, database_id, schema_id, buckets_table_id, files_table_id,
+  endpoint, provider, region, scope, private_schema_id
+)
+VALUES (
+  'f1a7f000-0000-4000-8000-000000000002',
+  'f1a7f000-0000-4000-8000-000000000001',
+  'ce552000-0000-4000-8000-000000000001', 'ce553000-0000-4000-8000-000000000001', 'ce553000-0000-4000-8000-000000000002',
+  'http://localhost:9000', 'minio', 'us-east-1', 'platform', 'ce552000-0000-4000-8000-000000000002'
+) ON CONFLICT (id) DO NOTHING;
+
 INSERT INTO metaschema_modules_public.storage_module (
   id,
   database_id,
@@ -80,10 +98,10 @@ VALUES (
   'ce552000-0000-4000-8000-000000000001',
   'ce553000-0000-4000-8000-000000000001',
   'ce553000-0000-4000-8000-000000000002',
-  'http://localhost:9000',
   NULL,
-  'minio',
-  'us-east-1',
+  NULL,
+  NULL,
+  NULL,
   ARRAY['*'],
   'database',
   'ce552000-0000-4000-8000-000000000002',

@@ -45,10 +45,25 @@ export class StorageConnectionNotConfiguredError extends Error {
   constructor(storageConfig: StorageModuleConfig, missing: string[]) {
     super(
       `STORAGE_CONNECTION_NOT_CONFIGURED: storage module ${storageConfig.id} (scope ` +
-      `${storageConfig.scope}) has no ${missing.join(', ')}; set them on its ` +
-      'storage_module row or on the platform database\'s platform plane',
+      `${storageConfig.scope}) has no ${missing.join(', ')}; set them on ` +
+      'the platform database\'s platform storage_module row',
     );
     this.name = 'StorageConnectionNotConfiguredError';
+  }
+}
+
+export class StorageConnectionOverrideError extends Error {
+  readonly code = 'STORAGE_CONNECTION_OVERRIDE_REFUSED';
+  readonly extensions = { code: 'STORAGE_CONNECTION_OVERRIDE_REFUSED' };
+
+  constructor(storageConfig: StorageModuleConfig) {
+    super(
+      `STORAGE_CONNECTION_OVERRIDE_REFUSED: storage module ${storageConfig.id} (scope ` +
+      `${storageConfig.scope}) sets its own ${storageConfig.connectionOverrides.join(', ')}; ` +
+      'storage credentials only sign for the platform database\'s platform plane, so clear ' +
+      'these columns on this row',
+    );
+    this.name = 'StorageConnectionOverrideError';
   }
 }
 
@@ -73,6 +88,9 @@ export function resolveS3ForDatabase(
   physicalName: string,
 ): S3Config {
   const { endpoint, provider, region, publicUrlPrefix } = storageConfig;
+  if (storageConfig.connectionOverrides.length > 0) {
+    throw new StorageConnectionOverrideError(storageConfig);
+  }
   if (!provider || !region) {
     throw new StorageConnectionNotConfiguredError(storageConfig, [
       ...(provider ? [] : ['provider']),
