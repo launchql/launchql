@@ -51,7 +51,7 @@ const bucket = {
 } as unknown as BucketConfig;
 
 const s3 = { client: { send: jest.fn() }, bucket: 'site-bucket', region: 'us-east-1' } as unknown as S3Config;
-const options = { s3 } as unknown as PresignedUrlPluginOptions;
+const options: PresignedUrlPluginOptions = { credentials: { accessKeyId: 'test', secretAccessKey: 'test' } };
 
 function fakeTx(existingHash: string, deletable = true) {
   const queries: Array<{ text: string; values: unknown[] }> = [];

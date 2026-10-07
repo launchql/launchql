@@ -38,6 +38,10 @@ const storageModuleCache = new LRUCache<string, StorageModuleConfig>({
  * SQL query to resolve ALL storage modules for a database, whatever their
  * scope. Returns each module with its entity table names so callers can
  * classify entity-keyed planes and resolve owners.
+ *
+ * The object-store connection (endpoint/provider/region/public prefix) is the
+ * effective one: a NULL column inherits the platform database's `platform`
+ * plane — the deployment's object store — in this same (cached) query.
  */
 const ALL_STORAGE_MODULES_QUERY = `
   SELECT
@@ -49,9 +53,10 @@ const ALL_STORAGE_MODULES_QUERY = `
     fs.schema_name AS files_schema,
     ft.name AS files_table,
     ps.schema_name AS private_schema,
-    sm.endpoint,
-    sm.public_url_prefix,
-    sm.provider,
+    coalesce(sm.endpoint, psm.endpoint) AS endpoint,
+    coalesce(sm.public_url_prefix, psm.public_url_prefix) AS public_url_prefix,
+    coalesce(sm.provider, psm.provider) AS provider,
+    coalesce(sm.region, psm.region) AS region,
     sm.allowed_origins,
     sm.upload_url_expiry_seconds,
     sm.download_url_expiry_seconds,
@@ -74,6 +79,10 @@ const ALL_STORAGE_MODULES_QUERY = `
   LEFT JOIN metaschema_public.schema ps ON ps.id = sm.private_schema_id
   LEFT JOIN metaschema_public.table et ON et.id = sm.entity_table_id
   LEFT JOIN metaschema_public.schema es ON es.id = et.schema_id
+  LEFT JOIN metaschema_modules_public.storage_module psm
+    ON psm.scope = 'platform'
+   AND psm.key = 'default'
+   AND psm.database_id = (SELECT d.id FROM metaschema_public.database d WHERE d.platform)
   WHERE sm.database_id = $1
 `;
 
@@ -89,6 +98,7 @@ interface StorageModuleRow {
   endpoint: string | null;
   public_url_prefix: string | null;
   provider: string | null;
+  region: string | null;
   allowed_origins: string[] | null;
   upload_url_expiry_seconds: number | null;
   download_url_expiry_seconds: number | null;
@@ -128,6 +138,7 @@ function buildConfig(row: StorageModuleRow): StorageModuleConfig {
     endpoint: row.endpoint,
     publicUrlPrefix: row.public_url_prefix,
     provider: row.provider,
+    region: row.region,
     allowedOrigins: row.allowed_origins,
     uploadUrlExpirySeconds: row.upload_url_expiry_seconds ?? DEFAULT_UPLOAD_URL_EXPIRY_SECONDS,
     downloadUrlExpirySeconds: row.download_url_expiry_seconds ?? DEFAULT_DOWNLOAD_URL_EXPIRY_SECONDS,

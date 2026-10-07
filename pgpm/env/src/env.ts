@@ -1,4 +1,4 @@
-import { BucketProvider, DeferredConstraintsMode, PgpmOptions } from '@pgpmjs/types';
+import { DeferredConstraintsMode, PgpmOptions } from '@pgpmjs/types';
 import { parseEnvBoolean, parseEnvList, parseEnvNumber } from '12factor-env';
 
 export { parseEnvBoolean, parseEnvList, parseEnvNumber };
@@ -52,15 +52,8 @@ export const getEnvVars = (env: NodeJS.ProcessEnv = process.env): PgpmOptions =>
     PGPASSWORD,
     PGDATABASE,
 
-    BUCKET_PROVIDER,
-    BUCKET_NAME,
-    AWS_REGION,
-    AWS_ACCESS_KEY,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_KEY,
-    AWS_SECRET_ACCESS_KEY,
-    CDN_ENDPOINT,
-    CDN_PUBLIC_URL_PREFIX,
+    STORAGE_ACCESS_KEY_ID,
+    STORAGE_SECRET_ACCESS_KEY,
 
     DEPLOYMENT_USE_TX,
     DEPLOYMENT_FAST,
@@ -142,14 +135,9 @@ export const getEnvVars = (env: NodeJS.ProcessEnv = process.env): PgpmOptions =>
       ...(PGPASSWORD && { password: PGPASSWORD }),
       ...(PGDATABASE && { database: PGDATABASE }),
     },
-    cdn: {
-      ...(BUCKET_PROVIDER && { provider: BUCKET_PROVIDER as BucketProvider }),
-      ...(BUCKET_NAME && { bucketName: BUCKET_NAME }),
-      ...(AWS_REGION && { awsRegion: AWS_REGION }),
-      ...((AWS_ACCESS_KEY || AWS_ACCESS_KEY_ID) && { awsAccessKey: AWS_ACCESS_KEY || AWS_ACCESS_KEY_ID }),
-      ...((AWS_SECRET_KEY || AWS_SECRET_ACCESS_KEY) && { awsSecretKey: AWS_SECRET_KEY || AWS_SECRET_ACCESS_KEY }),
-      ...(CDN_ENDPOINT && { endpoint: CDN_ENDPOINT }),
-      ...(CDN_PUBLIC_URL_PREFIX && { publicUrlPrefix: CDN_PUBLIC_URL_PREFIX }),
+    storage: {
+      ...(STORAGE_ACCESS_KEY_ID && { accessKeyId: STORAGE_ACCESS_KEY_ID }),
+      ...(STORAGE_SECRET_ACCESS_KEY && { secretAccessKey: STORAGE_SECRET_ACCESS_KEY }),
     },
     deployment: {
       ...(DEPLOYMENT_USE_TX && { useTx: parseEnvBoolean(DEPLOYMENT_USE_TX) }),

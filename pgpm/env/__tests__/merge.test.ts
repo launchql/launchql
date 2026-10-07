@@ -245,12 +245,7 @@ describe('getEnvOptions', () => {
         PGROOTDATABASE: 'app_root',
         SERVER_HOST: '0.0.0.0',
         DB_CONNECTIONS_APP_PASSWORD: 's3cret-app',
-        DB_CONNECTIONS_ADMIN_PASSWORD: 's3cret-admin',
-        AWS_ACCESS_KEY: 'AKIAREAL',
-        AWS_SECRET_KEY: 'realsecret',
-        CDN_ENDPOINT: 'https://s3.example.com',
-        CDN_PUBLIC_URL_PREFIX: 'https://cdn.example.com',
-        BUCKET_NAME: 'prod-bucket'
+        DB_CONNECTIONS_ADMIN_PASSWORD: 's3cret-admin'
       };
       expect(() => getEnvOptions({}, emptyCwd(), safeEnv)).not.toThrow();
     });

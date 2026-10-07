@@ -5,9 +5,20 @@
  * A logical bucket belongs to a tenant; a physical bucket is an S3 name. The
  * mapping is recorded on the bucket row by the storage reconciler, and that
  * value is the only coordinate anything reads — no name is ever recomputed.
+ * The connection (endpoint/provider/region) is the storage module's; only the
+ * credentials come from the plugin options.
  */
 
-import type { BucketConfig, PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from './types';
+import type { S3Client } from '@aws-sdk/client-s3';
+import { createS3Client, type StorageProvider } from '@constructive-io/s3-utils';
+
+import type {
+  BucketConfig,
+  PresignedUrlPluginOptions,
+  S3Config,
+  StorageCredentials,
+  StorageModuleConfig,
+} from './types';
 
 export class StorageBucketNotReconciledError extends Error {
   readonly code = 'STORAGE_BUCKET_NOT_RECONCILED';
@@ -27,46 +38,67 @@ export class StorageBucketNotReconciledError extends Error {
   }
 }
 
-/**
- * Resolve the plugin's S3 connection (credentials, endpoint, region), memoizing
- * a lazy getter on first use.
- *
- * `s3.bucket` on the result is the deployment's *default* physical bucket. It is
- * a connection default only — never a tenant's bucket. Every upload path
- * resolves its physical bucket from the tenant's bucket row.
- */
-export function resolveS3(options: PresignedUrlPluginOptions): S3Config {
-  if (typeof options.s3 === 'function') {
-    const resolved = options.s3();
-    options.s3 = resolved;
-    return resolved;
+export class StorageConnectionNotConfiguredError extends Error {
+  readonly code = 'STORAGE_CONNECTION_NOT_CONFIGURED';
+  readonly extensions = { code: 'STORAGE_CONNECTION_NOT_CONFIGURED' };
+
+  constructor(storageConfig: StorageModuleConfig, missing: string[]) {
+    super(
+      `STORAGE_CONNECTION_NOT_CONFIGURED: storage module ${storageConfig.id} (scope ` +
+      `${storageConfig.scope}) has no ${missing.join(', ')}; set them on its ` +
+      'storage_module row or on the platform database\'s platform plane',
+    );
+    this.name = 'StorageConnectionNotConfiguredError';
   }
-  return options.s3;
 }
 
+function resolveCredentials(options: PresignedUrlPluginOptions): StorageCredentials {
+  if (typeof options.credentials === 'function') {
+    options.credentials = options.credentials();
+  }
+  return options.credentials;
+}
+
+/** One S3 client per resolved connection, shared by every bucket on it. */
+const clients = new Map<string, S3Client>();
 
 /**
- * Build the S3 config for a *known* physical bucket. `physicalName` is
- * required — callers must resolve the coordinate from the stored row value
- * before getting here. No name is ever recomputed.
+ * Build the S3 config for a *known* physical bucket on the storage module's
+ * connection. `physicalName` is required — callers must resolve the coordinate
+ * from the stored row value before getting here. No name is ever recomputed.
  */
 export function resolveS3ForDatabase(
   options: PresignedUrlPluginOptions,
   storageConfig: StorageModuleConfig,
   physicalName: string,
 ): S3Config {
-  const globalS3 = resolveS3(options);
-  const publicUrlPrefix = storageConfig.publicUrlPrefix != null
-    ? storageConfig.publicUrlPrefix
-    : globalS3.publicUrlPrefix;
+  const { endpoint, provider, region, publicUrlPrefix } = storageConfig;
+  if (!provider || !region) {
+    throw new StorageConnectionNotConfiguredError(storageConfig, [
+      ...(provider ? [] : ['provider']),
+      ...(region ? [] : ['region']),
+    ]);
+  }
 
-  if (physicalName === globalS3.bucket && publicUrlPrefix === globalS3.publicUrlPrefix) {
-    return globalS3;
+  const cacheKey = JSON.stringify([provider, endpoint, region]);
+  let client = clients.get(cacheKey);
+  if (!client) {
+    const { accessKeyId, secretAccessKey } = resolveCredentials(options);
+    client = createS3Client({
+      provider: provider as StorageProvider,
+      region,
+      accessKeyId,
+      secretAccessKey,
+      ...(endpoint ? { endpoint } : {}),
+    });
+    clients.set(cacheKey, client);
   }
 
   return {
-    ...globalS3,
+    client,
     bucket: physicalName,
+    region,
+    ...(endpoint ? { endpoint, forcePathStyle: provider !== 's3' } : {}),
     ...(publicUrlPrefix != null ? { publicUrlPrefix } : {}),
   };
 }

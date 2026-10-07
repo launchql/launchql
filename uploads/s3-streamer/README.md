@@ -35,7 +35,7 @@ Stream uploads to S3
 
 ```js
 import Streamer from '@constructive-io/s3-streamer';
-const streamer = new Streamer(opts)
+const streamer = new Streamer({ client, defaultBucket })
 const readStream = createReadStream(filename);
 const results = await streamer.upload({
     readStream,
@@ -91,8 +91,9 @@ The upload methods return a detailed payload with upload results and file metada
 If you don't want to use the `Streamer` class you can use the utils directly:
 
 ```js
-import { getClient, upload } from '@constructive-io/s3-streamer';
-const client = getClient(opts)
+import { createS3Client } from '@constructive-io/s3-utils';
+import { upload } from '@constructive-io/s3-streamer';
+const client = createS3Client(opts)
 const readStream = createReadStream(filename);
 const results = await upload({
     client,
@@ -110,9 +111,12 @@ const results = await upload({
 ```js
 const streamer = new Streamer({
   defaultBucket: 'my-bucket',
-  awsRegion: 'us-east-1',
-  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
-  awsAccessKey: process.env.AWS_ACCESS_KEY_ID
+  client: createS3Client({
+    provider: 's3',
+    region: 'us-east-1',
+    accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
+    secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY
+  })
 });
 ```
 
@@ -121,10 +125,13 @@ const streamer = new Streamer({
 ```js
 const streamer = new Streamer({
   defaultBucket: 'my-bucket',
-  awsRegion: 'us-east-1',
-  awsSecretKey: 'minio-secret',
-  awsAccessKey: 'minio-access',
-  minioEndpoint: 'http://localhost:9000'
+  client: createS3Client({
+    provider: 'minio',
+    region: 'us-east-1',
+    accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
+    secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
+    endpoint: 'http://localhost:9000'
+  })
 });
 ```
 
@@ -135,12 +142,9 @@ const streamer = new Streamer({
 #### Constructor Options
 
 ```typescript
-interface StreamerOptions {
-  awsRegion: string;        // AWS region (e.g., 'us-east-1')
-  awsSecretKey: string;     // AWS secret access key
-  awsAccessKey: string;     // AWS access key ID
-  minioEndpoint?: string;   // Optional: MinIO/S3-compatible endpoint
-  defaultBucket: string;    // Default bucket for uploads
+{
+  client: S3Client;         // S3 client for the resolved object store (see createS3Client in @constructive-io/s3-utils)
+  defaultBucket?: string;   // Bucket used when a call names none
 }
 ```
 
@@ -172,14 +176,16 @@ streamer.destroy();
 If you prefer functional programming over classes:
 
 ```js
-import { getClient, upload } from '@constructive-io/s3-streamer';
+import { createS3Client } from '@constructive-io/s3-utils';
+import { upload } from '@constructive-io/s3-streamer';
 
 // Create S3 client
-const client = getClient({
-  awsRegion: 'us-east-1',
-  awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY,
-  awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
-  minioEndpoint: 'http://localhost:9000' // optional
+const client = createS3Client({
+  provider: 'minio',
+  region: 'us-east-1',
+  accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
+  secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
+  endpoint: 'http://localhost:9000' // omit for AWS S3
 });
 
 // Upload file

@@ -25,7 +25,7 @@ import {
   PgTypeMappingsPreset,
   RequiredInputPreset
 } from '../plugins';
-import { getPresignedUrlS3Config } from '../presigned-url-resolver';
+import { getStorageCredentials } from '../presigned-url-resolver';
 import { constructiveUploadFieldDefinitions } from '../upload-resolver';
 
 /**
@@ -199,7 +199,7 @@ export function createConstructivePreset(
   if (opts.enablePresignedUploads) {
     presets.push(
       PresignedUrlPreset({
-        s3: getPresignedUrlS3Config,
+        credentials: getStorageCredentials,
       }),
       BucketProvisionerPreset()
     );

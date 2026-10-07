@@ -23,15 +23,7 @@ const safeOpts = (): PgpmOptions => ({
     password: 's3cret-pg',
     database: 'appdb'
   },
-  server: { host: '0.0.0.0' },
-  cdn: {
-    provider: 'minio',
-    bucketName: 'prod-bucket',
-    awsAccessKey: 'AKIAREAL',
-    awsSecretKey: 'realsecret',
-    endpoint: 'https://s3.example.com',
-    publicUrlPrefix: 'https://cdn.example.com'
-  }
+  server: { host: '0.0.0.0' }
 });
 
 describe('findUnsafeProductionDefaults', () => {
@@ -39,8 +31,6 @@ describe('findUnsafeProductionDefaults', () => {
     const issues = findUnsafeProductionDefaults(pgpmDefaults);
     const joined = issues.join('\n');
     expect(joined).toContain('pg.password');
-    expect(joined).toContain('cdn.awsAccessKey');
-    expect(joined).toContain('cdn.awsSecretKey');
     expect(joined).toContain('db.connections.app.password');
     expect(joined).toContain('pg.host');
     // Never leak the value itself (paths mention ".password", but never the
@@ -49,7 +39,6 @@ describe('findUnsafeProductionDefaults', () => {
     expect(joined).not.toContain('admin_password');
     expect(joined).not.toContain('constructive-dev-secret');
     expect(joined).not.toContain('localhost');
-    expect(joined).not.toContain('test-bucket');
   });
 
   it('reports no issues when every sensitive field is overridden', () => {

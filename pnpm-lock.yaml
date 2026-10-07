@@ -1076,6 +1076,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.1052.0
         version: 3.1052.0
+      '@constructive-io/s3-utils':
+        specifier: workspace:^
+        version: link:../../uploads/s3-utils/dist
       '@pgpmjs/logger':
         specifier: workspace:^
         version: link:../../pgpm/logger/dist
@@ -1116,9 +1119,6 @@ importers:
         specifier: 5.1.4
         version: 5.1.4(103c5e67e025ec5d024bce65778e0145)
     devDependencies:
-      '@constructive-io/s3-utils':
-        specifier: workspace:^
-        version: link:../../uploads/s3-utils/dist
       '@types/node':
         specifier: ^22.19.11
         version: 22.19.15
@@ -1402,9 +1402,6 @@ importers:
       '@constructive-io/s3-streamer':
         specifier: workspace:^
         version: link:../../uploads/s3-streamer/dist
-      '@constructive-io/s3-utils':
-        specifier: workspace:^
-        version: link:../../uploads/s3-utils/dist
       '@constructive-io/upload-names':
         specifier: workspace:^
         version: link:../../uploads/upload-names/dist
@@ -1523,6 +1520,9 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
     devDependencies:
+      '@constructive-io/s3-utils':
+        specifier: workspace:^
+        version: link:../../uploads/s3-utils/dist
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.19
@@ -4140,9 +4140,6 @@ importers:
       '@constructive-io/s3-utils':
         specifier: workspace:^
         version: link:../s3-utils/dist
-      '@pgpmjs/types':
-        specifier: workspace:^
-        version: link:../../pgpm/types/dist
     devDependencies:
       '@pgpmjs/env':
         specifier: workspace:^

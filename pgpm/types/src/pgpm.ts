@@ -123,28 +123,18 @@ export interface ServerOptions {
 }
 
 /**
- * Storage provider type for CDN/bucket operations
+ * Storage provider type for bucket operations
  */
 export type BucketProvider = 's3' | 'minio' | 'rustfs' | 'gcs';
 
 /**
- * CDN and file storage configuration
+ * Object-store credentials — the only storage input read from the environment
+ * (`STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY`). Endpoint, provider,
+ * region and public URL prefix are `storage_module` rows, never config.
  */
-export interface CDNOptions {
-    /** Storage provider type (s3, minio, rustfs, gcs). 'minio' means path-style S3-compatible (RustFS, MinIO) */
-    provider?: BucketProvider;
-    /** S3 bucket name for file storage */
-    bucketName?: string;
-    /** AWS region for S3 bucket */
-    awsRegion?: string;
-    /** AWS access key for S3 */
-    awsAccessKey?: string;
-    /** AWS secret key for S3 */
-    awsSecretKey?: string;
-    /** S3-compatible API endpoint URL (RustFS, MinIO, R2, DO Spaces, GCS, etc.) */
-    endpoint?: string;
-    /** Public URL prefix for generating download URLs (e.g., CDN domain, S3 public URL) */
-    publicUrlPrefix?: string;
+export interface StorageCredentialOptions {
+    accessKeyId?: string;
+    secretAccessKey?: string;
 }
 
 /**
@@ -305,8 +295,8 @@ export interface PgpmOptions {
     pg?: Partial<PgConfig>;
     /** HTTP server configuration */
     server?: ServerOptions;
-    /** CDN and file storage configuration */
-    cdn?: CDNOptions;
+    /** Object-store credentials (coordinates live in storage_module) */
+    storage?: StorageCredentialOptions;
     /** Module deployment configuration */
     deployment?: DeploymentOptions;
     /** Migration and code generation options */
@@ -384,15 +374,6 @@ export const pgpmDefaults: PgpmOptions = {
     port: 3000,
     trustProxy: false,
     strictAuth: false
-  },
-  cdn: {
-    provider: 'minio',
-    bucketName: 'test-bucket',
-    awsRegion: 'us-east-1',
-    awsAccessKey: 'constructive',
-    awsSecretKey: 'constructive-dev-secret',
-    endpoint: 'http://localhost:9000',
-    publicUrlPrefix: 'http://localhost:9000'
   },
   deployment: {
     useTx: true,

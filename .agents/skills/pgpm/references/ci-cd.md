@@ -81,15 +81,13 @@ env:
   PGPASSWORD: password
 ```
 
-For RustFS/S3 testing (uploads, storage):
+For RustFS/S3 testing (uploads, storage) — credentials only; endpoint,
+provider and region are `storage_module` rows (fixtures set them):
 
 ```yaml
 env:
-  OBJECT_STORE_ENDPOINT: http://localhost:9000
-  AWS_ACCESS_KEY: constructive
-  AWS_SECRET_KEY: constructive-dev-secret
-  AWS_REGION: us-east-1
-  BUCKET_NAME: test-bucket
+  STORAGE_ACCESS_KEY_ID: constructive
+  STORAGE_SECRET_ACCESS_KEY: constructive-dev-secret
 ```
 
 ## PGPM CLI Caching
@@ -421,7 +419,8 @@ strategy:
           TEST_DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
       - package: uploads/s3-streamer
         env:
-          BUCKET_NAME: test-bucket
+          STORAGE_ACCESS_KEY_ID: constructive
+          STORAGE_SECRET_ACCESS_KEY: constructive-dev-secret
 
 steps:
   - name: Test ${{ matrix.package }}

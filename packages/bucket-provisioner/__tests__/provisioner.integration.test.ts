@@ -21,10 +21,11 @@ import { ProvisionerError } from '../src/types';
 
 // --- RustFS config (matches CI env) ---
 
-const OBJECT_STORE_ENDPOINT = process.env.CDN_ENDPOINT || 'http://localhost:9000';
-const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY || 'constructive';
-const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY || 'constructive-dev-secret';
+// The local object store (docker RustFS/MinIO); credentials from the env.
+const OBJECT_STORE_ENDPOINT = 'http://localhost:9000';
+const AWS_REGION = 'us-east-1';
+const AWS_ACCESS_KEY = process.env.STORAGE_ACCESS_KEY_ID!;
+const AWS_SECRET_KEY = process.env.STORAGE_SECRET_ACCESS_KEY!;
 
 const connection: StorageConnectionConfig = {
   provider: 'minio',

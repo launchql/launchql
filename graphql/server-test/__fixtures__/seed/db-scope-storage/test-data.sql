@@ -68,6 +68,7 @@ INSERT INTO metaschema_modules_public.storage_module (
   endpoint,
   public_url_prefix,
   provider,
+  region,
   allowed_origins,
   scope,
   private_schema_id,
@@ -79,9 +80,10 @@ VALUES (
   'ce552000-0000-4000-8000-000000000001',
   'ce553000-0000-4000-8000-000000000001',
   'ce553000-0000-4000-8000-000000000002',
-  NULL,  -- use global CDN_ENDPOINT
-  NULL,  -- use global CDN_PUBLIC_URL_PREFIX
+  'http://localhost:9000',
+  NULL,
   'minio',
+  'us-east-1',
   ARRAY['*'],
   'database',
   'ce552000-0000-4000-8000-000000000002',

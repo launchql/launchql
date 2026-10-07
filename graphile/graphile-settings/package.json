@@ -34,7 +34,6 @@
     "@constructive-io/graphql-env": "workspace:^",
     "@constructive-io/graphql-types": "workspace:^",
     "@constructive-io/s3-streamer": "workspace:^",
-    "@constructive-io/s3-utils": "workspace:^",
     "@constructive-io/upload-names": "workspace:^",
     "@dataplan/json": "1.0.1",
     "@dataplan/pg": "1.1.1",
@@ -76,6 +75,7 @@
     "tamedevil": "0.1.1"
   },
   "devDependencies": {
+    "@constructive-io/s3-utils": "workspace:^",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.6",
     "@types/pg": "^8.20.4",

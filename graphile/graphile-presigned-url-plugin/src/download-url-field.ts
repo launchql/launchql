@@ -27,7 +27,7 @@ import type { GraphileConfig } from 'graphile-config';
 import { withSystemLaneClient } from 'graphile-plugin-utils';
 import { DOWNLOAD_URL_FIELD } from 'graphile-storage-registry';
 
-import { resolveS3, resolveS3ForDatabase } from './physical-bucket';
+import { resolveS3ForDatabase } from './physical-bucket';
 import { withRequestPgClient } from './request-pg-client';
 import { generatePresignedGetUrl } from './s3-signer';
 import { loadAllStorageModules, resolveStorageConfigFromCodec, storedPhysicalName } from './storage-module-cache';
@@ -110,48 +110,38 @@ export function createDownloadUrlPlugin(
                     return lambda($combined, async ({ key, isPublic, filename, bucketId, withPgClient, pgSettings }: any) => {
                       if (!key) return null;
 
-                      let s3ForDb = resolveS3(options);
-                      let downloadUrlExpirySeconds = 3600;
-                      try {
-                        if (withPgClient && pgSettings) {
-                          const databaseId = await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
-                            const dbResult = await pgClient.query({
-                              text: `SELECT jwt_private.current_database_id() AS id`,
-                            });
-                            return (dbResult.rows[0]?.id as string | undefined) ?? null;
-                          });
-                          // Module registration is server config, not user data:
-                          // resolve it in the system lane's bounded role.
-                          const config = databaseId
-                            ? resolveStorageConfigFromCodec(
-                              capturedCodec,
-                              await withSystemLaneClient(withPgClient, (pgClient) => loadAllStorageModules(pgClient, databaseId)),
-                            )
-                            : null;
-                          const resolved = config && bucketId
-                            ? await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
-                              // Look up the stored physical coordinate for scoped S3 resolution
-                              const bucketResult = await pgClient.query({
-                                text: `SELECT key, physical_name FROM ${config.bucketsQualifiedName} WHERE id = $1 LIMIT 1`,
-                                values: [bucketId],
-                              });
-                              const row = bucketResult.rows[0] as { key: string; physical_name?: string | null } | undefined;
-                              return row ? { config, physicalName: storedPhysicalName(row) } : null;
-                            })
-                            : null;
-                          if (resolved) {
-                            if (resolved.physicalName === null) {
-                              // No physical bucket was ever provisioned — no object can exist.
-                              return null;
-                            }
-                            downloadUrlExpirySeconds = resolved.config.downloadUrlExpirySeconds;
-                            s3ForDb = resolveS3ForDatabase(options, resolved.config, resolved.physicalName);
-                          }
-                        }
-                      } catch {
-                        // Fall back to global config if lookup fails
-                      }
+                      if (!withPgClient || !pgSettings) return null;
 
+                      const databaseId = await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
+                        const dbResult = await pgClient.query({
+                          text: `SELECT jwt_private.current_database_id() AS id`,
+                        });
+                        return (dbResult.rows[0]?.id as string | undefined) ?? null;
+                      });
+                      // Module registration is server config, not user data:
+                      // resolve it in the system lane's bounded role.
+                      const config = databaseId
+                        ? resolveStorageConfigFromCodec(
+                          capturedCodec,
+                          await withSystemLaneClient(withPgClient, (pgClient) => loadAllStorageModules(pgClient, databaseId)),
+                        )
+                        : null;
+                      const resolved = config && bucketId
+                        ? await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
+                          // Look up the stored physical coordinate for scoped S3 resolution
+                          const bucketResult = await pgClient.query({
+                            text: `SELECT key, physical_name FROM ${config.bucketsQualifiedName} WHERE id = $1 LIMIT 1`,
+                            values: [bucketId],
+                          });
+                          const row = bucketResult.rows[0] as { key: string; physical_name?: string | null } | undefined;
+                          return row ? { config, physicalName: storedPhysicalName(row) } : null;
+                        })
+                        : null;
+                      // No resolvable bucket row, or no physical bucket was ever
+                      // provisioned: no object can exist.
+                      if (!resolved || resolved.physicalName === null) return null;
+
+                      const s3ForDb = resolveS3ForDatabase(options, resolved.config, resolved.physicalName);
                       if (isPublic && s3ForDb.publicUrlPrefix) {
                         return `${s3ForDb.publicUrlPrefix}/${s3ForDb.bucket}/${key}`;
                       }
@@ -159,7 +149,7 @@ export function createDownloadUrlPlugin(
                       return generatePresignedGetUrl(
                         s3ForDb,
                         key,
-                        downloadUrlExpirySeconds,
+                        resolved.config.downloadUrlExpirySeconds,
                         filename || undefined,
                       );
                     });

@@ -1,78 +1,33 @@
 /**
- * Unit tests for the connection-default S3 configuration.
+ * Unit tests for the object-store credentials (the only storage env input).
  */
 
-interface CdnOptions {
-  provider?: string;
-  bucketName?: string;
-  awsRegion?: string;
-  awsAccessKey?: string;
-  awsSecretKey?: string;
-  endpoint?: string;
-  publicUrlPrefix?: string;
-}
-
-async function loadResolverModule(cdn: CdnOptions | undefined) {
+async function loadResolverModule(storage: { accessKeyId?: string; secretAccessKey?: string } | undefined) {
   jest.resetModules();
 
   jest.doMock('@constructive-io/graphql-env', () => ({
-    getEnvOptions: jest.fn(() => ({ cdn })),
-  }));
-  jest.doMock('@constructive-io/s3-utils', () => ({
-    createS3Client: jest.fn(() => ({ send: jest.fn() })),
-  }));
-  jest.doMock('@pgpmjs/logger', () => ({
-    Logger: jest.fn().mockImplementation(() => ({ info: jest.fn() })),
+    getEnvOptions: jest.fn(() => ({ storage })),
   }));
 
   return import('../src/presigned-url-resolver');
 }
 
-const BASE_CDN: CdnOptions = {
-  provider: 'minio',
-  bucketName: 'connection-default',
-  awsRegion: 'us-east-1',
-  awsAccessKey: 'access',
-  awsSecretKey: 'secret',
-  endpoint: 'http://localhost:9000',
-  publicUrlPrefix: 'https://cdn.example.com',
-};
-
-describe('getPresignedUrlS3Config', () => {
-  it('returns the configured connection-default bucket', async () => {
-    const { getPresignedUrlS3Config } = await loadResolverModule(BASE_CDN);
-
-    expect(getPresignedUrlS3Config()).toEqual(expect.objectContaining({
-      bucket: 'connection-default',
-      region: 'us-east-1',
-      endpoint: 'http://localhost:9000',
-      publicUrlPrefix: 'https://cdn.example.com',
-    }));
-  });
-
-  it('caches the initialized S3 configuration', async () => {
-    const { getPresignedUrlS3Config } = await loadResolverModule(BASE_CDN);
-
-    expect(getPresignedUrlS3Config()).toBe(getPresignedUrlS3Config());
-  });
-
-  it('requires a CDN bucket name for the connection default', async () => {
-    const { getPresignedUrlS3Config } = await loadResolverModule({
-      ...BASE_CDN,
-      bucketName: undefined,
+describe('getStorageCredentials', () => {
+  it('returns the dedicated storage credentials', async () => {
+    const { getStorageCredentials } = await loadResolverModule({
+      accessKeyId: 'access',
+      secretAccessKey: 'secret',
     });
 
-    expect(() => getPresignedUrlS3Config()).toThrow(/CDN_BUCKET_NAME/);
+    expect(getStorageCredentials()).toEqual({ accessKeyId: 'access', secretAccessKey: 'secret' });
   });
 
-  it('requires CDN configuration and credentials', async () => {
-    const missingConfig = await loadResolverModule(undefined);
-    expect(() => missingConfig.getPresignedUrlS3Config()).toThrow(/CDN config not found/);
-
-    const missingCredentials = await loadResolverModule({
-      ...BASE_CDN,
-      awsAccessKey: undefined,
-    });
-    expect(() => missingCredentials.getPresignedUrlS3Config()).toThrow(/S3 credentials/);
+  it('fails fast naming both env vars when either is missing', async () => {
+    for (const storage of [undefined, { accessKeyId: 'access' }, { secretAccessKey: 'secret' }]) {
+      const { getStorageCredentials } = await loadResolverModule(storage);
+      expect(() => getStorageCredentials()).toThrow(
+        /STORAGE_ACCESS_KEY_ID and STORAGE_SECRET_ACCESS_KEY/,
+      );
+    }
   });
 });

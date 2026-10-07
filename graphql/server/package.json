@@ -30,8 +30,7 @@
     "debug:heap:capture": "node scripts/capture-heap-snapshot.mjs",
     "lint": "eslint . --fix",
     "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
-    "bucket:create": "ts-node src/scripts/create-bucket.ts"
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "server",
