@@ -1,21 +1,33 @@
-interface ReleasableService {
-  release?(): void | PromiseLike<void>;
-}
+import type { Server } from 'node:http';
+
+import { createPresetServicesReleaser, type ReleasablePresetService } from './preset-services';
 
 interface FailedBuild {
   release(): void | PromiseLike<void>;
-  getResolvedPreset(): { pgServices?: readonly ReleasableService[] };
+  getResolvedPreset(): { pgServices?: readonly ReleasablePresetService[] };
 }
 
 /**
- * Release a failed build after its schema work has settled. PostGraphile releases
- * Grafserv and schema watching; each service releases only its own resources.
+ * Release a failed build after its schema work has settled, including its own
+ * HTTP server if attachment started it. PostGraphile releases Grafserv and schema
+ * watching; each preset service releases only its own resources.
  */
 export const releaseFailedBuild = async (
-  pgl: FailedBuild
+  pgl: FailedBuild,
+  releasePresetServices = createPresetServicesReleaser(pgl.getResolvedPreset()),
+  httpServer?: Server
 ): Promise<void> => {
-  const services = [...new Set(pgl.getResolvedPreset().pgServices ?? [])];
   const errors: unknown[] = [];
+
+  try {
+    if (httpServer?.listening) {
+      await new Promise<void>((resolve, reject) => {
+        httpServer.close((error) => error ? reject(error) : resolve());
+      });
+    }
+  } catch (error) {
+    errors.push(error);
+  }
 
   try {
     await pgl.release();
@@ -23,12 +35,10 @@ export const releaseFailedBuild = async (
     errors.push(error);
   }
 
-  for (const service of services.reverse()) {
-    try {
-      await service.release?.();
-    } catch (error) {
-      errors.push(error);
-    }
+  try {
+    await releasePresetServices();
+  } catch (error) {
+    errors.push(error);
   }
 
   if (errors.length === 1) throw errors[0];

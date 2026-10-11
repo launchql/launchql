@@ -6,8 +6,9 @@ import { grafserv } from 'grafserv/express/v4';
 import { RealtimeManager } from 'graphile-realtime-subscriptions';
 import { postgraphile } from 'postgraphile';
 
-import type { GraphileCacheEntry } from './graphile-cache';
+import { disposeUncachedEntry, type GraphileCacheEntry } from './graphile-cache';
 import { awaitGraphileBuildReadiness } from './utils/build-readiness';
+import { createPresetServicesReleaser } from './utils/preset-services';
 import { releaseFailedBuild } from './utils/release-failed-build';
 
 const log = new Logger('graphile-cache:create');
@@ -32,9 +33,9 @@ interface GraphileInstanceOptions {
  *
  * Callers are responsible for building the `GraphileConfig.Preset` (including
  * pgServices, grafserv options, grafast context, etc.) before passing it here.
- * On a readiness failure, this factory releases PostGraphile and the preset's
- * services after schema construction settles; externally supplied pools stay
- * owned by the caller.
+ * Each generation owns its HTTP server and the services in its resolved preset.
+ * Supply fresh services for each generation; externally supplied pools remain
+ * caller-owned. Failed readiness or realtime startup releases that generation.
  *
  * When `enableRealtime` is true, a RealtimeManager is created that bridges
  * cursor-tracked events from `drain_changes()` into the PostGraphile
@@ -48,20 +49,24 @@ export const createGraphileInstance = async (
   const { preset, cacheKey, enableRealtime = false } = opts;
 
   const pgl = postgraphile(preset);
+  const resolvedPreset = pgl.getResolvedPreset();
+  const releasePresetServices = createPresetServicesReleaser(resolvedPreset);
   let serv!: ReturnType<typeof grafserv>;
+  let handler!: ReturnType<typeof express>;
+  let httpServer!: ReturnType<typeof createServer>;
 
-  const handler = express();
-  const httpServer = createServer(handler);
   await awaitGraphileBuildReadiness({
     schemaResult: async () => {
       await pgl.getSchemaResult();
     },
     addTo: () => {
+      handler = express();
+      httpServer = createServer(handler);
       serv = pgl.createServ(grafserv);
       return serv.addTo(handler, httpServer);
     },
     ready: () => serv.ready(),
-    release: () => releaseFailedBuild(pgl),
+    release: () => releaseFailedBuild(pgl, releasePresetServices, httpServer),
     onReleaseError: (releaseError) => {
       log.error(`Failed to release PostGraphile[${cacheKey}] after build failure:`, releaseError);
     },
@@ -74,6 +79,7 @@ export const createGraphileInstance = async (
     httpServer,
     cacheKey,
     createdAt: Date.now(),
+    releasePresetServices,
   };
 
   if (enableRealtime) {
@@ -81,15 +87,14 @@ export const createGraphileInstance = async (
       // Extract PgSubscriber and pool from the resolved preset's pgServices.
       // The pool is the same instance managed by pg-cache (via getPgPool)
       // and threaded into the preset by makePgService({ pool, schemas }).
-      const resolvedPreset = pgl.getResolvedPreset();
       const pgService = (resolvedPreset as any).pgServices?.[0];
       const pgSubscriber = pgService?.pgSubscriber ?? null;
       const pool = pgService?.adaptorSettings?.pool ?? null;
 
       if (!pgSubscriber) {
-        log.warn(`PostGraphile[${cacheKey}] has no pgSubscriber — RealtimeManager will not be started`);
+        throw new Error('Realtime requires a PostgreSQL subscriber');
       } else if (!pool) {
-        log.warn(`PostGraphile[${cacheKey}] has no pool in pgService — RealtimeManager will not be started`);
+        throw new Error('Realtime requires a PostgreSQL pool');
       } else {
         const manager = new RealtimeManager({
           pgSubscriber,
@@ -98,12 +103,17 @@ export const createGraphileInstance = async (
           schema: 'realtime_public',
         });
 
-        await manager.start();
         entry.realtimeManager = manager;
+        await manager.start();
         log.info(`RealtimeManager started for PostGraphile[${cacheKey}]`);
       }
     } catch (err) {
-      log.error(`Failed to start RealtimeManager for PostGraphile[${cacheKey}]:`, err);
+      try {
+        await disposeUncachedEntry(entry);
+      } catch (cleanupError) {
+        throw new AggregateError([err, cleanupError], 'Realtime startup and cleanup failed', { cause: err });
+      }
+      throw err;
     }
   }
 

@@ -7,7 +7,8 @@ module.exports = {
       'ts-jest',
       {
         babelConfig: false,
-        tsconfig: 'tsconfig.json',
+        // NodeNext needs isolated transformation; tsc checks both module builds.
+        tsconfig: { isolatedModules: true },
       },
     ],
   },

@@ -113,7 +113,7 @@ jobs:
           - batch: graphql
             packages: 'graphql/query graphql/codegen'
           - batch: graphile-unit
-            packages: 'graphile/graphile-plugin-utils graphile/graphile-realtime-subscriptions graphile/graphile-sql-expression-validator graphile/graphile-upload-plugin graphile/graphile-storage-registry graphile/graphile-cache'
+            packages: 'graphile/graphile-plugin-utils graphile/graphile-realtime-subscriptions graphile/graphile-sql-expression-validator graphile/graphile-upload-plugin graphile/graphile-storage-registry'
           - batch: agentic
             packages: 'agentic/protocol agentic/agentic-kit agentic/agent agentic/harness agentic/chat agentic/cli agentic/db-tools agentic/pi agentic/dsh agentic/react agentic/agentic-server agentic/anthropic agentic/openai agentic/ollama agentic/run-log agentic/metering agentic/agent-conversation agentic/pi-host agentic/run-log-client agentic/run-log-gate agentic/machine-protocol agentic/machine-runner agentic/agent-cli'
           - batch: pgpm-unit
@@ -246,7 +246,7 @@ jobs:
           - batch: pg-graphql
             packages: 'graphile/graphile-search graphile/graphile-ltree graphile/graphile-bulk-mutations graphile/graphile-function-bindings graphile/graphile-history graphile/graphile-meta graphile/graphile-schema graphql/orm-test graphql/test graphql/playwright-test'
           - batch: pg-graphile-extras
-            packages: 'graphile/graphile-i18n graphile/graphile-pg-aggregates graphile/graphile-query graphile/graphile-realtime-test'
+            packages: 'graphile/graphile-i18n graphile/graphile-pg-aggregates graphile/graphile-query graphile/graphile-realtime-test graphile/graphile-cache'
 
     env:
       PGHOST: localhost
