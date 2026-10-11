@@ -52,11 +52,10 @@ export const createGraphileInstance = async (
 
   const handler = express();
   const httpServer = createServer(handler);
-  const waitForSchema = async () => {
-    await pgl.getSchemaResult();
-  };
   await awaitGraphileBuildReadiness({
-    schemaResult: waitForSchema(),
+    schemaResult: (async () => {
+      await pgl.getSchemaResult();
+    })(),
     addTo: () => serv.addTo(handler, httpServer),
     ready: () => serv.ready(),
     release: () => releaseFailedBuild(pgl),

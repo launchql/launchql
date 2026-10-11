@@ -12,10 +12,14 @@ export const awaitGraphileBuildReadiness = async (
 ): Promise<void> => {
   // Observe schema rejection immediately, even while addTo is still pending.
   // Keeping it as an outcome also lets failure cleanup wait for schema work.
-  const schemaOutcome = build.schemaResult.then(
-    () => ({ ready: true as const }),
-    (error: unknown) => ({ ready: false as const, error })
-  );
+  const schemaOutcome = (async () => {
+    try {
+      await build.schemaResult;
+      return { ready: true as const };
+    } catch (error: unknown) {
+      return { ready: false as const, error };
+    }
+  })();
   try {
     await build.addTo();
     const [schema] = await Promise.all([schemaOutcome, build.ready()]);
