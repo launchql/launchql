@@ -114,7 +114,8 @@ describe('createGraphileInstance', () => {
       expect(mockPostgraphile).toHaveBeenCalledWith(preset);
       expect(pgl.getSchemaResult).toHaveBeenCalledTimes(1);
       expect(mockCreateServer).toHaveBeenCalledWith(handler);
-      expect(serv.addTo).toHaveBeenCalledWith(handler, httpServer);
+      expect(pgl.createServ).not.toHaveBeenCalled();
+      expect(serv.addTo).not.toHaveBeenCalled();
       expect(serv.ready).not.toHaveBeenCalled();
 
       if (first === 'schema') {
@@ -123,13 +124,15 @@ describe('createGraphileInstance', () => {
         attachment.resolve();
       }
       await flushAsyncWork();
-      expect(serv.ready).toHaveBeenCalledTimes(first === 'HTTP' ? 1 : 0);
+      expect(serv.ready).not.toHaveBeenCalled();
+      expect(pgl.createServ).toHaveBeenCalledTimes(first === 'schema' ? 1 : 0);
       expect(mockCreateRealtimeManager).not.toHaveBeenCalled();
       expect(settled).not.toHaveBeenCalled();
 
       schema.resolve(schemaResult);
       attachment.resolve();
       await flushAsyncWork();
+      expect(serv.addTo).toHaveBeenCalledWith(handler, httpServer);
       expect(serv.ready).toHaveBeenCalledTimes(1);
       expect(mockCreateRealtimeManager).not.toHaveBeenCalled();
       expect(settled).not.toHaveBeenCalled();
@@ -179,7 +182,7 @@ describe('createGraphileInstance', () => {
   });
 
   it.each(['throws synchronously', 'rejects immediately'] as const)(
-    'observes schema failure that %s while HTTP attachment is pending, then awaits cleanup',
+    'observes schema failure that %s before Grafserv construction and awaits cleanup',
     async (failure) => {
       const schemaError = new Error('schema failed before HTTP attachment');
       const attachment = deferred<void>();
@@ -199,19 +202,13 @@ describe('createGraphileInstance', () => {
       void instance.then(settled, settled);
       const rejection = expect(instance).rejects.toBe(schemaError);
       expect(pgl.getSchemaResult).toHaveBeenCalledTimes(1);
-      expect(serv.addTo).toHaveBeenCalledTimes(1);
-      expect(pgl.getSchemaResult.mock.invocationCallOrder[0]).toBeLessThan(
-        serv.addTo.mock.invocationCallOrder[0],
-      );
+      expect(pgl.createServ).not.toHaveBeenCalled();
+      expect(serv.addTo).not.toHaveBeenCalled();
+      expect(serv.ready).not.toHaveBeenCalled();
 
       // Cross a macrotask boundary so an unobserved schema rejection fails the test.
       await flushAsyncWork();
       expect(settled).not.toHaveBeenCalled();
-      expect(pgl.release).not.toHaveBeenCalled();
-      expect(releaseService).not.toHaveBeenCalled();
-
-      attachment.resolve();
-      await flushAsyncWork();
       expect(pgl.release).toHaveBeenCalledTimes(1);
       expect(releaseService).not.toHaveBeenCalled();
       expect(settled).not.toHaveBeenCalled();
@@ -227,39 +224,42 @@ describe('createGraphileInstance', () => {
     },
   );
 
-  it('waits for schema settlement and cleanup while preserving the original HTTP failure', async () => {
+  it('does not start HTTP attachment before schema settles, then preserves an attachment failure', async () => {
     const schema = deferred<typeof schemaResult>();
-    const attachment = deferred<void>();
     const released = deferred<void>();
     const attachmentError = new Error('HTTP attachment failed');
-    const schemaError = new Error('schema failed after HTTP attachment');
     pgl.getSchemaResult.mockReturnValue(schema.promise);
-    serv.addTo.mockReturnValue(attachment.promise);
+    serv.addTo.mockRejectedValue(attachmentError);
     pgl.release.mockReturnValue(released.promise);
 
-    const settled = jest.fn();
     const instance = createGraphileInstance({ preset, cacheKey, enableRealtime: true });
-    void instance.then(settled, settled);
     const rejection = expect(instance).rejects.toBe(attachmentError);
     await flushAsyncWork();
-    attachment.reject(attachmentError);
-    await flushAsyncWork();
+    expect(pgl.createServ).not.toHaveBeenCalled();
+    expect(serv.addTo).not.toHaveBeenCalled();
     expect(pgl.release).not.toHaveBeenCalled();
-    expect(releaseService).not.toHaveBeenCalled();
-    expect(settled).not.toHaveBeenCalled();
 
-    schema.reject(schemaError);
+    schema.resolve(schemaResult);
     await flushAsyncWork();
+    expect(pgl.createServ).toHaveBeenCalledTimes(1);
+    expect(serv.addTo).toHaveBeenCalledTimes(1);
     expect(pgl.release).toHaveBeenCalledTimes(1);
     expect(releaseService).not.toHaveBeenCalled();
-    expect(settled).not.toHaveBeenCalled();
-
+    expect(serv.ready).not.toHaveBeenCalled();
     released.resolve();
     await rejection;
     expect(releaseService).toHaveBeenCalledTimes(1);
-    expect(mockError).not.toHaveBeenCalled();
-    expect(serv.ready).not.toHaveBeenCalled();
     expect(mockCreateRealtimeManager).not.toHaveBeenCalled();
+  });
+
+  it('cleans up a synchronous createServ failure after schema completes', async () => {
+    const failure = new Error('createServ failed');
+    pgl.createServ.mockImplementation(() => { throw failure; });
+    await expect(createGraphileInstance({ preset, cacheKey })).rejects.toBe(failure);
+    expect(pgl.release).toHaveBeenCalledTimes(1);
+    expect(releaseService).toHaveBeenCalledTimes(1);
+    expect(serv.addTo).not.toHaveBeenCalled();
+    expect(serv.ready).not.toHaveBeenCalled();
   });
 
   it('reports cleanup failure with the original build error as its cause', async () => {

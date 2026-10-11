@@ -48,15 +48,18 @@ export const createGraphileInstance = async (
   const { preset, cacheKey, enableRealtime = false } = opts;
 
   const pgl = postgraphile(preset);
-  const serv = pgl.createServ(grafserv);
+  let serv!: ReturnType<typeof grafserv>;
 
   const handler = express();
   const httpServer = createServer(handler);
   await awaitGraphileBuildReadiness({
-    schemaResult: (async () => {
+    schemaResult: async () => {
       await pgl.getSchemaResult();
-    })(),
-    addTo: () => serv.addTo(handler, httpServer),
+    },
+    addTo: () => {
+      serv = pgl.createServ(grafserv);
+      return serv.addTo(handler, httpServer);
+    },
     ready: () => serv.ready(),
     release: () => releaseFailedBuild(pgl),
     onReleaseError: (releaseError) => {
