@@ -90,8 +90,13 @@ export interface GraphileCacheEntry {
   realtimeManager?: { stop(): Promise<void> } | null;
 }
 
-// Track disposed entries to prevent double-disposal
-const disposedKeys = new Set<string>();
+// Track disposed entries by reference to prevent double-disposal.
+// Using a WeakSet keyed on the entry object (rather than the string key)
+// avoids the race where closeAllCaches() manually disposes an entry,
+// the guard key is cleaned up, and then graphileCache.clear() triggers
+// the LRU dispose callback which attempts to release the same
+// PostGraphile instance a second time.
+const disposedEntries = new WeakSet<GraphileCacheEntry>();
 
 // Track keys that are being manually evicted for accurate eviction reason
 const manualEvictionKeys = new Set<string>();
@@ -103,15 +108,15 @@ const manualEvictionKeys = new Set<string>();
  * 1. Closing the HTTP server if listening
  * 2. Releasing the PostGraphile instance (which internally releases grafserv)
  *
- * Uses disposedKeys set to prevent double-disposal when closeAllCaches()
+ * Uses disposedEntries WeakSet to prevent double-disposal when closeAllCaches()
  * explicitly disposes entries and then clear() triggers the dispose callback.
  */
 const disposeEntry = async (entry: GraphileCacheEntry, key: string): Promise<void> => {
-  // Prevent double-disposal
-  if (disposedKeys.has(key)) {
+  // Prevent double-disposal (tracked by object reference, not key string)
+  if (disposedEntries.has(entry)) {
     return;
   }
-  disposedKeys.add(key);
+  disposedEntries.add(entry);
 
   log.debug(`Disposing PostGraphile[${key}]`);
   try {
@@ -135,8 +140,6 @@ const disposeEntry = async (entry: GraphileCacheEntry, key: string): Promise<voi
     }
   } catch (err) {
     log.error(`Error disposing PostGraphile[${key}]:`, err);
-  } finally {
-    disposedKeys.delete(key);
   }
 };
 
@@ -278,11 +281,9 @@ export const closeAllCaches = async (verbose = false): Promise<void> => {
       // Wait for all disposals to complete
       await Promise.allSettled(disposePromises);
 
-      // Clear the cache after disposal (dispose callback will no-op due to disposedKeys)
+      // Clear the cache after disposal (dispose callback will no-op due to disposedEntries)
       graphileCache.clear();
 
-      // Clear disposed keys tracking after full cleanup
-      disposedKeys.clear();
       manualEvictionKeys.clear();
 
       // Close pg pools
