@@ -104,9 +104,9 @@ describe('releaseFailedBuild', () => {
     expect(events).toEqual(['postgraphile', 'second', 'first']);
     expect(error).toBeInstanceOf(AggregateError);
     if (!(error instanceof AggregateError)) throw new Error('Expected aggregate cleanup error');
-    expect(error.errors).toHaveLength(3);
+    expect(error.errors).toHaveLength(2);
     expect(error.errors[0]).toBe(postGraphileError);
-    expect(error.errors[1]).toBe(secondError);
-    expect(error.errors[2]).toBe(firstError);
+    expect(error.errors[1]).toBeInstanceOf(AggregateError);
+    expect(error.errors[1].errors).toEqual([secondError, firstError]);
   });
 });

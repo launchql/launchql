@@ -1,4 +1,7 @@
 import { createGraphileInstance } from '../create-instance';
+import { clearGraphileCache, disposeUncachedEntry, waitForActiveDisposals } from '../graphile-cache';
+
+jest.mock('pg-cache', () => ({ pgCache: { registerCleanupCallback: jest.fn() } }));
 
 jest.mock('postgraphile', () => ({
   postgraphile: (...args: unknown[]) => mockPostgraphile(...args),
@@ -24,6 +27,7 @@ jest.mock('graphile-realtime-subscriptions', () => ({
 jest.mock('@pgpmjs/logger', () => ({
   Logger: function () {
     return {
+      debug: jest.fn(),
       info: (...args: unknown[]) => mockInfo(...args),
       warn: (...args: unknown[]) => mockWarn(...args),
       error: (...args: unknown[]) => mockError(...args),
@@ -55,12 +59,12 @@ describe('createGraphileInstance', () => {
   const preset = { grafserv: { graphqlPath: '/graphql' } };
   const cacheKey = 'readiness-test';
   const handler = jest.fn();
-  const httpServer = { close: jest.fn() };
+  const httpServer = { listening: false, close: jest.fn() };
   const pgSubscriber = {};
-  const pool = {};
+  const pool = { end: jest.fn() };
   const releaseService = jest.fn();
   const schemaResult = { schema: {} };
-  const manager = { start: jest.fn() };
+  const manager = { start: jest.fn(), stop: jest.fn() };
   const serv = {
     addTo: jest.fn(),
     ready: jest.fn(),
@@ -74,6 +78,7 @@ describe('createGraphileInstance', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    httpServer.listening = false;
     mockPostgraphile.mockReturnValue(pgl);
     mockExpress.mockReturnValue(handler);
     mockCreateServer.mockReturnValue(httpServer);
@@ -90,7 +95,9 @@ describe('createGraphileInstance', () => {
     manager.start.mockResolvedValue(undefined);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await clearGraphileCache();
+    expect(pool.end).not.toHaveBeenCalled();
     jest.clearAllMocks();
   });
 
@@ -113,7 +120,7 @@ describe('createGraphileInstance', () => {
 
       expect(mockPostgraphile).toHaveBeenCalledWith(preset);
       expect(pgl.getSchemaResult).toHaveBeenCalledTimes(1);
-      expect(mockCreateServer).toHaveBeenCalledWith(handler);
+      expect(mockCreateServer).not.toHaveBeenCalled();
       expect(pgl.createServ).not.toHaveBeenCalled();
       expect(serv.addTo).not.toHaveBeenCalled();
       expect(serv.ready).not.toHaveBeenCalled();
@@ -133,6 +140,7 @@ describe('createGraphileInstance', () => {
       attachment.resolve();
       await flushAsyncWork();
       expect(serv.addTo).toHaveBeenCalledWith(handler, httpServer);
+      expect(mockCreateServer).toHaveBeenCalledWith(handler);
       expect(serv.ready).toHaveBeenCalledTimes(1);
       expect(mockCreateRealtimeManager).not.toHaveBeenCalled();
       expect(settled).not.toHaveBeenCalled();
@@ -156,6 +164,7 @@ describe('createGraphileInstance', () => {
         httpServer,
         cacheKey,
         createdAt: expect.any(Number),
+        releasePresetServices: expect.any(Function),
         realtimeManager: manager,
       });
       expect(pgl.release).not.toHaveBeenCalled();
@@ -279,36 +288,89 @@ describe('createGraphileInstance', () => {
     expect(releaseService).toHaveBeenCalledTimes(1);
   });
 
-  it('still returns a ready instance when realtime startup fails', async () => {
+  it('awaits cleanup of a partially started realtime manager before rejecting', async () => {
     const realtimeError = new Error('realtime unavailable');
+    const stopped = deferred<void>();
     manager.start.mockRejectedValue(realtimeError);
+    manager.stop.mockReturnValue(stopped.promise);
 
-    const entry = await createGraphileInstance({ preset, cacheKey, enableRealtime: true });
+    const instance = createGraphileInstance({ preset, cacheKey, enableRealtime: true });
+    const rejection = expect(instance).rejects.toBe(realtimeError);
+    await flushAsyncWork();
 
-    expect(entry.pgl).toBe(pgl);
-    expect(entry.realtimeManager).toBeUndefined();
-    expect(mockError).toHaveBeenCalledWith(
-      `Failed to start RealtimeManager for PostGraphile[${cacheKey}]:`,
-      realtimeError,
-    );
+    expect(manager.stop).toHaveBeenCalledTimes(1);
     expect(pgl.release).not.toHaveBeenCalled();
+    stopped.resolve();
+    await rejection;
+    expect(pgl.release).toHaveBeenCalledTimes(1);
+    expect(releaseService).toHaveBeenCalledTimes(1);
+  });
+
+  it('preserves realtime startup and cleanup failures and retains the disposal failure for drains', async () => {
+    const startup = new Error('realtime start');
+    const stop = new Error('realtime stop');
+    const release = new Error('service release');
+    manager.start.mockRejectedValue(startup);
+    manager.stop.mockRejectedValue(stop);
+    releaseService.mockRejectedValue(release);
+
+    await expect(createGraphileInstance({ preset, cacheKey, enableRealtime: true })).rejects.toMatchObject({
+      cause: startup,
+      errors: [startup, expect.objectContaining({ errors: [stop, release] })],
+    });
+    expect(pgl.release).toHaveBeenCalledTimes(1);
+    await expect(waitForActiveDisposals()).rejects.toMatchObject({ errors: [stop, release] });
+  });
+
+  it('snapshots services before PostGraphile mutates the resolved preset during release', async () => {
+    const services = pgl.getResolvedPreset().pgServices;
+    pgl.release.mockImplementation(() => { services.length = 0; });
+    const entry = await createGraphileInstance({ preset, cacheKey });
     expect(releaseService).not.toHaveBeenCalled();
+    await disposeUncachedEntry(entry);
+    await disposeUncachedEntry(entry);
+    expect(pgl.release).toHaveBeenCalledTimes(1);
+    expect(releaseService).toHaveBeenCalledTimes(1);
   });
 
   it.each([
-    { pgService: { adaptorSettings: { pool } }, missing: 'pgSubscriber' },
-    { pgService: { pgSubscriber }, missing: 'pool in pgService' },
-  ])('still skips realtime when $missing is absent', async ({ pgService, missing }) => {
+    { pgService: { adaptorSettings: { pool } }, missing: 'subscriber' },
+    { pgService: { pgSubscriber }, missing: 'pool' },
+  ])('rejects and cleans up when realtime requires a missing $missing', async ({ pgService, missing }) => {
     pgl.getResolvedPreset.mockReturnValue({ pgServices: [pgService] });
 
-    const entry = await createGraphileInstance({ preset, cacheKey, enableRealtime: true });
-
-    expect(entry.pgl).toBe(pgl);
-    expect(entry.realtimeManager).toBeUndefined();
-    expect(mockCreateRealtimeManager).not.toHaveBeenCalled();
-    expect(mockWarn).toHaveBeenCalledWith(
-      `PostGraphile[${cacheKey}] has no ${missing} — RealtimeManager will not be started`,
+    await expect(createGraphileInstance({ preset, cacheKey, enableRealtime: true })).rejects.toThrow(
+      `Realtime requires a PostgreSQL ${missing}`,
     );
-    expect(pgl.release).not.toHaveBeenCalled();
+    expect(mockCreateRealtimeManager).not.toHaveBeenCalled();
+    expect(pgl.release).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(['express', 'http'] as const)('cleans up a synchronous %s construction failure', async (stage) => {
+    const failure = new Error('HTTP setup failed');
+    (stage === 'express' ? mockExpress : mockCreateServer).mockImplementation(() => { throw failure; });
+    await expect(createGraphileInstance({ preset, cacheKey })).rejects.toBe(failure);
+    expect(pgl.release).toHaveBeenCalledTimes(1);
+    expect(releaseService).toHaveBeenCalledTimes(1);
+    expect(pgl.createServ).not.toHaveBeenCalled();
+  });
+
+  it('closes a listening instance server after attachment failure and aggregates cleanup errors', async () => {
+    const attachment = new Error('attachment');
+    const close = new Error('close');
+    const release = new Error('release');
+    serv.addTo.mockImplementation(() => {
+      httpServer.listening = true;
+      throw attachment;
+    });
+    httpServer.close.mockImplementation(callback => callback(close));
+    pgl.release.mockRejectedValue(release);
+
+    await expect(createGraphileInstance({ preset, cacheKey })).rejects.toMatchObject({
+      cause: attachment,
+      errors: [attachment, expect.objectContaining({ errors: [close, release] })],
+    });
+    expect(httpServer.close).toHaveBeenCalledTimes(1);
+    expect(releaseService).toHaveBeenCalledTimes(1);
   });
 });
