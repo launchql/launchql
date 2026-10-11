@@ -1,4 +1,4 @@
-import { releaseFailedBuild } from '../release-failed-build';
+import { releaseFailedBuild } from '../utils/release-failed-build';
 
 type FailedBuild = Parameters<typeof releaseFailedBuild>[0];
 

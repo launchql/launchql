@@ -6,9 +6,9 @@ import { grafserv } from 'grafserv/express/v4';
 import { RealtimeManager } from 'graphile-realtime-subscriptions';
 import { postgraphile } from 'postgraphile';
 
-import { awaitGraphileBuildReadiness } from './build-readiness';
 import type { GraphileCacheEntry } from './graphile-cache';
-import { releaseFailedBuild } from './release-failed-build';
+import { awaitGraphileBuildReadiness } from './utils/build-readiness';
+import { releaseFailedBuild } from './utils/release-failed-build';
 
 const log = new Logger('graphile-cache:create');
 

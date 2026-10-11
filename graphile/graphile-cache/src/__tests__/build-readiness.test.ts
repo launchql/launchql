@@ -1,4 +1,4 @@
-import { awaitGraphileBuildReadiness } from '../build-readiness';
+import { awaitGraphileBuildReadiness } from '../utils/build-readiness';
 
 const deferred = () => {
   let resolve!: () => void;

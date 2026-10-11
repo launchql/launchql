@@ -26,4 +26,4 @@ export {
 export { createGraphileInstance } from './create-instance';
 
 // Generic module config cache for plugin lookups
-export { ModuleConfigCache, ModuleConfigCacheOptions } from './module-config-cache';
+export { ModuleConfigCache, ModuleConfigCacheOptions } from './utils/module-config-cache';
