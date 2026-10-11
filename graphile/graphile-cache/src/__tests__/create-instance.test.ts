@@ -178,6 +178,55 @@ describe('createGraphileInstance', () => {
     expect(releaseService).not.toHaveBeenCalled();
   });
 
+  it.each(['throws synchronously', 'rejects immediately'] as const)(
+    'observes schema failure that %s while HTTP attachment is pending, then awaits cleanup',
+    async (failure) => {
+      const schemaError = new Error('schema failed before HTTP attachment');
+      const attachment = deferred<void>();
+      const released = deferred<void>();
+      const serviceReleased = deferred<void>();
+      if (failure === 'throws synchronously') {
+        pgl.getSchemaResult.mockImplementationOnce(() => { throw schemaError; });
+      } else {
+        pgl.getSchemaResult.mockRejectedValueOnce(schemaError);
+      }
+      serv.addTo.mockReturnValue(attachment.promise);
+      pgl.release.mockReturnValue(released.promise);
+      releaseService.mockReturnValue(serviceReleased.promise);
+
+      const settled = jest.fn();
+      const instance = createGraphileInstance({ preset, cacheKey });
+      void instance.then(settled, settled);
+      const rejection = expect(instance).rejects.toBe(schemaError);
+      expect(pgl.getSchemaResult).toHaveBeenCalledTimes(1);
+      expect(serv.addTo).toHaveBeenCalledTimes(1);
+      expect(pgl.getSchemaResult.mock.invocationCallOrder[0]).toBeLessThan(
+        serv.addTo.mock.invocationCallOrder[0],
+      );
+
+      // Cross a macrotask boundary so an unobserved schema rejection fails the test.
+      await flushAsyncWork();
+      expect(settled).not.toHaveBeenCalled();
+      expect(pgl.release).not.toHaveBeenCalled();
+      expect(releaseService).not.toHaveBeenCalled();
+
+      attachment.resolve();
+      await flushAsyncWork();
+      expect(pgl.release).toHaveBeenCalledTimes(1);
+      expect(releaseService).not.toHaveBeenCalled();
+      expect(settled).not.toHaveBeenCalled();
+
+      released.resolve();
+      await flushAsyncWork();
+      expect(releaseService).toHaveBeenCalledTimes(1);
+      expect(settled).not.toHaveBeenCalled();
+
+      serviceReleased.resolve();
+      await rejection;
+      expect(mockError).not.toHaveBeenCalled();
+    },
+  );
+
   it('waits for schema settlement and cleanup while preserving the original HTTP failure', async () => {
     const schema = deferred<typeof schemaResult>();
     const attachment = deferred<void>();

@@ -52,9 +52,11 @@ export const createGraphileInstance = async (
 
   const handler = express();
   const httpServer = createServer(handler);
+  const waitForSchema = async () => {
+    await pgl.getSchemaResult();
+  };
   await awaitGraphileBuildReadiness({
-    // The upstream API returns a schema result object, possibly asynchronously.
-    schemaResult: Promise.resolve(pgl.getSchemaResult()).then(() => {}),
+    schemaResult: waitForSchema(),
     addTo: () => serv.addTo(handler, httpServer),
     ready: () => serv.ready(),
     release: () => releaseFailedBuild(pgl),
