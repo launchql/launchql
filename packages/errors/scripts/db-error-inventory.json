@@ -570,11 +570,11 @@
     "class": "internal"
   },
   "BILLING_PAYER_UNRESOLVED": {
-    "count": 11,
+    "count": 9,
     "dynamic": false,
     "sample": "BILLING_PAYER_UNRESOLVED",
     "n_source": 1,
-    "n_generated": 3,
+    "n_generated": 2,
     "class": "internal"
   },
   "BILLING_QUOTA_EXCEEDED": {
@@ -2239,6 +2239,14 @@
     "n_generated": 1,
     "class": "internal"
   },
+  "DECLARED_GRANT_DRIFT": {
+    "count": 2,
+    "dynamic": false,
+    "sample": "DECLARED_GRANT_DRIFT",
+    "n_source": 1,
+    "n_generated": 1,
+    "class": "internal"
+  },
   "DELETE_FIRST": {
     "count": 4,
     "dynamic": false,
@@ -2364,11 +2372,11 @@
     "n_generated": 6
   },
   "DUPLICATE_JOB_IDS": {
-    "count": 8,
+    "count": 12,
     "dynamic": false,
     "sample": "DUPLICATE_JOB_IDS",
     "n_source": 0,
-    "n_generated": 6,
+    "n_generated": 8,
     "class": "internal"
   },
   "EMAIL_NOT_VERIFIED": {
@@ -3636,11 +3644,11 @@
     "class": "public"
   },
   "INVALID_WORKER_ID": {
-    "count": 16,
+    "count": 20,
     "dynamic": false,
     "sample": "INVALID_WORKER_ID",
     "n_source": 0,
-    "n_generated": 10,
+    "n_generated": 12,
     "class": "internal"
   },
   "INVITE_ACCOUNT_EXISTS_UNVERIFIED": {
@@ -3784,6 +3792,14 @@
     "sample": "INVOCATION_USAGE: billing_schema and record_usage_fn are required \u2014 the generator must only build this trigger when billing is provisioned",
     "n_source": 1,
     "n_generated": 1
+  },
+  "JOB_DEFERRAL_ARRAYS_MISMATCH": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "JOB_DEFERRAL_ARRAYS_MISMATCH",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "internal"
   },
   "JOB_ENQUEUE_FAILED": {
     "count": 2,

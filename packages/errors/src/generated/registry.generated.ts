@@ -2,7 +2,7 @@
 /**
  * GENERATED FILE — DO NOT EDIT BY HAND.
  *
- * Source of truth: the constructive-db error audit (839 distinct codes
+ * Source of truth: the constructive-db error audit (841 distinct codes
  * raised via EXCEPTION/THROW across deploy sources + generated output).
  * Regenerate with `python3 scripts/generate-registry.py` (see README.md).
  *
@@ -10,7 +10,7 @@
  * codes carry their raw message (with %-args rendered as {{argN}}). Curated
  * entries in `registry.ts` override anything here (typed context + refined copy).
  *
- * Counts: 839 total, 611 public, 228 internal.
+ * Counts: 841 total, 611 public, 230 internal.
  */
 import { defineError, type DefinedError } from '../define';
 import type { ErrorContext } from '../types';
@@ -306,6 +306,7 @@ export const generatedRegistry: Record<string, DefinedError<ErrorContext>> = {
   'DB_POOL_CLAIM_NOT_ORGANIZATION_OWNER': defineError({ code: 'DB_POOL_CLAIM_NOT_ORGANIZATION_OWNER', class: 'public', http: 400, message: 'Db pool claim not organization owner.' }),
   'DB_POOL_CLAIM_UNATTRIBUTED_SCHEDULE': defineError({ code: 'DB_POOL_CLAIM_UNATTRIBUTED_SCHEDULE', class: 'public', http: 400, message: 'Db pool claim unattributed schedule.' }),
   'DB_PRESET_MODULE': defineError({ code: 'DB_PRESET_MODULE', class: 'internal', http: 500, message: 'Db preset module.' }),
+  'DECLARED_GRANT_DRIFT': defineError({ code: 'DECLARED_GRANT_DRIFT', class: 'internal', http: 500, message: 'Declared grant drift.' }),
   'DELETE_FIRST': defineError({ code: 'DELETE_FIRST', class: 'public', http: 400, message: 'Delete first.' }),
   'DEVICE_NOT_FOUND': defineError({ code: 'DEVICE_NOT_FOUND', class: 'public', http: 404, message: 'Device not found.' }),
   'DOMAIN_ALREADY_CLAIMED': defineError({ code: 'DOMAIN_ALREADY_CLAIMED', class: 'public', http: 409, message: 'Domain already claimed.' }),
@@ -504,6 +505,7 @@ export const generatedRegistry: Record<string, DefinedError<ErrorContext>> = {
   'INVOCATION_RATE_LIMIT_EXCEEDED': defineError({ code: 'INVOCATION_RATE_LIMIT_EXCEEDED', class: 'public', http: 429, message: 'Invocation rate limit exceeded.' }),
   'INVOCATION_RATE_LIMIT_NOT_PROVISIONED': defineError({ code: 'INVOCATION_RATE_LIMIT_NOT_PROVISIONED', class: 'internal', http: 500, message: 'Invocation rate limit not provisioned.' }),
   'INVOCATION_USAGE': defineError({ code: 'INVOCATION_USAGE', class: 'internal', http: 500, message: 'INVOCATION_USAGE: billing_schema and record_usage_fn are required — the generator must only build this trigger when billing is provisioned' }),
+  'JOB_DEFERRAL_ARRAYS_MISMATCH': defineError({ code: 'JOB_DEFERRAL_ARRAYS_MISMATCH', class: 'internal', http: 500, message: 'Job deferral arrays mismatch.' }),
   'JOB_ENQUEUE_FAILED': defineError({ code: 'JOB_ENQUEUE_FAILED', class: 'internal', http: 500, message: 'Job enqueue failed.' }),
   'JOB_FAILURE_ARRAYS_MISMATCH': defineError({ code: 'JOB_FAILURE_ARRAYS_MISMATCH', class: 'internal', http: 500, message: 'Job failure arrays mismatch.' }),
   'JSONB_PATH_FIELD': defineError({ code: 'JSONB_PATH_FIELD', class: 'internal', http: 500, message: 'Jsonb path field.' }),
@@ -1149,6 +1151,7 @@ export const GENERATED_CODE_META: Record<string, GeneratedCodeMeta> = {
   'DB_POOL_CLAIM_NOT_ORGANIZATION_OWNER': { class: 'public', dynamic: false, generatedOnly: false },
   'DB_POOL_CLAIM_UNATTRIBUTED_SCHEDULE': { class: 'public', dynamic: false, generatedOnly: false },
   'DB_PRESET_MODULE': { class: 'internal', dynamic: false, generatedOnly: false },
+  'DECLARED_GRANT_DRIFT': { class: 'internal', dynamic: false, generatedOnly: false },
   'DELETE_FIRST': { class: 'public', dynamic: false, generatedOnly: false },
   'DEVICE_NOT_FOUND': { class: 'public', dynamic: false, generatedOnly: false },
   'DOMAIN_ALREADY_CLAIMED': { class: 'public', dynamic: false, generatedOnly: false },
@@ -1347,6 +1350,7 @@ export const GENERATED_CODE_META: Record<string, GeneratedCodeMeta> = {
   'INVOCATION_RATE_LIMIT_EXCEEDED': { class: 'public', dynamic: false, generatedOnly: false },
   'INVOCATION_RATE_LIMIT_NOT_PROVISIONED': { class: 'internal', dynamic: false, generatedOnly: false },
   'INVOCATION_USAGE': { class: 'internal', dynamic: false, generatedOnly: false },
+  'JOB_DEFERRAL_ARRAYS_MISMATCH': { class: 'internal', dynamic: false, generatedOnly: true },
   'JOB_ENQUEUE_FAILED': { class: 'internal', dynamic: false, generatedOnly: false },
   'JOB_FAILURE_ARRAYS_MISMATCH': { class: 'internal', dynamic: false, generatedOnly: true },
   'JSONB_PATH_FIELD': { class: 'internal', dynamic: false, generatedOnly: false },
@@ -1709,4 +1713,4 @@ export const GENERATED_CODE_META: Record<string, GeneratedCodeMeta> = {
 };
 
 /** Total number of codes collected from constructive-db. */
-export const GENERATED_CODE_COUNT = 839;
+export const GENERATED_CODE_COUNT = 841;
