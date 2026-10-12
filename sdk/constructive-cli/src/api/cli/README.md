@@ -58,6 +58,7 @@ csdk auth set-token <your-token>
 | `hostname-binding` | hostnameBinding CRUD operations |
 | `identity-provider-registry` | identityProviderRegistry CRUD operations |
 | `index` | index CRUD operations |
+| `list-suspended-databases-record` | listSuspendedDatabasesRecord CRUD operations |
 | `managed-domain` | managedDomain CRUD operations |
 | `node-type-registry` | nodeTypeRegistry CRUD operations |
 | `page` | page CRUD operations |
@@ -820,7 +821,6 @@ CRUD operations for EmailProviderAccount records.
 
 | Field | Type |
 |-------|------|
-| `apiBaseUrl` | String |
 | `createdAt` | Datetime |
 | `credentialsSecretName` | String |
 | `databaseId` | UUID |
@@ -838,7 +838,7 @@ CRUD operations for EmailProviderAccount records.
 | `webhookSigningSecretName` | String |
 
 **Required create fields:** `credentialsSecretName`, `databaseId`, `name`, `provider`
-**Optional create fields (backend defaults):** `apiBaseUrl`, `isActive`, `providerAccountName`, `region`, `smtpHost`, `smtpPort`, `smtpSecure`, `smtpUser`, `webhookSigningSecretName`
+**Optional create fields (backend defaults):** `isActive`, `providerAccountName`, `region`, `smtpHost`, `smtpPort`, `smtpSecure`, `smtpUser`, `webhookSigningSecretName`
 
 ### `email-site-identity`
 
@@ -1311,6 +1311,31 @@ CRUD operations for Index records.
 **Required create fields:** `databaseId`, `tableId`
 **Optional create fields (backend defaults):** `accessMethod`, `category`, `fieldIds`, `includeFieldIds`, `indexParams`, `isUnique`, `name`, `nullsNotDistinct`, `opClasses`, `options`, `smartTags`, `tags`, `whereClause`
 
+### `list-suspended-databases-record`
+
+CRUD operations for ListSuspendedDatabasesRecord records.
+
+| Subcommand | Description |
+|------------|-------------|
+| `list` | List all listSuspendedDatabasesRecord records |
+| `find-first` | Find first matching listSuspendedDatabasesRecord record |
+| `get` | Get a listSuspendedDatabasesRecord by id |
+| `create` | Create a new listSuspendedDatabasesRecord |
+| `update` | Update an existing listSuspendedDatabasesRecord |
+| `delete` | Delete a listSuspendedDatabasesRecord |
+
+**Fields:**
+
+| Field | Type |
+|-------|------|
+| `id` | UUID |
+| `name` | String |
+| `ownerId` | UUID |
+| `suspendedAt` | Datetime |
+| `suspendedReason` | String |
+
+**Required create fields:** `name`, `ownerId`, `suspendedAt`, `suspendedReason`
+
 ### `managed-domain`
 
 CRUD operations for ManagedDomain records.
@@ -1724,7 +1749,6 @@ CRUD operations for PlatformEmailProviderAccount records.
 
 | Field | Type |
 |-------|------|
-| `apiBaseUrl` | String |
 | `createdAt` | Datetime |
 | `credentialsSecretName` | String |
 | `id` | UUID |
@@ -1741,7 +1765,7 @@ CRUD operations for PlatformEmailProviderAccount records.
 | `webhookSigningSecretName` | String |
 
 **Required create fields:** `credentialsSecretName`, `name`, `provider`
-**Optional create fields (backend defaults):** `apiBaseUrl`, `isActive`, `providerAccountName`, `region`, `smtpHost`, `smtpPort`, `smtpSecure`, `smtpUser`, `webhookSigningSecretName`
+**Optional create fields (backend defaults):** `isActive`, `providerAccountName`, `region`, `smtpHost`, `smtpPort`, `smtpSecure`, `smtpUser`, `webhookSigningSecretName`
 
 ### `platform-email-site-identity`
 

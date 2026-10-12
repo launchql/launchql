@@ -61,20 +61,20 @@ GraphQL errors. |
 ```typescript
 // List all machines
 const { data, isLoading } = useMachinesQuery({
-  selection: { fields: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } },
+  selection: { fields: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, relayUrl: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } },
 });
 
 // Get one machine
 const { data: item } = useMachineQuery({
   id: '<UUID>',
-  selection: { fields: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } },
+  selection: { fields: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, relayUrl: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } },
 });
 
 // Create a machine
 const { mutate: create } = useCreateMachineMutation({
   selection: { fields: { id: true } },
 });
-create({ createdBy: '<UUID>', createdByPrincipal: '<UUID>', entityId: '<UUID>', facts: '<JSON>', isShared: '<Boolean>', label: '<String>', lastSeenAt: '<Datetime>', ownerId: '<UUID>', policy: '<JSON>', principalId: '<UUID>', revokedAt: '<Datetime>', tokenHash: '<String>', updatedBy: '<UUID>', updatedByPrincipal: '<UUID>' });
+create({ createdBy: '<UUID>', createdByPrincipal: '<UUID>', entityId: '<UUID>', facts: '<JSON>', isShared: '<Boolean>', label: '<String>', lastSeenAt: '<Datetime>', ownerId: '<UUID>', policy: '<JSON>', principalId: '<UUID>', relayUrl: '<String>', revokedAt: '<Datetime>', tokenHash: '<String>', updatedBy: '<UUID>', updatedByPrincipal: '<UUID>' });
 ```
 
 ### MachineMessage

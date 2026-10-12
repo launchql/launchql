@@ -2263,7 +2263,7 @@ type AgentRun {
   deadlineAt: Datetime
 
   """
-  Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves
+  Entity billed for this run: the database it executes in (rolls up to the database owner)
   """
   entityId: UUID!
 
@@ -2491,7 +2491,7 @@ input AgentRunInput {
   deadlineAt: Datetime
 
   """
-  Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves
+  Entity billed for this run: the database it executes in (rolls up to the database owner)
   """
   entityId: UUID
 
@@ -2638,7 +2638,7 @@ input AgentRunPatch {
   deadlineAt: Datetime
 
   """
-  Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves
+  Entity billed for this run: the database it executes in (rolls up to the database owner)
   """
   entityId: UUID
 
@@ -8917,7 +8917,7 @@ type PlatformAgentRun {
   deadlineAt: Datetime
 
   """
-  Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves
+  Entity billed for this run: the database it executes in (rolls up to the database owner)
   """
   entityId: UUID!
 
@@ -9243,7 +9243,7 @@ input PlatformAgentRunInput {
   deadlineAt: Datetime
 
   """
-  Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves
+  Entity billed for this run: the database it executes in (rolls up to the database owner)
   """
   entityId: UUID
 
@@ -9390,7 +9390,7 @@ input PlatformAgentRunPatch {
   deadlineAt: Datetime
 
   """
-  Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves
+  Entity billed for this run: the database it executes in (rolls up to the database owner)
   """
   entityId: UUID
 

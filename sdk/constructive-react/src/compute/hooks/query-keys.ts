@@ -308,6 +308,15 @@ export const functionInvocationKeys = {
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...functionInvocationKeys.details(), id] as const,
 } as const;
+export const functionScheduleKeys = {
+  /** All functionSchedule queries */ all: ['functionschedule'] as const,
+  /** List query keys */ lists: () => [...functionScheduleKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...functionScheduleKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () => [...functionScheduleKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...functionScheduleKeys.details(), id] as const,
+} as const;
 export const getAllTreeNodesRecordKeys = {
   /** All getAllTreeNodesRecord queries */ all: ['getalltreenodesrecord'] as const,
   /** List query keys */ lists: () => [...getAllTreeNodesRecordKeys.all, 'list'] as const,
@@ -522,6 +531,15 @@ export const platformFunctionInvocationKeys = {
     [...platformFunctionInvocationKeys.all, 'detail'] as const,
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...platformFunctionInvocationKeys.details(), id] as const,
+} as const;
+export const platformFunctionScheduleKeys = {
+  /** All platformFunctionSchedule queries */ all: ['platformfunctionschedule'] as const,
+  /** List query keys */ lists: () => [...platformFunctionScheduleKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...platformFunctionScheduleKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () => [...platformFunctionScheduleKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...platformFunctionScheduleKeys.details(), id] as const,
 } as const;
 export const platformImageKeys = {
   /** All platformImage queries */ all: ['platformimage'] as const,
@@ -1220,6 +1238,7 @@ export const queryKeys = {
   functionGraphStore: functionGraphStoreKeys,
   functionInvocationAttempt: functionInvocationAttemptKeys,
   functionInvocation: functionInvocationKeys,
+  functionSchedule: functionScheduleKeys,
   getAllTreeNodesRecord: getAllTreeNodesRecordKeys,
   image: imageKeys,
   imageGrant: imageGrantKeys,
@@ -1242,6 +1261,7 @@ export const queryKeys = {
   platformFunctionExecutionLog: platformFunctionExecutionLogKeys,
   platformFunctionInvocationAttempt: platformFunctionInvocationAttemptKeys,
   platformFunctionInvocation: platformFunctionInvocationKeys,
+  platformFunctionSchedule: platformFunctionScheduleKeys,
   platformImage: platformImageKeys,
   platformImageGrant: platformImageGrantKeys,
   platformInfraCommit: platformInfraCommitKeys,

@@ -53,6 +53,7 @@ const db = createClient({
 | `hostnameBinding` | findMany, findOne, create, update, delete |
 | `identityProviderRegistry` | findMany, findOne, create, update, delete |
 | `index` | findMany, findOne, create, update, delete |
+| `listSuspendedDatabasesRecord` | findMany, findOne, create, update, delete |
 | `managedDomain` | findMany, findOne, create, update, delete |
 | `nodeTypeRegistry` | findMany, findOne, create, update, delete |
 | `page` | findMany, findOne, create, update, delete |
@@ -832,7 +833,6 @@ CRUD operations for EmailProviderAccount records.
 
 | Field | Type | Editable |
 |-------|------|----------|
-| `apiBaseUrl` | String | Yes |
 | `createdAt` | Datetime | No |
 | `credentialsSecretName` | String | Yes |
 | `databaseId` | UUID | Yes |
@@ -853,16 +853,16 @@ CRUD operations for EmailProviderAccount records.
 
 ```typescript
 // List all emailProviderAccount records
-const items = await db.emailProviderAccount.findMany({ select: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
+const items = await db.emailProviderAccount.findMany({ select: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
 
 // Get one by id
-const item = await db.emailProviderAccount.findOne({ id: '<UUID>', select: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
+const item = await db.emailProviderAccount.findOne({ id: '<UUID>', select: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
 
 // Create
-const created = await db.emailProviderAccount.create({ data: { apiBaseUrl: '<String>', credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' }, select: { id: true } }).execute();
+const created = await db.emailProviderAccount.create({ data: { credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' }, select: { id: true } }).execute();
 
 // Update
-const updated = await db.emailProviderAccount.update({ where: { id: '<UUID>' }, data: { apiBaseUrl: '<String>' }, select: { id: true } }).execute();
+const updated = await db.emailProviderAccount.update({ where: { id: '<UUID>' }, data: { credentialsSecretName: '<String>' }, select: { id: true } }).execute();
 
 // Delete
 const deleted = await db.emailProviderAccount.delete({ where: { id: '<UUID>' } }).execute();
@@ -1439,6 +1439,39 @@ const updated = await db.index.update({ where: { id: '<UUID>' }, data: { accessM
 const deleted = await db.index.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
+### `db.listSuspendedDatabasesRecord`
+
+CRUD operations for ListSuspendedDatabasesRecord records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `id` | UUID | No |
+| `name` | String | Yes |
+| `ownerId` | UUID | Yes |
+| `suspendedAt` | Datetime | Yes |
+| `suspendedReason` | String | Yes |
+
+**Operations:**
+
+```typescript
+// List all listSuspendedDatabasesRecord records
+const items = await db.listSuspendedDatabasesRecord.findMany({ select: { id: true, name: true, ownerId: true, suspendedAt: true, suspendedReason: true } }).execute();
+
+// Get one by id
+const item = await db.listSuspendedDatabasesRecord.findOne({ id: '<UUID>', select: { id: true, name: true, ownerId: true, suspendedAt: true, suspendedReason: true } }).execute();
+
+// Create
+const created = await db.listSuspendedDatabasesRecord.create({ data: { name: '<String>', ownerId: '<UUID>', suspendedAt: '<Datetime>', suspendedReason: '<String>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.listSuspendedDatabasesRecord.update({ where: { id: '<UUID>' }, data: { name: '<String>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.listSuspendedDatabasesRecord.delete({ where: { id: '<UUID>' } }).execute();
+```
+
 ### `db.managedDomain`
 
 CRUD operations for ManagedDomain records.
@@ -1929,7 +1962,6 @@ CRUD operations for PlatformEmailProviderAccount records.
 
 | Field | Type | Editable |
 |-------|------|----------|
-| `apiBaseUrl` | String | Yes |
 | `createdAt` | Datetime | No |
 | `credentialsSecretName` | String | Yes |
 | `id` | UUID | No |
@@ -1949,16 +1981,16 @@ CRUD operations for PlatformEmailProviderAccount records.
 
 ```typescript
 // List all platformEmailProviderAccount records
-const items = await db.platformEmailProviderAccount.findMany({ select: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
+const items = await db.platformEmailProviderAccount.findMany({ select: { createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
 
 // Get one by id
-const item = await db.platformEmailProviderAccount.findOne({ id: '<UUID>', select: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
+const item = await db.platformEmailProviderAccount.findOne({ id: '<UUID>', select: { createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } }).execute();
 
 // Create
-const created = await db.platformEmailProviderAccount.create({ data: { apiBaseUrl: '<String>', credentialsSecretName: '<String>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' }, select: { id: true } }).execute();
+const created = await db.platformEmailProviderAccount.create({ data: { credentialsSecretName: '<String>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' }, select: { id: true } }).execute();
 
 // Update
-const updated = await db.platformEmailProviderAccount.update({ where: { id: '<UUID>' }, data: { apiBaseUrl: '<String>' }, select: { id: true } }).execute();
+const updated = await db.platformEmailProviderAccount.update({ where: { id: '<UUID>' }, data: { credentialsSecretName: '<String>' }, select: { id: true } }).execute();
 
 // Delete
 const deleted = await db.platformEmailProviderAccount.delete({ where: { id: '<UUID>' } }).execute();

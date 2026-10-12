@@ -1,13 +1,13 @@
 ---
 name: hooks-compute
-description: React Query hooks for the compute API — provides typed query and mutation hooks for 119 tables and 60 custom operations
+description: React Query hooks for the compute API — provides typed query and mutation hooks for 121 tables and 62 custom operations
 ---
 
 # hooks-compute
 
 <!-- @constructive-io/graphql-codegen - DO NOT EDIT -->
 
-React Query hooks for the compute API — provides typed query and mutation hooks for 119 tables and 60 custom operations
+React Query hooks for the compute API — provides typed query and mutation hooks for 121 tables and 62 custom operations
 
 ## Usage
 
@@ -68,6 +68,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [function-graph-store](references/function-graph-store.md)
 - [function-invocation-attempt](references/function-invocation-attempt.md)
 - [function-invocation](references/function-invocation.md)
+- [function-schedule](references/function-schedule.md)
 - [get-all-tree-nodes-record](references/get-all-tree-nodes-record.md)
 - [image](references/image.md)
 - [image-grant](references/image-grant.md)
@@ -90,6 +91,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [platform-function-execution-log](references/platform-function-execution-log.md)
 - [platform-function-invocation-attempt](references/platform-function-invocation-attempt.md)
 - [platform-function-invocation](references/platform-function-invocation.md)
+- [platform-function-schedule](references/platform-function-schedule.md)
 - [platform-image](references/platform-image.md)
 - [platform-image-grant](references/platform-image-grant.md)
 - [platform-infra-commit](references/platform-infra-commit.md)
@@ -183,6 +185,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [database-save-graph](references/database-save-graph.md)
 - [database-start-execution](references/database-start-execution.md)
 - [database-validate-function-graph](references/database-validate-function-graph.md)
+- [function-execution-logs-append](references/function-execution-logs-append.md)
 - [function-invocations-create-sync](references/function-invocations-create-sync.md)
 - [import-definitions](references/import-definitions.md)
 - [import-graph-json](references/import-graph-json.md)
@@ -195,6 +198,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [init-empty-repo](references/init-empty-repo.md)
 - [insert-node-at-path](references/insert-node-at-path.md)
 - [insert-nodes-at-paths](references/insert-nodes-at-paths.md)
+- [platform-function-execution-logs-append](references/platform-function-execution-logs-append.md)
 - [platform-function-invocations-create-sync](references/platform-function-invocations-create-sync.md)
 - [platform-infra-init-empty-repo](references/platform-infra-init-empty-repo.md)
 - [platform-infra-insert-node-at-path](references/platform-infra-insert-node-at-path.md)

@@ -7,8 +7,8 @@ A tenant's configured account at an email provider: provider slug, endpoint coor
 ## Usage
 
 ```typescript
-useEmailProviderAccountsQuery({ selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } } })
-useEmailProviderAccountQuery({ id: '<UUID>', selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } } })
+useEmailProviderAccountsQuery({ selection: { fields: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } } })
+useEmailProviderAccountQuery({ id: '<UUID>', selection: { fields: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } } })
 useCreateEmailProviderAccountMutation({ selection: { fields: { id: true } } })
 useUpdateEmailProviderAccountMutation({ selection: { fields: { id: true } } })
 useDeleteEmailProviderAccountMutation({})
@@ -20,7 +20,7 @@ useDeleteEmailProviderAccountMutation({})
 
 ```typescript
 const { data, isLoading } = useEmailProviderAccountsQuery({
-  selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
+  selection: { fields: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
 });
 ```
 
@@ -30,5 +30,5 @@ const { data, isLoading } = useEmailProviderAccountsQuery({
 const { mutate } = useCreateEmailProviderAccountMutation({
   selection: { fields: { id: true } },
 });
-mutate({ apiBaseUrl: '<String>', credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' });
+mutate({ credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' });
 ```

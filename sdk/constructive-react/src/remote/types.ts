@@ -16,6 +16,7 @@ export interface Machine {
   ownerId: string | null;
   policy: unknown | null;
   principalId: string | null;
+  relayUrl: string | null;
   revokedAt: string | null;
   tokenHash: string | null;
   updatedAt: string | null;

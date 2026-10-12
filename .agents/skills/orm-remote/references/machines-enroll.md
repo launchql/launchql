@@ -7,7 +7,7 @@ Execute the machinesEnroll mutation
 ## Usage
 
 ```typescript
-db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', tokenHash: '<String>' } }).execute()
+db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', relayUrl: '<String>', tokenHash: '<String>' } }).execute()
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>',
 ### Run machinesEnroll
 
 ```typescript
-const result = await db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', tokenHash: '<String>' } }).execute();
+const result = await db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', relayUrl: '<String>', tokenHash: '<String>' } }).execute();
 ```

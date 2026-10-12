@@ -1311,6 +1311,7 @@ type BillingProviderModule {
   billingSubscriptionsTableName: String!
   billingWebhookEventsTableId: UUID!
   billingWebhookEventsTableName: String!
+  bindCheckoutSessionFunction: String!
   clearScheduledChangeFunction: String!
   databaseId: UUID!
   finishBillingOperationFunction: String!
@@ -1325,6 +1326,7 @@ type BillingProviderModule {
   getBillingSubscriptionFunction: String!
   getFallbackFreePlanFunction: String!
   getPlanPricingByExternalPriceFunction: String!
+  hasDueReconciliationsFunction: String!
   id: UUID!
   listDueReconciliationsFunction: String!
   listPendingUsageSyncFunction: String!
@@ -1349,6 +1351,7 @@ type BillingProviderModule {
   upsertBillingProductFunction: String!
   upsertBillingSubscriptionFunction: String!
   upsertInvoiceFunction: String!
+  usageSyncShardCount: Int!
 }
 
 """A connection to a list of `BillingProviderModule` values."""
@@ -1461,6 +1464,9 @@ input BillingProviderModuleFilter {
   """Filter by the object’s `billingWebhookEventsTableName` field."""
   billingWebhookEventsTableName: StringFilter
 
+  """Filter by the object’s `bindCheckoutSessionFunction` field."""
+  bindCheckoutSessionFunction: StringFilter
+
   """Filter by the object’s `clearScheduledChangeFunction` field."""
   clearScheduledChangeFunction: StringFilter
 
@@ -1504,6 +1510,9 @@ input BillingProviderModuleFilter {
 
   """Filter by the object’s `getPlanPricingByExternalPriceFunction` field."""
   getPlanPricingByExternalPriceFunction: StringFilter
+
+  """Filter by the object’s `hasDueReconciliationsFunction` field."""
+  hasDueReconciliationsFunction: StringFilter
 
   """Filter by the object’s `id` field."""
   id: UUIDFilter
@@ -1582,6 +1591,9 @@ input BillingProviderModuleFilter {
 
   """Filter by the object’s `upsertInvoiceFunction` field."""
   upsertInvoiceFunction: StringFilter
+
+  """Filter by the object’s `usageSyncShardCount` field."""
+  usageSyncShardCount: IntFilter
 }
 
 """An input for mutations affecting `BillingProviderModule`"""
@@ -1611,6 +1623,7 @@ input BillingProviderModuleInput {
   billingSubscriptionsTableName: String
   billingWebhookEventsTableId: UUID
   billingWebhookEventsTableName: String
+  bindCheckoutSessionFunction: String
   clearScheduledChangeFunction: String
   databaseId: UUID!
   finishBillingOperationFunction: String
@@ -1625,6 +1638,7 @@ input BillingProviderModuleInput {
   getBillingSubscriptionFunction: String
   getFallbackFreePlanFunction: String
   getPlanPricingByExternalPriceFunction: String
+  hasDueReconciliationsFunction: String
   id: UUID
   listDueReconciliationsFunction: String
   listPendingUsageSyncFunction: String
@@ -1649,6 +1663,7 @@ input BillingProviderModuleInput {
   upsertBillingProductFunction: String
   upsertBillingSubscriptionFunction: String
   upsertInvoiceFunction: String
+  usageSyncShardCount: Int
 }
 
 """Methods to use when ordering `BillingProviderModule`."""
@@ -1703,6 +1718,8 @@ enum BillingProviderModuleOrderBy {
   BILLING_WEBHOOK_EVENTS_TABLE_ID_DESC
   BILLING_WEBHOOK_EVENTS_TABLE_NAME_ASC
   BILLING_WEBHOOK_EVENTS_TABLE_NAME_DESC
+  BIND_CHECKOUT_SESSION_FUNCTION_ASC
+  BIND_CHECKOUT_SESSION_FUNCTION_DESC
   CLEAR_SCHEDULED_CHANGE_FUNCTION_ASC
   CLEAR_SCHEDULED_CHANGE_FUNCTION_DESC
   DATABASE_ID_ASC
@@ -1731,6 +1748,8 @@ enum BillingProviderModuleOrderBy {
   GET_FALLBACK_FREE_PLAN_FUNCTION_DESC
   GET_PLAN_PRICING_BY_EXTERNAL_PRICE_FUNCTION_ASC
   GET_PLAN_PRICING_BY_EXTERNAL_PRICE_FUNCTION_DESC
+  HAS_DUE_RECONCILIATIONS_FUNCTION_ASC
+  HAS_DUE_RECONCILIATIONS_FUNCTION_DESC
   ID_ASC
   ID_DESC
   LIST_DUE_RECONCILIATIONS_FUNCTION_ASC
@@ -1782,6 +1801,8 @@ enum BillingProviderModuleOrderBy {
   UPSERT_BILLING_SUBSCRIPTION_FUNCTION_DESC
   UPSERT_INVOICE_FUNCTION_ASC
   UPSERT_INVOICE_FUNCTION_DESC
+  USAGE_SYNC_SHARD_COUNT_ASC
+  USAGE_SYNC_SHARD_COUNT_DESC
 }
 
 """
@@ -1813,6 +1834,7 @@ input BillingProviderModulePatch {
   billingSubscriptionsTableName: String
   billingWebhookEventsTableId: UUID
   billingWebhookEventsTableName: String
+  bindCheckoutSessionFunction: String
   clearScheduledChangeFunction: String
   databaseId: UUID
   finishBillingOperationFunction: String
@@ -1827,6 +1849,7 @@ input BillingProviderModulePatch {
   getBillingSubscriptionFunction: String
   getFallbackFreePlanFunction: String
   getPlanPricingByExternalPriceFunction: String
+  hasDueReconciliationsFunction: String
   id: UUID
   listDueReconciliationsFunction: String
   listPendingUsageSyncFunction: String
@@ -1851,6 +1874,7 @@ input BillingProviderModulePatch {
   upsertBillingProductFunction: String
   upsertBillingSubscriptionFunction: String
   upsertInvoiceFunction: String
+  usageSyncShardCount: Int
 }
 
 """
@@ -14043,11 +14067,6 @@ type EntityTypeProvision {
   """
   namespaces: JSON
   outAgentModuleId: UUID
-
-  """
-  Output: the UUID of the generated buckets table (e.g. data_room_buckets). Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outBucketsTableId: UUID
   outDefinitionsTableId: UUID
 
   """
@@ -14061,11 +14080,6 @@ type EntityTypeProvision {
   """
   outEntityTableName: String
   outExecutionLogsTableId: UUID
-
-  """
-  Output: the UUID of the generated files table (e.g. data_room_files). Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outFilesTableId: UUID
   outFunctionModuleId: UUID
   outGraphModuleId: UUID
   outGraphsTableId: UUID
@@ -14107,12 +14121,6 @@ type EntityTypeProvision {
        Populated by the trigger when namespaces is non-NULL. NULL otherwise.
   """
   outNamespacesTableId: UUID
-  outPathSharesTableId: UUID
-
-  """
-  Output: the UUID of the storage_module row created for this entity type. Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outStorageModuleId: UUID
 
   """
   Prefix of the parent entity type. The trigger resolves this to a membership_type integer
@@ -14156,7 +14164,6 @@ type EntityTypeProvision {
          - key                           (text) module discriminator, max 16 chars, lowercase snake_case.
                                                 Defaults to 'default' (omitted from table names).
                                                 Non-default keys become infixes: {prefix}_{key}_buckets.
-                                                (storage_key accepted for backward compat)
          - upload_url_expiry_seconds     (integer) presigned PUT URL expiry override
          - download_url_expiry_seconds   (integer) presigned GET URL expiry override
          - default_max_file_size         (bigint)  global max file size in bytes for this module
@@ -14173,7 +14180,7 @@ type EntityTypeProvision {
            Each bucket: { name (required), description, is_public, allowed_mime_types, max_file_size, allowed_origins }
          - provisions                    (jsonb object) per-table customization keyed by "files" or "buckets".
                                                 Each value: { nodes, fields, grants, use_rls, policies }.
-       Example (single module, backward compat):
+       Example (single module):
          storage := '[{"buckets": [{"name": "documents"}]}]'::jsonb
        Example (multi-module):
          storage := '[{"has_path_shares": true, "buckets": [{"name": "documents"}]}, {"key": "fn", "has_custom_keys": true, "buckets": [{"name": "functions"}]}]'::jsonb
@@ -14307,9 +14314,6 @@ input EntityTypeProvisionFilter {
   """Filter by the object’s `outAgentModuleId` field."""
   outAgentModuleId: UUIDFilter
 
-  """Filter by the object’s `outBucketsTableId` field."""
-  outBucketsTableId: UUIDFilter
-
   """Filter by the object’s `outDefinitionsTableId` field."""
   outDefinitionsTableId: UUIDFilter
 
@@ -14321,9 +14325,6 @@ input EntityTypeProvisionFilter {
 
   """Filter by the object’s `outExecutionLogsTableId` field."""
   outExecutionLogsTableId: UUIDFilter
-
-  """Filter by the object’s `outFilesTableId` field."""
-  outFilesTableId: UUIDFilter
 
   """Filter by the object’s `outFunctionModuleId` field."""
   outFunctionModuleId: UUIDFilter
@@ -14354,12 +14355,6 @@ input EntityTypeProvisionFilter {
 
   """Filter by the object’s `outNamespacesTableId` field."""
   outNamespacesTableId: UUIDFilter
-
-  """Filter by the object’s `outPathSharesTableId` field."""
-  outPathSharesTableId: UUIDFilter
-
-  """Filter by the object’s `outStorageModuleId` field."""
-  outStorageModuleId: UUIDFilter
 
   """Filter by the object’s `parentEntity` field."""
   parentEntity: StringFilter
@@ -14498,11 +14493,6 @@ input EntityTypeProvisionInput {
   """
   namespaces: JSON
   outAgentModuleId: UUID
-
-  """
-  Output: the UUID of the generated buckets table (e.g. data_room_buckets). Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outBucketsTableId: UUID
   outDefinitionsTableId: UUID
 
   """
@@ -14516,11 +14506,6 @@ input EntityTypeProvisionInput {
   """
   outEntityTableName: String
   outExecutionLogsTableId: UUID
-
-  """
-  Output: the UUID of the generated files table (e.g. data_room_files). Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outFilesTableId: UUID
   outFunctionModuleId: UUID
   outGraphModuleId: UUID
   outGraphsTableId: UUID
@@ -14562,12 +14547,6 @@ input EntityTypeProvisionInput {
        Populated by the trigger when namespaces is non-NULL. NULL otherwise.
   """
   outNamespacesTableId: UUID
-  outPathSharesTableId: UUID
-
-  """
-  Output: the UUID of the storage_module row created for this entity type. Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outStorageModuleId: UUID
 
   """
   Prefix of the parent entity type. The trigger resolves this to a membership_type integer
@@ -14611,7 +14590,6 @@ input EntityTypeProvisionInput {
          - key                           (text) module discriminator, max 16 chars, lowercase snake_case.
                                                 Defaults to 'default' (omitted from table names).
                                                 Non-default keys become infixes: {prefix}_{key}_buckets.
-                                                (storage_key accepted for backward compat)
          - upload_url_expiry_seconds     (integer) presigned PUT URL expiry override
          - download_url_expiry_seconds   (integer) presigned GET URL expiry override
          - default_max_file_size         (bigint)  global max file size in bytes for this module
@@ -14628,7 +14606,7 @@ input EntityTypeProvisionInput {
            Each bucket: { name (required), description, is_public, allowed_mime_types, max_file_size, allowed_origins }
          - provisions                    (jsonb object) per-table customization keyed by "files" or "buckets".
                                                 Each value: { nodes, fields, grants, use_rls, policies }.
-       Example (single module, backward compat):
+       Example (single module):
          storage := '[{"buckets": [{"name": "documents"}]}]'::jsonb
        Example (multi-module):
          storage := '[{"has_path_shares": true, "buckets": [{"name": "documents"}]}, {"key": "fn", "has_custom_keys": true, "buckets": [{"name": "functions"}]}]'::jsonb
@@ -14709,8 +14687,6 @@ enum EntityTypeProvisionOrderBy {
   NATURAL
   OUT_AGENT_MODULE_ID_ASC
   OUT_AGENT_MODULE_ID_DESC
-  OUT_BUCKETS_TABLE_ID_ASC
-  OUT_BUCKETS_TABLE_ID_DESC
   OUT_DEFINITIONS_TABLE_ID_ASC
   OUT_DEFINITIONS_TABLE_ID_DESC
   OUT_ENTITY_TABLE_ID_ASC
@@ -14719,8 +14695,6 @@ enum EntityTypeProvisionOrderBy {
   OUT_ENTITY_TABLE_NAME_DESC
   OUT_EXECUTION_LOGS_TABLE_ID_ASC
   OUT_EXECUTION_LOGS_TABLE_ID_DESC
-  OUT_FILES_TABLE_ID_ASC
-  OUT_FILES_TABLE_ID_DESC
   OUT_FUNCTION_MODULE_ID_ASC
   OUT_FUNCTION_MODULE_ID_DESC
   OUT_GRAPHS_TABLE_ID_ASC
@@ -14741,10 +14715,6 @@ enum EntityTypeProvisionOrderBy {
   OUT_NAMESPACE_EVENTS_TABLE_ID_DESC
   OUT_NAMESPACE_MODULE_ID_ASC
   OUT_NAMESPACE_MODULE_ID_DESC
-  OUT_PATH_SHARES_TABLE_ID_ASC
-  OUT_PATH_SHARES_TABLE_ID_DESC
-  OUT_STORAGE_MODULE_ID_ASC
-  OUT_STORAGE_MODULE_ID_DESC
   PARENT_ENTITY_ASC
   PARENT_ENTITY_DESC
   PREFIX_ASC
@@ -14881,11 +14851,6 @@ input EntityTypeProvisionPatch {
   """
   namespaces: JSON
   outAgentModuleId: UUID
-
-  """
-  Output: the UUID of the generated buckets table (e.g. data_room_buckets). Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outBucketsTableId: UUID
   outDefinitionsTableId: UUID
 
   """
@@ -14899,11 +14864,6 @@ input EntityTypeProvisionPatch {
   """
   outEntityTableName: String
   outExecutionLogsTableId: UUID
-
-  """
-  Output: the UUID of the generated files table (e.g. data_room_files). Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outFilesTableId: UUID
   outFunctionModuleId: UUID
   outGraphModuleId: UUID
   outGraphsTableId: UUID
@@ -14945,12 +14905,6 @@ input EntityTypeProvisionPatch {
        Populated by the trigger when namespaces is non-NULL. NULL otherwise.
   """
   outNamespacesTableId: UUID
-  outPathSharesTableId: UUID
-
-  """
-  Output: the UUID of the storage_module row created for this entity type. Populated by the trigger when storage is non-NULL and non-empty.
-  """
-  outStorageModuleId: UUID
 
   """
   Prefix of the parent entity type. The trigger resolves this to a membership_type integer
@@ -14994,7 +14948,6 @@ input EntityTypeProvisionPatch {
          - key                           (text) module discriminator, max 16 chars, lowercase snake_case.
                                                 Defaults to 'default' (omitted from table names).
                                                 Non-default keys become infixes: {prefix}_{key}_buckets.
-                                                (storage_key accepted for backward compat)
          - upload_url_expiry_seconds     (integer) presigned PUT URL expiry override
          - download_url_expiry_seconds   (integer) presigned GET URL expiry override
          - default_max_file_size         (bigint)  global max file size in bytes for this module
@@ -15011,7 +14964,7 @@ input EntityTypeProvisionPatch {
            Each bucket: { name (required), description, is_public, allowed_mime_types, max_file_size, allowed_origins }
          - provisions                    (jsonb object) per-table customization keyed by "files" or "buckets".
                                                 Each value: { nodes, fields, grants, use_rls, policies }.
-       Example (single module, backward compat):
+       Example (single module):
          storage := '[{"buckets": [{"name": "documents"}]}]'::jsonb
        Example (multi-module):
          storage := '[{"has_path_shares": true, "buckets": [{"name": "documents"}]}, {"key": "fn", "has_custom_keys": true, "buckets": [{"name": "functions"}]}]'::jsonb
@@ -25161,7 +25114,6 @@ type PlansModule {
   planLimitsTableId: UUID!
   planLimitsTableName: String!
   planMeterLimitsTableId: UUID
-  planOverridesTableId: UUID
   planPricingTableId: UUID
   plansTableId: UUID!
   plansTableName: String!
@@ -25245,9 +25197,6 @@ input PlansModuleFilter {
   """Filter by the object’s `planMeterLimitsTableId` field."""
   planMeterLimitsTableId: UUIDFilter
 
-  """Filter by the object’s `planOverridesTableId` field."""
-  planOverridesTableId: UUIDFilter
-
   """Filter by the object’s `planPricingTableId` field."""
   planPricingTableId: UUIDFilter
 
@@ -25289,7 +25238,6 @@ input PlansModuleInput {
   planLimitsTableId: UUID
   planLimitsTableName: String
   planMeterLimitsTableId: UUID
-  planOverridesTableId: UUID
   planPricingTableId: UUID
   plansTableId: UUID
   plansTableName: String
@@ -25330,8 +25278,6 @@ enum PlansModuleOrderBy {
   PLAN_LIMITS_TABLE_NAME_DESC
   PLAN_METER_LIMITS_TABLE_ID_ASC
   PLAN_METER_LIMITS_TABLE_ID_DESC
-  PLAN_OVERRIDES_TABLE_ID_ASC
-  PLAN_OVERRIDES_TABLE_ID_DESC
   PLAN_PRICING_TABLE_ID_ASC
   PLAN_PRICING_TABLE_ID_DESC
   PREFIX_ASC
@@ -25365,7 +25311,6 @@ input PlansModulePatch {
   planLimitsTableId: UUID
   planLimitsTableName: String
   planMeterLimitsTableId: UUID
-  planOverridesTableId: UUID
   planPricingTableId: UUID
   plansTableId: UUID
   plansTableName: String

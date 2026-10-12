@@ -426,8 +426,6 @@ type CheckPasswordPayload {
 
 """All input for the `completeMfaChallenge` mutation."""
 input CompleteMfaChallengeInput {
-  authMethod: String
-
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -3438,12 +3436,6 @@ type Mutation {
     """
     input: ProvisionBucketInput!
   ): ProvisionBucketPayload
-  provisionNewUser(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: ProvisionNewUserInput!
-  ): ProvisionNewUserPayload
   refreshAccessToken(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -3456,6 +3448,12 @@ type Mutation {
     """
     input: RequestCrossOriginTokenInput!
   ): RequestCrossOriginTokenPayload
+  requestMagicLink(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: RequestMagicLinkInput!
+  ): RequestMagicLinkPayload
   resetPassword(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -3486,12 +3484,24 @@ type Mutation {
     """
     input: SendAccountDeletionEmailInput!
   ): SendAccountDeletionEmailPayload
+  sendMfaChallengeCode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SendMfaChallengeCodeInput!
+  ): SendMfaChallengeCodePayload
   sendPhoneVerificationCode(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: SendPhoneVerificationCodeInput!
   ): SendPhoneVerificationCodePayload
+  sendSmsOtp(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SendSmsOtpInput!
+  ): SendSmsOtpPayload
   sendVerificationEmail(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -4603,32 +4613,6 @@ type ProvisionBucketPayload {
   physicalName: String
 }
 
-"""All input for the `provisionNewUser` mutation."""
-input ProvisionNewUserInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  email: String
-  password: String
-}
-
-"""The output of our `provisionNewUser` mutation."""
-type ProvisionNewUserPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-  result: UUID
-}
-
 """The root query type which gives access points into the data universe."""
 type Query {
   """
@@ -5142,6 +5126,30 @@ type RequestCrossOriginTokenPayload {
   result: String
 }
 
+"""All input for the `requestMagicLink` mutation."""
+input RequestMagicLinkInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  email: String
+}
+
+"""The output of our `requestMagicLink` mutation."""
+type RequestMagicLinkPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `resetPassword` mutation."""
 input ResetPasswordInput {
   """
@@ -5345,6 +5353,33 @@ type SendAccountDeletionEmailPayload {
   result: Boolean
 }
 
+"""All input for the `sendMfaChallengeCode` mutation."""
+input SendMfaChallengeCodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  mfaChallengeToken: String
+  mfaMethod: String
+  userId: UUID
+}
+
+"""The output of our `sendMfaChallengeCode` mutation."""
+type SendMfaChallengeCodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  result: Boolean
+}
+
 """All input for the `sendPhoneVerificationCode` mutation."""
 input SendPhoneVerificationCodeInput {
   """
@@ -5357,6 +5392,31 @@ input SendPhoneVerificationCodeInput {
 
 """The output of our `sendPhoneVerificationCode` mutation."""
 type SendPhoneVerificationCodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  result: Boolean
+}
+
+"""All input for the `sendSmsOtp` mutation."""
+input SendSmsOtpInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  phone: String
+}
+
+"""The output of our `sendSmsOtp` mutation."""
+type SendSmsOtpPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
@@ -5560,6 +5620,8 @@ type SignInMagicLinkRecord {
   accessToken: String
   accessTokenExpiresAt: Datetime
   deviceApprovalRequired: Boolean
+  mfaChallengeToken: String
+  mfaRequired: Boolean
   outDeviceToken: String
   userId: UUID
 }
@@ -5625,6 +5687,8 @@ type SignInSmsOtpRecord {
   accessToken: String
   accessTokenExpiresAt: Datetime
   deviceApprovalRequired: Boolean
+  mfaChallengeToken: String
+  mfaRequired: Boolean
   outDeviceToken: String
   userId: UUID
 }

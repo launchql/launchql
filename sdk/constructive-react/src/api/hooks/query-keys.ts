@@ -308,6 +308,16 @@ export const indexKeys = {
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...indexKeys.details(), id] as const,
 } as const;
+export const listSuspendedDatabasesRecordKeys = {
+  /** All listSuspendedDatabasesRecord queries */ all: ['listsuspendeddatabasesrecord'] as const,
+  /** List query keys */ lists: () => [...listSuspendedDatabasesRecordKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...listSuspendedDatabasesRecordKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () =>
+    [...listSuspendedDatabasesRecordKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...listSuspendedDatabasesRecordKeys.details(), id] as const,
+} as const;
 export const managedDomainKeys = {
   /** All managedDomain queries */ all: ['manageddomain'] as const,
   /** List query keys */ lists: () => [...managedDomainKeys.all, 'list'] as const,
@@ -941,6 +951,7 @@ export const queryKeys = {
   hostnameBinding: hostnameBindingKeys,
   identityProviderRegistry: identityProviderRegistryKeys,
   index: indexKeys,
+  listSuspendedDatabasesRecord: listSuspendedDatabasesRecordKeys,
   managedDomain: managedDomainKeys,
   nodeTypeRegistry: nodeTypeRegistryKeys,
   page: pageKeys,

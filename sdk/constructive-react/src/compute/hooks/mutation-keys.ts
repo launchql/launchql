@@ -320,6 +320,15 @@ export const functionInvocationMutationKeys = {
   /** Delete functionInvocation mutation key */ delete: (id: string | number) =>
     ['mutation', 'functioninvocation', 'delete', id] as const,
 } as const;
+export const functionScheduleMutationKeys = {
+  /** All functionSchedule mutation keys */ all: ['mutation', 'functionschedule'] as const,
+  /** Create functionSchedule mutation key */ create: () =>
+    ['mutation', 'functionschedule', 'create'] as const,
+  /** Update functionSchedule mutation key */ update: (id: string | number) =>
+    ['mutation', 'functionschedule', 'update', id] as const,
+  /** Delete functionSchedule mutation key */ delete: (id: string | number) =>
+    ['mutation', 'functionschedule', 'delete', id] as const,
+} as const;
 export const getAllTreeNodesRecordMutationKeys = {
   /** All getAllTreeNodesRecord mutation keys */ all: [
     'mutation',
@@ -545,6 +554,18 @@ export const platformFunctionInvocationMutationKeys = {
     ['mutation', 'platformfunctioninvocation', 'update', id] as const,
   /** Delete platformFunctionInvocation mutation key */ delete: (id: string | number) =>
     ['mutation', 'platformfunctioninvocation', 'delete', id] as const,
+} as const;
+export const platformFunctionScheduleMutationKeys = {
+  /** All platformFunctionSchedule mutation keys */ all: [
+    'mutation',
+    'platformfunctionschedule',
+  ] as const,
+  /** Create platformFunctionSchedule mutation key */ create: () =>
+    ['mutation', 'platformfunctionschedule', 'create'] as const,
+  /** Update platformFunctionSchedule mutation key */ update: (id: string | number) =>
+    ['mutation', 'platformfunctionschedule', 'update', id] as const,
+  /** Delete platformFunctionSchedule mutation key */ delete: (id: string | number) =>
+    ['mutation', 'platformfunctionschedule', 'delete', id] as const,
 } as const;
 export const platformImageMutationKeys = {
   /** All platformImage mutation keys */ all: ['mutation', 'platformimage'] as const,
@@ -1358,6 +1379,12 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'databaseValidateFunctionGraph', identifier] as const)
       : (['mutation', 'databaseValidateFunctionGraph'] as const),
+  /** Mutation key for functionExecutionLogsAppend */ functionExecutionLogsAppend: (
+    identifier?: string
+  ) =>
+    identifier
+      ? (['mutation', 'functionExecutionLogsAppend', identifier] as const)
+      : (['mutation', 'functionExecutionLogsAppend'] as const),
   /** Mutation key for functionInvocationsCreateSync */ functionInvocationsCreateSync: (
     identifier?: string
   ) =>
@@ -1408,6 +1435,12 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'insertNodesAtPaths', identifier] as const)
       : (['mutation', 'insertNodesAtPaths'] as const),
+  /** Mutation key for platformFunctionExecutionLogsAppend */ platformFunctionExecutionLogsAppend: (
+    identifier?: string
+  ) =>
+    identifier
+      ? (['mutation', 'platformFunctionExecutionLogsAppend', identifier] as const)
+      : (['mutation', 'platformFunctionExecutionLogsAppend'] as const),
   /** Mutation key for platformFunctionInvocationsCreateSync */ platformFunctionInvocationsCreateSync:
     (identifier?: string) =>
       identifier
@@ -1575,6 +1608,7 @@ export const mutationKeys = {
   functionGraphStore: functionGraphStoreMutationKeys,
   functionInvocationAttempt: functionInvocationAttemptMutationKeys,
   functionInvocation: functionInvocationMutationKeys,
+  functionSchedule: functionScheduleMutationKeys,
   getAllTreeNodesRecord: getAllTreeNodesRecordMutationKeys,
   image: imageMutationKeys,
   imageGrant: imageGrantMutationKeys,
@@ -1597,6 +1631,7 @@ export const mutationKeys = {
   platformFunctionExecutionLog: platformFunctionExecutionLogMutationKeys,
   platformFunctionInvocationAttempt: platformFunctionInvocationAttemptMutationKeys,
   platformFunctionInvocation: platformFunctionInvocationMutationKeys,
+  platformFunctionSchedule: platformFunctionScheduleMutationKeys,
   platformImage: platformImageMutationKeys,
   platformImageGrant: platformImageGrantMutationKeys,
   platformInfraCommit: platformInfraCommitMutationKeys,
