@@ -7,7 +7,7 @@ React Query mutation hook for machinesEnroll
 ## Usage
 
 ```typescript
-const { mutate } = useMachinesEnrollMutation(); mutate({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', tokenHash: '<String>' } });
+const { mutate } = useMachinesEnrollMutation(); mutate({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', relayUrl: '<String>', tokenHash: '<String>' } });
 ```
 
 ## Examples
@@ -16,5 +16,5 @@ const { mutate } = useMachinesEnrollMutation(); mutate({ input: { entityId: '<UU
 
 ```typescript
 const { mutate, isLoading } = useMachinesEnrollMutation();
-mutate({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', tokenHash: '<String>' } });
+mutate({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', relayUrl: '<String>', tokenHash: '<String>' } });
 ```

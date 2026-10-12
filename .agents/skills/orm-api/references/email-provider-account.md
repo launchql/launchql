@@ -9,8 +9,8 @@ A tenant's configured account at an email provider: provider slug, endpoint coor
 ```typescript
 db.emailProviderAccount.findMany({ select: { id: true } }).execute()
 db.emailProviderAccount.findOne({ id: '<UUID>', select: { id: true } }).execute()
-db.emailProviderAccount.create({ data: { apiBaseUrl: '<String>', credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' }, select: { id: true } }).execute()
-db.emailProviderAccount.update({ where: { id: '<UUID>' }, data: { apiBaseUrl: '<String>' }, select: { id: true } }).execute()
+db.emailProviderAccount.create({ data: { credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' }, select: { id: true } }).execute()
+db.emailProviderAccount.update({ where: { id: '<UUID>' }, data: { credentialsSecretName: '<String>' }, select: { id: true } }).execute()
 db.emailProviderAccount.delete({ where: { id: '<UUID>' } }).execute()
 ```
 
@@ -20,7 +20,7 @@ db.emailProviderAccount.delete({ where: { id: '<UUID>' } }).execute()
 
 ```typescript
 const items = await db.emailProviderAccount.findMany({
-  select: { id: true, apiBaseUrl: true }
+  select: { id: true, credentialsSecretName: true }
 }).execute();
 ```
 
@@ -28,7 +28,7 @@ const items = await db.emailProviderAccount.findMany({
 
 ```typescript
 const item = await db.emailProviderAccount.create({
-  data: { apiBaseUrl: '<String>', credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' },
+  data: { credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' },
   select: { id: true }
 }).execute();
 ```

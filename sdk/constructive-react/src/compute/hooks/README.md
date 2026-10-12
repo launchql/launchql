@@ -179,6 +179,11 @@ function App() {
 | `useCreateFunctionInvocationMutation` | Mutation | Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug. |
 | `useUpdateFunctionInvocationMutation` | Mutation | Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug. |
 | `useDeleteFunctionInvocationMutation` | Mutation | Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug. |
+| `useFunctionSchedulesQuery` | Query | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useFunctionScheduleQuery` | Query | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useCreateFunctionScheduleMutation` | Mutation | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useUpdateFunctionScheduleMutation` | Mutation | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useDeleteFunctionScheduleMutation` | Mutation | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
 | `useGetAllTreeNodesQuery` | Query | List all getAllTreeNodes |
 | `useCreateGetAllTreeNodesRecordMutation` | Mutation | Create a getAllTreeNodesRecord |
 | `useImagesQuery` | Query | Container image catalog: images available to run as functions, resources, and builds |
@@ -283,6 +288,11 @@ function App() {
 | `useCreatePlatformFunctionInvocationMutation` | Mutation | Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug. |
 | `useUpdatePlatformFunctionInvocationMutation` | Mutation | Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug. |
 | `useDeletePlatformFunctionInvocationMutation` | Mutation | Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug. |
+| `usePlatformFunctionSchedulesQuery` | Query | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `usePlatformFunctionScheduleQuery` | Query | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useCreatePlatformFunctionScheduleMutation` | Mutation | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useUpdatePlatformFunctionScheduleMutation` | Mutation | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
+| `useDeletePlatformFunctionScheduleMutation` | Mutation | Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) |
 | `usePlatformImagesQuery` | Query | Container image catalog: images available to run as functions, resources, and builds |
 | `usePlatformImageQuery` | Query | Container image catalog: images available to run as functions, resources, and builds |
 | `useCreatePlatformImageMutation` | Mutation | Container image catalog: images available to run as functions, resources, and builds |
@@ -611,6 +621,7 @@ function App() {
 | `useDatabaseSaveGraphMutation` | Mutation | databaseSaveGraph |
 | `useDatabaseStartExecutionMutation` | Mutation | databaseStartExecution |
 | `useDatabaseValidateFunctionGraphMutation` | Mutation | databaseValidateFunctionGraph |
+| `useFunctionExecutionLogsAppendMutation` | Mutation | functionExecutionLogsAppend |
 | `useFunctionInvocationsCreateSyncMutation` | Mutation | functionInvocationsCreateSync |
 | `useImportDefinitionsMutation` | Mutation | importDefinitions |
 | `useImportGraphJsonMutation` | Mutation | importGraphJson |
@@ -623,6 +634,7 @@ function App() {
 | `useInitEmptyRepoMutation` | Mutation | initEmptyRepo |
 | `useInsertNodeAtPathMutation` | Mutation | insertNodeAtPath |
 | `useInsertNodesAtPathsMutation` | Mutation | insertNodesAtPaths |
+| `usePlatformFunctionExecutionLogsAppendMutation` | Mutation | platformFunctionExecutionLogsAppend |
 | `usePlatformFunctionInvocationsCreateSyncMutation` | Mutation | platformFunctionInvocationsCreateSync |
 | `usePlatformInfraInitEmptyRepoMutation` | Mutation | platformInfraInitEmptyRepo |
 | `usePlatformInfraInsertNodeAtPathMutation` | Mutation | platformInfraInsertNodeAtPath |
@@ -1276,6 +1288,27 @@ const { mutate: create } = useCreateFunctionInvocationMutation({
 create({ actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' });
 ```
 
+### FunctionSchedule
+
+```typescript
+// List all functionSchedules
+const { data, isLoading } = useFunctionSchedulesQuery({
+  selection: { fields: { actorId: true, createdAt: true, databaseId: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } },
+});
+
+// Get one functionSchedule
+const { data: item } = useFunctionScheduleQuery({
+  id: '<UUID>',
+  selection: { fields: { actorId: true, createdAt: true, databaseId: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } },
+});
+
+// Create a functionSchedule
+const { mutate: create } = useCreateFunctionScheduleMutation({
+  selection: { fields: { id: true } },
+});
+create({ actorId: '<UUID>', databaseId: '<UUID>', description: '<String>', functionDefinitionId: '<UUID>', isActive: '<Boolean>', name: '<String>', payload: '<JSON>', scheduleInfo: '<JSON>', suspendedAt: '<Datetime>', suspendedReason: '<String>' });
+```
+
 ### GetAllTreeNodesRecord
 
 ```typescript
@@ -1724,6 +1757,27 @@ const { mutate: create } = useCreatePlatformFunctionInvocationMutation({
   selection: { fields: { id: true } },
 });
 create({ actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' });
+```
+
+### PlatformFunctionSchedule
+
+```typescript
+// List all platformFunctionSchedules
+const { data, isLoading } = usePlatformFunctionSchedulesQuery({
+  selection: { fields: { actorId: true, createdAt: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } },
+});
+
+// Get one platformFunctionSchedule
+const { data: item } = usePlatformFunctionScheduleQuery({
+  id: '<UUID>',
+  selection: { fields: { actorId: true, createdAt: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } },
+});
+
+// Create a platformFunctionSchedule
+const { mutate: create } = useCreatePlatformFunctionScheduleMutation({
+  selection: { fields: { id: true } },
+});
+create({ actorId: '<UUID>', description: '<String>', functionDefinitionId: '<UUID>', isActive: '<Boolean>', name: '<String>', payload: '<JSON>', scheduleInfo: '<JSON>', suspendedAt: '<Datetime>', suspendedReason: '<String>' });
 ```
 
 ### PlatformImage
@@ -3355,6 +3409,17 @@ databaseValidateFunctionGraph
   |----------|------|
   | `input` | DatabaseValidateFunctionGraphInput (required) |
 
+### `useFunctionExecutionLogsAppendMutation`
+
+functionExecutionLogsAppend
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | FunctionExecutionLogsAppendInput (required) |
+
 ### `useFunctionInvocationsCreateSyncMutation`
 
 functionInvocationsCreateSync
@@ -3486,6 +3551,17 @@ insertNodesAtPaths
   | Argument | Type |
   |----------|------|
   | `input` | InsertNodesAtPathsInput (required) |
+
+### `usePlatformFunctionExecutionLogsAppendMutation`
+
+platformFunctionExecutionLogsAppend
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | PlatformFunctionExecutionLogsAppendInput (required) |
 
 ### `usePlatformFunctionInvocationsCreateSyncMutation`
 

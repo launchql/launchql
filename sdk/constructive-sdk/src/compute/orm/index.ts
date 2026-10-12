@@ -35,6 +35,7 @@ import { FunctionGraphRefModel } from './models/functionGraphRef';
 import { FunctionGraphStoreModel } from './models/functionGraphStore';
 import { FunctionInvocationAttemptModel } from './models/functionInvocationAttempt';
 import { FunctionInvocationModel } from './models/functionInvocation';
+import { FunctionScheduleModel } from './models/functionSchedule';
 import { GetAllTreeNodesRecordModel } from './models/getAllTreeNodesRecord';
 import { ImageModel } from './models/image';
 import { ImageGrantModel } from './models/imageGrant';
@@ -57,6 +58,7 @@ import { PlatformFunctionDeploymentEventModel } from './models/platformFunctionD
 import { PlatformFunctionExecutionLogModel } from './models/platformFunctionExecutionLog';
 import { PlatformFunctionInvocationAttemptModel } from './models/platformFunctionInvocationAttempt';
 import { PlatformFunctionInvocationModel } from './models/platformFunctionInvocation';
+import { PlatformFunctionScheduleModel } from './models/platformFunctionSchedule';
 import { PlatformImageModel } from './models/platformImage';
 import { PlatformImageGrantModel } from './models/platformImageGrant';
 import { PlatformInfraCommitModel } from './models/platformInfraCommit';
@@ -191,6 +193,7 @@ export function createClient(config: OrmClientConfig) {
     functionGraphStore: new FunctionGraphStoreModel(client),
     functionInvocationAttempt: new FunctionInvocationAttemptModel(client),
     functionInvocation: new FunctionInvocationModel(client),
+    functionSchedule: new FunctionScheduleModel(client),
     getAllTreeNodesRecord: new GetAllTreeNodesRecordModel(client),
     image: new ImageModel(client),
     imageGrant: new ImageGrantModel(client),
@@ -213,6 +216,7 @@ export function createClient(config: OrmClientConfig) {
     platformFunctionExecutionLog: new PlatformFunctionExecutionLogModel(client),
     platformFunctionInvocationAttempt: new PlatformFunctionInvocationAttemptModel(client),
     platformFunctionInvocation: new PlatformFunctionInvocationModel(client),
+    platformFunctionSchedule: new PlatformFunctionScheduleModel(client),
     platformImage: new PlatformImageModel(client),
     platformImageGrant: new PlatformImageGrantModel(client),
     platformInfraCommit: new PlatformInfraCommitModel(client),

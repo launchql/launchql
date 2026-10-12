@@ -627,8 +627,6 @@ export interface EmailIdentity {
 }
 /** A tenant's configured account at an email provider: provider slug, endpoint coordinates, and the NAME of the secret holding its credentials (never the credential itself) */
 export interface EmailProviderAccount {
-  /** Provider API base URL when it is not the provider default (e.g. Mailgun EU) */
-  apiBaseUrl?: string | null;
   createdAt?: string | null;
   /** Name of the secret holding this account's API key or SMTP password. The value is resolved from the secret store at send time (realm = this row's id) and is never stored here. */
   credentialsSecretName?: string | null;
@@ -643,7 +641,7 @@ export interface EmailProviderAccount {
   provider?: string | null;
   /** Account identifier at the provider — the Mailgun sending domain, the SES verified identity, the Postmark server name */
   providerAccountName?: string | null;
-  /** Provider region for region-addressed providers (e.g. SES us-east-1) */
+  /** Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us) */
   region?: string | null;
   /** SMTP host (provider = smtp, or a provider addressed over SMTP) */
   smtpHost?: string | null;
@@ -877,6 +875,13 @@ export interface Index {
   tags?: string[] | null;
   updatedAt?: string | null;
   whereClause?: Record<string, unknown> | null;
+}
+export interface ListSuspendedDatabasesRecord {
+  id: string;
+  name?: string | null;
+  ownerId?: string | null;
+  suspendedAt?: string | null;
+  suspendedReason?: string | null;
 }
 /** Platform-operated hostnames whose DNS and certificate lifecycle the platform drives */
 export interface ManagedDomain {
@@ -1155,8 +1160,6 @@ export interface PlatformEmailIdentity {
 }
 /** A tenant's configured account at an email provider: provider slug, endpoint coordinates, and the NAME of the secret holding its credentials (never the credential itself) */
 export interface PlatformEmailProviderAccount {
-  /** Provider API base URL when it is not the provider default (e.g. Mailgun EU) */
-  apiBaseUrl?: string | null;
   createdAt?: string | null;
   /** Name of the secret holding this account's API key or SMTP password. The value is resolved from the secret store at send time (realm = this row's id) and is never stored here. */
   credentialsSecretName?: string | null;
@@ -1169,7 +1172,7 @@ export interface PlatformEmailProviderAccount {
   provider?: string | null;
   /** Account identifier at the provider — the Mailgun sending domain, the SES verified identity, the Postmark server name */
   providerAccountName?: string | null;
-  /** Provider region for region-addressed providers (e.g. SES us-east-1) */
+  /** Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us) */
   region?: string | null;
   /** SMTP host (provider = smtp, or a provider addressed over SMTP) */
   smtpHost?: string | null;
@@ -1849,7 +1852,7 @@ export interface Table {
   schemaId?: string | null;
   singularName?: string | null;
   smartTags?: Record<string, unknown> | null;
-  /** Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / fresh_auth; password_or_mfa is the legacy spelling), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr. */
+  /** Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / password_or_mfa / fresh_auth), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr. */
   stepUp?: Record<string, unknown> | null;
   tags?: string[] | null;
   timestamps?: boolean | null;
@@ -2187,6 +2190,7 @@ export interface IndexRelations {
   database?: Database | null;
   table?: Table | null;
 }
+export interface ListSuspendedDatabasesRecordRelations {}
 export interface ManagedDomainRelations {
   domainEvents?: ConnectionResult<DomainEvent>;
   domainVerifications?: ConnectionResult<DomainVerification>;
@@ -2511,6 +2515,8 @@ export type HostnameBindingWithRelations = HostnameBinding & HostnameBindingRela
 export type IdentityProviderRegistryWithRelations = IdentityProviderRegistry &
   IdentityProviderRegistryRelations;
 export type IndexWithRelations = Index & IndexRelations;
+export type ListSuspendedDatabasesRecordWithRelations = ListSuspendedDatabasesRecord &
+  ListSuspendedDatabasesRecordRelations;
 export type ManagedDomainWithRelations = ManagedDomain & ManagedDomainRelations;
 export type NodeTypeRegistryWithRelations = NodeTypeRegistry & NodeTypeRegistryRelations;
 export type PageWithRelations = Page & PageRelations;
@@ -3160,7 +3166,6 @@ export type EmailIdentitySelect = {
   };
 };
 export type EmailProviderAccountSelect = {
-  apiBaseUrl?: boolean;
   createdAt?: boolean;
   credentialsSecretName?: boolean;
   databaseId?: boolean;
@@ -3516,6 +3521,13 @@ export type IndexSelect = {
     select: TableSelect;
   };
 };
+export type ListSuspendedDatabasesRecordSelect = {
+  id?: boolean;
+  name?: boolean;
+  ownerId?: boolean;
+  suspendedAt?: boolean;
+  suspendedReason?: boolean;
+};
 export type ManagedDomainSelect = {
   allowPublicUsage?: boolean;
   annotations?: boolean;
@@ -3771,7 +3783,6 @@ export type PlatformEmailIdentitySelect = {
   };
 };
 export type PlatformEmailProviderAccountSelect = {
-  apiBaseUrl?: boolean;
   createdAt?: boolean;
   credentialsSecretName?: boolean;
   id?: boolean;
@@ -5818,8 +5829,6 @@ export interface EmailIdentityFilter {
 export interface EmailProviderAccountFilter {
   /** Checks for all expressions in this list. */
   and?: EmailProviderAccountFilter[];
-  /** Filter by the object’s `apiBaseUrl` field. */
-  apiBaseUrl?: StringFilter;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `credentialsSecretName` field. */
@@ -6414,6 +6423,16 @@ export interface IndexFilter {
   /** Filter by the object’s `whereClause` field. */
   whereClause?: JSONFilter;
 }
+export interface ListSuspendedDatabasesRecordFilter {
+  id?: UUIDFilter;
+  name?: StringFilter;
+  ownerId?: UUIDFilter;
+  suspendedAt?: DatetimeFilter;
+  suspendedReason?: StringFilter;
+  and?: ListSuspendedDatabasesRecordFilter[];
+  or?: ListSuspendedDatabasesRecordFilter[];
+  not?: ListSuspendedDatabasesRecordFilter;
+}
 export interface ManagedDomainFilter {
   /** Filter by the object’s `allowPublicUsage` field. */
   allowPublicUsage?: BooleanFilter;
@@ -6879,8 +6898,6 @@ export interface PlatformEmailIdentityFilter {
 export interface PlatformEmailProviderAccountFilter {
   /** Checks for all expressions in this list. */
   and?: PlatformEmailProviderAccountFilter[];
-  /** Filter by the object’s `apiBaseUrl` field. */
-  apiBaseUrl?: StringFilter;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `credentialsSecretName` field. */
@@ -9291,8 +9308,6 @@ export type EmailIdentityOrderBy =
   | 'UPDATED_AT_ASC'
   | 'UPDATED_AT_DESC';
 export type EmailProviderAccountOrderBy =
-  | 'API_BASE_URL_ASC'
-  | 'API_BASE_URL_DESC'
   | 'CREATED_AT_ASC'
   | 'CREATED_AT_DESC'
   | 'CREDENTIALS_SECRET_NAME_ASC'
@@ -9740,6 +9755,20 @@ export type IndexOrderBy =
   | 'UPDATED_AT_DESC'
   | 'WHERE_CLAUSE_ASC'
   | 'WHERE_CLAUSE_DESC';
+export type ListSuspendedDatabasesRecordsOrderBy =
+  | 'PRIMARY_KEY_ASC'
+  | 'PRIMARY_KEY_DESC'
+  | 'NATURAL'
+  | 'ID_ASC'
+  | 'ID_DESC'
+  | 'NAME_ASC'
+  | 'NAME_DESC'
+  | 'OWNER_ID_ASC'
+  | 'OWNER_ID_DESC'
+  | 'SUSPENDED_AT_ASC'
+  | 'SUSPENDED_AT_DESC'
+  | 'SUSPENDED_REASON_ASC'
+  | 'SUSPENDED_REASON_DESC';
 export type ManagedDomainOrderBy =
   | 'ALLOW_PUBLIC_USAGE_ASC'
   | 'ALLOW_PUBLIC_USAGE_DESC'
@@ -10081,8 +10110,6 @@ export type PlatformEmailIdentityOrderBy =
   | 'UPDATED_AT_ASC'
   | 'UPDATED_AT_DESC';
 export type PlatformEmailProviderAccountOrderBy =
-  | 'API_BASE_URL_ASC'
-  | 'API_BASE_URL_DESC'
   | 'CREATED_AT_ASC'
   | 'CREATED_AT_DESC'
   | 'CREDENTIALS_SECRET_NAME_ASC'
@@ -11944,7 +11971,6 @@ export interface DeleteEmailIdentityInput {
 export interface CreateEmailProviderAccountInput {
   clientMutationId?: string;
   emailProviderAccount: {
-    apiBaseUrl?: string;
     credentialsSecretName: string;
     databaseId: string;
     isActive?: boolean;
@@ -11960,7 +11986,6 @@ export interface CreateEmailProviderAccountInput {
   };
 }
 export interface EmailProviderAccountPatch {
-  apiBaseUrl?: string | null;
   credentialsSecretName?: string | null;
   databaseId?: string | null;
   isActive?: boolean | null;
@@ -12503,6 +12528,30 @@ export interface DeleteIndexInput {
   clientMutationId?: string;
   id: string;
 }
+export interface CreateListSuspendedDatabasesRecordInput {
+  clientMutationId?: string;
+  listSuspendedDatabasesRecord: {
+    name?: string;
+    ownerId: string;
+    suspendedAt?: string;
+    suspendedReason?: string;
+  };
+}
+export interface ListSuspendedDatabasesRecordPatch {
+  name?: string | null;
+  ownerId?: string | null;
+  suspendedAt?: string | null;
+  suspendedReason?: string | null;
+}
+export interface UpdateListSuspendedDatabasesRecordInput {
+  clientMutationId?: string;
+  id: string;
+  listSuspendedDatabasesRecordPatch: ListSuspendedDatabasesRecordPatch;
+}
+export interface DeleteListSuspendedDatabasesRecordInput {
+  clientMutationId?: string;
+  id: string;
+}
 export interface CreateManagedDomainInput {
   clientMutationId?: string;
   managedDomain: {
@@ -12924,7 +12973,6 @@ export interface DeletePlatformEmailIdentityInput {
 export interface CreatePlatformEmailProviderAccountInput {
   clientMutationId?: string;
   platformEmailProviderAccount: {
-    apiBaseUrl?: string;
     credentialsSecretName: string;
     isActive?: boolean;
     name: string;
@@ -12939,7 +12987,6 @@ export interface CreatePlatformEmailProviderAccountInput {
   };
 }
 export interface PlatformEmailProviderAccountPatch {
-  apiBaseUrl?: string | null;
   credentialsSecretName?: string | null;
   isActive?: boolean | null;
   name?: string | null;
@@ -16186,8 +16233,6 @@ export interface EmailIdentityInput {
 }
 /** An input for mutations affecting `EmailProviderAccount` */
 export interface EmailProviderAccountInput {
-  /** Provider API base URL when it is not the provider default (e.g. Mailgun EU) */
-  apiBaseUrl?: string;
   createdAt?: string;
   /** Name of the secret holding this account's API key or SMTP password. The value is resolved from the secret store at send time (realm = this row's id) and is never stored here. */
   credentialsSecretName: string;
@@ -16202,7 +16247,7 @@ export interface EmailProviderAccountInput {
   provider: string;
   /** Account identifier at the provider — the Mailgun sending domain, the SES verified identity, the Postmark server name */
   providerAccountName?: string;
-  /** Provider region for region-addressed providers (e.g. SES us-east-1) */
+  /** Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us) */
   region?: string;
   /** SMTP host (provider = smtp, or a provider addressed over SMTP) */
   smtpHost?: string;
@@ -16723,8 +16768,6 @@ export interface PlatformEmailIdentityInput {
 }
 /** An input for mutations affecting `PlatformEmailProviderAccount` */
 export interface PlatformEmailProviderAccountInput {
-  /** Provider API base URL when it is not the provider default (e.g. Mailgun EU) */
-  apiBaseUrl?: string;
   createdAt?: string;
   /** Name of the secret holding this account's API key or SMTP password. The value is resolved from the secret store at send time (realm = this row's id) and is never stored here. */
   credentialsSecretName: string;
@@ -16737,7 +16780,7 @@ export interface PlatformEmailProviderAccountInput {
   provider: string;
   /** Account identifier at the provider — the Mailgun sending domain, the SES verified identity, the Postmark server name */
   providerAccountName?: string;
-  /** Provider region for region-addressed providers (e.g. SES us-east-1) */
+  /** Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us) */
   region?: string;
   /** SMTP host (provider = smtp, or a provider addressed over SMTP) */
   smtpHost?: string;
@@ -17405,7 +17448,7 @@ export interface TableInput {
   schemaId: string;
   singularName?: string;
   smartTags?: Record<string, unknown>;
-  /** Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / fresh_auth; password_or_mfa is the legacy spelling), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr. */
+  /** Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / password_or_mfa / fresh_auth), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr. */
   stepUp?: Record<string, unknown>;
   tags?: string[];
   timestamps?: boolean;
@@ -20630,8 +20673,6 @@ export interface RedirectFilter {
 export interface EmailProviderAccountFilter {
   /** Checks for all expressions in this list. */
   and?: EmailProviderAccountFilter[];
-  /** Filter by the object’s `apiBaseUrl` field. */
-  apiBaseUrl?: StringFilter;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `credentialsSecretName` field. */
@@ -20885,8 +20926,6 @@ export interface PlatformSiteFilter {
 export interface PlatformEmailProviderAccountFilter {
   /** Checks for all expressions in this list. */
   and?: PlatformEmailProviderAccountFilter[];
-  /** Filter by the object’s `apiBaseUrl` field. */
-  apiBaseUrl?: StringFilter;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `credentialsSecretName` field. */

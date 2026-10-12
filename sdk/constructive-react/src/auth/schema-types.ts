@@ -464,7 +464,6 @@ export interface CheckPasswordInput {
   password?: string;
 }
 export interface CompleteMfaChallengeInput {
-  authMethod?: string;
   clientMutationId?: string;
   credentialKind?: string;
   deviceToken?: string;
@@ -1280,11 +1279,6 @@ export interface ProvisionBucketInput {
    */
   ownerId?: string;
 }
-export interface ProvisionNewUserInput {
-  clientMutationId?: string;
-  email?: string;
-  password?: string;
-}
 export interface RefreshAccessTokenInput {
   clientMutationId?: string;
   token?: string;
@@ -1295,6 +1289,10 @@ export interface RequestCrossOriginTokenInput {
   origin?: ConstructiveInternalTypeOrigin;
   password?: string;
   rememberMe?: boolean;
+}
+export interface RequestMagicLinkInput {
+  clientMutationId?: string;
+  email?: string;
 }
 export interface ResetPasswordInput {
   clientMutationId?: string;
@@ -1341,7 +1339,17 @@ export interface RoleTypePatch {
 export interface SendAccountDeletionEmailInput {
   clientMutationId?: string;
 }
+export interface SendMfaChallengeCodeInput {
+  clientMutationId?: string;
+  mfaChallengeToken?: string;
+  mfaMethod?: string;
+  userId?: string;
+}
 export interface SendPhoneVerificationCodeInput {
+  clientMutationId?: string;
+  phone?: string;
+}
+export interface SendSmsOtpInput {
   clientMutationId?: string;
   phone?: string;
 }
@@ -2308,10 +2316,6 @@ export interface ProvisionBucketPayload {
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
 }
-export interface ProvisionNewUserPayload {
-  clientMutationId?: string | null;
-  result?: string | null;
-}
 export interface RefreshAccessTokenPayload {
   clientMutationId?: string | null;
   result?: RefreshAccessTokenRecord | null;
@@ -2319,6 +2323,9 @@ export interface RefreshAccessTokenPayload {
 export interface RequestCrossOriginTokenPayload {
   clientMutationId?: string | null;
   result?: string | null;
+}
+export interface RequestMagicLinkPayload {
+  clientMutationId?: string | null;
 }
 export interface ResetPasswordPayload {
   clientMutationId?: string | null;
@@ -2340,7 +2347,15 @@ export interface SendAccountDeletionEmailPayload {
   clientMutationId?: string | null;
   result?: boolean | null;
 }
+export interface SendMfaChallengeCodePayload {
+  clientMutationId?: string | null;
+  result?: boolean | null;
+}
 export interface SendPhoneVerificationCodePayload {
+  clientMutationId?: string | null;
+  result?: boolean | null;
+}
+export interface SendSmsOtpPayload {
   clientMutationId?: string | null;
   result?: boolean | null;
 }
@@ -2657,6 +2672,8 @@ export interface SignInMagicLinkRecord {
   accessToken?: string | null;
   accessTokenExpiresAt?: string | null;
   deviceApprovalRequired?: boolean | null;
+  mfaChallengeToken?: string | null;
+  mfaRequired?: boolean | null;
   outDeviceToken?: string | null;
   userId?: string | null;
 }
@@ -2664,6 +2681,8 @@ export interface SignInSmsOtpRecord {
   accessToken?: string | null;
   accessTokenExpiresAt?: string | null;
   deviceApprovalRequired?: boolean | null;
+  mfaChallengeToken?: string | null;
+  mfaRequired?: boolean | null;
   outDeviceToken?: string | null;
   userId?: string | null;
 }

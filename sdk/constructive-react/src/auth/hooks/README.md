@@ -139,15 +139,17 @@ Reads the bucket config via RLS, then enqueues the same
 storage:provision_bucket job used by the INSERT trigger. This is
 idempotent for an already-reconciled bucket; enqueue failures become
 GraphQL errors. |
-| `useProvisionNewUserMutation` | Mutation | provisionNewUser |
 | `useRefreshAccessTokenMutation` | Mutation | refreshAccessToken |
 | `useRequestCrossOriginTokenMutation` | Mutation | requestCrossOriginToken |
+| `useRequestMagicLinkMutation` | Mutation | requestMagicLink |
 | `useResetPasswordMutation` | Mutation | resetPassword |
 | `useRevokeApiKeyMutation` | Mutation | revokeApiKey |
 | `useRevokeOrgApiKeyMutation` | Mutation | revokeOrgApiKey |
 | `useRevokeSessionMutation` | Mutation | revokeSession |
 | `useSendAccountDeletionEmailMutation` | Mutation | sendAccountDeletionEmail |
+| `useSendMfaChallengeCodeMutation` | Mutation | sendMfaChallengeCode |
 | `useSendPhoneVerificationCodeMutation` | Mutation | sendPhoneVerificationCode |
+| `useSendSmsOtpMutation` | Mutation | sendSmsOtp |
 | `useSendVerificationEmailMutation` | Mutation | sendVerificationEmail |
 | `useSetPasswordMutation` | Mutation | setPassword |
 | `useSetPrincipalEntitiesMutation` | Mutation | setPrincipalEntities |
@@ -804,17 +806,6 @@ GraphQL errors.
   |----------|------|
   | `input` | ProvisionBucketInput (required) |
 
-### `useProvisionNewUserMutation`
-
-provisionNewUser
-
-- **Type:** mutation
-- **Arguments:**
-
-  | Argument | Type |
-  |----------|------|
-  | `input` | ProvisionNewUserInput (required) |
-
 ### `useRefreshAccessTokenMutation`
 
 refreshAccessToken
@@ -836,6 +827,17 @@ requestCrossOriginToken
   | Argument | Type |
   |----------|------|
   | `input` | RequestCrossOriginTokenInput (required) |
+
+### `useRequestMagicLinkMutation`
+
+requestMagicLink
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | RequestMagicLinkInput (required) |
 
 ### `useResetPasswordMutation`
 
@@ -892,6 +894,17 @@ sendAccountDeletionEmail
   |----------|------|
   | `input` | SendAccountDeletionEmailInput (required) |
 
+### `useSendMfaChallengeCodeMutation`
+
+sendMfaChallengeCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendMfaChallengeCodeInput (required) |
+
 ### `useSendPhoneVerificationCodeMutation`
 
 sendPhoneVerificationCode
@@ -902,6 +915,17 @@ sendPhoneVerificationCode
   | Argument | Type |
   |----------|------|
   | `input` | SendPhoneVerificationCodeInput (required) |
+
+### `useSendSmsOtpMutation`
+
+sendSmsOtp
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendSmsOtpInput (required) |
 
 ### `useSendVerificationEmailMutation`
 

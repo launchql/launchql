@@ -41,6 +41,7 @@ const fieldSchema: FieldSchema = {
   billingSubscriptionsTableName: 'string',
   billingWebhookEventsTableId: 'uuid',
   billingWebhookEventsTableName: 'string',
+  bindCheckoutSessionFunction: 'string',
   clearScheduledChangeFunction: 'string',
   databaseId: 'uuid',
   finishBillingOperationFunction: 'string',
@@ -55,6 +56,7 @@ const fieldSchema: FieldSchema = {
   getBillingSubscriptionFunction: 'string',
   getFallbackFreePlanFunction: 'string',
   getPlanPricingByExternalPriceFunction: 'string',
+  hasDueReconciliationsFunction: 'string',
   id: 'uuid',
   listDueReconciliationsFunction: 'string',
   listPendingUsageSyncFunction: 'string',
@@ -79,6 +81,7 @@ const fieldSchema: FieldSchema = {
   upsertBillingProductFunction: 'string',
   upsertBillingSubscriptionFunction: 'string',
   upsertInvoiceFunction: 'string',
+  usageSyncShardCount: 'int',
 };
 const usage =
   '\nbilling-provider-module <command>\n\nCommands:\n  list                  List billingProviderModule records\n  find-first            Find first matching billingProviderModule record\n  get                   Get a billingProviderModule by ID\n  create                Create a new billingProviderModule\n  update                Update an existing billingProviderModule\n  delete                Delete a billingProviderModule\n\nList Options:\n  --limit <n>           Max number of records to return (forward pagination)\n  --last <n>            Number of records from the end (backward pagination)\n  --after <cursor>      Cursor for forward pagination\n  --before <cursor>     Cursor for backward pagination\n  --offset <n>          Number of records to skip\n  --select <fields>     Comma-separated list of fields to return\n  --where.<field>.<op>  Filter (dot-notation, e.g. --where.name.equalTo foo)\n  --condition.<f>.<op>  Condition filter (dot-notation)\n  --orderBy <values>    Comma-separated ordering values (e.g. NAME_ASC,CREATED_AT_DESC)\n\nFind-First Options:\n  --select <fields>     Comma-separated list of fields to return\n  --where.<field>.<op>  Filter (dot-notation, e.g. --where.status.equalTo active)\n  --condition.<f>.<op>  Condition filter (dot-notation)\n  --orderBy <values>    Comma-separated ordering values (e.g. NAME_ASC,CREATED_AT_DESC)\n\n  --help, -h            Show this help message\n';
@@ -156,6 +159,7 @@ async function handleList(argv: Partial<Record<string, unknown>>, _prompter: Inq
       billingSubscriptionsTableName: true,
       billingWebhookEventsTableId: true,
       billingWebhookEventsTableName: true,
+      bindCheckoutSessionFunction: true,
       clearScheduledChangeFunction: true,
       databaseId: true,
       finishBillingOperationFunction: true,
@@ -170,6 +174,7 @@ async function handleList(argv: Partial<Record<string, unknown>>, _prompter: Inq
       getBillingSubscriptionFunction: true,
       getFallbackFreePlanFunction: true,
       getPlanPricingByExternalPriceFunction: true,
+      hasDueReconciliationsFunction: true,
       id: true,
       listDueReconciliationsFunction: true,
       listPendingUsageSyncFunction: true,
@@ -194,6 +199,7 @@ async function handleList(argv: Partial<Record<string, unknown>>, _prompter: Inq
       upsertBillingProductFunction: true,
       upsertBillingSubscriptionFunction: true,
       upsertInvoiceFunction: true,
+      usageSyncShardCount: true,
     };
     const findManyArgs = parseFindManyArgs<
       FindManyArgs<
@@ -243,6 +249,7 @@ async function handleFindFirst(argv: Partial<Record<string, unknown>>, _prompter
       billingSubscriptionsTableName: true,
       billingWebhookEventsTableId: true,
       billingWebhookEventsTableName: true,
+      bindCheckoutSessionFunction: true,
       clearScheduledChangeFunction: true,
       databaseId: true,
       finishBillingOperationFunction: true,
@@ -257,6 +264,7 @@ async function handleFindFirst(argv: Partial<Record<string, unknown>>, _prompter
       getBillingSubscriptionFunction: true,
       getFallbackFreePlanFunction: true,
       getPlanPricingByExternalPriceFunction: true,
+      hasDueReconciliationsFunction: true,
       id: true,
       listDueReconciliationsFunction: true,
       listPendingUsageSyncFunction: true,
@@ -281,6 +289,7 @@ async function handleFindFirst(argv: Partial<Record<string, unknown>>, _prompter
       upsertBillingProductFunction: true,
       upsertBillingSubscriptionFunction: true,
       upsertInvoiceFunction: true,
+      usageSyncShardCount: true,
     };
     const findFirstArgs = parseFindFirstArgs<
       FindFirstArgs<
@@ -342,6 +351,7 @@ async function handleGet(argv: Partial<Record<string, unknown>>, prompter: Inqui
           billingSubscriptionsTableName: true,
           billingWebhookEventsTableId: true,
           billingWebhookEventsTableName: true,
+          bindCheckoutSessionFunction: true,
           clearScheduledChangeFunction: true,
           databaseId: true,
           finishBillingOperationFunction: true,
@@ -356,6 +366,7 @@ async function handleGet(argv: Partial<Record<string, unknown>>, prompter: Inqui
           getBillingSubscriptionFunction: true,
           getFallbackFreePlanFunction: true,
           getPlanPricingByExternalPriceFunction: true,
+          hasDueReconciliationsFunction: true,
           id: true,
           listDueReconciliationsFunction: true,
           listPendingUsageSyncFunction: true,
@@ -380,6 +391,7 @@ async function handleGet(argv: Partial<Record<string, unknown>>, prompter: Inqui
           upsertBillingProductFunction: true,
           upsertBillingSubscriptionFunction: true,
           upsertInvoiceFunction: true,
+          usageSyncShardCount: true,
         },
       })
       .execute();
@@ -572,6 +584,13 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
       },
       {
         type: 'text',
+        name: 'bindCheckoutSessionFunction',
+        message: 'bindCheckoutSessionFunction',
+        required: false,
+        skipPrompt: true,
+      },
+      {
+        type: 'text',
         name: 'clearScheduledChangeFunction',
         message: 'clearScheduledChangeFunction',
         required: false,
@@ -664,6 +683,13 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
         type: 'text',
         name: 'getPlanPricingByExternalPriceFunction',
         message: 'getPlanPricingByExternalPriceFunction',
+        required: false,
+        skipPrompt: true,
+      },
+      {
+        type: 'text',
+        name: 'hasDueReconciliationsFunction',
+        message: 'hasDueReconciliationsFunction',
         required: false,
         skipPrompt: true,
       },
@@ -828,6 +854,13 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
         required: false,
         skipPrompt: true,
       },
+      {
+        type: 'text',
+        name: 'usageSyncShardCount',
+        message: 'usageSyncShardCount',
+        required: false,
+        skipPrompt: true,
+      },
     ]);
     const answers = coerceAnswers(rawAnswers, fieldSchema);
     const cleanedData = stripUndefined(
@@ -863,6 +896,7 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           billingSubscriptionsTableName: cleanedData.billingSubscriptionsTableName,
           billingWebhookEventsTableId: cleanedData.billingWebhookEventsTableId,
           billingWebhookEventsTableName: cleanedData.billingWebhookEventsTableName,
+          bindCheckoutSessionFunction: cleanedData.bindCheckoutSessionFunction,
           clearScheduledChangeFunction: cleanedData.clearScheduledChangeFunction,
           databaseId: cleanedData.databaseId,
           finishBillingOperationFunction: cleanedData.finishBillingOperationFunction,
@@ -879,6 +913,7 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           getBillingSubscriptionFunction: cleanedData.getBillingSubscriptionFunction,
           getFallbackFreePlanFunction: cleanedData.getFallbackFreePlanFunction,
           getPlanPricingByExternalPriceFunction: cleanedData.getPlanPricingByExternalPriceFunction,
+          hasDueReconciliationsFunction: cleanedData.hasDueReconciliationsFunction,
           listDueReconciliationsFunction: cleanedData.listDueReconciliationsFunction,
           listPendingUsageSyncFunction: cleanedData.listPendingUsageSyncFunction,
           markUsageSyncedFunction: cleanedData.markUsageSyncedFunction,
@@ -902,6 +937,7 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           upsertBillingProductFunction: cleanedData.upsertBillingProductFunction,
           upsertBillingSubscriptionFunction: cleanedData.upsertBillingSubscriptionFunction,
           upsertInvoiceFunction: cleanedData.upsertInvoiceFunction,
+          usageSyncShardCount: cleanedData.usageSyncShardCount,
         },
         select: {
           activatePlanSubscriptionFunction: true,
@@ -929,6 +965,7 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           billingSubscriptionsTableName: true,
           billingWebhookEventsTableId: true,
           billingWebhookEventsTableName: true,
+          bindCheckoutSessionFunction: true,
           clearScheduledChangeFunction: true,
           databaseId: true,
           finishBillingOperationFunction: true,
@@ -943,6 +980,7 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           getBillingSubscriptionFunction: true,
           getFallbackFreePlanFunction: true,
           getPlanPricingByExternalPriceFunction: true,
+          hasDueReconciliationsFunction: true,
           id: true,
           listDueReconciliationsFunction: true,
           listPendingUsageSyncFunction: true,
@@ -967,6 +1005,7 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           upsertBillingProductFunction: true,
           upsertBillingSubscriptionFunction: true,
           upsertInvoiceFunction: true,
+          usageSyncShardCount: true,
         },
       })
       .execute();
@@ -1165,6 +1204,13 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
       },
       {
         type: 'text',
+        name: 'bindCheckoutSessionFunction',
+        message: 'bindCheckoutSessionFunction',
+        required: false,
+        skipPrompt: true,
+      },
+      {
+        type: 'text',
         name: 'clearScheduledChangeFunction',
         message: 'clearScheduledChangeFunction',
         required: false,
@@ -1257,6 +1303,13 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
         type: 'text',
         name: 'getPlanPricingByExternalPriceFunction',
         message: 'getPlanPricingByExternalPriceFunction',
+        required: false,
+        skipPrompt: true,
+      },
+      {
+        type: 'text',
+        name: 'hasDueReconciliationsFunction',
+        message: 'hasDueReconciliationsFunction',
         required: false,
         skipPrompt: true,
       },
@@ -1421,6 +1474,13 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
         required: false,
         skipPrompt: true,
       },
+      {
+        type: 'text',
+        name: 'usageSyncShardCount',
+        message: 'usageSyncShardCount',
+        required: false,
+        skipPrompt: true,
+      },
     ]);
     const answers = coerceAnswers(rawAnswers, fieldSchema);
     const cleanedData = stripUndefined(answers, fieldSchema) as BillingProviderModulePatch;
@@ -1456,6 +1516,7 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           billingSubscriptionsTableName: cleanedData.billingSubscriptionsTableName,
           billingWebhookEventsTableId: cleanedData.billingWebhookEventsTableId,
           billingWebhookEventsTableName: cleanedData.billingWebhookEventsTableName,
+          bindCheckoutSessionFunction: cleanedData.bindCheckoutSessionFunction,
           clearScheduledChangeFunction: cleanedData.clearScheduledChangeFunction,
           databaseId: cleanedData.databaseId,
           finishBillingOperationFunction: cleanedData.finishBillingOperationFunction,
@@ -1472,6 +1533,7 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           getBillingSubscriptionFunction: cleanedData.getBillingSubscriptionFunction,
           getFallbackFreePlanFunction: cleanedData.getFallbackFreePlanFunction,
           getPlanPricingByExternalPriceFunction: cleanedData.getPlanPricingByExternalPriceFunction,
+          hasDueReconciliationsFunction: cleanedData.hasDueReconciliationsFunction,
           listDueReconciliationsFunction: cleanedData.listDueReconciliationsFunction,
           listPendingUsageSyncFunction: cleanedData.listPendingUsageSyncFunction,
           markUsageSyncedFunction: cleanedData.markUsageSyncedFunction,
@@ -1495,6 +1557,7 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           upsertBillingProductFunction: cleanedData.upsertBillingProductFunction,
           upsertBillingSubscriptionFunction: cleanedData.upsertBillingSubscriptionFunction,
           upsertInvoiceFunction: cleanedData.upsertInvoiceFunction,
+          usageSyncShardCount: cleanedData.usageSyncShardCount,
         },
         select: {
           activatePlanSubscriptionFunction: true,
@@ -1522,6 +1585,7 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           billingSubscriptionsTableName: true,
           billingWebhookEventsTableId: true,
           billingWebhookEventsTableName: true,
+          bindCheckoutSessionFunction: true,
           clearScheduledChangeFunction: true,
           databaseId: true,
           finishBillingOperationFunction: true,
@@ -1536,6 +1600,7 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           getBillingSubscriptionFunction: true,
           getFallbackFreePlanFunction: true,
           getPlanPricingByExternalPriceFunction: true,
+          hasDueReconciliationsFunction: true,
           id: true,
           listDueReconciliationsFunction: true,
           listPendingUsageSyncFunction: true,
@@ -1560,6 +1625,7 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           upsertBillingProductFunction: true,
           upsertBillingSubscriptionFunction: true,
           upsertInvoiceFunction: true,
+          usageSyncShardCount: true,
         },
       })
       .execute();

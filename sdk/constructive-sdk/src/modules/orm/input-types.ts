@@ -387,6 +387,7 @@ export interface BillingProviderModule {
   billingSubscriptionsTableName?: string | null;
   billingWebhookEventsTableId?: string | null;
   billingWebhookEventsTableName?: string | null;
+  bindCheckoutSessionFunction?: string | null;
   clearScheduledChangeFunction?: string | null;
   databaseId?: string | null;
   finishBillingOperationFunction?: string | null;
@@ -401,6 +402,7 @@ export interface BillingProviderModule {
   getBillingSubscriptionFunction?: string | null;
   getFallbackFreePlanFunction?: string | null;
   getPlanPricingByExternalPriceFunction?: string | null;
+  hasDueReconciliationsFunction?: string | null;
   id: string;
   listDueReconciliationsFunction?: string | null;
   listPendingUsageSyncFunction?: string | null;
@@ -425,6 +427,7 @@ export interface BillingProviderModule {
   upsertBillingProductFunction?: string | null;
   upsertBillingSubscriptionFunction?: string | null;
   upsertInvoiceFunction?: string | null;
+  usageSyncShardCount?: number | null;
 }
 /** An owned, editable blueprint scoped to a specific database. Created by copying from a blueprint_template via copy_template_to_blueprint() or built from scratch. The owner can customize the definition at any time. Execute it with construct_blueprint() which creates a separate blueprint_construction record to track the build. */
 export interface Blueprint {
@@ -1066,8 +1069,6 @@ export interface EntityTypeProvision {
    */
   namespaces?: Record<string, unknown> | null;
   outAgentModuleId?: string | null;
-  /** Output: the UUID of the generated buckets table (e.g. data_room_buckets). Populated by the trigger when storage is non-NULL and non-empty. */
-  outBucketsTableId?: string | null;
   outDefinitionsTableId?: string | null;
   /**
    * Output: the UUID of the created entity table. Populated by the trigger.
@@ -1077,8 +1078,6 @@ export interface EntityTypeProvision {
   /** Output: the name of the created entity table (e.g. 'data_rooms'). Populated by the trigger. */
   outEntityTableName?: string | null;
   outExecutionLogsTableId?: string | null;
-  /** Output: the UUID of the generated files table (e.g. data_room_files). Populated by the trigger when storage is non-NULL and non-empty. */
-  outFilesTableId?: string | null;
   outFunctionModuleId?: string | null;
   outGraphModuleId?: string | null;
   outGraphsTableId?: string | null;
@@ -1114,9 +1113,6 @@ export interface EntityTypeProvision {
    *      Populated by the trigger when namespaces is non-NULL. NULL otherwise.
    */
   outNamespacesTableId?: string | null;
-  outPathSharesTableId?: string | null;
-  /** Output: the UUID of the storage_module row created for this entity type. Populated by the trigger when storage is non-NULL and non-empty. */
-  outStorageModuleId?: string | null;
   /**
    * Prefix of the parent entity type. The trigger resolves this to a membership_type integer
    *      by looking up memberships_module WHERE prefix = parent_entity.
@@ -1156,7 +1152,6 @@ export interface EntityTypeProvision {
    *        - key                           (text) module discriminator, max 16 chars, lowercase snake_case.
    *                                               Defaults to 'default' (omitted from table names).
    *                                               Non-default keys become infixes: {prefix}_{key}_buckets.
-   *                                               (storage_key accepted for backward compat)
    *        - upload_url_expiry_seconds     (integer) presigned PUT URL expiry override
    *        - download_url_expiry_seconds   (integer) presigned GET URL expiry override
    *        - default_max_file_size         (bigint)  global max file size in bytes for this module
@@ -1173,7 +1168,7 @@ export interface EntityTypeProvision {
    *          Each bucket: { name (required), description, is_public, allowed_mime_types, max_file_size, allowed_origins }
    *        - provisions                    (jsonb object) per-table customization keyed by "files" or "buckets".
    *                                               Each value: { nodes, fields, grants, use_rls, policies }.
-   *      Example (single module, backward compat):
+   *      Example (single module):
    *        storage := '[{"buckets": [{"name": "documents"}]}]'::jsonb
    *      Example (multi-module):
    *        storage := '[{"has_path_shares": true, "buckets": [{"name": "documents"}]}, {"key": "fn", "has_custom_keys": true, "buckets": [{"name": "functions"}]}]'::jsonb
@@ -1904,7 +1899,6 @@ export interface PlansModule {
   planLimitsTableId?: string | null;
   planLimitsTableName?: string | null;
   planMeterLimitsTableId?: string | null;
-  planOverridesTableId?: string | null;
   planPricingTableId?: string | null;
   plansTableId?: string | null;
   plansTableName?: string | null;
@@ -3082,6 +3076,7 @@ export type BillingProviderModuleSelect = {
   billingSubscriptionsTableName?: boolean;
   billingWebhookEventsTableId?: boolean;
   billingWebhookEventsTableName?: boolean;
+  bindCheckoutSessionFunction?: boolean;
   clearScheduledChangeFunction?: boolean;
   databaseId?: boolean;
   finishBillingOperationFunction?: boolean;
@@ -3096,6 +3091,7 @@ export type BillingProviderModuleSelect = {
   getBillingSubscriptionFunction?: boolean;
   getFallbackFreePlanFunction?: boolean;
   getPlanPricingByExternalPriceFunction?: boolean;
+  hasDueReconciliationsFunction?: boolean;
   id?: boolean;
   listDueReconciliationsFunction?: boolean;
   listPendingUsageSyncFunction?: boolean;
@@ -3120,6 +3116,7 @@ export type BillingProviderModuleSelect = {
   upsertBillingProductFunction?: boolean;
   upsertBillingSubscriptionFunction?: boolean;
   upsertInvoiceFunction?: boolean;
+  usageSyncShardCount?: boolean;
 };
 export type BlueprintSelect = {
   createdAt?: boolean;
@@ -3672,12 +3669,10 @@ export type EntityTypeProvisionSelect = {
   name?: boolean;
   namespaces?: boolean;
   outAgentModuleId?: boolean;
-  outBucketsTableId?: boolean;
   outDefinitionsTableId?: boolean;
   outEntityTableId?: boolean;
   outEntityTableName?: boolean;
   outExecutionLogsTableId?: boolean;
-  outFilesTableId?: boolean;
   outFunctionModuleId?: boolean;
   outGraphModuleId?: boolean;
   outGraphsTableId?: boolean;
@@ -3688,8 +3683,6 @@ export type EntityTypeProvisionSelect = {
   outNamespaceEventsTableId?: boolean;
   outNamespaceModuleId?: boolean;
   outNamespacesTableId?: boolean;
-  outPathSharesTableId?: boolean;
-  outStorageModuleId?: boolean;
   parentEntity?: boolean;
   prefix?: boolean;
   skipEntityPolicies?: boolean;
@@ -4459,7 +4452,6 @@ export type PlansModuleSelect = {
   planLimitsTableId?: boolean;
   planLimitsTableName?: boolean;
   planMeterLimitsTableId?: boolean;
-  planOverridesTableId?: boolean;
   planPricingTableId?: boolean;
   plansTableId?: boolean;
   plansTableName?: boolean;
@@ -5432,6 +5424,8 @@ export interface BillingProviderModuleFilter {
   billingWebhookEventsTableId?: UUIDFilter;
   /** Filter by the object’s `billingWebhookEventsTableName` field. */
   billingWebhookEventsTableName?: StringFilter;
+  /** Filter by the object’s `bindCheckoutSessionFunction` field. */
+  bindCheckoutSessionFunction?: StringFilter;
   /** Filter by the object’s `clearScheduledChangeFunction` field. */
   clearScheduledChangeFunction?: StringFilter;
   /** Filter by the object’s `databaseId` field. */
@@ -5460,6 +5454,8 @@ export interface BillingProviderModuleFilter {
   getFallbackFreePlanFunction?: StringFilter;
   /** Filter by the object’s `getPlanPricingByExternalPriceFunction` field. */
   getPlanPricingByExternalPriceFunction?: StringFilter;
+  /** Filter by the object’s `hasDueReconciliationsFunction` field. */
+  hasDueReconciliationsFunction?: StringFilter;
   /** Filter by the object’s `id` field. */
   id?: UUIDFilter;
   /** Filter by the object’s `listDueReconciliationsFunction` field. */
@@ -5512,6 +5508,8 @@ export interface BillingProviderModuleFilter {
   upsertBillingSubscriptionFunction?: StringFilter;
   /** Filter by the object’s `upsertInvoiceFunction` field. */
   upsertInvoiceFunction?: StringFilter;
+  /** Filter by the object’s `usageSyncShardCount` field. */
+  usageSyncShardCount?: IntFilter;
 }
 export interface BlueprintFilter {
   /** Checks for all expressions in this list. */
@@ -6612,8 +6610,6 @@ export interface EntityTypeProvisionFilter {
   or?: EntityTypeProvisionFilter[];
   /** Filter by the object’s `outAgentModuleId` field. */
   outAgentModuleId?: UUIDFilter;
-  /** Filter by the object’s `outBucketsTableId` field. */
-  outBucketsTableId?: UUIDFilter;
   /** Filter by the object’s `outDefinitionsTableId` field. */
   outDefinitionsTableId?: UUIDFilter;
   /** Filter by the object’s `outEntityTableId` field. */
@@ -6622,8 +6618,6 @@ export interface EntityTypeProvisionFilter {
   outEntityTableName?: StringFilter;
   /** Filter by the object’s `outExecutionLogsTableId` field. */
   outExecutionLogsTableId?: UUIDFilter;
-  /** Filter by the object’s `outFilesTableId` field. */
-  outFilesTableId?: UUIDFilter;
   /** Filter by the object’s `outFunctionModuleId` field. */
   outFunctionModuleId?: UUIDFilter;
   /** Filter by the object’s `outGraphModuleId` field. */
@@ -6644,10 +6638,6 @@ export interface EntityTypeProvisionFilter {
   outNamespaceModuleId?: UUIDFilter;
   /** Filter by the object’s `outNamespacesTableId` field. */
   outNamespacesTableId?: UUIDFilter;
-  /** Filter by the object’s `outPathSharesTableId` field. */
-  outPathSharesTableId?: UUIDFilter;
-  /** Filter by the object’s `outStorageModuleId` field. */
-  outStorageModuleId?: UUIDFilter;
   /** Filter by the object’s `parentEntity` field. */
   parentEntity?: StringFilter;
   /** Filter by the object’s `prefix` field. */
@@ -8168,8 +8158,6 @@ export interface PlansModuleFilter {
   planLimitsTableName?: StringFilter;
   /** Filter by the object’s `planMeterLimitsTableId` field. */
   planMeterLimitsTableId?: UUIDFilter;
-  /** Filter by the object’s `planOverridesTableId` field. */
-  planOverridesTableId?: UUIDFilter;
   /** Filter by the object’s `planPricingTableId` field. */
   planPricingTableId?: UUIDFilter;
   /** Filter by the object’s `plansTableId` field. */
@@ -9819,6 +9807,8 @@ export type BillingProviderModuleOrderBy =
   | 'BILLING_WEBHOOK_EVENTS_TABLE_ID_DESC'
   | 'BILLING_WEBHOOK_EVENTS_TABLE_NAME_ASC'
   | 'BILLING_WEBHOOK_EVENTS_TABLE_NAME_DESC'
+  | 'BIND_CHECKOUT_SESSION_FUNCTION_ASC'
+  | 'BIND_CHECKOUT_SESSION_FUNCTION_DESC'
   | 'CLEAR_SCHEDULED_CHANGE_FUNCTION_ASC'
   | 'CLEAR_SCHEDULED_CHANGE_FUNCTION_DESC'
   | 'DATABASE_ID_ASC'
@@ -9847,6 +9837,8 @@ export type BillingProviderModuleOrderBy =
   | 'GET_FALLBACK_FREE_PLAN_FUNCTION_DESC'
   | 'GET_PLAN_PRICING_BY_EXTERNAL_PRICE_FUNCTION_ASC'
   | 'GET_PLAN_PRICING_BY_EXTERNAL_PRICE_FUNCTION_DESC'
+  | 'HAS_DUE_RECONCILIATIONS_FUNCTION_ASC'
+  | 'HAS_DUE_RECONCILIATIONS_FUNCTION_DESC'
   | 'ID_ASC'
   | 'ID_DESC'
   | 'LIST_DUE_RECONCILIATIONS_FUNCTION_ASC'
@@ -9897,7 +9889,9 @@ export type BillingProviderModuleOrderBy =
   | 'UPSERT_BILLING_SUBSCRIPTION_FUNCTION_ASC'
   | 'UPSERT_BILLING_SUBSCRIPTION_FUNCTION_DESC'
   | 'UPSERT_INVOICE_FUNCTION_ASC'
-  | 'UPSERT_INVOICE_FUNCTION_DESC';
+  | 'UPSERT_INVOICE_FUNCTION_DESC'
+  | 'USAGE_SYNC_SHARD_COUNT_ASC'
+  | 'USAGE_SYNC_SHARD_COUNT_DESC';
 export type BlueprintOrderBy =
   | 'CREATED_AT_ASC'
   | 'CREATED_AT_DESC'
@@ -10832,8 +10826,6 @@ export type EntityTypeProvisionOrderBy =
   | 'NATURAL'
   | 'OUT_AGENT_MODULE_ID_ASC'
   | 'OUT_AGENT_MODULE_ID_DESC'
-  | 'OUT_BUCKETS_TABLE_ID_ASC'
-  | 'OUT_BUCKETS_TABLE_ID_DESC'
   | 'OUT_DEFINITIONS_TABLE_ID_ASC'
   | 'OUT_DEFINITIONS_TABLE_ID_DESC'
   | 'OUT_ENTITY_TABLE_ID_ASC'
@@ -10842,8 +10834,6 @@ export type EntityTypeProvisionOrderBy =
   | 'OUT_ENTITY_TABLE_NAME_DESC'
   | 'OUT_EXECUTION_LOGS_TABLE_ID_ASC'
   | 'OUT_EXECUTION_LOGS_TABLE_ID_DESC'
-  | 'OUT_FILES_TABLE_ID_ASC'
-  | 'OUT_FILES_TABLE_ID_DESC'
   | 'OUT_FUNCTION_MODULE_ID_ASC'
   | 'OUT_FUNCTION_MODULE_ID_DESC'
   | 'OUT_GRAPHS_TABLE_ID_ASC'
@@ -10864,10 +10854,6 @@ export type EntityTypeProvisionOrderBy =
   | 'OUT_NAMESPACE_EVENTS_TABLE_ID_DESC'
   | 'OUT_NAMESPACE_MODULE_ID_ASC'
   | 'OUT_NAMESPACE_MODULE_ID_DESC'
-  | 'OUT_PATH_SHARES_TABLE_ID_ASC'
-  | 'OUT_PATH_SHARES_TABLE_ID_DESC'
-  | 'OUT_STORAGE_MODULE_ID_ASC'
-  | 'OUT_STORAGE_MODULE_ID_DESC'
   | 'PARENT_ENTITY_ASC'
   | 'PARENT_ENTITY_DESC'
   | 'PREFIX_ASC'
@@ -12194,8 +12180,6 @@ export type PlansModuleOrderBy =
   | 'PLAN_LIMITS_TABLE_NAME_DESC'
   | 'PLAN_METER_LIMITS_TABLE_ID_ASC'
   | 'PLAN_METER_LIMITS_TABLE_ID_DESC'
-  | 'PLAN_OVERRIDES_TABLE_ID_ASC'
-  | 'PLAN_OVERRIDES_TABLE_ID_DESC'
   | 'PLAN_PRICING_TABLE_ID_ASC'
   | 'PLAN_PRICING_TABLE_ID_DESC'
   | 'PREFIX_ASC'
@@ -13699,6 +13683,7 @@ export interface CreateBillingProviderModuleInput {
     billingSubscriptionsTableName?: string;
     billingWebhookEventsTableId?: string;
     billingWebhookEventsTableName?: string;
+    bindCheckoutSessionFunction?: string;
     clearScheduledChangeFunction?: string;
     databaseId: string;
     finishBillingOperationFunction?: string;
@@ -13713,6 +13698,7 @@ export interface CreateBillingProviderModuleInput {
     getBillingSubscriptionFunction?: string;
     getFallbackFreePlanFunction?: string;
     getPlanPricingByExternalPriceFunction?: string;
+    hasDueReconciliationsFunction?: string;
     listDueReconciliationsFunction?: string;
     listPendingUsageSyncFunction?: string;
     markUsageSyncedFunction?: string;
@@ -13736,6 +13722,7 @@ export interface CreateBillingProviderModuleInput {
     upsertBillingProductFunction?: string;
     upsertBillingSubscriptionFunction?: string;
     upsertInvoiceFunction?: string;
+    usageSyncShardCount?: number;
   };
 }
 export interface BillingProviderModulePatch {
@@ -13764,6 +13751,7 @@ export interface BillingProviderModulePatch {
   billingSubscriptionsTableName?: string | null;
   billingWebhookEventsTableId?: string | null;
   billingWebhookEventsTableName?: string | null;
+  bindCheckoutSessionFunction?: string | null;
   clearScheduledChangeFunction?: string | null;
   databaseId?: string | null;
   finishBillingOperationFunction?: string | null;
@@ -13778,6 +13766,7 @@ export interface BillingProviderModulePatch {
   getBillingSubscriptionFunction?: string | null;
   getFallbackFreePlanFunction?: string | null;
   getPlanPricingByExternalPriceFunction?: string | null;
+  hasDueReconciliationsFunction?: string | null;
   listDueReconciliationsFunction?: string | null;
   listPendingUsageSyncFunction?: string | null;
   markUsageSyncedFunction?: string | null;
@@ -13801,6 +13790,7 @@ export interface BillingProviderModulePatch {
   upsertBillingProductFunction?: string | null;
   upsertBillingSubscriptionFunction?: string | null;
   upsertInvoiceFunction?: string | null;
+  usageSyncShardCount?: number | null;
 }
 export interface UpdateBillingProviderModuleInput {
   clientMutationId?: string;
@@ -14942,12 +14932,10 @@ export interface CreateEntityTypeProvisionInput {
     name: string;
     namespaces?: Record<string, unknown>;
     outAgentModuleId?: string;
-    outBucketsTableId?: string;
     outDefinitionsTableId?: string;
     outEntityTableId?: string;
     outEntityTableName?: string;
     outExecutionLogsTableId?: string;
-    outFilesTableId?: string;
     outFunctionModuleId?: string;
     outGraphModuleId?: string;
     outGraphsTableId?: string;
@@ -14958,8 +14946,6 @@ export interface CreateEntityTypeProvisionInput {
     outNamespaceEventsTableId?: string;
     outNamespaceModuleId?: string;
     outNamespacesTableId?: string;
-    outPathSharesTableId?: string;
-    outStorageModuleId?: string;
     parentEntity?: string;
     prefix: string;
     skipEntityPolicies?: boolean;
@@ -14983,12 +14969,10 @@ export interface EntityTypeProvisionPatch {
   name?: string | null;
   namespaces?: Record<string, unknown> | null;
   outAgentModuleId?: string | null;
-  outBucketsTableId?: string | null;
   outDefinitionsTableId?: string | null;
   outEntityTableId?: string | null;
   outEntityTableName?: string | null;
   outExecutionLogsTableId?: string | null;
-  outFilesTableId?: string | null;
   outFunctionModuleId?: string | null;
   outGraphModuleId?: string | null;
   outGraphsTableId?: string | null;
@@ -14999,8 +14983,6 @@ export interface EntityTypeProvisionPatch {
   outNamespaceEventsTableId?: string | null;
   outNamespaceModuleId?: string | null;
   outNamespacesTableId?: string | null;
-  outPathSharesTableId?: string | null;
-  outStorageModuleId?: string | null;
   parentEntity?: string | null;
   prefix?: string | null;
   skipEntityPolicies?: boolean | null;
@@ -16592,7 +16574,6 @@ export interface CreatePlansModuleInput {
     planLimitsTableId?: string;
     planLimitsTableName?: string;
     planMeterLimitsTableId?: string;
-    planOverridesTableId?: string;
     planPricingTableId?: string;
     plansTableId?: string;
     plansTableName?: string;
@@ -16615,7 +16596,6 @@ export interface PlansModulePatch {
   planLimitsTableId?: string | null;
   planLimitsTableName?: string | null;
   planMeterLimitsTableId?: string | null;
-  planOverridesTableId?: string | null;
   planPricingTableId?: string | null;
   plansTableId?: string | null;
   plansTableName?: string | null;
@@ -18620,6 +18600,7 @@ export interface BillingProviderModuleInput {
   billingSubscriptionsTableName?: string;
   billingWebhookEventsTableId?: string;
   billingWebhookEventsTableName?: string;
+  bindCheckoutSessionFunction?: string;
   clearScheduledChangeFunction?: string;
   databaseId: string;
   finishBillingOperationFunction?: string;
@@ -18634,6 +18615,7 @@ export interface BillingProviderModuleInput {
   getBillingSubscriptionFunction?: string;
   getFallbackFreePlanFunction?: string;
   getPlanPricingByExternalPriceFunction?: string;
+  hasDueReconciliationsFunction?: string;
   id?: string;
   listDueReconciliationsFunction?: string;
   listPendingUsageSyncFunction?: string;
@@ -18658,6 +18640,7 @@ export interface BillingProviderModuleInput {
   upsertBillingProductFunction?: string;
   upsertBillingSubscriptionFunction?: string;
   upsertInvoiceFunction?: string;
+  usageSyncShardCount?: number;
 }
 /** An input for mutations affecting `Blueprint` */
 export interface BlueprintInput {
@@ -19327,8 +19310,6 @@ export interface EntityTypeProvisionInput {
    */
   namespaces?: Record<string, unknown>;
   outAgentModuleId?: string;
-  /** Output: the UUID of the generated buckets table (e.g. data_room_buckets). Populated by the trigger when storage is non-NULL and non-empty. */
-  outBucketsTableId?: string;
   outDefinitionsTableId?: string;
   /**
    * Output: the UUID of the created entity table. Populated by the trigger.
@@ -19338,8 +19319,6 @@ export interface EntityTypeProvisionInput {
   /** Output: the name of the created entity table (e.g. 'data_rooms'). Populated by the trigger. */
   outEntityTableName?: string;
   outExecutionLogsTableId?: string;
-  /** Output: the UUID of the generated files table (e.g. data_room_files). Populated by the trigger when storage is non-NULL and non-empty. */
-  outFilesTableId?: string;
   outFunctionModuleId?: string;
   outGraphModuleId?: string;
   outGraphsTableId?: string;
@@ -19375,9 +19354,6 @@ export interface EntityTypeProvisionInput {
    *      Populated by the trigger when namespaces is non-NULL. NULL otherwise.
    */
   outNamespacesTableId?: string;
-  outPathSharesTableId?: string;
-  /** Output: the UUID of the storage_module row created for this entity type. Populated by the trigger when storage is non-NULL and non-empty. */
-  outStorageModuleId?: string;
   /**
    * Prefix of the parent entity type. The trigger resolves this to a membership_type integer
    *      by looking up memberships_module WHERE prefix = parent_entity.
@@ -19417,7 +19393,6 @@ export interface EntityTypeProvisionInput {
    *        - key                           (text) module discriminator, max 16 chars, lowercase snake_case.
    *                                               Defaults to 'default' (omitted from table names).
    *                                               Non-default keys become infixes: {prefix}_{key}_buckets.
-   *                                               (storage_key accepted for backward compat)
    *        - upload_url_expiry_seconds     (integer) presigned PUT URL expiry override
    *        - download_url_expiry_seconds   (integer) presigned GET URL expiry override
    *        - default_max_file_size         (bigint)  global max file size in bytes for this module
@@ -19434,7 +19409,7 @@ export interface EntityTypeProvisionInput {
    *          Each bucket: { name (required), description, is_public, allowed_mime_types, max_file_size, allowed_origins }
    *        - provisions                    (jsonb object) per-table customization keyed by "files" or "buckets".
    *                                               Each value: { nodes, fields, grants, use_rls, policies }.
-   *      Example (single module, backward compat):
+   *      Example (single module):
    *        storage := '[{"buckets": [{"name": "documents"}]}]'::jsonb
    *      Example (multi-module):
    *        storage := '[{"has_path_shares": true, "buckets": [{"name": "documents"}]}, {"key": "fn", "has_custom_keys": true, "buckets": [{"name": "functions"}]}]'::jsonb
@@ -20164,7 +20139,6 @@ export interface PlansModuleInput {
   planLimitsTableId?: string;
   planLimitsTableName?: string;
   planMeterLimitsTableId?: string;
-  planOverridesTableId?: string;
   planPricingTableId?: string;
   plansTableId?: string;
   plansTableName?: string;

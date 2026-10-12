@@ -1121,6 +1121,32 @@ export interface FunctionInvocation {
   /** Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set. */
   taskIdentifier?: string | null;
 }
+/** Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) */
+export interface FunctionSchedule {
+  /** User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after. */
+  actorId?: string | null;
+  createdAt?: string | null;
+  /** Database that owns this resource (database-scoped isolation) */
+  databaseId?: string | null;
+  /** Human-readable description of what this schedule does */
+  description?: string | null;
+  /** Function definition this schedule invokes */
+  functionDefinitionId?: string | null;
+  id: string;
+  /** Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it. */
+  isActive?: boolean | null;
+  /** Human-readable schedule name */
+  name?: string | null;
+  /** Job payload passed to the function on each scheduled firing */
+  payload?: Record<string, unknown> | null;
+  /** Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...}) */
+  scheduleInfo?: Record<string, unknown> | null;
+  /** System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag. */
+  suspendedAt?: string | null;
+  /** Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended. */
+  suspendedReason?: string | null;
+  updatedAt?: string | null;
+}
 export interface GetAllTreeNodesRecord {
   data?: Record<string, unknown> | null;
   path?: string[] | null;
@@ -1708,6 +1734,30 @@ export interface PlatformFunctionInvocation {
   status?: string | null;
   /** Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set. */
   taskIdentifier?: string | null;
+}
+/** Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs) */
+export interface PlatformFunctionSchedule {
+  /** User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after. */
+  actorId?: string | null;
+  createdAt?: string | null;
+  /** Human-readable description of what this schedule does */
+  description?: string | null;
+  /** Function definition this schedule invokes */
+  functionDefinitionId?: string | null;
+  id: string;
+  /** Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it. */
+  isActive?: boolean | null;
+  /** Human-readable schedule name */
+  name?: string | null;
+  /** Job payload passed to the function on each scheduled firing */
+  payload?: Record<string, unknown> | null;
+  /** Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...}) */
+  scheduleInfo?: Record<string, unknown> | null;
+  /** System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag. */
+  suspendedAt?: string | null;
+  /** Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended. */
+  suspendedReason?: string | null;
+  updatedAt?: string | null;
 }
 /** Container image catalog: images available to run as functions, resources, and builds */
 export interface PlatformImage {
@@ -2376,9 +2426,9 @@ export interface PlatformResource {
   status?: string | null;
   /** Observed state from K8s — populated by handlers after reconciliation (service_url, clone_url, replicas, etc.) */
   statusObserved?: Record<string, unknown> | null;
-  /** Storage class/tier, derived from the legacy spec.storage_class else spec.storage[0].class (NULL if unset) */
+  /** Storage class/tier, derived from spec.storage[0].class (NULL if unset) */
   storageClass?: string | null;
-  /** Declared persistent volume bytes per pod, summed over spec.storage[] plus the legacy spec.storage_size (NULL if none declared) */
+  /** Declared persistent volume bytes per pod, summed over spec.storage[] (NULL if none declared) */
   storageSizeBytes?: string | null;
   /** Total declared persistent volume bytes for the resource: per-pod bytes times replicas for StatefulSet (per-ordinal claims), per-pod bytes otherwise (claims shared across replicas) */
   storageTotalBytes?: string | null;
@@ -3176,9 +3226,9 @@ export interface Resource {
   status?: string | null;
   /** Observed state from K8s — populated by handlers after reconciliation (service_url, clone_url, replicas, etc.) */
   statusObserved?: Record<string, unknown> | null;
-  /** Storage class/tier, derived from the legacy spec.storage_class else spec.storage[0].class (NULL if unset) */
+  /** Storage class/tier, derived from spec.storage[0].class (NULL if unset) */
   storageClass?: string | null;
-  /** Declared persistent volume bytes per pod, summed over spec.storage[] plus the legacy spec.storage_size (NULL if none declared) */
+  /** Declared persistent volume bytes per pod, summed over spec.storage[] (NULL if none declared) */
   storageSizeBytes?: string | null;
   /** Total declared persistent volume bytes for the resource: per-pod bytes times replicas for StatefulSet (per-ordinal claims), per-pod bytes otherwise (claims shared across replicas) */
   storageTotalBytes?: string | null;
@@ -3558,6 +3608,7 @@ export interface FunctionDefinitionRelations {
   graph?: DatabaseFunctionGraph | null;
   functionApiBindings?: ConnectionResult<FunctionApiBinding>;
   functionCapabilityBindingsByFunctionId?: ConnectionResult<FunctionCapabilityBinding>;
+  functionSchedules?: ConnectionResult<FunctionSchedule>;
   webhookEndpoints?: ConnectionResult<WebhookEndpoint>;
 }
 export interface FunctionDeploymentRelations {
@@ -3582,6 +3633,9 @@ export interface FunctionGraphStoreRelations {}
 export interface FunctionInvocationAttemptRelations {}
 export interface FunctionInvocationRelations {
   apiBinding?: FunctionApiBinding | null;
+}
+export interface FunctionScheduleRelations {
+  functionDefinition?: FunctionDefinition | null;
 }
 export interface GetAllTreeNodesRecordRelations {}
 export interface ImageRelations {
@@ -3627,6 +3681,7 @@ export interface PlatformFunctionDefinitionRelations {
   graph?: FunctionGraph | null;
   platformFunctionApiBindingsByFunctionDefinitionId?: ConnectionResult<PlatformFunctionApiBinding>;
   platformFunctionCapabilityBindingsByFunctionId?: ConnectionResult<PlatformFunctionCapabilityBinding>;
+  platformFunctionSchedulesByFunctionDefinitionId?: ConnectionResult<PlatformFunctionSchedule>;
   platformWebhookEndpointsByFunctionDefinitionId?: ConnectionResult<PlatformWebhookEndpoint>;
 }
 export interface PlatformFunctionDeploymentRelations {
@@ -3637,6 +3692,9 @@ export interface PlatformFunctionExecutionLogRelations {}
 export interface PlatformFunctionInvocationAttemptRelations {}
 export interface PlatformFunctionInvocationRelations {
   apiBinding?: PlatformFunctionApiBinding | null;
+}
+export interface PlatformFunctionScheduleRelations {
+  functionDefinition?: PlatformFunctionDefinition | null;
 }
 export interface PlatformImageRelations {
   platformImageGrantsByImageId?: ConnectionResult<PlatformImageGrant>;
@@ -3896,6 +3954,7 @@ export type FunctionGraphStoreWithRelations = FunctionGraphStore & FunctionGraph
 export type FunctionInvocationAttemptWithRelations = FunctionInvocationAttempt &
   FunctionInvocationAttemptRelations;
 export type FunctionInvocationWithRelations = FunctionInvocation & FunctionInvocationRelations;
+export type FunctionScheduleWithRelations = FunctionSchedule & FunctionScheduleRelations;
 export type GetAllTreeNodesRecordWithRelations = GetAllTreeNodesRecord &
   GetAllTreeNodesRecordRelations;
 export type ImageWithRelations = Image & ImageRelations;
@@ -3929,6 +3988,8 @@ export type PlatformFunctionInvocationAttemptWithRelations = PlatformFunctionInv
   PlatformFunctionInvocationAttemptRelations;
 export type PlatformFunctionInvocationWithRelations = PlatformFunctionInvocation &
   PlatformFunctionInvocationRelations;
+export type PlatformFunctionScheduleWithRelations = PlatformFunctionSchedule &
+  PlatformFunctionScheduleRelations;
 export type PlatformImageWithRelations = PlatformImage & PlatformImageRelations;
 export type PlatformImageGrantWithRelations = PlatformImageGrant & PlatformImageGrantRelations;
 export type PlatformInfraCommitWithRelations = PlatformInfraCommit & PlatformInfraCommitRelations;
@@ -4365,6 +4426,12 @@ export type FunctionDefinitionSelect = {
     filter?: FunctionCapabilityBindingFilter;
     orderBy?: FunctionCapabilityBindingOrderBy[];
   };
+  functionSchedules?: {
+    select: FunctionScheduleSelect;
+    first?: number;
+    filter?: FunctionScheduleFilter;
+    orderBy?: FunctionScheduleOrderBy[];
+  };
   webhookEndpoints?: {
     select: WebhookEndpointSelect;
     first?: number;
@@ -4598,6 +4665,24 @@ export type FunctionInvocationSelect = {
   taskIdentifier?: boolean;
   apiBinding?: {
     select: FunctionApiBindingSelect;
+  };
+};
+export type FunctionScheduleSelect = {
+  actorId?: boolean;
+  createdAt?: boolean;
+  databaseId?: boolean;
+  description?: boolean;
+  functionDefinitionId?: boolean;
+  id?: boolean;
+  isActive?: boolean;
+  name?: boolean;
+  payload?: boolean;
+  scheduleInfo?: boolean;
+  suspendedAt?: boolean;
+  suspendedReason?: boolean;
+  updatedAt?: boolean;
+  functionDefinition?: {
+    select: FunctionDefinitionSelect;
   };
 };
 export type GetAllTreeNodesRecordSelect = {
@@ -4936,6 +5021,12 @@ export type PlatformFunctionDefinitionSelect = {
     filter?: PlatformFunctionCapabilityBindingFilter;
     orderBy?: PlatformFunctionCapabilityBindingOrderBy[];
   };
+  platformFunctionSchedulesByFunctionDefinitionId?: {
+    select: PlatformFunctionScheduleSelect;
+    first?: number;
+    filter?: PlatformFunctionScheduleFilter;
+    orderBy?: PlatformFunctionScheduleOrderBy[];
+  };
   platformWebhookEndpointsByFunctionDefinitionId?: {
     select: PlatformWebhookEndpointSelect;
     first?: number;
@@ -5033,6 +5124,23 @@ export type PlatformFunctionInvocationSelect = {
   taskIdentifier?: boolean;
   apiBinding?: {
     select: PlatformFunctionApiBindingSelect;
+  };
+};
+export type PlatformFunctionScheduleSelect = {
+  actorId?: boolean;
+  createdAt?: boolean;
+  description?: boolean;
+  functionDefinitionId?: boolean;
+  id?: boolean;
+  isActive?: boolean;
+  name?: boolean;
+  payload?: boolean;
+  scheduleInfo?: boolean;
+  suspendedAt?: boolean;
+  suspendedReason?: boolean;
+  updatedAt?: boolean;
+  functionDefinition?: {
+    select: PlatformFunctionDefinitionSelect;
   };
 };
 export type PlatformImageSelect = {
@@ -7266,6 +7374,10 @@ export interface FunctionDefinitionFilter {
   functionCapabilityBindingsByFunctionIdExist?: boolean;
   /** Filter by the object’s `functionColumns` field. */
   functionColumns?: JSONFilter;
+  /** Filter by the object’s `functionSchedules` relation. */
+  functionSchedules?: FunctionDefinitionToManyFunctionScheduleFilter;
+  /** `functionSchedules` exist. */
+  functionSchedulesExist?: boolean;
   /** Filter by the object’s `graph` relation. */
   graph?: DatabaseFunctionGraphFilter;
   /** A related `graph` exists. */
@@ -7820,6 +7932,42 @@ export interface FunctionInvocationFilter {
   status?: StringFilter;
   /** Filter by the object’s `taskIdentifier` field. */
   taskIdentifier?: StringFilter;
+}
+export interface FunctionScheduleFilter {
+  /** Filter by the object’s `actorId` field. */
+  actorId?: UUIDFilter;
+  /** Checks for all expressions in this list. */
+  and?: FunctionScheduleFilter[];
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: DatetimeFilter;
+  /** Filter by the object’s `databaseId` field. */
+  databaseId?: UUIDFilter;
+  /** Filter by the object’s `description` field. */
+  description?: StringFilter;
+  /** Filter by the object’s `functionDefinition` relation. */
+  functionDefinition?: FunctionDefinitionFilter;
+  /** Filter by the object’s `functionDefinitionId` field. */
+  functionDefinitionId?: UUIDFilter;
+  /** Filter by the object’s `id` field. */
+  id?: UUIDFilter;
+  /** Filter by the object’s `isActive` field. */
+  isActive?: BooleanFilter;
+  /** Filter by the object’s `name` field. */
+  name?: StringFilter;
+  /** Negates the expression. */
+  not?: FunctionScheduleFilter;
+  /** Checks for any expressions in this list. */
+  or?: FunctionScheduleFilter[];
+  /** Filter by the object’s `payload` field. */
+  payload?: JSONFilter;
+  /** Filter by the object’s `scheduleInfo` field. */
+  scheduleInfo?: JSONFilter;
+  /** Filter by the object’s `suspendedAt` field. */
+  suspendedAt?: DatetimeFilter;
+  /** Filter by the object’s `suspendedReason` field. */
+  suspendedReason?: StringFilter;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: DatetimeFilter;
 }
 export interface GetAllTreeNodesRecordFilter {
   data?: JSONFilter;
@@ -8388,6 +8536,10 @@ export interface PlatformFunctionDefinitionFilter {
   platformFunctionCapabilityBindingsByFunctionId?: PlatformFunctionDefinitionToManyPlatformFunctionCapabilityBindingFilter;
   /** `platformFunctionCapabilityBindingsByFunctionId` exist. */
   platformFunctionCapabilityBindingsByFunctionIdExist?: boolean;
+  /** Filter by the object’s `platformFunctionSchedulesByFunctionDefinitionId` relation. */
+  platformFunctionSchedulesByFunctionDefinitionId?: PlatformFunctionDefinitionToManyPlatformFunctionScheduleFilter;
+  /** `platformFunctionSchedulesByFunctionDefinitionId` exist. */
+  platformFunctionSchedulesByFunctionDefinitionIdExist?: boolean;
   /** Filter by the object’s `platformWebhookEndpointsByFunctionDefinitionId` relation. */
   platformWebhookEndpointsByFunctionDefinitionId?: PlatformFunctionDefinitionToManyPlatformWebhookEndpointFilter;
   /** `platformWebhookEndpointsByFunctionDefinitionId` exist. */
@@ -8632,6 +8784,40 @@ export interface PlatformFunctionInvocationFilter {
   status?: StringFilter;
   /** Filter by the object’s `taskIdentifier` field. */
   taskIdentifier?: StringFilter;
+}
+export interface PlatformFunctionScheduleFilter {
+  /** Filter by the object’s `actorId` field. */
+  actorId?: UUIDFilter;
+  /** Checks for all expressions in this list. */
+  and?: PlatformFunctionScheduleFilter[];
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: DatetimeFilter;
+  /** Filter by the object’s `description` field. */
+  description?: StringFilter;
+  /** Filter by the object’s `functionDefinition` relation. */
+  functionDefinition?: PlatformFunctionDefinitionFilter;
+  /** Filter by the object’s `functionDefinitionId` field. */
+  functionDefinitionId?: UUIDFilter;
+  /** Filter by the object’s `id` field. */
+  id?: UUIDFilter;
+  /** Filter by the object’s `isActive` field. */
+  isActive?: BooleanFilter;
+  /** Filter by the object’s `name` field. */
+  name?: StringFilter;
+  /** Negates the expression. */
+  not?: PlatformFunctionScheduleFilter;
+  /** Checks for any expressions in this list. */
+  or?: PlatformFunctionScheduleFilter[];
+  /** Filter by the object’s `payload` field. */
+  payload?: JSONFilter;
+  /** Filter by the object’s `scheduleInfo` field. */
+  scheduleInfo?: JSONFilter;
+  /** Filter by the object’s `suspendedAt` field. */
+  suspendedAt?: DatetimeFilter;
+  /** Filter by the object’s `suspendedReason` field. */
+  suspendedReason?: StringFilter;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: DatetimeFilter;
 }
 export interface PlatformImageFilter {
   /** Checks for all expressions in this list. */
@@ -12547,6 +12733,36 @@ export type FunctionInvocationOrderBy =
   | 'STATUS_DESC'
   | 'TASK_IDENTIFIER_ASC'
   | 'TASK_IDENTIFIER_DESC';
+export type FunctionScheduleOrderBy =
+  | 'ACTOR_ID_ASC'
+  | 'ACTOR_ID_DESC'
+  | 'CREATED_AT_ASC'
+  | 'CREATED_AT_DESC'
+  | 'DATABASE_ID_ASC'
+  | 'DATABASE_ID_DESC'
+  | 'DESCRIPTION_ASC'
+  | 'DESCRIPTION_DESC'
+  | 'FUNCTION_DEFINITION_ID_ASC'
+  | 'FUNCTION_DEFINITION_ID_DESC'
+  | 'ID_ASC'
+  | 'ID_DESC'
+  | 'IS_ACTIVE_ASC'
+  | 'IS_ACTIVE_DESC'
+  | 'NAME_ASC'
+  | 'NAME_DESC'
+  | 'NATURAL'
+  | 'PAYLOAD_ASC'
+  | 'PAYLOAD_DESC'
+  | 'PRIMARY_KEY_ASC'
+  | 'PRIMARY_KEY_DESC'
+  | 'SCHEDULE_INFO_ASC'
+  | 'SCHEDULE_INFO_DESC'
+  | 'SUSPENDED_AT_ASC'
+  | 'SUSPENDED_AT_DESC'
+  | 'SUSPENDED_REASON_ASC'
+  | 'SUSPENDED_REASON_DESC'
+  | 'UPDATED_AT_ASC'
+  | 'UPDATED_AT_DESC';
 export type GetAllTreeNodesRecordsOrderBy =
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
@@ -13207,6 +13423,34 @@ export type PlatformFunctionInvocationOrderBy =
   | 'STATUS_DESC'
   | 'TASK_IDENTIFIER_ASC'
   | 'TASK_IDENTIFIER_DESC';
+export type PlatformFunctionScheduleOrderBy =
+  | 'ACTOR_ID_ASC'
+  | 'ACTOR_ID_DESC'
+  | 'CREATED_AT_ASC'
+  | 'CREATED_AT_DESC'
+  | 'DESCRIPTION_ASC'
+  | 'DESCRIPTION_DESC'
+  | 'FUNCTION_DEFINITION_ID_ASC'
+  | 'FUNCTION_DEFINITION_ID_DESC'
+  | 'ID_ASC'
+  | 'ID_DESC'
+  | 'IS_ACTIVE_ASC'
+  | 'IS_ACTIVE_DESC'
+  | 'NAME_ASC'
+  | 'NAME_DESC'
+  | 'NATURAL'
+  | 'PAYLOAD_ASC'
+  | 'PAYLOAD_DESC'
+  | 'PRIMARY_KEY_ASC'
+  | 'PRIMARY_KEY_DESC'
+  | 'SCHEDULE_INFO_ASC'
+  | 'SCHEDULE_INFO_DESC'
+  | 'SUSPENDED_AT_ASC'
+  | 'SUSPENDED_AT_DESC'
+  | 'SUSPENDED_REASON_ASC'
+  | 'SUSPENDED_REASON_DESC'
+  | 'UPDATED_AT_ASC'
+  | 'UPDATED_AT_DESC';
 export type PlatformImageOrderBy =
   | 'CREATED_AT_ASC'
   | 'CREATED_AT_DESC'
@@ -16695,6 +16939,42 @@ export interface DeleteFunctionInvocationInput {
   clientMutationId?: string;
   id: string;
 }
+export interface CreateFunctionScheduleInput {
+  clientMutationId?: string;
+  functionSchedule: {
+    actorId?: string;
+    databaseId: string;
+    description?: string;
+    functionDefinitionId: string;
+    isActive?: boolean;
+    name: string;
+    payload?: Record<string, unknown>;
+    scheduleInfo: Record<string, unknown>;
+    suspendedAt?: string;
+    suspendedReason?: string;
+  };
+}
+export interface FunctionSchedulePatch {
+  actorId?: string | null;
+  databaseId?: string | null;
+  description?: string | null;
+  functionDefinitionId?: string | null;
+  isActive?: boolean | null;
+  name?: string | null;
+  payload?: Record<string, unknown> | null;
+  scheduleInfo?: Record<string, unknown> | null;
+  suspendedAt?: string | null;
+  suspendedReason?: string | null;
+}
+export interface UpdateFunctionScheduleInput {
+  clientMutationId?: string;
+  id: string;
+  functionSchedulePatch: FunctionSchedulePatch;
+}
+export interface DeleteFunctionScheduleInput {
+  clientMutationId?: string;
+  id: string;
+}
 export interface CreateGetAllTreeNodesRecordInput {
   clientMutationId?: string;
   getAllTreeNodesRecord: {
@@ -17514,6 +17794,40 @@ export interface UpdatePlatformFunctionInvocationInput {
   platformFunctionInvocationPatch: PlatformFunctionInvocationPatch;
 }
 export interface DeletePlatformFunctionInvocationInput {
+  clientMutationId?: string;
+  id: string;
+}
+export interface CreatePlatformFunctionScheduleInput {
+  clientMutationId?: string;
+  platformFunctionSchedule: {
+    actorId?: string;
+    description?: string;
+    functionDefinitionId: string;
+    isActive?: boolean;
+    name: string;
+    payload?: Record<string, unknown>;
+    scheduleInfo: Record<string, unknown>;
+    suspendedAt?: string;
+    suspendedReason?: string;
+  };
+}
+export interface PlatformFunctionSchedulePatch {
+  actorId?: string | null;
+  description?: string | null;
+  functionDefinitionId?: string | null;
+  isActive?: boolean | null;
+  name?: string | null;
+  payload?: Record<string, unknown> | null;
+  scheduleInfo?: Record<string, unknown> | null;
+  suspendedAt?: string | null;
+  suspendedReason?: string | null;
+}
+export interface UpdatePlatformFunctionScheduleInput {
+  clientMutationId?: string;
+  id: string;
+  platformFunctionSchedulePatch: PlatformFunctionSchedulePatch;
+}
+export interface DeletePlatformFunctionScheduleInput {
   clientMutationId?: string;
   id: string;
 }
@@ -20183,6 +20497,7 @@ export const connectionFieldsMap = {
   FunctionDefinition: {
     functionApiBindings: 'FunctionApiBinding',
     functionCapabilityBindingsByFunctionId: 'FunctionCapabilityBinding',
+    functionSchedules: 'FunctionSchedule',
     webhookEndpoints: 'WebhookEndpoint',
   },
   FunctionGraph: {
@@ -20208,6 +20523,7 @@ export const connectionFieldsMap = {
   PlatformFunctionDefinition: {
     platformFunctionApiBindingsByFunctionDefinitionId: 'PlatformFunctionApiBinding',
     platformFunctionCapabilityBindingsByFunctionId: 'PlatformFunctionCapabilityBinding',
+    platformFunctionSchedulesByFunctionDefinitionId: 'PlatformFunctionSchedule',
     platformWebhookEndpointsByFunctionDefinitionId: 'PlatformWebhookEndpoint',
   },
   PlatformImage: {
@@ -20514,6 +20830,15 @@ export interface DatabaseValidateFunctionGraphInput {
   clientMutationId?: string;
   graphId?: string;
 }
+export interface FunctionExecutionLogsAppendInput {
+  clientMutationId?: string;
+  createdAt?: string;
+  invocationId?: string;
+  logLevel?: string;
+  message?: string;
+  metadata?: Record<string, unknown>;
+  taskIdentifier?: string;
+}
 export interface FunctionInvocationsCreateSyncInput {
   clientMutationId?: string;
   entityId?: string;
@@ -20610,6 +20935,15 @@ export interface InsertNodesAtPathsInput {
   paths?: Record<string, unknown>;
   root?: string;
   sId?: string;
+}
+export interface PlatformFunctionExecutionLogsAppendInput {
+  clientMutationId?: string;
+  createdAt?: string;
+  invocationId?: string;
+  logLevel?: string;
+  message?: string;
+  metadata?: Record<string, unknown>;
+  taskIdentifier?: string;
 }
 export interface PlatformFunctionInvocationsCreateSyncInput {
   clientMutationId?: string;
@@ -20876,6 +21210,15 @@ export interface FunctionDefinitionToManyFunctionCapabilityBindingFilter {
   /** Filters to entities where at least one related entity matches. */
   some?: FunctionCapabilityBindingFilter;
 }
+/** A filter to be used against many `FunctionSchedule` object types. All fields are combined with a logical ‘and.’ */
+export interface FunctionDefinitionToManyFunctionScheduleFilter {
+  /** Filters to entities where every related entity matches. */
+  every?: FunctionScheduleFilter;
+  /** Filters to entities where no related entity matches. */
+  none?: FunctionScheduleFilter;
+  /** Filters to entities where at least one related entity matches. */
+  some?: FunctionScheduleFilter;
+}
 /** A filter to be used against many `WebhookEndpoint` object types. All fields are combined with a logical ‘and.’ */
 export interface FunctionDefinitionToManyWebhookEndpointFilter {
   /** Filters to entities where every related entity matches. */
@@ -21045,6 +21388,15 @@ export interface PlatformFunctionDefinitionToManyPlatformFunctionCapabilityBindi
   none?: PlatformFunctionCapabilityBindingFilter;
   /** Filters to entities where at least one related entity matches. */
   some?: PlatformFunctionCapabilityBindingFilter;
+}
+/** A filter to be used against many `PlatformFunctionSchedule` object types. All fields are combined with a logical ‘and.’ */
+export interface PlatformFunctionDefinitionToManyPlatformFunctionScheduleFilter {
+  /** Filters to entities where every related entity matches. */
+  every?: PlatformFunctionScheduleFilter;
+  /** Filters to entities where no related entity matches. */
+  none?: PlatformFunctionScheduleFilter;
+  /** Filters to entities where at least one related entity matches. */
+  some?: PlatformFunctionScheduleFilter;
 }
 /** A filter to be used against many `PlatformWebhookEndpoint` object types. All fields are combined with a logical ‘and.’ */
 export interface PlatformFunctionDefinitionToManyPlatformWebhookEndpointFilter {
@@ -22525,6 +22877,32 @@ export interface FunctionInvocationInput {
   /** Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set. */
   taskIdentifier: string;
 }
+/** An input for mutations affecting `FunctionSchedule` */
+export interface FunctionScheduleInput {
+  /** User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after. */
+  actorId?: string;
+  createdAt?: string;
+  /** Database that owns this resource (database-scoped isolation) */
+  databaseId: string;
+  /** Human-readable description of what this schedule does */
+  description?: string;
+  /** Function definition this schedule invokes */
+  functionDefinitionId: string;
+  id?: string;
+  /** Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it. */
+  isActive?: boolean;
+  /** Human-readable schedule name */
+  name: string;
+  /** Job payload passed to the function on each scheduled firing */
+  payload?: Record<string, unknown>;
+  /** Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...}) */
+  scheduleInfo: Record<string, unknown>;
+  /** System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag. */
+  suspendedAt?: string;
+  /** Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended. */
+  suspendedReason?: string;
+  updatedAt?: string;
+}
 /** An input for mutations affecting `Image` */
 export interface ImageInput {
   createdAt?: string;
@@ -23094,6 +23472,30 @@ export interface PlatformFunctionInvocationInput {
   status?: string;
   /** Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set. */
   taskIdentifier: string;
+}
+/** An input for mutations affecting `PlatformFunctionSchedule` */
+export interface PlatformFunctionScheduleInput {
+  /** User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after. */
+  actorId?: string;
+  createdAt?: string;
+  /** Human-readable description of what this schedule does */
+  description?: string;
+  /** Function definition this schedule invokes */
+  functionDefinitionId: string;
+  id?: string;
+  /** Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it. */
+  isActive?: boolean;
+  /** Human-readable schedule name */
+  name: string;
+  /** Job payload passed to the function on each scheduled firing */
+  payload?: Record<string, unknown>;
+  /** Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...}) */
+  scheduleInfo: Record<string, unknown>;
+  /** System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag. */
+  suspendedAt?: string;
+  /** Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended. */
+  suspendedReason?: string;
+  updatedAt?: string;
 }
 /** An input for mutations affecting `PlatformImage` */
 export interface PlatformImageInput {
@@ -24600,6 +25002,10 @@ export interface FunctionDefinitionFilter {
   functionCapabilityBindingsByFunctionIdExist?: boolean;
   /** Filter by the object’s `functionColumns` field. */
   functionColumns?: JSONFilter;
+  /** Filter by the object’s `functionSchedules` relation. */
+  functionSchedules?: FunctionDefinitionToManyFunctionScheduleFilter;
+  /** `functionSchedules` exist. */
+  functionSchedulesExist?: boolean;
   /** Filter by the object’s `graph` relation. */
   graph?: DatabaseFunctionGraphFilter;
   /** A related `graph` exists. */
@@ -24867,6 +25273,43 @@ export interface FunctionCapabilityBindingFilter {
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: DatetimeFilter;
 }
+/** A filter to be used against `FunctionSchedule` object types. All fields are combined with a logical ‘and.’ */
+export interface FunctionScheduleFilter {
+  /** Filter by the object’s `actorId` field. */
+  actorId?: UUIDFilter;
+  /** Checks for all expressions in this list. */
+  and?: FunctionScheduleFilter[];
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: DatetimeFilter;
+  /** Filter by the object’s `databaseId` field. */
+  databaseId?: UUIDFilter;
+  /** Filter by the object’s `description` field. */
+  description?: StringFilter;
+  /** Filter by the object’s `functionDefinition` relation. */
+  functionDefinition?: FunctionDefinitionFilter;
+  /** Filter by the object’s `functionDefinitionId` field. */
+  functionDefinitionId?: UUIDFilter;
+  /** Filter by the object’s `id` field. */
+  id?: UUIDFilter;
+  /** Filter by the object’s `isActive` field. */
+  isActive?: BooleanFilter;
+  /** Filter by the object’s `name` field. */
+  name?: StringFilter;
+  /** Negates the expression. */
+  not?: FunctionScheduleFilter;
+  /** Checks for any expressions in this list. */
+  or?: FunctionScheduleFilter[];
+  /** Filter by the object’s `payload` field. */
+  payload?: JSONFilter;
+  /** Filter by the object’s `scheduleInfo` field. */
+  scheduleInfo?: JSONFilter;
+  /** Filter by the object’s `suspendedAt` field. */
+  suspendedAt?: DatetimeFilter;
+  /** Filter by the object’s `suspendedReason` field. */
+  suspendedReason?: StringFilter;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: DatetimeFilter;
+}
 /** A filter to be used against `WebhookEndpoint` object types. All fields are combined with a logical ‘and.’ */
 export interface WebhookEndpointFilter {
   /** Filter by the object’s `active` field. */
@@ -25063,6 +25506,10 @@ export interface PlatformFunctionDefinitionFilter {
   platformFunctionCapabilityBindingsByFunctionId?: PlatformFunctionDefinitionToManyPlatformFunctionCapabilityBindingFilter;
   /** `platformFunctionCapabilityBindingsByFunctionId` exist. */
   platformFunctionCapabilityBindingsByFunctionIdExist?: boolean;
+  /** Filter by the object’s `platformFunctionSchedulesByFunctionDefinitionId` relation. */
+  platformFunctionSchedulesByFunctionDefinitionId?: PlatformFunctionDefinitionToManyPlatformFunctionScheduleFilter;
+  /** `platformFunctionSchedulesByFunctionDefinitionId` exist. */
+  platformFunctionSchedulesByFunctionDefinitionIdExist?: boolean;
   /** Filter by the object’s `platformWebhookEndpointsByFunctionDefinitionId` relation. */
   platformWebhookEndpointsByFunctionDefinitionId?: PlatformFunctionDefinitionToManyPlatformWebhookEndpointFilter;
   /** `platformWebhookEndpointsByFunctionDefinitionId` exist. */
@@ -25664,6 +26111,41 @@ export interface PlatformFunctionCapabilityBindingFilter {
   not?: PlatformFunctionCapabilityBindingFilter;
   /** Checks for any expressions in this list. */
   or?: PlatformFunctionCapabilityBindingFilter[];
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: DatetimeFilter;
+}
+/** A filter to be used against `PlatformFunctionSchedule` object types. All fields are combined with a logical ‘and.’ */
+export interface PlatformFunctionScheduleFilter {
+  /** Filter by the object’s `actorId` field. */
+  actorId?: UUIDFilter;
+  /** Checks for all expressions in this list. */
+  and?: PlatformFunctionScheduleFilter[];
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: DatetimeFilter;
+  /** Filter by the object’s `description` field. */
+  description?: StringFilter;
+  /** Filter by the object’s `functionDefinition` relation. */
+  functionDefinition?: PlatformFunctionDefinitionFilter;
+  /** Filter by the object’s `functionDefinitionId` field. */
+  functionDefinitionId?: UUIDFilter;
+  /** Filter by the object’s `id` field. */
+  id?: UUIDFilter;
+  /** Filter by the object’s `isActive` field. */
+  isActive?: BooleanFilter;
+  /** Filter by the object’s `name` field. */
+  name?: StringFilter;
+  /** Negates the expression. */
+  not?: PlatformFunctionScheduleFilter;
+  /** Checks for any expressions in this list. */
+  or?: PlatformFunctionScheduleFilter[];
+  /** Filter by the object’s `payload` field. */
+  payload?: JSONFilter;
+  /** Filter by the object’s `scheduleInfo` field. */
+  scheduleInfo?: JSONFilter;
+  /** Filter by the object’s `suspendedAt` field. */
+  suspendedAt?: DatetimeFilter;
+  /** Filter by the object’s `suspendedReason` field. */
+  suspendedReason?: StringFilter;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: DatetimeFilter;
 }
@@ -28417,6 +28899,12 @@ export type DatabaseValidateFunctionGraphPayloadSelect = {
   clientMutationId?: boolean;
   result?: boolean;
 };
+export interface FunctionExecutionLogsAppendPayload {
+  clientMutationId?: string | null;
+}
+export type FunctionExecutionLogsAppendPayloadSelect = {
+  clientMutationId?: boolean;
+};
 export interface FunctionInvocationsCreateSyncPayload {
   clientMutationId?: string | null;
   functionInvocationEdge?: FunctionInvocationEdge | null;
@@ -28524,6 +29012,12 @@ export interface InsertNodesAtPathsPayload {
 export type InsertNodesAtPathsPayloadSelect = {
   clientMutationId?: boolean;
   result?: boolean;
+};
+export interface PlatformFunctionExecutionLogsAppendPayload {
+  clientMutationId?: string | null;
+}
+export type PlatformFunctionExecutionLogsAppendPayloadSelect = {
+  clientMutationId?: boolean;
 };
 export interface PlatformFunctionInvocationsCreateSyncPayload {
   clientMutationId?: string | null;
@@ -30007,6 +30501,51 @@ export type DeleteFunctionInvocationPayloadSelect = {
     select: FunctionInvocationEdgeSelect;
   };
 };
+export interface CreateFunctionSchedulePayload {
+  clientMutationId?: string | null;
+  /** The `FunctionSchedule` that was created by this mutation. */
+  functionSchedule?: FunctionSchedule | null;
+  functionScheduleEdge?: FunctionScheduleEdge | null;
+}
+export type CreateFunctionSchedulePayloadSelect = {
+  clientMutationId?: boolean;
+  functionSchedule?: {
+    select: FunctionScheduleSelect;
+  };
+  functionScheduleEdge?: {
+    select: FunctionScheduleEdgeSelect;
+  };
+};
+export interface UpdateFunctionSchedulePayload {
+  clientMutationId?: string | null;
+  /** The `FunctionSchedule` that was updated by this mutation. */
+  functionSchedule?: FunctionSchedule | null;
+  functionScheduleEdge?: FunctionScheduleEdge | null;
+}
+export type UpdateFunctionSchedulePayloadSelect = {
+  clientMutationId?: boolean;
+  functionSchedule?: {
+    select: FunctionScheduleSelect;
+  };
+  functionScheduleEdge?: {
+    select: FunctionScheduleEdgeSelect;
+  };
+};
+export interface DeleteFunctionSchedulePayload {
+  clientMutationId?: string | null;
+  /** The `FunctionSchedule` that was deleted by this mutation. */
+  functionSchedule?: FunctionSchedule | null;
+  functionScheduleEdge?: FunctionScheduleEdge | null;
+}
+export type DeleteFunctionSchedulePayloadSelect = {
+  clientMutationId?: boolean;
+  functionSchedule?: {
+    select: FunctionScheduleSelect;
+  };
+  functionScheduleEdge?: {
+    select: FunctionScheduleEdgeSelect;
+  };
+};
 export interface CreateImagePayload {
   clientMutationId?: string | null;
   /** The `Image` that was created by this mutation. */
@@ -30905,6 +31444,51 @@ export type DeletePlatformFunctionInvocationPayloadSelect = {
   };
   platformFunctionInvocationEdge?: {
     select: PlatformFunctionInvocationEdgeSelect;
+  };
+};
+export interface CreatePlatformFunctionSchedulePayload {
+  clientMutationId?: string | null;
+  /** The `PlatformFunctionSchedule` that was created by this mutation. */
+  platformFunctionSchedule?: PlatformFunctionSchedule | null;
+  platformFunctionScheduleEdge?: PlatformFunctionScheduleEdge | null;
+}
+export type CreatePlatformFunctionSchedulePayloadSelect = {
+  clientMutationId?: boolean;
+  platformFunctionSchedule?: {
+    select: PlatformFunctionScheduleSelect;
+  };
+  platformFunctionScheduleEdge?: {
+    select: PlatformFunctionScheduleEdgeSelect;
+  };
+};
+export interface UpdatePlatformFunctionSchedulePayload {
+  clientMutationId?: string | null;
+  /** The `PlatformFunctionSchedule` that was updated by this mutation. */
+  platformFunctionSchedule?: PlatformFunctionSchedule | null;
+  platformFunctionScheduleEdge?: PlatformFunctionScheduleEdge | null;
+}
+export type UpdatePlatformFunctionSchedulePayloadSelect = {
+  clientMutationId?: boolean;
+  platformFunctionSchedule?: {
+    select: PlatformFunctionScheduleSelect;
+  };
+  platformFunctionScheduleEdge?: {
+    select: PlatformFunctionScheduleEdgeSelect;
+  };
+};
+export interface DeletePlatformFunctionSchedulePayload {
+  clientMutationId?: string | null;
+  /** The `PlatformFunctionSchedule` that was deleted by this mutation. */
+  platformFunctionSchedule?: PlatformFunctionSchedule | null;
+  platformFunctionScheduleEdge?: PlatformFunctionScheduleEdge | null;
+}
+export type DeletePlatformFunctionSchedulePayloadSelect = {
+  clientMutationId?: boolean;
+  platformFunctionSchedule?: {
+    select: PlatformFunctionScheduleSelect;
+  };
+  platformFunctionScheduleEdge?: {
+    select: PlatformFunctionScheduleEdgeSelect;
   };
 };
 export interface CreatePlatformImagePayload {
@@ -33721,6 +34305,18 @@ export type FunctionInvocationAttemptEdgeSelect = {
     select: FunctionInvocationAttemptSelect;
   };
 };
+/** A `FunctionSchedule` edge in the connection. */
+export interface FunctionScheduleEdge {
+  cursor?: string | null;
+  /** The `FunctionSchedule` at the end of the edge. */
+  node?: FunctionSchedule | null;
+}
+export type FunctionScheduleEdgeSelect = {
+  cursor?: boolean;
+  node?: {
+    select: FunctionScheduleSelect;
+  };
+};
 /** A `Image` edge in the connection. */
 export interface ImageEdge {
   cursor?: string | null;
@@ -33935,6 +34531,18 @@ export type PlatformFunctionInvocationAttemptEdgeSelect = {
   cursor?: boolean;
   node?: {
     select: PlatformFunctionInvocationAttemptSelect;
+  };
+};
+/** A `PlatformFunctionSchedule` edge in the connection. */
+export interface PlatformFunctionScheduleEdge {
+  cursor?: string | null;
+  /** The `PlatformFunctionSchedule` at the end of the edge. */
+  node?: PlatformFunctionSchedule | null;
+}
+export type PlatformFunctionScheduleEdgeSelect = {
+  cursor?: boolean;
+  node?: {
+    select: PlatformFunctionScheduleSelect;
   };
 };
 /** A `PlatformImage` edge in the connection. */

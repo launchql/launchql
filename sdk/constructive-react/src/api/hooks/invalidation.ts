@@ -47,6 +47,7 @@ import {
   hostnameBindingKeys,
   identityProviderRegistryKeys,
   indexKeys,
+  listSuspendedDatabasesRecordKeys,
   managedDomainKeys,
   nodeTypeRegistryKeys,
   pageKeys,
@@ -645,6 +646,23 @@ export const invalidate = {
     /** Invalidate a specific index */ detail: (queryClient: QueryClient, id: string | number) =>
       queryClient.invalidateQueries({
         queryKey: indexKeys.detail(id),
+      }),
+  },
+  /** Invalidate listSuspendedDatabasesRecord queries */ listSuspendedDatabasesRecord: {
+    /** Invalidate all listSuspendedDatabasesRecord queries */ all: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: listSuspendedDatabasesRecordKeys.all,
+      }),
+    /** Invalidate listSuspendedDatabasesRecord list queries */ lists: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: listSuspendedDatabasesRecordKeys.lists(),
+      }),
+    /** Invalidate a specific listSuspendedDatabasesRecord */ detail: (
+      queryClient: QueryClient,
+      id: string | number
+    ) =>
+      queryClient.invalidateQueries({
+        queryKey: listSuspendedDatabasesRecordKeys.detail(id),
       }),
   },
   /** Invalidate managedDomain queries */ managedDomain: {
@@ -1862,6 +1880,14 @@ export const remove = {
   /** Remove index from cache */ index: (queryClient: QueryClient, id: string | number) => {
     queryClient.removeQueries({
       queryKey: indexKeys.detail(id),
+    });
+  },
+  /** Remove listSuspendedDatabasesRecord from cache */ listSuspendedDatabasesRecord: (
+    queryClient: QueryClient,
+    id: string | number
+  ) => {
+    queryClient.removeQueries({
+      queryKey: listSuspendedDatabasesRecordKeys.detail(id),
     });
   },
   /** Remove managedDomain from cache */ managedDomain: (

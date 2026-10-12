@@ -66,6 +66,8 @@ export * from './useIdentityProviderRegistriesQuery';
 export * from './useIdentityProviderRegistryQuery';
 export * from './useIndicesQuery';
 export * from './useIndexQuery';
+export * from './useListSuspendedDatabasesQuery';
+export * from './useListSuspendedDatabasesRecordQuery';
 export * from './useManagedDomainsQuery';
 export * from './useManagedDomainQuery';
 export * from './useNodeTypeRegistriesQuery';

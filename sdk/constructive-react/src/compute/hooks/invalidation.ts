@@ -45,6 +45,7 @@ import {
   functionGraphStoreKeys,
   functionInvocationAttemptKeys,
   functionInvocationKeys,
+  functionScheduleKeys,
   getAllTreeNodesRecordKeys,
   imageKeys,
   imageGrantKeys,
@@ -67,6 +68,7 @@ import {
   platformFunctionExecutionLogKeys,
   platformFunctionInvocationAttemptKeys,
   platformFunctionInvocationKeys,
+  platformFunctionScheduleKeys,
   platformImageKeys,
   platformImageGrantKeys,
   platformInfraCommitKeys,
@@ -677,6 +679,23 @@ export const invalidate = {
         queryKey: functionInvocationKeys.detail(id),
       }),
   },
+  /** Invalidate functionSchedule queries */ functionSchedule: {
+    /** Invalidate all functionSchedule queries */ all: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: functionScheduleKeys.all,
+      }),
+    /** Invalidate functionSchedule list queries */ lists: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: functionScheduleKeys.lists(),
+      }),
+    /** Invalidate a specific functionSchedule */ detail: (
+      queryClient: QueryClient,
+      id: string | number
+    ) =>
+      queryClient.invalidateQueries({
+        queryKey: functionScheduleKeys.detail(id),
+      }),
+  },
   /** Invalidate getAllTreeNodesRecord queries */ getAllTreeNodesRecord: {
     /** Invalidate all getAllTreeNodesRecord queries */ all: (queryClient: QueryClient) =>
       queryClient.invalidateQueries({
@@ -1053,6 +1072,23 @@ export const invalidate = {
     ) =>
       queryClient.invalidateQueries({
         queryKey: platformFunctionInvocationKeys.detail(id),
+      }),
+  },
+  /** Invalidate platformFunctionSchedule queries */ platformFunctionSchedule: {
+    /** Invalidate all platformFunctionSchedule queries */ all: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: platformFunctionScheduleKeys.all,
+      }),
+    /** Invalidate platformFunctionSchedule list queries */ lists: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: platformFunctionScheduleKeys.lists(),
+      }),
+    /** Invalidate a specific platformFunctionSchedule */ detail: (
+      queryClient: QueryClient,
+      id: string | number
+    ) =>
+      queryClient.invalidateQueries({
+        queryKey: platformFunctionScheduleKeys.detail(id),
       }),
   },
   /** Invalidate platformImage queries */ platformImage: {
@@ -2446,6 +2482,14 @@ export const remove = {
       queryKey: functionInvocationKeys.detail(id),
     });
   },
+  /** Remove functionSchedule from cache */ functionSchedule: (
+    queryClient: QueryClient,
+    id: string | number
+  ) => {
+    queryClient.removeQueries({
+      queryKey: functionScheduleKeys.detail(id),
+    });
+  },
   /** Remove getAllTreeNodesRecord from cache */ getAllTreeNodesRecord: (
     queryClient: QueryClient,
     id: string | number
@@ -2611,6 +2655,14 @@ export const remove = {
   ) => {
     queryClient.removeQueries({
       queryKey: platformFunctionInvocationKeys.detail(id),
+    });
+  },
+  /** Remove platformFunctionSchedule from cache */ platformFunctionSchedule: (
+    queryClient: QueryClient,
+    id: string | number
+  ) => {
+    queryClient.removeQueries({
+      queryKey: platformFunctionScheduleKeys.detail(id),
     });
   },
   /** Remove platformImage from cache */ platformImage: (

@@ -80,6 +80,8 @@ export type MachineOrderBy =
   | 'PRIMARY_KEY_DESC'
   | 'PRINCIPAL_ID_ASC'
   | 'PRINCIPAL_ID_DESC'
+  | 'RELAY_URL_ASC'
+  | 'RELAY_URL_DESC'
   | 'REVOKED_AT_ASC'
   | 'REVOKED_AT_DESC'
   | 'TOKEN_HASH_ASC'
@@ -217,6 +219,8 @@ export interface MachineFilter {
   policy?: JSONFilter;
   /** Filter by the object’s `principalId` field. */
   principalId?: UUIDFilter;
+  /** Filter by the object’s `relayUrl` field. */
+  relayUrl?: StringFilter;
   /** Filter by the object’s `revokedAt` field. */
   revokedAt?: DatetimeFilter;
   /** Filter by the object’s `tokenHash` field. */
@@ -250,6 +254,8 @@ export interface MachineInput {
   policy?: unknown;
   /** Principal this machine acts as (set with the row by <machines_table>_enroll) */
   principalId?: string;
+  /** Relay the runner was enrolled against (wss://...); clients attach through the same one */
+  relayUrl?: string;
   /** When enrollment was revoked; the relay refuses a revoked machine */
   revokedAt?: string;
   /** Hash of the enrollment credential the runner presents */
@@ -353,6 +359,8 @@ export interface MachinePatch {
   policy?: unknown;
   /** Principal this machine acts as (set with the row by <machines_table>_enroll) */
   principalId?: string;
+  /** Relay the runner was enrolled against (wss://...); clients attach through the same one */
+  relayUrl?: string;
   /** When enrollment was revoked; the relay refuses a revoked machine */
   revokedAt?: string;
   /** Hash of the enrollment credential the runner presents */
@@ -557,6 +565,7 @@ export interface MachinesEnrollInput {
   entityId?: string;
   isShared?: boolean;
   label?: string;
+  relayUrl?: string;
   tokenHash?: string;
 }
 export interface ProvisionBucketInput {

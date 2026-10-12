@@ -12361,10 +12361,6 @@ input EmailIdentityToManyEmailSiteIdentityFilter {
 A tenant's configured account at an email provider: provider slug, endpoint coordinates, and the NAME of the secret holding its credentials (never the credential itself)
 """
 type EmailProviderAccount {
-  """
-  Provider API base URL when it is not the provider default (e.g. Mailgun EU)
-  """
-  apiBaseUrl: String
   createdAt: Datetime
 
   """
@@ -12423,7 +12419,9 @@ type EmailProviderAccount {
   """
   providerAccountName: String
 
-  """Provider region for region-addressed providers (e.g. SES us-east-1)"""
+  """
+  Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us)
+  """
   region: String
 
   """SMTP host (provider = smtp, or a provider addressed over SMTP)"""
@@ -12481,9 +12479,6 @@ A filter to be used against `EmailProviderAccount` object types. All fields are 
 input EmailProviderAccountFilter {
   """Checks for all expressions in this list."""
   and: [EmailProviderAccountFilter!]
-
-  """Filter by the object’s `apiBaseUrl` field."""
-  apiBaseUrl: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -12545,10 +12540,6 @@ input EmailProviderAccountFilter {
 
 """An input for mutations affecting `EmailProviderAccount`"""
 input EmailProviderAccountInput {
-  """
-  Provider API base URL when it is not the provider default (e.g. Mailgun EU)
-  """
-  apiBaseUrl: String
   createdAt: Datetime
 
   """
@@ -12578,7 +12569,9 @@ input EmailProviderAccountInput {
   """
   providerAccountName: String
 
-  """Provider region for region-addressed providers (e.g. SES us-east-1)"""
+  """
+  Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us)
+  """
   region: String
 
   """SMTP host (provider = smtp, or a provider addressed over SMTP)"""
@@ -12604,8 +12597,6 @@ input EmailProviderAccountInput {
 
 """Methods to use when ordering `EmailProviderAccount`."""
 enum EmailProviderAccountOrderBy {
-  API_BASE_URL_ASC
-  API_BASE_URL_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREDENTIALS_SECRET_NAME_ASC
@@ -12645,10 +12636,6 @@ enum EmailProviderAccountOrderBy {
 Represents an update to a `EmailProviderAccount`. Fields that are set will be updated.
 """
 input EmailProviderAccountPatch {
-  """
-  Provider API base URL when it is not the provider default (e.g. Mailgun EU)
-  """
-  apiBaseUrl: String
   createdAt: Datetime
 
   """
@@ -12678,7 +12665,9 @@ input EmailProviderAccountPatch {
   """
   providerAccountName: String
 
-  """Provider region for region-addressed providers (e.g. SES us-east-1)"""
+  """
+  Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us)
+  """
   region: String
 
   """SMTP host (provider = smtp, or a provider addressed over SMTP)"""
@@ -15715,6 +15704,42 @@ input JSONFilter {
 
   """Not included in the specified list."""
   notIn: [JSON!]
+}
+
+"""A connection to a list of `ListSuspendedDatabasesRecord` values."""
+type ListSuspendedDatabasesConnection {
+  """
+  A list of edges which contains the `ListSuspendedDatabasesRecord` and cursor to aid in pagination.
+  """
+  edges: [ListSuspendedDatabasesEdge]!
+
+  """A list of `ListSuspendedDatabasesRecord` objects."""
+  nodes: [ListSuspendedDatabasesRecord]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `ListSuspendedDatabasesRecord` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `ListSuspendedDatabasesRecord` edge in the connection."""
+type ListSuspendedDatabasesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ListSuspendedDatabasesRecord` at the end of the edge."""
+  node: ListSuspendedDatabasesRecord
+}
+
+type ListSuspendedDatabasesRecord {
+  id: UUID
+  name: String
+  ownerId: UUID
+  suspendedAt: Datetime
+  suspendedReason: String
 }
 
 """
@@ -21724,10 +21749,6 @@ input PlatformEmailIdentityToManyPlatformEmailSiteIdentityFilter {
 A tenant's configured account at an email provider: provider slug, endpoint coordinates, and the NAME of the secret holding its credentials (never the credential itself)
 """
 type PlatformEmailProviderAccount {
-  """
-  Provider API base URL when it is not the provider default (e.g. Mailgun EU)
-  """
-  apiBaseUrl: String
   createdAt: Datetime
 
   """
@@ -21783,7 +21804,9 @@ type PlatformEmailProviderAccount {
   """
   providerAccountName: String
 
-  """Provider region for region-addressed providers (e.g. SES us-east-1)"""
+  """
+  Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us)
+  """
   region: String
 
   """SMTP host (provider = smtp, or a provider addressed over SMTP)"""
@@ -21841,9 +21864,6 @@ A filter to be used against `PlatformEmailProviderAccount` object types. All fie
 input PlatformEmailProviderAccountFilter {
   """Checks for all expressions in this list."""
   and: [PlatformEmailProviderAccountFilter!]
-
-  """Filter by the object’s `apiBaseUrl` field."""
-  apiBaseUrl: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -21904,10 +21924,6 @@ input PlatformEmailProviderAccountFilter {
 
 """An input for mutations affecting `PlatformEmailProviderAccount`"""
 input PlatformEmailProviderAccountInput {
-  """
-  Provider API base URL when it is not the provider default (e.g. Mailgun EU)
-  """
-  apiBaseUrl: String
   createdAt: Datetime
 
   """
@@ -21934,7 +21950,9 @@ input PlatformEmailProviderAccountInput {
   """
   providerAccountName: String
 
-  """Provider region for region-addressed providers (e.g. SES us-east-1)"""
+  """
+  Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us)
+  """
   region: String
 
   """SMTP host (provider = smtp, or a provider addressed over SMTP)"""
@@ -21960,8 +21978,6 @@ input PlatformEmailProviderAccountInput {
 
 """Methods to use when ordering `PlatformEmailProviderAccount`."""
 enum PlatformEmailProviderAccountOrderBy {
-  API_BASE_URL_ASC
-  API_BASE_URL_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREDENTIALS_SECRET_NAME_ASC
@@ -21999,10 +22015,6 @@ enum PlatformEmailProviderAccountOrderBy {
 Represents an update to a `PlatformEmailProviderAccount`. Fields that are set will be updated.
 """
 input PlatformEmailProviderAccountPatch {
-  """
-  Provider API base URL when it is not the provider default (e.g. Mailgun EU)
-  """
-  apiBaseUrl: String
   createdAt: Datetime
 
   """
@@ -22029,7 +22041,9 @@ input PlatformEmailProviderAccountPatch {
   """
   providerAccountName: String
 
-  """Provider region for region-addressed providers (e.g. SES us-east-1)"""
+  """
+  Provider region; the provider API host is derived from it, never stored (Mailgun: us or eu, unset meaning us)
+  """
   region: String
 
   """SMTP host (provider = smtp, or a provider addressed over SMTP)"""
@@ -26925,6 +26939,25 @@ type Query {
     """
     where: IndexFilter
   ): IndexConnection
+
+  """
+  Reads and enables pagination through a set of `ListSuspendedDatabasesRecord`.
+  """
+  listSuspendedDatabases(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+    afterId: UUID
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    maxRows: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): ListSuspendedDatabasesConnection
 
   """Reads and enables pagination through a set of `ManagedDomain`."""
   managedDomains(
@@ -34156,7 +34189,7 @@ type Table {
   ): SpatialRelationConnection!
 
   """
-  Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / fresh_auth; password_or_mfa is the legacy spelling), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr.
+  Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / password_or_mfa / fresh_auth), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr.
   """
   stepUp: JSON
 
@@ -34929,7 +34962,7 @@ input TableInput {
   smartTags: JSON
 
   """
-  Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / fresh_auth; password_or_mfa is the legacy spelling), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr.
+  Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / password_or_mfa / fresh_auth), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr.
   """
   stepUp: JSON
   tags: [String]
@@ -35015,7 +35048,7 @@ input TablePatch {
   smartTags: JSON
 
   """
-  Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / fresh_auth; password_or_mfa is the legacy spelling), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr.
+  Declarative step-up auth guard: jsonb object mapping DML verbs (INSERT, UPDATE, DELETE) to a step-up spec. Values: true (default fresh_auth), a type string (password / mfa / password_or_mfa / fresh_auth), or an object {type, min_age, min_age_lookup, conditions} where min_age is an interval string (e.g. 6 hours) gating the guard to rows older than that age (UPDATE/DELETE only), min_age_lookup resolves per-row windows from a lookup table, and conditions is a declarative WHEN-clause tree compiled by build_condition_expr.
   """
   stepUp: JSON
   tags: [String]

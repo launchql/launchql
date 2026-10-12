@@ -1775,7 +1775,7 @@ export interface AgentRunInput {
   createdAt?: string;
   /** When a supervisor should consider this run abandoned */
   deadlineAt?: string;
-  /** Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves */
+  /** Entity billed for this run: the database it executes in (rolls up to the database owner) */
   entityId?: string;
   /** Failure reason when status is failed */
   error?: string;
@@ -1825,7 +1825,7 @@ export interface AgentRunPatch {
   databaseId?: string;
   /** When a supervisor should consider this run abandoned */
   deadlineAt?: string;
-  /** Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves */
+  /** Entity billed for this run: the database it executes in (rolls up to the database owner) */
   entityId?: string;
   /** Failure reason when status is failed */
   error?: string;
@@ -3351,7 +3351,7 @@ export interface PlatformAgentRunInput {
   databaseId?: string;
   /** When a supervisor should consider this run abandoned */
   deadlineAt?: string;
-  /** Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves */
+  /** Entity billed for this run: the database it executes in (rolls up to the database owner) */
   entityId?: string;
   /** Failure reason when status is failed */
   error?: string;
@@ -3401,7 +3401,7 @@ export interface PlatformAgentRunPatch {
   databaseId?: string;
   /** When a supervisor should consider this run abandoned */
   deadlineAt?: string;
-  /** Entity billed for this run: an org the actor invoked on behalf of, or the actor themselves */
+  /** Entity billed for this run: the database it executes in (rolls up to the database owner) */
   entityId?: string;
   /** Failure reason when status is failed */
   error?: string;

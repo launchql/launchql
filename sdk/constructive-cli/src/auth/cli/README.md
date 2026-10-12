@@ -76,15 +76,17 @@ Reads the bucket config via RLS, then enqueues the same
 storage:provision_bucket job used by the INSERT trigger. This is
 idempotent for an already-reconciled bucket; enqueue failures become
 GraphQL errors. |
-| `provision-new-user` | provisionNewUser |
 | `refresh-access-token` | refreshAccessToken |
 | `request-cross-origin-token` | requestCrossOriginToken |
+| `request-magic-link` | requestMagicLink |
 | `reset-password` | resetPassword |
 | `revoke-api-key` | revokeApiKey |
 | `revoke-org-api-key` | revokeOrgApiKey |
 | `revoke-session` | revokeSession |
 | `send-account-deletion-email` | sendAccountDeletionEmail |
+| `send-mfa-challenge-code` | sendMfaChallengeCode |
 | `send-phone-verification-code` | sendPhoneVerificationCode |
+| `send-sms-otp` | sendSmsOtp |
 | `send-verification-email` | sendVerificationEmail |
 | `set-password` | setPassword |
 | `set-principal-entities` | setPrincipalEntities |
@@ -685,7 +687,6 @@ completeMfaChallenge
 
   | Argument | Type |
   |----------|------|
-  | `--input.authMethod` | String |
   | `--input.clientMutationId` | String |
   | `--input.credentialKind` | String |
   | `--input.deviceToken` | String |
@@ -985,19 +986,6 @@ GraphQL errors.
   | `--input.bucketKey` | String (required) |
   | `--input.ownerId` | UUID |
 
-### `provision-new-user`
-
-provisionNewUser
-
-- **Type:** mutation
-- **Arguments:**
-
-  | Argument | Type |
-  |----------|------|
-  | `--input.clientMutationId` | String |
-  | `--input.email` | String |
-  | `--input.password` | String |
-
 ### `refresh-access-token`
 
 refreshAccessToken
@@ -1024,6 +1012,18 @@ requestCrossOriginToken
   | `--input.origin` | Origin |
   | `--input.password` | String |
   | `--input.rememberMe` | Boolean |
+
+### `request-magic-link`
+
+requestMagicLink
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.email` | String |
 
 ### `reset-password`
 
@@ -1087,9 +1087,35 @@ sendAccountDeletionEmail
   |----------|------|
   | `--input.clientMutationId` | String |
 
+### `send-mfa-challenge-code`
+
+sendMfaChallengeCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.mfaChallengeToken` | String |
+  | `--input.mfaMethod` | String |
+  | `--input.userId` | UUID |
+
 ### `send-phone-verification-code`
 
 sendPhoneVerificationCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.phone` | String |
+
+### `send-sms-otp`
+
+sendSmsOtp
 
 - **Type:** mutation
 - **Arguments:**

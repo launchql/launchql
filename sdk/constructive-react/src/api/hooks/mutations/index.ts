@@ -95,6 +95,7 @@ export * from './useDeleteIdentityProviderRegistryMutation';
 export * from './useCreateIndexMutation';
 export * from './useUpdateIndexMutation';
 export * from './useDeleteIndexMutation';
+export * from './useCreateListSuspendedDatabasesRecordMutation';
 export * from './useCreateManagedDomainMutation';
 export * from './useUpdateManagedDomainMutation';
 export * from './useDeleteManagedDomainMutation';

@@ -304,6 +304,18 @@ export const indexMutationKeys = {
   /** Delete index mutation key */ delete: (id: string | number) =>
     ['mutation', 'index', 'delete', id] as const,
 } as const;
+export const listSuspendedDatabasesRecordMutationKeys = {
+  /** All listSuspendedDatabasesRecord mutation keys */ all: [
+    'mutation',
+    'listsuspendeddatabasesrecord',
+  ] as const,
+  /** Create listSuspendedDatabasesRecord mutation key */ create: () =>
+    ['mutation', 'listsuspendeddatabasesrecord', 'create'] as const,
+  /** Update listSuspendedDatabasesRecord mutation key */ update: (id: string | number) =>
+    ['mutation', 'listsuspendeddatabasesrecord', 'update', id] as const,
+  /** Delete listSuspendedDatabasesRecord mutation key */ delete: (id: string | number) =>
+    ['mutation', 'listsuspendeddatabasesrecord', 'delete', id] as const,
+} as const;
 export const managedDomainMutationKeys = {
   /** All managedDomain mutation keys */ all: ['mutation', 'manageddomain'] as const,
   /** Create managedDomain mutation key */ create: () =>
@@ -1049,6 +1061,7 @@ export const mutationKeys = {
   hostnameBinding: hostnameBindingMutationKeys,
   identityProviderRegistry: identityProviderRegistryMutationKeys,
   index: indexMutationKeys,
+  listSuspendedDatabasesRecord: listSuspendedDatabasesRecordMutationKeys,
   managedDomain: managedDomainMutationKeys,
   nodeTypeRegistry: nodeTypeRegistryMutationKeys,
   page: pageMutationKeys,

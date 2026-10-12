@@ -2723,6 +2723,41 @@ type CreateFunctionInvocationPayload {
   query: Query
 }
 
+"""All input for the create `FunctionSchedule` mutation."""
+input CreateFunctionScheduleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FunctionSchedule` to be created by this mutation."""
+  functionSchedule: FunctionScheduleInput!
+}
+
+"""The output of our create `FunctionSchedule` mutation."""
+type CreateFunctionSchedulePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FunctionSchedule` that was created by this mutation."""
+  functionSchedule: FunctionSchedule
+
+  """An edge for our `FunctionSchedule`. May be used by Relay 1."""
+  functionScheduleEdge(
+    """The method to use when ordering `FunctionSchedule`."""
+    orderBy: [FunctionScheduleOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionScheduleEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `ImageGrant` mutation."""
 input CreateImageGrantInput {
   """
@@ -3434,6 +3469,41 @@ type CreatePlatformFunctionInvocationPayload {
     """The method to use when ordering `PlatformFunctionInvocation`."""
     orderBy: [PlatformFunctionInvocationOrderBy!]! = [PRIMARY_KEY_ASC]
   ): PlatformFunctionInvocationEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `PlatformFunctionSchedule` mutation."""
+input CreatePlatformFunctionScheduleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `PlatformFunctionSchedule` to be created by this mutation."""
+  platformFunctionSchedule: PlatformFunctionScheduleInput!
+}
+
+"""The output of our create `PlatformFunctionSchedule` mutation."""
+type CreatePlatformFunctionSchedulePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PlatformFunctionSchedule` that was created by this mutation."""
+  platformFunctionSchedule: PlatformFunctionSchedule
+
+  """An edge for our `PlatformFunctionSchedule`. May be used by Relay 1."""
+  platformFunctionScheduleEdge(
+    """The method to use when ordering `PlatformFunctionSchedule`."""
+    orderBy: [PlatformFunctionScheduleOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PlatformFunctionScheduleEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -9366,6 +9436,39 @@ type DeleteFunctionInvocationPayload {
   query: Query
 }
 
+"""All input for the `deleteFunctionSchedule` mutation."""
+input DeleteFunctionScheduleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""The output of our delete `FunctionSchedule` mutation."""
+type DeleteFunctionSchedulePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FunctionSchedule` that was deleted by this mutation."""
+  functionSchedule: FunctionSchedule
+
+  """An edge for our `FunctionSchedule`. May be used by Relay 1."""
+  functionScheduleEdge(
+    """The method to use when ordering `FunctionSchedule`."""
+    orderBy: [FunctionScheduleOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionScheduleEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `deleteImageGrant` mutation."""
 input DeleteImageGrantInput {
   """
@@ -10080,6 +10183,39 @@ type DeletePlatformFunctionInvocationPayload {
     """The method to use when ordering `PlatformFunctionInvocation`."""
     orderBy: [PlatformFunctionInvocationOrderBy!]! = [PRIMARY_KEY_ASC]
   ): PlatformFunctionInvocationEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deletePlatformFunctionSchedule` mutation."""
+input DeletePlatformFunctionScheduleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""The output of our delete `PlatformFunctionSchedule` mutation."""
+type DeletePlatformFunctionSchedulePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PlatformFunctionSchedule` that was deleted by this mutation."""
+  platformFunctionSchedule: PlatformFunctionSchedule
+
+  """An edge for our `PlatformFunctionSchedule`. May be used by Relay 1."""
+  platformFunctionScheduleEdge(
+    """The method to use when ordering `PlatformFunctionSchedule`."""
+    orderBy: [PlatformFunctionScheduleOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PlatformFunctionScheduleEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -12499,6 +12635,35 @@ type FunctionDefinition {
   """
   functionColumns: JSON
 
+  """Reads and enables pagination through a set of `FunctionSchedule`."""
+  functionSchedules(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FunctionSchedule`."""
+    orderBy: [FunctionScheduleOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    where: FunctionScheduleFilter
+  ): FunctionScheduleConnection!
+
   """
   Reads a single `DatabaseFunctionGraph` that is related to this `FunctionDefinition`.
   """
@@ -12772,6 +12937,12 @@ input FunctionDefinitionFilter {
 
   """Filter by the object’s `functionColumns` field."""
   functionColumns: JSONFilter
+
+  """Filter by the object’s `functionSchedules` relation."""
+  functionSchedules: FunctionDefinitionToManyFunctionScheduleFilter
+
+  """`functionSchedules` exist."""
+  functionSchedulesExist: Boolean
 
   """Filter by the object’s `graph` relation."""
   graph: DatabaseFunctionGraphFilter
@@ -13377,6 +13548,20 @@ input FunctionDefinitionToManyFunctionCapabilityBindingFilter {
 
   """Filters to entities where at least one related entity matches."""
   some: FunctionCapabilityBindingFilter
+}
+
+"""
+A filter to be used against many `FunctionSchedule` object types. All fields are combined with a logical ‘and.’
+"""
+input FunctionDefinitionToManyFunctionScheduleFilter {
+  """Filters to entities where every related entity matches."""
+  every: FunctionScheduleFilter
+
+  """Filters to entities where no related entity matches."""
+  none: FunctionScheduleFilter
+
+  """Filters to entities where at least one related entity matches."""
+  some: FunctionScheduleFilter
 }
 
 """
@@ -14213,6 +14398,35 @@ input FunctionExecutionLogPatch {
 
   """Function routing key (NULL for generic job logs)"""
   taskIdentifier: String
+}
+
+"""All input for the `functionExecutionLogsAppend` mutation."""
+input FunctionExecutionLogsAppendInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  createdAt: Datetime
+  invocationId: UUID
+  logLevel: String
+  message: String
+  metadata: JSON
+  taskIdentifier: String
+}
+
+"""The output of our `functionExecutionLogsAppend` mutation."""
+type FunctionExecutionLogsAppendPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """
@@ -16999,6 +17213,270 @@ type FunctionInvocationsCreateSyncPayload {
   result: FunctionInvocation
 }
 
+"""
+Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs)
+"""
+type FunctionSchedule {
+  """
+  User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after.
+  """
+  actorId: UUID
+  createdAt: Datetime
+
+  """Database that owns this resource (database-scoped isolation)"""
+  databaseId: UUID!
+
+  """Human-readable description of what this schedule does"""
+  description: String
+
+  """
+  Reads a single `FunctionDefinition` that is related to this `FunctionSchedule`.
+  """
+  functionDefinition: FunctionDefinition
+
+  """Function definition this schedule invokes"""
+  functionDefinitionId: UUID!
+  id: UUID!
+
+  """
+  Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it.
+  """
+  isActive: Boolean!
+
+  """Human-readable schedule name"""
+  name: String!
+
+  """Job payload passed to the function on each scheduled firing"""
+  payload: JSON!
+
+  """
+  Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...})
+  """
+  scheduleInfo: JSON!
+
+  """
+  System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag.
+  """
+  suspendedAt: Datetime
+
+  """
+  Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended.
+  """
+  suspendedReason: String
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `FunctionSchedule` values."""
+type FunctionScheduleConnection {
+  """
+  A list of edges which contains the `FunctionSchedule` and cursor to aid in pagination.
+  """
+  edges: [FunctionScheduleEdge]!
+
+  """A list of `FunctionSchedule` objects."""
+  nodes: [FunctionSchedule]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `FunctionSchedule` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `FunctionSchedule` edge in the connection."""
+type FunctionScheduleEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FunctionSchedule` at the end of the edge."""
+  node: FunctionSchedule
+}
+
+"""
+A filter to be used against `FunctionSchedule` object types. All fields are combined with a logical ‘and.’
+"""
+input FunctionScheduleFilter {
+  """Filter by the object’s `actorId` field."""
+  actorId: UUIDFilter
+
+  """Checks for all expressions in this list."""
+  and: [FunctionScheduleFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `databaseId` field."""
+  databaseId: UUIDFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `functionDefinition` relation."""
+  functionDefinition: FunctionDefinitionFilter
+
+  """Filter by the object’s `functionDefinitionId` field."""
+  functionDefinitionId: UUIDFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `isActive` field."""
+  isActive: BooleanFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: FunctionScheduleFilter
+
+  """Checks for any expressions in this list."""
+  or: [FunctionScheduleFilter!]
+
+  """Filter by the object’s `payload` field."""
+  payload: JSONFilter
+
+  """Filter by the object’s `scheduleInfo` field."""
+  scheduleInfo: JSONFilter
+
+  """Filter by the object’s `suspendedAt` field."""
+  suspendedAt: DatetimeFilter
+
+  """Filter by the object’s `suspendedReason` field."""
+  suspendedReason: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+}
+
+"""An input for mutations affecting `FunctionSchedule`"""
+input FunctionScheduleInput {
+  """
+  User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after.
+  """
+  actorId: UUID
+  createdAt: Datetime
+
+  """Database that owns this resource (database-scoped isolation)"""
+  databaseId: UUID!
+
+  """Human-readable description of what this schedule does"""
+  description: String
+
+  """Function definition this schedule invokes"""
+  functionDefinitionId: UUID!
+  id: UUID
+
+  """
+  Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it.
+  """
+  isActive: Boolean
+
+  """Human-readable schedule name"""
+  name: String!
+
+  """Job payload passed to the function on each scheduled firing"""
+  payload: JSON
+
+  """
+  Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...})
+  """
+  scheduleInfo: JSON!
+
+  """
+  System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag.
+  """
+  suspendedAt: Datetime
+
+  """
+  Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended.
+  """
+  suspendedReason: String
+  updatedAt: Datetime
+}
+
+"""Methods to use when ordering `FunctionSchedule`."""
+enum FunctionScheduleOrderBy {
+  ACTOR_ID_ASC
+  ACTOR_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  DATABASE_ID_ASC
+  DATABASE_ID_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  FUNCTION_DEFINITION_ID_ASC
+  FUNCTION_DEFINITION_ID_DESC
+  ID_ASC
+  ID_DESC
+  IS_ACTIVE_ASC
+  IS_ACTIVE_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PAYLOAD_ASC
+  PAYLOAD_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SCHEDULE_INFO_ASC
+  SCHEDULE_INFO_DESC
+  SUSPENDED_AT_ASC
+  SUSPENDED_AT_DESC
+  SUSPENDED_REASON_ASC
+  SUSPENDED_REASON_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
+"""
+Represents an update to a `FunctionSchedule`. Fields that are set will be updated.
+"""
+input FunctionSchedulePatch {
+  """
+  User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after.
+  """
+  actorId: UUID
+  createdAt: Datetime
+
+  """Database that owns this resource (database-scoped isolation)"""
+  databaseId: UUID
+
+  """Human-readable description of what this schedule does"""
+  description: String
+
+  """Function definition this schedule invokes"""
+  functionDefinitionId: UUID
+  id: UUID
+
+  """
+  Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it.
+  """
+  isActive: Boolean
+
+  """Human-readable schedule name"""
+  name: String
+
+  """Job payload passed to the function on each scheduled firing"""
+  payload: JSON
+
+  """
+  Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...})
+  """
+  scheduleInfo: JSON
+
+  """
+  System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag.
+  """
+  suspendedAt: Datetime
+
+  """
+  Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended.
+  """
+  suspendedReason: String
+  updatedAt: Datetime
+}
+
 """A connection to a list of `GetAllTreeNodesRecord` values."""
 type GetAllTreeNodesConnection {
   """
@@ -19599,6 +20077,14 @@ type Mutation {
     input: CreateFunctionInvocationAttemptInput!
   ): CreateFunctionInvocationAttemptPayload
 
+  """Creates a single `FunctionSchedule`."""
+  createFunctionSchedule(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFunctionScheduleInput!
+  ): CreateFunctionSchedulePayload
+
   """Creates a single `Image`."""
   createImage(
     """
@@ -19758,6 +20244,14 @@ type Mutation {
     """
     input: CreatePlatformFunctionInvocationAttemptInput!
   ): CreatePlatformFunctionInvocationAttemptPayload
+
+  """Creates a single `PlatformFunctionSchedule`."""
+  createPlatformFunctionSchedule(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreatePlatformFunctionScheduleInput!
+  ): CreatePlatformFunctionSchedulePayload
 
   """Creates a single `PlatformImage`."""
   createPlatformImage(
@@ -20535,6 +21029,14 @@ type Mutation {
     input: DeleteFunctionInvocationAttemptInput!
   ): DeleteFunctionInvocationAttemptPayload
 
+  """Deletes a single `FunctionSchedule` using a unique key."""
+  deleteFunctionSchedule(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFunctionScheduleInput!
+  ): DeleteFunctionSchedulePayload
+
   """Deletes a single `Image` using a unique key."""
   deleteImage(
     """
@@ -20698,6 +21200,14 @@ type Mutation {
     """
     input: DeletePlatformFunctionInvocationAttemptInput!
   ): DeletePlatformFunctionInvocationAttemptPayload
+
+  """Deletes a single `PlatformFunctionSchedule` using a unique key."""
+  deletePlatformFunctionSchedule(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePlatformFunctionScheduleInput!
+  ): DeletePlatformFunctionSchedulePayload
 
   """Deletes a single `PlatformImage` using a unique key."""
   deletePlatformImage(
@@ -21130,6 +21640,12 @@ type Mutation {
     """
     input: DeleteWebhookEventInput!
   ): DeleteWebhookEventPayload
+  functionExecutionLogsAppend(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: FunctionExecutionLogsAppendInput!
+  ): FunctionExecutionLogsAppendPayload
   functionInvocationsCreateSync(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -21202,6 +21718,12 @@ type Mutation {
     """
     input: InsertNodesAtPathsInput!
   ): InsertNodesAtPathsPayload
+  platformFunctionExecutionLogsAppend(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: PlatformFunctionExecutionLogsAppendInput!
+  ): PlatformFunctionExecutionLogsAppendPayload
   platformFunctionInvocationsCreateSync(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -21591,6 +22113,14 @@ type Mutation {
     input: UpdateFunctionInvocationAttemptInput!
   ): UpdateFunctionInvocationAttemptPayload
 
+  """Updates a single `FunctionSchedule` using a unique key and a patch."""
+  updateFunctionSchedule(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFunctionScheduleInput!
+  ): UpdateFunctionSchedulePayload
+
   """Updates a single `Image` using a unique key and a patch."""
   updateImage(
     """
@@ -21768,6 +22298,16 @@ type Mutation {
     """
     input: UpdatePlatformFunctionInvocationAttemptInput!
   ): UpdatePlatformFunctionInvocationAttemptPayload
+
+  """
+  Updates a single `PlatformFunctionSchedule` using a unique key and a patch.
+  """
+  updatePlatformFunctionSchedule(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePlatformFunctionScheduleInput!
+  ): UpdatePlatformFunctionSchedulePayload
 
   """Updates a single `PlatformImage` using a unique key and a patch."""
   updatePlatformImage(
@@ -24565,6 +25105,37 @@ type PlatformFunctionDefinition {
   ): PlatformFunctionCapabilityBindingConnection!
 
   """
+  Reads and enables pagination through a set of `PlatformFunctionSchedule`.
+  """
+  platformFunctionSchedulesByFunctionDefinitionId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `PlatformFunctionSchedule`."""
+    orderBy: [PlatformFunctionScheduleOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    where: PlatformFunctionScheduleFilter
+  ): PlatformFunctionScheduleConnection!
+
+  """
   Reads and enables pagination through a set of `PlatformWebhookEndpoint`.
   """
   platformWebhookEndpointsByFunctionDefinitionId(
@@ -24833,6 +25404,14 @@ input PlatformFunctionDefinitionFilter {
 
   """`platformFunctionCapabilityBindingsByFunctionId` exist."""
   platformFunctionCapabilityBindingsByFunctionIdExist: Boolean
+
+  """
+  Filter by the object’s `platformFunctionSchedulesByFunctionDefinitionId` relation.
+  """
+  platformFunctionSchedulesByFunctionDefinitionId: PlatformFunctionDefinitionToManyPlatformFunctionScheduleFilter
+
+  """`platformFunctionSchedulesByFunctionDefinitionId` exist."""
+  platformFunctionSchedulesByFunctionDefinitionIdExist: Boolean
 
   """
   Filter by the object’s `platformWebhookEndpointsByFunctionDefinitionId` relation.
@@ -25405,6 +25984,20 @@ input PlatformFunctionDefinitionToManyPlatformFunctionCapabilityBindingFilter {
 
   """Filters to entities where at least one related entity matches."""
   some: PlatformFunctionCapabilityBindingFilter
+}
+
+"""
+A filter to be used against many `PlatformFunctionSchedule` object types. All fields are combined with a logical ‘and.’
+"""
+input PlatformFunctionDefinitionToManyPlatformFunctionScheduleFilter {
+  """Filters to entities where every related entity matches."""
+  every: PlatformFunctionScheduleFilter
+
+  """Filters to entities where no related entity matches."""
+  none: PlatformFunctionScheduleFilter
+
+  """Filters to entities where at least one related entity matches."""
+  some: PlatformFunctionScheduleFilter
 }
 
 """
@@ -26201,6 +26794,35 @@ input PlatformFunctionExecutionLogPatch {
   taskIdentifier: String
 }
 
+"""All input for the `platformFunctionExecutionLogsAppend` mutation."""
+input PlatformFunctionExecutionLogsAppendInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  createdAt: Datetime
+  invocationId: UUID
+  logLevel: String
+  message: String
+  metadata: JSON
+  taskIdentifier: String
+}
+
+"""The output of our `platformFunctionExecutionLogsAppend` mutation."""
+type PlatformFunctionExecutionLogsAppendPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """
 Function invocation log — INSERT to call a function (business-layer, metered). Linked to definitions via function_definition_id FK, with task_identifier as the denormalized routing/audit slug.
 """
@@ -26947,6 +27569,256 @@ type PlatformFunctionInvocationsCreateSyncPayload {
   """
   query: Query
   result: PlatformFunctionInvocation
+}
+
+"""
+Function schedules — user-facing cron schedules synced into the worker scheduler (app_jobs.scheduled_jobs)
+"""
+type PlatformFunctionSchedule {
+  """
+  User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after.
+  """
+  actorId: UUID
+  createdAt: Datetime
+
+  """Human-readable description of what this schedule does"""
+  description: String
+
+  """
+  Reads a single `PlatformFunctionDefinition` that is related to this `PlatformFunctionSchedule`.
+  """
+  functionDefinition: PlatformFunctionDefinition
+
+  """Function definition this schedule invokes"""
+  functionDefinitionId: UUID!
+  id: UUID!
+
+  """
+  Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it.
+  """
+  isActive: Boolean!
+
+  """Human-readable schedule name"""
+  name: String!
+
+  """Job payload passed to the function on each scheduled firing"""
+  payload: JSON!
+
+  """
+  Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...})
+  """
+  scheduleInfo: JSON!
+
+  """
+  System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag.
+  """
+  suspendedAt: Datetime
+
+  """
+  Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended.
+  """
+  suspendedReason: String
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `PlatformFunctionSchedule` values."""
+type PlatformFunctionScheduleConnection {
+  """
+  A list of edges which contains the `PlatformFunctionSchedule` and cursor to aid in pagination.
+  """
+  edges: [PlatformFunctionScheduleEdge]!
+
+  """A list of `PlatformFunctionSchedule` objects."""
+  nodes: [PlatformFunctionSchedule]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `PlatformFunctionSchedule` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `PlatformFunctionSchedule` edge in the connection."""
+type PlatformFunctionScheduleEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `PlatformFunctionSchedule` at the end of the edge."""
+  node: PlatformFunctionSchedule
+}
+
+"""
+A filter to be used against `PlatformFunctionSchedule` object types. All fields are combined with a logical ‘and.’
+"""
+input PlatformFunctionScheduleFilter {
+  """Filter by the object’s `actorId` field."""
+  actorId: UUIDFilter
+
+  """Checks for all expressions in this list."""
+  and: [PlatformFunctionScheduleFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `functionDefinition` relation."""
+  functionDefinition: PlatformFunctionDefinitionFilter
+
+  """Filter by the object’s `functionDefinitionId` field."""
+  functionDefinitionId: UUIDFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `isActive` field."""
+  isActive: BooleanFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: PlatformFunctionScheduleFilter
+
+  """Checks for any expressions in this list."""
+  or: [PlatformFunctionScheduleFilter!]
+
+  """Filter by the object’s `payload` field."""
+  payload: JSONFilter
+
+  """Filter by the object’s `scheduleInfo` field."""
+  scheduleInfo: JSONFilter
+
+  """Filter by the object’s `suspendedAt` field."""
+  suspendedAt: DatetimeFilter
+
+  """Filter by the object’s `suspendedReason` field."""
+  suspendedReason: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+}
+
+"""An input for mutations affecting `PlatformFunctionSchedule`"""
+input PlatformFunctionScheduleInput {
+  """
+  User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after.
+  """
+  actorId: UUID
+  createdAt: Datetime
+
+  """Human-readable description of what this schedule does"""
+  description: String
+
+  """Function definition this schedule invokes"""
+  functionDefinitionId: UUID!
+  id: UUID
+
+  """
+  Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it.
+  """
+  isActive: Boolean
+
+  """Human-readable schedule name"""
+  name: String!
+
+  """Job payload passed to the function on each scheduled firing"""
+  payload: JSON
+
+  """
+  Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...})
+  """
+  scheduleInfo: JSON!
+
+  """
+  System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag.
+  """
+  suspendedAt: Datetime
+
+  """
+  Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended.
+  """
+  suspendedReason: String
+  updatedAt: Datetime
+}
+
+"""Methods to use when ordering `PlatformFunctionSchedule`."""
+enum PlatformFunctionScheduleOrderBy {
+  ACTOR_ID_ASC
+  ACTOR_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  FUNCTION_DEFINITION_ID_ASC
+  FUNCTION_DEFINITION_ID_DESC
+  ID_ASC
+  ID_DESC
+  IS_ACTIVE_ASC
+  IS_ACTIVE_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PAYLOAD_ASC
+  PAYLOAD_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SCHEDULE_INFO_ASC
+  SCHEDULE_INFO_DESC
+  SUSPENDED_AT_ASC
+  SUSPENDED_AT_DESC
+  SUSPENDED_REASON_ASC
+  SUSPENDED_REASON_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
+"""
+Represents an update to a `PlatformFunctionSchedule`. Fields that are set will be updated.
+"""
+input PlatformFunctionSchedulePatch {
+  """
+  User who created this schedule; every fire runs as them. Forced to current_user_id() on INSERT, immutable after.
+  """
+  actorId: UUID
+  createdAt: Datetime
+
+  """Human-readable description of what this schedule does"""
+  description: String
+
+  """Function definition this schedule invokes"""
+  functionDefinitionId: UUID
+  id: UUID
+
+  """
+  Whether this schedule is active. Deactivating removes the worker scheduler row; reactivating recreates it.
+  """
+  isActive: Boolean
+
+  """Human-readable schedule name"""
+  name: String
+
+  """Job payload passed to the function on each scheduled firing"""
+  payload: JSON
+
+  """
+  Cron spec — same shape app_jobs.scheduled_jobs uses: {"rule": "0 0 * * *"} or recurrence objects ({minute, hour, dayOfWeek, ...})
+  """
+  scheduleInfo: JSON
+
+  """
+  System suspension timestamp (circuit-breaker). While non-NULL the schedule is not effectively running (is_active AND suspended_at IS NULL) and its worker scheduler row is removed. System-only; never conflated with the user-facing is_active flag.
+  """
+  suspendedAt: Datetime
+
+  """
+  Reason the system suspended this schedule (e.g. quota_exceeded, limit_exceeded). NULL when not suspended.
+  """
+  suspendedReason: String
+  updatedAt: Datetime
 }
 
 """
@@ -34285,13 +35157,11 @@ type PlatformResource {
   """
   statusObserved: JSON
 
-  """
-  Storage class/tier, derived from the legacy spec.storage_class else spec.storage[0].class (NULL if unset)
-  """
+  """Storage class/tier, derived from spec.storage[0].class (NULL if unset)"""
   storageClass: String
 
   """
-  Declared persistent volume bytes per pod, summed over spec.storage[] plus the legacy spec.storage_size (NULL if none declared)
+  Declared persistent volume bytes per pod, summed over spec.storage[] (NULL if none declared)
   """
   storageSizeBytes: BigInt
 
@@ -40951,6 +41821,35 @@ type Query {
     where: FunctionInvocationFilter
   ): FunctionInvocationConnection
 
+  """Reads and enables pagination through a set of `FunctionSchedule`."""
+  functionSchedules(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FunctionSchedule`."""
+    orderBy: [FunctionScheduleOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    where: FunctionScheduleFilter
+  ): FunctionScheduleConnection
+
   """Reads and enables pagination through a set of `GetAllTreeNodesRecord`."""
   getAllTreeNodes(
     """Read all values in the set after (below) this cursor."""
@@ -41586,6 +42485,37 @@ type Query {
     """
     where: PlatformFunctionInvocationFilter
   ): PlatformFunctionInvocationConnection
+
+  """
+  Reads and enables pagination through a set of `PlatformFunctionSchedule`.
+  """
+  platformFunctionSchedules(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `PlatformFunctionSchedule`."""
+    orderBy: [PlatformFunctionScheduleOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    where: PlatformFunctionScheduleFilter
+  ): PlatformFunctionScheduleConnection
 
   """Reads and enables pagination through a set of `PlatformImageGrant`."""
   platformImageGrants(
@@ -46230,13 +47160,11 @@ type Resource {
   """
   statusObserved: JSON
 
-  """
-  Storage class/tier, derived from the legacy spec.storage_class else spec.storage[0].class (NULL if unset)
-  """
+  """Storage class/tier, derived from spec.storage[0].class (NULL if unset)"""
   storageClass: String
 
   """
-  Declared persistent volume bytes per pod, summed over spec.storage[] plus the legacy spec.storage_size (NULL if none declared)
+  Declared persistent volume bytes per pod, summed over spec.storage[] (NULL if none declared)
   """
   storageSizeBytes: BigInt
 
@@ -51178,6 +52106,44 @@ type UpdateFunctionInvocationPayload {
   query: Query
 }
 
+"""All input for the `updateFunctionSchedule` mutation."""
+input UpdateFunctionScheduleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FunctionSchedule` being updated.
+  """
+  functionSchedulePatch: FunctionSchedulePatch!
+  id: UUID!
+}
+
+"""The output of our update `FunctionSchedule` mutation."""
+type UpdateFunctionSchedulePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FunctionSchedule` that was updated by this mutation."""
+  functionSchedule: FunctionSchedule
+
+  """An edge for our `FunctionSchedule`. May be used by Relay 1."""
+  functionScheduleEdge(
+    """The method to use when ordering `FunctionSchedule`."""
+    orderBy: [FunctionScheduleOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionScheduleEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `updateImageGrant` mutation."""
 input UpdateImageGrantInput {
   """
@@ -51992,6 +52958,44 @@ type UpdatePlatformFunctionInvocationPayload {
     """The method to use when ordering `PlatformFunctionInvocation`."""
     orderBy: [PlatformFunctionInvocationOrderBy!]! = [PRIMARY_KEY_ASC]
   ): PlatformFunctionInvocationEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updatePlatformFunctionSchedule` mutation."""
+input UpdatePlatformFunctionScheduleInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+
+  """
+  An object where the defined keys will be set on the `PlatformFunctionSchedule` being updated.
+  """
+  platformFunctionSchedulePatch: PlatformFunctionSchedulePatch!
+}
+
+"""The output of our update `PlatformFunctionSchedule` mutation."""
+type UpdatePlatformFunctionSchedulePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PlatformFunctionSchedule` that was updated by this mutation."""
+  platformFunctionSchedule: PlatformFunctionSchedule
+
+  """An edge for our `PlatformFunctionSchedule`. May be used by Relay 1."""
+  platformFunctionScheduleEdge(
+    """The method to use when ordering `PlatformFunctionSchedule`."""
+    orderBy: [PlatformFunctionScheduleOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PlatformFunctionScheduleEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.

@@ -33,6 +33,7 @@ export { FunctionGraphRefModel } from './functionGraphRef';
 export { FunctionGraphStoreModel } from './functionGraphStore';
 export { FunctionInvocationAttemptModel } from './functionInvocationAttempt';
 export { FunctionInvocationModel } from './functionInvocation';
+export { FunctionScheduleModel } from './functionSchedule';
 export { GetAllTreeNodesRecordModel } from './getAllTreeNodesRecord';
 export { ImageModel } from './image';
 export { ImageGrantModel } from './imageGrant';
@@ -55,6 +56,7 @@ export { PlatformFunctionDeploymentEventModel } from './platformFunctionDeployme
 export { PlatformFunctionExecutionLogModel } from './platformFunctionExecutionLog';
 export { PlatformFunctionInvocationAttemptModel } from './platformFunctionInvocationAttempt';
 export { PlatformFunctionInvocationModel } from './platformFunctionInvocation';
+export { PlatformFunctionScheduleModel } from './platformFunctionSchedule';
 export { PlatformImageModel } from './platformImage';
 export { PlatformImageGrantModel } from './platformImageGrant';
 export { PlatformInfraCommitModel } from './platformInfraCommit';
