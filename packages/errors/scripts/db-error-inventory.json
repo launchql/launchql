@@ -16,20 +16,28 @@
     "class": "public"
   },
   "ACCOUNT_LOCKED_EXCEED_ATTEMPTS": {
-    "count": 29,
+    "count": 25,
     "dynamic": false,
     "sample": "ACCOUNT_LOCKED_EXCEED_ATTEMPTS",
     "n_source": 3,
-    "n_generated": 14,
+    "n_generated": 12,
     "class": "public"
   },
   "ACCOUNT_NOT_FOUND": {
-    "count": 14,
+    "count": 10,
     "dynamic": false,
     "sample": "ACCOUNT_NOT_FOUND",
-    "n_source": 4,
+    "n_source": 3,
     "n_generated": 4,
     "class": "public"
+  },
+  "ACTOR_CLAIM_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "ACTOR_CLAIM_REQUIRED",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "internal"
   },
   "ALREADY_AUTHENTICATED_USE_LINK": {
     "count": 8,
@@ -38,6 +46,13 @@
     "n_source": 2,
     "n_generated": 4,
     "class": "public"
+  },
+  "ALREADY_SCHEDULED": {
+    "count": 8,
+    "dynamic": false,
+    "sample": "ALREADY_SCHEDULED",
+    "n_source": 0,
+    "n_generated": 4
   },
   "ALTER_TABLE_ADD_COLUMN": {
     "count": 16,
@@ -161,6 +176,14 @@
     "sample": "AST_OPTION_UNKNOWN",
     "n_source": 1,
     "n_generated": 1,
+    "class": "internal"
+  },
+  "ATTRIBUTION_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "ATTRIBUTION_REQUIRED",
+    "n_source": 0,
+    "n_generated": 4,
     "class": "internal"
   },
   "AUTHZ_COLUMN_SECURITY_AUTHZ_NODE_REQUIRED": {
@@ -1130,6 +1153,14 @@
     "n_source": 2,
     "n_generated": 4,
     "class": "public"
+  },
+  "DATABASE_CLAIM_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "DATABASE_CLAIM_REQUIRED",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "internal"
   },
   "DATABASE_FIELD_RESERVED_WORD": {
     "count": 2,
@@ -2300,6 +2331,14 @@
     "n_source": 0,
     "n_generated": 6
   },
+  "DUPLICATE_JOB_IDS": {
+    "count": 8,
+    "dynamic": false,
+    "sample": "DUPLICATE_JOB_IDS",
+    "n_source": 0,
+    "n_generated": 6,
+    "class": "internal"
+  },
   "EMAIL_NOT_VERIFIED": {
     "count": 6,
     "dynamic": false,
@@ -2308,12 +2347,20 @@
     "n_generated": 4,
     "class": "public"
   },
+  "ENTITY_CLAIM_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "ENTITY_CLAIM_REQUIRED",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "internal"
+  },
   "ENTITY_ID_REQUIRED": {
-    "count": 12,
+    "count": 16,
     "dynamic": false,
     "sample": "ENTITY_ID_REQUIRED",
     "n_source": 3,
-    "n_generated": 3,
+    "n_generated": 7,
     "class": "public"
   },
   "ENTITY_NOT_FOUND": {
@@ -2329,6 +2376,14 @@
     "dynamic": false,
     "sample": "ENTITY_REQUIRED",
     "n_source": 1,
+    "n_generated": 4,
+    "class": "internal"
+  },
+  "ENTITY_TYPE_CLAIM_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "ENTITY_TYPE_CLAIM_REQUIRED",
+    "n_source": 0,
     "n_generated": 4,
     "class": "internal"
   },
@@ -2357,11 +2412,11 @@
     "class": "internal"
   },
   "ENTITY_TYPE_REQUIRED": {
-    "count": 6,
+    "count": 10,
     "dynamic": false,
     "sample": "ENTITY_TYPE_REQUIRED",
     "n_source": 2,
-    "n_generated": 1,
+    "n_generated": 5,
     "class": "public"
   },
   "ENUM_VALUES_CANNOT_BE_REMOVED": {
@@ -2682,7 +2737,7 @@
     "class": "internal"
   },
   "FUNCTION_GRAPH_NOT_FOUND": {
-    "count": 16,
+    "count": 18,
     "dynamic": false,
     "sample": "FUNCTION_GRAPH_NOT_FOUND",
     "n_source": 1,
@@ -3434,12 +3489,11 @@
     "n_generated": 1
   },
   "INVALID_CODE": {
-    "count": 12,
+    "count": 4,
     "dynamic": false,
     "sample": "INVALID_CODE",
-    "n_source": 2,
-    "n_generated": 3,
-    "class": "public"
+    "n_source": 1,
+    "n_generated": 1
   },
   "INVALID_COMPOSITE_TYPE_ATTRIBUTE": {
     "count": 2,
@@ -3488,11 +3542,11 @@
     "n_generated": 1
   },
   "INVALID_MFA_CHALLENGE": {
-    "count": 8,
+    "count": 16,
     "dynamic": false,
     "sample": "INVALID_MFA_CHALLENGE",
-    "n_source": 1,
-    "n_generated": 3,
+    "n_source": 2,
+    "n_generated": 4,
     "class": "public"
   },
   "INVALID_MFA_LEVEL": {
@@ -3520,11 +3574,11 @@
     "class": "public"
   },
   "INVALID_TOKEN": {
-    "count": 12,
+    "count": 4,
     "dynamic": false,
     "sample": "INVALID_TOKEN",
-    "n_source": 3,
-    "n_generated": 5,
+    "n_source": 1,
+    "n_generated": 3,
     "class": "public"
   },
   "INVALID_USER": {
@@ -3534,6 +3588,14 @@
     "n_source": 2,
     "n_generated": 4,
     "class": "public"
+  },
+  "INVALID_WORKER_ID": {
+    "count": 16,
+    "dynamic": false,
+    "sample": "INVALID_WORKER_ID",
+    "n_source": 0,
+    "n_generated": 10,
+    "class": "internal"
   },
   "INVITE_ACCOUNT_EXISTS_UNVERIFIED": {
     "count": 4,
@@ -3683,6 +3745,14 @@
     "sample": "JOB_ENQUEUE_FAILED",
     "n_source": 1,
     "n_generated": 1,
+    "class": "internal"
+  },
+  "JOB_FAILURE_ARRAYS_MISMATCH": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "JOB_FAILURE_ARRAYS_MISMATCH",
+    "n_source": 0,
+    "n_generated": 4,
     "class": "internal"
   },
   "JSONB_PATH_FIELD": {
@@ -4232,19 +4302,27 @@
     "n_generated": 1
   },
   "MFA_CHALLENGE_EXPIRED": {
-    "count": 4,
+    "count": 8,
     "dynamic": false,
     "sample": "MFA_CHALLENGE_EXPIRED",
-    "n_source": 1,
-    "n_generated": 3,
+    "n_source": 2,
+    "n_generated": 4,
     "class": "public"
   },
   "MFA_IDENTIFIER_UNVERIFIED": {
-    "count": 16,
+    "count": 8,
     "dynamic": false,
     "sample": "MFA_IDENTIFIER_UNVERIFIED",
-    "n_source": 4,
-    "n_generated": 6,
+    "n_source": 2,
+    "n_generated": 4,
+    "class": "public"
+  },
+  "MFA_METHOD_NOT_ENABLED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "MFA_METHOD_NOT_ENABLED",
+    "n_source": 1,
+    "n_generated": 3,
     "class": "public"
   },
   "MFA_REQUIRED": {
@@ -4499,11 +4577,11 @@
     "class": "public"
   },
   "PASSWORD_LEN": {
-    "count": 12,
+    "count": 20,
     "dynamic": false,
     "sample": "PASSWORD_LEN",
     "n_source": 1,
-    "n_generated": 3,
+    "n_generated": 6,
     "class": "public"
   },
   "PASSWORD_RESET_LOCKED_EXCEED_ATTEMPTS": {
@@ -5139,6 +5217,46 @@
     "n_generated": 4,
     "class": "public"
   },
+  "SCHEDULED_JOB_NOT_ENQUEUED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "SCHEDULED_JOB_NOT_ENQUEUED",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "internal"
+  },
+  "SCHEDULED_TASK_IDENTIFIER_REQUIRED": {
+    "count": 8,
+    "dynamic": false,
+    "sample": "SCHEDULED_TASK_IDENTIFIER_REQUIRED",
+    "n_source": 0,
+    "n_generated": 6,
+    "class": "public"
+  },
+  "SCHEDULE_BATCH_SIZE_INVALID": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "SCHEDULE_BATCH_SIZE_INVALID",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "public"
+  },
+  "SCHEDULE_DEFER_INTERVAL_INVALID": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "SCHEDULE_DEFER_INTERVAL_INVALID",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "public"
+  },
+  "SCHEDULE_DEFER_REASON_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "SCHEDULE_DEFER_REASON_REQUIRED",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "public"
+  },
   "SCHEDULE_FANOUT_LANE_INVALID": {
     "count": 2,
     "dynamic": false,
@@ -5162,6 +5280,22 @@
     "n_source": 1,
     "n_generated": 1,
     "class": "internal"
+  },
+  "SCHEDULE_RULE_INVALID": {
+    "count": 32,
+    "dynamic": false,
+    "sample": "SCHEDULE_RULE_INVALID",
+    "n_source": 0,
+    "n_generated": 6,
+    "class": "public"
+  },
+  "SCHEDULE_RULE_UNSATISFIABLE": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "SCHEDULE_RULE_UNSATISFIABLE",
+    "n_source": 0,
+    "n_generated": 4,
+    "class": "public"
   },
   "SCOPE_TYPE_BACKFILL": {
     "count": 6,
