@@ -1,6 +1,6 @@
 {
   "name": "graphile-history",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "description": "PostGraphile v5 history plugin — per-row version history, point-in-time reads, and restore mutations for @history tables",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

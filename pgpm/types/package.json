@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/types",
-  "version": "2.56.1",
+  "version": "2.56.2",
   "author": "Constructive <developers@constructive.io>",
   "description": "PGPM types",
   "main": "index.js",

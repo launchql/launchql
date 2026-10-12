@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/constructive-io/constructive/compare/@constructive-io/errors@0.21.0...@constructive-io/errors@0.22.0) (2026-10-12)
+
+### Features
+
+- **errors:** regenerate registry against combined [#2194](https://github.com/constructive-io/constructive/issues/2194) branch (DECLARED_GRANT_DRIFT, JOB_DEFERRAL_ARRAYS_MISMATCH) ([782bfb9](https://github.com/constructive-io/constructive/commit/782bfb9fc7e3d9d5c100ae7138584d8d2cd7010d))
+- **errors:** register BILLING_PAYER_UNRESOLVED (regenerated from constructive-db feat/billing-payer-org) ([10d1ef3](https://github.com/constructive-io/constructive/commit/10d1ef30f4dd5d88de079ed17e30755487ef877f))
+
 # [0.21.0](https://github.com/constructive-io/constructive/compare/@constructive-io/errors@0.20.1...@constructive-io/errors@0.21.0) (2026-10-02)
 
 ### Features

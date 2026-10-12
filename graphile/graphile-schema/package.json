@@ -1,6 +1,6 @@
 {
   "name": "graphile-schema",
-  "version": "2.19.6",
+  "version": "2.19.7",
   "author": "Constructive <developers@constructive.io>",
   "description": "Build GraphQL SDL from PostgreSQL databases using PostGraphile v5",
   "main": "index.js",

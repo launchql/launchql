@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/traverse",
-  "version": "0.15.4",
+  "version": "0.15.5",
   "author": "Constructive <developers@constructive.io>",
   "description": "Traversal primitives for the pgpm module AST / migration bundle — walk a change's deploy/revert/verify scripts",
   "main": "index.js",
