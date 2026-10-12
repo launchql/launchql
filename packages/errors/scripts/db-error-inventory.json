@@ -570,11 +570,11 @@
     "class": "internal"
   },
   "BILLING_PAYER_UNRESOLVED": {
-    "count": 9,
+    "count": 11,
     "dynamic": false,
     "sample": "BILLING_PAYER_UNRESOLVED",
     "n_source": 1,
-    "n_generated": 2,
+    "n_generated": 3,
     "class": "internal"
   },
   "BILLING_QUOTA_EXCEEDED": {
@@ -2759,11 +2759,11 @@
     "class": "internal"
   },
   "FORBIDDEN": {
-    "count": 90,
+    "count": 92,
     "dynamic": false,
     "sample": "FORBIDDEN",
     "n_source": 6,
-    "n_generated": 43,
+    "n_generated": 44,
     "class": "public"
   },
   "FOREIGN_KEY_CONSTRAINT_NOT_FOUND": {
