@@ -27,6 +27,8 @@ import {
   HEADER_MACHINE_DATABASE,
   HEADER_MACHINE_ID,
   OpenFrame,
+  PathListFrame,
+  PathReadFrame,
   RUNNER_CONNECT_PATH,
   SignalName
 } from '@constructive-db/machine-protocol';
@@ -34,6 +36,7 @@ import { Logger } from '@pgpmjs/logger';
 import { WebSocket } from 'ws';
 
 import { Enrollment } from './config';
+import { listPath, PathAccessError, readPath } from './files';
 import { PolicyViolationError, resolveSpawn, RunnerPolicy } from './policy';
 import { pipeProcess, ptyProcess, SessionProcess } from './process';
 
@@ -303,6 +306,10 @@ export class EnrollmentRunner {
       }
       return;
     }
+    case 'path_list':
+    case 'path_read':
+      void this.answerPath(ws, frame);
+      return;
     case 'enrolled':
       // The exchange's result: the tenant resolved this machine to a principal
       // and minted a credential to dial with next time. Its value never reaches
@@ -317,6 +324,38 @@ export class EnrollmentRunner {
       this.logger.error(`machine-runner: unexpected '${frame.type}' frame from relay`);
       ws.close(4002, 'protocol error');
     }
+  }
+
+  /**
+   * Answer a read-only path request on the socket it arrived on: a listing, a
+   * file's bytes, or an `error` carrying the request id and why. A refusal
+   * is the requester's to act on; any other failure is also logged here.
+   */
+  private async answerPath(ws: WebSocket, frame: PathListFrame | PathReadFrame): Promise<void> {
+    const { requestId } = frame;
+    let reply: Frame;
+    try {
+      reply =
+        frame.type === 'path_list'
+          ? {
+            type: 'path_listing',
+            requestId,
+            entries: await listPath(this.policy, frame.root, frame.path)
+          }
+          : { type: 'path_content', requestId, ...(await readPath(this.policy, frame.root, frame.path)) };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (!(err instanceof PathAccessError)) {
+        this.logger.error(`machine-runner: ${frame.type} '${frame.path}' failed: ${message}`);
+      }
+      reply = {
+        type: 'error',
+        requestId,
+        message,
+        code: err instanceof PathAccessError ? err.code : 'PATH_UNREADABLE'
+      };
+    }
+    if (ws.readyState === WebSocket.OPEN) ws.send(encodeFrame(reply));
   }
 
   /** The session a frame addresses, or an `error` frame back and undefined. */
