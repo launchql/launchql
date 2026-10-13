@@ -115,7 +115,7 @@ Tests require PostgreSQL. Standard PG env vars:
 - `PGHOST` (default: localhost), `PGPORT` (default: 5432)
 - `PGUSER` (default: postgres), `PGPASSWORD` (default: password)
 
-For S3/RustFS tests: `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY` (endpoint/provider/region are `storage_module` rows, not env)
+For RustFS tests: `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY` (endpoint/provider/region come from the `storage_module` row)
 
 ## Build System
 

@@ -77,7 +77,9 @@ VALUES (
   'f1a7f000-0000-4000-8000-000000000002',
   'f1a7f000-0000-4000-8000-000000000001',
   '6dbae92a-5450-401b-1ed5-d69e7754940d', 'b0000001-0000-0000-0000-000000000001', 'b0000001-0000-0000-0000-000000000002',
-  'http://localhost:9000', 'minio', 'us-east-1', 'platform', '6dbae92a-5450-401b-1ed5-d69e7754940e'
+  -- 127.0.0.1, not the localhost:9000 an env default would point at: the
+  -- presigned host proves the coordinates came from this row.
+  'http://127.0.0.1:9000', 'minio', 'us-east-1', 'platform', '6dbae92a-5450-401b-1ed5-d69e7754940e'
 ) ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO metaschema_modules_public.storage_module (

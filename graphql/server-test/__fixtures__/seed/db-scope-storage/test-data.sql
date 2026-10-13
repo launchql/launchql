@@ -74,7 +74,8 @@ VALUES (
   'f1a7f000-0000-4000-8000-000000000002',
   'f1a7f000-0000-4000-8000-000000000001',
   'ce552000-0000-4000-8000-000000000001', 'ce553000-0000-4000-8000-000000000001', 'ce553000-0000-4000-8000-000000000002',
-  'http://localhost:9000', 'minio', 'us-east-1', 'platform', 'ce552000-0000-4000-8000-000000000002'
+  -- 127.0.0.1, not the localhost:9000 an env default would point at.
+  'http://127.0.0.1:9000', 'minio', 'us-east-1', 'platform', 'ce552000-0000-4000-8000-000000000002'
 ) ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO metaschema_modules_public.storage_module (

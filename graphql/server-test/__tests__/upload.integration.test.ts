@@ -402,6 +402,7 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
 
         const payload = data.uploadAppFile;
         expect(payload.uploadUrl).toBeTruthy();
+        expect(new URL(payload.uploadUrl).host).toBe('127.0.0.1:9000');
         expect(payload.fileId).toBeTruthy();
         expect(payload.key).toBe(contentHash);
         expect(payload.deduplicated).toBe(false);

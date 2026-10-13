@@ -194,6 +194,8 @@ describe('database-scope upload surface', () => {
 
       const payload = expectSuccess(res).uploadFile;
       expect(payload.uploadUrl).toBeTruthy();
+      // The tenant row names no endpoint: it inherits the platform row's, never an env default.
+      expect(new URL(payload.uploadUrl).host).toBe('127.0.0.1:9000');
       expect(payload.fileId).toBeTruthy();
       expect(payload.key).toBe(contentHash);
       expect(payload.deduplicated).toBe(false);
