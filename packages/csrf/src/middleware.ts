@@ -1,6 +1,8 @@
 import { generateToken, verifyToken } from './token';
 import { CookieOptions, createCsrfError,CsrfConfig } from './types';
 
+const DEFAULT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
 const DEFAULT_CONFIG: Required<CsrfConfig> = {
   cookieName: 'csrf_token',
   headerName: 'x-csrf-token',
@@ -9,7 +11,7 @@ const DEFAULT_CONFIG: Required<CsrfConfig> = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 86400,
+    maxAge: DEFAULT_MAX_AGE_MS,
     path: '/',
   },
   ignoreMethods: ['GET', 'HEAD', 'OPTIONS'],
