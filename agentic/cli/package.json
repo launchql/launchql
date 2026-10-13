@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/cli",
-  "version": "0.17.4",
+  "version": "0.17.5",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "agent — the pi coding agent with the Constructive harness baked in, purely a shell",
   "main": "index.js",

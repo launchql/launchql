@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/pi",
-  "version": "0.25.9",
+  "version": "0.25.10",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "the pi adapter for agentic-kit — Constructive's typed db tools, confirm gate, and the run-log/metering/gate lanes attached to a pi coding-agent session",
   "main": "index.js",

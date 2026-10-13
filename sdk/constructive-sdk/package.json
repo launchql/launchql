@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/sdk",
-  "version": "1.19.9",
+  "version": "1.19.10",
   "author": "Constructive <developers@constructive.io>",
   "description": "Constructive SDK - Auto-generated GraphQL types and ORM client",
   "main": "index.js",
