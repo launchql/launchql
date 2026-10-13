@@ -107,7 +107,7 @@ const csrf = createCsrfMiddleware({
     httpOnly: true,                // Not accessible via JavaScript
     secure: true,                  // HTTPS only in production
     sameSite: 'lax',              // CSRF protection
-    maxAge: 86400,                // 24 hours
+    maxAge: 86400 * 1000,         // 24 hours, in milliseconds (Express `res.cookie` unit)
     path: '/',
   },
 });

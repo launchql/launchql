@@ -99,6 +99,18 @@ For the operational workflow, sampler output, and heap snapshot usage, see [docs
 - `GET /debug/memory` -> memory/process/Graphile debug snapshot when observability is enabled
 - `GET /debug/db` -> PostgreSQL activity/locks/pool debug snapshot when observability is enabled
 
+## Auth cookies and CSRF
+
+Browsers authenticate with the `constructive_session` cookie; every other client sends `Authorization: Bearer <accessToken>`.
+
+- A successful sign-in mutation (`signIn`, `signUp`, `signInSso`, `signInMagicLink`, `signInEmailOtp`, `completeMfaChallenge`, …) returns the access token in the response body and also sets `constructive_session` (plus `constructive_device_token` when the mutation returns a device id). `Max-Age` comes from the API's auth settings (default 86400 s; `rememberMe: true` uses the remember-me duration).
+- `signOut` always answers with expired `constructive_session` and `constructive_device_token` cookies (`Max-Age=0`), however the request authenticated and whether or not the mutation succeeded. `revokeSession` / `revokeAllSessions` clear them on success.
+- Every request gets a `csrf_token` cookie (readable by JS, one day). A `POST /graphql` that carries `constructive_session` and no Bearer header must echo that value in `X-CSRF-Token`, or it is refused with 403 `CSRF_TOKEN_MISSING` / `CSRF_TOKEN_INVALID`. Bearer requests and requests without a session cookie skip the check.
+
+### Non-browser clients (native apps, CLIs, servers)
+
+Send `X-Constructive-Session-Cookie: omit` on every request. Sign-in mutations then set no auth cookie: read `accessToken` from the response body and send it as `Authorization: Bearer <accessToken>`. Any other value of the header is refused with 400 `INVALID_SESSION_COOKIE_HEADER` before the operation runs. The header does not bypass CSRF: a request that still carries `constructive_session` without a Bearer header is checked like a browser's, so sign out with the Bearer token (its response expires any session cookie the client was given before it opted out).
+
 ## Scoped routing
 
 This is a production-only server: every request is resolved through the scoped-routing plane. There is no static single-tenant mode and no flag to disable routing. For single-database local development without route resolution or a database id, use [`@constructive-io/graphql-dev-server`](../dev-server/README.md).

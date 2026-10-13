@@ -87,6 +87,19 @@ describe('createCsrfMiddleware', () => {
       expect(next).toHaveBeenCalled();
     });
 
+    it('should default maxAge to one day in milliseconds', () => {
+      const csrf = createCsrfMiddleware();
+      const res = createMockRes();
+
+      csrf.setToken(createMockReq(), res, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith(
+        'csrf_token',
+        expect.any(String),
+        expect.objectContaining({ maxAge: 86400 * 1000 })
+      );
+    });
+
     it('should not set token cookie if already present', () => {
       const csrf = createCsrfMiddleware();
       const req = createMockReq({ cookies: { csrf_token: 'existing-token' } });

@@ -10,6 +10,7 @@ import {
   DEVICE_TOKEN_COOKIE_NAME,
   getDeviceTokenCookieConfig,
   getSessionCookieConfig,
+  isSessionCookieOmitted,
   SESSION_COOKIE_NAME,
 } from '../middleware/cookie';
 
@@ -261,18 +262,17 @@ export const AuthCookiePlugin: GraphileConfig.Plugin = {
             const payload = bufferResult.buffer.toString('utf8');
             const graphqlResponse = JSON.parse(payload) as GraphQLResponse;
 
-            // Skip if there are GraphQL errors
-            if (graphqlResponse.errors?.length || !graphqlResponse.data) {
-              return result;
-            }
-
-            const data = graphqlResponse.data;
+            const succeeded = !graphqlResponse.errors?.length && Boolean(graphqlResponse.data);
+            const data = graphqlResponse.data ?? {};
             const authSettings = req.api?.authSettings;
             const cookiesToSet: string[] = [];
 
-            // Handle sign-out mutations
-            if (signOutMutation && data[signOutMutation]) {
-              log.info('[auth-cookie] Sign-out mutation succeeded, clearing session cookie');
+            // signOut always clears the cookies, whatever the mutation returned
+            // and however the request authenticated: a Bearer client that was
+            // once handed a session cookie must not keep sending it afterwards.
+            // revokeSession/revokeAllSessions clear them only on success.
+            if (signOutMutation === 'signOut' || (signOutMutation && succeeded && data[signOutMutation])) {
+              log.info(`[auth-cookie] ${signOutMutation}: clearing session cookie`);
               const config = getSessionCookieConfig(authSettings);
               cookiesToSet.push(serializeClearCookie(SESSION_COOKIE_NAME, config));
               // Also clear device token on sign-out
@@ -280,8 +280,9 @@ export const AuthCookiePlugin: GraphileConfig.Plugin = {
               cookiesToSet.push(serializeClearCookie(DEVICE_TOKEN_COOKIE_NAME, deviceConfig));
             }
 
-            // Handle sign-in mutations
-            if (signInMutation) {
+            // Handle sign-in mutations; a client that sent the opt-out header
+            // reads the token from the response body and gets no cookies.
+            if (signInMutation && succeeded && !isSessionCookieOmitted(req)) {
               const accessToken = extractAccessToken(data, signInMutation);
               if (accessToken) {
                 const rememberMe = hasRememberMe(body.variables);
