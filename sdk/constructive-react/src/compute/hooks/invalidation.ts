@@ -20,6 +20,7 @@ import {
   builderBindingKeys,
   contentPresetKeys,
   databaseFunctionGraphKeys,
+  databaseFunctionGraphExecutionCancelRequestKeys,
   databaseFunctionGraphExecutionKeys,
   databaseFunctionGraphExecutionNodeStateKeys,
   databaseFunctionGraphExecutionOutputKeys,
@@ -37,6 +38,7 @@ import {
   functionExecutionLogKeys,
   functionGraphCommitKeys,
   functionGraphKeys,
+  functionGraphExecutionCancelRequestKeys,
   functionGraphExecutionKeys,
   functionGraphExecutionNodeStateKeys,
   functionGraphExecutionOutputKeys,
@@ -239,6 +241,28 @@ export const invalidate = {
         queryKey: databaseFunctionGraphKeys.detail(id),
       }),
   },
+  /** Invalidate databaseFunctionGraphExecutionCancelRequest queries */ databaseFunctionGraphExecutionCancelRequest:
+    {
+      /** Invalidate all databaseFunctionGraphExecutionCancelRequest queries */ all: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: databaseFunctionGraphExecutionCancelRequestKeys.all,
+        }),
+      /** Invalidate databaseFunctionGraphExecutionCancelRequest list queries */ lists: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: databaseFunctionGraphExecutionCancelRequestKeys.lists(),
+        }),
+      /** Invalidate a specific databaseFunctionGraphExecutionCancelRequest */ detail: (
+        queryClient: QueryClient,
+        id: string | number
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: databaseFunctionGraphExecutionCancelRequestKeys.detail(id),
+        }),
+    },
   /** Invalidate databaseFunctionGraphExecution queries */ databaseFunctionGraphExecution: {
     /** Invalidate all databaseFunctionGraphExecution queries */ all: (queryClient: QueryClient) =>
       queryClient.invalidateQueries({
@@ -541,6 +565,28 @@ export const invalidate = {
         queryKey: functionGraphKeys.detail(id),
       }),
   },
+  /** Invalidate functionGraphExecutionCancelRequest queries */ functionGraphExecutionCancelRequest:
+    {
+      /** Invalidate all functionGraphExecutionCancelRequest queries */ all: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: functionGraphExecutionCancelRequestKeys.all,
+        }),
+      /** Invalidate functionGraphExecutionCancelRequest list queries */ lists: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: functionGraphExecutionCancelRequestKeys.lists(),
+        }),
+      /** Invalidate a specific functionGraphExecutionCancelRequest */ detail: (
+        queryClient: QueryClient,
+        id: string | number
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: functionGraphExecutionCancelRequestKeys.detail(id),
+        }),
+    },
   /** Invalidate functionGraphExecution queries */ functionGraphExecution: {
     /** Invalidate all functionGraphExecution queries */ all: (queryClient: QueryClient) =>
       queryClient.invalidateQueries({
@@ -2289,6 +2335,12 @@ export const remove = {
       queryKey: databaseFunctionGraphKeys.detail(id),
     });
   },
+  /** Remove databaseFunctionGraphExecutionCancelRequest from cache */ databaseFunctionGraphExecutionCancelRequest:
+    (queryClient: QueryClient, id: string | number) => {
+      queryClient.removeQueries({
+        queryKey: databaseFunctionGraphExecutionCancelRequestKeys.detail(id),
+      });
+    },
   /** Remove databaseFunctionGraphExecution from cache */ databaseFunctionGraphExecution: (
     queryClient: QueryClient,
     id: string | number
@@ -2418,6 +2470,12 @@ export const remove = {
       queryKey: functionGraphKeys.detail(id),
     });
   },
+  /** Remove functionGraphExecutionCancelRequest from cache */ functionGraphExecutionCancelRequest:
+    (queryClient: QueryClient, id: string | number) => {
+      queryClient.removeQueries({
+        queryKey: functionGraphExecutionCancelRequestKeys.detail(id),
+      });
+    },
   /** Remove functionGraphExecution from cache */ functionGraphExecution: (
     queryClient: QueryClient,
     id: string | number

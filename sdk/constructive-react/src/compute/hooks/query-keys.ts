@@ -64,6 +64,19 @@ export const databaseFunctionGraphKeys = {
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...databaseFunctionGraphKeys.details(), id] as const,
 } as const;
+export const databaseFunctionGraphExecutionCancelRequestKeys = {
+  /** All databaseFunctionGraphExecutionCancelRequest queries */ all: [
+    'databasefunctiongraphexecutioncancelrequest',
+  ] as const,
+  /** List query keys */ lists: () =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.details(), id] as const,
+} as const;
 export const databaseFunctionGraphExecutionKeys = {
   /** All databaseFunctionGraphExecution queries */ all: [
     'databasefunctiongraphexecution',
@@ -231,6 +244,19 @@ export const functionGraphKeys = {
   /** Detail query keys */ details: () => [...functionGraphKeys.all, 'detail'] as const,
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...functionGraphKeys.details(), id] as const,
+} as const;
+export const functionGraphExecutionCancelRequestKeys = {
+  /** All functionGraphExecutionCancelRequest queries */ all: [
+    'functiongraphexecutioncancelrequest',
+  ] as const,
+  /** List query keys */ lists: () =>
+    [...functionGraphExecutionCancelRequestKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...functionGraphExecutionCancelRequestKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () =>
+    [...functionGraphExecutionCancelRequestKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...functionGraphExecutionCancelRequestKeys.details(), id] as const,
 } as const;
 export const functionGraphExecutionKeys = {
   /** All functionGraphExecution queries */ all: ['functiongraphexecution'] as const,
@@ -1213,6 +1239,7 @@ export const queryKeys = {
   builderBinding: builderBindingKeys,
   contentPreset: contentPresetKeys,
   databaseFunctionGraph: databaseFunctionGraphKeys,
+  databaseFunctionGraphExecutionCancelRequest: databaseFunctionGraphExecutionCancelRequestKeys,
   databaseFunctionGraphExecution: databaseFunctionGraphExecutionKeys,
   databaseFunctionGraphExecutionNodeState: databaseFunctionGraphExecutionNodeStateKeys,
   databaseFunctionGraphExecutionOutput: databaseFunctionGraphExecutionOutputKeys,
@@ -1230,6 +1257,7 @@ export const queryKeys = {
   functionExecutionLog: functionExecutionLogKeys,
   functionGraphCommit: functionGraphCommitKeys,
   functionGraph: functionGraphKeys,
+  functionGraphExecutionCancelRequest: functionGraphExecutionCancelRequestKeys,
   functionGraphExecution: functionGraphExecutionKeys,
   functionGraphExecutionNodeState: functionGraphExecutionNodeStateKeys,
   functionGraphExecutionOutput: functionGraphExecutionOutputKeys,

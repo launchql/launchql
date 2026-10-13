@@ -10,6 +10,7 @@ import { BuildStepModel } from './models/buildStep';
 import { BuilderBindingModel } from './models/builderBinding';
 import { ContentPresetModel } from './models/contentPreset';
 import { DatabaseFunctionGraphModel } from './models/databaseFunctionGraph';
+import { DatabaseFunctionGraphExecutionCancelRequestModel } from './models/databaseFunctionGraphExecutionCancelRequest';
 import { DatabaseFunctionGraphExecutionModel } from './models/databaseFunctionGraphExecution';
 import { DatabaseFunctionGraphExecutionNodeStateModel } from './models/databaseFunctionGraphExecutionNodeState';
 import { DatabaseFunctionGraphExecutionOutputModel } from './models/databaseFunctionGraphExecutionOutput';
@@ -27,6 +28,7 @@ import { FunctionDeploymentEventModel } from './models/functionDeploymentEvent';
 import { FunctionExecutionLogModel } from './models/functionExecutionLog';
 import { FunctionGraphCommitModel } from './models/functionGraphCommit';
 import { FunctionGraphModel } from './models/functionGraph';
+import { FunctionGraphExecutionCancelRequestModel } from './models/functionGraphExecutionCancelRequest';
 import { FunctionGraphExecutionModel } from './models/functionGraphExecution';
 import { FunctionGraphExecutionNodeStateModel } from './models/functionGraphExecutionNodeState';
 import { FunctionGraphExecutionOutputModel } from './models/functionGraphExecutionOutput';
@@ -166,6 +168,8 @@ export function createClient(config: OrmClientConfig) {
     builderBinding: new BuilderBindingModel(client),
     contentPreset: new ContentPresetModel(client),
     databaseFunctionGraph: new DatabaseFunctionGraphModel(client),
+    databaseFunctionGraphExecutionCancelRequest:
+      new DatabaseFunctionGraphExecutionCancelRequestModel(client),
     databaseFunctionGraphExecution: new DatabaseFunctionGraphExecutionModel(client),
     databaseFunctionGraphExecutionNodeState: new DatabaseFunctionGraphExecutionNodeStateModel(
       client
@@ -185,6 +189,7 @@ export function createClient(config: OrmClientConfig) {
     functionExecutionLog: new FunctionExecutionLogModel(client),
     functionGraphCommit: new FunctionGraphCommitModel(client),
     functionGraph: new FunctionGraphModel(client),
+    functionGraphExecutionCancelRequest: new FunctionGraphExecutionCancelRequestModel(client),
     functionGraphExecution: new FunctionGraphExecutionModel(client),
     functionGraphExecutionNodeState: new FunctionGraphExecutionNodeStateModel(client),
     functionGraphExecutionOutput: new FunctionGraphExecutionOutputModel(client),

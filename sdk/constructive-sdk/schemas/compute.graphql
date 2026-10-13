@@ -1854,6 +1854,53 @@ type CreateContentPresetPayload {
   query: Query
 }
 
+"""
+All input for the create `DatabaseFunctionGraphExecutionCancelRequest` mutation.
+"""
+input CreateDatabaseFunctionGraphExecutionCancelRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The `DatabaseFunctionGraphExecutionCancelRequest` to be created by this mutation.
+  """
+  databaseFunctionGraphExecutionCancelRequest: DatabaseFunctionGraphExecutionCancelRequestInput!
+}
+
+"""
+The output of our create `DatabaseFunctionGraphExecutionCancelRequest` mutation.
+"""
+type CreateDatabaseFunctionGraphExecutionCancelRequestPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  The `DatabaseFunctionGraphExecutionCancelRequest` that was created by this mutation.
+  """
+  databaseFunctionGraphExecutionCancelRequest: DatabaseFunctionGraphExecutionCancelRequest
+
+  """
+  An edge for our `DatabaseFunctionGraphExecutionCancelRequest`. May be used by Relay 1.
+  """
+  databaseFunctionGraphExecutionCancelRequestEdge(
+    """
+    The method to use when ordering `DatabaseFunctionGraphExecutionCancelRequest`.
+    """
+    orderBy: [DatabaseFunctionGraphExecutionCancelRequestOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): DatabaseFunctionGraphExecutionCancelRequestEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `DatabaseFunctionGraphExecution` mutation."""
 input CreateDatabaseFunctionGraphExecutionInput {
   """
@@ -2400,6 +2447,51 @@ type CreateFunctionGraphCommitPayload {
     """The method to use when ordering `FunctionGraphCommit`."""
     orderBy: [FunctionGraphCommitOrderBy!]! = [PRIMARY_KEY_ASC]
   ): FunctionGraphCommitEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""
+All input for the create `FunctionGraphExecutionCancelRequest` mutation.
+"""
+input CreateFunctionGraphExecutionCancelRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The `FunctionGraphExecutionCancelRequest` to be created by this mutation.
+  """
+  functionGraphExecutionCancelRequest: FunctionGraphExecutionCancelRequestInput!
+}
+
+"""
+The output of our create `FunctionGraphExecutionCancelRequest` mutation.
+"""
+type CreateFunctionGraphExecutionCancelRequestPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  The `FunctionGraphExecutionCancelRequest` that was created by this mutation.
+  """
+  functionGraphExecutionCancelRequest: FunctionGraphExecutionCancelRequest
+
+  """
+  An edge for our `FunctionGraphExecutionCancelRequest`. May be used by Relay 1.
+  """
+  functionGraphExecutionCancelRequestEdge(
+    """The method to use when ordering `FunctionGraphExecutionCancelRequest`."""
+    orderBy: [FunctionGraphExecutionCancelRequestOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionGraphExecutionCancelRequestEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -5895,6 +5987,134 @@ type DatabaseFunctionGraphExecution {
   timeoutAt: Datetime!
 }
 
+"""
+Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched
+"""
+type DatabaseFunctionGraphExecutionCancelRequest {
+  """Who asked for the stop"""
+  actorId: UUID!
+
+  """When the stop was requested"""
+  createdAt: Datetime!
+
+  """The execution to stop"""
+  executionId: UUID!
+
+  """Unique cancel request identifier"""
+  id: UUID!
+}
+
+"""
+A connection to a list of `DatabaseFunctionGraphExecutionCancelRequest` values.
+"""
+type DatabaseFunctionGraphExecutionCancelRequestConnection {
+  """
+  A list of edges which contains the `DatabaseFunctionGraphExecutionCancelRequest` and cursor to aid in pagination.
+  """
+  edges: [DatabaseFunctionGraphExecutionCancelRequestEdge]!
+
+  """A list of `DatabaseFunctionGraphExecutionCancelRequest` objects."""
+  nodes: [DatabaseFunctionGraphExecutionCancelRequest]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `DatabaseFunctionGraphExecutionCancelRequest` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `DatabaseFunctionGraphExecutionCancelRequest` edge in the connection.
+"""
+type DatabaseFunctionGraphExecutionCancelRequestEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """
+  The `DatabaseFunctionGraphExecutionCancelRequest` at the end of the edge.
+  """
+  node: DatabaseFunctionGraphExecutionCancelRequest
+}
+
+"""
+A filter to be used against `DatabaseFunctionGraphExecutionCancelRequest` object types. All fields are combined with a logical ‘and.’
+"""
+input DatabaseFunctionGraphExecutionCancelRequestFilter {
+  """Filter by the object’s `actorId` field."""
+  actorId: UUIDFilter
+
+  """Checks for all expressions in this list."""
+  and: [DatabaseFunctionGraphExecutionCancelRequestFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `executionId` field."""
+  executionId: UUIDFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Negates the expression."""
+  not: DatabaseFunctionGraphExecutionCancelRequestFilter
+
+  """Checks for any expressions in this list."""
+  or: [DatabaseFunctionGraphExecutionCancelRequestFilter!]
+}
+
+"""
+An input for mutations affecting `DatabaseFunctionGraphExecutionCancelRequest`
+"""
+input DatabaseFunctionGraphExecutionCancelRequestInput {
+  """Who asked for the stop"""
+  actorId: UUID
+
+  """When the stop was requested"""
+  createdAt: Datetime
+
+  """The execution to stop"""
+  executionId: UUID!
+
+  """Unique cancel request identifier"""
+  id: UUID
+}
+
+"""
+Methods to use when ordering `DatabaseFunctionGraphExecutionCancelRequest`.
+"""
+enum DatabaseFunctionGraphExecutionCancelRequestOrderBy {
+  ACTOR_ID_ASC
+  ACTOR_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  EXECUTION_ID_ASC
+  EXECUTION_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+Represents an update to a `DatabaseFunctionGraphExecutionCancelRequest`. Fields that are set will be updated.
+"""
+input DatabaseFunctionGraphExecutionCancelRequestPatch {
+  """Who asked for the stop"""
+  actorId: UUID
+
+  """When the stop was requested"""
+  createdAt: Datetime
+
+  """The execution to stop"""
+  executionId: UUID
+
+  """Unique cancel request identifier"""
+  id: UUID
+}
+
 """A connection to a list of `DatabaseFunctionGraphExecution` values."""
 type DatabaseFunctionGraphExecutionConnection {
   """
@@ -8491,6 +8711,51 @@ type DeleteContentPresetPayload {
   query: Query
 }
 
+"""
+All input for the `deleteDatabaseFunctionGraphExecutionCancelRequest` mutation.
+"""
+input DeleteDatabaseFunctionGraphExecutionCancelRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique cancel request identifier"""
+  id: UUID!
+}
+
+"""
+The output of our delete `DatabaseFunctionGraphExecutionCancelRequest` mutation.
+"""
+type DeleteDatabaseFunctionGraphExecutionCancelRequestPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  The `DatabaseFunctionGraphExecutionCancelRequest` that was deleted by this mutation.
+  """
+  databaseFunctionGraphExecutionCancelRequest: DatabaseFunctionGraphExecutionCancelRequest
+
+  """
+  An edge for our `DatabaseFunctionGraphExecutionCancelRequest`. May be used by Relay 1.
+  """
+  databaseFunctionGraphExecutionCancelRequestEdge(
+    """
+    The method to use when ordering `DatabaseFunctionGraphExecutionCancelRequest`.
+    """
+    orderBy: [DatabaseFunctionGraphExecutionCancelRequestOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): DatabaseFunctionGraphExecutionCancelRequestEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `deleteDatabaseFunctionGraphExecution` mutation."""
 input DeleteDatabaseFunctionGraphExecutionInput {
   """
@@ -9087,6 +9352,49 @@ type DeleteFunctionGraphCommitPayload {
     """The method to use when ordering `FunctionGraphCommit`."""
     orderBy: [FunctionGraphCommitOrderBy!]! = [PRIMARY_KEY_ASC]
   ): FunctionGraphCommitEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""
+All input for the `deleteFunctionGraphExecutionCancelRequest` mutation.
+"""
+input DeleteFunctionGraphExecutionCancelRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique cancel request identifier"""
+  id: UUID!
+}
+
+"""
+The output of our delete `FunctionGraphExecutionCancelRequest` mutation.
+"""
+type DeleteFunctionGraphExecutionCancelRequestPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  The `FunctionGraphExecutionCancelRequest` that was deleted by this mutation.
+  """
+  functionGraphExecutionCancelRequest: FunctionGraphExecutionCancelRequest
+
+  """
+  An edge for our `FunctionGraphExecutionCancelRequest`. May be used by Relay 1.
+  """
+  functionGraphExecutionCancelRequestEdge(
+    """The method to use when ordering `FunctionGraphExecutionCancelRequest`."""
+    orderBy: [FunctionGraphExecutionCancelRequestOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionGraphExecutionCancelRequestEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -14891,6 +15199,126 @@ type FunctionGraphExecution {
   timeoutAt: Datetime!
 }
 
+"""
+Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched
+"""
+type FunctionGraphExecutionCancelRequest {
+  """Who asked for the stop"""
+  actorId: UUID!
+
+  """When the stop was requested"""
+  createdAt: Datetime!
+
+  """The execution to stop"""
+  executionId: UUID!
+
+  """Unique cancel request identifier"""
+  id: UUID!
+}
+
+"""
+A connection to a list of `FunctionGraphExecutionCancelRequest` values.
+"""
+type FunctionGraphExecutionCancelRequestConnection {
+  """
+  A list of edges which contains the `FunctionGraphExecutionCancelRequest` and cursor to aid in pagination.
+  """
+  edges: [FunctionGraphExecutionCancelRequestEdge]!
+
+  """A list of `FunctionGraphExecutionCancelRequest` objects."""
+  nodes: [FunctionGraphExecutionCancelRequest]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `FunctionGraphExecutionCancelRequest` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `FunctionGraphExecutionCancelRequest` edge in the connection."""
+type FunctionGraphExecutionCancelRequestEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FunctionGraphExecutionCancelRequest` at the end of the edge."""
+  node: FunctionGraphExecutionCancelRequest
+}
+
+"""
+A filter to be used against `FunctionGraphExecutionCancelRequest` object types. All fields are combined with a logical ‘and.’
+"""
+input FunctionGraphExecutionCancelRequestFilter {
+  """Filter by the object’s `actorId` field."""
+  actorId: UUIDFilter
+
+  """Checks for all expressions in this list."""
+  and: [FunctionGraphExecutionCancelRequestFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `executionId` field."""
+  executionId: UUIDFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Negates the expression."""
+  not: FunctionGraphExecutionCancelRequestFilter
+
+  """Checks for any expressions in this list."""
+  or: [FunctionGraphExecutionCancelRequestFilter!]
+}
+
+"""An input for mutations affecting `FunctionGraphExecutionCancelRequest`"""
+input FunctionGraphExecutionCancelRequestInput {
+  """Who asked for the stop"""
+  actorId: UUID
+
+  """When the stop was requested"""
+  createdAt: Datetime
+
+  """The execution to stop"""
+  executionId: UUID!
+
+  """Unique cancel request identifier"""
+  id: UUID
+}
+
+"""Methods to use when ordering `FunctionGraphExecutionCancelRequest`."""
+enum FunctionGraphExecutionCancelRequestOrderBy {
+  ACTOR_ID_ASC
+  ACTOR_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  EXECUTION_ID_ASC
+  EXECUTION_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+Represents an update to a `FunctionGraphExecutionCancelRequest`. Fields that are set will be updated.
+"""
+input FunctionGraphExecutionCancelRequestPatch {
+  """Who asked for the stop"""
+  actorId: UUID
+
+  """When the stop was requested"""
+  createdAt: Datetime
+
+  """The execution to stop"""
+  executionId: UUID
+
+  """Unique cancel request identifier"""
+  id: UUID
+}
+
 """A connection to a list of `FunctionGraphExecution` values."""
 type FunctionGraphExecutionConnection {
   """
@@ -16469,7 +16897,7 @@ type FunctionInvocation {
   apiBindingId: UUID
 
   """
-  Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker
+  Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker
   """
   channel: String!
 
@@ -16942,7 +17370,7 @@ input FunctionInvocationInput {
   apiBindingId: UUID
 
   """
-  Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker
+  Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker
   """
   channel: String!
 
@@ -17095,7 +17523,7 @@ input FunctionInvocationPatch {
   apiBindingId: UUID
 
   """
-  Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker
+  Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker
   """
   channel: String
 
@@ -17176,6 +17604,41 @@ input FunctionInvocationPatch {
   Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set.
   """
   taskIdentifier: String
+}
+
+"""All input for the `functionInvocationsCreatePage` mutation."""
+input FunctionInvocationsCreatePageInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  entityId: UUID
+  payload: JSON
+  provenance: JSON
+  routeBindingId: UUID
+  taskIdentifier: String
+}
+
+"""The output of our `functionInvocationsCreatePage` mutation."""
+type FunctionInvocationsCreatePagePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """An edge for our `FunctionInvocation`. May be used by Relay 1."""
+  functionInvocationEdge(
+    """The method to use when ordering `FunctionInvocation`."""
+    orderBy: [FunctionInvocationOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionInvocationEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  result: FunctionInvocation
 }
 
 """All input for the `functionInvocationsCreateSync` mutation."""
@@ -19895,6 +20358,14 @@ type Mutation {
     input: CreateDatabaseFunctionGraphExecutionInput!
   ): CreateDatabaseFunctionGraphExecutionPayload
 
+  """Creates a single `DatabaseFunctionGraphExecutionCancelRequest`."""
+  createDatabaseFunctionGraphExecutionCancelRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateDatabaseFunctionGraphExecutionCancelRequestInput!
+  ): CreateDatabaseFunctionGraphExecutionCancelRequestPayload
+
   """Creates a single `DatabaseFunctionGraphExecutionNodeState`."""
   createDatabaseFunctionGraphExecutionNodeState(
     """
@@ -20020,6 +20491,14 @@ type Mutation {
     """
     input: CreateFunctionGraphExecutionInput!
   ): CreateFunctionGraphExecutionPayload
+
+  """Creates a single `FunctionGraphExecutionCancelRequest`."""
+  createFunctionGraphExecutionCancelRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFunctionGraphExecutionCancelRequestInput!
+  ): CreateFunctionGraphExecutionCancelRequestPayload
 
   """Creates a single `FunctionGraphExecutionNodeState`."""
   createFunctionGraphExecutionNodeState(
@@ -20842,6 +21321,16 @@ type Mutation {
   ): DeleteDatabaseFunctionGraphExecutionPayload
 
   """
+  Deletes a single `DatabaseFunctionGraphExecutionCancelRequest` using a unique key.
+  """
+  deleteDatabaseFunctionGraphExecutionCancelRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDatabaseFunctionGraphExecutionCancelRequestInput!
+  ): DeleteDatabaseFunctionGraphExecutionCancelRequestPayload
+
+  """
   Deletes a single `DatabaseFunctionGraphExecutionNodeState` using a unique key.
   """
   deleteDatabaseFunctionGraphExecutionNodeState(
@@ -20972,6 +21461,16 @@ type Mutation {
     """
     input: DeleteFunctionGraphExecutionInput!
   ): DeleteFunctionGraphExecutionPayload
+
+  """
+  Deletes a single `FunctionGraphExecutionCancelRequest` using a unique key.
+  """
+  deleteFunctionGraphExecutionCancelRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFunctionGraphExecutionCancelRequestInput!
+  ): DeleteFunctionGraphExecutionCancelRequestPayload
 
   """Deletes a single `FunctionGraphExecutionNodeState` using a unique key."""
   deleteFunctionGraphExecutionNodeState(
@@ -21646,6 +22145,12 @@ type Mutation {
     """
     input: FunctionExecutionLogsAppendInput!
   ): FunctionExecutionLogsAppendPayload
+  functionInvocationsCreatePage(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: FunctionInvocationsCreatePageInput!
+  ): FunctionInvocationsCreatePagePayload
   functionInvocationsCreateSync(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -21724,6 +22229,12 @@ type Mutation {
     """
     input: PlatformFunctionExecutionLogsAppendInput!
   ): PlatformFunctionExecutionLogsAppendPayload
+  platformFunctionInvocationsCreatePage(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: PlatformFunctionInvocationsCreatePageInput!
+  ): PlatformFunctionInvocationsCreatePagePayload
   platformFunctionInvocationsCreateSync(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -21912,6 +22423,16 @@ type Mutation {
   ): UpdateDatabaseFunctionGraphExecutionPayload
 
   """
+  Updates a single `DatabaseFunctionGraphExecutionCancelRequest` using a unique key and a patch.
+  """
+  updateDatabaseFunctionGraphExecutionCancelRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDatabaseFunctionGraphExecutionCancelRequestInput!
+  ): UpdateDatabaseFunctionGraphExecutionCancelRequestPayload
+
+  """
   Updates a single `DatabaseFunctionGraphExecutionNodeState` using a unique key and a patch.
   """
   updateDatabaseFunctionGraphExecutionNodeState(
@@ -22050,6 +22571,16 @@ type Mutation {
     """
     input: UpdateFunctionGraphExecutionInput!
   ): UpdateFunctionGraphExecutionPayload
+
+  """
+  Updates a single `FunctionGraphExecutionCancelRequest` using a unique key and a patch.
+  """
+  updateFunctionGraphExecutionCancelRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFunctionGraphExecutionCancelRequestInput!
+  ): UpdateFunctionGraphExecutionCancelRequestPayload
 
   """
   Updates a single `FunctionGraphExecutionNodeState` using a unique key and a patch.
@@ -26841,7 +27372,7 @@ type PlatformFunctionInvocation {
   apiBindingId: UUID
 
   """
-  Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker
+  Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker
   """
   channel: String!
 
@@ -27300,7 +27831,7 @@ input PlatformFunctionInvocationInput {
   apiBindingId: UUID
 
   """
-  Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker
+  Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker
   """
   channel: String!
 
@@ -27453,7 +27984,7 @@ input PlatformFunctionInvocationPatch {
   apiBindingId: UUID
 
   """
-  Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker
+  Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker
   """
   channel: String
 
@@ -27534,6 +28065,41 @@ input PlatformFunctionInvocationPatch {
   Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set.
   """
   taskIdentifier: String
+}
+
+"""All input for the `platformFunctionInvocationsCreatePage` mutation."""
+input PlatformFunctionInvocationsCreatePageInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  entityId: UUID
+  payload: JSON
+  provenance: JSON
+  routeBindingId: UUID
+  taskIdentifier: String
+}
+
+"""The output of our `platformFunctionInvocationsCreatePage` mutation."""
+type PlatformFunctionInvocationsCreatePagePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """An edge for our `PlatformFunctionInvocation`. May be used by Relay 1."""
+  platformFunctionInvocationEdge(
+    """The method to use when ordering `PlatformFunctionInvocation`."""
+    orderBy: [PlatformFunctionInvocationOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PlatformFunctionInvocationEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  result: PlatformFunctionInvocation
 }
 
 """All input for the `platformFunctionInvocationsCreateSync` mutation."""
@@ -41054,6 +41620,39 @@ type Query {
   ): ContentPresetConnection
 
   """
+  Reads and enables pagination through a set of `DatabaseFunctionGraphExecutionCancelRequest`.
+  """
+  databaseFunctionGraphExecutionCancelRequests(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """
+    The method to use when ordering `DatabaseFunctionGraphExecutionCancelRequest`.
+    """
+    orderBy: [DatabaseFunctionGraphExecutionCancelRequestOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    where: DatabaseFunctionGraphExecutionCancelRequestFilter
+  ): DatabaseFunctionGraphExecutionCancelRequestConnection
+
+  """
   Reads and enables pagination through a set of `DatabaseFunctionGraphExecutionNodeState`.
   """
   databaseFunctionGraphExecutionNodeStates(
@@ -41551,6 +42150,37 @@ type Query {
     """
     where: FunctionGraphCommitFilter
   ): FunctionGraphCommitConnection
+
+  """
+  Reads and enables pagination through a set of `FunctionGraphExecutionCancelRequest`.
+  """
+  functionGraphExecutionCancelRequests(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FunctionGraphExecutionCancelRequest`."""
+    orderBy: [FunctionGraphExecutionCancelRequestOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    where: FunctionGraphExecutionCancelRequestFilter
+  ): FunctionGraphExecutionCancelRequestConnection
 
   """
   Reads and enables pagination through a set of `FunctionGraphExecutionNodeState`.
@@ -51036,6 +51666,56 @@ type UpdateContentPresetPayload {
   query: Query
 }
 
+"""
+All input for the `updateDatabaseFunctionGraphExecutionCancelRequest` mutation.
+"""
+input UpdateDatabaseFunctionGraphExecutionCancelRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `DatabaseFunctionGraphExecutionCancelRequest` being updated.
+  """
+  databaseFunctionGraphExecutionCancelRequestPatch: DatabaseFunctionGraphExecutionCancelRequestPatch!
+
+  """Unique cancel request identifier"""
+  id: UUID!
+}
+
+"""
+The output of our update `DatabaseFunctionGraphExecutionCancelRequest` mutation.
+"""
+type UpdateDatabaseFunctionGraphExecutionCancelRequestPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  The `DatabaseFunctionGraphExecutionCancelRequest` that was updated by this mutation.
+  """
+  databaseFunctionGraphExecutionCancelRequest: DatabaseFunctionGraphExecutionCancelRequest
+
+  """
+  An edge for our `DatabaseFunctionGraphExecutionCancelRequest`. May be used by Relay 1.
+  """
+  databaseFunctionGraphExecutionCancelRequestEdge(
+    """
+    The method to use when ordering `DatabaseFunctionGraphExecutionCancelRequest`.
+    """
+    orderBy: [DatabaseFunctionGraphExecutionCancelRequestOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): DatabaseFunctionGraphExecutionCancelRequestEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `updateDatabaseFunctionGraphExecution` mutation."""
 input UpdateDatabaseFunctionGraphExecutionInput {
   """
@@ -51712,6 +52392,54 @@ type UpdateFunctionGraphCommitPayload {
     """The method to use when ordering `FunctionGraphCommit`."""
     orderBy: [FunctionGraphCommitOrderBy!]! = [PRIMARY_KEY_ASC]
   ): FunctionGraphCommitEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""
+All input for the `updateFunctionGraphExecutionCancelRequest` mutation.
+"""
+input UpdateFunctionGraphExecutionCancelRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FunctionGraphExecutionCancelRequest` being updated.
+  """
+  functionGraphExecutionCancelRequestPatch: FunctionGraphExecutionCancelRequestPatch!
+
+  """Unique cancel request identifier"""
+  id: UUID!
+}
+
+"""
+The output of our update `FunctionGraphExecutionCancelRequest` mutation.
+"""
+type UpdateFunctionGraphExecutionCancelRequestPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  The `FunctionGraphExecutionCancelRequest` that was updated by this mutation.
+  """
+  functionGraphExecutionCancelRequest: FunctionGraphExecutionCancelRequest
+
+  """
+  An edge for our `FunctionGraphExecutionCancelRequest`. May be used by Relay 1.
+  """
+  functionGraphExecutionCancelRequestEdge(
+    """The method to use when ordering `FunctionGraphExecutionCancelRequest`."""
+    orderBy: [FunctionGraphExecutionCancelRequestOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): FunctionGraphExecutionCancelRequestEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
