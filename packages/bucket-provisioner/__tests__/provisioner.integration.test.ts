@@ -23,16 +23,16 @@ import { ProvisionerError } from '../src/types';
 
 // The local object store (docker RustFS/MinIO); credentials from the env.
 const OBJECT_STORE_ENDPOINT = 'http://localhost:9000';
-const AWS_REGION = 'us-east-1';
-const AWS_ACCESS_KEY = process.env.STORAGE_ACCESS_KEY_ID!;
-const AWS_SECRET_KEY = process.env.STORAGE_SECRET_ACCESS_KEY!;
+const REGION = 'us-east-1';
+const ACCESS_KEY_ID = process.env.STORAGE_ACCESS_KEY_ID!;
+const SECRET_ACCESS_KEY = process.env.STORAGE_SECRET_ACCESS_KEY!;
 
 const connection: StorageConnectionConfig = {
   provider: 'minio',
-  region: AWS_REGION,
+  region: REGION,
   endpoint: OBJECT_STORE_ENDPOINT,
-  accessKeyId: AWS_ACCESS_KEY,
-  secretAccessKey: AWS_SECRET_KEY,
+  accessKeyId: ACCESS_KEY_ID,
+  secretAccessKey: SECRET_ACCESS_KEY,
 };
 
 const TEST_ORIGINS = ['https://app.example.com'];
@@ -104,7 +104,7 @@ describe('BucketProvisioner integration (RustFS)', () => {
       expect(result.bucketName).toBe(bucketName);
       expect(result.accessType).toBe('private');
       expect(result.provider).toBe('minio');
-      expect(result.region).toBe(AWS_REGION);
+      expect(result.region).toBe(REGION);
       expect(result.endpoint).toBe(OBJECT_STORE_ENDPOINT);
       expect(result.blockPublicAccess).toBe(true);
       expect(result.versioning).toBe(false);
