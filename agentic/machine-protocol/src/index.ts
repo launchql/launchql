@@ -453,6 +453,8 @@ export const MAX_READ_BYTES = 1024 * 1024;
 
 /** The most entries one listing returns. A larger directory is refused, never truncated. */
 export const MAX_LIST_ENTRIES = 1000;
+/** Path requests a runner answers at once; one more is refused, not queued. */
+export const MAX_PATH_REQUESTS_IN_FLIGHT = 8;
 
 export const PATH_ERROR_CODES = [
   /** Absolute, traversing (`..`), or carrying a NUL byte. */
@@ -464,6 +466,8 @@ export const PATH_ERROR_CODES = [
   'NOT_A_FILE',
   'FILE_TOO_LARGE',
   'DIRECTORY_TOO_LARGE',
+  /** More than {@link MAX_PATH_REQUESTS_IN_FLIGHT} requests are being answered. */
+  'TOO_MANY_PATH_REQUESTS',
   /** Any other filesystem failure; the message carries the cause. */
   'PATH_UNREADABLE'
 ] as const;
@@ -968,6 +972,9 @@ export function decodeFrame(raw: string): Frame {
     if (frame.requestId !== undefined && typeof frame.requestId !== 'string') {
       throw new Error("machine-protocol: 'error' frame requestId must be a string");
     }
+    if (frame.code !== undefined && typeof frame.code !== 'string') {
+      throw new Error("machine-protocol: 'error' frame code must be a string");
+    }
     break;
   case 'path_list':
   case 'path_read':
@@ -997,6 +1004,9 @@ export function decodeFrame(raw: string): Frame {
   case 'fs_content':
     if (typeof frame.data !== 'string' || !Number.isInteger(frame.size)) {
       throw new Error(`machine-protocol: '${type}' frame is missing data/size`);
+    }
+    if (frame.size !== Buffer.from(frame.data, 'base64').length) {
+      throw new Error(`machine-protocol: '${type}' frame size does not match its data`);
     }
     if (type === 'fs_content' && typeof frame.path !== 'string') {
       throw new Error("machine-protocol: 'fs_content' frame is missing path");

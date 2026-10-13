@@ -26,6 +26,7 @@ import {
   Frame,
   HEADER_MACHINE_DATABASE,
   HEADER_MACHINE_ID,
+  MAX_PATH_REQUESTS_IN_FLIGHT,
   OpenFrame,
   PathListFrame,
   PathReadFrame,
@@ -95,6 +96,7 @@ export class EnrollmentRunner {
 
   private ws: WebSocket | null = null;
   private readonly sessions = new Map<string, RunnerSession>();
+  private pathRequestsInFlight = 0;
   /**
    * The short-lived credential the relay minted for the last dial, held in
    * memory only: it is never logged and never written beside the enrollment
@@ -308,7 +310,21 @@ export class EnrollmentRunner {
     }
     case 'path_list':
     case 'path_read':
-      void this.answerPath(ws, frame);
+      if (this.pathRequestsInFlight >= MAX_PATH_REQUESTS_IN_FLIGHT) {
+        ws.send(
+          encodeFrame({
+            type: 'error',
+            requestId: frame.requestId,
+            code: 'TOO_MANY_PATH_REQUESTS',
+            message: `${MAX_PATH_REQUESTS_IN_FLIGHT} path requests are already being answered`
+          })
+        );
+        return;
+      }
+      this.pathRequestsInFlight += 1;
+      void this.answerPath(ws, frame).finally(() => {
+        this.pathRequestsInFlight -= 1;
+      });
       return;
     case 'enrolled':
       // The exchange's result: the tenant resolved this machine to a principal

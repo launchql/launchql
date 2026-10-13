@@ -406,7 +406,10 @@ describe('machine-protocol codec', () => {
       { type: 'fs_listing', sessionId: 's', requestId: 'r', entries: [{ name: 'a', kind: 'file' }] },
       { type: 'path_content', requestId: 'r', data: 'x' },
       { type: 'fs_content', sessionId: 's', requestId: 'r', data: '', size: 0 },
-      { type: 'error', requestId: 1, message: 'x' }
+      { type: 'error', requestId: 1, message: 'x' },
+      { type: 'error', requestId: 'r', message: 'x', code: 7 },
+      { type: 'path_content', requestId: 'r', data: 'aGk=', size: -1 },
+      { type: 'path_content', requestId: 'r', data: 'aGk=', size: 3 }
     ];
     for (const frame of bad) expect(() => decodeFrame(JSON.stringify(frame))).toThrow(/machine-protocol/);
   });

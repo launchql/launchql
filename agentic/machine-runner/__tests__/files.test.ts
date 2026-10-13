@@ -1,5 +1,6 @@
 import { MAX_LIST_ENTRIES, MAX_READ_BYTES } from '@constructive-db/machine-protocol';
 import fs from 'fs';
+import fsp from 'fs/promises';
 import os from 'os';
 import path from 'path';
 
@@ -174,5 +175,49 @@ describe('a request is confined to its root', () => {
       code: 'PATH_OUTSIDE_ROOT'
     });
     fs.rmSync(link);
+  });
+});
+
+describe('a path swapped for a symlink while it is being answered', () => {
+  afterEach(() => jest.restoreAllMocks());
+
+  /** Swap `tree/swap` for a symlink to `outside` just before the call opens it. */
+  function swapOnOpen(method: 'open' | 'opendir'): void {
+    const swap = path.join(base, 'root', 'tree', 'swap');
+    fs.rmSync(swap, { recursive: true, force: true });
+    fs.rmSync(`${swap}-old`, { recursive: true, force: true });
+    fs.mkdirSync(swap);
+    fs.writeFileSync(path.join(swap, 'secret.txt'), 'inside\n');
+    const swapNow = (): void => {
+      fs.renameSync(swap, `${swap}-old`);
+      fs.symlinkSync(path.join(base, 'outside'), swap);
+    };
+    if (method === 'open') {
+      const real = fsp.open.bind(fsp);
+      jest.spyOn(fsp, 'open').mockImplementationOnce((...args: Parameters<typeof fsp.open>) => {
+        swapNow();
+        return real(...args);
+      });
+    } else {
+      const real = fsp.opendir.bind(fsp);
+      jest.spyOn(fsp, 'opendir').mockImplementationOnce((...args: Parameters<typeof fsp.opendir>) => {
+        swapNow();
+        return real(...args);
+      });
+    }
+  }
+
+  it('refuses a read whose directory became a symlink out of the root', async () => {
+    swapOnOpen('open');
+    expect(await refusal(readPath(policy, 'tree', 'swap/secret.txt'))).toMatchObject({
+      code: 'PATH_OUTSIDE_ROOT'
+    });
+  });
+
+  it('refuses a listing whose directory became a symlink out of the root', async () => {
+    swapOnOpen('opendir');
+    expect(await refusal(listPath(policy, 'tree', 'swap'))).toMatchObject({
+      code: 'PATH_OUTSIDE_ROOT'
+    });
   });
 });

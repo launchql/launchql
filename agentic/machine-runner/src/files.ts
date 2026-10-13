@@ -77,6 +77,26 @@ export async function resolveUnder(
   return real;
 }
 
+/**
+ * Refuse unless `requested` still resolves under the root to the same file as
+ * `seen` (what was opened or listed). A path component swapped for a symlink
+ * after {@link resolveUnder} looked would otherwise be followed out of the root.
+ */
+async function assertStillUnder(
+  policy: RunnerPolicy,
+  root: string | undefined,
+  requested: string,
+  seen: { dev: number; ino: number }
+): Promise<void> {
+  const now = await fs.stat(await resolveUnder(policy, root, requested)).catch(err => {
+    if (err instanceof PathAccessError) throw err;
+    throw fsFailure(err, requested);
+  });
+  if (now.dev !== seen.dev || now.ino !== seen.ino) {
+    throw new PathAccessError('PATH_OUTSIDE_ROOT', `'${requested}' changed while being read`);
+  }
+}
+
 function entryKind(entry: { isFile(): boolean; isDirectory(): boolean; isSymbolicLink(): boolean }) {
   if (entry.isSymbolicLink()) return 'symlink' as const;
   if (entry.isFile()) return 'file' as const;
@@ -96,8 +116,9 @@ export async function listPath(
 ): Promise<PathEntry[]> {
   const target = await resolveUnder(policy, root, requested);
   let dir;
+  let stat;
   try {
-    const stat = await fs.stat(target);
+    stat = await fs.stat(target);
     if (!stat.isDirectory()) {
       throw new PathAccessError('NOT_A_DIRECTORY', `'${requested}' is not a directory`);
     }
@@ -125,6 +146,7 @@ export async function listPath(
     if (err instanceof PathAccessError) throw err;
     throw fsFailure(err, requested);
   }
+  await assertStillUnder(policy, root, requested, stat);
   return entries.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 }
 
@@ -156,6 +178,7 @@ export async function readPath(
     throw fsFailure(err, requested);
   }
   try {
+    await assertStillUnder(policy, root, requested, await handle.stat());
     const buffer = Buffer.alloc(MAX_READ_BYTES + 1);
     let size = 0;
     for (;;) {
