@@ -308,6 +308,10 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'sendSmsOtp', identifier] as const)
       : (['mutation', 'sendSmsOtp'] as const),
+  /** Mutation key for sendStepUpCode */ sendStepUpCode: (identifier?: string) =>
+    identifier
+      ? (['mutation', 'sendStepUpCode', identifier] as const)
+      : (['mutation', 'sendStepUpCode'] as const),
   /** Mutation key for sendVerificationEmail */ sendVerificationEmail: (identifier?: string) =>
     identifier
       ? (['mutation', 'sendVerificationEmail', identifier] as const)
@@ -368,6 +372,10 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'verifyPhone', identifier] as const)
       : (['mutation', 'verifyPhone'] as const),
+  /** Mutation key for verifyStepUpCode */ verifyStepUpCode: (identifier?: string) =>
+    identifier
+      ? (['mutation', 'verifyStepUpCode', identifier] as const)
+      : (['mutation', 'verifyStepUpCode'] as const),
   /** Mutation key for verifyTotp */ verifyTotp: (identifier?: string) =>
     identifier
       ? (['mutation', 'verifyTotp', identifier] as const)

@@ -1353,6 +1353,10 @@ export interface SendSmsOtpInput {
   clientMutationId?: string;
   phone?: string;
 }
+export interface SendStepUpCodeInput {
+  clientMutationId?: string;
+  method?: string;
+}
 export interface SendVerificationEmailInput {
   clientMutationId?: string;
   email?: ConstructiveInternalTypeEmail;
@@ -1889,6 +1893,10 @@ export interface VerifyPhoneInput {
   code?: string;
   phone?: string;
 }
+export interface VerifyStepUpCodeInput {
+  clientMutationId?: string;
+  code: string;
+}
 export interface VerifyTotpInput {
   clientMutationId?: string;
   totpValue: string;
@@ -2359,6 +2367,10 @@ export interface SendSmsOtpPayload {
   clientMutationId?: string | null;
   result?: boolean | null;
 }
+export interface SendStepUpCodePayload {
+  clientMutationId?: string | null;
+  result?: string | null;
+}
 export interface SendVerificationEmailPayload {
   clientMutationId?: string | null;
   result?: boolean | null;
@@ -2473,6 +2485,10 @@ export interface VerifyPasswordPayload {
   result?: boolean | null;
 }
 export interface VerifyPhonePayload {
+  clientMutationId?: string | null;
+  result?: boolean | null;
+}
+export interface VerifyStepUpCodePayload {
   clientMutationId?: string | null;
   result?: boolean | null;
 }
@@ -2656,6 +2672,7 @@ export interface SignInRecord {
   isVerified?: boolean | null;
   mfaChallengeToken?: string | null;
   mfaRequired?: boolean | null;
+  mfaSetupRequired?: boolean | null;
   outDeviceToken?: string | null;
   totpEnabled?: boolean | null;
   userId?: string | null;

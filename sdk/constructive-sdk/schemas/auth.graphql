@@ -3502,6 +3502,12 @@ type Mutation {
     """
     input: SendSmsOtpInput!
   ): SendSmsOtpPayload
+  sendStepUpCode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SendStepUpCodeInput!
+  ): SendStepUpCodePayload
   sendVerificationEmail(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -3672,6 +3678,12 @@ type Mutation {
     """
     input: VerifyPhoneInput!
   ): VerifyPhonePayload
+  verifyStepUpCode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: VerifyStepUpCodeInput!
+  ): VerifyStepUpCodePayload
   verifyTotp(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -5430,6 +5442,31 @@ type SendSmsOtpPayload {
   result: Boolean
 }
 
+"""All input for the `sendStepUpCode` mutation."""
+input SendStepUpCodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  method: String
+}
+
+"""The output of our `sendStepUpCode` mutation."""
+type SendStepUpCodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  result: String
+}
+
 """All input for the `sendVerificationEmail` mutation."""
 input SendVerificationEmailInput {
   """
@@ -5649,6 +5686,7 @@ type SignInRecord {
   isVerified: Boolean
   mfaChallengeToken: String
   mfaRequired: Boolean
+  mfaSetupRequired: Boolean
   outDeviceToken: String
   totpEnabled: Boolean
   userId: UUID
@@ -7580,6 +7618,31 @@ input VerifyPhoneInput {
 
 """The output of our `verifyPhone` mutation."""
 type VerifyPhonePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  result: Boolean
+}
+
+"""All input for the `verifyStepUpCode` mutation."""
+input VerifyStepUpCodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  code: String!
+}
+
+"""The output of our `verifyStepUpCode` mutation."""
+type VerifyStepUpCodePayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.

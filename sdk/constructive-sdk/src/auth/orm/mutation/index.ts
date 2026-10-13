@@ -43,6 +43,7 @@ import type {
   SendMfaChallengeCodeInput,
   SendPhoneVerificationCodeInput,
   SendSmsOtpInput,
+  SendStepUpCodeInput,
   SendVerificationEmailInput,
   SetPasswordInput,
   SetPrincipalEntitiesInput,
@@ -59,6 +60,7 @@ import type {
   VerifyEmailInput,
   VerifyPasswordInput,
   VerifyPhoneInput,
+  VerifyStepUpCodeInput,
   VerifyTotpInput,
   ApproveDevicePayload,
   CheckPasswordPayload,
@@ -96,6 +98,7 @@ import type {
   SendMfaChallengeCodePayload,
   SendPhoneVerificationCodePayload,
   SendSmsOtpPayload,
+  SendStepUpCodePayload,
   SendVerificationEmailPayload,
   SetPasswordPayload,
   SetPrincipalEntitiesPayload,
@@ -112,6 +115,7 @@ import type {
   VerifyEmailPayload,
   VerifyPasswordPayload,
   VerifyPhonePayload,
+  VerifyStepUpCodePayload,
   VerifyTotpPayload,
   ApproveDevicePayloadSelect,
   CheckPasswordPayloadSelect,
@@ -149,6 +153,7 @@ import type {
   SendMfaChallengeCodePayloadSelect,
   SendPhoneVerificationCodePayloadSelect,
   SendSmsOtpPayloadSelect,
+  SendStepUpCodePayloadSelect,
   SendVerificationEmailPayloadSelect,
   SetPasswordPayloadSelect,
   SetPrincipalEntitiesPayloadSelect,
@@ -165,6 +170,7 @@ import type {
   VerifyEmailPayloadSelect,
   VerifyPasswordPayloadSelect,
   VerifyPhonePayloadSelect,
+  VerifyStepUpCodePayloadSelect,
   VerifyTotpPayloadSelect,
 } from '../input-types';
 import { connectionFieldsMap } from '../input-types';
@@ -284,6 +290,9 @@ export interface SendPhoneVerificationCodeVariables {
 export interface SendSmsOtpVariables {
   input: SendSmsOtpInput;
 }
+export interface SendStepUpCodeVariables {
+  input: SendStepUpCodeInput;
+}
 export interface SendVerificationEmailVariables {
   input: SendVerificationEmailInput;
 }
@@ -331,6 +340,9 @@ export interface VerifyPasswordVariables {
 }
 export interface VerifyPhoneVariables {
   input: VerifyPhoneInput;
+}
+export interface VerifyStepUpCodeVariables {
+  input: VerifyStepUpCodeInput;
 }
 export interface VerifyTotpVariables {
   input: VerifyTotpInput;
@@ -1381,6 +1393,35 @@ export function createMutationOperations(client: OrmClient) {
           'SendSmsOtpPayload'
         ),
       }),
+    sendStepUpCode: <S extends SendStepUpCodePayloadSelect>(
+      args: SendStepUpCodeVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, SendStepUpCodePayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        sendStepUpCode: InferSelectResult<SendStepUpCodePayload, S> | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'SendStepUpCode',
+        fieldName: 'sendStepUpCode',
+        ...buildCustomDocument(
+          'mutation',
+          'SendStepUpCode',
+          'sendStepUpCode',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'SendStepUpCodeInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'SendStepUpCodePayload'
+        ),
+      }),
     sendVerificationEmail: <S extends SendVerificationEmailPayloadSelect>(
       args: SendVerificationEmailVariables,
       options: {
@@ -1843,6 +1884,35 @@ export function createMutationOperations(client: OrmClient) {
           ],
           connectionFieldsMap,
           'VerifyPhonePayload'
+        ),
+      }),
+    verifyStepUpCode: <S extends VerifyStepUpCodePayloadSelect>(
+      args: VerifyStepUpCodeVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, VerifyStepUpCodePayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        verifyStepUpCode: InferSelectResult<VerifyStepUpCodePayload, S> | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'VerifyStepUpCode',
+        fieldName: 'verifyStepUpCode',
+        ...buildCustomDocument(
+          'mutation',
+          'VerifyStepUpCode',
+          'verifyStepUpCode',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'VerifyStepUpCodeInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'VerifyStepUpCodePayload'
         ),
       }),
     verifyTotp: <S extends VerifyTotpPayloadSelect>(

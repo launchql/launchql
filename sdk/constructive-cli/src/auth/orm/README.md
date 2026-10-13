@@ -1206,6 +1206,21 @@ sendSmsOtp
 const result = await db.mutation.sendSmsOtp({ input: { phone: '<String>' } }).execute();
 ```
 
+### `db.mutation.sendStepUpCode`
+
+sendStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendStepUpCodeInput (required) |
+
+```typescript
+const result = await db.mutation.sendStepUpCode({ input: { method: '<String>' } }).execute();
+```
+
 ### `db.mutation.sendVerificationEmail`
 
 sendVerificationEmail
@@ -1444,6 +1459,21 @@ verifyPhone
 
 ```typescript
 const result = await db.mutation.verifyPhone({ input: { code: '<String>', phone: '<String>' } }).execute();
+```
+
+### `db.mutation.verifyStepUpCode`
+
+verifyStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | VerifyStepUpCodeInput (required) |
+
+```typescript
+const result = await db.mutation.verifyStepUpCode({ input: { code: '<String>' } }).execute();
 ```
 
 ### `db.mutation.verifyTotp`
