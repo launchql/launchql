@@ -47,6 +47,7 @@ CRUD operations for Machine records.
 | `ownerId` | UUID | Yes |
 | `policy` | JSON | Yes |
 | `principalId` | UUID | Yes |
+| `relayUrl` | String | Yes |
 | `revokedAt` | Datetime | Yes |
 | `tokenHash` | String | Yes |
 | `updatedAt` | Datetime | No |
@@ -57,13 +58,13 @@ CRUD operations for Machine records.
 
 ```typescript
 // List all machine records
-const items = await db.machine.findMany({ select: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } }).execute();
+const items = await db.machine.findMany({ select: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, relayUrl: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } }).execute();
 
 // Get one by id
-const item = await db.machine.findOne({ id: '<UUID>', select: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } }).execute();
+const item = await db.machine.findOne({ id: '<UUID>', select: { createdAt: true, createdBy: true, createdByPrincipal: true, entityId: true, facts: true, id: true, isShared: true, label: true, lastSeenAt: true, ownerId: true, policy: true, principalId: true, relayUrl: true, revokedAt: true, tokenHash: true, updatedAt: true, updatedBy: true, updatedByPrincipal: true } }).execute();
 
 // Create
-const created = await db.machine.create({ data: { createdBy: '<UUID>', createdByPrincipal: '<UUID>', entityId: '<UUID>', facts: '<JSON>', isShared: '<Boolean>', label: '<String>', lastSeenAt: '<Datetime>', ownerId: '<UUID>', policy: '<JSON>', principalId: '<UUID>', revokedAt: '<Datetime>', tokenHash: '<String>', updatedBy: '<UUID>', updatedByPrincipal: '<UUID>' }, select: { id: true } }).execute();
+const created = await db.machine.create({ data: { createdBy: '<UUID>', createdByPrincipal: '<UUID>', entityId: '<UUID>', facts: '<JSON>', isShared: '<Boolean>', label: '<String>', lastSeenAt: '<Datetime>', ownerId: '<UUID>', policy: '<JSON>', principalId: '<UUID>', relayUrl: '<String>', revokedAt: '<Datetime>', tokenHash: '<String>', updatedBy: '<UUID>', updatedByPrincipal: '<UUID>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.machine.update({ where: { id: '<UUID>' }, data: { createdBy: '<UUID>' }, select: { id: true } }).execute();
@@ -180,7 +181,7 @@ machinesEnroll
   | `input` | MachinesEnrollInput (required) |
 
 ```typescript
-const result = await db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', tokenHash: '<String>' } }).execute();
+const result = await db.mutation.machinesEnroll({ input: { entityId: '<UUID>', isShared: '<Boolean>', label: '<String>', relayUrl: '<String>', tokenHash: '<String>' } }).execute();
 ```
 
 ### `db.mutation.provisionBucket`

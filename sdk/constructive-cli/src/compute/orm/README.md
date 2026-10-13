@@ -26,6 +26,7 @@ const db = createClient({
 | `builderBinding` | findMany, findOne, create, update, delete |
 | `contentPreset` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraph` | findMany, findOne, create, update, delete |
+| `databaseFunctionGraphExecutionCancelRequest` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraphExecution` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraphExecutionNodeState` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraphExecutionOutput` | findMany, findOne, create, update, delete |
@@ -43,6 +44,7 @@ const db = createClient({
 | `functionExecutionLog` | findMany, findOne, create, update, delete |
 | `functionGraphCommit` | findMany, findOne, create, update, delete |
 | `functionGraph` | findMany, findOne, create, update, delete |
+| `functionGraphExecutionCancelRequest` | findMany, findOne, create, update, delete |
 | `functionGraphExecution` | findMany, findOne, create, update, delete |
 | `functionGraphExecutionNodeState` | findMany, findOne, create, update, delete |
 | `functionGraphExecutionOutput` | findMany, findOne, create, update, delete |
@@ -51,6 +53,7 @@ const db = createClient({
 | `functionGraphStore` | findMany, findOne, create, update, delete |
 | `functionInvocationAttempt` | findMany, findOne, create, update, delete |
 | `functionInvocation` | findMany, findOne, create, update, delete |
+| `functionSchedule` | findMany, findOne, create, update, delete |
 | `getAllTreeNodesRecord` | findMany, findOne, create, update, delete |
 | `image` | findMany, findOne, create, update, delete |
 | `imageGrant` | findMany, findOne, create, update, delete |
@@ -73,6 +76,7 @@ const db = createClient({
 | `platformFunctionExecutionLog` | findMany, findOne, create, update, delete |
 | `platformFunctionInvocationAttempt` | findMany, findOne, create, update, delete |
 | `platformFunctionInvocation` | findMany, findOne, create, update, delete |
+| `platformFunctionSchedule` | findMany, findOne, create, update, delete |
 | `platformImage` | findMany, findOne, create, update, delete |
 | `platformImageGrant` | findMany, findOne, create, update, delete |
 | `platformInfraCommit` | findMany, findOne, create, update, delete |
@@ -358,6 +362,38 @@ const updated = await db.databaseFunctionGraph.update({ where: { id: '<UUID>' },
 
 // Delete
 const deleted = await db.databaseFunctionGraph.delete({ where: { id: '<UUID>' } }).execute();
+```
+
+### `db.databaseFunctionGraphExecutionCancelRequest`
+
+CRUD operations for DatabaseFunctionGraphExecutionCancelRequest records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `actorId` | UUID | Yes |
+| `createdAt` | Datetime | No |
+| `executionId` | UUID | Yes |
+| `id` | UUID | No |
+
+**Operations:**
+
+```typescript
+// List all databaseFunctionGraphExecutionCancelRequest records
+const items = await db.databaseFunctionGraphExecutionCancelRequest.findMany({ select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Get one by id
+const item = await db.databaseFunctionGraphExecutionCancelRequest.findOne({ id: '<UUID>', select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Create
+const created = await db.databaseFunctionGraphExecutionCancelRequest.create({ data: { actorId: '<UUID>', executionId: '<UUID>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.databaseFunctionGraphExecutionCancelRequest.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.databaseFunctionGraphExecutionCancelRequest.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
 ### `db.databaseFunctionGraphExecution`
@@ -1060,6 +1096,38 @@ const updated = await db.functionGraph.update({ where: { id: '<UUID>' }, data: {
 const deleted = await db.functionGraph.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
+### `db.functionGraphExecutionCancelRequest`
+
+CRUD operations for FunctionGraphExecutionCancelRequest records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `actorId` | UUID | Yes |
+| `createdAt` | Datetime | No |
+| `executionId` | UUID | Yes |
+| `id` | UUID | No |
+
+**Operations:**
+
+```typescript
+// List all functionGraphExecutionCancelRequest records
+const items = await db.functionGraphExecutionCancelRequest.findMany({ select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Get one by id
+const item = await db.functionGraphExecutionCancelRequest.findOne({ id: '<UUID>', select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Create
+const created = await db.functionGraphExecutionCancelRequest.create({ data: { actorId: '<UUID>', executionId: '<UUID>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.functionGraphExecutionCancelRequest.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.functionGraphExecutionCancelRequest.delete({ where: { id: '<UUID>' } }).execute();
+```
+
 ### `db.functionGraphExecution`
 
 CRUD operations for FunctionGraphExecution records.
@@ -1394,6 +1462,47 @@ const updated = await db.functionInvocation.update({ where: { id: '<UUID>' }, da
 
 // Delete
 const deleted = await db.functionInvocation.delete({ where: { id: '<UUID>' } }).execute();
+```
+
+### `db.functionSchedule`
+
+CRUD operations for FunctionSchedule records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `actorId` | UUID | Yes |
+| `createdAt` | Datetime | No |
+| `databaseId` | UUID | Yes |
+| `description` | String | Yes |
+| `functionDefinitionId` | UUID | Yes |
+| `id` | UUID | No |
+| `isActive` | Boolean | Yes |
+| `name` | String | Yes |
+| `payload` | JSON | Yes |
+| `scheduleInfo` | JSON | Yes |
+| `suspendedAt` | Datetime | Yes |
+| `suspendedReason` | String | Yes |
+| `updatedAt` | Datetime | No |
+
+**Operations:**
+
+```typescript
+// List all functionSchedule records
+const items = await db.functionSchedule.findMany({ select: { actorId: true, createdAt: true, databaseId: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } }).execute();
+
+// Get one by id
+const item = await db.functionSchedule.findOne({ id: '<UUID>', select: { actorId: true, createdAt: true, databaseId: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } }).execute();
+
+// Create
+const created = await db.functionSchedule.create({ data: { actorId: '<UUID>', databaseId: '<UUID>', description: '<String>', functionDefinitionId: '<UUID>', isActive: '<Boolean>', name: '<String>', payload: '<JSON>', scheduleInfo: '<JSON>', suspendedAt: '<Datetime>', suspendedReason: '<String>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.functionSchedule.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.functionSchedule.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
 ### `db.getAllTreeNodesRecord`
@@ -2296,6 +2405,46 @@ const updated = await db.platformFunctionInvocation.update({ where: { id: '<UUID
 
 // Delete
 const deleted = await db.platformFunctionInvocation.delete({ where: { id: '<UUID>' } }).execute();
+```
+
+### `db.platformFunctionSchedule`
+
+CRUD operations for PlatformFunctionSchedule records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `actorId` | UUID | Yes |
+| `createdAt` | Datetime | No |
+| `description` | String | Yes |
+| `functionDefinitionId` | UUID | Yes |
+| `id` | UUID | No |
+| `isActive` | Boolean | Yes |
+| `name` | String | Yes |
+| `payload` | JSON | Yes |
+| `scheduleInfo` | JSON | Yes |
+| `suspendedAt` | Datetime | Yes |
+| `suspendedReason` | String | Yes |
+| `updatedAt` | Datetime | No |
+
+**Operations:**
+
+```typescript
+// List all platformFunctionSchedule records
+const items = await db.platformFunctionSchedule.findMany({ select: { actorId: true, createdAt: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } }).execute();
+
+// Get one by id
+const item = await db.platformFunctionSchedule.findOne({ id: '<UUID>', select: { actorId: true, createdAt: true, description: true, functionDefinitionId: true, id: true, isActive: true, name: true, payload: true, scheduleInfo: true, suspendedAt: true, suspendedReason: true, updatedAt: true } }).execute();
+
+// Create
+const created = await db.platformFunctionSchedule.create({ data: { actorId: '<UUID>', description: '<String>', functionDefinitionId: '<UUID>', isActive: '<Boolean>', name: '<String>', payload: '<JSON>', scheduleInfo: '<JSON>', suspendedAt: '<Datetime>', suspendedReason: '<String>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.platformFunctionSchedule.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.platformFunctionSchedule.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
 ### `db.platformImage`
@@ -5649,6 +5798,36 @@ databaseValidateFunctionGraph
 const result = await db.mutation.databaseValidateFunctionGraph({ input: { graphId: '<UUID>' } }).execute();
 ```
 
+### `db.mutation.functionExecutionLogsAppend`
+
+functionExecutionLogsAppend
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | FunctionExecutionLogsAppendInput (required) |
+
+```typescript
+const result = await db.mutation.functionExecutionLogsAppend({ input: '<FunctionExecutionLogsAppendInput>' }).execute();
+```
+
+### `db.mutation.functionInvocationsCreatePage`
+
+functionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | FunctionInvocationsCreatePageInput (required) |
+
+```typescript
+const result = await db.mutation.functionInvocationsCreatePage({ input: { entityId: '<UUID>', payload: '<JSON>', provenance: '<JSON>', routeBindingId: '<UUID>', taskIdentifier: '<String>' } }).execute();
+```
+
 ### `db.mutation.functionInvocationsCreateSync`
 
 functionInvocationsCreateSync
@@ -5827,6 +6006,36 @@ insertNodesAtPaths
 
 ```typescript
 const result = await db.mutation.insertNodesAtPaths({ input: '<InsertNodesAtPathsInput>' }).execute();
+```
+
+### `db.mutation.platformFunctionExecutionLogsAppend`
+
+platformFunctionExecutionLogsAppend
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | PlatformFunctionExecutionLogsAppendInput (required) |
+
+```typescript
+const result = await db.mutation.platformFunctionExecutionLogsAppend({ input: '<PlatformFunctionExecutionLogsAppendInput>' }).execute();
+```
+
+### `db.mutation.platformFunctionInvocationsCreatePage`
+
+platformFunctionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | PlatformFunctionInvocationsCreatePageInput (required) |
+
+```typescript
+const result = await db.mutation.platformFunctionInvocationsCreatePage({ input: { entityId: '<UUID>', payload: '<JSON>', provenance: '<JSON>', routeBindingId: '<UUID>', taskIdentifier: '<String>' } }).execute();
 ```
 
 ### `db.mutation.platformFunctionInvocationsCreateSync`

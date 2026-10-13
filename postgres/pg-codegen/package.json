@@ -1,6 +1,6 @@
 {
   "name": "pg-codegen",
-  "version": "5.25.6",
+  "version": "5.25.8",
   "author": "Constructive <developers@constructive.io>",
   "description": "Type-safe TypeScript codegen from live PostgreSQL schemas: row types, coerce-backed decoders, serializers, table metadata, and enum unions",
   "main": "index.js",

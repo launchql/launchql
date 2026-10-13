@@ -1,9 +1,18 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
+import { InvalidSessionCookieHeaderError } from '../errors/api-errors';
 import type { AuthSettings } from '../types';
 
 export const SESSION_COOKIE_NAME = 'constructive_session';
 export const DEVICE_TOKEN_COOKIE_NAME = 'constructive_device_token';
+
+/**
+ * Request header a non-browser client (native app, CLI, server) sends to opt
+ * out of auth cookies: sign-in mutations then return the access token in the
+ * response body only and set neither the session nor the device-token cookie.
+ */
+export const SESSION_COOKIE_HEADER = 'X-Constructive-Session-Cookie';
+export const SESSION_COOKIE_OMIT = 'omit';
 
 const DEVICE_TOKEN_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
 
@@ -117,6 +126,29 @@ export const clearDeviceTokenCookie = (res: Response, config: CookieConfig): voi
     httpOnly: config.httpOnly,
     path: config.path,
   });
+};
+
+/**
+ * True when the request opted out of auth cookies via `SESSION_COOKIE_HEADER`.
+ */
+export const isSessionCookieOmitted = (req: Request): boolean =>
+  req.get(SESSION_COOKIE_HEADER) === SESSION_COOKIE_OMIT;
+
+/**
+ * Reject a `SESSION_COOKIE_HEADER` with any value but `omit`, before the
+ * request executes, so a misspelt opt-out fails loudly instead of setting the
+ * cookie the client asked not to receive.
+ */
+export const rejectInvalidSessionCookieHeader = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+): void => {
+  const value = req.get(SESSION_COOKIE_HEADER);
+  if (value !== undefined && value !== SESSION_COOKIE_OMIT) {
+    return next(new InvalidSessionCookieHeaderError(SESSION_COOKIE_HEADER, value, SESSION_COOKIE_OMIT));
+  }
+  next();
 };
 
 /**

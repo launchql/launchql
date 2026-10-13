@@ -1041,21 +1041,6 @@ GraphQL errors.
 const result = await db.mutation.provisionBucket({ input: { bucketKey: '<String>', ownerId: '<UUID>' } }).execute();
 ```
 
-### `db.mutation.provisionNewUser`
-
-provisionNewUser
-
-- **Type:** mutation
-- **Arguments:**
-
-  | Argument | Type |
-  |----------|------|
-  | `input` | ProvisionNewUserInput (required) |
-
-```typescript
-const result = await db.mutation.provisionNewUser({ input: { email: '<String>', password: '<String>' } }).execute();
-```
-
 ### `db.mutation.refreshAccessToken`
 
 refreshAccessToken
@@ -1084,6 +1069,21 @@ requestCrossOriginToken
 
 ```typescript
 const result = await db.mutation.requestCrossOriginToken({ input: { email: '<String>', origin: '<Origin>', password: '<String>', rememberMe: '<Boolean>' } }).execute();
+```
+
+### `db.mutation.requestMagicLink`
+
+requestMagicLink
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | RequestMagicLinkInput (required) |
+
+```typescript
+const result = await db.mutation.requestMagicLink({ input: { email: '<String>' } }).execute();
 ```
 
 ### `db.mutation.resetPassword`
@@ -1161,6 +1161,21 @@ sendAccountDeletionEmail
 const result = await db.mutation.sendAccountDeletionEmail({ input: '<SendAccountDeletionEmailInput>' }).execute();
 ```
 
+### `db.mutation.sendMfaChallengeCode`
+
+sendMfaChallengeCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendMfaChallengeCodeInput (required) |
+
+```typescript
+const result = await db.mutation.sendMfaChallengeCode({ input: { mfaChallengeToken: '<String>', mfaMethod: '<String>', userId: '<UUID>' } }).execute();
+```
+
 ### `db.mutation.sendPhoneVerificationCode`
 
 sendPhoneVerificationCode
@@ -1174,6 +1189,36 @@ sendPhoneVerificationCode
 
 ```typescript
 const result = await db.mutation.sendPhoneVerificationCode({ input: { phone: '<String>' } }).execute();
+```
+
+### `db.mutation.sendSmsOtp`
+
+sendSmsOtp
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendSmsOtpInput (required) |
+
+```typescript
+const result = await db.mutation.sendSmsOtp({ input: { phone: '<String>' } }).execute();
+```
+
+### `db.mutation.sendStepUpCode`
+
+sendStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendStepUpCodeInput (required) |
+
+```typescript
+const result = await db.mutation.sendStepUpCode({ input: { method: '<String>' } }).execute();
 ```
 
 ### `db.mutation.sendVerificationEmail`
@@ -1414,6 +1459,21 @@ verifyPhone
 
 ```typescript
 const result = await db.mutation.verifyPhone({ input: { code: '<String>', phone: '<String>' } }).execute();
+```
+
+### `db.mutation.verifyStepUpCode`
+
+verifyStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | VerifyStepUpCodeInput (required) |
+
+```typescript
+const result = await db.mutation.verifyStepUpCode({ input: { code: '<String>' } }).execute();
 ```
 
 ### `db.mutation.verifyTotp`

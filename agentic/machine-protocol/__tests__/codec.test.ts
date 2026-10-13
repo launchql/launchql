@@ -9,7 +9,8 @@ import {
   LineSplitter,
   MAX_LINE_LENGTH,
   OpenFrame,
-  parseApprovalDecisionLine
+  parseApprovalDecisionLine,
+  relativePathProblem
 } from '../src';
 
 describe('machine-protocol codec', () => {
@@ -362,5 +363,67 @@ describe('machine-protocol codec', () => {
     expect(() =>
       decodeFrame(JSON.stringify({ type: 'signal', sessionId: 's', signal: 'SIGSTEAL' }))
     ).toThrow(/unknown signal/);
+  });
+  it('round-trips the path and file frames', () => {
+    const frames: Frame[] = [
+      { type: 'path_list', requestId: 'r1', root: 'work', path: 'src' },
+      { type: 'path_read', requestId: 'r2', path: 'README.md' },
+      {
+        type: 'path_listing',
+        requestId: 'r1',
+        entries: [
+          { name: 'a.ts', kind: 'file', size: 3 },
+          { name: 'lib', kind: 'directory' },
+          { name: 'l', kind: 'symlink' }
+        ]
+      },
+      { type: 'path_content', requestId: 'r2', data: 'aGk=', size: 2 },
+      { type: 'fs_list', sessionId: 's', requestId: 'r3', path: '' },
+      { type: 'fs_read', sessionId: 's', requestId: 'r4', path: 'a.ts' },
+      {
+        type: 'fs_listing',
+        sessionId: 's',
+        requestId: 'r3',
+        path: '',
+        entries: [{ name: 'a.ts', kind: 'file', size: 3 }]
+      },
+      { type: 'fs_content', sessionId: 's', requestId: 'r4', path: 'a.ts', data: '', size: 0 },
+      { type: 'error', requestId: 'r4', message: 'no', code: 'PATH_INVALID' }
+    ];
+    for (const frame of frames) expect(decodeFrame(encodeFrame(frame))).toEqual(frame);
+  });
+
+  it('throws on malformed path and file frames', () => {
+    const bad = [
+      { type: 'path_list', path: '' },
+      { type: 'path_read', requestId: '', path: '' },
+      { type: 'path_read', requestId: 'r', root: 7, path: '' },
+      { type: 'path_list', requestId: 'r' },
+      { type: 'fs_list', requestId: 'r', path: '' },
+      { type: 'fs_read', sessionId: 's', path: 'a' },
+      { type: 'path_listing', requestId: 'r', entries: [{ name: 'a', kind: 'socket' }] },
+      { type: 'path_listing', requestId: 'r', entries: [{ name: 'a', kind: 'file', size: -1 }] },
+      { type: 'fs_listing', sessionId: 's', requestId: 'r', entries: [{ name: 'a', kind: 'file' }] },
+      { type: 'path_content', requestId: 'r', data: 'x' },
+      { type: 'fs_content', sessionId: 's', requestId: 'r', data: '', size: 0 },
+      { type: 'error', requestId: 1, message: 'x' },
+      { type: 'error', requestId: 'r', message: 'x', code: 7 },
+      { type: 'path_content', requestId: 'r', data: 'aGk=', size: -1 },
+      { type: 'path_content', requestId: 'r', data: 'aGk=', size: 3 }
+    ];
+    for (const frame of bad) expect(() => decodeFrame(JSON.stringify(frame))).toThrow(/machine-protocol/);
+  });
+
+  it('says why a path cannot name something under a root', () => {
+    for (const ok of ['', '.', 'a', 'src/index.ts', 'a..b', '.hidden/x']) {
+      expect(relativePathProblem(ok)).toBeNull();
+    }
+    expect(relativePathProblem('/etc/passwd')).toMatch(/absolute/);
+    expect(relativePathProblem('\\share')).toMatch(/absolute/);
+    expect(relativePathProblem('C:/x')).toMatch(/absolute/);
+    expect(relativePathProblem('..')).toMatch(/traverses/);
+    expect(relativePathProblem('a/../../b')).toMatch(/traverses/);
+    expect(relativePathProblem('a\\..\\b')).toMatch(/traverses/);
+    expect(relativePathProblem('a\0b')).toMatch(/NUL/);
   });
 });

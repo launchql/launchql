@@ -411,6 +411,7 @@ CRUD operations for BillingProviderModule records.
 | `billingSubscriptionsTableName` | String |
 | `billingWebhookEventsTableId` | UUID |
 | `billingWebhookEventsTableName` | String |
+| `bindCheckoutSessionFunction` | String |
 | `clearScheduledChangeFunction` | String |
 | `databaseId` | UUID |
 | `finishBillingOperationFunction` | String |
@@ -425,6 +426,7 @@ CRUD operations for BillingProviderModule records.
 | `getBillingSubscriptionFunction` | String |
 | `getFallbackFreePlanFunction` | String |
 | `getPlanPricingByExternalPriceFunction` | String |
+| `hasDueReconciliationsFunction` | String |
 | `id` | UUID |
 | `listDueReconciliationsFunction` | String |
 | `listPendingUsageSyncFunction` | String |
@@ -449,9 +451,10 @@ CRUD operations for BillingProviderModule records.
 | `upsertBillingProductFunction` | String |
 | `upsertBillingSubscriptionFunction` | String |
 | `upsertInvoiceFunction` | String |
+| `usageSyncShardCount` | Int |
 
 **Required create fields:** `databaseId`
-**Optional create fields (backend defaults):** `activatePlanSubscriptionFunction`, `apiName`, `applyProviderObservationFunction`, `billingCustomersTableId`, `billingCustomersTableName`, `billingDisputesTableId`, `billingDisputesTableName`, `billingHealthTableId`, `billingHealthTableName`, `billingInvoicesTableId`, `billingInvoicesTableName`, `billingOperationsTableId`, `billingOperationsTableName`, `billingPricesTableId`, `billingPricesTableName`, `billingProductsTableId`, `billingProductsTableName`, `billingProviderStateTableId`, `billingProviderStateTableName`, `billingRefundsTableId`, `billingRefundsTableName`, `billingSubscriptionsTableId`, `billingSubscriptionsTableName`, `billingWebhookEventsTableId`, `billingWebhookEventsTableName`, `clearScheduledChangeFunction`, `finishBillingOperationFunction`, `getActivePlanPricingFunction`, `getActivePlanSubscriptionFunction`, `getBillingCustomerFunction`, `getBillingPriceFunction`, `getBillingProductFunction`, `getBillingProviderStateFunction`, `getBillingSubscriptionByEntityFunction`, `getBillingSubscriptionByExternalIdFunction`, `getBillingSubscriptionFunction`, `getFallbackFreePlanFunction`, `getPlanPricingByExternalPriceFunction`, `listDueReconciliationsFunction`, `listPendingUsageSyncFunction`, `markUsageSyncedFunction`, `prefix`, `prepareScheduledChangeFunction`, `pricesTableId`, `privateApiName`, `privateSchemaId`, `processBillingEventFunction`, `productsTableId`, `provider`, `recordBillingHealthFunction`, `recordDisputeFunction`, `recordRefundFunction`, `reserveBillingOperationFunction`, `schemaId`, `subscriptionsTableId`, `sweepOverdueSubscriptionsFunction`, `upsertBillingCustomerFunction`, `upsertBillingPriceFunction`, `upsertBillingProductFunction`, `upsertBillingSubscriptionFunction`, `upsertInvoiceFunction`
+**Optional create fields (backend defaults):** `activatePlanSubscriptionFunction`, `apiName`, `applyProviderObservationFunction`, `billingCustomersTableId`, `billingCustomersTableName`, `billingDisputesTableId`, `billingDisputesTableName`, `billingHealthTableId`, `billingHealthTableName`, `billingInvoicesTableId`, `billingInvoicesTableName`, `billingOperationsTableId`, `billingOperationsTableName`, `billingPricesTableId`, `billingPricesTableName`, `billingProductsTableId`, `billingProductsTableName`, `billingProviderStateTableId`, `billingProviderStateTableName`, `billingRefundsTableId`, `billingRefundsTableName`, `billingSubscriptionsTableId`, `billingSubscriptionsTableName`, `billingWebhookEventsTableId`, `billingWebhookEventsTableName`, `bindCheckoutSessionFunction`, `clearScheduledChangeFunction`, `finishBillingOperationFunction`, `getActivePlanPricingFunction`, `getActivePlanSubscriptionFunction`, `getBillingCustomerFunction`, `getBillingPriceFunction`, `getBillingProductFunction`, `getBillingProviderStateFunction`, `getBillingSubscriptionByEntityFunction`, `getBillingSubscriptionByExternalIdFunction`, `getBillingSubscriptionFunction`, `getFallbackFreePlanFunction`, `getPlanPricingByExternalPriceFunction`, `hasDueReconciliationsFunction`, `listDueReconciliationsFunction`, `listPendingUsageSyncFunction`, `markUsageSyncedFunction`, `prefix`, `prepareScheduledChangeFunction`, `pricesTableId`, `privateApiName`, `privateSchemaId`, `processBillingEventFunction`, `productsTableId`, `provider`, `recordBillingHealthFunction`, `recordDisputeFunction`, `recordRefundFunction`, `reserveBillingOperationFunction`, `schemaId`, `subscriptionsTableId`, `sweepOverdueSubscriptionsFunction`, `upsertBillingCustomerFunction`, `upsertBillingPriceFunction`, `upsertBillingProductFunction`, `upsertBillingSubscriptionFunction`, `upsertInvoiceFunction`, `usageSyncShardCount`
 
 ### `blueprint`
 
@@ -1391,12 +1394,10 @@ CRUD operations for EntityTypeProvision records.
 | `name` | String |
 | `namespaces` | JSON |
 | `outAgentModuleId` | UUID |
-| `outBucketsTableId` | UUID |
 | `outDefinitionsTableId` | UUID |
 | `outEntityTableId` | UUID |
 | `outEntityTableName` | String |
 | `outExecutionLogsTableId` | UUID |
-| `outFilesTableId` | UUID |
 | `outFunctionModuleId` | UUID |
 | `outGraphModuleId` | UUID |
 | `outGraphsTableId` | UUID |
@@ -1407,8 +1408,6 @@ CRUD operations for EntityTypeProvision records.
 | `outNamespaceEventsTableId` | UUID |
 | `outNamespaceModuleId` | UUID |
 | `outNamespacesTableId` | UUID |
-| `outPathSharesTableId` | UUID |
-| `outStorageModuleId` | UUID |
 | `parentEntity` | String |
 | `prefix` | String |
 | `skipEntityPolicies` | Boolean |
@@ -1417,7 +1416,7 @@ CRUD operations for EntityTypeProvision records.
 | `tableProvision` | JSON |
 
 **Required create fields:** `databaseId`, `name`, `prefix`
-**Optional create fields (backend defaults):** `agents`, `description`, `functions`, `graphs`, `hasInviteAchievements`, `hasInvites`, `hasLevels`, `hasLimits`, `hasProfiles`, `isVisible`, `namespaces`, `outAgentModuleId`, `outBucketsTableId`, `outDefinitionsTableId`, `outEntityTableId`, `outEntityTableName`, `outExecutionLogsTableId`, `outFilesTableId`, `outFunctionModuleId`, `outGraphModuleId`, `outGraphsTableId`, `outInstalledModules`, `outInvitesModuleId`, `outInvocationsTableId`, `outMembershipType`, `outNamespaceEventsTableId`, `outNamespaceModuleId`, `outNamespacesTableId`, `outPathSharesTableId`, `outStorageModuleId`, `parentEntity`, `skipEntityPolicies`, `storage`, `tableName`, `tableProvision`
+**Optional create fields (backend defaults):** `agents`, `description`, `functions`, `graphs`, `hasInviteAchievements`, `hasInvites`, `hasLevels`, `hasLimits`, `hasProfiles`, `isVisible`, `namespaces`, `outAgentModuleId`, `outDefinitionsTableId`, `outEntityTableId`, `outEntityTableName`, `outExecutionLogsTableId`, `outFunctionModuleId`, `outGraphModuleId`, `outGraphsTableId`, `outInstalledModules`, `outInvitesModuleId`, `outInvocationsTableId`, `outMembershipType`, `outNamespaceEventsTableId`, `outNamespaceModuleId`, `outNamespacesTableId`, `parentEntity`, `skipEntityPolicies`, `storage`, `tableName`, `tableProvision`
 
 ### `events-module`
 
@@ -2640,7 +2639,6 @@ CRUD operations for PlansModule records.
 | `planLimitsTableId` | UUID |
 | `planLimitsTableName` | String |
 | `planMeterLimitsTableId` | UUID |
-| `planOverridesTableId` | UUID |
 | `planPricingTableId` | UUID |
 | `plansTableId` | UUID |
 | `plansTableName` | String |
@@ -2652,7 +2650,7 @@ CRUD operations for PlansModule records.
 | `schemaId` | UUID |
 
 **Required create fields:** `databaseId`
-**Optional create fields (backend defaults):** `apiName`, `applyBillingPlanFunction`, `applyPlanAggregateFunction`, `applyPlanCapsFunction`, `applyPlanFunction`, `planCapsTableId`, `planLimitsTableId`, `planLimitsTableName`, `planMeterLimitsTableId`, `planOverridesTableId`, `planPricingTableId`, `plansTableId`, `plansTableName`, `prefix`, `privateApiName`, `privateSchemaId`, `privateSchemaName`, `publicSchemaName`, `schemaId`
+**Optional create fields (backend defaults):** `apiName`, `applyBillingPlanFunction`, `applyPlanAggregateFunction`, `applyPlanCapsFunction`, `applyPlanFunction`, `planCapsTableId`, `planLimitsTableId`, `planLimitsTableName`, `planMeterLimitsTableId`, `planPricingTableId`, `plansTableId`, `plansTableName`, `prefix`, `privateApiName`, `privateSchemaId`, `privateSchemaName`, `publicSchemaName`, `schemaId`
 
 ### `principal-auth-module`
 

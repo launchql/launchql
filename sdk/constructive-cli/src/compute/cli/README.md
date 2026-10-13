@@ -31,6 +31,7 @@ csdk auth set-token <your-token>
 | `builder-binding` | builderBinding CRUD operations |
 | `content-preset` | contentPreset CRUD operations |
 | `database-function-graph` | databaseFunctionGraph CRUD operations |
+| `database-function-graph-execution-cancel-request` | databaseFunctionGraphExecutionCancelRequest CRUD operations |
 | `database-function-graph-execution` | databaseFunctionGraphExecution CRUD operations |
 | `database-function-graph-execution-node-state` | databaseFunctionGraphExecutionNodeState CRUD operations |
 | `database-function-graph-execution-output` | databaseFunctionGraphExecutionOutput CRUD operations |
@@ -48,6 +49,7 @@ csdk auth set-token <your-token>
 | `function-execution-log` | functionExecutionLog CRUD operations |
 | `function-graph-commit` | functionGraphCommit CRUD operations |
 | `function-graph` | functionGraph CRUD operations |
+| `function-graph-execution-cancel-request` | functionGraphExecutionCancelRequest CRUD operations |
 | `function-graph-execution` | functionGraphExecution CRUD operations |
 | `function-graph-execution-node-state` | functionGraphExecutionNodeState CRUD operations |
 | `function-graph-execution-output` | functionGraphExecutionOutput CRUD operations |
@@ -56,6 +58,7 @@ csdk auth set-token <your-token>
 | `function-graph-store` | functionGraphStore CRUD operations |
 | `function-invocation-attempt` | functionInvocationAttempt CRUD operations |
 | `function-invocation` | functionInvocation CRUD operations |
+| `function-schedule` | functionSchedule CRUD operations |
 | `get-all-tree-nodes-record` | getAllTreeNodesRecord CRUD operations |
 | `image` | image CRUD operations |
 | `image-grant` | imageGrant CRUD operations |
@@ -78,6 +81,7 @@ csdk auth set-token <your-token>
 | `platform-function-execution-log` | platformFunctionExecutionLog CRUD operations |
 | `platform-function-invocation-attempt` | platformFunctionInvocationAttempt CRUD operations |
 | `platform-function-invocation` | platformFunctionInvocation CRUD operations |
+| `platform-function-schedule` | platformFunctionSchedule CRUD operations |
 | `platform-image` | platformImage CRUD operations |
 | `platform-image-grant` | platformImageGrant CRUD operations |
 | `platform-infra-commit` | platformInfraCommit CRUD operations |
@@ -171,6 +175,8 @@ csdk auth set-token <your-token>
 | `database-save-graph` | databaseSaveGraph |
 | `database-start-execution` | databaseStartExecution |
 | `database-validate-function-graph` | databaseValidateFunctionGraph |
+| `function-execution-logs-append` | functionExecutionLogsAppend |
+| `function-invocations-create-page` | functionInvocationsCreatePage |
 | `function-invocations-create-sync` | functionInvocationsCreateSync |
 | `import-definitions` | importDefinitions |
 | `import-graph-json` | importGraphJson |
@@ -183,6 +189,8 @@ csdk auth set-token <your-token>
 | `init-empty-repo` | initEmptyRepo |
 | `insert-node-at-path` | insertNodeAtPath |
 | `insert-nodes-at-paths` | insertNodesAtPaths |
+| `platform-function-execution-logs-append` | platformFunctionExecutionLogsAppend |
+| `platform-function-invocations-create-page` | platformFunctionInvocationsCreatePage |
 | `platform-function-invocations-create-sync` | platformFunctionInvocationsCreateSync |
 | `platform-infra-init-empty-repo` | platformInfraInitEmptyRepo |
 | `platform-infra-insert-node-at-path` | platformInfraInsertNodeAtPath |
@@ -431,6 +439,31 @@ CRUD operations for DatabaseFunctionGraph records.
 | `validationErrors` | JSON |
 
 **Required create fields:** `context`, `createdBy`, `databaseId`, `definitionsCommitId`, `description`, `isValid`, `name`, `storeId`, `validationErrors`
+
+### `database-function-graph-execution-cancel-request`
+
+CRUD operations for DatabaseFunctionGraphExecutionCancelRequest records.
+
+| Subcommand | Description |
+|------------|-------------|
+| `list` | List all databaseFunctionGraphExecutionCancelRequest records |
+| `find-first` | Find first matching databaseFunctionGraphExecutionCancelRequest record |
+| `get` | Get a databaseFunctionGraphExecutionCancelRequest by id |
+| `create` | Create a new databaseFunctionGraphExecutionCancelRequest |
+| `update` | Update an existing databaseFunctionGraphExecutionCancelRequest |
+| `delete` | Delete a databaseFunctionGraphExecutionCancelRequest |
+
+**Fields:**
+
+| Field | Type |
+|-------|------|
+| `actorId` | UUID |
+| `createdAt` | Datetime |
+| `executionId` | UUID |
+| `id` | UUID |
+
+**Required create fields:** `executionId`
+**Optional create fields (backend defaults):** `actorId`
 
 ### `database-function-graph-execution`
 
@@ -1010,6 +1043,31 @@ CRUD operations for FunctionGraph records.
 
 **Required create fields:** `context`, `createdBy`, `definitionsCommitId`, `description`, `isValid`, `name`, `scopeId`, `storeId`, `validationErrors`
 
+### `function-graph-execution-cancel-request`
+
+CRUD operations for FunctionGraphExecutionCancelRequest records.
+
+| Subcommand | Description |
+|------------|-------------|
+| `list` | List all functionGraphExecutionCancelRequest records |
+| `find-first` | Find first matching functionGraphExecutionCancelRequest record |
+| `get` | Get a functionGraphExecutionCancelRequest by id |
+| `create` | Create a new functionGraphExecutionCancelRequest |
+| `update` | Update an existing functionGraphExecutionCancelRequest |
+| `delete` | Delete a functionGraphExecutionCancelRequest |
+
+**Fields:**
+
+| Field | Type |
+|-------|------|
+| `actorId` | UUID |
+| `createdAt` | Datetime |
+| `executionId` | UUID |
+| `id` | UUID |
+
+**Required create fields:** `executionId`
+**Optional create fields (backend defaults):** `actorId`
+
 ### `function-graph-execution`
 
 CRUD operations for FunctionGraphExecution records.
@@ -1288,6 +1346,40 @@ CRUD operations for FunctionInvocation records.
 
 **Required create fields:** `channel`, `databaseId`, `taskIdentifier`
 **Optional create fields (backend defaults):** `actorId`, `apiBindingId`, `completedAt`, `createdByPrincipal`, `definitionScope`, `durationMs`, `entityId`, `entityType`, `error`, `functionDefinitionId`, `graphExecutionId`, `jobId`, `organizationId`, `parentInvocationId`, `payload`, `principalId`, `provenance`, `result`, `startedAt`, `status`
+
+### `function-schedule`
+
+CRUD operations for FunctionSchedule records.
+
+| Subcommand | Description |
+|------------|-------------|
+| `list` | List all functionSchedule records |
+| `find-first` | Find first matching functionSchedule record |
+| `get` | Get a functionSchedule by id |
+| `create` | Create a new functionSchedule |
+| `update` | Update an existing functionSchedule |
+| `delete` | Delete a functionSchedule |
+
+**Fields:**
+
+| Field | Type |
+|-------|------|
+| `actorId` | UUID |
+| `createdAt` | Datetime |
+| `databaseId` | UUID |
+| `description` | String |
+| `functionDefinitionId` | UUID |
+| `id` | UUID |
+| `isActive` | Boolean |
+| `name` | String |
+| `payload` | JSON |
+| `scheduleInfo` | JSON |
+| `suspendedAt` | Datetime |
+| `suspendedReason` | String |
+| `updatedAt` | Datetime |
+
+**Required create fields:** `databaseId`, `functionDefinitionId`, `name`, `scheduleInfo`
+**Optional create fields (backend defaults):** `actorId`, `description`, `isActive`, `payload`, `suspendedAt`, `suspendedReason`
 
 ### `get-all-tree-nodes-record`
 
@@ -2034,6 +2126,39 @@ CRUD operations for PlatformFunctionInvocation records.
 
 **Required create fields:** `channel`, `taskIdentifier`
 **Optional create fields (backend defaults):** `actorId`, `apiBindingId`, `completedAt`, `createdByPrincipal`, `databaseId`, `definitionScope`, `durationMs`, `entityId`, `entityType`, `error`, `functionDefinitionId`, `graphExecutionId`, `jobId`, `organizationId`, `parentInvocationId`, `payload`, `principalId`, `provenance`, `result`, `startedAt`, `status`
+
+### `platform-function-schedule`
+
+CRUD operations for PlatformFunctionSchedule records.
+
+| Subcommand | Description |
+|------------|-------------|
+| `list` | List all platformFunctionSchedule records |
+| `find-first` | Find first matching platformFunctionSchedule record |
+| `get` | Get a platformFunctionSchedule by id |
+| `create` | Create a new platformFunctionSchedule |
+| `update` | Update an existing platformFunctionSchedule |
+| `delete` | Delete a platformFunctionSchedule |
+
+**Fields:**
+
+| Field | Type |
+|-------|------|
+| `actorId` | UUID |
+| `createdAt` | Datetime |
+| `description` | String |
+| `functionDefinitionId` | UUID |
+| `id` | UUID |
+| `isActive` | Boolean |
+| `name` | String |
+| `payload` | JSON |
+| `scheduleInfo` | JSON |
+| `suspendedAt` | Datetime |
+| `suspendedReason` | String |
+| `updatedAt` | Datetime |
+
+**Required create fields:** `functionDefinitionId`, `name`, `scheduleInfo`
+**Optional create fields (backend defaults):** `actorId`, `description`, `isActive`, `payload`, `suspendedAt`, `suspendedReason`
 
 ### `platform-image`
 
@@ -5496,6 +5621,39 @@ databaseValidateFunctionGraph
   | `--input.clientMutationId` | String |
   | `--input.graphId` | UUID |
 
+### `function-execution-logs-append`
+
+functionExecutionLogsAppend
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.createdAt` | Datetime |
+  | `--input.invocationId` | UUID |
+  | `--input.logLevel` | String |
+  | `--input.message` | String |
+  | `--input.metadata` | JSON |
+  | `--input.taskIdentifier` | String |
+
+### `function-invocations-create-page`
+
+functionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.entityId` | UUID |
+  | `--input.payload` | JSON |
+  | `--input.provenance` | JSON |
+  | `--input.routeBindingId` | UUID |
+  | `--input.taskIdentifier` | String |
+
 ### `function-invocations-create-sync`
 
 functionInvocationsCreateSync
@@ -5688,6 +5846,39 @@ insertNodesAtPaths
   | `--input.paths` | JSON |
   | `--input.root` | UUID |
   | `--input.sId` | UUID |
+
+### `platform-function-execution-logs-append`
+
+platformFunctionExecutionLogsAppend
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.createdAt` | Datetime |
+  | `--input.invocationId` | UUID |
+  | `--input.logLevel` | String |
+  | `--input.message` | String |
+  | `--input.metadata` | JSON |
+  | `--input.taskIdentifier` | String |
+
+### `platform-function-invocations-create-page`
+
+platformFunctionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.entityId` | UUID |
+  | `--input.payload` | JSON |
+  | `--input.provenance` | JSON |
+  | `--input.routeBindingId` | UUID |
+  | `--input.taskIdentifier` | String |
 
 ### `platform-function-invocations-create-sync`
 

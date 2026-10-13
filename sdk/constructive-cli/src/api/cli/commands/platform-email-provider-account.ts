@@ -16,7 +16,6 @@ import type {
 } from '../../orm/input-types';
 import type { FindManyArgs, FindFirstArgs } from '../../orm/select-types';
 const fieldSchema: FieldSchema = {
-  apiBaseUrl: 'string',
   createdAt: 'string',
   credentialsSecretName: 'string',
   id: 'uuid',
@@ -83,7 +82,6 @@ async function handleTableSubcommand(
 async function handleList(argv: Partial<Record<string, unknown>>, _prompter: Inquirerer) {
   try {
     const defaultSelect = {
-      apiBaseUrl: true,
       createdAt: true,
       credentialsSecretName: true,
       id: true,
@@ -122,7 +120,6 @@ async function handleList(argv: Partial<Record<string, unknown>>, _prompter: Inq
 async function handleFindFirst(argv: Partial<Record<string, unknown>>, _prompter: Inquirerer) {
   try {
     const defaultSelect = {
-      apiBaseUrl: true,
       createdAt: true,
       credentialsSecretName: true,
       id: true,
@@ -173,7 +170,6 @@ async function handleGet(argv: Partial<Record<string, unknown>>, prompter: Inqui
       .findOne({
         id: answers.id as string,
         select: {
-          apiBaseUrl: true,
           createdAt: true,
           credentialsSecretName: true,
           id: true,
@@ -203,13 +199,6 @@ async function handleGet(argv: Partial<Record<string, unknown>>, prompter: Inqui
 async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: Inquirerer) {
   try {
     const rawAnswers = await prompter.prompt(argv, [
-      {
-        type: 'text',
-        name: 'apiBaseUrl',
-        message: 'apiBaseUrl',
-        required: false,
-        skipPrompt: true,
-      },
       {
         type: 'text',
         name: 'credentialsSecretName',
@@ -294,7 +283,6 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
     const result = await client.platformEmailProviderAccount
       .create({
         data: {
-          apiBaseUrl: cleanedData.apiBaseUrl,
           credentialsSecretName: cleanedData.credentialsSecretName,
           isActive: cleanedData.isActive,
           name: cleanedData.name,
@@ -308,7 +296,6 @@ async function handleCreate(argv: Partial<Record<string, unknown>>, prompter: In
           webhookSigningSecretName: cleanedData.webhookSigningSecretName,
         },
         select: {
-          apiBaseUrl: true,
           createdAt: true,
           credentialsSecretName: true,
           id: true,
@@ -343,13 +330,6 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
         name: 'id',
         message: 'id',
         required: true,
-      },
-      {
-        type: 'text',
-        name: 'apiBaseUrl',
-        message: 'apiBaseUrl',
-        required: false,
-        skipPrompt: true,
       },
       {
         type: 'text',
@@ -435,7 +415,6 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           id: answers.id as string,
         },
         data: {
-          apiBaseUrl: cleanedData.apiBaseUrl,
           credentialsSecretName: cleanedData.credentialsSecretName,
           isActive: cleanedData.isActive,
           name: cleanedData.name,
@@ -449,7 +428,6 @@ async function handleUpdate(argv: Partial<Record<string, unknown>>, prompter: In
           webhookSigningSecretName: cleanedData.webhookSigningSecretName,
         },
         select: {
-          apiBaseUrl: true,
           createdAt: true,
           credentialsSecretName: true,
           id: true,

@@ -189,6 +189,11 @@ function App() {
 | `useCreateIndexMutation` | Mutation | Create a index |
 | `useUpdateIndexMutation` | Mutation | Update a index |
 | `useDeleteIndexMutation` | Mutation | Delete a index |
+| `useListSuspendedDatabasesQuery` | Query | List all listSuspendedDatabases |
+| `useListSuspendedDatabasesRecordQuery` | Query | Get one listSuspendedDatabasesRecord |
+| `useCreateListSuspendedDatabasesRecordMutation` | Mutation | Create a listSuspendedDatabasesRecord |
+| `useUpdateListSuspendedDatabasesRecordMutation` | Mutation | Update a listSuspendedDatabasesRecord |
+| `useDeleteListSuspendedDatabasesRecordMutation` | Mutation | Delete a listSuspendedDatabasesRecord |
 | `useManagedDomainsQuery` | Query | Platform-operated hostnames whose DNS and certificate lifecycle the platform drives |
 | `useManagedDomainQuery` | Query | Platform-operated hostnames whose DNS and certificate lifecycle the platform drives |
 | `useCreateManagedDomainMutation` | Mutation | Platform-operated hostnames whose DNS and certificate lifecycle the platform drives |
@@ -903,20 +908,20 @@ create({ databaseId: '<UUID>', fromAddress: '<String>', fromName: '<String>', is
 ```typescript
 // List all emailProviderAccounts
 const { data, isLoading } = useEmailProviderAccountsQuery({
-  selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
+  selection: { fields: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
 });
 
 // Get one emailProviderAccount
 const { data: item } = useEmailProviderAccountQuery({
   id: '<UUID>',
-  selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
+  selection: { fields: { createdAt: true, credentialsSecretName: true, databaseId: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
 });
 
 // Create a emailProviderAccount
 const { mutate: create } = useCreateEmailProviderAccountMutation({
   selection: { fields: { id: true } },
 });
-create({ apiBaseUrl: '<String>', credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' });
+create({ credentialsSecretName: '<String>', databaseId: '<UUID>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' });
 ```
 
 ### EmailSiteIdentity
@@ -1207,6 +1212,27 @@ const { mutate: create } = useCreateIndexMutation({
 create({ accessMethod: '<String>', category: '<ObjectCategory>', databaseId: '<UUID>', fieldIds: '<UUID>', includeFieldIds: '<UUID>', indexParams: '<JSON>', isUnique: '<Boolean>', name: '<String>', nullsNotDistinct: '<Boolean>', opClasses: '<String>', options: '<JSON>', smartTags: '<JSON>', tableId: '<UUID>', tags: '<String>', whereClause: '<JSON>' });
 ```
 
+### ListSuspendedDatabasesRecord
+
+```typescript
+// List all listSuspendedDatabases
+const { data, isLoading } = useListSuspendedDatabasesQuery({
+  selection: { fields: { id: true, name: true, ownerId: true, suspendedAt: true, suspendedReason: true } },
+});
+
+// Get one listSuspendedDatabasesRecord
+const { data: item } = useListSuspendedDatabasesRecordQuery({
+  id: '<UUID>',
+  selection: { fields: { id: true, name: true, ownerId: true, suspendedAt: true, suspendedReason: true } },
+});
+
+// Create a listSuspendedDatabasesRecord
+const { mutate: create } = useCreateListSuspendedDatabasesRecordMutation({
+  selection: { fields: { id: true } },
+});
+create({ name: '<String>', ownerId: '<UUID>', suspendedAt: '<Datetime>', suspendedReason: '<String>' });
+```
+
 ### ManagedDomain
 
 ```typescript
@@ -1464,20 +1490,20 @@ create({ fromAddress: '<String>', fromName: '<String>', isActive: '<Boolean>', i
 ```typescript
 // List all platformEmailProviderAccounts
 const { data, isLoading } = usePlatformEmailProviderAccountsQuery({
-  selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
+  selection: { fields: { createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
 });
 
 // Get one platformEmailProviderAccount
 const { data: item } = usePlatformEmailProviderAccountQuery({
   id: '<UUID>',
-  selection: { fields: { apiBaseUrl: true, createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
+  selection: { fields: { createdAt: true, credentialsSecretName: true, id: true, isActive: true, name: true, provider: true, providerAccountName: true, region: true, smtpHost: true, smtpPort: true, smtpSecure: true, smtpUser: true, updatedAt: true, webhookSigningSecretName: true } },
 });
 
 // Create a platformEmailProviderAccount
 const { mutate: create } = useCreatePlatformEmailProviderAccountMutation({
   selection: { fields: { id: true } },
 });
-create({ apiBaseUrl: '<String>', credentialsSecretName: '<String>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' });
+create({ credentialsSecretName: '<String>', isActive: '<Boolean>', name: '<String>', provider: '<String>', providerAccountName: '<String>', region: '<String>', smtpHost: '<String>', smtpPort: '<Int>', smtpSecure: '<Boolean>', smtpUser: '<String>', webhookSigningSecretName: '<String>' });
 ```
 
 ### PlatformEmailSiteIdentity

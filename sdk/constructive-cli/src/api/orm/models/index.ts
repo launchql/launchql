@@ -35,6 +35,7 @@ export { GetSitePreviewsRecordModel } from './getSitePreviewsRecord';
 export { HostnameBindingModel } from './hostnameBinding';
 export { IdentityProviderRegistryModel } from './identityProviderRegistry';
 export { IndexModel } from './indexModel';
+export { ListSuspendedDatabasesRecordModel } from './listSuspendedDatabasesRecord';
 export { ManagedDomainModel } from './managedDomain';
 export { NodeTypeRegistryModel } from './nodeTypeRegistry';
 export { PageModel } from './page';

@@ -431,9 +431,141 @@ export interface ExitFrame {
 export interface ErrorFrame {
   type: 'error';
   sessionId?: string;
+  /** The `path_*` / `fs_*` request this error answers, when it answers one. */
+  requestId?: string;
   message: string;
   /** A stable, machine-readable reason, where the sender has one. */
   code?: string;
+}
+
+/**
+ * Reading paths under a root, read-only. Two vocabularies, like everything
+ * else: the runner leg (`path_list` / `path_read`) names a root relative to the
+ * runner's policy cwd and knows nothing about sessions; the client leg
+ * (`fs_list` / `fs_read`) names a session, and the relay maps it to that
+ * session's working tree after the tenant authorizes it. A request carries a
+ * `requestId` and is answered by exactly one frame with the same id: a
+ * listing, a content frame, or an `error` with a {@link PathErrorCode}.
+ */
+
+/** The most bytes one read returns. A larger file is refused, never truncated. */
+export const MAX_READ_BYTES = 1024 * 1024;
+
+/** The most entries one listing returns. A larger directory is refused, never truncated. */
+export const MAX_LIST_ENTRIES = 1000;
+/** Path requests a runner answers at once; one more is refused, not queued. */
+export const MAX_PATH_REQUESTS_IN_FLIGHT = 8;
+
+export const PATH_ERROR_CODES = [
+  /** Absolute, traversing (`..`), or carrying a NUL byte. */
+  'PATH_INVALID',
+  /** Resolves — through a symlink — outside the root. */
+  'PATH_OUTSIDE_ROOT',
+  'PATH_NOT_FOUND',
+  'NOT_A_DIRECTORY',
+  'NOT_A_FILE',
+  'FILE_TOO_LARGE',
+  'DIRECTORY_TOO_LARGE',
+  /** More than {@link MAX_PATH_REQUESTS_IN_FLIGHT} requests are being answered. */
+  'TOO_MANY_PATH_REQUESTS',
+  /** Any other filesystem failure; the message carries the cause. */
+  'PATH_UNREADABLE'
+] as const;
+
+export type PathErrorCode = (typeof PATH_ERROR_CODES)[number];
+
+/**
+ * Why `requested` cannot name a path under a root, or `null` when it can.
+ * `''` (and `.`) name the root itself. This is syntax only: a path that passes
+ * may still resolve outside the root through a symlink, which only the side
+ * holding the filesystem can tell.
+ */
+export function relativePathProblem(requested: string): string | null {
+  if (requested.includes('\0')) return 'contains a NUL byte';
+  if (requested.startsWith('/') || requested.startsWith('\\') || /^[A-Za-z]:/.test(requested)) {
+    return 'is absolute';
+  }
+  if (requested.split(/[\\/]/).includes('..')) return "traverses out of its root with '..'";
+  return null;
+}
+
+export type PathEntryKind = 'file' | 'directory' | 'symlink' | 'other';
+
+export interface PathEntry {
+  name: string;
+  /** What the entry itself is; a symlink is reported as one, not followed. */
+  kind: PathEntryKind;
+  /** Bytes, for a file. */
+  size?: number;
+}
+
+const PATH_ENTRY_KINDS: ReadonlySet<string> = new Set(['file', 'directory', 'symlink', 'other']);
+
+/** Relay → runner: list a directory under `root` (relative to the policy cwd). */
+export interface PathListFrame {
+  type: 'path_list';
+  requestId: string;
+  /** The root `path` is confined to; omitted means the policy cwd itself. */
+  root?: string;
+  path: string;
+}
+
+/** Relay → runner: read a file under `root` (relative to the policy cwd). */
+export interface PathReadFrame {
+  type: 'path_read';
+  requestId: string;
+  root?: string;
+  path: string;
+}
+
+/** Runner → relay: the entries of a `path_list`, sorted by name. */
+export interface PathListingFrame {
+  type: 'path_listing';
+  requestId: string;
+  entries: PathEntry[];
+}
+
+/** Runner → relay: a `path_read`'s bytes, base64. */
+export interface PathContentFrame {
+  type: 'path_content';
+  requestId: string;
+  data: string;
+  size: number;
+}
+
+/** Client → relay: list a directory in a session's working tree. */
+export interface ListFilesFrame {
+  type: 'fs_list';
+  sessionId: string;
+  requestId: string;
+  path: string;
+}
+
+/** Client → relay: read a file in a session's working tree. */
+export interface ReadFileFrame {
+  type: 'fs_read';
+  sessionId: string;
+  requestId: string;
+  path: string;
+}
+
+/** Relay → client: the answer to an `fs_list`. */
+export interface FileListingFrame {
+  type: 'fs_listing';
+  sessionId: string;
+  requestId: string;
+  path: string;
+  entries: PathEntry[];
+}
+
+/** Relay → client: the answer to an `fs_read`, base64. */
+export interface FileContentFrame {
+  type: 'fs_content';
+  sessionId: string;
+  requestId: string;
+  path: string;
+  data: string;
+  size: number;
 }
 
 /**
@@ -504,16 +636,24 @@ export type ClientToRunnerFrame =
   | SignalFrame
   | DetachFrame
   | ReattachFrame
-  | CloseFrame;
+  | CloseFrame
+  | PathListFrame
+  | PathReadFrame;
 export type RunnerToClientFrame =
   | OutputFrame
   | AgentEventFrame
   | ExitFrame
   | ErrorFrame
-  | ScrollbackFrame;
+  | ScrollbackFrame
+  | PathListingFrame
+  | PathContentFrame;
 export type Frame =
   | ClientToRunnerFrame
   | RunnerToClientFrame
+  | ListFilesFrame
+  | ReadFileFrame
+  | FileListingFrame
+  | FileContentFrame
   | AttachedFrame
   | DetachedFrame
   | ReattachedFrame
@@ -535,7 +675,15 @@ const FRAME_TYPES: ReadonlySet<string> = new Set([
   'attached',
   'detached',
   'reattached',
-  'enrolled'
+  'enrolled',
+  'path_list',
+  'path_read',
+  'path_listing',
+  'path_content',
+  'fs_list',
+  'fs_read',
+  'fs_listing',
+  'fs_content'
 ]);
 
 /** Frame types that must carry a session id. */
@@ -552,8 +700,38 @@ const SESSION_FRAME_TYPES: ReadonlySet<string> = new Set([
   'exit',
   'scrollback',
   'detached',
-  'reattached'
+  'reattached',
+  'fs_list',
+  'fs_read',
+  'fs_listing',
+  'fs_content'
 ]);
+
+/** Frame types that answer, or ask, one request. */
+const REQUEST_FRAME_TYPES: ReadonlySet<string> = new Set([
+  'path_list',
+  'path_read',
+  'path_listing',
+  'path_content',
+  'fs_list',
+  'fs_read',
+  'fs_listing',
+  'fs_content'
+]);
+
+function validEntries(value: unknown): boolean {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      entry =>
+        isPlainObject(entry) &&
+        typeof entry.name === 'string' &&
+        typeof entry.kind === 'string' &&
+        PATH_ENTRY_KINDS.has(entry.kind) &&
+        (entry.size === undefined || (Number.isInteger(entry.size) && (entry.size as number) >= 0))
+    )
+  );
+}
 
 const SIGNALS: ReadonlySet<string> = new Set(SIGNAL_NAMES);
 
@@ -710,6 +888,12 @@ export function decodeFrame(raw: string): Frame {
   if (SESSION_FRAME_TYPES.has(type) && typeof frame.sessionId !== 'string') {
     throw new Error(`machine-protocol: '${type}' frame is missing sessionId`);
   }
+  if (
+    REQUEST_FRAME_TYPES.has(type) &&
+    (typeof frame.requestId !== 'string' || frame.requestId.length === 0)
+  ) {
+    throw new Error(`machine-protocol: '${type}' frame is missing requestId`);
+  }
   switch (type) {
   case 'open':
     if (typeof frame.command !== 'string' || frame.command.length === 0) {
@@ -784,6 +968,48 @@ export function decodeFrame(raw: string): Frame {
   case 'error':
     if (typeof frame.message !== 'string') {
       throw new Error("machine-protocol: 'error' frame is missing message");
+    }
+    if (frame.requestId !== undefined && typeof frame.requestId !== 'string') {
+      throw new Error("machine-protocol: 'error' frame requestId must be a string");
+    }
+    if (frame.code !== undefined && typeof frame.code !== 'string') {
+      throw new Error("machine-protocol: 'error' frame code must be a string");
+    }
+    break;
+  case 'path_list':
+  case 'path_read':
+    if (frame.root !== undefined && typeof frame.root !== 'string') {
+      throw new Error(`machine-protocol: '${type}' frame root must be a string`);
+    }
+    if (typeof frame.path !== 'string') {
+      throw new Error(`machine-protocol: '${type}' frame is missing path`);
+    }
+    break;
+  case 'fs_list':
+  case 'fs_read':
+    if (typeof frame.path !== 'string') {
+      throw new Error(`machine-protocol: '${type}' frame is missing path`);
+    }
+    break;
+  case 'path_listing':
+  case 'fs_listing':
+    if (!validEntries(frame.entries)) {
+      throw new Error(`machine-protocol: '${type}' frame has malformed entries`);
+    }
+    if (type === 'fs_listing' && typeof frame.path !== 'string') {
+      throw new Error("machine-protocol: 'fs_listing' frame is missing path");
+    }
+    break;
+  case 'path_content':
+  case 'fs_content':
+    if (typeof frame.data !== 'string' || !Number.isInteger(frame.size)) {
+      throw new Error(`machine-protocol: '${type}' frame is missing data/size`);
+    }
+    if (frame.size !== Buffer.from(frame.data, 'base64').length) {
+      throw new Error(`machine-protocol: '${type}' frame size does not match its data`);
+    }
+    if (type === 'fs_content' && typeof frame.path !== 'string') {
+      throw new Error("machine-protocol: 'fs_content' frame is missing path");
     }
     break;
   case 'attached':

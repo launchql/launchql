@@ -12,8 +12,8 @@ csdk platform-email-provider-account list --where.<field>.<op> <value> --orderBy
 csdk platform-email-provider-account list --limit 10 --after <cursor>
 csdk platform-email-provider-account find-first --where.<field>.<op> <value>
 csdk platform-email-provider-account get --id <UUID>
-csdk platform-email-provider-account create --credentialsSecretName <String> --name <String> --provider <String> [--apiBaseUrl <String>] [--isActive <Boolean>] [--providerAccountName <String>] [--region <String>] [--smtpHost <String>] [--smtpPort <Int>] [--smtpSecure <Boolean>] [--smtpUser <String>] [--webhookSigningSecretName <String>]
-csdk platform-email-provider-account update --id <UUID> [--apiBaseUrl <String>] [--credentialsSecretName <String>] [--isActive <Boolean>] [--name <String>] [--provider <String>] [--providerAccountName <String>] [--region <String>] [--smtpHost <String>] [--smtpPort <Int>] [--smtpSecure <Boolean>] [--smtpUser <String>] [--webhookSigningSecretName <String>]
+csdk platform-email-provider-account create --credentialsSecretName <String> --name <String> --provider <String> [--isActive <Boolean>] [--providerAccountName <String>] [--region <String>] [--smtpHost <String>] [--smtpPort <Int>] [--smtpSecure <Boolean>] [--smtpUser <String>] [--webhookSigningSecretName <String>]
+csdk platform-email-provider-account update --id <UUID> [--credentialsSecretName <String>] [--isActive <Boolean>] [--name <String>] [--provider <String>] [--providerAccountName <String>] [--region <String>] [--smtpHost <String>] [--smtpPort <Int>] [--smtpSecure <Boolean>] [--smtpUser <String>] [--webhookSigningSecretName <String>]
 csdk platform-email-provider-account delete --id <UUID>
 ```
 
@@ -58,7 +58,7 @@ csdk platform-email-provider-account list --where.id.equalTo <value> --orderBy I
 ### Create a platformEmailProviderAccount
 
 ```bash
-csdk platform-email-provider-account create --credentialsSecretName <String> --name <String> --provider <String> [--apiBaseUrl <String>] [--isActive <Boolean>] [--providerAccountName <String>] [--region <String>] [--smtpHost <String>] [--smtpPort <Int>] [--smtpSecure <Boolean>] [--smtpUser <String>] [--webhookSigningSecretName <String>]
+csdk platform-email-provider-account create --credentialsSecretName <String> --name <String> --provider <String> [--isActive <Boolean>] [--providerAccountName <String>] [--region <String>] [--smtpHost <String>] [--smtpPort <Int>] [--smtpSecure <Boolean>] [--smtpUser <String>] [--webhookSigningSecretName <String>]
 ```
 
 ### Get a platformEmailProviderAccount by id

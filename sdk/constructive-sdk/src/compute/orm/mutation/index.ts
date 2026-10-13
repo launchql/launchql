@@ -31,6 +31,8 @@ import type {
   DatabaseSaveGraphInput,
   DatabaseStartExecutionInput,
   DatabaseValidateFunctionGraphInput,
+  FunctionExecutionLogsAppendInput,
+  FunctionInvocationsCreatePageInput,
   FunctionInvocationsCreateSyncInput,
   ImportDefinitionsInput,
   ImportGraphJsonInput,
@@ -43,6 +45,8 @@ import type {
   InitEmptyRepoInput,
   InsertNodeAtPathInput,
   InsertNodesAtPathsInput,
+  PlatformFunctionExecutionLogsAppendInput,
+  PlatformFunctionInvocationsCreatePageInput,
   PlatformFunctionInvocationsCreateSyncInput,
   PlatformInfraInitEmptyRepoInput,
   PlatformInfraInsertNodeAtPathInput,
@@ -89,6 +93,8 @@ import type {
   DatabaseSaveGraphPayload,
   DatabaseStartExecutionPayload,
   DatabaseValidateFunctionGraphPayload,
+  FunctionExecutionLogsAppendPayload,
+  FunctionInvocationsCreatePagePayload,
   FunctionInvocationsCreateSyncPayload,
   ImportDefinitionsPayload,
   ImportGraphJsonPayload,
@@ -101,6 +107,8 @@ import type {
   InitEmptyRepoPayload,
   InsertNodeAtPathPayload,
   InsertNodesAtPathsPayload,
+  PlatformFunctionExecutionLogsAppendPayload,
+  PlatformFunctionInvocationsCreatePagePayload,
   PlatformFunctionInvocationsCreateSyncPayload,
   PlatformInfraInitEmptyRepoPayload,
   PlatformInfraInsertNodeAtPathPayload,
@@ -147,6 +155,8 @@ import type {
   DatabaseSaveGraphPayloadSelect,
   DatabaseStartExecutionPayloadSelect,
   DatabaseValidateFunctionGraphPayloadSelect,
+  FunctionExecutionLogsAppendPayloadSelect,
+  FunctionInvocationsCreatePagePayloadSelect,
   FunctionInvocationsCreateSyncPayloadSelect,
   ImportDefinitionsPayloadSelect,
   ImportGraphJsonPayloadSelect,
@@ -159,6 +169,8 @@ import type {
   InitEmptyRepoPayloadSelect,
   InsertNodeAtPathPayloadSelect,
   InsertNodesAtPathsPayloadSelect,
+  PlatformFunctionExecutionLogsAppendPayloadSelect,
+  PlatformFunctionInvocationsCreatePagePayloadSelect,
   PlatformFunctionInvocationsCreateSyncPayloadSelect,
   PlatformInfraInitEmptyRepoPayloadSelect,
   PlatformInfraInsertNodeAtPathPayloadSelect,
@@ -255,6 +267,12 @@ export interface DatabaseStartExecutionVariables {
 export interface DatabaseValidateFunctionGraphVariables {
   input: DatabaseValidateFunctionGraphInput;
 }
+export interface FunctionExecutionLogsAppendVariables {
+  input: FunctionExecutionLogsAppendInput;
+}
+export interface FunctionInvocationsCreatePageVariables {
+  input: FunctionInvocationsCreatePageInput;
+}
 export interface FunctionInvocationsCreateSyncVariables {
   input: FunctionInvocationsCreateSyncInput;
 }
@@ -290,6 +308,12 @@ export interface InsertNodeAtPathVariables {
 }
 export interface InsertNodesAtPathsVariables {
   input: InsertNodesAtPathsInput;
+}
+export interface PlatformFunctionExecutionLogsAppendVariables {
+  input: PlatformFunctionExecutionLogsAppendInput;
+}
+export interface PlatformFunctionInvocationsCreatePageVariables {
+  input: PlatformFunctionInvocationsCreatePageInput;
 }
 export interface PlatformFunctionInvocationsCreateSyncVariables {
   input: PlatformFunctionInvocationsCreateSyncInput;
@@ -1078,6 +1102,70 @@ export function createMutationOperations(client: OrmClient) {
           'DatabaseValidateFunctionGraphPayload'
         ),
       }),
+    functionExecutionLogsAppend: <S extends FunctionExecutionLogsAppendPayloadSelect>(
+      args: FunctionExecutionLogsAppendVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, FunctionExecutionLogsAppendPayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        functionExecutionLogsAppend: InferSelectResult<
+          FunctionExecutionLogsAppendPayload,
+          S
+        > | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'FunctionExecutionLogsAppend',
+        fieldName: 'functionExecutionLogsAppend',
+        ...buildCustomDocument(
+          'mutation',
+          'FunctionExecutionLogsAppend',
+          'functionExecutionLogsAppend',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'FunctionExecutionLogsAppendInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'FunctionExecutionLogsAppendPayload'
+        ),
+      }),
+    functionInvocationsCreatePage: <S extends FunctionInvocationsCreatePagePayloadSelect>(
+      args: FunctionInvocationsCreatePageVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, FunctionInvocationsCreatePagePayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        functionInvocationsCreatePage: InferSelectResult<
+          FunctionInvocationsCreatePagePayload,
+          S
+        > | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'FunctionInvocationsCreatePage',
+        fieldName: 'functionInvocationsCreatePage',
+        ...buildCustomDocument(
+          'mutation',
+          'FunctionInvocationsCreatePage',
+          'functionInvocationsCreatePage',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'FunctionInvocationsCreatePageInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'FunctionInvocationsCreatePagePayload'
+        ),
+      }),
     functionInvocationsCreateSync: <S extends FunctionInvocationsCreateSyncPayloadSelect>(
       args: FunctionInvocationsCreateSyncVariables,
       options: {
@@ -1427,6 +1515,74 @@ export function createMutationOperations(client: OrmClient) {
           ],
           connectionFieldsMap,
           'InsertNodesAtPathsPayload'
+        ),
+      }),
+    platformFunctionExecutionLogsAppend: <
+      S extends PlatformFunctionExecutionLogsAppendPayloadSelect,
+    >(
+      args: PlatformFunctionExecutionLogsAppendVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, PlatformFunctionExecutionLogsAppendPayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        platformFunctionExecutionLogsAppend: InferSelectResult<
+          PlatformFunctionExecutionLogsAppendPayload,
+          S
+        > | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'PlatformFunctionExecutionLogsAppend',
+        fieldName: 'platformFunctionExecutionLogsAppend',
+        ...buildCustomDocument(
+          'mutation',
+          'PlatformFunctionExecutionLogsAppend',
+          'platformFunctionExecutionLogsAppend',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'PlatformFunctionExecutionLogsAppendInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'PlatformFunctionExecutionLogsAppendPayload'
+        ),
+      }),
+    platformFunctionInvocationsCreatePage: <
+      S extends PlatformFunctionInvocationsCreatePagePayloadSelect,
+    >(
+      args: PlatformFunctionInvocationsCreatePageVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, PlatformFunctionInvocationsCreatePagePayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        platformFunctionInvocationsCreatePage: InferSelectResult<
+          PlatformFunctionInvocationsCreatePagePayload,
+          S
+        > | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'PlatformFunctionInvocationsCreatePage',
+        fieldName: 'platformFunctionInvocationsCreatePage',
+        ...buildCustomDocument(
+          'mutation',
+          'PlatformFunctionInvocationsCreatePage',
+          'platformFunctionInvocationsCreatePage',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'PlatformFunctionInvocationsCreatePageInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'PlatformFunctionInvocationsCreatePagePayload'
         ),
       }),
     platformFunctionInvocationsCreateSync: <

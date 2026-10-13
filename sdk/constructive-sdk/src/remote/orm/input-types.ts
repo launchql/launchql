@@ -253,6 +253,8 @@ export interface Machine {
   policy?: Record<string, unknown> | null;
   /** Principal this machine acts as (set with the row by <machines_table>_enroll) */
   principalId?: string | null;
+  /** Relay the runner was enrolled against (wss://...); clients attach through the same one */
+  relayUrl?: string | null;
   /** When enrollment was revoked; the relay refuses a revoked machine */
   revokedAt?: string | null;
   /** Hash of the enrollment credential the runner presents */
@@ -377,6 +379,7 @@ export type MachineSelect = {
   ownerId?: boolean;
   policy?: boolean;
   principalId?: boolean;
+  relayUrl?: boolean;
   revokedAt?: boolean;
   tokenHash?: boolean;
   updatedAt?: boolean;
@@ -479,6 +482,8 @@ export interface MachineFilter {
   policy?: JSONFilter;
   /** Filter by the object’s `principalId` field. */
   principalId?: UUIDFilter;
+  /** Filter by the object’s `relayUrl` field. */
+  relayUrl?: StringFilter;
   /** Filter by the object’s `revokedAt` field. */
   revokedAt?: DatetimeFilter;
   /** Filter by the object’s `tokenHash` field. */
@@ -619,6 +624,8 @@ export type MachineOrderBy =
   | 'PRIMARY_KEY_DESC'
   | 'PRINCIPAL_ID_ASC'
   | 'PRINCIPAL_ID_DESC'
+  | 'RELAY_URL_ASC'
+  | 'RELAY_URL_DESC'
   | 'REVOKED_AT_ASC'
   | 'REVOKED_AT_DESC'
   | 'TOKEN_HASH_ASC'
@@ -727,6 +734,7 @@ export interface CreateMachineInput {
     ownerId: string;
     policy?: Record<string, unknown>;
     principalId?: string;
+    relayUrl?: string;
     revokedAt?: string;
     tokenHash: string;
     updatedBy?: string;
@@ -744,6 +752,7 @@ export interface MachinePatch {
   ownerId?: string | null;
   policy?: Record<string, unknown> | null;
   principalId?: string | null;
+  relayUrl?: string | null;
   revokedAt?: string | null;
   tokenHash?: string | null;
   updatedBy?: string | null;
@@ -870,6 +879,7 @@ export interface MachinesEnrollInput {
   entityId?: string;
   isShared?: boolean;
   label?: string;
+  relayUrl?: string;
   tokenHash?: string;
 }
 export interface ProvisionBucketInput {
@@ -921,6 +931,8 @@ export interface MachineInput {
   policy?: Record<string, unknown>;
   /** Principal this machine acts as (set with the row by <machines_table>_enroll) */
   principalId?: string;
+  /** Relay the runner was enrolled against (wss://...); clients attach through the same one */
+  relayUrl?: string;
   /** When enrollment was revoked; the relay refuses a revoked machine */
   revokedAt?: string;
   /** Hash of the enrollment credential the runner presents */
@@ -1412,6 +1424,8 @@ export interface MachineFilter {
   policy?: JSONFilter;
   /** Filter by the object’s `principalId` field. */
   principalId?: UUIDFilter;
+  /** Filter by the object’s `relayUrl` field. */
+  relayUrl?: StringFilter;
   /** Filter by the object’s `revokedAt` field. */
   revokedAt?: DatetimeFilter;
   /** Filter by the object’s `tokenHash` field. */

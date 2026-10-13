@@ -31,7 +31,7 @@ import { createApiMiddleware } from './middleware/api';
 import { createAuthenticateMiddleware } from './middleware/auth';
 // Auth cookie handling is done via AuthCookiePlugin in grafserv
 import { createCaptchaMiddleware } from './middleware/captcha';
-import { parseCookieValue, SESSION_COOKIE_NAME } from './middleware/cookie';
+import { parseCookieValue, rejectInvalidSessionCookieHeader, SESSION_COOKIE_NAME } from './middleware/cookie';
 import { cors } from './middleware/cors';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { favicon } from './middleware/favicon';
@@ -217,6 +217,9 @@ class Server {
     };
     app.use(csrfSetToken); // Set CSRF token cookie on all requests
     app.use('/graphql', csrfProtect); // Enforce CSRF on GraphQL mutations
+    // The session-cookie opt-out does not bypass CSRF: it only stops sign-in
+    // responses from setting cookies (see AuthCookiePlugin).
+    app.use('/graphql', rejectInvalidSessionCookieHeader);
 
     // LLM Agent REST API — mounted before graphile so SSE streaming
     // routes are handled without going through PostGraphile

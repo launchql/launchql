@@ -11,6 +11,7 @@ export interface CookieOptions {
   httpOnly?: boolean;
   secure?: boolean;
   sameSite?: 'strict' | 'lax' | 'none';
+  /** Cookie lifetime in milliseconds (passed to Express `res.cookie`, which emits `Max-Age` in seconds). */
   maxAge?: number;
   path?: string;
   domain?: string;

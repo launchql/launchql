@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.28.9](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.8...@constructive-io/graphql-server@5.28.9) (2026-10-13)
+
+### Bug Fixes
+
+- **csrf,graphql-server:** one-day CSRF cookie, session-cookie opt-out for native clients, signOut always clears the cookie ([d8d6c9c](https://github.com/constructive-io/constructive/commit/d8d6c9c0c912c96b2aa3aeb9a952807cbd45848c))
+- **graphql-server:** only count auth mutations of the operation that executes ([b3a4628](https://github.com/constructive-io/constructive/commit/b3a462853cd210771f8faaebafd86b411631d7b7))
+
+## [5.28.8](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.7...@constructive-io/graphql-server@5.28.8) (2026-10-13)
+
+### Bug Fixes
+
+- **graphql-server:** answer a malformed input without echoing the values it carried ([77c2c55](https://github.com/constructive-io/constructive/commit/77c2c5525db7bba2b2c522a8a16cf9b8520f2478))
+
+## [5.28.7](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.6...@constructive-io/graphql-server@5.28.7) (2026-10-12)
+
+**Note:** Version bump only for package @constructive-io/graphql-server
+
 ## [5.28.6](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.5...@constructive-io/graphql-server@5.28.6) (2026-10-07)
 
 **Note:** Version bump only for package @constructive-io/graphql-server

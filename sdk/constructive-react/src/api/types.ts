@@ -273,7 +273,6 @@ export interface EmailIdentity {
   updatedAt: string | null;
 }
 export interface EmailProviderAccount {
-  apiBaseUrl: string | null;
   createdAt: string | null;
   credentialsSecretName: string | null;
   databaseId: string | null;
@@ -497,6 +496,13 @@ export interface Index {
   updatedAt: string | null;
   whereClause: unknown | null;
 }
+export interface ListSuspendedDatabasesRecord {
+  id: string | null;
+  name: string | null;
+  ownerId: string | null;
+  suspendedAt: string | null;
+  suspendedReason: string | null;
+}
 export interface ManagedDomain {
   allowPublicUsage: boolean | null;
   annotations: unknown | null;
@@ -668,7 +674,6 @@ export interface PlatformEmailIdentity {
   updatedAt: string | null;
 }
 export interface PlatformEmailProviderAccount {
-  apiBaseUrl: string | null;
   createdAt: string | null;
   credentialsSecretName: string | null;
   id: string | null;

@@ -20,6 +20,7 @@ import {
   builderBindingKeys,
   contentPresetKeys,
   databaseFunctionGraphKeys,
+  databaseFunctionGraphExecutionCancelRequestKeys,
   databaseFunctionGraphExecutionKeys,
   databaseFunctionGraphExecutionNodeStateKeys,
   databaseFunctionGraphExecutionOutputKeys,
@@ -37,6 +38,7 @@ import {
   functionExecutionLogKeys,
   functionGraphCommitKeys,
   functionGraphKeys,
+  functionGraphExecutionCancelRequestKeys,
   functionGraphExecutionKeys,
   functionGraphExecutionNodeStateKeys,
   functionGraphExecutionOutputKeys,
@@ -45,6 +47,7 @@ import {
   functionGraphStoreKeys,
   functionInvocationAttemptKeys,
   functionInvocationKeys,
+  functionScheduleKeys,
   getAllTreeNodesRecordKeys,
   imageKeys,
   imageGrantKeys,
@@ -67,6 +70,7 @@ import {
   platformFunctionExecutionLogKeys,
   platformFunctionInvocationAttemptKeys,
   platformFunctionInvocationKeys,
+  platformFunctionScheduleKeys,
   platformImageKeys,
   platformImageGrantKeys,
   platformInfraCommitKeys,
@@ -237,6 +241,28 @@ export const invalidate = {
         queryKey: databaseFunctionGraphKeys.detail(id),
       }),
   },
+  /** Invalidate databaseFunctionGraphExecutionCancelRequest queries */ databaseFunctionGraphExecutionCancelRequest:
+    {
+      /** Invalidate all databaseFunctionGraphExecutionCancelRequest queries */ all: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: databaseFunctionGraphExecutionCancelRequestKeys.all,
+        }),
+      /** Invalidate databaseFunctionGraphExecutionCancelRequest list queries */ lists: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: databaseFunctionGraphExecutionCancelRequestKeys.lists(),
+        }),
+      /** Invalidate a specific databaseFunctionGraphExecutionCancelRequest */ detail: (
+        queryClient: QueryClient,
+        id: string | number
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: databaseFunctionGraphExecutionCancelRequestKeys.detail(id),
+        }),
+    },
   /** Invalidate databaseFunctionGraphExecution queries */ databaseFunctionGraphExecution: {
     /** Invalidate all databaseFunctionGraphExecution queries */ all: (queryClient: QueryClient) =>
       queryClient.invalidateQueries({
@@ -539,6 +565,28 @@ export const invalidate = {
         queryKey: functionGraphKeys.detail(id),
       }),
   },
+  /** Invalidate functionGraphExecutionCancelRequest queries */ functionGraphExecutionCancelRequest:
+    {
+      /** Invalidate all functionGraphExecutionCancelRequest queries */ all: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: functionGraphExecutionCancelRequestKeys.all,
+        }),
+      /** Invalidate functionGraphExecutionCancelRequest list queries */ lists: (
+        queryClient: QueryClient
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: functionGraphExecutionCancelRequestKeys.lists(),
+        }),
+      /** Invalidate a specific functionGraphExecutionCancelRequest */ detail: (
+        queryClient: QueryClient,
+        id: string | number
+      ) =>
+        queryClient.invalidateQueries({
+          queryKey: functionGraphExecutionCancelRequestKeys.detail(id),
+        }),
+    },
   /** Invalidate functionGraphExecution queries */ functionGraphExecution: {
     /** Invalidate all functionGraphExecution queries */ all: (queryClient: QueryClient) =>
       queryClient.invalidateQueries({
@@ -675,6 +723,23 @@ export const invalidate = {
     ) =>
       queryClient.invalidateQueries({
         queryKey: functionInvocationKeys.detail(id),
+      }),
+  },
+  /** Invalidate functionSchedule queries */ functionSchedule: {
+    /** Invalidate all functionSchedule queries */ all: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: functionScheduleKeys.all,
+      }),
+    /** Invalidate functionSchedule list queries */ lists: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: functionScheduleKeys.lists(),
+      }),
+    /** Invalidate a specific functionSchedule */ detail: (
+      queryClient: QueryClient,
+      id: string | number
+    ) =>
+      queryClient.invalidateQueries({
+        queryKey: functionScheduleKeys.detail(id),
       }),
   },
   /** Invalidate getAllTreeNodesRecord queries */ getAllTreeNodesRecord: {
@@ -1053,6 +1118,23 @@ export const invalidate = {
     ) =>
       queryClient.invalidateQueries({
         queryKey: platformFunctionInvocationKeys.detail(id),
+      }),
+  },
+  /** Invalidate platformFunctionSchedule queries */ platformFunctionSchedule: {
+    /** Invalidate all platformFunctionSchedule queries */ all: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: platformFunctionScheduleKeys.all,
+      }),
+    /** Invalidate platformFunctionSchedule list queries */ lists: (queryClient: QueryClient) =>
+      queryClient.invalidateQueries({
+        queryKey: platformFunctionScheduleKeys.lists(),
+      }),
+    /** Invalidate a specific platformFunctionSchedule */ detail: (
+      queryClient: QueryClient,
+      id: string | number
+    ) =>
+      queryClient.invalidateQueries({
+        queryKey: platformFunctionScheduleKeys.detail(id),
       }),
   },
   /** Invalidate platformImage queries */ platformImage: {
@@ -2253,6 +2335,12 @@ export const remove = {
       queryKey: databaseFunctionGraphKeys.detail(id),
     });
   },
+  /** Remove databaseFunctionGraphExecutionCancelRequest from cache */ databaseFunctionGraphExecutionCancelRequest:
+    (queryClient: QueryClient, id: string | number) => {
+      queryClient.removeQueries({
+        queryKey: databaseFunctionGraphExecutionCancelRequestKeys.detail(id),
+      });
+    },
   /** Remove databaseFunctionGraphExecution from cache */ databaseFunctionGraphExecution: (
     queryClient: QueryClient,
     id: string | number
@@ -2382,6 +2470,12 @@ export const remove = {
       queryKey: functionGraphKeys.detail(id),
     });
   },
+  /** Remove functionGraphExecutionCancelRequest from cache */ functionGraphExecutionCancelRequest:
+    (queryClient: QueryClient, id: string | number) => {
+      queryClient.removeQueries({
+        queryKey: functionGraphExecutionCancelRequestKeys.detail(id),
+      });
+    },
   /** Remove functionGraphExecution from cache */ functionGraphExecution: (
     queryClient: QueryClient,
     id: string | number
@@ -2444,6 +2538,14 @@ export const remove = {
   ) => {
     queryClient.removeQueries({
       queryKey: functionInvocationKeys.detail(id),
+    });
+  },
+  /** Remove functionSchedule from cache */ functionSchedule: (
+    queryClient: QueryClient,
+    id: string | number
+  ) => {
+    queryClient.removeQueries({
+      queryKey: functionScheduleKeys.detail(id),
     });
   },
   /** Remove getAllTreeNodesRecord from cache */ getAllTreeNodesRecord: (
@@ -2611,6 +2713,14 @@ export const remove = {
   ) => {
     queryClient.removeQueries({
       queryKey: platformFunctionInvocationKeys.detail(id),
+    });
+  },
+  /** Remove platformFunctionSchedule from cache */ platformFunctionSchedule: (
+    queryClient: QueryClient,
+    id: string | number
+  ) => {
+    queryClient.removeQueries({
+      queryKey: platformFunctionScheduleKeys.detail(id),
     });
   },
   /** Remove platformImage from cache */ platformImage: (

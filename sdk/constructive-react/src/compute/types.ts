@@ -94,6 +94,12 @@ export interface DatabaseFunctionGraph {
   updatedAt: string | null;
   validationErrors: unknown | null;
 }
+export interface DatabaseFunctionGraphExecutionCancelRequest {
+  actorId: string | null;
+  createdAt: string | null;
+  executionId: string | null;
+  id: string | null;
+}
 export interface DatabaseFunctionGraphExecution {
   actorId: string | null;
   completedAt: string | null;
@@ -352,6 +358,12 @@ export interface FunctionGraph {
   updatedAt: string | null;
   validationErrors: unknown | null;
 }
+export interface FunctionGraphExecutionCancelRequest {
+  actorId: string | null;
+  createdAt: string | null;
+  executionId: string | null;
+  id: string | null;
+}
 export interface FunctionGraphExecution {
   actorId: string | null;
   completedAt: string | null;
@@ -479,6 +491,21 @@ export interface FunctionInvocation {
   startedAt: string | null;
   status: string | null;
   taskIdentifier: string | null;
+}
+export interface FunctionSchedule {
+  actorId: string | null;
+  createdAt: string | null;
+  databaseId: string | null;
+  description: string | null;
+  functionDefinitionId: string | null;
+  id: string | null;
+  isActive: boolean | null;
+  name: string | null;
+  payload: unknown | null;
+  scheduleInfo: unknown | null;
+  suspendedAt: string | null;
+  suspendedReason: string | null;
+  updatedAt: string | null;
 }
 export interface GetAllTreeNodesRecord {
   data: unknown | null;
@@ -809,6 +836,20 @@ export interface PlatformFunctionInvocation {
   startedAt: string | null;
   status: string | null;
   taskIdentifier: string | null;
+}
+export interface PlatformFunctionSchedule {
+  actorId: string | null;
+  createdAt: string | null;
+  description: string | null;
+  functionDefinitionId: string | null;
+  id: string | null;
+  isActive: boolean | null;
+  name: string | null;
+  payload: unknown | null;
+  scheduleInfo: unknown | null;
+  suspendedAt: string | null;
+  suspendedReason: string | null;
+  updatedAt: string | null;
 }
 export interface PlatformImage {
   createdAt: string | null;

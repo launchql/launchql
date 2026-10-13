@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.29.9](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.29.8...graphql-server-test@3.29.9) (2026-10-13)
+
+### Bug Fixes
+
+- **csrf,graphql-server:** one-day CSRF cookie, session-cookie opt-out for native clients, signOut always clears the cookie ([d8d6c9c](https://github.com/constructive-io/constructive/commit/d8d6c9c0c912c96b2aa3aeb9a952807cbd45848c))
+- **graphql-server:** only count auth mutations of the operation that executes ([b3a4628](https://github.com/constructive-io/constructive/commit/b3a462853cd210771f8faaebafd86b411631d7b7))
+
+## [3.29.8](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.29.7...graphql-server-test@3.29.8) (2026-10-13)
+
+**Note:** Version bump only for package graphql-server-test
+
+## [3.29.7](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.29.6...graphql-server-test@3.29.7) (2026-10-12)
+
+**Note:** Version bump only for package graphql-server-test
+
 ## [3.29.6](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.29.5...graphql-server-test@3.29.6) (2026-10-07)
 
 **Note:** Version bump only for package graphql-server-test

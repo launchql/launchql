@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.19.7](https://github.com/constructive-io/constructive/compare/@pgpmjs/slice@0.19.6...@pgpmjs/slice@0.19.7) (2026-10-13)
+
+**Note:** Version bump only for package @pgpmjs/slice
+
+## [0.19.6](https://github.com/constructive-io/constructive/compare/@pgpmjs/slice@0.19.5...@pgpmjs/slice@0.19.6) (2026-10-12)
+
+**Note:** Version bump only for package @pgpmjs/slice
+
 ## [0.19.5](https://github.com/constructive-io/constructive/compare/@pgpmjs/slice@0.19.4...@pgpmjs/slice@0.19.5) (2026-10-07)
 
 **Note:** Version bump only for package @pgpmjs/slice

@@ -1,6 +1,6 @@
 {
   "name": "@constructive-db/machine-runner",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "The machine runner: a Node daemon installed on a user's own machine that dials out to a machine relay over WebSocket, spawns policy-checked processes in a pty, and streams their bytes back. No inbound port, ever.",
   "author": "Constructive <developers@constructive.io>",
   "license": "MIT",

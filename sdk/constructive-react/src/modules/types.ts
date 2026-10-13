@@ -159,6 +159,7 @@ export interface BillingProviderModule {
   billingSubscriptionsTableName: string | null;
   billingWebhookEventsTableId: string | null;
   billingWebhookEventsTableName: string | null;
+  bindCheckoutSessionFunction: string | null;
   clearScheduledChangeFunction: string | null;
   databaseId: string | null;
   finishBillingOperationFunction: string | null;
@@ -173,6 +174,7 @@ export interface BillingProviderModule {
   getBillingSubscriptionFunction: string | null;
   getFallbackFreePlanFunction: string | null;
   getPlanPricingByExternalPriceFunction: string | null;
+  hasDueReconciliationsFunction: string | null;
   id: string | null;
   listDueReconciliationsFunction: string | null;
   listPendingUsageSyncFunction: string | null;
@@ -197,6 +199,7 @@ export interface BillingProviderModule {
   upsertBillingProductFunction: string | null;
   upsertBillingSubscriptionFunction: string | null;
   upsertInvoiceFunction: string | null;
+  usageSyncShardCount: number | null;
 }
 export interface Blueprint {
   createdAt: string | null;
@@ -665,12 +668,10 @@ export interface EntityTypeProvision {
   name: string | null;
   namespaces: unknown | null;
   outAgentModuleId: string | null;
-  outBucketsTableId: string | null;
   outDefinitionsTableId: string | null;
   outEntityTableId: string | null;
   outEntityTableName: string | null;
   outExecutionLogsTableId: string | null;
-  outFilesTableId: string | null;
   outFunctionModuleId: string | null;
   outGraphModuleId: string | null;
   outGraphsTableId: string | null;
@@ -681,8 +682,6 @@ export interface EntityTypeProvision {
   outNamespaceEventsTableId: string | null;
   outNamespaceModuleId: string | null;
   outNamespacesTableId: string | null;
-  outPathSharesTableId: string | null;
-  outStorageModuleId: string | null;
   parentEntity: string | null;
   prefix: string | null;
   skipEntityPolicies: boolean | null;
@@ -1344,7 +1343,6 @@ export interface PlansModule {
   planLimitsTableId: string | null;
   planLimitsTableName: string | null;
   planMeterLimitsTableId: string | null;
-  planOverridesTableId: string | null;
   planPricingTableId: string | null;
   plansTableId: string | null;
   plansTableName: string | null;

@@ -1,6 +1,6 @@
 {
   "name": "pgsql-test",
-  "version": "5.17.2",
+  "version": "5.17.4",
   "author": "Constructive <developers@constructive.io>",
   "description": "pgsql-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests — giving developers realistic test coverage without external state pollution",
   "main": "index.js",

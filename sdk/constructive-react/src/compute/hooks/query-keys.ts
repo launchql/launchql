@@ -64,6 +64,19 @@ export const databaseFunctionGraphKeys = {
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...databaseFunctionGraphKeys.details(), id] as const,
 } as const;
+export const databaseFunctionGraphExecutionCancelRequestKeys = {
+  /** All databaseFunctionGraphExecutionCancelRequest queries */ all: [
+    'databasefunctiongraphexecutioncancelrequest',
+  ] as const,
+  /** List query keys */ lists: () =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...databaseFunctionGraphExecutionCancelRequestKeys.details(), id] as const,
+} as const;
 export const databaseFunctionGraphExecutionKeys = {
   /** All databaseFunctionGraphExecution queries */ all: [
     'databasefunctiongraphexecution',
@@ -232,6 +245,19 @@ export const functionGraphKeys = {
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...functionGraphKeys.details(), id] as const,
 } as const;
+export const functionGraphExecutionCancelRequestKeys = {
+  /** All functionGraphExecutionCancelRequest queries */ all: [
+    'functiongraphexecutioncancelrequest',
+  ] as const,
+  /** List query keys */ lists: () =>
+    [...functionGraphExecutionCancelRequestKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...functionGraphExecutionCancelRequestKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () =>
+    [...functionGraphExecutionCancelRequestKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...functionGraphExecutionCancelRequestKeys.details(), id] as const,
+} as const;
 export const functionGraphExecutionKeys = {
   /** All functionGraphExecution queries */ all: ['functiongraphexecution'] as const,
   /** List query keys */ lists: () => [...functionGraphExecutionKeys.all, 'list'] as const,
@@ -307,6 +333,15 @@ export const functionInvocationKeys = {
   /** Detail query keys */ details: () => [...functionInvocationKeys.all, 'detail'] as const,
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...functionInvocationKeys.details(), id] as const,
+} as const;
+export const functionScheduleKeys = {
+  /** All functionSchedule queries */ all: ['functionschedule'] as const,
+  /** List query keys */ lists: () => [...functionScheduleKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...functionScheduleKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () => [...functionScheduleKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...functionScheduleKeys.details(), id] as const,
 } as const;
 export const getAllTreeNodesRecordKeys = {
   /** All getAllTreeNodesRecord queries */ all: ['getalltreenodesrecord'] as const,
@@ -522,6 +557,15 @@ export const platformFunctionInvocationKeys = {
     [...platformFunctionInvocationKeys.all, 'detail'] as const,
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...platformFunctionInvocationKeys.details(), id] as const,
+} as const;
+export const platformFunctionScheduleKeys = {
+  /** All platformFunctionSchedule queries */ all: ['platformfunctionschedule'] as const,
+  /** List query keys */ lists: () => [...platformFunctionScheduleKeys.all, 'list'] as const,
+  /** List query key with variables */ list: (variables?: object) =>
+    [...platformFunctionScheduleKeys.lists(), variables] as const,
+  /** Detail query keys */ details: () => [...platformFunctionScheduleKeys.all, 'detail'] as const,
+  /** Detail query key for specific item */ detail: (id: string | number) =>
+    [...platformFunctionScheduleKeys.details(), id] as const,
 } as const;
 export const platformImageKeys = {
   /** All platformImage queries */ all: ['platformimage'] as const,
@@ -1195,6 +1239,7 @@ export const queryKeys = {
   builderBinding: builderBindingKeys,
   contentPreset: contentPresetKeys,
   databaseFunctionGraph: databaseFunctionGraphKeys,
+  databaseFunctionGraphExecutionCancelRequest: databaseFunctionGraphExecutionCancelRequestKeys,
   databaseFunctionGraphExecution: databaseFunctionGraphExecutionKeys,
   databaseFunctionGraphExecutionNodeState: databaseFunctionGraphExecutionNodeStateKeys,
   databaseFunctionGraphExecutionOutput: databaseFunctionGraphExecutionOutputKeys,
@@ -1212,6 +1257,7 @@ export const queryKeys = {
   functionExecutionLog: functionExecutionLogKeys,
   functionGraphCommit: functionGraphCommitKeys,
   functionGraph: functionGraphKeys,
+  functionGraphExecutionCancelRequest: functionGraphExecutionCancelRequestKeys,
   functionGraphExecution: functionGraphExecutionKeys,
   functionGraphExecutionNodeState: functionGraphExecutionNodeStateKeys,
   functionGraphExecutionOutput: functionGraphExecutionOutputKeys,
@@ -1220,6 +1266,7 @@ export const queryKeys = {
   functionGraphStore: functionGraphStoreKeys,
   functionInvocationAttempt: functionInvocationAttemptKeys,
   functionInvocation: functionInvocationKeys,
+  functionSchedule: functionScheduleKeys,
   getAllTreeNodesRecord: getAllTreeNodesRecordKeys,
   image: imageKeys,
   imageGrant: imageGrantKeys,
@@ -1242,6 +1289,7 @@ export const queryKeys = {
   platformFunctionExecutionLog: platformFunctionExecutionLogKeys,
   platformFunctionInvocationAttempt: platformFunctionInvocationAttemptKeys,
   platformFunctionInvocation: platformFunctionInvocationKeys,
+  platformFunctionSchedule: platformFunctionScheduleKeys,
   platformImage: platformImageKeys,
   platformImageGrant: platformImageGrantKeys,
   platformInfraCommit: platformInfraCommitKeys,

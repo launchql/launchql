@@ -27,6 +27,7 @@ export const ErrorCodes = {
   DATABASE_CONNECTION_ERROR: 'DATABASE_CONNECTION_ERROR',
   AMBIGUOUS_TENANT: 'AMBIGUOUS_TENANT',
   ADMIN_AUTH_REQUIRED: 'ADMIN_AUTH_REQUIRED',
+  INVALID_SESSION_COOKIE_HEADER: 'INVALID_SESSION_COOKIE_HEADER',
 } as const;
 
 /**
@@ -268,6 +269,22 @@ export class AdminAuthRequiredError extends ApiError {
       { reason }
     );
     this.name = 'AdminAuthRequiredError';
+  }
+}
+
+/**
+ * Thrown when the session-cookie opt-out header carries a value other than
+ * the one the server accepts, so a typo never silently falls back to cookies.
+ */
+export class InvalidSessionCookieHeaderError extends ApiError {
+  constructor(header: string, value: string, accepted: string) {
+    super(
+      ErrorCodes.INVALID_SESSION_COOKIE_HEADER,
+      400,
+      `${header} accepts only "${accepted}"`,
+      { header, value, accepted }
+    );
+    this.name = 'InvalidSessionCookieHeaderError';
   }
 }
 

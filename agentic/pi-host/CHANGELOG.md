@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.11](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi-host@0.5.10...@agentic-kit/pi-host@0.5.11) (2026-10-13)
+
+**Note:** Version bump only for package @agentic-kit/pi-host
+
+## [0.5.10](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi-host@0.5.9...@agentic-kit/pi-host@0.5.10) (2026-10-13)
+
+**Note:** Version bump only for package @agentic-kit/pi-host
+
+## [0.5.9](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi-host@0.5.8...@agentic-kit/pi-host@0.5.9) (2026-10-13)
+
+**Note:** Version bump only for package @agentic-kit/pi-host
+
+## [0.5.8](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi-host@0.5.7...@agentic-kit/pi-host@0.5.8) (2026-10-12)
+
+**Note:** Version bump only for package @agentic-kit/pi-host
+
+## [0.5.7](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi-host@0.5.6...@agentic-kit/pi-host@0.5.7) (2026-10-12)
+
+**Note:** Version bump only for package @agentic-kit/pi-host
+
 ## [0.5.6](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi-host@0.5.5...@agentic-kit/pi-host@0.5.6) (2026-10-07)
 
 **Note:** Version bump only for package @agentic-kit/pi-host

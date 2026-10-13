@@ -37,6 +37,7 @@ import { GetSitePreviewsRecordModel } from './models/getSitePreviewsRecord';
 import { HostnameBindingModel } from './models/hostnameBinding';
 import { IdentityProviderRegistryModel } from './models/identityProviderRegistry';
 import { IndexModel } from './models/index';
+import { ListSuspendedDatabasesRecordModel } from './models/listSuspendedDatabasesRecord';
 import { ManagedDomainModel } from './models/managedDomain';
 import { NodeTypeRegistryModel } from './models/nodeTypeRegistry';
 import { PageModel } from './models/page';
@@ -163,6 +164,7 @@ export function createClient(config: OrmClientConfig) {
     hostnameBinding: new HostnameBindingModel(client),
     identityProviderRegistry: new IdentityProviderRegistryModel(client),
     index: new IndexModel(client),
+    listSuspendedDatabasesRecord: new ListSuspendedDatabasesRecordModel(client),
     managedDomain: new ManagedDomainModel(client),
     nodeTypeRegistry: new NodeTypeRegistryModel(client),
     page: new PageModel(client),

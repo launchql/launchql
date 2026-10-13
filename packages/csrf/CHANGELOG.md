@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.30.1](https://github.com/constructive-io/constructive/compare/@constructive-io/csrf@0.30.0...@constructive-io/csrf@0.30.1) (2026-10-13)
+
+### Bug Fixes
+
+- **csrf,graphql-server:** one-day CSRF cookie, session-cookie opt-out for native clients, signOut always clears the cookie ([d8d6c9c](https://github.com/constructive-io/constructive/commit/d8d6c9c0c912c96b2aa3aeb9a952807cbd45848c))
+
 # [0.30.0](https://github.com/constructive-io/constructive/compare/@constructive-io/csrf@0.29.1...@constructive-io/csrf@0.30.0) (2026-09-17)
 
 **Note:** Version bump only for package @constructive-io/csrf

@@ -106,6 +106,7 @@ CRUD operations for Machine records.
 | `ownerId` | UUID |
 | `policy` | JSON |
 | `principalId` | UUID |
+| `relayUrl` | String |
 | `revokedAt` | Datetime |
 | `tokenHash` | String |
 | `updatedAt` | Datetime |
@@ -113,7 +114,7 @@ CRUD operations for Machine records.
 | `updatedByPrincipal` | UUID |
 
 **Required create fields:** `entityId`, `label`, `ownerId`, `tokenHash`
-**Optional create fields (backend defaults):** `createdBy`, `createdByPrincipal`, `facts`, `isShared`, `lastSeenAt`, `policy`, `principalId`, `revokedAt`, `updatedBy`, `updatedByPrincipal`
+**Optional create fields (backend defaults):** `createdBy`, `createdByPrincipal`, `facts`, `isShared`, `lastSeenAt`, `policy`, `principalId`, `relayUrl`, `revokedAt`, `updatedBy`, `updatedByPrincipal`
 
 ### `machine-message`
 
@@ -210,6 +211,7 @@ machinesEnroll
   | `--input.entityId` | UUID |
   | `--input.isShared` | Boolean |
   | `--input.label` | String |
+  | `--input.relayUrl` | String |
   | `--input.tokenHash` | String |
 
 ### `provision-bucket`

@@ -1,13 +1,13 @@
 ---
 name: orm-auth
-description: ORM client for the auth API — provides typed CRUD operations for 15 tables and 57 custom operations
+description: ORM client for the auth API — provides typed CRUD operations for 15 tables and 61 custom operations
 ---
 
 # orm-auth
 
 <!-- @constructive-io/graphql-codegen - DO NOT EDIT -->
 
-ORM client for the auth API — provides typed CRUD operations for 15 tables and 57 custom operations
+ORM client for the auth API — provides typed CRUD operations for 15 tables and 61 custom operations
 
 ## Usage
 
@@ -83,15 +83,18 @@ See the `references/` directory for detailed per-entity API documentation:
 - [link-identity](references/link-identity.md)
 - [mint-access-token](references/mint-access-token.md)
 - [provision-bucket](references/provision-bucket.md)
-- [provision-new-user](references/provision-new-user.md)
 - [refresh-access-token](references/refresh-access-token.md)
 - [request-cross-origin-token](references/request-cross-origin-token.md)
+- [request-magic-link](references/request-magic-link.md)
 - [reset-password](references/reset-password.md)
 - [revoke-api-key](references/revoke-api-key.md)
 - [revoke-org-api-key](references/revoke-org-api-key.md)
 - [revoke-session](references/revoke-session.md)
 - [send-account-deletion-email](references/send-account-deletion-email.md)
+- [send-mfa-challenge-code](references/send-mfa-challenge-code.md)
 - [send-phone-verification-code](references/send-phone-verification-code.md)
+- [send-sms-otp](references/send-sms-otp.md)
+- [send-step-up-code](references/send-step-up-code.md)
 - [send-verification-email](references/send-verification-email.md)
 - [set-password](references/set-password.md)
 - [set-principal-entities](references/set-principal-entities.md)
@@ -108,4 +111,5 @@ See the `references/` directory for detailed per-entity API documentation:
 - [verify-email](references/verify-email.md)
 - [verify-password](references/verify-password.md)
 - [verify-phone](references/verify-phone.md)
+- [verify-step-up-code](references/verify-step-up-code.md)
 - [verify-totp](references/verify-totp.md)
