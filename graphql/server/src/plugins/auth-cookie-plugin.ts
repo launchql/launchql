@@ -4,6 +4,8 @@ import { Logger } from '@pgpmjs/logger';
 import type { Request } from 'express';
 import type { BufferResult } from 'grafserv';
 import type { GraphileConfig } from 'graphile-config';
+import type { DocumentNode } from 'graphql';
+import { getOperationAST, Kind, parse } from 'graphql';
 
 import {
   CookieConfig,
@@ -107,29 +109,21 @@ interface GraphQLResponse {
 }
 
 /**
- * Extract mutation names from a GraphQL query string.
+ * Top-level field names of the mutation that will execute: the operation
+ * picked by `operationName`, so other operations in the document never count.
  */
-const extractMutationNames = (query: string): string[] => {
-  const mutations: string[] = [];
-
-  if (!/^\s*mutation\b/i.test(query)) {
-    return mutations;
+const extractMutationNames = (query: string, operationName?: string): string[] => {
+  let document: DocumentNode;
+  try {
+    document = parse(query);
+  } catch {
+    return [];
   }
-
-  const bodyStart = query.indexOf('{');
-  if (bodyStart === -1) return mutations;
-
-  const bodyContent = query.slice(bodyStart + 1);
-  const fieldPattern = /(\w+)\s*(?:\(|{)/g;
-  let match;
-  while ((match = fieldPattern.exec(bodyContent)) !== null) {
-    const name = match[1];
-    if (name !== 'mutation' && name !== 'query' && name !== 'fragment') {
-      mutations.push(name);
-    }
-  }
-
-  return mutations;
+  const operation = getOperationAST(document, operationName);
+  if (operation?.operation !== 'mutation') return [];
+  return operation.selectionSet.selections.flatMap((selection) =>
+    selection.kind === Kind.FIELD ? [selection.name.value] : []
+  );
 };
 
 /**
@@ -242,7 +236,7 @@ export const AuthCookiePlugin: GraphileConfig.Plugin = {
           }
 
           // Extract mutation names
-          const mutationNames = extractMutationNames(body.query);
+          const mutationNames = extractMutationNames(body.query, body.operationName);
           if (mutationNames.length === 0) {
             return result;
           }

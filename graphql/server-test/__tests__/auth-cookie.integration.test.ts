@@ -46,12 +46,12 @@ describe('session cookie lifecycle', () => {
   let request: supertest.Agent;
   let teardown: () => Promise<void>;
 
-  const post = (query: string, headers: Record<string, string> = {}) => {
+  const post = (query: string, headers: Record<string, string> = {}, operationName?: string) => {
     let req = request.post('/graphql').set('Host', HOST);
     for (const [name, value] of Object.entries(headers)) {
       req = req.set(name, value);
     }
-    return req.send({ query });
+    return req.send({ query, operationName });
   };
 
   beforeAll(async () => {
@@ -145,6 +145,14 @@ describe('session cookie lifecycle', () => {
 
     expect(res.body.errors).toBeDefined();
     expect(cookieNamed(res, 'constructive_session')).toMatch(/^constructive_session=; Max-Age=0;/);
+  });
+
+  it('ignores a signOut operation in the document that does not run', async () => {
+    const res = await post(`${SIGN_IN}\n${SIGN_OUT}`, {}, 'SignIn');
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.signIn.result.accessToken).toBe('session-token');
+    expect(cookieNamed(res, 'constructive_session')).toMatch(/^constructive_session=session-token;/);
   });
 
   it('lets a native client sign in again after signing out', async () => {
