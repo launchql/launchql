@@ -1,5 +1,6 @@
 import {
   execute,
+  GraphQLEnumType,
   GraphQLError,
   GraphQLInputObjectType,
   GraphQLNonNull,
@@ -23,7 +24,14 @@ const ResetPasswordInput = new GraphQLInputObjectType({
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
-    fields: { ok: { type: GraphQLString, resolve: () => 'ok' } },
+    fields: {
+      ok: { type: GraphQLString, resolve: () => 'ok' },
+      mode: {
+        type: GraphQLString,
+        args: { m: { type: new GraphQLNonNull(new GraphQLEnumType({ name: 'Mode', values: { LIVE: {}, TEST: {} } })) } },
+        resolve: () => 'ok',
+      },
+    },
   }),
   mutation: new GraphQLObjectType({
     name: 'Mutation',
@@ -76,6 +84,25 @@ describe('maskError', () => {
     expect(result.message).toContain('Field "userId" is not defined by type "ResetPasswordInput"');
     expect(result.extensions?.code).toBe('BAD_USER_INPUT');
     expect(result.extensions?.errorId).toBeUndefined();
+    expect(result.message).not.toContain('secret');
+  });
+
+  it('names the variable and path of a value of the wrong type, not the value', async () => {
+    const [result] = await run('mutation($i: ResetPasswordInput!){ resetPassword(input: $i) }', {
+      i: { roleId: 'role-1', newPassword: { key: 'sk_test_secret' } },
+    });
+
+    expect(result.message).toBe(
+      'Variable "$i" got invalid value at "i.newPassword"; String cannot represent a non string value.'
+    );
+    expect(result.extensions?.code).toBe('BAD_USER_INPUT');
+  });
+
+  it('names an enum value the type does not have without echoing it', async () => {
+    const [result] = await run('query($m: Mode!){ mode(m: $m) }', { m: 'sk_test_secret' });
+
+    expect(result.message).toBe('Variable "$m" got invalid value; Value does not exist in "Mode" enum.');
+    expect(result.extensions?.code).toBe('BAD_USER_INPUT');
   });
 
   it('surfaces a required input field the request left out', async () => {

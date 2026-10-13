@@ -52,6 +52,28 @@ const isGraphQLLayerError = (value: unknown): boolean =>
 const isRequestError = (error: GraphQLError): boolean =>
   error.path == null && isGraphQLLayerError((error as { originalError?: unknown }).originalError);
 
+/**
+ * A request error's message without the values the request sent. graphql-js
+ * writes a variable coercion failure as `Variable "$x" got invalid value <the
+ * value> at "<path>"; <inner>`, and a leaf type's inner complaint ends in the
+ * value too (`String cannot represent a non string value: <value>`,
+ * `Value "<value>" does not exist in "E" enum.`), so a password or API key sent
+ * in a malformed input would come back in the answer. The variable, the path and
+ * what was wrong stay; the values go.
+ */
+const withoutInputValues = (error: GraphQLError): string => {
+  const inner = error.originalError?.message;
+  const message = error.message;
+  if (!message.startsWith('Variable "$') || !inner || !message.endsWith(`; ${inner}`)) return message;
+  const prefix = message.slice(0, message.length - inner.length - 2);
+  const variable = /^Variable "\$[^"]+"/.exec(prefix)?.[0];
+  const at = / at "[^"]*"$/.exec(prefix)?.[0] ?? '';
+  const complaint = inner
+    .replace(/(value): [\s\S]*$/, '$1.')
+    .replace(/^Value "[\s\S]*" does not exist in/, 'Value does not exist in');
+  return `${variable} got invalid value${at}; ${complaint}`;
+};
+
 /** The code a surfaced request error carries when graphql-js supplied none. */
 const BAD_USER_INPUT = 'BAD_USER_INPUT';
 
@@ -102,7 +124,7 @@ export const maskError = (error: GraphQLError): GraphQLError | GraphQLFormattedE
   if (!effectiveCode && isRequestError(error)) {
     extensions.code = BAD_USER_INPUT;
     return {
-      message: error.message,
+      message: withoutInputValues(error),
       ...(error.locations ? { locations: error.locations } : {}),
       extensions,
     } as GraphQLFormattedError;
