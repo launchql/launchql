@@ -22,6 +22,7 @@ import { respondWithGraphQLError } from '../errors/graphql-response';
 import { AuthCookiePlugin } from '../plugins/auth-cookie-plugin';
 import { createErrorEventsPlugin } from '../plugins/error-events-plugin';
 import { RequestProtectionPlugin } from '../plugins/request-protection-plugin';
+import { WebauthnPlugin } from '../plugins/webauthn-plugin';
 import type { DatabaseSettings } from '../types';
 import { formatError } from './format-error';
 import { makeIntrospectionWiring } from './graphile-introspection';
@@ -81,7 +82,8 @@ const buildPreset = async (
   graphileOptions: ConstructiveOptions['graphile'],
   databaseSettings?: DatabaseSettings,
   apiId?: string,
-  compute?: ComputeConfig
+  compute?: ComputeConfig,
+  webauthn?: boolean
 ): Promise<GraphileConfig.Preset> => {
   const introspection = await makeIntrospectionWiring(pool, schemas, graphileOptions, undefined, introspectionRole);
   const configuredPreset = graphileOptions?.preset ?? {};
@@ -102,6 +104,9 @@ const buildPreset = async (
       AuthCookiePlugin,
       RequestProtectionPlugin,
       createErrorEventsPlugin(pool),
+      // Only when the tenant provisioned the WebAuthn module; the policy
+      // itself is read per request from `req.api.webauthnSettings`.
+      ...(webauthn ? [WebauthnPlugin] : []),
       // Only registered when the compute module is provisioned for this
       // database — all schema/table names come from the constructive
       // metaschema (express-context compute module loader); the plugin has
@@ -371,7 +376,8 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           opts.graphile,
           api.databaseSettings,
           api.apiId,
-          compute
+          compute,
+          Boolean(api.webauthnSettings)
         );
         return observeGraphileBuild(
           {

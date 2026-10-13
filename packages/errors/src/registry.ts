@@ -157,6 +157,12 @@ export const registry = {
     http: 401,
     message: 'You must be signed in to do that.'
   }),
+  WEBAUTHN_VERIFICATION_FAILED: defineError({
+    code: 'WEBAUTHN_VERIFICATION_FAILED',
+    class: 'public',
+    http: 401,
+    message: 'The passkey response could not be verified.'
+  }),
   ACCOUNT_LOCKED: defineError({
     code: 'ACCOUNT_LOCKED',
     class: 'public',
