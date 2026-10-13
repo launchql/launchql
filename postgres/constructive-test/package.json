@@ -1,6 +1,6 @@
 {
   "name": "constructive-test",
-  "version": "1.17.6",
+  "version": "1.17.7",
   "author": "Constructive <developers@constructive.io>",
   "description": "constructive-test extends pgsql-test with Constructive platform defaults: auto-derived principal_id, role mappings, and platform-specific test helpers",
   "main": "index.js",

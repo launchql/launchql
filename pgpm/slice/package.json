@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/slice",
-  "version": "0.19.6",
+  "version": "0.19.7",
   "author": "Constructive <developers@constructive.io>",
   "description": "PGPM plan slicing — split a monolithic pgpm plan into packages with pattern strategies and opt-in AST-based dependency closure",
   "main": "index.js",

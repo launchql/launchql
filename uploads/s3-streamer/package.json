@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/s3-streamer",
-  "version": "2.44.5",
+  "version": "2.44.6",
   "author": "Constructive <developers@constructive.io>",
   "description": "stream files to s3",
   "main": "index.js",

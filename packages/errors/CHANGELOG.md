@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.23.0](https://github.com/constructive-io/constructive/compare/@constructive-io/errors@0.22.0...@constructive-io/errors@0.23.0) (2026-10-13)
+
+### Features
+
+- **errors:** register 2FA SQL-raised codes (MFA_METHOD_NOT_ALLOWED, STEP_UP_METHOD_REQUIRED, STEP_UP_SESSION_INVALID) ([c791971](https://github.com/constructive-io/constructive/commit/c791971e427fb797851072ccc64e491637de1928))
+
 # [0.22.0](https://github.com/constructive-io/constructive/compare/@constructive-io/errors@0.21.0...@constructive-io/errors@0.22.0) (2026-10-12)
 
 ### Features
