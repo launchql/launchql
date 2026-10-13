@@ -38,6 +38,7 @@ import { favicon } from './middleware/favicon';
 import { createFlushMiddleware, flushService } from './middleware/flush';
 import { createFnRouter } from './middleware/fn';
 import { graphile } from './middleware/graphile';
+import { createWebauthnRouter } from './middleware/webauthn';
 import { multipartBridge } from './middleware/multipart-bridge';
 import { createDebugDatabaseMiddleware } from './middleware/observability/debug-db';
 import { debugMemory } from './middleware/observability/debug-memory';
@@ -224,6 +225,9 @@ class Server {
 
     // REST function invocation routes (POST /fn/:alias, GET /fn/invocations/:id)
     app.use(createFnRouter());
+
+    // WebAuthn/Passkey REST routes
+    app.use(createWebauthnRouter());
 
     app.use(graphile(effectiveOpts));
     app.use(createFlushMiddleware(effectiveOpts));
