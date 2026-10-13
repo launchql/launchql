@@ -9,18 +9,13 @@
  * @example
  * ```typescript
  * import { PresignedUrlPreset } from 'graphile-presigned-url-plugin';
- * import { S3Client } from '@aws-sdk/client-s3';
- *
- * const s3Client = new S3Client({ region: 'us-east-1' });
- *
  * const preset = {
  *   extends: [
  *     PresignedUrlPreset({
- *       s3: {
- *         client: s3Client,
- *         bucket: 'my-uploads',
- *         publicUrlPrefix: 'https://cdn.example.com',
- *       },
+ *       credentials: () => ({
+ *         accessKeyId: process.env.STORAGE_ACCESS_KEY_ID!,
+ *         secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY!,
+ *       }),
  *     }),
  *   ],
  * };
@@ -49,9 +44,10 @@ export {
 } from './managed-upload';
 export {
   assertBucketReconciled,
-  resolveS3,
   resolveS3ForDatabase,
   StorageBucketNotReconciledError,
+  StorageConnectionNotConfiguredError,
+  StorageConnectionOverrideError,
 } from './physical-bucket';
 export { createPresignedUrlPlugin,PresignedUrlPlugin } from './plugin';
 export { PresignedUrlPreset } from './preset';
@@ -65,6 +61,6 @@ export type {
   RequestUploadUrlInput,
   RequestUploadUrlPayload,
   S3Config,
-  S3ConfigOrGetter,
+  StorageCredentials,
   StorageModuleConfig,
 } from './types';

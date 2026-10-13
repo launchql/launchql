@@ -23,20 +23,21 @@ import type { S3Config } from '../src/types';
 
 // --- RustFS config (matches docker-compose.yml + CI env) ---
 
-const OBJECT_STORE_ENDPOINT = process.env.CDN_ENDPOINT || 'http://localhost:9000';
-const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY || 'constructive';
-const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY || 'constructive-dev-secret';
+// The local object store (docker RustFS/MinIO); credentials from the env.
+const OBJECT_STORE_ENDPOINT = 'http://localhost:9000';
+const REGION = 'us-east-1';
+const ACCESS_KEY_ID = process.env.STORAGE_ACCESS_KEY_ID!;
+const SECRET_ACCESS_KEY = process.env.STORAGE_SECRET_ACCESS_KEY!;
 const TEST_BUCKET = 'presigned-url-test-bucket';
 
 // --- S3 client + config ---
 
 const s3Client = new S3Client({
   credentials: {
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_KEY,
+    accessKeyId: ACCESS_KEY_ID,
+    secretAccessKey: SECRET_ACCESS_KEY,
   },
-  region: AWS_REGION,
+  region: REGION,
   endpoint: OBJECT_STORE_ENDPOINT,
   forcePathStyle: true,
 });
@@ -45,7 +46,7 @@ const s3Config: S3Config = {
   client: s3Client,
   bucket: TEST_BUCKET,
   endpoint: OBJECT_STORE_ENDPOINT,
-  region: AWS_REGION,
+  region: REGION,
   forcePathStyle: true,
 };
 

@@ -1,35 +1,26 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { createS3Bucket } from '@constructive-io/s3-utils';
-import { getEnvOptions } from '@pgpmjs/env';
+import { createS3Bucket, createS3Client } from '@constructive-io/s3-utils';
 import { createReadStream } from 'fs';
 import { sync as glob } from 'glob';
 import { basename } from 'path';
 
-import { getClient, Streamer, upload } from '../src';
+import { Streamer, upload } from '../src';
 import type { AsyncUploadResult } from '../src/utils';
 
-// Use Constructive defaults with optional overrides
-const config = getEnvOptions({
-  cdn: {
-    bucketName: 'test-bucket'
-  }
-});
-
-const {
-  bucketName: BUCKET_NAME,
-  awsRegion: AWS_REGION,
-  awsSecretKey: AWS_SECRET_KEY,
-  awsAccessKey: AWS_ACCESS_KEY,
-  endpoint: ENDPOINT
-} = config.cdn;
+// The local object store (docker RustFS/MinIO); credentials from the env.
+const BUCKET_NAME = 'test-bucket';
+const REGION = 'us-east-1';
+const ENDPOINT = 'http://localhost:9000';
+const ACCESS_KEY_ID = process.env.STORAGE_ACCESS_KEY_ID!;
+const SECRET_ACCESS_KEY = process.env.STORAGE_SECRET_ACCESS_KEY!;
 
 // Initialize S3 client
 const s3Client = new S3Client({
   credentials: {
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_KEY,
+    accessKeyId: ACCESS_KEY_ID,
+    secretAccessKey: SECRET_ACCESS_KEY,
   },
-  region: AWS_REGION,
+  region: REGION,
   endpoint: ENDPOINT,
   forcePathStyle: true
 });
@@ -62,10 +53,13 @@ describe('uploads', () => {
   it('upload files via class', async () => {
     const streamer = new Streamer({
       defaultBucket: BUCKET_NAME,
-      awsRegion: AWS_REGION,
-      awsSecretKey: AWS_SECRET_KEY,
-      awsAccessKey: AWS_ACCESS_KEY,
-      endpoint: ENDPOINT
+      client: createS3Client({
+        provider: 'minio',
+        region: REGION,
+        accessKeyId: ACCESS_KEY_ID,
+        secretAccessKey: SECRET_ACCESS_KEY,
+        endpoint: ENDPOINT
+      })
     });
 
     try {
@@ -94,10 +88,11 @@ describe('uploads', () => {
   });
 
   it('upload files via functions', async () => {
-    const client = getClient({
-      awsRegion: AWS_REGION,
-      awsSecretKey: AWS_SECRET_KEY,
-      awsAccessKey: AWS_ACCESS_KEY,
+    const client = createS3Client({
+      provider: 'minio',
+      region: REGION,
+      accessKeyId: ACCESS_KEY_ID,
+      secretAccessKey: SECRET_ACCESS_KEY,
       endpoint: ENDPOINT
     });
 

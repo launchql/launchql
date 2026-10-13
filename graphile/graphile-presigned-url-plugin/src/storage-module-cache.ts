@@ -38,6 +38,12 @@ const storageModuleCache = new LRUCache<string, StorageModuleConfig>({
  * SQL query to resolve ALL storage modules for a database, whatever their
  * scope. Returns each module with its entity table names so callers can
  * classify entity-keyed planes and resolve owners.
+ *
+ * Endpoint, provider and region are always the platform database's `platform`
+ * plane — the only object store the deployment's STORAGE_* credentials belong
+ * to — and `connection_overrides` names any a row sets differently, which
+ * signing then refuses. A NULL `public_url_prefix` inherits the platform's.
+ * All in this same (cached) query.
  */
 const ALL_STORAGE_MODULES_QUERY = `
   SELECT
@@ -49,9 +55,15 @@ const ALL_STORAGE_MODULES_QUERY = `
     fs.schema_name AS files_schema,
     ft.name AS files_table,
     ps.schema_name AS private_schema,
-    sm.endpoint,
-    sm.public_url_prefix,
-    sm.provider,
+    psm.endpoint AS endpoint,
+    coalesce(sm.public_url_prefix, psm.public_url_prefix) AS public_url_prefix,
+    psm.provider AS provider,
+    psm.region AS region,
+    array_remove(ARRAY[
+      CASE WHEN sm.endpoint IS DISTINCT FROM psm.endpoint AND sm.endpoint IS NOT NULL THEN 'endpoint' END,
+      CASE WHEN sm.provider IS DISTINCT FROM psm.provider AND sm.provider IS NOT NULL THEN 'provider' END,
+      CASE WHEN sm.region IS DISTINCT FROM psm.region AND sm.region IS NOT NULL THEN 'region' END
+    ], NULL) AS connection_overrides,
     sm.allowed_origins,
     sm.upload_url_expiry_seconds,
     sm.download_url_expiry_seconds,
@@ -74,6 +86,10 @@ const ALL_STORAGE_MODULES_QUERY = `
   LEFT JOIN metaschema_public.schema ps ON ps.id = sm.private_schema_id
   LEFT JOIN metaschema_public.table et ON et.id = sm.entity_table_id
   LEFT JOIN metaschema_public.schema es ON es.id = et.schema_id
+  LEFT JOIN metaschema_modules_public.storage_module psm
+    ON psm.scope = 'platform'
+   AND psm.key = 'default'
+   AND psm.database_id = (SELECT d.id FROM metaschema_public.database d WHERE d.platform)
   WHERE sm.database_id = $1
 `;
 
@@ -89,6 +105,8 @@ interface StorageModuleRow {
   endpoint: string | null;
   public_url_prefix: string | null;
   provider: string | null;
+  region: string | null;
+  connection_overrides: string[] | null;
   allowed_origins: string[] | null;
   upload_url_expiry_seconds: number | null;
   download_url_expiry_seconds: number | null;
@@ -128,6 +146,8 @@ function buildConfig(row: StorageModuleRow): StorageModuleConfig {
     endpoint: row.endpoint,
     publicUrlPrefix: row.public_url_prefix,
     provider: row.provider,
+    region: row.region,
+    connectionOverrides: row.connection_overrides ?? [],
     allowedOrigins: row.allowed_origins,
     uploadUrlExpirySeconds: row.upload_url_expiry_seconds ?? DEFAULT_UPLOAD_URL_EXPIRY_SECONDS,
     downloadUrlExpirySeconds: row.download_url_expiry_seconds ?? DEFAULT_DOWNLOAD_URL_EXPIRY_SECONDS,

@@ -18,6 +18,8 @@ function storageConfig(
     endpoint: null,
     publicUrlPrefix: null,
     provider: 'minio',
+    region: 'us-east-1',
+    connectionOverrides: [],
     allowedOrigins: null,
     uploadUrlExpirySeconds: 900,
     downloadUrlExpirySeconds: 3600,

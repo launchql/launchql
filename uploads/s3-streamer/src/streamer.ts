@@ -1,9 +1,7 @@
 import { S3Client } from '@aws-sdk/client-s3';
 import { streamContentType } from '@constructive-io/content-type-stream';
-import type { BucketProvider } from '@pgpmjs/types';
 import type { Readable } from 'stream';
 
-import getS3 from './s3';
 import {
   type AsyncUploadResult,
   upload as streamUpload,
@@ -11,11 +9,8 @@ import {
 } from './utils';
 
 interface StreamerOptions {
-  awsRegion: string;
-  awsSecretKey: string;
-  awsAccessKey: string;
-  endpoint?: string;
-  provider?: BucketProvider;
+  /** Client for the object store the caller resolved (see `createS3Client` in `@constructive-io/s3-utils`). */
+  client: S3Client;
   /**
    * Bucket used when a call does not name one. Optional: a caller that resolves
    * the bucket per upload (tenant-resolved storage) has no deployment-wide
@@ -44,21 +39,8 @@ export class Streamer {
   private s3: S3Client;
   private defaultBucket?: string;
 
-  constructor({
-    awsRegion,
-    awsSecretKey,
-    awsAccessKey,
-    endpoint,
-    provider,
-    defaultBucket
-  }: StreamerOptions) {
-    this.s3 = getS3({
-      awsRegion,
-      awsSecretKey,
-      awsAccessKey,
-      endpoint,
-      provider
-    });
+  constructor({ client, defaultBucket }: StreamerOptions) {
+    this.s3 = client;
     this.defaultBucket = defaultBucket;
   }
 

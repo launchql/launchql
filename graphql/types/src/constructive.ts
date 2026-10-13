@@ -1,11 +1,11 @@
 import {
-  CDNOptions,
   DeploymentOptions,
   MigrationOptions,
   pgpmDefaults,
   PgpmOptions,
   PgTestConnectionOptions,
-  ServerOptions} from '@pgpmjs/types';
+  ServerOptions,
+  StorageCredentialOptions} from '@pgpmjs/types';
 import deepmerge from 'deepmerge';
 import { PgConfig } from 'pg-env';
 
@@ -48,8 +48,8 @@ export interface ConstructiveOptions extends PgpmOptions, ConstructiveGraphQLOpt
   features?: GraphileFeatureOptions;
   /** API configuration options */
   api?: ApiOptions;
-  /** CDN and file storage configuration */
-  cdn?: CDNOptions;
+  /** Object-store credentials (coordinates live in storage_module) */
+  storage?: StorageCredentialOptions;
   /** Module deployment configuration */
   deployment?: DeploymentOptions;
   /** Migration and code generation options */

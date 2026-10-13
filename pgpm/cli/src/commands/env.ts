@@ -14,7 +14,7 @@ Database Profiles:
   --supabase         Use Supabase local development profile
 
 Additional Services:
-  --rustfs           Include RustFS/S3 environment variables
+  --rustfs           Include the local RustFS object-store credentials
 
 Modes:
   No command         Print export statements for shell evaluation
@@ -23,7 +23,8 @@ Modes:
 Options:
   --help, -h         Show this help message
   --supabase         Use Supabase profile instead of default Postgres
-  --rustfs           Include CDN_ENDPOINT, AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_REGION
+  --rustfs           Include STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY
+                     (endpoint/provider/region are storage_module rows, not env)
 
 Examples:
   pgpm env                                    Print default Postgres env exports
@@ -47,17 +48,13 @@ const DEFAULT_PROFILE: PgConfig = {
 };
 
 interface ObjectStoreConfig {
-  endpoint: string;
-  accessKey: string;
-  secretKey: string;
-  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
 }
 
 const OBJECT_STORE_PROFILE: ObjectStoreConfig = {
-  endpoint: 'http://localhost:9000',
-  accessKey: 'constructive',
-  secretKey: 'constructive-dev-secret',
-  region: 'us-east-1',
+  accessKeyId: 'constructive',
+  secretAccessKey: 'constructive-dev-secret',
 };
 
 function configToEnvVars(config: PgConfig, objectStore?: ObjectStoreConfig): Record<string, string> {
@@ -70,10 +67,8 @@ function configToEnvVars(config: PgConfig, objectStore?: ObjectStoreConfig): Rec
   };
 
   if (objectStore) {
-    vars.CDN_ENDPOINT = objectStore.endpoint;
-    vars.AWS_ACCESS_KEY = objectStore.accessKey;
-    vars.AWS_SECRET_KEY = objectStore.secretKey;
-    vars.AWS_REGION = objectStore.region;
+    vars.STORAGE_ACCESS_KEY_ID = objectStore.accessKeyId;
+    vars.STORAGE_SECRET_ACCESS_KEY = objectStore.secretAccessKey;
   }
 
   return vars;

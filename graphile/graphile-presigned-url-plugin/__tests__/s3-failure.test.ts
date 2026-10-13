@@ -1,8 +1,8 @@
 /**
  * The presigned lane's diagnosis of a failed S3 call.
  *
- * The case that motivated this: a server whose CDN_ENDPOINT is unset signs
- * against the library default (its own loopback), and the transport failure
+ * The case that motivated this: a server signing against an endpoint it cannot
+ * reach (its own loopback), and the transport failure
  * arrives as an `AggregateError` with an empty `message` — so reporting
  * `err.message` gave the client a blank reason. These assert that the reason is
  * never blank, that it names the coordinates, and that the original error stays

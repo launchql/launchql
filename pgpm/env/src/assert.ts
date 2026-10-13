@@ -5,8 +5,7 @@ import { getStrictEnvMode, isProduction } from '12factor-env';
  * Production-safety enforcement for the merged PGPM options.
  *
  * `pgpmDefaults` bakes in development-only values so local dev and tests work
- * out of the box (e.g. `pg.password = 'password'`, `cdn.awsAccessKey =
- * 'constructive'`, `pg.host = 'localhost'`). Those are a liability in production:
+ * out of the box (e.g. `pg.password = 'password'`, `pg.host = 'localhost'`). Those are a liability in production:
  * a deploy that forgets to set the real value boots on the dev default instead
  * of failing. `deepmerge` cannot express "dev default, required in prod", so
  * this is enforced here as an opt-in assertion callers run at startup.
@@ -34,15 +33,10 @@ const SENSITIVE_FIELDS: SensitiveField[] = [
   { path: 'pg.password', severity: 'secret', envHint: 'PGPASSWORD' },
   { path: 'db.connections.app.password', severity: 'secret', envHint: 'DB_CONNECTIONS_APP_PASSWORD' },
   { path: 'db.connections.admin.password', severity: 'secret', envHint: 'DB_CONNECTIONS_ADMIN_PASSWORD' },
-  { path: 'cdn.awsAccessKey', severity: 'secret', envHint: 'AWS_ACCESS_KEY' },
-  { path: 'cdn.awsSecretKey', severity: 'secret', envHint: 'AWS_SECRET_KEY' },
   { path: 'pg.host', severity: 'host', envHint: 'PGHOST' },
   { path: 'pg.database', severity: 'host', envHint: 'PGDATABASE' },
   { path: 'db.rootDb', severity: 'host', envHint: 'PGROOTDATABASE' },
-  { path: 'server.host', severity: 'host', envHint: 'SERVER_HOST' },
-  { path: 'cdn.endpoint', severity: 'host', envHint: 'CDN_ENDPOINT' },
-  { path: 'cdn.publicUrlPrefix', severity: 'host', envHint: 'CDN_PUBLIC_URL_PREFIX' },
-  { path: 'cdn.bucketName', severity: 'host', envHint: 'BUCKET_NAME' }
+  { path: 'server.host', severity: 'host', envHint: 'SERVER_HOST' }
 ];
 
 const getPath = (obj: unknown, path: string): unknown =>

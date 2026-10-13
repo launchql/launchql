@@ -18,18 +18,13 @@ import type { PresignedUrlPluginOptions } from './types';
  * @example
  * ```typescript
  * import { PresignedUrlPreset } from 'graphile-presigned-url-plugin';
- * import { S3Client } from '@aws-sdk/client-s3';
- *
- * const s3Client = new S3Client({ region: 'us-east-1' });
- *
  * const preset = {
  *   extends: [
  *     PresignedUrlPreset({
- *       s3: {
- *         client: s3Client,
- *         bucket: 'my-bucket',
- *         publicUrlPrefix: 'https://cdn.example.com',
- *       },
+ *       credentials: () => ({
+ *         accessKeyId: process.env.STORAGE_ACCESS_KEY_ID!,
+ *         secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY!,
+ *       }),
  *     }),
  *   ],
  * };

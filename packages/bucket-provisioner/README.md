@@ -114,8 +114,8 @@ const provisioner = new BucketProvisioner({
   connection: {
     provider: 's3',
     region: 'us-west-2',
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.STORAGE_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY!,
   },
   allowedOrigins: ['https://app.example.com'],
 });

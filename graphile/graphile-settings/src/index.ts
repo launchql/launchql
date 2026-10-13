@@ -65,4 +65,4 @@ export * from './presets/index';
 export { makePgService };
 
 // Presigned URL utilities
-export { getPresignedUrlS3Config } from './presigned-url-resolver';
+export { getStorageCredentials } from './presigned-url-resolver';

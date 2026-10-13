@@ -16,15 +16,6 @@ exports[`getEnvOptions merges pgpm defaults, graphql defaults, config, env, and 
     "roleName": "env_role",
     "routingSchema": "routing_public",
   },
-  "cdn": {
-    "awsAccessKey": "constructive",
-    "awsRegion": "us-east-1",
-    "awsSecretKey": "constructive-dev-secret",
-    "bucketName": "test-bucket",
-    "endpoint": "http://localhost:9000",
-    "provider": "minio",
-    "publicUrlPrefix": "http://localhost:9000",
-  },
   "db": {
     "connections": {
       "admin": {
@@ -109,5 +100,6 @@ exports[`getEnvOptions merges pgpm defaults, graphql defaults, config, env, and 
     "port": 587,
     "secure": false,
   },
+  "storage": {},
 }
 `;
