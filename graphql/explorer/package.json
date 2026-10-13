@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/graphql-explorer",
-  "version": "5.19.0",
+  "version": "5.19.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Constructive GraphQL Explorer",
   "main": "index.js",

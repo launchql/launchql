@@ -1,6 +1,6 @@
 {
   "name": "graphile-connection-filter",
-  "version": "2.17.8",
+  "version": "2.17.9",
   "description": "PostGraphile v5 native connection filter plugin - adds advanced filtering to connections",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

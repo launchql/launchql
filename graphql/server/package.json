@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/graphql-server",
-  "version": "5.29.0",
+  "version": "5.29.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Constructive GraphQL Server",
   "main": "index.js",

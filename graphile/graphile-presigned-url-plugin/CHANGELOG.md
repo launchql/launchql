@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.22.0...graphile-presigned-url-plugin@1.22.1) (2026-10-13)
+
+### Bug Fixes
+
+- **storage:** resolve a visible file's bucket physical name on the system lane for downloadUrl ([6a27d6d](https://github.com/constructive-io/constructive/commit/6a27d6d986c55292cfac2f8b7b76185a0c1e325a))
+
 # [1.22.0](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.21.1...graphile-presigned-url-plugin@1.22.0) (2026-10-13)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "graphile-function-bindings",
-  "version": "1.17.8",
+  "version": "1.17.9",
   "description": "PostGraphile v5 plugin — exposes API-bound compute functions as typed GraphQL mutations backed by function_invocations inserts",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

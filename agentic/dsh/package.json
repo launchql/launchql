@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/dsh",
-  "version": "0.7.12",
+  "version": "0.7.13",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "the DeepSeek Harness adapter for agentic-kit — Constructive's typed db tools and confirm gate as a dsh plugin, plus a dsh transcript reader for the run log",
   "main": "index.js",
