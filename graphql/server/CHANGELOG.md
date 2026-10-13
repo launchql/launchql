@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.28.8](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.7...@constructive-io/graphql-server@5.28.8) (2026-10-13)
+
+### Bug Fixes
+
+- **graphql-server:** answer a malformed input without echoing the values it carried ([77c2c55](https://github.com/constructive-io/constructive/commit/77c2c5525db7bba2b2c522a8a16cf9b8520f2478))
+
 ## [5.28.7](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.6...@constructive-io/graphql-server@5.28.7) (2026-10-12)
 
 **Note:** Version bump only for package @constructive-io/graphql-server
