@@ -45,9 +45,9 @@
   "dependencies": {
     "@pgpmjs/ast": "workspace:^",
     "@pgpmjs/naming-spec": "workspace:^",
-    "@pgsql/scripts": "^18.4.10",
-    "@pgsql/semantics": "^18.1.11",
-    "@pgsql/transform": "^18.17.10",
-    "plpgsql-parser": "^18.5.12"
+    "@pgsql/scripts": "^18.4.12",
+    "@pgsql/semantics": "^18.1.13",
+    "@pgsql/transform": "^18.17.12",
+    "plpgsql-parser": "^18.5.14"
   }
 }

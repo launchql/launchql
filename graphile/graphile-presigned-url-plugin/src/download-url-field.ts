@@ -126,9 +126,13 @@ export function createDownloadUrlPlugin(
                           await withSystemLaneClient(withPgClient, (pgClient) => loadAllStorageModules(pgClient, databaseId)),
                         )
                         : null;
+                      // The file row already passed the reader's RLS, which is the
+                      // authorization for this URL. The bucket's physical name is
+                      // server config, not user data, and a reader may see a file
+                      // (public, or path-shared) without seeing its bucket row, so
+                      // it is read on the system lane.
                       const resolved = config && bucketId
-                        ? await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
-                          // Look up the stored physical coordinate for scoped S3 resolution
+                        ? await withSystemLaneClient(withPgClient, async (pgClient) => {
                           const bucketResult = await pgClient.query({
                             text: `SELECT key, physical_name FROM ${config.bucketsQualifiedName} WHERE id = $1 LIMIT 1`,
                             values: [bucketId],
