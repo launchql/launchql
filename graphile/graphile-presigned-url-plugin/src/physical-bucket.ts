@@ -88,20 +88,20 @@ export function resolveS3ForDatabase(
   physicalName: string,
 ): S3Config {
   const { endpoint, provider, region, publicUrlPrefix } = storageConfig;
-  if (storageConfig.connectionOverrides.length > 0) {
-    throw new StorageConnectionOverrideError(storageConfig);
-  }
   if (!provider || !region) {
     throw new StorageConnectionNotConfiguredError(storageConfig, [
       ...(provider ? [] : ['provider']),
       ...(region ? [] : ['region']),
     ]);
   }
+  if (storageConfig.connectionOverrides.length > 0) {
+    throw new StorageConnectionOverrideError(storageConfig);
+  }
 
-  const cacheKey = JSON.stringify([provider, endpoint, region]);
+  const { accessKeyId, secretAccessKey } = resolveCredentials(options);
+  const cacheKey = JSON.stringify([provider, endpoint, region, accessKeyId, secretAccessKey]);
   let client = clients.get(cacheKey);
   if (!client) {
-    const { accessKeyId, secretAccessKey } = resolveCredentials(options);
     client = createS3Client({
       provider: provider as StorageProvider,
       region,
