@@ -11,6 +11,7 @@ import type {
   ContentPreset,
   DatabaseFunctionGraph,
   DatabaseFunctionGraphExecution,
+  DatabaseFunctionGraphExecutionCancelRequest,
   DatabaseFunctionGraphExecutionNodeState,
   DatabaseFunctionGraphExecutionOutput,
   DatabaseGraphCommit,
@@ -28,6 +29,7 @@ import type {
   FunctionGraph,
   FunctionGraphCommit,
   FunctionGraphExecution,
+  FunctionGraphExecutionCancelRequest,
   FunctionGraphExecutionNodeState,
   FunctionGraphExecutionOutput,
   FunctionGraphObject,
@@ -297,6 +299,19 @@ export type ContentPresetOrderBy =
   | 'STORE_ID_DESC'
   | 'UPDATED_AT_ASC'
   | 'UPDATED_AT_DESC';
+/** Methods to use when ordering `DatabaseFunctionGraphExecutionCancelRequest`. */
+export type DatabaseFunctionGraphExecutionCancelRequestOrderBy =
+  | 'ACTOR_ID_ASC'
+  | 'ACTOR_ID_DESC'
+  | 'CREATED_AT_ASC'
+  | 'CREATED_AT_DESC'
+  | 'EXECUTION_ID_ASC'
+  | 'EXECUTION_ID_DESC'
+  | 'ID_ASC'
+  | 'ID_DESC'
+  | 'NATURAL'
+  | 'PRIMARY_KEY_ASC'
+  | 'PRIMARY_KEY_DESC';
 /** Methods to use when ordering `DatabaseFunctionGraphExecutionNodeState`. */
 export type DatabaseFunctionGraphExecutionNodeStateOrderBy =
   | 'CALLBACK_INPUTS_ASC'
@@ -821,6 +836,19 @@ export type FunctionGraphCommitOrderBy =
   | 'STORE_ID_DESC'
   | 'TREE_ID_ASC'
   | 'TREE_ID_DESC';
+/** Methods to use when ordering `FunctionGraphExecutionCancelRequest`. */
+export type FunctionGraphExecutionCancelRequestOrderBy =
+  | 'ACTOR_ID_ASC'
+  | 'ACTOR_ID_DESC'
+  | 'CREATED_AT_ASC'
+  | 'CREATED_AT_DESC'
+  | 'EXECUTION_ID_ASC'
+  | 'EXECUTION_ID_DESC'
+  | 'ID_ASC'
+  | 'ID_DESC'
+  | 'NATURAL'
+  | 'PRIMARY_KEY_ASC'
+  | 'PRIMARY_KEY_DESC';
 /** Methods to use when ordering `FunctionGraphExecutionNodeState`. */
 export type FunctionGraphExecutionNodeStateOrderBy =
   | 'CALLBACK_INPUTS_ASC'
@@ -4851,6 +4879,11 @@ export interface CreateContentPresetInput {
   /** The `ContentPreset` to be created by this mutation. */
   contentPreset: ContentPresetInput;
 }
+export interface CreateDatabaseFunctionGraphExecutionCancelRequestInput {
+  clientMutationId?: string;
+  /** The `DatabaseFunctionGraphExecutionCancelRequest` to be created by this mutation. */
+  databaseFunctionGraphExecutionCancelRequest: DatabaseFunctionGraphExecutionCancelRequestInput;
+}
 export interface CreateDatabaseFunctionGraphExecutionInput {
   clientMutationId?: string;
   /** The `DatabaseFunctionGraphExecution` to be created by this mutation. */
@@ -4925,6 +4958,11 @@ export interface CreateFunctionGraphCommitInput {
   clientMutationId?: string;
   /** The `FunctionGraphCommit` to be created by this mutation. */
   functionGraphCommit: FunctionGraphCommitInput;
+}
+export interface CreateFunctionGraphExecutionCancelRequestInput {
+  clientMutationId?: string;
+  /** The `FunctionGraphExecutionCancelRequest` to be created by this mutation. */
+  functionGraphExecutionCancelRequest: FunctionGraphExecutionCancelRequestInput;
 }
 export interface CreateFunctionGraphExecutionInput {
   clientMutationId?: string;
@@ -5416,6 +5454,45 @@ export interface DatabaseCreateFunctionGraphInput {
   definitionsCommitId?: string;
   description?: string;
   name?: string;
+}
+/** A filter to be used against `DatabaseFunctionGraphExecutionCancelRequest` object types. All fields are combined with a logical ‘and.’ */
+export interface DatabaseFunctionGraphExecutionCancelRequestFilter {
+  /** Filter by the object’s `actorId` field. */
+  actorId?: UUIDFilter;
+  /** Checks for all expressions in this list. */
+  and?: DatabaseFunctionGraphExecutionCancelRequestFilter[];
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: DatetimeFilter;
+  /** Filter by the object’s `executionId` field. */
+  executionId?: UUIDFilter;
+  /** Filter by the object’s `id` field. */
+  id?: UUIDFilter;
+  /** Negates the expression. */
+  not?: DatabaseFunctionGraphExecutionCancelRequestFilter;
+  /** Checks for any expressions in this list. */
+  or?: DatabaseFunctionGraphExecutionCancelRequestFilter[];
+}
+/** An input for mutations affecting `DatabaseFunctionGraphExecutionCancelRequest` */
+export interface DatabaseFunctionGraphExecutionCancelRequestInput {
+  /** Who asked for the stop */
+  actorId?: string;
+  /** When the stop was requested */
+  createdAt?: string;
+  /** The execution to stop */
+  executionId: string;
+  /** Unique cancel request identifier */
+  id?: string;
+}
+/** Represents an update to a `DatabaseFunctionGraphExecutionCancelRequest`. Fields that are set will be updated. */
+export interface DatabaseFunctionGraphExecutionCancelRequestPatch {
+  /** Who asked for the stop */
+  actorId?: string;
+  /** When the stop was requested */
+  createdAt?: string;
+  /** The execution to stop */
+  executionId?: string;
+  /** Unique cancel request identifier */
+  id?: string;
 }
 /** A filter to be used against `DatabaseFunctionGraphExecution` object types. All fields are combined with a logical ‘and.’ */
 export interface DatabaseFunctionGraphExecutionFilter {
@@ -6311,6 +6388,11 @@ export interface DeleteContentPresetInput {
   /** Unique preset identifier */
   id: string;
 }
+export interface DeleteDatabaseFunctionGraphExecutionCancelRequestInput {
+  clientMutationId?: string;
+  /** Unique cancel request identifier */
+  id: string;
+}
 export interface DeleteDatabaseFunctionGraphExecutionInput {
   clientMutationId?: string;
   /** Unique execution identifier */
@@ -6404,6 +6486,11 @@ export interface DeleteFunctionGraphCommitInput {
   id: string;
   /** Opaque store partition key for the global tier */
   scopeId: string;
+}
+export interface DeleteFunctionGraphExecutionCancelRequestInput {
+  clientMutationId?: string;
+  /** Unique cancel request identifier */
+  id: string;
 }
 export interface DeleteFunctionGraphExecutionInput {
   clientMutationId?: string;
@@ -7662,6 +7749,45 @@ export interface FunctionGraphCommitPatch {
   /** Root object ID of the tree snapshot at this commit */
   treeId?: string;
 }
+/** A filter to be used against `FunctionGraphExecutionCancelRequest` object types. All fields are combined with a logical ‘and.’ */
+export interface FunctionGraphExecutionCancelRequestFilter {
+  /** Filter by the object’s `actorId` field. */
+  actorId?: UUIDFilter;
+  /** Checks for all expressions in this list. */
+  and?: FunctionGraphExecutionCancelRequestFilter[];
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: DatetimeFilter;
+  /** Filter by the object’s `executionId` field. */
+  executionId?: UUIDFilter;
+  /** Filter by the object’s `id` field. */
+  id?: UUIDFilter;
+  /** Negates the expression. */
+  not?: FunctionGraphExecutionCancelRequestFilter;
+  /** Checks for any expressions in this list. */
+  or?: FunctionGraphExecutionCancelRequestFilter[];
+}
+/** An input for mutations affecting `FunctionGraphExecutionCancelRequest` */
+export interface FunctionGraphExecutionCancelRequestInput {
+  /** Who asked for the stop */
+  actorId?: string;
+  /** When the stop was requested */
+  createdAt?: string;
+  /** The execution to stop */
+  executionId: string;
+  /** Unique cancel request identifier */
+  id?: string;
+}
+/** Represents an update to a `FunctionGraphExecutionCancelRequest`. Fields that are set will be updated. */
+export interface FunctionGraphExecutionCancelRequestPatch {
+  /** Who asked for the stop */
+  actorId?: string;
+  /** When the stop was requested */
+  createdAt?: string;
+  /** The execution to stop */
+  executionId?: string;
+  /** Unique cancel request identifier */
+  id?: string;
+}
 /** A filter to be used against `FunctionGraphExecution` object types. All fields are combined with a logical ‘and.’ */
 export interface FunctionGraphExecutionFilter {
   /** Filter by the object’s `actorId` field. */
@@ -8459,7 +8585,7 @@ export interface FunctionInvocationInput {
   actorId?: string;
   /** API binding this invocation arrived through (NULL for cron/graph/system/worker paths) */
   apiBindingId?: string;
-  /** Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker */
+  /** Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker */
   channel: string;
   /** When execution completed */
   completedAt?: string;
@@ -8512,7 +8638,7 @@ export interface FunctionInvocationPatch {
   actorId?: string;
   /** API binding this invocation arrived through (NULL for cron/graph/system/worker paths) */
   apiBindingId?: string;
-  /** Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker */
+  /** Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker */
   channel?: string;
   /** When execution completed */
   completedAt?: string;
@@ -8557,6 +8683,14 @@ export interface FunctionInvocationPatch {
   /** Lifecycle: pending → running → completed/failed/cancelled; running → retrying → running while the queue still has attempts left (an intermediate failure, never terminal); skipped = never ran (a gate rejected the intended run) */
   status?: string;
   /** Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set. */
+  taskIdentifier?: string;
+}
+export interface FunctionInvocationsCreatePageInput {
+  clientMutationId?: string;
+  entityId?: string;
+  payload?: unknown;
+  provenance?: unknown;
+  routeBindingId?: string;
   taskIdentifier?: string;
 }
 export interface FunctionInvocationsCreateSyncInput {
@@ -10781,7 +10915,7 @@ export interface PlatformFunctionInvocationInput {
   actorId?: string;
   /** API binding this invocation arrived through (NULL for cron/graph/system/worker paths) */
   apiBindingId?: string;
-  /** Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker */
+  /** Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker */
   channel: string;
   /** When execution completed */
   completedAt?: string;
@@ -10834,7 +10968,7 @@ export interface PlatformFunctionInvocationPatch {
   actorId?: string;
   /** API binding this invocation arrived through (NULL for cron/graph/system/worker paths) */
   apiBindingId?: string;
-  /** Invocation trigger channel: api, graph, cron, sync, webhook, trigger, or worker */
+  /** Invocation trigger channel: api, graph, cron, sync, page, webhook, trigger, or worker */
   channel?: string;
   /** When execution completed */
   completedAt?: string;
@@ -10879,6 +11013,14 @@ export interface PlatformFunctionInvocationPatch {
   /** Lifecycle: pending → running → completed/failed/cancelled; running → retrying → running while the queue still has attempts left (an intermediate failure, never terminal); skipped = never ran (a gate rejected the intended run) */
   status?: string;
   /** Function routing slug (category:name). Denormalized from the definition — must match the row referenced by function_definition_id when that is set. */
+  taskIdentifier?: string;
+}
+export interface PlatformFunctionInvocationsCreatePageInput {
+  clientMutationId?: string;
+  entityId?: string;
+  payload?: unknown;
+  provenance?: unknown;
+  routeBindingId?: string;
   taskIdentifier?: string;
 }
 export interface PlatformFunctionInvocationsCreateSyncInput {
@@ -17314,6 +17456,13 @@ export interface UpdateContentPresetInput {
   /** Unique preset identifier */
   id: string;
 }
+export interface UpdateDatabaseFunctionGraphExecutionCancelRequestInput {
+  clientMutationId?: string;
+  /** An object where the defined keys will be set on the `DatabaseFunctionGraphExecutionCancelRequest` being updated. */
+  databaseFunctionGraphExecutionCancelRequestPatch: DatabaseFunctionGraphExecutionCancelRequestPatch;
+  /** Unique cancel request identifier */
+  id: string;
+}
 export interface UpdateDatabaseFunctionGraphExecutionInput {
   clientMutationId?: string;
   /** An object where the defined keys will be set on the `DatabaseFunctionGraphExecution` being updated. */
@@ -17439,6 +17588,13 @@ export interface UpdateFunctionGraphCommitInput {
   id: string;
   /** Opaque store partition key for the global tier */
   scopeId: string;
+}
+export interface UpdateFunctionGraphExecutionCancelRequestInput {
+  clientMutationId?: string;
+  /** An object where the defined keys will be set on the `FunctionGraphExecutionCancelRequest` being updated. */
+  functionGraphExecutionCancelRequestPatch: FunctionGraphExecutionCancelRequestPatch;
+  /** Unique cancel request identifier */
+  id: string;
 }
 export interface UpdateFunctionGraphExecutionInput {
   clientMutationId?: string;
@@ -18288,6 +18444,13 @@ export interface ContentPresetConnection {
   pageInfo: PageInfo;
   totalCount: number;
 }
+/** A connection to a list of `DatabaseFunctionGraphExecutionCancelRequest` values. */
+export interface DatabaseFunctionGraphExecutionCancelRequestConnection {
+  edges: DatabaseFunctionGraphExecutionCancelRequestEdge[];
+  nodes: DatabaseFunctionGraphExecutionCancelRequest[];
+  pageInfo: PageInfo;
+  totalCount: number;
+}
 /** A connection to a list of `DatabaseFunctionGraphExecutionNodeState` values. */
 export interface DatabaseFunctionGraphExecutionNodeStateConnection {
   edges: DatabaseFunctionGraphExecutionNodeStateEdge[];
@@ -18404,6 +18567,13 @@ export interface FunctionExecutionLogConnection {
 export interface FunctionGraphCommitConnection {
   edges: FunctionGraphCommitEdge[];
   nodes: FunctionGraphCommit[];
+  pageInfo: PageInfo;
+  totalCount: number;
+}
+/** A connection to a list of `FunctionGraphExecutionCancelRequest` values. */
+export interface FunctionGraphExecutionCancelRequestConnection {
+  edges: FunctionGraphExecutionCancelRequestEdge[];
+  nodes: FunctionGraphExecutionCancelRequest[];
   pageInfo: PageInfo;
   totalCount: number;
 }
@@ -19160,6 +19330,12 @@ export interface CreateDatabaseFunctionGraphExecutionPayload {
   databaseFunctionGraphExecution?: DatabaseFunctionGraphExecution | null;
   databaseFunctionGraphExecutionEdge?: DatabaseFunctionGraphExecutionEdge | null;
 }
+export interface CreateDatabaseFunctionGraphExecutionCancelRequestPayload {
+  clientMutationId?: string | null;
+  /** The `DatabaseFunctionGraphExecutionCancelRequest` that was created by this mutation. */
+  databaseFunctionGraphExecutionCancelRequest?: DatabaseFunctionGraphExecutionCancelRequest | null;
+  databaseFunctionGraphExecutionCancelRequestEdge?: DatabaseFunctionGraphExecutionCancelRequestEdge | null;
+}
 export interface CreateDatabaseFunctionGraphExecutionNodeStatePayload {
   clientMutationId?: string | null;
   /** The `DatabaseFunctionGraphExecutionNodeState` that was created by this mutation. */
@@ -19253,6 +19429,12 @@ export interface CreateFunctionGraphExecutionPayload {
   /** The `FunctionGraphExecution` that was created by this mutation. */
   functionGraphExecution?: FunctionGraphExecution | null;
   functionGraphExecutionEdge?: FunctionGraphExecutionEdge | null;
+}
+export interface CreateFunctionGraphExecutionCancelRequestPayload {
+  clientMutationId?: string | null;
+  /** The `FunctionGraphExecutionCancelRequest` that was created by this mutation. */
+  functionGraphExecutionCancelRequest?: FunctionGraphExecutionCancelRequest | null;
+  functionGraphExecutionCancelRequestEdge?: FunctionGraphExecutionCancelRequestEdge | null;
 }
 export interface CreateFunctionGraphExecutionNodeStatePayload {
   clientMutationId?: string | null;
@@ -19859,6 +20041,12 @@ export interface DeleteDatabaseFunctionGraphExecutionPayload {
   databaseFunctionGraphExecution?: DatabaseFunctionGraphExecution | null;
   databaseFunctionGraphExecutionEdge?: DatabaseFunctionGraphExecutionEdge | null;
 }
+export interface DeleteDatabaseFunctionGraphExecutionCancelRequestPayload {
+  clientMutationId?: string | null;
+  /** The `DatabaseFunctionGraphExecutionCancelRequest` that was deleted by this mutation. */
+  databaseFunctionGraphExecutionCancelRequest?: DatabaseFunctionGraphExecutionCancelRequest | null;
+  databaseFunctionGraphExecutionCancelRequestEdge?: DatabaseFunctionGraphExecutionCancelRequestEdge | null;
+}
 export interface DeleteDatabaseFunctionGraphExecutionNodeStatePayload {
   clientMutationId?: string | null;
   /** The `DatabaseFunctionGraphExecutionNodeState` that was deleted by this mutation. */
@@ -19954,6 +20142,12 @@ export interface DeleteFunctionGraphExecutionPayload {
   /** The `FunctionGraphExecution` that was deleted by this mutation. */
   functionGraphExecution?: FunctionGraphExecution | null;
   functionGraphExecutionEdge?: FunctionGraphExecutionEdge | null;
+}
+export interface DeleteFunctionGraphExecutionCancelRequestPayload {
+  clientMutationId?: string | null;
+  /** The `FunctionGraphExecutionCancelRequest` that was deleted by this mutation. */
+  functionGraphExecutionCancelRequest?: FunctionGraphExecutionCancelRequest | null;
+  functionGraphExecutionCancelRequestEdge?: FunctionGraphExecutionCancelRequestEdge | null;
 }
 export interface DeleteFunctionGraphExecutionNodeStatePayload {
   clientMutationId?: string | null;
@@ -20456,6 +20650,11 @@ export interface DeleteWebhookEventPayload {
 export interface FunctionExecutionLogsAppendPayload {
   clientMutationId?: string | null;
 }
+export interface FunctionInvocationsCreatePagePayload {
+  clientMutationId?: string | null;
+  functionInvocationEdge?: FunctionInvocationEdge | null;
+  result?: FunctionInvocation | null;
+}
 export interface FunctionInvocationsCreateSyncPayload {
   clientMutationId?: string | null;
   functionInvocationEdge?: FunctionInvocationEdge | null;
@@ -20506,6 +20705,11 @@ export interface InsertNodesAtPathsPayload {
 }
 export interface PlatformFunctionExecutionLogsAppendPayload {
   clientMutationId?: string | null;
+}
+export interface PlatformFunctionInvocationsCreatePagePayload {
+  clientMutationId?: string | null;
+  platformFunctionInvocationEdge?: PlatformFunctionInvocationEdge | null;
+  result?: PlatformFunctionInvocation | null;
 }
 export interface PlatformFunctionInvocationsCreateSyncPayload {
   clientMutationId?: string | null;
@@ -20630,6 +20834,12 @@ export interface UpdateDatabaseFunctionGraphExecutionPayload {
   databaseFunctionGraphExecution?: DatabaseFunctionGraphExecution | null;
   databaseFunctionGraphExecutionEdge?: DatabaseFunctionGraphExecutionEdge | null;
 }
+export interface UpdateDatabaseFunctionGraphExecutionCancelRequestPayload {
+  clientMutationId?: string | null;
+  /** The `DatabaseFunctionGraphExecutionCancelRequest` that was updated by this mutation. */
+  databaseFunctionGraphExecutionCancelRequest?: DatabaseFunctionGraphExecutionCancelRequest | null;
+  databaseFunctionGraphExecutionCancelRequestEdge?: DatabaseFunctionGraphExecutionCancelRequestEdge | null;
+}
 export interface UpdateDatabaseFunctionGraphExecutionNodeStatePayload {
   clientMutationId?: string | null;
   /** The `DatabaseFunctionGraphExecutionNodeState` that was updated by this mutation. */
@@ -20725,6 +20935,12 @@ export interface UpdateFunctionGraphExecutionPayload {
   /** The `FunctionGraphExecution` that was updated by this mutation. */
   functionGraphExecution?: FunctionGraphExecution | null;
   functionGraphExecutionEdge?: FunctionGraphExecutionEdge | null;
+}
+export interface UpdateFunctionGraphExecutionCancelRequestPayload {
+  clientMutationId?: string | null;
+  /** The `FunctionGraphExecutionCancelRequest` that was updated by this mutation. */
+  functionGraphExecutionCancelRequest?: FunctionGraphExecutionCancelRequest | null;
+  functionGraphExecutionCancelRequestEdge?: FunctionGraphExecutionCancelRequestEdge | null;
 }
 export interface UpdateFunctionGraphExecutionNodeStatePayload {
   clientMutationId?: string | null;
@@ -21290,6 +21506,12 @@ export interface ContentPresetEdge {
   /** The `ContentPreset` at the end of the edge. */
   node?: ContentPreset | null;
 }
+/** A `DatabaseFunctionGraphExecutionCancelRequest` edge in the connection. */
+export interface DatabaseFunctionGraphExecutionCancelRequestEdge {
+  cursor?: string | null;
+  /** The `DatabaseFunctionGraphExecutionCancelRequest` at the end of the edge. */
+  node?: DatabaseFunctionGraphExecutionCancelRequest | null;
+}
 /** A `DatabaseFunctionGraphExecutionNodeState` edge in the connection. */
 export interface DatabaseFunctionGraphExecutionNodeStateEdge {
   cursor?: string | null;
@@ -21391,6 +21613,12 @@ export interface FunctionGraphCommitEdge {
   cursor?: string | null;
   /** The `FunctionGraphCommit` at the end of the edge. */
   node?: FunctionGraphCommit | null;
+}
+/** A `FunctionGraphExecutionCancelRequest` edge in the connection. */
+export interface FunctionGraphExecutionCancelRequestEdge {
+  cursor?: string | null;
+  /** The `FunctionGraphExecutionCancelRequest` at the end of the edge. */
+  node?: FunctionGraphExecutionCancelRequest | null;
 }
 /** A `FunctionGraphExecutionNodeState` edge in the connection. */
 export interface FunctionGraphExecutionNodeStateEdge {

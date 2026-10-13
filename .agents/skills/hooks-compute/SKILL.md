@@ -1,13 +1,13 @@
 ---
 name: hooks-compute
-description: React Query hooks for the compute API — provides typed query and mutation hooks for 121 tables and 62 custom operations
+description: React Query hooks for the compute API — provides typed query and mutation hooks for 123 tables and 64 custom operations
 ---
 
 # hooks-compute
 
 <!-- @constructive-io/graphql-codegen - DO NOT EDIT -->
 
-React Query hooks for the compute API — provides typed query and mutation hooks for 121 tables and 62 custom operations
+React Query hooks for the compute API — provides typed query and mutation hooks for 123 tables and 64 custom operations
 
 ## Usage
 
@@ -43,6 +43,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [builder-binding](references/builder-binding.md)
 - [content-preset](references/content-preset.md)
 - [database-function-graph](references/database-function-graph.md)
+- [database-function-graph-execution-cancel-request](references/database-function-graph-execution-cancel-request.md)
 - [database-function-graph-execution](references/database-function-graph-execution.md)
 - [database-function-graph-execution-node-state](references/database-function-graph-execution-node-state.md)
 - [database-function-graph-execution-output](references/database-function-graph-execution-output.md)
@@ -60,6 +61,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [function-execution-log](references/function-execution-log.md)
 - [function-graph-commit](references/function-graph-commit.md)
 - [function-graph](references/function-graph.md)
+- [function-graph-execution-cancel-request](references/function-graph-execution-cancel-request.md)
 - [function-graph-execution](references/function-graph-execution.md)
 - [function-graph-execution-node-state](references/function-graph-execution-node-state.md)
 - [function-graph-execution-output](references/function-graph-execution-output.md)
@@ -186,6 +188,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [database-start-execution](references/database-start-execution.md)
 - [database-validate-function-graph](references/database-validate-function-graph.md)
 - [function-execution-logs-append](references/function-execution-logs-append.md)
+- [function-invocations-create-page](references/function-invocations-create-page.md)
 - [function-invocations-create-sync](references/function-invocations-create-sync.md)
 - [import-definitions](references/import-definitions.md)
 - [import-graph-json](references/import-graph-json.md)
@@ -199,6 +202,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [insert-node-at-path](references/insert-node-at-path.md)
 - [insert-nodes-at-paths](references/insert-nodes-at-paths.md)
 - [platform-function-execution-logs-append](references/platform-function-execution-logs-append.md)
+- [platform-function-invocations-create-page](references/platform-function-invocations-create-page.md)
 - [platform-function-invocations-create-sync](references/platform-function-invocations-create-sync.md)
 - [platform-infra-init-empty-repo](references/platform-infra-init-empty-repo.md)
 - [platform-infra-insert-node-at-path](references/platform-infra-insert-node-at-path.md)

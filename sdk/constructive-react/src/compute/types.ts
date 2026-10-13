@@ -94,6 +94,12 @@ export interface DatabaseFunctionGraph {
   updatedAt: string | null;
   validationErrors: unknown | null;
 }
+export interface DatabaseFunctionGraphExecutionCancelRequest {
+  actorId: string | null;
+  createdAt: string | null;
+  executionId: string | null;
+  id: string | null;
+}
 export interface DatabaseFunctionGraphExecution {
   actorId: string | null;
   completedAt: string | null;
@@ -351,6 +357,12 @@ export interface FunctionGraph {
   storeId: string | null;
   updatedAt: string | null;
   validationErrors: unknown | null;
+}
+export interface FunctionGraphExecutionCancelRequest {
+  actorId: string | null;
+  createdAt: string | null;
+  executionId: string | null;
+  id: string | null;
 }
 export interface FunctionGraphExecution {
   actorId: string | null;

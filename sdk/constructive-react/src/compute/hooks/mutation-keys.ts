@@ -64,6 +64,20 @@ export const databaseFunctionGraphMutationKeys = {
   /** Delete databaseFunctionGraph mutation key */ delete: (id: string | number) =>
     ['mutation', 'databasefunctiongraph', 'delete', id] as const,
 } as const;
+export const databaseFunctionGraphExecutionCancelRequestMutationKeys = {
+  /** All databaseFunctionGraphExecutionCancelRequest mutation keys */ all: [
+    'mutation',
+    'databasefunctiongraphexecutioncancelrequest',
+  ] as const,
+  /** Create databaseFunctionGraphExecutionCancelRequest mutation key */ create: () =>
+    ['mutation', 'databasefunctiongraphexecutioncancelrequest', 'create'] as const,
+  /** Update databaseFunctionGraphExecutionCancelRequest mutation key */ update: (
+    id: string | number
+  ) => ['mutation', 'databasefunctiongraphexecutioncancelrequest', 'update', id] as const,
+  /** Delete databaseFunctionGraphExecutionCancelRequest mutation key */ delete: (
+    id: string | number
+  ) => ['mutation', 'databasefunctiongraphexecutioncancelrequest', 'delete', id] as const,
+} as const;
 export const databaseFunctionGraphExecutionMutationKeys = {
   /** All databaseFunctionGraphExecution mutation keys */ all: [
     'mutation',
@@ -235,6 +249,18 @@ export const functionGraphMutationKeys = {
     ['mutation', 'functiongraph', 'update', id] as const,
   /** Delete functionGraph mutation key */ delete: (id: string | number) =>
     ['mutation', 'functiongraph', 'delete', id] as const,
+} as const;
+export const functionGraphExecutionCancelRequestMutationKeys = {
+  /** All functionGraphExecutionCancelRequest mutation keys */ all: [
+    'mutation',
+    'functiongraphexecutioncancelrequest',
+  ] as const,
+  /** Create functionGraphExecutionCancelRequest mutation key */ create: () =>
+    ['mutation', 'functiongraphexecutioncancelrequest', 'create'] as const,
+  /** Update functionGraphExecutionCancelRequest mutation key */ update: (id: string | number) =>
+    ['mutation', 'functiongraphexecutioncancelrequest', 'update', id] as const,
+  /** Delete functionGraphExecutionCancelRequest mutation key */ delete: (id: string | number) =>
+    ['mutation', 'functiongraphexecutioncancelrequest', 'delete', id] as const,
 } as const;
 export const functionGraphExecutionMutationKeys = {
   /** All functionGraphExecution mutation keys */ all: [
@@ -1385,6 +1411,12 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'functionExecutionLogsAppend', identifier] as const)
       : (['mutation', 'functionExecutionLogsAppend'] as const),
+  /** Mutation key for functionInvocationsCreatePage */ functionInvocationsCreatePage: (
+    identifier?: string
+  ) =>
+    identifier
+      ? (['mutation', 'functionInvocationsCreatePage', identifier] as const)
+      : (['mutation', 'functionInvocationsCreatePage'] as const),
   /** Mutation key for functionInvocationsCreateSync */ functionInvocationsCreateSync: (
     identifier?: string
   ) =>
@@ -1441,6 +1473,11 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'platformFunctionExecutionLogsAppend', identifier] as const)
       : (['mutation', 'platformFunctionExecutionLogsAppend'] as const),
+  /** Mutation key for platformFunctionInvocationsCreatePage */ platformFunctionInvocationsCreatePage:
+    (identifier?: string) =>
+      identifier
+        ? (['mutation', 'platformFunctionInvocationsCreatePage', identifier] as const)
+        : (['mutation', 'platformFunctionInvocationsCreatePage'] as const),
   /** Mutation key for platformFunctionInvocationsCreateSync */ platformFunctionInvocationsCreateSync:
     (identifier?: string) =>
       identifier
@@ -1583,6 +1620,8 @@ export const mutationKeys = {
   builderBinding: builderBindingMutationKeys,
   contentPreset: contentPresetMutationKeys,
   databaseFunctionGraph: databaseFunctionGraphMutationKeys,
+  databaseFunctionGraphExecutionCancelRequest:
+    databaseFunctionGraphExecutionCancelRequestMutationKeys,
   databaseFunctionGraphExecution: databaseFunctionGraphExecutionMutationKeys,
   databaseFunctionGraphExecutionNodeState: databaseFunctionGraphExecutionNodeStateMutationKeys,
   databaseFunctionGraphExecutionOutput: databaseFunctionGraphExecutionOutputMutationKeys,
@@ -1600,6 +1639,7 @@ export const mutationKeys = {
   functionExecutionLog: functionExecutionLogMutationKeys,
   functionGraphCommit: functionGraphCommitMutationKeys,
   functionGraph: functionGraphMutationKeys,
+  functionGraphExecutionCancelRequest: functionGraphExecutionCancelRequestMutationKeys,
   functionGraphExecution: functionGraphExecutionMutationKeys,
   functionGraphExecutionNodeState: functionGraphExecutionNodeStateMutationKeys,
   functionGraphExecutionOutput: functionGraphExecutionOutputMutationKeys,

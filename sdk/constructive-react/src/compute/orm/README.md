@@ -26,6 +26,7 @@ const db = createClient({
 | `builderBinding` | findMany, findOne, create, update, delete |
 | `contentPreset` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraph` | findMany, findOne, create, update, delete |
+| `databaseFunctionGraphExecutionCancelRequest` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraphExecution` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraphExecutionNodeState` | findMany, findOne, create, update, delete |
 | `databaseFunctionGraphExecutionOutput` | findMany, findOne, create, update, delete |
@@ -43,6 +44,7 @@ const db = createClient({
 | `functionExecutionLog` | findMany, findOne, create, update, delete |
 | `functionGraphCommit` | findMany, findOne, create, update, delete |
 | `functionGraph` | findMany, findOne, create, update, delete |
+| `functionGraphExecutionCancelRequest` | findMany, findOne, create, update, delete |
 | `functionGraphExecution` | findMany, findOne, create, update, delete |
 | `functionGraphExecutionNodeState` | findMany, findOne, create, update, delete |
 | `functionGraphExecutionOutput` | findMany, findOne, create, update, delete |
@@ -360,6 +362,38 @@ const updated = await db.databaseFunctionGraph.update({ where: { id: '<UUID>' },
 
 // Delete
 const deleted = await db.databaseFunctionGraph.delete({ where: { id: '<UUID>' } }).execute();
+```
+
+### `db.databaseFunctionGraphExecutionCancelRequest`
+
+CRUD operations for DatabaseFunctionGraphExecutionCancelRequest records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `actorId` | UUID | Yes |
+| `createdAt` | Datetime | No |
+| `executionId` | UUID | Yes |
+| `id` | UUID | No |
+
+**Operations:**
+
+```typescript
+// List all databaseFunctionGraphExecutionCancelRequest records
+const items = await db.databaseFunctionGraphExecutionCancelRequest.findMany({ select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Get one by id
+const item = await db.databaseFunctionGraphExecutionCancelRequest.findOne({ id: '<UUID>', select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Create
+const created = await db.databaseFunctionGraphExecutionCancelRequest.create({ data: { actorId: '<UUID>', executionId: '<UUID>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.databaseFunctionGraphExecutionCancelRequest.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.databaseFunctionGraphExecutionCancelRequest.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
 ### `db.databaseFunctionGraphExecution`
@@ -1060,6 +1094,38 @@ const updated = await db.functionGraph.update({ where: { id: '<UUID>' }, data: {
 
 // Delete
 const deleted = await db.functionGraph.delete({ where: { id: '<UUID>' } }).execute();
+```
+
+### `db.functionGraphExecutionCancelRequest`
+
+CRUD operations for FunctionGraphExecutionCancelRequest records.
+
+**Fields:**
+
+| Field | Type | Editable |
+|-------|------|----------|
+| `actorId` | UUID | Yes |
+| `createdAt` | Datetime | No |
+| `executionId` | UUID | Yes |
+| `id` | UUID | No |
+
+**Operations:**
+
+```typescript
+// List all functionGraphExecutionCancelRequest records
+const items = await db.functionGraphExecutionCancelRequest.findMany({ select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Get one by id
+const item = await db.functionGraphExecutionCancelRequest.findOne({ id: '<UUID>', select: { actorId: true, createdAt: true, executionId: true, id: true } }).execute();
+
+// Create
+const created = await db.functionGraphExecutionCancelRequest.create({ data: { actorId: '<UUID>', executionId: '<UUID>' }, select: { id: true } }).execute();
+
+// Update
+const updated = await db.functionGraphExecutionCancelRequest.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
+
+// Delete
+const deleted = await db.functionGraphExecutionCancelRequest.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
 ### `db.functionGraphExecution`
@@ -5747,6 +5813,21 @@ functionExecutionLogsAppend
 const result = await db.mutation.functionExecutionLogsAppend({ input: '<FunctionExecutionLogsAppendInput>' }).execute();
 ```
 
+### `db.mutation.functionInvocationsCreatePage`
+
+functionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | FunctionInvocationsCreatePageInput (required) |
+
+```typescript
+const result = await db.mutation.functionInvocationsCreatePage({ input: { entityId: '<UUID>', payload: '<JSON>', provenance: '<JSON>', routeBindingId: '<UUID>', taskIdentifier: '<String>' } }).execute();
+```
+
 ### `db.mutation.functionInvocationsCreateSync`
 
 functionInvocationsCreateSync
@@ -5940,6 +6021,21 @@ platformFunctionExecutionLogsAppend
 
 ```typescript
 const result = await db.mutation.platformFunctionExecutionLogsAppend({ input: '<PlatformFunctionExecutionLogsAppendInput>' }).execute();
+```
+
+### `db.mutation.platformFunctionInvocationsCreatePage`
+
+platformFunctionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | PlatformFunctionInvocationsCreatePageInput (required) |
+
+```typescript
+const result = await db.mutation.platformFunctionInvocationsCreatePage({ input: { entityId: '<UUID>', payload: '<JSON>', provenance: '<JSON>', routeBindingId: '<UUID>', taskIdentifier: '<String>' } }).execute();
 ```
 
 ### `db.mutation.platformFunctionInvocationsCreateSync`

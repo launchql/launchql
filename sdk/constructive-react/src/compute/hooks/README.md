@@ -57,6 +57,11 @@ function App() {
 | `useCreateDatabaseFunctionGraphMutation` | Mutation | Flow graph definitions — FBP graphs stored in the dedicated graph Merkle store |
 | `useUpdateDatabaseFunctionGraphMutation` | Mutation | Flow graph definitions — FBP graphs stored in the dedicated graph Merkle store |
 | `useDeleteDatabaseFunctionGraphMutation` | Mutation | Flow graph definitions — FBP graphs stored in the dedicated graph Merkle store |
+| `useDatabaseFunctionGraphExecutionCancelRequestsQuery` | Query | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useDatabaseFunctionGraphExecutionCancelRequestQuery` | Query | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useCreateDatabaseFunctionGraphExecutionCancelRequestMutation` | Mutation | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useUpdateDatabaseFunctionGraphExecutionCancelRequestMutation` | Mutation | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useDeleteDatabaseFunctionGraphExecutionCancelRequestMutation` | Mutation | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
 | `useDatabaseFunctionGraphExecutionsQuery` | Query | Ephemeral execution state for flow graph evaluation |
 | `useDatabaseFunctionGraphExecutionQuery` | Query | Ephemeral execution state for flow graph evaluation |
 | `useCreateDatabaseFunctionGraphExecutionMutation` | Mutation | Ephemeral execution state for flow graph evaluation |
@@ -139,6 +144,11 @@ function App() {
 | `useCreateFunctionGraphMutation` | Mutation | Flow graph definitions — FBP graphs stored in the dedicated graph Merkle store |
 | `useUpdateFunctionGraphMutation` | Mutation | Flow graph definitions — FBP graphs stored in the dedicated graph Merkle store |
 | `useDeleteFunctionGraphMutation` | Mutation | Flow graph definitions — FBP graphs stored in the dedicated graph Merkle store |
+| `useFunctionGraphExecutionCancelRequestsQuery` | Query | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useFunctionGraphExecutionCancelRequestQuery` | Query | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useCreateFunctionGraphExecutionCancelRequestMutation` | Mutation | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useUpdateFunctionGraphExecutionCancelRequestMutation` | Mutation | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
+| `useDeleteFunctionGraphExecutionCancelRequestMutation` | Mutation | Requests to stop a graph execution; each insert settles it cancelled and tears down the Jobs its nodes dispatched |
 | `useFunctionGraphExecutionsQuery` | Query | Ephemeral execution state for flow graph evaluation |
 | `useFunctionGraphExecutionQuery` | Query | Ephemeral execution state for flow graph evaluation |
 | `useCreateFunctionGraphExecutionMutation` | Mutation | Ephemeral execution state for flow graph evaluation |
@@ -622,6 +632,7 @@ function App() {
 | `useDatabaseStartExecutionMutation` | Mutation | databaseStartExecution |
 | `useDatabaseValidateFunctionGraphMutation` | Mutation | databaseValidateFunctionGraph |
 | `useFunctionExecutionLogsAppendMutation` | Mutation | functionExecutionLogsAppend |
+| `useFunctionInvocationsCreatePageMutation` | Mutation | functionInvocationsCreatePage |
 | `useFunctionInvocationsCreateSyncMutation` | Mutation | functionInvocationsCreateSync |
 | `useImportDefinitionsMutation` | Mutation | importDefinitions |
 | `useImportGraphJsonMutation` | Mutation | importGraphJson |
@@ -635,6 +646,7 @@ function App() {
 | `useInsertNodeAtPathMutation` | Mutation | insertNodeAtPath |
 | `useInsertNodesAtPathsMutation` | Mutation | insertNodesAtPaths |
 | `usePlatformFunctionExecutionLogsAppendMutation` | Mutation | platformFunctionExecutionLogsAppend |
+| `usePlatformFunctionInvocationsCreatePageMutation` | Mutation | platformFunctionInvocationsCreatePage |
 | `usePlatformFunctionInvocationsCreateSyncMutation` | Mutation | platformFunctionInvocationsCreateSync |
 | `usePlatformInfraInitEmptyRepoMutation` | Mutation | platformInfraInitEmptyRepo |
 | `usePlatformInfraInsertNodeAtPathMutation` | Mutation | platformInfraInsertNodeAtPath |
@@ -767,6 +779,27 @@ const { mutate: create } = useCreateDatabaseFunctionGraphMutation({
   selection: { fields: { id: true } },
 });
 create({ context: '<String>', createdBy: '<UUID>', databaseId: '<UUID>', definitionsCommitId: '<UUID>', description: '<String>', isValid: '<Boolean>', name: '<String>', storeId: '<UUID>', validationErrors: '<JSON>' });
+```
+
+### DatabaseFunctionGraphExecutionCancelRequest
+
+```typescript
+// List all databaseFunctionGraphExecutionCancelRequests
+const { data, isLoading } = useDatabaseFunctionGraphExecutionCancelRequestsQuery({
+  selection: { fields: { actorId: true, createdAt: true, executionId: true, id: true } },
+});
+
+// Get one databaseFunctionGraphExecutionCancelRequest
+const { data: item } = useDatabaseFunctionGraphExecutionCancelRequestQuery({
+  id: '<UUID>',
+  selection: { fields: { actorId: true, createdAt: true, executionId: true, id: true } },
+});
+
+// Create a databaseFunctionGraphExecutionCancelRequest
+const { mutate: create } = useCreateDatabaseFunctionGraphExecutionCancelRequestMutation({
+  selection: { fields: { id: true } },
+});
+create({ actorId: '<UUID>', executionId: '<UUID>' });
 ```
 
 ### DatabaseFunctionGraphExecution
@@ -1118,6 +1151,27 @@ const { mutate: create } = useCreateFunctionGraphMutation({
   selection: { fields: { id: true } },
 });
 create({ context: '<String>', createdBy: '<UUID>', definitionsCommitId: '<UUID>', description: '<String>', isValid: '<Boolean>', name: '<String>', scopeId: '<UUID>', storeId: '<UUID>', validationErrors: '<JSON>' });
+```
+
+### FunctionGraphExecutionCancelRequest
+
+```typescript
+// List all functionGraphExecutionCancelRequests
+const { data, isLoading } = useFunctionGraphExecutionCancelRequestsQuery({
+  selection: { fields: { actorId: true, createdAt: true, executionId: true, id: true } },
+});
+
+// Get one functionGraphExecutionCancelRequest
+const { data: item } = useFunctionGraphExecutionCancelRequestQuery({
+  id: '<UUID>',
+  selection: { fields: { actorId: true, createdAt: true, executionId: true, id: true } },
+});
+
+// Create a functionGraphExecutionCancelRequest
+const { mutate: create } = useCreateFunctionGraphExecutionCancelRequestMutation({
+  selection: { fields: { id: true } },
+});
+create({ actorId: '<UUID>', executionId: '<UUID>' });
 ```
 
 ### FunctionGraphExecution
@@ -3420,6 +3474,17 @@ functionExecutionLogsAppend
   |----------|------|
   | `input` | FunctionExecutionLogsAppendInput (required) |
 
+### `useFunctionInvocationsCreatePageMutation`
+
+functionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | FunctionInvocationsCreatePageInput (required) |
+
 ### `useFunctionInvocationsCreateSyncMutation`
 
 functionInvocationsCreateSync
@@ -3562,6 +3627,17 @@ platformFunctionExecutionLogsAppend
   | Argument | Type |
   |----------|------|
   | `input` | PlatformFunctionExecutionLogsAppendInput (required) |
+
+### `usePlatformFunctionInvocationsCreatePageMutation`
+
+platformFunctionInvocationsCreatePage
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | PlatformFunctionInvocationsCreatePageInput (required) |
 
 ### `usePlatformFunctionInvocationsCreateSyncMutation`
 
