@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.35.0](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-env@3.34.6...@constructive-io/graphql-env@3.35.0) (2026-10-13)
+
+### Bug Fixes
+
+- **graphql-server:** never mask errors; same formatting in every environment ([783dfac](https://github.com/constructive-io/constructive/commit/783dfacef5254db8975756ddc243a7f423b6f245))
+
+### Features
+
+- **storage:** storage coordinates come only from storage_module; STORAGE_* credentials are the only env ([44c4516](https://github.com/constructive-io/constructive/commit/44c4516f347e7021067914f1148ebd87cb2131fb))
+
 ## [3.34.6](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-env@3.34.5...@constructive-io/graphql-env@3.34.6) (2026-10-13)
 
 **Note:** Version bump only for package @constructive-io/graphql-env

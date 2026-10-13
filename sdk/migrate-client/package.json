@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/migrate-client",
-  "version": "1.19.8",
+  "version": "1.19.9",
   "author": "Constructive <developers@constructive.io>",
   "description": "Typed GraphQL ORM client for the Constructive Migrate API (db_migrate schema)",
   "main": "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/errors",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "Canonical Constructive error system: registry, codes, i18n messages, and cross-source (PostgreSQL/GraphQL/client) parsing. Zero runtime dependencies.",
   "main": "index.js",

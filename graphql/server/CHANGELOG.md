@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.29.0](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.9...@constructive-io/graphql-server@5.29.0) (2026-10-13)
+
+### Bug Fixes
+
+- **graphql-server:** formatError keeps input values out of request-error messages ([ffd28f4](https://github.com/constructive-io/constructive/commit/ffd28f4dfcde257a2bb76d94799c8b472eb694ba))
+- **graphql-server:** never mask errors; same formatting in every environment ([783dfac](https://github.com/constructive-io/constructive/commit/783dfacef5254db8975756ddc243a7f423b6f245))
+- **webauthn:** persist a verified registration through the verifier lane ([e8fdba8](https://github.com/constructive-io/constructive/commit/e8fdba80d076fc88287e1cb31f07c1a917d4bd24))
+
+### Features
+
+- **graphql-server:** WebAuthn passkey ceremony as GraphQL mutations ([46c4920](https://github.com/constructive-io/constructive/commit/46c492050a5c406f7ed85f303ccf3400260e2552))
+- **storage:** storage coordinates come only from storage_module; STORAGE_* credentials are the only env ([44c4516](https://github.com/constructive-io/constructive/commit/44c4516f347e7021067914f1148ebd87cb2131fb))
+
 ## [5.28.9](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.28.8...@constructive-io/graphql-server@5.28.9) (2026-10-13)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/express-context",
-  "version": "0.33.6",
+  "version": "0.33.7",
   "description": "Extractable Express middleware for Constructive tenant context — domain resolution, JWT auth, pgSettings, and withPgClient",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

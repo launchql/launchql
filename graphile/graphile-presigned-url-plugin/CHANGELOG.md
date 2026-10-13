@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.21.1...graphile-presigned-url-plugin@1.22.0) (2026-10-13)
+
+### Bug Fixes
+
+- **presigned-url:** refuse storage_module rows that name their own endpoint/provider/region for the platform credentials ([16d15f4](https://github.com/constructive-io/constructive/commit/16d15f480265de3bb54b052fea0b2d76200d10c0))
+- **presigned-url:** S3 client cache keys on credentials too; a missing platform row reports NOT_CONFIGURED, not OVERRIDE_REFUSED ([fa3f111](https://github.com/constructive-io/constructive/commit/fa3f111ff54652d2086b9d15c1f723be24b0cef2))
+
+### Features
+
+- **storage:** storage coordinates come only from storage_module; STORAGE_* credentials are the only env ([44c4516](https://github.com/constructive-io/constructive/commit/44c4516f347e7021067914f1148ebd87cb2131fb))
+
 ## [1.21.1](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.21.0...graphile-presigned-url-plugin@1.21.1) (2026-09-30)
 
 ### Bug Fixes

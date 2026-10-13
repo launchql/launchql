@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.45.0](https://github.com/constructive-io/constructive/compare/@constructive-io/s3-streamer@2.44.6...@constructive-io/s3-streamer@2.45.0) (2026-10-13)
+
+### Features
+
+- **storage:** storage coordinates come only from storage_module; STORAGE_* credentials are the only env ([44c4516](https://github.com/constructive-io/constructive/commit/44c4516f347e7021067914f1148ebd87cb2131fb))
+
 ## [2.44.6](https://github.com/constructive-io/constructive/compare/@constructive-io/s3-streamer@2.44.5...@constructive-io/s3-streamer@2.44.6) (2026-10-13)
 
 **Note:** Version bump only for package @constructive-io/s3-streamer

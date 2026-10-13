@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.24.0](https://github.com/constructive-io/constructive/compare/@constructive-io/errors@0.23.0...@constructive-io/errors@0.24.0) (2026-10-13)
+
+### Bug Fixes
+
+- **graphql-server:** never mask errors; same formatting in every environment ([783dfac](https://github.com/constructive-io/constructive/commit/783dfacef5254db8975756ddc243a7f423b6f245))
+
+### Features
+
+- **graphql-server:** WebAuthn passkey ceremony as GraphQL mutations ([46c4920](https://github.com/constructive-io/constructive/commit/46c492050a5c406f7ed85f303ccf3400260e2552))
+
 # [0.23.0](https://github.com/constructive-io/constructive/compare/@constructive-io/errors@0.22.0...@constructive-io/errors@0.23.0) (2026-10-13)
 
 ### Features
