@@ -224,9 +224,8 @@ const DELETE_APP_BUCKET = `
  * PostgreSQL RLS denials surface in three ways through PostGraphile:
  *   1. An explicit PG error — message contains "permission denied",
  *      "new row violates row-level security", or "No values were".
- *   2. A masked internal error — in production mode PostGraphile masks
- *      PG errors with code INTERNAL_SERVER_ERROR (the raw message is
- *      only logged server-side).
+ *   2. A structured code — `42501` reaches clients as FORBIDDEN (the raw
+ *      message is kept), unrecognized errors as INTERNAL_SERVER_ERROR.
  *   3. The mutation silently affects 0 rows and returns null or an
  *      object with all-null fields (RLS USING clause filtered the row).
  *
@@ -248,6 +247,7 @@ function expectRlsDenied(
         msg.includes('new row violates row-level security') ||
         msg.includes('insufficient_privilege') ||
         msg.includes('No values were') ||
+        code === 'FORBIDDEN' ||
         code === 'INTERNAL_SERVER_ERROR'
     ).toBe(true);
     return;
@@ -402,6 +402,7 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
 
         const payload = data.uploadAppFile;
         expect(payload.uploadUrl).toBeTruthy();
+        expect(new URL(payload.uploadUrl).host).toBe('127.0.0.1:9000');
         expect(payload.fileId).toBeTruthy();
         expect(payload.key).toBe(contentHash);
         expect(payload.deduplicated).toBe(false);

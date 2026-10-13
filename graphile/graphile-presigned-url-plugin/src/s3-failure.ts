@@ -6,9 +6,9 @@
  * per-address `errors` hold the `ECONNREFUSED`, and a hung socket arrives as a
  * bare wrapper around its `cause`. Anything that reports `err.message` verbatim
  * therefore hands the client a blank reason — which is how a server signing
- * against the wrong endpoint (a missing `CDN_ENDPOINT`, so the library default
- * `http://localhost:9000`, i.e. the pod's own loopback) presents as an upload
- * that fails with nothing to diagnose.
+ * against the wrong endpoint (a `storage_module.endpoint` naming a host the
+ * server cannot reach) presents as an upload that fails with nothing to
+ * diagnose.
  *
  * So a failure is described by walking to where the words actually are, and
  * re-thrown naming the coordinates it was talking to, with the original kept as

@@ -9,7 +9,7 @@ import { getOperationAST } from 'graphql';
 import { escapeIdentifier, type Pool } from 'pg';
 import { withPgClient } from 'pg-query-context';
 
-import { normalizeError } from '../middleware/mask-error';
+import { normalizeError } from '../middleware/format-error';
 
 const log = new Logger('error-events');
 
@@ -19,8 +19,8 @@ const getExpressRequest = (
 
 /**
  * The first structured, public-classified registry code among the errors.
- * Internal/unknown errors are bugs, not refusals: they are masked and logged
- * by `maskError` and never recorded as tenant events.
+ * Internal/unknown errors are bugs, not refusals: they are logged by
+ * `formatError` and never recorded as tenant events.
  */
 const refusalCode = (errors: readonly GraphQLError[] | undefined): string | undefined => {
   for (const error of errors ?? []) {

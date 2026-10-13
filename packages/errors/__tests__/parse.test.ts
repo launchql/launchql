@@ -46,7 +46,14 @@ describe('parse', () => {
     expect(result.context.constraint).toBe('users_email_key');
   });
 
-  it('classifies unknown codes as internal (masked)', () => {
+  it('maps an insufficient-privilege SQLSTATE to FORBIDDEN', () => {
+    const result = parse({ message: 'permission denied for table agent_thread', code: '42501', table: 'agent_thread' });
+    expect(result.code).toBe('FORBIDDEN');
+    expect(result.class).toBe('public');
+    expect(result.context.table).toBe('agent_thread');
+  });
+
+  it('classifies unknown codes as internal', () => {
     const result = parse({ message: 'DATA_INVARIANT_BROKEN', code: 'P0001' });
     expect(result.code).toBe('DATA_INVARIANT_BROKEN');
     expect(result.known).toBe(false);

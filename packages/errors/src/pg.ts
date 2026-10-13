@@ -1,15 +1,18 @@
 import type { PgErrorFields } from './types';
 
 /**
- * PostgreSQL SQLSTATE codes for the native constraint violations we surface as
- * public Constructive codes.
+ * PostgreSQL SQLSTATE codes for the native errors we surface as public
+ * Constructive codes: constraint violations, and `42501` (a missing grant or an
+ * RLS `WITH CHECK` refusal). Postgres cannot tell an anonymous caller from a
+ * signed-in one at that point, so `42501` is `FORBIDDEN`.
  */
 export const SQLSTATE_TO_CODE: Record<string, string> = {
   23505: 'UNIQUE_VIOLATION',
   23503: 'FOREIGN_KEY_VIOLATION',
   23502: 'NOT_NULL_VIOLATION',
   23514: 'CHECK_VIOLATION',
-  '23P01': 'EXCLUSION_VIOLATION'
+  '23P01': 'EXCLUSION_VIOLATION',
+  42501: 'FORBIDDEN'
 };
 
 /** SQLSTATE for a user-raised `RAISE EXCEPTION` without an explicit ERRCODE. */

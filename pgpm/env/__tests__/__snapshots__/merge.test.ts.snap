@@ -2,15 +2,6 @@
 
 exports[`getEnvOptions merges defaults, config, env, and overrides 1`] = `
 {
-  "cdn": {
-    "awsAccessKey": "constructive",
-    "awsRegion": "us-east-1",
-    "awsSecretKey": "constructive-dev-secret",
-    "bucketName": "test-bucket",
-    "endpoint": "http://localhost:9000",
-    "provider": "minio",
-    "publicUrlPrefix": "http://localhost:9000",
-  },
   "db": {
     "connections": {
       "admin": {
@@ -74,5 +65,6 @@ exports[`getEnvOptions merges defaults, config, env, and overrides 1`] = `
     "port": 587,
     "secure": false,
   },
+  "storage": {},
 }
 `;

@@ -8,6 +8,11 @@
  * without a server or S3.
  */
 
+const mockS3Send = jest.fn();
+jest.mock('@constructive-io/s3-utils', () => ({
+  createS3Client: jest.fn(() => ({ send: mockS3Send })),
+}));
+
 import { clearFileRefFieldCache } from '../src/file-ref-registry';
 import { clearBucketCache, clearStorageModuleCache } from '../src/storage-module-cache';
 import type { BucketConfig, PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from '../src/types';
@@ -65,9 +70,11 @@ function storageModuleRow(overrides: Record<string, unknown> = {}): Record<strin
     files_schema: 'storage_public',
     files_table: 'app_files',
     private_schema: 'storage_private',
-    endpoint: null,
+    endpoint: 'http://localhost:9000',
     public_url_prefix: 'https://cdn.example.com',
     provider: 'minio',
+    region: 'us-east-1',
+    connection_overrides: [],
     allowed_origins: null,
     upload_url_expiry_seconds: null,
     download_url_expiry_seconds: null,
@@ -111,14 +118,7 @@ const NO_REGISTRY_ROW: QueryHandler = {
 };
 
 function options(): PresignedUrlPluginOptions {
-  return {
-    s3: {
-      client: { send: jest.fn() } as any,
-      bucket: 'connection-default',
-      region: 'us-east-1',
-      publicUrlPrefix: 'https://cdn.example.com',
-    },
-  };
+  return { credentials: { accessKeyId: 'test', secretAccessKey: 'test' } };
 }
 
 function storageConfig(): StorageModuleConfig {
@@ -201,7 +201,8 @@ describe('resolveManagedUploadTarget', () => {
     expect(target.binding).toBeNull();
     expect(target.physicalName).toBe('myapp-default-public-db');
     expect(target.s3.bucket).toBe('myapp-default-public-db');
-    expect(target.s3.bucket).not.toBe('connection-default');
+    expect(target.s3.endpoint).toBe('http://localhost:9000');
+    expect(target.s3.region).toBe('us-east-1');
 
     const resolveCall = db.queries.find((q) => /resolve_default_bucket/.test(q.text));
     // scope, entity, public_access, and no explicit key: the reserved default tag.
@@ -267,8 +268,7 @@ describe('resolveManagedUploadTarget', () => {
 
   it('rejects an unreconciled bucket without calling S3 or provisioning', async () => {
     const { resolveManagedUploadTarget } = await import('../src/managed-upload');
-    const send = jest.fn();
-    const baseS3 = options().s3 as S3Config;
+    mockS3Send.mockClear();
     const db = fakeDb([
       SET_CONFIG,
       NO_REGISTRY_ROW,
@@ -278,10 +278,7 @@ describe('resolveManagedUploadTarget', () => {
     ]);
 
     await expect(resolveManagedUploadTarget({
-      options: {
-        ...options(),
-        s3: { ...baseS3, client: { send } as any },
-      },
+      options: options(),
       withPgClient: db.withPgClient,
       pgSettings: null,
       databaseId: DATABASE_ID,
@@ -289,7 +286,7 @@ describe('resolveManagedUploadTarget', () => {
       defaultPublicAccess: true,
     })).rejects.toThrow('STORAGE_BUCKET_NOT_RECONCILED');
 
-    expect(send).not.toHaveBeenCalled();
+    expect(mockS3Send).not.toHaveBeenCalled();
     expect(db.queries.some((q) => /UPDATE/.test(q.text))).toBe(false);
   });
 

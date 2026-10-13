@@ -9,26 +9,18 @@
  * It used to be a second storage model: stream to `BUCKET_NAME` under a random
  * key, hand back a URL, record nothing. Objects written that way belonged to no
  * database, could not be deduplicated, listed, or access-controlled, and storage
- * GC could not see that a document still pointed at them. There is no
- * environment bucket in this path any more; `cdn.*` supplies S3 credentials and
- * an endpoint only.
+ * GC could not see that a document still pointed at them. Nothing in this path
+ * comes from the environment but the object-store credentials: the bucket and
+ * its connection (endpoint/provider/region) are the tenant's storage module.
  *
  * Compatibility: `image`/`upload` columns still receive `url` alongside the new
  * `id`/`key`/`bucket_id`/`size` fields, so existing readers of `photo.url` keep
  * working while they migrate to `id` + the files row's late-bound `downloadUrl`.
  *
- * ENV VARS (S3 connection only):
- *   BUCKET_PROVIDER  - 'minio' | 's3' (default: 'minio')
- *   AWS_REGION       - AWS region (default: 'us-east-1')
- *   Defaults come from `pgpmDefaults.cdn` (dev-only values; set these in production).
- *   AWS_ACCESS_KEY   - access key
- *   AWS_SECRET_KEY   - secret key
- *   CDN_ENDPOINT     - S3-compatible endpoint
+ * ENV VARS: STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY (required).
  */
 
-import { getEnvOptions } from '@constructive-io/graphql-env';
 import Streamer from '@constructive-io/s3-streamer';
-import { Logger } from '@pgpmjs/logger';
 import { createHash, randomUUID } from 'crypto';
 import {
   finalizeStagedUpload,
@@ -45,56 +37,16 @@ import type {
 import { checkTypeAgreement } from 'mime-bytes';
 import { Transform } from 'stream';
 
-import { getPresignedUrlS3Config } from './presigned-url-resolver';
+import { getStorageCredentials } from './presigned-url-resolver';
 
-const log = new Logger('upload-resolver');
 const DEFAULT_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/svg+xml'];
 
-let streamer: Streamer | null = null;
-
-/**
- * The S3 streamer, built from the CDN connection settings.
- *
- * Deliberately constructed with no `defaultBucket`: every upload names the
- * bucket it resolved, and a default here would be an environment-owned bucket
- * standing in for a tenant's.
- */
-function getStreamer(): Streamer {
-  if (streamer) return streamer;
-
-  const { cdn } = getEnvOptions();
-
-  if (process.env.NODE_ENV === 'production' && (!cdn.awsAccessKey || !cdn.awsSecretKey)) {
-    log.warn('[upload-resolver] WARNING: CDN credentials not configured in production.');
-  }
-
-  const provider = cdn.provider;
-  log.info(`[upload-resolver] Initializing: provider=${provider}`);
-
-  streamer = new Streamer({
-    provider,
-    awsRegion: cdn.awsRegion,
-    awsAccessKey: cdn.awsAccessKey,
-    awsSecretKey: cdn.awsSecretKey,
-    endpoint: cdn.endpoint,
-  });
-
-  return streamer;
-}
-
-/**
- * The upload lane's view of the presigned plugin's options: the same S3
- * connection the presigned lane uses, so both transports resolve identical
- * coordinates for a bucket.
- *
- * Built on first upload rather than at import time.
- */
 let managedOptions: PresignedUrlPluginOptions | null = null;
 
 function getManagedOptions(): PresignedUrlPluginOptions {
   if (!managedOptions) {
     managedOptions = {
-      s3: getPresignedUrlS3Config,
+      credentials: getStorageCredentials,
     };
   }
   return managedOptions;
@@ -213,7 +165,7 @@ async function uploadResolver(
     );
   }
 
-  const s3 = getStreamer();
+  const s3 = new Streamer({ client: target.s3.client, defaultBucket: target.physicalName });
   const { filename } = upload;
 
   // Validate before persisting: content type comes from the leading bytes, not

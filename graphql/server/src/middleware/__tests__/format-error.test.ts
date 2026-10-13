@@ -11,7 +11,7 @@ import {
   validate,
 } from 'graphql';
 
-import { maskError } from '../mask-error';
+import { formatError } from '../format-error';
 
 const ResetPasswordInput = new GraphQLInputObjectType({
   name: 'ResetPasswordInput',
@@ -61,21 +61,11 @@ const run = async (query: string, variables?: Record<string, unknown>) => {
 
   expect(raised.length).toBeGreaterThan(0);
   return raised.map(
-    (error) => maskError(error) as { message: string; extensions?: Record<string, unknown> }
+    (error) => formatError(error) as { message: string; extensions?: Record<string, unknown> }
   );
 };
 
-describe('maskError', () => {
-  const nodeEnv = process.env.NODE_ENV;
-
-  beforeAll(() => {
-    process.env.NODE_ENV = 'production';
-  });
-
-  afterAll(() => {
-    process.env.NODE_ENV = nodeEnv;
-  });
-
+describe('formatError', () => {
   it('surfaces an input field the schema does not define', async () => {
     const [result] = await run('mutation($i: ResetPasswordInput!){ resetPassword(input: $i) }', {
       i: { userId: 'role-1', roleId: 'role-1', newPassword: 'secret' },
@@ -128,17 +118,48 @@ describe('maskError', () => {
       extensions: { code: 'PERSISTED_QUERY_NOT_FOUND' },
     });
 
-    const result = maskError(error) as { message: string; extensions?: Record<string, unknown> };
+    const result = formatError(error) as { message: string; extensions?: Record<string, unknown> };
 
     expect(result.message).toBe('PersistedQueryNotFound');
     expect(result.extensions?.code).toBe('PERSISTED_QUERY_NOT_FOUND');
   });
 
-  it('masks an unrecognized error raised while resolving a field', async () => {
+  it('surfaces an unrecognized resolver error with its real message', async () => {
     const [result] = await run('mutation{ brokenField }');
 
-    expect(result.message).toMatch(/^An unexpected error occurred\. Reference: [0-9a-f]{16}$/);
+    expect(result.message).toBe('relation "internal_secrets" does not exist');
     expect(result.extensions?.code).toBe('INTERNAL_SERVER_ERROR');
-    expect(result.extensions?.errorId).toEqual(expect.any(String));
+    expect(result.extensions?.errorId).toMatch(/^[0-9a-f]{16}$/);
   });
+
+  it('surfaces a permission refusal from postgres as FORBIDDEN', () => {
+    const pgError = Object.assign(new Error('permission denied for table agent_thread'), {
+      code: '42501',
+    });
+    const error = new GraphQLError(pgError.message, { path: ['agentThreads'], originalError: pgError });
+
+    const result = formatError(error) as { message: string; extensions?: Record<string, unknown> };
+
+    expect(result.message).toBe('permission denied for table agent_thread');
+    expect(result.extensions?.code).toBe('FORBIDDEN');
+    expect(result.extensions?.class).toBe('public');
+    expect(result.extensions?.errorId).toBeUndefined();
+  });
+
+  it.each(['production', 'development', 'test', undefined])(
+    'formats errors identically when NODE_ENV is %s',
+    async (env) => {
+      const previous = process.env.NODE_ENV;
+      if (env === undefined) delete process.env.NODE_ENV;
+      else process.env.NODE_ENV = env;
+      try {
+        const [result] = await run('mutation{ brokenField }');
+        expect(result.message).toBe('relation "internal_secrets" does not exist');
+        expect(result.extensions?.code).toBe('INTERNAL_SERVER_ERROR');
+      } finally {
+        if (previous === undefined) delete process.env.NODE_ENV;
+        else process.env.NODE_ENV = previous;
+      }
+    }
+  );
 });

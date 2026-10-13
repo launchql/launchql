@@ -34,9 +34,6 @@ const ALL_STORAGE_MODULES_QUERY = `
     sm.entity_table_id,
     bs.schema_name AS buckets_schema,
     bt.name AS buckets_table,
-    sm.endpoint,
-    sm.public_url_prefix,
-    sm.provider,
     sm.allowed_origins,
     es.schema_name AS entity_schema,
     et.name AS entity_table
@@ -57,9 +54,6 @@ interface StorageModuleRow {
   entity_table_id: string | null;
   buckets_schema: string;
   buckets_table: string;
-  endpoint: string | null;
-  public_url_prefix: string | null;
-  provider: string | null;
   allowed_origins: string[] | null;
   entity_schema?: string | null;
   entity_table?: string | null;

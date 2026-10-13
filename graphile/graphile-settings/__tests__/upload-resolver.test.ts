@@ -32,9 +32,10 @@ function storageModuleRow(): Record<string, unknown> {
     files_schema: 'storage_public',
     files_table: 'app_files',
     private_schema: 'storage_private',
-    endpoint: null,
+    endpoint: 'http://localhost:9000',
     public_url_prefix: 'https://cdn.example.com',
     provider: 'minio',
+    region: 'us-east-1',
     allowed_origins: null,
     upload_url_expiry_seconds: null,
     download_url_expiry_seconds: null,
@@ -139,15 +140,7 @@ async function loadUploadResolverModule(opts: { detectedContentType: string }) {
 
   jest.doMock('@constructive-io/graphql-env', () => ({
     getEnvOptions: jest.fn(() => ({
-      cdn: {
-        provider: 'minio',
-        bucketName: 'myapp',
-        awsRegion: 'us-east-1',
-        awsAccessKey: 'test',
-        awsSecretKey: 'test',
-        endpoint: 'http://localhost:9000',
-        publicUrlPrefix: 'https://cdn.example.com',
-      },
+      storage: { accessKeyId: 'test', secretAccessKey: 'test' },
     })),
   }));
 

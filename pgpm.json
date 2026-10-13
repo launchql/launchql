@@ -7,11 +7,11 @@
     "@constructive-db/catalog": "6.3.0",
     "@constructive-db/routing": "8.4.0",
     "@constructive-db/routing-platform": "7.2.0",
-    "@pgpm/database-jobs": "0.46.0",
-    "@pgpm/function-resolution": "0.46.0",
-    "@pgpm/jwt-claims": "0.46.0",
-    "@pgpm/metaschema-modules": "0.46.0",
-    "@pgpm/metaschema-schema": "0.46.0",
+    "@pgpm/database-jobs": "0.47.1",
+    "@pgpm/function-resolution": "0.47.2",
+    "@pgpm/jwt-claims": "0.47.1",
+    "@pgpm/metaschema-modules": "0.47.2",
+    "@pgpm/metaschema-schema": "0.47.1",
     "@pgpm/stamps": "0.46.0",
     "@pgpm/uuid": "0.46.0"
   }

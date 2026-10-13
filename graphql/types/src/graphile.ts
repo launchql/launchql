@@ -65,6 +65,11 @@ export interface GraphileOptions {
   preset?: Partial<GraphileConfig.Preset>;
   /** Explicit per-schema Grafast cache bounds used for tenant-density control. */
   grafastCache?: GrafastCacheLimits;
+  /**
+   * Allow clients to request Grafast plan/SQL output with the
+   * `x-graphql-explain` header. Off unless set.
+   */
+  explain?: boolean;
 }
 
 /**

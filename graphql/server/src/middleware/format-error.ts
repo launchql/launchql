@@ -1,46 +1,24 @@
 import crypto from 'node:crypto';
 
-import { classify, type ErrorContext, parse } from '@constructive-io/errors';
-import { getNodeEnv } from '@pgpmjs/env';
+import { type ErrorContext, parse } from '@constructive-io/errors';
 import { Logger } from '@pgpmjs/logger';
 import { type GraphQLError, type GraphQLFormattedError } from 'graphql';
 
-const maskErrorLog = new Logger('graphile:maskError');
-
-/**
- * GraphQL framework protocol codes. These originate in the GraphQL/grafast
- * transport layer (not in constructive-db), so they are not Constructive domain
- * codes in the `@constructive-io/errors` registry. They are always safe to
- * surface — they carry no sensitive detail. Everything else (auth, account,
- * resource, constraint, and every constructive-db code) is classified by the
- * registry, which is the single source of truth for public vs. internal.
- */
-const GRAPHQL_PROTOCOL_CODES = new Set([
-  'GRAPHQL_VALIDATION_FAILED',
-  'GRAPHQL_PARSE_FAILED',
-  'PERSISTED_QUERY_NOT_FOUND',
-  'PERSISTED_QUERY_NOT_SUPPORTED'
-]);
-
-/** A code is safe to surface when the registry classifies it public, or it is a
- * GraphQL framework protocol code. */
-const isPublicCode = (code: string | null | undefined): boolean =>
-  Boolean(code) && (classify(code) === 'public' || GRAPHQL_PROTOCOL_CODES.has(code as string));
+const formatErrorLog = new Logger('graphile:formatError');
 
 /**
  * An error the GraphQL layer raised about the *request*, before any resolver
  * ran: an unknown input field, a value of the wrong type, a missing required
  * variable. graphql-js reports variable coercion without an `extensions.code`
  * (unlike parse/validation, which carry `GRAPHQL_PARSE_FAILED` /
- * `GRAPHQL_VALIDATION_FAILED`), so code-based classification alone reads it as
- * unknown and masks it — telling a client its own malformed query was a server
- * failure, with a reference id pointing at nothing.
+ * `GRAPHQL_VALIDATION_FAILED`), so code-based classification alone would read
+ * it as a server failure instead of the client's own malformed query.
  *
  * A request error is answered before a field is resolved, so it carries no
  * response `path` — every execution error has one. Coercion wraps the inner
  * complaint about the value, so `originalError` may be set, but only ever to
  * another GraphQL-layer error: anything a resolver or the database threw arrives
- * as a foreign error (a pg error, an `Error`) and is masked as before. The wrap
+ * as a foreign error (a pg error, an `Error`). The wrap
  * is recognized by name rather than by `instanceof`, because the error is raised
  * by whichever copy of graphql-js grafast resolved, not by this package's.
  */
@@ -74,8 +52,11 @@ const withoutInputValues = (error: GraphQLError): string => {
   return `${variable} got invalid value${at}; ${complaint}`;
 };
 
-/** The code a surfaced request error carries when graphql-js supplied none. */
+/** The code a request error carries when graphql-js supplied none. */
 const BAD_USER_INPUT = 'BAD_USER_INPUT';
+
+/** The code any other error carries when nothing supplied one. */
+const INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR';
 
 /**
  * Normalize any GraphQL/database error into a canonical Constructive shape.
@@ -95,22 +76,22 @@ export const normalizeError = (
 };
 
 /**
- * Production-aware error handling backed by `@constructive-io/errors`.
+ * Format every GraphQL error the same way, in every environment. Nothing is
+ * masked: the client always receives the real message.
  *
- * 1. Enrich `extensions.code`/`class`/`context` from the parsed error so clients
- *    always receive a machine-readable code (fixing the gap where database
- *    errors reached clients as a bare message with empty `extensions`).
- * 2. Surface public (registered/allowlisted) errors as-is.
- * 3. In development, pass everything through (enriched) for debugging.
- * 4. In production, mask internal/unknown errors behind a reference ID and log
- *    the original.
+ * 1. Lift the structured code onto `extensions.code`/`class`/`context` from the
+ *    parsed error, so database errors reach clients with a machine-readable
+ *    code instead of a bare message with empty `extensions`.
+ * 2. A request error graphql-js raised without a code is `BAD_USER_INPUT`.
+ * 3. Any other error without a code is `INTERNAL_SERVER_ERROR`.
+ * 4. Every internal error (unknown, or registered as internal) carries an
+ *    `errorId` and is logged under it, so a report can be matched to the log.
  */
-export const maskError = (error: GraphQLError): GraphQLError | GraphQLFormattedError => {
+export const formatError = (error: GraphQLError): GraphQLFormattedError => {
   const { code, context, class: errorClass } = normalizeError(error);
 
-  // Lift the structured code onto extensions for every recognized error so
-  // clients always receive a machine-readable code (`extensions` is read-only
-  // on GraphQLError, so we build a formatted error rather than mutating it).
+  // `extensions` is read-only on GraphQLError, so build a formatted error
+  // rather than mutating it.
   const extensions: Record<string, unknown> = { ...error.extensions };
   if (code) {
     extensions.code = code;
@@ -120,36 +101,26 @@ export const maskError = (error: GraphQLError): GraphQLError | GraphQLFormattedE
     }
   }
 
-  const effectiveCode = code ?? (error.extensions?.code as string | undefined);
-  if (!effectiveCode && isRequestError(error)) {
-    extensions.code = BAD_USER_INPUT;
-    return {
-      message: withoutInputValues(error),
-      ...(error.locations ? { locations: error.locations } : {}),
-      extensions,
-    } as GraphQLFormattedError;
+  let internal = Boolean(code) && errorClass === 'internal';
+  let message = error.message;
+  if (!code && !error.extensions?.code) {
+    const requestError = isRequestError(error);
+    if (requestError) message = withoutInputValues(error);
+    extensions.code = requestError ? BAD_USER_INPUT : INTERNAL_SERVER_ERROR;
+    internal = !requestError;
   }
 
-  if (isPublicCode(effectiveCode) || getNodeEnv() === 'development') {
-    // Note: grafserv strips originalError and internal extensions before
-    // serializing to the client, so returning the enriched error is safe.
-    return {
-      message: error.message,
-      ...(error.locations ? { locations: error.locations } : {}),
-      ...(error.path ? { path: error.path } : {}),
-      extensions,
-    } as GraphQLFormattedError;
+  if (internal) {
+    const errorId = crypto.randomBytes(8).toString('hex');
+    extensions.errorId = errorId;
+    formatErrorLog.error(`[graphql-error:${errorId}]`, error);
   }
 
-  // Mask internal/unknown errors with a reference ID.
-  const errorId = crypto.randomBytes(8).toString('hex');
-  maskErrorLog.error(`[masked-error:${errorId}]`, error);
-
+  // grafserv strips originalError before serializing to the client.
   return {
-    message: `An unexpected error occurred. Reference: ${errorId}`,
-    extensions: {
-      code: 'INTERNAL_SERVER_ERROR',
-      errorId
-    }
-  } as GraphQLFormattedError;
+    message,
+    ...(error.locations ? { locations: error.locations } : {}),
+    ...(error.path ? { path: error.path } : {}),
+    extensions
+  };
 };

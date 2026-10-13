@@ -14,6 +14,7 @@ export const getGraphQLEnvVars = (env: NodeJS.ProcessEnv = process.env): Partial
   const scopedIntrospection = getScopedIntrospectionEnv(env);
   const {
     GRAPHILE_SCHEMA,
+    GRAPHILE_EXPLAIN,
     GRAPHILE_QUERY_CACHE_MAX_LENGTH,
     GRAPHILE_OPERATIONS_CACHE_MAX_LENGTH,
     GRAPHILE_OPERATION_PLANS_CACHE_MAX_LENGTH,
@@ -88,6 +89,7 @@ export const getGraphQLEnvVars = (env: NodeJS.ProcessEnv = process.env): Partial
           )
         })
       }),
+      ...(GRAPHILE_EXPLAIN && { explain: parseEnvBoolean(GRAPHILE_EXPLAIN) }),
       ...(GRAPHILE_SCHEMA && {
         schema: GRAPHILE_SCHEMA.includes(',')
           ? GRAPHILE_SCHEMA.split(',').map(s => s.trim())

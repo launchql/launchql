@@ -355,12 +355,9 @@ jobs:
       PGPORT: 5432
       PGUSER: postgres
       PGPASSWORD: password
-      CDN_ENDPOINT: http://localhost:9000
-      AWS_ACCESS_KEY: constructive
-      AWS_SECRET_KEY: constructive-dev-secret
-      AWS_REGION: us-east-1
-      # uploads/s3-streamer reads BUCKET_NAME; harmless for the others.
-      BUCKET_NAME: test-bucket
+      # Object-store credentials only; endpoint/provider/region are storage_module rows.
+      STORAGE_ACCESS_KEY_ID: constructive
+      STORAGE_SECRET_ACCESS_KEY: constructive-dev-secret
       # Pin an explicit heap cap: on smaller runners Node's memory-derived
       # default can land near ~2GB and OOM Jest.
       NODE_OPTIONS: '--max-old-space-size=4096'

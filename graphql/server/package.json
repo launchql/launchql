@@ -30,8 +30,7 @@
     "debug:heap:capture": "node scripts/capture-heap-snapshot.mjs",
     "lint": "eslint . --fix",
     "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
-    "bucket:create": "ts-node src/scripts/create-bucket.ts"
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "server",
@@ -56,6 +55,8 @@
     "@pgpmjs/logger": "workspace:^",
     "@pgpmjs/server-utils": "workspace:^",
     "@pgpmjs/types": "workspace:^",
+    "@pgsql/quotes": "^18.2.4",
+    "@simplewebauthn/server": "13.3.2",
     "cors": "^2.8.6",
     "deepmerge": "^4.3.1",
     "express": "^5.2.1",
@@ -67,6 +68,7 @@
     "graphile-cache": "workspace:^",
     "graphile-config": "1.1.0",
     "graphile-function-bindings": "workspace:^",
+    "graphile-plugin-utils": "workspace:^",
     "graphile-scoped-introspection": "workspace:^",
     "graphile-settings": "workspace:^",
     "graphile-utils": "5.0.3",

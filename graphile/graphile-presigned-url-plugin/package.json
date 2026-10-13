@@ -1,7 +1,7 @@
 {
   "name": "graphile-presigned-url-plugin",
   "version": "1.21.1",
-  "description": "Presigned URL upload plugin for PostGraphile v5 — requestUploadUrl mutation and downloadUrl computed field",
+  "description": "Presigned URL upload plugin for PostGraphile v5 \u2014 requestUploadUrl mutation and downloadUrl computed field",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",
   "license": "MIT",
@@ -42,6 +42,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1052.0",
     "@aws-sdk/s3-request-presigner": "^3.1052.0",
+    "@constructive-io/s3-utils": "workspace:^",
     "@pgpmjs/logger": "workspace:^",
     "@pgsql/quotes": "^18.2.4",
     "graphile-plugin-utils": "workspace:^",
@@ -59,7 +60,6 @@
     "postgraphile": "^5.1.3"
   },
   "devDependencies": {
-    "@constructive-io/s3-utils": "workspace:^",
     "@types/node": "^22.19.11",
     "makage": "^0.8.0"
   }

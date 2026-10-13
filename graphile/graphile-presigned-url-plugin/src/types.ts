@@ -48,14 +48,24 @@ export interface StorageModuleConfig {
   /** Qualified entity table name for ownerId lookups (NULL for app-level) */
   entityQualifiedName: string | null;
 
-  // --- S3 connection config (NULL in DB = use global env/plugin defaults) ---
+  // --- Object-store connection: the only source of storage coordinates. ---
+  // Effective values: a NULL column on this plane inherits the platform
+  // database's `platform` plane row, resolved in the same cached query.
 
-  /** S3-compatible API endpoint URL (per-database override) */
+  /** S3-compatible API endpoint URL presigned URLs are signed for (NULL = AWS S3) */
   endpoint: string | null;
-  /** Public URL prefix for generating download URLs (per-database override) */
+  /** Public URL prefix for generating download URLs */
   publicUrlPrefix: string | null;
-  /** Storage provider type: 'minio', 's3', 'gcs', etc. (per-database override) */
+  /** Storage provider type: 'minio', 'rustfs', 's3', 'gcs', etc. */
   provider: string | null;
+  /** Object-store region */
+  region: string | null;
+  /**
+   * Coordinates (endpoint/provider/region) this module's row sets differently
+   * from the platform plane. Signing refuses them: the credentials only
+   * belong to the platform object store.
+   */
+  connectionOverrides: string[];
   /** CORS allowed origins (per-database override, NULL = use global fallback) */
   allowedOrigins: string[] | null;
 
@@ -177,7 +187,7 @@ export interface FileProjection {
 }
 
 /**
- * S3 configuration for the presigned URL plugin.
+ * S3 coordinates for one physical bucket, built from a resolved storage module.
  */
 export interface S3Config {
   /** S3 client instance */
@@ -195,18 +205,21 @@ export interface S3Config {
 }
 
 /**
- * S3 configuration or a lazy getter that returns it on first use.
- * When a function is provided, it will only be called when the first
- * mutation or resolver actually needs the S3 client — avoiding eager
- * env-var reads and S3Client creation at module import time.
+ * Object-store credentials. The only storage input that does not come from a
+ * `storage_module` row (`STORAGE_ACCESS_KEY_ID` / `STORAGE_SECRET_ACCESS_KEY`).
  */
-export type S3ConfigOrGetter = S3Config | (() => S3Config);
+export interface StorageCredentials {
+  accessKeyId: string;
+  secretAccessKey: string;
+}
 
 /**
  * Plugin options for the presigned URL plugin.
+ *
+ * Only credentials: endpoint, provider, region and public URL prefix are read
+ * from the resolved storage module. A getter is called on first use, so a
+ * server that never touches storage never needs the credentials.
  */
 export interface PresignedUrlPluginOptions {
-  /** S3 configuration (concrete or lazy getter) */
-  s3: S3ConfigOrGetter;
-
+  credentials: StorageCredentials | (() => StorageCredentials);
 }

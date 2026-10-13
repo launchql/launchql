@@ -4,7 +4,6 @@ import { errors } from '@constructive-io/errors';
 import type { ComputeConfig } from '@constructive-io/express-context';
 import { DEFAULT_REQUEST_PROTECTION, protectionPgSettings } from '@constructive-io/express-context';
 import type { ConstructiveOptions } from '@constructive-io/graphql-types';
-import { getNodeEnv } from '@pgpmjs/env';
 import { Logger } from '@pgpmjs/logger';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { createGraphileInstance, graphileCache,type GraphileCacheEntry } from 'graphile-cache';
@@ -23,12 +22,11 @@ import { respondWithGraphQLError } from '../errors/graphql-response';
 import { AuthCookiePlugin } from '../plugins/auth-cookie-plugin';
 import { createErrorEventsPlugin } from '../plugins/error-events-plugin';
 import { RequestProtectionPlugin } from '../plugins/request-protection-plugin';
+import { WebauthnPlugin } from '../plugins/webauthn-plugin';
 import type { DatabaseSettings } from '../types';
+import { formatError } from './format-error';
 import { makeIntrospectionWiring } from './graphile-introspection';
-import { maskError } from './mask-error';
 import { observeGraphileBuild } from './observability/graphile-build-stats';
-
-const isDev = (): boolean => getNodeEnv() === 'development';
 
 // =============================================================================
 // Single-Flight Pattern: In-Flight Tracking
@@ -84,7 +82,8 @@ const buildPreset = async (
   graphileOptions: ConstructiveOptions['graphile'],
   databaseSettings?: DatabaseSettings,
   apiId?: string,
-  compute?: ComputeConfig
+  compute?: ComputeConfig,
+  webauthn?: boolean
 ): Promise<GraphileConfig.Preset> => {
   const introspection = await makeIntrospectionWiring(pool, schemas, graphileOptions, undefined, introspectionRole);
   const configuredPreset = graphileOptions?.preset ?? {};
@@ -105,6 +104,9 @@ const buildPreset = async (
       AuthCookiePlugin,
       RequestProtectionPlugin,
       createErrorEventsPlugin(pool),
+      // Only when the tenant provisioned the WebAuthn module; the policy
+      // itself is read per request from `req.api.webauthnSettings`.
+      ...(webauthn ? [WebauthnPlugin] : []),
       // Only registered when the compute module is provisioned for this
       // database — all schema/table names come from the constructive
       // metaschema (express-context compute module loader); the plugin has
@@ -131,10 +133,10 @@ const buildPreset = async (
       graphiqlPath: '/graphiql',
       graphiql: true,
       graphiqlOnGraphQLGET: false,
-      maskError
+      maskError: formatError
     },
     grafast: {
-      explain: process.env.NODE_ENV === 'development',
+      explain: graphileOptions?.explain === true,
       context: (requestContext: Partial<Grafast.RequestContext>) => {
       // In grafserv/express/v4, the request is available at requestContext.expressv4.req
         const req = (requestContext as { expressv4?: { req?: Request } })?.expressv4?.req;
@@ -374,7 +376,8 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           opts.graphile,
           api.databaseSettings,
           api.apiId,
-          compute
+          compute,
+          Boolean(api.webauthnSettings)
         );
         return observeGraphileBuild(
           {
@@ -416,7 +419,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
         respondWithGraphQLError(
           res,
           errors.INTERNAL_FAILURE({
-            details: isDev() ? e?.message ?? String(e) : 'An unexpected error occurred'
+            details: e?.message ?? String(e)
           })
         );
         return;

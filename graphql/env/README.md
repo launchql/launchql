@@ -107,6 +107,9 @@ PostgreSQL extensions or change the API's exposed schemas.
 Each cache limit must be a safe integer of at least `2`. When omitted, Grafast's
 upstream default for that cache remains in effect.
 
+### Grafast Explain
+- `GRAPHILE_EXPLAIN` - Allow clients to request Grafast plan/SQL output via the `x-graphql-explain` header (off unless set)
+
 ### Feature Flags
 - `FEATURES_SIMPLE_INFLECTION` - Enable simple inflection plugin
 - `FEATURES_OPPOSITE_BASE_NAMES` - Enable opposite base names

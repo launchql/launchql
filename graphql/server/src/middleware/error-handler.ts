@@ -1,6 +1,5 @@
 import './types';
 
-import { getNodeEnv } from '@pgpmjs/env';
 import { Logger } from '@pgpmjs/logger';
 import type { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 
@@ -10,22 +9,11 @@ import { isApiError } from '../errors/api-errors';
 
 const log = new Logger('error-handler');
 
-const isDevelopment = (): boolean => getNodeEnv() === 'development';
-
 const wantsJson = (req: Request): boolean => {
   const accept = req.get('Accept') || '';
   return accept.includes('application/json')
     || accept.includes('application/graphql-response+json')
     || Boolean(req.is('json'));
-};
-
-const sanitizeMessage = (error: Error): string => {
-  if (isDevelopment()) return error.message;
-  if (isApiError(error)) return error.message;
-  if (error.message?.includes('ECONNREFUSED')) return 'Service temporarily unavailable';
-  if (error.message?.includes('timeout') || error.message?.includes('ETIMEDOUT')) return 'Request timed out';
-  if (error.message?.includes('does not exist')) return 'The requested resource does not exist';
-  return 'An unexpected error occurred';
 };
 
 interface ErrorResponse {
@@ -45,7 +33,7 @@ const categorizeError = (err: Error): ErrorResponse => {
     return {
       statusCode: err.statusCode,
       code: err.code,
-      message: sanitizeMessage(err),
+      message: err.message,
       logLevel: err.statusCode >= 500 ? 'error' : 'warn',
     };
   }
@@ -54,12 +42,12 @@ const categorizeError = (err: Error): ErrorResponse => {
     return { statusCode: 403, code, message: err.message, logLevel: 'warn' };
   }
   if (err.message?.includes('ECONNREFUSED') || err.message?.includes('connection terminated')) {
-    return { statusCode: 503, code: 'SERVICE_UNAVAILABLE', message: sanitizeMessage(err), logLevel: 'error' };
+    return { statusCode: 503, code: 'SERVICE_UNAVAILABLE', message: err.message, logLevel: 'error' };
   }
   if (err.message?.includes('timeout') || err.message?.includes('ETIMEDOUT')) {
-    return { statusCode: 504, code: 'GATEWAY_TIMEOUT', message: sanitizeMessage(err), logLevel: 'error' };
+    return { statusCode: 504, code: 'GATEWAY_TIMEOUT', message: err.message, logLevel: 'error' };
   }
-  return { statusCode: 500, code: 'INTERNAL_ERROR', message: sanitizeMessage(err), logLevel: 'error' };
+  return { statusCode: 500, code: 'INTERNAL_ERROR', message: err.message, logLevel: 'error' };
 };
 
 const sendResponse = (req: Request, res: Response, { statusCode, code, message }: ErrorResponse): void => {
@@ -84,7 +72,7 @@ const logError = (err: Error, req: Request, level: 'warn' | 'error'): void => {
   if (isApiError(err)) {
     log[level]({ event: 'api_error', code: err.code, statusCode: err.statusCode, message: err.message, ...context });
   } else {
-    log[level]({ event: 'unexpected_error', name: err.name, message: err.message, stack: isDevelopment() ? err.stack : undefined, ...context });
+    log[level]({ event: 'unexpected_error', name: err.name, message: err.message, stack: err.stack, ...context });
   }
 };
 
