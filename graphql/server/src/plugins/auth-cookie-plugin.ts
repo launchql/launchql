@@ -86,6 +86,7 @@ const SIGN_IN_MUTATIONS = new Set([
   'completeMfaChallenge',
   'signInOneTimeToken',
   'signInCrossOrigin',
+  'webauthnSignInFinish',
 ]);
 
 /**
