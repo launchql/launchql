@@ -88,6 +88,24 @@ and optionally a directory. The runner:
 - keeps a detached interactive session alive with a bounded scrollback until
   a client reattaches or the session is closed.
 
+Separately from sessions, the runner answers two read-only path requests,
+`path_list` and `path_read`, each naming a relative `path` under an optional
+`root` (itself resolved under the policy's `cwd`, as an `open`'s `cwd` is). It:
+
+- refuses an absolute path, a `..` segment or a NUL byte (`PATH_INVALID`), and
+  a path — or a symlink anywhere along it — that resolves outside the root
+  (`PATH_OUTSIDE_ROOT`);
+- answers `path_listing` (name, kind, size; symlinks reported, not followed)
+  or `path_content` (base64 bytes);
+- refuses a directory of more than `MAX_LIST_ENTRIES` entries
+  (`DIRECTORY_TOO_LARGE`) and a file of more than `MAX_READ_BYTES` bytes
+  (`FILE_TOO_LARGE`) rather than truncating either;
+- answers every failure as an `error` frame carrying the request's
+  `requestId` and one of the `PATH_ERROR_CODES`.
+
+It writes nothing. Which root a request may name is the relay's decision, not
+the runner's: the runner only guarantees it stays under its policy.
+
 That is the whole contract. An agent session is one of these whose command
 happens to be an agent program — the relay composes that command and reads
 its output; the runner ran an allow-listed command:
