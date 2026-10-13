@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/constructive-io/constructive/compare/@constructive-db/machine-protocol@0.2.2...@constructive-db/machine-protocol@0.3.0) (2026-10-13)
+
+### Bug Fixes
+
+- **machine-runner:** re-check containment after open, cap path requests in flight ([45a67d5](https://github.com/constructive-io/constructive/commit/45a67d50027287ade5c1bd822ff544b2e417b112))
+
+### Features
+
+- **machine-runner:** list and read a path under the policy cwd, read-only ([bee596b](https://github.com/constructive-io/constructive/commit/bee596b23f3e81ac61352db157882a248fa0e632))
+
 ## [0.2.2](https://github.com/constructive-io/constructive/compare/@constructive-db/machine-protocol@0.2.1...@constructive-db/machine-protocol@0.2.2) (2026-09-25)
 
 ### Bug Fixes

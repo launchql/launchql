@@ -1,6 +1,6 @@
 {
   "name": "@constructive-db/machine-protocol",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Wire protocol shared by the machine relay and the machine runner: the JSON frames a session is made of, and the codec that refuses malformed ones.",
   "author": "Constructive <developers@constructive.io>",
   "license": "MIT",
