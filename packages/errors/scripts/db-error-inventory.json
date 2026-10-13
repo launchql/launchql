@@ -3512,7 +3512,7 @@
     "class": "public"
   },
   "INTERNAL_ERROR": {
-    "count": 464,
+    "count": 466,
     "dynamic": false,
     "sample": "INTERNAL_ERROR",
     "n_source": 98,
@@ -4379,12 +4379,20 @@
     "n_generated": 4,
     "class": "public"
   },
+  "MFA_METHOD_NOT_ALLOWED": {
+    "count": 8,
+    "dynamic": false,
+    "sample": "MFA_METHOD_NOT_ALLOWED",
+    "n_source": 2,
+    "n_generated": 4,
+    "class": "public"
+  },
   "MFA_METHOD_NOT_ENABLED": {
-    "count": 4,
+    "count": 12,
     "dynamic": false,
     "sample": "MFA_METHOD_NOT_ENABLED",
-    "n_source": 1,
-    "n_generated": 3,
+    "n_source": 2,
+    "n_generated": 4,
     "class": "public"
   },
   "MFA_REQUIRED": {
@@ -5999,6 +6007,14 @@
     "n_generated": 3,
     "class": "public"
   },
+  "STEP_UP_METHOD_REQUIRED": {
+    "count": 4,
+    "dynamic": false,
+    "sample": "STEP_UP_METHOD_REQUIRED",
+    "n_source": 1,
+    "n_generated": 3,
+    "class": "public"
+  },
   "STEP_UP_REQUIRED_FRESH_AUTH": {
     "count": 23,
     "dynamic": false,
@@ -6029,6 +6045,14 @@
     "sample": "STEP_UP_REQUIRED_PASSWORD_OR_MFA",
     "n_source": 1,
     "n_generated": 3,
+    "class": "public"
+  },
+  "STEP_UP_SESSION_INVALID": {
+    "count": 14,
+    "dynamic": false,
+    "sample": "STEP_UP_SESSION_INVALID",
+    "n_source": 2,
+    "n_generated": 4,
     "class": "public"
   },
   "STORAGE_API_NOT_PROVISIONED": {
@@ -6312,11 +6336,11 @@
     "class": "public"
   },
   "TOO_MANY_REQUESTS": {
-    "count": 59,
+    "count": 61,
     "dynamic": false,
     "sample": "TOO_MANY_REQUESTS",
     "n_source": 2,
-    "n_generated": 27,
+    "n_generated": 28,
     "class": "public"
   },
   "TOTP_ALREADY_ENABLED": {

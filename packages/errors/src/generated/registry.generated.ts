@@ -2,7 +2,7 @@
 /**
  * GENERATED FILE — DO NOT EDIT BY HAND.
  *
- * Source of truth: the constructive-db error audit (841 distinct codes
+ * Source of truth: the constructive-db error audit (844 distinct codes
  * raised via EXCEPTION/THROW across deploy sources + generated output).
  * Regenerate with `python3 scripts/generate-registry.py` (see README.md).
  *
@@ -10,7 +10,7 @@
  * codes carry their raw message (with %-args rendered as {{argN}}). Curated
  * entries in `registry.ts` override anything here (typed context + refined copy).
  *
- * Counts: 841 total, 611 public, 230 internal.
+ * Counts: 844 total, 614 public, 230 internal.
  */
 import { defineError, type DefinedError } from '../define';
 import type { ErrorContext } from '../types';
@@ -579,6 +579,7 @@ export const generatedRegistry: Record<string, DefinedError<ErrorContext>> = {
   'METER_RATE_LIMIT': defineError({ code: 'METER_RATE_LIMIT', class: 'internal', http: 500, message: 'METER_RATE_LIMIT: unknown event {{arg0}}, expected INSERT or UPDATE', positional: ['arg0'] }),
   'MFA_CHALLENGE_EXPIRED': defineError({ code: 'MFA_CHALLENGE_EXPIRED', class: 'public', http: 403, message: 'Mfa challenge expired.' }),
   'MFA_IDENTIFIER_UNVERIFIED': defineError({ code: 'MFA_IDENTIFIER_UNVERIFIED', class: 'public', http: 403, message: 'Mfa identifier unverified.' }),
+  'MFA_METHOD_NOT_ALLOWED': defineError({ code: 'MFA_METHOD_NOT_ALLOWED', class: 'public', http: 403, message: 'Mfa method not allowed.' }),
   'MFA_METHOD_NOT_ENABLED': defineError({ code: 'MFA_METHOD_NOT_ENABLED', class: 'public', http: 403, message: 'Mfa method not enabled.' }),
   'MFA_REQUIRED': defineError({ code: 'MFA_REQUIRED', class: 'public', http: 403, message: 'Mfa required.' }),
   'MISSING_FIXTURE_TYPE': defineError({ code: 'MISSING_FIXTURE_TYPE', class: 'internal', http: 500, message: 'Missing fixture type.' }),
@@ -785,10 +786,12 @@ export const generatedRegistry: Record<string, DefinedError<ErrorContext>> = {
   'SSO_STATE_TTL_INVALID': defineError({ code: 'SSO_STATE_TTL_INVALID', class: 'internal', http: 500, message: 'Sso state ttl invalid.' }),
   'STATIC_SITES_LIMIT': defineError({ code: 'STATIC_SITES_LIMIT', class: 'public', http: 429, message: 'Static sites limit.' }),
   'STEP_UP_INVALID_TYPE': defineError({ code: 'STEP_UP_INVALID_TYPE', class: 'public', http: 403, message: 'This action requires verification that is not configured correctly. Please contact support.' }),
+  'STEP_UP_METHOD_REQUIRED': defineError({ code: 'STEP_UP_METHOD_REQUIRED', class: 'public', http: 403, message: 'Step up method required.' }),
   'STEP_UP_REQUIRED_FRESH_AUTH': defineError({ code: 'STEP_UP_REQUIRED_FRESH_AUTH', class: 'public', http: 403, message: 'Please verify your identity to continue.' }),
   'STEP_UP_REQUIRED_MFA': defineError({ code: 'STEP_UP_REQUIRED_MFA', class: 'public', http: 403, message: 'Please enter a code from your authenticator app to continue.' }),
   'STEP_UP_REQUIRED_PASSWORD': defineError({ code: 'STEP_UP_REQUIRED_PASSWORD', class: 'public', http: 403, message: 'Please re-enter your password to continue.' }),
   'STEP_UP_REQUIRED_PASSWORD_OR_MFA': defineError({ code: 'STEP_UP_REQUIRED_PASSWORD_OR_MFA', class: 'public', http: 403, message: 'Please re-enter your password or enter a code from your authenticator app to continue.' }),
+  'STEP_UP_SESSION_INVALID': defineError({ code: 'STEP_UP_SESSION_INVALID', class: 'public', http: 403, message: 'Step up session invalid.' }),
   'STORAGE_API_NOT_PROVISIONED': defineError({ code: 'STORAGE_API_NOT_PROVISIONED', class: 'public', http: 400, message: 'Storage api not provisioned.' }),
   'STORAGE_DESTINATION_REQUIRES_TEMP': defineError({ code: 'STORAGE_DESTINATION_REQUIRES_TEMP', class: 'internal', http: 500, message: 'Storage destination requires temp.' }),
   'STORAGE_FILE_BUCKET_IMMUTABLE': defineError({ code: 'STORAGE_FILE_BUCKET_IMMUTABLE', class: 'internal', http: 500, message: 'Storage file bucket immutable.' }),
@@ -1424,6 +1427,7 @@ export const GENERATED_CODE_META: Record<string, GeneratedCodeMeta> = {
   'METER_RATE_LIMIT': { class: 'internal', dynamic: true, generatedOnly: false },
   'MFA_CHALLENGE_EXPIRED': { class: 'public', dynamic: false, generatedOnly: false },
   'MFA_IDENTIFIER_UNVERIFIED': { class: 'public', dynamic: false, generatedOnly: false },
+  'MFA_METHOD_NOT_ALLOWED': { class: 'public', dynamic: false, generatedOnly: false },
   'MFA_METHOD_NOT_ENABLED': { class: 'public', dynamic: false, generatedOnly: false },
   'MFA_REQUIRED': { class: 'public', dynamic: false, generatedOnly: false },
   'MISSING_FIXTURE_TYPE': { class: 'internal', dynamic: false, generatedOnly: false },
@@ -1630,10 +1634,12 @@ export const GENERATED_CODE_META: Record<string, GeneratedCodeMeta> = {
   'SSO_STATE_TTL_INVALID': { class: 'internal', dynamic: false, generatedOnly: false },
   'STATIC_SITES_LIMIT': { class: 'public', dynamic: false, generatedOnly: false },
   'STEP_UP_INVALID_TYPE': { class: 'public', dynamic: false, generatedOnly: false },
+  'STEP_UP_METHOD_REQUIRED': { class: 'public', dynamic: false, generatedOnly: false },
   'STEP_UP_REQUIRED_FRESH_AUTH': { class: 'public', dynamic: false, generatedOnly: false },
   'STEP_UP_REQUIRED_MFA': { class: 'public', dynamic: false, generatedOnly: false },
   'STEP_UP_REQUIRED_PASSWORD': { class: 'public', dynamic: false, generatedOnly: false },
   'STEP_UP_REQUIRED_PASSWORD_OR_MFA': { class: 'public', dynamic: false, generatedOnly: false },
+  'STEP_UP_SESSION_INVALID': { class: 'public', dynamic: false, generatedOnly: false },
   'STORAGE_API_NOT_PROVISIONED': { class: 'public', dynamic: false, generatedOnly: false },
   'STORAGE_DESTINATION_REQUIRES_TEMP': { class: 'internal', dynamic: false, generatedOnly: false },
   'STORAGE_FILE_BUCKET_IMMUTABLE': { class: 'internal', dynamic: false, generatedOnly: false },
@@ -1713,4 +1719,4 @@ export const GENERATED_CODE_META: Record<string, GeneratedCodeMeta> = {
 };
 
 /** Total number of codes collected from constructive-db. */
-export const GENERATED_CODE_COUNT = 841;
+export const GENERATED_CODE_COUNT = 844;
