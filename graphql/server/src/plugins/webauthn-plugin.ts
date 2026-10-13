@@ -31,13 +31,13 @@ import { extendSchema, gql } from 'graphile-utils';
  *
  * Two lanes reach the procedures:
  * - the request lane (the request's own role and claims) begins both
- *   ceremonies and persists a verified registration — work any caller may ask
- *   for as themselves;
+ *   ceremonies — work any caller may ask for as themselves;
  * - the verifier lane (the request's claims under the server's
  *   {@link SYSTEM_LANE_ROLE}) reads the stored challenge and the credential's
- *   public key, and mints the session. Those procedures trust their caller to
- *   have verified a signature, so only the server is granted them — an
- *   anonymous SQL caller cannot mint a session by naming a credential.
+ *   public key, persists a verified registration, and mints the session.
+ *   Those procedures trust their caller to have verified a signature, so only
+ *   the server is granted them — a SQL caller can neither mint a session by
+ *   naming a credential nor plant a public key on someone else's account.
  */
 
 interface PgClient {
@@ -358,7 +358,7 @@ export const WebauthnPlugin: GraphileConfig.Plugin = {
             if (!verified.verified) fail('WEBAUTHN_VERIFICATION_FAILED', 'WebAuthn registration verification failed');
 
             const { credential, credentialDeviceType, credentialBackedUp } = verified.registrationInfo;
-            const credentialId = await withRequestLane(withPgClient, pgSettings, async (tx) => {
+            const credentialId = await withVerifierLane(withPgClient, pgSettings, async (tx) => {
               const { rows } = await tx.query({
                 text: `SELECT ${procedure(settings, 'webauthn_finish_registration')}(
                   $1, $2, $3, $4, $5, $6, $7, $8, $9, $10

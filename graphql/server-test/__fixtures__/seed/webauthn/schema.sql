@@ -129,7 +129,7 @@ $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA "simple-pets-auth-private" FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".authenticate(text) TO administrator, authenticated, anonymous;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_begin_registration(uuid) TO authenticated;
-GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_finish_registration(text, bytea, bigint, text[], text, boolean, boolean, text, uuid, text) TO authenticated;
+GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_finish_registration(text, bytea, bigint, text[], text, boolean, boolean, text, uuid, text) TO administrator;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_begin_sign_in(uuid) TO anonymous, authenticated;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_challenge_matches(text, text, uuid) TO administrator;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_credential_for_assertion(text, uuid) TO administrator;
