@@ -150,6 +150,7 @@ GraphQL errors. |
 | `useSendMfaChallengeCodeMutation` | Mutation | sendMfaChallengeCode |
 | `useSendPhoneVerificationCodeMutation` | Mutation | sendPhoneVerificationCode |
 | `useSendSmsOtpMutation` | Mutation | sendSmsOtp |
+| `useSendStepUpCodeMutation` | Mutation | sendStepUpCode |
 | `useSendVerificationEmailMutation` | Mutation | sendVerificationEmail |
 | `useSetPasswordMutation` | Mutation | setPassword |
 | `useSetPrincipalEntitiesMutation` | Mutation | setPrincipalEntities |
@@ -166,6 +167,7 @@ GraphQL errors. |
 | `useVerifyEmailMutation` | Mutation | verifyEmail |
 | `useVerifyPasswordMutation` | Mutation | verifyPassword |
 | `useVerifyPhoneMutation` | Mutation | verifyPhone |
+| `useVerifyStepUpCodeMutation` | Mutation | verifyStepUpCode |
 | `useVerifyTotpMutation` | Mutation | verifyTotp |
 
 ## Table Hooks
@@ -927,6 +929,17 @@ sendSmsOtp
   |----------|------|
   | `input` | SendSmsOtpInput (required) |
 
+### `useSendStepUpCodeMutation`
+
+sendStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | SendStepUpCodeInput (required) |
+
 ### `useSendVerificationEmailMutation`
 
 sendVerificationEmail
@@ -1102,6 +1115,17 @@ verifyPhone
   | Argument | Type |
   |----------|------|
   | `input` | VerifyPhoneInput (required) |
+
+### `useVerifyStepUpCodeMutation`
+
+verifyStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | VerifyStepUpCodeInput (required) |
 
 ### `useVerifyTotpMutation`
 

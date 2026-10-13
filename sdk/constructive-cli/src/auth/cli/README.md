@@ -87,6 +87,7 @@ GraphQL errors. |
 | `send-mfa-challenge-code` | sendMfaChallengeCode |
 | `send-phone-verification-code` | sendPhoneVerificationCode |
 | `send-sms-otp` | sendSmsOtp |
+| `send-step-up-code` | sendStepUpCode |
 | `send-verification-email` | sendVerificationEmail |
 | `set-password` | setPassword |
 | `set-principal-entities` | setPrincipalEntities |
@@ -103,6 +104,7 @@ GraphQL errors. |
 | `verify-email` | verifyEmail |
 | `verify-password` | verifyPassword |
 | `verify-phone` | verifyPhone |
+| `verify-step-up-code` | verifyStepUpCode |
 | `verify-totp` | verifyTotp |
 
 ## Infrastructure Commands
@@ -1125,6 +1127,18 @@ sendSmsOtp
   | `--input.clientMutationId` | String |
   | `--input.phone` | String |
 
+### `send-step-up-code`
+
+sendStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.method` | String |
+
 ### `send-verification-email`
 
 sendVerificationEmail
@@ -1357,6 +1371,18 @@ verifyPhone
   | `--input.clientMutationId` | String |
   | `--input.code` | String |
   | `--input.phone` | String |
+
+### `verify-step-up-code`
+
+verifyStepUpCode
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.code` | String (required) |
 
 ### `verify-totp`
 
