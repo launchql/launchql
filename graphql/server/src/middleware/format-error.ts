@@ -30,6 +30,28 @@ const isGraphQLLayerError = (value: unknown): boolean =>
 const isRequestError = (error: GraphQLError): boolean =>
   error.path == null && isGraphQLLayerError((error as { originalError?: unknown }).originalError);
 
+/**
+ * A request error's message without the values the request sent. graphql-js
+ * writes a variable coercion failure as `Variable "$x" got invalid value <the
+ * value> at "<path>"; <inner>`, and a leaf type's inner complaint ends in the
+ * value too (`String cannot represent a non string value: <value>`,
+ * `Value "<value>" does not exist in "E" enum.`), so a password or API key sent
+ * in a malformed input would come back in the answer. The variable, the path and
+ * what was wrong stay; the values go.
+ */
+const withoutInputValues = (error: GraphQLError): string => {
+  const inner = error.originalError?.message;
+  const message = error.message;
+  if (!message.startsWith('Variable "$') || !inner || !message.endsWith(`; ${inner}`)) return message;
+  const prefix = message.slice(0, message.length - inner.length - 2);
+  const variable = /^Variable "\$[^"]+"/.exec(prefix)?.[0];
+  const at = / at "[^"]*"$/.exec(prefix)?.[0] ?? '';
+  const complaint = inner
+    .replace(/(value): [\s\S]*$/, '$1.')
+    .replace(/^Value "[\s\S]*" does not exist in/, 'Value does not exist in');
+  return `${variable} got invalid value${at}; ${complaint}`;
+};
+
 /** The code a request error carries when graphql-js supplied none. */
 const BAD_USER_INPUT = 'BAD_USER_INPUT';
 
@@ -80,8 +102,10 @@ export const formatError = (error: GraphQLError): GraphQLFormattedError => {
   }
 
   let internal = Boolean(code) && errorClass === 'internal';
+  let message = error.message;
   if (!code && !error.extensions?.code) {
     const requestError = isRequestError(error);
+    if (requestError) message = withoutInputValues(error);
     extensions.code = requestError ? BAD_USER_INPUT : INTERNAL_SERVER_ERROR;
     internal = !requestError;
   }
@@ -94,7 +118,7 @@ export const formatError = (error: GraphQLError): GraphQLFormattedError => {
 
   // grafserv strips originalError before serializing to the client.
   return {
-    message: error.message,
+    message,
     ...(error.locations ? { locations: error.locations } : {}),
     ...(error.path ? { path: error.path } : {}),
     extensions
