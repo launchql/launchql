@@ -74,6 +74,7 @@ describe('graphile single-flight handler creation', () => {
     });
 
     const middleware = graphile({
+      api: { controlRole: 'test_control' },
       graphile: {
         grafastCache: { queryCacheMaxLength: 16 },
         extends: [

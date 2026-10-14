@@ -46,6 +46,7 @@ async function pgQueryContext({ client, context = {}, query = '', variables = []
     return result;
   } catch (error) {
     if (pgClient && !skipTransaction) {
+      // Teardown only: the original error is rethrown below.
       await pgClient.query('ROLLBACK').catch(() => {});
     }
     throw error;
@@ -93,6 +94,7 @@ export async function withPgClient<T>(
     return result;
   } catch (err) {
     if (!opts.skipTransaction) {
+      // Teardown only: the original error is rethrown below and the client is released.
       await client.query('ROLLBACK').catch(() => {});
     }
     throw err;
