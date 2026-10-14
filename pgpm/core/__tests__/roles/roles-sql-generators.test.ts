@@ -138,6 +138,17 @@ describe('Role SQL Generators - Input Validation', () => {
       expect(sql).toContain('anon');
       expect(sql).toContain('auth');
     });
+
+    it('reapplies the password even when the login already exists', () => {
+      const sql = generateCreateUserSQL('testuser', "pass'word", {
+        anonymous: 'anon',
+        authenticated: 'auth'
+      });
+      const createEnd = sql.indexOf('END IF;');
+      const passwordUpdate = sql.indexOf("EXECUTE format('ALTER ROLE %I PASSWORD %L', v_username, v_password);");
+      expect(passwordUpdate).toBeGreaterThan(createEnd);
+      expect(sql).toContain("v_password text := 'pass''word';");
+    });
   });
 
   describe('generateCreateTestUsersSQL', () => {

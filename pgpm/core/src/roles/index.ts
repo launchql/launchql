@@ -259,6 +259,8 @@ BEGIN
     END;
   END IF;
 
+  EXECUTE format('ALTER ROLE %I PASSWORD %L', v_username, v_password);
+
   -- Grant anonymous to user
   IF NOT EXISTS (
     SELECT 1 FROM pg_auth_members am

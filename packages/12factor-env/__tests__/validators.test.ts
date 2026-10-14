@@ -136,29 +136,29 @@ describe('cross-field checks', () => {
   it('reports a failed check in the same consolidated error', () => {
     expect(() =>
       env(
-        { CONTROL_USER: 'proxy', UPSTREAM_USER: 'proxy' },
+        { SOURCE_DATABASE: 'app', TARGET_DATABASE: 'app' },
         {},
-        { CONTROL_USER: str(), UPSTREAM_USER: str() },
+        { SOURCE_DATABASE: str(), TARGET_DATABASE: str() },
         {
           checks: [
             distinct(
-              ['CONTROL_USER', 'UPSTREAM_USER'],
-              'must be different roles: the control-plane read needs BYPASSRLS and the data plane must not have it'
+              ['SOURCE_DATABASE', 'TARGET_DATABASE'],
+              'must be different databases'
             )
           ]
         }
       )
-    ).toThrow(/CONTROL_USER, UPSTREAM_USER: must be different roles/);
+    ).toThrow(/SOURCE_DATABASE, TARGET_DATABASE: must be different databases/);
   });
 
   it('passes when the constraint holds', () => {
     const config = env(
-      { CONTROL_USER: 'proxy_control', UPSTREAM_USER: 'proxy_data' },
+      { SOURCE_DATABASE: 'app', TARGET_DATABASE: 'app_copy' },
       {},
-      { CONTROL_USER: str(), UPSTREAM_USER: str() },
-      { checks: [distinct(['CONTROL_USER', 'UPSTREAM_USER'])] }
+      { SOURCE_DATABASE: str(), TARGET_DATABASE: str() },
+      { checks: [distinct(['SOURCE_DATABASE', 'TARGET_DATABASE'])] }
     );
-    expect(config.CONTROL_USER).toBe('proxy_control');
+    expect(config.SOURCE_DATABASE).toBe('app');
   });
 
   it('is skipped when a var it names already failed (no "both equal" noise)', () => {
@@ -167,14 +167,14 @@ describe('cross-field checks', () => {
       env(
         {},
         {},
-        { CONTROL_USER: str(), UPSTREAM_USER: str() },
-        { checks: [distinct(['CONTROL_USER', 'UPSTREAM_USER'], 'must be different roles')] }
+        { SOURCE_DATABASE: str(), TARGET_DATABASE: str() },
+        { checks: [distinct(['SOURCE_DATABASE', 'TARGET_DATABASE'], 'must be different databases')] }
       );
     } catch (err) {
       error = err as Error;
     }
-    expect(error?.message).toMatch(/CONTROL_USER/);
-    expect(error?.message).not.toMatch(/must be different roles/);
+    expect(error?.message).toMatch(/SOURCE_DATABASE/);
+    expect(error?.message).not.toMatch(/must be different databases/);
   });
 
   it('sees cleaned, coerced values', () => {

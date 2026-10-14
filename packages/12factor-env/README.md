@@ -224,9 +224,9 @@ way they run against cleaned values and their failures join the same report:
 ```ts
 import { distinct, env, mutuallyExclusive, requiredWhen, str } from '12factor-env';
 
-const config = env(process.env, { CONTROL_ROLE: str(), DATA_ROLE: str() }, {}, {
+const config = env(process.env, { SOURCE_DATABASE: str(), TARGET_DATABASE: str() }, {}, {
   checks: [
-    distinct(['CONTROL_ROLE', 'DATA_ROLE'], 'the control role needs BYPASSRLS; the data role must not have it'),
+    distinct(['SOURCE_DATABASE', 'TARGET_DATABASE'], 'source and target databases must differ'),
     mutuallyExclusive(['AUTH_TOKEN', 'AUTH_TOKEN_FILE']),
     requiredWhen('TLS_ENABLED', ['TLS_CERT', 'TLS_KEY']),
     { vars: ['MIN', 'MAX'], check: (v) => v.MIN <= v.MAX, message: 'MIN must not exceed MAX' }

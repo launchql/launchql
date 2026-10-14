@@ -2360,6 +2360,9 @@ importers:
       '@constructive-io/s3-utils':
         specifier: workspace:^
         version: link:../../uploads/s3-utils/dist
+      '@pgpmjs/core':
+        specifier: workspace:^
+        version: link:../../pgpm/core/dist
       '@simplewebauthn/server':
         specifier: 13.3.2
         version: 13.3.2
