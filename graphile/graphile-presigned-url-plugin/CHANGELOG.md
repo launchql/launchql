@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.23.0...graphile-presigned-url-plugin@1.23.1) (2026-10-14)
+
+### Bug Fixes
+
+- **presigned-url:** dedup only against rows whose bytes exist; expose maxBulkFiles on buckets ([2800576](https://github.com/constructive-io/constructive/commit/2800576f82924eadbabb473ebd6d05ed0b68ac89))
+- **presigned-url:** HEAD the matched row's own key on hash dedup; check the staged-upload stale-row delete ([07602c9](https://github.com/constructive-io/constructive/commit/07602c95c47aa88cf5d11f0f9889c5db572f6eef))
+
 # [1.23.0](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.22.2...graphile-presigned-url-plugin@1.23.0) (2026-10-14)
 
 ### Bug Fixes

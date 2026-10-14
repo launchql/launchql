@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/graphql-test",
-  "version": "5.20.0",
+  "version": "5.20.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Constructive GraphQL Testing with all plugins loaded",
   "main": "index.js",

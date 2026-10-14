@@ -1,6 +1,6 @@
 {
   "name": "pglite-test",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Drop-in pgsql-test getConnections backed by an in-process PGlite instance — no Postgres server, instance-per-suite isolation",
   "main": "index.js",
