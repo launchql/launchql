@@ -199,7 +199,8 @@ INSERT INTO metaschema_modules_public.storage_module (
   allowed_origins,
   scope,
   private_schema_id,
-  has_versioning
+  has_versioning,
+  max_bulk_files
 )
 VALUES (
   'c1c1c1c1-0000-0000-0000-000000000001',
@@ -214,7 +215,8 @@ VALUES (
   ARRAY['*'],
   'app',
   'a2a2a2a2-b3b3-4c4c-d5d5-e6e6e6e6e6f0',
-  true
+  true,
+  25
 ) ON CONFLICT (id) DO NOTHING;
 
 -- =====================================================

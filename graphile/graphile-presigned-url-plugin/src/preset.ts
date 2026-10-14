@@ -8,6 +8,7 @@
 
 import type { GraphileConfig } from 'graphile-config';
 
+import { createBulkLimitPlugin } from './bulk-limit-field';
 import { createDownloadUrlPlugin } from './download-url-field';
 import { createPresignedUrlPlugin } from './plugin';
 import type { PresignedUrlPluginOptions } from './types';
@@ -37,6 +38,7 @@ export function PresignedUrlPreset(
     plugins: [
       createPresignedUrlPlugin(options),
       createDownloadUrlPlugin(options),
+      createBulkLimitPlugin(),
     ],
   };
 }

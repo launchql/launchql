@@ -535,8 +535,10 @@ describe('finalizeStagedUpload', () => {
     expect(projection.id).toBe(FILE_ID);
     expect(projection.filename).toBe('original.png');
     expect(db.queries.some((q) => /INSERT/.test(q.text))).toBe(false);
-    // Only the staged object is deleted; nothing is copied.
-    expect(s3.client.send).toHaveBeenCalledTimes(1);
+    // The existing row's object is confirmed, then only the staged object is
+    // deleted; nothing is copied.
+    const sent = (s3.client.send as jest.Mock).mock.calls.map(([command]) => command.constructor.name);
+    expect(sent).toEqual(['HeadObjectCommand', 'DeleteObjectCommand']);
   });
 
   // With the confirm-upload lifecycle, a row is a claim on bytes rather than

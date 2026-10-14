@@ -333,9 +333,9 @@ export async function finalizeStagedUpload(args: {
   // final key is the content hash and (bucket_id, key) is unique. The GC job the
   // delete enqueues re-takes the reference count when it runs, by which point
   // the replacement row exists, so it no-ops.
-  if (existing && !isLiveFileRow(storageConfig, existing)) {
+  if (existing && !(await isLiveFileRow(storageConfig, s3, existing))) {
     log.info(
-      `Restarting upload of hash ${staged.contentHash}: file ${existing.id} is ${existing.status}, so it carries no bytes`
+      `Restarting upload of hash ${staged.contentHash}: file ${existing.id} has no bytes behind it`
     );
     await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
       await pgClient.query({

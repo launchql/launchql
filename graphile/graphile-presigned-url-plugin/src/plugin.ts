@@ -345,7 +345,7 @@ export function createPresignedUrlPlugin(
             newFields[bulkMutationName] = context.fieldWithHooks(
                 { fieldName: bulkMutationName } as any,
                 {
-                  description: `Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.`,
+                  description: `Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's \`maxBulkFiles\` files per call.`,
                   type: BulkPayloadType,
                   args: {
                     input: { type: new GraphQLNonNull(BulkInputType) },
@@ -708,7 +708,7 @@ export async function processSingleFile(
     if (existingResult.rows.length > 0) {
       const existing = existingResult.rows[0];
       if (existing.content_hash === contentHash) {
-        if (isLiveFileRow(storageConfig, existing)) {
+        if (await isLiveFileRow(storageConfig, s3ForDb, { key: s3Key, status: existing.status })) {
           log.info(`Dedup hit (custom key): file ${existing.id} for key ${s3Key}`);
           return {
             uploadUrl: null as string | null,
@@ -721,7 +721,7 @@ export async function processSingleFile(
           };
         }
         staleFileId = existing.id as string;
-        log.info(`Restarting upload of key ${s3Key}: file ${staleFileId} is ${existing.status}, so it carries no bytes`);
+        log.info(`Restarting upload of key ${s3Key}: file ${staleFileId} has no bytes behind it`);
       } else if (storageConfig.hasVersioning) {
         previousVersionId = existing.id;
         log.info(`Versioning: new version of key ${s3Key}, previous=${previousVersionId}`);
@@ -753,7 +753,7 @@ export async function processSingleFile(
 
     if (dedupResult.rows.length > 0) {
       const existingFile = dedupResult.rows[0];
-      if (isLiveFileRow(storageConfig, existingFile)) {
+      if (await isLiveFileRow(storageConfig, s3ForDb, { key: s3Key, status: existingFile.status })) {
         log.info(`Dedup hit: file ${existingFile.id} for hash ${contentHash}`);
 
         return {
@@ -767,7 +767,7 @@ export async function processSingleFile(
         };
       }
       staleFileId = existingFile.id as string;
-      log.info(`Restarting upload of hash ${contentHash}: file ${staleFileId} is ${existingFile.status}, so it carries no bytes`);
+      log.info(`Restarting upload of hash ${contentHash}: file ${staleFileId} has no bytes behind it`);
     }
   }
 
