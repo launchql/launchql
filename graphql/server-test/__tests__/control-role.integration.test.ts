@@ -16,10 +16,12 @@
 
 import { getEnvOptions } from '@constructive-io/graphql-env';
 import path from 'path';
+import { pgCache } from 'pg-cache';
+import { getConnections } from 'pgsql-test';
 import type { PgTestClient } from 'pgsql-test/test-client';
 import supertest from 'supertest';
 
-import { createTestServer, getConnections, seed } from '../src';
+import { createTestServer, seed } from '../src';
 import type { ServerInfo } from '../src/types';
 
 jest.setTimeout(60000);
@@ -80,14 +82,12 @@ let strict: ServerInfo;
 let request: supertest.Agent;
 
 beforeAll(async () => {
-  ({ pg, teardown } = await getConnections(
-    {
-      schemas,
-      authRole: 'anonymous',
-      server: { useRouting: true, api: { isPublic: true, metaSchemas } }
-    },
-    seedAdapters
-  ));
+  // pgsql-test alone, with no harness server. pg-cache keys pools by database,
+  // so the admin pool the pgpm seed cached is evicted before the strict server
+  // starts; otherwise it would be handed that pool and never connect as LOGIN.
+  ({ pg, teardown } = await getConnections({}, seedAdapters));
+  pgCache.delete(pg.config.database);
+  await pgCache.waitForDisposals();
 
   await pg.query(
     `CREATE ROLE "${LOGIN}" LOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD '${LOGIN_PASSWORD}'`
@@ -95,6 +95,8 @@ beforeAll(async () => {
   await pg.query(
     `CREATE ROLE "${CONTROL}" NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION BYPASSRLS`
   );
+  // CONNECT is the one thing the login holds itself: it has to open a session.
+  await pg.query(`GRANT CONNECT ON DATABASE "${pg.config.database}" TO "${LOGIN}"`);
   await pg.query(grantControlRole);
   await pg.query(`GRANT "${CONTROL}" TO "${LOGIN}" WITH INHERIT FALSE, SET TRUE`);
   await pg.query(`GRANT anonymous TO "${LOGIN}" WITH INHERIT FALSE, SET TRUE`);
@@ -169,6 +171,12 @@ describe('the server still serves requests as that login', () => {
     expect(res.status).toBe(200);
     expect(res.body.errors).toBeUndefined();
     expect(res.body.data.animals.nodes.length).toBeGreaterThan(0);
+
+    const { rows } = await pg.query(
+      'SELECT count(*)::int AS n FROM pg_stat_activity WHERE usename = $1 AND datname = current_database()',
+      [LOGIN]
+    );
+    expect(rows[0].n).toBeGreaterThan(0);
   });
 
   it('authenticates a Bearer token and serves the request as authenticated', async () => {

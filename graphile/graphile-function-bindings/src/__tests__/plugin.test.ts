@@ -72,6 +72,7 @@ describe('function bindings plugin', () => {
     // module loader (constructive metaschema); tests supply them directly.
     const plugin = createFunctionBindingsPlugin({
       apiId: API_ID,
+      role: 'postgres',
       modules: [
         {
           computeSchema: 'compute_public',

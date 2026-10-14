@@ -81,6 +81,7 @@ const buildPreset = async (
   anonRole: string,
   roleName: string,
   introspectionRole: string | undefined,
+  controlRole: string,
   graphileOptions: ConstructiveOptions['graphile'],
   databaseSettings?: DatabaseSettings,
   apiId?: string,
@@ -117,6 +118,7 @@ const buildPreset = async (
         ? [
           createFunctionBindingsPlugin({
             apiId,
+            role: controlRole,
             modules: compute.modules.map((m) => ({
               computeSchema: m.schemaName,
               bindingsTable: m.bindingsTableName,
@@ -375,6 +377,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           anonRole,
           roleName,
           opts.api?.introspectionRole,
+          getControlRole(opts),
           opts.graphile,
           api.databaseSettings,
           api.apiId,
