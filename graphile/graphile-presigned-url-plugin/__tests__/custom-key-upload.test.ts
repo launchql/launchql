@@ -50,7 +50,7 @@ const bucket = {
   allow_custom_keys: true,
 } as unknown as BucketConfig;
 
-const s3 = { client: { send: jest.fn() }, bucket: 'site-bucket', region: 'us-east-1' } as unknown as S3Config;
+const s3 = { client: { send: jest.fn().mockResolvedValue({}) }, bucket: 'site-bucket', region: 'us-east-1' } as unknown as S3Config;
 const options: PresignedUrlPluginOptions = { credentials: { accessKeyId: 'test', secretAccessKey: 'test' } };
 
 function fakeTx(existingHash: string, deletable = true) {

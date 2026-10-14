@@ -485,6 +485,65 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
         expect(payload.expiresAt).toBeNull();
         expect(payload.fileId).toBeTruthy();
       });
+
+      // The row is written before the PUT, and this module has no confirm-upload
+      // job to settle its status, so only the object itself proves the bytes
+      // arrived. A retry after a PUT that never ran must get a URL again.
+      it('issues a fresh upload URL when the earlier PUT never ran', async () => {
+        const fileContent = `Never PUT: the client walked away (${crypto.randomUUID()}).`;
+        const contentHash = await hashContent(fileContent);
+        const input = {
+          bucketKey: 'public',
+          contentHash,
+          contentType: 'text/plain',
+          size: Buffer.byteLength(fileContent),
+          filename: 'never-put.txt'
+        };
+
+        const first = expectSuccess(await postGraphQL({ query: UPLOAD_APP_FILE, variables: { input } })).uploadAppFile;
+        expect(first.deduplicated).toBe(false);
+        expect(first.uploadUrl).toBeTruthy();
+
+        const retry = expectSuccess(await postGraphQL({ query: UPLOAD_APP_FILE, variables: { input } })).uploadAppFile;
+        expect(retry.deduplicated).toBe(false);
+        expect(retry.uploadUrl).toBeTruthy();
+        expect(retry.fileId).not.toBe(first.fileId);
+
+        const putRes = await putToPresignedUrl(retry.uploadUrl, fileContent, 'text/plain');
+        expect(putRes.ok).toBe(true);
+
+        const afterPut = expectSuccess(await postGraphQL({ query: UPLOAD_APP_FILE, variables: { input } })).uploadAppFile;
+        expect(afterPut.deduplicated).toBe(true);
+        expect(afterPut.uploadUrl).toBeNull();
+        expect(afterPut.fileId).toBe(retry.fileId);
+      });
+    });
+
+    describe('Bulk upload limit', () => {
+      const BUCKET_LIMITS = `
+        query BucketLimits {
+          appBuckets {
+            nodes {
+              key
+              maxBulkFiles
+            }
+          }
+        }
+      `;
+
+      it('reads the default limit when the storage module leaves max_bulk_files unset', async () => {
+        const data = expectSuccess(await postGraphQL({ query: BUCKET_LIMITS }));
+        const limits = data.appBuckets.nodes.map((b: { maxBulkFiles: number }) => b.maxBulkFiles);
+        expect(limits.length).toBeGreaterThan(0);
+        expect(new Set(limits)).toEqual(new Set([100]));
+      });
+
+      it('reads the storage module\'s own max_bulk_files when it is set', async () => {
+        const data = expectSuccess(await postGraphQLViaApi(bobDatabaseId, 'bob-app', { query: BUCKET_LIMITS }));
+        const limits = data.appBuckets.nodes.map((b: { maxBulkFiles: number }) => b.maxBulkFiles);
+        expect(limits.length).toBeGreaterThan(0);
+        expect(new Set(limits)).toEqual(new Set([25]));
+      });
     });
   });
 

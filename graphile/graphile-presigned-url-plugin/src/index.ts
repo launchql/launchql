@@ -22,6 +22,7 @@
  * ```
  */
 
+export { createBulkLimitPlugin } from './bulk-limit-field';
 export {
   CONFIRM_PREFIX_BYTES,
   confirmUploadedBytes,

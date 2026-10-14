@@ -18,7 +18,8 @@ Presigned URL upload plugin for PostGraphile v5.
 
 - `requestUploadUrl` mutation — generates presigned PUT URLs for direct client-to-S3 upload
 - `downloadUrl` computed field — presigned GET URLs for private files, public URLs for public files
-- Content-hash based S3 keys (SHA-256) with automatic deduplication
+- `maxBulkFiles` field on bucket types — the most files one bulk-upload call accepts (`storage_module.max_bulk_files`, default 100)
+- Content-hash based S3 keys (SHA-256) with automatic deduplication — only against rows whose bytes are in S3, so a retry of a never-completed upload gets a fresh URL
 - Per-bucket MIME type and file size validation
 
 ## Usage
