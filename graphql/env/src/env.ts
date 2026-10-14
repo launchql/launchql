@@ -31,7 +31,6 @@ export const getGraphQLEnvVars = (env: NodeJS.ProcessEnv = process.env): Partial
     API_ROLE_NAME,
     API_FLUSH_TOKEN,
     API_INTROSPECTION_ROLE,
-    API_CONTROL_ROLE,
 
     EMBEDDER_PROVIDER,
     EMBEDDER_MODEL,
@@ -110,8 +109,7 @@ export const getGraphQLEnvVars = (env: NodeJS.ProcessEnv = process.env): Partial
       ...(API_ANON_ROLE && { anonRole: API_ANON_ROLE }),
       ...(API_ROLE_NAME && { roleName: API_ROLE_NAME }),
       ...(API_FLUSH_TOKEN && { flushToken: API_FLUSH_TOKEN }),
-      ...(API_INTROSPECTION_ROLE && { introspectionRole: API_INTROSPECTION_ROLE }),
-      ...(API_CONTROL_ROLE && { controlRole: API_CONTROL_ROLE })
+      ...(API_INTROSPECTION_ROLE && { introspectionRole: API_INTROSPECTION_ROLE })
     },
     ...((EMBEDDER_PROVIDER || CHAT_PROVIDER) && {
       llm: {

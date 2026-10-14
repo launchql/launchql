@@ -248,35 +248,29 @@ describe('createRecordRefusalsSink', () => {
       'jwt.claims.user_id': 'u-platform',
       'jwt.claims.database_id': 'db-platform'
     }));
-    const sink = createRecordRefusalsSink({ pool: pool as any, role: 'refusals_control', claims });
+    const sink = createRecordRefusalsSink({ pool: pool as any, claims });
     const rows = refusalRows([{ key: key(), count: 2, firstAt: 1, lastAt: 2 }]);
 
     await sink(rows);
 
     const texts = queries.map((q) => q.text);
     expect(texts[0]).toBe('BEGIN');
-    expect(texts.slice(1, 4)).toEqual([
-      'SELECT set_config($1, $2, true)',
-      'SELECT set_config($1, $2, true)',
-      'SELECT set_config($1, $2, true)'
-    ]);
+    expect(texts.slice(1, 3)).toEqual(['SELECT set_config($1, $2, true)', 'SELECT set_config($1, $2, true)']);
     expect(queries[1].values).toEqual(['jwt.claims.user_id', 'u-platform']);
     expect(queries[2].values).toEqual(['jwt.claims.database_id', 'db-platform']);
-    // The flush runs as the control role: the login role itself holds nothing.
-    expect(queries[3].values).toEqual(['role', 'refusals_control']);
-    expect(texts[4]).toBe('SELECT "constructive_usage_private"."record_refusals"($1::jsonb) AS recorded');
-    expect(JSON.parse(queries[4].values![0] as string)).toEqual(rows);
-    expect(texts[5]).toBe('COMMIT');
+    expect(texts[3]).toBe('SELECT "constructive_usage_private"."record_refusals"($1::jsonb) AS recorded');
+    expect(JSON.parse(queries[3].values![0] as string)).toEqual(rows);
+    expect(texts[4]).toBe('COMMIT');
     expect(client.release).toHaveBeenCalledTimes(1);
   });
 
   it('does nothing for an empty batch and rejects a bad function name', async () => {
     const { pool, claims } = { ...fakePool(), claims: jest.fn(async () => ({})) };
-    await createRecordRefusalsSink({ pool: pool as any, role: 'refusals_control', claims })([]);
+    await createRecordRefusalsSink({ pool: pool as any, claims })([]);
     expect(pool.connect).not.toHaveBeenCalled();
     expect(claims).not.toHaveBeenCalled();
     expect(() =>
-      createRecordRefusalsSink({ pool: pool as any, role: 'refusals_control', claims, functionName: 'x; drop table y' })
+      createRecordRefusalsSink({ pool: pool as any, claims, functionName: 'x; drop table y' })
     ).toThrow(/invalid function name/);
   });
 
@@ -286,7 +280,7 @@ describe('createRecordRefusalsSink', () => {
       if (text.startsWith('SELECT "')) throw new Error('claim missing');
       return { rows: [], rowCount: 0 };
     });
-    const sink = createRecordRefusalsSink({ pool: pool as any, role: 'refusals_control', claims: async () => ({}) });
+    const sink = createRecordRefusalsSink({ pool: pool as any, claims: async () => ({}) });
     await expect(sink(refusalRows([{ key: key(), count: 1, firstAt: 1, lastAt: 1 }]))).rejects.toThrow('claim missing');
     expect(client.query).toHaveBeenCalledWith('ROLLBACK');
     expect(client.release).toHaveBeenCalledTimes(1);

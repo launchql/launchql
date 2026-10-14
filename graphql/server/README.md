@@ -56,6 +56,13 @@ This starts the server with env defaults from `@constructive-io/graphql-env`.
 
 ## What it does
 
+Platform deployments connect through one pgpm-provisioned `NOSUPERUSER INHERIT
+BYPASSRLS` login with direct metadata privileges, configured only with
+`PGUSER`/`PGPASSWORD`. Startup and routing queries use that pool login directly.
+Requests continue to switch to `authenticated` or `anonymous`, so PostgreSQL
+enforces their RLS policies; the login's BYPASSRLS attribute is not inherited
+after `SET ROLE`.
+
 Runs an Express server that wires CORS, uploads, domain parsing, auth, and PostGraphile into a single GraphQL endpoint. It serves `/graphql` and `/graphiql`, injects per-request `pgSettings`, and flushes cached schemas on demand or via database notifications. When meta API is enabled, it resolves API config (schemas, roles, modules) from the meta schema using the request host and enforces `api.isPublic`, with optional header overrides in private mode; when meta API is disabled, it serves the fixed schemas and roles from `api.exposedSchemas`, `api.anonRole`, and `api.roleName`.
 
 ## Key Features
@@ -146,7 +153,6 @@ Configuration is merged from defaults, config files, and env vars via `@construc
 | `API_ROLE_NAME`                | Authenticated role name               | `administrator`                                               |
 | `API_FLUSH_TOKEN`              | Bearer token required by `POST /flush`; route is not mounted when unset | empty                        |
 | `API_INTROSPECTION_ROLE`       | Role PostGraphile introspects as; unset means the pool's connecting role. Naming a role with fewer grants removes fields from the schema | empty |
-| `API_CONTROL_ROLE`             | Role control-plane queries (routing, API lookups, module loaders, flush, refusal log) run as via `SET LOCAL ROLE`. The login role holds no privileges, so the server refuses to start without it | required |
 | `GRAPHQL_OBSERVABILITY_ENABLED` | Master switch for debug routes and sampler | `false`                                                  |
 | `GRAPHQL_DEBUG_SAMPLER_ENABLED` | Enables periodic NDJSON sampling when observability is on | `true`                                   |
 | `GRAPHQL_DEBUG_SAMPLER_INTERVAL_MS` | Sampler interval in milliseconds | `10000`                                                       |

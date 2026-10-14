@@ -122,14 +122,6 @@ export interface ApiOptions {
    * role is only safe once its grants cover the served surface.
    */
   introspectionRole?: string;
-  /**
-   * Role every control-plane query runs as (`SET LOCAL ROLE` inside its own
-   * transaction): route resolution, API lookups, module loaders, cache
-   * invalidation and the refusal flush. The server's login role is NOINHERIT
-   * with no privileges of its own, so there is no default — the server refuses
-   * to start without one.
-   */
-  controlRole?: string;
 }
 
 /**

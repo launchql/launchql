@@ -68,9 +68,4 @@ export interface FunctionBindingsPluginOptions {
    * module are exposed; RLS on the underlying tables governs access.
    */
   modules: ComputeModuleNames[];
-  /**
-   * Control role the gather-time bindings read runs as (`SET LOCAL ROLE`); the
-   * server's login role holds no privileges of its own.
-   */
-  role: string;
 }

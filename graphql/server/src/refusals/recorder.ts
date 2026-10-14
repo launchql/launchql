@@ -10,10 +10,8 @@ import {
 import type { ConstructiveOptions } from '@constructive-io/graphql-types';
 import { Logger } from '@pgpmjs/logger';
 import type { Request } from 'express';
+import type { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
-import { controlPlanePool,type ControlPlaneQueryable } from 'pg-query-context';
-
-import { getControlRole } from '../control-role';
 
 const log = new Logger('refusals');
 
@@ -123,7 +121,7 @@ interface PlatformFlushIdentity {
  * that was missing named — rather than returning a partial identity.
  */
 export const resolvePlatformFlushIdentity = async (
-  pool: ControlPlaneQueryable,
+  pool: Pool,
   principalName = PLATFORM_BOOTSTRAP_PRINCIPAL
 ): Promise<PlatformFlushIdentity> => {
   const database = await pool.query<{ id: string }>(
@@ -177,16 +175,15 @@ export const createPlatformRefusalRecorder = (
   recorderOpts: PlatformRefusalRecorderOptions = {}
 ): RefusalRecorder => {
   const pool = getPgPool(opts.pg);
-  const role = getControlRole(opts);
   let cached: Record<string, string> | null = null;
   const claims = async (): Promise<Record<string, string>> => {
     if (cached) return cached;
-    cached = platformFlushClaims(await resolvePlatformFlushIdentity(controlPlanePool(pool, role), recorderOpts.principalName));
+    cached = platformFlushClaims(await resolvePlatformFlushIdentity(pool, recorderOpts.principalName));
     log.info(`[refusals] flushing as '${recorderOpts.principalName ?? PLATFORM_BOOTSTRAP_PRINCIPAL}'`);
     return cached;
   };
   return new RefusalRecorder({
-    sink: createRecordRefusalsSink({ pool, role, claims }),
+    sink: createRecordRefusalsSink({ pool, claims }),
     intervalMs: recorderOpts.intervalMs,
     jitterMs: recorderOpts.jitterMs,
     maxKeys: recorderOpts.maxKeys

@@ -7,9 +7,7 @@ import { createHash, timingSafeEqual } from 'crypto';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { graphileCache } from 'graphile-cache';
 import { getPgPool } from 'pg-cache';
-import { controlPlanePool } from 'pg-query-context';
 
-import { getControlRole } from '../control-role';
 import { getRoutingSchema, isValidSchemaName } from './routing';
 
 const log = new Logger('flush');
@@ -73,7 +71,7 @@ export const flushService = async (
   opts: ConstructiveOptions,
   databaseId: string
 ): Promise<void> => {
-  const pgPool = controlPlanePool(getPgPool(opts.pg), getControlRole(opts));
+  const pgPool = getPgPool(opts.pg);
   log.info('flushing db ' + databaseId);
 
   const api = new RegExp(`^api:${databaseId}:.*`);

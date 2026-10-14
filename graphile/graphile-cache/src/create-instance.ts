@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 import { Logger } from '@pgpmjs/logger';
 import express from 'express';
 import { grafserv } from 'grafserv/express/v4';
-import { type Queryable, RealtimeManager } from 'graphile-realtime-subscriptions';
+import { RealtimeManager } from 'graphile-realtime-subscriptions';
 import { postgraphile } from 'postgraphile';
 
 import type { GraphileCacheEntry } from './graphile-cache';
@@ -19,11 +19,6 @@ interface GraphileInstanceOptions {
    * pgServices (managed by pg-cache) rather than passed separately.
    */
   enableRealtime?: boolean;
-  /**
-   * What the RealtimeManager queries through. Defaults to the preset's pool;
-   * a server whose login role holds no privileges passes a control-role view.
-   */
-  realtimePool?: Queryable;
 }
 
 /**
@@ -45,7 +40,7 @@ interface GraphileInstanceOptions {
 export const createGraphileInstance = async (
   opts: GraphileInstanceOptions
 ): Promise<GraphileCacheEntry> => {
-  const { preset, cacheKey, enableRealtime = false, realtimePool } = opts;
+  const { preset, cacheKey, enableRealtime = false } = opts;
 
   const pgl = postgraphile(preset);
   const serv = pgl.createServ(grafserv);
@@ -72,7 +67,7 @@ export const createGraphileInstance = async (
       const resolvedPreset = pgl.getResolvedPreset();
       const pgService = (resolvedPreset as any).pgServices?.[0];
       const pgSubscriber = pgService?.pgSubscriber ?? null;
-      const pool = realtimePool ?? pgService?.adaptorSettings?.pool ?? null;
+      const pool = pgService?.adaptorSettings?.pool ?? null;
 
       if (!pgSubscriber) {
         log.warn(`PostGraphile[${cacheKey}] has no pgSubscriber — RealtimeManager will not be started`);

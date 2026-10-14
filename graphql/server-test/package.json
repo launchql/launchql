@@ -29,6 +29,7 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
+    "@pgpmjs/core": "workspace:^",
     "@0no-co/graphql.web": "^1.3.3",
     "@agentic-kit/ollama": "workspace:*",
     "@constructive-io/graphql-codegen": "workspace:^",

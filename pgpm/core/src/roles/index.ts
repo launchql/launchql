@@ -200,17 +200,22 @@ COMMIT;
 `;
 }
 
+export interface CreateUserOptions {
+  useLocksForRoles?: boolean;
+  bypassRls?: boolean;
+}
+
 /**
- * Generate SQL to create a user with password and grant base roles.
+ * Generate SQL to create or reconcile a login and grant base roles.
  * Callers should use getConnEnvOptions() from @pgpmjs/env to get merged values.
  * @param roles - Role mapping from getConnEnvOptions().roles!
- * @param useLocksForRoles - Whether to use advisory locks (from getConnEnvOptions().useLocksForRoles)
+ * @param options - Role locking and explicit RLS bypass (off by default).
  */
 export function generateCreateUserSQL(
   username: string, 
   password: string, 
   roles: RoleMapping,
-  useLocksForRoles = false
+  { useLocksForRoles = false, bypassRls = false }: CreateUserOptions = {}
 ): string {
   if (!roles) {
     throw new Error(
@@ -259,6 +264,8 @@ BEGIN
     END;
   END IF;
 
+  EXECUTE format('ALTER ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION ${bypassRls ? 'BYPASSRLS' : 'NOBYPASSRLS'} PASSWORD %L', v_username, v_password);
+
   -- Grant anonymous to user
   IF NOT EXISTS (
     SELECT 1 FROM pg_auth_members am
@@ -273,8 +280,7 @@ BEGIN
         -- 23505: Membership was granted concurrently; safe to ignore
         NULL;
       WHEN undefined_object THEN
-        -- 42704: One of the roles doesn't exist; log notice and continue
-        RAISE NOTICE 'Missing role when granting % to %', v_anonymous, v_username;
+        RAISE;
       WHEN insufficient_privilege THEN
         -- 42501: Must surface this error - caller lacks permission
         RAISE;
@@ -298,8 +304,7 @@ BEGIN
         -- 23505: Membership was granted concurrently; safe to ignore
         NULL;
       WHEN undefined_object THEN
-        -- 42704: One of the roles doesn't exist; log notice and continue
-        RAISE NOTICE 'Missing role when granting % to %', v_authenticated, v_username;
+        RAISE;
       WHEN insufficient_privilege THEN
         -- 42501: Must surface this error - caller lacks permission
         RAISE;

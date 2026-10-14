@@ -124,7 +124,6 @@ upstream default for that cache remains in effect.
 - `API_ROLE_NAME` - Default role name
 - `API_FLUSH_TOKEN` - Bearer token required by `POST /flush`; the route is not mounted when unset
 - `API_INTROSPECTION_ROLE` - Role PostGraphile introspects as; unset means the pool's connecting role
-- `API_CONTROL_ROLE` - Role every control-plane query runs as (`SET LOCAL ROLE` in its own transaction); required by the server, no default
 
 ## Defaults
 

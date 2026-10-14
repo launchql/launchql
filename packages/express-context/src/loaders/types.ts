@@ -10,7 +10,7 @@
  * `req.constructive.modules`.
  */
 
-import type { ControlPlaneQueryable } from 'pg-query-context';
+import type { Pool } from 'pg';
 
 /** Published logical name of the scoped routing plane. */
 export const DEFAULT_ROUTING_SCHEMA = 'routing_public';
@@ -51,16 +51,15 @@ export function requireDatabaseId(
 /**
  * Context passed to every loader's resolve function.
  * Provides both pool references so the loader can query whichever
- * database tier it needs. Both run every query as the control role
- * (`SET LOCAL ROLE` in its own transaction): the login role can read nothing.
+ * database tier it needs.
  */
 export interface LoaderContext {
   /** Routing/configuration database pool (for routing-plane lookups) */
-  routingPool: ControlPlaneQueryable;
+  routingPool: Pool;
   /** Routing-plane schema to query (defaults to the published routing_public) */
   routingSchema?: string;
   /** Tenant database pool (for metaschema_modules_public.* lookups) */
-  tenantPool: ControlPlaneQueryable;
+  tenantPool: Pool;
   /** UUID of the database being resolved */
   databaseId: string;
   /** UUID of the API (if resolved from domain/api-name lookup) */
