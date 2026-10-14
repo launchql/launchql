@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@constructive-db/machine-protocol": "workspace:*",
-    "@pgpmjs/logger": "^2.26.0",
+    "@pgpmjs/logger": "workspace:^",
     "node-pty": "1.1.0",
     "ws": "^8.21.3"
   },
