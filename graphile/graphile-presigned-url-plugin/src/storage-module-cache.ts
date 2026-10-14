@@ -26,12 +26,13 @@ const ONE_HOUR_MS = 1000 * 60 * 60;
  * and their schemas. This cache avoids re-querying metaschema
  * on every request.
  *
- * Pattern: same as graphile-cache's LRU with TTL-based eviction.
+ * Pattern: same as graphile-cache's LRU with TTL-based eviction. The TTL
+ * counts from the load, not the last read, so a changed row is picked up
+ * within one TTL however steadily the entry is being read.
  */
 const storageModuleCache = new LRUCache<string, StorageModuleConfig>({
   max: 50,
   ttl: process.env.NODE_ENV === 'development' ? FIVE_MINUTES_MS : ONE_HOUR_MS,
-  updateAgeOnGet: true,
 });
 
 /**
@@ -270,13 +271,16 @@ export function resolveStorageConfigFromCodec(
  * is safe. The important RLS is on the files table (INSERT/UPDATE),
  * which is never cached.
  *
+ * Only reconciled rows are cached: a row without a recorded `physical_name`
+ * is still waiting on the reconciler, so it is re-read until the name lands
+ * rather than pinned as not-reconciled for a whole TTL.
+ *
  * Keys: `bucket:${databaseId}:${storageModuleId}:${bucketKey}`
- * TTL: same as storage module cache (5min dev / 1hr prod)
+ * TTL: same as storage module cache (5min dev / 1hr prod), counted from the load
  */
 const bucketCache = new LRUCache<string, BucketConfig>({
   max: 500, // many buckets across many databases
   ttl: process.env.NODE_ENV === 'development' ? FIVE_MINUTES_MS : ONE_HOUR_MS,
-  updateAgeOnGet: true,
 });
 
 /**
@@ -363,6 +367,11 @@ export async function getBucketConfig(
     allow_custom_keys: row.allow_custom_keys ?? false,
     physical_name: storedPhysicalName(row),
   };
+
+  if (config.physical_name === null) {
+    log.debug(`Bucket ${databaseId}:${bucketKey} (id=${config.id}) has no physical name yet; not caching`);
+    return config;
+  }
 
   bucketCache.set(cacheKey, config);
   log.debug(`Cached bucket config for ${databaseId}:${bucketKey} (id=${config.id}, scope=${storageConfig.scope})`);

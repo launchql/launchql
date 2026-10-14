@@ -256,6 +256,30 @@ describe('BucketProvisioner integration (RustFS)', () => {
     });
   });
 
+  describe('provision — origins removed', () => {
+    const bucketName = testBucketName('cors-removed');
+
+    it('clears the CORS rule set once the bucket records no origin', async () => {
+      if (!objectStoreAvailable) return;
+
+      await provisioner.provision({ bucketName, accessType: 'private' });
+      expect((await provisioner.inspect(bucketName, 'private')).corsRules).toHaveLength(1);
+
+      const unbrowsed = new BucketProvisioner({ connection, allowedOrigins: [] });
+      const result = await unbrowsed.provision({ bucketName, accessType: 'private' });
+
+      expect(result.corsRules).toEqual([]);
+      expect((await provisioner.inspect(bucketName, 'private')).corsRules).toEqual([]);
+    });
+
+    it('provisions a fresh bucket that never had a CORS rule set', async () => {
+      if (!objectStoreAvailable) return;
+
+      const unbrowsed = new BucketProvisioner({ connection, allowedOrigins: [] });
+      await unbrowsed.provision({ bucketName: testBucketName('never-browsed'), accessType: 'private' });
+    });
+  });
+
   describe('updateCors', () => {
     const bucketName = testBucketName('cors-update');
 

@@ -122,7 +122,7 @@ describe('BucketProvisioner.provision — private bucket', () => {
 });
 
 describe('BucketProvisioner.provision — no browser origins', () => {
-  it('writes no CORS rule set for a bucket nothing browses', async () => {
+  it('clears any CORS rule set for a bucket nothing browses', async () => {
     const provisioner = new BucketProvisioner({
       connection: defaultOptions.connection,
       allowedOrigins: [],
@@ -140,7 +140,23 @@ describe('BucketProvisioner.provision — no browser origins', () => {
       'CreateBucketCommand',
       'PutPublicAccessBlockCommand',
       'DeleteBucketPolicyCommand',
+      'DeleteBucketCorsCommand',
     ]);
+  });
+
+  it('removes the rule set an earlier provision wrote once the origins are gone', async () => {
+    const browsed = new BucketProvisioner(defaultOptions);
+    await browsed.provision({ bucketName: 'test-origins-removed', accessType: 'private' });
+    mockSend.mockClear();
+
+    const unbrowsed = new BucketProvisioner({ connection: defaultOptions.connection, allowedOrigins: [] });
+    await unbrowsed.provision({ bucketName: 'test-origins-removed', accessType: 'private' });
+
+    const commandNames = mockSend.mock.calls.map(
+      (call: any[]) => call[0].constructor.name,
+    );
+    expect(commandNames).toContain('DeleteBucketCorsCommand');
+    expect(commandNames).not.toContain('PutBucketCorsCommand');
   });
 
   it('still applies the lifecycle rule a temp bucket needs', async () => {
@@ -570,6 +586,71 @@ describe('BucketProvisioner — graceful degradation (error-code matching)', () 
     });
   });
 
+  it('setBucketPolicy throws an AWS AccessDenied whose message mentions a policy', async () => {
+    // The shape AWS returns for a role without s3:PutBucketPolicy.
+    const err = new Error(
+      'User: arn:aws:iam::123456789012:role/reconciler is not authorized to perform: ' +
+        's3:PutBucketPolicy on resource: "arn:aws:s3:::tenant-public" because no ' +
+        'identity-based policy allows the s3:PutBucketPolicy action',
+    );
+    (err as any).name = 'AccessDenied';
+    (err as any).Code = 'AccessDenied';
+    mockSend.mockRejectedValueOnce(err);
+
+    const provisioner = new BucketProvisioner(defaultOptions);
+    await expect(
+      provisioner.setBucketPolicy('tenant-public', {
+        Version: '2012-10-17',
+        Statement: [],
+      }),
+    ).rejects.toThrow(/not authorized to perform: s3:PutBucketPolicy/);
+  });
+
+  it('setPublicAccessBlock throws a MalformedXML that names the configuration', async () => {
+    const err = new Error('The PublicAccessBlockConfiguration XML you provided was not well-formed');
+    (err as any).name = 'MalformedXML';
+    mockSend.mockRejectedValueOnce(err);
+
+    const provisioner = new BucketProvisioner(defaultOptions);
+    await expect(
+      provisioner.setPublicAccessBlock('test-bucket', {
+        BlockPublicAcls: true,
+        IgnorePublicAcls: true,
+        BlockPublicPolicy: true,
+        RestrictPublicBuckets: true,
+      }),
+    ).rejects.toThrow(ProvisionerError);
+  });
+
+  it('setCors throws an AccessDenied that names the configuration', async () => {
+    const err = new Error('Access Denied for CORSConfiguration');
+    (err as any).name = 'AccessDenied';
+    mockSend.mockRejectedValueOnce(err);
+
+    const provisioner = new BucketProvisioner(defaultOptions);
+    await expect(
+      provisioner.setCors('test-bucket', []),
+    ).rejects.toThrow(ProvisionerError);
+  });
+
+  it('clearCors treats a bucket with no CORS configuration as cleared', async () => {
+    const err = new Error('The CORS configuration does not exist');
+    (err as any).name = 'NoSuchCORSConfiguration';
+    mockSend.mockRejectedValueOnce(err);
+
+    const provisioner = new BucketProvisioner(defaultOptions);
+    await provisioner.clearCors('test-bucket');
+  });
+
+  it('clearCors throws on genuine errors', async () => {
+    const err = new Error('Access Denied');
+    (err as any).name = 'AccessDenied';
+    mockSend.mockRejectedValueOnce(err);
+
+    const provisioner = new BucketProvisioner(defaultOptions);
+    await expect(provisioner.clearCors('test-bucket')).rejects.toThrow(ProvisionerError);
+  });
+
   it('setBucketPolicy throws on genuine errors', async () => {
     mockSend.mockRejectedValueOnce(new Error('Access denied'));
 
@@ -600,12 +681,13 @@ describe('BucketProvisioner — graceful degradation (error-code matching)', () 
     await provisioner.enableVersioning('test-bucket');
   });
 
-  it('enableVersioning tolerates VersioningConfiguration message', async () => {
-    const err = new Error('VersioningConfiguration is not supported');
+  it('enableVersioning throws when only the message names the configuration', async () => {
+    const err = new Error('The VersioningConfiguration you provided is invalid');
+    (err as any).name = 'MalformedXML';
     mockSend.mockRejectedValueOnce(err);
 
     const provisioner = new BucketProvisioner(defaultOptions);
-    await provisioner.enableVersioning('test-bucket');
+    await expect(provisioner.enableVersioning('test-bucket')).rejects.toThrow(ProvisionerError);
   });
 
   it('enableVersioning throws on genuine errors', async () => {
@@ -639,14 +721,17 @@ describe('BucketProvisioner — graceful degradation (error-code matching)', () 
     ]);
   });
 
-  it('setLifecycleRules tolerates LifecycleConfiguration message', async () => {
-    const err = new Error('LifecycleConfiguration is not supported');
+  it('setLifecycleRules throws when only the message names the configuration', async () => {
+    const err = new Error('The LifecycleConfiguration you provided is invalid');
+    (err as any).name = 'MalformedXML';
     mockSend.mockRejectedValueOnce(err);
 
     const provisioner = new BucketProvisioner(defaultOptions);
-    await provisioner.setLifecycleRules('test-bucket', [
-      { id: 'test', prefix: '', expirationDays: 1, enabled: true },
-    ]);
+    await expect(
+      provisioner.setLifecycleRules('test-bucket', [
+        { id: 'test', prefix: '', expirationDays: 1, enabled: true },
+      ]),
+    ).rejects.toThrow(ProvisionerError);
   });
 
   it('setLifecycleRules tolerates MissingContentMD5 (MinIO edge-cicd)', async () => {

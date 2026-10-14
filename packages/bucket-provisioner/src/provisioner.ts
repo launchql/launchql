@@ -13,6 +13,7 @@
 import type { S3Client } from '@aws-sdk/client-s3';
 import {
   CreateBucketCommand,
+  DeleteBucketCorsCommand,
   DeleteBucketPolicyCommand,
   GetBucketCorsCommand,
   GetBucketLifecycleConfigurationCommand,
@@ -42,6 +43,24 @@ import type {
   UpdateCorsOptions,
 } from './types';
 import { ProvisionerError } from './types';
+
+/**
+ * Error codes an S3-compatible backend answers with when it does not implement
+ * a bucket-configuration API at all (older MinIO, some RustFS builds). Matched
+ * on the error's code only — never on message text, which AWS fills with the
+ * operation and policy names of real failures (an AccessDenied for
+ * `s3:PutBucketPolicy` reads "...because no identity-based policy allows...").
+ */
+const UNSUPPORTED_OPERATION_CODES = ['XmlParseException', 'NotImplemented'];
+
+function errorCode(err: any): string | undefined {
+  return err?.Code ?? err?.name;
+}
+
+function isUnsupportedOperation(err: any, extraCodes: string[] = []): boolean {
+  const code = errorCode(err);
+  return code !== undefined && [...UNSUPPORTED_OPERATION_CODES, ...extraCodes].includes(code);
+}
 
 /**
  * Options for the BucketProvisioner constructor.
@@ -144,6 +163,8 @@ export class BucketProvisioner {
     // A bucket no browser origin may reach gets no rule set: cross-origin
     // access is the bucket's own recorded data, and "none recorded" is a
     // legitimate answer, not a missing setting to invent an origin for.
+    // Provisioning converges, so "none" also clears a rule set an earlier
+    // provision wrote for origins the bucket no longer records.
     const effectiveOrigins = options.allowedOrigins ?? this.allowedOrigins;
     const corsRules = effectiveOrigins.length === 0
       ? []
@@ -152,6 +173,8 @@ export class BucketProvisioner {
         : buildUploadCorsRules(effectiveOrigins);
     if (corsRules.length > 0) {
       await this.setCors(bucketName, corsRules);
+    } else {
+      await this.clearCors(bucketName);
     }
 
     // 5. Versioning
@@ -245,9 +268,8 @@ export class BucketProvisioner {
   /**
    * Configure S3 Block Public Access settings.
    *
-   * Gracefully skips if the S3-compatible backend (e.g. MinIO) does not
-   * support PutPublicAccessBlock — the operation is best-effort since
-   * not all providers implement this AWS-specific API.
+   * Skips only when the S3-compatible backend (e.g. MinIO) answers that it
+   * does not implement PutPublicAccessBlock; every other failure throws.
    */
   async setPublicAccessBlock(
     bucketName: string,
@@ -261,18 +283,9 @@ export class BucketProvisioner {
         }),
       );
     } catch (err: any) {
-      // Some S3-compatible backends (e.g. older MinIO) don't support
-      // PutPublicAccessBlock. Treat XML parse errors or "not implemented"
-      // responses as non-fatal — the bucket is still usable.
-      if (
-        err.Code === 'XmlParseException' ||
-        err.name === 'XmlParseException' ||
-        err.Code === 'NotImplemented' ||
-        err.name === 'NotImplemented' ||
-        err.message?.includes('not well-formed') ||
-        err.message?.includes('not implemented') ||
-        err.message?.includes('PublicAccessBlockConfiguration')
-      ) {
+      // Some S3-compatible backends (e.g. older MinIO) don't implement
+      // PutPublicAccessBlock; the bucket is still usable without it.
+      if (isUnsupportedOperation(err)) {
         return;
       }
       throw new ProvisionerError(
@@ -286,9 +299,9 @@ export class BucketProvisioner {
   /**
    * Apply an S3 bucket policy.
    *
-   * Gracefully skips if the S3-compatible backend does not support
-   * PutBucketPolicy — bucket policies are best-effort since not all
-   * providers implement this AWS-specific API.
+   * Skips only when the S3-compatible backend answers that it does not
+   * implement PutBucketPolicy; every other failure (AccessDenied, a blocked
+   * public policy, a malformed document) throws.
    */
   async setBucketPolicy(
     bucketName: string,
@@ -302,17 +315,8 @@ export class BucketProvisioner {
         }),
       );
     } catch (err: any) {
-      // Some S3-compatible backends don't fully support bucket policies.
-      // Treat XML parse errors or "not implemented" responses as non-fatal.
-      if (
-        err.Code === 'XmlParseException' ||
-        err.name === 'XmlParseException' ||
-        err.Code === 'NotImplemented' ||
-        err.name === 'NotImplemented' ||
-        err.message?.includes('not well-formed') ||
-        err.message?.includes('not implemented') ||
-        err.message?.includes('policy')
-      ) {
+      // Some S3-compatible backends don't implement bucket policies.
+      if (isUnsupportedOperation(err)) {
         return;
       }
       throw new ProvisionerError(
@@ -337,14 +341,9 @@ export class BucketProvisioner {
     } catch (err: any) {
       // No policy to delete — that's fine
       if (
-        err.name === 'NoSuchBucketPolicy' ||
+        errorCode(err) === 'NoSuchBucketPolicy' ||
         err.$metadata?.httpStatusCode === 404 ||
-        err.Code === 'XmlParseException' ||
-        err.name === 'XmlParseException' ||
-        err.Code === 'NotImplemented' ||
-        err.name === 'NotImplemented' ||
-        err.message?.includes('not well-formed') ||
-        err.message?.includes('not implemented')
+        isUnsupportedOperation(err)
       ) {
         return;
       }
@@ -359,9 +358,8 @@ export class BucketProvisioner {
   /**
    * Set CORS configuration on an S3 bucket.
    *
-   * Gracefully skips if the S3-compatible backend (e.g. older MinIO) does
-   * not support PutBucketCors — CORS is best-effort since not all providers
-   * implement this API via the same endpoint path.
+   * Skips only when the S3-compatible backend (e.g. older MinIO) answers
+   * that it does not implement PutBucketCors; every other failure throws.
    */
   async setCors(bucketName: string, rules: CorsRule[]): Promise<void> {
     try {
@@ -380,18 +378,9 @@ export class BucketProvisioner {
         }),
       );
     } catch (err: any) {
-      // Some S3-compatible backends (e.g. older MinIO) don't support
-      // PutBucketCors via the standard path. Treat XML parse errors or
-      // "not implemented" responses as non-fatal.
-      if (
-        err.Code === 'XmlParseException' ||
-        err.name === 'XmlParseException' ||
-        err.Code === 'NotImplemented' ||
-        err.name === 'NotImplemented' ||
-        err.message?.includes('not well-formed') ||
-        err.message?.includes('not implemented') ||
-        err.message?.includes('CORSConfiguration')
-      ) {
+      // Some S3-compatible backends (e.g. older MinIO) don't implement
+      // PutBucketCors.
+      if (isUnsupportedOperation(err)) {
         return;
       }
       throw new ProvisionerError(
@@ -403,11 +392,29 @@ export class BucketProvisioner {
   }
 
   /**
+   * Remove the CORS configuration from an S3 bucket, so no browser origin may
+   * reach it. A bucket that has none already is the converged state.
+   */
+  async clearCors(bucketName: string): Promise<void> {
+    try {
+      await this.client.send(new DeleteBucketCorsCommand({ Bucket: bucketName }));
+    } catch (err: any) {
+      if (errorCode(err) === 'NoSuchCORSConfiguration' || isUnsupportedOperation(err)) {
+        return;
+      }
+      throw new ProvisionerError(
+        'CORS_FAILED',
+        `Failed to clear CORS on '${bucketName}': ${err.message}`,
+        err,
+      );
+    }
+  }
+
+  /**
    * Enable versioning on an S3 bucket.
    *
-   * Gracefully skips if the S3-compatible backend (e.g. MinIO edge-cicd)
-   * does not support PutBucketVersioning — versioning is best-effort
-   * since not all providers implement this API.
+   * Skips only when the S3-compatible backend (e.g. MinIO edge-cicd)
+   * answers that it does not implement PutBucketVersioning.
    */
   async enableVersioning(bucketName: string): Promise<void> {
     try {
@@ -418,18 +425,9 @@ export class BucketProvisioner {
         }),
       );
     } catch (err: any) {
-      // Some S3-compatible backends (e.g. MinIO edge-cicd) don't support
-      // PutBucketVersioning. Treat XML parse errors or "not implemented"
-      // responses as non-fatal.
-      if (
-        err.Code === 'XmlParseException' ||
-        err.name === 'XmlParseException' ||
-        err.Code === 'NotImplemented' ||
-        err.name === 'NotImplemented' ||
-        err.message?.includes('not well-formed') ||
-        err.message?.includes('not implemented') ||
-        err.message?.includes('VersioningConfiguration')
-      ) {
+      // Some S3-compatible backends (e.g. MinIO edge-cicd) don't implement
+      // PutBucketVersioning.
+      if (isUnsupportedOperation(err)) {
         return;
       }
       throw new ProvisionerError(
@@ -443,9 +441,8 @@ export class BucketProvisioner {
   /**
    * Set lifecycle rules on an S3 bucket.
    *
-   * Gracefully skips if the S3-compatible backend (e.g. MinIO edge-cicd)
-   * does not support PutBucketLifecycleConfiguration — lifecycle rules
-   * are best-effort since not all providers implement this API.
+   * Skips only when the S3-compatible backend (e.g. MinIO edge-cicd)
+   * answers that it does not implement PutBucketLifecycleConfiguration.
    */
   async setLifecycleRules(
     bucketName: string,
@@ -466,22 +463,10 @@ export class BucketProvisioner {
         }),
       );
     } catch (err: any) {
-      // Some S3-compatible backends (e.g. MinIO edge-cicd) don't support
-      // PutBucketLifecycleConfiguration (may require Content-MD5 header
-      // the SDK doesn't send). Treat XML parse errors, "not implemented",
-      // or missing-header responses as non-fatal.
-      if (
-        err.Code === 'XmlParseException' ||
-        err.name === 'XmlParseException' ||
-        err.Code === 'NotImplemented' ||
-        err.name === 'NotImplemented' ||
-        err.Code === 'MissingContentMD5' ||
-        err.name === 'MissingContentMD5' ||
-        err.message?.includes('not well-formed') ||
-        err.message?.includes('not implemented') ||
-        err.message?.includes('Content-Md5') ||
-        err.message?.includes('LifecycleConfiguration')
-      ) {
+      // Some S3-compatible backends (e.g. MinIO edge-cicd) don't implement
+      // PutBucketLifecycleConfiguration, or require a Content-MD5 header the
+      // SDK doesn't send.
+      if (isUnsupportedOperation(err, ['MissingContentMD5'])) {
         return;
       }
       throw new ProvisionerError(
