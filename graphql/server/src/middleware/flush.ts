@@ -6,6 +6,7 @@ import { svcCache } from '@pgpmjs/server-utils';
 import { createHash, timingSafeEqual } from 'crypto';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { graphileCache } from 'graphile-cache';
+import { clearStorageModuleCache } from 'graphile-presigned-url-plugin';
 import { getPgPool } from 'pg-cache';
 
 import { getRoutingSchema, isValidSchemaName } from './routing';
@@ -61,6 +62,8 @@ export const createFlushMiddleware = (
       return;
     }
 
+    const databaseId = req.databaseId ?? req.api?.databaseId;
+    if (databaseId) clearStorageModuleCache(databaseId);
     graphileCache.delete((req as any).svc_key);
     svcCache.delete((req as any).svc_key);
     res.status(200).send('OK');
@@ -71,6 +74,9 @@ export const flushService = async (
   opts: ConstructiveOptions,
   databaseId: string
 ): Promise<void> => {
+  // Do this before the routing lookup: an empty/removed domain must not leave
+  // module discovery alive after its schema has changed.
+  clearStorageModuleCache(databaseId);
   const pgPool = getPgPool(opts.pg);
   log.info('flushing db ' + databaseId);
 

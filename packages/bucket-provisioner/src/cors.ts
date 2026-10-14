@@ -57,9 +57,9 @@ export function buildUploadCorsRules(
 /**
  * Build restrictive CORS rules for private-only buckets.
  *
- * Similar to upload CORS but without GET (private files use
- * presigned URLs which include auth in the query string,
- * so CORS is less of a concern for downloads).
+ * Presigned GETs still need CORS for browser fetch/preview. Allow reads from
+ * the configured origins; S3 authorization and public-access blocking still
+ * reject unsigned access to private objects.
  *
  * @param allowedOrigins - Domains allowed to make cross-origin requests.
  * @param maxAgeSeconds - Preflight cache duration (default: 3600 = 1 hour)
@@ -75,7 +75,7 @@ export function buildPrivateCorsRules(
   return [
     {
       allowedOrigins,
-      allowedMethods: ['PUT', 'HEAD'],
+      allowedMethods: ['PUT', 'GET', 'HEAD'],
       allowedHeaders: [
         'Content-Type',
         'Content-Length',

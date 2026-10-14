@@ -224,7 +224,8 @@ CORS rules for public/temp buckets (PUT, GET, HEAD).
 
 #### `buildPrivateCorsRules(allowedOrigins, maxAgeSeconds?)`
 
-CORS rules for private buckets (PUT, HEAD only — no GET).
+CORS rules for private buckets (PUT, GET, HEAD for the configured origins).
+Presigned downloads still require browser CORS; allowing GET does not grant unsigned object access.
 
 ### Lifecycle Builders
 
@@ -273,7 +274,7 @@ Error codes:
 
 | Access Type | Block Public Access | Bucket Policy | CORS Methods | Lifecycle |
 |-------------|-------------------|---------------|--------------|-----------|
-| `private` | All blocked | None (deleted) | PUT, HEAD | None |
+| `private` | All blocked | None (deleted) | PUT, GET, HEAD | None |
 | `public` | Partially relaxed | Public-read | PUT, GET, HEAD | None |
 | `temp` | All blocked | None (deleted) | PUT, GET, HEAD | Auto-expire (1 day) |
 

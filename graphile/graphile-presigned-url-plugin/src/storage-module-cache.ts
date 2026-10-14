@@ -18,6 +18,32 @@ const DEFAULT_MAX_BULK_TOTAL_SIZE = 1073741824; // 1GB
 const FIVE_MINUTES_MS = 1000 * 60 * 5;
 const ONE_HOUR_MS = 1000 * 60 * 60;
 
+// Track only active reads, not an ever-growing generation map. A schema flush
+// may race a query started under the previous schema; let that request finish,
+// but do not let its result refill the cache after invalidation.
+const pendingReads = new Set<{
+  databaseId: string;
+  kind: 'module' | 'bucket';
+  invalidated: boolean;
+}>();
+
+async function readAndCache<T>(
+  databaseId: string,
+  kind: 'module' | 'bucket',
+  read: () => Promise<T>,
+  publish: (value: T) => void,
+): Promise<T> {
+  const pending = { databaseId, kind, invalidated: false };
+  pendingReads.add(pending);
+  try {
+    const value = await read();
+    if (!pending.invalidated) publish(value);
+    return value;
+  } finally {
+    pendingReads.delete(pending);
+  }
+}
+
 /**
  * LRU cache for per-database StorageModuleConfig.
  *
@@ -221,16 +247,16 @@ export async function loadAllStorageModules(
   }
 
   log.debug(`Loading all storage modules for database ${databaseId}`);
-  const result = await pgClient.query({ text: ALL_STORAGE_MODULES_QUERY, values: [databaseId] });
-  const configs = (result.rows as StorageModuleRow[]).map(buildConfig);
-
-  // Store the full list under a sentinel key (only if non-empty to avoid caching failed lookups)
-  if (configs.length > 0) {
-    const sentinel = { ...configs[0], _allConfigs: configs } as any;
-    storageModuleCache.set(cacheKey, sentinel);
-  }
-
-  return configs;
+  return readAndCache(databaseId, 'module', async () => {
+    const result = await pgClient.query({ text: ALL_STORAGE_MODULES_QUERY, values: [databaseId] });
+    return (result.rows as StorageModuleRow[]).map(buildConfig);
+  }, (configs) => {
+    // Avoid caching a database that has no storage modules yet.
+    if (configs.length > 0) {
+      const sentinel = { ...configs[0], _allConfigs: configs } as any;
+      storageModuleCache.set(cacheKey, sentinel);
+    }
+  });
 }
 
 /**
@@ -323,69 +349,77 @@ export async function getBucketConfig(
 
   log.debug(`Bucket cache miss for ${databaseId}:${bucketKey}${ownerId ? ` (owner=${ownerId})` : ''}, querying DB...`);
 
-  // Entity-keyed planes (the module records an entity table) use the
-  // (owner_id, key) composite lookup; app- and database-scope planes just use key.
-  const isEntityScoped = storageConfig.entityTableId !== null;
-  const hasOwner = ownerId && isEntityScoped;
-  const result = await pgClient.query({
-    text: hasOwner
-      ? `SELECT id, key, type, is_public, owner_id, allowed_mime_types, max_file_size, allow_custom_keys, physical_name
-         FROM ${storageConfig.bucketsQualifiedName}
-         WHERE key = $1 AND owner_id = $2
-         LIMIT 1`
-      : `SELECT id, key, type, is_public, ${isEntityScoped ? 'owner_id,' : ''} allowed_mime_types, max_file_size, allow_custom_keys, physical_name
-         FROM ${storageConfig.bucketsQualifiedName}
-         WHERE key = $1
-         LIMIT 1`,
-    values: hasOwner ? [bucketKey, ownerId] : [bucketKey],
-  });
+  return readAndCache(databaseId, 'bucket', async () => {
+    // Entity-keyed planes (the module records an entity table) use the
+    // (owner_id, key) composite lookup; app- and database-scope planes just use key.
+    const isEntityScoped = storageConfig.entityTableId !== null;
+    const hasOwner = ownerId && isEntityScoped;
+    const result = await pgClient.query({
+      text: hasOwner
+        ? `SELECT id, key, type, is_public, owner_id, allowed_mime_types, max_file_size, allow_custom_keys, physical_name
+           FROM ${storageConfig.bucketsQualifiedName}
+           WHERE key = $1 AND owner_id = $2
+           LIMIT 1`
+        : `SELECT id, key, type, is_public, ${isEntityScoped ? 'owner_id,' : ''} allowed_mime_types, max_file_size, allow_custom_keys, physical_name
+           FROM ${storageConfig.bucketsQualifiedName}
+           WHERE key = $1
+           LIMIT 1`,
+      values: hasOwner ? [bucketKey, ownerId] : [bucketKey],
+    });
 
-  if (result.rows.length === 0) {
-    return null;
-  }
+    if (result.rows.length === 0) {
+      return null;
+    }
 
-  const row = result.rows[0] as {
-    id: string;
-    key: string;
-    type: string;
-    is_public: boolean;
-    owner_id: string | null;
-    allowed_mime_types: string[] | null;
-    max_file_size: number | null;
-    allow_custom_keys: boolean;
-    physical_name: string | null;
-  };
+    const row = result.rows[0] as {
+      id: string;
+      key: string;
+      type: string;
+      is_public: boolean;
+      owner_id: string | null;
+      allowed_mime_types: string[] | null;
+      max_file_size: number | null;
+      allow_custom_keys: boolean;
+      physical_name: string | null;
+    };
 
-  const config: BucketConfig = {
-    id: row.id,
-    key: row.key,
-    type: row.type as BucketConfig['type'],
-    is_public: row.is_public,
-    owner_id: row.owner_id ?? null,
-    allowed_mime_types: row.allowed_mime_types,
-    max_file_size: row.max_file_size,
-    allow_custom_keys: row.allow_custom_keys ?? false,
-    physical_name: storedPhysicalName(row),
-  };
+    const config: BucketConfig = {
+      id: row.id,
+      key: row.key,
+      type: row.type as BucketConfig['type'],
+      is_public: row.is_public,
+      owner_id: row.owner_id ?? null,
+      allowed_mime_types: row.allowed_mime_types,
+      max_file_size: row.max_file_size,
+      allow_custom_keys: row.allow_custom_keys ?? false,
+      physical_name: storedPhysicalName(row),
+    };
 
-  if (config.physical_name === null) {
-    log.debug(`Bucket ${databaseId}:${bucketKey} (id=${config.id}) has no physical name yet; not caching`);
+    if (config.physical_name === null) {
+      log.debug(`Bucket ${databaseId}:${bucketKey} (id=${config.id}) has no physical name yet; not caching`);
+      return config;
+    }
+
     return config;
-  }
-
-  bucketCache.set(cacheKey, config);
-  log.debug(`Cached bucket config for ${databaseId}:${bucketKey} (id=${config.id}, scope=${storageConfig.scope})`);
-
-  return config;
+  }, (config) => {
+    if (config?.physical_name != null) bucketCache.set(cacheKey, config);
+  });
 }
 
 /**
- * Clear the storage module cache AND bucket cache.
- * Useful for testing or schema changes.
+ * Clear storage discovery and bucket metadata for one database (or all).
+ * Schema invalidation must clear both and fence reads already in flight.
  */
-export function clearStorageModuleCache(): void {
-  storageModuleCache.clear();
-  bucketCache.clear();
+export function clearStorageModuleCache(databaseId?: string): void {
+  for (const pending of pendingReads) {
+    if (databaseId === undefined || pending.databaseId === databaseId) pending.invalidated = true;
+  }
+  if (databaseId === undefined) {
+    storageModuleCache.clear();
+  } else {
+    storageModuleCache.delete(`storage:${databaseId}:all-list`);
+  }
+  clearBucketCache(databaseId);
 }
 
 /**
@@ -393,7 +427,12 @@ export function clearStorageModuleCache(): void {
  * Useful when bucket config changes are detected.
  */
 export function clearBucketCache(databaseId?: string): void {
-  if (!databaseId) {
+  for (const pending of pendingReads) {
+    if (pending.kind === 'bucket' && (databaseId === undefined || pending.databaseId === databaseId)) {
+      pending.invalidated = true;
+    }
+  }
+  if (databaseId === undefined) {
     bucketCache.clear();
     return;
   }

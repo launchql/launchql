@@ -115,7 +115,7 @@ describe('BucketProvisioner integration (RustFS)', () => {
       expect(result.corsRules[0].allowedOrigins).toEqual(TEST_ORIGINS);
       expect(result.corsRules[0].allowedMethods).toContain('PUT');
       expect(result.corsRules[0].allowedMethods).toContain('HEAD');
-      expect(result.corsRules[0].allowedMethods).not.toContain('GET');
+      expect(result.corsRules[0].allowedMethods).toContain('GET');
     });
 
     it('should be inspectable after provisioning', async () => {
@@ -303,11 +303,12 @@ describe('BucketProvisioner integration (RustFS)', () => {
 
       expect(rules).toHaveLength(1);
       expect(rules[0].allowedOrigins).toEqual(newOrigins);
+      expect(rules[0].allowedMethods).toContain('GET');
       expect(rules[0].allowedMethods).toContain('PUT');
       expect(rules[0].allowedMethods).toContain('HEAD');
     });
 
-    it('should switch from private to public CORS methods on access type change', async () => {
+    it('should retain upload and download methods when changing to public access', async () => {
       if (!objectStoreAvailable) return;
 
       const rules = await provisioner.updateCors({
