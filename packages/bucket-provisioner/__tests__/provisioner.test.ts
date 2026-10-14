@@ -82,10 +82,25 @@ describe('BucketProvisioner.provision — private bucket', () => {
     expect(result.lifecycleRules).toHaveLength(0);
     expect(result.corsRules).toHaveLength(1);
 
-    // CORS for private bucket: PUT + HEAD only (no GET)
+    // CORS for private bucket: PUT + GET + HEAD; authorization still keeps objects private
     expect(result.corsRules[0].allowedMethods).toContain('PUT');
     expect(result.corsRules[0].allowedMethods).toContain('HEAD');
-    expect(result.corsRules[0].allowedMethods).not.toContain('GET');
+    expect(result.corsRules[0].allowedMethods).toContain('GET');
+
+    const commands = mockSend.mock.calls.map(([command]) => command);
+    const cors = commands.find(command => command.constructor.name === 'PutBucketCorsCommand');
+    expect(cors.input.CORSConfiguration.CORSRules[0]).toMatchObject({
+      AllowedOrigins: ['https://app.example.com'],
+      AllowedMethods: ['PUT', 'GET', 'HEAD'],
+    });
+    const access = commands.find(command => command.constructor.name === 'PutPublicAccessBlockCommand');
+    expect(access.input.PublicAccessBlockConfiguration).toEqual({
+      BlockPublicAcls: true,
+      IgnorePublicAcls: true,
+      BlockPublicPolicy: true,
+      RestrictPublicBuckets: true,
+    });
+    expect(commands.some(command => command.constructor.name === 'PutBucketPolicyCommand')).toBe(false);
   });
 
   it('calls S3 commands in correct order', async () => {

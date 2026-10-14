@@ -56,14 +56,15 @@ describe('buildUploadCorsRules', () => {
 });
 
 describe('buildPrivateCorsRules', () => {
-  it('builds rules with PUT and HEAD only (no GET)', () => {
+  it('builds rules with PUT, GET and HEAD for explicitly allowed origins', () => {
     const rules = buildPrivateCorsRules(['https://app.example.com']);
     expect(rules).toHaveLength(1);
+    expect(rules[0].allowedOrigins).toEqual(['https://app.example.com']);
 
     const rule = rules[0];
     expect(rule.allowedMethods).toContain('PUT');
     expect(rule.allowedMethods).toContain('HEAD');
-    expect(rule.allowedMethods).not.toContain('GET');
+    expect(rule.allowedMethods).toContain('GET');
   });
 
   it('includes required headers for presigned uploads', () => {
