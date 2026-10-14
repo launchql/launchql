@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.30.1](https://github.com/constructive-io/constructive/compare/@constructive-io/bucket-provisioner@0.30.0...@constructive-io/bucket-provisioner@0.30.1) (2026-10-14)
+
+### Bug Fixes
+
+- **storage:** re-read unreconciled buckets, expire cache entries on TTL, converge bucket CORS and stop swallowing S3 errors by message text ([6d61ab4](https://github.com/constructive-io/constructive/commit/6d61ab46dde25a4f4bac786a8f331962e99fe8e5))
+
 # [0.30.0](https://github.com/constructive-io/constructive/compare/@constructive-io/bucket-provisioner@0.29.0...@constructive-io/bucket-provisioner@0.30.0) (2026-10-13)
 
 ### Features

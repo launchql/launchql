@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/graphql-dev-server",
-  "version": "3.20.12",
+  "version": "3.20.13",
   "author": "Constructive <developers@constructive.io>",
   "description": "Pure-PostGraphile single-tenant dev server (no scoped routing, no database-id plugins)",
   "main": "index.js",

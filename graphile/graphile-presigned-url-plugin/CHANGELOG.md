@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.2](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.22.1...graphile-presigned-url-plugin@1.22.2) (2026-10-14)
+
+### Bug Fixes
+
+- **storage:** re-read unreconciled buckets, expire cache entries on TTL, converge bucket CORS and stop swallowing S3 errors by message text ([6d61ab4](https://github.com/constructive-io/constructive/commit/6d61ab46dde25a4f4bac786a8f331962e99fe8e5))
+
 ## [1.22.1](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.22.0...graphile-presigned-url-plugin@1.22.1) (2026-10-13)
 
 ### Bug Fixes
