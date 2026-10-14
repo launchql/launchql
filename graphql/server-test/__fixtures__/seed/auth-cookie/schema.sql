@@ -32,6 +32,9 @@ RETURNS TABLE (
   WHERE token_str = 'session-token';
 $$ LANGUAGE sql STABLE;
 
+-- As the generated auth module does: the server resolves the token as the anonymous request role.
+GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".authenticate(text) TO anonymous, authenticated;
+
 CREATE TYPE "simple-pets-public".auth_token AS (
   access_token text
 );

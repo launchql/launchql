@@ -3,6 +3,8 @@ import { Pool, type PoolClient } from 'pg';
 import { buildConnectionString, getPgPool } from 'pg-cache';
 import { getPgEnvOptions } from 'pg-env';
 
+import { getControlRole } from '../control-role';
+
 const ACTIVE_ACTIVITY_SQL = `
   select
     pid,
@@ -160,6 +162,7 @@ const withDiagnosticsClient = async <T>(
 
   try {
     await client.query('BEGIN');
+    await client.query('SELECT set_config($1, $2, true)', ['role', getControlRole(opts)]);
     await client.query(`SET LOCAL statement_timeout = '${DIAGNOSTICS_STATEMENT_TIMEOUT_MS}ms'`);
     await client.query(`SET LOCAL lock_timeout = '${DIAGNOSTICS_LOCK_TIMEOUT_MS}ms'`);
     const result = await fn(client);

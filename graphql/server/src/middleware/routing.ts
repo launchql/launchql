@@ -1,5 +1,5 @@
 import { Logger } from '@pgpmjs/logger';
-import { Pool } from 'pg';
+import type { ControlPlaneQueryable } from 'pg-query-context';
 
 import { ApiOptions, ApiStructure } from '../types';
 
@@ -83,7 +83,7 @@ export const isValidSchemaName = (name: string): boolean =>
  * treats it as a hard no-match (→ 404); there is no legacy fallback.
  */
 export const resolveRoute = async (
-  pool: Pool,
+  pool: ControlPlaneQueryable,
   schema: string,
   host: string
 ): Promise<ResolvedRoute | null> => {
