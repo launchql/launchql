@@ -191,6 +191,27 @@ describe('WebAuthn over GraphQL', () => {
     expect(codeOf(res)).toBe('WEBAUTHN_CREDENTIAL_NOT_FOUND');
   });
 
+  it('persists against the challenge it verified when two registrations are pending', async () => {
+    const first = await createSoftwareAuthenticator();
+    const second = await createSoftwareAuthenticator();
+    const a = (await post(REGISTER_BEGIN, {}, SESSION)).body.data.webauthnRegisterBegin;
+    const b = (await post(REGISTER_BEGIN, {}, SESSION)).body.data.webauthnRegisterBegin;
+
+    const responseA = await first.registration(a.options, ORIGIN);
+    const finishA = await post(REGISTER_FINISH, { response: responseA, webauthnUserId: a.webauthnUserId }, SESSION);
+    expect(finishA.body.errors).toBeUndefined();
+
+    const replay = await post(REGISTER_FINISH, { response: responseA, webauthnUserId: a.webauthnUserId }, SESSION);
+    expect(codeOf(replay)).toBe('WEBAUTHN_VERIFICATION_FAILED');
+
+    const responseB = await second.registration(b.options, ORIGIN);
+    const finishB = await post(REGISTER_FINISH, { response: responseB, webauthnUserId: b.webauthnUserId }, SESSION);
+    expect(finishB.body.errors).toBeUndefined();
+    expect(finishB.body.data.webauthnRegisterFinish.credentialId).not.toBe(
+      finishA.body.data.webauthnRegisterFinish.credentialId
+    );
+  });
+
   it('rejects a registration response from an origin outside the policy', async () => {
     const authenticator = await createSoftwareAuthenticator();
     const begin = await post(REGISTER_BEGIN, {}, SESSION);

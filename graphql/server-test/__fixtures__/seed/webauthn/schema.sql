@@ -59,19 +59,26 @@ $$ LANGUAGE sql STABLE SECURITY DEFINER;
 CREATE FUNCTION "simple-pets-auth-private".webauthn_finish_registration(
   credential_id text, public_key bytea, sign_count bigint, transports text[],
   credential_device_type text, backup_eligible boolean, backup_state boolean,
-  webauthn_user_id text, user_id uuid, name text DEFAULT NULL
+  webauthn_user_id text, user_id uuid, challenge text, name text DEFAULT NULL
 ) RETURNS text AS $$
-  WITH consumed AS (
-    UPDATE "simple-pets-auth-private".webauthn_challenges c SET consumed = true
-    WHERE c.name = 'webauthn_register_challenge' AND c.user_id = webauthn_finish_registration.user_id AND NOT c.consumed
-    RETURNING c.id
-  )
+DECLARE
+  v_credential_id text;
+BEGIN
+  UPDATE "simple-pets-auth-private".webauthn_challenges c SET consumed = true
+  WHERE c.name = 'webauthn_register_challenge'
+    AND c.user_id = webauthn_finish_registration.user_id
+    AND c.challenge = webauthn_finish_registration.challenge
+    AND NOT c.consumed;
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'WEBAUTHN_REGISTER_CHALLENGE_NOT_FOUND_OR_EXPIRED' USING ERRCODE = 'P0001';
+  END IF;
   INSERT INTO "simple-pets-auth-private".webauthn_credentials
     (credential_id, user_id, public_key, sign_count, transports, webauthn_user_id, name)
-  SELECT credential_id, user_id, public_key, sign_count, transports, webauthn_user_id, name
-  WHERE EXISTS (SELECT 1 FROM consumed)
-  RETURNING webauthn_credentials.credential_id;
-$$ LANGUAGE sql VOLATILE SECURITY DEFINER;
+  VALUES (credential_id, user_id, public_key, sign_count, transports, webauthn_user_id, name)
+  RETURNING webauthn_credentials.credential_id INTO v_credential_id;
+  RETURN v_credential_id;
+END;
+$$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
 CREATE FUNCTION "simple-pets-auth-private".webauthn_begin_sign_in(user_id uuid DEFAULT NULL)
 RETURNS jsonb AS $$
@@ -129,7 +136,7 @@ $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA "simple-pets-auth-private" FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".authenticate(text) TO administrator, authenticated, anonymous;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_begin_registration(uuid) TO authenticated;
-GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_finish_registration(text, bytea, bigint, text[], text, boolean, boolean, text, uuid, text) TO administrator;
+GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_finish_registration(text, bytea, bigint, text[], text, boolean, boolean, text, uuid, text, text) TO administrator;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_begin_sign_in(uuid) TO anonymous, authenticated;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_challenge_matches(text, text, uuid) TO administrator;
 GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".webauthn_credential_for_assertion(text, uuid) TO administrator;

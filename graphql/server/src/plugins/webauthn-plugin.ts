@@ -346,22 +346,29 @@ export const WebauthnPlugin: GraphileConfig.Plugin = {
               fail('BAD_USER_INPUT', `name must be at most ${MAX_NAME_LENGTH} characters`);
             }
 
+            let verifiedChallenge: string | null = null;
             const verified = await withVerifierLane(withPgClient, pgSettings, (tx) =>
               verifying(() => verifyRegistrationResponse({
                 response,
-                expectedChallenge: (challenge) => challengeMatches(tx, settings, REGISTER_CHALLENGE, challenge, null),
+                expectedChallenge: async (challenge) => {
+                  const matches = await challengeMatches(tx, settings, REGISTER_CHALLENGE, challenge, null);
+                  if (matches) verifiedChallenge = challenge;
+                  return matches;
+                },
                 expectedOrigin: settings.originAllowlist,
                 expectedRPID: settings.rpId,
                 requireUserVerification: settings.requireUserVerification
               }))
             );
-            if (!verified.verified) fail('WEBAUTHN_VERIFICATION_FAILED', 'WebAuthn registration verification failed');
+            if (!verified.verified || verifiedChallenge === null) {
+              fail('WEBAUTHN_VERIFICATION_FAILED', 'WebAuthn registration verification failed');
+            }
 
             const { credential, credentialDeviceType, credentialBackedUp } = verified.registrationInfo;
             const credentialId = await withVerifierLane(withPgClient, pgSettings, async (tx) => {
               const { rows } = await tx.query({
                 text: `SELECT ${procedure(settings, 'webauthn_finish_registration')}(
-                  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+                  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
                 ) AS id`,
                 values: [
                   credential.id,
@@ -375,6 +382,8 @@ export const WebauthnPlugin: GraphileConfig.Plugin = {
                   credentialBackedUp,
                   webauthnUserId,
                   userId,
+                  // Consume exactly the challenge the attestation was verified against.
+                  verifiedChallenge,
                   name
                 ]
               });
