@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.30.2](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.30.1...graphql-server-test@3.30.2) (2026-10-14)
+
+### Bug Fixes
+
+- **webauthn:** pass the verified challenge to webauthn_finish_registration ([2278e45](https://github.com/constructive-io/constructive/commit/2278e457fc2160e5914ffee29f6208d024739858))
+
 ## [3.30.1](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.30.0...graphql-server-test@3.30.1) (2026-10-13)
 
 **Note:** Version bump only for package graphql-server-test

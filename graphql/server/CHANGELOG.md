@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.29.2](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.29.1...@constructive-io/graphql-server@5.29.2) (2026-10-14)
+
+### Bug Fixes
+
+- **webauthn:** pass the verified challenge to webauthn_finish_registration ([2278e45](https://github.com/constructive-io/constructive/commit/2278e457fc2160e5914ffee29f6208d024739858))
+
 ## [5.29.1](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.29.0...@constructive-io/graphql-server@5.29.1) (2026-10-13)
 
 **Note:** Version bump only for package @constructive-io/graphql-server
