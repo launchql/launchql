@@ -42,8 +42,12 @@ beforeAll(async () => {
 
   const roles = { anonymous: 'anonymous', authenticated: 'authenticated' };
   await pg.query(generateCreateUserSQL(LOGIN, randomBytes(24).toString('hex'), roles));
-  await pg.query(generateCreateUserSQL(LOGIN, PASSWORD, roles));
+  await pg.query(generateCreateUserSQL(LOGIN, PASSWORD, roles, { bypassRls: true }));
   await pg.query(`
+    ALTER TABLE routing_public.domains ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE metaschema_public.database ENABLE ROW LEVEL SECURITY;
+    GRANT USAGE ON SCHEMA routing_public, metaschema_public TO authenticated, anonymous;
+    GRANT SELECT ON routing_public.domains, metaschema_public.database TO authenticated, anonymous;
     GRANT CONNECT ON DATABASE "${pg.config.database}" TO "${LOGIN}";
     DO $grant$
     DECLARE s text;
@@ -91,17 +95,32 @@ afterEach(async () => {
   await pg.afterEach();
 });
 
-it('uses one ordinary inheriting login with the pgpm request-role memberships', async () => {
+it('uses one non-superuser inheriting login with RLS bypass and the pgpm request-role memberships', async () => {
   const { rows } = await pg.query(`
-    SELECT rolsuper, rolbypassrls, rolinherit,
+    SELECT rolsuper, rolbypassrls, rolinherit, rolcreatedb, rolcreaterole,
       pg_has_role(rolname, 'anonymous', 'USAGE') AS inherits_anonymous,
       pg_has_role(rolname, 'authenticated', 'USAGE') AS inherits_authenticated
     FROM pg_roles WHERE rolname = $1
   `, [LOGIN]);
   expect(rows[0]).toEqual({
-    rolsuper: false, rolbypassrls: false, rolinherit: true,
+    rolsuper: false, rolbypassrls: true, rolinherit: true,
+    rolcreatedb: false, rolcreaterole: false,
     inherits_anonymous: true, inherits_authenticated: true
   });
+});
+
+it.each(['authenticated', 'anonymous'])('reads startup metadata as the login, but filters rows after SET ROLE %s', async (role) => {
+  await pg.query(`SET LOCAL ROLE "${LOGIN}"`);
+  const visible = await pg.query(`SELECT
+    (SELECT count(*)::int FROM routing_public.domains) AS domains,
+    (SELECT count(*)::int FROM metaschema_public.database) AS databases`);
+  expect(visible.rows[0].domains).toBeGreaterThan(0);
+  expect(visible.rows[0].databases).toBeGreaterThan(0);
+  await pg.query(`SET LOCAL ROLE "${role}"`);
+  const filtered = await pg.query(`SELECT
+    (SELECT count(*)::int FROM routing_public.domains) AS domains,
+    (SELECT count(*)::int FROM metaschema_public.database) AS databases`);
+  expect(filtered.rows[0]).toEqual({ domains: 0, databases: 0 });
 });
 
 it('resolves routes and serves GraphQL using the reconciled password', async () => {

@@ -339,11 +339,20 @@ eval "$(pgpm env --supabase)"
 pgpm admin-users bootstrap
 
 # Add specific user
-pgpm admin-users add myuser
+pgpm admin-users add --username myuser --password "$PGPASSWORD" --yes
+
+# Opt-in RLS bypass for a platform service login (never for a request role)
+pgpm admin-users add --username platform_service --password "$PGPASSWORD" --bypassrls --yes
 
 # Remove user
 pgpm admin-users remove myuser
 ```
+
+User provisioning reconciles LOGIN, INHERIT, NOSUPERUSER, NOCREATEDB,
+NOCREATEROLE, NOREPLICATION and the supplied password on every run. RLS bypass
+is off unless `--bypassrls` is passed. Platform components use one such login
+via `PGUSER`/`PGPASSWORD`; requests still switch to `authenticated`/`anonymous`,
+whose current-role attributes enforce RLS. No role environment variable is needed.
 
 ### Utilities
 

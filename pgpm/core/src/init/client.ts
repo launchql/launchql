@@ -5,6 +5,7 @@ import { getPgPool } from 'pg-cache';
 import { PgConfig } from 'pg-env';
 
 import { 
+  CreateUserOptions,
   generateCreateBaseRolesSQL, 
   generateCreateClientRoleSQL,
   generateCreateTestUsersSQL,
@@ -89,18 +90,18 @@ export class PgpmInit {
    * @param username - The username to create
    * @param password - The password for the user
    * @param roles - Role mapping from getConnEnvOptions().roles!
-   * @param useLocksForRoles - Whether to use advisory locks (from getConnEnvOptions().useLocksForRoles)
+   * @param options - Role locking and explicit RLS bypass (off by default).
    */
   async bootstrapDbRoles(
     username: string, 
     password: string, 
     roles: RoleMapping,
-    useLocksForRoles = false
+    options: CreateUserOptions = {}
   ): Promise<void> {
     try {
       log.info(`Bootstrapping PGPM database roles for user: ${username}...`);
       
-      const sql = generateCreateUserSQL(username, password, roles, useLocksForRoles);
+      const sql = generateCreateUserSQL(username, password, roles, options);
       await this.pool.query(sql);
       
       log.success(`Successfully bootstrapped PGPM database roles for user: ${username}`);

@@ -145,9 +145,21 @@ describe('Role SQL Generators - Input Validation', () => {
         authenticated: 'auth'
       });
       const createEnd = sql.indexOf('END IF;');
-      const passwordUpdate = sql.indexOf("EXECUTE format('ALTER ROLE %I PASSWORD %L', v_username, v_password);");
+      const passwordUpdate = sql.indexOf("EXECUTE format('ALTER ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD %L', v_username, v_password);");
       expect(passwordUpdate).toBeGreaterThan(createEnd);
       expect(sql).toContain("v_password text := 'pass''word';");
+    });
+
+    it('enables RLS bypass only by explicit opt-in, including reruns', () => {
+      const roles = { anonymous: 'anonymous', authenticated: 'authenticated' };
+      expect(generateCreateUserSQL('testuser', 'testpass', roles)).toContain('NOBYPASSRLS PASSWORD');
+      const sql = generateCreateUserSQL('testuser', 'testpass', roles, {
+        bypassRls: true, useLocksForRoles: true
+      });
+      expect(sql).toContain('NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION BYPASSRLS PASSWORD');
+      expect(sql).not.toContain('NOBYPASSRLS');
+      expect(sql.indexOf("EXECUTE format('ALTER ROLE")).toBeGreaterThan(sql.indexOf('END IF;'));
+      expect(sql).toContain('pg_advisory_xact_lock(42, hashtext(v_username))');
     });
   });
 

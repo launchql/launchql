@@ -19,6 +19,7 @@ Options:
   --username <username>   Username for the database user
   --password <password>   Password for the database user
   --test                  Add test users (app_user, app_admin) with default passwords
+  --bypassrls             Allow the login to bypass RLS (off by default; not for request roles)
   --cwd <directory>       Working directory (default: current directory)
 
 Examples:
@@ -40,6 +41,10 @@ export default async (
 
   const pgEnv = getPgEnvOptions();
   const isTest = argv.test;
+  const bypassRls = argv.bypassrls === true;
+  if (isTest && bypassRls) {
+    throw new Error('--bypassrls cannot be used with --test');
+  }
 
   // Get merged options (defaults + config + env + overrides)
   const db = getConnEnvOptions();
@@ -96,7 +101,10 @@ export default async (
         return;
       }
 
-      await init.bootstrapDbRoles(username, password, db.roles!);
+      await init.bootstrapDbRoles(username, password, db.roles!, {
+        useLocksForRoles: db.useLocksForRoles,
+        bypassRls
+      });
       log.success(`Database user "${username}" added successfully.`);
     }
   } finally {
