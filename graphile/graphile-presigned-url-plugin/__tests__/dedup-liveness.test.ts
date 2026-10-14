@@ -78,6 +78,20 @@ function s3Answering(objectExists: boolean): S3Config {
   } as unknown as S3Config;
 }
 
+/** An S3 whose HEAD resolves only the keys given. */
+function s3Holding(keys: string[]): S3Config {
+  return {
+    client: {
+      send: jest.fn(async (command: unknown) => {
+        if (command instanceof HeadObjectCommand && !keys.includes(command.input.Key as string)) throw notFound;
+        return {};
+      }),
+    },
+    bucket: 'site-bucket',
+    region: 'us-east-1',
+  } as unknown as S3Config;
+}
+
 const heads = (s3: S3Config) =>
   (s3.client.send as jest.Mock).mock.calls
     .map(([command]) => command)
@@ -144,6 +158,32 @@ describe.each([
   });
 });
 
+describe('content-addressed upload whose hash matches a custom-key row (no confirm-upload)', () => {
+  // Custom-key rows carry content_hash too, so the hash probe can match a row
+  // whose bytes live at its own key, not at the hash. That row is live.
+  it('deduplicates against the row and leaves it in place', async () => {
+    const s3 = s3Holding([SITE_KEY]);
+    const { txClient, queries } = fakeTx(SITE_KEY);
+
+    const result = await upload(txClient, s3);
+
+    expect(result).toMatchObject({ fileId: OLD_FILE_ID, deduplicated: true, uploadUrl: null, key: SITE_KEY });
+    expect(heads(s3)).toEqual([SITE_KEY]);
+    expect(queries.some((q) => /^DELETE/.test(q.text))).toBe(false);
+  });
+
+  it('restarts the upload when that row has no object at its own key', async () => {
+    const s3 = s3Holding([]);
+    const { txClient, queries } = fakeTx(SITE_KEY);
+
+    const result = await upload(txClient, s3);
+
+    expect(result).toMatchObject({ fileId: NEW_FILE_ID, deduplicated: false, key: HASH });
+    expect(heads(s3)).toEqual([SITE_KEY]);
+    expect(queries.find((q) => /^DELETE/.test(q.text))?.values).toEqual([OLD_FILE_ID]);
+  });
+});
+
 describe('streamed upload landing on a never-completed row (no confirm-upload)', () => {
   const staged = {
     stagingKey: '.staging/tmp-1',
@@ -153,7 +193,7 @@ describe('streamed upload landing on a never-completed row (no confirm-upload)',
     filename: SITE_KEY,
   };
 
-  function db() {
+  function db({ deleteAffects = true } = {}) {
     const queries: Array<{ text: string; values?: unknown[] }> = [];
     const client = {
       async query(opts: { text: string; values?: unknown[] }) {
@@ -162,7 +202,9 @@ describe('streamed upload landing on a never-completed row (no confirm-upload)',
         if (/SELECT id, key, mime_type/.test(opts.text)) {
           return { rows: [{ id: OLD_FILE_ID, key: HASH, mime_type: 'text/html', size: 16, filename: null as string | null, status: 'requested' }] };
         }
-        if (/^DELETE FROM storage_public\.app_files/.test(opts.text)) return { rows: [] };
+        if (/^DELETE FROM storage_public\.app_files/.test(opts.text)) {
+          return { rows: deleteAffects ? [{ id: OLD_FILE_ID }] : [] };
+        }
         if (/record_file/.test(opts.text)) return { rows: [{ id: NEW_FILE_ID }] };
         throw new Error(`unexpected query: ${opts.text}`);
       },
@@ -192,6 +234,20 @@ describe('streamed upload landing on a never-completed row (no confirm-upload)',
     expect(projection.id).toBe(NEW_FILE_ID);
     expect(heads(s3)).toEqual([HASH]);
     expect(fake.queries.find((q) => /^DELETE/.test(q.text))?.values).toEqual([OLD_FILE_ID]);
+  });
+
+  it('fails instead of promoting when the caller cannot delete the empty row', async () => {
+    const s3 = s3Answering(false);
+    const fake = db({ deleteAffects: false });
+
+    await expect(
+      finalizeStagedUpload({ target: target(s3), withPgClient: fake.withPgClient, pgSettings: null, staged }),
+    ).rejects.toThrow(/FILE_NOT_REPLACEABLE/);
+
+    expect(fake.queries.some((q) => /record_file/.test(q.text))).toBe(false);
+    const sent = (s3.client.send as jest.Mock).mock.calls.map(([command]) => command);
+    expect(sent.map((command) => command.constructor.name)).toEqual(['HeadObjectCommand', 'DeleteObjectCommand']);
+    expect(sent[1].input.Key).toBe(staged.stagingKey);
   });
 
   it('deduplicates against a row whose object is in S3', async () => {

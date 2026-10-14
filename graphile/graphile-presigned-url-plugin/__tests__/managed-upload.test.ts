@@ -582,7 +582,7 @@ describe('finalizeStagedUpload', () => {
         const db = fakeDb([
           SET_CONFIG,
           { match: /SELECT id, key, mime_type/, rows: () => [existingRow(status)] },
-          { match: /DELETE FROM storage_public\.app_files/, rows: () => [] },
+          { match: /DELETE FROM storage_public\.app_files/, rows: () => [{ id: FILE_ID }] },
           { match: /SELECT id FROM storage_private\.app_files_record_file/, rows: () => [{ id: NEW_FILE_ID }] },
         ]);
 

@@ -337,12 +337,23 @@ export async function finalizeStagedUpload(args: {
     log.info(
       `Restarting upload of hash ${staged.contentHash}: file ${existing.id} has no bytes behind it`
     );
-    await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
-      await pgClient.query({
-        text: `DELETE FROM ${storageConfig.filesQualifiedName} WHERE id = $1`,
+    // The DELETE runs under the request role, so RLS decides whether this caller
+    // may drop the row. A row it can see but not delete stays, and the upload
+    // fails here rather than colliding on (bucket_id, key) below.
+    const deleted = await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
+      const result = await pgClient.query({
+        text: `DELETE FROM ${storageConfig.filesQualifiedName} WHERE id = $1 RETURNING id`,
         values: [existing.id],
       });
+      return result.rows.length;
     });
+    if (deleted === 0) {
+      // Nothing names the staged object, so dropping it cannot cost anyone bytes.
+      await bestEffortDelete(s3, staged.stagingKey);
+      throw new Error(
+        `FILE_NOT_REPLACEABLE: file ${existing.id} at key ${existing.key} cannot be replaced by this caller`
+      );
+    }
   } else if (existing) {
     log.info(`Dedup hit: file ${existing.id} already carries hash ${staged.contentHash}`);
     await deleteS3Object(s3, staged.stagingKey);

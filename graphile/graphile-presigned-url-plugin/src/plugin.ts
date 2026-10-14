@@ -743,7 +743,7 @@ export async function processSingleFile(
     }
   } else {
     const dedupResult = await txClient.query({
-      text: `SELECT id${statusColumn}
+      text: `SELECT id, key${statusColumn}
        FROM ${storageConfig.filesQualifiedName}
        WHERE content_hash = $1
          AND bucket_id = $2
@@ -753,17 +753,19 @@ export async function processSingleFile(
 
     if (dedupResult.rows.length > 0) {
       const existingFile = dedupResult.rows[0];
-      if (await isLiveFileRow(storageConfig, s3ForDb, { key: s3Key, status: existingFile.status })) {
+      // A custom-key row can carry this hash, so the bytes are at the row's own key.
+      const existingKey = existingFile.key as string;
+      if (await isLiveFileRow(storageConfig, s3ForDb, { key: existingKey, status: existingFile.status })) {
         log.info(`Dedup hit: file ${existingFile.id} for hash ${contentHash}`);
 
         return {
           uploadUrl: null as string | null,
           fileId: existingFile.id as string,
-          key: s3Key,
+          key: existingKey,
           deduplicated: true,
           expiresAt: null as string | null,
           previousVersionId: null as string | null,
-          file: projectFile(existingFile.id as string, s3Key),
+          file: projectFile(existingFile.id as string, existingKey),
         };
       }
       staleFileId = existingFile.id as string;
