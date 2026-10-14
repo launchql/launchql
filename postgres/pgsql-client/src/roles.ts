@@ -8,6 +8,7 @@ export const DEFAULT_ROLE_MAPPING: Required<RoleMapping> = {
   authenticated: 'authenticated',
   administrator: 'administrator',
   authenticatedClient: 'authenticated_client',
+  routingReader: 'routing_reader',
   default: 'anonymous'
 };
 
