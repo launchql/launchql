@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/pi-host",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "author": "Constructive <developers@constructive.io>",
   "description": "The host side of a headless agent run: a GateHost that asks for approval through the conversation thread, persona → model/prompt/tools selection, and an AgentEvent → transcript/task writer.",
   "main": "index.js",

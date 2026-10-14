@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/constructive-io/constructive/compare/graphile-llm@1.18.9...graphile-llm@1.19.0) (2026-10-14)
+
+### Features
+
+- **server:** run every control-plane query as api.controlRole (SET LOCAL ROLE) ([0c06623](https://github.com/constructive-io/constructive/commit/0c06623fd6796c37e19c962fb29e11fe88b733cc))
+
 ## [1.18.9](https://github.com/constructive-io/constructive/compare/graphile-llm@1.18.8...graphile-llm@1.18.9) (2026-10-13)
 
 **Note:** Version bump only for package graphile-llm

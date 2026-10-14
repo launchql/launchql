@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.22.0](https://github.com/constructive-io/constructive/compare/@constructive-io/playwright-test@3.21.12...@constructive-io/playwright-test@3.22.0) (2026-10-14)
+
+### Features
+
+- **server:** run every control-plane query as api.controlRole (SET LOCAL ROLE) ([0c06623](https://github.com/constructive-io/constructive/commit/0c06623fd6796c37e19c962fb29e11fe88b733cc))
+
 ## [3.21.12](https://github.com/constructive-io/constructive/compare/@constructive-io/playwright-test@3.21.11...@constructive-io/playwright-test@3.21.12) (2026-10-14)
 
 **Note:** Version bump only for package @constructive-io/playwright-test

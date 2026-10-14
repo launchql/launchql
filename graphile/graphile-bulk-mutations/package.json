@@ -1,6 +1,6 @@
 {
   "name": "graphile-bulk-mutations",
-  "version": "1.17.9",
+  "version": "1.17.10",
   "description": "PostGraphile v5 plugin for bulk insert, upsert, update, and delete mutations with ON CONFLICT handling",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

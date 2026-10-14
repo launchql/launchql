@@ -1,6 +1,6 @@
 {
   "name": "graphile-i18n",
-  "version": "2.18.9",
+  "version": "2.18.10",
   "description": "PostGraphile v5 i18n plugin — language-aware fields from @i18n translation tables with Accept-Language negotiation and fallback chains",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

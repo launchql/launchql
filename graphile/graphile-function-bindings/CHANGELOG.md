@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.10](https://github.com/constructive-io/constructive/compare/graphile-function-bindings@1.17.9...graphile-function-bindings@1.17.10) (2026-10-14)
+
+### Bug Fixes
+
+- **server:** function-bindings gather read runs as the control role; strict test connects as the login ([21e08ea](https://github.com/constructive-io/constructive/commit/21e08ea6e16780c3221beff5d6899ba81b1947f7))
+
 ## [1.17.9](https://github.com/constructive-io/constructive/compare/graphile-function-bindings@1.17.8...graphile-function-bindings@1.17.9) (2026-10-13)
 
 **Note:** Version bump only for package graphile-function-bindings

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.31.0](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.30.2...graphql-server-test@3.31.0) (2026-10-14)
+
+### Bug Fixes
+
+- **server:** function-bindings gather read runs as the control role; strict test connects as the login ([21e08ea](https://github.com/constructive-io/constructive/commit/21e08ea6e16780c3221beff5d6899ba81b1947f7))
+
+### Features
+
+- **server:** run every control-plane query as api.controlRole (SET LOCAL ROLE) ([0c06623](https://github.com/constructive-io/constructive/commit/0c06623fd6796c37e19c962fb29e11fe88b733cc))
+
 ## [3.30.2](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.30.1...graphql-server-test@3.30.2) (2026-10-14)
 
 ### Bug Fixes

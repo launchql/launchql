@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.32.0](https://github.com/constructive-io/constructive/compare/pg-query-context@2.31.0...pg-query-context@2.32.0) (2026-10-14)
+
+### Features
+
+- **server:** run every control-plane query as api.controlRole (SET LOCAL ROLE) ([0c06623](https://github.com/constructive-io/constructive/commit/0c06623fd6796c37e19c962fb29e11fe88b733cc))
+
 # [2.31.0](https://github.com/constructive-io/constructive/compare/pg-query-context@2.30.1...pg-query-context@2.31.0) (2026-09-17)
 
 **Note:** Version bump only for package pg-query-context

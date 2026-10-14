@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.15.0](https://github.com/constructive-io/constructive/compare/graphile-cache@4.14.7...graphile-cache@4.15.0) (2026-10-14)
+
+### Features
+
+- **server:** run every control-plane query as api.controlRole (SET LOCAL ROLE) ([0c06623](https://github.com/constructive-io/constructive/commit/0c06623fd6796c37e19c962fb29e11fe88b733cc))
+
 ## [4.14.7](https://github.com/constructive-io/constructive/compare/graphile-cache@4.14.6...graphile-cache@4.14.7) (2026-10-13)
 
 **Note:** Version bump only for package graphile-cache
