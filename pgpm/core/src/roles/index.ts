@@ -32,7 +32,8 @@ export function generateCreateBaseRolesSQL(roles: RoleMapping): string {
   const r = {
     anonymous: roles.anonymous,
     authenticated: roles.authenticated,
-    administrator: roles.administrator
+    administrator: roles.administrator,
+    routingReader: roles.routingReader ?? 'routing_reader'
   };
   
   return `
@@ -42,7 +43,22 @@ DECLARE
   v_anonymous text := ${sqlLiteral(r.anonymous)};
   v_authenticated text := ${sqlLiteral(r.authenticated)};
   v_administrator text := ${sqlLiteral(r.administrator)};
+  v_routing_reader text := ${sqlLiteral(r.routingReader)};
 BEGIN
+  -- Create routing reader group role: pre-check + exception handling for TOCTOU safety
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = v_routing_reader) THEN
+    BEGIN
+      EXECUTE format('CREATE ROLE %I', v_routing_reader);
+    EXCEPTION
+      WHEN duplicate_object THEN
+        NULL;
+      WHEN unique_violation THEN
+        NULL;
+      WHEN insufficient_privilege THEN
+        RAISE;
+    END;
+  END IF;
+
   -- Create anonymous role: pre-check + exception handling for TOCTOU safety
   IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = v_anonymous) THEN
     BEGIN
@@ -98,6 +114,7 @@ BEGIN
   EXECUTE format('ALTER ROLE %I WITH NOCREATEDB NOSUPERUSER NOCREATEROLE NOLOGIN NOREPLICATION NOBYPASSRLS', v_anonymous);
   EXECUTE format('ALTER ROLE %I WITH NOCREATEDB NOSUPERUSER NOCREATEROLE NOLOGIN NOREPLICATION NOBYPASSRLS', v_authenticated);
   EXECUTE format('ALTER ROLE %I WITH NOCREATEDB NOSUPERUSER NOCREATEROLE NOLOGIN NOREPLICATION BYPASSRLS', v_administrator);
+  EXECUTE format('ALTER ROLE %I WITH NOCREATEDB NOSUPERUSER NOCREATEROLE NOLOGIN NOREPLICATION NOBYPASSRLS', v_routing_reader);
 END
 $do$;
 COMMIT;

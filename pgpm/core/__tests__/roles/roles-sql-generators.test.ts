@@ -60,6 +60,23 @@ describe('Role SQL Generators - Input Validation', () => {
     });
   });
 
+  describe('generateCreateBaseRolesSQL routing reader', () => {
+    it('creates the routing reader group role with a default name, without login or RLS bypass', () => {
+      const sql = generateCreateBaseRolesSQL({ anonymous: 'anon', authenticated: 'auth', administrator: 'admin' });
+      expect(sql).toContain("v_routing_reader text := 'routing_reader'");
+      expect(sql).toContain(
+        "ALTER ROLE %I WITH NOCREATEDB NOSUPERUSER NOCREATEROLE NOLOGIN NOREPLICATION NOBYPASSRLS', v_routing_reader"
+      );
+    });
+
+    it('honours a configured routing reader name', () => {
+      const sql = generateCreateBaseRolesSQL({
+        anonymous: 'anon', authenticated: 'auth', administrator: 'admin', routingReader: 'edge_reader'
+      });
+      expect(sql).toContain("v_routing_reader text := 'edge_reader'");
+    });
+  });
+
   describe('generateCreateClientRoleSQL', () => {
     it('should throw an error when roles is undefined', () => {
       expect(() => {

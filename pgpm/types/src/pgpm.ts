@@ -80,6 +80,8 @@ export interface RoleMapping {
     administrator?: string;
     /** Restricted proxy client role name (opt-in; created via `admin-users bootstrap --client`) */
     authenticatedClient?: string;
+    /** Group role that may read every scope's routing plane (routes, bindings, managed domains) */
+    routingReader?: string;
     /** Default role for new connections */
     default?: string;
 }
@@ -358,6 +360,7 @@ export const pgpmDefaults: PgpmOptions = {
       anonymous: 'anonymous',
       authenticated: 'authenticated',
       administrator: 'administrator',
+      routingReader: 'routing_reader',
       default: 'anonymous'
     },
     useLocksForRoles: false
