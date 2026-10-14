@@ -91,6 +91,7 @@ export const createAuthenticateMiddleware = (
       if (effectiveToken) {
         log.info(`[auth] Processing ${tokenSource} authentication`);
         const context: Record<string, any> = {
+          role: api.anonRole,
           'jwt.claims.ip_address': req.clientIp,
         };
 

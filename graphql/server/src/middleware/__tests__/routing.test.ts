@@ -52,6 +52,18 @@ const noMatchRoute = (): ResolvedRoute =>
 
 const createPool = (query: jest.Mock): Pool => ({ query } as unknown as Pool);
 
+// A pool whose transaction framing (BEGIN / role switch / COMMIT) is absorbed,
+// so `query` sees only the control-plane statements the code under test runs.
+const controlAwarePool = (query: jest.Mock): Pool => {
+  const framing = /^(BEGIN|COMMIT|ROLLBACK)$|set_config/;
+  const client = {
+    query: (text: string, values?: unknown[]) =>
+      framing.test(text) ? Promise.resolve({ rows: [] }) : query(text, values),
+    release: jest.fn()
+  };
+  return { query, connect: jest.fn(async () => client) } as unknown as Pool;
+};
+
 describe('resolveRoute', () => {
   it('returns the row when a route matches', async () => {
     const query = jest.fn().mockResolvedValue({ rows: [matchedRoute()] });
@@ -159,6 +171,7 @@ describe('getApiConfig with scoped routing enabled', () => {
     pg: { database: 'constructive' },
     api: {
       isPublic: true,
+      controlRole: 'test_control',
       metaSchemas: ['metaschema_public']
     }
   } as unknown as ApiOptions);
@@ -182,7 +195,7 @@ describe('getApiConfig with scoped routing enabled', () => {
       if (sql.includes('resolve_route')) return { rows: [matchedRoute()] };
       throw new Error(`unexpected query: ${sql}`);
     });
-    mockGetPgPool.mockReturnValue(createPool(query) as never);
+    mockGetPgPool.mockReturnValue(controlAwarePool(query) as never);
 
     const result = await getApiConfig(createOptions(), createRequest({ host: 'api.example.com' }));
 
@@ -199,7 +212,7 @@ describe('getApiConfig with scoped routing enabled', () => {
       if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
       throw new Error(`unexpected query (no legacy fallback): ${sql}`);
     });
-    mockGetPgPool.mockReturnValue(createPool(query) as never);
+    mockGetPgPool.mockReturnValue(controlAwarePool(query) as never);
 
     const result = await getApiConfig(createOptions(), createRequest({ host: 'nomatch.example.com' }));
 
@@ -223,7 +236,7 @@ describe('getApiConfig with scoped routing enabled', () => {
       if (sql.includes('resolve_route')) return { rows: [routeWithoutDbId] };
       throw new Error(`unexpected query: ${sql}`);
     });
-    mockGetPgPool.mockReturnValue(createPool(query) as never);
+    mockGetPgPool.mockReturnValue(controlAwarePool(query) as never);
 
     await expect(
       getApiConfig(createOptions(), createRequest({ host: 'api.example.com' }))

@@ -18,6 +18,7 @@ import type { PgpmOptions } from '@pgpmjs/types';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import type { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
+import { controlPlanePool } from 'pg-query-context';
 
 import type { BillingClient } from './billing-client';
 import { createBillingClient } from './billing-client';
@@ -34,6 +35,8 @@ export interface ContextMiddlewareOptions {
   loaders?: LoaderRegistry;
   /** Routing-plane schema loaders query (defaults to routing_public) */
   routingSchema?: string;
+  /** Role the module loaders run as (`SET LOCAL ROLE`); required with `loaders`. */
+  controlRole?: string;
 }
 
 /**
@@ -88,11 +91,10 @@ export function buildContext(
   // Build loader context (if registry provided and databaseId known)
   let loaderCtx: LoaderContext | null = null;
   if (opts.loaders && api.databaseId) {
-    const routingPool: Pool = getPgPool(opts.pg);
     loaderCtx = {
-      routingPool,
+      routingPool: controlPlanePool(getPgPool(opts.pg), opts.controlRole),
       routingSchema: opts.routingSchema,
-      tenantPool,
+      tenantPool: controlPlanePool(tenantPool, opts.controlRole),
       databaseId: api.databaseId,
       apiId: api.apiId,
       dbname: api.dbname
@@ -181,6 +183,9 @@ export function buildContext(
 export function createContextMiddleware(
   opts: ContextMiddlewareOptions = {}
 ): RequestHandler {
+  if (opts.loaders && !opts.controlRole) {
+    throw new Error('createContextMiddleware: `loaders` need a `controlRole` to run as');
+  }
   return (req: Request, _res: Response, next: NextFunction): void => {
     const ctx = buildContext(req, opts);
     if (ctx) {

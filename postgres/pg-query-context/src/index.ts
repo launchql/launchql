@@ -46,6 +46,7 @@ async function pgQueryContext({ client, context = {}, query = '', variables = []
     return result;
   } catch (error) {
     if (pgClient && !skipTransaction) {
+      // Teardown only: the original error is rethrown below.
       await pgClient.query('ROLLBACK').catch(() => {});
     }
     throw error;
@@ -93,10 +94,75 @@ export async function withPgClient<T>(
     return result;
   } catch (err) {
     if (!opts.skipTransaction) {
+      // Teardown only: the original error is rethrown below and the client is released.
       await client.query('ROLLBACK').catch(() => {});
     }
     throw err;
   } finally {
     client.release();
   }
+}
+
+// --- Control-plane API ---
+
+export interface ControlPlaneQueryable {
+  query<R extends Record<string, any> = any>(text: string, values?: any[]): Promise<QueryResult<R>>;
+}
+
+/**
+ * A pool whose every query runs as the control role: `BEGIN; SET LOCAL ROLE
+ * <role>; <query>; COMMIT`. It deliberately exposes only `query`, so code
+ * holding it cannot borrow a raw client that would run as the login role.
+ */
+export interface ControlPlanePool extends ControlPlaneQueryable {
+  readonly role: string;
+}
+
+const requireControlRole = (role: string): string => {
+  if (typeof role !== 'string' || role.length === 0) {
+    throw new Error(
+      'Control-plane query refused: no control role is configured (api.controlRole / API_CONTROL_ROLE)'
+    );
+  }
+  return role;
+};
+
+/**
+ * Run control-plane work inside `BEGIN; SET LOCAL ROLE <role>; … COMMIT`.
+ *
+ * Login roles are NOINHERIT with no privileges of their own, so every
+ * control-plane read or write has to name the role it runs as; a connection
+ * that never switched role can do nothing. `context` adds further
+ * transaction-local settings (e.g. jwt claims) after the role switch.
+ */
+export async function withControlRole<T>(
+  pool: Pool,
+  role: string,
+  fn: (client: PoolClient) => Promise<T>,
+  context: Record<string, string> = {},
+): Promise<T> {
+  requireControlRole(role);
+  return withPgClient(pool, { ...context, role }, fn);
+}
+
+const controlPlanePools = new WeakMap<Pool, Map<string, ControlPlanePool>>();
+
+/** The (cached) control-role view of `pool`. */
+export function controlPlanePool(pool: Pool, role: string): ControlPlanePool {
+  requireControlRole(role);
+  let byRole = controlPlanePools.get(pool);
+  if (!byRole) {
+    byRole = new Map();
+    controlPlanePools.set(pool, byRole);
+  }
+  let control = byRole.get(role);
+  if (!control) {
+    control = {
+      role,
+      query: (text, values) =>
+        withControlRole(pool, role, (client) => client.query(text, values))
+    };
+    byRole.set(role, control);
+  }
+  return control;
 }

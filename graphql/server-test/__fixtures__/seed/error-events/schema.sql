@@ -40,6 +40,7 @@ RETURNS TABLE (
     NULL::text
   WHERE token_str IN ('human-token', 'principal-token');
 $$ LANGUAGE sql STABLE;
+GRANT EXECUTE ON FUNCTION "simple-pets-auth-private".authenticate(text) TO anonymous, authenticated;
 
 -- ─── Mutation that refuses widening ──────────────────────────────────────────
 

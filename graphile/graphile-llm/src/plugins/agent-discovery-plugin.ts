@@ -15,7 +15,7 @@
  */
 
 import { ModuleConfigCache } from 'graphile-cache';
-import { Pool } from 'pg';
+import type { Pool } from 'pg';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -76,7 +76,7 @@ const isNotProvisioned = (err: unknown): boolean =>
  * Results are cached per database id with a 60s TTL.
  */
 export async function getAgentDiscovery(
-  pool: Pool,
+  pool: Pick<Pool, 'query'>,
   databaseId: string
 ): Promise<AgentDiscovery | null> {
   if (!databaseId) {

@@ -49,6 +49,9 @@ export const getConnections = async (
   const serverOpts = getEnvOptions({
     pg: pg.config,
     api: {
+      // The harness connects as its admin user, which is also the role the
+      // control plane runs as unless a suite names a narrower one.
+      controlRole: pg.config.user,
       // Start with user-provided api options from server.api
       ...input.server?.api,
       // Apply convenience properties (these take precedence)

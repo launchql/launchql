@@ -47,6 +47,9 @@ const createConnectionsWithServerBase = async (
   const serverOpts = getEnvOptions({
     pg: pg.config,
     api: {
+      // The harness connects as its admin user, which is also the role the
+      // control plane runs as unless a suite names a narrower one.
+      controlRole: pg.config.user,
       ...input.server?.api,
       exposedSchemas: input.schemas,
       ...(input.authRole && { anonRole: input.authRole, roleName: input.authRole })

@@ -15,7 +15,7 @@
  * request against it with `column ds.… does not exist`.
  */
 
-import type { Pool } from 'pg';
+import type { ControlPlaneQueryable } from 'pg-query-context';
 
 import type { RequestProtection, RequestProtectionInput } from '../request-protection';
 import { resolveRequestProtection } from '../request-protection';
@@ -84,9 +84,9 @@ const requestProtectionSql = (schema: string, columns: AvailableColumns): string
  * once per pool+schema. Keyed by the pool object so a test pool and a serving
  * pool never share an answer.
  */
-const columnCache = new WeakMap<Pool, Map<string, Promise<AvailableColumns>>>();
+const columnCache = new WeakMap<ControlPlaneQueryable, Map<string, Promise<AvailableColumns>>>();
 
-const availableColumns = (pool: Pool, schema: string): Promise<AvailableColumns> => {
+const availableColumns = (pool: ControlPlaneQueryable, schema: string): Promise<AvailableColumns> => {
   let bySchema = columnCache.get(pool);
   if (!bySchema) {
     bySchema = new Map();
@@ -121,7 +121,7 @@ const availableColumns = (pool: Pool, schema: string): Promise<AvailableColumns>
 };
 
 /** Test seam: forget what a pool's routing plane looked like. */
-export const forgetProtectionColumns = (pool: Pool): void => {
+export const forgetProtectionColumns = (pool: ControlPlaneQueryable): void => {
   columnCache.delete(pool);
 };
 
