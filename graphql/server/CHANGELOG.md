@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.31.0](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.30.0...@constructive-io/graphql-server@5.31.0) (2026-10-14)
+
+### Features
+
+- opt in to login RLS bypass through pgpm user provisioning ([c637b77](https://github.com/constructive-io/constructive/commit/c637b77f75659a0fd5ef75ea3434c2fe7012d063))
+
 # [5.30.0](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.29.2...@constructive-io/graphql-server@5.30.0) (2026-10-14)
 
 ### Bug Fixes

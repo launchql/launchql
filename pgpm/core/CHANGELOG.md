@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.33.0](https://github.com/constructive-io/constructive/compare/@pgpmjs/core@7.32.8...@pgpmjs/core@7.33.0) (2026-10-14)
+
+### Bug Fixes
+
+- reconcile pgpm login passwords and test direct server login ([6350e2a](https://github.com/constructive-io/constructive/commit/6350e2ac7f4f303865371a9efcffb48c42b1740b))
+
+### Features
+
+- opt in to login RLS bypass through pgpm user provisioning ([c637b77](https://github.com/constructive-io/constructive/commit/c637b77f75659a0fd5ef75ea3434c2fe7012d063))
+
 ## [7.32.8](https://github.com/constructive-io/constructive/compare/@pgpmjs/core@7.32.7...@pgpmjs/core@7.32.8) (2026-10-13)
 
 **Note:** Version bump only for package @pgpmjs/core

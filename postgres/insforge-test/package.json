@@ -1,6 +1,6 @@
 {
   "name": "insforge-test",
-  "version": "1.17.9",
+  "version": "1.17.10",
   "author": "Interweb <developers@interweb.io>",
   "description": "insforge-test offers isolated, role-aware, and rollback-friendly PostgreSQL environments for integration tests with InsForge defaults baked in",
   "main": "index.js",

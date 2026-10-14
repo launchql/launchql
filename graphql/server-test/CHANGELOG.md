@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.32.0](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.31.0...graphql-server-test@3.32.0) (2026-10-14)
+
+### Bug Fixes
+
+- reconcile pgpm login passwords and test direct server login ([6350e2a](https://github.com/constructive-io/constructive/commit/6350e2ac7f4f303865371a9efcffb48c42b1740b))
+
+### Features
+
+- opt in to login RLS bypass through pgpm user provisioning ([c637b77](https://github.com/constructive-io/constructive/commit/c637b77f75659a0fd5ef75ea3434c2fe7012d063))
+
 # [3.31.0](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.30.2...graphql-server-test@3.31.0) (2026-10-14)
 
 ### Bug Fixes

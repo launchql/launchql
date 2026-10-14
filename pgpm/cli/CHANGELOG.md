@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.37.0](https://github.com/constructive-io/constructive/compare/pgpm@5.36.2...pgpm@5.37.0) (2026-10-14)
+
+### Features
+
+- opt in to login RLS bypass through pgpm user provisioning ([c637b77](https://github.com/constructive-io/constructive/commit/c637b77f75659a0fd5ef75ea3434c2fe7012d063))
+
 ## [5.36.2](https://github.com/constructive-io/constructive/compare/pgpm@5.36.1...pgpm@5.36.2) (2026-10-14)
 
 **Note:** Version bump only for package pgpm

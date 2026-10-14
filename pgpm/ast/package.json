@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/ast",
-  "version": "0.15.7",
+  "version": "0.15.8",
   "author": "Constructive <developers@constructive.io>",
   "description": "PGPM module AST — plan/control/SQL-header parsers and the lossless module read/write layer",
   "main": "index.js",

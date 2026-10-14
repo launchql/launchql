@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/portability",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "author": "Constructive <developers@constructive.io>",
   "description": "Vendor portability for pgpm — vendor shape profiles (supabase, insforge, ...) and pgsql-test seed adapters for deploying apply/transpile targets",
   "main": "index.js",
