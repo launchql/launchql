@@ -15,7 +15,7 @@ import { getPgPool } from 'pg-cache';
 import errorPage50x from '../errors/50x';
 import errorPage404Message from '../errors/404-message';
 import { ApiConfigResult, ApiError, ApiOptions, ApiStructure, AuthSettings, DatabaseSettings, PubkeyChallengeSettings, RlsModule, WebauthnSettings } from '../types';
-import { getRoutingSchema, isValidSchemaName, requireApiRole, resolveRoute, routeToApiStructure } from './routing';
+import { getRoutingSchema, isValidSchemaName, requireApiRole, resolveRouteAcrossPlanes, routeToApiStructure } from './routing';
 
 const log = new Logger('api');
 
@@ -355,12 +355,19 @@ const resolveMetaSchemaHeader = (
 const resolveScopedRoute = async (ctx: ResolveContext): Promise<ApiStructure | null> => {
   const { opts, pool, host } = ctx;
 
-  const schema = getRoutingSchema(opts);
-  const route = await resolveRoute(pool, schema, host);
-  if (!route) return null;
+  const match = await resolveRouteAcrossPlanes(pool, getRoutingSchema(opts), host);
+  if (!match) return null;
 
-  const structure = routeToApiStructure(route, opts);
+  const structure = routeToApiStructure(match.route, opts);
   if (!structure) return null;
+
+  if (match.planeDatabaseId && structure.databaseId !== match.planeDatabaseId) {
+    const error = new Error(
+      `host ${host} is owned by database ${match.planeDatabaseId}'s routing plane but routes to database ${structure.databaseId ?? '<none>'}`
+    ) as Error & { code?: string };
+    error.code = 'CROSS_DATABASE_ROUTE';
+    throw error;
+  }
 
   log.debug(`[scoped-routing] resolved host=${host} → api=${structure.apiId} db=${structure.dbname}`);
 

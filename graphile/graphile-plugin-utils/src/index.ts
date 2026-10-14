@@ -8,11 +8,10 @@ export { isComputedScalarAttributeResource } from './pg-resources';
 
 // System lane: server-owned work under a named role in one transaction
 export type {
-  SystemLaneOptions,
   SystemLanePgClient,
   SystemLaneWithPgClient
 } from './system-lane';
-export { SYSTEM_LANE_ROLE, withSystemLaneClient } from './system-lane';
+export { withSystemLaneClient } from './system-lane';
 
 // Generic pg/JSON-schema → GraphQL scalar mapping tables (function-bindings)
 export type { GraphQLScalarName } from './scalar-maps';

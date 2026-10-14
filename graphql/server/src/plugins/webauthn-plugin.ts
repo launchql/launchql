@@ -16,7 +16,6 @@ import { isoBase64URL } from '@simplewebauthn/server/helpers';
 import type { Request } from 'express';
 import { context as grafastContext, lambda, object, type Step } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
-import { SYSTEM_LANE_ROLE } from 'graphile-plugin-utils';
 import { extendSchema, gql } from 'graphile-utils';
 
 /**
@@ -33,7 +32,7 @@ import { extendSchema, gql } from 'graphile-utils';
  * - the request lane (the request's own role and claims) begins both
  *   ceremonies — work any caller may ask for as themselves;
  * - the verifier lane (the request's claims under the server's
- *   {@link SYSTEM_LANE_ROLE}) reads the stored challenge and the credential's
+ *   {@link VERIFIER_ROLE}) reads the stored challenge and the credential's
  *   public key, persists a verified registration, and mints the session.
  *   Those procedures trust their caller to have verified a signature, so only
  *   the server is granted them — a SQL caller can neither mint a session by
@@ -97,6 +96,9 @@ const withRequestLane = <T>(
       })
     );
 
+/** Role the verifier lane runs its server-only procedures as. */
+const VERIFIER_ROLE = 'administrator';
+
 const withVerifierLane = <T>(
   withPgClient: WithPgClient,
   pgSettings: Record<string, string> | null,
@@ -104,7 +106,7 @@ const withVerifierLane = <T>(
 ): Promise<T> =>
     withPgClient(null, (client) =>
       client.withTransaction(async (tx) => {
-        await applySettings(tx, pgSettings, SYSTEM_LANE_ROLE);
+        await applySettings(tx, pgSettings, VERIFIER_ROLE);
         return cb(tx);
       })
     );

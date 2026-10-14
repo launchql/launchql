@@ -1,4 +1,4 @@
-import { SYSTEM_LANE_ROLE, SystemLanePgClient, withSystemLaneClient } from '../system-lane';
+import { SystemLanePgClient, withSystemLaneClient } from '../system-lane';
 
 interface Call {
   text: string;
@@ -44,7 +44,7 @@ const makeWithPgClient = (
   ) => Promise<T>;
 
 describe('withSystemLaneClient', () => {
-  it('runs the callback in one transaction under a transaction-local role', async () => {
+  it('runs the callback in one transaction as the connection login, with no role switch', async () => {
     const { client, calls } = makeClient();
     const settings: Array<Record<string, string> | null> = [];
 
@@ -57,21 +57,9 @@ describe('withSystemLaneClient', () => {
     expect(settings).toEqual([null]);
     expect(calls.map((c) => c.text)).toEqual([
       'BEGIN',
-      'SELECT set_config($1, $2, true)',
       'SELECT 1',
       'COMMIT'
     ]);
-    expect(calls[1].values).toEqual(['role', SYSTEM_LANE_ROLE]);
-  });
-
-  it('honours an explicit role', async () => {
-    const { client, calls } = makeClient();
-
-    await withSystemLaneClient(makeWithPgClient(client, []), async (): Promise<null> => null, {
-      role: 'anonymous'
-    });
-
-    expect(calls[1].values).toEqual(['role', 'anonymous']);
   });
 
   it('leaves the rollback to the client and rethrows the callback failure', async () => {
@@ -85,7 +73,6 @@ describe('withSystemLaneClient', () => {
 
     expect(calls.map((c) => c.text)).toEqual([
       'BEGIN',
-      'SELECT set_config($1, $2, true)',
       'ROLLBACK'
     ]);
   });

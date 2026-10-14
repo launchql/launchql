@@ -197,6 +197,7 @@ describe('getApiConfig with scoped routing enabled', () => {
     const query = jest.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
       if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
+      if (sql.includes('metaschema_modules_public.route_module')) return { rows: [] };
       throw new Error(`unexpected query (no legacy fallback): ${sql}`);
     });
     mockGetPgPool.mockReturnValue(createPool(query) as never);
@@ -205,6 +206,22 @@ describe('getApiConfig with scoped routing enabled', () => {
 
     expect(result).toBeFalsy();
     expect(query.mock.calls.some(([sql]) => String(sql).includes('services_public'))).toBe(false);
+  });
+
+  it('throws ROUTING_PLANE_INCOMPLETE when a database plane names no resolver', async () => {
+    const query = jest.fn(async (sql: string, params: unknown[]) => {
+      if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
+      if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
+      if (sql.includes('metaschema_modules_public.route_module')) {
+        return { rows: [{ database_id: 'db-2', schema_name: 'tenant-routing-public', resolver_function_name: null as string | null }] };
+      }
+      throw new Error(`unexpected query: ${sql}`);
+    });
+    mockGetPgPool.mockReturnValue(createPool(query) as never);
+
+    await expect(
+      getApiConfig(createOptions(), createRequest({ host: 'nomatch.example.com' }))
+    ).rejects.toMatchObject({ code: 'ROUTING_PLANE_INCOMPLETE', databaseId: 'db-2' });
   });
 
   it('throws NO_DATABASE_ID when a route resolves without a database id (no default database)', async () => {
