@@ -7,6 +7,8 @@ import { RealtimeManager } from 'graphile-realtime-subscriptions';
 import { postgraphile } from 'postgraphile';
 
 import type { GraphileCacheEntry } from './graphile-cache';
+import { awaitGraphileBuildReadiness } from './utils/build-readiness';
+import { releaseFailedBuild } from './utils/release-failed-build';
 
 const log = new Logger('graphile-cache:create');
 
@@ -30,6 +32,9 @@ interface GraphileInstanceOptions {
  *
  * Callers are responsible for building the `GraphileConfig.Preset` (including
  * pgServices, grafserv options, grafast context, etc.) before passing it here.
+ * On a readiness failure, this factory releases PostGraphile and the preset's
+ * services after schema construction settles; externally supplied pools stay
+ * owned by the caller.
  *
  * When `enableRealtime` is true, a RealtimeManager is created that bridges
  * cursor-tracked events from `drain_changes()` into the PostGraphile
@@ -43,12 +48,24 @@ export const createGraphileInstance = async (
   const { preset, cacheKey, enableRealtime = false } = opts;
 
   const pgl = postgraphile(preset);
-  const serv = pgl.createServ(grafserv);
+  let serv!: ReturnType<typeof grafserv>;
 
   const handler = express();
   const httpServer = createServer(handler);
-  await serv.addTo(handler, httpServer);
-  await serv.ready();
+  await awaitGraphileBuildReadiness({
+    schemaResult: async () => {
+      await pgl.getSchemaResult();
+    },
+    addTo: () => {
+      serv = pgl.createServ(grafserv);
+      return serv.addTo(handler, httpServer);
+    },
+    ready: () => serv.ready(),
+    release: () => releaseFailedBuild(pgl),
+    onReleaseError: (releaseError) => {
+      log.error(`Failed to release PostGraphile[${cacheKey}] after build failure:`, releaseError);
+    },
+  });
 
   const entry: GraphileCacheEntry = {
     pgl,
