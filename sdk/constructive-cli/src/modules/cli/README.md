@@ -389,6 +389,8 @@ CRUD operations for BillingProviderModule records.
 | `activatePlanSubscriptionFunction` | String |
 | `apiName` | String |
 | `applyProviderObservationFunction` | String |
+| `billingConnectionTableId` | UUID |
+| `billingConnectionTableName` | String |
 | `billingCustomersTableId` | UUID |
 | `billingCustomersTableName` | String |
 | `billingDisputesTableId` | UUID |
@@ -403,6 +405,7 @@ CRUD operations for BillingProviderModule records.
 | `billingPricesTableName` | String |
 | `billingProductsTableId` | UUID |
 | `billingProductsTableName` | String |
+| `billingProviderConnectedFunction` | String |
 | `billingProviderStateTableId` | UUID |
 | `billingProviderStateTableName` | String |
 | `billingRefundsTableId` | UUID |
@@ -439,6 +442,7 @@ CRUD operations for BillingProviderModule records.
 | `processBillingEventFunction` | String |
 | `productsTableId` | UUID |
 | `provider` | String |
+| `recordBillingConnectionFunction` | String |
 | `recordBillingHealthFunction` | String |
 | `recordDisputeFunction` | String |
 | `recordRefundFunction` | String |
@@ -454,7 +458,7 @@ CRUD operations for BillingProviderModule records.
 | `usageSyncShardCount` | Int |
 
 **Required create fields:** `databaseId`
-**Optional create fields (backend defaults):** `activatePlanSubscriptionFunction`, `apiName`, `applyProviderObservationFunction`, `billingCustomersTableId`, `billingCustomersTableName`, `billingDisputesTableId`, `billingDisputesTableName`, `billingHealthTableId`, `billingHealthTableName`, `billingInvoicesTableId`, `billingInvoicesTableName`, `billingOperationsTableId`, `billingOperationsTableName`, `billingPricesTableId`, `billingPricesTableName`, `billingProductsTableId`, `billingProductsTableName`, `billingProviderStateTableId`, `billingProviderStateTableName`, `billingRefundsTableId`, `billingRefundsTableName`, `billingSubscriptionsTableId`, `billingSubscriptionsTableName`, `billingWebhookEventsTableId`, `billingWebhookEventsTableName`, `bindCheckoutSessionFunction`, `clearScheduledChangeFunction`, `finishBillingOperationFunction`, `getActivePlanPricingFunction`, `getActivePlanSubscriptionFunction`, `getBillingCustomerFunction`, `getBillingPriceFunction`, `getBillingProductFunction`, `getBillingProviderStateFunction`, `getBillingSubscriptionByEntityFunction`, `getBillingSubscriptionByExternalIdFunction`, `getBillingSubscriptionFunction`, `getFallbackFreePlanFunction`, `getPlanPricingByExternalPriceFunction`, `hasDueReconciliationsFunction`, `listDueReconciliationsFunction`, `listPendingUsageSyncFunction`, `markUsageSyncedFunction`, `prefix`, `prepareScheduledChangeFunction`, `pricesTableId`, `privateApiName`, `privateSchemaId`, `processBillingEventFunction`, `productsTableId`, `provider`, `recordBillingHealthFunction`, `recordDisputeFunction`, `recordRefundFunction`, `reserveBillingOperationFunction`, `schemaId`, `subscriptionsTableId`, `sweepOverdueSubscriptionsFunction`, `upsertBillingCustomerFunction`, `upsertBillingPriceFunction`, `upsertBillingProductFunction`, `upsertBillingSubscriptionFunction`, `upsertInvoiceFunction`, `usageSyncShardCount`
+**Optional create fields (backend defaults):** `activatePlanSubscriptionFunction`, `apiName`, `applyProviderObservationFunction`, `billingConnectionTableId`, `billingConnectionTableName`, `billingCustomersTableId`, `billingCustomersTableName`, `billingDisputesTableId`, `billingDisputesTableName`, `billingHealthTableId`, `billingHealthTableName`, `billingInvoicesTableId`, `billingInvoicesTableName`, `billingOperationsTableId`, `billingOperationsTableName`, `billingPricesTableId`, `billingPricesTableName`, `billingProductsTableId`, `billingProductsTableName`, `billingProviderConnectedFunction`, `billingProviderStateTableId`, `billingProviderStateTableName`, `billingRefundsTableId`, `billingRefundsTableName`, `billingSubscriptionsTableId`, `billingSubscriptionsTableName`, `billingWebhookEventsTableId`, `billingWebhookEventsTableName`, `bindCheckoutSessionFunction`, `clearScheduledChangeFunction`, `finishBillingOperationFunction`, `getActivePlanPricingFunction`, `getActivePlanSubscriptionFunction`, `getBillingCustomerFunction`, `getBillingPriceFunction`, `getBillingProductFunction`, `getBillingProviderStateFunction`, `getBillingSubscriptionByEntityFunction`, `getBillingSubscriptionByExternalIdFunction`, `getBillingSubscriptionFunction`, `getFallbackFreePlanFunction`, `getPlanPricingByExternalPriceFunction`, `hasDueReconciliationsFunction`, `listDueReconciliationsFunction`, `listPendingUsageSyncFunction`, `markUsageSyncedFunction`, `prefix`, `prepareScheduledChangeFunction`, `pricesTableId`, `privateApiName`, `privateSchemaId`, `processBillingEventFunction`, `productsTableId`, `provider`, `recordBillingConnectionFunction`, `recordBillingHealthFunction`, `recordDisputeFunction`, `recordRefundFunction`, `reserveBillingOperationFunction`, `schemaId`, `subscriptionsTableId`, `sweepOverdueSubscriptionsFunction`, `upsertBillingCustomerFunction`, `upsertBillingPriceFunction`, `upsertBillingProductFunction`, `upsertBillingSubscriptionFunction`, `upsertInvoiceFunction`, `usageSyncShardCount`
 
 ### `blueprint`
 
@@ -3410,13 +3414,14 @@ CRUD operations for StorageModule records.
 | `provisions` | JSON |
 | `publicSchemaName` | String |
 | `publicUrlPrefix` | String |
+| `region` | String |
 | `restrictReads` | Boolean |
 | `schemaId` | UUID |
 | `scope` | String |
 | `uploadUrlExpirySeconds` | Int |
 
 **Required create fields:** `databaseId`, `scope`
-**Optional create fields (backend defaults):** `allowedOrigins`, `apiName`, `bucketsTableId`, `bucketsTableName`, `cacheTtlSeconds`, `catalogModuleId`, `confirmUploadDelay`, `defaultCapabilities`, `defaultMaxFileSize`, `downloadUrlExpirySeconds`, `endpoint`, `entityField`, `entityTableId`, `fileEventsTableId`, `filesTableId`, `filesTableName`, `hasAuditLog`, `hasConfirmUpload`, `hasContentHash`, `hasCustomKeys`, `hasPathShares`, `hasVersioning`, `key`, `maxBulkFiles`, `maxBulkTotalSize`, `maxFilenameLength`, `pathSharesTableId`, `policies`, `prefix`, `privateApiName`, `privateSchemaId`, `privateSchemaName`, `provider`, `provisions`, `publicSchemaName`, `publicUrlPrefix`, `restrictReads`, `schemaId`, `uploadUrlExpirySeconds`
+**Optional create fields (backend defaults):** `allowedOrigins`, `apiName`, `bucketsTableId`, `bucketsTableName`, `cacheTtlSeconds`, `catalogModuleId`, `confirmUploadDelay`, `defaultCapabilities`, `defaultMaxFileSize`, `downloadUrlExpirySeconds`, `endpoint`, `entityField`, `entityTableId`, `fileEventsTableId`, `filesTableId`, `filesTableName`, `hasAuditLog`, `hasConfirmUpload`, `hasContentHash`, `hasCustomKeys`, `hasPathShares`, `hasVersioning`, `key`, `maxBulkFiles`, `maxBulkTotalSize`, `maxFilenameLength`, `pathSharesTableId`, `policies`, `prefix`, `privateApiName`, `privateSchemaId`, `privateSchemaName`, `provider`, `provisions`, `publicSchemaName`, `publicUrlPrefix`, `region`, `restrictReads`, `schemaId`, `uploadUrlExpirySeconds`
 
 ### `transfer-log-module`
 

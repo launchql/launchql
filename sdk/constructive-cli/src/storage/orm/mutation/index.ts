@@ -56,7 +56,7 @@ export interface UploadFileVariables {
 }
 /**
  * Variables for uploadFiles
- * Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+ * Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
  */
 export interface UploadFilesVariables {
   input: UploadFileBulkInput;
@@ -70,7 +70,7 @@ export interface UploadPlatformFileVariables {
 }
 /**
  * Variables for uploadPlatformFiles
- * Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+ * Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
  */
 export interface UploadPlatformFilesVariables {
   input: UploadPlatformFileBulkInput;

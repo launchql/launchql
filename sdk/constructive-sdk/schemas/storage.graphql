@@ -196,6 +196,11 @@ type Bucket {
   key: String!
 
   """
+  The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED.
+  """
+  maxBulkFiles: Int!
+
+  """
   Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred)
   """
   maxFileSize: BigInt
@@ -2009,7 +2014,7 @@ type Mutation {
   ): UploadFilePayload
 
   """
-  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
   """
   uploadFiles(
     """
@@ -2029,7 +2034,7 @@ type Mutation {
   ): UploadPlatformFilePayload
 
   """
-  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
   """
   uploadPlatformFiles(
     """
@@ -2100,6 +2105,11 @@ type PlatformBucket {
   Unique bucket identifier used in S3 key paths (e.g. avatars, documents, temp)
   """
   key: String!
+
+  """
+  The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED.
+  """
+  maxBulkFiles: Int!
 
   """
   Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred)

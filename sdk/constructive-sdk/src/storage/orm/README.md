@@ -47,6 +47,7 @@ CRUD operations for Bucket records.
 | `id` | UUID | No |
 | `isPublic` | Boolean | Yes |
 | `key` | String | Yes |
+| `maxBulkFiles` | Int | Yes |
 | `maxFileSize` | BigInt | Yes |
 | `physicalName` | String | Yes |
 | `stagingTtl` | Interval | Yes |
@@ -58,13 +59,13 @@ CRUD operations for Bucket records.
 
 ```typescript
 // List all bucket records
-const items = await db.bucket.findMany({ select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
+const items = await db.bucket.findMany({ select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
 
 // Get one by id
-const item = await db.bucket.findOne({ id: '<UUID>', select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
+const item = await db.bucket.findOne({ id: '<UUID>', select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
 
 // Create
-const created = await db.bucket.create({ data: { actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', databaseId: '<UUID>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' }, select: { id: true } }).execute();
+const created = await db.bucket.create({ data: { actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', databaseId: '<UUID>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxBulkFiles: '<Int>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.bucket.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
@@ -139,6 +140,7 @@ CRUD operations for PlatformBucket records.
 | `id` | UUID | No |
 | `isPublic` | Boolean | Yes |
 | `key` | String | Yes |
+| `maxBulkFiles` | Int | Yes |
 | `maxFileSize` | BigInt | Yes |
 | `physicalName` | String | Yes |
 | `stagingTtl` | Interval | Yes |
@@ -150,13 +152,13 @@ CRUD operations for PlatformBucket records.
 
 ```typescript
 // List all platformBucket records
-const items = await db.platformBucket.findMany({ select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
+const items = await db.platformBucket.findMany({ select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
 
 // Get one by id
-const item = await db.platformBucket.findOne({ id: '<UUID>', select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
+const item = await db.platformBucket.findOne({ id: '<UUID>', select: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } }).execute();
 
 // Create
-const created = await db.platformBucket.create({ data: { actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' }, select: { id: true } }).execute();
+const created = await db.platformBucket.create({ data: { actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxBulkFiles: '<Int>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.platformBucket.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
@@ -280,7 +282,7 @@ const result = await db.mutation.uploadFile({ input: '<UploadFileInput>' }).exec
 
 ### `db.mutation.uploadFiles`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**
@@ -310,7 +312,7 @@ const result = await db.mutation.uploadPlatformFile({ input: '<UploadPlatformFil
 
 ### `db.mutation.uploadPlatformFiles`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**
