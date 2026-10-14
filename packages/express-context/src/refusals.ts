@@ -22,7 +22,7 @@
 
 import { Logger } from '@pgpmjs/logger';
 import type { Pool, PoolClient } from 'pg';
-import { withControlRole } from 'pg-query-context';
+import { withPgClient } from 'pg-query-context';
 
 import type { CounterEntry, CounterFlusherStats } from './usage-counter';
 import { BoundedCounter, CounterFlusher } from './usage-counter';
@@ -302,8 +302,6 @@ export class RefusalRecorder {
 export interface RecordRefusalsSinkOptions {
   /** The platform database's pool. */
   pool: Pool;
-  /** Role the flush runs as (`SET LOCAL ROLE`); the login role holds nothing. */
-  role: string;
   /**
    * The transaction-local claims the flush runs under, resolved by the caller
    * (a service principal plus the platform database id). The function raises
@@ -333,8 +331,8 @@ export const createRecordRefusalsSink = (opts: RecordRefusalsSinkOptions): Refus
   return async (rows) => {
     if (rows.length === 0) return;
     const claims = await opts.claims();
-    await withControlRole(opts.pool, opts.role, async (client: PoolClient) => {
+    await withPgClient(opts.pool, claims, async (client: PoolClient) => {
       await client.query(sql, [JSON.stringify(rows)]);
-    }, claims);
+    });
   };
 };

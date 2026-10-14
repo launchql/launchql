@@ -30,25 +30,12 @@ const createRequest = (headers: Record<string, string>): Request => {
   } as unknown as Request;
 };
 
-// A pool whose transaction framing (BEGIN / role switch / COMMIT) is absorbed,
-// so `query` sees only the control-plane statements the code under test runs.
-const controlAwarePool = (query: jest.Mock): Pool => {
-  const framing = /^(BEGIN|COMMIT|ROLLBACK)$|set_config/;
-  const client = {
-    query: (text: string, values?: unknown[]) =>
-      framing.test(text) ? Promise.resolve({ rows: [] }) : query(text, values),
-    release: jest.fn()
-  };
-  return { query, connect: jest.fn(async () => client) } as unknown as Pool;
-};
-
 const createPrivateOptions = (): ApiOptions => ({
   pg: {
     database: 'constructive'
   },
   api: {
     isPublic: false,
-    controlRole: 'test_control',
     metaSchemas: ['metaschema_public']
   }
 } as unknown as ApiOptions);
@@ -101,7 +88,7 @@ describe('api middleware routing priority', () => {
       return { rows: [] };
     });
 
-    mockGetPgPool.mockReturnValue(controlAwarePool(query));
+    mockGetPgPool.mockReturnValue({ query } as unknown as Pool);
 
     const req = createRequest({
       host: 'admin.localhost',
@@ -160,7 +147,7 @@ describe('missing served role on an X-Api-Name row', () => {
       }
       return { rows: [] };
     });
-    mockGetPgPool.mockReturnValue(controlAwarePool(query));
+    mockGetPgPool.mockReturnValue({ query } as unknown as Pool);
   };
 
   const request = () => createRequest({

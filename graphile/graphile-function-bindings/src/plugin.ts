@@ -69,7 +69,7 @@ async function loadBindings(
   pgService: GraphileConfig.PgServiceConfiguration,
   options: FunctionBindingsPluginOptions
 ): Promise<FunctionBindingsBuildInput> {
-  return withPgClientFromPgService(pgService, { role: options.role }, async (client) => {
+  return withPgClientFromPgService(pgService, null, async (client) => {
     const bindings: LoadedBinding[] = [];
     for (const module of options.modules) {
       const { computeSchema, bindingsTable, definitionsTable } = module;

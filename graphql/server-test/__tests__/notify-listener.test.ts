@@ -15,7 +15,7 @@ class FakeClient extends EventEmitter {
 const asPoolClient = (client: FakeClient): PoolClient => client as unknown as PoolClient;
 
 const createServer = () => {
-  const server = new Server({ pg: { database: 'notify_listener_test' }, api: { controlRole: 'notify_listener_control' } });
+  const server = new Server({ pg: { database: 'notify_listener_test' } });
   const reconnects: number[] = [];
   jest.spyOn(server, 'addEventListener').mockImplementation(() => {
     reconnects.push(Date.now());

@@ -9,10 +9,9 @@ import { parseUrl } from '@constructive-io/url-domains';
 import { Logger } from '@pgpmjs/logger';
 import { svcCache } from '@pgpmjs/server-utils';
 import { NextFunction, Request, Response } from 'express';
+import { Pool } from 'pg';
 import { getPgPool } from 'pg-cache';
-import { type ControlPlanePool, controlPlanePool,type ControlPlaneQueryable } from 'pg-query-context';
 
-import { getControlRole } from '../control-role';
 import errorPage50x from '../errors/50x';
 import errorPage404Message from '../errors/404-message';
 import { ApiConfigResult, ApiError, ApiOptions, ApiStructure, AuthSettings, DatabaseSettings, PubkeyChallengeSettings, RlsModule, WebauthnSettings } from '../types';
@@ -69,7 +68,7 @@ interface ApiRow {
 
 interface ResolveContext {
   opts: ApiOptions;
-  pool: ControlPlanePool;
+  pool: Pool;
   domain: string;
   subdomain: string | null;
   cacheKey: string;
@@ -110,7 +109,7 @@ interface ResolvedModuleSettings {
  * This is used to resolve per-database module settings via the loader registry.
  */
 const buildLoaderContext = (
-  routingPool: ControlPlanePool,
+  routingPool: Pool,
   opts: ApiOptions,
   row: ApiRow
 ): LoaderContext => {
@@ -120,7 +119,7 @@ const buildLoaderContext = (
   return {
     routingPool,
     routingSchema: getRoutingSchema(opts),
-    tenantPool: controlPlanePool(getPgPool({ ...opts.pg, database: dbname }), routingPool.role),
+    tenantPool: getPgPool({ ...opts.pg, database: dbname }),
     databaseId: row.database_id,
     apiId: row.api_id,
     dbname
@@ -269,7 +268,7 @@ const createAdminStructure = (
 // Database Queries (API resolution only)
 // =============================================================================
 
-const validateSchemata = async (pool: ControlPlaneQueryable, schemas: string[]): Promise<string[]> => {
+const validateSchemata = async (pool: Pool, schemas: string[]): Promise<string[]> => {
   const result = await pool.query(
     `SELECT schema_name FROM information_schema.schemata WHERE schema_name = ANY($1::text[])`,
     [schemas]
@@ -278,7 +277,7 @@ const validateSchemata = async (pool: ControlPlaneQueryable, schemas: string[]):
 };
 
 const queryByApiName = async (
-  pool: ControlPlaneQueryable,
+  pool: Pool,
   opts: ApiOptions,
   databaseId: string,
   name: string
@@ -396,7 +395,7 @@ export const getApiConfig = async (
   opts: ApiOptions,
   req: Request
 ): Promise<ApiConfigResult> => {
-  const pool = controlPlanePool(getPgPool(opts.pg), getControlRole(opts));
+  const pool = getPgPool(opts.pg);
   const { domain, subdomains } = getUrlDomains(req);
   const subdomain = getSubdomain(subdomains);
   const cacheKey = getSvcKey(opts, req);

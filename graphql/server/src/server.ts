@@ -17,7 +17,6 @@ import { getPgPool } from 'pg-cache';
 import requestIp from 'request-ip';
 
 import { createAgenticRouter } from './agentic';
-import { getControlRole } from './control-role';
 import { closeDebugDatabasePools } from './diagnostics/debug-db-snapshot';
 import type { DebugSamplerHandle } from './diagnostics/debug-sampler';
 import { startDebugSampler } from './diagnostics/debug-sampler';
@@ -93,7 +92,6 @@ class Server {
   constructor(opts: ConstructiveOptions) {
     this.opts = getEnvOptions(opts);
     const effectiveOpts = this.opts;
-    const controlRole = getControlRole(effectiveOpts);
     const observabilityRequested = isGraphqlObservabilityRequested();
     const observabilityEnabled = isGraphqlObservabilityEnabled(effectiveOpts.server?.host);
 
@@ -174,8 +172,7 @@ class Server {
     app.use(createContextMiddleware({
       pg: effectiveOpts.pg,
       loaders: createDefaultRegistry(),
-      routingSchema: getRoutingSchema(effectiveOpts),
-      controlRole
+      routingSchema: getRoutingSchema(effectiveOpts)
     }));
     // A suspended (or unknown) database is refused before anything is spent on
     // the request; billing and platform admins set that state, the loader reads it.
