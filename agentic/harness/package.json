@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/harness",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Host-agnostic Constructive harness core — skill overlay resolution, materialization, and on-disk layout for harness hosts (desktop, CLI, MCP)",
   "main": "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/chat",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Provider-agnostic LLM adapter with streaming and multi-turn support",
   "main": "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "graphile-plugin-utils",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Shared internals for Constructive PostGraphile v5 plugins - PgCondition query-builder walker and pg-resource introspection helpers",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

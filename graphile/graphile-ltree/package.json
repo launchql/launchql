@@ -1,6 +1,6 @@
 {
   "name": "graphile-ltree",
-  "version": "2.17.11",
+  "version": "2.18.0",
   "description": "PostGraphile v5 ltree plugin — auto-detects ltree columns, exposes slash-path folder fields, and provides containment/glob filter operators",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

@@ -1,6 +1,6 @@
 {
   "name": "graphile-pg-aggregates",
-  "version": "2.17.11",
+  "version": "2.18.0",
   "description": "PostGraphile v5 aggregate plugin — sum, avg, min, max, stddev, variance, distinctCount, groupedAggregates with groupBy + having, orderBy relational aggregates",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

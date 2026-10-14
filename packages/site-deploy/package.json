@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/site-deploy",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "Deploy a static build as an immutable Constructive release: hash, content-addressed upload with dedupe, one manifest commit, publish/rollback and preview refs",
   "main": "index.js",

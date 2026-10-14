@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.22.2...graphile-presigned-url-plugin@1.23.0) (2026-10-14)
+
+### Bug Fixes
+
+- **storage:** invalidate schema metadata and allow private download CORS ([770f892](https://github.com/constructive-io/constructive/commit/770f892e5551245b738e3780942cb78aec6d138b))
+
 ## [1.22.2](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.22.1...graphile-presigned-url-plugin@1.22.2) (2026-10-14)
 
 ### Bug Fixes

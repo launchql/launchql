@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/coerce",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "Coerce untrusted unknown values into narrow TypeScript types",
   "main": "index.js",

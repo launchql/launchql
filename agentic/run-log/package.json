@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/run-log",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "The append-only agent run log — pi session entries stored verbatim under a run/seq wrapper, with projections for transcript, usage, tool state and resumable sessions",
   "main": "index.js",

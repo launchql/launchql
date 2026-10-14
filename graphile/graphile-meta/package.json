@@ -1,6 +1,6 @@
 {
   "name": "graphile-meta",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "PostGraphile v5 _meta introspection plugin — exposes a single _meta root query describing tables, fields, indexes, constraints, relations, inflection names, and smart-tag-derived metadata for dynamic query building and code generation",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

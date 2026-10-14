@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/run-log-gate",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "Tool approvals over the run log — the request, the human's answer and every settled gate decision are run-log entries, so desktop, cloud pi and agentic hosts ask and are answered on one surface",
   "main": "index.js",

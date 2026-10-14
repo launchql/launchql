@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/content-type-stream",
-  "version": "2.32.0",
+  "version": "2.33.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "detect content-types via streams",
   "main": "index.js",

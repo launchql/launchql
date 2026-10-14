@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/s3-utils",
-  "version": "2.34.0",
+  "version": "2.35.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "Unified S3 utilities — client factory, file operations, presigned URLs",
   "main": "index.js",

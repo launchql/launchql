@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.31.0](https://github.com/constructive-io/constructive/compare/@constructive-io/bucket-provisioner@0.30.1...@constructive-io/bucket-provisioner@0.31.0) (2026-10-14)
+
+### Bug Fixes
+
+- **storage:** invalidate schema metadata and allow private download CORS ([770f892](https://github.com/constructive-io/constructive/commit/770f892e5551245b738e3780942cb78aec6d138b))
+
 ## [0.30.1](https://github.com/constructive-io/constructive/compare/@constructive-io/bucket-provisioner@0.30.0...@constructive-io/bucket-provisioner@0.30.1) (2026-10-14)
 
 ### Bug Fixes

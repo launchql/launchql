@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/naming-spec",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "PGPM naming spec — canonical, derived change paths rendered from object identity; paths are projections, never authored and never identity",
   "main": "index.js",

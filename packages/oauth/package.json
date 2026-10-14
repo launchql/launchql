@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/oauth",
-  "version": "0.30.1",
+  "version": "0.31.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "OAuth 2.0 client for social authentication (Google, GitHub, Facebook, LinkedIn)",
   "main": "index.js",

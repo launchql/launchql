@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/metering",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "harness-neutral metering for an agent run — the Constructive gateway as a model endpoint, run identity headers, and usage reporting",
   "main": "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/bundle",
-  "version": "0.18.8",
+  "version": "0.19.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "PGPM migration bundle — the portable, content-addressed artifact layer (create/io/verify/transpile/diff/reconcile)",
   "main": "index.js",

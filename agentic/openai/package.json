@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/openai",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "OpenAI (and OpenAI-compatible) adapter for agentic-kit",
   "main": "index.js",

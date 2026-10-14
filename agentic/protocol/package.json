@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/protocol",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Shared protocol kernel (types, event stream, message + JSON helpers) for agentic-kit",
   "main": "index.js",

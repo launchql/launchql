@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.32.0](https://github.com/constructive-io/constructive/compare/uuid-hash@2.31.0...uuid-hash@2.32.0) (2026-10-14)
+
+**Note:** Version bump only for package uuid-hash
+
 # [2.31.0](https://github.com/constructive-io/constructive/compare/uuid-hash@2.30.1...uuid-hash@2.31.0) (2026-09-17)
 
 **Note:** Version bump only for package uuid-hash

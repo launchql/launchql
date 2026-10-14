@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/constructive-io/constructive/compare/@constructive-db/machine-runner@0.3.0...@constructive-db/machine-runner@0.4.0) (2026-10-14)
+
+### Bug Fixes
+
+- **machine-runner:** use workspace protocol for @pgpmjs/logger ([15a6b5d](https://github.com/constructive-io/constructive/commit/15a6b5d0f395c668bdcb820cb80233ac325f5f25))
+
 # [0.3.0](https://github.com/constructive-io/constructive/compare/@constructive-db/machine-runner@0.2.2...@constructive-db/machine-runner@0.3.0) (2026-10-13)
 
 ### Bug Fixes

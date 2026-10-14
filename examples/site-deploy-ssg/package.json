@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/examples-site-deploy-ssg",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Example: a tiny static site generator deployed as an immutable Constructive release, with a `play` preview and rollback.",
   "homepage": "https://github.com/constructive-io/constructive",

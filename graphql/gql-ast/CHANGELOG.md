@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.26.0](https://github.com/constructive-io/constructive/compare/gql-ast@3.25.0...gql-ast@3.26.0) (2026-10-14)
+
+**Note:** Version bump only for package gql-ast
+
 # [3.25.0](https://github.com/constructive-io/constructive/compare/gql-ast@3.24.1...gql-ast@3.25.0) (2026-09-17)
 
 **Note:** Version bump only for package gql-ast

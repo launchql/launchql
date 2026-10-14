@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/constructive-io/constructive/compare/@constructive-io/examples-site-deploy-ssg@0.3.0...@constructive-io/examples-site-deploy-ssg@0.4.0) (2026-10-14)
+
+**Note:** Version bump only for package @constructive-io/examples-site-deploy-ssg
+
 # [0.3.0](https://github.com/constructive-io/constructive/compare/@constructive-io/examples-site-deploy-ssg@0.2.0...@constructive-io/examples-site-deploy-ssg@0.3.0) (2026-09-17)
 
 **Note:** Version bump only for package @constructive-io/examples-site-deploy-ssg

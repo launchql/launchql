@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/constructive-io/constructive/compare/query-spec@0.13.0...query-spec@0.14.0) (2026-10-14)
+
+**Note:** Version bump only for package query-spec
+
 # [0.13.0](https://github.com/constructive-io/constructive/compare/query-spec@0.12.1...query-spec@0.13.0) (2026-09-17)
 
 **Note:** Version bump only for package query-spec

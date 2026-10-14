@@ -1,6 +1,6 @@
 {
   "name": "graphile-storage-registry",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Registry-derived storage plane discovery for PostGraphile v5 — pairs @storageFiles/@storageBuckets codecs through their actual foreign-key relations and derives the canonical upload surface names, so no table name is ever load-bearing",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/run-log-client",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "The run log as a browser reads it: a tenant-GraphQL RunLogStore over a module's agent_run/agent_event pair, plus the follower loop every run surface uses",
   "main": "index.js",
