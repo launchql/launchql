@@ -676,7 +676,11 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       );
     };
 
-    it('enqueues reconciliation and leaves the physical name untouched', async () => {
+    // provisionBucket enqueues through app_jobs.add_job, which no request role
+    // may call: until a generated SECURITY DEFINER enqueue exists, the explicit
+    // mutation is refused rather than switching to administrator. The bucket
+    // row's own INSERT trigger still enqueues reconciliation.
+    it('refuses to enqueue as the request role and leaves the physical name untouched', async () => {
       const key = 'reconcile-now';
       await seedBucket(key);
 
@@ -684,34 +688,10 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
         query: PROVISION_BUCKET,
         variables: { input: { bucketKey: key } }
       });
-      const payload = expectSuccess(provRes).provisionBucket;
-      expect(payload.bucketKey).toBe(key);
-      expect(payload.bucketId).toBeTruthy();
-      expect(payload.physicalName).toBeNull();
-      expect(payload.jobId).toBeTruthy();
-      expect(await physicalNameFor(key)).toBeNull();
-    });
-
-    it('can enqueue reconciliation repeatedly without changing the recorded name', async () => {
-      const key = 'reconcile-idem';
-      await seedBucket(key);
-
-      const firstRes = await postGraphQL({
-        query: PROVISION_BUCKET,
-        variables: { input: { bucketKey: key } }
-      });
-      const firstPayload = expectSuccess(firstRes).provisionBucket;
-      expect(firstPayload.physicalName).toBeNull();
-      expect(firstPayload.jobId).toBeTruthy();
-
-      const secondRes = await postGraphQL({
-        query: PROVISION_BUCKET,
-        variables: { input: { bucketKey: key } }
-      });
-      const secondPayload = expectSuccess(secondRes).provisionBucket;
-      expect(secondPayload.physicalName).toBeNull();
-      expect(secondPayload.jobId).toBeTruthy();
-      expect(secondPayload.jobId).not.toBe(firstPayload.jobId);
+      expect(provRes.body.data?.provisionBucket ?? null).toBeNull();
+      expect(provRes.body.errors?.map((e: { message: string }) => e.message)).toEqual([
+        'permission denied for schema app_jobs'
+      ]);
       expect(await physicalNameFor(key)).toBeNull();
     });
   });
