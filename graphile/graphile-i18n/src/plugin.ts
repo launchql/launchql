@@ -24,7 +24,7 @@ import type { PgCodecWithAttributes } from '@dataplan/pg';
 import { TYPES } from '@dataplan/pg';
 import { context as grafastContext, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
-import { withSystemLaneClient } from 'graphile-plugin-utils';
+import { withRequestPgClient } from 'graphile-plugin-utils';
 
 import type { I18nPluginOptions, I18nTableInfo, TranslatableField } from './types';
 
@@ -267,18 +267,20 @@ export function createI18nPlugin(options: I18nPluginOptions = {}): GraphileConfi
                   $baseCols[column] = $parent.get(column);
                 }
                 const $withPgClient = (grafastContext() as any).get('withPgClient');
+                const $pgSettings = (grafastContext() as any).get('pgSettings');
                 const $langCodes = (grafastContext() as any).get('langCodes');
 
                 // Combine all inputs into a single step
                 const $input = object({
                   id: $id,
                   withPgClient: $withPgClient,
+                  pgSettings: $pgSettings,
                   langCodes: $langCodes,
                   ...$baseCols,
                 });
 
                 return lambda($input, async (input: any) => {
-                  const { id, withPgClient, langCodes: ctxLangCodes, ...baseCols } = input;
+                  const { id, withPgClient, pgSettings, langCodes: ctxLangCodes, ...baseCols } = input;
                   const langs: string[] = ctxLangCodes ?? defaultLanguages;
 
                   if (!withPgClient || !id) {
@@ -289,10 +291,9 @@ export function createI18nPlugin(options: I18nPluginOptions = {}): GraphileConfi
                     return result;
                   }
 
-                  // Translation lookup is a server-side read, so it runs in the
-                  // system lane's bounded role inside one transaction rather
-                  // than inheriting the pool's connecting role.
-                  const row = await withSystemLaneClient(withPgClient, async (client) => {
+                  // Translations are the tenant's own rows: read them as the
+                  // request's role, under its jwt claims and RLS.
+                  const row = await withRequestPgClient(withPgClient, pgSettings, async (client) => {
                     const { rows } = await client.query({ text: sqlQuery, values: [id, langs] });
                     return rows[0] ?? null;
                   });

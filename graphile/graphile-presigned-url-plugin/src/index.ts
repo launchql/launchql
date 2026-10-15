@@ -52,7 +52,6 @@ export {
 } from './physical-bucket';
 export { createPresignedUrlPlugin,PresignedUrlPlugin } from './plugin';
 export { PresignedUrlPreset } from './preset';
-export { type WithPgClient, withRequestPgClient } from './request-pg-client';
 export { describeS3Failure, s3FailureError } from './s3-failure';
 export { copyS3Object, deleteS3Object, generatePresignedGetUrl, generatePresignedPutUrl, headObject, readObjectPrefix } from './s3-signer';
 export { clearBucketCache, clearStorageModuleCache, getBucketConfig, loadAllStorageModules,resolveStorageConfigFromCodec, resolveStorageModuleByFileId } from './storage-module-cache';
@@ -65,3 +64,4 @@ export type {
   StorageCredentials,
   StorageModuleConfig,
 } from './types';
+export { type WithPgClient, withRequestPgClient } from 'graphile-plugin-utils';

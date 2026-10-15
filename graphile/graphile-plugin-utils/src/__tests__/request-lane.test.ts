@@ -18,7 +18,7 @@
  * transaction-LOCAL semantics so the regression needs no live database.
  */
 
-import { type WithPgClient,withRequestPgClient } from '../src/request-pg-client';
+import { type WithPgClient,withRequestPgClient } from '../request-lane';
 
 const SET_CONFIG_SQL_RE = /set_config\(el->>0, el->>1, true\)/;
 
@@ -125,7 +125,7 @@ describe('withRequestPgClient', () => {
     expect(claim).toBe('db-1');
   });
 
-  it('acquires the client in the system lane (null pgSettings) and wraps work in one transaction', async () => {
+  it('acquires the client without settings and wraps work in one transaction', async () => {
     const pg = new FakePg();
     const { withPgClient, settingsSeen } = makeWithPgClient(pg);
 

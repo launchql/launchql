@@ -100,7 +100,7 @@ beforeAll(async () => {
   await pgCache.waitForDisposals();
 
   const roles = { anonymous: 'anonymous', authenticated: 'authenticated' };
-  await pg.query(generateCreateUserSQL(LOGIN, PASSWORD, roles, { bypassRls: true }));
+  await pg.query(generateCreateUserSQL(LOGIN, PASSWORD, roles, { bypassRls: false }));
   await pg.query(`
     GRANT CONNECT ON DATABASE "${pg.config.database}" TO "${LOGIN}";
     DO $grant$
@@ -116,6 +116,16 @@ beforeAll(async () => {
       END LOOP;
     END
     $grant$;
+  `);
+
+  // Production keeps RLS on module registration: a tenant's end users see no
+  // storage_module / file_ref_field / route_module row, and the login holds no
+  // policy at all. Mirror that, so any read that is not a claim-scoped
+  // SECURITY DEFINER hop sees nothing instead of passing on a grant.
+  await pg.query(`
+    ALTER TABLE metaschema_modules_public.storage_module ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE metaschema_modules_public.file_ref_field ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE metaschema_modules_public.route_module ENABLE ROW LEVEL SECURITY;
   `);
 
   server = await createTestServer(getEnvOptions({
@@ -154,12 +164,13 @@ afterEach(async () => {
   await pg.afterEach();
 });
 
-it('serves with a login that is not a member of administrator', async () => {
+it('serves with a NOBYPASSRLS login that is not a member of administrator', async () => {
   const { rows } = await pg.query(
-    `SELECT pg_has_role($1, 'administrator', 'MEMBER') AS member`,
+    `SELECT pg_has_role(r.rolname, 'administrator', 'MEMBER') AS member, r.rolbypassrls AS bypass_rls
+       FROM pg_roles r WHERE r.rolname = $1`,
     [LOGIN]
   );
-  expect(rows[0].member).toBe(false);
+  expect(rows[0]).toEqual({ member: false, bypass_rls: false });
 });
 
 it('returns an upload URL from uploadFile on the tenant storage host', async () => {

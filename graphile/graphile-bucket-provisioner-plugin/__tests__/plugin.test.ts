@@ -66,7 +66,7 @@ function createMockPgClient({
     if (sql.includes('jwt_private.current_database_id')) {
       return Promise.resolve({ rows: [{ id: DATABASE_ID }] });
     }
-    if (sql.includes('metaschema_modules_public.storage_module')) {
+    if (sql.includes('function_resolution.storage_modules()')) {
       return Promise.resolve({
         rows: [{
           id: 'sm-uuid-456',

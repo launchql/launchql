@@ -25,24 +25,7 @@ import { extendSchema, gql } from 'graphile-utils';
  * resolution in the explicit provisionBucket mutation).
  */
 const ALL_STORAGE_MODULES_QUERY = `
-  SELECT
-    sm.id,
-    sm.database_id,
-    sm.buckets_table_id,
-    sm.scope,
-    sm.entity_field,
-    sm.entity_table_id,
-    bs.schema_name AS buckets_schema,
-    bt.name AS buckets_table,
-    sm.allowed_origins,
-    es.schema_name AS entity_schema,
-    et.name AS entity_table
-  FROM metaschema_modules_public.storage_module sm
-  JOIN metaschema_public.table bt ON bt.id = sm.buckets_table_id
-  JOIN metaschema_public.schema bs ON bs.id = bt.schema_id
-  LEFT JOIN metaschema_public.table et ON et.id = sm.entity_table_id
-  LEFT JOIN metaschema_public.schema es ON es.id = et.schema_id
-  WHERE sm.database_id = $1
+  SELECT * FROM function_resolution.storage_modules()
 `;
 
 interface StorageModuleRow {
@@ -106,7 +89,7 @@ async function resolveBucketByKey(
   bucketKey: string,
   ownerId?: string,
 ): Promise<{ storageModule: StorageModuleRow; bucket: BucketRow } | null> {
-  const result = await runQuery(pgClient, ALL_STORAGE_MODULES_QUERY, [databaseId]);
+  const result = await runQuery(pgClient, ALL_STORAGE_MODULES_QUERY);
   const modules = result.rows as StorageModuleRow[];
 
   if (modules.length === 0) {

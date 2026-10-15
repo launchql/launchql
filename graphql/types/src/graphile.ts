@@ -147,8 +147,8 @@ export const graphileFeatureDefaults: GraphileFeatureOptions = {
  */
 export const apiDefaults: ApiOptions = {
   exposedSchemas: [],
-  anonRole: 'administrator',
-  roleName: 'administrator',
+  anonRole: 'anonymous',
+  roleName: 'authenticated',
   isPublic: true,
   metaSchemas: [
     'routing_public',

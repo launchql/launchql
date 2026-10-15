@@ -293,42 +293,22 @@ describe('scoped private via X-Meta-Schema', () => {
     teardowns.push(teardown);
   });
 
-  it('should query all databases', async () => {
-    const res = await postGraphQL({
-      query: '{ databases { nodes { name } } }'
-    });
+  // The meta schema serves as the request's own role, under RLS: nothing
+  // switches to administrator. A caller without a session is `anonymous`,
+  // which holds no grant on the metaschema tables.
+  it.each([
+    ['databases', '{ databases { nodes { name } } }'],
+    ['schemas', '{ schemas { nodes { name schemaName isPublic } } }'],
+    ['tables', '{ tables { nodes { name } } }'],
+    ['apis', '{ apis { nodes { name isPublished databaseId } } }']
+  ])('reads %s as anonymous under its own grants, never as administrator', async (field, query) => {
+    const res = await postGraphQL({ query });
 
     expect(res.status).toBe(200);
-    expect(res.body.data.databases.nodes).toBeInstanceOf(Array);
-    expect(res.body.data.databases.nodes.length).toBeGreaterThanOrEqual(1);
-  });
-
-  it('should query schemas', async () => {
-    const res = await postGraphQL({
-      query: '{ schemas { nodes { name schemaName isPublic } } }'
-    });
-
-    expect(res.status).toBe(200);
-    expect(res.body.data.schemas.nodes).toBeInstanceOf(Array);
-  });
-
-  it('should query tables', async () => {
-    const res = await postGraphQL({
-      query: '{ tables { nodes { name } } }'
-    });
-
-    expect(res.status).toBe(200);
-    expect(res.body.data.tables.nodes).toBeInstanceOf(Array);
-  });
-
-  it('should query apis', async () => {
-    const res = await postGraphQL({
-      query: '{ apis { nodes { name isPublished databaseId } } }'
-    });
-
-    expect(res.status).toBe(200);
-    expect(res.body.data.apis.nodes).toBeInstanceOf(Array);
-    expect(res.body.data.apis.nodes.length).toBeGreaterThanOrEqual(1);
+    expect(res.body.data?.[field] ?? null).toBeNull();
+    expect(res.body.errors?.map((e: { message: string }) => e.message)).toEqual([
+      expect.stringMatching(/^permission denied for (table|schema) /)
+    ]);
   });
 
   it('resolves the meta-schema surface (single-record __typename)', async () => {

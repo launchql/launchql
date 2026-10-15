@@ -6,12 +6,9 @@ export { getQueryBuilder } from './query-builder';
 // pg-resource introspection helpers (connection-filter / pg-aggregates)
 export { isComputedScalarAttributeResource } from './pg-resources';
 
-// System lane: server-owned work under a named role in one transaction
-export type {
-  SystemLanePgClient,
-  SystemLaneWithPgClient
-} from './system-lane';
-export { withSystemLaneClient } from './system-lane';
+// Request lane: the request's own role and jwt claims across one transaction
+export type { RequestPgClient, WithPgClient } from './request-lane';
+export { withRequestPgClient } from './request-lane';
 
 // Generic pg/JSON-schema → GraphQL scalar mapping tables (function-bindings)
 export type { GraphQLScalarName } from './scalar-maps';

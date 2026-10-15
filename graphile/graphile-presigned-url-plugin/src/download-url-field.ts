@@ -24,11 +24,10 @@ import 'graphile-build';
 import { Logger } from '@pgpmjs/logger';
 import { context as grafastContext, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
-import { withSystemLaneClient } from 'graphile-plugin-utils';
+import { withRequestPgClient } from 'graphile-plugin-utils';
 import { DOWNLOAD_URL_FIELD } from 'graphile-storage-registry';
 
 import { resolveS3ForDatabase } from './physical-bucket';
-import { withRequestPgClient } from './request-pg-client';
 import { generatePresignedGetUrl } from './s3-signer';
 import { loadAllStorageModules, resolveStorageConfigFromCodec, storedPhysicalName } from './storage-module-cache';
 import type { PresignedUrlPluginOptions } from './types';
@@ -118,21 +117,19 @@ export function createDownloadUrlPlugin(
                         });
                         return (dbResult.rows[0]?.id as string | undefined) ?? null;
                       });
-                      // Module registration is server config, not user data:
-                      // resolve it in the system lane's bounded role.
+                      // Storage config is read on the request lane through the claim-scoped
+                      // function_resolution.storage_modules(): no role switch, no RLS bypass.
                       const config = databaseId
                         ? resolveStorageConfigFromCodec(
                           capturedCodec,
-                          await withSystemLaneClient(withPgClient, (pgClient) => loadAllStorageModules(pgClient, databaseId)),
+                          await withRequestPgClient(withPgClient, pgSettings, (pgClient) => loadAllStorageModules(pgClient, databaseId)),
                         )
                         : null;
                       // The file row already passed the reader's RLS, which is the
-                      // authorization for this URL. The bucket's physical name is
-                      // server config, not user data, and a reader may see a file
-                      // (public, or path-shared) without seeing its bucket row, so
-                      // it is read on the system lane.
+                      // authorization for this URL. The bucket row is read the same
+                      // way, as the request's own role.
                       const resolved = config && bucketId
-                        ? await withSystemLaneClient(withPgClient, async (pgClient) => {
+                        ? await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
                           const bucketResult = await pgClient.query({
                             text: `SELECT key, physical_name FROM ${config.bucketsQualifiedName} WHERE id = $1 LIMIT 1`,
                             values: [bucketId],

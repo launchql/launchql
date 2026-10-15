@@ -132,8 +132,11 @@ export interface DatabaseRoutingPlane {
 
 /**
  * The database-scope routing planes after the server's configured plane, in
- * the static gateway's order (by database id). A plane whose registration
- * names no schema or resolver is an incomplete install and fails loud.
+ * the static gateway's order (by database id). The list spans every tenant,
+ * so it comes from a SECURITY DEFINER reader granted to the platform login
+ * alone, on the login's own connection: no role switch, no RLS bypass. A plane
+ * whose registration names no schema or resolver is an incomplete install and
+ * fails loud.
  */
 export const loadDatabaseRoutingPlanes = async (
   pool: Pool,
@@ -144,11 +147,8 @@ export const loadDatabaseRoutingPlanes = async (
     schema_name: string | null;
     resolver_function_name: string | null;
   }>(
-    `SELECT rm.database_id, s.schema_name, rm.resolver_function_name
-       FROM metaschema_modules_public.route_module rm
-       LEFT JOIN metaschema_public.schema s ON s.id = rm.schema_id
-      WHERE rm.scope = 'database'
-      ORDER BY rm.database_id`
+    `SELECT database_id, schema_name, resolver_function_name
+       FROM function_resolution.routing_planes()`
   );
   return rows
     .filter((row) => row.schema_name !== configuredSchema)

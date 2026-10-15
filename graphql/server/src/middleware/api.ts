@@ -256,8 +256,8 @@ const createAdminStructure = (
   databaseId?: string
 ): ApiStructure => ({
   dbname: opts.pg?.database ?? '',
-  anonRole: 'administrator',
-  roleName: 'administrator',
+  anonRole: 'anonymous',
+  roleName: 'authenticated',
   schema: schemas,
   domains: [],
   databaseId,

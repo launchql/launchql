@@ -86,10 +86,10 @@ beforeAll(async () => {
   pgCache.delete(pg.config.database);
   await pgCache.waitForDisposals();
 
-  // The service login: BYPASSRLS, inherits the request roles, and holds its
+  // The service login: NOBYPASSRLS, inherits the request roles, and holds its
   // own EXECUTE on the verifier procedures — never administrator membership.
   const roles = { anonymous: 'anonymous', authenticated: 'authenticated' };
-  await pg.query(generateCreateUserSQL(LOGIN, PASSWORD, roles, { bypassRls: true }));
+  await pg.query(generateCreateUserSQL(LOGIN, PASSWORD, roles, { bypassRls: false }));
   await pg.query(`
     GRANT CONNECT ON DATABASE "${pg.config.database}" TO "${LOGIN}";
     DO $grant$
@@ -140,12 +140,13 @@ afterEach(async () => {
   await pg.afterEach();
 });
 
-it('serves with a login that is not a member of administrator', async () => {
+it('serves with a NOBYPASSRLS login that is not a member of administrator', async () => {
   const { rows } = await pg.query(
-    `SELECT pg_has_role($1, 'administrator', 'MEMBER') AS member`,
+    `SELECT pg_has_role(r.rolname, 'administrator', 'MEMBER') AS member, r.rolbypassrls AS bypass_rls
+       FROM pg_roles r WHERE r.rolname = $1`,
     [LOGIN]
   );
-  expect(rows[0].member).toBe(false);
+  expect(rows[0]).toEqual({ member: false, bypass_rls: false });
 });
 
 it('keeps the verifier procedures off the request roles', async () => {
