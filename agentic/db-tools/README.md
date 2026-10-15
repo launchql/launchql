@@ -56,6 +56,25 @@ A tool executes against nothing but its params and a context, so it is callable 
 const result = await describeSchemaTool.execute({ database_name: 'my-app' }, { cwd: process.cwd() });
 ```
 
+## Requests
+
+Every backend request of a tool call goes through `createBackendFetch` (see `src/backend-fetch.ts`). The rules are the same for each request:
+
+- **Abort** — the request obeys `ctx.signal`. When the signal aborts, the call stops at once, also during a wait between retries.
+- **Timeout** — one request stops after 30 s (`REQUEST_TIMEOUT_MS`). A request that times out does not retry.
+- **Retries** — a network error or a 502, 503, or 504 response retries up to 3 times (`MAX_RETRIES`). The wait starts at 500 ms, doubles for each retry, and has random jitter.
+- **Writes** — a `mutation` retries only when the connection did not open (for example `ECONNREFUSED`). The server did not get the request, so a second send is safe.
+- **Progress** — each retry sends "Retrying 1/3" through `ctx.onProgress`, if the host gives one.
+
+`provision_database` and `provision_blueprint` have a limit of 5 min for the full call (`PROVISION_TIMEOUT_MS`). The ticket polls of `provision_database` keep the 30 s limit. `run_codegen` stops its child processes when the signal aborts.
+
+To send your own request with the same rules, use `toolFetch(ctx)`:
+
+```ts
+const fetch = toolFetch(ctx);
+const response = await fetch(endpoint, { method: 'POST', body: JSON.stringify({ query }) });
+```
+
 ## Related
 
 | Package | Role |
