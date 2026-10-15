@@ -1,8 +1,10 @@
+import { withTimeLimit } from '../src/backend-fetch';
 import {
   type ProvisionRequestExecutor,
   type ProvisionTicket,
   requestDatabaseProvision,
 } from '../src/provision-database/request-database';
+import { PROVISION_STOPPED_MESSAGE } from '../src/tools/provision-database';
 
 function ticket(overrides: Partial<ProvisionTicket> = {}): ProvisionTicket {
   return {
@@ -21,7 +23,6 @@ const done = ticket({ status: 'completed', bootstrapStatus: 'completed', databas
 function run(args: {
   initial: ProvisionTicket;
   polls?: (ProvisionTicket | null | Error)[];
-  deadlineMs?: number;
 }) {
   const polls = [...(args.polls ?? [])];
   const pollCalls: string[] = [];
@@ -44,8 +45,8 @@ function run(args: {
     domain: 'localhost',
     request: { presetSlug: 'b2b:storage' },
     executor,
+    signal: new AbortController().signal,
     pollIntervalMs: 0,
-    pollDeadlineMs: args.deadlineMs ?? 5_000,
   });
   return { promise, request, pollCalls };
 }
@@ -167,10 +168,23 @@ describe('requestDatabaseProvision', () => {
     await expect(promise).resolves.toEqual({ databaseId: 'db-id' });
   });
 
-  it('times out a ticket that never completes', async () => {
-    const { promise, pollCalls } = run({ initial: ticket(), deadlineMs: 0 });
-    await expect(promise).rejects.toThrow(/timed out.*status: pending.*bootstrapStatus: pending/);
-    expect(pollCalls).toEqual([]);
+  it('polls a ticket that never completes until the provisioning limit stops it', async () => {
+    const poll = jest.fn(async () => ticket());
+    const promise = requestDatabaseProvision({
+      apiEndpoint: 'http://api.test/graphql',
+      modulesEndpoint: 'http://modules.test/graphql',
+      bearer: 'bearer-token',
+      databaseName: 'my_app',
+      domain: 'localhost',
+      request: { presetSlug: 'b2b:storage' },
+      executor: { request: async () => ticket(), poll },
+      signal: withTimeLimit(undefined, 50, PROVISION_STOPPED_MESSAGE),
+      pollIntervalMs: 5,
+    });
+    await expect(promise).rejects.toThrow(PROVISION_STOPPED_MESSAGE);
+    expect(poll.mock.calls.length).toBeGreaterThan(1);
+    expect(PROVISION_STOPPED_MESSAGE).toMatch(/continues on the server/);
+    expect(PROVISION_STOPPED_MESSAGE).toMatch(/Run provision_database again to check it/);
   });
 
   it('stops at once when the signal aborts during the poll wait', async () => {

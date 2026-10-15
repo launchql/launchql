@@ -40,6 +40,10 @@ function provisionDomain(apiEndpoint: string): string {
   }
 }
 
+export const PROVISION_STOPPED_MESSAGE = `provision_database stopped after ${
+  PROVISION_TIMEOUT_MS / 60_000
+} min. Provisioning continues on the server. Run provision_database again to check it.`;
+
 const ProvisionDatabaseZod = z.object({
   database_name: z
     .string()
@@ -100,11 +104,7 @@ export const provisionDatabaseTool: HarnessTool<
     const databaseName = params.database_name.trim();
     if (!databaseName) return fail('database_name is required.');
 
-    const signal = withTimeLimit(
-      ctx.signal,
-      PROVISION_TIMEOUT_MS,
-      `provision_database stopped after ${PROVISION_TIMEOUT_MS / 60_000} min. The database can still finish on the server; run provision_database again to check.`,
-    );
+    const signal = withTimeLimit(ctx.signal, PROVISION_TIMEOUT_MS, PROVISION_STOPPED_MESSAGE);
     const call = { ...ctx, signal };
 
     const envPath = path.join(ctx.cwd, '.env');
@@ -274,7 +274,7 @@ export const provisionDatabaseTool: HarnessTool<
       const nameTakenHint = /already exists|already taken|already in use|duplicate/i.test(detail)
         ? ' The database name is already taken on the backend — re-run with a different database_name.'
         : '';
-      return fail(`Database provisioning failed: ${detail}.${nameTakenHint}`);
+      return fail(`Database provisioning failed: ${detail.replace(/\.$/, '')}.${nameTakenHint}`);
     }
 
     // Persist the binding to the project .env (upsert, preserving other keys).

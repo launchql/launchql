@@ -8,9 +8,8 @@
 // hands credentials to the agent as soon as this resolves, and until owner
 // bootstrap completes the new database has zero users, so its per-DB API
 // would reject the owner token under RLS. requestDatabase owns the database
-// to the JWT user — there is no owner input. The generated ORM's default
-// adapter is plain fetch, so the SDK's FetchAdapter is injected to keep
-// *.localhost DNS/Host routing working in Node.
+// to the JWT user — there is no owner input. The SDK's FetchAdapter sends with
+// the caller's fetch, which keeps *.localhost DNS/Host routing working in Node.
 
 import { api, modules } from '@constructive-io/sdk';
 
@@ -48,8 +47,6 @@ export type ProvisionRequestExecutor = {
 };
 
 export const POLL_INTERVAL_MS = 2_000;
-/** Stays under airpage's 5-minute per-tool timeout. */
-export const POLL_DEADLINE_MS = 240_000;
 /**
  * Consecutive unreadable polls tolerated before giving up. Provisioning keeps
  * running server-side, so a dropped request or a momentary 502 must not abort
@@ -129,10 +126,9 @@ export async function requestDatabaseProvision(args: {
   fetch?: typeof globalThis.fetch;
   /** Sends the ticket polls. Defaults to `fetch`. */
   pollFetch?: typeof globalThis.fetch;
-  /** Stops the poll loop and its waits. */
-  signal?: AbortSignal;
+  /** The only end of the poll loop besides a final ticket: stops the polls and their waits. */
+  signal: AbortSignal;
   pollIntervalMs?: number;
-  pollDeadlineMs?: number;
 }): Promise<{ databaseId: string }> {
   const executor =
     args.executor ??
@@ -144,7 +140,6 @@ export async function requestDatabaseProvision(args: {
       pollFetch: args.pollFetch,
     });
   const intervalMs = args.pollIntervalMs ?? POLL_INTERVAL_MS;
-  const deadlineMs = args.pollDeadlineMs ?? POLL_DEADLINE_MS;
 
   let ticket = await executor.request({
     databaseName: args.databaseName,
@@ -155,7 +150,6 @@ export async function requestDatabaseProvision(args: {
   const ticketId = ticket.id;
   if (!ticketId) throw new Error('requestDatabase returned a provision ticket without an id.');
 
-  const deadline = Date.now() + deadlineMs;
   let failures = 0;
   for (;;) {
     if (ticket.status === 'failed') {
@@ -168,14 +162,6 @@ export async function requestDatabaseProvision(args: {
       if (!ticket.databaseId) throw new Error('provisioning completed but returned no databaseId.');
       return { databaseId: ticket.databaseId };
     }
-    if (Date.now() >= deadline) {
-      throw new Error(
-        `provisioning timed out after ${Math.round(deadlineMs / 1000)}s (status: ${
-          ticket.status ?? 'unknown'
-        }, bootstrapStatus: ${ticket.bootstrapStatus ?? 'unknown'})`,
-      );
-    }
-
     await sleep(intervalMs, args.signal);
 
     // A poll that throws (network blip, 502) or comes back empty is retried a
@@ -184,7 +170,7 @@ export async function requestDatabaseProvision(args: {
     try {
       polled = await executor.poll(ticketId);
     } catch (err) {
-      args.signal?.throwIfAborted();
+      args.signal.throwIfAborted();
       if (++failures > MAX_CONSECUTIVE_POLL_FAILURES) throw err;
       continue;
     }
