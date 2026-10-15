@@ -54,6 +54,14 @@ export function createConstructiveDbTools(host: ToolsHost): readonly AnyHarnessT
 }
 
 export {
+  type BackendFetchOptions,
+  createBackendFetch,
+  MAX_RETRIES,
+  PROVISION_TIMEOUT_MS,
+  REQUEST_TIMEOUT_MS,
+  toolFetch,
+} from './backend-fetch';
+export {
   CONTEXT_ENV_KEYS,
   CONTEXT_ENV_PREFIX,
   type ContextEnvKey,
