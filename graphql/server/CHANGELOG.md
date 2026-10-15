@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.32.2](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.32.1...@constructive-io/graphql-server@5.32.2) (2026-10-15)
+
+### Bug Fixes
+
+- **graphql-server:** admit handlers to the cache inside the shared single-flight promise ([4bb81d0](https://github.com/constructive-io/constructive/commit/4bb81d028c1b10e11c87fce7972e6a23f9362d79))
+- **graphql-server:** scope handler introspection to API schemas and bound graphile cache by heap ([4460d89](https://github.com/constructive-io/constructive/commit/4460d89ec1d82beeeb95d38046b6613838e5a943))
+
 ## [5.32.1](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.32.0...@constructive-io/graphql-server@5.32.1) (2026-10-14)
 
 **Note:** Version bump only for package @constructive-io/graphql-server
