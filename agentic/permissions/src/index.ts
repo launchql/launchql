@@ -4,6 +4,7 @@
  * grants, and secret redaction.
  */
 
+export { scrubEnv } from './env';
 export { nodeFsProbe } from './node-fs';
 export {
   defaultHardDeny,
@@ -14,4 +15,5 @@ export {
   WORKSPACE_PROTECTED_WRITE
 } from './roots';
 export { isSecretFile, isSecretFileName } from './secret-files';
+export { findPlaceholders, PLACEHOLDER_PATTERN } from './secrets';
 export * from './types';
