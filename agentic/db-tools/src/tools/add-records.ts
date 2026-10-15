@@ -7,6 +7,7 @@ import {
 import { objects } from '@constructive-io/sdk';
 import { z } from 'zod';
 
+import { toolRequests } from '../backend-fetch';
 import { resolveDataToken, resolveProjectContext } from '../context';
 import { cleanTable, findMetaTable, META_QUERY, type MetaResponse } from '../records/meta';
 
@@ -66,9 +67,9 @@ export const addRecordsTool: HarnessTool<typeof AddRecordsZod, AddRecordsDetails
   promptSnippet: 'add_records: insert rows into an existing table. Gated.',
   parameters: AddRecordsZod,
   async execute(params: z.infer<typeof AddRecordsZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return fail(resolved.reason);
-    const { dataEndpoint } = resolved.context;
+    const { dataEndpoint, fetch } = resolved.context;
 
     if (!dataEndpoint) {
       return fail(
@@ -80,9 +81,11 @@ export const addRecordsTool: HarnessTool<typeof AddRecordsZod, AddRecordsDetails
     const token = await resolveDataToken(resolved.context);
     if (!token.token) return needsAuth(token.reason ?? 'Sign in to the database to insert records.');
 
-    const adapter = new objects.FetchAdapter(dataEndpoint, {
-      Authorization: `Bearer ${token.token}`,
-    });
+    const adapter = new objects.FetchAdapter(
+      dataEndpoint,
+      { Authorization: `Bearer ${token.token}` },
+      fetch,
+    );
 
     let tables;
     try {

@@ -6,6 +6,7 @@ import {
   type HarnessTool,
 } from '@agentic-kit/harness';
 
+import { PROVISION_TIMEOUT_MS, toolRequests, withTimeLimit } from '../backend-fetch';
 import { resolveProjectContext } from '../context';
 
 type Params = Blueprint;
@@ -59,7 +60,15 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
     async execute(params: Params, ctx) {
       const empty: ProvisionBlueprintDetails = { created: 0, total: 0, tables: [], error: null };
 
-      const resolved = await resolveProjectContext(ctx.cwd);
+      const signal = withTimeLimit(
+        ctx.signal,
+        PROVISION_TIMEOUT_MS,
+        `provision_blueprint stopped after ${PROVISION_TIMEOUT_MS / 60_000} min. The tables can still finish on the server; run describe_schema to check.`,
+      );
+      const resolved = await resolveProjectContext(
+        ctx.cwd,
+        toolRequests({ ...ctx, signal }, { timeoutMs: 0 }),
+      );
       if (!resolved.context) {
         return { content: [{ type: 'text', text: resolved.reason }], details: empty };
       }

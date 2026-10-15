@@ -9,7 +9,7 @@ jest.mock('@constructive-io/sdk', () => ({
   modules: { createClient: jest.fn(() => ({ kind: 'modules' })) },
 }));
 
-import { api } from '@constructive-io/sdk';
+import { api, modules } from '@constructive-io/sdk';
 
 import {
   CONTEXT_ENV_PREFIX,
@@ -117,6 +117,23 @@ describe('resolveProjectContext sources', () => {
     expect(mockProbe).toHaveBeenCalledWith(
       expect.objectContaining({ endpoint: 'http://api.localhost:3000/graphql' }),
     );
+  });
+
+  it('sends every control-plane request through the given fetch and signal', async () => {
+    const fetch = jest.fn() as unknown as typeof globalThis.fetch;
+    const signal = new AbortController().signal;
+    const resolved = await resolveProjectContext(
+      {
+        [`${CONTEXT_ENV_PREFIX}ACCESS_TOKEN`]: 'project-key',
+        [`${CONTEXT_ENV_PREFIX}DATABASE_ID`]: 'db-1',
+      },
+      { fetch, signal },
+    );
+
+    expect(resolved.context?.fetch).toBe(fetch);
+    expect(mockCreateClient).toHaveBeenCalledWith(expect.objectContaining({ fetch }));
+    expect(modules.createClient).toHaveBeenCalledWith(expect.objectContaining({ fetch }));
+    expect(mockProbe).toHaveBeenCalledWith(expect.objectContaining({ fetch, signal }));
   });
 
   it('reports no-env when a cwd has no .env', async () => {

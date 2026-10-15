@@ -6,6 +6,7 @@ import type { HarnessTool } from '@agentic-kit/harness';
 import { z } from 'zod';
 
 import { prewarmAppWorkspace } from '../app-workspace';
+import { PROVISION_TIMEOUT_MS, toolFetch, withTimeLimit } from '../backend-fetch';
 import { probeDatabase } from '../db-probe';
 import { getHost } from '../host';
 import { selectProvisionCredential } from '../provision-database/credential';
@@ -99,6 +100,13 @@ export const provisionDatabaseTool: HarnessTool<
     const databaseName = params.database_name.trim();
     if (!databaseName) return fail('database_name is required.');
 
+    const signal = withTimeLimit(
+      ctx.signal,
+      PROVISION_TIMEOUT_MS,
+      `provision_database stopped after ${PROVISION_TIMEOUT_MS / 60_000} min. The database can still finish on the server; run provision_database again to check.`,
+    );
+    const call = { ...ctx, signal };
+
     const envPath = path.join(ctx.cwd, '.env');
     let existing = '';
     try {
@@ -149,6 +157,8 @@ export const provisionDatabaseTool: HarnessTool<
         bearer: credential.bearer,
         databaseId: existingEnv.DATABASE_ID,
         signInHint: host.signInHint,
+        fetch: toolFetch(call),
+        signal,
       });
       if (probe.outcome === 'unreachable') {
         return fail(
@@ -212,7 +222,7 @@ export const provisionDatabaseTool: HarnessTool<
     // This keeps clone + install off run_codegen's critical path. Best-effort:
     // run_codegen re-runs the same idempotent steps, so a prewarm failure is
     // harmless. Never let it reject (we await it before returning).
-    const prewarm = prewarmAppWorkspace(ctx.cwd).catch(
+    const prewarm = prewarmAppWorkspace(ctx.cwd, signal).catch(
       (err: unknown): { ok: boolean; out: string } => ({
         ok: false,
         out: err instanceof Error ? err.message : String(err),
@@ -255,6 +265,9 @@ export const provisionDatabaseTool: HarnessTool<
         databaseName,
         domain: provisionDomain(apiEndpoint),
         request: selectProvisionRequest(modules),
+        fetch: toolFetch(call, { timeoutMs: 0 }),
+        pollFetch: toolFetch(call),
+        signal,
       }));
     } catch (err) {
       const detail = err instanceof Error ? err.message : String(err);

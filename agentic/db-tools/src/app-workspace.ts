@@ -31,10 +31,12 @@ export async function run(
   args: string[],
   cwd: string,
   env?: Record<string, string>,
+  signal?: AbortSignal,
 ): Promise<{ ok: boolean; out: string }> {
   try {
     const { stdout, stderr } = await execFileAsync(cmd, args, {
       cwd,
+      signal,
       timeout: 5 * 60_000,
       encoding: 'utf-8',
       maxBuffer: 32 * 1024 * 1024,
@@ -42,6 +44,7 @@ export async function run(
     });
     return { ok: true, out: `${stdout}${stderr}`.trim() };
   } catch (err) {
+    signal?.throwIfAborted();
     const e = err as { stdout?: string; stderr?: string; message?: string };
     return { ok: false, out: `${e.stdout ?? ''}${e.stderr ?? ''}`.trim() || e.message || 'failed' };
   }
@@ -97,7 +100,10 @@ export async function pinCodegenLatest(appDir: string): Promise<void> {
 // its CLI is unreliable in the non-TTY agent shell, which made the agent thrash
 // for minutes. Materialize `packages/app` deterministically by shallow-cloning
 // the template instead (PGPM-001).
-export async function ensureAppScaffold(cwd: string): Promise<{ ok: boolean; out: string }> {
+export async function ensureAppScaffold(
+  cwd: string,
+  signal?: AbortSignal,
+): Promise<{ ok: boolean; out: string }> {
   const appDir = path.join(cwd, 'packages', 'app');
   if (existsSync(path.join(appDir, 'package.json'))) {
     return { ok: true, out: 'packages/app already scaffolded' };
@@ -105,7 +111,13 @@ export async function ensureAppScaffold(cwd: string): Promise<{ ok: boolean; out
 
   const tmp = path.join(os.tmpdir(), `airpage-app-template-${process.pid}`);
   await rm(tmp, { recursive: true, force: true });
-  const clone = await run('git', ['clone', '--depth', '1', TEMPLATE_REPO, tmp], cwd);
+  let clone: { ok: boolean; out: string };
+  try {
+    clone = await run('git', ['clone', '--depth', '1', TEMPLATE_REPO, tmp], cwd, undefined, signal);
+  } catch (err) {
+    await rm(tmp, { recursive: true, force: true });
+    throw err;
+  }
   if (!clone.ok) {
     await rm(tmp, { recursive: true, force: true });
     return { ok: false, out: `Template clone failed:\n${clone.out}` };
@@ -138,15 +150,18 @@ export async function ensureAppScaffold(cwd: string): Promise<{ ok: boolean; out
 // run_codegen re-runs the same steps, finding the scaffold present and the install
 // already satisfied (a fast no-op). Errors are swallowed by callers that prewarm —
 // run_codegen surfaces any real failure later.
-export async function prewarmAppWorkspace(cwd: string): Promise<{ ok: boolean; out: string }> {
-  const scaffold = await ensureAppScaffold(cwd);
+export async function prewarmAppWorkspace(
+  cwd: string,
+  signal?: AbortSignal,
+): Promise<{ ok: boolean; out: string }> {
+  const scaffold = await ensureAppScaffold(cwd, signal);
   if (!scaffold.ok) return scaffold;
 
   const appDir = path.join(cwd, 'packages', 'app');
   await ensureWorkspaceConfig(cwd);
   await pinCodegenLatest(appDir);
 
-  const install = await run('pnpm', ['install', '--no-frozen-lockfile'], cwd);
+  const install = await run('pnpm', ['install', '--no-frozen-lockfile'], cwd, undefined, signal);
   if (!install.ok && !IGNORED_BUILDS_RE.test(install.out)) {
     return { ok: false, out: `pnpm install failed:\n${install.out}` };
   }

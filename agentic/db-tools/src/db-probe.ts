@@ -39,10 +39,12 @@ export async function probeDatabase(args: {
   databaseId: string;
   executor?: ProbeExecutor;
   signInHint?: string;
+  fetch?: typeof globalThis.fetch;
+  signal?: AbortSignal;
 }): Promise<DatabaseProbe> {
   const executor =
     args.executor ??
-    new api.FetchAdapter(args.endpoint, { Authorization: `Bearer ${args.bearer}` });
+    new api.FetchAdapter(args.endpoint, { Authorization: `Bearer ${args.bearer}` }, args.fetch);
   const document = `
     query ProbeDatabase {
       databases(where: { id: { equalTo: ${JSON.stringify(args.databaseId)} } }) {
@@ -71,6 +73,7 @@ export async function probeDatabase(args: {
     }
     return { outcome: 'missing' };
   } catch (err) {
+    args.signal?.throwIfAborted();
     return { outcome: 'unreachable', detail: err instanceof Error ? err.message : String(err) };
   }
 }

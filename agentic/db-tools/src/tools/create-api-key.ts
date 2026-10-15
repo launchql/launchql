@@ -2,6 +2,7 @@ import type { HarnessTool } from '@agentic-kit/harness';
 import { auth } from '@constructive-io/sdk';
 import { z } from 'zod';
 
+import { toolRequests } from '../backend-fetch';
 import { deriveSubdomainEndpoint, resolveDataToken, resolveProjectContext } from '../context';
 import { getHost } from '../host';
 
@@ -81,6 +82,7 @@ export function describeScope(entityIds: string[] | undefined, readOnly: boolean
 }
 
 async function rawGraphql(
+  fetch: typeof globalThis.fetch,
   endpoint: string,
   token: string | undefined,
   query: string,
@@ -97,8 +99,12 @@ async function rawGraphql(
   return (await res.json()) as { data?: Record<string, unknown>; errors?: { message: string }[] };
 }
 
-async function createPrincipalInputFields(endpoint: string): Promise<Set<string>> {
+async function createPrincipalInputFields(
+  fetch: typeof globalThis.fetch,
+  endpoint: string,
+): Promise<Set<string>> {
   const probe = await rawGraphql(
+    fetch,
     endpoint,
     undefined,
     '{ __type(name: "CreatePrincipalInput") { inputFields { name } } }',
@@ -121,9 +127,12 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
     const keyName = params.key_name?.trim();
     if (!keyName) return fail('create_api_key requires "key_name".');
 
-    const resolved = await resolveProjectContext(ctx.cwd, { plane: 'data' });
+    const resolved = await resolveProjectContext(ctx.cwd, {
+      plane: 'data',
+      ...toolRequests(ctx),
+    });
     if (!resolved.context) return fail(resolved.reason);
-    const { databaseId, databaseName, apiEndpoint } = resolved.context;
+    const { databaseId, databaseName, apiEndpoint, fetch } = resolved.context;
 
     if (!databaseName) {
       return fail(
@@ -151,7 +160,7 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
     const scoped = Boolean(params.entity_ids?.length) || params.read_only === true;
     try {
       if (scoped) {
-        const fields = await createPrincipalInputFields(authEndpoint);
+        const fields = await createPrincipalInputFields(fetch, authEndpoint);
         const missing = [
           ...(params.entity_ids?.length && !fields.has('entityIds') ? ['entityIds'] : []),
           ...(params.read_only === true && !fields.has('isReadOnly') ? ['isReadOnly'] : []),
@@ -166,6 +175,7 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
       const dbAuth = auth.createClient({
         endpoint: authEndpoint,
         headers: { Authorization: `Bearer ${token.token}` },
+        fetch,
       });
 
       const principalName = params.principal_name?.trim() || keyName;
@@ -202,6 +212,7 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
         // the live CreatePrincipalInput is flat and its payload only exposes
         // `result: UUID` — raw GraphQL is the only working surface.
         const created = await rawGraphql(
+          fetch,
           authEndpoint,
           token.token,
           'mutation ($input: CreatePrincipalInput!) { createPrincipal(input: $input) { result } }',

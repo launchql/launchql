@@ -1,6 +1,7 @@
 import { fieldTypeToTypeName, type HarnessTool, isInternalPolicy } from '@agentic-kit/harness';
 import { z } from 'zod';
 
+import { toolRequests } from '../backend-fetch';
 import { resolveProjectContext } from '../context';
 
 const ParamZod = z.object({});
@@ -59,7 +60,7 @@ export const describeSchemaTool: HarnessTool<typeof ParamZod, DescribeSchemaDeta
     'describe_schema: list the project database tables and their fields. Read-only — call before modifying schema.',
   parameters: ParamZod,
   async execute(_params: Params, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) {
       return {
         content: [{ type: 'text', text: resolved.reason }],

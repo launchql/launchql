@@ -101,6 +101,7 @@ function useContext() {
       databaseId: 'db-1',
       databaseName: 'demo',
       apiEndpoint: 'http://api.localhost:6464/graphql',
+      fetch: (input: RequestInfo | URL, init?: RequestInit) => global.fetch(input, init),
     },
     reason: '',
   } as never);

@@ -14,6 +14,7 @@
 
 import { api, modules } from '@constructive-io/sdk';
 
+import { sleep } from '../backend-fetch';
 import type { ProvisionModule } from './presets';
 
 /**
@@ -73,11 +74,15 @@ function createSdkExecutor(args: {
   apiEndpoint: string;
   modulesEndpoint: string;
   bearer: string;
+  fetch?: typeof globalThis.fetch;
+  pollFetch?: typeof globalThis.fetch;
 }): ProvisionRequestExecutor {
   const headers = { Authorization: `Bearer ${args.bearer}` };
-  const apiClient = api.createClient({ adapter: new api.FetchAdapter(args.apiEndpoint, headers) });
+  const apiClient = api.createClient({
+    adapter: new api.FetchAdapter(args.apiEndpoint, headers, args.fetch),
+  });
   const modulesClient = modules.createClient({
-    adapter: new api.FetchAdapter(args.modulesEndpoint, headers),
+    adapter: new api.FetchAdapter(args.modulesEndpoint, headers, args.pollFetch ?? args.fetch),
   });
   return {
     async request(input) {
@@ -105,10 +110,6 @@ function createSdkExecutor(args: {
   };
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 /**
  * Request a database and resolve only when it is fully usable: ticket
  * `status` AND `bootstrapStatus` both 'completed'. The ticket the mutation
@@ -124,6 +125,12 @@ export async function requestDatabaseProvision(args: {
   domain: string;
   request: ProvisionRequest;
   executor?: ProvisionRequestExecutor;
+  /** Sends the requestDatabase mutation. */
+  fetch?: typeof globalThis.fetch;
+  /** Sends the ticket polls. Defaults to `fetch`. */
+  pollFetch?: typeof globalThis.fetch;
+  /** Stops the poll loop and its waits. */
+  signal?: AbortSignal;
   pollIntervalMs?: number;
   pollDeadlineMs?: number;
 }): Promise<{ databaseId: string }> {
@@ -133,6 +140,8 @@ export async function requestDatabaseProvision(args: {
       apiEndpoint: args.apiEndpoint,
       modulesEndpoint: args.modulesEndpoint,
       bearer: args.bearer,
+      fetch: args.fetch,
+      pollFetch: args.pollFetch,
     });
   const intervalMs = args.pollIntervalMs ?? POLL_INTERVAL_MS;
   const deadlineMs = args.pollDeadlineMs ?? POLL_DEADLINE_MS;
@@ -167,7 +176,7 @@ export async function requestDatabaseProvision(args: {
       );
     }
 
-    await sleep(intervalMs);
+    await sleep(intervalMs, args.signal);
 
     // A poll that throws (network blip, 502) or comes back empty is retried a
     // few times rather than failing a provision that is still running.
@@ -175,6 +184,7 @@ export async function requestDatabaseProvision(args: {
     try {
       polled = await executor.poll(ticketId);
     } catch (err) {
+      args.signal?.throwIfAborted();
       if (++failures > MAX_CONSECUTIVE_POLL_FAILURES) throw err;
       continue;
     }

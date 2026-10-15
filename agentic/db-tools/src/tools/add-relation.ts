@@ -1,5 +1,6 @@
 import { expandBlueprintDefaults, type HarnessTool } from '@agentic-kit/harness';
 
+import { toolRequests } from '../backend-fetch';
 import { resolveProjectContext } from '../context';
 import { resolveSchema, resolveTable } from '../schema-resolve';
 import { type AddRelationParams as Params, AddRelationZod, buildRelation } from './add-relation-schema';
@@ -35,7 +36,7 @@ export const addRelationTool: HarnessTool<typeof AddRelationZod, AddRelationDeta
       return fail('junction_table_name is required for a many_to_many relation.');
     }
 
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return fail(resolved.reason);
     const { modules, databaseId, schemaId, ownerId } = resolved.context;
     if (!ownerId) return fail('Not authenticated (missing OWNER_ID in .env).');

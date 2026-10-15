@@ -4,6 +4,7 @@ import path from 'node:path';
 import { api, auth, modules } from '@constructive-io/sdk';
 import { parseDotenv } from '12factor-env/dotenv';
 
+import { createBackendFetch } from './backend-fetch';
 import { probeDatabase } from './db-probe';
 import { DEFAULT_DATA_TOKEN_SKEW_MS, getHost } from './host';
 
@@ -26,6 +27,8 @@ export type ProjectContext = {
   // Per-DB data/CRUD endpoint (api-<db>.localhost). Empty when DATABASE_NAME is
   // absent — record tools need it; schema tools use `api` and ignore it.
   dataEndpoint: string;
+  /** The fetch every client above sends with; reuse it for any other request. */
+  fetch: typeof globalThis.fetch;
 };
 
 export type ProjectContextFailureCode =
@@ -104,6 +107,10 @@ export type ResolveOptions = {
    *  ownership — a live foreign-owned database serves data fine, exactly as
    *  the app itself does in the Preview. */
   plane?: 'control' | 'data';
+  /** Sends every backend request. Defaults to `createBackendFetch()`. */
+  fetch?: typeof globalThis.fetch;
+  /** The signal `fetch` obeys, so a cancelled probe throws instead of reading as unreachable. */
+  signal?: AbortSignal;
 };
 
 /**
@@ -170,8 +177,9 @@ export async function resolveProjectContext(
     };
   }
   const controlHeaders = { Authorization: `Bearer ${accountBearer}` };
+  const fetch = options.fetch ?? createBackendFetch({ signal: options.signal });
 
-  const apiClient = api.createClient({ endpoint: controlApiEndpoint, headers: controlHeaders });
+  const apiClient = api.createClient({ endpoint: controlApiEndpoint, headers: controlHeaders, fetch });
 
   // Always probe the bound database — the DATABASE_ID stamp proves it WAS
   // bound, never that the database still exists (backend refresh, deletion,
@@ -181,6 +189,8 @@ export async function resolveProjectContext(
     bearer: accountBearer,
     databaseId,
     signInHint: host.signInHint,
+    fetch,
+    signal: options.signal,
   });
   if (probe.outcome === 'unreachable') {
     return {
@@ -232,7 +242,11 @@ export async function resolveProjectContext(
   return {
     context: {
       api: apiClient,
-      modules: modules.createClient({ endpoint: controlModulesEndpoint, headers: controlHeaders }),
+      modules: modules.createClient({
+        endpoint: controlModulesEndpoint,
+        headers: controlHeaders,
+        fetch,
+      }),
       databaseId,
       schemaId,
       ownerId,
@@ -241,6 +255,7 @@ export async function resolveProjectContext(
       databaseName,
       accessToken,
       dataEndpoint,
+      fetch,
     },
     reason: '',
   };
@@ -306,7 +321,10 @@ export function deriveSubdomainEndpoint(baseEndpoint: string, firstLabel: string
 // binding health never depends on it. Authenticates with the account bearer
 // against the app-configured auth endpoint (the platform rejects per-database
 // keys, and the bearer never goes to a .env-pinned endpoint).
-export async function resolveOrgName(ownerId: string): Promise<string | undefined> {
+export async function resolveOrgName(
+  ownerId: string,
+  fetch: typeof globalThis.fetch = createBackendFetch(),
+): Promise<string | undefined> {
   try {
     const host = getHost();
     const account = host.account();
@@ -321,6 +339,7 @@ export async function resolveOrgName(ownerId: string): Promise<string | undefine
     const client = auth.createClient({
       endpoint: authEndpoint,
       headers: { Authorization: `Bearer ${bearer}` },
+      fetch,
     });
     const result = await client.user
       .findMany({

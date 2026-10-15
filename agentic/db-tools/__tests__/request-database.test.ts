@@ -172,4 +172,46 @@ describe('requestDatabaseProvision', () => {
     await expect(promise).rejects.toThrow(/timed out.*status: pending.*bootstrapStatus: pending/);
     expect(pollCalls).toEqual([]);
   });
+
+  it('stops at once when the signal aborts during the poll wait', async () => {
+    const controller = new AbortController();
+    const reason = new Error('cancelled');
+    const poll = jest.fn();
+    const promise = requestDatabaseProvision({
+      apiEndpoint: 'http://api.test/graphql',
+      modulesEndpoint: 'http://modules.test/graphql',
+      bearer: 'bearer-token',
+      databaseName: 'my_app',
+      domain: 'localhost',
+      request: { presetSlug: 'b2b:storage' },
+      executor: { request: async () => ticket(), poll },
+      signal: controller.signal,
+      pollIntervalMs: 60_000,
+    });
+    setTimeout(() => controller.abort(reason), 5);
+    await expect(promise).rejects.toBe(reason);
+    expect(poll).not.toHaveBeenCalled();
+  });
+
+  it('does not count an aborted poll as a failed poll', async () => {
+    const controller = new AbortController();
+    const reason = new Error('cancelled');
+    const poll = jest.fn(async (): Promise<ProvisionTicket> => {
+      controller.abort(reason);
+      throw reason;
+    });
+    const promise = requestDatabaseProvision({
+      apiEndpoint: 'http://api.test/graphql',
+      modulesEndpoint: 'http://modules.test/graphql',
+      bearer: 'bearer-token',
+      databaseName: 'my_app',
+      domain: 'localhost',
+      request: { presetSlug: 'b2b:storage' },
+      executor: { request: async () => ticket(), poll },
+      signal: controller.signal,
+      pollIntervalMs: 0,
+    });
+    await expect(promise).rejects.toBe(reason);
+    expect(poll).toHaveBeenCalledTimes(1);
+  });
 });

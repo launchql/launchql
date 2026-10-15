@@ -1,6 +1,7 @@
 import type { HarnessTool } from '@agentic-kit/harness';
 import { z } from 'zod';
 
+import { toolRequests } from '../backend-fetch';
 import { resolveProjectContext } from '../context';
 
 const ManageEntityTypesZod = z.object({
@@ -155,7 +156,7 @@ export const manageEntityTypesTool: HarnessTool<
     'manage_entity_types: list/create/delete entity types (orgs, teams, …) in the project database. list is free; create/delete are gated.',
   parameters: ManageEntityTypesZod,
   async execute(params: Params, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) {
       return {
         content: [{ type: 'text', text: resolved.reason }],

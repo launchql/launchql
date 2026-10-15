@@ -1,6 +1,7 @@
 import { type ConfirmPreviewTable, filterInternalPolicies, type HarnessTool } from '@agentic-kit/harness';
 import { z } from 'zod';
 
+import { toolRequests } from '../backend-fetch';
 import type { ModulesClient, ProjectContext } from '../context';
 import { resolveProjectContext } from '../context';
 
@@ -190,7 +191,7 @@ export const listTemplatesTool: HarnessTool<typeof ListTemplatesZod, ListTemplat
     'list_templates: list the available blueprint templates to apply. Read-only — call before apply_template.',
   parameters: ListTemplatesZod,
   async execute(_params: z.infer<typeof ListTemplatesZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) {
       return { content: [{ type: 'text', text: resolved.reason }], details: { templates: [] } };
     }
@@ -257,7 +258,7 @@ export const createTemplateTool: HarnessTool<typeof CreateTemplateZod, CreateTem
     'create_template: save a project blueprint to the reusable template catalog. Gated.',
   parameters: CreateTemplateZod,
   async execute(params: z.infer<typeof CreateTemplateZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return done(false, resolved.reason);
     const { modules, ownerId } = resolved.context;
     if (!ownerId) return done(false, 'Not authenticated (missing OWNER_ID in .env).');
@@ -321,7 +322,7 @@ export const applyTemplateTool: HarnessTool<typeof ApplyTemplateZod, TemplateDet
   promptSnippet: 'apply_template: provision a saved blueprint template by display name. Gated.',
   parameters: ApplyTemplateZod,
   async execute(params: z.infer<typeof ApplyTemplateZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return done(false, resolved.reason);
     const { modules, databaseId, schemaId, ownerId } = resolved.context;
     if (!ownerId) return done(false, 'Not authenticated (missing OWNER_ID in .env).');
@@ -379,7 +380,7 @@ export const updateTemplateTool: HarnessTool<typeof UpdateTemplateZod, TemplateD
   promptSnippet: 'update_template: edit a saved template’s metadata by display name. Gated.',
   parameters: UpdateTemplateZod,
   async execute(params: z.infer<typeof UpdateTemplateZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return done(false, resolved.reason);
     try {
       const templateId = await resolveTemplateId(resolved.context.modules, params.templateName);
@@ -410,7 +411,7 @@ export const deleteTemplateTool: HarnessTool<typeof DeleteTemplateZod, TemplateD
   promptSnippet: 'delete_template: remove a saved template by display name. Destructive — gated.',
   parameters: DeleteTemplateZod,
   async execute(params: z.infer<typeof DeleteTemplateZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return done(false, resolved.reason);
     try {
       const templateId = await resolveTemplateId(resolved.context.modules, params.templateName);

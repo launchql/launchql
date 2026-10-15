@@ -1,6 +1,7 @@
 import { type HarnessTool, toFieldDefault, toFieldType } from '@agentic-kit/harness';
 import { z } from 'zod';
 
+import { toolRequests } from '../backend-fetch';
 import { resolveProjectContext } from '../context';
 import { findUniqueConstraintId, resolveField, resolveSchema, resolveTable } from '../schema-resolve';
 
@@ -36,7 +37,7 @@ export const deleteTableTool: HarnessTool<typeof DeleteTableZod, MutationDetails
   promptSnippet: 'delete_table: drop an existing table by name. Destructive — gated.',
   parameters: DeleteTableZod,
   async execute(params: z.infer<typeof DeleteTableZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return fail(resolved.reason);
     try {
       const schema = await resolveSchema(resolved.context);
@@ -79,7 +80,7 @@ export const createFieldTool: HarnessTool<typeof CreateFieldZod, MutationDetails
   promptSnippet: 'create_field: add a column to an existing table. Gated.',
   parameters: CreateFieldZod,
   async execute(params: z.infer<typeof CreateFieldZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return fail(resolved.reason);
     const { api, databaseId } = resolved.context;
     try {
@@ -152,7 +153,7 @@ export const updateFieldTool: HarnessTool<typeof UpdateFieldZod, MutationDetails
   promptSnippet: 'update_field: rename/retype/toggle an existing column. Gated.',
   parameters: UpdateFieldZod,
   async execute(params: z.infer<typeof UpdateFieldZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return fail(resolved.reason);
     const { api, databaseId } = resolved.context;
     try {
@@ -230,7 +231,7 @@ export const deleteFieldTool: HarnessTool<typeof DeleteFieldZod, MutationDetails
   promptSnippet: 'delete_field: drop a column from a table by name. Destructive — gated.',
   parameters: DeleteFieldZod,
   async execute(params: z.infer<typeof DeleteFieldZod>, ctx) {
-    const resolved = await resolveProjectContext(ctx.cwd);
+    const resolved = await resolveProjectContext(ctx.cwd, toolRequests(ctx));
     if (!resolved.context) return fail(resolved.reason);
     try {
       const schema = await resolveSchema(resolved.context);

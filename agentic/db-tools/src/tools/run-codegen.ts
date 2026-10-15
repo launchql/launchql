@@ -13,6 +13,7 @@ import {
   prewarmAppWorkspace,
   run,
 } from '../app-workspace';
+import { sleep } from '../backend-fetch';
 import { getHost } from '../host';
 import { normalizeSdkBarrels } from '../run-codegen/barrels';
 import { codegenEndpointEnv, derivePlaneEndpoints, envLocalContent } from '../run-codegen/endpoints';
@@ -52,8 +53,6 @@ async function readProjectEnv(
   }
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 // The codegen CLI introspects three live vhosts (admin/auth/app). Under load the
 // Constructive backend intermittently resets a connection mid-introspection
 // ("Failed to fetch schema: Connection reset"), which is transient — a retry
@@ -63,6 +62,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 async function runCodegenWithRetry(
   appDir: string,
   env: Record<string, string>,
+  signal?: AbortSignal,
   attempts = 4,
 ): Promise<{ ok: boolean; out: string }> {
   const sdk = path.join(appDir, 'src', 'graphql', 'sdk');
@@ -76,10 +76,11 @@ async function runCodegenWithRetry(
       ['@constructive-io/graphql-codegen', 'generate', '--config', './graphql-codegen.config.ts'],
       appDir,
       env,
+      signal,
     );
     if (last.ok) return last;
     if (!FETCH_RESET_RE.test(last.out)) return last;
-    if (i < attempts) await sleep(2000 * i);
+    if (i < attempts) await sleep(2000 * i, signal);
   }
   return last;
 }
@@ -99,7 +100,7 @@ export const runCodegenTool: HarnessTool<typeof RunCodegenZod, RunCodegenDetails
     // Materialize packages/app deterministically if it isn't there yet — this
     // replaces the flaky `pgpm init` scaffold step (PGPM-001). When
     // provision_database prewarmed it, this no-ops.
-    const scaffold = await ensureAppScaffold(cwd);
+    const scaffold = await ensureAppScaffold(cwd, ctx.signal);
     if (!scaffold.ok) {
       return fail(scaffold.out);
     }
@@ -131,7 +132,7 @@ export const runCodegenTool: HarnessTool<typeof RunCodegenZod, RunCodegenDetails
     await ensureWorkspaceConfig(cwd);
     await pinCodegenLatest(appDir);
 
-    const install = await run('pnpm', ['install', '--no-frozen-lockfile'], cwd);
+    const install = await run('pnpm', ['install', '--no-frozen-lockfile'], cwd, undefined, ctx.signal);
     if (!install.ok && !IGNORED_BUILDS_RE.test(install.out)) {
       return fail(`pnpm install failed:\n${install.out}`);
     }
@@ -139,7 +140,7 @@ export const runCodegenTool: HarnessTool<typeof RunCodegenZod, RunCodegenDetails
     const codegen = await runCodegenWithRetry(appDir, {
       NEXT_PUBLIC_DB_NAME: dbName,
       ...(planes ? codegenEndpointEnv(planes) : {}),
-    });
+    }, ctx.signal);
     if (!codegen.ok) {
       // A reset that survives every internal retry is a backend OUTAGE, not a code
       // or install problem — re-running run_codegen cannot fix it. Say so explicitly
