@@ -35,6 +35,7 @@ import { buildFileProjection, type FileProjection } from './managed-upload';
 import { assertBucketReconciled, resolveS3ForDatabase } from './physical-bucket';
 import { deleteS3Object,generatePresignedPutUrl } from './s3-signer';
 import { recordManagedFile } from './storage-file-recorder';
+import { fileNotReplaceable } from './file-not-replaceable';
 import { getBucketConfig, loadAllStorageModules, resolveStorageConfigFromCodec, storedPhysicalName } from './storage-module-cache';
 import type { BucketConfig,PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from './types';
 
@@ -783,7 +784,7 @@ export async function processSingleFile(
       values: [staleFileId],
     });
     if (deleted.rows.length === 0) {
-      throw new Error(`FILE_NOT_REPLACEABLE: file ${staleFileId} at key ${s3Key} cannot be replaced by this caller`);
+      throw fileNotReplaceable(staleFileId, s3Key);
     }
   }
 

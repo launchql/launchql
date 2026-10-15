@@ -27,6 +27,7 @@ import { type FileRefFieldBinding, getFileRefFieldBinding } from './file-ref-reg
 import { assertBucketReconciled, resolveS3ForDatabase } from './physical-bucket';
 import { copyS3Object, deleteS3Object } from './s3-signer';
 import { recordManagedFile } from './storage-file-recorder';
+import { fileNotReplaceable } from './file-not-replaceable';
 import { getBucketConfig, loadAllStorageModules } from './storage-module-cache';
 import type { BucketConfig, FileProjection, PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from './types';
 
@@ -349,9 +350,7 @@ export async function finalizeStagedUpload(args: {
     if (deleted === 0) {
       // Nothing names the staged object, so dropping it cannot cost anyone bytes.
       await bestEffortDelete(s3, staged.stagingKey);
-      throw new Error(
-        `FILE_NOT_REPLACEABLE: file ${existing.id} at key ${existing.key} cannot be replaced by this caller`
-      );
+      throw fileNotReplaceable(existing.id, existing.key);
     }
   } else if (existing) {
     log.info(`Dedup hit: file ${existing.id} already carries hash ${staged.contentHash}`);

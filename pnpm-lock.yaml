@@ -1076,6 +1076,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.1052.0
         version: 3.1052.0
+      '@constructive-io/errors':
+        specifier: workspace:^
+        version: link:../../packages/errors/dist
       '@constructive-io/s3-utils':
         specifier: workspace:^
         version: link:../../uploads/s3-utils/dist

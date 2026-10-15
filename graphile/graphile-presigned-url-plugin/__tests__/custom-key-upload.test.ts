@@ -103,9 +103,13 @@ describe('custom-key upload of changed bytes', () => {
   it('refuses to replace a row the caller cannot delete', async () => {
     const { txClient, queries } = fakeTx('a'.repeat(64), false);
 
-    await expect(upload(storageConfig(), txClient)).rejects.toThrow(
+    const refused = upload(storageConfig(), txClient);
+    await expect(refused).rejects.toThrow(
       `FILE_NOT_REPLACEABLE: file ${OLD_FILE_ID} at key ${KEY}`,
     );
+    // A named error carries its code, so the server passes it through
+    // instead of masking it as INTERNAL_SERVER_ERROR.
+    await expect(refused).rejects.toMatchObject({ code: 'FILE_NOT_REPLACEABLE', errorClass: 'public' });
     expect(queries.some((q) => /record_file\(/.test(q.text))).toBe(false);
   });
 

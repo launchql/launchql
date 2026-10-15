@@ -42,6 +42,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1052.0",
     "@aws-sdk/s3-request-presigner": "^3.1052.0",
+    "@constructive-io/errors": "workspace:^",
     "@constructive-io/s3-utils": "workspace:^",
     "@pgpmjs/logger": "workspace:^",
     "@pgsql/quotes": "^18.2.4",
