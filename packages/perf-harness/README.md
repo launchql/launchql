@@ -118,3 +118,49 @@ package; `cache:analyze` validates local raw reports and produces both summaries
 Generated results are not committed. The [PR #1746 description](https://github.com/constructive-io/constructive/pull/1746)
 records the measured results and tradeoffs; the suite README contains reproduction
 instructions.
+
+## Connection lifecycle stability suite
+
+The TypeScript entry points in `src/connection-lifecycle` exercise the unpatched
+PostGraphile service and the real `graphile-cache` lifecycle. Build the workspace
+(or `pnpm --filter @constructive-io/perf-harness... build`), then run:
+
+```sh
+node packages/perf-harness/dist/connection-lifecycle/suite.js \
+  --database-url 'postgresql://postgres:password@localhost:5432/postgres' \
+  --output /tmp/graphile-connection-lifecycle.json
+```
+
+Use a local PostgreSQL test administrator URL without query parameters. Its
+named database is the administrative connection database; `pgsql-test` creates
+and tears down a separate test database per worker. The suite defaults to one
+fresh-process repetition, one concurrent lifecycle, a two-connection pool, and
+`--scale 0.01`: 20 cycles for each service-only case and three cycles for each
+Graphile case (72 lifecycles total). This is a low-resource functional check.
+
+For a separate stress run on a suitable machine, pass `--scale 1 --repetitions 3
+--concurrency 8`: 2,000 cycles per service-only case, 256 per Graphile case, and a
+16-connection pool (21,072 lifecycles total). Concurrency accepts 1–16; the pool
+limit is twice concurrency, capped at 16. Each worker retains the harness's
+five-minute deadline.
+
+Cases cover idle services, confirmed LISTEN subscriptions, release during
+subscription startup, Graphile build/dispose, subscribed build/dispose, failed
+schema builds, and replacement of generations using the same cache key. Runtime
+GraphQL queries verify the built schema against a real table. Every 64 cycles
+(and at the end), the worker separately observes pool quiescence and checks every
+remaining backend for LISTEN channels. It also verifies that `pg_stat_activity`
+returns to its pre-run baseline after idle expiry, before fixture teardown or
+process exit can hide a leak.
+
+A successful public release call is counted immediately; it does not imply that
+upstream background UNLISTEN/client return has completed. Reports distinguish
+pending connections at return, peak pool size/checkout/waiting counts, cleanup
+settlement latency, quiescent checkpoints, and retained client event listeners.
+Listener accumulation is reported separately from checked-out connection leaks.
+For this suite `buildMs` measures the whole churn loop, including its validation
+checkpoints, rather than one
+schema build. The failed-build case expects its injected schema errors. Network
+partitions, backend termination, and production workload distributions are not
+modeled. Keep generated JSON reports outside the repository; commit only the
+TypeScript suite and its documentation.

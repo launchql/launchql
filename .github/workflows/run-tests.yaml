@@ -246,7 +246,7 @@ jobs:
           - batch: pg-graphql
             packages: 'graphile/graphile-search graphile/graphile-ltree graphile/graphile-bulk-mutations graphile/graphile-function-bindings graphile/graphile-history graphile/graphile-meta graphile/graphile-schema graphql/orm-test graphql/test graphql/playwright-test'
           - batch: pg-graphile-extras
-            packages: 'graphile/graphile-i18n graphile/graphile-pg-aggregates graphile/graphile-query graphile/graphile-realtime-test'
+            packages: 'graphile/graphile-cache graphile/graphile-i18n graphile/graphile-pg-aggregates graphile/graphile-query graphile/graphile-realtime-test'
 
     env:
       PGHOST: localhost

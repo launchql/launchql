@@ -37,6 +37,7 @@
   "devDependencies": {
     "@types/node": "^22.19.11",
     "@types/pg": "^8.20.4",
+    "graphile-cache": "workspace:^",
     "makage": "^0.8.0",
     "pg-cache": "workspace:^",
     "pgsql-test": "workspace:^"
