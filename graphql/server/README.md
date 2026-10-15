@@ -57,11 +57,11 @@ This starts the server with env defaults from `@constructive-io/graphql-env`.
 ## What it does
 
 Platform deployments connect through one pgpm-provisioned `NOSUPERUSER INHERIT
-BYPASSRLS` login with direct metadata privileges, configured only with
-`PGUSER`/`PGPASSWORD`. Startup and routing queries use that pool login directly.
-Requests continue to switch to `authenticated` or `anonymous`, so PostgreSQL
-enforces their RLS policies; the login's BYPASSRLS attribute is not inherited
-after `SET ROLE`.
+NOBYPASSRLS` login, configured only with `PGUSER`/`PGPASSWORD`. Startup and
+routing queries run as that login, so rows behind member RLS stay hidden from
+it: standing and routing settings are read through static, login-only
+`SECURITY DEFINER` readers in `function_resolution`. Requests switch to
+`authenticated` or `anonymous`, so PostgreSQL enforces their RLS policies.
 
 Runs an Express server that wires CORS, uploads, domain parsing, auth, and PostGraphile into a single GraphQL endpoint. It serves `/graphql` and `/graphiql`, injects per-request `pgSettings`, and flushes cached schemas on demand or via database notifications. When meta API is enabled, it resolves API config (schemas, roles, modules) from the meta schema using the request host and enforces `api.isPublic`, with optional header overrides in private mode; when meta API is disabled, it serves the fixed schemas and roles from `api.exposedSchemas`, `api.anonRole`, and `api.roleName`.
 
