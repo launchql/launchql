@@ -6,9 +6,8 @@ import * as path from 'path';
 import { getGraphQLEnvVars } from '../src/env';
 import { getEnvOptions } from '../src/merge';
 
-const switchName = 'GRAPHILE_SCOPED_INTROSPECTION';
-const catalogName = `${switchName}_CATALOG_TYPES`;
-const extensionsName = `${switchName}_CAPABILITY_EXTENSIONS`;
+const catalogName = 'GRAPHILE_SCOPED_INTROSPECTION_CATALOG_TYPES';
+const extensionsName = 'GRAPHILE_SCOPED_INTROSPECTION_CAPABILITY_EXTENSIONS';
 const scoped = (options: Partial<ConstructiveOptions>) =>
   options.graphile?.preset?.gather?.pgScopedIntrospection;
 const optionsFor = (main: PgScopedIntrospectionServiceConfig): Partial<ConstructiveOptions> => ({
@@ -16,18 +15,17 @@ const optionsFor = (main: PgScopedIntrospectionServiceConfig): Partial<Construct
 });
 
 describe('scoped introspection environment variables', () => {
-  it.each([{}, { [switchName]: '' }, { [switchName]: '  ' }])(
-    'leaves the feature absent for %j', (environment) => {
-      expect(scoped(getGraphQLEnvVars(environment))).toBeUndefined();
-    }
-  );
+  it('leaves the options absent when no variable is set', () => {
+    expect(scoped(getGraphQLEnvVars({}))).toBeUndefined();
+  });
+
+  it('has no switch for stock introspection', () => {
+    expect(scoped(getGraphQLEnvVars({ GRAPHILE_SCOPED_INTROSPECTION: 'false' }))).toBeUndefined();
+  });
 
   it.each([
-    [{ [switchName]: 'true' }, {}],
-    [{ [switchName]: 'false' }, false],
-    [{ [switchName]: ' true ' }, {}],
     [{ [catalogName]: 'all' }, { catalogTypes: 'all' }],
-    [{ [switchName]: '', [catalogName]: 'dependency-closure' }, { catalogTypes: 'dependency-closure' }],
+    [{ [catalogName]: 'dependency-closure' }, { catalogTypes: 'dependency-closure' }],
     [{ [extensionsName]: ' pg_trgm, vector,pg_trgm ' }, { capabilityExtensions: ['pg_trgm', 'vector'] }],
     [{ [extensionsName]: '' }, { capabilityExtensions: [] }],
     [{ [extensionsName]: '  ' }, { capabilityExtensions: [] }]
@@ -36,7 +34,6 @@ describe('scoped introspection environment variables', () => {
   });
 
   it.each([
-    [switchName, 'tru'], [switchName, '1'], [switchName, 'TRUE'],
     [catalogName, 'invalid'], [catalogName, ''], [catalogName, ' all '],
     [extensionsName, 'pg_trgm,,vector'], [extensionsName, ',vector'],
     [extensionsName, 'pg_trgm,'], [extensionsName, 'pg_trgm, ,vector']
@@ -44,20 +41,14 @@ describe('scoped introspection environment variables', () => {
     expect(() => getGraphQLEnvVars({ [name]: value })).toThrow(name);
   });
 
-  it('lets explicit false ignore malformed advanced settings', () => {
-    expect(scoped(getGraphQLEnvVars({
-      [switchName]: 'false', [catalogName]: 'invalid', [extensionsName]: ',,'
-    }))).toEqual({ main: false });
-  });
-
   it('uses injected environment values without reading the process environment', () => {
-    const previous = process.env[switchName];
-    process.env[switchName] = 'invalid';
+    const previous = process.env[catalogName];
+    process.env[catalogName] = 'invalid';
     try {
       expect(scoped(getGraphQLEnvVars({}))).toBeUndefined();
     } finally {
-      if (previous === undefined) delete process.env[switchName];
-      else process.env[switchName] = previous;
+      if (previous === undefined) delete process.env[catalogName];
+      else process.env[catalogName] = previous;
     }
   });
 });
@@ -84,8 +75,8 @@ describe('scoped introspection configuration precedence', () => {
   });
   afterEach(() => fs.rmSync(directory, { recursive: true, force: true }));
 
-  it.each([{}, { [switchName]: 'true' }])('preserves configured advanced settings for %j', (environment) => {
-    const result = getEnvOptions({}, directory, environment);
+  it('preserves configured options without environment overrides', () => {
+    const result = getEnvOptions({}, directory, {});
     expect(scoped(result)).toEqual({ main: configured, secondary: false });
     expect(result.graphile?.schema).toEqual(['app']);
   });
@@ -104,25 +95,15 @@ describe('scoped introspection configuration precedence', () => {
     });
   });
 
-  it.each([false, true])('enables advanced settings over configured main=%s', (main) => {
-    configure(main);
+  it('replaces a configured main=true with the environment options', () => {
+    configure(true);
     expect(scoped(getEnvOptions({}, directory, { [catalogName]: 'all' }))?.main).toEqual({ catalogTypes: 'all' });
   });
 
-  it('lets the false switch override configured settings and advanced variables', () => {
-    expect(scoped(getEnvOptions({}, directory, {
-      [switchName]: 'false', [catalogName]: 'all', [extensionsName]: 'hstore'
-    }))).toEqual({ main: false, secondary: false });
-  });
-
-  it.each([true, false, { capabilityExtensions: [] }])('gives runtime main=%j priority over env false', (main) => {
-    expect(scoped(getEnvOptions(optionsFor(main), directory, { [switchName]: 'false' }))?.main).toEqual(main);
-  });
-
-  it.each([true, false])('gives runtime main=%s priority over enabled environment options', (main) => {
-    expect(scoped(getEnvOptions(optionsFor(main), directory, {
+  it('gives runtime main=true priority over environment options', () => {
+    expect(scoped(getEnvOptions(optionsFor(true), directory, {
       [catalogName]: 'all', [extensionsName]: 'vector'
-    }))?.main).toBe(main);
+    }))?.main).toBe(true);
   });
 
   it('merges runtime option fields last and replaces their arrays', () => {
@@ -131,7 +112,7 @@ describe('scoped introspection configuration precedence', () => {
     }))?.main).toEqual({ catalogTypes: 'all', capabilityExtensions: ['hstore'] });
   });
 
-  it('keeps stock defaults when neither file nor environment configures the feature', () => {
+  it('adds no options when neither file nor environment configures them', () => {
     fs.writeFileSync(path.join(directory, 'pgpm.json'), '{}');
     expect(getEnvOptions({}, directory, {}).graphile).toEqual({ schema: [], extends: [], preset: {} });
   });

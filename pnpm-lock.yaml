@@ -2384,6 +2384,9 @@ importers:
       gql-ast:
         specifier: workspace:^
         version: link:../gql-ast/dist
+      graphile-cache:
+        specifier: workspace:^
+        version: link:../../graphile/graphile-cache/dist
       inquirerer:
         specifier: ^4.9.4
         version: 4.9.4

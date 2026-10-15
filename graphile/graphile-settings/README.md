@@ -229,9 +229,9 @@ const preset = {
 
 The map is keyed by the final PostgreSQL service name. `true` enables scoped
 defaults, `false` keeps stock introspection, and an omitted service keeps stock
-introspection. The Constructive GraphQL server accepts the same gather options
-under `graphile.preset.gather` and loads the scoped package only when the map is
-configured, unless the replacement preset is already included in `graphile.extends`.
+introspection. The Constructive GraphQL server always installs the scoped
+preset for its `main` service and accepts the same options under
+`graphile.preset.gather`; it rejects `main: false`.
 
 ## Smart Tags Reference
 

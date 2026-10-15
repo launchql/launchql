@@ -1,15 +1,15 @@
 const mockCacheGet = jest.fn();
-const mockCacheSet = jest.fn();
+const mockCacheGraphileInstance = jest.fn();
 const mockCreateGraphileInstance = jest.fn();
 const mockGetPgPool = jest.fn();
 const mockMakeIntrospectionWiring = jest.fn();
 const mockCreateGrafastCacheLimitsPreset = jest.fn();
 
 jest.mock('graphile-cache', () => ({
+  cacheGraphileInstance: mockCacheGraphileInstance,
   createGraphileInstance: mockCreateGraphileInstance,
   graphileCache: {
-    get: mockCacheGet,
-    set: mockCacheSet
+    get: mockCacheGet
   }
 }));
 
@@ -52,7 +52,7 @@ describe('graphile single-flight handler creation', () => {
   beforeEach(() => {
     clearInFlightMap();
     mockCacheGet.mockReset().mockReturnValue(undefined);
-    mockCacheSet.mockReset();
+    mockCacheGraphileInstance.mockReset().mockResolvedValue(undefined);
     mockGetPgPool.mockReset().mockReturnValue({});
     mockCreateGraphileInstance.mockReset().mockResolvedValue({
       handler: jest.fn()
@@ -63,29 +63,31 @@ describe('graphile single-flight handler creation', () => {
     });
   });
 
-  it('coalesces requests while asynchronous preset wiring is pending', async () => {
-    let releaseWiring!: () => void;
-    const wiringReady = new Promise<void>((resolve) => {
-      releaseWiring = resolve;
+  it('coalesces requests while the handler build is pending', async () => {
+    let releaseBuild!: () => void;
+    const buildReady = new Promise<void>((resolve) => {
+      releaseBuild = resolve;
     });
-    mockMakeIntrospectionWiring.mockImplementation(async () => {
-      await wiringReady;
-      return { presets: [], pgService: {} };
+    mockCreateGraphileInstance.mockImplementation(async () => {
+      await buildReady;
+      return { handler: jest.fn() };
+    });
+    const pgScopedIntrospection = {
+      main: { catalogTypes: 'dependency-closure' }
+    };
+    mockMakeIntrospectionWiring.mockReturnValue({
+      presets: [],
+      pgService: {},
+      pgScopedIntrospection
     });
 
     const middleware = graphile({
       graphile: {
         grafastCache: { queryCacheMaxLength: 16 },
-        extends: [
-          {
-            gather: {
-              pgScopedIntrospection: { main: true }
-            }
-          }
-        ],
         preset: {
           gather: {
-            pgScopedIntrospection: { main: false }
+            pgIdentifiers: 'unqualified',
+            pgScopedIntrospection: { main: true }
           }
         }
       }
@@ -101,11 +103,11 @@ describe('graphile single-flight handler creation', () => {
 
     const second = middleware(makeRequest(), response, next);
     expect(getInFlightCount()).toBe(1);
-    expect(mockMakeIntrospectionWiring).toHaveBeenCalledTimes(1);
 
-    releaseWiring();
+    releaseBuild();
     await Promise.all([first, second]);
 
+    expect(mockMakeIntrospectionWiring).toHaveBeenCalledTimes(1);
     expect(mockCreateGraphileInstance).toHaveBeenCalledTimes(1);
     expect(mockCreateGrafastCacheLimitsPreset).toHaveBeenCalledWith({
       queryCacheMaxLength: 16
@@ -113,10 +115,48 @@ describe('graphile single-flight handler creation', () => {
     expect(mockCreateGraphileInstance.mock.calls[0][0].preset.extends).toContainEqual({
       plugins: [{ name: 'GrafastCacheLimitsPlugin', version: '1.0.0' }]
     });
-    expect(mockCacheSet).toHaveBeenCalledTimes(1);
+    expect(mockCacheGraphileInstance).toHaveBeenCalledTimes(1);
     expect(getInFlightCount()).toBe(0);
     expect(mockCreateGraphileInstance.mock.calls[0][0].preset.gather).toEqual({
-      pgScopedIntrospection: { main: false }
+      pgIdentifiers: 'unqualified',
+      pgScopedIntrospection
     });
+  });
+
+  it('never hands coalesced waiters a handler the cache rejected', async () => {
+    let releaseBuild!: () => void;
+    const buildReady = new Promise<void>((resolve) => {
+      releaseBuild = resolve;
+    });
+    const handler = jest.fn();
+    mockCreateGraphileInstance.mockImplementation(async () => {
+      await buildReady;
+      return { handler };
+    });
+    const budgetError = new Error('over the graphile cache budget');
+    mockCacheGraphileInstance.mockRejectedValue(budgetError);
+    mockMakeIntrospectionWiring.mockReturnValue({
+      presets: [],
+      pgService: {},
+      pgScopedIntrospection: { main: true }
+    });
+
+    const middleware = graphile({ graphile: {} } as any);
+    const response = { headersSent: true } as unknown as Response;
+    const next = jest.fn();
+    const first = middleware(makeRequest(), response, next);
+    await Promise.resolve();
+    const second = middleware(makeRequest(), response, next);
+    expect(getInFlightCount()).toBe(1);
+
+    releaseBuild();
+    await Promise.all([first, second]);
+
+    expect(handler).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(2);
+    for (const [error] of next.mock.calls) {
+      expect(error.message).toContain(budgetError.message);
+    }
+    expect(getInFlightCount()).toBe(0);
   });
 });

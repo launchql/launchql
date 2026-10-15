@@ -41,6 +41,7 @@
     "@types/supertest": "^7.2.1",
     "appstash": "^0.8.0",
     "gql-ast": "workspace:^",
+    "graphile-cache": "workspace:^",
     "inquirerer": "^4.9.4",
     "makage": "^0.8.0",
     "nested-obj": "^0.2.3"

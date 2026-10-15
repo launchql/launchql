@@ -1,5 +1,5 @@
-import type { PgScopedIntrospectionServiceConfig } from '@constructive-io/graphql-types';
-import { cleanEnv, enumerated, EnvError, makeValidator, parseEnvList, str } from '12factor-env';
+import type { SchemaScopedIntrospectionOptions } from '@constructive-io/graphql-types';
+import { cleanEnv, enumerated, EnvError, makeValidator, parseEnvList } from '12factor-env';
 
 // Unlike the generic list validator, this configuration permits an explicit
 // empty list (clear the configured extensions), but rejects empty CSV items.
@@ -11,23 +11,10 @@ const capabilityExtensions = makeValidator<string[]>((value) => {
   return [...new Set(parseEnvList(value))];
 });
 
-/** Partial override for the server-owned `main` service; absence is not a default. */
+/** Partial override for the server-owned `main` service's scoped introspection options. */
 export const getScopedIntrospectionEnv = (
   environment: NodeJS.ProcessEnv
-): PgScopedIntrospectionServiceConfig | undefined => {
-  const enabled = cleanEnv({
-    GRAPHILE_SCOPED_INTROSPECTION:
-      environment.GRAPHILE_SCOPED_INTROSPECTION?.trim() || undefined
-  }, {
-    GRAPHILE_SCOPED_INTROSPECTION: str({
-      choices: ['true', 'false'],
-      default: undefined
-    })
-  }).GRAPHILE_SCOPED_INTROSPECTION;
-
-  // The rollback switch works even if stale advanced settings are malformed.
-  if (enabled === 'false') return false;
-
+): SchemaScopedIntrospectionOptions | undefined => {
   const options = cleanEnv(environment, {
     GRAPHILE_SCOPED_INTROSPECTION_CATALOG_TYPES: enumerated(
       ['all', 'dependency-closure'] as const,
@@ -39,12 +26,11 @@ export const getScopedIntrospectionEnv = (
   });
   const catalogTypes = options.GRAPHILE_SCOPED_INTROSPECTION_CATALOG_TYPES;
   const extensions = options.GRAPHILE_SCOPED_INTROSPECTION_CAPABILITY_EXTENSIONS;
-  if (enabled === undefined && catalogTypes === undefined && extensions === undefined) {
+  if (catalogTypes === undefined && extensions === undefined) {
     return undefined;
   }
 
-  // An object enables scoped introspection while deepmerge preserves advanced
-  // fields from pgpm.json. A literal `true` would discard those fields.
+  // deepmerge keeps the other option fields configured in pgpm.json.
   return {
     ...(catalogTypes !== undefined && { catalogTypes }),
     ...(extensions !== undefined && { capabilityExtensions: extensions })

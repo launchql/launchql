@@ -6,6 +6,7 @@ export {
   CacheEventEmitter,
   cacheEvents,
   CacheEvictionEvent,
+  cacheGraphileInstance,
   // Cache stats
   CacheStats,
   // Clear matching entries
@@ -18,7 +19,9 @@ export {
   getCacheStats,
   // Cache instance and entry type
   graphileCache,
+  GraphileCacheBudgetError,
   GraphileCacheEntry,
+  MIN_ENTRY_HEAP_BYTES,
   // Time constants
   ONE_HOUR_MS} from './graphile-cache';
 
