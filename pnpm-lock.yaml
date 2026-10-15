@@ -2308,6 +2308,9 @@ importers:
 
   graphql/server-test:
     dependencies:
+      '@constructive-io/express-context':
+        specifier: workspace:^
+        version: link:../../packages/express-context/dist
       '@constructive-io/graphql-dev-server':
         specifier: workspace:^
         version: link:../dev-server/dist
