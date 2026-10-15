@@ -197,7 +197,7 @@ describe('getApiConfig with scoped routing enabled', () => {
     const query = jest.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
       if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
-      if (sql.includes('metaschema_modules_public.route_module')) return { rows: [] };
+      if (sql.includes('function_resolution.routing_planes()')) return { rows: [] };
       throw new Error(`unexpected query (no legacy fallback): ${sql}`);
     });
     mockGetPgPool.mockReturnValue(createPool(query) as never);
@@ -212,7 +212,7 @@ describe('getApiConfig with scoped routing enabled', () => {
     const query = jest.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
       if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
-      if (sql.includes('metaschema_modules_public.route_module')) {
+      if (sql.includes('function_resolution.routing_planes()')) {
         return { rows: [{ database_id: 'db-2', schema_name: 'tenant-routing-public', resolver_function_name: null as string | null }] };
       }
       throw new Error(`unexpected query: ${sql}`);
