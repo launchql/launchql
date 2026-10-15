@@ -39,6 +39,16 @@ export const requireApiRole = (
     error.apiId = apiId;
     throw error;
   }
+  // administrator bypasses RLS; an API never serves as it.
+  if (value === 'administrator') {
+    const error = new Error(
+      `API ${apiId ?? '<unknown>'} ${column} is administrator; APIs serve as request roles under RLS.`
+    ) as Error & { code?: string; column?: string; apiId?: string };
+    error.code = 'API_ROLE_FORBIDDEN';
+    error.column = column;
+    error.apiId = apiId;
+    throw error;
+  }
   return value;
 };
 
@@ -64,14 +74,8 @@ export interface ResolvedRoute {
 
 const RESOLVER_FUNCTION = 'resolve_route';
 
-/** Published logical name of the database-scope routing plane. */
-export const DEFAULT_ROUTING_SCHEMA = 'routing_public';
-
-/** The routing-plane schema in effect: configured override or the published default. */
-export const getRoutingSchema = (opts: {
-  api?: { routingSchema?: string };
-}): string =>
-  opts.api?.routingSchema || DEFAULT_ROUTING_SCHEMA;
+/** The scoped routing plane the server resolves hosts on first. */
+export const ROUTING_SCHEMA = 'routing_public';
 
 export const isValidSchemaName = (name: string): boolean =>
   /^[a-z_][a-z0-9_]*$/.test(name);
@@ -131,7 +135,7 @@ export interface DatabaseRoutingPlane {
 }
 
 /**
- * The database-scope routing planes after the server's configured plane, in
+ * The database-scope routing planes after the server's own `routing_public` plane, in
  * the static gateway's order (by database id). The list spans every tenant,
  * so it comes from a SECURITY DEFINER reader granted to the platform login
  * alone, on the login's own connection: no role switch, no RLS bypass. A plane
@@ -139,8 +143,7 @@ export interface DatabaseRoutingPlane {
  * fails loud.
  */
 export const loadDatabaseRoutingPlanes = async (
-  pool: Pool,
-  configuredSchema: string
+  pool: Pool
 ): Promise<DatabaseRoutingPlane[]> => {
   const { rows } = await pool.query<{
     database_id: string;
@@ -151,7 +154,7 @@ export const loadDatabaseRoutingPlanes = async (
        FROM function_resolution.routing_planes()`
   );
   return rows
-    .filter((row) => row.schema_name !== configuredSchema)
+    .filter((row) => row.schema_name !== ROUTING_SCHEMA)
     .map((row) => {
       if (!row.schema_name || !row.resolver_function_name) {
         const error = new Error(
@@ -185,24 +188,23 @@ const resolveOnPlane = async (
 
 export interface PlaneRouteMatch {
   route: ResolvedRoute;
-  /** Database whose own plane owns the host; null for the configured plane. */
+  /** Database whose own plane owns the host; null for `routing_public`. */
   planeDatabaseId: string | null;
 }
 
 /**
- * Resolve a host across routing planes: the server's configured plane, then
+ * Resolve a host across routing planes: `routing_public` first, then
  * each tenant database-scope plane. The first plane that matches owns the
  * host; later planes are not consulted.
  */
 export const resolveRouteAcrossPlanes = async (
   pool: Pool,
-  schema: string,
   host: string
 ): Promise<PlaneRouteMatch | null> => {
-  const route = await resolveRoute(pool, schema, host);
+  const route = await resolveRoute(pool, ROUTING_SCHEMA, host);
   if (route) return { route, planeDatabaseId: null };
 
-  for (const plane of await loadDatabaseRoutingPlanes(pool, schema)) {
+  for (const plane of await loadDatabaseRoutingPlanes(pool)) {
     const planeRoute = await resolveOnPlane(pool, plane, host);
     if (planeRoute) {
       log.debug(`[resolve-route] host=${host} owned by database plane ${plane.schema} (db=${plane.databaseId})`);

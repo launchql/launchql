@@ -99,12 +99,6 @@ export interface ApiOptions {
   /** Schemas containing metadata tables */
   metaSchemas?: string[];
   /**
-   * Schema containing the compiled resolve_route() resolver. Requests are
-   * always resolved through the scoped-routing plane via
-   * <schema>.resolve_route() (host → tenant/api/db/role).
-   */
-  routingSchema?: string;
-  /**
    * Shared secret required by the `/flush` cache-invalidation route, presented
    * as `Authorization: Bearer <token>`. The route is disabled when unset.
    */
@@ -154,6 +148,5 @@ export const apiDefaults: ApiOptions = {
     'routing_public',
     'metaschema_public',
     'metaschema_modules_public'
-  ],
-  routingSchema: 'routing_public'
+  ]
 };

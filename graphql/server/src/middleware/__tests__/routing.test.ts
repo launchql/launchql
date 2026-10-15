@@ -139,6 +139,18 @@ describe('routeToApiStructure', () => {
       expect.objectContaining({ code: 'MISSING_API_ROLE', column, apiId: 'api-1' })
     );
   });
+
+  it.each(['role_name', 'anon_role'] as const)(
+    'throws API_ROLE_FORBIDDEN when %s is administrator',
+    (column) => {
+      const route = matchedRoute({
+        resolved_config: { ...(matchedRoute().resolved_config as Record<string, unknown>), [column]: 'administrator' }
+      });
+      expect(() => routeToApiStructure(route, opts)).toThrow(
+        expect.objectContaining({ code: 'API_ROLE_FORBIDDEN', column, apiId: 'api-1' })
+      );
+    }
+  );
 });
 
 describe('getApiConfig with scoped routing enabled', () => {

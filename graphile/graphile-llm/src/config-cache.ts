@@ -113,6 +113,14 @@ const SCHEMA_EXISTS_SQL = `
   SELECT 1 FROM information_schema.schemata WHERE schema_name = $1 LIMIT 1
 `;
 
+/**
+ * The module table is absent on a database that never provisioned it; only
+ * that undefined_table probe result means "not configured". Anything else
+ * (permissions, connectivity, bad SQL) is a real failure and propagates.
+ */
+const isModuleTableMissing = (err: unknown): boolean =>
+  (err as { code?: string } | null)?.code === '42P01';
+
 async function resolveInferenceLogConfig(
   pgClient: PgClient,
   databaseId: string
@@ -129,8 +137,9 @@ async function resolveInferenceLogConfig(
       schema: row.schema as string,
       tableName: row.table_name as string
     };
-  } catch {
-    return null;
+  } catch (err) {
+    if (isModuleTableMissing(err)) return null;
+    throw err;
   }
 }
 
@@ -156,9 +165,9 @@ async function resolveBillingConfig(
       // The check_billing_quota function name follows the inflection pattern
       checkBillingQuotaFunction: 'check_billing_quota'
     };
-  } catch {
-    // Schema/table doesn't exist or query failed — billing not available
-    return null;
+  } catch (err) {
+    if (isModuleTableMissing(err)) return null;
+    throw err;
   }
 }
 

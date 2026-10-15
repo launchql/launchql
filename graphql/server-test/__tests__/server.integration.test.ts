@@ -50,7 +50,6 @@ type Scenario = {
   api: {
     isPublic: boolean;
     metaSchemas?: string[];
-    routingSchema?: string;
   };
   headers?: Record<string, string>;
 };

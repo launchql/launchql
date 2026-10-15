@@ -95,7 +95,7 @@ VALUES
   ),
   (
     'e257c53d-6ba6-40de-b679-61b37188a316', 'database', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', false,
-    '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'private', current_database(), 'administrator', 'administrator',
+    '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'private', current_database(), 'authenticated', 'anonymous',
     jsonb_build_object(
       'api_id', 'e257c53d-6ba6-40de-b679-61b37188a316',
       'database_id', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9',
@@ -158,7 +158,7 @@ INSERT INTO routing_public.apis
   (id, database_id, name, dbname, role_name, anon_role, is_published)
 VALUES
   ('6c9997a4-591b-4cb3-9313-4ef45d6f134e', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'app', current_database(), 'authenticated', 'anonymous', true),
-  ('e257c53d-6ba6-40de-b679-61b37188a316', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'private', current_database(), 'administrator', 'administrator', false),
+  ('e257c53d-6ba6-40de-b679-61b37188a316', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'private', current_database(), 'authenticated', 'anonymous', false),
   ('28199444-da40-40b1-8a4c-53edbf91c738', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'public', current_database(), 'authenticated', 'anonymous', true),
   ('cc1e8389-e69d-4e12-9089-a98bf11fc75f', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'admin', current_database(), 'authenticated', 'anonymous', true),
   ('a2e6098f-2c11-4f2a-b481-c19175bc62ef', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', 'auth', current_database(), 'authenticated', 'anonymous', true)

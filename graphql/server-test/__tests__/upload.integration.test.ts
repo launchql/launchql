@@ -77,7 +77,8 @@ const seedAdapters = [
   seed.pgpm(pgpmWorkspace),
   seed.sqlfile([
     sql('simple-seed-storage', 'schema.sql'),
-    sql('simple-seed-storage', 'test-data.sql')
+    sql('simple-seed-storage', 'test-data.sql'),
+    sql('simple-seed-storage', 'auth-provision.sql')
   ])
 ];
 
@@ -676,22 +677,52 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       );
     };
 
-    // provisionBucket enqueues through app_jobs.add_job, which no request role
-    // may call: until a generated SECURITY DEFINER enqueue exists, the explicit
-    // mutation is refused rather than switching to administrator. The bucket
-    // row's own INSERT trigger still enqueues reconciliation.
-    it('refuses to enqueue as the request role and leaves the physical name untouched', async () => {
+    // The generated provisioner is granted to `authenticated` only, so these
+    // run on Alice's API with the fixture's session token.
+    const postAsAlice = (payload: { query: string; variables?: Record<string, unknown> }) =>
+      request
+        .post('/graphql')
+        .set('X-Database-Id', aliceDatabaseId)
+        .set('X-Api-Name', 'app')
+        .set('Authorization', 'Bearer session-token')
+        .send(payload);
+
+    it('enqueues reconciliation and leaves the physical name untouched', async () => {
       const key = 'reconcile-now';
       await seedBucket(key);
 
-      const provRes = await postGraphQL({
+      const provRes = await postAsAlice({
         query: PROVISION_BUCKET,
         variables: { input: { bucketKey: key } }
       });
-      expect(provRes.body.data?.provisionBucket ?? null).toBeNull();
-      expect(provRes.body.errors?.map((e: { message: string }) => e.message)).toEqual([
-        'permission denied for schema app_jobs'
-      ]);
+      const payload = expectSuccess(provRes).provisionBucket;
+      expect(payload.bucketKey).toBe(key);
+      expect(payload.bucketId).toBeTruthy();
+      expect(payload.physicalName).toBeNull();
+      expect(payload.jobId).toBeTruthy();
+      expect(await physicalNameFor(key)).toBeNull();
+    });
+
+    it('can enqueue reconciliation repeatedly without changing the recorded name', async () => {
+      const key = 'reconcile-idem';
+      await seedBucket(key);
+
+      const firstRes = await postAsAlice({
+        query: PROVISION_BUCKET,
+        variables: { input: { bucketKey: key } }
+      });
+      const firstPayload = expectSuccess(firstRes).provisionBucket;
+      expect(firstPayload.physicalName).toBeNull();
+      expect(firstPayload.jobId).toBeTruthy();
+
+      const secondRes = await postAsAlice({
+        query: PROVISION_BUCKET,
+        variables: { input: { bucketKey: key } }
+      });
+      const secondPayload = expectSuccess(secondRes).provisionBucket;
+      expect(secondPayload.physicalName).toBeNull();
+      expect(secondPayload.jobId).toBeTruthy();
+      expect(secondPayload.jobId).not.toBe(firstPayload.jobId);
       expect(await physicalNameFor(key)).toBeNull();
     });
   });

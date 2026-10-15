@@ -9,11 +9,10 @@
 import type { DatabaseSettings } from '../types';
 import { createModuleLoader } from './create-loader';
 import type { LoaderContext, ModuleLoader } from './types';
-import { routingSchemaOf } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
-const databaseSettingsSql = (schema: string): string => `
+const databaseSettingsSql = `
   SELECT
     COALESCE(aps.enable_aggregates, ds.enable_aggregates) AS resolved_enable_aggregates,
     COALESCE(aps.enable_postgis, ds.enable_postgis) AS resolved_enable_postgis,
@@ -27,8 +26,8 @@ const databaseSettingsSql = (schema: string): string => `
     COALESCE(aps.enable_realtime, ds.enable_realtime) AS resolved_enable_realtime,
     COALESCE(aps.enable_bulk, ds.enable_bulk) AS resolved_enable_bulk,
     COALESCE(aps.enable_i18n, ds.enable_i18n) AS resolved_enable_i18n
-  FROM "${schema}".database_settings ds
-  LEFT JOIN "${schema}".api_settings aps ON ds.database_id = aps.database_id AND aps.api_id = $2
+  FROM routing_public.database_settings ds
+  LEFT JOIN routing_public.api_settings aps ON ds.database_id = aps.database_id AND aps.api_id = $2
   WHERE ds.database_id = $1
   LIMIT 1
 `;
@@ -59,7 +58,7 @@ export const databaseSettingsLoader: ModuleLoader<DatabaseSettings> = createModu
     const { routingPool, databaseId, apiId } = ctx;
 
     const result = await routingPool.query<DatabaseSettingsRow>(
-      databaseSettingsSql(routingSchemaOf(ctx)),
+      databaseSettingsSql,
       [databaseId, apiId ?? null]
     );
     const row = result.rows[0];

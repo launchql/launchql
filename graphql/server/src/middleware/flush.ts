@@ -9,7 +9,6 @@ import { graphileCache } from 'graphile-cache';
 import { clearStorageModuleCache } from 'graphile-presigned-url-plugin';
 import { getPgPool } from 'pg-cache';
 
-import { getRoutingSchema, isValidSchemaName } from './routing';
 
 const log = new Logger('flush');
 
@@ -93,15 +92,10 @@ export const flushService = async (
     });
   }
 
-  const routingSchema = getRoutingSchema(opts);
-  if (!isValidSchemaName(routingSchema)) {
-    log.warn(`[flush] invalid routing schema name: ${routingSchema}`);
-    return;
-  }
-  const svc = await pgPool.query(
-    `SELECT hostname
-     FROM "${routingSchema}".domains
-     WHERE database_id = $1`,
+  // The domains plane sits behind member RLS; the login reads it through the
+  // login-only SECURITY DEFINER reader, which resolves the plane itself.
+  const svc = await pgPool.query<{ hostname: string }>(
+    `SELECT hostname FROM function_resolution.api_hostnames($1) AS hostname`,
     [databaseId]
   );
 

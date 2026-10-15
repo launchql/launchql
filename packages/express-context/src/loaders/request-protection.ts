@@ -21,7 +21,7 @@ import type { RequestProtection, RequestProtectionInput } from '../request-prote
 import { resolveRequestProtection } from '../request-protection';
 import { createModuleLoader } from './create-loader';
 import type { LoaderContext, ModuleLoader } from './types';
-import { routingSchemaOf } from './types';
+import { ROUTING_SCHEMA } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
@@ -168,12 +168,11 @@ export const requestProtectionLoader: ModuleLoader<RequestProtection> =
     ttlMs: 5 * 60_000,
     async resolve(ctx: LoaderContext) {
       const { routingPool, databaseId, apiId } = ctx;
-      const schema = routingSchemaOf(ctx);
-      const columns = await availableColumns(routingPool, schema);
+      const columns = await availableColumns(routingPool, ROUTING_SCHEMA);
 
       const params: unknown[] = columns.api.size ? [databaseId, apiId ?? null] : [databaseId];
       const result = await routingPool.query<RequestProtectionRow>(
-        requestProtectionSql(schema, columns),
+        requestProtectionSql(ROUTING_SCHEMA, columns),
         params
       );
       const row = result.rows[0];

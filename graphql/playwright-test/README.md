@@ -75,7 +75,6 @@ test('resolves through the scoped routing plane', async ({ request }) => {
       server: {
         useRouting: true,
         api: {
-          routingSchema: 'constructive_routing_public',
           isPublic: true,
           metaSchemas: ['constructive_routing_public', 'metaschema_public']
         }

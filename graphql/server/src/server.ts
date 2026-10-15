@@ -44,7 +44,6 @@ import { debugMemory } from './middleware/observability/debug-memory';
 import { localObservabilityOnly } from './middleware/observability/guard';
 import { createRequestLogger } from './middleware/observability/request-logger';
 import { createRequestProtectionMiddleware } from './middleware/request-protection';
-import { getRoutingSchema } from './middleware/routing';
 import { createStandingMiddleware } from './middleware/standing';
 import { createPlatformRefusalRecorder, installRefusalRecorder } from './refusals/recorder';
 
@@ -109,7 +108,6 @@ class Server {
       serverHost: effectiveOpts.server?.host,
       serverPort: effectiveOpts.server?.port,
       apiIsPublic: apiOpts.isPublic,
-      routingSchema: apiOpts.routingSchema,
       metaSchemas: apiOpts.metaSchemas?.join(',') || 'default',
       observabilityEnabled
     });
@@ -171,8 +169,7 @@ class Server {
     app.use(authenticate);
     app.use(createContextMiddleware({
       pg: effectiveOpts.pg,
-      loaders: createDefaultRegistry(),
-      routingSchema: getRoutingSchema(effectiveOpts)
+      loaders: createDefaultRegistry()
     }));
     // A suspended (or unknown) database is refused before anything is spent on
     // the request; billing and platform admins set that state, the loader reads it.

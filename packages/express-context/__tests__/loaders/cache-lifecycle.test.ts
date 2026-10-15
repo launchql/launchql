@@ -13,7 +13,6 @@ const context = (
   overrides: Partial<LoaderContext> = {}
 ): LoaderContext => ({
   routingPool: pool(),
-  routingSchema: 'routing_public',
   tenantPool: pool(),
   databaseId: 'database-a',
   apiId: 'api-a',
@@ -42,7 +41,7 @@ describe('module loader cache lifecycle', () => {
     expect(loader.cacheSize).toBe(4);
   });
 
-  it('reuses the same logical key across pool and routing schema changes', async () => {
+  it('reuses the same logical key across pool changes', async () => {
     const ctx = context();
     const resolve = jest.fn(async () => 'shared-config');
     const loader = createModuleLoader({ name: 'logical-key', resolve });
@@ -50,8 +49,7 @@ describe('module loader cache lifecycle', () => {
     await expect(loader.resolve(ctx)).resolves.toBe('shared-config');
     for (const overrides of [
       { routingPool: pool() },
-      { tenantPool: pool() },
-      { routingSchema: 'routing_shadow' }
+      { tenantPool: pool() }
     ]) {
       await expect(loader.resolve(context({ ...ctx, ...overrides })))
         .resolves.toBe('shared-config');
@@ -110,10 +108,9 @@ describe('module loader cache lifecycle', () => {
     await expect(
       Promise.all([
         loader.resolve(ctx),
-        loader.resolve(context()),
-        loader.resolve(context({ routingSchema: 'routing_shadow' }))
+        loader.resolve(context())
       ])
-    ).resolves.toEqual(['shared-config', 'shared-config', 'shared-config']);
+    ).resolves.toEqual(['shared-config', 'shared-config']);
     expect(resolve).toHaveBeenCalledTimes(1);
   });
 
