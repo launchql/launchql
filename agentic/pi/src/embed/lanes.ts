@@ -17,6 +17,11 @@ import {
   type MeteredModelExtension,
   type MeteredModelExtensionOptions
 } from '../extensions/metered-model';
+import {
+  createPermissionsExtension,
+  type PermissionsExtension,
+  type PermissionsExtensionOptions
+} from '../extensions/permissions';
 import { createRunLogExtension, type RunLogExtension, type RunLogExtensionOptions } from '../extensions/run-log';
 import {
   createUsageReportExtension,
@@ -40,10 +45,18 @@ export type MeteringLane =
 /** Approval lane — `runId` comes from the run. */
 export type GateLane = Omit<GateExtensionOptions, 'runId'>;
 
+/**
+ * Permissions lane — the built-in tools (read, write, edit, bash, grep, find,
+ * ls) and secret redaction of every tool result. `runId` comes from the run.
+ */
+export type PermissionsLane = Omit<PermissionsExtensionOptions, 'runId'>;
+
 export interface ComposeRunOptions {
   runId: string;
   log?: RunLogLane;
   metering?: MeteringLane;
+  /** Loaded before `gate`: it owns the built-in tools, the gate owns the rest. */
+  permissions?: PermissionsLane;
   gate?: GateLane;
   /**
    * The host's own extensions — workspace tools, prompts, UI glue. Loaded after
@@ -56,12 +69,13 @@ export interface ComposedLanes {
   log?: RunLogExtension;
   meteredModel?: MeteredModelExtension;
   usageReport?: UsageReportExtension;
+  permissions?: PermissionsExtension;
   gate?: GateExtension;
 }
 
 export interface ComposedRun {
   runId: string;
-  /** In load order: log, metering, gate, then the host's own. */
+  /** In load order: log, metering, permissions, gate, then the host's own. */
   extensions: ExtensionFactory[];
   lanes: ComposedLanes;
   /**
@@ -98,6 +112,11 @@ export function composeRun(options: ComposeRunOptions): ComposedRun {
       identity: { runId: options.runId, ...identity }
     });
     extensions.push(lanes.usageReport.extension);
+  }
+
+  if (options.permissions) {
+    lanes.permissions = createPermissionsExtension({ runId: options.runId, ...options.permissions });
+    extensions.push(lanes.permissions.extension);
   }
 
   if (options.gate) {
