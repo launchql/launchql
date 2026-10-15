@@ -1,3 +1,5 @@
+import { getHeapStatistics } from 'node:v8';
+
 import { Logger } from '@pgpmjs/logger';
 import { parseEnvNumber } from '12factor-env';
 import { EventEmitter } from 'events';
@@ -42,13 +44,23 @@ export const cacheEvents = new CacheEventEmitter();
 export interface CacheConfig {
   max: number;
   ttl: number;
+  /** Total measured heap the cached handlers may retain, in bytes. */
+  maxHeapBytes: number;
 }
+
+/** Floor for an entry's measured heap so a GC during its build cannot make it free. */
+export const MIN_ENTRY_HEAP_BYTES = 1024 * 1024;
+
+const defaultMaxHeapBytes = (): number =>
+  Math.floor(getHeapStatistics().heap_size_limit / 2);
 
 /**
  * Get cache configuration from environment variables
  *
  * Supports:
  * - GRAPHILE_CACHE_MAX: Maximum number of entries (default: 50)
+ * - GRAPHILE_CACHE_MAX_HEAP_BYTES: Total measured heap the cached handlers may
+ *   retain (default: half of V8's heap limit, so the cache cannot fill the heap)
  * - GRAPHILE_CACHE_TTL_MS: TTL in milliseconds
  *   - Production default: ONE_YEAR
  *   - Development default: FIVE_MINUTES_MS
@@ -65,7 +77,10 @@ export function getCacheConfig(): CacheConfig {
     parseEnvNumber(process.env.GRAPHILE_CACHE_TTL_MS) ??
     (isDevelopment ? FIVE_MINUTES_MS : ONE_YEAR);
 
-  return { max, ttl };
+  const maxHeapBytes =
+    parseEnvNumber(process.env.GRAPHILE_CACHE_MAX_HEAP_BYTES) ?? defaultMaxHeapBytes();
+
+  return { max, ttl, maxHeapBytes };
 }
 
 /**
@@ -78,6 +93,7 @@ export function getCacheConfig(): CacheConfig {
  * - httpServer: Node HTTP server (required by grafserv)
  * - cacheKey: Unique identifier for this entry
  * - createdAt: Timestamp when this entry was created
+ * - heapBytes: Heap retained by building this entry; the cache's size unit
  */
 export interface GraphileCacheEntry {
   pgl: PostGraphileInstance;
@@ -86,15 +102,17 @@ export interface GraphileCacheEntry {
   httpServer: HttpServer;
   cacheKey: string;
   createdAt: number;
+  heapBytes: number;
   /** Optional RealtimeManager for cursor-tracked subscription delivery */
   realtimeManager?: { stop(): Promise<void> } | null;
 }
 
-// Track disposed entries to prevent double-disposal
-const disposedKeys = new Set<string>();
-
 // Track keys that are being manually evicted for accurate eviction reason
 const manualEvictionKeys = new Set<string>();
+
+// One disposal per entry: closeAllCaches() and the LRU dispose callback both
+// dispose the same entry, and PostGraphile throws if released twice.
+const disposals = new WeakMap<GraphileCacheEntry, Promise<void>>();
 
 /**
  * Dispose a PostGraphile v5 cache entry
@@ -102,17 +120,8 @@ const manualEvictionKeys = new Set<string>();
  * Properly releases resources by:
  * 1. Closing the HTTP server if listening
  * 2. Releasing the PostGraphile instance (which internally releases grafserv)
- *
- * Uses disposedKeys set to prevent double-disposal when closeAllCaches()
- * explicitly disposes entries and then clear() triggers the dispose callback.
  */
-const disposeEntry = async (entry: GraphileCacheEntry, key: string): Promise<void> => {
-  // Prevent double-disposal
-  if (disposedKeys.has(key)) {
-    return;
-  }
-  disposedKeys.add(key);
-
+const releaseEntry = async (entry: GraphileCacheEntry, key: string): Promise<void> => {
   log.debug(`Disposing PostGraphile[${key}]`);
   try {
     // Close HTTP server if it's listening
@@ -135,9 +144,16 @@ const disposeEntry = async (entry: GraphileCacheEntry, key: string): Promise<voi
     }
   } catch (err) {
     log.error(`Error disposing PostGraphile[${key}]:`, err);
-  } finally {
-    disposedKeys.delete(key);
   }
+};
+
+const disposeEntry = (entry: GraphileCacheEntry, key: string): Promise<void> => {
+  let disposal = disposals.get(entry);
+  if (!disposal) {
+    disposal = releaseEntry(entry, key);
+    disposals.set(entry, disposal);
+  }
+  return disposal;
 };
 
 /**
@@ -166,6 +182,8 @@ const initialConfig = getCacheConfig();
 export const graphileCache = new LRUCache<string, GraphileCacheEntry>({
   max: initialConfig.max,
   ttl: initialConfig.ttl,
+  maxSize: initialConfig.maxHeapBytes,
+  sizeCalculation: (entry) => entry.heapBytes,
   updateAgeOnGet: true,
   dispose: (entry, key) => {
     // Determine eviction reason before disposal
@@ -184,11 +202,42 @@ export const graphileCache = new LRUCache<string, GraphileCacheEntry>({
   }
 });
 
+export class GraphileCacheBudgetError extends Error {
+  constructor(
+    readonly cacheKey: string,
+    readonly heapBytes: number,
+    readonly maxHeapBytes: number
+  ) {
+    super(
+      `PostGraphile[${cacheKey}] retains ${heapBytes} heap bytes, more than the ${maxHeapBytes}-byte graphile cache budget`
+    );
+    this.name = 'GraphileCacheBudgetError';
+  }
+}
+
+/**
+ * Cache a newly built handler, evicting least-recently-used handlers until the
+ * measured heap of all cached handlers fits the budget. A handler that alone
+ * exceeds the budget is released and rejected instead of being served uncached.
+ */
+export async function cacheGraphileInstance(
+  key: string,
+  entry: GraphileCacheEntry
+): Promise<void> {
+  if (entry.heapBytes > graphileCache.maxEntrySize) {
+    await disposeEntry(entry, key);
+    throw new GraphileCacheBudgetError(key, entry.heapBytes, graphileCache.maxEntrySize);
+  }
+  graphileCache.set(key, entry);
+}
+
 // --- Cache Stats ---
 export interface CacheStats {
   size: number;
   max: number;
   ttl: number;
+  heapBytes: number;
+  maxHeapBytes: number;
   keys: string[];
 }
 
@@ -201,6 +250,8 @@ export function getCacheStats(): CacheStats {
     size: graphileCache.size,
     max: config.max,
     ttl: config.ttl,
+    heapBytes: graphileCache.calculatedSize,
+    maxHeapBytes: graphileCache.maxSize,
     keys: [...graphileCache.keys()]
   };
 }
@@ -263,7 +314,6 @@ export const closeAllCaches = async (verbose = false): Promise<void> => {
     try {
       if (verbose) log.info('Closing all server caches...');
 
-      // Collect all entries and dispose them properly
       const entries = [...graphileCache.entries()];
 
       // Mark all as manual evictions
@@ -271,18 +321,11 @@ export const closeAllCaches = async (verbose = false): Promise<void> => {
         manualEvictionKeys.add(key);
       }
 
-      const disposePromises = entries.map(([key, entry]) =>
-        disposeEntry(entry, key)
-      );
-
-      // Wait for all disposals to complete
-      await Promise.allSettled(disposePromises);
-
-      // Clear the cache after disposal (dispose callback will no-op due to disposedKeys)
+      // clear() starts each entry's disposal; wait for those same disposals.
       graphileCache.clear();
-
-      // Clear disposed keys tracking after full cleanup
-      disposedKeys.clear();
+      await Promise.allSettled(
+        entries.map(([key, entry]) => disposeEntry(entry, key))
+      );
       manualEvictionKeys.clear();
 
       // Close pg pools

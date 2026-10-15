@@ -128,6 +128,21 @@ app.use((req, res, next) => {
 });
 ```
 
+### Heap Budget
+
+Each entry records `heapBytes`, the heap growth measured while
+`createGraphileInstance()` built it. Cache entries with
+`cacheGraphileInstance(key, entry)` rather than `graphileCache.set()`: the
+cache evicts least-recently-used entries before their combined `heapBytes`
+exceeds the budget, and an entry that alone exceeds it is released and rejected
+with `GraphileCacheBudgetError`.
+
+| Variable | Default |
+| --- | --- |
+| `GRAPHILE_CACHE_MAX` | `50` entries |
+| `GRAPHILE_CACHE_MAX_HEAP_BYTES` | half of V8's heap size limit |
+| `GRAPHILE_CACHE_TTL_MS` | ~1 year (5 minutes in development) |
+
 ### Graceful Shutdown
 
 ```typescript

@@ -3,7 +3,7 @@ import type { ConstructiveOptions } from '@constructive-io/graphql-types';
 import { middleware as parseDomains } from '@constructive-io/url-domains';
 import { cors, healthz, poweredBy } from '@pgpmjs/server-utils';
 import express, { Express, NextFunction, Request, Response } from 'express';
-import { createGraphileInstance, graphileCache, GraphileCacheEntry } from 'graphile-cache';
+import { cacheGraphileInstance, createGraphileInstance, graphileCache, GraphileCacheEntry } from 'graphile-cache';
 import type { GraphileConfig } from 'graphile-config';
 import { makePgService } from 'graphile-settings';
 import { getPgPool } from 'pg-cache';
@@ -51,7 +51,7 @@ export const GraphQLExplorer = (rawOpts: ConstructiveOptions = {}): Express => {
     };
 
     const instance = await createGraphileInstance({ preset, cacheKey: key });
-    graphileCache.set(key, instance);
+    await cacheGraphileInstance(key, instance);
     return instance;
   };
 

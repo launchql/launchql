@@ -6,7 +6,12 @@ import { DEFAULT_REQUEST_PROTECTION, protectionPgSettings } from '@constructive-
 import type { ConstructiveOptions } from '@constructive-io/graphql-types';
 import { Logger } from '@pgpmjs/logger';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
-import { createGraphileInstance, graphileCache,type GraphileCacheEntry } from 'graphile-cache';
+import {
+  cacheGraphileInstance,
+  createGraphileInstance,
+  graphileCache,
+  type GraphileCacheEntry
+} from 'graphile-cache';
 import type { GraphileConfig } from 'graphile-config';
 import { createFunctionBindingsPlugin } from 'graphile-function-bindings';
 import {
@@ -73,7 +78,7 @@ const reqLabel = (req: Request): string => (req.requestId ? `[${req.requestId}]`
  * plugin preset.  Without settings the default preset is used
  * (everything on except aggregates).
  */
-const buildPreset = async (
+const buildPreset = (
   pool: import('pg').Pool,
   schemas: string[],
   anonRole: string,
@@ -84,8 +89,8 @@ const buildPreset = async (
   apiId?: string,
   compute?: ComputeConfig,
   webauthn?: boolean
-): Promise<GraphileConfig.Preset> => {
-  const introspection = await makeIntrospectionWiring(pool, schemas, graphileOptions, undefined, introspectionRole);
+): GraphileConfig.Preset => {
+  const introspection = makeIntrospectionWiring(pool, schemas, graphileOptions, introspectionRole);
   const configuredPreset = graphileOptions?.preset ?? {};
   const grafastCachePreset = createGrafastCacheLimitsPreset(graphileOptions?.grafastCache);
   return {
@@ -128,6 +133,10 @@ const buildPreset = async (
         : [])
     ],
     pgServices: [introspection.pgService],
+    gather: {
+      ...configuredPreset.gather,
+      pgScopedIntrospection: introspection.pgScopedIntrospection
+    },
     grafserv: {
       graphqlPath: '/graphql',
       graphiqlPath: '/graphiql',
@@ -326,7 +335,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           const instance = await inFlight;
           return instance.handler(req, res, next);
         } catch (error) {
-          log.warn(`${label} Coalesced request failed for PostGraphile[${key}], retrying`);
+          log.warn(`${label} Coalesced request failed for PostGraphile[${key}], retrying`, error);
           // Fall through to Phase C to retry creation
         }
       }
@@ -367,7 +376,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
       // concurrent requests coalesce while optional plugin modules load.
       const creationPromise = (async () => {
         const compute = api.apiId ? await req.constructive?.useModule('compute') : undefined;
-        const preset = await buildPreset(
+        const preset = buildPreset(
           pool,
           schema || [],
           anonRole,
@@ -379,7 +388,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           compute,
           Boolean(api.webauthnSettings)
         );
-        return observeGraphileBuild(
+        const instance = await observeGraphileBuild(
           {
             cacheKey: key,
             serviceKey: key,
@@ -392,12 +401,15 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           }),
           { enabled: observabilityEnabled }
         );
+        // Admission is part of the shared promise: a handler the cache rejects
+        // has been released, so coalesced waiters must not be handed it.
+        await cacheGraphileInstance(key, instance);
+        return instance;
       })();
       creating.set(key, creationPromise);
 
       try {
         const instance = await creationPromise;
-        graphileCache.set(key, instance);
         log.info(`${label} Cached PostGraphile v5 handler key=${key} db=${dbname}`);
         return instance.handler(req, res, next);
       } catch (error) {
