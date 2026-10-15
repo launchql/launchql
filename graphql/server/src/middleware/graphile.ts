@@ -335,7 +335,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           const instance = await inFlight;
           return instance.handler(req, res, next);
         } catch (error) {
-          log.warn(`${label} Coalesced request failed for PostGraphile[${key}], retrying`);
+          log.warn(`${label} Coalesced request failed for PostGraphile[${key}], retrying`, error);
           // Fall through to Phase C to retry creation
         }
       }
@@ -388,7 +388,7 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           compute,
           Boolean(api.webauthnSettings)
         );
-        return observeGraphileBuild(
+        const instance = await observeGraphileBuild(
           {
             cacheKey: key,
             serviceKey: key,
@@ -401,12 +401,15 @@ export const graphile = (opts: ConstructiveOptions): RequestHandler => {
           }),
           { enabled: observabilityEnabled }
         );
+        // Admission is part of the shared promise: a handler the cache rejects
+        // has been released, so coalesced waiters must not be handed it.
+        await cacheGraphileInstance(key, instance);
+        return instance;
       })();
       creating.set(key, creationPromise);
 
       try {
         const instance = await creationPromise;
-        await cacheGraphileInstance(key, instance);
         log.info(`${label} Cached PostGraphile v5 handler key=${key} db=${dbname}`);
         return instance.handler(req, res, next);
       } catch (error) {

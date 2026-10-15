@@ -122,4 +122,41 @@ describe('graphile single-flight handler creation', () => {
       pgScopedIntrospection
     });
   });
+
+  it('never hands coalesced waiters a handler the cache rejected', async () => {
+    let releaseBuild!: () => void;
+    const buildReady = new Promise<void>((resolve) => {
+      releaseBuild = resolve;
+    });
+    const handler = jest.fn();
+    mockCreateGraphileInstance.mockImplementation(async () => {
+      await buildReady;
+      return { handler };
+    });
+    const budgetError = new Error('over the graphile cache budget');
+    mockCacheGraphileInstance.mockRejectedValue(budgetError);
+    mockMakeIntrospectionWiring.mockReturnValue({
+      presets: [],
+      pgService: {},
+      pgScopedIntrospection: { main: true }
+    });
+
+    const middleware = graphile({ graphile: {} } as any);
+    const response = { headersSent: true } as unknown as Response;
+    const next = jest.fn();
+    const first = middleware(makeRequest(), response, next);
+    await Promise.resolve();
+    const second = middleware(makeRequest(), response, next);
+    expect(getInFlightCount()).toBe(1);
+
+    releaseBuild();
+    await Promise.all([first, second]);
+
+    expect(handler).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(2);
+    for (const [error] of next.mock.calls) {
+      expect(error.message).toContain(budgetError.message);
+    }
+    expect(getInFlightCount()).toBe(0);
+  });
 });
