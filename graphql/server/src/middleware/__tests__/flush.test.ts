@@ -54,8 +54,8 @@ describe('createFlushMiddleware', () => {
   let next: NextFunction;
 
   beforeEach(() => {
-    graphileCache.set('tenant.example.com', { cached: true } as any);
-    svcCache.set('tenant.example.com', { cached: true } as any);
+    graphileCache.set('tenant.example.com', { cached: true, heapBytes: 1 } as any);
+    svcCache.set('tenant.example.com', { cached: true, heapBytes: 1 } as any);
     next = jest.fn();
     clearStorageModuleCache();
     mockRoutingQuery.mockReset();

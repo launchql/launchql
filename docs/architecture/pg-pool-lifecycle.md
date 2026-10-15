@@ -86,11 +86,18 @@ instance + grafserv handler + HTTP server):
 
 | Setting           | Default (prod) | Default (dev)  |
 |-------------------|-----------------|----------------|
-| `max`             | 15              | 15             |
+| `max`             | 50              | 50             |
+| `maxSize`         | half the V8 heap limit (bytes) | half the V8 heap limit (bytes) |
 | `ttl`             | ~1 year         | 5 minutes      |
 | `updateAgeOnGet`  | true            | true           |
 
-Configurable via `GRAPHILE_CACHE_MAX` and `GRAPHILE_CACHE_TTL_MS` env vars.
+Each entry's size is the heap growth measured while building it, so the cache
+evicts least-recently-used handlers before their combined size reaches the
+heap budget. A handler that alone exceeds the budget is released and its
+request fails instead of being served uncached.
+
+Configurable via `GRAPHILE_CACHE_MAX`, `GRAPHILE_CACHE_MAX_HEAP_BYTES` and
+`GRAPHILE_CACHE_TTL_MS` env vars.
 
 ### Instance Disposal
 

@@ -6,7 +6,7 @@ import { grafserv } from 'grafserv/express/v4';
 import { RealtimeManager } from 'graphile-realtime-subscriptions';
 import { postgraphile } from 'postgraphile';
 
-import type { GraphileCacheEntry } from './graphile-cache';
+import { type GraphileCacheEntry, MIN_ENTRY_HEAP_BYTES } from './graphile-cache';
 
 const log = new Logger('graphile-cache:create');
 
@@ -36,12 +36,17 @@ interface GraphileInstanceOptions {
  * instance's PgSubscriber EventEmitter.  Both `pgSubscriber` and the pg
  * pool are extracted from the resolved preset's pgServices — no separate
  * pool parameter is needed.
+ *
+ * `heapBytes` is the heap growth across the build, which the cache uses as the
+ * entry's size. Builds running concurrently count each other's allocations,
+ * so the estimate errs towards evicting early.
  */
 export const createGraphileInstance = async (
   opts: GraphileInstanceOptions
 ): Promise<GraphileCacheEntry> => {
   const { preset, cacheKey, enableRealtime = false } = opts;
 
+  const heapBefore = process.memoryUsage().heapUsed;
   const pgl = postgraphile(preset);
   const serv = pgl.createServ(grafserv);
 
@@ -49,6 +54,11 @@ export const createGraphileInstance = async (
   const httpServer = createServer(handler);
   await serv.addTo(handler, httpServer);
   await serv.ready();
+  await pgl.getSchema();
+  const heapBytes = Math.max(
+    process.memoryUsage().heapUsed - heapBefore,
+    MIN_ENTRY_HEAP_BYTES
+  );
 
   const entry: GraphileCacheEntry = {
     pgl,
@@ -57,6 +67,7 @@ export const createGraphileInstance = async (
     httpServer,
     cacheKey,
     createdAt: Date.now(),
+    heapBytes,
   };
 
   if (enableRealtime) {
