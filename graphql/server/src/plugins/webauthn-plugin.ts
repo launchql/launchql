@@ -31,8 +31,8 @@ import { extendSchema, gql } from 'graphile-utils';
  * Two lanes reach the procedures:
  * - the request lane (the request's own role and claims) begins both
  *   ceremonies — work any caller may ask for as themselves;
- * - the verifier lane (the request's claims under the server's
- *   {@link VERIFIER_ROLE}) reads the stored challenge and the credential's
+ * - the verifier lane (the request's claims as the server's connection
+ *   login) reads the stored challenge and the credential's
  *   public key, persists a verified registration, and mints the session.
  *   Those procedures trust their caller to have verified a signature, so only
  *   the server is granted them — a SQL caller can neither mint a session by
@@ -69,14 +69,11 @@ const fail = (code: string, message: string): never => {
   throw err;
 };
 
-/** Apply the request's settings transaction-locally, optionally overriding its role. */
+/** Apply settings transaction-locally. */
 const applySettings = async (
   tx: PgClient,
-  pgSettings: Record<string, string> | null,
-  role?: string
+  entries: Array<[string, string]>
 ): Promise<void> => {
-  const entries = Object.entries(pgSettings ?? {}).filter(([key]) => !role || key !== 'role');
-  if (role) entries.push(['role', role]);
   if (entries.length === 0) return;
   await tx.query({
     text: 'SELECT set_config(el->>0, el->>1, true) FROM json_array_elements($1::json) el',
@@ -91,13 +88,19 @@ const withRequestLane = <T>(
 ): Promise<T> =>
     withPgClient(null, (client) =>
       client.withTransaction(async (tx) => {
-        await applySettings(tx, pgSettings);
+        await applySettings(tx, Object.entries(pgSettings ?? {}));
         return cb(tx);
       })
     );
 
-/** Role the verifier lane runs its server-only procedures as. */
-const VERIFIER_ROLE = 'administrator';
+/**
+ * The verifier lane calls the server-only procedures as the connection's own
+ * login, which alone holds EXECUTE on them. It carries the request's
+ * `jwt.claims.*` but never its `role`: as a request role those procedures are
+ * revoked, so any SQL caller could otherwise mint a session.
+ */
+const verifierSettings = (pgSettings: Record<string, string> | null): Array<[string, string]> =>
+  Object.entries(pgSettings ?? {}).filter(([key]) => key !== 'role');
 
 const withVerifierLane = <T>(
   withPgClient: WithPgClient,
@@ -106,7 +109,7 @@ const withVerifierLane = <T>(
 ): Promise<T> =>
     withPgClient(null, (client) =>
       client.withTransaction(async (tx) => {
-        await applySettings(tx, pgSettings, VERIFIER_ROLE);
+        await applySettings(tx, verifierSettings(pgSettings));
         return cb(tx);
       })
     );

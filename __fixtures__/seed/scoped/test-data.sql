@@ -54,10 +54,10 @@ VALUES (
 -- Field entries for animals table
 INSERT INTO metaschema_public.field (id, database_id, table_id, name, type, description)
 VALUES
-  ('6dbace4d-bcf9-4d55-e363-6b24623f0d8a', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'id', 'uuid', NULL),
-  ('6dbae9c7-3460-4f65-8290-b2a8e05eb714', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'name', 'text', NULL),
-  ('6dbacc68-876e-4ece-b190-706819ae4f00', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'species', 'text', NULL),
-  ('6dba080e-bb3f-4556-8ca7-425ceb98a519', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'owner_id', 'uuid', NULL)
+  ('6dbace4d-bcf9-4d55-e363-6b24623f0d8a', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'id', '{"name": "uuid"}', NULL),
+  ('6dbae9c7-3460-4f65-8290-b2a8e05eb714', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'name', '{"name": "text"}', NULL),
+  ('6dbacc68-876e-4ece-b190-706819ae4f00', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'species', '{"name": "text"}', NULL),
+  ('6dba080e-bb3f-4556-8ca7-425ceb98a519', '80a2eaaf-f77e-4bfe-8506-df929ef1b8d9', '6dba36e9-b098-4157-1b4c-e5b6e3a885de', 'owner_id', '{"name": "uuid"}', NULL)
 ON CONFLICT (id) DO NOTHING;
 
 -- Primary key constraint
