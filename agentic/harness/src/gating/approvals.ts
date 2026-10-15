@@ -8,6 +8,17 @@
  * what lets a cloud run be approved from a browser.
  */
 
+import type { GrantScope, PermissionPrompt } from '@agentic-kit/permissions';
+
+/**
+ * The card for a permissions-layer request (a built-in tool such as `read` or
+ * `bash`), as `@agentic-kit/permissions` builds it. A channel that sees it
+ * renders this instead of its own prompt, and may offer the grant scopes.
+ */
+export type ApprovalPermissionPrompt = PermissionPrompt;
+
+export type ApprovalGrantScope = GrantScope;
+
 export interface ApprovalRequest {
   runId: string;
   toolCallId: string;
@@ -16,6 +27,8 @@ export interface ApprovalRequest {
   /** The policy's reason for asking. */
   reason?: string;
   requestedAt: string;
+  /** Set by the permissions lane; absent for every other gate. */
+  permission?: ApprovalPermissionPrompt;
 }
 
 export interface ApprovalOutcome {
@@ -23,6 +36,8 @@ export interface ApprovalOutcome {
   reason?: string;
   /** Who decided, when the channel knows. */
   actorId?: string;
+  /** On `allow`: remember it beyond this call. Absent means once. */
+  grant?: { scope: ApprovalGrantScope };
 }
 
 export interface ApprovalChannel {
