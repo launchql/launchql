@@ -1,13 +1,13 @@
 ---
 name: cli-api
-description: CLI tool (csdk) for the api API — provides CRUD commands for 92 tables and 46 custom operations
+description: CLI tool (csdk) for the api API — provides CRUD commands for 90 tables and 46 custom operations
 ---
 
 # cli-api
 
 <!-- @constructive-io/graphql-codegen - DO NOT EDIT -->
 
-CLI tool (csdk) for the api API — provides CRUD commands for 92 tables and 46 custom operations
+CLI tool (csdk) for the api API — provides CRUD commands for 90 tables and 46 custom operations
 
 ## Usage
 
@@ -85,7 +85,6 @@ See the `references/` directory for detailed per-entity API documentation:
 - [full-text-search](references/full-text-search.md)
 - [function](references/function.md)
 - [get-site-previews-record](references/get-site-previews-record.md)
-- [hostname-binding](references/hostname-binding.md)
 - [identity-provider-registry](references/identity-provider-registry.md)
 - [index](references/index.md)
 - [list-suspended-databases-record](references/list-suspended-databases-record.md)
@@ -120,7 +119,6 @@ See the `references/` directory for detailed per-entity API documentation:
 - [pubkey-setting](references/pubkey-setting.md)
 - [redirect](references/redirect.md)
 - [rls-setting](references/rls-setting.md)
-- [route-binding](references/route-binding.md)
 - [route](references/route.md)
 - [schema](references/schema.md)
 - [schema-grant](references/schema-grant.md)

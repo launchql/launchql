@@ -50,7 +50,6 @@ const db = createClient({
 | `fullTextSearch` | findMany, findOne, create, update, delete |
 | `function` | findMany, findOne, create, update, delete |
 | `getSitePreviewsRecord` | findMany, findOne, create, update, delete |
-| `hostnameBinding` | findMany, findOne, create, update, delete |
 | `identityProviderRegistry` | findMany, findOne, create, update, delete |
 | `index` | findMany, findOne, create, update, delete |
 | `listSuspendedDatabasesRecord` | findMany, findOne, create, update, delete |
@@ -85,7 +84,6 @@ const db = createClient({
 | `pubkeySetting` | findMany, findOne, create, update, delete |
 | `redirect` | findMany, findOne, create, update, delete |
 | `rlsSetting` | findMany, findOne, create, update, delete |
-| `routeBinding` | findMany, findOne, create, update, delete |
 | `route` | findMany, findOne, create, update, delete |
 | `schema` | findMany, findOne, create, update, delete |
 | `schemaGrant` | findMany, findOne, create, update, delete |
@@ -1319,44 +1317,6 @@ const updated = await db.getSitePreviewsRecord.update({ where: { id: '<UUID>' },
 const deleted = await db.getSitePreviewsRecord.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
-### `db.hostnameBinding`
-
-CRUD operations for HostnameBinding records.
-
-**Fields:**
-
-| Field | Type | Editable |
-|-------|------|----------|
-| `domainId` | UUID | Yes |
-| `hostname` | String | Yes |
-| `id` | UUID | No |
-| `isWildcard` | Boolean | Yes |
-| `managed` | Boolean | Yes |
-| `parentHostname` | String | Yes |
-| `tlsSecretName` | String | Yes |
-| `tlsStatus` | String | Yes |
-| `updatedAt` | Datetime | No |
-| `verificationStatus` | String | Yes |
-
-**Operations:**
-
-```typescript
-// List all hostnameBinding records
-const items = await db.hostnameBinding.findMany({ select: { domainId: true, hostname: true, id: true, isWildcard: true, managed: true, parentHostname: true, tlsSecretName: true, tlsStatus: true, updatedAt: true, verificationStatus: true } }).execute();
-
-// Get one by id
-const item = await db.hostnameBinding.findOne({ id: '<UUID>', select: { domainId: true, hostname: true, id: true, isWildcard: true, managed: true, parentHostname: true, tlsSecretName: true, tlsStatus: true, updatedAt: true, verificationStatus: true } }).execute();
-
-// Create
-const created = await db.hostnameBinding.create({ data: { domainId: '<UUID>', hostname: '<String>', isWildcard: '<Boolean>', managed: '<Boolean>', parentHostname: '<String>', tlsSecretName: '<String>', tlsStatus: '<String>', verificationStatus: '<String>' }, select: { id: true } }).execute();
-
-// Update
-const updated = await db.hostnameBinding.update({ where: { id: '<UUID>' }, data: { domainId: '<UUID>' }, select: { id: true } }).execute();
-
-// Delete
-const deleted = await db.hostnameBinding.delete({ where: { id: '<UUID>' } }).execute();
-```
-
 ### `db.identityProviderRegistry`
 
 CRUD operations for IdentityProviderRegistry records.
@@ -1489,6 +1449,7 @@ CRUD operations for ManagedDomain records.
 | `domain` | String | Yes |
 | `id` | UUID | No |
 | `isWildcard` | Boolean | Yes |
+| `publicPort` | Int | Yes |
 | `tlsReadyAt` | Datetime | Yes |
 | `tlsStatus` | String | Yes |
 | `updatedAt` | Datetime | No |
@@ -1500,13 +1461,13 @@ CRUD operations for ManagedDomain records.
 
 ```typescript
 // List all managedDomain records
-const items = await db.managedDomain.findMany({ select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
+const items = await db.managedDomain.findMany({ select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
 
 // Get one by id
-const item = await db.managedDomain.findOne({ id: '<UUID>', select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
+const item = await db.managedDomain.findOne({ id: '<UUID>', select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
 
 // Create
-const created = await db.managedDomain.create({ data: { allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' }, select: { id: true } }).execute();
+const created = await db.managedDomain.create({ data: { allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', publicPort: '<Int>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.managedDomain.update({ where: { id: '<UUID>' }, data: { allowPublicUsage: '<Boolean>' }, select: { id: true } }).execute();
@@ -2075,6 +2036,7 @@ CRUD operations for PlatformManagedDomain records.
 | `domain` | String | Yes |
 | `id` | UUID | No |
 | `isWildcard` | Boolean | Yes |
+| `publicPort` | Int | Yes |
 | `tlsReadyAt` | Datetime | Yes |
 | `tlsStatus` | String | Yes |
 | `updatedAt` | Datetime | No |
@@ -2086,13 +2048,13 @@ CRUD operations for PlatformManagedDomain records.
 
 ```typescript
 // List all platformManagedDomain records
-const items = await db.platformManagedDomain.findMany({ select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
+const items = await db.platformManagedDomain.findMany({ select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
 
 // Get one by id
-const item = await db.platformManagedDomain.findOne({ id: '<UUID>', select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
+const item = await db.platformManagedDomain.findOne({ id: '<UUID>', select: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } }).execute();
 
 // Create
-const created = await db.platformManagedDomain.create({ data: { allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' }, select: { id: true } }).execute();
+const created = await db.platformManagedDomain.create({ data: { allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', publicPort: '<Int>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.platformManagedDomain.update({ where: { id: '<UUID>' }, data: { allowPublicUsage: '<Boolean>' }, select: { id: true } }).execute();
@@ -2678,48 +2640,6 @@ const updated = await db.rlsSetting.update({ where: { id: '<UUID>' }, data: { au
 
 // Delete
 const deleted = await db.rlsSetting.delete({ where: { id: '<UUID>' } }).execute();
-```
-
-### `db.routeBinding`
-
-CRUD operations for RouteBinding records.
-
-**Fields:**
-
-| Field | Type | Editable |
-|-------|------|----------|
-| `domainId` | UUID | Yes |
-| `id` | UUID | No |
-| `isActive` | Boolean | Yes |
-| `method` | String | Yes |
-| `path` | String | Yes |
-| `priority` | Int | Yes |
-| `servingSiteId` | UUID | Yes |
-| `targetApiId` | UUID | Yes |
-| `targetBucketId` | UUID | Yes |
-| `targetFunctionId` | UUID | Yes |
-| `targetRedirectId` | UUID | Yes |
-| `targetServiceId` | UUID | Yes |
-| `targetSiteId` | UUID | Yes |
-| `updatedAt` | Datetime | No |
-
-**Operations:**
-
-```typescript
-// List all routeBinding records
-const items = await db.routeBinding.findMany({ select: { domainId: true, id: true, isActive: true, method: true, path: true, priority: true, servingSiteId: true, targetApiId: true, targetBucketId: true, targetFunctionId: true, targetRedirectId: true, targetServiceId: true, targetSiteId: true, updatedAt: true } }).execute();
-
-// Get one by id
-const item = await db.routeBinding.findOne({ id: '<UUID>', select: { domainId: true, id: true, isActive: true, method: true, path: true, priority: true, servingSiteId: true, targetApiId: true, targetBucketId: true, targetFunctionId: true, targetRedirectId: true, targetServiceId: true, targetSiteId: true, updatedAt: true } }).execute();
-
-// Create
-const created = await db.routeBinding.create({ data: { domainId: '<UUID>', isActive: '<Boolean>', method: '<String>', path: '<String>', priority: '<Int>', servingSiteId: '<UUID>', targetApiId: '<UUID>', targetBucketId: '<UUID>', targetFunctionId: '<UUID>', targetRedirectId: '<UUID>', targetServiceId: '<UUID>', targetSiteId: '<UUID>' }, select: { id: true } }).execute();
-
-// Update
-const updated = await db.routeBinding.update({ where: { id: '<UUID>' }, data: { domainId: '<UUID>' }, select: { id: true } }).execute();
-
-// Delete
-const deleted = await db.routeBinding.delete({ where: { id: '<UUID>' } }).execute();
 ```
 
 ### `db.route`
