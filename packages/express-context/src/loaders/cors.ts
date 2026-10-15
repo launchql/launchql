@@ -11,18 +11,12 @@ import type { LoaderContext, ModuleLoader } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
-const corsSettingsSql = `
+// The serving login is NOBYPASSRLS and routing_public sits behind member RLS,
+// so the login reads through the platform's login-only reader, which
+// answers the API row first and the database default otherwise.
+const corsOriginsSql = `
   SELECT allowed_origins
-  FROM routing_public.cors_settings
-  WHERE database_id = $1 AND api_id = $2
-  LIMIT 1
-`;
-
-const corsSettingsDbDefaultSql = `
-  SELECT allowed_origins
-  FROM routing_public.cors_settings
-  WHERE database_id = $1 AND api_id IS NULL
-  LIMIT 1
+  FROM function_resolution.cors_origins($1, $2)
 `;
 
 // ─── Row Types ──────────────────────────────────────────────────────────────
@@ -39,13 +33,7 @@ export const corsLoader: ModuleLoader<string[]> = createModuleLoader<string[]>({
   async resolve(ctx: LoaderContext) {
     const { routingPool, databaseId, apiId } = ctx;
 
-    if (apiId) {
-      const perApi = await routingPool.query<CorsSettingsRow>(corsSettingsSql, [databaseId, apiId]);
-      if (perApi.rows[0]) return perApi.rows[0].allowed_origins;
-    }
-    const dbDefault = await routingPool.query<CorsSettingsRow>(corsSettingsDbDefaultSql, [databaseId]);
-    if (dbDefault.rows[0]) return dbDefault.rows[0].allowed_origins;
-
-    return undefined;
+    const result = await routingPool.query<CorsSettingsRow>(corsOriginsSql, [databaseId, apiId ?? null]);
+    return result.rows[0]?.allowed_origins;
   }
 });

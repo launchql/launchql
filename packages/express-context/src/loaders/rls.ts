@@ -12,27 +12,19 @@ import type { LoaderContext, ModuleLoader } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
+// The serving login is NOBYPASSRLS and routing_public sits behind member RLS,
+// so the login reads through the platform's login-only reader.
 const rlsSettingsSql = `
   SELECT
-    auth_schema.schema_name AS authenticate_schema,
-    role_schema.schema_name AS role_schema,
-    auth_fn.name AS authenticate,
-    auth_strict_fn.name AS authenticate_strict,
-    role_fn.name AS current_role,
-    role_id_fn.name AS current_role_id,
-    ua_fn.name AS current_user_agent,
-    ip_fn.name AS current_ip_address
-  FROM routing_public.rls_settings rs
-  LEFT JOIN metaschema_public.schema auth_schema ON rs.authenticate_schema_id = auth_schema.id
-  LEFT JOIN metaschema_public.schema role_schema ON rs.role_schema_id = role_schema.id
-  LEFT JOIN metaschema_public.function auth_fn ON rs.authenticate_function_id = auth_fn.id
-  LEFT JOIN metaschema_public.function auth_strict_fn ON rs.authenticate_strict_function_id = auth_strict_fn.id
-  LEFT JOIN metaschema_public.function role_fn ON rs.current_role_function_id = role_fn.id
-  LEFT JOIN metaschema_public.function role_id_fn ON rs.current_role_id_function_id = role_id_fn.id
-  LEFT JOIN metaschema_public.function ua_fn ON rs.current_user_agent_function_id = ua_fn.id
-  LEFT JOIN metaschema_public.function ip_fn ON rs.current_ip_address_function_id = ip_fn.id
-  WHERE rs.database_id = $1
-  LIMIT 1
+    authenticate_schema,
+    role_schema,
+    authenticate_function AS authenticate,
+    authenticate_strict_function AS authenticate_strict,
+    current_role_function AS current_role,
+    current_role_id_function AS current_role_id,
+    current_user_agent_function AS current_user_agent,
+    current_ip_address_function AS current_ip_address
+  FROM function_resolution.tenant_auth_entry($1)
 `;
 
 // ─── Row Types ──────────────────────────────────────────────────────────────

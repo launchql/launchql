@@ -1,9 +1,6 @@
 import type { Pool } from 'pg';
 
-import {
-  forgetProtectionColumns,
-  requestProtectionLoader
-} from '../src/loaders/request-protection';
+import { requestProtectionLoader } from '../src/loaders/request-protection';
 import type { LoaderContext } from '../src/loaders/types';
 import {
   DEFAULT_REQUEST_PROTECTION,
@@ -113,47 +110,18 @@ interface Call {
   values?: unknown[];
 }
 
-/**
- * A routing pool that answers the column probe with a fully-migrated plane
- * (unless `columns` says otherwise) and then the settings rows in order.
- */
-const fakePool = (rows: unknown[][], columns?: { database: string[]; api: string[] }) => {
+/** A routing pool that answers the settings rows in order. */
+const fakePool = (rows: unknown[][]) => {
   const calls: Call[] = [];
   let i = 0;
-  const probeRows = columns
-    ? [
-      ...columns.database.map((c) => ({ table_name: 'database_settings', column_name: c })),
-      ...columns.api.map((c) => ({ table_name: 'api_settings', column_name: c }))
-    ]
-    : ALL_PROTECTION_COLUMNS.flatMap((c) => [
-      { table_name: 'database_settings', column_name: c },
-      { table_name: 'api_settings', column_name: c }
-    ]);
-
   const pool = {
     query: jest.fn(async (text: string, values?: unknown[]) => {
-      if (text.includes('information_schema.columns')) return { rows: probeRows };
       calls.push({ text, values });
       return { rows: rows[i++] ?? [] };
     })
   } as unknown as Pool;
   return { pool, calls };
 };
-
-const ALL_PROTECTION_COLUMNS = [
-  'statement_timeout_ms',
-  'idle_in_transaction_timeout_ms',
-  'lock_timeout_ms',
-  'max_concurrent_requests',
-  'max_queue_wait_ms',
-  'rate_limit_rpm',
-  'rate_limit_burst',
-  'max_query_depth',
-  'max_query_cost',
-  'max_page_size',
-  'max_request_bytes',
-  'enable_introspection'
-];
 
 const ctx = (routingPool: Pool, databaseId = 'db-1', apiId?: string): LoaderContext =>
   ({
@@ -175,7 +143,7 @@ describe('requestProtectionLoader', () => {
     await requestProtectionLoader.resolve(ctx(pool, 'db-a', 'api-a'));
 
     expect(calls[0].values).toEqual(['db-a', 'api-a']);
-    expect(calls[0].text).toMatch(/api_settings/);
+    expect(calls[0].text).toMatch(/function_resolution\.request_protection/);
   });
 
   it('reads a bigint back as a number rather than a string', async () => {
@@ -225,20 +193,12 @@ describe('requestProtectionLoader', () => {
     expect(await requestProtectionLoader.resolve(ctx(pool))).toBeUndefined();
   });
 
-  it('selects only the columns a routing plane actually has', async () => {
-    // A plane published before these columns existed must resolve to the
-    // platform defaults, not fail every request with `column … does not exist`.
-    const { pool, calls } = fakePool([[{ db_statement_timeout_ms: '5000' }]], {
-      database: ['statement_timeout_ms'],
-      api: []
-    });
+  it('reads both scopes through the login-only reader, not the RLS-protected tables', async () => {
+    const { pool, calls } = fakePool([[{ db_statement_timeout_ms: '5000' }]]);
 
-    const resolved = await requestProtectionLoader.resolve(ctx(pool, 'db-old'));
+    await requestProtectionLoader.resolve(ctx(pool, 'db-reader'));
 
-    expect(calls[0].text).not.toMatch(/idle_in_transaction_timeout_ms/);
-    expect(calls[0].text).not.toMatch(/aps\./);
-    expect(resolved?.statementTimeoutMs).toBe(5_000);
-    expect(resolved?.lockTimeoutMs).toBe(PROTECTION_BOUNDS.lockTimeoutMs.default);
-    forgetProtectionColumns(pool);
+    expect(calls[0].text).toMatch(/FROM function_resolution\.request_protection\(\$1, \$2\)/);
+    expect(calls[0].text).not.toMatch(/routing_public|information_schema/);
   });
 });

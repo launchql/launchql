@@ -29,7 +29,7 @@ describe('standingLoader', () => {
     const standing = await standingLoader.resolve(ctx(pool, 'db-a'));
 
     expect(query).toHaveBeenCalledTimes(1);
-    expect(query.mock.calls[0][0]).toMatch(/FROM metaschema_public\.database/);
+    expect(query.mock.calls[0][0]).toMatch(/FROM function_resolution\.database_standing\(\$1\)/);
     expect(query.mock.calls[0][1]).toEqual(['db-a']);
     expect(standing).toEqual({ exists: true, suspended: false, suspendedAt: null, reason: null });
   });

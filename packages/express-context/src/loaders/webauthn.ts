@@ -11,26 +11,22 @@ import type { LoaderContext, ModuleLoader } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
+// The serving login is NOBYPASSRLS and routing_public sits behind member RLS,
+// so the login reads through the platform's login-only reader.
 const webauthnSettingsSql = `
   SELECT
-    s.schema_name AS schema,
-    cred_s.schema_name AS credentials_schema,
-    sess_s.schema_name AS sessions_schema,
-    sec_s.schema_name AS session_secrets_schema,
-    ws.rp_id,
-    ws.rp_name,
-    ws.origin_allowlist,
-    ws.attestation_type,
-    ws.require_user_verification,
-    ws.resident_key,
-    ws.challenge_expiry_seconds
-  FROM routing_public.webauthn_settings ws
-  LEFT JOIN metaschema_public.schema s ON ws.schema_id = s.id
-  LEFT JOIN metaschema_public.schema cred_s ON ws.credentials_schema_id = cred_s.id
-  LEFT JOIN metaschema_public.schema sess_s ON ws.sessions_schema_id = sess_s.id
-  LEFT JOIN metaschema_public.schema sec_s ON ws.session_secrets_schema_id = sec_s.id
-  WHERE ws.database_id = $1
-  LIMIT 1
+    schema_name AS schema,
+    credentials_schema,
+    sessions_schema,
+    session_secrets_schema,
+    rp_id,
+    rp_name,
+    origin_allowlist,
+    attestation_type,
+    require_user_verification,
+    resident_key,
+    challenge_expiry_seconds
+  FROM function_resolution.webauthn_entry($1)
 `;
 
 // ─── Row Types ──────────────────────────────────────────────────────────────
