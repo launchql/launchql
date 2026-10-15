@@ -76,6 +76,26 @@ describe('toPiTool', () => {
     expect(seen).toEqual([{ cwd: '/tmp/project', signal: controller.signal }]);
     expect(result).toEqual({ content: [{ type: 'text', text: 'hi' }], details: null });
   });
+
+  it('sends progress text through pi\'s update callback', async () => {
+    const tool = defineHarnessTool({
+      ...echoTool,
+      async execute(params, ctx) {
+        ctx.onProgress?.('Retrying 1/3');
+        return { content: [{ type: 'text' as const, text: params.message }], details: null };
+      },
+    });
+    const onUpdate = jest.fn();
+
+    await toPiTool(tool).execute('call-1', { message: 'hi' }, undefined, onUpdate, {
+      cwd: '/tmp/project',
+    } as never);
+
+    expect(onUpdate).toHaveBeenCalledWith({
+      content: [{ type: 'text', text: 'Retrying 1/3' }],
+      details: undefined,
+    });
+  });
 });
 
 describe('dbTools', () => {

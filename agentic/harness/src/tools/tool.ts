@@ -60,6 +60,8 @@ export interface HarnessToolContext {
   readonly cwd: string;
   /** Aborted when the run is cancelled, if the harness offers one. */
   readonly signal?: AbortSignal;
+  /** Reports progress text while the call runs (e.g. "Retrying 2/3"), if the harness shows it. */
+  readonly onProgress?: (message: string) => void;
 }
 
 /**
