@@ -93,35 +93,12 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
         const blueprintId = createResult.createBlueprint?.blueprint?.id;
         if (!blueprintId) throw new Error('Failed to create blueprint');
 
-        const constructResult = await modules.mutation
+        await modules.mutation
           .constructBlueprint(
             { input: { blueprintId, schemaId } },
             { select: { result: true } },
           )
           .unwrap();
-
-        const result = constructResult.constructBlueprint?.result;
-
-        if (!result) {
-          const constructions = await modules.blueprintConstruction
-            .findMany({
-              where: { blueprintId: { equalTo: blueprintId } },
-              orderBy: ['ID_DESC'],
-              first: 1,
-              select: { status: true, errorDetails: true },
-            })
-            .unwrap();
-
-          const error =
-            constructions?.blueprintConstructions?.nodes?.[0]?.errorDetails ?? 'Unknown error';
-          const details: ProvisionBlueprintDetails = {
-            created: 0,
-            total: params.definition.tables.length,
-            tables: [],
-            error: typeof error === 'string' ? error : JSON.stringify(error),
-          };
-          return { content: [{ type: 'text', text: formatText(params.name, details) }], details };
-        }
 
         const relations = params.definition.relations ?? [];
         const details: ProvisionBlueprintDetails = {
