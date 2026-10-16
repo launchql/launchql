@@ -104,6 +104,13 @@ async function makeRoot(p: string, label: string, fs: FsProbe): Promise<Root> {
   return { path: canonical ?? lexical, lexical, label };
 }
 
+const HOST_HARD_DENY_LABEL = 'app data the agent may not touch';
+
+/** Host hard-deny paths listed at decision time (a folder made during the session). */
+export function buildHostHardDeny(paths: readonly string[], fs: FsProbe): Promise<Root[]> {
+  return Promise.all(paths.map((p) => makeRoot(p, HOST_HARD_DENY_LABEL, fs)));
+}
+
 /** Canonicalize every root once. */
 export async function buildRoots(spec: RootsSpec, fs: FsProbe): Promise<Roots> {
   const labelled = (list: readonly string[] | undefined, label: string) => (list ?? []).map((p) => ({ p, label }));
@@ -119,7 +126,7 @@ export async function buildRoots(spec: RootsSpec, fs: FsProbe): Promise<Roots> {
     build(trustedRead),
     build(trustedExec),
     build(labelled(spec.temp ?? defaultTempDirs(), 'temp dir')),
-    build([...known(path.resolve(spec.homeDir), HOME_HARD_DENY), ...labelled(spec.hardDeny, 'app data the agent may not touch')]),
+    build([...known(path.resolve(spec.homeDir), HOME_HARD_DENY), ...labelled(spec.hardDeny, HOST_HARD_DENY_LABEL)]),
     build([
       ...trustedRead,
       ...trustedExec,

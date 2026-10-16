@@ -15,7 +15,7 @@ import * as path from 'node:path';
 import { classify } from './classify';
 import { nodeFsProbe } from './node-fs';
 import { decide, type PolicyRules } from './policy';
-import { buildRoots, type Roots } from './roots';
+import { buildHostHardDeny, buildRoots, type Roots } from './roots';
 import { isSecretFile } from './secret-files';
 import { collectWorkspaceSecrets, isSecretEntry, redactToolResult, SecretVault } from './secrets';
 import { mapCommand, mapWriteTexts } from './tool-input';
@@ -65,6 +65,12 @@ export interface PermissionEngineOptions {
   cwd: string;
   homeDir: string;
   roots?: RootsInput;
+  /**
+   * More hard-deny paths, listed again at every decision: entries that can
+   * appear while a session runs (another tool's data dir, a new store file).
+   * A throw fails the decision, and the call is blocked.
+   */
+  liveHardDeny?: () => Promise<readonly string[]>;
   /** Defaults to the Node fs (`nodeFsProbe`). */
   fs?: FsProbe;
   /** Per-install HMAC key for placeholder suffixes. Without one, a random key per engine. */
@@ -143,6 +149,12 @@ export function createPermissionEngine(options: PermissionEngineOptions): Permis
 
   let rootsReady: Promise<Roots> | undefined;
   const getRoots = (): Promise<Roots> => (rootsReady ??= buildRoots({ cwd, homeDir, ...options.roots }, fs));
+  const decisionRoots = async (): Promise<Roots> => {
+    const roots = await getRoots();
+    if (!options.liveHardDeny) return roots;
+    const live = await buildHostHardDeny(await options.liveHardDeny(), fs);
+    return { ...roots, hardDeny: [...roots.hardDeny, ...live] };
+  };
 
   let hostEnv: Record<string, string | undefined> = {};
   /** The env names whose values are secret: `$NAME` in a command asks. */
@@ -182,7 +194,7 @@ export function createPermissionEngine(options: PermissionEngineOptions): Permis
     async evaluate(call, context) {
       const { toolName } = call;
       if (!isBuiltinTool(toolName)) return null;
-      const [roots] = await Promise.all([getRoots(), ensureVault()]);
+      const [roots] = await Promise.all([decisionRoots(), ensureVault()]);
       const request = await classify(
         { toolCallId: call.toolCallId, toolName, input: call.input ?? {} },
         { cwd, homeDir, roots, fs, vault, secretEnvNames }
