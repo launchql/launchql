@@ -26,6 +26,7 @@ const fieldSchema: FieldSchema = {
   id: 'uuid',
   isPublic: 'boolean',
   key: 'string',
+  maxBulkFiles: 'int',
   maxFileSize: 'int',
   physicalName: 'string',
   stagingTtl: 'string',

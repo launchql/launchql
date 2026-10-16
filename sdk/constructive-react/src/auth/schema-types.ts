@@ -2708,6 +2708,7 @@ export interface SignUpRecord {
   accessTokenExpiresAt?: string | null;
   id?: string | null;
   isVerified?: boolean | null;
+  mfaSetupRequired?: boolean | null;
   outDeviceToken?: string | null;
   totpEnabled?: boolean | null;
   userId?: string | null;

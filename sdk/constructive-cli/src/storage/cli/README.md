@@ -38,9 +38,9 @@ storage:provision_bucket job used by the INSERT trigger. This is
 idempotent for an already-reconciled bucket; enqueue failures become
 GraphQL errors. |
 | `upload-file` | Upload a file: resolves the bucket by key, creates the file row, and returns a presigned PUT URL. |
-| `upload-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. |
+| `upload-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call. |
 | `upload-platform-file` | Upload a file: resolves the bucket by key, creates the file row, and returns a presigned PUT URL. |
-| `upload-platform-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. |
+| `upload-platform-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call. |
 
 ## Infrastructure Commands
 
@@ -111,6 +111,7 @@ CRUD operations for Bucket records.
 | `id` | UUID |
 | `isPublic` | Boolean |
 | `key` | String |
+| `maxBulkFiles` | Int |
 | `maxFileSize` | BigInt |
 | `physicalName` | String |
 | `stagingTtl` | Interval |
@@ -189,6 +190,7 @@ CRUD operations for PlatformBucket records.
 | `id` | UUID |
 | `isPublic` | Boolean |
 | `key` | String |
+| `maxBulkFiles` | Int |
 | `maxFileSize` | BigInt |
 | `physicalName` | String |
 | `stagingTtl` | Interval |
@@ -302,7 +304,7 @@ Upload a file: resolves the bucket by key, creates the file row, and returns a p
 
 ### `upload-files`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**
@@ -332,7 +334,7 @@ Upload a file: resolves the bucket by key, creates the file row, and returns a p
 
 ### `upload-platform-files`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**

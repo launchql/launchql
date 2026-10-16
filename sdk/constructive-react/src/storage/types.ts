@@ -17,6 +17,7 @@ export interface Bucket {
   id: string | null;
   isPublic: boolean | null;
   key: string | null;
+  maxBulkFiles: number | null;
   maxFileSize: string | null;
   physicalName: string | null;
   stagingTtl: string | null;
@@ -57,6 +58,7 @@ export interface PlatformBucket {
   id: string | null;
   isPublic: boolean | null;
   key: string | null;
+  maxBulkFiles: number | null;
   maxFileSize: string | null;
   physicalName: string | null;
   stagingTtl: string | null;

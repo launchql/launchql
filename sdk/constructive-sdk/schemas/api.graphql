@@ -2869,41 +2869,6 @@ type CreateFunctionPayload {
   query: Query
 }
 
-"""All input for the create `HostnameBinding` mutation."""
-input CreateHostnameBindingInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `HostnameBinding` to be created by this mutation."""
-  hostnameBinding: HostnameBindingInput!
-}
-
-"""The output of our create `HostnameBinding` mutation."""
-type CreateHostnameBindingPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `HostnameBinding` that was created by this mutation."""
-  hostnameBinding: HostnameBinding
-
-  """An edge for our `HostnameBinding`. May be used by Relay 1."""
-  hostnameBindingEdge(
-    """The method to use when ordering `HostnameBinding`."""
-    orderBy: [HostnameBindingOrderBy!]! = [PRIMARY_KEY_ASC]
-  ): HostnameBindingEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the create `IdentityProviderRegistry` mutation."""
 input CreateIdentityProviderRegistryInput {
   """
@@ -4024,41 +3989,6 @@ type CreateRlsSettingPayload {
     """The method to use when ordering `RlsSetting`."""
     orderBy: [RlsSettingOrderBy!]! = [PRIMARY_KEY_ASC]
   ): RlsSettingEdge
-}
-
-"""All input for the create `RouteBinding` mutation."""
-input CreateRouteBindingInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `RouteBinding` to be created by this mutation."""
-  routeBinding: RouteBindingInput!
-}
-
-"""The output of our create `RouteBinding` mutation."""
-type CreateRouteBindingPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `RouteBinding` that was created by this mutation."""
-  routeBinding: RouteBinding
-
-  """An edge for our `RouteBinding`. May be used by Relay 1."""
-  routeBindingEdge(
-    """The method to use when ordering `RouteBinding`."""
-    orderBy: [RouteBindingOrderBy!]! = [PRIMARY_KEY_ASC]
-  ): RouteBindingEdge
 }
 
 """All input for the create `Route` mutation."""
@@ -8725,39 +8655,6 @@ type DeleteFunctionPayload {
   query: Query
 }
 
-"""All input for the `deleteHostnameBinding` mutation."""
-input DeleteHostnameBindingInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  id: UUID!
-}
-
-"""The output of our delete `HostnameBinding` mutation."""
-type DeleteHostnameBindingPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `HostnameBinding` that was deleted by this mutation."""
-  hostnameBinding: HostnameBinding
-
-  """An edge for our `HostnameBinding`. May be used by Relay 1."""
-  hostnameBindingEdge(
-    """The method to use when ordering `HostnameBinding`."""
-    orderBy: [HostnameBindingOrderBy!]! = [PRIMARY_KEY_ASC]
-  ): HostnameBindingEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `deleteIdentityProviderRegistry` mutation."""
 input DeleteIdentityProviderRegistryInput {
   """
@@ -9818,39 +9715,6 @@ type DeleteRlsSettingPayload {
     """The method to use when ordering `RlsSetting`."""
     orderBy: [RlsSettingOrderBy!]! = [PRIMARY_KEY_ASC]
   ): RlsSettingEdge
-}
-
-"""All input for the `deleteRouteBinding` mutation."""
-input DeleteRouteBindingInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  id: UUID!
-}
-
-"""The output of our delete `RouteBinding` mutation."""
-type DeleteRouteBindingPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `RouteBinding` that was deleted by this mutation."""
-  routeBinding: RouteBinding
-
-  """An edge for our `RouteBinding`. May be used by Relay 1."""
-  routeBindingEdge(
-    """The method to use when ordering `RouteBinding`."""
-    orderBy: [RouteBindingOrderBy!]! = [PRIMARY_KEY_ASC]
-  ): RouteBindingEdge
 }
 
 """All input for the `deleteRoute` mutation."""
@@ -15064,202 +14928,6 @@ type GetSitePreviewsRecord {
   name: String
 }
 
-"""
-Compiled hostname index maintained by domain sync triggers; read only through the resolver
-"""
-type HostnameBinding {
-  """Domain row this binding was compiled from"""
-  domainId: UUID!
-
-  """Lowercase hostname (exact or *.parent wildcard)"""
-  hostname: String!
-  id: UUID!
-
-  """Whether this binding is a wildcard claim"""
-  isWildcard: Boolean!
-
-  """Whether the platform drives this hostname's lifecycle"""
-  managed: Boolean!
-
-  """Parent hostname a wildcard binding covers"""
-  parentHostname: String
-
-  """TLS secret name compiled from the domain row"""
-  tlsSecretName: String
-
-  """Certificate lifecycle state compiled from the domain row"""
-  tlsStatus: String
-
-  """When this binding was last recompiled"""
-  updatedAt: Datetime!
-
-  """Ownership verification state compiled from the domain row"""
-  verificationStatus: String
-}
-
-"""A connection to a list of `HostnameBinding` values."""
-type HostnameBindingConnection {
-  """
-  A list of edges which contains the `HostnameBinding` and cursor to aid in pagination.
-  """
-  edges: [HostnameBindingEdge]!
-
-  """A list of `HostnameBinding` objects."""
-  nodes: [HostnameBinding]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """
-  The count of *all* `HostnameBinding` you could get from the connection.
-  """
-  totalCount: Int!
-}
-
-"""A `HostnameBinding` edge in the connection."""
-type HostnameBindingEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `HostnameBinding` at the end of the edge."""
-  node: HostnameBinding
-}
-
-"""
-A filter to be used against `HostnameBinding` object types. All fields are combined with a logical ‘and.’
-"""
-input HostnameBindingFilter {
-  """Checks for all expressions in this list."""
-  and: [HostnameBindingFilter!]
-
-  """Filter by the object’s `domainId` field."""
-  domainId: UUIDFilter
-
-  """Filter by the object’s `hostname` field."""
-  hostname: StringFilter
-
-  """Filter by the object’s `id` field."""
-  id: UUIDFilter
-
-  """Filter by the object’s `isWildcard` field."""
-  isWildcard: BooleanFilter
-
-  """Filter by the object’s `managed` field."""
-  managed: BooleanFilter
-
-  """Negates the expression."""
-  not: HostnameBindingFilter
-
-  """Checks for any expressions in this list."""
-  or: [HostnameBindingFilter!]
-
-  """Filter by the object’s `parentHostname` field."""
-  parentHostname: StringFilter
-
-  """Filter by the object’s `tlsSecretName` field."""
-  tlsSecretName: StringFilter
-
-  """Filter by the object’s `tlsStatus` field."""
-  tlsStatus: StringFilter
-
-  """Filter by the object’s `updatedAt` field."""
-  updatedAt: DatetimeFilter
-
-  """Filter by the object’s `verificationStatus` field."""
-  verificationStatus: StringFilter
-}
-
-"""An input for mutations affecting `HostnameBinding`"""
-input HostnameBindingInput {
-  """Domain row this binding was compiled from"""
-  domainId: UUID!
-
-  """Lowercase hostname (exact or *.parent wildcard)"""
-  hostname: String!
-  id: UUID
-
-  """Whether this binding is a wildcard claim"""
-  isWildcard: Boolean
-
-  """Whether the platform drives this hostname's lifecycle"""
-  managed: Boolean
-
-  """Parent hostname a wildcard binding covers"""
-  parentHostname: String
-
-  """TLS secret name compiled from the domain row"""
-  tlsSecretName: String
-
-  """Certificate lifecycle state compiled from the domain row"""
-  tlsStatus: String
-
-  """When this binding was last recompiled"""
-  updatedAt: Datetime
-
-  """Ownership verification state compiled from the domain row"""
-  verificationStatus: String
-}
-
-"""Methods to use when ordering `HostnameBinding`."""
-enum HostnameBindingOrderBy {
-  DOMAIN_ID_ASC
-  DOMAIN_ID_DESC
-  HOSTNAME_ASC
-  HOSTNAME_DESC
-  ID_ASC
-  ID_DESC
-  IS_WILDCARD_ASC
-  IS_WILDCARD_DESC
-  MANAGED_ASC
-  MANAGED_DESC
-  NATURAL
-  PARENT_HOSTNAME_ASC
-  PARENT_HOSTNAME_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  TLS_SECRET_NAME_ASC
-  TLS_SECRET_NAME_DESC
-  TLS_STATUS_ASC
-  TLS_STATUS_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  VERIFICATION_STATUS_ASC
-  VERIFICATION_STATUS_DESC
-}
-
-"""
-Represents an update to a `HostnameBinding`. Fields that are set will be updated.
-"""
-input HostnameBindingPatch {
-  """Domain row this binding was compiled from"""
-  domainId: UUID
-
-  """Lowercase hostname (exact or *.parent wildcard)"""
-  hostname: String
-  id: UUID
-
-  """Whether this binding is a wildcard claim"""
-  isWildcard: Boolean
-
-  """Whether the platform drives this hostname's lifecycle"""
-  managed: Boolean
-
-  """Parent hostname a wildcard binding covers"""
-  parentHostname: String
-
-  """TLS secret name compiled from the domain row"""
-  tlsSecretName: String
-
-  """Certificate lifecycle state compiled from the domain row"""
-  tlsStatus: String
-
-  """When this binding was last recompiled"""
-  updatedAt: Datetime
-
-  """Ownership verification state compiled from the domain row"""
-  verificationStatus: String
-}
-
 type IdentityProviderRegistry {
   authorizationUrl: String
   displayName: String!
@@ -15827,6 +15495,11 @@ type ManagedDomain {
   """Whether this managed hostname is a *.parent wildcard"""
   isWildcard: Boolean!
 
+  """
+  Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge
+  """
+  publicPort: Int
+
   """When TLS last became ready"""
   tlsReadyAt: Datetime
 
@@ -15920,6 +15593,9 @@ input ManagedDomainFilter {
   """Checks for any expressions in this list."""
   or: [ManagedDomainFilter!]
 
+  """Filter by the object’s `publicPort` field."""
+  publicPort: IntFilter
+
   """Filter by the object’s `tlsReadyAt` field."""
   tlsReadyAt: DatetimeFilter
 
@@ -15964,6 +15640,11 @@ input ManagedDomainInput {
   """Whether this managed hostname is a *.parent wildcard"""
   isWildcard: Boolean
 
+  """
+  Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge
+  """
+  publicPort: Int
+
   """When TLS last became ready"""
   tlsReadyAt: Datetime
 
@@ -16002,6 +15683,8 @@ enum ManagedDomainOrderBy {
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PUBLIC_PORT_ASC
+  PUBLIC_PORT_DESC
   TLS_READY_AT_ASC
   TLS_READY_AT_DESC
   TLS_STATUS_ASC
@@ -16042,6 +15725,11 @@ input ManagedDomainPatch {
 
   """Whether this managed hostname is a *.parent wildcard"""
   isWildcard: Boolean
+
+  """
+  Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge
+  """
+  publicPort: Int
 
   """When TLS last became ready"""
   tlsReadyAt: Datetime
@@ -16711,14 +16399,6 @@ type Mutation {
     input: CreateFunctionInput!
   ): CreateFunctionPayload
 
-  """Creates a single `HostnameBinding`."""
-  createHostnameBinding(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateHostnameBindingInput!
-  ): CreateHostnameBindingPayload
-
   """Creates a single `IdentityProviderRegistry`."""
   createIdentityProviderRegistry(
     """
@@ -16982,14 +16662,6 @@ type Mutation {
     """
     input: CreateRouteInput!
   ): CreateRoutePayload
-
-  """Creates a single `RouteBinding`."""
-  createRouteBinding(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateRouteBindingInput!
-  ): CreateRouteBindingPayload
 
   """Creates a single `Schema`."""
   createSchema(
@@ -17407,14 +17079,6 @@ type Mutation {
     input: DeleteFunctionInput!
   ): DeleteFunctionPayload
 
-  """Deletes a single `HostnameBinding` using a unique key."""
-  deleteHostnameBinding(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteHostnameBindingInput!
-  ): DeleteHostnameBindingPayload
-
   """Deletes a single `IdentityProviderRegistry` using a unique key."""
   deleteIdentityProviderRegistry(
     """
@@ -17678,14 +17342,6 @@ type Mutation {
     """
     input: DeleteRouteInput!
   ): DeleteRoutePayload
-
-  """Deletes a single `RouteBinding` using a unique key."""
-  deleteRouteBinding(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteRouteBindingInput!
-  ): DeleteRouteBindingPayload
 
   """Deletes a single `Schema` using a unique key."""
   deleteSchema(
@@ -18284,14 +17940,6 @@ type Mutation {
     input: UpdateFunctionInput!
   ): UpdateFunctionPayload
 
-  """Updates a single `HostnameBinding` using a unique key and a patch."""
-  updateHostnameBinding(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateHostnameBindingInput!
-  ): UpdateHostnameBindingPayload
-
   """
   Updates a single `IdentityProviderRegistry` using a unique key and a patch.
   """
@@ -18577,14 +18225,6 @@ type Mutation {
     """
     input: UpdateRouteInput!
   ): UpdateRoutePayload
-
-  """Updates a single `RouteBinding` using a unique key and a patch."""
-  updateRouteBinding(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateRouteBindingInput!
-  ): UpdateRouteBindingPayload
 
   """Updates a single `Schema` using a unique key and a patch."""
   updateSchema(
@@ -22331,6 +21971,11 @@ type PlatformManagedDomain {
     where: PlatformDomainVerificationFilter
   ): PlatformDomainVerificationConnection!
 
+  """
+  Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge
+  """
+  publicPort: Int
+
   """When TLS last became ready"""
   tlsReadyAt: Datetime
 
@@ -22427,6 +22072,9 @@ input PlatformManagedDomainFilter {
   """`platformDomainVerificationsByManagedDomainId` exist."""
   platformDomainVerificationsByManagedDomainIdExist: Boolean
 
+  """Filter by the object’s `publicPort` field."""
+  publicPort: IntFilter
+
   """Filter by the object’s `tlsReadyAt` field."""
   tlsReadyAt: DatetimeFilter
 
@@ -22468,6 +22116,11 @@ input PlatformManagedDomainInput {
   """Whether this managed hostname is a *.parent wildcard"""
   isWildcard: Boolean
 
+  """
+  Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge
+  """
+  publicPort: Int
+
   """When TLS last became ready"""
   tlsReadyAt: Datetime
 
@@ -22504,6 +22157,8 @@ enum PlatformManagedDomainOrderBy {
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PUBLIC_PORT_ASC
+  PUBLIC_PORT_DESC
   TLS_READY_AT_ASC
   TLS_READY_AT_DESC
   TLS_STATUS_ASC
@@ -22541,6 +22196,11 @@ input PlatformManagedDomainPatch {
 
   """Whether this managed hostname is a *.parent wildcard"""
   isWildcard: Boolean
+
+  """
+  Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge
+  """
+  publicPort: Int
 
   """When TLS last became ready"""
   tlsReadyAt: Datetime
@@ -26851,35 +26511,6 @@ type Query {
   ): GetSitePreviewsConnection
   getSiteReleaseManifest(targetCommitId: UUID, targetSiteId: UUID): JSON
 
-  """Reads and enables pagination through a set of `HostnameBinding`."""
-  hostnameBindings(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `HostnameBinding`."""
-    orderBy: [HostnameBindingOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    where: HostnameBindingFilter
-  ): HostnameBindingConnection
-
   """
   Reads and enables pagination through a set of `IdentityProviderRegistry`.
   """
@@ -27862,35 +27493,6 @@ type Query {
     """
     where: RlsSettingFilter
   ): RlsSettingConnection
-
-  """Reads and enables pagination through a set of `RouteBinding`."""
-  routeBindings(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `RouteBinding`."""
-    orderBy: [RouteBindingOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    where: RouteBindingFilter
-  ): RouteBindingConnection
 
   """Reads and enables pagination through a set of `Route`."""
   routes(
@@ -29403,262 +29005,6 @@ type Route {
 
   """Site surface this route targets; must be this scope's own site"""
   targetSiteId: UUID
-  updatedAt: Datetime
-}
-
-"""
-Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver
-"""
-type RouteBinding {
-  """Domain row the source route binds"""
-  domainId: UUID!
-  id: UUID!
-
-  """Active flag compiled from the source route"""
-  isActive: Boolean!
-
-  """HTTP method this binding matches; NULL matches any method"""
-  method: String
-
-  """Path prefix this binding matches"""
-  path: String!
-
-  """Priority compiled from the source route"""
-  priority: Int!
-
-  """
-  Site whose surface the source route serves; NULL when it serves no site
-  """
-  servingSiteId: UUID
-
-  """Api catalog row the source route targets"""
-  targetApiId: UUID
-
-  """Bucket catalog row the source route targets"""
-  targetBucketId: UUID
-
-  """Function catalog row the source route targets"""
-  targetFunctionId: UUID
-
-  """Redirect catalog row the source route targets"""
-  targetRedirectId: UUID
-
-  """Resource catalog row (a Service resource) the source route targets"""
-  targetServiceId: UUID
-
-  """Site catalog row the source route targets"""
-  targetSiteId: UUID
-
-  """When this binding was last recompiled"""
-  updatedAt: Datetime!
-}
-
-"""A connection to a list of `RouteBinding` values."""
-type RouteBindingConnection {
-  """
-  A list of edges which contains the `RouteBinding` and cursor to aid in pagination.
-  """
-  edges: [RouteBindingEdge]!
-
-  """A list of `RouteBinding` objects."""
-  nodes: [RouteBinding]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `RouteBinding` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `RouteBinding` edge in the connection."""
-type RouteBindingEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `RouteBinding` at the end of the edge."""
-  node: RouteBinding
-}
-
-"""
-A filter to be used against `RouteBinding` object types. All fields are combined with a logical ‘and.’
-"""
-input RouteBindingFilter {
-  """Checks for all expressions in this list."""
-  and: [RouteBindingFilter!]
-
-  """Filter by the object’s `domainId` field."""
-  domainId: UUIDFilter
-
-  """Filter by the object’s `id` field."""
-  id: UUIDFilter
-
-  """Filter by the object’s `isActive` field."""
-  isActive: BooleanFilter
-
-  """Filter by the object’s `method` field."""
-  method: StringFilter
-
-  """Negates the expression."""
-  not: RouteBindingFilter
-
-  """Checks for any expressions in this list."""
-  or: [RouteBindingFilter!]
-
-  """Filter by the object’s `path` field."""
-  path: StringFilter
-
-  """Filter by the object’s `priority` field."""
-  priority: IntFilter
-
-  """Filter by the object’s `servingSiteId` field."""
-  servingSiteId: UUIDFilter
-
-  """Filter by the object’s `targetApiId` field."""
-  targetApiId: UUIDFilter
-
-  """Filter by the object’s `targetBucketId` field."""
-  targetBucketId: UUIDFilter
-
-  """Filter by the object’s `targetFunctionId` field."""
-  targetFunctionId: UUIDFilter
-
-  """Filter by the object’s `targetRedirectId` field."""
-  targetRedirectId: UUIDFilter
-
-  """Filter by the object’s `targetServiceId` field."""
-  targetServiceId: UUIDFilter
-
-  """Filter by the object’s `targetSiteId` field."""
-  targetSiteId: UUIDFilter
-
-  """Filter by the object’s `updatedAt` field."""
-  updatedAt: DatetimeFilter
-}
-
-"""An input for mutations affecting `RouteBinding`"""
-input RouteBindingInput {
-  """Domain row the source route binds"""
-  domainId: UUID!
-  id: UUID
-
-  """Active flag compiled from the source route"""
-  isActive: Boolean
-
-  """HTTP method this binding matches; NULL matches any method"""
-  method: String
-
-  """Path prefix this binding matches"""
-  path: String!
-
-  """Priority compiled from the source route"""
-  priority: Int
-
-  """
-  Site whose surface the source route serves; NULL when it serves no site
-  """
-  servingSiteId: UUID
-
-  """Api catalog row the source route targets"""
-  targetApiId: UUID
-
-  """Bucket catalog row the source route targets"""
-  targetBucketId: UUID
-
-  """Function catalog row the source route targets"""
-  targetFunctionId: UUID
-
-  """Redirect catalog row the source route targets"""
-  targetRedirectId: UUID
-
-  """Resource catalog row (a Service resource) the source route targets"""
-  targetServiceId: UUID
-
-  """Site catalog row the source route targets"""
-  targetSiteId: UUID
-
-  """When this binding was last recompiled"""
-  updatedAt: Datetime
-}
-
-"""Methods to use when ordering `RouteBinding`."""
-enum RouteBindingOrderBy {
-  DOMAIN_ID_ASC
-  DOMAIN_ID_DESC
-  ID_ASC
-  ID_DESC
-  IS_ACTIVE_ASC
-  IS_ACTIVE_DESC
-  METHOD_ASC
-  METHOD_DESC
-  NATURAL
-  PATH_ASC
-  PATH_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  PRIORITY_ASC
-  PRIORITY_DESC
-  SERVING_SITE_ID_ASC
-  SERVING_SITE_ID_DESC
-  TARGET_API_ID_ASC
-  TARGET_API_ID_DESC
-  TARGET_BUCKET_ID_ASC
-  TARGET_BUCKET_ID_DESC
-  TARGET_FUNCTION_ID_ASC
-  TARGET_FUNCTION_ID_DESC
-  TARGET_REDIRECT_ID_ASC
-  TARGET_REDIRECT_ID_DESC
-  TARGET_SERVICE_ID_ASC
-  TARGET_SERVICE_ID_DESC
-  TARGET_SITE_ID_ASC
-  TARGET_SITE_ID_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-}
-
-"""
-Represents an update to a `RouteBinding`. Fields that are set will be updated.
-"""
-input RouteBindingPatch {
-  """Domain row the source route binds"""
-  domainId: UUID
-  id: UUID
-
-  """Active flag compiled from the source route"""
-  isActive: Boolean
-
-  """HTTP method this binding matches; NULL matches any method"""
-  method: String
-
-  """Path prefix this binding matches"""
-  path: String
-
-  """Priority compiled from the source route"""
-  priority: Int
-
-  """
-  Site whose surface the source route serves; NULL when it serves no site
-  """
-  servingSiteId: UUID
-
-  """Api catalog row the source route targets"""
-  targetApiId: UUID
-
-  """Bucket catalog row the source route targets"""
-  targetBucketId: UUID
-
-  """Function catalog row the source route targets"""
-  targetFunctionId: UUID
-
-  """Redirect catalog row the source route targets"""
-  targetRedirectId: UUID
-
-  """Resource catalog row (a Service resource) the source route targets"""
-  targetServiceId: UUID
-
-  """Site catalog row the source route targets"""
-  targetSiteId: UUID
-
-  """When this binding was last recompiled"""
   updatedAt: Datetime
 }
 
@@ -35765,6 +35111,7 @@ type UniqueConstraint {
   initiallyDeferred: Boolean!
   isDeferrable: Boolean!
   name: String
+  nullsNotDistinct: Boolean!
   smartTags: JSON
 
   """Reads a single `Table` that is related to this `UniqueConstraint`."""
@@ -36017,6 +35364,9 @@ input UniqueConstraintFilter {
   """Negates the expression."""
   not: UniqueConstraintFilter
 
+  """Filter by the object’s `nullsNotDistinct` field."""
+  nullsNotDistinct: BooleanFilter
+
   """Checks for any expressions in this list."""
   or: [UniqueConstraintFilter!]
 
@@ -36059,6 +35409,7 @@ input UniqueConstraintInput {
   initiallyDeferred: Boolean
   isDeferrable: Boolean
   name: String
+  nullsNotDistinct: Boolean
   smartTags: JSON
   tableId: UUID!
   tags: [String]
@@ -36088,6 +35439,8 @@ enum UniqueConstraintOrderBy {
   NAME_ASC
   NAME_DESC
   NATURAL
+  NULLS_NOT_DISTINCT_ASC
+  NULLS_NOT_DISTINCT_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   SMART_TAGS_ASC
@@ -36117,6 +35470,7 @@ input UniqueConstraintPatch {
   initiallyDeferred: Boolean
   isDeferrable: Boolean
   name: String
+  nullsNotDistinct: Boolean
   smartTags: JSON
   tableId: UUID
   tags: [String]
@@ -37192,44 +36546,6 @@ type UpdateFunctionPayload {
     """The method to use when ordering `Function`."""
     orderBy: [FunctionOrderBy!]! = [PRIMARY_KEY_ASC]
   ): FunctionEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the `updateHostnameBinding` mutation."""
-input UpdateHostnameBindingInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `HostnameBinding` being updated.
-  """
-  hostnameBindingPatch: HostnameBindingPatch!
-  id: UUID!
-}
-
-"""The output of our update `HostnameBinding` mutation."""
-type UpdateHostnameBindingPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `HostnameBinding` that was updated by this mutation."""
-  hostnameBinding: HostnameBinding
-
-  """An edge for our `HostnameBinding`. May be used by Relay 1."""
-  hostnameBindingEdge(
-    """The method to use when ordering `HostnameBinding`."""
-    orderBy: [HostnameBindingOrderBy!]! = [PRIMARY_KEY_ASC]
-  ): HostnameBindingEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -38457,44 +37773,6 @@ type UpdateRlsSettingPayload {
     """The method to use when ordering `RlsSetting`."""
     orderBy: [RlsSettingOrderBy!]! = [PRIMARY_KEY_ASC]
   ): RlsSettingEdge
-}
-
-"""All input for the `updateRouteBinding` mutation."""
-input UpdateRouteBindingInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  id: UUID!
-
-  """
-  An object where the defined keys will be set on the `RouteBinding` being updated.
-  """
-  routeBindingPatch: RouteBindingPatch!
-}
-
-"""The output of our update `RouteBinding` mutation."""
-type UpdateRouteBindingPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `RouteBinding` that was updated by this mutation."""
-  routeBinding: RouteBinding
-
-  """An edge for our `RouteBinding`. May be used by Relay 1."""
-  routeBindingEdge(
-    """The method to use when ordering `RouteBinding`."""
-    orderBy: [RouteBindingOrderBy!]! = [PRIMARY_KEY_ASC]
-  ): RouteBindingEdge
 }
 
 """All input for the `updateRoute` mutation."""

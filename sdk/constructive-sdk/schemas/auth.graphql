@@ -5826,6 +5826,7 @@ type SignUpRecord {
   accessTokenExpiresAt: Datetime
   id: UUID
   isVerified: Boolean
+  mfaSetupRequired: Boolean
   outDeviceToken: String
   totpEnabled: Boolean
   userId: UUID
