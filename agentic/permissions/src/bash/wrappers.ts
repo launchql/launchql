@@ -7,6 +7,7 @@
 import * as path from 'node:path';
 
 import type { Analyzer, Arg } from './analyze';
+import { leadingOptions } from './args';
 import { NO_OPERANDS } from './commands';
 
 /** How `xargs` feeds the command it runs. */
@@ -73,10 +74,23 @@ export function xargsOperands(analyzer: Analyzer, name: string, rest: Arg[], inp
   return rest;
 }
 
-/** `npx -c 'cmd'`, `pnpm exec -c 'cmd'`: the shell string after the first `-c` or `--call` from `from` on. */
-function callString(args: Arg[], from: number): Arg | undefined {
-  const c = args.findIndex((a, k) => k >= from && (a.text === '-c' || a.text === '--call'));
-  return c < 0 ? undefined : args[c + 1];
+const ENV_VALUE_OPTIONS = new Set(['-u', '--unset', '-C', '--chdir', '-S', '--split-string']);
+const RUNNER_VALUE_OPTIONS = new Set(['-c', '--call', '-p', '--package']);
+
+/**
+ * `npx -c 'cmd'`, `pnpm exec --call=cmd`: the runner's options from `from` up
+ * to the package name, its `-c` shell string, and where the package name is.
+ */
+function runnerOptions(args: Arg[], from: number): { call: Arg | null | undefined; next: number } {
+  const { options, next } = leadingOptions(args.slice(from), RUNNER_VALUE_OPTIONS);
+  const call = options.find((o) => o.key === '-c' || o.key === '--call');
+  return { call: call ? (call.value ?? null) : undefined, next: from + next };
+}
+
+/** A runner's `-c` string: analyzed as a nested command, or dynamic when it is not known. */
+function runCall(analyzer: Analyzer, call: Arg | null, what: string): void {
+  if (!call || call.unknown) analyzer.dynamic(`it runs ${what} with a string from a variable`);
+  else analyzer.nested(call.text, `it runs a string with ${what}`);
 }
 
 /**
@@ -120,25 +134,23 @@ export function stripWrapper(analyzer: Analyzer, args: Arg[], i: number, scope: 
     return k + 1;
   }
   case 'env': {
-    let k = i + 1;
-    while (k < args.length) {
-      const t = args[k].text;
-      if (t === '-S' || t.startsWith('--split-string') || /^-[a-zA-Z]*S/.test(t)) {
-        const inline = t.startsWith('--split-string=') ? t.slice('--split-string='.length) : null;
-        const value = inline ?? args.slice(k + 1).map((a) => a.text).join(' ');
-        analyzer.nested(value, 'it runs a string with env -S');
+    // `env -` is `env -i`.
+    const from = args[i + 1]?.text === '-' ? i + 2 : i + 1;
+    const rest = args.slice(from);
+    const { options, next } = leadingOptions(rest, ENV_VALUE_OPTIONS);
+    for (const { key, value } of options) {
+      if (key === '-S' || key === '--split-string') {
+        const words = [value, ...rest.slice(next)].filter((a): a is Arg => a !== undefined);
+        if (words.some((a) => a.unknown)) analyzer.dynamic('it runs env -S with a string from a variable');
+        else analyzer.nested(words.map((a) => a.text).join(' '), 'it runs a string with env -S');
         return args.length;
       }
-      if (t === '-u' || t === '--unset') k += 2;
-      else if (t === '-C' || t === '--chdir') {
-        analyzer.base = args[k + 1] ? analyzer.toAbs(args[k + 1].text) : null;
+      if (key === '-C' || key === '--chdir') {
+        analyzer.base = value && !value.unknown ? analyzer.toAbs(value.text) : null;
         scope.chdir = true;
-        k += 2;
-      } else if (t === '--') k++;
-      else if (t.startsWith('-')) k++;
-      else break;
+      }
     }
-    return k;
+    return from + next;
   }
   case 'sudo':
   case 'doas':
@@ -170,29 +182,21 @@ export function stripWrapper(analyzer: Analyzer, args: Arg[], i: number, scope: 
   case 'npx':
   case 'pnpx':
   case 'bunx': {
-    const call = callString(args, i + 1);
-    if (call) {
-      analyzer.nested(call.text, `it runs a string with ${name} -c`);
-      return args.length;
-    }
-    return opts(/^(-p|--package)$/, /^-/);
+    const { call, next } = runnerOptions(args, i + 1);
+    if (call === undefined) return next;
+    runCall(analyzer, call, `${name} -c`);
+    return args.length;
   }
   case 'pnpm':
   case 'npm':
   case 'yarn':
   case 'bun': {
     const sub = args[i + 1]?.text;
-    if (sub === 'exec' || sub === 'dlx' || sub === 'x') {
-      const call = callString(args, i + 2);
-      if (call) {
-        analyzer.nested(call.text, `it runs a string with ${name} ${sub} -c`);
-        return args.length;
-      }
-      let k = i + 2;
-      while (k < args.length && args[k].text.startsWith('-')) k++;
-      return k;
-    }
-    return i;
+    if (sub !== 'exec' && sub !== 'dlx' && sub !== 'x') return i;
+    const { call, next } = runnerOptions(args, i + 2);
+    if (call === undefined) return next;
+    runCall(analyzer, call, `${name} ${sub} -c`);
+    return args.length;
   }
   default:
     return i;

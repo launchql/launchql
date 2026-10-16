@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import type { Findings } from '../findings';
 import type { Access, Signal } from '../types';
 import { expandBraces } from './braces';
-import { runCommand } from './commands';
+import { runCommand, TESTS } from './commands';
 import { type ContentFlow, FlowTracker, type Source, type Stdin } from './flows';
 import { type SimpleCommand, tokenize, type Word } from './tokenize';
 import { isPathLike, isUrl } from './words';
@@ -102,9 +102,18 @@ const HARMLESS_DEVICES = new Set([
 /** Running `/usr/bin/x` is the same as running `x`. */
 const SYSTEM_BIN_DIRS = new Set(['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/opt/homebrew/bin']);
 
-/** Assignments that change which program runs or what it loads. */
-const DANGEROUS_VARS =
-  /^(PATH|IFS|ENV|BASH_ENV|PROMPT_COMMAND|SHELLOPTS|BASHOPTS|PS4|GIT_SSH|GIT_SSH_COMMAND|GIT_EXEC_PATH|GIT_EDITOR|GIT_PAGER|EDITOR|VISUAL|PAGER|LD_PRELOAD|LD_LIBRARY_PATH|LD_AUDIT|DYLD_\w*)$/;
+/**
+ * Assignments that change which program runs, what it loads (the shell's and
+ * every interpreter's preload and library paths), or where a path resolves.
+ */
+const DANGEROUS_VARS = new RegExp(
+  `^(${[
+    'PATH|IFS|ENV|BASH_ENV|PROMPT_COMMAND|SHELLOPTS|BASHOPTS|PS4|CDPATH|GLOBIGNORE',
+    'GIT_SSH|GIT_SSH_COMMAND|GIT_EXEC_PATH|GIT_EDITOR|GIT_PAGER|EDITOR|VISUAL|PAGER',
+    'LD_PRELOAD|LD_LIBRARY_PATH|LD_AUDIT|DYLD_\\w*',
+    'NODE_OPTIONS|NODE_PATH|PYTHONPATH|PYTHONSTARTUP|PYTHONHOME|PERL5OPT|PERL5LIB|PERLLIB|RUBYOPT|RUBYLIB|JAVA_TOOL_OPTIONS|_JAVA_OPTIONS'
+  ].join('|')})$`
+);
 
 const RESERVED = new Set(['!', '{', '}', 'if', 'then', 'else', 'elif', 'fi', 'do', 'done', 'while', 'until', 'esac', 'coproc']);
 
@@ -178,6 +187,16 @@ class Analyzer {
     this.flag('shell-dynamic', reason);
   }
 
+  /** A path the analyzer cannot place: it asks in every mode, so no mode lets it reach a denied root. */
+  unresolvable(reason: string): void {
+    this.flag('unresolvable-path', reason);
+  }
+
+  /** `cd dir` looks `dir` up in `CDPATH` when the command set it and `dir` is not `/…`, `./…` or `../…`. */
+  searchesCdPath(dir: string): boolean {
+    return this.vars.has('CDPATH') && !dir.startsWith('/') && !/^\.\.?(\/|$)/.test(dir);
+  }
+
   analyzeString(command: string): void {
     if (this.depth > MAX_NESTING) {
       this.dynamic('the command nests shell strings too deeply to check');
@@ -228,6 +247,17 @@ class Analyzer {
     return null;
   }
 
+  /**
+   * `$NAME`, or `${NAME:-fallback}`. The fallback counts only when this
+   * command set the variable to empty: one from outside may hold anything, and
+   * a fallback with its own expansion or a `~` is not known either.
+   */
+  private valueOf(name: string, fallback: string | undefined): string | null {
+    const value = this.lookup(name);
+    if (fallback === undefined || value !== '') return value;
+    return /[$`~]/.test(fallback) ? null : fallback;
+  }
+
   resolveWord(word: Word): Arg[] {
     let text = '';
     const mask: boolean[] = [];
@@ -244,7 +274,7 @@ class Analyzer {
         if (part.ref) this.noteRef(part.ref);
       } else {
         this.noteRef(part.name);
-        const value = this.lookup(part.name) ?? part.fallback ?? null;
+        const value = this.valueOf(part.name, part.fallback);
         if (value === null) unknown = true;
         else append(value, false);
       }
@@ -276,13 +306,13 @@ class Analyzer {
   /** Record a path the command touches. `quiet`: the program loads it without printing it. */
   addPath(arg: Arg, access: Access, hard: boolean, quiet = false): void {
     if (arg.unknown) {
-      if (hard) this.dynamic(`the path ${arg.raw} is built from a variable or substitution`);
+      if (hard) this.unresolvable(`the path ${arg.raw} is built from a variable or substitution`);
       return;
     }
     if (arg.text === '') return;
     const abs = this.toAbs(arg.text);
     if (abs === null) {
-      if (hard) this.dynamic(`the path ${arg.raw} is used after a cd to an unknown dir`);
+      this.unresolvable(`${arg.raw} is used after a cd to an unknown dir`);
       return;
     }
     if (isHarmlessDevice(abs)) return;
@@ -323,7 +353,7 @@ class Analyzer {
       const access: Access = r.op === '<' ? 'read' : 'write';
       for (const target of this.resolveWord(r.target)) {
         if (target.unknown) {
-          this.dynamic(`it redirects to ${target.raw}, a path from a variable or substitution`);
+          this.unresolvable(`it redirects to ${target.raw}, a path from a variable or substitution`);
           continue;
         }
         this.addPath(target, access, true);
@@ -387,7 +417,7 @@ class Analyzer {
       this.dynamic(`the command name ${argv0.raw} comes from a variable or substitution`);
       return null;
     }
-    if (argv0.glob) {
+    if (argv0.glob && !TESTS.has(argv0.text)) {
       this.dynamic(`the command name ${argv0.raw} is a glob`);
       return null;
     }

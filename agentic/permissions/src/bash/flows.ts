@@ -76,6 +76,7 @@ const NO_CONTENT = new Set([
   'file',
   'test',
   '[',
+  '[[',
   'touch',
   'cd',
   'pushd',

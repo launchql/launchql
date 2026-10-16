@@ -137,7 +137,7 @@ export function wget(ctx: CommandContext, rest: readonly Arg[]): void {
   const { analyzer } = ctx;
   const p = parse(
     rest,
-    new Set(['-O', '-o', '-a', '-P', '-i', '--post-file', '--body-file', '--output-document', '--input-file'])
+    new Set(['-O', '-o', '-a', '-P', '-i', '--post-file', '--body-file', '--post-data', '--body-data', '--output-document', '--input-file'])
   );
   for (const v of valuesOf(p, '--post-file', '--body-file')) {
     analyzer.flag('upload', `it uploads data: wget sends ${v.raw}`);
@@ -220,11 +220,9 @@ function serves(ctx: CommandContext, what: string, address: string | undefined):
 }
 
 /** `python -m http.server` binds every interface unless `--bind` says otherwise. */
-export function pythonServer(ctx: CommandContext, rest: readonly Arg[]): void {
-  const m = rest.findIndex((a) => a.text === '-m');
-  const module = m >= 0 ? rest[m + 1]?.text : undefined;
+export function pythonServer(ctx: CommandContext, module: string, args: readonly Arg[]): void {
   if (module === 'SimpleHTTPServer') serves(ctx, 'python -m SimpleHTTPServer', undefined);
-  else if (module === 'http.server') serves(ctx, 'python -m http.server', optionValue(rest.slice(m + 2), '-b', '--bind'));
+  else if (module === 'http.server') serves(ctx, 'python -m http.server', optionValue(args, '-b', '--bind'));
 }
 
 /** `php -S host:port`. */

@@ -68,6 +68,54 @@ export function parse(rest: readonly Arg[], withValue: ReadonlySet<string> = new
   return { flags, values, positionals };
 }
 
+export interface LeadingOption {
+  /** One option: `-c` out of a `-xc` cluster, `--eval` out of `--eval=X`. */
+  key: string;
+  /** Its value, glued (`-cX`, `--eval=X`) or the next word: only for `withValue` keys. */
+  value?: Arg;
+}
+
+/**
+ * A program's own options, up to its first operand (`node -r x main.js -e y`
+ * stops at `main.js`: the rest belongs to the script). Reads every spelling
+ * that `parse` reads. `next` is the index of the first operand; a word built
+ * from a variable stops the scan, because it may be either. An option in
+ * `stopAfter` ends the program's options (`python -c X`, `python -m X`).
+ */
+export function leadingOptions(
+  rest: readonly Arg[],
+  withValue: ReadonlySet<string>,
+  stopAfter: ReadonlySet<string> = new Set()
+): { options: LeadingOption[]; next: number } {
+  const options: LeadingOption[] = [];
+  let k = 0;
+  for (; k < rest.length; k++) {
+    const arg = rest[k];
+    const t = arg.text;
+    if (t === '--') return { options, next: k + 1 };
+    if (arg.unknown || !t.startsWith('-') || t === '-') break;
+    if (t.startsWith('--')) {
+      const eq = t.indexOf('=');
+      const key = eq < 0 ? t : t.slice(0, eq);
+      if (eq >= 0) options.push({ key, value: { ...arg, text: t.slice(eq + 1) } });
+      else options.push(withValue.has(key) ? { key, value: rest[++k] } : { key });
+    } else {
+      for (let c = 1; c < t.length; c++) {
+        const key = `-${t[c]}`;
+        if (!withValue.has(key)) {
+          options.push({ key });
+          continue;
+        }
+        const glued = t.slice(c + 1);
+        options.push({ key, value: glued ? { ...arg, text: glued } : rest[++k] });
+        break;
+      }
+    }
+    if (stopAfter.has(options[options.length - 1]?.key ?? '')) return { options, next: k + 1 };
+  }
+  return { options, next: k };
+}
+
 export const has = (p: Parsed, ...keys: string[]) => keys.some((key) => p.flags.has(key));
 export const valuesOf = (p: Parsed, ...keys: string[]) => keys.flatMap((key) => p.values.get(key) ?? []);
 

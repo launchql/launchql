@@ -141,7 +141,7 @@ describe('hardening: file tools and redaction', () => {
 });
 
 describe('hardening: scrubEnv', () => {
-  it('drops secret-named and token-shaped variables and keeps the plain ones', () => {
+  it('drops secret-named and token-shaped variables and the shell startup ones, and keeps the plain ones', () => {
     const env: Record<string, string | undefined> = {
       PATH: '/usr/bin:/bin',
       HOME: '/Users/me',
@@ -153,6 +153,9 @@ describe('hardening: scrubEnv', () => {
       DATABASE_URL: 'postgres://app:pw@localhost/app',
       GH_HELPER: GH_TOKEN,
       REDIS_URL: 'redis://user:Sup3rS3cretPw@cache:6379',
+      BASH_ENV: '/Users/me/.bashrc',
+      ENV: '/Users/me/.shrc',
+      CDPATH: '/Users/me',
       UNSET: undefined
     };
     expect(scrubEnv(env)).toEqual({
