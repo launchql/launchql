@@ -9,26 +9,20 @@
 import type { PubkeyChallengeSettings } from '../types';
 import { createModuleLoader } from './create-loader';
 import type { LoaderContext, ModuleLoader } from './types';
-import { routingSchemaOf } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
-const pubkeySettingsSql = (schema: string): string => `
+// The serving login is NOBYPASSRLS and routing_public sits behind member RLS,
+// so the login reads through the platform's login-only reader.
+const pubkeySettingsSql = `
   SELECT
-    s.schema_name AS schema,
-    ps.crypto_network,
-    sign_up_fn.name AS sign_up_with_key,
-    sign_in_req_fn.name AS sign_in_request_challenge,
-    sign_in_fail_fn.name AS sign_in_record_failure,
-    sign_in_fn.name AS sign_in_with_challenge
-  FROM "${schema}".pubkey_settings ps
-  LEFT JOIN metaschema_public.schema s ON ps.schema_id = s.id
-  LEFT JOIN metaschema_public.function sign_up_fn ON ps.sign_up_with_key_function_id = sign_up_fn.id
-  LEFT JOIN metaschema_public.function sign_in_req_fn ON ps.sign_in_request_challenge_function_id = sign_in_req_fn.id
-  LEFT JOIN metaschema_public.function sign_in_fail_fn ON ps.sign_in_record_failure_function_id = sign_in_fail_fn.id
-  LEFT JOIN metaschema_public.function sign_in_fn ON ps.sign_in_with_challenge_function_id = sign_in_fn.id
-  WHERE ps.database_id = $1
-  LIMIT 1
+    schema_name AS schema,
+    crypto_network,
+    sign_up_with_key,
+    sign_in_request_challenge,
+    sign_in_record_failure,
+    sign_in_with_challenge
+  FROM function_resolution.pubkey_entry($1)
 `;
 
 // ─── Row Types ──────────────────────────────────────────────────────────────
@@ -63,7 +57,7 @@ export const pubkeyLoader: ModuleLoader<PubkeyChallengeSettings> = createModuleL
   ttlMs: 5 * 60_000,
   async resolve(ctx: LoaderContext) {
     const { routingPool, databaseId } = ctx;
-    const result = await routingPool.query<PubkeySettingsRow>(pubkeySettingsSql(routingSchemaOf(ctx)), [databaseId]);
+    const result = await routingPool.query<PubkeySettingsRow>(pubkeySettingsSql, [databaseId]);
     return fromRow(result.rows[0] ?? null);
   }
 });

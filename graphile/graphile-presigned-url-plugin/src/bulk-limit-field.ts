@@ -13,9 +13,8 @@ import 'graphile-build';
 
 import { context as grafastContext, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
-import { withSystemLaneClient } from 'graphile-plugin-utils';
+import { withRequestPgClient } from 'graphile-plugin-utils';
 
-import { withRequestPgClient } from './request-pg-client';
 import { loadAllStorageModules, resolveStorageConfigFromCodec } from './storage-module-cache';
 
 export function createBulkLimitPlugin(): GraphileConfig.Plugin {
@@ -64,9 +63,10 @@ export function createBulkLimitPlugin(): GraphileConfig.Plugin {
                       });
                       if (!databaseId) throw new Error('DATABASE_NOT_FOUND');
 
-                      // Module registration is server config, not user data:
-                      // resolve it in the system lane's bounded role.
-                      const allConfigs = await withSystemLaneClient(withPgClient, (pgClient) =>
+                      // Storage config is read on the request lane through the claim-scoped
+
+                      // function_resolution.storage_modules(): no role switch, no RLS bypass.
+                      const allConfigs = await withRequestPgClient(withPgClient, pgSettings, (pgClient) =>
                         loadAllStorageModules(pgClient, databaseId),
                       );
                       const storageConfig = resolveStorageConfigFromCodec(capturedCodec, allConfigs);

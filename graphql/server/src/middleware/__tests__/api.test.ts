@@ -111,7 +111,7 @@ describe('api middleware routing priority', () => {
     });
     expect(svcCache.get('api:db-123:customer-api')).toBe(result);
     expect(query.mock.calls).toEqual(expect.arrayContaining([
-      [expect.stringContaining('FROM "routing_public".apis'), ['db-123', 'customer-api']]
+      [expect.stringContaining('FROM function_resolution.api_by_name($1, $2)'), ['db-123', 'customer-api']]
     ]));
   });
 });
@@ -178,11 +178,11 @@ describe('missing served role on an X-Api-Name row', () => {
   });
 
   it('passes the row roles through verbatim when both are present', async () => {
-    poolWithApiRow({ role_name: 'administrator', anon_role: 'administrator' });
+    poolWithApiRow({ role_name: 'authenticated', anon_role: 'anonymous' });
 
     const result = await getApiConfig(createPrivateOptions(), request());
 
-    expect(result).toMatchObject({ roleName: 'administrator', anonRole: 'administrator' });
+    expect(result).toMatchObject({ roleName: 'authenticated', anonRole: 'anonymous' });
     expect(svcCache.get('api:db-123:customer-api')).toBe(result);
   });
 });

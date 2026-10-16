@@ -1,4 +1,5 @@
 import { Logger } from '@pgpmjs/logger';
+import { QuoteUtils } from '@pgsql/quotes';
 import { Pool } from 'pg';
 
 import { ApiOptions, ApiStructure } from '../types';
@@ -38,6 +39,16 @@ export const requireApiRole = (
     error.apiId = apiId;
     throw error;
   }
+  // administrator bypasses RLS; an API never serves as it.
+  if (value === 'administrator') {
+    const error = new Error(
+      `API ${apiId ?? '<unknown>'} ${column} is administrator; APIs serve as request roles under RLS.`
+    ) as Error & { code?: string; column?: string; apiId?: string };
+    error.code = 'API_ROLE_FORBIDDEN';
+    error.column = column;
+    error.apiId = apiId;
+    throw error;
+  }
   return value;
 };
 
@@ -63,14 +74,8 @@ export interface ResolvedRoute {
 
 const RESOLVER_FUNCTION = 'resolve_route';
 
-/** Published logical name of the database-scope routing plane. */
-export const DEFAULT_ROUTING_SCHEMA = 'routing_public';
-
-/** The routing-plane schema in effect: configured override or the published default. */
-export const getRoutingSchema = (opts: {
-  api?: { routingSchema?: string };
-}): string =>
-  opts.api?.routingSchema || DEFAULT_ROUTING_SCHEMA;
+/** The scoped routing plane the server resolves hosts on first. */
+export const ROUTING_SCHEMA = 'routing_public';
 
 export const isValidSchemaName = (name: string): boolean =>
   /^[a-z_][a-z0-9_]*$/.test(name);
@@ -119,6 +124,97 @@ export const resolveRoute = async (
  * Config keys the scoped api surface folds into `config` (and route
  * `resolved_config`) that the server maps onto ApiStructure.
  */
+/**
+ * A tenant database's own database-scope routing plane: one `route_module`
+ * row whose resolver keeps the resolve_route contract.
+ */
+export interface DatabaseRoutingPlane {
+  databaseId: string;
+  schema: string;
+  resolver: string;
+}
+
+/**
+ * The database-scope routing planes after the server's own `routing_public` plane, in
+ * the static gateway's order (by database id). The list spans every tenant,
+ * so it comes from a SECURITY DEFINER reader granted to the platform login
+ * alone, on the login's own connection: no role switch, no RLS bypass. A plane
+ * whose registration names no schema or resolver is an incomplete install and
+ * fails loud.
+ */
+export const loadDatabaseRoutingPlanes = async (
+  pool: Pool
+): Promise<DatabaseRoutingPlane[]> => {
+  const { rows } = await pool.query<{
+    database_id: string;
+    schema_name: string | null;
+    resolver_function_name: string | null;
+  }>(
+    `SELECT database_id, schema_name, resolver_function_name
+       FROM function_resolution.routing_planes()`
+  );
+  return rows
+    .filter((row) => row.schema_name !== ROUTING_SCHEMA)
+    .map((row) => {
+      if (!row.schema_name || !row.resolver_function_name) {
+        const error = new Error(
+          `route_module for database ${row.database_id} names no ${row.schema_name ? 'resolver function' : 'public schema'}`
+        ) as Error & { code?: string; databaseId?: string };
+        error.code = 'ROUTING_PLANE_INCOMPLETE';
+        error.databaseId = row.database_id;
+        throw error;
+      }
+      return {
+        databaseId: row.database_id,
+        schema: row.schema_name,
+        resolver: row.resolver_function_name
+      };
+    });
+};
+
+const resolveOnPlane = async (
+  pool: Pool,
+  plane: DatabaseRoutingPlane,
+  host: string
+): Promise<ResolvedRoute | null> => {
+  const resolver = QuoteUtils.quoteQualifiedIdentifier(plane.schema, plane.resolver);
+  const result = await pool.query<ResolvedRoute>(
+    `SELECT * FROM ${resolver}($1, '/', NULL)`,
+    [host]
+  );
+  const row = result.rows[0];
+  return row && row.route_binding_id !== null ? row : null;
+};
+
+export interface PlaneRouteMatch {
+  route: ResolvedRoute;
+  /** Database whose own plane owns the host; null for `routing_public`. */
+  planeDatabaseId: string | null;
+}
+
+/**
+ * Resolve a host across routing planes: `routing_public` first, then
+ * each tenant database-scope plane. The first plane that matches owns the
+ * host; later planes are not consulted.
+ */
+export const resolveRouteAcrossPlanes = async (
+  pool: Pool,
+  host: string
+): Promise<PlaneRouteMatch | null> => {
+  const route = await resolveRoute(pool, ROUTING_SCHEMA, host);
+  if (route) return { route, planeDatabaseId: null };
+
+  for (const plane of await loadDatabaseRoutingPlanes(pool)) {
+    const planeRoute = await resolveOnPlane(pool, plane, host);
+    if (planeRoute) {
+      log.debug(`[resolve-route] host=${host} owned by database plane ${plane.schema} (db=${plane.databaseId})`);
+      return { route: planeRoute, planeDatabaseId: plane.databaseId };
+    }
+  }
+  log.debug(`[resolve-route] no plane owns host=${host}`);
+  return null;
+};
+
 interface ApiSurfaceConfig {
   api_id?: string;
   database_id?: string;

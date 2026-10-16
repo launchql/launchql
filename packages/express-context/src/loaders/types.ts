@@ -12,23 +12,8 @@
 
 import type { Pool } from 'pg';
 
-/** Published logical name of the scoped routing plane. */
-export const DEFAULT_ROUTING_SCHEMA = 'routing_public';
-
-/**
- * The routing-plane schema a loader should query: the context override or
- * the published default. Throws on names unsafe to interpolate as an
- * identifier.
- */
-export const routingSchemaOf = (
-  ctx: Pick<LoaderContext, 'routingSchema'>
-): string => {
-  const schema = ctx.routingSchema ?? DEFAULT_ROUTING_SCHEMA;
-  if (!/^[a-z_][a-z0-9_]*$/.test(schema)) {
-    throw new Error(`invalid routing schema name: ${schema}`);
-  }
-  return schema;
-};
+/** The scoped routing plane every routing-plane loader reads. */
+export const ROUTING_SCHEMA = 'routing_public';
 
 /**
  * Assert a loader was handed the tenant it is resolving for.
@@ -56,8 +41,6 @@ export function requireDatabaseId(
 export interface LoaderContext {
   /** Routing/configuration database pool (for routing-plane lookups) */
   routingPool: Pool;
-  /** Routing-plane schema to query (defaults to the published routing_public) */
-  routingSchema?: string;
   /** Tenant database pool (for metaschema_modules_public.* lookups) */
   tenantPool: Pool;
   /** UUID of the database being resolved */

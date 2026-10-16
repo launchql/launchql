@@ -62,8 +62,9 @@ const storageModuleCache = new LRUCache<string, StorageModuleConfig>({
 });
 
 /**
- * SQL query to resolve ALL storage modules for a database, whatever their
- * scope. Returns each module with its entity table names so callers can
+ * Resolve ALL storage modules of the request's own database (its
+ * jwt.claims.database_id), whatever their scope, through the claim-scoped
+ * SECURITY DEFINER reader: RLS hides storage_module from a tenant's end users. Returns each module with its entity table names so callers can
  * classify entity-keyed planes and resolve owners.
  *
  * Endpoint, provider and region are always the platform database's `platform`
@@ -73,51 +74,7 @@ const storageModuleCache = new LRUCache<string, StorageModuleConfig>({
  * All in this same (cached) query.
  */
 const ALL_STORAGE_MODULES_QUERY = `
-  SELECT
-    sm.id,
-    sm.scope,
-    sm.entity_table_id,
-    bs.schema_name AS buckets_schema,
-    bt.name AS buckets_table,
-    fs.schema_name AS files_schema,
-    ft.name AS files_table,
-    ps.schema_name AS private_schema,
-    psm.endpoint AS endpoint,
-    coalesce(sm.public_url_prefix, psm.public_url_prefix) AS public_url_prefix,
-    psm.provider AS provider,
-    psm.region AS region,
-    array_remove(ARRAY[
-      CASE WHEN sm.endpoint IS DISTINCT FROM psm.endpoint AND sm.endpoint IS NOT NULL THEN 'endpoint' END,
-      CASE WHEN sm.provider IS DISTINCT FROM psm.provider AND sm.provider IS NOT NULL THEN 'provider' END,
-      CASE WHEN sm.region IS DISTINCT FROM psm.region AND sm.region IS NOT NULL THEN 'region' END
-    ], NULL) AS connection_overrides,
-    sm.allowed_origins,
-    sm.upload_url_expiry_seconds,
-    sm.download_url_expiry_seconds,
-    sm.default_max_file_size,
-    sm.max_filename_length,
-    sm.cache_ttl_seconds,
-    sm.max_bulk_files,
-    sm.max_bulk_total_size,
-    sm.has_path_shares,
-    sm.has_versioning,
-    sm.has_content_hash,
-    sm.has_confirm_upload,
-    es.schema_name AS entity_schema,
-    et.name AS entity_table
-  FROM metaschema_modules_public.storage_module sm
-  JOIN metaschema_public.table bt ON bt.id = sm.buckets_table_id
-  JOIN metaschema_public.schema bs ON bs.id = bt.schema_id
-  JOIN metaschema_public.table ft ON ft.id = sm.files_table_id
-  JOIN metaschema_public.schema fs ON fs.id = ft.schema_id
-  LEFT JOIN metaschema_public.schema ps ON ps.id = sm.private_schema_id
-  LEFT JOIN metaschema_public.table et ON et.id = sm.entity_table_id
-  LEFT JOIN metaschema_public.schema es ON es.id = et.schema_id
-  LEFT JOIN metaschema_modules_public.storage_module psm
-    ON psm.scope = 'platform'
-   AND psm.key = 'default'
-   AND psm.database_id = (SELECT d.id FROM metaschema_public.database d WHERE d.platform)
-  WHERE sm.database_id = $1
+  SELECT * FROM function_resolution.storage_modules()
 `;
 
 interface StorageModuleRow {
@@ -208,7 +165,7 @@ export async function resolveStorageModuleByFileId(
   // Load all storage modules for this database
   log.debug(`Resolving file ${fileId} across all storage modules for database ${databaseId}`);
 
-  const allConfigs = (await pgClient.query({ text: ALL_STORAGE_MODULES_QUERY, values: [databaseId] })).rows.map(
+  const allConfigs = (await pgClient.query({ text: ALL_STORAGE_MODULES_QUERY })).rows.map(
     (row: unknown) => buildConfig(row as StorageModuleRow),
   );
 
@@ -248,7 +205,7 @@ export async function loadAllStorageModules(
 
   log.debug(`Loading all storage modules for database ${databaseId}`);
   return readAndCache(databaseId, 'module', async () => {
-    const result = await pgClient.query({ text: ALL_STORAGE_MODULES_QUERY, values: [databaseId] });
+    const result = await pgClient.query({ text: ALL_STORAGE_MODULES_QUERY });
     return (result.rows as StorageModuleRow[]).map(buildConfig);
   }, (configs) => {
     // Avoid caching a database that has no storage modules yet.

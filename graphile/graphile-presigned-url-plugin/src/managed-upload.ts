@@ -19,15 +19,15 @@
  */
 
 import { Logger } from '@pgpmjs/logger';
-import { withSystemLaneClient } from 'graphile-plugin-utils';
+import { type WithPgClient, withRequestPgClient } from 'graphile-plugin-utils';
 
 import { resolveDefaultBucket } from './default-bucket';
 import { isLiveFileRow, statusSelectFragment } from './file-lifecycle';
 import { type FileRefFieldBinding, getFileRefFieldBinding } from './file-ref-registry';
 import { assertBucketReconciled, resolveS3ForDatabase } from './physical-bucket';
-import { type WithPgClient, withRequestPgClient } from './request-pg-client';
 import { copyS3Object, deleteS3Object } from './s3-signer';
 import { recordManagedFile } from './storage-file-recorder';
+import { fileNotReplaceable } from './file-not-replaceable';
 import { getBucketConfig, loadAllStorageModules } from './storage-module-cache';
 import type { BucketConfig, FileProjection, PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from './types';
 
@@ -119,9 +119,9 @@ export async function resolveManagedUploadTarget(args: {
 }): Promise<ManagedUploadTarget> {
   const { options, withPgClient, pgSettings, databaseId, field, defaultPublicAccess } = args;
 
-  // Registry and module registration are schema metadata, not tenant rows:
-  // read them in the system lane, like every other config read here.
-  const binding = await withSystemLaneClient(withPgClient, async (pgClient): Promise<FileRefFieldBinding | null> => {
+  // Registry and module registration are read as the request's own role,
+  // through the claim-scoped function_resolution SECURITY DEFINER readers.
+  const binding = await withRequestPgClient(withPgClient, pgSettings, async (pgClient): Promise<FileRefFieldBinding | null> => {
     try {
       return await getFileRefFieldBinding(pgClient, databaseId, field);
     } catch (err: any) {
@@ -133,7 +133,7 @@ export async function resolveManagedUploadTarget(args: {
     }
   });
 
-  const allConfigs = await withSystemLaneClient(withPgClient, (pgClient) =>
+  const allConfigs = await withRequestPgClient(withPgClient, pgSettings, (pgClient) =>
     loadAllStorageModules(pgClient, databaseId),
   );
 
@@ -350,9 +350,7 @@ export async function finalizeStagedUpload(args: {
     if (deleted === 0) {
       // Nothing names the staged object, so dropping it cannot cost anyone bytes.
       await bestEffortDelete(s3, staged.stagingKey);
-      throw new Error(
-        `FILE_NOT_REPLACEABLE: file ${existing.id} at key ${existing.key} cannot be replaced by this caller`
-      );
+      throw fileNotReplaceable(existing.id, existing.key);
     }
   } else if (existing) {
     log.info(`Dedup hit: file ${existing.id} already carries hash ${staged.contentHash}`);

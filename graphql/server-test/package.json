@@ -47,6 +47,7 @@
     "nested-obj": "^0.2.3"
   },
   "dependencies": {
+    "@constructive-io/express-context": "workspace:^",
     "@constructive-io/graphql-dev-server": "workspace:^",
     "@constructive-io/graphql-env": "workspace:^",
     "@constructive-io/graphql-server": "workspace:^",

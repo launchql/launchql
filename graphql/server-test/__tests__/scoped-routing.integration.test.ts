@@ -134,8 +134,8 @@ describe('simple-seed-scoped: resolve_route (SQL level)', () => {
     expect(route!.resolved_config).toMatchObject({
       name: 'private',
       is_public: false,
-      role_name: 'administrator',
-      anon_role: 'administrator',
+      role_name: 'authenticated',
+      anon_role: 'anonymous',
       schemas: [
         'simple-pets-public',
         'simple-pets-private',

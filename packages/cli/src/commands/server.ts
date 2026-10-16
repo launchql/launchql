@@ -151,7 +151,7 @@ export default async (
 
   // Debug: Log API routing configuration
   const apiOpts = (options as any).api || {};
-  log.debug(`📡 API Routing: isPublic=${apiOpts.isPublic}, routingSchema=${apiOpts.routingSchema}`);
+  log.debug(`📡 API Routing: isPublic=${apiOpts.isPublic}`);
   if (apiOpts.isPublic === false) {
     log.debug(`   Header-based routing enabled (X-Api-Name, X-Database-Id, X-Meta-Schema)`);
   }

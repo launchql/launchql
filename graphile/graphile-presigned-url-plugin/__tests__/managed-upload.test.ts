@@ -108,7 +108,7 @@ function bucketRow(overrides: Record<string, unknown> = {}): Record<string, unkn
 }
 
 const STORAGE_MODULES: QueryHandler = {
-  match: /FROM metaschema_modules_public\.storage_module/,
+  match: /function_resolution\.storage_modules\(\)/,
   rows: () => [storageModuleRow()],
 };
 
@@ -295,7 +295,7 @@ describe('resolveManagedUploadTarget', () => {
     const db = fakeDb([
       SET_CONFIG,
       NO_REGISTRY_ROW,
-      { match: /FROM metaschema_modules_public\.storage_module/, rows: () => [] },
+      { match: /function_resolution\.storage_modules\(\)/, rows: () => [] },
     ]);
 
     await expect(
@@ -320,7 +320,7 @@ describe('resolveManagedUploadTarget', () => {
       SET_CONFIG,
       NO_REGISTRY_ROW,
       {
-        match: /FROM metaschema_modules_public\.storage_module/,
+        match: /function_resolution\.storage_modules\(\)/,
         rows: () => [storageModuleRow({
           scope: 'database',
           buckets_table: 'buckets',
@@ -352,7 +352,7 @@ describe('resolveManagedUploadTarget', () => {
       SET_CONFIG,
       NO_REGISTRY_ROW,
       {
-        match: /FROM metaschema_modules_public\.storage_module/,
+        match: /function_resolution\.storage_modules\(\)/,
         rows: () => [
           storageModuleRow({ scope: 'database', buckets_table: 'buckets', files_table: 'files' }),
           storageModuleRow({ id: OTHER_MODULE_ID, scope: 'platform', buckets_table: 'platform_buckets', files_table: 'platform_files' }),
@@ -404,7 +404,7 @@ describe('resolveManagedUploadTarget', () => {
         rows: () => [{ id: 'ref-1', storage_module_id: OTHER_MODULE_ID, bucket_key: null, bucket_tags: null, is_public: null, enforce_fk: false }],
       },
       {
-        match: /FROM metaschema_modules_public\.storage_module/,
+        match: /function_resolution\.storage_modules\(\)/,
         rows: () => [storageModuleRow({
           id: OTHER_MODULE_ID,
           scope: 'data_room',

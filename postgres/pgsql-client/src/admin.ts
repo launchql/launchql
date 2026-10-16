@@ -190,7 +190,15 @@ export class DbAdmin {
     if (!existsSync(file)) {
       throw new Error(`Missing SQL file: ${file}`);
     }
-    this.run('psql', ['-f', file, dbName]);
+    try {
+      execFileSync('psql', ['-X', '-v', 'ON_ERROR_STOP=1', '-f', file, dbName], {
+        stdio: 'pipe',
+        env: { ...process.env, ...this.getEnv() }
+      });
+    } catch (err: any) {
+      const detail = String(err.stderr ?? '').trim() || err.message;
+      throw new Error(`SQL file ${file} failed: ${detail}`, { cause: err });
+    }
   }
 
   async streamSql(sql: string, dbName: string): Promise<void> {

@@ -124,16 +124,12 @@ export const resolvePlatformFlushIdentity = async (
   pool: Pool,
   principalName = PLATFORM_BOOTSTRAP_PRINCIPAL
 ): Promise<PlatformFlushIdentity> => {
-  const database = await pool.query<{ id: string }>(
-    `SELECT id FROM metaschema_public.database WHERE platform IS TRUE`
-  );
-  if (database.rowCount !== 1) {
-    throw new Error(
-      `refusals: expected exactly one platform database (metaschema_public.database.platform), found ${database.rowCount}`
-    );
-  }
+  // Both reads cross RLS before any request exists, so they go through
+  // SECURITY DEFINER resolvers granted to the login; the first raises when no
+  // platform database is registered.
+  const database = await pool.query<{ id: string }>(`SELECT app_scope.platform_database_id() AS id`);
   const principal = await pool.query<{ user_id: string; bypass_step_up: boolean }>(
-    `SELECT user_id, bypass_step_up FROM constructive_auth_public.principals WHERE name = $1`,
+    `SELECT user_id, bypass_step_up FROM function_resolution.service_principal($1)`,
     [principalName]
   );
   if (principal.rowCount !== 1) {

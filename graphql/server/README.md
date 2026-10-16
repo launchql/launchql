@@ -57,11 +57,11 @@ This starts the server with env defaults from `@constructive-io/graphql-env`.
 ## What it does
 
 Platform deployments connect through one pgpm-provisioned `NOSUPERUSER INHERIT
-BYPASSRLS` login with direct metadata privileges, configured only with
-`PGUSER`/`PGPASSWORD`. Startup and routing queries use that pool login directly.
-Requests continue to switch to `authenticated` or `anonymous`, so PostgreSQL
-enforces their RLS policies; the login's BYPASSRLS attribute is not inherited
-after `SET ROLE`.
+NOBYPASSRLS` login, configured only with `PGUSER`/`PGPASSWORD`. Startup and
+routing queries run as that login, so rows behind member RLS stay hidden from
+it: standing and routing settings are read through static, login-only
+`SECURITY DEFINER` readers in `function_resolution`. Requests switch to
+`authenticated` or `anonymous`, so PostgreSQL enforces their RLS policies.
 
 Runs an Express server that wires CORS, uploads, domain parsing, auth, and PostGraphile into a single GraphQL endpoint. It serves `/graphql` and `/graphiql`, injects per-request `pgSettings`, and flushes cached schemas on demand or via database notifications. When meta API is enabled, it resolves API config (schemas, roles, modules) from the meta schema using the request host and enforces `api.isPublic`, with optional header overrides in private mode; when meta API is disabled, it serves the fixed schemas and roles from `api.exposedSchemas`, `api.anonRole`, and `api.roleName`.
 
@@ -122,7 +122,7 @@ Send `X-Constructive-Session-Cookie: omit` on every request. Sign-in mutations t
 
 This is a production-only server: every request is resolved through the scoped-routing plane. There is no static single-tenant mode and no flag to disable routing. For single-database local development without route resolution or a database id, use [`@constructive-io/graphql-dev-server`](../dev-server/README.md).
 
-- The server resolves the request host with a single `resolve_route()` call against the compiled route bindings in the scoped routing schema (`API_ROUTING_SCHEMA`, default `routing_public`), mapping host → tenant/api/database/role.
+- The server resolves the request host with a single `resolve_route()` call against the compiled route bindings in `routing_public`, mapping host → tenant/api/database/role.
 - Only APIs where `api.is_public` matches `API_IS_PUBLIC` are served.
 - In private mode (`API_IS_PUBLIC=false`), you can override with headers:
   - `X-Api-Name` + `X-Database-Id`
@@ -145,7 +145,6 @@ Configuration is merged from defaults, config files, and env vars via `@construc
 | `FEATURES_SIMPLE_INFLECTION`   | Enable simple inflection              | `true`                                                        |
 | `FEATURES_OPPOSITE_BASE_NAMES` | Enable opposite base names            | `true`                                                        |
 | `FEATURES_POSTGIS`             | Enable PostGIS support                | `true`                                                        |
-| `API_ROUTING_SCHEMA`    | Schema containing `resolve_route()`   | `routing_public`                                 |
 | `API_IS_PUBLIC`                | Serve public APIs only                | `true`                                                        |
 | `API_EXPOSED_SCHEMAS`          | Additional schemas to expose          | empty                                                         |
 | `API_META_SCHEMAS`             | Meta schemas to query                 | `routing_public,metaschema_public,metaschema_modules_public` |

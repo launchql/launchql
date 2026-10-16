@@ -15,7 +15,7 @@ import { getPgPool } from 'pg-cache';
 import errorPage50x from '../errors/50x';
 import errorPage404Message from '../errors/404-message';
 import { ApiConfigResult, ApiError, ApiOptions, ApiStructure, AuthSettings, DatabaseSettings, PubkeyChallengeSettings, RlsModule, WebauthnSettings } from '../types';
-import { getRoutingSchema, isValidSchemaName, requireApiRole, resolveRoute, routeToApiStructure } from './routing';
+import { requireApiRole, resolveRouteAcrossPlanes, routeToApiStructure } from './routing';
 
 const log = new Logger('api');
 
@@ -29,26 +29,16 @@ const defaultRegistry: LoaderRegistry = createDefaultRegistry();
 // SQL Queries (API resolution only — module queries now live in loaders)
 // =============================================================================
 
-// Private-header X-Api-Name lookup against the scoped routing plane.
-// X-Api-Name is a trusted internal selector (only honored when the server
-// runs with isPublic=false): it addresses a database's API surface by name.
+// Private-header X-Api-Name lookup. X-Api-Name is a trusted internal selector
+// (only honored when the server runs with isPublic=false): it addresses a
+// database's API surface by name. The routing tables sit behind member RLS and
+// no request identity exists yet, so the login reads through the login-only
+// SECURITY DEFINER reader, which resolves the database's apis plane itself.
 // `is_published` governs cross-scope route visibility, not internal
 // addressability, so it does not filter this lookup.
-const scopedApiNameLookupSql = (routingSchema: string): string => `
-  SELECT 
-    a.id as api_id,
-    a.database_id,
-    a.dbname,
-    a.role_name,
-    a.anon_role,
-    a.is_published as is_public,
-    COALESCE(array_agg(s.schema_name) FILTER (WHERE s.schema_name IS NOT NULL), '{}') as schemas
-  FROM "${routingSchema}".apis a
-  LEFT JOIN "${routingSchema}".api_schemas aps ON a.id = aps.api_id
-  LEFT JOIN metaschema_public.schema s ON aps.schema_id = s.id
-  WHERE a.database_id = $1 
-    AND a.name = $2
-  GROUP BY a.id, a.database_id, a.dbname, a.role_name, a.anon_role, a.is_published
+const API_BY_NAME_SQL = `
+  SELECT api_id, api_database_id AS database_id, dbname, role_name, anon_role, is_public, schemas
+  FROM function_resolution.api_by_name($1, $2)
   LIMIT 1
 `;
 
@@ -118,7 +108,6 @@ const buildLoaderContext = (
   const dbname = row.dbname || opts.pg?.database || '';
   return {
     routingPool,
-    routingSchema: getRoutingSchema(opts),
     tenantPool: getPgPool({ ...opts.pg, database: dbname }),
     databaseId: row.database_id,
     apiId: row.api_id,
@@ -256,8 +245,8 @@ const createAdminStructure = (
   databaseId?: string
 ): ApiStructure => ({
   dbname: opts.pg?.database ?? '',
-  anonRole: 'administrator',
-  roleName: 'administrator',
+  anonRole: 'anonymous',
+  roleName: 'authenticated',
   schema: schemas,
   domains: [],
   databaseId,
@@ -278,16 +267,10 @@ const validateSchemata = async (pool: Pool, schemas: string[]): Promise<string[]
 
 const queryByApiName = async (
   pool: Pool,
-  opts: ApiOptions,
   databaseId: string,
   name: string
 ): Promise<ApiRow | null> => {
-  const routingSchema = getRoutingSchema(opts);
-  if (!isValidSchemaName(routingSchema)) {
-    log.warn(`[api-name-lookup] invalid routing schema name: ${routingSchema}`);
-    return null;
-  }
-  const result = await pool.query<ApiRow>(scopedApiNameLookupSql(routingSchema), [databaseId, name]);
+  const result = await pool.query<ApiRow>(API_BY_NAME_SQL, [databaseId, name]);
   return result.rows[0] ?? null;
 };
 
@@ -324,7 +307,7 @@ const resolveApiNameHeader = async (ctx: ResolveContext): Promise<ApiStructure |
   const { opts, pool, headers } = ctx;
   if (!headers.databaseId) return null;
 
-  const row = await queryByApiName(pool, opts, headers.databaseId, headers.apiName!);
+  const row = await queryByApiName(pool, headers.databaseId, headers.apiName!);
   
   if (!row) {
     log.debug(`[api-name-lookup] No API found for databaseId=${headers.databaseId} name=${headers.apiName}`);
@@ -355,12 +338,19 @@ const resolveMetaSchemaHeader = (
 const resolveScopedRoute = async (ctx: ResolveContext): Promise<ApiStructure | null> => {
   const { opts, pool, host } = ctx;
 
-  const schema = getRoutingSchema(opts);
-  const route = await resolveRoute(pool, schema, host);
-  if (!route) return null;
+  const match = await resolveRouteAcrossPlanes(pool, host);
+  if (!match) return null;
 
-  const structure = routeToApiStructure(route, opts);
+  const structure = routeToApiStructure(match.route, opts);
   if (!structure) return null;
+
+  if (match.planeDatabaseId && structure.databaseId !== match.planeDatabaseId) {
+    const error = new Error(
+      `host ${host} is owned by database ${match.planeDatabaseId}'s routing plane but routes to database ${structure.databaseId ?? '<none>'}`
+    ) as Error & { code?: string };
+    error.code = 'CROSS_DATABASE_ROUTE';
+    throw error;
+  }
 
   log.debug(`[scoped-routing] resolved host=${host} → api=${structure.apiId} db=${structure.dbname}`);
 

@@ -1,5 +1,7 @@
 -- Catalog bulk that no routed API exposes. A handler that introspects the whole
 -- database retains all of it; a schema-scoped handler retains none of it.
+-- COMMIT per schema: one transaction for all 100 overflows CI's lock table
+-- (max_locks_per_transaction = 64).
 DO $$
 BEGIN
   FOR s IN 1..100 LOOP
@@ -24,6 +26,7 @@ BEGIN
         s, f, format('SELECT a + length(b) + %s', f)
       );
     END LOOP;
+    COMMIT;
   END LOOP;
 END
 $$;

@@ -45,11 +45,6 @@ interface MockOptions {
   entityField: string | null;
   physicalName?: string | null;
   scopeKey?: string | null;
-  orgResolver?: {
-    entity_type: string;
-    get_org_fn_schema: string;
-    get_org_fn: string;
-  } | null;
   bucketFound?: boolean;
 }
 
@@ -58,7 +53,6 @@ function createMockPgClient({
   entityField,
   physicalName = null,
   scopeKey = null,
-  orgResolver = null,
   bucketFound = true,
 }: MockOptions) {
   const query = jest.fn((arg: any) => {
@@ -66,7 +60,7 @@ function createMockPgClient({
     if (sql.includes('jwt_private.current_database_id')) {
       return Promise.resolve({ rows: [{ id: DATABASE_ID }] });
     }
-    if (sql.includes('metaschema_modules_public.storage_module')) {
+    if (sql.includes('function_resolution.storage_modules()')) {
       return Promise.resolve({
         rows: [{
           id: 'sm-uuid-456',
@@ -77,6 +71,7 @@ function createMockPgClient({
           entity_table_id: entityField === 'owner_id' ? 'entity-table-uuid' : null,
           buckets_schema: 'app_public',
           buckets_table: 'buckets',
+          private_schema: 'app_private',
           allowed_origins: null,
           entity_schema: entityField === 'owner_id' ? 'app_public' : null,
           entity_table: entityField === 'owner_id' ? 'accounts' : null,
@@ -98,14 +93,7 @@ function createMockPgClient({
           : [],
       });
     }
-    if (sql.includes('metaschema.resolve_entity_context_by_field')) {
-      return Promise.resolve({ rows: orgResolver ? [orgResolver] : [{
-        entity_type: scope,
-        get_org_fn_schema: null,
-        get_org_fn: null,
-      }] });
-    }
-    if (sql.includes('app_jobs.add_job')) {
+    if (sql.includes('buckets_provision(')) {
       return Promise.resolve({ rows: [{ id: JOB_ID }] });
     }
     throw new Error(`unexpected query: ${sql}`);
@@ -124,7 +112,7 @@ async function invoke(pgClient: any, input: Record<string, string> = { bucketKey
 
 function enqueueCall(pgClient: any): { text: string; values: unknown[] } {
   const call = pgClient.query.mock.calls.find((args: any[]) =>
-    args[0]?.text?.includes('app_jobs.add_job'));
+    args[0]?.text?.includes('buckets_provision('));
   expect(call).toBeDefined();
   return call[0];
 }
@@ -143,134 +131,36 @@ describe('createBucketProvisionerPlugin', () => {
     expect(plugin.schema).toBeDefined();
   });
 
-  it('enqueues the global-scope reconciliation job without entity attribution', async () => {
+  it.each([
+    ['app', null, null],
+    ['platform', null, null],
+    ['database', 'database_id', DATABASE_ID],
+    ['org', 'owner_id', OWNER_ID],
+  ])('enqueues a %s-scope bucket through the generated provision function', async (scope, entityField, scopeKey) => {
     createBucketProvisionerPlugin();
-    const pgClient = createMockPgClient({ scope: 'app', entityField: null });
+    const pgClient = createMockPgClient({ scope, entityField, scopeKey });
 
-    const result = await invoke(pgClient);
+    await invoke(pgClient, entityField === 'owner_id'
+      ? { bucketKey: 'public', ownerId: OWNER_ID }
+      : { bucketKey: 'public' });
     const enqueue = enqueueCall(pgClient);
 
-    expect(enqueue.text).toContain("identifier => 'storage:provision_bucket'");
-    expect(enqueue.text).toContain("'id', $1::uuid");
-    expect(enqueue.text).toContain("'scope', $2::text");
-    expect(enqueue.text).toContain("queue_name => 'bucket:' || $1::text");
-    expect(enqueue.text).toContain('max_attempts => 25');
-    expect(enqueue.text).toContain('priority => 0');
-    expect(enqueue.text).not.toContain('entity_id =>');
-    expect(enqueue.text).not.toContain('organization_id =>');
-    expect(enqueue.values).toEqual([BUCKET_ID, 'app']);
-    expect(result).toEqual({
-      bucketId: BUCKET_ID,
-      bucketKey: 'public',
-      physicalName: null,
-      jobId: JOB_ID,
-    });
+    expect(enqueue.text).toMatch(/^SELECT "?app_private"?\."?buckets_provision"?\(\$1::uuid\) AS id$/);
+    expect(enqueue.values).toEqual([BUCKET_ID]);
+    expect(pgClient.query.mock.calls.some((args: any[]) =>
+      args[0]?.text?.includes('app_jobs.add_job'))).toBe(false);
   });
 
-  it('enqueues the platform global-scope reconciliation job', async () => {
+  it('looks an owner-scoped bucket up by its owner before enqueueing', async () => {
     createBucketProvisionerPlugin();
-    const pgClient = createMockPgClient({
-      scope: 'platform',
-      entityField: null,
-      physicalName: 'existing-physical-name',
-    });
-
-    const result = await invoke(pgClient);
-    const enqueue = enqueueCall(pgClient);
-
-    expect(enqueue.text).not.toContain('db_id =>');
-    expect(enqueue.text).not.toContain('entity_type =>');
-    expect(enqueue.values).toEqual([BUCKET_ID, 'platform']);
-    expect(result.physicalName).toBe('existing-physical-name');
-  });
-
-  it('enqueues the exact database-scope reconciliation job', async () => {
-    createBucketProvisionerPlugin();
-    const pgClient = createMockPgClient({
-      scope: 'database',
-      entityField: 'database_id',
-      scopeKey: DATABASE_ID,
-    });
-
-    const result = await invoke(pgClient);
-    const enqueue = enqueueCall(pgClient);
-    const bucketLookup = pgClient.query.mock.calls.find((args: any[]) =>
-      args[0]?.text?.includes('FROM app_public.buckets'));
-
-    expect(bucketLookup[0].text).toContain('database_id AS scope_key');
-    expect(bucketLookup[0].values).toEqual(['public']);
-    expect(enqueue.text).toContain("'database_id', $2::uuid");
-    expect(enqueue.text).toContain("'id', $1::uuid");
-    expect(enqueue.text).toContain("'scope', $3::text");
-    expect(enqueue.text).toContain('db_id => $2');
-    expect(enqueue.text).toContain('entity_id => $2');
-    expect(enqueue.text).toContain('organization_id => NULL');
-    expect(enqueue.text).toContain('entity_type => $3');
-    expect(enqueue.values).toEqual([BUCKET_ID, DATABASE_ID, 'database']);
-    expect(result.jobId).toBe(JOB_ID);
-  });
-
-  it('enqueues an entity-scope job with the resolved organization function', async () => {
-    createBucketProvisionerPlugin();
-    const pgClient = createMockPgClient({
-      scope: 'org',
-      entityField: 'owner_id',
-      scopeKey: OWNER_ID,
-      orgResolver: {
-        entity_type: 'org',
-        get_org_fn_schema: 'org_private',
-        get_org_fn: 'get_organization_id',
-      },
-    });
+    const pgClient = createMockPgClient({ scope: 'org', entityField: 'owner_id', scopeKey: OWNER_ID });
 
     await invoke(pgClient, { bucketKey: 'public', ownerId: OWNER_ID });
-    const enqueue = enqueueCall(pgClient);
     const bucketLookup = pgClient.query.mock.calls.find((args: any[]) =>
       args[0]?.text?.includes('FROM app_public.buckets'));
-    const resolverLookup = pgClient.query.mock.calls.find((args: any[]) =>
-      args[0]?.text?.includes('metaschema.resolve_entity_context_by_field'));
 
     expect(bucketLookup[0].text).toContain('owner_id AS scope_key');
     expect(bucketLookup[0].values).toEqual(['public', OWNER_ID]);
-    expect(resolverLookup[0].values).toEqual([
-      DATABASE_ID,
-      BUCKETS_TABLE_ID,
-      'owner_id',
-    ]);
-    expect(enqueue.text).toContain("'id', $1::uuid");
-    expect(enqueue.text).toContain("'owner_id', $2::uuid");
-    expect(enqueue.text).toContain("'scope', $3::text");
-    expect(enqueue.text).toContain('entity_id => $2');
-    expect(enqueue.text).toContain(
-      'organization_id => org_private.get_organization_id($3::text, $2::uuid)',
-    );
-    expect(enqueue.text).toContain('entity_type => $3');
-    expect(enqueue.values).toEqual([BUCKET_ID, OWNER_ID, 'org']);
-  });
-
-  it('enqueues an entity-scope job with NULL organization without a resolver', async () => {
-    createBucketProvisionerPlugin();
-    const pgClient = createMockPgClient({
-      scope: 'user',
-      entityField: 'owner_id',
-      scopeKey: OWNER_ID,
-    });
-
-    await invoke(pgClient, { bucketKey: 'public', ownerId: OWNER_ID });
-    const enqueue = enqueueCall(pgClient);
-    const resolverLookup = pgClient.query.mock.calls.find((args: any[]) =>
-      args[0]?.text?.includes('metaschema.resolve_entity_context_by_field'));
-
-    expect(resolverLookup[0].values).toEqual([
-      DATABASE_ID,
-      BUCKETS_TABLE_ID,
-      'owner_id',
-    ]);
-    expect(enqueue.text).toContain("'owner_id', $2::uuid");
-    expect(enqueue.text).toContain('entity_id => $2');
-    expect(enqueue.text).toContain('organization_id => NULL');
-    expect(enqueue.text).toContain('entity_type => $3');
-    expect(enqueue.values).toEqual([BUCKET_ID, OWNER_ID, 'user']);
   });
 
   it('propagates enqueue failures as GraphQL errors', async () => {
@@ -282,7 +172,7 @@ describe('createBucketProvisionerPlugin', () => {
     });
     pgClient.query.mockImplementation((arg: any): Promise<any> => {
       const sql: string = typeof arg === 'string' ? arg : arg.text;
-      if (sql.includes('app_jobs.add_job')) {
+      if (sql.includes('buckets_provision(')) {
         return Promise.reject(new Error('enqueue failed'));
       }
       return createMockPgClient({

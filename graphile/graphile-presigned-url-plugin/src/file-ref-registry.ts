@@ -48,22 +48,7 @@ export interface FileRefFieldBinding {
  * other.
  */
 const FILE_REF_FIELD_QUERY = `
-  SELECT
-    frf.id,
-    frf.storage_module_id,
-    frf.bucket_key,
-    frf.bucket_tags::text[] AS bucket_tags,
-    frf.is_public,
-    frf.enforce_fk
-  FROM metaschema_modules_public.file_ref_field frf
-  JOIN metaschema_public.field f ON f.id = frf.field_id
-  JOIN metaschema_public.table t ON t.id = frf.table_id
-  JOIN metaschema_public.schema s ON s.id = t.schema_id
-  WHERE frf.database_id = $1
-    AND s.schema_name = $2
-    AND t.name = $3
-    AND f.name = $4
-  LIMIT 1
+  SELECT * FROM function_resolution.storage_file_ref_field($1, $2, $3)
 `;
 
 interface FileRefFieldRow {
@@ -109,9 +94,9 @@ export class FileRefFieldNotRegisteredError extends Error {
 /**
  * Look up the storage binding for a document column, or throw.
  *
- * The read runs on whichever client the caller passes. The registry is schema
- * metadata rather than tenant rows, so callers resolve it in the system lane —
- * the RLS that matters is on the files table the upload eventually writes.
+ * The read runs on the request's own lane, through the claim-scoped
+ * function_resolution.storage_file_ref_field(): the database is the request's
+ * jwt.claims.database_id, never an argument.
  */
 export async function getFileRefFieldBinding(
   pgClient: { query: (opts: { text: string; values?: unknown[] }) => Promise<{ rows: unknown[] }> },
@@ -124,7 +109,7 @@ export async function getFileRefFieldBinding(
 
   const result = await pgClient.query({
     text: FILE_REF_FIELD_QUERY,
-    values: [databaseId, field.schemaName, field.tableName, field.columnName],
+    values: [field.schemaName, field.tableName, field.columnName],
   });
 
   if (result.rows.length === 0) {

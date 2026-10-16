@@ -24,7 +24,7 @@ import 'graphile-build';
 import { Logger } from '@pgpmjs/logger';
 import { access, context as grafastContext, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
-import { withSystemLaneClient } from 'graphile-plugin-utils';
+import { withRequestPgClient } from 'graphile-plugin-utils';
 import { discoverStoragePlanes, uploadSurfaceNames } from 'graphile-storage-registry';
 import { checkTypeAgreement } from 'mime-bytes';
 
@@ -33,9 +33,9 @@ import { resolveDefaultBucket } from './default-bucket';
 import { isLiveFileRow, statusSelectFragment } from './file-lifecycle';
 import { buildFileProjection, type FileProjection } from './managed-upload';
 import { assertBucketReconciled, resolveS3ForDatabase } from './physical-bucket';
-import { withRequestPgClient } from './request-pg-client';
 import { deleteS3Object,generatePresignedPutUrl } from './s3-signer';
 import { recordManagedFile } from './storage-file-recorder';
+import { fileNotReplaceable } from './file-not-replaceable';
 import { getBucketConfig, loadAllStorageModules, resolveStorageConfigFromCodec, storedPhysicalName } from './storage-module-cache';
 import type { BucketConfig,PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from './types';
 
@@ -258,9 +258,10 @@ export function createPresignedUrlPlugin(
                       );
                       if (!databaseId) throw new Error('DATABASE_NOT_FOUND');
 
-                      // Module registration is server config, not user data:
-                      // resolve it in the system lane's bounded role.
-                      const allConfigs = await withSystemLaneClient(vals.withPgClient, (pgClient) =>
+                      // Storage config is read on the request lane through the claim-scoped
+
+                      // function_resolution.storage_modules(): no role switch, no RLS bypass.
+                      const allConfigs = await withRequestPgClient(vals.withPgClient, vals.pgSettings, (pgClient) =>
                         loadAllStorageModules(pgClient, databaseId),
                       );
                       const storageConfig = resolveStorageConfigFromCodec(capturedFilesCodec, allConfigs);
@@ -377,9 +378,10 @@ export function createPresignedUrlPlugin(
                       );
                       if (!databaseId) throw new Error('DATABASE_NOT_FOUND');
 
-                      // Module registration is server config, not user data:
-                      // resolve it in the system lane's bounded role.
-                      const allConfigs = await withSystemLaneClient(vals.withPgClient, (pgClient) =>
+                      // Storage config is read on the request lane through the claim-scoped
+
+                      // function_resolution.storage_modules(): no role switch, no RLS bypass.
+                      const allConfigs = await withRequestPgClient(vals.withPgClient, vals.pgSettings, (pgClient) =>
                         loadAllStorageModules(pgClient, databaseId),
                       );
                       const storageConfig = resolveStorageConfigFromCodec(capturedFilesCodec, allConfigs);
@@ -494,10 +496,10 @@ export function createPresignedUrlPlugin(
                 if (withPgClient) {
                   try {
                     const databaseId = await withRequestPgClient(withPgClient, pgSettings, (pgClient) => resolveDatabaseId(pgClient));
-                    // Module registration is server config, not user data:
-                    // resolve it in the system lane's bounded role.
+                    // Storage config is read on the request lane through the claim-scoped
+                    // function_resolution.storage_modules(): no role switch, no RLS bypass.
                     const allConfigs = databaseId
-                      ? await withSystemLaneClient(withPgClient, (pgClient) => loadAllStorageModules(pgClient, databaseId))
+                      ? await withRequestPgClient(withPgClient, pgSettings, (pgClient) => loadAllStorageModules(pgClient, databaseId))
                       : [];
                     const storageConfig = resolveStorageConfigFromCodec(capturedCodec, allConfigs);
 
@@ -530,10 +532,10 @@ export function createPresignedUrlPlugin(
                 if (withPgClient) {
                   try {
                     const databaseId = await withRequestPgClient(withPgClient, pgSettings, (pgClient) => resolveDatabaseId(pgClient));
-                    // Module registration is server config, not user data:
-                    // resolve it in the system lane's bounded role.
+                    // Storage config is read on the request lane through the claim-scoped
+                    // function_resolution.storage_modules(): no role switch, no RLS bypass.
                     const allConfigs = databaseId
-                      ? await withSystemLaneClient(withPgClient, (pgClient) => loadAllStorageModules(pgClient, databaseId))
+                      ? await withRequestPgClient(withPgClient, pgSettings, (pgClient) => loadAllStorageModules(pgClient, databaseId))
                       : [];
                     const storageConfig = resolveStorageConfigFromCodec(capturedCodec, allConfigs);
 
@@ -782,7 +784,7 @@ export async function processSingleFile(
       values: [staleFileId],
     });
     if (deleted.rows.length === 0) {
-      throw new Error(`FILE_NOT_REPLACEABLE: file ${staleFileId} at key ${s3Key} cannot be replaced by this caller`);
+      throw fileNotReplaceable(staleFileId, s3Key);
     }
   }
 

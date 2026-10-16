@@ -14,7 +14,6 @@ exports[`getEnvOptions merges pgpm defaults, graphql defaults, config, env, and 
       "env_meta2",
     ],
     "roleName": "env_role",
-    "routingSchema": "routing_public",
   },
   "db": {
     "connections": {

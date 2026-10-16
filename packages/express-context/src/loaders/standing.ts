@@ -10,9 +10,7 @@
  * The TTL is deliberately short: it bounds how long an established client
  * keeps being served after its database is suspended.
  *
- * A plane without `metaschema_public.database` resolves to `undefined` like any
- * other absent module (the factory's undefined_table handling); any other read
- * failure propagates so the caller fails closed. A database the plane does not
+ * Any read failure propagates so the caller fails closed. A database the plane does not
  * know is *not* servable — a request pinned to it has nothing to run against.
  */
 
@@ -22,10 +20,12 @@ import type { LoaderContext, ModuleLoader } from './types';
 
 // ─── SQL ────────────────────────────────────────────────────────────────────
 
+// The serving login is NOBYPASSRLS and the database table's RLS shows a row
+// only to members of the owning org, so the login reads standing through the
+// platform's login-only reader rather than the table.
 export const DATABASE_STANDING_SQL = `
   SELECT suspended_at, suspended_reason
-  FROM metaschema_public.database
-  WHERE id = $1
+  FROM function_resolution.database_standing($1)
 `;
 
 export const DATABASE_STANDING_TTL_MS = 5_000;

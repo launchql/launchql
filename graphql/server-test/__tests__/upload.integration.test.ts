@@ -77,7 +77,8 @@ const seedAdapters = [
   seed.pgpm(pgpmWorkspace),
   seed.sqlfile([
     sql('simple-seed-storage', 'schema.sql'),
-    sql('simple-seed-storage', 'test-data.sql')
+    sql('simple-seed-storage', 'test-data.sql'),
+    sql('simple-seed-storage', 'auth-provision.sql')
   ])
 ];
 
@@ -676,11 +677,21 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       );
     };
 
+    // The generated provisioner is granted to `authenticated` only, so these
+    // run on Alice's API with the fixture's session token.
+    const postAsAlice = (payload: { query: string; variables?: Record<string, unknown> }) =>
+      request
+        .post('/graphql')
+        .set('X-Database-Id', aliceDatabaseId)
+        .set('X-Api-Name', 'app')
+        .set('Authorization', 'Bearer session-token')
+        .send(payload);
+
     it('enqueues reconciliation and leaves the physical name untouched', async () => {
       const key = 'reconcile-now';
       await seedBucket(key);
 
-      const provRes = await postGraphQL({
+      const provRes = await postAsAlice({
         query: PROVISION_BUCKET,
         variables: { input: { bucketKey: key } }
       });
@@ -696,7 +707,7 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       const key = 'reconcile-idem';
       await seedBucket(key);
 
-      const firstRes = await postGraphQL({
+      const firstRes = await postAsAlice({
         query: PROVISION_BUCKET,
         variables: { input: { bucketKey: key } }
       });
@@ -704,7 +715,7 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       expect(firstPayload.physicalName).toBeNull();
       expect(firstPayload.jobId).toBeTruthy();
 
-      const secondRes = await postGraphQL({
+      const secondRes = await postAsAlice({
         query: PROVISION_BUCKET,
         variables: { input: { bucketKey: key } }
       });

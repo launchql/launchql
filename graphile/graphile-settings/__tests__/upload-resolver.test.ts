@@ -74,7 +74,7 @@ function fakeContext(opts: { isPublic?: boolean; existingFile?: boolean; failIns
     { match: /set_config/, rows: () => [] },
     { match: /current_database_id/, rows: () => [{ id: DATABASE_ID }] },
     { match: /file_ref_field/, rows: () => [] },
-    { match: /FROM metaschema_modules_public\.storage_module/, rows: () => [storageModuleRow()] },
+    { match: /function_resolution\.storage_modules\(\)/, rows: () => [storageModuleRow()] },
     {
       match: /resolve_default_bucket/,
       rows: () => [{
