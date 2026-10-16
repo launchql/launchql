@@ -32,7 +32,7 @@ describe('approval prompt', () => {
       title: 'Read a file outside the project',
       summary: '~/work/lib/util.ts',
       targets: [{ path: '~/work/lib/util.ts', access: 'read', zone: 'outside' }],
-      reasons: ['~/work/lib/util.ts is outside the project']
+      reasons: ['it is outside the project']
     });
     const hook = asAsk(await sb.run('write', { path: '.git/hooks/pre-push', content: 'x' })).prompt;
     expect(hook.title).toBe('Write to a git hook');
@@ -44,7 +44,7 @@ describe('approval prompt', () => {
     const { prompt } = asAsk(await sb.run('edit', { path: '.env', edits: [] }, 'ask'));
     expect(prompt.reasons).toEqual([
       'Ask mode asks before every file change',
-      '.env is a secret file: its values reach the model only as placeholders'
+      'it is a secret file: its values reach the model only as placeholders'
     ]);
   });
 });

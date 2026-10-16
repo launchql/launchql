@@ -48,7 +48,11 @@ export interface PromptDisplay {
   homeDir: string;
 }
 
-/** The card for an ASK. `reasons` are the sentences the policy asked for, in order. */
+/**
+ * The card for an ASK. `reasons` are the sentences the policy asked for, in
+ * order. With one target and no command, the card shows the path in its own
+ * row, so a reason that opens with that path says "it" instead.
+ */
 export function buildPrompt(
   request: PermissionRequest,
   reasons: readonly string[],
@@ -56,6 +60,8 @@ export function buildPrompt(
   display: PromptDisplay
 ): PermissionPrompt {
   const shown = request.targets.map((t) => showPath(t.path, display.workspace, display.homeDir));
+  const only = request.command === undefined && shown.length === 1 ? `${shown[0]} ` : null;
+  const cardReasons = reasons.map((r) => (only && r.startsWith(only) ? `it ${r.slice(only.length)}` : r));
   return {
     title: promptTitle(request),
     summary: request.command ?? shown.join('\n'),
@@ -64,7 +70,7 @@ export function buildPrompt(
     ...(request.command === undefined ? {} : { command: request.command }),
     targets: request.targets.map((t, i) => ({ path: shown[i], access: t.access, zone: t.zone })),
     signals: request.signals,
-    reasons: [...reasons],
+    reasons: cardReasons,
     grantOptions: grantOptions.map(({ scope, label, pattern }) => ({ scope, label, pattern }))
   };
 }
