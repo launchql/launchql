@@ -32,6 +32,7 @@
     "@agentic-kit/db-tools": "workspace:^",
     "@agentic-kit/harness": "workspace:^",
     "@agentic-kit/metering": "workspace:^",
+    "@agentic-kit/permissions": "workspace:^",
     "@agentic-kit/run-log": "workspace:^",
     "zod": "^4.4.3"
   },
