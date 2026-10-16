@@ -26,12 +26,13 @@ current: after any tool that can write (anything but `read`, `grep`, `find`,
 - silent access outside the project outside Full mode;
 - bash commands that upload data (including `git push` to a new remote, publishing a package, a secret file on the clipboard), destroy data, run as root, run code the analyzer cannot see (`eval`, `sh -c`, `node -e`, `$(…)`, a heredoc into an interpreter), outlast the session (`crontab`, `launchctl load`), expose the machine (`python -m http.server`, `ngrok`), or take file names from stdin that it cannot see (`find | xargs …`), outside Full mode;
 - a secret leaving in a form redaction cannot match: a secret file copied into a plain file or through a program that changes its text (`base64 .env`), and a secret env var expanded in a command (`$OPENAI_API_KEY`), outside Full mode;
-- secret values reaching the model: `.env` values and token-shaped strings are replaced with placeholders in every tool result, also when a value is split across two adjacent text blocks.
+- secret values reaching the model: `.env` values and token-shaped strings are replaced with placeholders in every tool result, also when a value is split across two adjacent text blocks;
+- a path the analyzer cannot place (built from a variable or a substitution, a `${VAR:-…}` fallback it cannot know, or any relative operand after a `cd` it cannot follow): it asks in every mode, Full included, so no mode lets an unknown path reach a credential store.
 
 **It does not stop** (known gaps in v1):
 
 1. A script the agent writes and then runs (`node upload.js`) can read `.env` and send it out. Static analysis cannot see into it; only an OS sandbox can.
-2. Bash analysis is best effort. Exotic forms can pass: a glob through a symlink that already sits in the project, values built across several steps, aliases in an interactive shell, or a program that writes where its arguments do not say. A plain `*` is matched with bash's default rule (it does not match dotfiles) unless the command mentions `dotglob`, `GLOBIGNORE` or `globdots`. Only an OS boundary is a real security boundary.
+2. Bash analysis is best effort. Exotic forms can pass: a glob through a symlink that already sits in the project, values built across several steps, aliases in an interactive shell, or a program that writes where its arguments do not say. A word built from a variable is a path only where the analyzer knows the position holds one (a path-like word, a redirect, the operands of the file readers `cat`, `head`, `base64` and the like); `[ -n "$X" ]` and `npm install $PKG` stay quiet, so a program that is not on that list can take a path from a variable unseen. A plain `*` is matched with bash's default rule (it does not match dotfiles) unless the command mentions `dotglob`, `GLOBIGNORE` or `globdots`. Only an OS boundary is a real security boundary.
 3. Dev servers and scripts read `.env` as processes. That is by design; redaction covers only what goes back to the model. `--env-file .env` is treated as such a load, not as a transform. Which programs count as transforms is a list: the verbatim readers (`cat`, `head`, `tail`, `less`, `more`, `bat`, the `grep` family, `wc`, `diff`, `tee`, `sort`, `uniq`, `nl`) and commands that print nothing of what they read (`ls`, `test`, `cp`, `git`, …) are not; everything else that reads a secret file is.
 4. Streaming tool output reaches the local UI before redaction. The bash full-output temp file holds raw text (a later `read` of it is redacted).
 5. Secrets shorter than 8 chars, or under a key name that does not look secret and with no token shape, are not redacted. Common local-dev defaults (`password`, `postgres`, `changeme`, …) are not redacted either, so ordinary source text stays readable.
@@ -52,6 +53,8 @@ const engine = createPermissionEngine({
     hardDeny: [path.join(dataDir, 'agent'), path.join(dataDir, 'sessions')],
     protectedWrite: [path.join(dataDir, 'permissions')]
   },
+  // listed again at every decision: entries that can appear while a session runs
+  liveHardDeny: async () => listOtherToolDataDirs(),
   placeholderKey: perInstallKey
 });
 
@@ -87,7 +90,9 @@ const { content, details, changed } = await engine.redactResult({ toolName, cont
 | `refreshSecrets({ values?, env? })` | Re-read the workspace secret files. `values` and `env` are host-provided and kept across refreshes. |
 | `addSecret(name, value)` | Add a value the host knows is secret (a minted API key). |
 
-Other exports: `scrubEnv` (a copy of an env without the variables that are secret by name, unless the value is a path, or by token shape, URL passwords included: what a host gives the agent's shell), `grantFrom` (the `Grant` an option saves), `sameMatch`, `GrantStore` and `memoryGrantStore`, `nodeFsProbe`, the fixed lists (`HOME_HARD_DENY`, `WORKSPACE_PROTECTED_WRITE`, `WORKSPACE_ASK_WRITE`, `defaultHardDeny`, `defaultTempDirs`), `isSecretFile`, the placeholder format, and the types. Classification, the policy, the bash analyzer and the vault are internal.
+`liveHardDeny` (an option, not a member) lists more hard-deny paths at every decision, for entries that can appear during a session; a throw fails the decision, so the call is blocked.
+
+Other exports: `scrubEnv` (a copy of an env without the variables that are secret by name, unless the value is a path, or by token shape, URL passwords included, and without `BASH_ENV`, `ENV` and `CDPATH`, which change how the shell starts and resolves paths: what a host gives the agent's shell), `grantFrom` (the `Grant` an option saves), `sameMatch`, `GrantStore` and `memoryGrantStore`, `nodeFsProbe`, the fixed lists (`HOME_HARD_DENY`, `WORKSPACE_PROTECTED_WRITE`, `WORKSPACE_ASK_WRITE`, `defaultHardDeny`, `defaultTempDirs`), `isSecretFile`, the placeholder format, and the types. Classification, the policy, the bash analyzer and the vault are internal.
 
 `FsProbe` is the only fs access (`realpath`, `lexists`, `readFile`, `readDir`, `size`). `nodeFsProbe` is the default and the only module that imports `node:fs`.
 
@@ -126,8 +131,8 @@ Every `ask` and `deny` reason starts with `permissions: ` and names the path or 
 
 ### Grants
 
-- **Path grants** (`{ type: 'path', access, pathPrefix }`) cover a file-tool call when every target is inside `pathPrefix` with the same access. The prefix is the canonical parent dir of the target (the common parent of several). Label: `Always: reads in ~/work/lib/`.
-- **Command grants** (`{ type: 'command', command }`) cover a bash call whose command, with whitespace collapsed, is identical. Label: `Always: this exact command`. No wildcards.
+- **Path grants** (`{ type: 'path', access, pathPrefix }`) cover a file-tool call when every target is inside `pathPrefix` with the same access. The prefix is the canonical parent dir of the target (the common parent of several). Label: `Always allow reads in ~/work/lib/`.
+- **Command grants** (`{ type: 'command', command }`) cover a bash call whose command, with whitespace collapsed, is identical. Label: `Always allow <the command>`. No wildcards.
 - A grant never matches on a tool name, a path grant never covers bash, and a command grant never covers a file tool.
 - No grant is offered for, or covers, a call with `unresolvable-path`, `placeholder-in-command` or `secret-into-plain-file`: each one needs its own yes.
 - No path grant is offered for, or covers, a target with an unexpanded glob outside the project: a folder cannot say where the glob expands to.
@@ -136,7 +141,8 @@ Every `ask` and `deny` reason starts with `permissions: ` and names the path or 
 
 | Signal | Raised by |
 |---|---|
-| `shell-dynamic` | `$(…)`, backticks, `<(…)`, `${…}` with an operator, `eval`, `source`/`.`, `sh/bash/zsh -c`, `node -e/-p`, `python -c`, `perl -e`, `ruby -e`, `deno eval`, `osascript -e`, an awk program with `system()`, code piped or heredoc'd into an interpreter, a function definition, `PATH=`/`LD_PRELOAD=`-style assignments, a command or path from an unknown variable, a `cd` the analyzer cannot follow, a lexer error |
+| `shell-dynamic` | `$(…)`, backticks, `<(…)`, `${…}` with an operator, `eval`, `source`/`.`, `sh/bash/zsh -c`, `node -e/-p`, `python -c`, `perl -e`, `ruby -e`, `deno eval`, `osascript -e` (in every spelling: `-ec`, `-cX`, `--eval=X`), a shell option word it cannot read, an awk program with `system()`, code piped or heredoc'd into an interpreter, a function definition, assignments that change what runs or loads (`PATH=`, `LD_PRELOAD=`, `NODE_OPTIONS=`, `PYTHONPATH=`, `CDPATH=`, …), `test -v` and `[[`'s arithmetic comparisons (they evaluate array subscripts), a command name from an unknown variable, a lexer error |
+| `unresolvable-path` | a path operand built from a variable or substitution (a path-like word, a redirect target, an operand of a file reader such as `cat`, `head`, `base64`), a `${VAR:-…}` fallback the analyzer cannot know, any relative operand after a `cd` it cannot follow (`cd $DIR`, `cd -`, `pushd +1`, `popd`, a `cd` under a `CDPATH` the command set); also a file-tool path through a dangling link. Asks in every mode and is never grantable |
 | `sudo` | `sudo`, `doas`, `pkexec`, `su` |
 | `upload` | curl `-d/--data*/--json/-F/--form/-T/--upload-file/-H` with `@file` or `@-`; any curl data form fed by stdin; curl or wget to a host other than `localhost`/`127.0.0.1`/`::1` fed by stdin; `wget --post-file/--body-file`; `scp`/`rsync` to a `host:` target; `nc`, `ncat`, `socat`, `telnet`, `ftp`, `sftp`; `ssh` fed by stdin; `git push` to a URL or `host:path`, or to a remote the same command added or repointed (`git remote add`/`set-url`, `-c remote.x.url=`); `npm`/`pnpm`/`yarn`/`bun publish`, `gem push`, `twine upload`, `cargo publish`, `docker`/`podman push`; a secret file put on the clipboard |
 | `destructive` | `rm -r/-f`, `rimraf`, `shred` on a target outside the workspace or temp dirs, on a workspace or temp root itself, or on targets not known until it runs (`xargs rm`); `chmod -R`/`chown -R`, `dd of=`, `find -delete`, `git reset --hard`, `git clean -f` outside the workspace; `git push --force`/`--force-with-lease`/`--mirror`/`--delete` or a `+` refspec; `mkfs*`, disk tools, `dd` to a device; the oh-my-pi critical patterns (fork bomb, `curl | sh`, `shutdown`, …) |
@@ -149,7 +155,7 @@ Every `ask` and `deny` reason starts with `permissions: ` and names the path or 
 | `secret-env-expansion` | `$NAME` or `${NAME…}` (heredoc bodies too) where `NAME` matches the secret key rule or holds a secret the host passed in `refreshSecrets({ env })`, and the command did not set it itself |
 | `secret-into-plain-file` | `cp`, `mv`, `install`, `tee`, `dd` or a `>` redirect from a secret file into a file that is not one (a dir keeps the name); `git add -f` of a secret file |
 
-Before rules apply, wrappers come off (`env VAR=…`, `command`, `builtin`, `exec`, `nice`, `timeout`, `nohup`, `time`, `stdbuf`, `ionice`, `xargs`, `sudo`, `npx`, `pnpm exec/dlx`), and argv[0] is reduced to its base name, so `/bin/rm`, `command rm` and `env rm` are all `rm`. Inner command strings (`bash -c`, `eval`, `watch`, `su -c`, `env -S`) and substitutions are analyzed too, so a credential read inside them is still denied. `~`, `$HOME`, `$PWD`, variables set earlier in the command, `${VAR:-default}`, brace expansion and `$'…'` quoting are expanded before paths are judged, and `cd` moves the base for later relative paths.
+Options are read in every spelling a program accepts (`-xc`, `-cX`, `--opt=X`, `--opt X`) for `env`, the shells, the interpreters, `bun` and `npx`/`pnpm exec`, up to the first operand. Before rules apply, wrappers come off (`env VAR=…`, `command`, `builtin`, `exec`, `nice`, `timeout`, `nohup`, `time`, `stdbuf`, `ionice`, `xargs`, `sudo`, `npx`, `pnpm exec/dlx`), and argv[0] is reduced to its base name, so `/bin/rm`, `command rm` and `env rm` are all `rm`. Inner command strings (`bash -c`, `eval`, `watch`, `su -c`, `env -S`) and substitutions are analyzed too, so a credential read inside them is still denied. `~`, `$HOME`, `$PWD`, variables set earlier in the command, brace expansion and `$'…'` quoting are expanded before paths are judged, and `cd` moves the base for later relative paths. A `${VAR:-default}` fallback counts only when the command set `VAR` to empty: a variable from outside may hold anything.
 
 Targets come from path-like arguments (with `/`, starting with `.` or `~`), redirections, and the file operands of known commands (`rm`, `cp`, `mv`, `tee`, `sed -i`, …). A bare word is also checked, and it becomes a target when it leads out of the workspace (a symlink) or names a secret file. Words that `echo`, `printf` or a here-string pipe into `xargs` become operands of the command it runs (`{}` replaced with `-I`). `/dev/null` and the other standard devices are ignored, and running `/usr/bin/x` is treated like running `x`.
 
@@ -171,11 +177,11 @@ A target with an unexpanded glob (`*`, `?`, `[…]`, `**`) is matched component 
 
 **Sources.** The secret files in the workspace (at the root and nested to depth 4, skipping `node_modules`, `.git` and build output (`.next`, `.turbo`, `dist`, `build`, `coverage`), files up to 256 KB): `.env*` and `.envrc` as dotenv, the ini-style ones (`.npmrc`, `.pypirc`, `.boto`, `.s3cfg`, `credentials`, `*.tfvars`), JSON ones, `.netrc`, `.pgpass`, `.htpasswd` and `.git-credentials`. Plus values the host adds (`addSecret`, `refreshSecrets({ values, env })`), token shapes found in any text (GitHub, GitLab, OpenAI, Anthropic, AWS, Google, Slack, npm, Stripe, Hugging Face, SendGrid, JWT, `Bearer …`, PEM private keys), and URL passwords (`scheme://user:pw@`).
 
-**Which values are secret.** A value of 8 or more chars whose key matches `/(KEY|SECRET|TOKEN|PASSWORD|PASS|AUTH|CREDENTIAL|PRIVATE|DSN|DATABASE_URL)(_|$)/i`, or any value with a token shape. IDs such as `DATABASE_ID` and `OWNER_ID` are not secret. A URL with no password, a local-dev default (`password`, `postgres`, …), a boolean or a number is not secret by its key alone.
+**Which values are secret.** A value that the file's format makes a secret (the passwords in `.netrc`, `.pgpass` and `.git-credentials`, the hashes in `.htpasswd`), unless it is a local-dev default. Otherwise a value of 8 or more chars whose key matches `/(KEY|SECRET|TOKEN|PASSWORD|PASS|AUTH|CREDENTIAL|PRIVATE|DSN|DATABASE_URL)(_|$)/i`, or any value with a token shape. IDs such as `DATABASE_ID` and `OWNER_ID` are not secret. A URL with no password, a local-dev default (`password`, `postgres`, …), a boolean or a number is not secret by its key alone.
 
 **Placeholder.** `«secret:NAME#h4»`, where `NAME` is the key (non-word chars become `_`) and `h4` is the first 4 hex chars of HMAC-SHA256(key, value), longer only on a collision. A token shape with no name of its own uses `NAME=TOKEN`. The longest value is replaced first, and a shorter value inside it is not replaced again.
 
-**Restore.** In write and edit input to a secret file (`content`, `edits[].oldText`/`newText`, and legacy `oldText`/`newText`), so an edit's `oldText` matches the file. In bash only after the user approved the command. Anywhere else a placeholder stays literal text. A write or edit that puts a real secret value or a placeholder into a file that is not a secret file raises `secret-into-plain-file`.
+**Restore.** In write and edit input to a secret file (`content`, `edits[].oldText`/`newText`, and legacy `oldText`/`newText`), so an edit's `oldText` matches the file. The secret file is the one the write really lands in: a plainly named link to `.env` gets the values back, and a link named `.env` that points at a plain file does not. In bash only after the user approved the command. Anywhere else a placeholder stays literal text. A write or edit that puts a real secret value or a placeholder into a file that is not a secret file raises `secret-into-plain-file`.
 
 ## Failure behavior
 
