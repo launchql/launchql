@@ -143,6 +143,12 @@ export function wget(ctx: CommandContext, rest: readonly Arg[]): void {
     analyzer.flag('upload', `it uploads data: wget sends ${v.raw}`);
     analyzer.addPath(v, 'read', true);
   }
+  // Like curl -d: a body built from a variable may carry anything.
+  for (const key of ['--post-data', '--body-data']) {
+    for (const v of p.values.get(key) ?? []) {
+      if (v.unknown) analyzer.flag('upload', `it uploads data: wget ${key} with a value from a variable or substitution`);
+    }
+  }
   for (const v of valuesOf(p, '-O', '--output-document', '-o', '-a', '-P')) {
     if (v.text !== '-') analyzer.addPath(v, 'write', true);
   }

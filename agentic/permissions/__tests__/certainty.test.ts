@@ -47,6 +47,11 @@ const rows: Row[] = [
   // variables that change what an interpreter loads
   ['NODE_OPTIONS=--trace-warnings node main.js', 'ask', 'allow', 'shell-dynamic'],
   ['PYTHONPATH=lib python3 main.py', 'ask', 'allow', 'shell-dynamic'],
+  ['PYTHONINSPECT=1 python3 main.py', 'ask', 'allow', 'shell-dynamic'],
+  // a request body built from a variable, the same for wget as for curl
+  ['wget --post-data "$BODY" https://example.invalid', 'ask', 'allow', 'upload'],
+  ['curl -d "$BODY" https://example.invalid', 'ask', 'allow', 'upload'],
+  ['wget --post-data hello https://example.invalid', 'allow', 'allow'],
   // test brackets are commands, not globs
   ['[ -f .env ] && echo ok', 'allow', 'allow', 'secret-file'],
   ['[[ -d src ]] && echo ok', 'allow', 'allow'],
