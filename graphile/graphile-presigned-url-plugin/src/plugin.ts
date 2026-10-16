@@ -36,7 +36,7 @@ import { assertBucketReconciled, resolveS3ForDatabase } from './physical-bucket'
 import { deleteS3Object,generatePresignedPutUrl } from './s3-signer';
 import { recordManagedFile } from './storage-file-recorder';
 import { fileNotReplaceable } from './file-not-replaceable';
-import { getBucketConfig, loadAllStorageModules, resolveStorageConfigFromCodec, storedPhysicalName } from './storage-module-cache';
+import { getBucketConfig, loadAllStorageModules, readBucketPhysicalName, resolveStorageConfigFromCodec } from './storage-module-cache';
 import type { BucketConfig,PresignedUrlPluginOptions, S3Config, StorageModuleConfig } from './types';
 
 const log = new Logger('graphile-presigned-url:plugin');
@@ -554,17 +554,10 @@ export function createPresignedUrlPlugin(
 
                       // No other references — attempt sync S3 delete.
                       // Read the stored physical coordinate; the object lives in the
-                      // recorded bucket, never a recomputed prefix name.
-                      const bucketResult = await pgClient.query({
-                        text: `SELECT key, physical_name FROM ${storageConfig.bucketsQualifiedName} WHERE id = $1 LIMIT 1`,
-                        values: [fileRow!.bucket_id],
-                      });
-                      const bucketRow = bucketResult.rows[0] as { key: string; physical_name?: string | null } | undefined;
-                      if (!bucketRow) {
-                        log.warn(`Bucket not found for bucket_id=${fileRow!.bucket_id}; skipping S3 delete`);
-                        return;
-                      }
-                      const physicalName = storedPhysicalName(bucketRow);
+                      // recorded bucket, never a recomputed prefix name. A deleter may
+                      // not see the bucket row (path share with can_delete), so it is
+                      // read through the module's narrow bucket physical-name reader.
+                      const physicalName = await readBucketPhysicalName(pgClient, storageConfig, fileRow!.bucket_id);
                       if (physicalName === null) {
                         // No physical bucket was ever provisioned — there is no object to delete.
                         log.warn(`Bucket ${fileRow!.bucket_id} has no physical_name; skipping S3 delete`);

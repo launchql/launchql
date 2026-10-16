@@ -38,6 +38,8 @@ export interface StorageModuleConfig {
   filesTableName: string;
   /** Qualified generated managed-file recorder, or null when unavailable */
   recorderQualifiedName: string | null;
+  /** Qualified generated request-lane bucket physical-name reader, or null when unavailable */
+  bucketPhysicalNameQualifiedName: string | null;
 
   // --- Scope identity ---
 

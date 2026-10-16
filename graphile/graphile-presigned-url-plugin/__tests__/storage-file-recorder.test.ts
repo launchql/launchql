@@ -12,6 +12,7 @@ function storageConfig(
     bucketsTableName: 'app_buckets',
     filesTableName: 'app_files',
     recorderQualifiedName: 'storage_private.app_files_record_file',
+    bucketPhysicalNameQualifiedName: 'storage_private.app_buckets_physical_name',
     scope: 'app',
     entityTableId: null,
     entityQualifiedName: null,

@@ -119,6 +119,9 @@ function buildConfig(row: StorageModuleRow): StorageModuleConfig {
     recorderQualifiedName: row.private_schema
       ? QuoteUtils.quoteQualifiedIdentifier(row.private_schema, `${row.files_table}_record_file`)
       : null,
+    bucketPhysicalNameQualifiedName: row.private_schema
+      ? QuoteUtils.quoteQualifiedIdentifier(row.private_schema, `${row.buckets_table}_physical_name`)
+      : null,
     schemaName: row.buckets_schema,
     bucketsTableName: row.buckets_table,
     filesTableName: row.files_table,
@@ -274,6 +277,33 @@ const bucketCache = new LRUCache<string, BucketConfig>({
  * the single place that shape is interpreted — callers branch on `string`
  * vs `null` and never coalesce a bucket name into existence.
  */
+/**
+ * The recorded physical bucket of a file the caller already read under RLS.
+ *
+ * A reader may see a file (public, or path-shared) without seeing its bucket
+ * row, so the bucket table is not read directly. The storage module's
+ * generated `<buckets>_physical_name` reader (SECURITY DEFINER, scoped to the
+ * caller's claimed database) returns only the bucket's coordinate; it runs on
+ * the caller's own request lane. The visible file row is the authorization.
+ *
+ * Returns null when no physical bucket was recorded (never provisioned, so no
+ * object can exist).
+ */
+export async function readBucketPhysicalName(
+  pgClient: { query(opts: { text: string; values?: unknown[] }): Promise<{ rows: Array<Record<string, unknown>> }> },
+  config: StorageModuleConfig,
+  bucketId: string,
+): Promise<string | null> {
+  if (!config.bucketPhysicalNameQualifiedName) {
+    throw new Error(`STORAGE_BUCKET_READER_MISSING: storage module ${config.id} records no private schema`);
+  }
+  const result = await pgClient.query({
+    text: `SELECT ${config.bucketPhysicalNameQualifiedName}($1) AS physical_name`,
+    values: [bucketId],
+  });
+  return storedPhysicalName(result.rows[0] as { physical_name?: string | null });
+}
+
 export function storedPhysicalName(row: { physical_name?: string | null }): string | null {
   return row.physical_name == null ? null : row.physical_name;
 }
