@@ -1,5 +1,5 @@
 /**
- * Tests for the explicit bucket reconciliation enqueue mutation.
+ * Tests for the explicit bucket reconciliation request mutation.
  */
 
 let capturedLambdaCallback: Function | null = null;
@@ -38,7 +38,7 @@ const DATABASE_ID = 'db-uuid-123';
 const BUCKET_ID = 'bucket-uuid-789';
 const BUCKETS_TABLE_ID = 'buckets-table-uuid';
 const OWNER_ID = 'owner-uuid-222';
-const JOB_ID = 'job-uuid-999';
+const REQUESTED_AT = '2026-10-16T21:00:00.000Z';
 
 interface MockOptions {
   scope: string;
@@ -94,7 +94,9 @@ function createMockPgClient({
       });
     }
     if (sql.includes('buckets_provision(')) {
-      return Promise.resolve({ rows: [{ id: JOB_ID }] });
+      return Promise.resolve({
+        rows: [{ id: BUCKET_ID, key: 'public', physical_name: physicalName, provision_requested_at: REQUESTED_AT }],
+      });
     }
     throw new Error(`unexpected query: ${sql}`);
   });
@@ -110,7 +112,7 @@ async function invoke(pgClient: any, input: Record<string, string> = { bucketKey
   });
 }
 
-function enqueueCall(pgClient: any): { text: string; values: unknown[] } {
+function provisionCall(pgClient: any): { text: string; values: unknown[] } {
   const call = pgClient.query.mock.calls.find((args: any[]) =>
     args[0]?.text?.includes('buckets_provision('));
   expect(call).toBeDefined();
@@ -136,22 +138,30 @@ describe('createBucketProvisionerPlugin', () => {
     ['platform', null, null],
     ['database', 'database_id', DATABASE_ID],
     ['org', 'owner_id', OWNER_ID],
-  ])('enqueues a %s-scope bucket through the generated provision function', async (scope, entityField, scopeKey) => {
+  ])('requests a %s-scope bucket through the generated provision function', async (scope, entityField, scopeKey) => {
     createBucketProvisionerPlugin();
     const pgClient = createMockPgClient({ scope, entityField, scopeKey });
 
-    await invoke(pgClient, entityField === 'owner_id'
+    const payload = await invoke(pgClient, entityField === 'owner_id'
       ? { bucketKey: 'public', ownerId: OWNER_ID }
       : { bucketKey: 'public' });
-    const enqueue = enqueueCall(pgClient);
+    const provision = provisionCall(pgClient);
 
-    expect(enqueue.text).toMatch(/^SELECT "?app_private"?\."?buckets_provision"?\(\$1::uuid\) AS id$/);
-    expect(enqueue.values).toEqual([BUCKET_ID]);
+    expect(provision.text).toMatch(
+      /^SELECT id, key, physical_name, provision_requested_at FROM "?app_private"?\."?buckets_provision"?\(\$1::uuid\)$/
+    );
+    expect(provision.values).toEqual([BUCKET_ID]);
+    expect(payload).toEqual({
+      bucketId: BUCKET_ID,
+      bucketKey: 'public',
+      physicalName: null,
+      provisionRequestedAt: REQUESTED_AT,
+    });
     expect(pgClient.query.mock.calls.some((args: any[]) =>
       args[0]?.text?.includes('app_jobs.add_job'))).toBe(false);
   });
 
-  it('looks an owner-scoped bucket up by its owner before enqueueing', async () => {
+  it('looks an owner-scoped bucket up by its owner before requesting reconciliation', async () => {
     createBucketProvisionerPlugin();
     const pgClient = createMockPgClient({ scope: 'org', entityField: 'owner_id', scopeKey: OWNER_ID });
 
@@ -163,7 +173,7 @@ describe('createBucketProvisionerPlugin', () => {
     expect(bucketLookup[0].values).toEqual(['public', OWNER_ID]);
   });
 
-  it('propagates enqueue failures as GraphQL errors', async () => {
+  it('propagates provision failures as GraphQL errors', async () => {
     createBucketProvisionerPlugin();
     const pgClient = createMockPgClient({
       scope: 'database',
@@ -173,7 +183,7 @@ describe('createBucketProvisionerPlugin', () => {
     pgClient.query.mockImplementation((arg: any): Promise<any> => {
       const sql: string = typeof arg === 'string' ? arg : arg.text;
       if (sql.includes('buckets_provision(')) {
-        return Promise.reject(new Error('enqueue failed'));
+        return Promise.reject(new Error('JOB_SUBJECT_NOT_FOUND'));
       }
       return createMockPgClient({
         scope: 'database',
@@ -182,7 +192,7 @@ describe('createBucketProvisionerPlugin', () => {
       }).query(arg);
     });
 
-    await expect(invoke(pgClient)).rejects.toThrow('enqueue failed');
+    await expect(invoke(pgClient)).rejects.toThrow('JOB_SUBJECT_NOT_FOUND');
   });
 
   it('throws for invalid and missing bucket inputs', async () => {

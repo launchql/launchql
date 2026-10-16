@@ -1,7 +1,7 @@
 /**
  * Bucket Provisioner Plugin for PostGraphile v5
  *
- * Provides an explicit `provisionBucket` reconciliation enqueue mutation for
+ * Provides an explicit `provisionBucket` reconciliation request mutation for
  * PostGraphile v5.
  */
 
