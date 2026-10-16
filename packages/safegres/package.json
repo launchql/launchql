@@ -1,6 +1,6 @@
 {
   "name": "safegres",
-  "version": "1.29.0",
+  "version": "1.29.1",
   "author": "Constructive <developers@constructive.io>",
   "description": "Postgres security and performance auditor: RLS, grants and effective-access analysis plus index and policy-cost checks, scored on two independent axes. One connection, no framework.",
   "main": "index.js",

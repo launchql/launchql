@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.18.1](https://github.com/constructive-io/constructive/compare/pgsql-test@5.18.0...pgsql-test@5.18.1) (2026-10-16)
+
+### Bug Fixes
+
+- webauthn verifier lane runs as the service login; seed.sqlfile fails on fixture SQL errors ([d976b26](https://github.com/constructive-io/constructive/commit/d976b2623fdb1c44f293f2c1b026cad14844641c)), closes [constructive-planning#2260](https://github.com/constructive-planning/issues/2260) [constructive-planning#2261](https://github.com/constructive-planning/issues/2261)
+
 # [5.18.0](https://github.com/constructive-io/constructive/compare/pgsql-test@5.17.7...pgsql-test@5.18.0) (2026-10-14)
 
 **Note:** Version bump only for package pgsql-test

@@ -1,6 +1,6 @@
 {
   "name": "graphile-search",
-  "version": "2.18.1",
+  "version": "2.18.2",
   "description": "Unified PostGraphile v5 search plugin — abstracts tsvector, BM25, pg_trgm, and pgvector behind a single adapter-based architecture with composite searchScore",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

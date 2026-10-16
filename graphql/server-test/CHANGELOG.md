@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.33.3](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.33.2...graphql-server-test@3.33.3) (2026-10-16)
+
+### Bug Fixes
+
+- **graphql-server:** system lane runs as the service login; resolve hosts on tenant routing planes ([ae49734](https://github.com/constructive-io/constructive/commit/ae497343487430bb70b190c5b413b405eed0a0de)), closes [planning#2258](https://github.com/planning/issues/2258) [planning#2259](https://github.com/planning/issues/2259)
+- login-side reads via login-only function_resolution readers; one routing schema (routing_public); generated provisioner on the request lane; server tests run as a NOBYPASSRLS login ([937c4fd](https://github.com/constructive-io/constructive/commit/937c4fd1e26b6ad3181d8d8ee3b0605e994d1245))
+- no role switch anywhere; request-lane storage/i18n reads via claim-scoped SECURITY DEFINER readers; admin structure serves as the request role ([d41873d](https://github.com/constructive-io/constructive/commit/d41873d040aaecc3eba2ec48d85c7b045167c3a3))
+- **server-test:** commit the handler-heap seed per schema so it fits CI's lock table ([2c5e397](https://github.com/constructive-io/constructive/commit/2c5e3975f37b4f00a97f2f9f3ad59d7bfeb4011f)), closes [#2261](https://github.com/constructive-io/constructive/issues/2261)
+- webauthn verifier lane runs as the service login; seed.sqlfile fails on fixture SQL errors ([d976b26](https://github.com/constructive-io/constructive/commit/d976b2623fdb1c44f293f2c1b026cad14844641c)), closes [constructive-planning#2260](https://github.com/constructive-planning/issues/2260) [constructive-planning#2261](https://github.com/constructive-planning/issues/2261)
+
 ## [3.33.2](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.33.1...graphql-server-test@3.33.2) (2026-10-15)
 
 ### Bug Fixes

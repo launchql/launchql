@@ -1,6 +1,6 @@
 {
   "name": "graphile-realtime-test",
-  "version": "1.18.1",
+  "version": "1.18.2",
   "description": "Subscription testing utilities for graphile-realtime-subscriptions — smart tag injection, grafast.subscribe() helpers, and pg_notify simulation",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

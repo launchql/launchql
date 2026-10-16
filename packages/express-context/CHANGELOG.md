@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.35.1](https://github.com/constructive-io/constructive/compare/@constructive-io/express-context@0.35.0...@constructive-io/express-context@0.35.1) (2026-10-16)
+
+### Bug Fixes
+
+- **express-context:** standing and routing loaders read through login-only function_resolution readers ([0615fa5](https://github.com/constructive-io/constructive/commit/0615fa52624163425f3ad60d9a803cb41269de13))
+- login-side reads via login-only function_resolution readers; one routing schema (routing_public); generated provisioner on the request lane; server tests run as a NOBYPASSRLS login ([937c4fd](https://github.com/constructive-io/constructive/commit/937c4fd1e26b6ad3181d8d8ee3b0605e994d1245))
+
 # [0.35.0](https://github.com/constructive-io/constructive/compare/@constructive-io/express-context@0.34.1...@constructive-io/express-context@0.35.0) (2026-10-14)
 
 **Note:** Version bump only for package @constructive-io/express-context

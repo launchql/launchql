@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.37.2](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-env@3.37.1...@constructive-io/graphql-env@3.37.2) (2026-10-16)
+
+### Bug Fixes
+
+- login-side reads via login-only function_resolution readers; one routing schema (routing_public); generated provisioner on the request lane; server tests run as a NOBYPASSRLS login ([937c4fd](https://github.com/constructive-io/constructive/commit/937c4fd1e26b6ad3181d8d8ee3b0605e994d1245))
+
 ## [3.37.1](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-env@3.37.0...@constructive-io/graphql-env@3.37.1) (2026-10-15)
 
 ### Bug Fixes

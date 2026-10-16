@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.36.1](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-types@3.36.0...@constructive-io/graphql-types@3.36.1) (2026-10-16)
+
+### Bug Fixes
+
+- login-side reads via login-only function_resolution readers; one routing schema (routing_public); generated provisioner on the request lane; server tests run as a NOBYPASSRLS login ([937c4fd](https://github.com/constructive-io/constructive/commit/937c4fd1e26b6ad3181d8d8ee3b0605e994d1245))
+- no role switch anywhere; request-lane storage/i18n reads via claim-scoped SECURITY DEFINER readers; admin structure serves as the request role ([d41873d](https://github.com/constructive-io/constructive/commit/d41873d040aaecc3eba2ec48d85c7b045167c3a3))
+
 # [3.36.0](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-types@3.35.1...@constructive-io/graphql-types@3.36.0) (2026-10-14)
 
 **Note:** Version bump only for package @constructive-io/graphql-types

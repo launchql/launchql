@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.2](https://github.com/constructive-io/constructive/compare/graphile-i18n@2.19.1...graphile-i18n@2.19.2) (2026-10-16)
+
+### Bug Fixes
+
+- no role switch anywhere; request-lane storage/i18n reads via claim-scoped SECURITY DEFINER readers; admin structure serves as the request role ([d41873d](https://github.com/constructive-io/constructive/commit/d41873d040aaecc3eba2ec48d85c7b045167c3a3))
+
 ## [2.19.1](https://github.com/constructive-io/constructive/compare/graphile-i18n@2.19.0...graphile-i18n@2.19.1) (2026-10-15)
 
 **Note:** Version bump only for package graphile-i18n

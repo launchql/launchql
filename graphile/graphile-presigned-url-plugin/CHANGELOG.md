@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.2](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.23.1...graphile-presigned-url-plugin@1.23.2) (2026-10-16)
+
+### Bug Fixes
+
+- no role switch anywhere; request-lane storage/i18n reads via claim-scoped SECURITY DEFINER readers; admin structure serves as the request role ([d41873d](https://github.com/constructive-io/constructive/commit/d41873d040aaecc3eba2ec48d85c7b045167c3a3))
+- **presigned-url:** FILE_NOT_REPLACEABLE is a coded public error, not INTERNAL_SERVER_ERROR ([#2267](https://github.com/constructive-io/constructive/issues/2267)) ([f77a634](https://github.com/constructive-io/constructive/commit/f77a6346d204eb7c61d6839a22108666bcd04aaa))
+
 ## [1.23.1](https://github.com/constructive-io/constructive/compare/graphile-presigned-url-plugin@1.23.0...graphile-presigned-url-plugin@1.23.1) (2026-10-14)
 
 ### Bug Fixes

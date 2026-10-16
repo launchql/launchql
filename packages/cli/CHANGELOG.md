@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.22.3](https://github.com/constructive-io/constructive/compare/@constructive-io/cli@8.22.2...@constructive-io/cli@8.22.3) (2026-10-16)
+
+### Bug Fixes
+
+- login-side reads via login-only function_resolution readers; one routing schema (routing_public); generated provisioner on the request lane; server tests run as a NOBYPASSRLS login ([937c4fd](https://github.com/constructive-io/constructive/commit/937c4fd1e26b6ad3181d8d8ee3b0605e994d1245))
+
 ## [8.22.2](https://github.com/constructive-io/constructive/compare/@constructive-io/cli@8.22.1...@constructive-io/cli@8.22.2) (2026-10-15)
 
 **Note:** Version bump only for package @constructive-io/cli

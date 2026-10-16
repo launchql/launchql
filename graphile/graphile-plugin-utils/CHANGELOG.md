@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/constructive-io/constructive/compare/graphile-plugin-utils@1.14.0...graphile-plugin-utils@1.14.1) (2026-10-16)
+
+### Bug Fixes
+
+- **graphql-server:** system lane runs as the service login; resolve hosts on tenant routing planes ([ae49734](https://github.com/constructive-io/constructive/commit/ae497343487430bb70b190c5b413b405eed0a0de)), closes [planning#2258](https://github.com/planning/issues/2258) [planning#2259](https://github.com/planning/issues/2259)
+- no role switch anywhere; request-lane storage/i18n reads via claim-scoped SECURITY DEFINER readers; admin structure serves as the request role ([d41873d](https://github.com/constructive-io/constructive/commit/d41873d040aaecc3eba2ec48d85c7b045167c3a3))
+
 # [1.14.0](https://github.com/constructive-io/constructive/compare/graphile-plugin-utils@1.13.0...graphile-plugin-utils@1.14.0) (2026-10-14)
 
 **Note:** Version bump only for package graphile-plugin-utils
