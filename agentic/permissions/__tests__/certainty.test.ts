@@ -1,3 +1,4 @@
+import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
 
 import { createPermissionEngine, type PermissionVerdict, type Signal } from '../src';
@@ -61,6 +62,37 @@ describe('certainty: bash per mode', () => {
       if (signal) expect(d.request.signals).toContain(signal);
     }
     expect(verdicts).toEqual([workspace, full]);
+  });
+});
+
+describe('certainty: secret files', () => {
+  const placeholderOf = async (text: string) => {
+    const r = await sb.engine.redactResult({ toolName: 'read', content: [{ type: 'text', text }] });
+    return (r.content[0] as { text: string }).text;
+  };
+
+  it('restores real values by the file a write lands in, not by the name it uses', async () => {
+    const real = 'ACCESS_TOKEN=tok_live_9f8e7d6c5b4a39281706';
+    const shown = await placeholderOf(real);
+    expect(shown).not.toBe(real);
+
+    await fs.symlink('.env', path.join(sb.ws, 'notes-link.txt'));
+    const toSecret = { path: 'notes-link.txt', content: shown };
+    sb.engine.restoreInput(await sb.run('write', toSecret), toSecret);
+    expect(toSecret.content).toBe(real);
+
+    await fs.writeFile(path.join(sb.ws, 'src', 'plain.txt'), '');
+    await fs.symlink('src/plain.txt', path.join(sb.ws, '.env.production'));
+    const toPlain = { path: '.env.production', content: shown };
+    sb.engine.restoreInput(await sb.run('write', toPlain, 'full'), toPlain);
+    expect(toPlain.content).toBe(shown);
+  });
+
+  it('learns the values of a file whose format makes them secret, whatever their key', async () => {
+    const hash = '$apr1$abcdefgh$ijklmnopqrstuvwxyz0123';
+    await fs.writeFile(path.join(sb.ws, '.htpasswd'), `alice:${hash}\n`);
+    await sb.engine.refreshSecrets();
+    expect(await placeholderOf(`alice:${hash}`)).not.toContain(hash);
   });
 });
 

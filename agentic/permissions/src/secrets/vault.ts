@@ -11,7 +11,7 @@
 
 import { createHmac } from 'node:crypto';
 
-import { isTrivial, MIN_SECRET_LENGTH, TOKEN_SHAPES } from './rules';
+import { isTrivial, MIN_SECRET_LENGTH, TOKEN_SHAPE_SCANNERS } from './rules';
 
 export const PLACEHOLDER_PATTERN = /«secret:([A-Za-z0-9_]+)#([0-9a-f]{4,64})»/g;
 
@@ -83,9 +83,10 @@ export class SecretVault {
 
   /** Learn token-shaped values in `text` that no source named. */
   private discover(text: string): void {
-    for (const shape of TOKEN_SHAPES) {
-      const re = new RegExp(shape.source, `${shape.flags ?? ''}g`);
-      for (const m of text.matchAll(re)) {
+    const lower = text.toLowerCase();
+    for (const shape of TOKEN_SHAPE_SCANNERS) {
+      if (!shape.hints.some((hint) => lower.includes(hint))) continue;
+      for (const m of text.matchAll(shape.re)) {
         const value = m[1] ?? m[0];
         if (shape.name === 'UrlPassword' && (isTrivial(value) || /[${}]/.test(value))) continue;
         if (value.length >= MIN_SECRET_LENGTH && !this.byValue.has(value)) this.add(UNNAMED_TOKEN, value, 'token');

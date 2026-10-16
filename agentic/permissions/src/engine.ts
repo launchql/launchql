@@ -133,11 +133,15 @@ export interface PermissionEngine {
 
 const MIN_HOST_SECRET = 4;
 
-/** A write or edit to a file that is secret under both its own name and its real name. */
+/**
+ * A write or edit to a secret file, by the file it really lands in: a link
+ * named `.env` that points at a plain file gets no real values, and a plainly
+ * named link to `.env` gets them back, as the values came from there.
+ */
 function writesSecretFile(request: PermissionRequest): boolean {
   if (request.toolName !== 'write' && request.toolName !== 'edit') return false;
   const target = request.targets[0];
-  return Boolean(target) && target.zone !== 'unresolvable' && isSecretFile(target.path) && isSecretFile(target.raw);
+  return Boolean(target) && target.zone !== 'unresolvable' && isSecretFile(target.path);
 }
 
 export function createPermissionEngine(options: PermissionEngineOptions): PermissionEngine {

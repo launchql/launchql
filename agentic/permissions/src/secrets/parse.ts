@@ -9,6 +9,8 @@ export interface ParsedValue {
   value: string;
   /** The value as written in the file, when it differs (escapes inside double quotes). */
   raw?: string;
+  /** The file format says the value is a secret (a `.netrc` password, a `.htpasswd` hash), whatever its key. */
+  secret?: true;
 }
 
 function unescapeDouble(s: string): string {
@@ -94,22 +96,22 @@ export function parseSecretFile(fileName: string, text: string): ParsedValue[] {
     }
   }
   if (name === '.netrc') {
-    return [...text.matchAll(/\bpassword\s+(\S+)/g)].map((m) => ({ key: 'NETRC_PASSWORD', value: m[1] }));
+    return [...text.matchAll(/\bpassword\s+(\S+)/g)].map((m) => ({ key: 'NETRC_PASSWORD', value: m[1], secret: true as const }));
   }
   if (name === '.pgpass') {
     return text
       .split(/\r?\n/)
       .filter((l) => l && !l.startsWith('#'))
-      .map((l) => ({ key: 'PGPASSWORD', value: l.split(/(?<!\\):/).pop() ?? '' }));
+      .map((l) => ({ key: 'PGPASSWORD', value: l.split(/(?<!\\):/).pop() ?? '', secret: true as const }));
   }
   if (name === '.htpasswd') {
     return text
       .split(/\r?\n/)
       .filter((l) => l.includes(':'))
-      .map((l) => ({ key: 'HTPASSWD', value: l.slice(l.indexOf(':') + 1) }));
+      .map((l) => ({ key: 'HTPASSWD', value: l.slice(l.indexOf(':') + 1), secret: true as const }));
   }
   if (name === '.git-credentials') {
-    return [...text.matchAll(/:\/\/[^\s/:@]*:([^\s/@]+)@/g)].map((m) => ({ key: 'GIT_PASSWORD', value: m[1] }));
+    return [...text.matchAll(/:\/\/[^\s/:@]*:([^\s/@]+)@/g)].map((m) => ({ key: 'GIT_PASSWORD', value: m[1], secret: true as const }));
   }
   if (['.npmrc', '.pypirc', '.boto', '.s3cfg', 'credentials'].includes(name) || name.endsWith('.tfvars')) {
     return parseIni(text);
@@ -121,7 +123,7 @@ export function parseSecretFile(fileName: string, text: string): ParsedValue[] {
 export function secretValuesOf(pairs: readonly ParsedValue[]): { name: string; value: string }[] {
   const out: { name: string; value: string }[] = [];
   for (const pair of pairs) {
-    if (isSecretEntry(pair.key, pair.value)) {
+    if (pair.secret ? !isTrivial(pair.value) : isSecretEntry(pair.key, pair.value)) {
       out.push({ name: pair.key, value: pair.value });
       if (pair.raw) out.push({ name: pair.key, value: pair.raw });
     }
