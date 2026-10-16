@@ -3875,10 +3875,11 @@ based pagination. May not be used with \`last\`.",
               ],
               "deprecationReason": null,
               "description": "Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.",
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.",
               "isDeprecated": false,
               "name": "provisionBucket",
               "type": {
@@ -4384,7 +4385,7 @@ Omit for app-level (database-wide) storage.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "The logical bucket row that was queued for reconciliation.",
+              "description": "The logical bucket row whose reconciliation was requested.",
               "isDeprecated": false,
               "name": "bucketId",
               "type": {
@@ -4428,15 +4429,15 @@ Omit for app-level (database-wide) storage.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "The reconciler job enqueued to provision this bucket.",
+              "description": "When reconciliation was last requested for this bucket.",
               "isDeprecated": false,
-              "name": "jobId",
+              "name": "provisionRequestedAt",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
-                  "name": "UUID",
+                  "name": "Datetime",
                   "ofType": null,
                 },
               },
@@ -4446,6 +4447,20 @@ Omit for app-level (database-wide) storage.",
           "interfaces": [],
           "kind": "OBJECT",
           "name": "ProvisionBucketPayload",
+          "possibleTypes": null,
+        },
+        {
+          "description": "A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) and, if it has a timezone, [RFC
+3339](https://datatracker.ietf.org/doc/html/rfc3339) standards. Input values
+that do not conform to both ISO 8601 and RFC 3339 may be coerced, which may lead
+to unexpected results.",
+          "enumValues": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "SCALAR",
+          "name": "Datetime",
           "possibleTypes": null,
         },
         {
