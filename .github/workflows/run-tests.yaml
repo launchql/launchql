@@ -115,7 +115,7 @@ jobs:
           - batch: graphile-unit
             packages: 'graphile/graphile-plugin-utils graphile/graphile-cache graphile/graphile-realtime-subscriptions graphile/graphile-sql-expression-validator graphile/graphile-upload-plugin graphile/graphile-storage-registry'
           - batch: agentic
-            packages: 'agentic/protocol agentic/agentic-kit agentic/agent agentic/harness agentic/chat agentic/cli agentic/db-tools agentic/pi agentic/dsh agentic/react agentic/agentic-server agentic/anthropic agentic/openai agentic/ollama agentic/run-log agentic/metering agentic/agent-conversation agentic/pi-host agentic/run-log-client agentic/run-log-gate agentic/machine-protocol agentic/machine-runner agentic/agent-cli'
+            packages: 'agentic/protocol agentic/agentic-kit agentic/agent agentic/harness agentic/permissions agentic/chat agentic/cli agentic/db-tools agentic/pi agentic/dsh agentic/react agentic/agentic-server agentic/anthropic agentic/openai agentic/ollama agentic/run-log agentic/metering agentic/agent-conversation agentic/pi-host agentic/run-log-client agentic/run-log-gate agentic/machine-protocol agentic/machine-runner agentic/agent-cli'
           - batch: pgpm-unit
             packages: 'pgpm/types pgpm/naming-spec pgpm/diff pgpm/import pgpm/slice pgpm/transform'
           - batch: pglite
