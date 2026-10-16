@@ -63,7 +63,7 @@ export function grantOptionsFor(request: PermissionRequest, homeDir: string): Gr
     if (!request.command) return [];
     match = { type: 'command', command: request.command };
     pattern = request.command;
-    always = 'Always: this exact command';
+    always = `Always allow ${request.command}`;
   } else {
     if (!pathGrantable(request)) return [];
     const access = request.targets[0].access;
@@ -71,7 +71,7 @@ export function grantOptionsFor(request: PermissionRequest, homeDir: string): Gr
     const prefix = commonParent(request.targets.map((t) => t.path));
     match = { type: 'path', access, pathPrefix: prefix };
     pattern = displayDir(prefix, homeDir);
-    always = `Always: ${describeGrant(match, homeDir)}`;
+    always = `Always allow ${describeGrant(match, homeDir)}`;
   }
   return [
     { scope: 'chat', label: 'Allow in this chat', pattern, match },
