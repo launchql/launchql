@@ -1,6 +1,6 @@
 {
   "name": "agentic-kit",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "description": "Umbrella package for the agentic-kit family: chat, agent runtime, and harness",
   "main": "index.js",

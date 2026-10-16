@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.27.0](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi@0.26.2...@agentic-kit/pi@0.27.0) (2026-10-16)
+
+### Features
+
+- **pi:** add the permissions lane ([7bbbe7c](https://github.com/constructive-io/constructive/commit/7bbbe7c281c56db81188077155d19317136356c8))
+
 ## [0.26.2](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi@0.26.1...@agentic-kit/pi@0.26.2) (2026-10-15)
 
 **Note:** Version bump only for package @agentic-kit/pi
