@@ -243,6 +243,9 @@ importers:
 
   agentic/harness:
     dependencies:
+      '@agentic-kit/permissions':
+        specifier: workspace:^
+        version: link:../permissions/dist
       appstash:
         specifier: ^0.8.0
         version: 0.8.0
@@ -301,6 +304,9 @@ importers:
         version: link:../protocol/dist
     publishDirectory: dist
 
+  agentic/permissions:
+    publishDirectory: dist
+
   agentic/pi:
     dependencies:
       '@agentic-kit/db-tools':
@@ -312,6 +318,9 @@ importers:
       '@agentic-kit/metering':
         specifier: workspace:^
         version: link:../metering/dist
+      '@agentic-kit/permissions':
+        specifier: workspace:^
+        version: link:../permissions/dist
       '@agentic-kit/run-log':
         specifier: workspace:^
         version: link:../run-log/dist

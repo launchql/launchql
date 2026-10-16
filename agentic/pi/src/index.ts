@@ -52,6 +52,7 @@ export {
   type ComposeRunOptions,
   type GateLane,
   type MeteringLane,
+  type PermissionsLane,
   type RunLogLane,
 } from './embed/lanes';
 export {
@@ -73,6 +74,15 @@ export {
   type MeteredModelExtensionOptions,
   piProviderConfig,
 } from './extensions/metered-model';
+export {
+  createPermissionsExtension,
+  PERMISSION_GRANT_ENTRY,
+  PERMISSION_INTERNAL_ERROR,
+  PERMISSION_OUTPUT_WITHHELD,
+  type PermissionDecisionRecord,
+  type PermissionsExtension,
+  type PermissionsExtensionOptions,
+} from './extensions/permissions';
 export {
   createRunLogExtension,
   MIRROR_EVENTS,
