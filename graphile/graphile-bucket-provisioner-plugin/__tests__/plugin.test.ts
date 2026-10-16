@@ -148,7 +148,7 @@ describe('createBucketProvisionerPlugin', () => {
     const provision = provisionCall(pgClient);
 
     expect(provision.text).toMatch(
-      /^SELECT id, key, physical_name, provision_requested_at FROM "?app_private"?\."?buckets_provision"?\(\$1::uuid\)$/
+      /^SELECT id, key, physical_name, to_json\(provision_requested_at\) #>> '\{\}' AS provision_requested_at FROM "?app_private"?\."?buckets_provision"?\(\$1::uuid\)$/
     );
     expect(provision.values).toEqual([BUCKET_ID]);
     expect(payload).toEqual({
