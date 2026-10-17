@@ -32,6 +32,7 @@ BEGIN
        allow_custom_keys boolean NOT NULL DEFAULT false,
        allowed_origins text[] NULL,
        physical_name text NULL,
+       provision_requested_at timestamptz NULL,
        created_at timestamptz DEFAULT now(),
        updated_at timestamptz DEFAULT now(),
        UNIQUE (key)

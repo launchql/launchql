@@ -3,9 +3,10 @@
  *
  * Adds S3 bucket provisioning support to PostGraphile v5:
  *
- * 1. `provisionBucket` mutation — explicitly enqueue reconciliation for a
- *    logical bucket row in the database. Reads the bucket config via RLS,
- *    then queues the same storage reconciler job used by the INSERT trigger.
+ * 1. `provisionBucket` mutation — explicitly request reconciliation for a
+ *    logical bucket row in the database. Stamps the bucket's
+ *    `provision_requested_at` via RLS; the bucket's own job trigger then
+ *    queues the same storage reconciler job used on INSERT.
  *
  * Detection: Uses the `@storageBuckets` smart tag on the codec (table).
  * The storage module generator in constructive-db sets this tag on the
@@ -159,6 +160,13 @@ interface BucketRow {
   scope_key: string | null;
 }
 
+interface ProvisionedBucketRow {
+  id: string;
+  key: string;
+  physical_name: string | null;
+  provision_requested_at: string;
+}
+
 // --- Helpers ---
 
 /**
@@ -174,30 +182,32 @@ async function resolveDatabaseId(pgClient: any): Promise<string | null> {
 
 
 /**
- * Enqueue reconciliation through the storage module's generated
- * `<private>.<buckets>_provision(bucket_id)`. It runs as the request role: it
- * locks the bucket row FOR UPDATE under the buckets table's own RLS, then
- * enqueues exactly the job the buckets INSERT trigger does.
+ * Request reconciliation through the storage module's generated
+ * `<private>.<buckets>_provision(bucket_id)`. It runs as the request role and
+ * stamps the bucket's `provision_requested_at` under the buckets table's own
+ * RLS; the bucket's UPDATE job trigger then enqueues the reconciler (keyed and
+ * queued on the bucket, so repeated requests collapse into one pending job).
+ * It returns the updated bucket row.
  */
-async function enqueueReconciliationJob(
+async function requestReconciliation(
   pgClient: any,
   storageModule: StorageModuleRow,
   bucket: BucketRow,
-): Promise<string> {
+): Promise<ProvisionedBucketRow> {
   const provisionFunction = QuoteUtils.quoteQualifiedIdentifier(
     storageModule.private_schema,
     `${storageModule.buckets_table}_provision`,
   );
   const result = await runQuery(
     pgClient,
-    `SELECT ${provisionFunction}($1::uuid) AS id`,
+    `SELECT id, key, physical_name, to_json(provision_requested_at) #>> '{}' AS provision_requested_at FROM ${provisionFunction}($1::uuid)`,
     [bucket.id],
   );
-  const jobId = result.rows[0]?.id;
-  if (!jobId) {
-    throw new Error(`STORAGE_BUCKET_JOB_ID_MISSING: bucket ${bucket.id}`);
+  const row = result.rows[0] as ProvisionedBucketRow | undefined;
+  if (!row?.id) {
+    throw new Error(`STORAGE_BUCKET_PROVISION_EMPTY: bucket ${bucket.id}`);
   }
-  return jobId;
+  return row;
 }
 
 // --- Plugin factory ---
@@ -208,7 +218,7 @@ async function enqueueReconciliationJob(
  * This plugin provides one reconciliation pathway:
  *
  * 1. **Explicit `provisionBucket` mutation** — Call this mutation with a
- *    bucket key to enqueue reconciliation (or re-reconciliation) for the
+ *    bucket key to request reconciliation (or re-reconciliation) for the
  *    bucket. Protected by RLS on the buckets table.
  *
  */
@@ -227,22 +237,23 @@ export function createBucketProvisionerPlugin(): GraphileConfig.Plugin {
       }
 
       type ProvisionBucketPayload {
-        """The logical bucket row that was queued for reconciliation."""
+        """The logical bucket row whose reconciliation was requested."""
         bucketId: UUID!
         bucketKey: String!
         """The physical bucket name already recorded, or null when reconciliation has not completed."""
         physicalName: String
-        """The reconciler job enqueued to provision this bucket."""
-        jobId: UUID!
+        """When reconciliation was last requested for this bucket."""
+        provisionRequestedAt: Datetime!
       }
 
       extend type Mutation {
         """
         Reconcile an S3 bucket for a logical bucket in the database.
-        Reads the bucket config via RLS, then enqueues the same
-        storage:provision_bucket job used by the INSERT trigger. This is
-        idempotent for an already-reconciled bucket; enqueue failures become
-        GraphQL errors.
+        Records the request on the bucket row via RLS; the bucket's job
+        trigger then enqueues the same storage:provision_bucket job used on
+        INSERT, and repeated requests collapse into one pending job. This is
+        idempotent for an already-reconciled bucket; failures become GraphQL
+        errors.
         """
         provisionBucket(
           input: ProvisionBucketInput!
@@ -282,13 +293,13 @@ export function createBucketProvisionerPlugin(): GraphileConfig.Plugin {
                 throw new Error('BUCKET_NOT_FOUND');
               }
               const { storageModule, bucket } = resolution;
-              const jobId = await enqueueReconciliationJob(pgClient, storageModule, bucket);
+              const provisioned = await requestReconciliation(pgClient, storageModule, bucket);
 
               return {
-                bucketId: bucket.id,
-                bucketKey: bucket.key,
-                physicalName: bucket.physical_name,
-                jobId,
+                bucketId: provisioned.id,
+                bucketKey: provisioned.key,
+                physicalName: provisioned.physical_name,
+                provisionRequestedAt: provisioned.provision_requested_at,
               };
             });
           });

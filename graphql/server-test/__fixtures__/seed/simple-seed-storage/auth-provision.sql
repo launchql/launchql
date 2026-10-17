@@ -3,9 +3,10 @@
 --
 -- `authenticate` is a stand-in auth module accepting the one fixture token.
 -- `app_buckets_provision` is the storage_module generator's output
--- (metaschema_generators.storage_module -> data_job_trigger
--- `enqueue_function` -> ast_plpgsql_helpers.job_trigger, constructive-db #4067)
--- for an app-scope module, copied from pg_get_functiondef with only the schema
+-- (metaschema_generators.storage_module, constructive-db #4088): it stamps
+-- provision_requested_at as the caller and the bucket's UPDATE job trigger
+-- enqueues the reconciler. This fixture carries no job trigger, so here it
+-- only stamps the row. Copied from pg_get_functiondef with only the schema
 -- names replaced (and CREATE OR REPLACE written as CREATE). Keep it in sync
 -- with that generator; do not edit it by hand.
 --
@@ -40,23 +41,24 @@ RETURNS TABLE (
 $$ LANGUAGE sql STABLE;
 
 CREATE FUNCTION "simple-storage-public-private".app_buckets_provision(bucket_id uuid)
- RETURNS bigint
+ RETURNS "simple-storage-public".app_buckets
  LANGUAGE plpgsql
 AS $function$
 DECLARE
-  subject_row "simple-storage-public".app_buckets;
-  job_id bigint;
+  bucket "simple-storage-public".app_buckets;
 BEGIN
-  SELECT *
-  FROM "simple-storage-public".app_buckets AS subject
+  UPDATE "simple-storage-public".app_buckets SET
+  provision_requested_at = clock_timestamp()
   WHERE
-    subject.id = bucket_id
-  FOR UPDATE INTO subject_row;
+    id = bucket_id;
   IF NOT (FOUND) THEN
     PERFORM errors.raise_error('JOB_SUBJECT_NOT_FOUND', jsonb_build_object('id', bucket_id), 'public');
   END IF;
-  SELECT (app_jobs.add_job(identifier:='storage:provision_bucket', payload:=json_build_object('id', subject_row.id, 'scope', 'app'), queue_name:='bucket:' || subject_row.id::text, max_attempts:=25, priority:=0)).id INTO job_id;
-  RETURN job_id;
+  SELECT *
+  FROM "simple-storage-public".app_buckets AS requested
+  WHERE
+    requested.id = bucket_id INTO bucket;
+  RETURN bucket;
 END;
 $function$;
 

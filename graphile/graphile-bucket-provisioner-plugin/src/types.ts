@@ -16,15 +16,15 @@ export interface ProvisionBucketInput {
 }
 
 /**
- * Result of the provisionBucket reconciliation enqueue mutation.
+ * Result of the provisionBucket mutation: the bucket row it stamped.
  */
 export interface ProvisionBucketPayload {
-  /** The logical bucket row queued for reconciliation */
+  /** The logical bucket row whose reconciliation was requested */
   bucketId: string;
   /** The logical bucket key */
   bucketKey: string;
   /** The physical name already recorded, or null while reconciliation is pending */
   physicalName: string | null;
-  /** The queued reconciler job */
-  jobId: string;
+  /** When reconciliation was last requested */
+  provisionRequestedAt: string;
 }

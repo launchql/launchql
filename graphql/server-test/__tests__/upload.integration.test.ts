@@ -104,7 +104,7 @@ const PROVISION_BUCKET = `
       bucketId
       bucketKey
       physicalName
-      jobId
+      provisionRequestedAt
     }
   }
 `;
@@ -655,10 +655,10 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
   });
 
   // ==========================================================================
-  // 1c. Reconciliation enqueue via the provisionBucket mutation (Alice)
+  // 1c. Reconciliation request via the provisionBucket mutation (Alice)
   // ==========================================================================
 
-  describe('Reconciliation enqueue via provisionBucket (Alice)', () => {
+  describe('Reconciliation request via provisionBucket (Alice)', () => {
     const aliceBucketsTable = `"${aliceSchemas[0]}".app_buckets`;
 
     const physicalNameFor = async (key: string): Promise<string | null> => {
@@ -687,7 +687,7 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
         .set('Authorization', 'Bearer session-token')
         .send(payload);
 
-    it('enqueues reconciliation and leaves the physical name untouched', async () => {
+    it('records the request on the bucket row and leaves the physical name untouched', async () => {
       const key = 'reconcile-now';
       await seedBucket(key);
 
@@ -699,11 +699,11 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       expect(payload.bucketKey).toBe(key);
       expect(payload.bucketId).toBeTruthy();
       expect(payload.physicalName).toBeNull();
-      expect(payload.jobId).toBeTruthy();
+      expect(Date.parse(payload.provisionRequestedAt)).not.toBeNaN();
       expect(await physicalNameFor(key)).toBeNull();
     });
 
-    it('can enqueue reconciliation repeatedly without changing the recorded name', async () => {
+    it('can request reconciliation repeatedly without changing the recorded name', async () => {
       const key = 'reconcile-idem';
       await seedBucket(key);
 
@@ -713,7 +713,6 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       });
       const firstPayload = expectSuccess(firstRes).provisionBucket;
       expect(firstPayload.physicalName).toBeNull();
-      expect(firstPayload.jobId).toBeTruthy();
 
       const secondRes = await postAsAlice({
         query: PROVISION_BUCKET,
@@ -721,8 +720,10 @@ describe('Integration tests (uploads, tenant isolation, RLS)', () => {
       });
       const secondPayload = expectSuccess(secondRes).provisionBucket;
       expect(secondPayload.physicalName).toBeNull();
-      expect(secondPayload.jobId).toBeTruthy();
-      expect(secondPayload.jobId).not.toBe(firstPayload.jobId);
+      expect(secondPayload.bucketId).toBe(firstPayload.bucketId);
+      expect(Date.parse(secondPayload.provisionRequestedAt)).toBeGreaterThan(
+        Date.parse(firstPayload.provisionRequestedAt)
+      );
       expect(await physicalNameFor(key)).toBeNull();
     });
   });

@@ -19,15 +19,15 @@ describe('ProvisionBucketInput', () => {
 });
 
 describe('ProvisionBucketPayload', () => {
-  it('represents a queued reconciliation job', () => {
+  it('represents the bucket row whose reconciliation was requested', () => {
     const payload: ProvisionBucketPayload = {
       bucketId: 'bucket-123',
       bucketKey: 'public',
       physicalName: null,
-      jobId: 'job-123',
+      provisionRequestedAt: '2026-10-16T21:00:00.000Z',
     };
 
     expect(payload.physicalName).toBeNull();
-    expect(payload.jobId).toBe('job-123');
+    expect(payload.provisionRequestedAt).toBe('2026-10-16T21:00:00.000Z');
   });
 });
