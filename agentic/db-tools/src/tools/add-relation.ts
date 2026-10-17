@@ -72,25 +72,9 @@ export const addRelationTool: HarnessTool<typeof AddRelationZod, AddRelationDeta
       const blueprintId = created.createBlueprint?.blueprint?.id;
       if (!blueprintId) throw new Error('Failed to create relation blueprint');
 
-      const constructResult = await modules.mutation
+      await modules.mutation
         .constructBlueprint({ input: { blueprintId, schemaId } }, { select: { result: true } })
         .unwrap();
-
-      if (!constructResult.constructBlueprint?.result) {
-        const constructions = await modules.blueprintConstruction
-          .findMany({
-            where: { blueprintId: { equalTo: blueprintId } },
-            orderBy: ['ID_DESC'],
-            first: 1,
-            select: { status: true, errorDetails: true },
-          })
-          .unwrap();
-        const error =
-          constructions?.blueprintConstructions?.nodes?.[0]?.errorDetails ?? 'Unknown error';
-        return fail(
-          `Failed to add relation: ${typeof error === 'string' ? error : JSON.stringify(error)}`,
-        );
-      }
     } catch (err) {
       return fail(`Failed to add relation: ${err instanceof Error ? err.message : String(err)}`);
     }

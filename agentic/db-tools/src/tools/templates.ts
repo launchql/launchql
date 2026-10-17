@@ -345,10 +345,22 @@ export const applyTemplateTool: HarnessTool<typeof ApplyTemplateZod, TemplateDet
         .constructBlueprint({ input: { blueprintId, schemaId } }, { select: { result: true } })
         .unwrap();
 
-      const refMap = constructResult.constructBlueprint?.result;
-      if (!refMap) return done(false, `Construction failed for template "${params.templateName}"`);
+      const constructionId = constructResult.constructBlueprint?.result;
+      if (!constructionId) throw new Error('constructBlueprint returned no construction id');
 
-      const createdCount = Object.keys(refMap).length;
+      const constructions = await modules.blueprintConstruction
+        .findMany({
+          where: { id: { equalTo: constructionId } },
+          first: 1,
+          select: { tableMap: true },
+        })
+        .unwrap();
+      const tableMap = (constructions?.blueprintConstructions?.nodes?.[0]?.tableMap ?? {}) as Record<
+        string,
+        string
+      >;
+
+      const createdCount = Object.keys(tableMap).length;
       return done(
         true,
         `Applied template "${params.templateName}" — created ${createdCount} table${createdCount === 1 ? '' : 's'}`,
