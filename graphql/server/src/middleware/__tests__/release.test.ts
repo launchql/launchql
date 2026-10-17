@@ -1,7 +1,8 @@
-import type { ConstructiveOptions } from '@constructive-io/graphql-types';
+import type { ConstructiveOptions, ReleaseOptions } from '@constructive-io/graphql-types';
 import supertest from 'supertest';
 
 import { Server } from '../../server';
+import { createReleaseHandler } from '../release';
 
 // Field list consumed by constructive-hub tests/acceptance/graphql.ts
 // (RELEASE_FIELDS) and the .github/workflows/live.yml preflight.
@@ -42,5 +43,31 @@ describe('GET /.well-known/constructive-release', () => {
       dashboard: '1623557',
       functions: 'f14937c'
     });
+  });
+});
+
+describe('createReleaseHandler', () => {
+  const RELEASE = {
+    hub: '880',
+    constructive: '91e18cc',
+    constructiveDb: 'f14937c',
+    dashboard: '1623557',
+    functions: 'f14937c'
+  };
+
+  it.each(RELEASE_FIELDS)('rejects a runtime release option missing %s', (field) => {
+    const release = { ...RELEASE } as Record<string, string>;
+    delete release[field];
+    expect(() => createReleaseHandler(release as unknown as ReleaseOptions)).toThrow(field);
+  });
+
+  it.each(RELEASE_FIELDS)('rejects a runtime release option with an empty %s', (field) => {
+    expect(() => createReleaseHandler({ ...RELEASE, [field]: ' ' })).toThrow(field);
+  });
+
+  it('refuses to construct a Server from a partial runtime release option', () => {
+    expect(
+      () => new Server({ release: { hub: '880' } } as unknown as ConstructiveOptions)
+    ).toThrow('constructiveDb');
   });
 });
