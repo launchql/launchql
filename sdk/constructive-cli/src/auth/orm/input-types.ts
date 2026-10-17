@@ -4689,6 +4689,7 @@ export interface SignUpRecord {
   accessTokenExpiresAt?: string | null;
   id?: string | null;
   isVerified?: boolean | null;
+  mfaSetupRequired?: boolean | null;
   outDeviceToken?: string | null;
   totpEnabled?: boolean | null;
   userId?: string | null;
@@ -4698,6 +4699,7 @@ export type SignUpRecordSelect = {
   accessTokenExpiresAt?: boolean;
   id?: boolean;
   isVerified?: boolean;
+  mfaSetupRequired?: boolean;
   outDeviceToken?: boolean;
   totpEnabled?: boolean;
   userId?: boolean;

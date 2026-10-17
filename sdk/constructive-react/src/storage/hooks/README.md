@@ -60,9 +60,9 @@ storage:provision_bucket job used by the INSERT trigger. This is
 idempotent for an already-reconciled bucket; enqueue failures become
 GraphQL errors. |
 | `useUploadFileMutation` | Mutation | Upload a file: resolves the bucket by key, creates the file row, and returns a presigned PUT URL. |
-| `useUploadFilesMutation` | Mutation | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. |
+| `useUploadFilesMutation` | Mutation | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call. |
 | `useUploadPlatformFileMutation` | Mutation | Upload a file: resolves the bucket by key, creates the file row, and returns a presigned PUT URL. |
-| `useUploadPlatformFilesMutation` | Mutation | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. |
+| `useUploadPlatformFilesMutation` | Mutation | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call. |
 
 ## Table Hooks
 
@@ -71,20 +71,20 @@ GraphQL errors. |
 ```typescript
 // List all buckets
 const { data, isLoading } = useBucketsQuery({
-  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
+  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
 });
 
 // Get one bucket
 const { data: item } = useBucketQuery({
   id: '<UUID>',
-  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
+  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, databaseId: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
 });
 
 // Create a bucket
 const { mutate: create } = useCreateBucketMutation({
   selection: { fields: { id: true } },
 });
-create({ actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', databaseId: '<UUID>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' });
+create({ actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', databaseId: '<UUID>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxBulkFiles: '<Int>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' });
 ```
 
 ### File
@@ -113,20 +113,20 @@ create({ actorId: '<UUID>', bucketId: '<UUID>', contentHash: '<String>', databas
 ```typescript
 // List all platformBuckets
 const { data, isLoading } = usePlatformBucketsQuery({
-  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
+  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
 });
 
 // Get one platformBucket
 const { data: item } = usePlatformBucketQuery({
   id: '<UUID>',
-  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
+  selection: { fields: { actorId: true, allowCustomKeys: true, allowedMimeTypes: true, allowedOrigins: true, createdAt: true, description: true, destinationBucketId: true, id: true, isPublic: true, key: true, maxBulkFiles: true, maxFileSize: true, physicalName: true, stagingTtl: true, tags: true, type: true, updatedAt: true } },
 });
 
 // Create a platformBucket
 const { mutate: create } = useCreatePlatformBucketMutation({
   selection: { fields: { id: true } },
 });
-create({ actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' });
+create({ actorId: '<UUID>', allowCustomKeys: '<Boolean>', allowedMimeTypes: '<String>', allowedOrigins: '<String>', description: '<String>', destinationBucketId: '<UUID>', isPublic: '<Boolean>', key: '<String>', maxBulkFiles: '<Int>', maxFileSize: '<BigInt>', physicalName: '<String>', stagingTtl: '<Interval>', tags: '<String>', type: '<BucketType>' });
 ```
 
 ### PlatformFile
@@ -202,7 +202,7 @@ Upload a file: resolves the bucket by key, creates the file row, and returns a p
 
 ### `useUploadFilesMutation`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**
@@ -224,7 +224,7 @@ Upload a file: resolves the bucket by key, creates the file row, and returns a p
 
 ### `useUploadPlatformFilesMutation`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**

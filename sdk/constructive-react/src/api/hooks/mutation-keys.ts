@@ -275,15 +275,6 @@ export const getSitePreviewsRecordMutationKeys = {
   /** Delete getSitePreviewsRecord mutation key */ delete: (id: string | number) =>
     ['mutation', 'getsitepreviewsrecord', 'delete', id] as const,
 } as const;
-export const hostnameBindingMutationKeys = {
-  /** All hostnameBinding mutation keys */ all: ['mutation', 'hostnamebinding'] as const,
-  /** Create hostnameBinding mutation key */ create: () =>
-    ['mutation', 'hostnamebinding', 'create'] as const,
-  /** Update hostnameBinding mutation key */ update: (id: string | number) =>
-    ['mutation', 'hostnamebinding', 'update', id] as const,
-  /** Delete hostnameBinding mutation key */ delete: (id: string | number) =>
-    ['mutation', 'hostnamebinding', 'delete', id] as const,
-} as const;
 export const identityProviderRegistryMutationKeys = {
   /** All identityProviderRegistry mutation keys */ all: [
     'mutation',
@@ -616,15 +607,6 @@ export const rlsSettingMutationKeys = {
     ['mutation', 'rlssetting', 'update', id] as const,
   /** Delete rlsSetting mutation key */ delete: (id: string | number) =>
     ['mutation', 'rlssetting', 'delete', id] as const,
-} as const;
-export const routeBindingMutationKeys = {
-  /** All routeBinding mutation keys */ all: ['mutation', 'routebinding'] as const,
-  /** Create routeBinding mutation key */ create: () =>
-    ['mutation', 'routebinding', 'create'] as const,
-  /** Update routeBinding mutation key */ update: (id: string | number) =>
-    ['mutation', 'routebinding', 'update', id] as const,
-  /** Delete routeBinding mutation key */ delete: (id: string | number) =>
-    ['mutation', 'routebinding', 'delete', id] as const,
 } as const;
 export const routeMutationKeys = {
   /** All route mutation keys */ all: ['mutation', 'route'] as const,
@@ -1058,7 +1040,6 @@ export const mutationKeys = {
   fullTextSearch: fullTextSearchMutationKeys,
   function: functionMutationKeys,
   getSitePreviewsRecord: getSitePreviewsRecordMutationKeys,
-  hostnameBinding: hostnameBindingMutationKeys,
   identityProviderRegistry: identityProviderRegistryMutationKeys,
   index: indexMutationKeys,
   listSuspendedDatabasesRecord: listSuspendedDatabasesRecordMutationKeys,
@@ -1093,7 +1074,6 @@ export const mutationKeys = {
   pubkeySetting: pubkeySettingMutationKeys,
   redirect: redirectMutationKeys,
   rlsSetting: rlsSettingMutationKeys,
-  routeBinding: routeBindingMutationKeys,
   route: routeMutationKeys,
   schema: schemaMutationKeys,
   schemaGrant: schemaGrantMutationKeys,

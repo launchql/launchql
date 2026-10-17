@@ -258,6 +258,8 @@ export interface Bucket {
   isPublic?: boolean | null;
   /** Unique bucket identifier used in S3 key paths (e.g. avatars, documents, temp) */
   key?: string | null;
+  /** The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED. */
+  maxBulkFiles?: number | null;
   /** Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred) */
   maxFileSize?: string | null;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
@@ -329,6 +331,8 @@ export interface PlatformBucket {
   isPublic?: boolean | null;
   /** Unique bucket identifier used in S3 key paths (e.g. avatars, documents, temp) */
   key?: string | null;
+  /** The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED. */
+  maxBulkFiles?: number | null;
   /** Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred) */
   maxFileSize?: string | null;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
@@ -425,6 +429,7 @@ export type BucketSelect = {
   id?: boolean;
   isPublic?: boolean;
   key?: boolean;
+  maxBulkFiles?: boolean;
   maxFileSize?: boolean;
   physicalName?: boolean;
   stagingTtl?: boolean;
@@ -483,6 +488,7 @@ export type PlatformBucketSelect = {
   id?: boolean;
   isPublic?: boolean;
   key?: boolean;
+  maxBulkFiles?: boolean;
   maxFileSize?: boolean;
   physicalName?: boolean;
   stagingTtl?: boolean;

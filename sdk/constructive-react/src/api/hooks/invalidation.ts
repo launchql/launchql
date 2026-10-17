@@ -44,7 +44,6 @@ import {
   fullTextSearchKeys,
   functionKeys,
   getSitePreviewsRecordKeys,
-  hostnameBindingKeys,
   identityProviderRegistryKeys,
   indexKeys,
   listSuspendedDatabasesRecordKeys,
@@ -79,7 +78,6 @@ import {
   pubkeySettingKeys,
   redirectKeys,
   rlsSettingKeys,
-  routeBindingKeys,
   routeKeys,
   schemaKeys,
   schemaGrantKeys,
@@ -598,23 +596,6 @@ export const invalidate = {
     ) =>
       queryClient.invalidateQueries({
         queryKey: getSitePreviewsRecordKeys.detail(id),
-      }),
-  },
-  /** Invalidate hostnameBinding queries */ hostnameBinding: {
-    /** Invalidate all hostnameBinding queries */ all: (queryClient: QueryClient) =>
-      queryClient.invalidateQueries({
-        queryKey: hostnameBindingKeys.all,
-      }),
-    /** Invalidate hostnameBinding list queries */ lists: (queryClient: QueryClient) =>
-      queryClient.invalidateQueries({
-        queryKey: hostnameBindingKeys.lists(),
-      }),
-    /** Invalidate a specific hostnameBinding */ detail: (
-      queryClient: QueryClient,
-      id: string | number
-    ) =>
-      queryClient.invalidateQueries({
-        queryKey: hostnameBindingKeys.detail(id),
       }),
   },
   /** Invalidate identityProviderRegistry queries */ identityProviderRegistry: {
@@ -1183,23 +1164,6 @@ export const invalidate = {
     ) =>
       queryClient.invalidateQueries({
         queryKey: rlsSettingKeys.detail(id),
-      }),
-  },
-  /** Invalidate routeBinding queries */ routeBinding: {
-    /** Invalidate all routeBinding queries */ all: (queryClient: QueryClient) =>
-      queryClient.invalidateQueries({
-        queryKey: routeBindingKeys.all,
-      }),
-    /** Invalidate routeBinding list queries */ lists: (queryClient: QueryClient) =>
-      queryClient.invalidateQueries({
-        queryKey: routeBindingKeys.lists(),
-      }),
-    /** Invalidate a specific routeBinding */ detail: (
-      queryClient: QueryClient,
-      id: string | number
-    ) =>
-      queryClient.invalidateQueries({
-        queryKey: routeBindingKeys.detail(id),
       }),
   },
   /** Invalidate route queries */ route: {
@@ -1861,14 +1825,6 @@ export const remove = {
       queryKey: getSitePreviewsRecordKeys.detail(id),
     });
   },
-  /** Remove hostnameBinding from cache */ hostnameBinding: (
-    queryClient: QueryClient,
-    id: string | number
-  ) => {
-    queryClient.removeQueries({
-      queryKey: hostnameBindingKeys.detail(id),
-    });
-  },
   /** Remove identityProviderRegistry from cache */ identityProviderRegistry: (
     queryClient: QueryClient,
     id: string | number
@@ -2124,14 +2080,6 @@ export const remove = {
   ) => {
     queryClient.removeQueries({
       queryKey: rlsSettingKeys.detail(id),
-    });
-  },
-  /** Remove routeBinding from cache */ routeBinding: (
-    queryClient: QueryClient,
-    id: string | number
-  ) => {
-    queryClient.removeQueries({
-      queryKey: routeBindingKeys.detail(id),
     });
   },
   /** Remove route from cache */ route: (queryClient: QueryClient, id: string | number) => {

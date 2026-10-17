@@ -281,15 +281,6 @@ export const getSitePreviewsRecordKeys = {
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...getSitePreviewsRecordKeys.details(), id] as const,
 } as const;
-export const hostnameBindingKeys = {
-  /** All hostnameBinding queries */ all: ['hostnamebinding'] as const,
-  /** List query keys */ lists: () => [...hostnameBindingKeys.all, 'list'] as const,
-  /** List query key with variables */ list: (variables?: object) =>
-    [...hostnameBindingKeys.lists(), variables] as const,
-  /** Detail query keys */ details: () => [...hostnameBindingKeys.all, 'detail'] as const,
-  /** Detail query key for specific item */ detail: (id: string | number) =>
-    [...hostnameBindingKeys.details(), id] as const,
-} as const;
 export const identityProviderRegistryKeys = {
   /** All identityProviderRegistry queries */ all: ['identityproviderregistry'] as const,
   /** List query keys */ lists: () => [...identityProviderRegistryKeys.all, 'list'] as const,
@@ -599,15 +590,6 @@ export const rlsSettingKeys = {
   /** Detail query keys */ details: () => [...rlsSettingKeys.all, 'detail'] as const,
   /** Detail query key for specific item */ detail: (id: string | number) =>
     [...rlsSettingKeys.details(), id] as const,
-} as const;
-export const routeBindingKeys = {
-  /** All routeBinding queries */ all: ['routebinding'] as const,
-  /** List query keys */ lists: () => [...routeBindingKeys.all, 'list'] as const,
-  /** List query key with variables */ list: (variables?: object) =>
-    [...routeBindingKeys.lists(), variables] as const,
-  /** Detail query keys */ details: () => [...routeBindingKeys.all, 'detail'] as const,
-  /** Detail query key for specific item */ detail: (id: string | number) =>
-    [...routeBindingKeys.details(), id] as const,
 } as const;
 export const routeKeys = {
   /** All route queries */ all: ['route'] as const,
@@ -948,7 +930,6 @@ export const queryKeys = {
   fullTextSearch: fullTextSearchKeys,
   function: functionKeys,
   getSitePreviewsRecord: getSitePreviewsRecordKeys,
-  hostnameBinding: hostnameBindingKeys,
   identityProviderRegistry: identityProviderRegistryKeys,
   index: indexKeys,
   listSuspendedDatabasesRecord: listSuspendedDatabasesRecordKeys,
@@ -983,7 +964,6 @@ export const queryKeys = {
   pubkeySetting: pubkeySettingKeys,
   redirect: redirectKeys,
   rlsSetting: rlsSettingKeys,
-  routeBinding: routeBindingKeys,
   route: routeKeys,
   schema: schemaKeys,
   schemaGrant: schemaGrantKeys,
