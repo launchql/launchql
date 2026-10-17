@@ -383,6 +383,10 @@ export type BillingProviderModuleOrderBy =
   | 'API_NAME_DESC'
   | 'APPLY_PROVIDER_OBSERVATION_FUNCTION_ASC'
   | 'APPLY_PROVIDER_OBSERVATION_FUNCTION_DESC'
+  | 'BILLING_CONNECTION_TABLE_ID_ASC'
+  | 'BILLING_CONNECTION_TABLE_ID_DESC'
+  | 'BILLING_CONNECTION_TABLE_NAME_ASC'
+  | 'BILLING_CONNECTION_TABLE_NAME_DESC'
   | 'BILLING_CUSTOMERS_TABLE_ID_ASC'
   | 'BILLING_CUSTOMERS_TABLE_ID_DESC'
   | 'BILLING_CUSTOMERS_TABLE_NAME_ASC'
@@ -411,6 +415,8 @@ export type BillingProviderModuleOrderBy =
   | 'BILLING_PRODUCTS_TABLE_ID_DESC'
   | 'BILLING_PRODUCTS_TABLE_NAME_ASC'
   | 'BILLING_PRODUCTS_TABLE_NAME_DESC'
+  | 'BILLING_PROVIDER_CONNECTED_FUNCTION_ASC'
+  | 'BILLING_PROVIDER_CONNECTED_FUNCTION_DESC'
   | 'BILLING_PROVIDER_STATE_TABLE_ID_ASC'
   | 'BILLING_PROVIDER_STATE_TABLE_ID_DESC'
   | 'BILLING_PROVIDER_STATE_TABLE_NAME_ASC'
@@ -486,6 +492,8 @@ export type BillingProviderModuleOrderBy =
   | 'PRODUCTS_TABLE_ID_DESC'
   | 'PROVIDER_ASC'
   | 'PROVIDER_DESC'
+  | 'RECORD_BILLING_CONNECTION_FUNCTION_ASC'
+  | 'RECORD_BILLING_CONNECTION_FUNCTION_DESC'
   | 'RECORD_BILLING_HEALTH_FUNCTION_ASC'
   | 'RECORD_BILLING_HEALTH_FUNCTION_DESC'
   | 'RECORD_DISPUTE_FUNCTION_ASC'
@@ -3729,6 +3737,8 @@ export type StorageModuleOrderBy =
   | 'PUBLIC_SCHEMA_NAME_DESC'
   | 'PUBLIC_URL_PREFIX_ASC'
   | 'PUBLIC_URL_PREFIX_DESC'
+  | 'REGION_ASC'
+  | 'REGION_DESC'
   | 'RESTRICT_READS_ASC'
   | 'RESTRICT_READS_DESC'
   | 'SCHEMA_ID_ASC'
@@ -4623,6 +4633,10 @@ export interface BillingProviderModuleFilter {
   apiName?: StringFilter;
   /** Filter by the object’s `applyProviderObservationFunction` field. */
   applyProviderObservationFunction?: StringFilter;
+  /** Filter by the object’s `billingConnectionTableId` field. */
+  billingConnectionTableId?: UUIDFilter;
+  /** Filter by the object’s `billingConnectionTableName` field. */
+  billingConnectionTableName?: StringFilter;
   /** Filter by the object’s `billingCustomersTableId` field. */
   billingCustomersTableId?: UUIDFilter;
   /** Filter by the object’s `billingCustomersTableName` field. */
@@ -4651,6 +4665,8 @@ export interface BillingProviderModuleFilter {
   billingProductsTableId?: UUIDFilter;
   /** Filter by the object’s `billingProductsTableName` field. */
   billingProductsTableName?: StringFilter;
+  /** Filter by the object’s `billingProviderConnectedFunction` field. */
+  billingProviderConnectedFunction?: StringFilter;
   /** Filter by the object’s `billingProviderStateTableId` field. */
   billingProviderStateTableId?: UUIDFilter;
   /** Filter by the object’s `billingProviderStateTableName` field. */
@@ -4727,6 +4743,8 @@ export interface BillingProviderModuleFilter {
   productsTableId?: UUIDFilter;
   /** Filter by the object’s `provider` field. */
   provider?: StringFilter;
+  /** Filter by the object’s `recordBillingConnectionFunction` field. */
+  recordBillingConnectionFunction?: StringFilter;
   /** Filter by the object’s `recordBillingHealthFunction` field. */
   recordBillingHealthFunction?: StringFilter;
   /** Filter by the object’s `recordDisputeFunction` field. */
@@ -4759,6 +4777,8 @@ export interface BillingProviderModuleInput {
   activatePlanSubscriptionFunction?: string;
   apiName?: string;
   applyProviderObservationFunction?: string;
+  billingConnectionTableId?: string;
+  billingConnectionTableName?: string;
   billingCustomersTableId?: string;
   billingCustomersTableName?: string;
   billingDisputesTableId?: string;
@@ -4773,6 +4793,7 @@ export interface BillingProviderModuleInput {
   billingPricesTableName?: string;
   billingProductsTableId?: string;
   billingProductsTableName?: string;
+  billingProviderConnectedFunction?: string;
   billingProviderStateTableId?: string;
   billingProviderStateTableName?: string;
   billingRefundsTableId?: string;
@@ -4809,6 +4830,7 @@ export interface BillingProviderModuleInput {
   processBillingEventFunction?: string;
   productsTableId?: string;
   provider?: string;
+  recordBillingConnectionFunction?: string;
   recordBillingHealthFunction?: string;
   recordDisputeFunction?: string;
   recordRefundFunction?: string;
@@ -4828,6 +4850,8 @@ export interface BillingProviderModulePatch {
   activatePlanSubscriptionFunction?: string;
   apiName?: string;
   applyProviderObservationFunction?: string;
+  billingConnectionTableId?: string;
+  billingConnectionTableName?: string;
   billingCustomersTableId?: string;
   billingCustomersTableName?: string;
   billingDisputesTableId?: string;
@@ -4842,6 +4866,7 @@ export interface BillingProviderModulePatch {
   billingPricesTableName?: string;
   billingProductsTableId?: string;
   billingProductsTableName?: string;
+  billingProviderConnectedFunction?: string;
   billingProviderStateTableId?: string;
   billingProviderStateTableName?: string;
   billingRefundsTableId?: string;
@@ -4878,6 +4903,7 @@ export interface BillingProviderModulePatch {
   processBillingEventFunction?: string;
   productsTableId?: string;
   provider?: string;
+  recordBillingConnectionFunction?: string;
   recordBillingHealthFunction?: string;
   recordDisputeFunction?: string;
   recordRefundFunction?: string;
@@ -13703,6 +13729,8 @@ export interface StorageModuleFilter {
   publicSchemaName?: StringFilter;
   /** Filter by the object’s `publicUrlPrefix` field. */
   publicUrlPrefix?: StringFilter;
+  /** Filter by the object’s `region` field. */
+  region?: StringFilter;
   /** Filter by the object’s `restrictReads` field. */
   restrictReads?: BooleanFilter;
   /** Filter by the object’s `schemaId` field. */
@@ -13752,6 +13780,7 @@ export interface StorageModuleInput {
   provisions?: unknown;
   publicSchemaName?: string;
   publicUrlPrefix?: string;
+  region?: string;
   restrictReads?: boolean;
   schemaId?: string;
   scope: string;
@@ -13797,6 +13826,7 @@ export interface StorageModulePatch {
   provisions?: unknown;
   publicSchemaName?: string;
   publicUrlPrefix?: string;
+  region?: string;
   restrictReads?: boolean;
   schemaId?: string;
   scope?: string;
