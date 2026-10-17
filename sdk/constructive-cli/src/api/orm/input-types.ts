@@ -824,28 +824,6 @@ export interface GetSitePreviewsRecord {
   commitId?: string | null;
   name?: string | null;
 }
-/** Compiled hostname index maintained by domain sync triggers; read only through the resolver */
-export interface HostnameBinding {
-  /** Domain row this binding was compiled from */
-  domainId?: string | null;
-  /** Lowercase hostname (exact or *.parent wildcard) */
-  hostname?: string | null;
-  id: string;
-  /** Whether this binding is a wildcard claim */
-  isWildcard?: boolean | null;
-  /** Whether the platform drives this hostname's lifecycle */
-  managed?: boolean | null;
-  /** Parent hostname a wildcard binding covers */
-  parentHostname?: string | null;
-  /** TLS secret name compiled from the domain row */
-  tlsSecretName?: string | null;
-  /** Certificate lifecycle state compiled from the domain row */
-  tlsStatus?: string | null;
-  /** When this binding was last recompiled */
-  updatedAt?: string | null;
-  /** Ownership verification state compiled from the domain row */
-  verificationStatus?: string | null;
-}
 export interface IdentityProviderRegistry {
   authorizationUrl?: string | null;
   displayName?: string | null;
@@ -900,6 +878,8 @@ export interface ManagedDomain {
   id: string;
   /** Whether this managed hostname is a *.parent wildcard */
   isWildcard?: boolean | null;
+  /** Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge */
+  publicPort?: number | null;
   /** When TLS last became ready */
   tlsReadyAt?: string | null;
   /** TLS provisioning state for this managed hostname */
@@ -1215,6 +1195,8 @@ export interface PlatformManagedDomain {
   id: string;
   /** Whether this managed hostname is a *.parent wildcard */
   isWildcard?: boolean | null;
+  /** Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge */
+  publicPort?: number | null;
   /** When TLS last became ready */
   tlsReadyAt?: string | null;
   /** TLS provisioning state for this managed hostname */
@@ -1516,36 +1498,6 @@ export interface RlsSetting {
   id: string;
   /** Schema containing current_role and related functions (FK to metaschema_public.schema) */
   roleSchemaId?: string | null;
-  updatedAt?: string | null;
-}
-/** Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver */
-export interface RouteBinding {
-  /** Domain row the source route binds */
-  domainId?: string | null;
-  id: string;
-  /** Active flag compiled from the source route */
-  isActive?: boolean | null;
-  /** HTTP method this binding matches; NULL matches any method */
-  method?: string | null;
-  /** Path prefix this binding matches */
-  path?: string | null;
-  /** Priority compiled from the source route */
-  priority?: number | null;
-  /** Site whose surface the source route serves; NULL when it serves no site */
-  servingSiteId?: string | null;
-  /** Api catalog row the source route targets */
-  targetApiId?: string | null;
-  /** Bucket catalog row the source route targets */
-  targetBucketId?: string | null;
-  /** Function catalog row the source route targets */
-  targetFunctionId?: string | null;
-  /** Redirect catalog row the source route targets */
-  targetRedirectId?: string | null;
-  /** Resource catalog row (a Service resource) the source route targets */
-  targetServiceId?: string | null;
-  /** Site catalog row the source route targets */
-  targetSiteId?: string | null;
-  /** When this binding was last recompiled */
   updatedAt?: string | null;
 }
 /** Routes binding a domain hostname and path to a typed catalog target */
@@ -2184,7 +2136,6 @@ export interface FunctionRelations {
   triggers?: ConnectionResult<Trigger>;
 }
 export interface GetSitePreviewsRecordRelations {}
-export interface HostnameBindingRelations {}
 export interface IdentityProviderRegistryRelations {}
 export interface IndexRelations {
   database?: Database | null;
@@ -2317,7 +2268,6 @@ export interface RlsSettingRelations {
   currentUserAgentFunction?: Function | null;
   roleSchema?: Schema | null;
 }
-export interface RouteBindingRelations {}
 export interface RouteRelations {
   domain?: Domain | null;
   servingSite?: Site | null;
@@ -2511,7 +2461,6 @@ export type FullTextSearchWithRelations = FullTextSearch & FullTextSearchRelatio
 export type FunctionWithRelations = Function & FunctionRelations;
 export type GetSitePreviewsRecordWithRelations = GetSitePreviewsRecord &
   GetSitePreviewsRecordRelations;
-export type HostnameBindingWithRelations = HostnameBinding & HostnameBindingRelations;
 export type IdentityProviderRegistryWithRelations = IdentityProviderRegistry &
   IdentityProviderRegistryRelations;
 export type IndexWithRelations = Index & IndexRelations;
@@ -2559,7 +2508,6 @@ export type PrimaryKeyConstraintWithRelations = PrimaryKeyConstraint &
 export type PubkeySettingWithRelations = PubkeySetting & PubkeySettingRelations;
 export type RedirectWithRelations = Redirect & RedirectRelations;
 export type RlsSettingWithRelations = RlsSetting & RlsSettingRelations;
-export type RouteBindingWithRelations = RouteBinding & RouteBindingRelations;
 export type RouteWithRelations = Route & RouteRelations;
 export type SchemaWithRelations = Schema & SchemaRelations;
 export type SchemaGrantWithRelations = SchemaGrant & SchemaGrantRelations;
@@ -3473,18 +3421,6 @@ export type GetSitePreviewsRecordSelect = {
   commitId?: boolean;
   name?: boolean;
 };
-export type HostnameBindingSelect = {
-  domainId?: boolean;
-  hostname?: boolean;
-  id?: boolean;
-  isWildcard?: boolean;
-  managed?: boolean;
-  parentHostname?: boolean;
-  tlsSecretName?: boolean;
-  tlsStatus?: boolean;
-  updatedAt?: boolean;
-  verificationStatus?: boolean;
-};
 export type IdentityProviderRegistrySelect = {
   authorizationUrl?: boolean;
   displayName?: boolean;
@@ -3538,6 +3474,7 @@ export type ManagedDomainSelect = {
   domain?: boolean;
   id?: boolean;
   isWildcard?: boolean;
+  publicPort?: boolean;
   tlsReadyAt?: boolean;
   tlsStatus?: boolean;
   updatedAt?: boolean;
@@ -3830,6 +3767,7 @@ export type PlatformManagedDomainSelect = {
   domain?: boolean;
   id?: boolean;
   isWildcard?: boolean;
+  publicPort?: boolean;
   tlsReadyAt?: boolean;
   tlsStatus?: boolean;
   updatedAt?: boolean;
@@ -4175,22 +4113,6 @@ export type RlsSettingSelect = {
   roleSchema?: {
     select: SchemaSelect;
   };
-};
-export type RouteBindingSelect = {
-  domainId?: boolean;
-  id?: boolean;
-  isActive?: boolean;
-  method?: boolean;
-  path?: boolean;
-  priority?: boolean;
-  servingSiteId?: boolean;
-  targetApiId?: boolean;
-  targetBucketId?: boolean;
-  targetFunctionId?: boolean;
-  targetRedirectId?: boolean;
-  targetServiceId?: boolean;
-  targetSiteId?: boolean;
-  updatedAt?: boolean;
 };
 export type RouteSelect = {
   anonymous?: boolean;
@@ -6323,34 +6245,6 @@ export interface GetSitePreviewsRecordFilter {
   or?: GetSitePreviewsRecordFilter[];
   not?: GetSitePreviewsRecordFilter;
 }
-export interface HostnameBindingFilter {
-  /** Checks for all expressions in this list. */
-  and?: HostnameBindingFilter[];
-  /** Filter by the object’s `domainId` field. */
-  domainId?: UUIDFilter;
-  /** Filter by the object’s `hostname` field. */
-  hostname?: StringFilter;
-  /** Filter by the object’s `id` field. */
-  id?: UUIDFilter;
-  /** Filter by the object’s `isWildcard` field. */
-  isWildcard?: BooleanFilter;
-  /** Filter by the object’s `managed` field. */
-  managed?: BooleanFilter;
-  /** Negates the expression. */
-  not?: HostnameBindingFilter;
-  /** Checks for any expressions in this list. */
-  or?: HostnameBindingFilter[];
-  /** Filter by the object’s `parentHostname` field. */
-  parentHostname?: StringFilter;
-  /** Filter by the object’s `tlsSecretName` field. */
-  tlsSecretName?: StringFilter;
-  /** Filter by the object’s `tlsStatus` field. */
-  tlsStatus?: StringFilter;
-  /** Filter by the object’s `updatedAt` field. */
-  updatedAt?: DatetimeFilter;
-  /** Filter by the object’s `verificationStatus` field. */
-  verificationStatus?: StringFilter;
-}
 export interface IdentityProviderRegistryFilter {
   /** Checks for all expressions in this list. */
   and?: IdentityProviderRegistryFilter[];
@@ -6466,6 +6360,8 @@ export interface ManagedDomainFilter {
   not?: ManagedDomainFilter;
   /** Checks for any expressions in this list. */
   or?: ManagedDomainFilter[];
+  /** Filter by the object’s `publicPort` field. */
+  publicPort?: IntFilter;
   /** Filter by the object’s `tlsReadyAt` field. */
   tlsReadyAt?: DatetimeFilter;
   /** Filter by the object’s `tlsStatus` field. */
@@ -6995,6 +6891,8 @@ export interface PlatformManagedDomainFilter {
   platformDomainVerificationsByManagedDomainId?: PlatformManagedDomainToManyPlatformDomainVerificationFilter;
   /** `platformDomainVerificationsByManagedDomainId` exist. */
   platformDomainVerificationsByManagedDomainIdExist?: boolean;
+  /** Filter by the object’s `publicPort` field. */
+  publicPort?: IntFilter;
   /** Filter by the object’s `tlsReadyAt` field. */
   tlsReadyAt?: DatetimeFilter;
   /** Filter by the object’s `tlsStatus` field. */
@@ -7571,42 +7469,6 @@ export interface RlsSettingFilter {
   roleSchemaExists?: boolean;
   /** Filter by the object’s `roleSchemaId` field. */
   roleSchemaId?: UUIDFilter;
-  /** Filter by the object’s `updatedAt` field. */
-  updatedAt?: DatetimeFilter;
-}
-export interface RouteBindingFilter {
-  /** Checks for all expressions in this list. */
-  and?: RouteBindingFilter[];
-  /** Filter by the object’s `domainId` field. */
-  domainId?: UUIDFilter;
-  /** Filter by the object’s `id` field. */
-  id?: UUIDFilter;
-  /** Filter by the object’s `isActive` field. */
-  isActive?: BooleanFilter;
-  /** Filter by the object’s `method` field. */
-  method?: StringFilter;
-  /** Negates the expression. */
-  not?: RouteBindingFilter;
-  /** Checks for any expressions in this list. */
-  or?: RouteBindingFilter[];
-  /** Filter by the object’s `path` field. */
-  path?: StringFilter;
-  /** Filter by the object’s `priority` field. */
-  priority?: IntFilter;
-  /** Filter by the object’s `servingSiteId` field. */
-  servingSiteId?: UUIDFilter;
-  /** Filter by the object’s `targetApiId` field. */
-  targetApiId?: UUIDFilter;
-  /** Filter by the object’s `targetBucketId` field. */
-  targetBucketId?: UUIDFilter;
-  /** Filter by the object’s `targetFunctionId` field. */
-  targetFunctionId?: UUIDFilter;
-  /** Filter by the object’s `targetRedirectId` field. */
-  targetRedirectId?: UUIDFilter;
-  /** Filter by the object’s `targetServiceId` field. */
-  targetServiceId?: UUIDFilter;
-  /** Filter by the object’s `targetSiteId` field. */
-  targetSiteId?: UUIDFilter;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: DatetimeFilter;
 }
@@ -9671,30 +9533,6 @@ export type GetSitePreviewsRecordsOrderBy =
   | 'COMMIT_ID_DESC'
   | 'NAME_ASC'
   | 'NAME_DESC';
-export type HostnameBindingOrderBy =
-  | 'DOMAIN_ID_ASC'
-  | 'DOMAIN_ID_DESC'
-  | 'HOSTNAME_ASC'
-  | 'HOSTNAME_DESC'
-  | 'ID_ASC'
-  | 'ID_DESC'
-  | 'IS_WILDCARD_ASC'
-  | 'IS_WILDCARD_DESC'
-  | 'MANAGED_ASC'
-  | 'MANAGED_DESC'
-  | 'NATURAL'
-  | 'PARENT_HOSTNAME_ASC'
-  | 'PARENT_HOSTNAME_DESC'
-  | 'PRIMARY_KEY_ASC'
-  | 'PRIMARY_KEY_DESC'
-  | 'TLS_SECRET_NAME_ASC'
-  | 'TLS_SECRET_NAME_DESC'
-  | 'TLS_STATUS_ASC'
-  | 'TLS_STATUS_DESC'
-  | 'UPDATED_AT_ASC'
-  | 'UPDATED_AT_DESC'
-  | 'VERIFICATION_STATUS_ASC'
-  | 'VERIFICATION_STATUS_DESC';
 export type IdentityProviderRegistryOrderBy =
   | 'AUTHORIZATION_URL_ASC'
   | 'AUTHORIZATION_URL_DESC'
@@ -9791,6 +9629,8 @@ export type ManagedDomainOrderBy =
   | 'NATURAL'
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
+  | 'PUBLIC_PORT_ASC'
+  | 'PUBLIC_PORT_DESC'
   | 'TLS_READY_AT_ASC'
   | 'TLS_READY_AT_DESC'
   | 'TLS_STATUS_ASC'
@@ -10183,6 +10023,8 @@ export type PlatformManagedDomainOrderBy =
   | 'NATURAL'
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
+  | 'PUBLIC_PORT_ASC'
+  | 'PUBLIC_PORT_DESC'
   | 'TLS_READY_AT_ASC'
   | 'TLS_READY_AT_DESC'
   | 'TLS_STATUS_ASC'
@@ -10571,38 +10413,6 @@ export type RlsSettingOrderBy =
   | 'PRIMARY_KEY_DESC'
   | 'ROLE_SCHEMA_ID_ASC'
   | 'ROLE_SCHEMA_ID_DESC'
-  | 'UPDATED_AT_ASC'
-  | 'UPDATED_AT_DESC';
-export type RouteBindingOrderBy =
-  | 'DOMAIN_ID_ASC'
-  | 'DOMAIN_ID_DESC'
-  | 'ID_ASC'
-  | 'ID_DESC'
-  | 'IS_ACTIVE_ASC'
-  | 'IS_ACTIVE_DESC'
-  | 'METHOD_ASC'
-  | 'METHOD_DESC'
-  | 'NATURAL'
-  | 'PATH_ASC'
-  | 'PATH_DESC'
-  | 'PRIMARY_KEY_ASC'
-  | 'PRIMARY_KEY_DESC'
-  | 'PRIORITY_ASC'
-  | 'PRIORITY_DESC'
-  | 'SERVING_SITE_ID_ASC'
-  | 'SERVING_SITE_ID_DESC'
-  | 'TARGET_API_ID_ASC'
-  | 'TARGET_API_ID_DESC'
-  | 'TARGET_BUCKET_ID_ASC'
-  | 'TARGET_BUCKET_ID_DESC'
-  | 'TARGET_FUNCTION_ID_ASC'
-  | 'TARGET_FUNCTION_ID_DESC'
-  | 'TARGET_REDIRECT_ID_ASC'
-  | 'TARGET_REDIRECT_ID_DESC'
-  | 'TARGET_SERVICE_ID_ASC'
-  | 'TARGET_SERVICE_ID_DESC'
-  | 'TARGET_SITE_ID_ASC'
-  | 'TARGET_SITE_ID_DESC'
   | 'UPDATED_AT_ASC'
   | 'UPDATED_AT_DESC';
 export type RouteOrderBy =
@@ -12418,38 +12228,6 @@ export interface DeleteGetSitePreviewsRecordInput {
   clientMutationId?: string;
   id: string;
 }
-export interface CreateHostnameBindingInput {
-  clientMutationId?: string;
-  hostnameBinding: {
-    domainId: string;
-    hostname: string;
-    isWildcard?: boolean;
-    managed?: boolean;
-    parentHostname?: string;
-    tlsSecretName?: string;
-    tlsStatus?: string;
-    verificationStatus?: string;
-  };
-}
-export interface HostnameBindingPatch {
-  domainId?: string | null;
-  hostname?: string | null;
-  isWildcard?: boolean | null;
-  managed?: boolean | null;
-  parentHostname?: string | null;
-  tlsSecretName?: string | null;
-  tlsStatus?: string | null;
-  verificationStatus?: string | null;
-}
-export interface UpdateHostnameBindingInput {
-  clientMutationId?: string;
-  id: string;
-  hostnameBindingPatch: HostnameBindingPatch;
-}
-export interface DeleteHostnameBindingInput {
-  clientMutationId?: string;
-  id: string;
-}
 export interface CreateIdentityProviderRegistryInput {
   clientMutationId?: string;
   identityProviderRegistry: {
@@ -12562,6 +12340,7 @@ export interface CreateManagedDomainInput {
     databaseId: string;
     domain: string;
     isWildcard?: boolean;
+    publicPort?: number;
     tlsReadyAt?: string;
     tlsStatus?: string;
     updatedByPrincipal?: string;
@@ -12577,6 +12356,7 @@ export interface ManagedDomainPatch {
   databaseId?: string | null;
   domain?: string | null;
   isWildcard?: boolean | null;
+  publicPort?: number | null;
   tlsReadyAt?: string | null;
   tlsStatus?: string | null;
   updatedByPrincipal?: string | null;
@@ -13057,6 +12837,7 @@ export interface CreatePlatformManagedDomainInput {
     createdByPrincipal?: string;
     domain: string;
     isWildcard?: boolean;
+    publicPort?: number;
     tlsReadyAt?: string;
     tlsStatus?: string;
     updatedByPrincipal?: string;
@@ -13071,6 +12852,7 @@ export interface PlatformManagedDomainPatch {
   createdByPrincipal?: string | null;
   domain?: string | null;
   isWildcard?: boolean | null;
+  publicPort?: number | null;
   tlsReadyAt?: string | null;
   tlsStatus?: string | null;
   updatedByPrincipal?: string | null;
@@ -13555,46 +13337,6 @@ export interface UpdateRlsSettingInput {
   rlsSettingPatch: RlsSettingPatch;
 }
 export interface DeleteRlsSettingInput {
-  clientMutationId?: string;
-  id: string;
-}
-export interface CreateRouteBindingInput {
-  clientMutationId?: string;
-  routeBinding: {
-    domainId: string;
-    isActive?: boolean;
-    method?: string;
-    path: string;
-    priority?: number;
-    servingSiteId?: string;
-    targetApiId?: string;
-    targetBucketId?: string;
-    targetFunctionId?: string;
-    targetRedirectId?: string;
-    targetServiceId?: string;
-    targetSiteId?: string;
-  };
-}
-export interface RouteBindingPatch {
-  domainId?: string | null;
-  isActive?: boolean | null;
-  method?: string | null;
-  path?: string | null;
-  priority?: number | null;
-  servingSiteId?: string | null;
-  targetApiId?: string | null;
-  targetBucketId?: string | null;
-  targetFunctionId?: string | null;
-  targetRedirectId?: string | null;
-  targetServiceId?: string | null;
-  targetSiteId?: string | null;
-}
-export interface UpdateRouteBindingInput {
-  clientMutationId?: string;
-  id: string;
-  routeBindingPatch: RouteBindingPatch;
-}
-export interface DeleteRouteBindingInput {
   clientMutationId?: string;
   id: string;
 }
@@ -16435,28 +16177,6 @@ export interface FunctionInput {
   tags?: string[];
   volatility?: string;
 }
-/** An input for mutations affecting `HostnameBinding` */
-export interface HostnameBindingInput {
-  /** Domain row this binding was compiled from */
-  domainId: string;
-  /** Lowercase hostname (exact or *.parent wildcard) */
-  hostname: string;
-  id?: string;
-  /** Whether this binding is a wildcard claim */
-  isWildcard?: boolean;
-  /** Whether the platform drives this hostname's lifecycle */
-  managed?: boolean;
-  /** Parent hostname a wildcard binding covers */
-  parentHostname?: string;
-  /** TLS secret name compiled from the domain row */
-  tlsSecretName?: string;
-  /** Certificate lifecycle state compiled from the domain row */
-  tlsStatus?: string;
-  /** When this binding was last recompiled */
-  updatedAt?: string;
-  /** Ownership verification state compiled from the domain row */
-  verificationStatus?: string;
-}
 /** An input for mutations affecting `IdentityProviderRegistry` */
 export interface IdentityProviderRegistryInput {
   authorizationUrl?: string;
@@ -16506,6 +16226,8 @@ export interface ManagedDomainInput {
   id?: string;
   /** Whether this managed hostname is a *.parent wildcard */
   isWildcard?: boolean;
+  /** Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge */
+  publicPort?: number;
   /** When TLS last became ready */
   tlsReadyAt?: string;
   /** TLS provisioning state for this managed hostname */
@@ -16819,6 +16541,8 @@ export interface PlatformManagedDomainInput {
   id?: string;
   /** Whether this managed hostname is a *.parent wildcard */
   isWildcard?: boolean;
+  /** Port the edge serves this hostname on when it is not the scheme default; NULL on a standard edge */
+  publicPort?: number;
   /** When TLS last became ready */
   tlsReadyAt?: string;
   /** TLS provisioning state for this managed hostname */
@@ -17122,36 +16846,6 @@ export interface RlsSettingInput {
   id?: string;
   /** Schema containing current_role and related functions (FK to metaschema_public.schema) */
   roleSchemaId?: string;
-  updatedAt?: string;
-}
-/** An input for mutations affecting `RouteBinding` */
-export interface RouteBindingInput {
-  /** Domain row the source route binds */
-  domainId: string;
-  id?: string;
-  /** Active flag compiled from the source route */
-  isActive?: boolean;
-  /** HTTP method this binding matches; NULL matches any method */
-  method?: string;
-  /** Path prefix this binding matches */
-  path: string;
-  /** Priority compiled from the source route */
-  priority?: number;
-  /** Site whose surface the source route serves; NULL when it serves no site */
-  servingSiteId?: string;
-  /** Api catalog row the source route targets */
-  targetApiId?: string;
-  /** Bucket catalog row the source route targets */
-  targetBucketId?: string;
-  /** Function catalog row the source route targets */
-  targetFunctionId?: string;
-  /** Redirect catalog row the source route targets */
-  targetRedirectId?: string;
-  /** Resource catalog row (a Service resource) the source route targets */
-  targetServiceId?: string;
-  /** Site catalog row the source route targets */
-  targetSiteId?: string;
-  /** When this binding was last recompiled */
   updatedAt?: string;
 }
 /** An input for mutations affecting `Route` */
@@ -20540,6 +20234,8 @@ export interface ManagedDomainFilter {
   not?: ManagedDomainFilter;
   /** Checks for any expressions in this list. */
   or?: ManagedDomainFilter[];
+  /** Filter by the object’s `publicPort` field. */
+  publicPort?: IntFilter;
   /** Filter by the object’s `tlsReadyAt` field. */
   tlsReadyAt?: DatetimeFilter;
   /** Filter by the object’s `tlsStatus` field. */
@@ -20832,6 +20528,8 @@ export interface PlatformManagedDomainFilter {
   platformDomainVerificationsByManagedDomainId?: PlatformManagedDomainToManyPlatformDomainVerificationFilter;
   /** `platformDomainVerificationsByManagedDomainId` exist. */
   platformDomainVerificationsByManagedDomainIdExist?: boolean;
+  /** Filter by the object’s `publicPort` field. */
+  publicPort?: IntFilter;
   /** Filter by the object’s `tlsReadyAt` field. */
   tlsReadyAt?: DatetimeFilter;
   /** Filter by the object’s `tlsStatus` field. */
@@ -22886,51 +22584,6 @@ export type DeleteFunctionPayloadSelect = {
     select: FunctionEdgeSelect;
   };
 };
-export interface CreateHostnameBindingPayload {
-  clientMutationId?: string | null;
-  /** The `HostnameBinding` that was created by this mutation. */
-  hostnameBinding?: HostnameBinding | null;
-  hostnameBindingEdge?: HostnameBindingEdge | null;
-}
-export type CreateHostnameBindingPayloadSelect = {
-  clientMutationId?: boolean;
-  hostnameBinding?: {
-    select: HostnameBindingSelect;
-  };
-  hostnameBindingEdge?: {
-    select: HostnameBindingEdgeSelect;
-  };
-};
-export interface UpdateHostnameBindingPayload {
-  clientMutationId?: string | null;
-  /** The `HostnameBinding` that was updated by this mutation. */
-  hostnameBinding?: HostnameBinding | null;
-  hostnameBindingEdge?: HostnameBindingEdge | null;
-}
-export type UpdateHostnameBindingPayloadSelect = {
-  clientMutationId?: boolean;
-  hostnameBinding?: {
-    select: HostnameBindingSelect;
-  };
-  hostnameBindingEdge?: {
-    select: HostnameBindingEdgeSelect;
-  };
-};
-export interface DeleteHostnameBindingPayload {
-  clientMutationId?: string | null;
-  /** The `HostnameBinding` that was deleted by this mutation. */
-  hostnameBinding?: HostnameBinding | null;
-  hostnameBindingEdge?: HostnameBindingEdge | null;
-}
-export type DeleteHostnameBindingPayloadSelect = {
-  clientMutationId?: boolean;
-  hostnameBinding?: {
-    select: HostnameBindingSelect;
-  };
-  hostnameBindingEdge?: {
-    select: HostnameBindingEdgeSelect;
-  };
-};
 export interface CreateIdentityProviderRegistryPayload {
   clientMutationId?: string | null;
   /** The `IdentityProviderRegistry` that was created by this mutation. */
@@ -24369,51 +24022,6 @@ export type DeleteRlsSettingPayloadSelect = {
   };
   rlsSettingEdge?: {
     select: RlsSettingEdgeSelect;
-  };
-};
-export interface CreateRouteBindingPayload {
-  clientMutationId?: string | null;
-  /** The `RouteBinding` that was created by this mutation. */
-  routeBinding?: RouteBinding | null;
-  routeBindingEdge?: RouteBindingEdge | null;
-}
-export type CreateRouteBindingPayloadSelect = {
-  clientMutationId?: boolean;
-  routeBinding?: {
-    select: RouteBindingSelect;
-  };
-  routeBindingEdge?: {
-    select: RouteBindingEdgeSelect;
-  };
-};
-export interface UpdateRouteBindingPayload {
-  clientMutationId?: string | null;
-  /** The `RouteBinding` that was updated by this mutation. */
-  routeBinding?: RouteBinding | null;
-  routeBindingEdge?: RouteBindingEdge | null;
-}
-export type UpdateRouteBindingPayloadSelect = {
-  clientMutationId?: boolean;
-  routeBinding?: {
-    select: RouteBindingSelect;
-  };
-  routeBindingEdge?: {
-    select: RouteBindingEdgeSelect;
-  };
-};
-export interface DeleteRouteBindingPayload {
-  clientMutationId?: string | null;
-  /** The `RouteBinding` that was deleted by this mutation. */
-  routeBinding?: RouteBinding | null;
-  routeBindingEdge?: RouteBindingEdge | null;
-}
-export type DeleteRouteBindingPayloadSelect = {
-  clientMutationId?: boolean;
-  routeBinding?: {
-    select: RouteBindingSelect;
-  };
-  routeBindingEdge?: {
-    select: RouteBindingEdgeSelect;
   };
 };
 export interface CreateRoutePayload {
@@ -26090,18 +25698,6 @@ export type FunctionEdgeSelect = {
     select: FunctionSelect;
   };
 };
-/** A `HostnameBinding` edge in the connection. */
-export interface HostnameBindingEdge {
-  cursor?: string | null;
-  /** The `HostnameBinding` at the end of the edge. */
-  node?: HostnameBinding | null;
-}
-export type HostnameBindingEdgeSelect = {
-  cursor?: boolean;
-  node?: {
-    select: HostnameBindingSelect;
-  };
-};
 /** A `IdentityProviderRegistry` edge in the connection. */
 export interface IdentityProviderRegistryEdge {
   cursor?: string | null;
@@ -26460,18 +26056,6 @@ export type RlsSettingEdgeSelect = {
   cursor?: boolean;
   node?: {
     select: RlsSettingSelect;
-  };
-};
-/** A `RouteBinding` edge in the connection. */
-export interface RouteBindingEdge {
-  cursor?: string | null;
-  /** The `RouteBinding` at the end of the edge. */
-  node?: RouteBinding | null;
-}
-export type RouteBindingEdgeSelect = {
-  cursor?: boolean;
-  node?: {
-    select: RouteBindingSelect;
   };
 };
 /** A `Schema` edge in the connection. */

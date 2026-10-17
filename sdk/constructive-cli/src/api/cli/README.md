@@ -55,7 +55,6 @@ csdk auth set-token <your-token>
 | `full-text-search` | fullTextSearch CRUD operations |
 | `function` | function CRUD operations |
 | `get-site-previews-record` | getSitePreviewsRecord CRUD operations |
-| `hostname-binding` | hostnameBinding CRUD operations |
 | `identity-provider-registry` | identityProviderRegistry CRUD operations |
 | `index` | index CRUD operations |
 | `list-suspended-databases-record` | listSuspendedDatabasesRecord CRUD operations |
@@ -90,7 +89,6 @@ csdk auth set-token <your-token>
 | `pubkey-setting` | pubkeySetting CRUD operations |
 | `redirect` | redirect CRUD operations |
 | `rls-setting` | rlsSetting CRUD operations |
-| `route-binding` | routeBinding CRUD operations |
 | `route` | route CRUD operations |
 | `schema` | schema CRUD operations |
 | `schema-grant` | schemaGrant CRUD operations |
@@ -1212,37 +1210,6 @@ CRUD operations for GetSitePreviewsRecord records.
 
 **Required create fields:** `commitId`, `name`
 
-### `hostname-binding`
-
-CRUD operations for HostnameBinding records.
-
-| Subcommand | Description |
-|------------|-------------|
-| `list` | List all hostnameBinding records |
-| `find-first` | Find first matching hostnameBinding record |
-| `get` | Get a hostnameBinding by id |
-| `create` | Create a new hostnameBinding |
-| `update` | Update an existing hostnameBinding |
-| `delete` | Delete a hostnameBinding |
-
-**Fields:**
-
-| Field | Type |
-|-------|------|
-| `domainId` | UUID |
-| `hostname` | String |
-| `id` | UUID |
-| `isWildcard` | Boolean |
-| `managed` | Boolean |
-| `parentHostname` | String |
-| `tlsSecretName` | String |
-| `tlsStatus` | String |
-| `updatedAt` | Datetime |
-| `verificationStatus` | String |
-
-**Required create fields:** `domainId`, `hostname`
-**Optional create fields (backend defaults):** `isWildcard`, `managed`, `parentHostname`, `tlsSecretName`, `tlsStatus`, `verificationStatus`
-
 ### `identity-provider-registry`
 
 CRUD operations for IdentityProviderRegistry records.
@@ -1362,6 +1329,7 @@ CRUD operations for ManagedDomain records.
 | `domain` | String |
 | `id` | UUID |
 | `isWildcard` | Boolean |
+| `publicPort` | Int |
 | `tlsReadyAt` | Datetime |
 | `tlsStatus` | String |
 | `updatedAt` | Datetime |
@@ -1370,7 +1338,7 @@ CRUD operations for ManagedDomain records.
 | `verifiedAt` | Datetime |
 
 **Required create fields:** `databaseId`, `domain`
-**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
+**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `publicPort`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
 
 ### `node-type-registry`
 
@@ -1839,6 +1807,7 @@ CRUD operations for PlatformManagedDomain records.
 | `domain` | String |
 | `id` | UUID |
 | `isWildcard` | Boolean |
+| `publicPort` | Int |
 | `tlsReadyAt` | Datetime |
 | `tlsStatus` | String |
 | `updatedAt` | Datetime |
@@ -1847,7 +1816,7 @@ CRUD operations for PlatformManagedDomain records.
 | `verifiedAt` | Datetime |
 
 **Required create fields:** `domain`
-**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
+**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `publicPort`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
 
 ### `platform-page`
 
@@ -2321,41 +2290,6 @@ CRUD operations for RlsSetting records.
 
 **Required create fields:** `databaseId`
 **Optional create fields (backend defaults):** `authenticateFunctionId`, `authenticateSchemaId`, `authenticateStrictFunctionId`, `currentIpAddressFunctionId`, `currentRoleFunctionId`, `currentRoleIdFunctionId`, `currentUserAgentFunctionId`, `roleSchemaId`
-
-### `route-binding`
-
-CRUD operations for RouteBinding records.
-
-| Subcommand | Description |
-|------------|-------------|
-| `list` | List all routeBinding records |
-| `find-first` | Find first matching routeBinding record |
-| `get` | Get a routeBinding by id |
-| `create` | Create a new routeBinding |
-| `update` | Update an existing routeBinding |
-| `delete` | Delete a routeBinding |
-
-**Fields:**
-
-| Field | Type |
-|-------|------|
-| `domainId` | UUID |
-| `id` | UUID |
-| `isActive` | Boolean |
-| `method` | String |
-| `path` | String |
-| `priority` | Int |
-| `servingSiteId` | UUID |
-| `targetApiId` | UUID |
-| `targetBucketId` | UUID |
-| `targetFunctionId` | UUID |
-| `targetRedirectId` | UUID |
-| `targetServiceId` | UUID |
-| `targetSiteId` | UUID |
-| `updatedAt` | Datetime |
-
-**Required create fields:** `domainId`, `path`
-**Optional create fields (backend defaults):** `isActive`, `method`, `priority`, `servingSiteId`, `targetApiId`, `targetBucketId`, `targetFunctionId`, `targetRedirectId`, `targetServiceId`, `targetSiteId`
 
 ### `route`
 

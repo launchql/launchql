@@ -174,11 +174,6 @@ function App() {
 | `useDeleteFunctionMutation` | Mutation | Delete a function |
 | `useGetSitePreviewsQuery` | Query | List all getSitePreviews |
 | `useCreateGetSitePreviewsRecordMutation` | Mutation | Create a getSitePreviewsRecord |
-| `useHostnameBindingsQuery` | Query | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useHostnameBindingQuery` | Query | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useCreateHostnameBindingMutation` | Mutation | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useUpdateHostnameBindingMutation` | Mutation | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useDeleteHostnameBindingMutation` | Mutation | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
 | `useIdentityProviderRegistriesQuery` | Query | List all identityProviderRegistries |
 | `useIdentityProviderRegistryQuery` | Query | Get one identityProviderRegistry |
 | `useCreateIdentityProviderRegistryMutation` | Mutation | Create a identityProviderRegistry |
@@ -346,11 +341,6 @@ function App() {
 | `useCreateRlsSettingMutation` | Mutation | RLS module runtime configuration; typed references to the authenticate/current_role function plumbing |
 | `useUpdateRlsSettingMutation` | Mutation | RLS module runtime configuration; typed references to the authenticate/current_role function plumbing |
 | `useDeleteRlsSettingMutation` | Mutation | RLS module runtime configuration; typed references to the authenticate/current_role function plumbing |
-| `useRouteBindingsQuery` | Query | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useRouteBindingQuery` | Query | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useCreateRouteBindingMutation` | Mutation | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useUpdateRouteBindingMutation` | Mutation | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useDeleteRouteBindingMutation` | Mutation | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
 | `useRoutesQuery` | Query | Routes binding a domain hostname and path to a typed catalog target |
 | `useRouteQuery` | Query | Routes binding a domain hostname and path to a typed catalog target |
 | `useCreateRouteMutation` | Mutation | Routes binding a domain hostname and path to a typed catalog target |
@@ -1149,27 +1139,6 @@ const { mutate: create } = useCreateGetSitePreviewsRecordMutation({
 create({ commitId: '<UUID>', name: '<String>' });
 ```
 
-### HostnameBinding
-
-```typescript
-// List all hostnameBindings
-const { data, isLoading } = useHostnameBindingsQuery({
-  selection: { fields: { domainId: true, hostname: true, id: true, isWildcard: true, managed: true, parentHostname: true, tlsSecretName: true, tlsStatus: true, updatedAt: true, verificationStatus: true } },
-});
-
-// Get one hostnameBinding
-const { data: item } = useHostnameBindingQuery({
-  id: '<UUID>',
-  selection: { fields: { domainId: true, hostname: true, id: true, isWildcard: true, managed: true, parentHostname: true, tlsSecretName: true, tlsStatus: true, updatedAt: true, verificationStatus: true } },
-});
-
-// Create a hostnameBinding
-const { mutate: create } = useCreateHostnameBindingMutation({
-  selection: { fields: { id: true } },
-});
-create({ domainId: '<UUID>', hostname: '<String>', isWildcard: '<Boolean>', managed: '<Boolean>', parentHostname: '<String>', tlsSecretName: '<String>', tlsStatus: '<String>', verificationStatus: '<String>' });
-```
-
 ### IdentityProviderRegistry
 
 ```typescript
@@ -1238,20 +1207,20 @@ create({ name: '<String>', ownerId: '<UUID>', suspendedAt: '<Datetime>', suspend
 ```typescript
 // List all managedDomains
 const { data, isLoading } = useManagedDomainsQuery({
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Get one managedDomain
 const { data: item } = useManagedDomainQuery({
   id: '<UUID>',
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Create a managedDomain
 const { mutate: create } = useCreateManagedDomainMutation({
   selection: { fields: { id: true } },
 });
-create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
+create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', publicPort: '<Int>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
 ```
 
 ### NodeTypeRegistry
@@ -1547,20 +1516,20 @@ create({ commitId: '<UUID>', name: '<String>' });
 ```typescript
 // List all platformManagedDomains
 const { data, isLoading } = usePlatformManagedDomainsQuery({
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Get one platformManagedDomain
 const { data: item } = usePlatformManagedDomainQuery({
   id: '<UUID>',
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Create a platformManagedDomain
 const { mutate: create } = useCreatePlatformManagedDomainMutation({
   selection: { fields: { id: true } },
 });
-create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
+create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', publicPort: '<Int>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
 ```
 
 ### PlatformPage
@@ -1876,27 +1845,6 @@ const { mutate: create } = useCreateRlsSettingMutation({
   selection: { fields: { id: true } },
 });
 create({ authenticateFunctionId: '<UUID>', authenticateSchemaId: '<UUID>', authenticateStrictFunctionId: '<UUID>', currentIpAddressFunctionId: '<UUID>', currentRoleFunctionId: '<UUID>', currentRoleIdFunctionId: '<UUID>', currentUserAgentFunctionId: '<UUID>', databaseId: '<UUID>', roleSchemaId: '<UUID>' });
-```
-
-### RouteBinding
-
-```typescript
-// List all routeBindings
-const { data, isLoading } = useRouteBindingsQuery({
-  selection: { fields: { domainId: true, id: true, isActive: true, method: true, path: true, priority: true, servingSiteId: true, targetApiId: true, targetBucketId: true, targetFunctionId: true, targetRedirectId: true, targetServiceId: true, targetSiteId: true, updatedAt: true } },
-});
-
-// Get one routeBinding
-const { data: item } = useRouteBindingQuery({
-  id: '<UUID>',
-  selection: { fields: { domainId: true, id: true, isActive: true, method: true, path: true, priority: true, servingSiteId: true, targetApiId: true, targetBucketId: true, targetFunctionId: true, targetRedirectId: true, targetServiceId: true, targetSiteId: true, updatedAt: true } },
-});
-
-// Create a routeBinding
-const { mutate: create } = useCreateRouteBindingMutation({
-  selection: { fields: { id: true } },
-});
-create({ domainId: '<UUID>', isActive: '<Boolean>', method: '<String>', path: '<String>', priority: '<Int>', servingSiteId: '<UUID>', targetApiId: '<UUID>', targetBucketId: '<UUID>', targetFunctionId: '<UUID>', targetRedirectId: '<UUID>', targetServiceId: '<UUID>', targetSiteId: '<UUID>' });
 ```
 
 ### Route
