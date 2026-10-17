@@ -29,7 +29,7 @@ import { DOWNLOAD_URL_FIELD } from 'graphile-storage-registry';
 
 import { resolveS3ForDatabase } from './physical-bucket';
 import { generatePresignedGetUrl } from './s3-signer';
-import { loadAllStorageModules, resolveStorageConfigFromCodec, storedPhysicalName } from './storage-module-cache';
+import { loadAllStorageModules, readBucketPhysicalName, resolveStorageConfigFromCodec } from './storage-module-cache';
 import type { PresignedUrlPluginOptions } from './types';
 
 const log = new Logger('graphile-presigned-url:download-url');
@@ -126,20 +126,20 @@ export function createDownloadUrlPlugin(
                         )
                         : null;
                       // The file row already passed the reader's RLS, which is the
-                      // authorization for this URL. The bucket row is read the same
-                      // way, as the request's own role.
+                      // authorization for this URL. The reader may not see the bucket
+                      // row itself (public file, path share), so its coordinate comes
+                      // from the module's narrow bucket physical-name reader.
                       const resolved = config && bucketId
-                        ? await withRequestPgClient(withPgClient, pgSettings, async (pgClient) => {
-                          const bucketResult = await pgClient.query({
-                            text: `SELECT key, physical_name FROM ${config.bucketsQualifiedName} WHERE id = $1 LIMIT 1`,
-                            values: [bucketId],
-                          });
-                          const row = bucketResult.rows[0] as { key: string; physical_name?: string | null } | undefined;
-                          return row ? { config, physicalName: storedPhysicalName(row) } : null;
-                        })
+                        ? {
+                          config,
+                          physicalName: await withRequestPgClient(
+                            withPgClient,
+                            pgSettings,
+                            (pgClient) => readBucketPhysicalName(pgClient, config, bucketId),
+                          ),
+                        }
                         : null;
-                      // No resolvable bucket row, or no physical bucket was ever
-                      // provisioned: no object can exist.
+                      // No physical bucket was ever provisioned: no object can exist.
                       if (!resolved || resolved.physicalName === null) return null;
 
                       const s3ForDb = resolveS3ForDatabase(options, resolved.config, resolved.physicalName);

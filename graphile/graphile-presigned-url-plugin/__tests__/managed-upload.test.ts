@@ -129,6 +129,7 @@ function storageConfig(): StorageModuleConfig {
     filesQualifiedName: 'storage_public.app_files',
     filesTableName: 'app_files',
     recorderQualifiedName: 'storage_private.app_files_record_file',
+    bucketPhysicalNameQualifiedName: 'storage_private.app_buckets_physical_name',
     defaultMaxFileSize: 1000,
     hasPathShares: false,
     allowedOrigins: null,
