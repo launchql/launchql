@@ -17,6 +17,7 @@ import {
   GraphileFeatureOptions,
   GraphileOptions} from './graphile';
 import { LlmOptions } from './llm';
+import { ReleaseOptions } from './release';
 import { SmsOptions } from './sms';
 
 /**
@@ -58,6 +59,8 @@ export interface ConstructiveOptions extends PgpmOptions, ConstructiveGraphQLOpt
   llm?: LlmOptions;
   /** SMS provider configuration */
   sms?: SmsOptions;
+  /** Deployed release tuple served at /.well-known/constructive-release */
+  release?: ReleaseOptions;
 }
 
 /**

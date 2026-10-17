@@ -43,6 +43,7 @@ import { createDebugDatabaseMiddleware } from './middleware/observability/debug-
 import { debugMemory } from './middleware/observability/debug-memory';
 import { localObservabilityOnly } from './middleware/observability/guard';
 import { createRequestLogger } from './middleware/observability/request-logger';
+import { createReleaseHandler, RELEASE_PATH } from './middleware/release';
 import { createRequestProtectionMiddleware } from './middleware/request-protection';
 import { createStandingMiddleware } from './middleware/standing';
 import { createPlatformRefusalRecorder, installRefusalRecorder } from './refusals/recorder';
@@ -129,6 +130,9 @@ class Server {
     }
 
     healthz(app);
+    if (effectiveOpts.release) {
+      app.get(RELEASE_PATH, createReleaseHandler(effectiveOpts.release));
+    }
     if (observabilityEnabled) {
       app.get('/debug/memory', localObservabilityOnly, debugMemory);
       app.get('/debug/db', localObservabilityOnly, createDebugDatabaseMiddleware(effectiveOpts));

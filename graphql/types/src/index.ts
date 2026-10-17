@@ -33,6 +33,9 @@ export {
   LlmEmbedderOptions,
   LlmOptions} from './llm';
 
+// Export release types
+export { ReleaseOptions } from './release';
+
 // Export SMS types
 export {
   DevSmsOptions,

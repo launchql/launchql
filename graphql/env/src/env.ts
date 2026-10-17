@@ -5,6 +5,7 @@ import {
   normalizeGrafastCacheLimits,
   parseGrafastCacheLimitEnv
 } from './grafast-cache-limits';
+import { getReleaseEnv } from './release';
 import { getScopedIntrospectionEnv } from './scoped-introspection';
 
 /**
@@ -12,6 +13,7 @@ import { getScopedIntrospectionEnv } from './scoped-introspection';
  */
 export const getGraphQLEnvVars = (env: NodeJS.ProcessEnv = process.env): Partial<ConstructiveOptions> => {
   const scopedIntrospection = getScopedIntrospectionEnv(env);
+  const release = getReleaseEnv(env);
   const {
     GRAPHILE_SCHEMA,
     GRAPHILE_EXPLAIN,
@@ -141,6 +143,7 @@ export const getGraphQLEnvVars = (env: NodeJS.ProcessEnv = process.env): Partial
           }
         })
       }
-    })
+    }),
+    ...(release && { release })
   };
 };
