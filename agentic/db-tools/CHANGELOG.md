@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.5](https://github.com/constructive-io/constructive/compare/@agentic-kit/db-tools@0.10.4...@agentic-kit/db-tools@0.10.5) (2026-10-17)
+
+### Bug Fixes
+
+- **db-tools:** constructBlueprint raises on failure; drop NULL-return fallbacks ([abdfc6f](https://github.com/constructive-io/constructive/commit/abdfc6ffc493181b2ddb5027bc7a5c22f7eb5efa))
+
 ## [0.10.4](https://github.com/constructive-io/constructive/compare/@agentic-kit/db-tools@0.10.3...@agentic-kit/db-tools@0.10.4) (2026-10-16)
 
 **Note:** Version bump only for package @agentic-kit/db-tools

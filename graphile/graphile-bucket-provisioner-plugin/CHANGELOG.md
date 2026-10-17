@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/constructive-io/constructive/compare/graphile-bucket-provisioner-plugin@1.18.1...graphile-bucket-provisioner-plugin@1.19.0) (2026-10-17)
+
+### Bug Fixes
+
+- **bucket-provisioner:** return provisionRequestedAt as ISO text; refresh server-test schema snapshot ([152caee](https://github.com/constructive-io/constructive/commit/152caee163d01065791e0217c02969b353358be8))
+
+### Features
+
+- **bucket-provisioner:** provisionBucket returns the bucket row it stamps for reconciliation ([9c2f2ed](https://github.com/constructive-io/constructive/commit/9c2f2ed950f353e1db3a49bc94822630ccd63c42))
+
 ## [1.18.1](https://github.com/constructive-io/constructive/compare/graphile-bucket-provisioner-plugin@1.18.0...graphile-bucket-provisioner-plugin@1.18.1) (2026-10-16)
 
 ### Bug Fixes

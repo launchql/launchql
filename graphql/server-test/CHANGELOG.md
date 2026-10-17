@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.33.4](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.33.3...graphql-server-test@3.33.4) (2026-10-17)
+
+### Bug Fixes
+
+- **bucket-provisioner:** return provisionRequestedAt as ISO text; refresh server-test schema snapshot ([152caee](https://github.com/constructive-io/constructive/commit/152caee163d01065791e0217c02969b353358be8))
+
 ## [3.33.3](https://github.com/constructive-io/constructive/compare/graphql-server-test@3.33.2...graphql-server-test@3.33.3) (2026-10-16)
 
 ### Bug Fixes

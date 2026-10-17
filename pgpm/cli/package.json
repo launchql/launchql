@@ -1,6 +1,6 @@
 {
   "name": "pgpm",
-  "version": "5.38.3",
+  "version": "5.38.4",
   "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL Package Manager - Database migration and package management CLI",
   "main": "index.js",
