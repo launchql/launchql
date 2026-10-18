@@ -11,6 +11,25 @@ export interface RealtimeSubscriptionsPluginOptions {
    * Default: 50
    */
   overflowThreshold?: number;
+
+  /**
+   * Receives the exact physical PostgreSQL notification topics compiled into
+   * this schema. The callback runs during schema construction, including with
+   * an empty list when no @realtime table was discovered.
+   *
+   * This is a build-time integration seam. It must not retain Graphile build
+   * objects or database resources; descriptors contain strings only.
+   */
+  onTopicsDiscovered?: (
+    topics: readonly RealtimeTopicDescriptor[]
+  ) => void;
+}
+
+/** Credential-free description of one compiled @realtime channel. */
+export interface RealtimeTopicDescriptor {
+  readonly topic: string;
+  readonly schema: string;
+  readonly table: string;
 }
 
 /**
@@ -26,6 +45,13 @@ export interface Queryable {
     text: string,
     values?: unknown[],
   ): Promise<{ rows: R[] }>;
+}
+
+/** Explicit local delivery capability used by cursor catch-up. */
+export interface RealtimePublisher {
+  /** Optional batch preflight used to keep routing violations fail-closed. */
+  assertTopics?(topics: readonly string[]): void;
+  publish(topic: string, payload: string): void;
 }
 
 /**
@@ -111,11 +137,34 @@ export interface CursorTrackerOptions {
  */
 export interface RealtimeManagerOptions {
   /**
-   * The PgSubscriber instance from PostGraphile's context.
-   * RealtimeManager emits cursor-tracked events on its internal EventEmitter
-   * so they flow through existing subscription plans.
+   * Generation-local publisher used for cursor catch-up delivery. New callers
+   * should always provide this capability explicitly.
    */
-  pgSubscriber: unknown;
+  publisher?: RealtimePublisher;
+
+  /**
+   * Transitional compatibility input for the current @dataplan/pg
+   * PgSubscriber. Its private emitter is adapted outside RealtimeManager.
+   * @deprecated Provide publisher instead.
+   */
+  pgSubscriber?: unknown;
+
+  /**
+   * Exact physical schemas this Graphile instance exposes. Cursor rows naming
+   * any other source schema stop delivery and surface an error before any row
+   * in that batch is emitted. Required for the explicit publisher path.
+   *
+   * The field remains optional only for the deprecated pgSubscriber adapter,
+   * whose callers predate generation-scoped routing.
+   */
+  allowedSourceSchemas?: readonly string[];
+
+  /**
+   * Called once when delivery can no longer be trusted, after new dispatch is
+   * disabled and manager shutdown has begun. Callers should synchronously
+   * remove the owning Graphile generation from service.
+   */
+  onFatalError?: (error: Error) => void;
 
   /**
    * A query-capable object (typically a pg.Pool from pg-cache) used by
@@ -160,8 +209,10 @@ export interface RealtimeManagerOptions {
   batchLimit?: number;
 
   /**
-   * Called when an error occurs during polling, heartbeat, or cleanup.
-   * If not provided, errors are logged via @pgpmjs/logger.
+   * Observes polling, heartbeat, or cleanup errors. A polling or heartbeat
+   * error after startup is independently treated as fatal and delivered to
+   * onFatalError because cursor recovery can no longer be guaranteed.
+   * If omitted, the error is logged via @pgpmjs/logger.
    */
   onError?: (error: Error) => void;
 }

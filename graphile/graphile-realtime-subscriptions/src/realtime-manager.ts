@@ -1,17 +1,13 @@
 /**
  * RealtimeManager — bridges CursorTracker (polling drain_changes) into
- * PostGraphile's PgSubscriber so cursor-tracked events flow through the
- * same subscription plans as NOTIFY events.
+ * a generation-local publisher so cursor-tracked events flow through the same
+ * subscription plans as NOTIFY events.
  *
  * Architecture:
- *   PgSubscriber uses an internal EventEmitter. NOTIFY payloads arrive via
- *   pg's `notification` event and are emitted as `eventEmitter.emit(channel, payload)`.
- *   The `listen()` step in grafast subscribes to the same EventEmitter.
- *
  *   RealtimeManager converts ChangeLogEntry objects from drain_changes() into
- *   the same NOTIFY payload format ("OP:rowId1,rowId2,...") and emits them on
- *   the PgSubscriber's EventEmitter, so existing subscription plans handle
- *   them identically to real NOTIFY events.
+ *   the same NOTIFY payload format ("OP:rowId1,rowId2,...") and publishes them
+ *   through an explicit capability. The generation-scoped subscriber keeps
+ *   these cursor events local even when PostgreSQL LISTEN is shared.
  *
  *   This provides at-least-once delivery: NOTIFY is instant but best-effort;
  *   cursor polling catches up on anything missed (disconnects, restarts).
@@ -19,19 +15,65 @@
  *
  * Lifecycle:
  *   1. start() → registers listener node, begins polling + heartbeat
- *   2. drain_changes() results are converted and emitted on PgSubscriber
+ *   2. drain_changes() results are converted and sent to the local publisher
  *   3. stop() → cleans up ephemeral subscriptions, removes listener node
  */
 
 import { Logger } from '@pgpmjs/logger';
 
 import { CursorTracker } from './cursor-tracker';
+import { createPgSubscriberPublisher } from './generation-subscriber';
 import type {
   ChangeLogEntry,
   RealtimeManagerOptions,
+  RealtimePublisher,
 } from './types';
 
 const log = new Logger('realtime-manager');
+
+type RealtimeManagerState = 'stopped' | 'starting' | 'running' | 'stopping';
+
+export class RealtimeManagerStartAbortedError extends Error {
+  readonly code = 'REALTIME_MANAGER_START_ABORTED';
+
+  constructor() {
+    super('RealtimeManager was stopped before startup completed');
+    this.name = 'RealtimeManagerStartAbortedError';
+  }
+}
+
+export class RealtimeSubscriberUnavailableError extends Error {
+  readonly code = 'REALTIME_SUBSCRIBER_UNAVAILABLE';
+
+  constructor() {
+    super('RealtimeManager requires a usable local publisher');
+    this.name = 'RealtimeSubscriberUnavailableError';
+  }
+}
+
+export class RealtimeSourceSchemaViolationError extends Error {
+  readonly code = 'REALTIME_SOURCE_SCHEMA_VIOLATION';
+
+  constructor(
+    readonly sourceSchema: unknown,
+    readonly allowedSourceSchemas: readonly string[]
+  ) {
+    super(
+      `Realtime cursor returned source schema ${JSON.stringify(sourceSchema)} `
+      + `outside the allowed Graphile schemas: ${allowedSourceSchemas.join(', ')}`
+    );
+    this.name = 'RealtimeSourceSchemaViolationError';
+  }
+}
+
+export class RealtimeSourceSchemaConfigurationError extends Error {
+  readonly code = 'REALTIME_SOURCE_SCHEMAS_REQUIRED';
+
+  constructor() {
+    super('RealtimeManager requires at least one exact allowed source schema');
+    this.name = 'RealtimeSourceSchemaConfigurationError';
+  }
+}
 
 /**
  * Extract row IDs from a ChangeLogEntry.
@@ -69,12 +111,43 @@ function entryToChannel(entry: ChangeLogEntry): string {
 
 export class RealtimeManager {
   private readonly cursorTracker: CursorTracker;
-  private readonly subscriber: unknown;
-  private started = false;
+  private readonly publisher: RealtimePublisher | null;
+  private readonly allowedSourceSchemas: ReadonlySet<string>;
+  private readonly allowedSourceSchemaList: readonly string[];
+  private readonly requiresSourceSchemaAllowlist: boolean;
+  private readonly sourceSchemaConfigurationValid: boolean;
+  private readonly onFatalError?: (error: Error) => void;
+  private state: RealtimeManagerState = 'stopped';
+  private generation = 0;
+  private dispatchEnabled = false;
+  private fatalError: Error | null = null;
+  private startPromise: Promise<void> | null = null;
+  private stopPromise: Promise<void> | null = null;
 
   constructor(options: RealtimeManagerOptions) {
-    const { pgSubscriber, pool, ...cursorOpts } = options;
-    this.subscriber = pgSubscriber;
+    const {
+      publisher,
+      pgSubscriber,
+      pool,
+      allowedSourceSchemas,
+      onFatalError,
+      ...cursorOpts
+    } = options;
+    this.publisher = publisher ?? createPgSubscriberPublisher(pgSubscriber);
+    this.onFatalError = onFatalError;
+    this.requiresSourceSchemaAllowlist = publisher !== undefined
+      || allowedSourceSchemas !== undefined;
+    this.sourceSchemaConfigurationValid = !this.requiresSourceSchemaAllowlist
+      || (
+        Array.isArray(allowedSourceSchemas)
+        && allowedSourceSchemas.every(
+          (schema) => typeof schema === 'string' && schema.length > 0
+        )
+      );
+    this.allowedSourceSchemaList = Object.freeze([
+      ...new Set(allowedSourceSchemas ?? [])
+    ]);
+    this.allowedSourceSchemas = new Set(this.allowedSourceSchemaList);
 
     this.cursorTracker = new CursorTracker({
       nodeId: cursorOpts.nodeId,
@@ -84,9 +157,26 @@ export class RealtimeManager {
       batchLimit: cursorOpts.batchLimit,
       pool,
       onChanges: (entries) => this.dispatchEntries(entries),
-      onError: cursorOpts.onError ?? ((err) => {
-        log.error(`RealtimeManager error: ${err.message}`);
-      }),
+      onError: (error) => {
+        // Once readiness has completed, losing either cursor polling or the
+        // listener heartbeat means at-least-once delivery can no longer be
+        // claimed. Disable dispatch and begin shutdown before invoking the
+        // observational callback so a callback cannot leave a stale
+        // generation serving traffic by throwing or stopping it itself.
+        if (this.state === 'running') this.failDelivery(error);
+
+        try {
+          if (cursorOpts.onError) {
+            cursorOpts.onError(error);
+          } else {
+            log.error(`RealtimeManager error: ${error.message}`);
+          }
+        } catch (callbackError) {
+          log.error(
+            `RealtimeManager error callback failed: ${String(callbackError)}`
+          );
+        }
+      },
     });
   }
 
@@ -95,62 +185,166 @@ export class RealtimeManager {
   }
 
   get isRunning(): boolean {
-    return this.started && this.cursorTracker.isRunning;
+    return this.state === 'running' && this.cursorTracker.isRunning;
   }
 
-  async start(): Promise<void> {
-    if (this.started) return;
-    this.started = true;
+  start(): Promise<void> {
+    if (this.state === 'running') return Promise.resolve();
+    if (this.state === 'starting') return this.startPromise!;
+    if (this.state === 'stopping') {
+      return (this.stopPromise ?? Promise.resolve()).then(() => this.start());
+    }
 
+    const generation = ++this.generation;
+    this.state = 'starting';
+    this.dispatchEnabled = true;
     log.info(`Starting RealtimeManager: node=${this.nodeId}`);
-    await this.cursorTracker.start();
+    const pending = this.startInternal(generation);
+    this.startPromise = pending;
+    void pending.then(
+      () => {
+        if (this.startPromise === pending) this.startPromise = null;
+      },
+      () => {
+        if (this.startPromise === pending) this.startPromise = null;
+      }
+    );
+    return pending;
   }
 
-  async stop(): Promise<void> {
-    if (!this.started) return;
-    this.started = false;
+  private async startInternal(generation: number): Promise<void> {
+    try {
+      if (
+        this.requiresSourceSchemaAllowlist
+        && (
+          !this.sourceSchemaConfigurationValid
+          || this.allowedSourceSchemas.size === 0
+        )
+      ) {
+        throw new RealtimeSourceSchemaConfigurationError();
+      }
+      if (!this.publisher || typeof this.publisher.publish !== 'function') {
+        throw new RealtimeSubscriberUnavailableError();
+      }
+      await this.cursorTracker.start();
+      if (this.state !== 'starting' || this.generation !== generation) {
+        throw new RealtimeManagerStartAbortedError();
+      }
+      this.state = 'running';
+    } catch (error) {
+      this.dispatchEnabled = false;
+      if (this.state === 'starting') this.state = 'stopped';
+      throw error;
+    }
+  }
 
+  stop(): Promise<void> {
+    if (this.state === 'stopping') return this.stopPromise!;
+
+    const startInFlight = this.startPromise;
+    ++this.generation;
+    this.state = 'stopping';
+    this.dispatchEnabled = false;
     log.info(`Stopping RealtimeManager: node=${this.nodeId}`);
-    await this.cursorTracker.stop();
+    // Even a stopped manager may retain a registration after failed cleanup.
+    // The tracker owns that state and makes successful repeated stops a no-op.
+    // Start the tracker shutdown synchronously so an in-flight drain is
+    // invalidated before it can dispatch after this method is called.
+    const trackerStop = this.cursorTracker.stop();
+    const pending = this.stopInternal(startInFlight, trackerStop);
+    this.stopPromise = pending;
+    void pending.then(
+      () => {
+        if (this.stopPromise === pending) this.stopPromise = null;
+      },
+      () => {
+        if (this.stopPromise === pending) this.stopPromise = null;
+      }
+    );
+    return pending;
+  }
+
+  private async stopInternal(
+    startInFlight: Promise<void> | null,
+    trackerStop: Promise<void>
+  ): Promise<void> {
+    try {
+      if (startInFlight) await Promise.allSettled([startInFlight]);
+      await trackerStop;
+    } finally {
+      this.state = 'stopped';
+      this.dispatchEnabled = false;
+    }
   }
 
   /**
-   * Convert ChangeLogEntry objects to NOTIFY-format payloads and emit
-   * them on the PgSubscriber's internal EventEmitter.
+   * Convert ChangeLogEntry objects to NOTIFY-format payloads and publish them
+   * through the exact generation's explicit local capability.
    */
   private dispatchEntries(entries: ChangeLogEntry[]): void {
-    const emitter = this.getEventEmitter();
-    if (!emitter) {
-      log.warn('PgSubscriber has no eventEmitter; cursor events cannot be dispatched');
-      return;
+    if (!this.dispatchEnabled) return;
+
+    const publisher = this.publisher;
+    if (!publisher) {
+      const error = new RealtimeSubscriberUnavailableError();
+      this.failDelivery(error);
+      throw error;
     }
 
-    for (const entry of entries) {
-      const channel = entryToChannel(entry);
-      const payload = entryToNotifyPayload(entry);
-      emitter.emit(channel, payload);
+    // Validate the complete batch before emitting the first event. This keeps
+    // a mixed valid/foreign batch atomic from the tenant-isolation boundary's
+    // perspective: no event is delivered when routing is inconclusive.
+    const foreignEntry = this.requiresSourceSchemaAllowlist
+      ? entries.find(
+        (entry) => !this.allowedSourceSchemas.has(entry.source_schema)
+      )
+      : undefined;
+    if (foreignEntry) {
+      const error = new RealtimeSourceSchemaViolationError(
+        foreignEntry.source_schema,
+        this.allowedSourceSchemaList
+      );
+      this.failDelivery(error);
+      throw error;
     }
 
-    log.info(`Dispatched ${entries.length} cursor-tracked event(s) to PgSubscriber`);
+    const notifications = entries.map((entry) => ({
+      channel: entryToChannel(entry),
+      payload: entryToNotifyPayload(entry)
+    }));
+    try {
+      publisher.assertTopics?.(notifications.map(({ channel }) => channel));
+      for (const { channel, payload } of notifications) {
+        publisher.publish(channel, payload);
+      }
+    } catch (reason) {
+      const error = reason instanceof Error ? reason : new Error(String(reason));
+      this.failDelivery(error);
+      throw error;
+    }
+
+    log.info(`Dispatched ${entries.length} cursor-tracked event(s)`);
   }
 
-  /**
-   * Access PgSubscriber's internal EventEmitter.
-   *
-   * PgSubscriber from @dataplan/pg stores an EventEmitter3 instance as
-   * `this.eventEmitter`. It is private but stable across v1.x releases.
-   * This is the same emitter that NOTIFY events are dispatched through.
-   */
-  private getEventEmitter(): { emit(event: string, payload: string): boolean } | null {
-    const sub = this.subscriber as Record<string, unknown>;
-    if (sub && typeof sub === 'object' && 'eventEmitter' in sub) {
-      const ee = sub.eventEmitter as { emit(event: string, payload: string): boolean };
-      if (typeof ee?.emit === 'function') {
-        return ee;
+  private failDelivery(error: Error): void {
+    this.dispatchEnabled = false;
+    const stopping = this.stop();
+    if (!this.fatalError) {
+      this.fatalError = error;
+      try {
+        this.onFatalError?.(error);
+      } catch (callbackError) {
+        log.error(
+          `RealtimeManager fatal-error callback failed: ${String(callbackError)}`
+        );
       }
     }
-    return null;
+    void stopping.catch((stopError) => {
+      log.error(
+        `RealtimeManager failed to stop after a delivery violation: ${String(stopError)}`
+      );
+    });
   }
 }
 
-export { entryToChannel,entryToNotifyPayload, extractRowId };
+export { entryToChannel, entryToNotifyPayload, extractRowId };

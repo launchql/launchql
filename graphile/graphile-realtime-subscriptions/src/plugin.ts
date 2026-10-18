@@ -55,7 +55,10 @@ import { extendSchema } from 'graphile-utils';
 
 import type { ParsedPayload } from './event-gate';
 import { createGatedSubscriber } from './event-gate';
-import type { RealtimeSubscriptionsPluginOptions } from './types';
+import type {
+  RealtimeSubscriptionsPluginOptions,
+  RealtimeTopicDescriptor,
+} from './types';
 
 const log = new Logger('graphile-realtime-subscriptions');
 
@@ -223,6 +226,18 @@ export function createRealtimeSubscriptionsPlugin(
   return extendSchema(
     (build) => {
       const tables = discoverRealtimeTables(build);
+      const discoveredTopics: readonly RealtimeTopicDescriptor[] = Object.freeze(
+        tables
+          .map(({ notifyChannel, pgSchema, pgTable }) => Object.freeze({
+            topic: notifyChannel,
+            schema: pgSchema,
+            table: pgTable,
+          }))
+          .sort((left, right) => (
+            left.topic < right.topic ? -1 : left.topic > right.topic ? 1 : 0
+          )),
+      );
+      options.onTopicsDiscovered?.(discoveredTopics);
 
       if (tables.length === 0) {
         log.info('No tables with @realtime tag found — skipping subscription generation');

@@ -235,6 +235,38 @@ describe('createRealtimeSubscriptionsPlugin', () => {
   });
 
   describe('table discovery', () => {
+    it('reports sorted credential-free physical topic descriptors during build', () => {
+      const onTopicsDiscovered = jest.fn();
+      createRealtimeSubscriptionsPlugin({ onTopicsDiscovered });
+
+      const zeta = createMockCodec('zeta', {
+        realtime: true,
+        schemaName: 'tenant_a',
+      });
+      const alpha = createMockCodec('alpha', {
+        realtime: true,
+        schemaName: 'tenant_a',
+      });
+      capturedFactory!(createMockBuild({
+        zeta: createMockResource('zeta', zeta),
+        alpha: createMockResource('alpha', alpha),
+      }));
+
+      expect(onTopicsDiscovered).toHaveBeenCalledTimes(1);
+      expect(onTopicsDiscovered).toHaveBeenCalledWith([
+        { topic: 'realtime:tenant_a.alpha', schema: 'tenant_a', table: 'alpha' },
+        { topic: 'realtime:tenant_a.zeta', schema: 'tenant_a', table: 'zeta' },
+      ]);
+    });
+
+    it('reports an explicit empty topic set', () => {
+      const onTopicsDiscovered = jest.fn();
+      createRealtimeSubscriptionsPlugin({ onTopicsDiscovered });
+      capturedFactory!(createMockBuild({}));
+
+      expect(onTopicsDiscovered).toHaveBeenCalledWith([]);
+    });
+
     it('discovers tables with @realtime tag', () => {
       createRealtimeSubscriptionsPlugin();
 

@@ -21,6 +21,7 @@ jest.mock('@pgpmjs/logger', () => ({
 
 import {
   CursorTracker,
+  CursorTrackerStartAbortedError,
   DEFAULT_BATCH_LIMIT,
   DEFAULT_HEARTBEAT_INTERVAL_MS,
   DEFAULT_POLL_INTERVAL_MS,
@@ -49,6 +50,16 @@ function createChangeLogEntry(overrides: Partial<ChangeLogEntry> = {}): ChangeLo
     subscriber_ids: ['sub-1'],
     ...overrides,
   };
+}
+
+function deferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
+  });
+  return { promise, resolve, reject };
 }
 
 // --- Tests ---
@@ -152,6 +163,58 @@ describe('CursorTracker.start()', () => {
 
     await tracker.stop();
   });
+
+  it('fails readiness and rolls back when listener registration fails', async () => {
+    const error = new Error('touch denied');
+    const pool: Queryable = { query: jest.fn().mockRejectedValue(error) };
+    const onError = jest.fn();
+    const tracker = new CursorTracker({ pool, onError });
+
+    await expect(tracker.start()).rejects.toBe(error);
+
+    expect(tracker.isRunning).toBe(false);
+    expect(onError).toHaveBeenCalledWith(error);
+    expect((pool.query as jest.Mock).mock.calls).toHaveLength(1);
+  });
+
+  it('fails readiness and cleans up when the initial drain fails', async () => {
+    const error = new Error('drain denied');
+    const pool: Queryable = {
+      query: jest.fn().mockImplementation(async (sql: string) => {
+        if (sql.includes('drain_changes')) throw error;
+        return { rows: [] };
+      })
+    };
+    const tracker = new CursorTracker({ nodeId: 'strict-node', pool });
+
+    await expect(tracker.start()).rejects.toBe(error);
+
+    expect(tracker.isRunning).toBe(false);
+    expect(pool.query).toHaveBeenCalledWith(
+      expect.stringContaining('cleanup_ephemeral'),
+      ['strict-node']
+    );
+  });
+
+  it('preserves startup and rollback failures when both operations fail', async () => {
+    const drainError = new Error('drain denied');
+    const cleanupError = new Error('cleanup denied');
+    const pool: Queryable = {
+      query: jest.fn().mockImplementation(async (sql: string) => {
+        if (sql.includes('drain_changes')) throw drainError;
+        if (sql.includes('cleanup_ephemeral')) throw cleanupError;
+        return { rows: [] };
+      })
+    };
+    const tracker = new CursorTracker({ nodeId: 'rollback-node', pool });
+
+    const starting = tracker.start();
+    await expect(starting).rejects.toBeInstanceOf(AggregateError);
+    await expect(starting).rejects.toMatchObject({
+      errors: [drainError, cleanupError]
+    });
+    expect(tracker.isRunning).toBe(false);
+  });
 });
 
 describe('CursorTracker.stop()', () => {
@@ -191,6 +254,28 @@ describe('CursorTracker.stop()', () => {
     expect(tracker.isRunning).toBe(false);
   });
 
+  it('surfaces cleanup failure and permits an explicit retry', async () => {
+    const cleanupError = new Error('cleanup failed');
+    let failCleanup = true;
+    const pool = createMockPool();
+    pool.query.mockImplementation(async (sql: string) => {
+      if (failCleanup && sql.includes('cleanup_ephemeral')) throw cleanupError;
+      return { rows: [] };
+    });
+    const onError = jest.fn();
+    const tracker = new CursorTracker({ pool, onError });
+    await tracker.start();
+
+    await expect(tracker.stop()).rejects.toBe(cleanupError);
+    expect(tracker.isRunning).toBe(false);
+    expect(onError).toHaveBeenCalledWith(cleanupError);
+
+    failCleanup = false;
+    await expect(tracker.stop()).resolves.toBeUndefined();
+    expect(pool.query.mock.calls.filter(([sql]) => sql.includes('cleanup_ephemeral')))
+      .toHaveLength(2);
+  });
+
   it('is idempotent (calling stop twice does not double-cleanup)', async () => {
     const mockPool = createMockPool();
     const tracker = new CursorTracker({
@@ -222,6 +307,112 @@ describe('CursorTracker.stop()', () => {
 
     expect(clearSpy).toHaveBeenCalledTimes(2);
     clearSpy.mockRestore();
+  });
+
+  it('waits for an active poll and suppresses its dispatch after stop begins', async () => {
+    const pool = createMockPool();
+    const onChanges = jest.fn();
+    const tracker = new CursorTracker({
+      nodeId: 'poll-stop-node',
+      pool,
+      onChanges,
+    });
+    await tracker.start();
+
+    const poll = deferred<{ rows: { drain_changes: ChangeLogEntry }[] }>();
+    pool.query.mockImplementation((sql: string) => {
+      if (sql.includes('drain_changes')) return poll.promise;
+      return Promise.resolve({ rows: [] });
+    });
+    pool.query.mockClear();
+
+    const activeDrain = tracker.drain();
+    const stopping = tracker.stop();
+    let stopped = false;
+    void stopping.then(() => {
+      stopped = true;
+    });
+    await Promise.resolve();
+
+    expect(stopped).toBe(false);
+    expect(pool.query.mock.calls.some(([sql]) => sql.includes('cleanup_ephemeral'))).toBe(false);
+
+    const entry = createChangeLogEntry();
+    poll.resolve({ rows: [{ drain_changes: entry }] });
+    await expect(activeDrain).resolves.toEqual([entry]);
+    await stopping;
+
+    expect(onChanges).not.toHaveBeenCalled();
+    expect(pool.query).toHaveBeenCalledWith(
+      expect.stringContaining('cleanup_ephemeral'),
+      ['poll-stop-node']
+    );
+  });
+
+  it('waits for an active heartbeat before cleaning up the listener', async () => {
+    const pool = createMockPool();
+    const tracker = new CursorTracker({
+      nodeId: 'heartbeat-stop-node',
+      pool,
+    });
+    await tracker.start();
+
+    const heartbeat = deferred<{ rows: never[] }>();
+    pool.query.mockImplementation((sql: string) => {
+      if (sql.includes('touch_listener')) return heartbeat.promise;
+      return Promise.resolve({ rows: [] });
+    });
+    pool.query.mockClear();
+
+    const activeHeartbeat = tracker.touchListener();
+    const stopping = tracker.stop();
+    let stopped = false;
+    void stopping.then(() => {
+      stopped = true;
+    });
+    await Promise.resolve();
+
+    expect(stopped).toBe(false);
+    expect(pool.query.mock.calls.some(([sql]) => sql.includes('cleanup_ephemeral'))).toBe(false);
+
+    heartbeat.resolve({ rows: [] });
+    await activeHeartbeat;
+    await stopping;
+
+    expect(pool.query).toHaveBeenCalledWith(
+      expect.stringContaining('cleanup_ephemeral'),
+      ['heartbeat-stop-node']
+    );
+  });
+
+  it('aborts startup deterministically when stop wins the registration race', async () => {
+    const registration = deferred<{ rows: never[] }>();
+    const pool: jest.Mocked<Queryable> = {
+      query: jest.fn().mockImplementation((sql: string) => {
+        if (sql.includes('touch_listener')) return registration.promise;
+        return Promise.resolve({ rows: [] });
+      }),
+    };
+    const tracker = new CursorTracker({
+      nodeId: 'start-stop-node',
+      pool,
+    });
+
+    const starting = tracker.start();
+    const startResult = expect(starting).rejects.toBeInstanceOf(CursorTrackerStartAbortedError);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(pool.query.mock.calls.some(([sql]) => sql.includes('touch_listener'))).toBe(true);
+
+    const stopping = tracker.stop();
+    registration.resolve({ rows: [] });
+
+    await startResult;
+    await stopping;
+
+    expect(tracker.isRunning).toBe(false);
+    expect(pool.query.mock.calls.some(([sql]) => sql.includes('drain_changes'))).toBe(false);
+    expect(pool.query.mock.calls.filter(([sql]) => sql.includes('cleanup_ephemeral'))).toHaveLength(1);
   });
 });
 
@@ -465,7 +656,7 @@ describe('CursorTracker error handling', () => {
     }));
   });
 
-  it('cleanup_ephemeral error calls onError without throwing', async () => {
+  it('cleanup_ephemeral error calls onError and rejects', async () => {
     const failingPool: Queryable = {
       query: jest.fn().mockRejectedValue(new Error('cleanup failed')),
     };
@@ -476,7 +667,7 @@ describe('CursorTracker error handling', () => {
       onError,
     });
 
-    await tracker.cleanupEphemeral();
+    await expect(tracker.cleanupEphemeral()).rejects.toThrow('cleanup failed');
 
     expect(onError).toHaveBeenCalledWith(expect.objectContaining({
       message: 'cleanup failed',
