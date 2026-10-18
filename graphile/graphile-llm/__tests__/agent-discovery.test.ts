@@ -33,6 +33,14 @@ const fakePool = (respond: (values: unknown[]) => { rows: unknown[] }) => {
 
 const pgError = (code: string) => Object.assign(new Error(`pg error ${code}`), { code });
 
+function deferred(): { promise: Promise<void>; resolve: () => void } {
+  let resolve!: () => void;
+  const promise = new Promise<void>(res => {
+    resolve = res;
+  });
+  return { promise, resolve };
+}
+
 beforeEach(() => clearAgentDiscoveryCache());
 
 describe('getAgentDiscovery', () => {
@@ -63,6 +71,58 @@ describe('getAgentDiscovery', () => {
 
     await getAgentDiscovery(pool, DB_B);
     expect(calls).toHaveLength(2);
+  });
+
+  it('does not share discovery across physical pool identities', async () => {
+    const first = fakePool(() => ({ rows: [row('physical_a')] }));
+    const second = fakePool(() => ({ rows: [row('physical_b')] }));
+
+    const fromFirst = await getAgentDiscovery(first.pool, DB_A);
+    const fromSecond = await getAgentDiscovery(second.pool, DB_A);
+
+    expect(fromFirst?.thread?.schemaName).toBe('physical_a_agent_public');
+    expect(fromSecond?.thread?.schemaName).toBe('physical_b_agent_public');
+    expect(first.calls).toHaveLength(1);
+    expect(second.calls).toHaveLength(1);
+  });
+
+  it('keeps overlapping same-database discovery isolated by pool identity', async () => {
+    const gate = deferred();
+    const first = fakePool(() => ({ rows: [row('overlap_a')] }));
+    const second = fakePool(() => ({ rows: [row('overlap_b')] }));
+    const firstQuery = first.pool.query as jest.Mock;
+    const secondQuery = second.pool.query as jest.Mock;
+    firstQuery.mockImplementation(async (text: string, values?: unknown[]) => {
+      first.calls.push({ text, values });
+      await gate.promise;
+      return { rows: [row('overlap_a')] };
+    });
+    secondQuery.mockImplementation(async (text: string, values?: unknown[]) => {
+      second.calls.push({ text, values });
+      await gate.promise;
+      return { rows: [row('overlap_b')] };
+    });
+
+    const pending = Promise.all([
+      getAgentDiscovery(first.pool, DB_A),
+      getAgentDiscovery(second.pool, DB_A),
+    ]);
+    expect(first.calls).toHaveLength(1);
+    expect(second.calls).toHaveLength(1);
+    gate.resolve();
+
+    const [fromFirst, fromSecond] = await pending;
+    const [cachedFirst, cachedSecond] = await Promise.all([
+      getAgentDiscovery(first.pool, DB_A),
+      getAgentDiscovery(second.pool, DB_A),
+    ]);
+
+    expect(fromFirst?.thread?.schemaName).toBe('overlap_a_agent_public');
+    expect(fromSecond?.thread?.schemaName).toBe('overlap_b_agent_public');
+    expect(cachedFirst).toBe(fromFirst);
+    expect(cachedSecond).toBe(fromSecond);
+    expect(first.calls).toHaveLength(1);
+    expect(second.calls).toHaveLength(1);
   });
 
   it('treats an absent module as not provisioned', async () => {

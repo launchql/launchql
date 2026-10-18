@@ -171,8 +171,13 @@ export function createUnifiedSearchPlugin(
 ): GraphileConfig.Plugin {
   const { adapters, enableSearchScore = true, enableUnifiedSearch = true, rrfK = 60 } = options;
 
-  // Per-codec cache of discovered columns, keyed by codec name
-  const codecCache = new Map<string, AdapterColumnCache[]>();
+  // Column discovery may depend on the surrounding build registry, not just
+  // the codec. Weak identity keys keep one build's result out of another and
+  // allow both build and codec state to be collected after schema creation.
+  const buildCodecCache = new WeakMap<
+    object,
+    WeakMap<PgCodecWithAttributes, AdapterColumnCache[]>
+  >();
 
   // Bridge between orderBy enum apply and filter apply.
   // The orderBy enum runs on the PgSelectStep while the filter runs on
@@ -195,9 +200,14 @@ export function createUnifiedSearchPlugin(
    * count as intentional search.
    */
   function getAdapterColumns(codec: PgCodecWithAttributes, build: any): AdapterColumnCache[] {
-    const cacheKey = codec.name;
-    if (codecCache.has(cacheKey)) {
-      return codecCache.get(cacheKey)!;
+    let codecCache = buildCodecCache.get(build);
+    if (!codecCache) {
+      codecCache = new WeakMap<PgCodecWithAttributes, AdapterColumnCache[]>();
+      buildCodecCache.set(build, codecCache);
+    }
+    const cached = codecCache.get(codec);
+    if (cached) {
+      return cached;
     }
 
     const primaryAdapters = adapters.filter((a) => !a.isSupplementary);
@@ -238,7 +248,7 @@ export function createUnifiedSearchPlugin(
       }
     }
 
-    codecCache.set(cacheKey, results);
+    codecCache.set(codec, results);
     return results;
   }
 

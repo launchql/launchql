@@ -58,6 +58,19 @@ const preset = {
 - **Hybrid search**: Combine multiple algorithms in a single query
 - **Zero config**: Auto-discovers columns and indexes per adapter
 
+### BM25 discovery and compatibility
+
+BM25 index discovery is scoped to the current gather and attaches metadata to
+that gather's codec attributes. It does not populate a process-wide cache, so
+overlapping builds cannot reuse another build's index metadata.
+
+The deprecated `bm25IndexStore` export remains available for integrations that
+need a migration period. It is never populated automatically; pass it
+explicitly as `createBm25Adapter({ bm25IndexStore })` if required. New code
+should use the normal `UnifiedSearchPreset` and per-build codec metadata. The
+old `bm25ExtensionDetected` deep import was removed and is not part of the
+compatibility surface.
+
 ## Architecture
 
 ```

@@ -60,6 +60,15 @@ The preset bundles all plugins listed below. You can also import each plugin ind
 - **Toggleable** — each capability (`enableTextSearch`, `enableTextMutations`, `enableRag`) can be independently enabled or disabled
 - **Plugin-conditional** — fields only appear in the schema when the plugin is loaded
 
+### Cache ownership
+
+Runtime billing and inference-log configuration is cached per database ID and
+cache owner. `getLlmBillingConfig(client, databaseId, owner)` accepts the
+Graphile build as the owner; the owner is optional for compatibility with the
+original two-argument call and then defaults to the client. Cache statistics
+require an owner. `invalidateLlmBillingConfig(databaseId, owner)` clears one
+owner, while omitting the owner clears all owners.
+
 ## Plugins
 
 | Plugin | Description | Toggle |

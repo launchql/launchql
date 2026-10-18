@@ -63,7 +63,8 @@ function defaultResolveEntityId(pgSettings: Record<string, string>): string | nu
 
 async function buildMeteringContext(
   graphqlContext: any,
-  resolveEntityId: (pgSettings: Record<string, string>) => string | null
+  resolveEntityId: (pgSettings: Record<string, string>) => string | null,
+  cacheScope: object
 ): Promise<MeteringContext | null> {
   const pgSettings: Record<string, string> = graphqlContext?.pgSettings ?? {};
   const entityId = resolveEntityId(pgSettings);
@@ -79,7 +80,7 @@ async function buildMeteringContext(
   let inferenceLogConfig = null;
   try {
     await withPgClient(pgSettings, async (pgClient: PgClient) => {
-      const entry = await getLlmBillingConfig(pgClient, databaseId);
+      const entry = await getLlmBillingConfig(pgClient, databaseId, cacheScope);
       billingConfig = entry.billing;
       inferenceLogConfig = entry.inferenceLog;
     });
@@ -215,7 +216,11 @@ export function createLlmMeteringPlugin(
             ...rest,
             async resolve(source: any, args: any, graphqlContext: any, info: any) {
               // Build the metering context for this request
-              const ctx = await buildMeteringContext(graphqlContext, resolveEntityId);
+              const ctx = await buildMeteringContext(
+                graphqlContext,
+                resolveEntityId,
+                build
+              );
 
               // Run the original resolver within the AsyncLocalStorage scope
               // so any embedder calls made by downstream plugins pick up the ctx

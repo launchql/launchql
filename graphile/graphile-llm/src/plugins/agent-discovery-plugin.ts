@@ -34,14 +34,26 @@ export interface AgentDiscovery {
 
 // ─── Cache ──────────────────────────────────────────────────────────────────
 
-const agentDiscoveryCache = new ModuleConfigCache<AgentDiscovery | null>({
-  name: 'agent-discovery',
-  ttlMs: 60_000
-});
+let agentDiscoveryCaches = new WeakMap<
+  object,
+  ModuleConfigCache<AgentDiscovery | null>
+>();
+
+function cacheForPool(pool: object): ModuleConfigCache<AgentDiscovery | null> {
+  let cache = agentDiscoveryCaches.get(pool);
+  if (!cache) {
+    cache = new ModuleConfigCache<AgentDiscovery | null>({
+      name: 'agent-discovery',
+      ttlMs: 60_000
+    });
+    agentDiscoveryCaches.set(pool, cache);
+  }
+  return cache;
+}
 
 /** Clear all cached discovery results (for testing) */
 export function clearAgentDiscoveryCache(): void {
-  agentDiscoveryCache.clear();
+  agentDiscoveryCaches = new WeakMap();
 }
 
 // ─── Discovery Query ────────────────────────────────────────────────────────
@@ -83,6 +95,7 @@ export async function getAgentDiscovery(
     throw new Error('getAgentDiscovery: databaseId is required');
   }
 
+  const agentDiscoveryCache = cacheForPool(pool);
   const cached = agentDiscoveryCache.get(databaseId);
   if (cached !== undefined) {
     return cached;
