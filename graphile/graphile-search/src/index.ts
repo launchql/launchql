@@ -30,6 +30,13 @@
  * ```
  */
 
+export type { SearchExtensionSchemas } from './extension-metadata';
+export {
+  collectSearchExtensionSchemas,
+  requireBuildExtensionSchema,
+  resolveBuildExtensionSchema,
+} from './extension-metadata';
+
 // Core plugin
 export { createUnifiedSearchPlugin } from './plugin';
 

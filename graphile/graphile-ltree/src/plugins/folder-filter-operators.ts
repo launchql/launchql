@@ -10,31 +10,13 @@ import type {
 import type { SQL } from 'pg-sql2';
 import sql from 'pg-sql2';
 
+import type { LtreeExtensionInfo } from './detect-ltree';
 import { LTREE_SCALAR_NAME } from './ltree-codec';
-
-function hasLtreeHelpers(build: any): boolean {
-  const pgRegistry = build.input?.pgRegistry;
-  if (!pgRegistry) return false;
-  for (const resource of Object.values(pgRegistry.pgResources)) {
-    const r = resource as any;
-    if (r?.extensions?.pg?.schemaName === 'ltree_helpers') return true;
-  }
-  return false;
-}
-
-function slashToLtree(value: SQL, useHelpers: boolean): SQL {
-  if (useHelpers) {
-    return sql.fragment`ltree_helpers.to_path(${value})`;
-  }
-  return sql.fragment`replace(ltrim(${value}, '/'), '/', '.')::ltree`;
-}
-
-function slashGlobToLquery(value: SQL, useHelpers: boolean): SQL {
-  if (useHelpers) {
-    return sql.fragment`ltree_helpers.to_query(${value})`;
-  }
-  return sql.fragment`replace(replace(replace(replace(ltrim(${value}, '/'), '**', '__DSTAR__'), '*', '*{1}'), '__DSTAR__', '*'), '/', '.')::lquery`;
-}
+import {
+  ltreeOperatorExpression,
+  ltreePathExpression,
+  ltreeQueryExpression,
+} from './qualified-sql';
 
 /**
  * Creates folder-oriented connection filter operators for the LTree scalar.
@@ -56,10 +38,9 @@ function slashGlobToLquery(value: SQL, useHelpers: boolean): SQL {
  */
 export function createFolderOperatorFactory(): ConnectionFilterOperatorFactory {
   return (build) => {
-    const ltreeInfo = (build as any).pgLtreeExtensionInfo;
+    const ltreeInfo: LtreeExtensionInfo | undefined =
+      (build as any).pgLtreeExtensionInfo;
     if (!ltreeInfo) return [];
-
-    const useHelpers = hasLtreeHelpers(build);
     const registrations: ConnectionFilterOperatorRegistration[] = [];
 
     registrations.push({
@@ -79,7 +60,12 @@ export function createFolderOperatorFactory(): ConnectionFilterOperatorFactory {
           _details: { fieldName: string | null; operatorName: string }
         ) {
           const pathVal = sql.value(String(input));
-          return sql.fragment`${sqlIdentifier} <@ ${slashToLtree(pathVal, useHelpers)}`;
+          return ltreeOperatorExpression(
+            '<@',
+            sqlIdentifier,
+            ltreePathExpression(pathVal, ltreeInfo),
+            ltreeInfo
+          );
         }
       } satisfies ConnectionFilterOperatorSpec
     });
@@ -101,7 +87,12 @@ export function createFolderOperatorFactory(): ConnectionFilterOperatorFactory {
           _details: { fieldName: string | null; operatorName: string }
         ) {
           const pathVal = sql.value(String(input));
-          return sql.fragment`${sqlIdentifier} @> ${slashToLtree(pathVal, useHelpers)}`;
+          return ltreeOperatorExpression(
+            '@>',
+            sqlIdentifier,
+            ltreePathExpression(pathVal, ltreeInfo),
+            ltreeInfo
+          );
         }
       } satisfies ConnectionFilterOperatorSpec
     });
@@ -124,7 +115,12 @@ export function createFolderOperatorFactory(): ConnectionFilterOperatorFactory {
           _details: { fieldName: string | null; operatorName: string }
         ) {
           const globVal = sql.value(String(input));
-          return sql.fragment`${sqlIdentifier} ~ ${slashGlobToLquery(globVal, useHelpers)}`;
+          return ltreeOperatorExpression(
+            '~',
+            sqlIdentifier,
+            ltreeQueryExpression(globVal, ltreeInfo),
+            ltreeInfo
+          );
         }
       } satisfies ConnectionFilterOperatorSpec
     });

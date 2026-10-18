@@ -343,31 +343,31 @@ describe('PostGIS operator factory (createPostgisOperatorFactory)', () => {
 
       it('generates correct SQL for = operator', () => {
         expect(runOp('exactlyEquals').text).toBe(
-          '"col" = "public"."st_geomfromgeojson"($1::text)'
+          '"col" OPERATOR("public".=) "public"."st_geomfromgeojson"($1::text)'
         );
       });
 
       it('generates correct SQL for && operator', () => {
         expect(runOp('bboxIntersects2D').text).toBe(
-          '"col" && "public"."st_geomfromgeojson"($1::text)'
+          '"col" OPERATOR("public".&&) "public"."st_geomfromgeojson"($1::text)'
         );
       });
 
       it('generates correct SQL for ~ operator', () => {
         expect(runOp('bboxContains').text).toBe(
-          '"col" ~ "public"."st_geomfromgeojson"($1::text)'
+          '"col" OPERATOR("public".~) "public"."st_geomfromgeojson"($1::text)'
         );
       });
 
       it('generates correct SQL for ~= operator', () => {
         expect(runOp('bboxEquals').text).toBe(
-          '"col" ~= "public"."st_geomfromgeojson"($1::text)'
+          '"col" OPERATOR("public".~=) "public"."st_geomfromgeojson"($1::text)'
         );
       });
 
       it('generates correct SQL for &&& operator', () => {
         expect(runOp('bboxIntersectsND').text).toBe(
-          '"col" &&& "public"."st_geomfromgeojson"($1::text)'
+          '"col" OPERATOR("public".&&&) "public"."st_geomfromgeojson"($1::text)'
         );
       });
     });

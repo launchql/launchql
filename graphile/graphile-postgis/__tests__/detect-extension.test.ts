@@ -40,7 +40,7 @@ describe('PostgisExtensionDetectionPlugin', () => {
     it('should detect PostGIS with only geometry codec (no geography)', () => {
       const geometryCodec = {
         name: 'geometry',
-        extensions: { pg: { name: 'geometry', schemaName: 'public' } }
+        extensions: { pg: { name: 'geometry', schemaName: 'public', serviceName: 'main' } }
       };
       const build = {
         input: {
@@ -57,17 +57,18 @@ describe('PostgisExtensionDetectionPlugin', () => {
       expect(result.pgGISExtensionInfo).toBeDefined();
       expect(result.pgGISExtensionInfo.geometryCodec).toBe(geometryCodec);
       expect(result.pgGISExtensionInfo.geographyCodec).toBeNull();
+      expect(result.pgGISExtensionInfo.serviceName).toBe('main');
       expect(result.pgGISExtensionInfo.schemaName).toBe('public');
     });
 
     it('should detect PostGIS when both geometry and geography codecs exist', () => {
       const geometryCodec = {
         name: 'geometry',
-        extensions: { pg: { name: 'geometry', schemaName: 'public' } }
+        extensions: { pg: { name: 'geometry', schemaName: 'public', serviceName: 'main' } }
       };
       const geographyCodec = {
         name: 'geography',
-        extensions: { pg: { name: 'geography', schemaName: 'public' } }
+        extensions: { pg: { name: 'geography', schemaName: 'public', serviceName: 'main' } }
       };
 
       const build = {
@@ -90,11 +91,11 @@ describe('PostgisExtensionDetectionPlugin', () => {
     it('should detect custom schema for PostGIS installation', () => {
       const geometryCodec = {
         name: 'geometry',
-        extensions: { pg: { name: 'geometry', schemaName: 'postgis' } }
+        extensions: { pg: { name: 'geometry', schemaName: 'postgis', serviceName: 'main' } }
       };
       const geographyCodec = {
         name: 'geography',
-        extensions: { pg: { name: 'geography', schemaName: 'postgis' } }
+        extensions: { pg: { name: 'geography', schemaName: 'postgis', serviceName: 'main' } }
       };
 
       const build = {
@@ -113,11 +114,11 @@ describe('PostgisExtensionDetectionPlugin', () => {
     it('should skip codecs without pg extensions', () => {
       const geometryCodec = {
         name: 'geometry',
-        extensions: { pg: { name: 'geometry', schemaName: 'public' } }
+        extensions: { pg: { name: 'geometry', schemaName: 'public', serviceName: 'main' } }
       };
       const geographyCodec = {
         name: 'geography',
-        extensions: { pg: { name: 'geography', schemaName: 'public' } }
+        extensions: { pg: { name: 'geography', schemaName: 'public', serviceName: 'main' } }
       };
       const otherCodec = {
         name: 'custom',
@@ -139,6 +140,45 @@ describe('PostgisExtensionDetectionPlugin', () => {
 
       const result = buildHook(build);
       expect(result.pgGISExtensionInfo).toBeDefined();
+    });
+
+    it('fails closed when codec identity is missing or inconsistent', () => {
+      const extend = (base: any, ext: any) => ({ ...base, ...ext });
+      expect(() => buildHook({
+        input: {
+          pgRegistry: {
+            pgCodecs: {
+              geometry: {
+                name: 'geometry',
+                extensions: { pg: { name: 'geometry', schemaName: 'postgis' } }
+              }
+            }
+          }
+        },
+        extend
+      })).toThrow(/missing exact service\/schema metadata/);
+
+      expect(() => buildHook({
+        input: {
+          pgRegistry: {
+            pgCodecs: {
+              geometry: {
+                name: 'geometry',
+                extensions: {
+                  pg: { name: 'geometry', schemaName: 'postgis_a', serviceName: 'main' }
+                }
+              },
+              geography: {
+                name: 'geography',
+                extensions: {
+                  pg: { name: 'geography', schemaName: 'postgis_b', serviceName: 'main' }
+                }
+              }
+            }
+          }
+        },
+        extend
+      })).toThrow(/different service\/schema identities/);
     });
   });
 });

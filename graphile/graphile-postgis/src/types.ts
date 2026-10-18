@@ -22,6 +22,8 @@ export interface GisFieldValue {
  * PostGIS extension detection result stored on the build object.
  */
 export interface PostgisExtensionInfo {
+  /** Exact Graphile PostgreSQL service that owns these codecs. */
+  serviceName: string;
   /** The schema name where PostGIS is installed (e.g. 'public') */
   schemaName: string;
   /** The geometry codec from the registry (null if only geography columns are used) */

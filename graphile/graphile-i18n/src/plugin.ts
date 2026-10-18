@@ -22,6 +22,7 @@ import 'graphile-build-pg';
 
 import type { PgCodecWithAttributes } from '@dataplan/pg';
 import { TYPES } from '@dataplan/pg';
+import { QuoteUtils } from '@pgsql/quotes';
 import { context as grafastContext, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
 import { withRequestPgClient } from 'graphile-plugin-utils';
@@ -48,20 +49,191 @@ function hasI18nTag(codec: PgCodecWithAttributes): string | false {
   return false;
 }
 
-function resolvePgTypeName(codec: any): string {
-  if (codec === TYPES.uuid) return 'uuid';
-  if (codec === TYPES.int) return 'int4';
-  if (codec === TYPES.bigint) return 'int8';
-  if (codec === TYPES.text) return 'text';
-  if (codec === TYPES.varchar) return 'text';
-  return codec?.name ?? 'text';
-}
-
 function resolveAttrPgType(codec: any): string {
   if (codec === TYPES.text) return 'text';
   if (codec === TYPES.varchar) return 'text';
   if (codec?.name === 'citext') return 'citext';
   return codec?.name ?? 'text';
+}
+
+function resourceIdentity(resource: any, label: string): {
+  serviceName: string;
+  schemaName: string;
+  name: string;
+} {
+  const pg = resource?.codec?.extensions?.pg ?? resource?.extensions?.pg;
+  if (!pg?.serviceName || !pg?.schemaName || !pg?.name) {
+    throw new Error(`[graphile-i18n] ${label} is missing exact service/schema/table metadata`);
+  }
+  return pg;
+}
+
+function compilePgType(build: any, codec: any, label: string): string {
+  if (!codec?.sqlType || typeof build?.sql?.compile !== 'function') {
+    throw new Error(`[graphile-i18n] ${label} has no compilable PostgreSQL type`);
+  }
+  const compiled = build.sql.compile(codec.sqlType);
+  if (!compiled?.text || (compiled.values?.length ?? 0) !== 0) {
+    throw new Error(`[graphile-i18n] ${label} PostgreSQL type did not compile to a static identifier`);
+  }
+  return compiled.text;
+}
+
+/** Resolve one @i18n tag exclusively against this exact build registry. */
+export function resolveI18nTableInfo(
+  build: any,
+  codec: PgCodecWithAttributes,
+  langCodeColumn: string,
+  allowedTypes: readonly string[]
+): I18nTableInfo | null {
+  const translationTableName = hasI18nTag(codec);
+  if (!translationTableName) return null;
+
+  const resources = Object.values(build.input?.pgRegistry?.pgResources ?? {}) as any[];
+  const baseMatches = resources.filter(
+    (resource) => !resource?.parameters && resource?.codec === codec
+  );
+  if (baseMatches.length !== 1) {
+    throw new Error(
+      `[graphile-i18n] @i18n codec '${codec.name}' must resolve exactly one base resource ` +
+      `(matches=${baseMatches.length})`
+    );
+  }
+  const baseResource = baseMatches[0];
+  const base = resourceIdentity(baseResource, 'base resource');
+
+  const primaryKeys = (baseResource.uniques as Array<{
+    attributes: string[];
+    isPrimary?: boolean;
+  }> | undefined)?.filter((unique) => unique.isPrimary) ?? [];
+  if (primaryKeys.length !== 1 || primaryKeys[0].attributes.length !== 1) {
+    throw new Error(
+      `[graphile-i18n] @i18n base '${base.schemaName}.${base.name}' requires one ` +
+      'single-column primary key'
+    );
+  }
+  const pkColumn = primaryKeys[0].attributes[0];
+  const pkAttr = codec.attributes?.[pkColumn] as any;
+  if (!pkAttr) {
+    throw new Error(
+      `[graphile-i18n] Primary key '${pkColumn}' is missing from ` +
+      `'${base.schemaName}.${base.name}'`
+    );
+  }
+  const pkType = compilePgType(build, pkAttr.codec, `${base.schemaName}.${base.name}.${pkColumn}`);
+
+  const translationMatches = resources.filter((resource) => {
+    if (resource?.parameters || !resource?.codec?.attributes) return false;
+    const pg = resource.codec.extensions?.pg ?? resource.extensions?.pg;
+    return pg?.serviceName === base.serviceName &&
+      pg?.schemaName === base.schemaName &&
+      pg?.name === translationTableName;
+  });
+  if (translationMatches.length !== 1) {
+    throw new Error(
+      `[graphile-i18n] @i18n on '${base.schemaName}.${base.name}' must resolve exactly ` +
+      `one same-service, same-schema '${translationTableName}' resource ` +
+      `(matches=${translationMatches.length})`
+    );
+  }
+
+  const translationResource = translationMatches[0];
+  const translation = resourceIdentity(translationResource, 'translation resource');
+  const translationCodec = translationResource.codec as PgCodecWithAttributes;
+  if (!translationCodec.attributes?.[langCodeColumn]) {
+    throw new Error(
+      `[graphile-i18n] Translation table '${translation.schemaName}.${translation.name}' ` +
+      `is missing language column '${langCodeColumn}'`
+    );
+  }
+
+  const conventionalFk = `${base.name}_id`;
+  const matchingFkColumns = Object.entries(translationCodec.attributes)
+    .filter(([attrName, attr]) =>
+      attrName !== 'id' &&
+      attrName !== langCodeColumn &&
+      (attr as any).codec === pkAttr.codec
+    )
+    .map(([attrName]) => attrName);
+  const fkColumn = matchingFkColumns.includes(conventionalFk)
+    ? conventionalFk
+    : matchingFkColumns.length === 1
+      ? matchingFkColumns[0]
+      : null;
+  if (!fkColumn) {
+    throw new Error(
+      `[graphile-i18n] Translation table '${translation.schemaName}.${translation.name}' ` +
+      `has ambiguous or missing FK metadata for '${base.schemaName}.${base.name}'`
+    );
+  }
+
+  const fields: Record<string, TranslatableField> = {};
+  for (const [attrName, attr] of Object.entries(translationCodec.attributes)) {
+    if (attrName === langCodeColumn || attrName === fkColumn) continue;
+    if (attrName === 'id' || attrName === 'created_at' || attrName === 'updated_at') continue;
+
+    const pgType = resolveAttrPgType((attr as any).codec);
+    if (!allowedTypes.includes(pgType)) continue;
+    if (!codec.attributes?.[attrName]) {
+      throw new Error(
+        `[graphile-i18n] Translation field '${translation.schemaName}.${translation.name}.` +
+        `${attrName}' has no matching base field on '${base.schemaName}.${base.name}'`
+      );
+    }
+
+    const gqlName = build.inflection.camelCase(attrName);
+    fields[gqlName] = {
+      column: attrName,
+      type: pgType,
+      isNotNull: !!(attr as any).notNull,
+    };
+  }
+  if (Object.keys(fields).length === 0) {
+    throw new Error(
+      `[graphile-i18n] Translation table '${translation.schemaName}.${translation.name}' ` +
+      'has no eligible translatable fields'
+    );
+  }
+
+  return {
+    baseTable: base.name,
+    translationTable: translation.name,
+    schemaName: base.schemaName,
+    fkColumn,
+    pkColumn,
+    pkType,
+    fields,
+  };
+}
+
+export function buildI18nLookupSql(
+  info: I18nTableInfo,
+  langCodeColumn: string
+): string {
+  const {
+    schemaName,
+    baseTable,
+    translationTable,
+    fkColumn,
+    pkColumn,
+    pkType,
+    fields,
+  } = info;
+  const qi = (name: string): string => QuoteUtils.quoteIdentifier(name);
+  const coalescedCols = Object.values(fields)
+    .map((field) => `coalesce(v.${qi(field.column)}, b.${qi(field.column)}) as ${qi(field.column)}`)
+    .join(', ');
+  const baseTableRef = QuoteUtils.quoteQualifiedIdentifier(schemaName, baseTable);
+  const translationTableRef = QuoteUtils.quoteQualifiedIdentifier(schemaName, translationTable);
+
+  return `SELECT v.${qi(langCodeColumn)} AS "lang_code", ${coalescedCols}
+             FROM ${baseTableRef} b
+             LEFT JOIN ${translationTableRef} v
+               ON v.${qi(fkColumn)} = b.${qi(pkColumn)}
+               AND array_position($2::text[], v.${qi(langCodeColumn)}) IS NOT NULL
+             WHERE b.${qi(pkColumn)} = $1::${pkType}
+             ORDER BY array_position($2::text[], v.${qi(langCodeColumn)}) ASC NULLS LAST
+             LIMIT 1`;
 }
 
 // ─── Plugin Factory ──────────────────────────────────────────────────────────
@@ -92,113 +264,9 @@ export function createI18nPlugin(options: I18nPluginOptions = {}): GraphileConfi
               const c = codec as PgCodecWithAttributes;
               if (!c.attributes) continue;
 
-              const translationTableName = hasI18nTag(c);
-              if (!translationTableName) continue;
-
-              // Get schema name from the codec's pg extensions
-              let schemaName = (c.extensions as any)?.pg?.schemaName ?? 'public';
-              let pkColumn: string | null = null;
-              let pkType = 'text';
-              for (const [, resource] of Object.entries(build.input.pgRegistry.pgResources)) {
-                const r = resource as any;
-                if (r.codec === c) {
-                  // Try multiple sources for schema name
-                  const rSchema = r.extensions?.pg?.schemaName ?? r.schemaName;
-                  if (rSchema) schemaName = rSchema;
-                  // Extract PK from the resource's uniques array
-                  const uniques = r.uniques as Array<{ attributes: string[]; isPrimary?: boolean }> | undefined;
-                  if (uniques) {
-                    const pk = uniques.find((u: any) => u.isPrimary);
-                    if (pk && pk.attributes.length === 1) {
-                      pkColumn = pk.attributes[0];
-                      const pkAttr = c.attributes[pkColumn];
-                      if (pkAttr) {
-                        pkType = resolvePgTypeName((pkAttr as any).codec);
-                      }
-                    }
-                  }
-                  break;
-                }
-              }
-              if (!pkColumn) continue;
-
-              // Find the translation codec. The @i18n tag value is the SQL table name
-              // (e.g. 'posts_translations'), but PostGraphile inflects codec names
-              // to camelCase (e.g. 'postsTranslations'). Match via resource name.
-              let translationCodec: PgCodecWithAttributes | null = null;
-              for (const [, resource] of Object.entries(build.input.pgRegistry.pgResources)) {
-                const r = resource as any;
-                if (!r.codec?.attributes) continue;
-                // Match by the resource's SQL name (which preserves snake_case)
-                const sqlName = r.codec?.extensions?.pg?.name ?? r.name;
-                if (sqlName === translationTableName) {
-                  translationCodec = r.codec as PgCodecWithAttributes;
-                  break;
-                }
-              }
-              // Fallback: try matching the inflected codec name directly
-              if (!translationCodec) {
-                const inflectedName = build.inflection.camelCase(translationTableName);
-                for (const [, tCodec] of Object.entries(build.input.pgRegistry.pgCodecs)) {
-                  const tc = tCodec as any;
-                  if (!tc.attributes) continue;
-                  if (tc.name === translationTableName || tc.name === inflectedName) {
-                    translationCodec = tc;
-                    break;
-                  }
-                }
-              }
-
-              if (!translationCodec) continue;
-
-              // Find FK column on translation table — convention first, then type match
-              let fkColumn: string | null = null;
-              const conventionalFk = `${c.name}_id`;
-              if (translationCodec.attributes[conventionalFk]) {
-                fkColumn = conventionalFk;
-              }
-              if (!fkColumn) {
-                // Fallback: find a column with the same type as the PK, excluding
-                // common non-FK columns (id, lang_code)
-                for (const [attrName, attr] of Object.entries(translationCodec.attributes)) {
-                  if (attrName === 'id' || attrName === langCodeColumn) continue;
-                  const a = attr as any;
-                  if (a.codec === (c.attributes[pkColumn] as any).codec) {
-                    fkColumn = attrName;
-                    break;
-                  }
-                }
-              }
-              if (!fkColumn) continue;
-
-              // Discover translatable fields
-              const fields: Record<string, TranslatableField> = {};
-              for (const [attrName, attr] of Object.entries(translationCodec.attributes)) {
-                if (attrName === langCodeColumn || attrName === fkColumn) continue;
-                if (attrName === 'id' || attrName === 'created_at' || attrName === 'updated_at') continue;
-
-                const pgType = resolveAttrPgType((attr as any).codec);
-                if (!allowedTypes.includes(pgType)) continue;
-
-                const gqlName = build.inflection.camelCase(attrName);
-                fields[gqlName] = {
-                  column: attrName,
-                  type: pgType,
-                  isNotNull: !!(attr as any).notNull,
-                };
-              }
-
-              if (Object.keys(fields).length === 0) continue;
-
-              i18nRegistry[c.name] = {
-                baseTable: c.name,
-                translationTable: translationTableName,
-                schemaName,
-                fkColumn,
-                pkColumn,
-                pkType,
-                fields,
-              };
+              if (!hasI18nTag(c)) continue;
+              const info = resolveI18nTableInfo(build, c, langCodeColumn, allowedTypes);
+              if (info) i18nRegistry[c.name] = info;
             }
 
             return _;
@@ -234,21 +302,8 @@ export function createI18nPlugin(options: I18nPluginOptions = {}): GraphileConfi
           }
           const localeType = localeTypeCache[localeTypeName];
 
-          const { schemaName, baseTable, translationTable, fkColumn, pkColumn, pkType, fields: i18nFields } = info;
-
-          const coalescedCols = Object.values(i18nFields)
-            .map(f => `coalesce(v."${f.column}", b."${f.column}") as "${f.column}"`)
-            .join(', ');
-
-          // Build the SQL query template
-          const sqlQuery = `SELECT v."${langCodeColumn}" AS "lang_code", ${coalescedCols}
-             FROM "${schemaName}"."${baseTable}" b
-             LEFT JOIN "${schemaName}"."${translationTable}" v
-               ON v."${fkColumn}" = b."${pkColumn}"
-               AND array_position($2::text[], v."${langCodeColumn}") IS NOT NULL
-             WHERE b."${pkColumn}" = $1::${pkType}
-             ORDER BY array_position($2::text[], v."${langCodeColumn}") ASC NULLS LAST
-             LIMIT 1`;
+          const { pkColumn, fields: i18nFields } = info;
+          const sqlQuery = buildI18nLookupSql(info, langCodeColumn);
 
           // Build column names list for mapping base values
           const baseColNames = Object.entries(i18nFields).map(([gqlName, f]) => ({

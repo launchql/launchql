@@ -1,6 +1,7 @@
 import sql from 'pg-sql2';
 
 import {
+  buildSpatialJoinFragment,
   collectSpatialRelations,
   OPERATOR_REGISTRY,
   parseSpatialRelationTag,
@@ -129,6 +130,23 @@ describe('OPERATOR_REGISTRY', () => {
         expect(op.pgToken).toBe(op.name);
       }
     }
+  });
+
+  it('schema-qualifies the PostGIS infix operator in relation SQL', () => {
+    const fragment = buildSpatialJoinFragment(
+      {
+        ownerAttributeName: 'location',
+        targetAttributeName: 'geom',
+        operator: OPERATOR_REGISTRY.st_bbox_intersects,
+      } as any,
+      'postgis_ext',
+      sql.identifier('owner'),
+      sql.identifier('target'),
+      null
+    );
+    expect(sql.compile(fragment).text).toBe(
+      '"owner"."location" OPERATOR("postgis_ext".&&) "target"."geom"'
+    );
   });
 });
 

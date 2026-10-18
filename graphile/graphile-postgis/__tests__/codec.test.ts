@@ -1,4 +1,5 @@
 import type { PgCodec } from '@dataplan/pg';
+import sql from 'pg-sql2';
 
 import { GisSubtype } from '../src/constants';
 import { PostgisCodecPlugin } from '../src/plugins/codec';
@@ -27,16 +28,33 @@ describe('PostgisCodecPlugin', () => {
     const gatherHook = (PostgisCodecPlugin as { gather: { hooks: { pgCodecs_findPgCodec: Function } } })
       .gather.hooks.pgCodecs_findPgCodec;
 
-    it('should skip if pgCodec is already set', async () => {
-      const info = { helpers: { pgIntrospection: { getNamespace: jest.fn() } } };
-      const event = { pgCodec: { name: 'existing' }, pgType: { typname: 'geometry' }, serviceName: 'main' };
+    it('should bind exact identity when a native pgCodec is already set', async () => {
+      const info = {
+        helpers: {
+          pgIntrospection: {
+            getNamespace: jest.fn().mockResolvedValue({ _id: '123', nspname: 'postgis_ext' })
+          }
+        }
+      };
+      const event = {
+        pgCodec: { name: 'geometry' } as PgCodec,
+        pgType: { typname: 'geometry', typnamespace: '123', _id: '456' },
+        serviceName: 'main'
+      };
+      const originalCodec = event.pgCodec;
 
       await gatherHook(info, event);
-      // Should not have called getNamespace since pgCodec was already set
-      expect(info.helpers.pgIntrospection.getNamespace).not.toHaveBeenCalled();
+      expect(event.pgCodec).toBe(originalCodec);
+      expect(info.helpers.pgIntrospection.getNamespace).toHaveBeenCalledWith('main', '123');
+      expect(event.pgCodec.extensions?.pg).toEqual({
+        serviceName: 'main',
+        schemaName: 'postgis_ext',
+        name: 'geometry'
+      });
+      expect(sql.compile(event.pgCodec.sqlType!).text).toBe('"postgis_ext"."geometry"');
     });
 
-    it('should skip if namespace is not found', async () => {
+    it('should fail closed if namespace is not found', async () => {
       const info = {
         helpers: { pgIntrospection: { getNamespace: jest.fn().mockResolvedValue(null) } }
       };
@@ -46,8 +64,9 @@ describe('PostgisCodecPlugin', () => {
         serviceName: 'main'
       };
 
-      await gatherHook(info, event);
-      expect(event.pgCodec).toBeNull();
+      await expect(gatherHook(info, event)).rejects.toThrow(
+        /Cannot resolve namespace for geometry codec/
+      );
     });
 
     it('should create geometry codec when type is geometry', async () => {

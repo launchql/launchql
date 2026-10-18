@@ -32,6 +32,7 @@
     "@agentic-kit/ollama": "workspace:*",
     "@constructive-io/express-context": "workspace:^",
     "@constructive-io/llm-env": "workspace:^",
+    "@pgsql/quotes": "^18.2.4",
     "graphile-cache": "workspace:^"
   },
   "peerDependencies": {

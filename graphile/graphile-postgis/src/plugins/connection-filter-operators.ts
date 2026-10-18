@@ -18,21 +18,22 @@ import type { PostgisExtensionInfo } from './detect-extension';
  * Builds an infix operator SQL fragment from a validated operator string.
  * Uses explicit template literals for each operator to avoid sql.raw.
  */
-function buildOperatorExpr(op: string, i: SQL, v: SQL): SQL {
+function buildOperatorExpr(schemaName: string, op: string, i: SQL, v: SQL): SQL {
+  const schema = sql.identifier(schemaName);
   switch (op) {
-  case '=':   return sql.fragment`${i} = ${v}`;
-  case '&&':  return sql.fragment`${i} && ${v}`;
-  case '&&&': return sql.fragment`${i} &&& ${v}`;
-  case '&<':  return sql.fragment`${i} &< ${v}`;
-  case '&<|': return sql.fragment`${i} &<| ${v}`;
-  case '&>':  return sql.fragment`${i} &> ${v}`;
-  case '|&>': return sql.fragment`${i} |&> ${v}`;
-  case '<<':  return sql.fragment`${i} << ${v}`;
-  case '<<|': return sql.fragment`${i} <<| ${v}`;
-  case '>>':  return sql.fragment`${i} >> ${v}`;
-  case '|>>': return sql.fragment`${i} |>> ${v}`;
-  case '~':   return sql.fragment`${i} ~ ${v}`;
-  case '~=':  return sql.fragment`${i} ~= ${v}`;
+  case '=':   return sql.fragment`${i} OPERATOR(${schema}.=) ${v}`;
+  case '&&':  return sql.fragment`${i} OPERATOR(${schema}.&&) ${v}`;
+  case '&&&': return sql.fragment`${i} OPERATOR(${schema}.&&&) ${v}`;
+  case '&<':  return sql.fragment`${i} OPERATOR(${schema}.&<) ${v}`;
+  case '&<|': return sql.fragment`${i} OPERATOR(${schema}.&<|) ${v}`;
+  case '&>':  return sql.fragment`${i} OPERATOR(${schema}.&>) ${v}`;
+  case '|&>': return sql.fragment`${i} OPERATOR(${schema}.|&>) ${v}`;
+  case '<<':  return sql.fragment`${i} OPERATOR(${schema}.<<) ${v}`;
+  case '<<|': return sql.fragment`${i} OPERATOR(${schema}.<<|) ${v}`;
+  case '>>':  return sql.fragment`${i} OPERATOR(${schema}.>>) ${v}`;
+  case '|>>': return sql.fragment`${i} OPERATOR(${schema}.|>>) ${v}`;
+  case '~':   return sql.fragment`${i} OPERATOR(${schema}.~) ${v}`;
+  case '~=':  return sql.fragment`${i} OPERATOR(${schema}.~=) ${v}`;
   default:
     throw new Error(`Unexpected PostGIS SQL operator: ${op}`);
   }
@@ -289,7 +290,8 @@ export function createPostgisOperatorFactory(): ConnectionFilterOperatorFactory 
           operatorName,
           description,
           baseType: baseType as 'geometry' | 'geography',
-          resolve: (i: SQL, v: SQL) => buildOperatorExpr(capturedOp, i, v)
+          resolve: (i: SQL, v: SQL) =>
+            buildOperatorExpr(schemaName, capturedOp, i, v)
         });
       }
     }

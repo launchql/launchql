@@ -12,6 +12,7 @@
 
 import type { SQL } from 'pg-sql2';
 
+import type { SearchExtensionSchemas } from '../extension-metadata';
 import type { FilterApplyResult,SearchableColumn, SearchAdapter } from '../types';
 import { type ChunksInfo,getChunksInfo } from './chunks';
 
@@ -46,6 +47,12 @@ export interface TrgmAdapterOptions {
    * @default true
    */
   requireIntentionalSearch?: boolean;
+}
+
+interface TrgmColumnData {
+  serviceName: string;
+  extensionSchema: string;
+  chunksInfo?: ChunksInfo;
 }
 
 export function createTrgmAdapter(
@@ -89,12 +96,39 @@ export function createTrgmAdapter(
         codec.attributes as Record<string, any>
       )) {
         if (isTextCodec(attribute.codec)) {
+          const binding: SearchExtensionSchemas | undefined =
+            attribute?.extensions?.searchExtensionSchemas;
+          if (!binding) {
+            const tableName = codec?.extensions?.pg?.name ?? codec?.name ?? '<unknown>';
+            throw new Error(
+              `[graphile-search] pg_trgm column '${tableName}.${attributeName}' is ` +
+              'missing service-bound extension schema metadata'
+            );
+          }
+          if (!binding.pgTrgmSchema) {
+            const explicitlyRequired =
+              requireIntentionalSearch === false ||
+              codec?.extensions?.tags?.trgmSearch === true ||
+              attribute?.extensions?.tags?.trgmSearch === true;
+            if (explicitlyRequired) {
+              const tableName = codec?.extensions?.pg?.name ?? codec?.name ?? '<unknown>';
+              throw new Error(
+                `[graphile-search] pg_trgm is required for '${tableName}.${attributeName}' ` +
+                `but is not installed for service '${binding.serviceName}'`
+              );
+            }
+            continue;
+          }
           // Store chunks info if available and chunks have trigram search
           const chunksInfo = getChunksInfo(codec);
           const hasChunkTrgm = chunksInfo?.searchIndexes.includes('trigram');
           columns.push({
             attributeName,
-            adapterData: hasChunkTrgm ? chunksInfo : undefined,
+            adapterData: {
+              serviceName: binding.serviceName,
+              extensionSchema: binding.pgTrgmSchema,
+              ...(hasChunkTrgm ? { chunksInfo } : {}),
+            } satisfies TrgmColumnData,
           });
         }
       }
@@ -152,12 +186,20 @@ export function createTrgmAdapter(
       const { value, threshold, includeChunks } = filterValue;
       if (!value || typeof value !== 'string' || value.trim().length === 0) return null;
 
+      const columnData = column.adapterData as TrgmColumnData | undefined;
+      if (!columnData?.extensionSchema || !columnData.serviceName) {
+        throw new Error(
+          `[graphile-search] pg_trgm column '${column.attributeName}' has no bound ` +
+          'extension schema'
+        );
+      }
       const th = threshold != null ? threshold : defaultThreshold;
       const columnExpr = sql`${alias}.${sql.identifier(column.attributeName)}`;
-      const similarityExpr = sql`similarity(${columnExpr}, ${sql.value(value)})`;
+      const similarity = sql.identifier(columnData.extensionSchema, 'similarity');
+      const similarityExpr = sql`${similarity}(${columnExpr}, ${sql.value(value)})`;
 
       // Check for chunk-aware querying
-      const chunksInfo = column.adapterData as ChunksInfo | undefined;
+      const chunksInfo = columnData.chunksInfo;
       if (chunksInfo && chunksInfo.searchIndexes.includes('trigram') && (includeChunks !== false)) {
         const chunksTableRef = chunksInfo.chunksSchema
           ? sql`${sql.identifier(chunksInfo.chunksSchema)}.${sql.identifier(chunksInfo.chunksTableName)}`
@@ -169,10 +211,10 @@ export function createTrgmAdapter(
 
         // Subquery: MAX(similarity) across chunks (higher = better for trgm)
         const chunkSimilaritySubquery = sql`(
-          SELECT MAX(similarity(${chunksAlias}.${chunkContentField}, ${sql.value(value)}))
+          SELECT MAX(${similarity}(${chunksAlias}.${chunkContentField}, ${sql.value(value)}))
           FROM ${chunksTableRef} AS ${chunksAlias}
           WHERE ${chunksAlias}.${parentFk} = ${parentId}
-            AND similarity(${chunksAlias}.${chunkContentField}, ${sql.value(value)}) > ${sql.value(th)}
+            AND ${similarity}(${chunksAlias}.${chunkContentField}, ${sql.value(value)}) > ${sql.value(th)}
         )`;
 
         // Combined: GREATEST of parent similarity and best chunk similarity

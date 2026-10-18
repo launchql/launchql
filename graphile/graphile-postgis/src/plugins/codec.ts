@@ -199,11 +199,11 @@ export const PostgisCodecPlugin: GraphileConfig.Plugin = {
   gather: {
     hooks: {
       async pgCodecs_findPgCodec(info, event) {
-        if (event.pgCodec) {
+        const { pgType: type, serviceName } = event;
+
+        if (type.typname !== 'geometry' && type.typname !== 'geography') {
           return;
         }
-
-        const { pgType: type, serviceName } = event;
 
         // Find the namespace for this type by its OID
         const typeNamespace = await info.helpers.pgIntrospection.getNamespace(
@@ -212,6 +212,35 @@ export const PostgisCodecPlugin: GraphileConfig.Plugin = {
         );
 
         if (!typeNamespace) {
+          throw new Error(
+            `[graphile-postgis] Cannot resolve namespace for ${type.typname} ` +
+            `codec in service '${serviceName}'`
+          );
+        }
+
+        if (event.pgCodec) {
+          const existingPg = event.pgCodec.extensions?.pg;
+          if (
+            (existingPg?.serviceName && existingPg.serviceName !== serviceName) ||
+            (existingPg?.schemaName && existingPg.schemaName !== typeNamespace.nspname)
+          ) {
+            throw new Error(
+              `[graphile-postgis] Existing ${type.typname} codec identity conflicts ` +
+              `with introspection for service '${serviceName}'`
+            );
+          }
+          const existingCodec = event.pgCodec as any;
+          existingCodec.sqlType = sql.identifier(typeNamespace.nspname, type.typname);
+          existingCodec.extensions = {
+            ...existingCodec.extensions,
+            oid: type._id,
+            pg: {
+              ...existingPg,
+              serviceName,
+              schemaName: typeNamespace.nspname,
+              name: type.typname,
+            },
+          };
           return;
         }
 

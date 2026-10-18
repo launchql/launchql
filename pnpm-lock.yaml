@@ -542,6 +542,9 @@ importers:
       '@dataplan/pg':
         specifier: 1.1.1
         version: 1.1.1(@dataplan/json@1.0.1(grafast@1.1.2(graphql@16.13.0)))(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0)
+      '@pgsql/quotes':
+        specifier: ^18.2.4
+        version: 18.2.4
       grafast:
         specifier: 1.1.2
         version: 1.1.2(graphql@16.13.0)
@@ -765,6 +768,9 @@ importers:
       '@dataplan/pg':
         specifier: 1.1.1
         version: 1.1.1(@dataplan/json@1.0.1(grafast@1.1.2(graphql@16.13.0)))(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0)
+      '@pgsql/quotes':
+        specifier: ^18.2.4
+        version: 18.2.4
       accept-language-parser:
         specifier: ^1.5.0
         version: 1.5.0
@@ -830,6 +836,9 @@ importers:
       '@dataplan/pg':
         specifier: 1.1.1
         version: 1.1.1(@dataplan/json@1.0.1(grafast@1.1.2(graphql@16.13.0)))(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0)
+      '@pgsql/quotes':
+        specifier: ^18.2.4
+        version: 18.2.4
       grafast:
         specifier: 1.1.2
         version: 1.1.2(graphql@16.13.0)
@@ -1352,6 +1361,9 @@ importers:
       '@dataplan/pg':
         specifier: 1.1.1
         version: 1.1.1(@dataplan/json@1.0.1(grafast@1.1.2(graphql@16.13.0)))(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0)
+      '@pgsql/quotes':
+        specifier: ^18.2.4
+        version: 18.2.4
       graphile-build:
         specifier: 5.1.1
         version: 5.1.1(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)

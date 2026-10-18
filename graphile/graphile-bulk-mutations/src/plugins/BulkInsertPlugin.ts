@@ -1,6 +1,7 @@
 import '../augmentations';
 
 import { sideEffectWithPgClient } from '@dataplan/pg';
+import { QuoteUtils } from '@pgsql/quotes';
 import type { GraphileConfig } from 'graphile-config';
 import type { GraphQLInputType, GraphQLOutputType } from 'graphql';
 
@@ -275,7 +276,7 @@ export const BulkInsertPlugin: GraphileConfig.Plugin = {
                           const pkConditions = allPkRows.map((pkRow, rowIdx) => {
                             return pkColumns.map((col, colIdx) => {
                               const paramIdx = rowIdx * pkColumns.length + colIdx + 1;
-                              return `"${col}" = $${paramIdx}`;
+                              return `${QuoteUtils.quoteIdentifier(col)} = $${paramIdx}`;
                             }).join(' AND ');
                           });
                           const whereClause = pkConditions.map((c) => `(${c})`).join(' OR ');

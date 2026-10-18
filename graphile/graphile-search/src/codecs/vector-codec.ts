@@ -26,8 +26,6 @@ export const VectorCodecPlugin: GraphileConfig.Plugin = {
   gather: {
     hooks: {
       async pgCodecs_findPgCodec(info, event) {
-        if (event.pgCodec) return;
-
         const { pgType: type, serviceName } = event;
         if (type.typname !== 'vector') return;
 
@@ -35,9 +33,40 @@ export const VectorCodecPlugin: GraphileConfig.Plugin = {
           serviceName,
           type.typnamespace
         );
-        if (!typeNamespace) return;
+        if (!typeNamespace?.nspname) {
+          throw new Error(
+            `[graphile-search] Cannot resolve the vector type namespace for ` +
+            `service '${serviceName}'`
+          );
+        }
 
         const schemaName = typeNamespace.nspname;
+
+        if (event.pgCodec) {
+          const existingPg = event.pgCodec.extensions?.pg;
+          if (
+            (existingPg?.serviceName && existingPg.serviceName !== serviceName) ||
+            (existingPg?.schemaName && existingPg.schemaName !== schemaName)
+          ) {
+            throw new Error(
+              `[graphile-search] Existing vector codec identity conflicts with ` +
+              `introspection for service '${serviceName}'`
+            );
+          }
+          const existingCodec = event.pgCodec as any;
+          existingCodec.sqlType = sql.identifier(schemaName, 'vector');
+          existingCodec.extensions = {
+            ...existingCodec.extensions,
+            oid: type._id,
+            pg: {
+              ...existingPg,
+              serviceName,
+              schemaName,
+              name: 'vector',
+            },
+          };
+          return;
+        }
 
         event.pgCodec = {
           name: 'vector',

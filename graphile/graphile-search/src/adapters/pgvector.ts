@@ -8,8 +8,15 @@
 
 import type { SQL } from 'pg-sql2';
 
+import type { SearchExtensionSchemas } from '../extension-metadata';
 import type { FilterApplyResult,SearchableColumn, SearchAdapter } from '../types';
 import { type ChunksInfo,getChunksInfo } from './chunks';
+
+interface PgvectorColumnData {
+  serviceName: string;
+  extensionSchema: string;
+  chunksInfo?: ChunksInfo;
+}
 
 /**
  * Build a distance expression for the given metric.
@@ -20,15 +27,16 @@ function buildDistanceExpr(
   columnExpr: SQL,
   vectorExpr: SQL,
   metric: string,
+  extensionSchema: string,
 ): SQL {
   switch (metric) {
   case 'L2':
-    return sql`(${columnExpr} <-> ${vectorExpr})`;
+    return sql`(${columnExpr} OPERATOR(${sql.identifier(extensionSchema)}.<->) ${vectorExpr})`;
   case 'IP':
-    return sql`(${columnExpr} <#> ${vectorExpr})`;
+    return sql`(${columnExpr} OPERATOR(${sql.identifier(extensionSchema)}.<#>) ${vectorExpr})`;
   case 'COSINE':
   default:
-    return sql`(${columnExpr} <=> ${vectorExpr})`;
+    return sql`(${columnExpr} OPERATOR(${sql.identifier(extensionSchema)}.<=>) ${vectorExpr})`;
   }
 }
 
@@ -92,9 +100,33 @@ export function createPgvectorAdapter(
         codec.attributes as Record<string, any>
       )) {
         if (isVectorCodec(attribute.codec)) {
+          const binding: SearchExtensionSchemas | undefined =
+            attribute?.extensions?.searchExtensionSchemas;
+          const codecPg = attribute.codec?.extensions?.pg;
+          if (!binding?.pgvectorSchema || !codecPg?.schemaName || !codecPg?.serviceName) {
+            const tableName = codec?.extensions?.pg?.name ?? codec?.name ?? '<unknown>';
+            throw new Error(
+              `[graphile-search] pgvector column '${tableName}.${attributeName}' is ` +
+              'missing exact codec/service extension metadata'
+            );
+          }
+          if (
+            codecPg.schemaName !== binding.pgvectorSchema ||
+            codecPg.serviceName !== binding.serviceName
+          ) {
+            throw new Error(
+              `[graphile-search] pgvector column '${attributeName}' codec identity ` +
+              `'${codecPg.serviceName}/${codecPg.schemaName}' does not match extension ` +
+              `'${binding.serviceName}/${binding.pgvectorSchema}'`
+            );
+          }
           columns.push({
             attributeName,
-            adapterData: chunksInfo ? { chunksInfo } : undefined,
+            adapterData: {
+              serviceName: binding.serviceName,
+              extensionSchema: binding.pgvectorSchema,
+              ...(chunksInfo ? { chunksInfo } : {}),
+            } satisfies PgvectorColumnData,
           });
         }
       }
@@ -195,12 +227,21 @@ export function createPgvectorAdapter(
       const { vector, metric, distance, includeChunks } = filterValue;
       if (!vector || !Array.isArray(vector) || vector.length === 0) return null;
 
+      const adapterData = column.adapterData as PgvectorColumnData | undefined;
+      if (!adapterData?.extensionSchema || !adapterData.serviceName) {
+        throw new Error(
+          `[graphile-search] pgvector column '${column.attributeName}' has no bound ` +
+          'extension schema'
+        );
+      }
       const resolvedMetric = metric || defaultMetric;
       const vectorString = `[${vector.join(',')}]`;
-      const vectorExpr = sql`${sql.value(vectorString)}::vector`;
+      const vectorExpr = sql`${sql.value(vectorString)}::${sql.identifier(
+        adapterData.extensionSchema,
+        'vector'
+      )}`;
 
       // Check if this column has chunks info and chunk querying is requested
-      const adapterData = column.adapterData as { chunksInfo?: ChunksInfo } | undefined;
       const chunksInfo = adapterData?.chunksInfo;
 
       if (chunksInfo && (includeChunks !== false)) {
@@ -217,7 +258,13 @@ export function createPgvectorAdapter(
         const chunksAlias = sql.identifier('__chunks');
 
         // Subquery: SELECT MIN(distance) FROM chunks WHERE chunks.parent_fk = parent.pk
-        const chunkDistanceExpr = buildDistanceExpr(sql, sql`${chunksAlias}.${chunkEmbedding}`, vectorExpr, resolvedMetric);
+        const chunkDistanceExpr = buildDistanceExpr(
+          sql,
+          sql`${chunksAlias}.${chunkEmbedding}`,
+          vectorExpr,
+          resolvedMetric,
+          adapterData.extensionSchema
+        );
         const chunkDistanceSubquery = sql`(
           SELECT MIN(${chunkDistanceExpr})
           FROM ${chunksTableRef} AS ${chunksAlias}
@@ -226,7 +273,13 @@ export function createPgvectorAdapter(
 
         // Also compute direct parent distance if the parent has an embedding
         const parentColumnExpr = sql`${alias}.${sql.identifier(column.attributeName)}`;
-        const parentDistanceExpr = buildDistanceExpr(sql, parentColumnExpr, vectorExpr, resolvedMetric);
+        const parentDistanceExpr = buildDistanceExpr(
+          sql,
+          parentColumnExpr,
+          vectorExpr,
+          resolvedMetric,
+          adapterData.extensionSchema
+        );
 
         // Use LEAST of parent distance and closest chunk distance
         // COALESCE handles cases where parent or chunks may not have embeddings
@@ -248,7 +301,13 @@ export function createPgvectorAdapter(
 
       // Standard (non-chunk) query
       const columnExpr = sql`${alias}.${sql.identifier(column.attributeName)}`;
-      const distanceExpr = buildDistanceExpr(sql, columnExpr, vectorExpr, resolvedMetric);
+      const distanceExpr = buildDistanceExpr(
+        sql,
+        columnExpr,
+        vectorExpr,
+        resolvedMetric,
+        adapterData.extensionSchema
+      );
 
       let whereClause: SQL | null = null;
       if (distance !== undefined && distance !== null) {

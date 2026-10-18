@@ -8,6 +8,62 @@ import type { PostgisExtensionInfo } from '../types';
 
 export type { PostgisExtensionInfo } from '../types';
 
+function codecIdentity(codec: any, typeName: string): {
+  serviceName: string;
+  schemaName: string;
+} {
+  const pg = codec?.extensions?.pg;
+  if (!pg?.serviceName || !pg?.schemaName) {
+    throw new Error(
+      `[graphile-postgis] ${typeName} codec is missing exact service/schema metadata`
+    );
+  }
+  return { serviceName: pg.serviceName, schemaName: pg.schemaName };
+}
+
+/** Resolve one unambiguous PostGIS installation identity for this build. */
+export function resolvePostgisExtensionInfo(build: any): PostgisExtensionInfo | undefined {
+  const pgRegistry = build.input?.pgRegistry;
+  if (!pgRegistry) return undefined;
+
+  const geometryCodecs: PgCodec[] = [];
+  const geographyCodecs: PgCodec[] = [];
+  for (const codec of Object.values(pgRegistry.pgCodecs) as PgCodec[]) {
+    const name = codec?.extensions?.pg?.name;
+    if (name === 'geometry') geometryCodecs.push(codec);
+    if (name === 'geography') geographyCodecs.push(codec);
+  }
+  if (geometryCodecs.length === 0 && geographyCodecs.length === 0) return undefined;
+  if (geometryCodecs.length > 1 || geographyCodecs.length > 1) {
+    throw new Error(
+      `[graphile-postgis] Ambiguous codecs in one build ` +
+      `(geometry=${geometryCodecs.length}, geography=${geographyCodecs.length})`
+    );
+  }
+
+  const geometryCodec = geometryCodecs[0] ?? null;
+  const geographyCodec = geographyCodecs[0] ?? null;
+  const primary = geometryCodec ?? geographyCodec!;
+  const identity = codecIdentity(primary, geometryCodec ? 'geometry' : 'geography');
+  if (geometryCodec && geographyCodec) {
+    const geographyIdentity = codecIdentity(geographyCodec, 'geography');
+    if (
+      geographyIdentity.serviceName !== identity.serviceName ||
+      geographyIdentity.schemaName !== identity.schemaName
+    ) {
+      throw new Error(
+        '[graphile-postgis] geometry/geography codecs resolve to different service/schema identities'
+      );
+    }
+  }
+
+  return {
+    ...identity,
+    geometryCodec,
+    geographyCodec,
+  };
+}
+
 /**
  * PostgisExtensionDetectionPlugin
  *
@@ -25,44 +81,8 @@ export const PostgisExtensionDetectionPlugin: GraphileConfig.Plugin = {
   schema: {
     hooks: {
       build(build) {
-        const pgRegistry = build.input?.pgRegistry;
-        if (!pgRegistry) {
-          return build;
-        }
-
-        let geometryCodec: PgCodec | null = null;
-        let geographyCodec: PgCodec | null = null;
-        let schemaName: string = 'public';
-
-        // Search through codecs for geometry and geography types
-        for (const codec of Object.values(pgRegistry.pgCodecs)) {
-          const pg = codec?.extensions?.pg;
-          if (!pg) continue;
-
-          if (pg.name === 'geometry') {
-            geometryCodec = codec;
-            schemaName = pg.schemaName || 'public';
-          } else if (pg.name === 'geography') {
-            geographyCodec = codec;
-            if (!geometryCodec) {
-              schemaName = pg.schemaName || 'public';
-            }
-          }
-        }
-
-        // PostGIS is detected when at least one of geometry or geography
-        // codecs is present. Some databases use only geography columns
-        // (e.g. use_geography: true in SearchSpatial), so PostGraphile may
-        // introspect geography but not geometry.
-        if (!geometryCodec && !geographyCodec) {
-          return build;
-        }
-
-        const postgisInfo: PostgisExtensionInfo = {
-          schemaName,
-          geometryCodec,
-          geographyCodec
-        };
+        const postgisInfo = resolvePostgisExtensionInfo(build);
+        if (!postgisInfo) return build;
 
         return build.extend(build, {
           pgGISExtensionInfo: postgisInfo,

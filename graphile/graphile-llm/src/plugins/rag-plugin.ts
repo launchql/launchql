@@ -20,6 +20,7 @@
  *   2. Falls back to error if not configured
  */
 
+import { QuoteUtils } from '@pgsql/quotes';
 import { context as grafastContext, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
 import { extendSchema, gql } from 'graphile-utils';
@@ -76,6 +77,7 @@ function parseHasChunksTag(raw: any, codec: any): ChunkTableInfo | null {
   return {
     parentCodecName: codec.name || 'unknown',
     chunksSchema,
+    vectorSchema: '',
     chunksTableName: parsed.chunksTable,
     parentFkField: parsed.parentFk || 'parent_id',
     parentPkField: parsed.parentPk || 'id',
@@ -84,10 +86,60 @@ function parseHasChunksTag(raw: any, codec: any): ChunkTableInfo | null {
   };
 }
 
+function requirePgIdentity(value: any, label: string): {
+  serviceName: string;
+  schemaName: string;
+  name: string;
+} {
+  const pg = value?.extensions?.pg;
+  if (!pg?.serviceName || !pg?.schemaName || !pg?.name) {
+    throw new Error(`[graphile-llm] ${label} is missing exact service/schema/table metadata`);
+  }
+  return pg;
+}
+
+function configuredSchemas(build: any, serviceName: string): ReadonlySet<string> | null {
+  const services = build?.resolvedPreset?.pgServices;
+  if (!Array.isArray(services)) return null;
+  const matches = services.filter(
+    (service: any) => (service?.name ?? 'main') === serviceName
+  );
+  if (matches.length !== 1) {
+    throw new Error(
+      `[graphile-llm] @hasChunks cannot resolve exact service '${serviceName}' ` +
+      `(matches=${matches.length})`
+    );
+  }
+  const service = matches[0];
+  const schemas = service?.schemas;
+  if (!Array.isArray(schemas) || schemas.length === 0) {
+    throw new Error(
+      `[graphile-llm] @hasChunks service '${serviceName}' has no configured schema allowlist`
+    );
+  }
+  const dependencySchemas = service?.introspectionAllowedDependencySchemas;
+  if (dependencySchemas !== undefined && !Array.isArray(dependencySchemas)) {
+    throw new Error(
+      `[graphile-llm] @hasChunks service '${serviceName}' has an invalid dependency schema allowlist`
+    );
+  }
+  return new Set([...schemas, ...(dependencySchemas ?? [])]);
+}
+
+function requireField(codec: any, fieldName: string, label: string, table: string): any {
+  const field = codec?.attributes?.[fieldName];
+  if (!field) {
+    throw new Error(
+      `[graphile-llm] @hasChunks ${label} '${fieldName}' does not exist on '${table}'`
+    );
+  }
+  return field;
+}
+
 /**
  * Discover all chunk-aware tables from the pgRegistry.
  */
-function discoverChunkTables(build: any): ChunkTableInfo[] {
+export function discoverChunkTables(build: any): ChunkTableInfo[] {
   const chunkTables: ChunkTableInfo[] = [];
   const pgRegistry = build.input?.pgRegistry ?? build.pgRegistry;
   if (!pgRegistry) return chunkTables;
@@ -101,9 +153,67 @@ function discoverChunkTables(build: any): ChunkTableInfo[] {
     if (!tags?.hasChunks) continue;
 
     const info = parseHasChunksTag(tags.hasChunks, c);
-    if (info) {
-      chunkTables.push(info);
+    if (!info) {
+      throw new Error(`[graphile-llm] @hasChunks on '${c.name}' must be a valid JSON object`);
     }
+
+    const parent = requirePgIdentity(c, 'parent codec');
+    if (!info.chunksSchema) {
+      throw new Error(`[graphile-llm] @hasChunks on '${parent.name}' has no chunks schema`);
+    }
+    const allowedSchemas = configuredSchemas(build, parent.serviceName);
+    if (allowedSchemas && !allowedSchemas.has(info.chunksSchema)) {
+      throw new Error(
+        `[graphile-llm] @hasChunks on '${parent.schemaName}.${parent.name}' references ` +
+        `schema '${info.chunksSchema}' outside service '${parent.serviceName}'`
+      );
+    }
+
+    const matches = Object.values(pgRegistry.pgResources ?? {}).filter((resource: any) => {
+      if (resource?.parameters || !resource?.codec?.attributes) return false;
+      const pg = resource.codec.extensions?.pg;
+      return pg?.serviceName === parent.serviceName &&
+        pg?.schemaName === info.chunksSchema &&
+        pg?.name === info.chunksTableName;
+    }) as any[];
+    if (matches.length !== 1) {
+      throw new Error(
+        `[graphile-llm] @hasChunks on '${parent.schemaName}.${parent.name}' must resolve ` +
+        `exactly one '${info.chunksSchema}.${info.chunksTableName}' resource ` +
+        `(matches=${matches.length})`
+      );
+    }
+
+    const chunksCodec = matches[0].codec;
+    const chunks = requirePgIdentity(chunksCodec, 'chunks codec');
+    requireField(c, info.parentPkField, 'parentPk', `${parent.schemaName}.${parent.name}`);
+    requireField(chunksCodec, info.parentFkField, 'parentFk', `${chunks.schemaName}.${chunks.name}`);
+    requireField(chunksCodec, info.contentField, 'contentField', `${chunks.schemaName}.${chunks.name}`);
+    const embedding = requireField(
+      chunksCodec,
+      info.embeddingField,
+      'embeddingField',
+      `${chunks.schemaName}.${chunks.name}`
+    );
+    const vectorPg = embedding.codec?.extensions?.pg;
+    if (
+      vectorPg?.name !== 'vector' ||
+      vectorPg?.serviceName !== parent.serviceName ||
+      !vectorPg?.schemaName
+    ) {
+      throw new Error(
+        `[graphile-llm] @hasChunks embedding '${chunks.schemaName}.${chunks.name}.` +
+        `${info.embeddingField}' is not bound to an exact vector type for service ` +
+        `'${parent.serviceName}'`
+      );
+    }
+
+    chunkTables.push({
+      ...info,
+      chunksSchema: chunks.schemaName,
+      chunksTableName: chunks.name,
+      vectorSchema: vectorPg.schemaName,
+    });
   }
 
   return chunkTables;
@@ -112,37 +222,43 @@ function discoverChunkTables(build: any): ChunkTableInfo[] {
 /**
  * Build a SQL query string to search a chunks table for similar embeddings.
  */
-function buildChunkSearchSql(
+export function buildChunkSearchSql(
   table: ChunkTableInfo,
   vectorString: string,
   limit: number,
   maxDistance: number | null
 ): { text: string; values: any[] } {
-  const schema = table.chunksSchema;
-  const qualifiedTable = schema
-    ? `"${schema}"."${table.chunksTableName}"`
-    : `"${table.chunksTableName}"`;
+  const qualifiedTable = QuoteUtils.quoteQualifiedIdentifier(
+    table.chunksSchema || null,
+    table.chunksTableName
+  );
 
-  const embeddingCol = `"${table.embeddingField}"`;
-  const contentCol = `"${table.contentField}"`;
-  const parentFkCol = `"${table.parentFkField}"`;
+  const embeddingCol = QuoteUtils.quoteIdentifier(table.embeddingField);
+  const contentCol = QuoteUtils.quoteIdentifier(table.contentField);
+  const parentFkCol = QuoteUtils.quoteIdentifier(table.parentFkField);
+  if (!table.vectorSchema) {
+    throw new Error('[graphile-llm] RAG chunk table is missing an exact vector schema');
+  }
+  const vectorType = QuoteUtils.quoteQualifiedIdentifier(table.vectorSchema, 'vector');
+  const vectorDistanceOperator = `OPERATOR(${QuoteUtils.quoteIdentifier(table.vectorSchema)}.<=>)`;
 
   let text = `
     SELECT
       ${contentCol} AS content,
       ${parentFkCol}::text AS parent_id,
-      (${embeddingCol} <=> $1::vector) AS distance
+      (${embeddingCol} ${vectorDistanceOperator} $1::${vectorType}) AS distance
     FROM ${qualifiedTable}
   `;
 
   const values: any[] = [vectorString];
 
   if (maxDistance !== null) {
-    text += ` WHERE (${embeddingCol} <=> $1::vector) <= $2`;
+    text += ` WHERE (${embeddingCol} ${vectorDistanceOperator} $1::${vectorType}) <= $2`;
     values.push(maxDistance);
   }
 
-  text += ` ORDER BY ${embeddingCol} <=> $1::vector LIMIT $${values.length + 1}`;
+  text += ` ORDER BY ${embeddingCol} ${vectorDistanceOperator} $1::${vectorType} ` +
+    `LIMIT $${values.length + 1}`;
   values.push(limit);
 
   return { text, values };
@@ -174,7 +290,7 @@ export function createLlmRagPlugin(
   let embedder: EmbedderFunction | null = null;
   let chatCompleter: ChatFunction | null = null;
 
-  const schemaExtension = extendSchema((build) => {
+  const schemaExtension = extendSchema((_build) => {
     return {
       typeDefs: gql`
         """A source chunk retrieved during RAG context assembly."""

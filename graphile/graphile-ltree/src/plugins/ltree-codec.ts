@@ -56,8 +56,6 @@ export const LtreeCodecPlugin: GraphileConfig.Plugin = {
   gather: {
     hooks: {
       async pgCodecs_findPgCodec(info, event) {
-        if (event.pgCodec) return;
-
         const { pgType: type, serviceName } = event;
 
         const isLtree = type.typname === 'ltree';
@@ -70,7 +68,39 @@ export const LtreeCodecPlugin: GraphileConfig.Plugin = {
           serviceName,
           type.typnamespace
         );
-        const schemaName = ns?.nspname || 'pg_catalog';
+        if (!ns?.nspname) {
+          throw new Error(
+            `[graphile-ltree] Cannot resolve namespace for ${type.typname} ` +
+            `codec in service '${serviceName}'`
+          );
+        }
+        const schemaName = ns.nspname;
+
+        if (event.pgCodec) {
+          const existingPg = event.pgCodec.extensions?.pg;
+          if (
+            (existingPg?.serviceName && existingPg.serviceName !== serviceName) ||
+            (existingPg?.schemaName && existingPg.schemaName !== schemaName)
+          ) {
+            throw new Error(
+              `[graphile-ltree] Existing ${type.typname} codec identity conflicts with ` +
+              `introspection for service '${serviceName}'`
+            );
+          }
+          const existingCodec = event.pgCodec as any;
+          existingCodec.sqlType = sql.identifier(schemaName, type.typname);
+          existingCodec.extensions = {
+            ...existingCodec.extensions,
+            oid: type._id,
+            pg: {
+              ...existingPg,
+              serviceName,
+              schemaName,
+              name: type.typname,
+            },
+          };
+          return;
+        }
 
         event.pgCodec = {
           name: type.typname,

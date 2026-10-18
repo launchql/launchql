@@ -11,6 +11,7 @@
 import type { ConnectionFilterOperatorFactory } from 'graphile-connection-filter';
 import type { SQL } from 'pg-sql2';
 
+import { resolveBuildExtensionSchema } from '../extension-metadata';
 /**
  * Creates the `matches` filter operator factory for full-text search.
  * Declared here so it's registered via the declarative
@@ -59,6 +60,10 @@ export function createMatchesOperatorFactory(
 export function createTrgmOperatorFactories(): ConnectionFilterOperatorFactory {
   return (build) => {
     const { sql } = build;
+    const extensionSchema = resolveBuildExtensionSchema(build, 'pg_trgm');
+    if (!extensionSchema) return [];
+    const similarity = sql.identifier(extensionSchema, 'similarity');
+    const wordSimilarity = sql.identifier(extensionSchema, 'word_similarity');
 
     return [
       {
@@ -82,7 +87,7 @@ export function createTrgmOperatorFactories(): ConnectionFilterOperatorFactory {
               return null;
             }
             const th = threshold != null ? threshold : 0.3;
-            return sql`similarity(${sqlIdentifier}, ${sql.value(value)}) > ${sql.value(th)}`;
+            return sql`${similarity}(${sqlIdentifier}, ${sql.value(value)}) > ${sql.value(th)}`;
           },
         },
       },
@@ -107,7 +112,7 @@ export function createTrgmOperatorFactories(): ConnectionFilterOperatorFactory {
               return null;
             }
             const th = threshold != null ? threshold : 0.3;
-            return sql`word_similarity(${sql.value(value)}, ${sqlIdentifier}) > ${sql.value(th)}`;
+            return sql`${wordSimilarity}(${sql.value(value)}, ${sqlIdentifier}) > ${sql.value(th)}`;
           },
         },
       },

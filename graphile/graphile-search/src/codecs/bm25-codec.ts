@@ -22,6 +22,8 @@ import sql from 'pg-sql2';
  * Represents a discovered BM25 index in the database.
  */
 export interface Bm25IndexInfo {
+  /** Schema containing pg_textsearch functions and operators. */
+  extensionSchema: string;
   /** Schema name (e.g. 'public') */
   schemaName: string;
   /** Table name (e.g. 'documents') */
@@ -53,6 +55,7 @@ export let bm25ExtensionDetected = false;
  */
 const BM25_DISCOVERY_SQL = `
   SELECT
+    en.nspname AS extension_schema,
     n.nspname  AS schema_name,
     c.relname  AS table_name,
     a.attname  AS column_name,
@@ -63,6 +66,8 @@ const BM25_DISCOVERY_SQL = `
   JOIN pg_class c ON c.oid = ix.indrelid
   JOIN pg_namespace n ON n.oid = c.relnamespace
   JOIN pg_attribute a ON a.attrelid = c.oid AND a.attnum = ANY(ix.indkey)
+  JOIN pg_extension e ON e.extname = 'pg_textsearch'
+  JOIN pg_namespace en ON en.oid = e.extnamespace
   WHERE am.amname = 'bm25'
 `;
 
@@ -151,6 +156,7 @@ export const Bm25CodecPlugin: GraphileConfig.Plugin = {
               for (const row of result.rows) {
                 const key = `${row.schema_name}.${row.table_name}.${row.column_name}`;
                 bm25IndexStore.set(key, {
+                  extensionSchema: row.extension_schema,
                   schemaName: row.schema_name,
                   tableName: row.table_name,
                   columnName: row.column_name,

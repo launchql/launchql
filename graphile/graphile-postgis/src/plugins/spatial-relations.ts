@@ -451,7 +451,7 @@ function spatialFilterTypeName(build: any, rel: SpatialRelationInfo): string {
  * Build the SQL fragment that joins the inner (target) row to the outer
  * (owner) row using the resolved PostGIS predicate.
  */
-function buildSpatialJoinFragment(
+export function buildSpatialJoinFragment(
   rel: SpatialRelationInfo,
   schemaName: string,
   outerAlias: SQL,
@@ -467,8 +467,8 @@ function buildSpatialJoinFragment(
   const ownerExpr = sql`${outerAlias}.${sql.identifier(rel.ownerAttributeName)}`;
   const targetExpr = sql`${innerAlias}.${sql.identifier(rel.targetAttributeName)}`;
   if (rel.operator.kind === 'infix') {
-    // Only `&&` today — simple inline (symmetric).
-    return sql`${ownerExpr} && ${targetExpr}`;
+    // Only `&&` today. Bind it to this build's exact PostGIS namespace.
+    return sql`${ownerExpr} OPERATOR(${sql.identifier(schemaName)}.&&) ${targetExpr}`;
   }
   const fn = sql.identifier(schemaName, rel.operator.pgToken);
   if (rel.operator.parametric) {

@@ -29,6 +29,7 @@
     "url": "https://github.com/constructive-io/constructive/issues"
   },
   "dependencies": {
+    "@pgsql/quotes": "^18.2.4",
     "graphile-plugin-utils": "workspace:^"
   },
   "devDependencies": {

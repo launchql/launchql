@@ -41,6 +41,9 @@
   "bugs": {
     "url": "https://github.com/constructive-io/constructive/issues"
   },
+  "dependencies": {
+    "@pgsql/quotes": "^18.2.4"
+  },
   "devDependencies": {
     "@types/node": "^22.19.11",
     "graphile-test": "workspace:^",

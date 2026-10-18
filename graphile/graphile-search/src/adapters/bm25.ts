@@ -13,6 +13,7 @@
  * LEAST(parent_score, chunk_score) (lower = better for BM25).
  */
 
+import { QuoteUtils } from '@pgsql/quotes';
 import type { SQL } from 'pg-sql2';
 
 import { bm25IndexStore as moduleBm25IndexStore } from '../codecs/bm25-codec';
@@ -23,6 +24,7 @@ import { type ChunksInfo,getChunksInfo } from './chunks';
  * BM25 index info discovered during gather phase.
  */
 export interface Bm25IndexInfo {
+  extensionSchema: string;
   schemaName: string;
   tableName: string;
   columnName: string;
@@ -182,9 +184,15 @@ export function createBm25Adapter(
       const columnExpr = sql`${alias}.${sql.identifier(column.attributeName)}`;
 
       // Use quoteQualifiedIdentifier to produce the qualified index name
-      const qualifiedIndexName = `"${bm25Index.schemaName}"."${bm25Index.indexName}"`;
-      const bm25queryExpr = sql`to_bm25query(${sql.value(query)}, ${sql.value(qualifiedIndexName)})`;
-      const scoreExpr = sql`(${columnExpr} <@> ${bm25queryExpr})`;
+      const qualifiedIndexName = QuoteUtils.quoteQualifiedIdentifier(
+        bm25Index.schemaName,
+        bm25Index.indexName
+      );
+      const toBm25Query = sql.identifier(bm25Index.extensionSchema, 'to_bm25query');
+      const bm25queryExpr = sql`${toBm25Query}(${sql.value(query)}, ${sql.value(qualifiedIndexName)})`;
+      const scoreExpr = sql`(${columnExpr} OPERATOR(${sql.identifier(
+        bm25Index.extensionSchema
+      )}.<@>) ${bm25queryExpr})`;
 
       // Check for chunk-aware querying
       const chunksInfo = columnData.chunksInfo;
@@ -200,9 +208,14 @@ export function createBm25Adapter(
         // BM25 on chunks requires an index name on the chunks table.
         // We construct it from the chunks table schema + a conventional index name.
         // The BM25 index on chunks is named: {chunks_table}_{content_field}_bm25_idx
-        const chunksIndexName = `"${chunksInfo.chunksSchema || bm25Index.schemaName}"."${chunksInfo.chunksTableName}_${chunksInfo.contentField}_bm25_idx"`;
-        const chunkBm25queryExpr = sql`to_bm25query(${sql.value(query)}, ${sql.value(chunksIndexName)})`;
-        const chunkScoreExpr = sql`(${chunksAlias}.${chunkContentField} <@> ${chunkBm25queryExpr})`;
+        const chunksIndexName = QuoteUtils.quoteQualifiedIdentifier(
+          chunksInfo.chunksSchema || bm25Index.schemaName,
+          `${chunksInfo.chunksTableName}_${chunksInfo.contentField}_bm25_idx`
+        );
+        const chunkBm25queryExpr = sql`${toBm25Query}(${sql.value(query)}, ${sql.value(chunksIndexName)})`;
+        const chunkScoreExpr = sql`(${chunksAlias}.${chunkContentField} OPERATOR(${sql.identifier(
+          bm25Index.extensionSchema
+        )}.<@>) ${chunkBm25queryExpr})`;
 
         // Subquery: MIN(bm25_score) across chunks (lower = better for BM25)
         const chunkScoreSubquery = sql`(
