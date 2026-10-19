@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.27.0](https://github.com/constructive-io/constructive/compare/graphile-settings@6.26.4...graphile-settings@6.27.0) (2026-10-19)
+
+### Features
+
+- **graphile-settings:** createFunctionFromSource — author customer functions from SQL text ([690aa0e](https://github.com/constructive-io/constructive/commit/690aa0efdd3f4df7eab94f14951b31de36d39796))
+
 ## [6.26.4](https://github.com/constructive-io/constructive/compare/graphile-settings@6.26.3...graphile-settings@6.26.4) (2026-10-17)
 
 **Note:** Version bump only for package graphile-settings

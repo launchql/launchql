@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/react",
-  "version": "1.20.4",
+  "version": "1.20.5",
   "author": "Constructive <developers@constructive.io>",
   "description": "Constructive React - Auto-generated React Query hooks and ORM client",
   "main": "index.js",

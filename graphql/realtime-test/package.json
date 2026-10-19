@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/graphql-realtime-test",
-  "version": "1.19.4",
+  "version": "1.19.5",
   "author": "Constructive <developers@constructive.io>",
   "description": "Constructive Realtime GraphQL Testing with all plugins loaded",
   "main": "index.js",
