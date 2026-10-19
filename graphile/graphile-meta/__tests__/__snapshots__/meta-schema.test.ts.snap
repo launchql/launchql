@@ -350,6 +350,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "author_id",
               "description": null,
               "enumValues": null,
@@ -357,6 +358,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "authorId",
               "type": {
                 "encoding": {
@@ -374,6 +378,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "name": "comment_author_fkey",
           "refFields": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -381,6 +386,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -406,6 +414,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "post_id",
               "description": null,
               "enumValues": null,
@@ -413,6 +422,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "postId",
               "type": {
                 "encoding": {
@@ -430,6 +442,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "name": "comment_post_fkey",
           "refFields": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -437,6 +450,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -463,6 +479,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "primaryKey": {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -470,6 +487,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -490,6 +510,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
     },
     "fields": [
       {
+        "allowedValues": null,
         "columnName": "author_id",
         "description": null,
         "enumValues": null,
@@ -497,6 +518,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": true,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "authorId",
         "type": {
           "encoding": {
@@ -511,6 +535,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "body",
         "description": null,
         "enumValues": null,
@@ -518,6 +543,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "body",
         "type": {
           "encoding": null,
@@ -530,6 +558,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "id",
         "description": null,
         "enumValues": null,
@@ -537,6 +566,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": true,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "id",
         "type": {
           "encoding": {
@@ -551,6 +583,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "post_id",
         "description": null,
         "enumValues": null,
@@ -558,6 +591,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": true,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "postId",
         "type": {
           "encoding": {
@@ -576,6 +612,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "author_id",
             "description": null,
             "enumValues": null,
@@ -583,6 +620,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "authorId",
             "type": {
               "encoding": {
@@ -600,6 +640,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "name": "comment_author_fkey",
         "refFields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -607,6 +648,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -632,6 +676,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "post_id",
             "description": null,
             "enumValues": null,
@@ -639,6 +684,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "postId",
             "type": {
               "encoding": {
@@ -656,6 +704,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "name": "comment_post_fkey",
         "refFields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -663,6 +712,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -694,6 +746,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -701,6 +754,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -734,11 +790,13 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "tableType": "Comment",
       "updatePayloadType": "UpdatecommentPayload",
     },
+    "isJunction": false,
     "name": "Comment",
     "primaryKeyConstraints": [
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -746,6 +804,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -778,6 +839,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "author_id",
               "description": null,
               "enumValues": null,
@@ -785,6 +847,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "authorId",
               "type": {
                 "encoding": {
@@ -809,6 +874,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "post_id",
               "description": null,
               "enumValues": null,
@@ -816,6 +882,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "postId",
               "type": {
                 "encoding": {
@@ -854,6 +923,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "author_id",
               "description": null,
               "enumValues": null,
@@ -861,6 +931,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "authorId",
               "type": {
                 "encoding": {
@@ -878,6 +951,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "name": "post_author_fkey",
           "refFields": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -885,6 +959,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -911,6 +988,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "primaryKey": {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -918,6 +996,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -938,6 +1019,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
     },
     "fields": [
       {
+        "allowedValues": null,
         "columnName": "author_id",
         "description": null,
         "enumValues": null,
@@ -945,6 +1027,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": true,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "authorId",
         "type": {
           "encoding": {
@@ -959,6 +1044,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "id",
         "description": null,
         "enumValues": null,
@@ -966,6 +1052,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": true,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "id",
         "type": {
           "encoding": {
@@ -980,6 +1069,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "metadata",
         "description": null,
         "enumValues": null,
@@ -987,6 +1077,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": false,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "metadata",
         "type": {
           "encoding": null,
@@ -999,6 +1092,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "title",
         "description": null,
         "enumValues": null,
@@ -1006,6 +1100,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "title",
         "type": {
           "encoding": null,
@@ -1022,6 +1119,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "author_id",
             "description": null,
             "enumValues": null,
@@ -1029,6 +1127,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "authorId",
             "type": {
               "encoding": {
@@ -1046,6 +1147,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "name": "post_author_fkey",
         "refFields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -1053,6 +1155,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -1084,6 +1189,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -1091,6 +1197,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -1124,11 +1233,13 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "tableType": "Post",
       "updatePayloadType": "UpdatepostPayload",
     },
+    "isJunction": false,
     "name": "Post",
     "primaryKeyConstraints": [
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -1136,6 +1247,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -1168,6 +1282,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "author_id",
               "description": null,
               "enumValues": null,
@@ -1175,6 +1290,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "authorId",
               "type": {
                 "encoding": {
@@ -1201,6 +1319,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1208,6 +1327,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1232,6 +1354,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1239,6 +1362,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1265,6 +1391,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1272,6 +1399,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1296,6 +1426,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1303,6 +1434,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1330,6 +1464,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "junctionLeftConstraint": {
             "fields": [
               {
+                "allowedValues": null,
                 "columnName": "post_id",
                 "description": null,
                 "enumValues": null,
@@ -1337,6 +1472,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "postId",
                 "type": {
                   "encoding": {
@@ -1354,6 +1492,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "name": "post_post_tags",
             "refFields": [
               {
+                "allowedValues": null,
                 "columnName": "id",
                 "description": null,
                 "enumValues": null,
@@ -1361,6 +1500,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "id",
                 "type": {
                   "encoding": {
@@ -1385,6 +1527,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           },
           "junctionLeftKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "post_id",
               "description": null,
               "enumValues": null,
@@ -1392,6 +1535,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "postId",
               "type": {
                 "encoding": {
@@ -1409,6 +1555,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "junctionRightConstraint": {
             "fields": [
               {
+                "allowedValues": null,
                 "columnName": "tag_id",
                 "description": null,
                 "enumValues": null,
@@ -1416,6 +1563,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "tagId",
                 "type": {
                   "encoding": {
@@ -1433,6 +1583,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "name": "post_tag_tag_fkey",
             "refFields": [
               {
+                "allowedValues": null,
                 "columnName": "id",
                 "description": null,
                 "enumValues": null,
@@ -1440,6 +1591,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "id",
                 "type": {
                   "encoding": {
@@ -1464,6 +1618,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           },
           "junctionRightKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "tag_id",
               "description": null,
               "enumValues": null,
@@ -1471,6 +1626,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "tagId",
               "type": {
                 "encoding": {
@@ -1490,6 +1648,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           },
           "leftKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1497,6 +1656,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1513,6 +1675,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           ],
           "rightKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1520,6 +1683,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1554,6 +1720,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "post_id",
               "description": null,
               "enumValues": null,
@@ -1561,6 +1728,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "postId",
               "type": {
                 "encoding": {
@@ -1578,6 +1748,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "name": "post_tag_post_fkey",
           "refFields": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1585,6 +1756,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1610,6 +1784,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "tag_id",
               "description": null,
               "enumValues": null,
@@ -1617,6 +1792,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "tagId",
               "type": {
                 "encoding": {
@@ -1634,6 +1812,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "name": "post_tag_tag_fkey",
           "refFields": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -1641,6 +1820,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -1667,6 +1849,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "primaryKey": {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "post_id",
             "description": null,
             "enumValues": null,
@@ -1674,6 +1857,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "postId",
             "type": {
               "encoding": {
@@ -1688,6 +1874,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             },
           },
           {
+            "allowedValues": null,
             "columnName": "tag_id",
             "description": null,
             "enumValues": null,
@@ -1695,6 +1882,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "tagId",
             "type": {
               "encoding": {
@@ -1715,6 +1905,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
     },
     "fields": [
       {
+        "allowedValues": null,
         "columnName": "post_id",
         "description": null,
         "enumValues": null,
@@ -1722,6 +1913,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": true,
         "isNotNull": true,
         "isPrimaryKey": true,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "postId",
         "type": {
           "encoding": {
@@ -1736,6 +1930,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "tag_id",
         "description": null,
         "enumValues": null,
@@ -1743,6 +1938,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": true,
         "isNotNull": true,
         "isPrimaryKey": true,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "tagId",
         "type": {
           "encoding": {
@@ -1761,6 +1959,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "post_id",
             "description": null,
             "enumValues": null,
@@ -1768,6 +1967,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "postId",
             "type": {
               "encoding": {
@@ -1785,6 +1987,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "name": "post_tag_post_fkey",
         "refFields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -1792,6 +1995,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -1817,6 +2023,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "tag_id",
             "description": null,
             "enumValues": null,
@@ -1824,6 +2031,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "tagId",
             "type": {
               "encoding": {
@@ -1841,6 +2051,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "name": "post_tag_tag_fkey",
         "refFields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -1848,6 +2059,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -1880,6 +2094,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "post_id",
             "description": null,
             "enumValues": null,
@@ -1887,6 +2102,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "postId",
             "type": {
               "encoding": {
@@ -1901,6 +2119,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             },
           },
           {
+            "allowedValues": null,
             "columnName": "tag_id",
             "description": null,
             "enumValues": null,
@@ -1908,6 +2127,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "tagId",
             "type": {
               "encoding": {
@@ -1941,11 +2163,13 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "tableType": "PostTag",
       "updatePayloadType": "Updatepost_tagPayload",
     },
+    "isJunction": true,
     "name": "PostTag",
     "primaryKeyConstraints": [
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "post_id",
             "description": null,
             "enumValues": null,
@@ -1953,6 +2177,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "postId",
             "type": {
               "encoding": {
@@ -1967,6 +2194,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             },
           },
           {
+            "allowedValues": null,
             "columnName": "tag_id",
             "description": null,
             "enumValues": null,
@@ -1974,6 +2202,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "tagId",
             "type": {
               "encoding": {
@@ -2006,6 +2237,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "post_id",
               "description": null,
               "enumValues": null,
@@ -2013,6 +2245,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "postId",
               "type": {
                 "encoding": {
@@ -2037,6 +2272,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "tag_id",
               "description": null,
               "enumValues": null,
@@ -2044,6 +2280,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "tagId",
               "type": {
                 "encoding": {
@@ -2082,6 +2321,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "primaryKey": {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -2089,6 +2329,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -2109,6 +2352,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "slug",
               "description": null,
               "enumValues": null,
@@ -2116,6 +2360,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "slug",
               "type": {
                 "encoding": null,
@@ -2134,6 +2381,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
     },
     "fields": [
       {
+        "allowedValues": null,
         "columnName": "id",
         "description": null,
         "enumValues": null,
@@ -2141,6 +2389,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": true,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "id",
         "type": {
           "encoding": {
@@ -2155,6 +2406,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "slug",
         "description": null,
         "enumValues": null,
@@ -2162,6 +2414,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "slug",
         "type": {
           "encoding": null,
@@ -2183,6 +2438,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -2190,6 +2446,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -2214,6 +2473,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "slug",
             "description": null,
             "enumValues": null,
@@ -2221,6 +2481,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "slug",
             "type": {
               "encoding": null,
@@ -2252,11 +2515,13 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "tableType": "Tag",
       "updatePayloadType": "UpdatetagPayload",
     },
+    "isJunction": false,
     "name": "Tag",
     "primaryKeyConstraints": [
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -2264,6 +2529,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -2297,6 +2565,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2304,6 +2573,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2330,6 +2602,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2337,6 +2610,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2364,6 +2640,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "junctionLeftConstraint": {
             "fields": [
               {
+                "allowedValues": null,
                 "columnName": "tag_id",
                 "description": null,
                 "enumValues": null,
@@ -2371,6 +2648,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "tagId",
                 "type": {
                   "encoding": {
@@ -2388,6 +2668,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "name": "tag_post_tags",
             "refFields": [
               {
+                "allowedValues": null,
                 "columnName": "id",
                 "description": null,
                 "enumValues": null,
@@ -2395,6 +2676,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "id",
                 "type": {
                   "encoding": {
@@ -2419,6 +2703,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           },
           "junctionLeftKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "tag_id",
               "description": null,
               "enumValues": null,
@@ -2426,6 +2711,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "tagId",
               "type": {
                 "encoding": {
@@ -2443,6 +2731,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "junctionRightConstraint": {
             "fields": [
               {
+                "allowedValues": null,
                 "columnName": "post_id",
                 "description": null,
                 "enumValues": null,
@@ -2450,6 +2739,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "postId",
                 "type": {
                   "encoding": {
@@ -2467,6 +2759,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "name": "post_tag_post_fkey",
             "refFields": [
               {
+                "allowedValues": null,
                 "columnName": "id",
                 "description": null,
                 "enumValues": null,
@@ -2474,6 +2767,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
                 "isForeignKey": false,
                 "isNotNull": true,
                 "isPrimaryKey": false,
+                "isRequiredOnCreate": null,
+                "isWritableOnCreate": null,
+                "isWritableOnUpdate": null,
                 "name": "id",
                 "type": {
                   "encoding": {
@@ -2498,6 +2794,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           },
           "junctionRightKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "post_id",
               "description": null,
               "enumValues": null,
@@ -2505,6 +2802,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "postId",
               "type": {
                 "encoding": {
@@ -2524,6 +2824,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           },
           "leftKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2531,6 +2832,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2547,6 +2851,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           ],
           "rightKeyAttributes": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2554,6 +2859,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2584,6 +2892,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "slug",
             "description": null,
             "enumValues": null,
@@ -2591,6 +2900,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "slug",
             "type": {
               "encoding": null,
@@ -2613,6 +2925,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "primaryKey": {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -2620,6 +2933,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -2640,6 +2956,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         {
           "fields": [
             {
+              "allowedValues": null,
               "columnName": "email_address",
               "description": null,
               "enumValues": null,
@@ -2647,6 +2964,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "emailAddress",
               "type": {
                 "encoding": null,
@@ -2665,6 +2985,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
     },
     "fields": [
       {
+        "allowedValues": null,
         "columnName": "display_name",
         "description": null,
         "enumValues": null,
@@ -2672,6 +2993,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": false,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "displayName",
         "type": {
           "encoding": null,
@@ -2684,6 +3008,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "email_address",
         "description": null,
         "enumValues": null,
@@ -2691,6 +3016,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": false,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "emailAddress",
         "type": {
           "encoding": null,
@@ -2703,6 +3031,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         },
       },
       {
+        "allowedValues": null,
         "columnName": "id",
         "description": null,
         "enumValues": null,
@@ -2710,6 +3039,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         "isForeignKey": false,
         "isNotNull": true,
         "isPrimaryKey": true,
+        "isRequiredOnCreate": null,
+        "isWritableOnCreate": null,
+        "isWritableOnUpdate": null,
         "name": "id",
         "type": {
           "encoding": {
@@ -2733,6 +3065,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "email_address",
             "description": null,
             "enumValues": null,
@@ -2740,6 +3073,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "emailAddress",
             "type": {
               "encoding": null,
@@ -2762,6 +3098,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
         ],
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -2769,6 +3106,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -2802,11 +3142,13 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       "tableType": "User",
       "updatePayloadType": "UpdateuserPayload",
     },
+    "isJunction": false,
     "name": "User",
     "primaryKeyConstraints": [
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "id",
             "description": null,
             "enumValues": null,
@@ -2814,6 +3156,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "id",
             "type": {
               "encoding": {
@@ -2847,6 +3192,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2854,6 +3200,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2878,6 +3227,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2885,6 +3235,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2911,6 +3264,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2918,6 +3272,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2942,6 +3299,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
           "isUnique": false,
           "keys": [
             {
+              "allowedValues": null,
               "columnName": "id",
               "description": null,
               "enumValues": null,
@@ -2949,6 +3307,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
               "isForeignKey": false,
               "isNotNull": true,
               "isPrimaryKey": false,
+              "isRequiredOnCreate": null,
+              "isWritableOnCreate": null,
+              "isWritableOnUpdate": null,
               "name": "id",
               "type": {
                 "encoding": {
@@ -2981,6 +3342,7 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
       {
         "fields": [
           {
+            "allowedValues": null,
             "columnName": "email_address",
             "description": null,
             "enumValues": null,
@@ -2988,6 +3350,9 @@ exports[`MetaSchemaPlugin snapshot scenarios produces stable metadata for a mult
             "isForeignKey": false,
             "isNotNull": true,
             "isPrimaryKey": false,
+            "isRequiredOnCreate": null,
+            "isWritableOnCreate": null,
+            "isWritableOnUpdate": null,
             "name": "emailAddress",
             "type": {
               "encoding": null,

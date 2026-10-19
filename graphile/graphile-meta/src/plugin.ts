@@ -1,12 +1,23 @@
 // Type augmentation: adds the 'schema' property to GraphileConfig.Plugin
 import 'graphile-build';
 
+import type {} from 'graphile-build-pg';
 import type { GraphileConfig } from 'graphile-config';
 import type { GraphQLSchema } from 'graphql';
 
+import { allowedValuesForAttribute } from './check-constraint-values';
 import { extendQueryWithMetaField } from './graphql-meta-field';
 import { collectTablesMeta } from './table-meta-builder';
 import type { MetaBuild, TableMeta } from './types';
+
+declare global {
+  namespace DataplanPg {
+    interface PgCodecAttributeExtensions {
+      /** Values permitted by the column's simple CHECK constraints. */
+      allowedValues?: string[];
+    }
+  }
+}
 
 const runtimeTablesBySchema = new WeakMap<GraphQLSchema, TableMeta[]>();
 
@@ -37,6 +48,22 @@ export const MetaSchemaPlugin: GraphileConfig.Plugin = {
   name: 'MetaSchemaPlugin',
   version: '1.0.0',
   description: 'Exposes _meta query for database schema introspection',
+  gather: {
+    hooks: {
+      // Record each column's CHECK-constraint values on the codec attribute, from
+      // the introspection the gather phase already holds (conbin), so _meta can
+      // report them without querying the database.
+      pgCodecs_attribute(_info, event) {
+        const { pgClass, pgAttribute, attribute } = event;
+        const allowedValues = allowedValuesForAttribute(
+          pgClass.getConstraints(),
+          pgAttribute.attnum
+        );
+        if (!allowedValues) return;
+        attribute.extensions = { ...attribute.extensions, allowedValues };
+      },
+    },
+  },
   schema: {
     hooks: {
       GraphQLObjectType_fields(rawFields, rawBuild, rawContext) {

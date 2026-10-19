@@ -18,6 +18,12 @@ export interface TableMeta {
   i18n: I18nMeta | null;
   realtime: RealtimeMeta | null;
   scope: ScopeMeta | null;
+  /**
+   * Whether a reported many-to-many relation names this table as its junction,
+   * either one the many-to-many plugin declares or one detected by
+   * `junctionForeignKeys` (see `isSystemColumn` for the system-column rule).
+   */
+  isJunction?: boolean;
 }
 
 /** Coarse provisioning tier a table's scope belongs to. */
@@ -142,6 +148,22 @@ export interface FieldMeta {
   isForeignKey: boolean;
   description: string | null;
   enumValues: EnumMeta | null;
+  /**
+   * Values permitted by simple single-column CHECK constraints
+   * (`col IN (…)`, `col = ANY (ARRAY[…])`, `col = 'a' OR col = 'b'`), else null.
+   * Set on `TableMeta.fields` only, which holds exposed columns only.
+   */
+  allowedValues?: string[] | null;
+  /**
+   * Whether the field is non-null in the table's create input type. Null when
+   * not resolved against the final schema, which is the case for fields nested
+   * in indexes, constraints and relations.
+   */
+  isRequiredOnCreate?: boolean | null;
+  /** Whether the table's create input type has this field (null as above). */
+  isWritableOnCreate?: boolean | null;
+  /** Whether the table's patch type has this field (null as above). */
+  isWritableOnUpdate?: boolean | null;
 }
 
 export interface TypeMeta {
@@ -296,10 +318,13 @@ export interface PgCodec {
       schemaName?: string;
       name?: string;
     };
+    tags?: Record<string, unknown>;
   };
 }
 
 export interface PgAttributeExtensions extends Record<string, unknown> {
+  /** Set at gather time from the column's simple CHECK constraints. */
+  allowedValues?: string[] | null;
   geometrySubtype?: string | null;
   geometrySrid?: number | null;
   vectorDimensions?: number | null;
@@ -395,6 +420,7 @@ export interface MetaInflection {
     details: { resource: PgTableResource },
   ) => string | null | undefined;
   tableFieldName?: (resource: PgTableResource) => string | null | undefined;
+  patchField?: (fieldName: string) => string | null | undefined;
   createField?: (resource: PgTableResource) => string | null | undefined;
   rowByUnique?: (details: PgUniqueInflectionDetails) => string | null | undefined;
   updateByKeysField?: (details: PgUniqueInflectionDetails) => string | null | undefined;
@@ -438,6 +464,7 @@ export interface MetaBuild extends GqlTypeResolverBuild {
       entity: [PgCodec, string],
       behavior: string,
     ) => boolean;
+    pgCodecRelationMatches?: (relation: PgRelation, behavior: string) => boolean;
   };
   options?: {
     pgSchemas?: string[];
