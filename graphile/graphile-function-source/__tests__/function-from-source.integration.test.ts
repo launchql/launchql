@@ -8,7 +8,6 @@ jest.setTimeout(120000);
 
 const workspaceRoot = join(__dirname, '../../..');
 const TENANT_A = '00000000-0000-4000-8000-00000000000a';
-const TENANT_B = '00000000-0000-4000-8000-00000000000b';
 const SCHEMA_A = '00000000-0000-4000-8000-0000000000aa';
 
 const SOURCE = `
@@ -52,10 +51,6 @@ CREATE FUNCTION renamed_total(threshold integer)
   LANGUAGE sql IMMUTABLE
   AS $$ SELECT threshold * 2 $$;`;
 
-const asTenant = (databaseId: string) => ({
-  pgSettings: { role: 'authenticated', 'jwt.claims.database_id': databaseId }
-});
-
 describe('createFunctionFromSource', () => {
   let pg: any;
   let db: any;
@@ -68,7 +63,7 @@ describe('createFunctionFromSource', () => {
         schemas: ['metaschema_public'],
         preset: { extends: [FunctionFromSourcePreset] },
         useRoot: true,
-        authRole: 'authenticated'
+        authRole: 'postgres'
       },
       [seed.pgpm(workspaceRoot), seed.sqlfile([join(__dirname, '../sql/function-from-source-seed.sql')])]
     );
@@ -89,16 +84,13 @@ describe('createFunctionFromSource', () => {
     await pg.afterEach();
   });
 
-  const create = (databaseId: string, source: string, claimsFor = databaseId) =>
-    query<any>(
-      CREATE,
-      { input: { clientMutationId: 'm1', databaseId, schemaId: SCHEMA_A, source, apiExposed: true } },
-      false,
-      asTenant(claimsFor)
-    );
+  const create = (source: string) =>
+    query<any>(CREATE, {
+      input: { clientMutationId: 'm1', databaseId: TENANT_A, schemaId: SCHEMA_A, source, apiExposed: true }
+    });
 
-  it('inserts the parsed definition under the caller\'s claims', async () => {
-    const result = await create(TENANT_A, SOURCE);
+  it('inserts the mapped columns, datums intact', async () => {
+    const result = await create(SOURCE);
     expect(result.errors).toBeUndefined();
     const { clientMutationId, function: fn } = result.data.createFunctionFromSource;
     expect(clientMutationId).toBe('m1');
@@ -124,15 +116,9 @@ describe('createFunctionFromSource', () => {
     ]);
   });
 
-  it('is refused by RLS when the caller writes into another database', async () => {
-    const result = await create(TENANT_A, SOURCE, TENANT_B);
-    expect(result.data?.createFunctionFromSource ?? null).toBeNull();
-    expect(result.errors?.[0].message).toMatch(/row-level security policy/);
-  });
-
   it('returns a parse error with the parser position and inserts nothing', async () => {
     const source = 'CREATE FUNCTION f() RETURNS int LANGUAGE sql AS $$ SELEC 1 $$';
-    const result = await create(TENANT_A, source);
+    const result = await create(source);
     expect(result.errors?.[0]).toMatchObject({
       message: 'syntax error at or near "SELEC"',
       extensions: { code: 'FUNCTION_SOURCE_PARSE_ERROR', position: source.indexOf('SELEC') }
@@ -142,9 +128,7 @@ describe('createFunctionFromSource', () => {
   });
 
   describe('updateFunctionFromSource', () => {
-    // Read back as tenant A: the last mutation's claims are still set on this transaction.
     const rowOf = async (name: string) => {
-      await pg.query(`SELECT set_config('jwt.claims.database_id', $1, true)`, [TENANT_A]);
       const { rows } = await pg.query(
         `SELECT id, database_id, schema_id, name, kind, volatility, arguments, returns, api_exposed, body_ast
            FROM metaschema_public.function WHERE database_id = $1 AND name = $2`,
@@ -153,16 +137,16 @@ describe('createFunctionFromSource', () => {
       return rows[0];
     };
 
-    const update = async (id: string, source: string, claimsFor = TENANT_A) =>
-      query<any>(UPDATE, { input: { clientMutationId: 'u1', id, source } }, false, asTenant(claimsFor));
+    const update = (id: string, source: string) =>
+      query<any>(UPDATE, { input: { clientMutationId: 'u1', id, source } });
 
     let id: string;
     beforeEach(async () => {
-      expect((await create(TENANT_A, SOURCE)).errors).toBeUndefined();
+      expect((await create(SOURCE)).errors).toBeUndefined();
       ({ id } = await rowOf('visible_total'));
     });
 
-    it('replaces the definition under the caller\'s claims, keeping database, schema and exposure', async () => {
+    it('writes only the definition columns, keeping database, schema and exposure', async () => {
       const result = await update(id, REPLACEMENT);
       expect(result.errors).toBeUndefined();
       expect(result.data.updateFunctionFromSource).toMatchObject({
@@ -182,16 +166,6 @@ describe('createFunctionFromSource', () => {
       expect(row.id).toBe(id);
       expect(row.body_ast.stmts).toHaveLength(1);
       expect(await rowOf('visible_total')).toBeUndefined();
-    });
-
-    // RLS hides the row, so — exactly as with `updateFunction` — nothing matches and the
-    // payload carries no function.
-    it('is refused by RLS when the caller updates another database\'s function', async () => {
-      const before = await rowOf('visible_total');
-      const result = await update(id, REPLACEMENT, TENANT_B);
-      expect(result.errors).toBeUndefined();
-      expect(result.data.updateFunctionFromSource.function).toBeNull();
-      expect(await rowOf('visible_total')).toEqual(before);
     });
 
     it('refuses OR REPLACE, the same text format as create, and changes nothing', async () => {

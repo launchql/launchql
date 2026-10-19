@@ -83,7 +83,7 @@ const fieldType = (typeName: AstNode): FieldType => {
 /**
  * Maps one `CREATE FUNCTION` statement onto the columns `metaschema_public.function`
  * accepts. Anything those columns cannot carry is refused rather than dropped; whether
- * the definition is *allowed* is left to the database (capability gate, RLS, validator).
+ * the definition is *allowed* is left to the database.
  * Create and update take the same text: replacing is chosen by the mutation, not the source.
  */
 export const parseFunctionSource = async (source: string): Promise<FunctionDefinition> => {
@@ -239,7 +239,7 @@ const definitionColumns = ($input: any) => {
  * `createFunctionFromSource` / `updateFunctionFromSource`: author or replace a customer
  * function from SQL text. The server parses (the database never parses strings) and
  * performs the same `pgInsertSingle` / `pgUpdateSingle` as `createFunction` /
- * `updateFunction`, on the request's client under the caller's claims.
+ * `updateFunction`, on the request's own client.
  */
 export const FunctionFromSourcePlugin: GraphileConfig.Plugin = {
   name: 'FunctionFromSourcePlugin',

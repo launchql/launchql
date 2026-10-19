@@ -21,7 +21,7 @@ Adds two mutations over the `metaschema_public.function` table:
 
 Both take the same text: one plain `CREATE FUNCTION` statement. `CREATE OR REPLACE` is refused by both — replacing is what `updateFunctionFromSource` means.
 
-The server parses `source` with [`plpgsql-parser`](https://www.npmjs.com/package/plpgsql-parser), maps it onto the table's columns (`name`, `kind`, `arguments`, `returns`, `volatility`, `is_strict`, `security_invoker`, and the hydrated `body_ast`), and writes the row on the request's own client — so RLS, triggers and validators decide exactly as they do for the generated mutations. Deleting needs no source: use the generated `deleteFunction`.
+The server parses `source` with [`plpgsql-parser`](https://www.npmjs.com/package/plpgsql-parser), maps it onto the table's columns (`name`, `kind`, `arguments`, `returns`, `volatility`, `is_strict`, `security_invoker`, and the hydrated `body_ast`), and writes the same row `createFunction` / `updateFunction` would, on the request's own client. The database decides whether a definition is allowed; the plugin only parses and writes. Deleting needs no source: use the generated `deleteFunction`.
 
 Parse failures are GraphQL errors with `extensions.code = 'FUNCTION_SOURCE_PARSE_ERROR'` and, when the parser reports one, `extensions.position` (0-based offset into `source`). Constructs the table cannot represent are refused with `FUNCTION_SOURCE_UNSUPPORTED`.
 
