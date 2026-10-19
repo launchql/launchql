@@ -101,6 +101,13 @@ export interface ToolsHost {
   /** Treat tokens expiring within this window as already expired. Default 30s. */
   dataTokenSkewMs?: number;
   /**
+   * How long provision_database waits for a provision ticket to complete.
+   * Default 240s, which keeps an agent tool call under a 5-minute tool
+   * timeout; a host that calls the tool outside such a timeout (e.g. a
+   * pipeline) can wait longer for a cold provision on a loaded backend.
+   */
+  provisionPollDeadlineMs?: number;
+  /**
    * Optional provision overlay: pick a base preset and/or layer module
    * add/remove on top of it. The base module list always comes from the pinned
    * `node-type-registry` preset — this only customizes it. Distributed as data

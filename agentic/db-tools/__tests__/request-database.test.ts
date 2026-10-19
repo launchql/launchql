@@ -1,8 +1,19 @@
 import {
+  ProvisionPendingError,
   type ProvisionRequestExecutor,
   type ProvisionTicket,
   requestDatabaseProvision,
 } from '../src/provision-database/request-database';
+
+// What the SDK throws: an HTTP status from the adapter, a GraphQL error, or a
+// fetch that never got a response.
+const httpError = (status: number) =>
+  Object.assign(new Error(`GraphQL Error: HTTP ${status}`), {
+    errors: [{ message: `HTTP ${status}` }],
+  });
+const graphqlError = (message: string) =>
+  Object.assign(new Error(`GraphQL Error: ${message}`), { errors: [{ message }] });
+const networkError = () => new TypeError('fetch failed');
 
 function ticket(overrides: Partial<ProvisionTicket> = {}): ProvisionTicket {
   return {
@@ -64,7 +75,7 @@ describe('requestDatabaseProvision', () => {
 
   it('resolves a fully completed ticket without ever polling', async () => {
     const { promise, pollCalls } = run({ initial: done });
-    await expect(promise).resolves.toEqual({ databaseId: 'db-id' });
+    await expect(promise).resolves.toEqual({ databaseId: 'db-id', ticketId: 'ticket-1' });
     expect(pollCalls).toEqual([]);
   });
 
@@ -73,7 +84,7 @@ describe('requestDatabaseProvision', () => {
       initial: ticket({ status: 'completed', databaseId: 'db-id' }),
       polls: [done],
     });
-    await expect(promise).resolves.toEqual({ databaseId: 'db-id' });
+    await expect(promise).resolves.toEqual({ databaseId: 'db-id', ticketId: 'ticket-1' });
     expect(pollCalls).toEqual(['ticket-1']);
   });
 
@@ -86,7 +97,7 @@ describe('requestDatabaseProvision', () => {
         done,
       ],
     });
-    await expect(promise).resolves.toEqual({ databaseId: 'db-id' });
+    await expect(promise).resolves.toEqual({ databaseId: 'db-id', ticketId: 'ticket-1' });
     expect(pollCalls).toHaveLength(3);
   });
 
@@ -136,35 +147,45 @@ describe('requestDatabaseProvision', () => {
   it('tolerates three consecutive failed polls, then continues', async () => {
     const { promise } = run({
       initial: ticket(),
-      polls: [new Error('502'), null, new Error('network'), done],
+      polls: [httpError(502), null, networkError(), done],
     });
-    await expect(promise).resolves.toEqual({ databaseId: 'db-id' });
+    await expect(promise).resolves.toEqual({ databaseId: 'db-id', ticketId: 'ticket-1' });
   });
 
-  it('gives up on the fourth consecutive failed poll', async () => {
+  it('leaves the ticket pending after the fourth consecutive unreachable poll', async () => {
     const { promise, pollCalls } = run({
       initial: ticket(),
-      polls: [new Error('502'), new Error('502'), new Error('502'), new Error('final failure')],
+      polls: [httpError(502), httpError(502), networkError(), httpError(503)],
     });
-    await expect(promise).rejects.toThrow('final failure');
+    await expect(promise).rejects.toBeInstanceOf(ProvisionPendingError);
+    await expect(promise).rejects.toMatchObject({ ticketId: 'ticket-1' });
     expect(pollCalls).toHaveLength(4);
+  });
+
+  it('fails at once when a poll gets a GraphQL or auth error, without calling it pending', async () => {
+    for (const error of [graphqlError('permission denied for table database_provision_module'), httpError(401)]) {
+      const { promise, pollCalls } = run({ initial: ticket(), polls: [error] });
+      await expect(promise).rejects.toThrow(/could not be read/);
+      await expect(promise).rejects.not.toBeInstanceOf(ProvisionPendingError);
+      expect(pollCalls).toHaveLength(1);
+    }
   });
 
   it('resets the failure budget after a readable poll', async () => {
     const { promise } = run({
       initial: ticket(),
       polls: [
-        new Error('502'),
+        httpError(502),
         null,
-        new Error('502'),
+        httpError(502),
         ticket({ status: 'in_progress' }),
-        new Error('502'),
+        networkError(),
         null,
-        new Error('502'),
+        httpError(502),
         done,
       ],
     });
-    await expect(promise).resolves.toEqual({ databaseId: 'db-id' });
+    await expect(promise).resolves.toEqual({ databaseId: 'db-id', ticketId: 'ticket-1' });
   });
 
   it('times out a ticket that never completes', async () => {

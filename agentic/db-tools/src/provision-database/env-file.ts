@@ -1,27 +1,100 @@
-// Pure .env merge — used by provision_database to persist provisioning
-// credentials without clobbering existing keys: replace a key in place if
-// present, else append.
+// Pure .env edits — used by provision_database to persist provisioning
+// credentials without clobbering existing keys.
 // Kept side-effect-free so it is unit-testable (the tool does the fs write).
+//
+// Reads go through the same parser context.ts uses (quotes, `export`,
+// comments, the last definition wins), and edits find a key the way that
+// parser does, so a key written as `export KEY="value"` or spread over several
+// lines by a quoted value is still the key being replaced or removed.
+
+import { parseDotenv } from '12factor-env/dotenv';
 
 export type EnvVars = Record<string, string>;
 
+/** Parse .env text: quoted values, `export` prefixes and comments; last definition wins. */
+export function readEnv(content: string): EnvVars {
+  return parseDotenv(content);
+}
+
+const ENTRY_RE = /^(\s*)(export\s+)?([\w.-]+)\s*=\s*(.*)$/;
+const QUOTES = new Set(['"', "'", '`']);
+
+type EnvEntry = { key: string | null; exported: boolean; lines: string[] };
+
+// Group lines into entries: a key with the lines its value spans (a quoted
+// value left open continues to the line that closes it), or a non-entry line
+// (comment, blank, anything else) with a null key.
+function envEntries(content: string): EnvEntry[] {
+  const lines = content.split('\n');
+  const entries: EnvEntry[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const match = line.trimStart().startsWith('#') ? null : ENTRY_RE.exec(line);
+    if (!match) {
+      entries.push({ key: null, exported: false, lines: [line] });
+      continue;
+    }
+    const value = match[4];
+    const span = [line];
+    if (QUOTES.has(value[0]) && !value.slice(1).includes(value[0])) {
+      while (i + 1 < lines.length) {
+        span.push(lines[++i]);
+        if (lines[i].includes(value[0])) break;
+      }
+    }
+    entries.push({ key: match[3], exported: !!match[2], lines: span });
+  }
+  return entries;
+}
+
 /**
- * Upsert `vars` into the existing `.env` `content`. Existing keys are replaced
- * in place (preserving surrounding lines/comments); new keys are appended.
+ * Upsert `vars` into the existing `.env` `content`. An existing key is
+ * replaced in place (keeping an `export` prefix), and any later definition of
+ * it is dropped so the new value is the one that wins; new keys are appended.
  * Returns the new file body, trailing-newline-terminated.
  */
 export function mergeEnv(content: string, vars: EnvVars): string {
-  let out = content;
-  for (const [key, val] of Object.entries(vars)) {
-    // Escape the key for the regex, and use a replacement function so `$`
-    // sequences in the value are never treated as replacement specials.
-    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`^${escapedKey}=.*`, 'm');
-    if (regex.test(out)) out = out.replace(regex, () => `${key}=${val}`);
-    else out += `\n${key}=${val}`;
+  const remaining = new Map(Object.entries(vars));
+  const written = new Set<string>();
+  const out: string[] = [];
+  for (const entry of envEntries(content)) {
+    if (entry.key !== null && remaining.has(entry.key)) {
+      out.push(`${entry.exported ? 'export ' : ''}${entry.key}=${remaining.get(entry.key)}`);
+      remaining.delete(entry.key);
+      written.add(entry.key);
+    } else if (entry.key === null || !written.has(entry.key)) {
+      out.push(...entry.lines);
+    }
   }
-  return out.trim() + '\n';
+  let text = out.join('\n');
+  for (const [key, value] of remaining) text += `\n${key}=${value}`;
+  return text.trim() + '\n';
 }
+
+/**
+ * Drop every definition of `keys`. Comments and other entries pass through,
+ * and content without those keys comes back unchanged.
+ */
+export function removeEnvKeys(content: string, keys: readonly string[]): string {
+  const keySet = new Set(keys);
+  const entries = envEntries(content);
+  const kept = entries.filter((entry) => entry.key === null || !keySet.has(entry.key));
+  return kept.length === entries.length ? content : kept.flatMap((entry) => entry.lines).join('\n');
+}
+
+/**
+ * The provision request provision_database is still waiting on, recorded when
+ * it stops waiting so the next call resumes that ticket. It's resumed only
+ * for the same database name, backend and account. Absent whenever no request
+ * is pending.
+ */
+export const PENDING_PROVISION_KEYS = {
+  ticketId: 'PROVISION_TICKET_ID',
+  databaseName: 'PROVISION_TICKET_DATABASE_NAME',
+  apiEndpoint: 'PROVISION_TICKET_API_ENDPOINT',
+  userId: 'PROVISION_TICKET_USER_ID',
+  attempts: 'PROVISION_TICKET_ATTEMPTS',
+} as const;
 
 /** The credential keys provision_database owns in a project's .env. */
 export const PROVISION_ENV_KEYS = [
@@ -86,14 +159,11 @@ export function archiveBindingKeys(
   archivedOn: string,
 ): string {
   const keySet = new Set(keys);
-  return content
-    .split('\n')
-    .map((line) => {
-      if (line.trimStart().startsWith('#')) return line;
-      const eq = line.indexOf('=');
-      if (eq === -1) return line;
-      const key = line.slice(0, eq).trim();
-      return keySet.has(key) ? `# archived ${archivedOn}: ${line.trim()}` : line;
-    })
+  return envEntries(content)
+    .flatMap((entry) =>
+      entry.key !== null && keySet.has(entry.key)
+        ? entry.lines.map((line) => `# archived ${archivedOn}: ${line.trim()}`)
+        : entry.lines,
+    )
     .join('\n');
 }

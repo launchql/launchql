@@ -56,6 +56,23 @@ export const POLL_DEADLINE_MS = 240_000;
  */
 export const MAX_CONSECUTIVE_POLL_FAILURES = 3;
 
+/**
+ * The provision is still running server-side, but this call stopped waiting:
+ * the deadline passed, or the backend couldn't be reached. A caller should keep
+ * `ticketId` and pass it back as `resumeTicketId`, because requesting the same
+ * name again starts a second provision rather than resuming this one.
+ */
+export class ProvisionPendingError extends Error {
+  constructor(
+    message: string,
+    readonly ticketId: string,
+    options?: { cause?: unknown },
+  ) {
+    super(message, options);
+    this.name = 'ProvisionPendingError';
+  }
+}
+
 const TICKET_SELECT = {
   id: true,
   status: true,
@@ -105,6 +122,28 @@ function createSdkExecutor(args: {
   };
 }
 
+const NETWORK_ERROR_RE =
+  /fetch failed|network|socket hang up|ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|ENOTFOUND|aborted|timed? ?out/i;
+
+/**
+ * Whether an error reading or requesting a ticket says only that the backend
+ * couldn't be reached or failed: a network error thrown before any response,
+ * or an HTTP 5xx/429 the adapter reports as the only error. A GraphQL error
+ * (validation, permission, an expired or rejected token) is an answer, so the
+ * ticket can't be followed any further.
+ */
+export function isTransientProvisionError(err: unknown): boolean {
+  const errors = (err as { errors?: { message?: string }[] } | null)?.errors;
+  if (Array.isArray(errors)) {
+    return errors.length > 0 && errors.every((e) => /^HTTP (5\d\d|429)\b/.test(e?.message ?? ''));
+  }
+  if (!(err instanceof Error)) return false;
+  const code = (err.cause as { code?: unknown } | undefined)?.code;
+  return NETWORK_ERROR_RE.test(`${err.message} ${typeof code === 'string' ? code : ''}`);
+}
+
+const errorText = (err: unknown) => (err instanceof Error ? err.message : String(err));
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -114,7 +153,12 @@ function sleep(ms: number): Promise<void> {
  * `status` AND `bootstrapStatus` both 'completed'. The ticket the mutation
  * returns is checked before the first sleep, so a warm claim with bootstrap
  * already done never waits. `status: 'failed'` surfaces `errorMessage`;
- * `bootstrapStatus: 'failed'` surfaces `bootstrapError`.
+ * `bootstrapStatus: 'failed'` surfaces `bootstrapError`. Stopping short of
+ * either outcome throws `ProvisionPendingError`.
+ *
+ * With `resumeTicketId` the ticket of an earlier call is polled instead of
+ * requesting again. A ticket that can't be found (another backend or account)
+ * falls back to a new request; `resumed` is true when the old one was used.
  */
 export async function requestDatabaseProvision(args: {
   apiEndpoint: string;
@@ -126,7 +170,8 @@ export async function requestDatabaseProvision(args: {
   executor?: ProvisionRequestExecutor;
   pollIntervalMs?: number;
   pollDeadlineMs?: number;
-}): Promise<{ databaseId: string }> {
+  resumeTicketId?: string;
+}): Promise<{ databaseId: string; ticketId: string; resumed?: true }> {
   const executor =
     args.executor ??
     createSdkExecutor({
@@ -137,14 +182,33 @@ export async function requestDatabaseProvision(args: {
   const intervalMs = args.pollIntervalMs ?? POLL_INTERVAL_MS;
   const deadlineMs = args.pollDeadlineMs ?? POLL_DEADLINE_MS;
 
-  let ticket = await executor.request({
-    databaseName: args.databaseName,
-    subdomain: args.databaseName,
-    domain: args.domain,
-    request: args.request,
-  });
-  const ticketId = ticket.id;
+  // A backend that can't be reached leaves the old ticket pending rather than
+  // falling back to a new request, which would start a duplicate provision.
+  // Any other error is final for that ticket.
+  let resumedTicket: ProvisionTicket | null = null;
+  if (args.resumeTicketId) {
+    try {
+      resumedTicket = await executor.poll(args.resumeTicketId);
+    } catch (err) {
+      if (isTransientProvisionError(err)) {
+        throw new ProvisionPendingError(errorText(err), args.resumeTicketId, { cause: err });
+      }
+      throw new Error(`provision ticket ${args.resumeTicketId} could not be read: ${errorText(err)}`, {
+        cause: err,
+      });
+    }
+  }
+  let ticket =
+    resumedTicket ??
+    (await executor.request({
+      databaseName: args.databaseName,
+      subdomain: args.databaseName,
+      domain: args.domain,
+      request: args.request,
+    }));
+  const ticketId = resumedTicket ? (ticket.id ?? args.resumeTicketId!) : ticket.id;
   if (!ticketId) throw new Error('requestDatabase returned a provision ticket without an id.');
+  const resumed = resumedTicket ? ({ resumed: true } as const) : {};
 
   const deadline = Date.now() + deadlineMs;
   let failures = 0;
@@ -157,25 +221,35 @@ export async function requestDatabaseProvision(args: {
     }
     if (ticket.status === 'completed' && ticket.bootstrapStatus === 'completed') {
       if (!ticket.databaseId) throw new Error('provisioning completed but returned no databaseId.');
-      return { databaseId: ticket.databaseId };
+      return { databaseId: ticket.databaseId, ticketId, ...resumed };
     }
     if (Date.now() >= deadline) {
-      throw new Error(
+      throw new ProvisionPendingError(
         `provisioning timed out after ${Math.round(deadlineMs / 1000)}s (status: ${
           ticket.status ?? 'unknown'
         }, bootstrapStatus: ${ticket.bootstrapStatus ?? 'unknown'})`,
+        ticketId,
       );
     }
 
     await sleep(intervalMs);
 
-    // A poll that throws (network blip, 502) or comes back empty is retried a
-    // few times rather than failing a provision that is still running.
+    // A poll that can't reach the backend (network blip, 502) or comes back
+    // empty is retried a few times rather than failing a provision that is
+    // still running. Past that, an unreachable backend leaves the ticket
+    // pending; an empty answer, or any error that is an answer, is final.
     let polled: ProvisionTicket | null;
     try {
       polled = await executor.poll(ticketId);
     } catch (err) {
-      if (++failures > MAX_CONSECUTIVE_POLL_FAILURES) throw err;
+      if (!isTransientProvisionError(err)) {
+        throw new Error(`provision ticket ${ticketId} could not be read: ${errorText(err)}`, {
+          cause: err,
+        });
+      }
+      if (++failures > MAX_CONSECUTIVE_POLL_FAILURES) {
+        throw new ProvisionPendingError(errorText(err), ticketId, { cause: err });
+      }
       continue;
     }
     if (!polled) {
