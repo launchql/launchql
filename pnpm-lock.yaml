@@ -713,6 +713,44 @@ importers:
         version: link:../../postgres/pgsql-test/dist
     publishDirectory: dist
 
+  graphile/graphile-function-source:
+    dependencies:
+      '@dataplan/pg':
+        specifier: 1.1.1
+        version: 1.1.1(@dataplan/json@1.0.1(grafast@1.1.2(graphql@16.13.0)))(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0)
+      grafast:
+        specifier: 1.1.2
+        version: 1.1.2(graphql@16.13.0)
+      graphile-build:
+        specifier: 5.1.1
+        version: 5.1.1(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)
+      graphile-build-pg:
+        specifier: 5.1.3
+        version: 5.1.3(@dataplan/pg@1.1.1(@dataplan/json@1.0.1(grafast@1.1.2(graphql@16.13.0)))(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0))(grafast@1.1.2(graphql@16.13.0))(graphile-build@5.1.1(grafast@1.1.2(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0))(graphile-config@1.1.0)(graphql@16.13.0)(pg-sql2@5.0.1)(pg@8.21.0)(tamedevil@0.1.1)
+      graphile-config:
+        specifier: 1.1.0
+        version: 1.1.0
+      graphql:
+        specifier: 16.13.0
+        version: 16.13.0
+      plpgsql-parser:
+        specifier: ^18.5.14
+        version: 18.5.14
+      postgraphile:
+        specifier: 5.1.4
+        version: 5.1.4(abb1e7d37c806d345dec450464477780)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.19.11
+        version: 22.19.19
+      graphile-test:
+        specifier: workspace:^
+        version: link:../graphile-test/dist
+      makage:
+        specifier: ^0.8.0
+        version: 0.8.0
+    publishDirectory: dist
+
   graphile/graphile-history:
     dependencies:
       '@dataplan/pg':
@@ -1465,6 +1503,9 @@ importers:
       graphile-connection-filter:
         specifier: workspace:^
         version: link:../graphile-connection-filter/dist
+      graphile-function-source:
+        specifier: workspace:^
+        version: link:../graphile-function-source/dist
       graphile-history:
         specifier: workspace:^
         version: link:../graphile-history/dist
@@ -1522,9 +1563,6 @@ importers:
       pg-sql2:
         specifier: 5.0.1
         version: 5.0.1
-      plpgsql-parser:
-        specifier: ^18.5.14
-        version: 18.5.14
       postgraphile:
         specifier: 5.1.4
         version: 5.1.4(6fac2ccd59325b02d1508e585e9ab2d6)

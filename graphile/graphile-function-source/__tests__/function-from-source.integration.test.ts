@@ -2,7 +2,7 @@ import type { GraphQLResponse } from 'graphile-test';
 import { getConnections, seed } from 'graphile-test';
 import { join } from 'path';
 
-import { ConstructivePreset } from '../src/presets/constructive-preset';
+import { FunctionFromSourcePreset } from '../src';
 
 jest.setTimeout(120000);
 
@@ -51,7 +51,7 @@ describe('createFunctionFromSource', () => {
     const connections = await (getConnections as any)(
       {
         schemas: ['metaschema_public'],
-        preset: { extends: [ConstructivePreset] },
+        preset: { extends: [FunctionFromSourcePreset] },
         useRoot: true,
         authRole: 'authenticated'
       },
@@ -100,7 +100,8 @@ describe('createFunctionFromSource', () => {
 
     const {
       rows: [row]
-    } = await pg.query('SELECT body_ast, security_invoker FROM metaschema_public.function WHERE id = $1', [fn.id]);
+    } = await pg.query('SELECT body_ast, security_invoker FROM metaschema_public.function WHERE database_id = $1 AND name = $2',
+      [TENANT_A, 'visible_total']);
     expect(row.security_invoker).toBe(true);
     expect(row.body_ast.PLpgSQL_function.datums.map((d: any) => d.PLpgSQL_var.refname)).toEqual([
       'min_amount',

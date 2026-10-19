@@ -244,7 +244,7 @@ jobs:
           - batch: pg-postgres
             packages: 'postgres/pgsql-test postgres/drizzle-orm-test postgres/introspectron graphile/graphile-test graphile/graphile-scoped-introspection graphile/graphile-connection-filter graphile/graphile-postgis'
           - batch: pg-graphql
-            packages: 'graphile/graphile-search graphile/graphile-ltree graphile/graphile-bulk-mutations graphile/graphile-function-bindings graphile/graphile-history graphile/graphile-meta graphile/graphile-schema graphql/orm-test graphql/test graphql/playwright-test'
+            packages: 'graphile/graphile-search graphile/graphile-function-source graphile/graphile-ltree graphile/graphile-bulk-mutations graphile/graphile-function-bindings graphile/graphile-history graphile/graphile-meta graphile/graphile-schema graphql/orm-test graphql/test graphql/playwright-test'
           - batch: pg-graphile-extras
             packages: 'graphile/graphile-i18n graphile/graphile-pg-aggregates graphile/graphile-query graphile/graphile-realtime-test'
 

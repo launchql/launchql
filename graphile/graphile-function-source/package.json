@@ -1,0 +1,57 @@
+{
+  "name": "graphile-function-source",
+  "version": "0.1.0",
+  "description": "Author PostgreSQL functions from CREATE FUNCTION source text in PostGraphile v5",
+  "author": "Constructive <developers@constructive.io>",
+  "homepage": "https://github.com/constructive-io/constructive",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "makage clean",
+    "prepack": "npm run build",
+    "build": "makage build",
+    "build:dev": "makage build --dev",
+    "lint": "eslint . --fix",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/constructive-io/constructive"
+  },
+  "keywords": [
+    "postgraphile",
+    "graphile",
+    "constructive",
+    "plugin",
+    "postgres",
+    "graphql",
+    "plpgsql",
+    "functions"
+  ],
+  "bugs": {
+    "url": "https://github.com/constructive-io/constructive/issues"
+  },
+  "dependencies": {
+    "plpgsql-parser": "^18.5.14"
+  },
+  "peerDependencies": {
+    "@dataplan/pg": "^1.1.1",
+    "grafast": "^1.1.2",
+    "graphile-build": "^5.1.1",
+    "graphile-build-pg": "^5.1.3",
+    "graphile-config": "^1.1.0",
+    "graphql": "^16.9.0",
+    "postgraphile": "^5.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.11",
+    "graphile-test": "workspace:^",
+    "makage": "^0.8.0"
+  }
+}

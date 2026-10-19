@@ -2,7 +2,7 @@ import {
   FUNCTION_SOURCE_PARSE_ERROR,
   FUNCTION_SOURCE_UNSUPPORTED,
   parseFunctionSource
-} from '../src/plugins/function-from-source';
+} from '../src';
 
 const rejection = async (source: string) => {
   const err = await parseFunctionSource(source).then(

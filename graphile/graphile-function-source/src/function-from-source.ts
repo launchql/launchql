@@ -1,3 +1,6 @@
+import 'graphile-build';
+import 'graphile-build-pg';
+
 import { pgInsertSingle, type PgResource } from '@dataplan/pg';
 import { access, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
