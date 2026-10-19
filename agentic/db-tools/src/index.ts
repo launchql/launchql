@@ -101,6 +101,7 @@ export {
   resolveProvisionModules,
 } from './provision-database/resolve';
 export { toolSchema } from './tool-schema';
+export { type RunCodegenDetails, type RunCodegenTimings } from './tools/run-codegen';
 export { createTemplatePreviewTables } from './tools/templates';
 
 export default constructiveDbTools;
