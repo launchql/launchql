@@ -16,6 +16,7 @@ import { UploadPreset } from 'graphile-upload-plugin';
 import {
   ConflictDetectorPreset,
   EnableAllFilterColumnsPreset,
+  FunctionFromSourcePreset,
   InflectorLoggerPreset,
   InflektPreset,
   ManyToManyOptInPreset,
@@ -159,7 +160,8 @@ export function createConstructivePreset(
     NoUniqueLookupPreset,
     MetaSchemaPreset,
     PgTypeMappingsPreset,
-    RequiredInputPreset
+    RequiredInputPreset,
+    FunctionFromSourcePreset
   ];
 
   if (opts.enableConnectionFilter) {

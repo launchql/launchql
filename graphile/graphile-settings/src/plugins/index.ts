@@ -47,6 +47,16 @@ export {
   PrimaryKeyOnlyPreset,
 } from './primary-key-only';
 
+// Author customer functions from CREATE FUNCTION source text
+export type { FunctionDefinition } from './function-from-source';
+export {
+  FUNCTION_SOURCE_PARSE_ERROR,
+  FUNCTION_SOURCE_UNSUPPORTED,
+  FunctionFromSourcePlugin,
+  FunctionFromSourcePreset,
+  parseFunctionSource,
+} from './function-from-source';
+
 // Meta schema plugin for introspection (tables, fields, indexes, constraints)
 export {
   getTablesMetaForSchema,

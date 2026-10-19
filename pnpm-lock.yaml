@@ -1522,6 +1522,9 @@ importers:
       pg-sql2:
         specifier: 5.0.1
         version: 5.0.1
+      plpgsql-parser:
+        specifier: ^18.5.14
+        version: 18.5.14
       postgraphile:
         specifier: 5.1.4
         version: 5.1.4(6fac2ccd59325b02d1508e585e9ab2d6)
