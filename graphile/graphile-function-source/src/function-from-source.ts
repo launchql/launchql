@@ -1,7 +1,7 @@
 import 'graphile-build';
 import 'graphile-build-pg';
 
-import { pgInsertSingle, type PgResource } from '@dataplan/pg';
+import { pgInsertSingle, type PgResource,pgUpdateSingle } from '@dataplan/pg';
 import { access, lambda, object } from 'grafast';
 import type { GraphileConfig } from 'graphile-config';
 import { GraphQLError } from 'graphql';
@@ -84,6 +84,7 @@ const fieldType = (typeName: AstNode): FieldType => {
  * Maps one `CREATE FUNCTION` statement onto the columns `metaschema_public.function`
  * accepts. Anything those columns cannot carry is refused rather than dropped; whether
  * the definition is *allowed* is left to the database (capability gate, RLS, validator).
+ * Create and update take the same text: replacing is chosen by the mutation, not the source.
  */
 export const parseFunctionSource = async (source: string): Promise<FunctionDefinition> => {
   await loadModule();
@@ -101,7 +102,11 @@ export const parseFunctionSource = async (source: string): Promise<FunctionDefin
   }
   const stmt = stmts[0].stmt.CreateFunctionStmt as AstNode;
   if (stmt.is_procedure) throw unsupported('procedures are not supported');
-  if (stmt.replace) throw unsupported('CREATE OR REPLACE is not supported; this creates a new function');
+  if (stmt.replace) {
+    throw unsupported(
+      'CREATE OR REPLACE is not supported; to replace a function, send CREATE FUNCTION to updateFunctionFromSource with its id'
+    );
+  }
   if (stmt.sql_body) throw unsupported('write the body as a string literal (AS $$ ... $$)');
   if (stmt.funcname.length !== 1) {
     throw unsupported('the function name must be unqualified; schemaId chooses its schema');
@@ -200,103 +205,152 @@ const isFunctionTable = (resource: PgResource<any, any, any, any, any>) => {
   return !resource.parameters && pg?.schemaName === 'metaschema_public' && pg?.name === 'function';
 };
 
-const findFunctionResource = (build: GraphileBuild.Build) =>
+/** `updateFunctionFromSource` addresses the row the way `updateFunction` does: by `id`. */
+const isIdPrimaryKey = (unique: { isPrimary?: boolean; attributes: readonly string[] }) =>
+  Boolean(unique.isPrimary) && unique.attributes.length === 1 && unique.attributes[0] === 'id';
+
+const findFunctionResource = (build: GraphileBuild.Build, behavior: 'resource:insert' | 'resource:update') =>
   Object.values(build.pgResources).find(
     (resource) =>
-      isFunctionTable(resource) && build.behavior.pgResourceMatches(resource, 'resource:insert') === true
+      isFunctionTable(resource) &&
+      (behavior === 'resource:insert' || resource.uniques.some(isIdPrimaryKey)) &&
+      build.behavior.pgResourceMatches(resource, behavior) === true
   );
 
-const INPUT_TYPE = 'CreateFunctionFromSourceInput';
+const CREATE_INPUT = 'CreateFunctionFromSourceInput';
+const UPDATE_INPUT = 'UpdateFunctionFromSourceInput';
+
+/** The columns the source text decides; create and update write exactly these. */
+const definitionColumns = ($input: any) => {
+  const $definition = lambda(access($input, 'source'), (source) => parseFunctionSource(source as string));
+  return {
+    name: access($definition, 'name'),
+    kind: access($definition, 'kind'),
+    arguments: access($definition, 'arguments'),
+    returns: access($definition, 'returns'),
+    volatility: access($definition, 'volatility'),
+    is_strict: access($definition, 'is_strict'),
+    security_invoker: access($definition, 'security_invoker'),
+    body_ast: access($definition, 'body_ast')
+  };
+};
 
 /**
- * `createFunctionFromSource`: author a customer function from SQL text. The server parses
- * (the database never parses strings) and performs the same `pgInsertSingle` as
- * `createFunction`, on the request's client under the caller's claims.
+ * `createFunctionFromSource` / `updateFunctionFromSource`: author or replace a customer
+ * function from SQL text. The server parses (the database never parses strings) and
+ * performs the same `pgInsertSingle` / `pgUpdateSingle` as `createFunction` /
+ * `updateFunction`, on the request's client under the caller's claims.
  */
 export const FunctionFromSourcePlugin: GraphileConfig.Plugin = {
   name: 'FunctionFromSourcePlugin',
   version: '1.0.0',
-  after: ['PgMutationCreatePlugin', 'PgMutationPayloadEdgePlugin'],
+  after: ['PgMutationCreatePlugin', 'PgMutationUpdateDeletePlugin', 'PgMutationPayloadEdgePlugin'],
   schema: {
     hooks: {
       init(_, build) {
-        if (!findFunctionResource(build)) return _;
         const { GraphQLBoolean, GraphQLNonNull, GraphQLString } = build.graphql;
-        build.registerInputObjectType(
-          INPUT_TYPE,
-          { isMutationInput: true },
-          () => ({
-            description: 'Author a function from its `CREATE FUNCTION` source text.',
-            fields: () => {
-              const uuid = build.getInputTypeByName('UUID');
-              return {
+        const register = (name: string, description: string, fields: (uuid: any) => Record<string, any>) =>
+          build.registerInputObjectType(
+            name,
+            { isMutationInput: true },
+            () => ({
+              description,
+              fields: () => ({
                 clientMutationId: {
                   type: GraphQLString,
                   apply(qb: any, val: unknown) {
                     qb.setMeta('clientMutationId', val);
                   }
                 },
-                databaseId: { type: new GraphQLNonNull(uuid) },
-                schemaId: { type: new GraphQLNonNull(uuid) },
+                ...fields(build.getInputTypeByName('UUID')),
                 source: {
                   type: new GraphQLNonNull(GraphQLString),
                   description: 'One `CREATE FUNCTION` statement (LANGUAGE plpgsql or sql).'
-                },
-                apiExposed: { type: GraphQLBoolean, defaultValue: false }
-              };
-            }
-          }),
-          'FunctionFromSourcePlugin input'
-        );
+                }
+              })
+            }),
+            'FunctionFromSourcePlugin input'
+          );
+        if (findFunctionResource(build, 'resource:insert')) {
+          register(CREATE_INPUT, 'Author a function from its `CREATE FUNCTION` source text.', (uuid) => ({
+            databaseId: { type: new GraphQLNonNull(uuid) },
+            schemaId: { type: new GraphQLNonNull(uuid) },
+            apiExposed: { type: GraphQLBoolean, defaultValue: false }
+          }));
+        }
+        if (findFunctionResource(build, 'resource:update')) {
+          register(
+            UPDATE_INPUT,
+            'Replace a function\'s definition from its `CREATE FUNCTION` source text.',
+            (uuid) => ({ id: { type: new GraphQLNonNull(uuid) } })
+          );
+        }
         return _;
       },
       GraphQLObjectType_fields(fields, build, context) {
         if (!context.scope.isRootMutation) return fields;
-        const resource = findFunctionResource(build);
-        if (!resource) return fields;
         const { GraphQLNonNull } = build.graphql;
-        return build.extend(
-          fields,
-          {
-            createFunctionFromSource: context.fieldWithHooks(
-              { fieldName: 'createFunctionFromSource' },
-              {
-                description: 'Creates a `Function` from its `CREATE FUNCTION` source text.',
-                type: build.getOutputTypeByName(build.inflection.createPayloadType(resource)),
-                args: {
-                  input: {
-                    type: new GraphQLNonNull(build.getInputTypeByName(INPUT_TYPE)),
-                    applyPlan(_: unknown, $insert: unknown) {
-                      return $insert;
-                    }
+        const field = (
+          fieldName: string,
+          description: string,
+          payloadType: string,
+          inputType: string,
+          plan: (fieldArgs: any) => any
+        ) =>
+          context.fieldWithHooks(
+            { fieldName },
+            {
+              description,
+              type: build.getOutputTypeByName(payloadType),
+              args: {
+                input: {
+                  type: new GraphQLNonNull(build.getInputTypeByName(inputType)),
+                  applyPlan(_: unknown, $mutation: unknown) {
+                    return $mutation;
                   }
-                },
-                plan(_$root: unknown, fieldArgs: any) {
-                  const $input = fieldArgs.getRaw('input');
-                  const $definition = lambda(access($input, 'source'), (source) =>
-                    parseFunctionSource(source as string)
-                  );
-                  const $insert = pgInsertSingle(resource, {
-                    database_id: access($input, 'databaseId'),
-                    schema_id: access($input, 'schemaId'),
-                    api_exposed: access($input, 'apiExposed'),
-                    name: access($definition, 'name'),
-                    kind: access($definition, 'kind'),
-                    arguments: access($definition, 'arguments'),
-                    returns: access($definition, 'returns'),
-                    volatility: access($definition, 'volatility'),
-                    is_strict: access($definition, 'is_strict'),
-                    security_invoker: access($definition, 'security_invoker'),
-                    body_ast: access($definition, 'body_ast')
-                  });
-                  fieldArgs.apply($insert);
-                  return object({ result: $insert });
                 }
+              },
+              plan(_$root: unknown, fieldArgs: any) {
+                const $mutation = plan(fieldArgs);
+                fieldArgs.apply($mutation);
+                return object({ result: $mutation });
               }
-            )
-          },
-          'Adding createFunctionFromSource mutation'
-        );
+            }
+          );
+
+        const added: Record<string, any> = {};
+        const insertable = findFunctionResource(build, 'resource:insert');
+        if (insertable) {
+          added.createFunctionFromSource = field(
+            'createFunctionFromSource',
+            'Creates a `Function` from its `CREATE FUNCTION` source text.',
+            build.inflection.createPayloadType(insertable),
+            CREATE_INPUT,
+            (fieldArgs) => {
+              const $input = fieldArgs.getRaw('input');
+              return pgInsertSingle(insertable, {
+                database_id: access($input, 'databaseId'),
+                schema_id: access($input, 'schemaId'),
+                api_exposed: access($input, 'apiExposed'),
+                ...definitionColumns($input)
+              });
+            }
+          );
+        }
+        const updatable = findFunctionResource(build, 'resource:update');
+        if (updatable) {
+          added.updateFunctionFromSource = field(
+            'updateFunctionFromSource',
+            'Replaces a `Function`\'s definition from its source text; its database, schema and exposure are unchanged.',
+            build.inflection.updatePayloadType({ resource: updatable }),
+            UPDATE_INPUT,
+            (fieldArgs) => {
+              const $input = fieldArgs.getRaw('input');
+              return pgUpdateSingle(updatable, { id: access($input, 'id') }, definitionColumns($input));
+            }
+          );
+        }
+        return build.extend(fields, added, 'Adding FunctionFromSource mutations');
       }
     }
   }

@@ -37,6 +37,21 @@ type QueryFn = <T = unknown>(
   reqOptions?: Record<string, unknown>
 ) => Promise<GraphQLResponse<T>>;
 
+const UPDATE = `
+  mutation ($input: UpdateFunctionFromSourceInput!) {
+    updateFunctionFromSource(input: $input) {
+      clientMutationId
+      function { databaseId schemaId name kind volatility returns arguments apiExposed }
+    }
+  }
+`;
+
+const REPLACEMENT = `
+CREATE FUNCTION renamed_total(threshold integer)
+  RETURNS integer
+  LANGUAGE sql IMMUTABLE
+  AS $$ SELECT threshold * 2 $$;`;
+
 const asTenant = (databaseId: string) => ({
   pgSettings: { role: 'authenticated', 'jwt.claims.database_id': databaseId }
 });
@@ -124,5 +139,80 @@ describe('createFunctionFromSource', () => {
     });
     const { rows } = await pg.query('SELECT count(*)::int AS n FROM metaschema_public.function');
     expect(rows[0].n).toBe(0);
+  });
+
+  describe('updateFunctionFromSource', () => {
+    // Read back as tenant A: the last mutation's claims are still set on this transaction.
+    const rowOf = async (name: string) => {
+      await pg.query(`SELECT set_config('jwt.claims.database_id', $1, true)`, [TENANT_A]);
+      const { rows } = await pg.query(
+        `SELECT id, database_id, schema_id, name, kind, volatility, arguments, returns, api_exposed, body_ast
+           FROM metaschema_public.function WHERE database_id = $1 AND name = $2`,
+        [TENANT_A, name]
+      );
+      return rows[0];
+    };
+
+    const update = async (id: string, source: string, claimsFor = TENANT_A) =>
+      query<any>(UPDATE, { input: { clientMutationId: 'u1', id, source } }, false, asTenant(claimsFor));
+
+    let id: string;
+    beforeEach(async () => {
+      expect((await create(TENANT_A, SOURCE)).errors).toBeUndefined();
+      ({ id } = await rowOf('visible_total'));
+    });
+
+    it('replaces the definition under the caller\'s claims, keeping database, schema and exposure', async () => {
+      const result = await update(id, REPLACEMENT);
+      expect(result.errors).toBeUndefined();
+      expect(result.data.updateFunctionFromSource).toMatchObject({
+        clientMutationId: 'u1',
+        function: {
+          databaseId: TENANT_A,
+          schemaId: SCHEMA_A,
+          name: 'renamed_total',
+          kind: 'sql',
+          volatility: 'IMMUTABLE',
+          returns: { type: { name: 'int4' } },
+          arguments: [{ name: 'threshold', type: { name: 'int4' } }],
+          apiExposed: true
+        }
+      });
+      const row = await rowOf('renamed_total');
+      expect(row.id).toBe(id);
+      expect(row.body_ast.stmts).toHaveLength(1);
+      expect(await rowOf('visible_total')).toBeUndefined();
+    });
+
+    // RLS hides the row, so — exactly as with `updateFunction` — nothing matches and the
+    // payload carries no function.
+    it('is refused by RLS when the caller updates another database\'s function', async () => {
+      const before = await rowOf('visible_total');
+      const result = await update(id, REPLACEMENT, TENANT_B);
+      expect(result.errors).toBeUndefined();
+      expect(result.data.updateFunctionFromSource.function).toBeNull();
+      expect(await rowOf('visible_total')).toEqual(before);
+    });
+
+    it('refuses OR REPLACE, the same text format as create, and changes nothing', async () => {
+      const before = await rowOf('visible_total');
+      const result = await update(id, REPLACEMENT.replace('CREATE FUNCTION', 'CREATE OR REPLACE FUNCTION'));
+      expect(result.errors?.[0]).toMatchObject({
+        message: expect.stringContaining('updateFunctionFromSource with its id'),
+        extensions: { code: 'FUNCTION_SOURCE_UNSUPPORTED' }
+      });
+      expect(await rowOf('visible_total')).toEqual(before);
+    });
+
+    it('returns a parse error and changes nothing', async () => {
+      const before = await rowOf('visible_total');
+      const source = 'CREATE FUNCTION visible_total() RETURNS int LANGUAGE sql AS $$ SELEC 1 $$';
+      const result = await update(id, source);
+      expect(result.errors?.[0]).toMatchObject({
+        message: 'syntax error at or near "SELEC"',
+        extensions: { code: 'FUNCTION_SOURCE_PARSE_ERROR', position: source.indexOf('SELEC') }
+      });
+      expect(await rowOf('visible_total')).toEqual(before);
+    });
   });
 });

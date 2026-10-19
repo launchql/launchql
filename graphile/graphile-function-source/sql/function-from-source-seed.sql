@@ -9,7 +9,7 @@ INSERT INTO metaschema_public.schema (id, database_id, name, schema_name) VALUES
   ('00000000-0000-4000-8000-0000000000bb', '00000000-0000-4000-8000-00000000000b', 'app_public', 'tenant_b_app_public');
 
 GRANT USAGE ON SCHEMA metaschema_public TO authenticated;
-GRANT SELECT, INSERT ON metaschema_public.function TO authenticated;
+GRANT SELECT, INSERT, UPDATE ON metaschema_public.function TO authenticated;
 
 ALTER TABLE metaschema_public.function ENABLE ROW LEVEL SECURITY;
 
