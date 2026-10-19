@@ -51,6 +51,7 @@
     "graphile-bulk-mutations": "workspace:^",
     "graphile-config": "1.1.0",
     "graphile-connection-filter": "workspace:^",
+    "graphile-function-source": "workspace:^",
     "graphile-history": "workspace:^",
     "graphile-i18n": "workspace:^",
     "graphile-llm": "workspace:^",
