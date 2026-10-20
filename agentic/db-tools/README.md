@@ -29,7 +29,7 @@ npm install @agentic-kit/db-tools
 
 - **18 typed db tools** — `provision_database`, `provision_blueprint`, `describe_schema`, `add_relation`, `delete_table`, `create_field` / `update_field` / `delete_field`, `add_policies`, `add_records`, `manage_entity_types`, `create_api_key`, `run_codegen`, and the template suite (`list` / `create` / `apply` / `update` / `delete`). `constructiveDbTools` is the list, in registration order.
 - **Host injection** — credentials, backend endpoints and data-plane tokens come from the host application, not from the package. Call `configureHost()` once at startup; the tools read it lazily per call.
-- **Project context** — `resolveProjectContext` / `resolveDataToken` resolve the database a tool acts on from the cwd's `.env` plus the host's session, and `deriveSubdomainEndpoint` derives its per-database endpoints.
+- **Project context** — `resolveProjectContext` / `resolveDataToken` resolve the database a tool acts on from the cwd's `.env` plus the host's session, and `deriveSubdomainEndpoint` derives its per-database endpoints. `probeDatabase` says whether that database is still there, and `readSchemaModel` reads its app tables.
 - **Provisioning model** — the pinned `node-type-registry` presets, the provision manifest, and overlay resolution (`resolveProvisionModules`).
 - **`constructiveGateDeps`** — the confirm gate's host capabilities (is the project runnable, is there a data token, what tables would a template copy) answered by these resolvers, so every adapter gates the same tools against the same project state instead of restating it.
 - **`toolSchema`** — a tool's zod parameters as plain JSON Schema, for adapters whose harness wants JSON Schema rather than zod.
@@ -55,6 +55,37 @@ A tool executes against nothing but its params and a context, so it is callable 
 ```ts
 const result = await describeSchemaTool.execute({ database_name: 'my-app' }, { cwd: process.cwd() });
 ```
+
+## Is the bound database still there?
+
+`probeDatabase` (or `probeBoundDatabase(id)`, which uses the host's account and control endpoint) asks the platform api and returns one of:
+
+| `status` | Means | Recovery |
+| --- | --- | --- |
+| `found` | Live; carries `name`, `ownerId` and `hash` (the schema hash, which changes on every schema change) | none |
+| `suspended` | It exists and keeps its data, but is held (`suspendedAt`, `suspendedReason`) | wait for the hold to lift; never replace it |
+| `missing` | The backend answered and this account can't see it: deleted, or access lost | re-provision |
+| `unreachable` | No usable answer; `cause` is `network`, `server`, `auth` (account credential rejected) or `error` (an error the probe doesn't know) | retry or sign in; never re-provision |
+
+Only `missing` means the database is gone. On a backend without `hash`, the probe retries once without it and `hash` is undefined. `resolveProjectContext` reports the same states as `db-missing`, `db-suspended`, `account-mismatch` and `backend-unreachable` (with `cause`), and a resolved context carries `hash`.
+
+Tenant APIs answer `ACCESS_SUSPENDED` (a 403 with a JSON body) for a deleted or suspended database. The SDK's `FetchAdapter` drops that body, so `postGraphQL` and `statusAdapter` (a drop-in ORM adapter) keep each error's `extensions.code` and HTTP status, and `classifyBackendErrors` sorts them into `suspended`, `network`, `server`, `auth`, `forbidden` or `graphql`. `add_records`, `run_codegen` and `create_api_key` return `details.code: 'database-unavailable'` on `ACCESS_SUSPENDED`, and `run_codegen` doesn't retry a refused introspection.
+
+## The live schema
+
+`readSchemaModel(context)` reads the app tables (category `APP`, whoever created them) from the metaschema in one piece, or throws `SchemaReadError`; a partial read would look like columns dropped outside. Each table has its stable metaschema id, every field with its category (a status column made by `DataStatusField` is `MODULE`), a normalised type, `isRequired`, a structured default (`value`, `now`, `today`, `generated` or `expression`), the values an IN-list check allows, primary-key and unique flags, foreign keys with their delete and update actions (targets outside the app tables still resolve), and its policies. `accessOf(policies)` maps them to `shared`, `private` or `custom`. The model's `hash` is read before anything else.
+
+## Provisioning
+
+`provision_database` and the host-side `provisionDatabase(input, { cwd })` never create a second database by accident. Calls for one project run one at a time. A binding is `DATABASE_ID` alone: it is probed, then kept (healing the token, endpoints and any missing keys) or refused. Replace mode (`mode: 'replace', replaces: <the id the caller saw>`) swaps the binding only if it is still that one, and never swaps a suspended database, or a live one on the host path. A provision that outlasts the poll is recorded in `.env` and resumed by the next call. A ticket that can't be read back, or a call that lost track of its ticket, finds an in-flight provision of the same name with `listOwn` before anything is requested; a completed one is only reported. After `MAX_PENDING_ATTEMPTS` waits the call fails `provision-stuck` until the host passes `abandonPending`.
+
+Failures carry a `code`: `signed-out`, `backend-unreachable`, `db-missing`, `db-suspended`, `account-mismatch`, `binding-live`, `binding-changed`, `pending-other`, `ticket-lost`, `provision-stuck`, `name-taken` (with `heldBy` when a database of this account holds the name, which the host can bind with `adopt: <id>`), `binding-not-saved`, `env-write-failed`, `reprovision-not-allowed` or `failed`.
+
+Host hooks for this, all optional:
+
+- `persistBinding(binding)` saves the binding in the host's own store before `.env` is written. If it throws, `.env` is left alone, the ticket stays recorded, and the call fails `binding-not-saved`.
+- `toolReprovision: false` makes the tool's `reprovision: true` fail `reprovision-not-allowed`, for a host that replaces databases only after the user approves.
+- `reprovisionHint` replaces the "re-provision with `reprovision: true`" advice in failure messages.
 
 ## Related
 
