@@ -2,9 +2,18 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import os from 'node:os';
 import path from 'node:path';
 
+// The app API check after a refused codegen; classification stays real.
+jest.mock('../src/graphql-http', () => ({
+  ...jest.requireActual('../src/graphql-http'),
+  postGraphQL: jest.fn(),
+}));
+
 import { prewarmAppWorkspace, type RunCommand } from '../src/app-workspace';
+import { postGraphQL } from '../src/graphql-http';
 import { configureHost } from '../src/host';
 import { createRunCodegenTool } from '../src/tools/run-codegen';
+
+const mockPost = postGraphQL as jest.MockedFunction<typeof postGraphQL>;
 
 type Call = { cmd: string; args: string[]; cwd: string; env?: Record<string, string> };
 
@@ -239,6 +248,40 @@ describe('run_codegen on a composed app', () => {
     expect(result.details).toMatchObject({ success: false, appKind: 'composed', codegenAttempts: 1 });
     expect(result.details.timings?.codegenMs).toEqual(expect.any(Number));
     expect(read(path.join(appDir, 'src', 'graphql', 'sdk', 'app', 'index.ts'))).toBe(STUB);
+  });
+});
+
+describe('run_codegen when the app API refuses', () => {
+  const refused = () => fakeExec((call) => ({ ok: !isCodegen(call), out: 'Failed to fetch schema: HTTP 403 Forbidden' }));
+
+  it('stops at the first 403 and reports a deleted or suspended database', async () => {
+    composedApp({ nodeModules: true });
+    mockPost.mockResolvedValue({
+      httpStatus: 403,
+      data: null,
+      errors: [{ message: 'Access to this database is suspended.', extensions: { code: 'ACCESS_SUSPENDED', httpStatus: 403 } }],
+    });
+    const { exec, calls } = refused();
+
+    const result = await createRunCodegenTool(exec).execute({}, { cwd });
+
+    expect(calls.filter(isCodegen)).toHaveLength(1);
+    expect(mockPost).toHaveBeenCalledWith(
+      expect.objectContaining({ endpoint: 'http://api-myapp.localhost:3000/graphql' }),
+    );
+    expect(result.details).toMatchObject({ success: false, code: 'database-unavailable', codegenAttempts: 1 });
+  });
+
+  it('keeps a 403 from a database that is up a plain codegen failure', async () => {
+    composedApp({ nodeModules: true });
+    mockPost.mockResolvedValue({ httpStatus: 200, data: { __typename: 'Query' }, errors: [] });
+    const { exec, calls } = refused();
+
+    const result = await createRunCodegenTool(exec).execute({}, { cwd });
+
+    expect(calls.filter(isCodegen)).toHaveLength(1);
+    expect(result.details).toMatchObject({ success: false, codegenAttempts: 1 });
+    expect(result.details.code).toBeUndefined();
   });
 });
 

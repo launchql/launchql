@@ -3,6 +3,13 @@ import { auth } from '@constructive-io/sdk';
 import { z } from 'zod';
 
 import { deriveSubdomainEndpoint, resolveDataToken, resolveProjectContext } from '../context';
+import {
+  classifyBackendErrors,
+  errorsText,
+  type GraphQLError,
+  postGraphQL,
+  statusAdapter,
+} from '../graphql-http';
 import { getHost } from '../host';
 
 const CreateApiKeyZod = z.object({
@@ -45,6 +52,8 @@ export type CreateApiKeyDetails = {
   principalName?: string;
   scope?: string;
   needsAuth?: boolean;
+  /** The app API answered ACCESS_SUSPENDED: the database is deleted or suspended. */
+  code?: 'database-unavailable';
 };
 
 type ToolResult = { content: { type: 'text'; text: string }[]; details: CreateApiKeyDetails };
@@ -80,29 +89,39 @@ export function describeScope(entityIds: string[] | undefined, readOnly: boolean
   return parts.join(', ');
 }
 
+// The plain fetch, read at call time. postGraphQL keeps a 403's body, so a
+// deleted or suspended database's ACCESS_SUSPENDED reaches the caller.
 async function rawGraphql(
   endpoint: string,
   token: string | undefined,
   query: string,
   variables?: Record<string, unknown>,
-): Promise<{ data?: Record<string, unknown>; errors?: { message: string }[] }> {
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: JSON.stringify({ query, variables }),
+): Promise<{ data?: Record<string, unknown>; errors?: GraphQLError[] }> {
+  const result = await postGraphQL<Record<string, unknown>>({
+    endpoint,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    query,
+    variables,
+    fetchFn: (input, init) => fetch(input, init),
   });
-  return (await res.json()) as { data?: Record<string, unknown>; errors?: { message: string }[] };
+  return { data: result.data ?? undefined, errors: result.errors.length > 0 ? result.errors : undefined };
 }
 
-async function createPrincipalInputFields(endpoint: string): Promise<Set<string>> {
+const UNAVAILABLE_MESSAGE =
+  'The app database is unavailable: the backend answered ACCESS_SUSPENDED, so it was deleted or is suspended. No key was minted.';
+
+const isSuspended = (errors: readonly GraphQLError[] | undefined) =>
+  Boolean(errors?.length) && classifyBackendErrors(errors) === 'suspended';
+
+const unavailable = (): ToolResult => fail(UNAVAILABLE_MESSAGE, { code: 'database-unavailable' });
+
+async function createPrincipalInputFields(endpoint: string): Promise<Set<string> | 'unavailable'> {
   const probe = await rawGraphql(
     endpoint,
     undefined,
     '{ __type(name: "CreatePrincipalInput") { inputFields { name } } }',
   );
+  if (isSuspended(probe.errors)) return 'unavailable';
   const type = probe.data?.__type as { inputFields?: { name: string }[] } | null | undefined;
   return new Set((type?.inputFields ?? []).map((f) => f.name));
 }
@@ -152,6 +171,7 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
     try {
       if (scoped) {
         const fields = await createPrincipalInputFields(authEndpoint);
+        if (fields === 'unavailable') return unavailable();
         const missing = [
           ...(params.entity_ids?.length && !fields.has('entityIds') ? ['entityIds'] : []),
           ...(params.read_only === true && !fields.has('isReadOnly') ? ['isReadOnly'] : []),
@@ -164,8 +184,7 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
       }
 
       const dbAuth = auth.createClient({
-        endpoint: authEndpoint,
-        headers: { Authorization: `Bearer ${token.token}` },
+        adapter: statusAdapter(authEndpoint, { Authorization: `Bearer ${token.token}` }),
       });
 
       const principalName = params.principal_name?.trim() || keyName;
@@ -213,8 +232,9 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
             },
           },
         );
+        if (isSuspended(created.errors)) return unavailable();
         if (created.errors?.length) {
-          return fail(`createPrincipal failed: ${created.errors.map((e) => e.message).join('; ')}`);
+          return fail(`createPrincipal failed: ${errorsText(created.errors)}`);
         }
         const payload = created.data?.createPrincipal as { result?: string } | undefined;
         principalId = payload?.result;
@@ -248,7 +268,8 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
         minted = await mint();
       }
       if (!minted.ok) {
-        return fail(`createApiKey failed: ${minted.errors.map((e) => e.message).join('; ')}`);
+        if (isSuspended(minted.errors)) return unavailable();
+        return fail(`createApiKey failed: ${errorsText(minted.errors)}`);
       }
 
       const record = minted.data?.createApiKey?.result;
@@ -280,6 +301,8 @@ export const createApiKeyTool: HarnessTool<typeof CreateApiKeyZod, CreateApiKeyD
         },
       };
     } catch (err) {
+      // The SDK's unwrap() throws its errors as `errors`.
+      if (isSuspended((err as { errors?: GraphQLError[] } | null)?.errors)) return unavailable();
       return fail(err instanceof Error ? err.message : 'Failed to create the API key.');
     }
   },

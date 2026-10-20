@@ -85,7 +85,7 @@ function mockFetchWith(entityIdsSupported: boolean) {
         },
       }
       : { data: { createPrincipal: { result: 'prin-1' } } };
-    return { json: async () => json };
+    return { ok: true, status: 200, json: async () => json };
   });
 }
 
@@ -187,6 +187,8 @@ describe('create_api_key execute', () => {
     mockGetHost.mockReturnValue(makeHost() as never);
     mockToken.mockResolvedValue({ token: 'tok' });
     global.fetch = jest.fn(async () => ({
+      ok: true,
+      status: 200,
       json: async () => ({
         data: { __type: { inputFields: [{ name: 'name' }, { name: 'entityIds' }] } },
       }),

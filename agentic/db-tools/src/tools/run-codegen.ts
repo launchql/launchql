@@ -17,6 +17,7 @@ import {
   type RunCommand,
   settlePrewarm,
 } from '../app-workspace';
+import { classifyBackendErrors, postGraphQL } from '../graphql-http';
 import { getHost } from '../host';
 import { readEnv } from '../provision-database/env-file';
 import { normalizeSdkBarrels } from '../run-codegen/barrels';
@@ -47,6 +48,8 @@ export type RunCodegenDetails = {
   installed?: boolean;
   codegenAttempts?: number;
   timings?: RunCodegenTimings;
+  /** The app API answered ACCESS_SUSPENDED: the database is deleted or suspended. */
+  code?: 'database-unavailable';
 };
 
 type ToolResult = { content: { type: 'text'; text: string }[]; details: RunCodegenDetails };
@@ -59,6 +62,8 @@ function fail(message: string, extra?: Omit<RunCodegenDetails, 'success' | 'mess
 }
 
 const FETCH_RESET_RE = /Failed to fetch schema|Connection reset|ECONNRESET|socket hang up/i;
+// A refusal is an answer, not a dropped connection: retrying it only waits.
+const REFUSED_RE = /\b403\b|Forbidden|ACCESS_SUSPENDED/;
 
 // Read the binding provision_database wrote to the project .env. The
 // API_ENDPOINT pin identifies which backend owns the binding — it wins over
@@ -78,6 +83,12 @@ async function readProjectEnv(
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Ask the app API itself; a 403 from codegen alone could be anything.
+async function isDatabaseUnavailable(appEndpoint: string): Promise<boolean> {
+  const answer = await postGraphQL({ endpoint: appEndpoint, query: '{ __typename }' });
+  return classifyBackendErrors(answer.errors) === 'suspended';
+}
 
 const CODEGEN_ARGS = ['generate', '--config', './graphql-codegen.config.ts'];
 
@@ -115,7 +126,7 @@ async function runCodegenWithRetry(
       }
     }
     last = await exec(cmd, args, appDir, env);
-    if (last.ok || !FETCH_RESET_RE.test(last.out)) return { ...last, attempts: i };
+    if (last.ok || !FETCH_RESET_RE.test(last.out) || REFUSED_RE.test(last.out)) return { ...last, attempts: i };
     if (i < attempts) await sleep(2000 * i);
   }
   return { ...last, attempts };
@@ -232,6 +243,14 @@ export function createRunCodegenTool(
       timings.codegenMs = since(tCodegen);
       codegenAttempts = codegen.attempts;
       if (!codegen.ok) {
+        // A refused introspection may be the database itself: deleted or
+        // suspended databases answer ACCESS_SUSPENDED on every app API.
+        if (REFUSED_RE.test(codegen.out) && planes && (await isDatabaseUnavailable(planes.app))) {
+          return fail(
+            `codegen failed: the app database "${dbName}" is unavailable (the backend answered ACCESS_SUSPENDED: it was deleted or is suspended). Re-running run_codegen won't help until it is restored.`,
+            { ...stepDetails(), code: 'database-unavailable' },
+          );
+        }
         // A reset that survives every internal retry is a backend OUTAGE, not a code
         // or install problem — re-running run_codegen cannot fix it. Say so explicitly
         // so the agent marks sdk-codegen `blocked` instead of looping the tool to the

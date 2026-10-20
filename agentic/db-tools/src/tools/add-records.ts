@@ -4,10 +4,10 @@ import {
   toCamelCaseSingular,
   toCreateMutationName,
 } from '@constructive-io/graphql-query/generators';
-import { objects } from '@constructive-io/sdk';
 import { z } from 'zod';
 
 import { resolveDataToken, resolveProjectContext } from '../context';
+import { classifyBackendErrors, errorsText, type GraphQLError, statusAdapter } from '../graphql-http';
 import { cleanTable, findMetaTable, META_QUERY, type MetaResponse } from '../records/meta';
 
 export type AddRecordsDetails = {
@@ -22,6 +22,8 @@ export type AddRecordsDetails = {
   // app in the Preview (or the session token expired). The renderer shows a
   // text prompt to sign in there.
   needsAuth?: boolean;
+  // The app API answered ACCESS_SUSPENDED: the database is deleted or suspended.
+  code?: 'database-unavailable';
 };
 
 type ToolResult = { content: { type: 'text'; text: string }[]; details: AddRecordsDetails };
@@ -29,6 +31,19 @@ type ToolResult = { content: { type: 'text'; text: string }[]; details: AddRecor
 function fail(message: string): ToolResult {
   return { content: [{ type: 'text', text: message }], details: { success: false, message } };
 }
+
+const UNAVAILABLE =
+  "The app database is unavailable: the backend answered ACCESS_SUSPENDED, so it was deleted or is suspended. Retrying won't help until it is restored.";
+
+function unavailable(inserted = 0): ToolResult {
+  const message = inserted > 0 ? `${UNAVAILABLE} ${inserted} row(s) were inserted before it stopped.` : `${UNAVAILABLE} No rows were inserted.`;
+  return {
+    content: [{ type: 'text', text: message }],
+    details: { success: false, message, code: 'database-unavailable', ...(inserted > 0 ? { createdCount: inserted } : {}) },
+  };
+}
+
+const isSuspended = (errors: readonly GraphQLError[]) => classifyBackendErrors(errors) === 'suspended';
 
 function needsAuth(message: string): ToolResult {
   return {
@@ -80,15 +95,15 @@ export const addRecordsTool: HarnessTool<typeof AddRecordsZod, AddRecordsDetails
     const token = await resolveDataToken(resolved.context);
     if (!token.token) return needsAuth(token.reason ?? 'Sign in to the database to insert records.');
 
-    const adapter = new objects.FetchAdapter(dataEndpoint, {
-      Authorization: `Bearer ${token.token}`,
-    });
+    // Keeps the status and extensions.code that the SDK adapter drops.
+    const adapter = statusAdapter(dataEndpoint, { Authorization: `Bearer ${token.token}` });
 
     let tables;
     try {
       const meta = await adapter.execute<MetaResponse>(META_QUERY);
       if (!meta.ok) {
-        return fail(`Failed to read schema from the app database: ${meta.errors.map((e) => e.message).join('; ')}`);
+        if (isSuspended(meta.errors)) return unavailable();
+        return fail(`Failed to read schema from the app database: ${errorsText(meta.errors)}`);
       }
       tables = (meta.data._meta?.tables ?? []).filter((t): t is NonNullable<typeof t> => Boolean(t));
     } catch (err) {
@@ -124,7 +139,8 @@ export const addRecordsTool: HarnessTool<typeof AddRecordsZod, AddRecordsDetails
       try {
         const result = await adapter.execute<Record<string, unknown>>(mutation, variables);
         if (!result.ok) {
-          errors.push(result.errors.map((e) => e.message).join('; '));
+          if (isSuspended(result.errors)) return unavailable(created.length);
+          errors.push(errorsText(result.errors));
           continue;
         }
         const payload = result.data[mutationName] as Record<string, unknown> | undefined;
