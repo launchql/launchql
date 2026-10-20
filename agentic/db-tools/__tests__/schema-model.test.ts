@@ -122,6 +122,12 @@ describe('accessOf', () => {
     expect(accessOf(crud('AuthzAppMembership', { data: { is_admin: false, levels: [] } }))).toBe('shared');
   });
 
+  it('ignores the keys the backend fills in for an app membership, as a provisioned table stores them', () => {
+    const resolved = { sprt_table: 'app_memberships', sprt_schema: 'app_private', membership_type: 1 };
+    expect(accessOf(crud('AuthzAppMembership', { data: resolved }))).toBe('shared');
+    expect(accessOf(crud('AuthzAppMemberOwner', { data: { ...resolved, owner_field: 'owner_id' } }))).toBe('private');
+  });
+
   it.each([
     ['no policies', []],
     ['a missing privilege', crud('AuthzAppMembership').slice(0, 3)],
@@ -130,6 +136,7 @@ describe('accessOf', () => {
     ['another role', crud('AuthzAppMembership', { role: 'anonymous' })],
     ['mixed modes', [...crud('AuthzAppMembership').slice(0, 2), ...crud('AuthzAppMemberOwner').slice(2)]],
     ['another policy type', crud('AuthzEntityMembership')],
+    ['an org membership', crud('AuthzAppMembership', { data: { membership_type: 2 } })],
   ])('reads %s as custom', (_case, policies) => {
     expect(accessOf(policies)).toBe('custom');
   });

@@ -112,6 +112,11 @@ export class SchemaReadError extends Error {
 const CRUD = ['select', 'insert', 'update', 'delete'];
 const OWNER_FIELD = 'owner_id';
 
+// Keys the backend fills in when it stores an app-membership policy: where the
+// membership table lives, and that it's the app's (type 1, not an org's).
+const RESOLVED_KEYS = new Set(['sprt_table', 'sprt_schema']);
+const APP_MEMBERSHIP_TYPE = 1;
+
 // A parameter counts only when it narrows the policy: `is_admin: false` or
 // `levels: []` is the same as leaving it out.
 const isSet = (value: unknown): boolean =>
@@ -121,12 +126,18 @@ const isSet = (value: unknown): boolean =>
       ? Object.keys(value).length > 0
       : Boolean(value);
 
+/** Whether a policy parameter narrows who the policy lets in. */
+const narrows = (data: Record<string, unknown>, key: string): boolean => {
+  if (key === 'owner_field' || RESOLVED_KEYS.has(key)) return false;
+  if (key === 'membership_type') return Number(data[key]) !== APP_MEMBERSHIP_TYPE;
+  return isSet(data[key]);
+};
+
 function modeOf(policy: ModelPolicy): 'shared' | 'private' | null {
   if (!policy.permissive || policy.role !== 'authenticated') return null;
   if (policy.withCheck && isSet(policy.withCheck)) return null;
   const data = policy.data ?? {};
-  const extras = Object.keys(data).filter((key) => key !== 'owner_field' && isSet(data[key]));
-  if (extras.length > 0) return null;
+  if (Object.keys(data).some((key) => narrows(data, key))) return null;
   if (policy.type === 'AuthzAppMembership') return isSet(data.owner_field) ? null : 'shared';
   if (policy.type === 'AuthzAppMemberOwner') {
     const owner = data.owner_field;
