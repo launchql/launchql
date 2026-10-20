@@ -16946,6 +16946,11 @@ type FunctionInvocation {
   """FK to app_jobs.jobs — the underlying transport"""
   jobId: BigInt
 
+  """
+  Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests
+  """
+  jobKey: String
+
   """Organization identity propagated with the invocation"""
   organizationId: UUID
 
@@ -16962,6 +16967,9 @@ type FunctionInvocation {
   Non-secret channel-specific invocation provenance (route/binding/event identifiers only)
   """
   provenance: JSON!
+
+  """Job queue: jobs sharing a queue run one at a time, in order"""
+  queueName: String
 
   """Function return value (success) or structured error (failure)"""
   result: JSON
@@ -17325,6 +17333,9 @@ input FunctionInvocationFilter {
   """Filter by the object’s `jobId` field."""
   jobId: BigIntFilter
 
+  """Filter by the object’s `jobKey` field."""
+  jobKey: StringFilter
+
   """Negates the expression."""
   not: FunctionInvocationFilter
 
@@ -17345,6 +17356,9 @@ input FunctionInvocationFilter {
 
   """Filter by the object’s `provenance` field."""
   provenance: JSONFilter
+
+  """Filter by the object’s `queueName` field."""
+  queueName: StringFilter
 
   """Filter by the object’s `result` field."""
   result: JSONFilter
@@ -17419,6 +17433,11 @@ input FunctionInvocationInput {
   """FK to app_jobs.jobs — the underlying transport"""
   jobId: BigInt
 
+  """
+  Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests
+  """
+  jobKey: String
+
   """Organization identity propagated with the invocation"""
   organizationId: UUID
 
@@ -17435,6 +17454,9 @@ input FunctionInvocationInput {
   Non-secret channel-specific invocation provenance (route/binding/event identifiers only)
   """
   provenance: JSON
+
+  """Job queue: jobs sharing a queue run one at a time, in order"""
+  queueName: String
 
   """Function return value (success) or structured error (failure)"""
   result: JSON
@@ -17487,6 +17509,8 @@ enum FunctionInvocationOrderBy {
   ID_DESC
   JOB_ID_ASC
   JOB_ID_DESC
+  JOB_KEY_ASC
+  JOB_KEY_DESC
   NATURAL
   ORGANIZATION_ID_ASC
   ORGANIZATION_ID_DESC
@@ -17500,6 +17524,8 @@ enum FunctionInvocationOrderBy {
   PRINCIPAL_ID_DESC
   PROVENANCE_ASC
   PROVENANCE_DESC
+  QUEUE_NAME_ASC
+  QUEUE_NAME_DESC
   RESULT_ASC
   RESULT_DESC
   STARTED_AT_ASC
@@ -17572,6 +17598,11 @@ input FunctionInvocationPatch {
   """FK to app_jobs.jobs — the underlying transport"""
   jobId: BigInt
 
+  """
+  Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests
+  """
+  jobKey: String
+
   """Organization identity propagated with the invocation"""
   organizationId: UUID
 
@@ -17588,6 +17619,9 @@ input FunctionInvocationPatch {
   Non-secret channel-specific invocation provenance (route/binding/event identifiers only)
   """
   provenance: JSON
+
+  """Job queue: jobs sharing a queue run one at a time, in order"""
+  queueName: String
 
   """Function return value (success) or structured error (failure)"""
   result: JSON
@@ -22304,10 +22338,11 @@ type Mutation {
 
   """
   Reconcile an S3 bucket for a logical bucket in the database.
-  Reads the bucket config via RLS, then enqueues the same
-  storage:provision_bucket job used by the INSERT trigger. This is
-  idempotent for an already-reconciled bucket; enqueue failures become
-  GraphQL errors.
+  Records the request on the bucket row via RLS; the bucket's job
+  trigger then enqueues the same storage:provision_bucket job used on
+  INSERT, and repeated requests collapse into one pending job. This is
+  idempotent for an already-reconciled bucket; failures become GraphQL
+  errors.
   """
   provisionBucket(
     """
@@ -27421,6 +27456,11 @@ type PlatformFunctionInvocation {
   """FK to app_jobs.jobs — the underlying transport"""
   jobId: BigInt
 
+  """
+  Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests
+  """
+  jobKey: String
+
   """Organization identity propagated with the invocation"""
   organizationId: UUID
 
@@ -27437,6 +27477,9 @@ type PlatformFunctionInvocation {
   Non-secret channel-specific invocation provenance (route/binding/event identifiers only)
   """
   provenance: JSON!
+
+  """Job queue: jobs sharing a queue run one at a time, in order"""
+  queueName: String
 
   """Function return value (success) or structured error (failure)"""
   result: JSON
@@ -27786,6 +27829,9 @@ input PlatformFunctionInvocationFilter {
   """Filter by the object’s `jobId` field."""
   jobId: BigIntFilter
 
+  """Filter by the object’s `jobKey` field."""
+  jobKey: StringFilter
+
   """Negates the expression."""
   not: PlatformFunctionInvocationFilter
 
@@ -27806,6 +27852,9 @@ input PlatformFunctionInvocationFilter {
 
   """Filter by the object’s `provenance` field."""
   provenance: JSONFilter
+
+  """Filter by the object’s `queueName` field."""
+  queueName: StringFilter
 
   """Filter by the object’s `result` field."""
   result: JSONFilter
@@ -27880,6 +27929,11 @@ input PlatformFunctionInvocationInput {
   """FK to app_jobs.jobs — the underlying transport"""
   jobId: BigInt
 
+  """
+  Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests
+  """
+  jobKey: String
+
   """Organization identity propagated with the invocation"""
   organizationId: UUID
 
@@ -27896,6 +27950,9 @@ input PlatformFunctionInvocationInput {
   Non-secret channel-specific invocation provenance (route/binding/event identifiers only)
   """
   provenance: JSON
+
+  """Job queue: jobs sharing a queue run one at a time, in order"""
+  queueName: String
 
   """Function return value (success) or structured error (failure)"""
   result: JSON
@@ -27948,6 +28005,8 @@ enum PlatformFunctionInvocationOrderBy {
   ID_DESC
   JOB_ID_ASC
   JOB_ID_DESC
+  JOB_KEY_ASC
+  JOB_KEY_DESC
   NATURAL
   ORGANIZATION_ID_ASC
   ORGANIZATION_ID_DESC
@@ -27961,6 +28020,8 @@ enum PlatformFunctionInvocationOrderBy {
   PRINCIPAL_ID_DESC
   PROVENANCE_ASC
   PROVENANCE_DESC
+  QUEUE_NAME_ASC
+  QUEUE_NAME_DESC
   RESULT_ASC
   RESULT_DESC
   STARTED_AT_ASC
@@ -28033,6 +28094,11 @@ input PlatformFunctionInvocationPatch {
   """FK to app_jobs.jobs — the underlying transport"""
   jobId: BigInt
 
+  """
+  Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests
+  """
+  jobKey: String
+
   """Organization identity propagated with the invocation"""
   organizationId: UUID
 
@@ -28049,6 +28115,9 @@ input PlatformFunctionInvocationPatch {
   Non-secret channel-specific invocation provenance (route/binding/event identifiers only)
   """
   provenance: JSON
+
+  """Job queue: jobs sharing a queue run one at a time, in order"""
+  queueName: String
 
   """Function return value (success) or structured error (failure)"""
   result: JSON
@@ -41483,17 +41552,17 @@ input ProvisionBucketInput {
 }
 
 type ProvisionBucketPayload {
-  """The logical bucket row that was queued for reconciliation."""
+  """The logical bucket row whose reconciliation was requested."""
   bucketId: UUID!
   bucketKey: String!
-
-  """The reconciler job enqueued to provision this bucket."""
-  jobId: UUID!
 
   """
   The physical bucket name already recorded, or null when reconciliation has not completed.
   """
   physicalName: String
+
+  """When reconciliation was last requested for this bucket."""
+  provisionRequestedAt: Datetime!
 }
 
 """The root query type which gives access points into the data universe."""

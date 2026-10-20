@@ -1,13 +1,13 @@
 ---
 name: cli-api
-description: CLI tool (csdk) for the api API — provides CRUD commands for 92 tables and 46 custom operations
+description: CLI tool (csdk) for the api API — provides CRUD commands for 90 tables and 49 custom operations
 ---
 
 # cli-api
 
 <!-- @constructive-io/graphql-codegen - DO NOT EDIT -->
 
-CLI tool (csdk) for the api API — provides CRUD commands for 92 tables and 46 custom operations
+CLI tool (csdk) for the api API — provides CRUD commands for 90 tables and 49 custom operations
 
 ## Usage
 
@@ -85,7 +85,6 @@ See the `references/` directory for detailed per-entity API documentation:
 - [full-text-search](references/full-text-search.md)
 - [function](references/function.md)
 - [get-site-previews-record](references/get-site-previews-record.md)
-- [hostname-binding](references/hostname-binding.md)
 - [identity-provider-registry](references/identity-provider-registry.md)
 - [index](references/index.md)
 - [list-suspended-databases-record](references/list-suspended-databases-record.md)
@@ -120,7 +119,6 @@ See the `references/` directory for detailed per-entity API documentation:
 - [pubkey-setting](references/pubkey-setting.md)
 - [redirect](references/redirect.md)
 - [rls-setting](references/rls-setting.md)
-- [route-binding](references/route-binding.md)
 - [route](references/route.md)
 - [schema](references/schema.md)
 - [schema-grant](references/schema-grant.md)
@@ -150,6 +148,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [webauthn-setting](references/webauthn-setting.md)
 - [api-schema-names](references/api-schema-names.md)
 - [apply-registry-defaults](references/apply-registry-defaults.md)
+- [email-shared-account](references/email-shared-account.md)
 - [get-site-preview-commit](references/get-site-preview-commit.md)
 - [get-site-release-manifest](references/get-site-release-manifest.md)
 - [page-published](references/page-published.md)
@@ -168,6 +167,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [accept-database-transfer](references/accept-database-transfer.md)
 - [apply-rls](references/apply-rls.md)
 - [cancel-database-transfer](references/cancel-database-transfer.md)
+- [create-function-from-source](references/create-function-from-source.md)
 - [delete-site-preview](references/delete-site-preview.md)
 - [domains-assign-subdomain](references/domains-assign-subdomain.md)
 - [mint-site-preview-token](references/mint-site-preview-token.md)
@@ -194,3 +194,4 @@ See the `references/` directory for detailed per-entity API documentation:
 - [sites-provision-static-site](references/sites-provision-static-site.md)
 - [suspend-database](references/suspend-database.md)
 - [unsuspend-database](references/unsuspend-database.md)
+- [update-function-from-source](references/update-function-from-source.md)

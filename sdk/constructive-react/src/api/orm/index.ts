@@ -34,7 +34,6 @@ import { ForeignKeyConstraintModel } from './models/foreignKeyConstraint';
 import { FullTextSearchModel } from './models/fullTextSearch';
 import { FunctionModel } from './models/function';
 import { GetSitePreviewsRecordModel } from './models/getSitePreviewsRecord';
-import { HostnameBindingModel } from './models/hostnameBinding';
 import { IdentityProviderRegistryModel } from './models/identityProviderRegistry';
 import { IndexModel } from './models/index';
 import { ListSuspendedDatabasesRecordModel } from './models/listSuspendedDatabasesRecord';
@@ -69,7 +68,6 @@ import { PrimaryKeyConstraintModel } from './models/primaryKeyConstraint';
 import { PubkeySettingModel } from './models/pubkeySetting';
 import { RedirectModel } from './models/redirect';
 import { RlsSettingModel } from './models/rlsSetting';
-import { RouteBindingModel } from './models/routeBinding';
 import { RouteModel } from './models/route';
 import { SchemaModel } from './models/schema';
 import { SchemaGrantModel } from './models/schemaGrant';
@@ -161,7 +159,6 @@ export function createClient(config: OrmClientConfig) {
     fullTextSearch: new FullTextSearchModel(client),
     function: new FunctionModel(client),
     getSitePreviewsRecord: new GetSitePreviewsRecordModel(client),
-    hostnameBinding: new HostnameBindingModel(client),
     identityProviderRegistry: new IdentityProviderRegistryModel(client),
     index: new IndexModel(client),
     listSuspendedDatabasesRecord: new ListSuspendedDatabasesRecordModel(client),
@@ -196,7 +193,6 @@ export function createClient(config: OrmClientConfig) {
     pubkeySetting: new PubkeySettingModel(client),
     redirect: new RedirectModel(client),
     rlsSetting: new RlsSettingModel(client),
-    routeBinding: new RouteBindingModel(client),
     route: new RouteModel(client),
     schema: new SchemaModel(client),
     schemaGrant: new SchemaGrantModel(client),

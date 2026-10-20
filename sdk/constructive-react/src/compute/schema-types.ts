@@ -1121,6 +1121,8 @@ export type FunctionInvocationOrderBy =
   | 'ID_DESC'
   | 'JOB_ID_ASC'
   | 'JOB_ID_DESC'
+  | 'JOB_KEY_ASC'
+  | 'JOB_KEY_DESC'
   | 'NATURAL'
   | 'ORGANIZATION_ID_ASC'
   | 'ORGANIZATION_ID_DESC'
@@ -1134,6 +1136,8 @@ export type FunctionInvocationOrderBy =
   | 'PRINCIPAL_ID_DESC'
   | 'PROVENANCE_ASC'
   | 'PROVENANCE_DESC'
+  | 'QUEUE_NAME_ASC'
+  | 'QUEUE_NAME_DESC'
   | 'RESULT_ASC'
   | 'RESULT_DESC'
   | 'STARTED_AT_ASC'
@@ -1816,6 +1820,8 @@ export type PlatformFunctionInvocationOrderBy =
   | 'ID_DESC'
   | 'JOB_ID_ASC'
   | 'JOB_ID_DESC'
+  | 'JOB_KEY_ASC'
+  | 'JOB_KEY_DESC'
   | 'NATURAL'
   | 'ORGANIZATION_ID_ASC'
   | 'ORGANIZATION_ID_DESC'
@@ -1829,6 +1835,8 @@ export type PlatformFunctionInvocationOrderBy =
   | 'PRINCIPAL_ID_DESC'
   | 'PROVENANCE_ASC'
   | 'PROVENANCE_DESC'
+  | 'QUEUE_NAME_ASC'
+  | 'QUEUE_NAME_DESC'
   | 'RESULT_ASC'
   | 'RESULT_DESC'
   | 'STARTED_AT_ASC'
@@ -8556,6 +8564,8 @@ export interface FunctionInvocationFilter {
   id?: UUIDFilter;
   /** Filter by the object’s `jobId` field. */
   jobId?: BigIntFilter;
+  /** Filter by the object’s `jobKey` field. */
+  jobKey?: StringFilter;
   /** Negates the expression. */
   not?: FunctionInvocationFilter;
   /** Checks for any expressions in this list. */
@@ -8570,6 +8580,8 @@ export interface FunctionInvocationFilter {
   principalId?: UUIDFilter;
   /** Filter by the object’s `provenance` field. */
   provenance?: JSONFilter;
+  /** Filter by the object’s `queueName` field. */
+  queueName?: StringFilter;
   /** Filter by the object’s `result` field. */
   result?: JSONFilter;
   /** Filter by the object’s `startedAt` field. */
@@ -8613,6 +8625,8 @@ export interface FunctionInvocationInput {
   id?: string;
   /** FK to app_jobs.jobs — the underlying transport */
   jobId?: string;
+  /** Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests */
+  jobKey?: string;
   /** Organization identity propagated with the invocation */
   organizationId?: string;
   /** Parent invocation when this is a child node of a flow graph execution */
@@ -8623,6 +8637,8 @@ export interface FunctionInvocationInput {
   principalId?: string;
   /** Non-secret channel-specific invocation provenance (route/binding/event identifiers only) */
   provenance?: unknown;
+  /** Job queue: jobs sharing a queue run one at a time, in order */
+  queueName?: string;
   /** Function return value (success) or structured error (failure) */
   result?: unknown;
   /** When execution started */
@@ -8666,6 +8682,8 @@ export interface FunctionInvocationPatch {
   id?: string;
   /** FK to app_jobs.jobs — the underlying transport */
   jobId?: string;
+  /** Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests */
+  jobKey?: string;
   /** Organization identity propagated with the invocation */
   organizationId?: string;
   /** Parent invocation when this is a child node of a flow graph execution */
@@ -8676,6 +8694,8 @@ export interface FunctionInvocationPatch {
   principalId?: string;
   /** Non-secret channel-specific invocation provenance (route/binding/event identifiers only) */
   provenance?: unknown;
+  /** Job queue: jobs sharing a queue run one at a time, in order */
+  queueName?: string;
   /** Function return value (success) or structured error (failure) */
   result?: unknown;
   /** When execution started */
@@ -10886,6 +10906,8 @@ export interface PlatformFunctionInvocationFilter {
   id?: UUIDFilter;
   /** Filter by the object’s `jobId` field. */
   jobId?: BigIntFilter;
+  /** Filter by the object’s `jobKey` field. */
+  jobKey?: StringFilter;
   /** Negates the expression. */
   not?: PlatformFunctionInvocationFilter;
   /** Checks for any expressions in this list. */
@@ -10900,6 +10922,8 @@ export interface PlatformFunctionInvocationFilter {
   principalId?: UUIDFilter;
   /** Filter by the object’s `provenance` field. */
   provenance?: JSONFilter;
+  /** Filter by the object’s `queueName` field. */
+  queueName?: StringFilter;
   /** Filter by the object’s `result` field. */
   result?: JSONFilter;
   /** Filter by the object’s `startedAt` field. */
@@ -10943,6 +10967,8 @@ export interface PlatformFunctionInvocationInput {
   id?: string;
   /** FK to app_jobs.jobs — the underlying transport */
   jobId?: string;
+  /** Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests */
+  jobKey?: string;
   /** Organization identity propagated with the invocation */
   organizationId?: string;
   /** Parent invocation when this is a child node of a flow graph execution */
@@ -10953,6 +10979,8 @@ export interface PlatformFunctionInvocationInput {
   principalId?: string;
   /** Non-secret channel-specific invocation provenance (route/binding/event identifiers only) */
   provenance?: unknown;
+  /** Job queue: jobs sharing a queue run one at a time, in order */
+  queueName?: string;
   /** Function return value (success) or structured error (failure) */
   result?: unknown;
   /** When execution started */
@@ -10996,6 +11024,8 @@ export interface PlatformFunctionInvocationPatch {
   id?: string;
   /** FK to app_jobs.jobs — the underlying transport */
   jobId?: string;
+  /** Job dedupe key: a pending or retrying invocation with this key absorbs repeat requests */
+  jobKey?: string;
   /** Organization identity propagated with the invocation */
   organizationId?: string;
   /** Parent invocation when this is a child node of a flow graph execution */
@@ -11006,6 +11036,8 @@ export interface PlatformFunctionInvocationPatch {
   principalId?: string;
   /** Non-secret channel-specific invocation provenance (route/binding/event identifiers only) */
   provenance?: unknown;
+  /** Job queue: jobs sharing a queue run one at a time, in order */
+  queueName?: string;
   /** Function return value (success) or structured error (failure) */
   result?: unknown;
   /** When execution started */
@@ -20755,13 +20787,13 @@ export interface PlatformResourceInstallationsUpgradePayload {
   clientMutationId?: string | null;
 }
 export interface ProvisionBucketPayload {
-  /** The logical bucket row that was queued for reconciliation. */
+  /** The logical bucket row whose reconciliation was requested. */
   bucketId: string;
   bucketKey: string;
-  /** The reconciler job enqueued to provision this bucket. */
-  jobId: string;
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
+  /** When reconciliation was last requested for this bucket. */
+  provisionRequestedAt: string;
 }
 export interface ResourceInstallationsInstallPayload {
   clientMutationId?: string | null;

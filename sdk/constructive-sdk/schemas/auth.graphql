@@ -3425,10 +3425,11 @@ type Mutation {
 
   """
   Reconcile an S3 bucket for a logical bucket in the database.
-  Reads the bucket config via RLS, then enqueues the same
-  storage:provision_bucket job used by the INSERT trigger. This is
-  idempotent for an already-reconciled bucket; enqueue failures become
-  GraphQL errors.
+  Records the request on the bucket row via RLS; the bucket's job
+  trigger then enqueues the same storage:provision_bucket job used on
+  INSERT, and repeated requests collapse into one pending job. This is
+  idempotent for an already-reconciled bucket; failures become GraphQL
+  errors.
   """
   provisionBucket(
     """
@@ -4612,17 +4613,17 @@ input ProvisionBucketInput {
 }
 
 type ProvisionBucketPayload {
-  """The logical bucket row that was queued for reconciliation."""
+  """The logical bucket row whose reconciliation was requested."""
   bucketId: UUID!
   bucketKey: String!
-
-  """The reconciler job enqueued to provision this bucket."""
-  jobId: UUID!
 
   """
   The physical bucket name already recorded, or null when reconciliation has not completed.
   """
   physicalName: String
+
+  """When reconciliation was last requested for this bucket."""
+  provisionRequestedAt: Datetime!
 }
 
 """The root query type which gives access points into the data universe."""
@@ -5146,6 +5147,7 @@ input RequestMagicLinkInput {
   """
   clientMutationId: String
   email: String
+  next: String
 }
 
 """The output of our `requestMagicLink` mutation."""
@@ -5761,13 +5763,10 @@ input SignUpInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  credentialKind: String
   csrfToken: String
-  deviceToken: String
   email: String
   inviteToken: String
   password: String
-  rememberMe: Boolean
 }
 
 """All input for the `signUpMagicLink` mutation."""
@@ -5818,17 +5817,6 @@ type SignUpPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-  result: SignUpRecord
-}
-
-type SignUpRecord {
-  accessToken: String
-  accessTokenExpiresAt: Datetime
-  id: UUID
-  isVerified: Boolean
-  outDeviceToken: String
-  totpEnabled: Boolean
-  userId: UUID
 }
 
 """All input for the `signUpSms` mutation."""

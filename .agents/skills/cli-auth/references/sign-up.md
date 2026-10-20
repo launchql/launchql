@@ -7,7 +7,7 @@ Execute the signUp mutation
 ## Usage
 
 ```bash
-csdk sign-up --input.clientMutationId <String> --input.credentialKind <String> --input.csrfToken <String> --input.deviceToken <String> --input.email <String> --input.inviteToken <String> --input.password <String> --input.rememberMe <Boolean>
+csdk sign-up --input.clientMutationId <String> --input.csrfToken <String> --input.email <String> --input.inviteToken <String> --input.password <String>
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ csdk sign-up --input.clientMutationId <String> --input.credentialKind <String> -
 ### Run signUp
 
 ```bash
-csdk sign-up --input.clientMutationId <String> --input.credentialKind <String> --input.csrfToken <String> --input.deviceToken <String> --input.email <String> --input.inviteToken <String> --input.password <String> --input.rememberMe <Boolean>
+csdk sign-up --input.clientMutationId <String> --input.csrfToken <String> --input.email <String> --input.inviteToken <String> --input.password <String>
 ```

@@ -17,8 +17,10 @@ export interface Bucket {
   id: string | null;
   isPublic: boolean | null;
   key: string | null;
+  maxBulkFiles: number | null;
   maxFileSize: string | null;
   physicalName: string | null;
+  provisionRequestedAt: string | null;
   stagingTtl: string | null;
   tags: string[] | null;
   type: BucketType | null;
@@ -57,8 +59,10 @@ export interface PlatformBucket {
   id: string | null;
   isPublic: boolean | null;
   key: string | null;
+  maxBulkFiles: number | null;
   maxFileSize: string | null;
   physicalName: string | null;
+  provisionRequestedAt: string | null;
   stagingTtl: string | null;
   tags: string[] | null;
   type: BucketType | null;

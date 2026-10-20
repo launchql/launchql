@@ -1293,6 +1293,7 @@ export interface RequestCrossOriginTokenInput {
 export interface RequestMagicLinkInput {
   clientMutationId?: string;
   email?: string;
+  next?: string;
 }
 export interface ResetPasswordInput {
   clientMutationId?: string;
@@ -1414,13 +1415,10 @@ export interface SignOutInput {
 }
 export interface SignUpInput {
   clientMutationId?: string;
-  credentialKind?: string;
   csrfToken?: string;
-  deviceToken?: string;
   email?: string;
   inviteToken?: string;
   password?: string;
-  rememberMe?: boolean;
 }
 export interface SignUpMagicLinkInput {
   clientMutationId?: string;
@@ -2316,13 +2314,13 @@ export interface MintAccessTokenPayload {
   result?: MintAccessTokenRecord | null;
 }
 export interface ProvisionBucketPayload {
-  /** The logical bucket row that was queued for reconciliation. */
+  /** The logical bucket row whose reconciliation was requested. */
   bucketId: string;
   bucketKey: string;
-  /** The reconciler job enqueued to provision this bucket. */
-  jobId: string;
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
+  /** When reconciliation was last requested for this bucket. */
+  provisionRequestedAt: string;
 }
 export interface RefreshAccessTokenPayload {
   clientMutationId?: string | null;
@@ -2408,7 +2406,6 @@ export interface SignOutPayload {
 }
 export interface SignUpPayload {
   clientMutationId?: string | null;
-  result?: SignUpRecord | null;
 }
 export interface SignUpMagicLinkPayload {
   clientMutationId?: string | null;
@@ -2701,15 +2698,6 @@ export interface SignInSmsOtpRecord {
   mfaChallengeToken?: string | null;
   mfaRequired?: boolean | null;
   outDeviceToken?: string | null;
-  userId?: string | null;
-}
-export interface SignUpRecord {
-  accessToken?: string | null;
-  accessTokenExpiresAt?: string | null;
-  id?: string | null;
-  isVerified?: boolean | null;
-  outDeviceToken?: string | null;
-  totpEnabled?: boolean | null;
   userId?: string | null;
 }
 export interface SignUpMagicLinkRecord {

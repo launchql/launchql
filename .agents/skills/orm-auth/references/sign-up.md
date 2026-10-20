@@ -7,7 +7,7 @@ Execute the signUp mutation
 ## Usage
 
 ```typescript
-db.mutation.signUp({ input: '<SignUpInput>' }).execute()
+db.mutation.signUp({ input: { csrfToken: '<String>', email: '<String>', inviteToken: '<String>', password: '<String>' } }).execute()
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ db.mutation.signUp({ input: '<SignUpInput>' }).execute()
 ### Run signUp
 
 ```typescript
-const result = await db.mutation.signUp({ input: '<SignUpInput>' }).execute();
+const result = await db.mutation.signUp({ input: { csrfToken: '<String>', email: '<String>', inviteToken: '<String>', password: '<String>' } }).execute();
 ```

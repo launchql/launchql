@@ -1025,10 +1025,11 @@ const result = await db.mutation.mintAccessToken({ input: { accessTtl: '<Interva
 ### `db.mutation.provisionBucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**
@@ -1083,7 +1084,7 @@ requestMagicLink
   | `input` | RequestMagicLinkInput (required) |
 
 ```typescript
-const result = await db.mutation.requestMagicLink({ input: { email: '<String>' } }).execute();
+const result = await db.mutation.requestMagicLink({ input: { email: '<String>', next: '<String>' } }).execute();
 ```
 
 ### `db.mutation.resetPassword`
@@ -1368,7 +1369,7 @@ signUp
   | `input` | SignUpInput (required) |
 
 ```typescript
-const result = await db.mutation.signUp({ input: '<SignUpInput>' }).execute();
+const result = await db.mutation.signUp({ input: { csrfToken: '<String>', email: '<String>', inviteToken: '<String>', password: '<String>' } }).execute();
 ```
 
 ### `db.mutation.signUpMagicLink`

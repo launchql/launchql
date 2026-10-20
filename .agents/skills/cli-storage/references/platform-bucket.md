@@ -12,8 +12,8 @@ csdk platform-bucket list --where.<field>.<op> <value> --orderBy <values>
 csdk platform-bucket list --limit 10 --after <cursor>
 csdk platform-bucket find-first --where.<field>.<op> <value>
 csdk platform-bucket get --id <UUID>
-csdk platform-bucket create --actorId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
-csdk platform-bucket update --id <UUID> [--actorId <UUID>] [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--key <String>] [--maxFileSize <BigInt>] [--physicalName <String>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
+csdk platform-bucket create --actorId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--provisionRequestedAt <Datetime>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
+csdk platform-bucket update --id <UUID> [--actorId <UUID>] [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--key <String>] [--maxFileSize <BigInt>] [--physicalName <String>] [--provisionRequestedAt <Datetime>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
 csdk platform-bucket delete --id <UUID>
 ```
 
@@ -58,7 +58,7 @@ csdk platform-bucket list --where.id.equalTo <value> --orderBy ID_ASC
 ### Create a platformBucket
 
 ```bash
-csdk platform-bucket create --actorId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
+csdk platform-bucket create --actorId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--provisionRequestedAt <Datetime>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
 ```
 
 ### Get a platformBucket by id

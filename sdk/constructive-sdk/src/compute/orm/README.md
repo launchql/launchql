@@ -1435,11 +1435,13 @@ CRUD operations for FunctionInvocation records.
 | `graphExecutionId` | UUID | Yes |
 | `id` | UUID | No |
 | `jobId` | BigInt | Yes |
+| `jobKey` | String | Yes |
 | `organizationId` | UUID | Yes |
 | `parentInvocationId` | UUID | Yes |
 | `payload` | JSON | Yes |
 | `principalId` | UUID | Yes |
 | `provenance` | JSON | Yes |
+| `queueName` | String | Yes |
 | `result` | JSON | Yes |
 | `startedAt` | Datetime | Yes |
 | `status` | String | Yes |
@@ -1449,13 +1451,13 @@ CRUD operations for FunctionInvocation records.
 
 ```typescript
 // List all functionInvocation records
-const items = await db.functionInvocation.findMany({ select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
+const items = await db.functionInvocation.findMany({ select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
 
 // Get one by id
-const item = await db.functionInvocation.findOne({ id: '<UUID>', select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
+const item = await db.functionInvocation.findOne({ id: '<UUID>', select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
 
 // Create
-const created = await db.functionInvocation.create({ data: { actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' }, select: { id: true } }).execute();
+const created = await db.functionInvocation.create({ data: { actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', jobKey: '<String>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', queueName: '<String>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.functionInvocation.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
@@ -2378,11 +2380,13 @@ CRUD operations for PlatformFunctionInvocation records.
 | `graphExecutionId` | UUID | Yes |
 | `id` | UUID | No |
 | `jobId` | BigInt | Yes |
+| `jobKey` | String | Yes |
 | `organizationId` | UUID | Yes |
 | `parentInvocationId` | UUID | Yes |
 | `payload` | JSON | Yes |
 | `principalId` | UUID | Yes |
 | `provenance` | JSON | Yes |
+| `queueName` | String | Yes |
 | `result` | JSON | Yes |
 | `startedAt` | Datetime | Yes |
 | `status` | String | Yes |
@@ -2392,13 +2396,13 @@ CRUD operations for PlatformFunctionInvocation records.
 
 ```typescript
 // List all platformFunctionInvocation records
-const items = await db.platformFunctionInvocation.findMany({ select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
+const items = await db.platformFunctionInvocation.findMany({ select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
 
 // Get one by id
-const item = await db.platformFunctionInvocation.findOne({ id: '<UUID>', select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
+const item = await db.platformFunctionInvocation.findOne({ id: '<UUID>', select: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } }).execute();
 
 // Create
-const created = await db.platformFunctionInvocation.create({ data: { actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' }, select: { id: true } }).execute();
+const created = await db.platformFunctionInvocation.create({ data: { actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', jobKey: '<String>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', queueName: '<String>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.platformFunctionInvocation.update({ where: { id: '<UUID>' }, data: { actorId: '<UUID>' }, select: { id: true } }).execute();
@@ -6206,10 +6210,11 @@ const result = await db.mutation.platformResourceInstallationsUpgrade({ input: {
 ### `db.mutation.provisionBucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**

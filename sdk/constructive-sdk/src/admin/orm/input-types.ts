@@ -3753,19 +3753,19 @@ export type ProvisionAppUsersBulkPayloadSelect = {
   };
 };
 export interface ProvisionBucketPayload {
-  /** The logical bucket row that was queued for reconciliation. */
+  /** The logical bucket row whose reconciliation was requested. */
   bucketId: string;
   bucketKey: string;
-  /** The reconciler job enqueued to provision this bucket. */
-  jobId: string;
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
+  /** When reconciliation was last requested for this bucket. */
+  provisionRequestedAt: string;
 }
 export type ProvisionBucketPayloadSelect = {
   bucketId?: boolean;
   bucketKey?: boolean;
-  jobId?: boolean;
   physicalName?: boolean;
+  provisionRequestedAt?: boolean;
 };
 export interface ProvisionOrgUserPayload {
   clientMutationId?: string | null;

@@ -752,6 +752,11 @@
       "table": "buckets"
     },
     {
+      "key": "catalog_private.domain_verifications",
+      "schema": "catalog_private",
+      "table": "domain_verifications"
+    },
+    {
       "key": "catalog_private.domains",
       "schema": "catalog_private",
       "table": "domains"
@@ -852,6 +857,10 @@
       "updated_at"
     ],
     "catalog_private.buckets": [
+      "created_at",
+      "updated_at"
+    ],
+    "catalog_private.domain_verifications": [
       "created_at",
       "updated_at"
     ],

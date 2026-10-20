@@ -55,7 +55,6 @@ csdk auth set-token <your-token>
 | `full-text-search` | fullTextSearch CRUD operations |
 | `function` | function CRUD operations |
 | `get-site-previews-record` | getSitePreviewsRecord CRUD operations |
-| `hostname-binding` | hostnameBinding CRUD operations |
 | `identity-provider-registry` | identityProviderRegistry CRUD operations |
 | `index` | index CRUD operations |
 | `list-suspended-databases-record` | listSuspendedDatabasesRecord CRUD operations |
@@ -90,7 +89,6 @@ csdk auth set-token <your-token>
 | `pubkey-setting` | pubkeySetting CRUD operations |
 | `redirect` | redirect CRUD operations |
 | `rls-setting` | rlsSetting CRUD operations |
-| `route-binding` | routeBinding CRUD operations |
 | `route` | route CRUD operations |
 | `schema` | schema CRUD operations |
 | `schema-grant` | schemaGrant CRUD operations |
@@ -120,6 +118,7 @@ csdk auth set-token <your-token>
 | `webauthn-setting` | webauthnSetting CRUD operations |
 | `api-schema-names` | apiSchemaNames |
 | `apply-registry-defaults` | applyRegistryDefaults |
+| `email-shared-account` | emailSharedAccount |
 | `get-site-preview-commit` | getSitePreviewCommit |
 | `get-site-release-manifest` | getSiteReleaseManifest |
 | `page-published` | pagePublished |
@@ -138,6 +137,7 @@ csdk auth set-token <your-token>
 | `accept-database-transfer` | acceptDatabaseTransfer |
 | `apply-rls` | applyRls |
 | `cancel-database-transfer` | cancelDatabaseTransfer |
+| `create-function-from-source` | Creates a `Function` from its `CREATE FUNCTION` source text. |
 | `delete-site-preview` | deleteSitePreview |
 | `domains-assign-subdomain` | domainsAssignSubdomain |
 | `mint-site-preview-token` | mintSitePreviewToken |
@@ -153,10 +153,11 @@ csdk auth set-token <your-token>
 | `platform-sites-install-mantra` | platformSitesInstallMantra |
 | `platform-sites-provision-static-site` | platformSitesProvisionStaticSite |
 | `provision-bucket` | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 | `provision-site-preview` | provisionSitePreview |
 | `reject-database-transfer` | rejectDatabaseTransfer |
 | `request-database` | Requests a database and returns a ticket (database_provision_module row) to poll.
@@ -175,6 +176,7 @@ Example usage:
 | `sites-provision-static-site` | sitesProvisionStaticSite |
 | `suspend-database` | suspendDatabase |
 | `unsuspend-database` | unsuspendDatabase |
+| `update-function-from-source` | Replaces a `Function`'s definition from its source text; its database, schema and exposure are unchanged. |
 
 ## Infrastructure Commands
 
@@ -1212,37 +1214,6 @@ CRUD operations for GetSitePreviewsRecord records.
 
 **Required create fields:** `commitId`, `name`
 
-### `hostname-binding`
-
-CRUD operations for HostnameBinding records.
-
-| Subcommand | Description |
-|------------|-------------|
-| `list` | List all hostnameBinding records |
-| `find-first` | Find first matching hostnameBinding record |
-| `get` | Get a hostnameBinding by id |
-| `create` | Create a new hostnameBinding |
-| `update` | Update an existing hostnameBinding |
-| `delete` | Delete a hostnameBinding |
-
-**Fields:**
-
-| Field | Type |
-|-------|------|
-| `domainId` | UUID |
-| `hostname` | String |
-| `id` | UUID |
-| `isWildcard` | Boolean |
-| `managed` | Boolean |
-| `parentHostname` | String |
-| `tlsSecretName` | String |
-| `tlsStatus` | String |
-| `updatedAt` | Datetime |
-| `verificationStatus` | String |
-
-**Required create fields:** `domainId`, `hostname`
-**Optional create fields (backend defaults):** `isWildcard`, `managed`, `parentHostname`, `tlsSecretName`, `tlsStatus`, `verificationStatus`
-
 ### `identity-provider-registry`
 
 CRUD operations for IdentityProviderRegistry records.
@@ -1362,6 +1333,7 @@ CRUD operations for ManagedDomain records.
 | `domain` | String |
 | `id` | UUID |
 | `isWildcard` | Boolean |
+| `publicPort` | Int |
 | `tlsReadyAt` | Datetime |
 | `tlsStatus` | String |
 | `updatedAt` | Datetime |
@@ -1370,7 +1342,7 @@ CRUD operations for ManagedDomain records.
 | `verifiedAt` | Datetime |
 
 **Required create fields:** `databaseId`, `domain`
-**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
+**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `publicPort`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
 
 ### `node-type-registry`
 
@@ -1839,6 +1811,7 @@ CRUD operations for PlatformManagedDomain records.
 | `domain` | String |
 | `id` | UUID |
 | `isWildcard` | Boolean |
+| `publicPort` | Int |
 | `tlsReadyAt` | Datetime |
 | `tlsStatus` | String |
 | `updatedAt` | Datetime |
@@ -1847,7 +1820,7 @@ CRUD operations for PlatformManagedDomain records.
 | `verifiedAt` | Datetime |
 
 **Required create fields:** `domain`
-**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
+**Optional create fields (backend defaults):** `allowPublicUsage`, `annotations`, `certStatus`, `createdByPrincipal`, `isWildcard`, `publicPort`, `tlsReadyAt`, `tlsStatus`, `updatedByPrincipal`, `verificationStatus`, `verifiedAt`
 
 ### `platform-page`
 
@@ -2321,41 +2294,6 @@ CRUD operations for RlsSetting records.
 
 **Required create fields:** `databaseId`
 **Optional create fields (backend defaults):** `authenticateFunctionId`, `authenticateSchemaId`, `authenticateStrictFunctionId`, `currentIpAddressFunctionId`, `currentRoleFunctionId`, `currentRoleIdFunctionId`, `currentUserAgentFunctionId`, `roleSchemaId`
-
-### `route-binding`
-
-CRUD operations for RouteBinding records.
-
-| Subcommand | Description |
-|------------|-------------|
-| `list` | List all routeBinding records |
-| `find-first` | Find first matching routeBinding record |
-| `get` | Get a routeBinding by id |
-| `create` | Create a new routeBinding |
-| `update` | Update an existing routeBinding |
-| `delete` | Delete a routeBinding |
-
-**Fields:**
-
-| Field | Type |
-|-------|------|
-| `domainId` | UUID |
-| `id` | UUID |
-| `isActive` | Boolean |
-| `method` | String |
-| `path` | String |
-| `priority` | Int |
-| `servingSiteId` | UUID |
-| `targetApiId` | UUID |
-| `targetBucketId` | UUID |
-| `targetFunctionId` | UUID |
-| `targetRedirectId` | UUID |
-| `targetServiceId` | UUID |
-| `targetSiteId` | UUID |
-| `updatedAt` | Datetime |
-
-**Required create fields:** `domainId`, `path`
-**Optional create fields (backend defaults):** `isActive`, `method`, `priority`, `servingSiteId`, `targetApiId`, `targetBucketId`, `targetFunctionId`, `targetRedirectId`, `targetServiceId`, `targetSiteId`
 
 ### `route`
 
@@ -3029,6 +2967,7 @@ CRUD operations for UniqueConstraint records.
 | `initiallyDeferred` | Boolean |
 | `isDeferrable` | Boolean |
 | `name` | String |
+| `nullsNotDistinct` | Boolean |
 | `smartTags` | JSON |
 | `tableId` | UUID |
 | `tags` | String |
@@ -3037,7 +2976,7 @@ CRUD operations for UniqueConstraint records.
 | `withoutOverlaps` | Boolean |
 
 **Required create fields:** `fieldIds`, `tableId`
-**Optional create fields (backend defaults):** `category`, `databaseId`, `description`, `initiallyDeferred`, `isDeferrable`, `name`, `smartTags`, `tags`, `type`, `withoutOverlaps`
+**Optional create fields (backend defaults):** `category`, `databaseId`, `description`, `initiallyDeferred`, `isDeferrable`, `name`, `nullsNotDistinct`, `smartTags`, `tags`, `type`, `withoutOverlaps`
 
 ### `view-behavior`
 
@@ -3251,6 +3190,13 @@ applyRegistryDefaults
   |----------|------|
   | `--data` | JSON |
   | `--nodeType` | String |
+
+### `email-shared-account`
+
+emailSharedAccount
+
+- **Type:** query
+- **Arguments:** none
 
 ### `get-site-preview-commit`
 
@@ -3472,6 +3418,21 @@ cancelDatabaseTransfer
   | `--input.clientMutationId` | String |
   | `--input.transferId` | UUID |
 
+### `create-function-from-source`
+
+Creates a `Function` from its `CREATE FUNCTION` source text.
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.apiExposed` | Boolean |
+  | `--input.clientMutationId` | String |
+  | `--input.databaseId` | UUID (required) |
+  | `--input.schemaId` | UUID (required) |
+  | `--input.source` | String (required) |
+
 ### `delete-site-preview`
 
 deleteSitePreview
@@ -3676,10 +3637,11 @@ platformSitesProvisionStaticSite
 ### `provision-bucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**
@@ -3852,6 +3814,19 @@ unsuspendDatabase
   | `--input.clientMutationId` | String |
   | `--input.databaseId` | UUID |
   | `--input.reason` | String |
+
+### `update-function-from-source`
+
+Replaces a `Function`'s definition from its source text; its database, schema and exposure are unchanged.
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.id` | UUID (required) |
+  | `--input.source` | String (required) |
 
 ## Output
 

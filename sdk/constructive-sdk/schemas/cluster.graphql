@@ -1,3 +1,12 @@
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) and, if it has a timezone, [RFC
+3339](https://datatracker.ietf.org/doc/html/rfc3339) standards. Input values
+that do not conform to both ISO 8601 and RFC 3339 may be coerced, which may lead
+to unexpected results.
+"""
+scalar Datetime
+
 """A belongs-to (forward FK) relation"""
 type MetaBelongsToRelation {
   fieldName: String
@@ -357,10 +366,11 @@ The root mutation type which contains root level fields which mutate data.
 type Mutation {
   """
   Reconcile an S3 bucket for a logical bucket in the database.
-  Reads the bucket config via RLS, then enqueues the same
-  storage:provision_bucket job used by the INSERT trigger. This is
-  idempotent for an already-reconciled bucket; enqueue failures become
-  GraphQL errors.
+  Records the request on the bucket row via RLS; the bucket's job
+  trigger then enqueues the same storage:provision_bucket job used on
+  INSERT, and repeated requests collapse into one pending job. This is
+  idempotent for an already-reconciled bucket; failures become GraphQL
+  errors.
   """
   provisionBucket(
     """
@@ -382,17 +392,17 @@ input ProvisionBucketInput {
 }
 
 type ProvisionBucketPayload {
-  """The logical bucket row that was queued for reconciliation."""
+  """The logical bucket row whose reconciliation was requested."""
   bucketId: UUID!
   bucketKey: String!
-
-  """The reconciler job enqueued to provision this bucket."""
-  jobId: UUID!
 
   """
   The physical bucket name already recorded, or null when reconciliation has not completed.
   """
   physicalName: String
+
+  """When reconciliation was last requested for this bucket."""
+  provisionRequestedAt: Datetime!
 }
 
 """The root query type which gives access points into the data universe."""

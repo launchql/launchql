@@ -137,6 +137,25 @@ export function createQueryOperations(client: OrmClient) {
           undefined
         ),
       }),
+    emailSharedAccount: (options?: { select?: Record<string, unknown> }) =>
+      new QueryBuilder<{
+        emailSharedAccount: unknown | null;
+      }>({
+        client,
+        operation: 'query',
+        operationName: 'EmailSharedAccount',
+        fieldName: 'emailSharedAccount',
+        ...buildCustomDocument(
+          'query',
+          'EmailSharedAccount',
+          'emailSharedAccount',
+          options?.select,
+          undefined,
+          [],
+          connectionFieldsMap,
+          undefined
+        ),
+      }),
     getSitePreviewCommit: (
       args: GetSitePreviewCommitVariables,
       options?: {

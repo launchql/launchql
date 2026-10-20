@@ -258,10 +258,14 @@ export interface Bucket {
   isPublic?: boolean | null;
   /** Unique bucket identifier used in S3 key paths (e.g. avatars, documents, temp) */
   key?: string | null;
+  /** The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED. */
+  maxBulkFiles?: number | null;
   /** Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred) */
   maxFileSize?: string | null;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string | null;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string | null;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: string | null;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -329,10 +333,14 @@ export interface PlatformBucket {
   isPublic?: boolean | null;
   /** Unique bucket identifier used in S3 key paths (e.g. avatars, documents, temp) */
   key?: string | null;
+  /** The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED. */
+  maxBulkFiles?: number | null;
   /** Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred) */
   maxFileSize?: string | null;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string | null;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string | null;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: string | null;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -425,8 +433,10 @@ export type BucketSelect = {
   id?: boolean;
   isPublic?: boolean;
   key?: boolean;
+  maxBulkFiles?: boolean;
   maxFileSize?: boolean;
   physicalName?: boolean;
+  provisionRequestedAt?: boolean;
   stagingTtl?: boolean;
   tags?: boolean;
   type?: boolean;
@@ -483,8 +493,10 @@ export type PlatformBucketSelect = {
   id?: boolean;
   isPublic?: boolean;
   key?: boolean;
+  maxBulkFiles?: boolean;
   maxFileSize?: boolean;
   physicalName?: boolean;
+  provisionRequestedAt?: boolean;
   stagingTtl?: boolean;
   tags?: boolean;
   type?: boolean;
@@ -575,6 +587,8 @@ export interface BucketFilter {
   or?: BucketFilter[];
   /** Filter by the object’s `physicalName` field. */
   physicalName?: StringFilter;
+  /** Filter by the object’s `provisionRequestedAt` field. */
+  provisionRequestedAt?: DatetimeFilter;
   /** Filter by the object’s `stagingTtl` field. */
   stagingTtl?: IntervalFilter;
   /** Filter by the object’s `tags` field. */
@@ -673,6 +687,8 @@ export interface PlatformBucketFilter {
   platformFilesByBucketId?: PlatformBucketToManyPlatformFileFilter;
   /** `platformFilesByBucketId` exist. */
   platformFilesByBucketIdExist?: boolean;
+  /** Filter by the object’s `provisionRequestedAt` field. */
+  provisionRequestedAt?: DatetimeFilter;
   /** Filter by the object’s `stagingTtl` field. */
   stagingTtl?: IntervalFilter;
   /** Filter by the object’s `tags` field. */
@@ -757,6 +773,8 @@ export type BucketOrderBy =
   | 'PHYSICAL_NAME_DESC'
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
+  | 'PROVISION_REQUESTED_AT_ASC'
+  | 'PROVISION_REQUESTED_AT_DESC'
   | 'STAGING_TTL_ASC'
   | 'STAGING_TTL_DESC'
   | 'TAGS_ASC'
@@ -833,6 +851,8 @@ export type PlatformBucketOrderBy =
   | 'PHYSICAL_NAME_DESC'
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
+  | 'PROVISION_REQUESTED_AT_ASC'
+  | 'PROVISION_REQUESTED_AT_DESC'
   | 'STAGING_TTL_ASC'
   | 'STAGING_TTL_DESC'
   | 'TAGS_ASC'
@@ -894,6 +914,7 @@ export interface CreateBucketInput {
     key: string;
     maxFileSize?: string;
     physicalName?: string;
+    provisionRequestedAt?: string;
     stagingTtl?: IntervalInput;
     tags?: string[];
     type?: BucketType;
@@ -911,6 +932,7 @@ export interface BucketPatch {
   key?: string | null;
   maxFileSize?: string | null;
   physicalName?: string | null;
+  provisionRequestedAt?: string | null;
   stagingTtl?: IntervalInput | null;
   tags?: string[] | null;
   type?: BucketType | null;
@@ -982,6 +1004,7 @@ export interface CreatePlatformBucketInput {
     key: string;
     maxFileSize?: string;
     physicalName?: string;
+    provisionRequestedAt?: string;
     stagingTtl?: IntervalInput;
     tags?: string[];
     type?: BucketType;
@@ -998,6 +1021,7 @@ export interface PlatformBucketPatch {
   key?: string | null;
   maxFileSize?: string | null;
   physicalName?: string | null;
+  provisionRequestedAt?: string | null;
   stagingTtl?: IntervalInput | null;
   tags?: string[] | null;
   type?: BucketType | null;
@@ -1306,6 +1330,8 @@ export interface BucketInput {
   maxFileSize?: string;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: IntervalInput;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -1389,6 +1415,8 @@ export interface PlatformBucketInput {
   maxFileSize?: string;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: IntervalInput;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -1499,6 +1527,8 @@ export interface BucketFilter {
   or?: BucketFilter[];
   /** Filter by the object’s `physicalName` field. */
   physicalName?: StringFilter;
+  /** Filter by the object’s `provisionRequestedAt` field. */
+  provisionRequestedAt?: DatetimeFilter;
   /** Filter by the object’s `stagingTtl` field. */
   stagingTtl?: IntervalFilter;
   /** Filter by the object’s `tags` field. */
@@ -1599,6 +1629,8 @@ export interface PlatformBucketFilter {
   platformFilesByBucketId?: PlatformBucketToManyPlatformFileFilter;
   /** `platformFilesByBucketId` exist. */
   platformFilesByBucketIdExist?: boolean;
+  /** Filter by the object’s `provisionRequestedAt` field. */
+  provisionRequestedAt?: DatetimeFilter;
   /** Filter by the object’s `stagingTtl` field. */
   stagingTtl?: IntervalFilter;
   /** Filter by the object’s `tags` field. */
@@ -1899,19 +1931,19 @@ export type PlatformFilesRenamePayloadSelect = {
   };
 };
 export interface ProvisionBucketPayload {
-  /** The logical bucket row that was queued for reconciliation. */
+  /** The logical bucket row whose reconciliation was requested. */
   bucketId: string;
   bucketKey: string;
-  /** The reconciler job enqueued to provision this bucket. */
-  jobId: string;
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
+  /** When reconciliation was last requested for this bucket. */
+  provisionRequestedAt: string;
 }
 export type ProvisionBucketPayloadSelect = {
   bucketId?: boolean;
   bucketKey?: boolean;
-  jobId?: boolean;
   physicalName?: boolean;
+  provisionRequestedAt?: boolean;
 };
 export interface UploadFilePayload {
   /** Whether this file was deduplicated (content already exists) */
