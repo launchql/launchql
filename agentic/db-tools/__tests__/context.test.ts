@@ -38,7 +38,7 @@ let dir: string;
 
 beforeEach(() => {
   dir = mkdtempSync(path.join(os.tmpdir(), 'pi-context-'));
-  mockProbe.mockResolvedValue({ outcome: 'found', name: 'myapp', ownerId: 'u1' });
+  mockProbe.mockResolvedValue({ status: 'found', databaseId: 'db-1', name: 'myapp', ownerId: 'u1', hash: 'h1' });
   mockCreateClient.mockReturnValue(schemaClient);
   configureHost({
     account: () => ({ userId: 'u1', accessToken: 'account-bearer' }),
@@ -131,6 +131,58 @@ describe('resolveProjectContext sources', () => {
 
     expect(resolved.context).toBeNull();
     expect(resolved.code).toBe('missing-credentials');
+  });
+});
+
+describe('resolveProjectContext binding health', () => {
+  const source = fromEnvironment({
+    [`${CONTEXT_ENV_PREFIX}ACCESS_TOKEN`]: 'project-key',
+    [`${CONTEXT_ENV_PREFIX}DATABASE_ID`]: 'db-1',
+  });
+
+  it("carries the database's hash from the probe", async () => {
+    const resolved = await resolveProjectContext(source);
+
+    expect(resolved.context?.hash).toBe('h1');
+  });
+
+  it('reports a suspended database as db-suspended, never as missing', async () => {
+    mockProbe.mockResolvedValue({
+      status: 'suspended',
+      databaseId: 'db-1',
+      ownerId: 'u1',
+      suspendedAt: '2026-10-01T00:00:00Z',
+    });
+
+    const resolved = await resolveProjectContext(source);
+
+    expect(resolved).toMatchObject({ context: null, code: 'db-suspended' });
+    expect(resolved.reason).not.toMatch(/reprovision/i);
+  });
+
+  it('reports an unknown backend error as unreachable with its cause', async () => {
+    mockProbe.mockResolvedValue({ status: 'unreachable', databaseId: 'db-1', cause: 'error', detail: 'boom' });
+
+    const resolved = await resolveProjectContext(source);
+
+    expect(resolved).toMatchObject({ context: null, code: 'backend-unreachable', cause: 'error' });
+    expect(resolved.reason).toMatch(/answered with an error/);
+  });
+
+  it("gives the host's reprovision advice for a missing database instead of the tool's", async () => {
+    configureHost({
+      account: () => ({ userId: 'u1', accessToken: 'account-bearer' }),
+      backendConfig: () => null,
+      reprovisionHint: 'Approve the rebuild card to re-provision.',
+      toolReprovision: false,
+    });
+    mockProbe.mockResolvedValue({ status: 'missing', databaseId: 'db-1' });
+
+    const resolved = await resolveProjectContext(source);
+
+    expect(resolved.code).toBe('db-missing');
+    expect(resolved.reason).toMatch(/Approve the rebuild card/);
+    expect(resolved.reason).not.toMatch(/reprovision: true/);
   });
 });
 

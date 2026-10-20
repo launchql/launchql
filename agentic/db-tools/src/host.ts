@@ -83,6 +83,24 @@ export type StepUpRequest = {
   apiEndpoint: string;
 };
 
+/**
+ * The database a project is bound to, handed to the host before provisioning
+ * writes it to the project's `.env`, so a host that keeps its own record of
+ * the binding never ends up with a `.env` it doesn't know about.
+ */
+export type ProjectBinding = {
+  cwd: string;
+  databaseId: string;
+  databaseName: string;
+  ownerId: string;
+  apiEndpoint: string;
+  modulesEndpoint: string;
+  /** The database this binding replaced (replace mode). */
+  replaces?: string;
+  /** True when the existing binding was kept: nothing was provisioned. */
+  skipped?: boolean;
+};
+
 export interface ToolsHost {
   /** Signed-in platform account, or null/undefined when signed out. */
   account(): HostAccount | null | undefined;
@@ -129,9 +147,39 @@ export interface ToolsHost {
    * Required for create_api_key — without it the tool refuses to mint.
    */
   deliverSecret?(delivery: SecretDelivery): Promise<void>;
+  /**
+   * What to tell the agent to do about a database that is gone or belongs to
+   * another account, in place of the default advice to call
+   * provision_database with `reprovision: true`.
+   */
+  reprovisionHint?: string;
+  /**
+   * Whether the agent may replace a binding through provision_database's
+   * `reprovision: true`. Default true. A host that replaces databases only
+   * after the user approves (calling `provisionDatabase` in replace mode
+   * itself) sets false, and the tool then refuses.
+   */
+  toolReprovision?: boolean;
+  /**
+   * Save a binding in the host's own store. Provisioning calls it before
+   * writing `.env`, on a new binding and on a kept one (`skipped`). If it
+   * throws, `.env` is left alone, the provision ticket stays recorded, and
+   * the call fails with `binding-not-saved`.
+   */
+  persistBinding?(binding: ProjectBinding): Promise<void>;
 }
 
 export const DEFAULT_DATA_TOKEN_SKEW_MS = 30_000;
+
+const DEFAULT_REPROVISION_ADVICE =
+  'Re-provision with provision_database (reprovision: true): the schema is rebuilt from the project, and records do not carry over.';
+
+/** The advice for a database that is gone or under another account. */
+export function reprovisionAdvice(host: ToolsHost): string {
+  if (host.reprovisionHint) return host.reprovisionHint;
+  if (host.toolReprovision === false) return 'Ask the user to re-provision it from the app.';
+  return DEFAULT_REPROVISION_ADVICE;
+}
 
 let currentHost: ToolsHost | null = null;
 

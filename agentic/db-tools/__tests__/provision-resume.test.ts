@@ -68,7 +68,7 @@ beforeEach(() => {
   mockRequestDatabase.mockReset();
   mockFindTicket.mockReset();
   mockProbe.mockReset();
-  mockProbe.mockResolvedValue({ outcome: 'found', ownerId: 'user-1' });
+  mockProbe.mockResolvedValue({ status: 'found', databaseId: 'db-1', ownerId: 'user-1' });
   configureHost({
     account: () => ({ userId: 'user-1', accessToken: 'account-token' }),
     backendConfig: () => ({ apiEndpoint: API, modulesEndpoint: 'http://modules.localhost:3000/graphql' }),
@@ -174,7 +174,7 @@ describe('provision_database pending tickets', () => {
   it('does not bind a database the signed-in account does not own', async () => {
     writeEnv(`KEEP=me\n${record()}`);
     mockFindTicket.mockResolvedValue(ticketRead(completed('ticket-1', 'db-1')));
-    mockProbe.mockResolvedValue({ outcome: 'found', ownerId: 'user-2' });
+    mockProbe.mockResolvedValue({ status: 'found', databaseId: 'db-1', ownerId: 'user-2' });
 
     const result = await provision('myapp');
 

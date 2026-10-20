@@ -218,12 +218,12 @@ export function createProvisionDatabaseTool(
           databaseId: existingEnv.DATABASE_ID,
           signInHint: host.signInHint,
         });
-        if (probe.outcome === 'unreachable') {
+        if (probe.status === 'unreachable') {
           return fail(
             `Cannot verify the existing database binding: backend unreachable (${probe.detail}). Check the Constructive backend is running, then retry — do not reprovision on an unreachable backend.`,
           );
         }
-        if (probe.outcome === 'missing') {
+        if (probe.status === 'missing') {
           return fail(
             `Project carries a binding (DATABASE_ID=${existingEnv.DATABASE_ID}) but that database no longer exists on this backend. Re-run with reprovision: true to mint a fresh database (old keys archived in .env, old database untouched), then rebuild the schema (provision_blueprint + run_codegen); records do not carry over.`,
           );
@@ -353,7 +353,7 @@ export function createProvisionDatabaseTool(
         databaseId,
         signInHint: host.signInHint,
       });
-      if (owner.outcome === 'unreachable') {
+      if (owner.status === 'unreachable') {
         return pendingResult(
           envPath,
           ticketFor(ticketId),
@@ -361,11 +361,11 @@ export function createProvisionDatabaseTool(
           reprovision,
         );
       }
-      if (owner.outcome === 'missing' || owner.ownerId !== ownerId) {
+      if (owner.status === 'missing' || owner.ownerId !== ownerId) {
         await updateEnvFile(envPath, clearPendingTicket).catch((): void => undefined);
         return fail(
           `Database provisioning returned database ${databaseId}, but ${
-            owner.outcome === 'missing' ? "it isn't visible to" : "it isn't owned by"
+            owner.status === 'missing' ? "it isn't visible to" : "it isn't owned by"
           } the signed-in account, so it was not bound. Call provision_database again to request a new database.`,
         );
       }
