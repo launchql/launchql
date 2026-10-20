@@ -2,6 +2,7 @@ import {
   ProvisionPendingError,
   type ProvisionRequestExecutor,
   type ProvisionTicket,
+  ProvisionTicketLostError,
   requestDatabaseProvision,
 } from '../src/provision-database/request-database';
 
@@ -33,6 +34,7 @@ function run(args: {
   initial: ProvisionTicket;
   polls?: (ProvisionTicket | null | Error)[];
   deadlineMs?: number;
+  resumeTicketId?: string;
 }) {
   const polls = [...(args.polls ?? [])];
   const pollCalls: string[] = [];
@@ -46,6 +48,7 @@ function run(args: {
       if (next instanceof Error) throw next;
       return next;
     },
+    listOwn: async () => [],
   };
   const promise = requestDatabaseProvision({
     apiEndpoint: 'http://api.test/graphql',
@@ -57,6 +60,7 @@ function run(args: {
     executor,
     pollIntervalMs: 0,
     pollDeadlineMs: args.deadlineMs ?? 5_000,
+    resumeTicketId: args.resumeTicketId,
   });
   return { promise, request, pollCalls };
 }
@@ -186,6 +190,15 @@ describe('requestDatabaseProvision', () => {
       ],
     });
     await expect(promise).resolves.toEqual({ databaseId: 'db-id', ticketId: 'ticket-1' });
+  });
+
+  it('throws ProvisionTicketLostError for a resumed ticket that reads back empty, never requesting', async () => {
+    const { promise, request, pollCalls } = run({ initial: done, polls: [null], resumeTicketId: 'ticket-9' });
+
+    await expect(promise).rejects.toBeInstanceOf(ProvisionTicketLostError);
+    await expect(promise).rejects.toMatchObject({ ticketId: 'ticket-9' });
+    expect(pollCalls).toEqual(['ticket-9']);
+    expect(request).not.toHaveBeenCalled();
   });
 
   it('times out a ticket that never completes', async () => {

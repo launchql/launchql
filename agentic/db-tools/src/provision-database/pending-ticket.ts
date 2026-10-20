@@ -2,7 +2,14 @@
 // a project's .env. requestDatabase never resumes by name, so the ticket is
 // the only way back to a provision that is still running.
 
-import { type EnvVars, mergeEnv, PENDING_PROVISION_KEYS, removeEnvKeys } from './env-file';
+import {
+  archiveBindingKeys,
+  type EnvVars,
+  mergeEnv,
+  PENDING_PROVISION_KEYS,
+  readEnv,
+  removeEnvKeys,
+} from './env-file';
 
 /**
  * Pending results recorded for one ticket before provision_database stops
@@ -22,25 +29,31 @@ export type PendingTicket = {
 const KEYS = Object.values(PENDING_PROVISION_KEYS);
 
 /**
- * The recorded ticket when it was requested for this database name, on this
- * backend and by this account. A ticket from another backend or account isn't
- * ours to poll, and one for another name is a different database.
+ * Tickets the host told provisioning to stop following (`abandonPending`),
+ * comma-separated. A lookup by name skips them, so an abandoned provision is
+ * never resumed.
  */
-export function matchingPendingTicket(
-  env: EnvVars,
-  want: { databaseName: string; apiEndpoint: string; userId: string },
-): PendingTicket | undefined {
+export const ABANDONED_TICKETS_KEY = 'PROVISION_TICKET_ABANDONED';
+
+/** The newest abandoned ids kept; older ones are long finished or failed. */
+const MAX_ABANDONED = 10;
+
+/**
+ * The recorded ticket, with the name, backend and account it was requested
+ * for. Only a ticket from this backend and account is ours to poll, and one
+ * for another name is a different database.
+ */
+export function recordedTicket(env: EnvVars): PendingTicket | undefined {
   const ticketId = env[PENDING_PROVISION_KEYS.ticketId];
-  if (
-    !ticketId ||
-    env[PENDING_PROVISION_KEYS.databaseName] !== want.databaseName ||
-    env[PENDING_PROVISION_KEYS.apiEndpoint] !== want.apiEndpoint ||
-    env[PENDING_PROVISION_KEYS.userId] !== want.userId
-  ) {
-    return undefined;
-  }
+  if (!ticketId) return undefined;
   const attempts = Number.parseInt(env[PENDING_PROVISION_KEYS.attempts] ?? '', 10);
-  return { ...want, ticketId, attempts: Number.isFinite(attempts) && attempts > 0 ? attempts : 0 };
+  return {
+    ticketId,
+    databaseName: env[PENDING_PROVISION_KEYS.databaseName] ?? '',
+    apiEndpoint: env[PENDING_PROVISION_KEYS.apiEndpoint] ?? '',
+    userId: env[PENDING_PROVISION_KEYS.userId] ?? '',
+    attempts: Number.isFinite(attempts) && attempts > 0 ? attempts : 0,
+  };
 }
 
 export function recordPendingTicket(content: string, ticket: PendingTicket): string {
@@ -55,4 +68,24 @@ export function recordPendingTicket(content: string, ticket: PendingTicket): str
 
 export function clearPendingTicket(content: string): string {
   return removeEnvKeys(content, KEYS);
+}
+
+/** Comment the record out (`# archived <date>: …`), keeping it readable. */
+export function archivePendingTicket(content: string, archivedOn: string): string {
+  return archiveBindingKeys(content, KEYS, archivedOn);
+}
+
+export function abandonedTickets(env: EnvVars): Set<string> {
+  return new Set(
+    (env[ABANDONED_TICKETS_KEY] ?? '')
+      .split(',')
+      .map((id) => id.trim())
+      .filter(Boolean),
+  );
+}
+
+/** Add ticket ids to the abandoned list. */
+export function recordAbandoned(content: string, ticketIds: readonly string[]): string {
+  const ids = [...new Set([...abandonedTickets(readEnv(content)), ...ticketIds])].slice(-MAX_ABANDONED);
+  return mergeEnv(content, { [ABANDONED_TICKETS_KEY]: ids.join(',') });
 }

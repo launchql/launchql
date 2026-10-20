@@ -2,10 +2,11 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import os from 'node:os';
 import path from 'node:path';
 
-// The network boundary: requestDatabase on the api client, the ticket read on
-// the modules client, and the ownership probe.
+// The network boundary: requestDatabase on the api client, the ticket read and
+// the lookup by name on the modules client, and the ownership probe.
 const mockRequestDatabase = jest.fn();
 const mockFindTicket = jest.fn();
+const mockListOwn = jest.fn();
 jest.mock('@constructive-io/sdk', () => ({
   api: {
     FetchAdapter: jest.fn(),
@@ -17,6 +18,7 @@ jest.mock('@constructive-io/sdk', () => ({
     createClient: () => ({
       databaseProvisionModule: {
         findOne: (args: { id: string }) => ({ unwrap: () => mockFindTicket(args.id) }),
+        findMany: (args: unknown) => ({ unwrap: () => mockListOwn(args) }),
       },
     }),
   },
@@ -67,8 +69,10 @@ beforeEach(() => {
   cwd = mkdtempSync(path.join(os.tmpdir(), 'db-tools-provision-'));
   mockRequestDatabase.mockReset();
   mockFindTicket.mockReset();
+  mockListOwn.mockReset();
+  mockListOwn.mockResolvedValue({ databaseProvisionModules: { nodes: [] } });
   mockProbe.mockReset();
-  mockProbe.mockResolvedValue({ status: 'found', databaseId: 'db-1', ownerId: 'user-1' });
+  mockProbe.mockImplementation(async ({ databaseId }) => ({ status: 'found', databaseId, ownerId: 'user-1' }));
   configureHost({
     account: () => ({ userId: 'user-1', accessToken: 'account-token' }),
     backendConfig: () => ({ apiEndpoint: API, modulesEndpoint: 'http://modules.localhost:3000/graphql' }),
@@ -143,23 +147,10 @@ describe('provision_database pending tickets', () => {
     expect(envFile()).toBe('KEEP=me\n');
   });
 
-  it('stops following a ticket after the attempt cap, and says a new call starts a new provision', async () => {
-    writeEnv(`KEEP=me\n${record({ attempts: '5' })}`);
-    mockFindTicket.mockResolvedValue(ticketRead(pending('ticket-1')));
-
-    const result = await provision('myapp');
-
-    expect(mockRequestDatabase).not.toHaveBeenCalled();
-    expect(result.details.pending).toBeUndefined();
-    expect(result.details.message).toMatch(/still not ready after 5 waits.*a new call starts a new provision/);
-    expect(envFile()).toBe('KEEP=me\n');
-  });
-
   it.each([
-    ['another name', { name: 'otherapp' }],
     ['another backend', { api: 'http://api.example.test/graphql' }],
     ['another account', { user: 'user-2' }],
-  ])('never reuses a ticket recorded for %s', async (_case, fields) => {
+  ])('never follows a ticket recorded for %s', async (_case, fields) => {
     writeEnv(record(fields));
     mockRequestDatabase.mockResolvedValue(requested(completed('ticket-2', 'db-2')));
 

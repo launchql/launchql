@@ -30,11 +30,13 @@ export type ProvisionTicket = {
   databaseId?: string | null;
   errorMessage?: string | null;
   bootstrapError?: string | null;
+  databaseName?: string | null;
+  createdAt?: string | null;
 };
 
 /**
- * Request + poll seam, injectable for tests (pattern: db-probe's
- * ProbeExecutor). The default executor drives the SDK clients.
+ * Request, poll and lookup seam, injectable for tests. The default executor
+ * drives the SDK clients.
  */
 export type ProvisionRequestExecutor = {
   request(input: {
@@ -44,6 +46,8 @@ export type ProvisionRequestExecutor = {
     request: ProvisionRequest;
   }): Promise<ProvisionTicket>;
   poll(ticketId: string): Promise<ProvisionTicket | null>;
+  /** The account's newest tickets for a database name, newest first. */
+  listOwn(filter: { databaseName: string; ownerId: string }): Promise<ProvisionTicket[]>;
 };
 
 export const POLL_INTERVAL_MS = 2_000;
@@ -73,6 +77,21 @@ export class ProvisionPendingError extends Error {
   }
 }
 
+/**
+ * The recorded ticket can't be read back: it is gone, or this account can't
+ * see it. Nothing says the provision stopped, so a caller must not request
+ * the same database again on this alone.
+ */
+export class ProvisionTicketLostError extends Error {
+  constructor(
+    message: string,
+    readonly ticketId: string,
+  ) {
+    super(message);
+    this.name = 'ProvisionTicketLostError';
+  }
+}
+
 const TICKET_SELECT = {
   id: true,
   status: true,
@@ -82,11 +101,14 @@ const TICKET_SELECT = {
   bootstrapError: true,
 } as const;
 
+/** How many of an account's tickets for one name a lookup reads. */
+const LIST_OWN_LIMIT = 5;
+
 type RequestDatabaseInput = Parameters<
   ReturnType<typeof api.createClient>['mutation']['requestDatabase']
 >[0]['input'];
 
-function createSdkExecutor(args: {
+export function createProvisionExecutor(args: {
   apiEndpoint: string;
   modulesEndpoint: string;
   bearer: string;
@@ -119,7 +141,24 @@ function createSdkExecutor(args: {
         .unwrap();
       return result.databaseProvisionModule ?? null;
     },
+    async listOwn({ databaseName, ownerId }) {
+      const result = await modulesClient.databaseProvisionModule
+        .findMany({
+          select: { ...TICKET_SELECT, databaseName: true, createdAt: true },
+          where: { databaseName: { equalTo: databaseName }, ownerId: { equalTo: ownerId } },
+          orderBy: ['CREATED_AT_DESC'],
+          first: LIST_OWN_LIMIT,
+        })
+        .unwrap();
+      return (result.databaseProvisionModules?.nodes ?? []).filter((ticket) => Boolean(ticket));
+    },
   };
+}
+
+/** A ticket whose provision or owner bootstrap is still running. */
+export function isTicketInFlight(ticket: ProvisionTicket): boolean {
+  if (ticket.status === 'pending' || ticket.status === 'in_progress') return true;
+  return ticket.status === 'completed' && (ticket.bootstrapStatus === 'pending' || ticket.bootstrapStatus === 'in_progress');
 }
 
 const NETWORK_ERROR_RE =
@@ -157,8 +196,9 @@ function sleep(ms: number): Promise<void> {
  * either outcome throws `ProvisionPendingError`.
  *
  * With `resumeTicketId` the ticket of an earlier call is polled instead of
- * requesting again. A ticket that can't be found (another backend or account)
- * falls back to a new request; `resumed` is true when the old one was used.
+ * requesting again, and `resumed` is true. A ticket that reads back empty
+ * throws `ProvisionTicketLostError`, never a new request: the provision may
+ * still be running where this account can't see it.
  */
 export async function requestDatabaseProvision(args: {
   apiEndpoint: string;
@@ -174,7 +214,7 @@ export async function requestDatabaseProvision(args: {
 }): Promise<{ databaseId: string; ticketId: string; resumed?: true }> {
   const executor =
     args.executor ??
-    createSdkExecutor({
+    createProvisionExecutor({
       apiEndpoint: args.apiEndpoint,
       modulesEndpoint: args.modulesEndpoint,
       bearer: args.bearer,
@@ -196,6 +236,12 @@ export async function requestDatabaseProvision(args: {
       throw new Error(`provision ticket ${args.resumeTicketId} could not be read: ${errorText(err)}`, {
         cause: err,
       });
+    }
+    if (!resumedTicket) {
+      throw new ProvisionTicketLostError(
+        `provision ticket ${args.resumeTicketId} could not be found on this backend.`,
+        args.resumeTicketId,
+      );
     }
   }
   let ticket =
@@ -254,7 +300,7 @@ export async function requestDatabaseProvision(args: {
     }
     if (!polled) {
       if (++failures > MAX_CONSECUTIVE_POLL_FAILURES) {
-        throw new Error(`provision ticket ${ticketId} could not be read back.`);
+        throw new ProvisionTicketLostError(`provision ticket ${ticketId} could not be read back.`, ticketId);
       }
       continue;
     }
