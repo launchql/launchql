@@ -7,7 +7,7 @@ Execute the requestMagicLink mutation
 ## Usage
 
 ```bash
-csdk request-magic-link --input.clientMutationId <String> --input.email <String>
+csdk request-magic-link --input.clientMutationId <String> --input.email <String> --input.next <String>
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ csdk request-magic-link --input.clientMutationId <String> --input.email <String>
 ### Run requestMagicLink
 
 ```bash
-csdk request-magic-link --input.clientMutationId <String> --input.email <String>
+csdk request-magic-link --input.clientMutationId <String> --input.email <String> --input.next <String>
 ```

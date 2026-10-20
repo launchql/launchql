@@ -196,6 +196,11 @@ type Bucket {
   key: String!
 
   """
+  The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED.
+  """
+  maxBulkFiles: Int!
+
+  """
   Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred)
   """
   maxFileSize: BigInt
@@ -204,6 +209,11 @@ type Bucket {
   Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists)
   """
   physicalName: String
+
+  """
+  When re-provisioning was last requested (provisionBucket); NULL until requested
+  """
+  provisionRequestedAt: Datetime
 
   """
   For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets.
@@ -318,6 +328,9 @@ input BucketFilter {
   """Filter by the object’s `physicalName` field."""
   physicalName: StringFilter
 
+  """Filter by the object’s `provisionRequestedAt` field."""
+  provisionRequestedAt: DatetimeFilter
+
   """Filter by the object’s `stagingTtl` field."""
   stagingTtl: IntervalFilter
 
@@ -385,6 +398,11 @@ input BucketInput {
   physicalName: String
 
   """
+  When re-provisioning was last requested (provisionBucket); NULL until requested
+  """
+  provisionRequestedAt: Datetime
+
+  """
   For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets.
   """
   stagingTtl: IntervalInput
@@ -432,6 +450,8 @@ enum BucketOrderBy {
   PHYSICAL_NAME_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROVISION_REQUESTED_AT_ASC
+  PROVISION_REQUESTED_AT_DESC
   STAGING_TTL_ASC
   STAGING_TTL_DESC
   TAGS_ASC
@@ -496,6 +516,11 @@ input BucketPatch {
   Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists)
   """
   physicalName: String
+
+  """
+  When re-provisioning was last requested (provisionBucket); NULL until requested
+  """
+  provisionRequestedAt: Datetime
 
   """
   For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets.
@@ -1954,10 +1979,11 @@ type Mutation {
 
   """
   Reconcile an S3 bucket for a logical bucket in the database.
-  Reads the bucket config via RLS, then enqueues the same
-  storage:provision_bucket job used by the INSERT trigger. This is
-  idempotent for an already-reconciled bucket; enqueue failures become
-  GraphQL errors.
+  Records the request on the bucket row via RLS; the bucket's job
+  trigger then enqueues the same storage:provision_bucket job used on
+  INSERT, and repeated requests collapse into one pending job. This is
+  idempotent for an already-reconciled bucket; failures become GraphQL
+  errors.
   """
   provisionBucket(
     """
@@ -2009,7 +2035,7 @@ type Mutation {
   ): UploadFilePayload
 
   """
-  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
   """
   uploadFiles(
     """
@@ -2029,7 +2055,7 @@ type Mutation {
   ): UploadPlatformFilePayload
 
   """
-  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+  Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
   """
   uploadPlatformFiles(
     """
@@ -2102,6 +2128,11 @@ type PlatformBucket {
   key: String!
 
   """
+  The most files one bulk-upload call accepts for this bucket. Batches larger than this are refused with BULK_UPLOAD_FILES_EXCEEDED.
+  """
+  maxBulkFiles: Int!
+
+  """
   Maximum file size in bytes allowed in this bucket (NULL = no limit, enforcement deferred)
   """
   maxFileSize: BigInt
@@ -2168,6 +2199,11 @@ type PlatformBucket {
     """
     where: PlatformFileFilter
   ): PlatformFileConnection!
+
+  """
+  When re-provisioning was last requested (provisionBucket); NULL until requested
+  """
+  provisionRequestedAt: Datetime
 
   """
   For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets.
@@ -2281,6 +2317,9 @@ input PlatformBucketFilter {
   """`platformFilesByBucketId` exist."""
   platformFilesByBucketIdExist: Boolean
 
+  """Filter by the object’s `provisionRequestedAt` field."""
+  provisionRequestedAt: DatetimeFilter
+
   """Filter by the object’s `stagingTtl` field."""
   stagingTtl: IntervalFilter
 
@@ -2345,6 +2384,11 @@ input PlatformBucketInput {
   physicalName: String
 
   """
+  When re-provisioning was last requested (provisionBucket); NULL until requested
+  """
+  provisionRequestedAt: Datetime
+
+  """
   For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets.
   """
   stagingTtl: IntervalInput
@@ -2390,6 +2434,8 @@ enum PlatformBucketOrderBy {
   PHYSICAL_NAME_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROVISION_REQUESTED_AT_ASC
+  PROVISION_REQUESTED_AT_DESC
   STAGING_TTL_ASC
   STAGING_TTL_DESC
   TAGS_ASC
@@ -2451,6 +2497,11 @@ input PlatformBucketPatch {
   Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists)
   """
   physicalName: String
+
+  """
+  When re-provisioning was last requested (provisionBucket); NULL until requested
+  """
+  provisionRequestedAt: Datetime
 
   """
   For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets.
@@ -2895,17 +2946,17 @@ input ProvisionBucketInput {
 }
 
 type ProvisionBucketPayload {
-  """The logical bucket row that was queued for reconciliation."""
+  """The logical bucket row whose reconciliation was requested."""
   bucketId: UUID!
   bucketKey: String!
-
-  """The reconciler job enqueued to provision this bucket."""
-  jobId: UUID!
 
   """
   The physical bucket name already recorded, or null when reconciliation has not completed.
   """
   physicalName: String
+
+  """When reconciliation was last requested for this bucket."""
+  provisionRequestedAt: Datetime!
 }
 
 """The root query type which gives access points into the data universe."""

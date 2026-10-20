@@ -365,6 +365,8 @@ export interface BillingProviderModule {
   activatePlanSubscriptionFunction?: string | null;
   apiName?: string | null;
   applyProviderObservationFunction?: string | null;
+  billingConnectionTableId?: string | null;
+  billingConnectionTableName?: string | null;
   billingCustomersTableId?: string | null;
   billingCustomersTableName?: string | null;
   billingDisputesTableId?: string | null;
@@ -379,6 +381,8 @@ export interface BillingProviderModule {
   billingPricesTableName?: string | null;
   billingProductsTableId?: string | null;
   billingProductsTableName?: string | null;
+  billingProviderConnectedFunction?: string | null;
+  billingProviderKeyFunction?: string | null;
   billingProviderStateTableId?: string | null;
   billingProviderStateTableName?: string | null;
   billingRefundsTableId?: string | null;
@@ -415,6 +419,7 @@ export interface BillingProviderModule {
   processBillingEventFunction?: string | null;
   productsTableId?: string | null;
   provider?: string | null;
+  recordBillingConnectionFunction?: string | null;
   recordBillingHealthFunction?: string | null;
   recordDisputeFunction?: string | null;
   recordRefundFunction?: string | null;
@@ -468,13 +473,11 @@ export interface BlueprintConstruction {
   createdAt?: string | null;
   /** The database the blueprint was constructed into. */
   databaseId?: string | null;
-  /** Error message from a failed construction attempt. NULL unless status is failed. */
-  errorDetails?: string | null;
   /** Unique identifier for this construction attempt. */
   id: string;
   /** The default schema used for tables that did not specify an explicit schema_name. NULL if not yet resolved. */
   schemaId?: string | null;
-  /** Execution state of this construction attempt. pending: created but not yet started. constructing: currently executing. constructed: successfully completed. failed: execution failed (see error_details). */
+  /** Execution state of this construction attempt. pending: created but not yet started. constructing: currently executing. constructed: successfully completed. A failed construction raises and rolls back, so it leaves no row. */
   status?: string | null;
   /** Mapping of table names to created table UUIDs, populated after successful construction. Format: {"products": "uuid", "categories": "uuid", ...}. Defaults to empty object. */
   tableMap?: Record<string, unknown> | null;
@@ -562,6 +565,8 @@ export interface CatalogModule {
   bucketsTableName?: string | null;
   databaseId?: string | null;
   defaultCapabilities?: string[] | null;
+  domainVerificationsTableId?: string | null;
+  domainVerificationsTableName?: string | null;
   domainsTableId?: string | null;
   domainsTableName?: string | null;
   entityTableId?: string | null;
@@ -2452,6 +2457,7 @@ export interface StorageModule {
   provisions?: Record<string, unknown> | null;
   publicSchemaName?: string | null;
   publicUrlPrefix?: string | null;
+  region?: string | null;
   restrictReads?: boolean | null;
   schemaId?: string | null;
   scope?: string | null;
@@ -3054,6 +3060,8 @@ export type BillingProviderModuleSelect = {
   activatePlanSubscriptionFunction?: boolean;
   apiName?: boolean;
   applyProviderObservationFunction?: boolean;
+  billingConnectionTableId?: boolean;
+  billingConnectionTableName?: boolean;
   billingCustomersTableId?: boolean;
   billingCustomersTableName?: boolean;
   billingDisputesTableId?: boolean;
@@ -3068,6 +3076,8 @@ export type BillingProviderModuleSelect = {
   billingPricesTableName?: boolean;
   billingProductsTableId?: boolean;
   billingProductsTableName?: boolean;
+  billingProviderConnectedFunction?: boolean;
+  billingProviderKeyFunction?: boolean;
   billingProviderStateTableId?: boolean;
   billingProviderStateTableName?: boolean;
   billingRefundsTableId?: boolean;
@@ -3104,6 +3114,7 @@ export type BillingProviderModuleSelect = {
   processBillingEventFunction?: boolean;
   productsTableId?: boolean;
   provider?: boolean;
+  recordBillingConnectionFunction?: boolean;
   recordBillingHealthFunction?: boolean;
   recordDisputeFunction?: boolean;
   recordRefundFunction?: boolean;
@@ -3147,7 +3158,6 @@ export type BlueprintConstructionSelect = {
   constructedDefinition?: boolean;
   createdAt?: boolean;
   databaseId?: boolean;
-  errorDetails?: boolean;
   id?: boolean;
   schemaId?: boolean;
   status?: boolean;
@@ -3238,6 +3248,8 @@ export type CatalogModuleSelect = {
   bucketsTableName?: boolean;
   databaseId?: boolean;
   defaultCapabilities?: boolean;
+  domainVerificationsTableId?: boolean;
+  domainVerificationsTableName?: boolean;
   domainsTableId?: boolean;
   domainsTableName?: boolean;
   entityTableId?: boolean;
@@ -4908,6 +4920,7 @@ export type StorageModuleSelect = {
   provisions?: boolean;
   publicSchemaName?: boolean;
   publicUrlPrefix?: boolean;
+  region?: boolean;
   restrictReads?: boolean;
   schemaId?: boolean;
   scope?: boolean;
@@ -5380,6 +5393,10 @@ export interface BillingProviderModuleFilter {
   apiName?: StringFilter;
   /** Filter by the object’s `applyProviderObservationFunction` field. */
   applyProviderObservationFunction?: StringFilter;
+  /** Filter by the object’s `billingConnectionTableId` field. */
+  billingConnectionTableId?: UUIDFilter;
+  /** Filter by the object’s `billingConnectionTableName` field. */
+  billingConnectionTableName?: StringFilter;
   /** Filter by the object’s `billingCustomersTableId` field. */
   billingCustomersTableId?: UUIDFilter;
   /** Filter by the object’s `billingCustomersTableName` field. */
@@ -5408,6 +5425,10 @@ export interface BillingProviderModuleFilter {
   billingProductsTableId?: UUIDFilter;
   /** Filter by the object’s `billingProductsTableName` field. */
   billingProductsTableName?: StringFilter;
+  /** Filter by the object’s `billingProviderConnectedFunction` field. */
+  billingProviderConnectedFunction?: StringFilter;
+  /** Filter by the object’s `billingProviderKeyFunction` field. */
+  billingProviderKeyFunction?: StringFilter;
   /** Filter by the object’s `billingProviderStateTableId` field. */
   billingProviderStateTableId?: UUIDFilter;
   /** Filter by the object’s `billingProviderStateTableName` field. */
@@ -5484,6 +5505,8 @@ export interface BillingProviderModuleFilter {
   productsTableId?: UUIDFilter;
   /** Filter by the object’s `provider` field. */
   provider?: StringFilter;
+  /** Filter by the object’s `recordBillingConnectionFunction` field. */
+  recordBillingConnectionFunction?: StringFilter;
   /** Filter by the object’s `recordBillingHealthFunction` field. */
   recordBillingHealthFunction?: StringFilter;
   /** Filter by the object’s `recordDisputeFunction` field. */
@@ -5566,8 +5589,6 @@ export interface BlueprintConstructionFilter {
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `databaseId` field. */
   databaseId?: UUIDFilter;
-  /** Filter by the object’s `errorDetails` field. */
-  errorDetails?: StringFilter;
   /** Filter by the object’s `id` field. */
   id?: UUIDFilter;
   /** Negates the expression. */
@@ -5740,6 +5761,10 @@ export interface CatalogModuleFilter {
   domainModules?: CatalogModuleToManyDomainModuleFilter;
   /** `domainModules` exist. */
   domainModulesExist?: boolean;
+  /** Filter by the object’s `domainVerificationsTableId` field. */
+  domainVerificationsTableId?: UUIDFilter;
+  /** Filter by the object’s `domainVerificationsTableName` field. */
+  domainVerificationsTableName?: StringFilter;
   /** Filter by the object’s `domainsTableId` field. */
   domainsTableId?: UUIDFilter;
   /** Filter by the object’s `domainsTableName` field. */
@@ -9120,6 +9145,8 @@ export interface StorageModuleFilter {
   publicSchemaName?: StringFilter;
   /** Filter by the object’s `publicUrlPrefix` field. */
   publicUrlPrefix?: StringFilter;
+  /** Filter by the object’s `region` field. */
+  region?: StringFilter;
   /** Filter by the object’s `restrictReads` field. */
   restrictReads?: BooleanFilter;
   /** Filter by the object’s `schemaId` field. */
@@ -9763,6 +9790,10 @@ export type BillingProviderModuleOrderBy =
   | 'API_NAME_DESC'
   | 'APPLY_PROVIDER_OBSERVATION_FUNCTION_ASC'
   | 'APPLY_PROVIDER_OBSERVATION_FUNCTION_DESC'
+  | 'BILLING_CONNECTION_TABLE_ID_ASC'
+  | 'BILLING_CONNECTION_TABLE_ID_DESC'
+  | 'BILLING_CONNECTION_TABLE_NAME_ASC'
+  | 'BILLING_CONNECTION_TABLE_NAME_DESC'
   | 'BILLING_CUSTOMERS_TABLE_ID_ASC'
   | 'BILLING_CUSTOMERS_TABLE_ID_DESC'
   | 'BILLING_CUSTOMERS_TABLE_NAME_ASC'
@@ -9791,6 +9822,10 @@ export type BillingProviderModuleOrderBy =
   | 'BILLING_PRODUCTS_TABLE_ID_DESC'
   | 'BILLING_PRODUCTS_TABLE_NAME_ASC'
   | 'BILLING_PRODUCTS_TABLE_NAME_DESC'
+  | 'BILLING_PROVIDER_CONNECTED_FUNCTION_ASC'
+  | 'BILLING_PROVIDER_CONNECTED_FUNCTION_DESC'
+  | 'BILLING_PROVIDER_KEY_FUNCTION_ASC'
+  | 'BILLING_PROVIDER_KEY_FUNCTION_DESC'
   | 'BILLING_PROVIDER_STATE_TABLE_ID_ASC'
   | 'BILLING_PROVIDER_STATE_TABLE_ID_DESC'
   | 'BILLING_PROVIDER_STATE_TABLE_NAME_ASC'
@@ -9866,6 +9901,8 @@ export type BillingProviderModuleOrderBy =
   | 'PRODUCTS_TABLE_ID_DESC'
   | 'PROVIDER_ASC'
   | 'PROVIDER_DESC'
+  | 'RECORD_BILLING_CONNECTION_FUNCTION_ASC'
+  | 'RECORD_BILLING_CONNECTION_FUNCTION_DESC'
   | 'RECORD_BILLING_HEALTH_FUNCTION_ASC'
   | 'RECORD_BILLING_HEALTH_FUNCTION_DESC'
   | 'RECORD_DISPUTE_FUNCTION_ASC'
@@ -9931,8 +9968,6 @@ export type BlueprintConstructionOrderBy =
   | 'CREATED_AT_DESC'
   | 'DATABASE_ID_ASC'
   | 'DATABASE_ID_DESC'
-  | 'ERROR_DETAILS_ASC'
-  | 'ERROR_DETAILS_DESC'
   | 'ID_ASC'
   | 'ID_DESC'
   | 'NATURAL'
@@ -10069,6 +10104,10 @@ export type CatalogModuleOrderBy =
   | 'DOMAINS_TABLE_ID_DESC'
   | 'DOMAINS_TABLE_NAME_ASC'
   | 'DOMAINS_TABLE_NAME_DESC'
+  | 'DOMAIN_VERIFICATIONS_TABLE_ID_ASC'
+  | 'DOMAIN_VERIFICATIONS_TABLE_ID_DESC'
+  | 'DOMAIN_VERIFICATIONS_TABLE_NAME_ASC'
+  | 'DOMAIN_VERIFICATIONS_TABLE_NAME_DESC'
   | 'ENTITY_TABLE_ID_ASC'
   | 'ENTITY_TABLE_ID_DESC'
   | 'FUNCTIONS_TABLE_ID_ASC'
@@ -13036,6 +13075,8 @@ export type StorageModuleOrderBy =
   | 'PUBLIC_SCHEMA_NAME_DESC'
   | 'PUBLIC_URL_PREFIX_ASC'
   | 'PUBLIC_URL_PREFIX_DESC'
+  | 'REGION_ASC'
+  | 'REGION_DESC'
   | 'RESTRICT_READS_ASC'
   | 'RESTRICT_READS_DESC'
   | 'SCHEMA_ID_ASC'
@@ -13661,6 +13702,8 @@ export interface CreateBillingProviderModuleInput {
     activatePlanSubscriptionFunction?: string;
     apiName?: string;
     applyProviderObservationFunction?: string;
+    billingConnectionTableId?: string;
+    billingConnectionTableName?: string;
     billingCustomersTableId?: string;
     billingCustomersTableName?: string;
     billingDisputesTableId?: string;
@@ -13675,6 +13718,8 @@ export interface CreateBillingProviderModuleInput {
     billingPricesTableName?: string;
     billingProductsTableId?: string;
     billingProductsTableName?: string;
+    billingProviderConnectedFunction?: string;
+    billingProviderKeyFunction?: string;
     billingProviderStateTableId?: string;
     billingProviderStateTableName?: string;
     billingRefundsTableId?: string;
@@ -13710,6 +13755,7 @@ export interface CreateBillingProviderModuleInput {
     processBillingEventFunction?: string;
     productsTableId?: string;
     provider?: string;
+    recordBillingConnectionFunction?: string;
     recordBillingHealthFunction?: string;
     recordDisputeFunction?: string;
     recordRefundFunction?: string;
@@ -13729,6 +13775,8 @@ export interface BillingProviderModulePatch {
   activatePlanSubscriptionFunction?: string | null;
   apiName?: string | null;
   applyProviderObservationFunction?: string | null;
+  billingConnectionTableId?: string | null;
+  billingConnectionTableName?: string | null;
   billingCustomersTableId?: string | null;
   billingCustomersTableName?: string | null;
   billingDisputesTableId?: string | null;
@@ -13743,6 +13791,8 @@ export interface BillingProviderModulePatch {
   billingPricesTableName?: string | null;
   billingProductsTableId?: string | null;
   billingProductsTableName?: string | null;
+  billingProviderConnectedFunction?: string | null;
+  billingProviderKeyFunction?: string | null;
   billingProviderStateTableId?: string | null;
   billingProviderStateTableName?: string | null;
   billingRefundsTableId?: string | null;
@@ -13778,6 +13828,7 @@ export interface BillingProviderModulePatch {
   processBillingEventFunction?: string | null;
   productsTableId?: string | null;
   provider?: string | null;
+  recordBillingConnectionFunction?: string | null;
   recordBillingHealthFunction?: string | null;
   recordDisputeFunction?: string | null;
   recordRefundFunction?: string | null;
@@ -13842,7 +13893,6 @@ export interface CreateBlueprintConstructionInput {
     constructedAt?: string;
     constructedDefinition?: Record<string, unknown>;
     databaseId: string;
-    errorDetails?: string;
     schemaId?: string;
     status?: string;
     tableMap?: Record<string, unknown>;
@@ -13853,7 +13903,6 @@ export interface BlueprintConstructionPatch {
   constructedAt?: string | null;
   constructedDefinition?: Record<string, unknown> | null;
   databaseId?: string | null;
-  errorDetails?: string | null;
   schemaId?: string | null;
   status?: string | null;
   tableMap?: Record<string, unknown> | null;
@@ -13991,6 +14040,8 @@ export interface CreateCatalogModuleInput {
     bucketsTableName?: string;
     databaseId: string;
     defaultCapabilities?: string[];
+    domainVerificationsTableId?: string;
+    domainVerificationsTableName?: string;
     domainsTableId?: string;
     domainsTableName?: string;
     entityTableId?: string;
@@ -14042,6 +14093,8 @@ export interface CatalogModulePatch {
   bucketsTableName?: string | null;
   databaseId?: string | null;
   defaultCapabilities?: string[] | null;
+  domainVerificationsTableId?: string | null;
+  domainVerificationsTableName?: string | null;
   domainsTableId?: string | null;
   domainsTableName?: string | null;
   entityTableId?: string | null;
@@ -17585,6 +17638,7 @@ export interface CreateStorageModuleInput {
     provisions?: Record<string, unknown>;
     publicSchemaName?: string;
     publicUrlPrefix?: string;
+    region?: string;
     restrictReads?: boolean;
     schemaId?: string;
     scope: string;
@@ -17629,6 +17683,7 @@ export interface StorageModulePatch {
   provisions?: Record<string, unknown> | null;
   publicSchemaName?: string | null;
   publicUrlPrefix?: string | null;
+  region?: string | null;
   restrictReads?: boolean | null;
   schemaId?: string | null;
   scope?: string | null;
@@ -18578,6 +18633,8 @@ export interface BillingProviderModuleInput {
   activatePlanSubscriptionFunction?: string;
   apiName?: string;
   applyProviderObservationFunction?: string;
+  billingConnectionTableId?: string;
+  billingConnectionTableName?: string;
   billingCustomersTableId?: string;
   billingCustomersTableName?: string;
   billingDisputesTableId?: string;
@@ -18592,6 +18649,8 @@ export interface BillingProviderModuleInput {
   billingPricesTableName?: string;
   billingProductsTableId?: string;
   billingProductsTableName?: string;
+  billingProviderConnectedFunction?: string;
+  billingProviderKeyFunction?: string;
   billingProviderStateTableId?: string;
   billingProviderStateTableName?: string;
   billingRefundsTableId?: string;
@@ -18628,6 +18687,7 @@ export interface BillingProviderModuleInput {
   processBillingEventFunction?: string;
   productsTableId?: string;
   provider?: string;
+  recordBillingConnectionFunction?: string;
   recordBillingHealthFunction?: string;
   recordDisputeFunction?: string;
   recordRefundFunction?: string;
@@ -18681,13 +18741,11 @@ export interface BlueprintConstructionInput {
   createdAt?: string;
   /** The database the blueprint was constructed into. */
   databaseId: string;
-  /** Error message from a failed construction attempt. NULL unless status is failed. */
-  errorDetails?: string;
   /** Unique identifier for this construction attempt. */
   id?: string;
   /** The default schema used for tables that did not specify an explicit schema_name. NULL if not yet resolved. */
   schemaId?: string;
-  /** Execution state of this construction attempt. pending: created but not yet started. constructing: currently executing. constructed: successfully completed. failed: execution failed (see error_details). */
+  /** Execution state of this construction attempt. pending: created but not yet started. constructing: currently executing. constructed: successfully completed. A failed construction raises and rolls back, so it leaves no row. */
   status?: string;
   /** Mapping of table names to created table UUIDs, populated after successful construction. Format: {"products": "uuid", "categories": "uuid", ...}. Defaults to empty object. */
   tableMap?: Record<string, unknown>;
@@ -18777,6 +18835,8 @@ export interface CatalogModuleInput {
   bucketsTableName?: string;
   databaseId: string;
   defaultCapabilities?: string[];
+  domainVerificationsTableId?: string;
+  domainVerificationsTableName?: string;
   domainsTableId?: string;
   domainsTableName?: string;
   entityTableId?: string;
@@ -20697,6 +20757,7 @@ export interface StorageModuleInput {
   provisions?: Record<string, unknown>;
   publicSchemaName?: string;
   publicUrlPrefix?: string;
+  region?: string;
   restrictReads?: boolean;
   schemaId?: string;
   scope: string;
@@ -20884,8 +20945,6 @@ export interface BlueprintConstructionFilter {
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `databaseId` field. */
   databaseId?: UUIDFilter;
-  /** Filter by the object’s `errorDetails` field. */
-  errorDetails?: StringFilter;
   /** Filter by the object’s `id` field. */
   id?: UUIDFilter;
   /** Negates the expression. */
@@ -22348,6 +22407,10 @@ export interface CatalogModuleFilter {
   domainModules?: CatalogModuleToManyDomainModuleFilter;
   /** `domainModules` exist. */
   domainModulesExist?: boolean;
+  /** Filter by the object’s `domainVerificationsTableId` field. */
+  domainVerificationsTableId?: UUIDFilter;
+  /** Filter by the object’s `domainVerificationsTableName` field. */
+  domainVerificationsTableName?: StringFilter;
   /** Filter by the object’s `domainsTableId` field. */
   domainsTableId?: UUIDFilter;
   /** Filter by the object’s `domainsTableName` field. */
@@ -22814,6 +22877,8 @@ export interface StorageModuleFilter {
   publicSchemaName?: StringFilter;
   /** Filter by the object’s `publicUrlPrefix` field. */
   publicUrlPrefix?: StringFilter;
+  /** Filter by the object’s `region` field. */
+  region?: StringFilter;
   /** Filter by the object’s `restrictReads` field. */
   restrictReads?: BooleanFilter;
   /** Filter by the object’s `schemaId` field. */
@@ -22866,19 +22931,19 @@ export type CopyTemplateToBlueprintPayloadSelect = {
   result?: boolean;
 };
 export interface ProvisionBucketPayload {
-  /** The logical bucket row that was queued for reconciliation. */
+  /** The logical bucket row whose reconciliation was requested. */
   bucketId: string;
   bucketKey: string;
-  /** The reconciler job enqueued to provision this bucket. */
-  jobId: string;
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
+  /** When reconciliation was last requested for this bucket. */
+  provisionRequestedAt: string;
 }
 export type ProvisionBucketPayloadSelect = {
   bucketId?: boolean;
   bucketKey?: boolean;
-  jobId?: boolean;
   physicalName?: boolean;
+  provisionRequestedAt?: boolean;
 };
 export interface CreateAgentModulePayload {
   /** The `AgentModule` that was created by this mutation. */

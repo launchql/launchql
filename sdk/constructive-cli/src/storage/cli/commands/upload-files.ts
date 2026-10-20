@@ -16,7 +16,7 @@ export default async (
   try {
     if (argv.help || argv.h) {
       console.log(
-        'upload-files - Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.\n\nUsage: upload-files [OPTIONS]\n'
+        "upload-files - Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.\n\nUsage: upload-files [OPTIONS]\n"
       );
       process.exit(0);
     }

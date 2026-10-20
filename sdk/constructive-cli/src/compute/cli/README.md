@@ -203,10 +203,11 @@ csdk auth set-token <your-token>
 | `platform-resource-installations-uninstall` | platformResourceInstallationsUninstall |
 | `platform-resource-installations-upgrade` | platformResourceInstallationsUpgrade |
 | `provision-bucket` | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 | `resource-installations-install` | resourceInstallationsInstall |
 | `resource-installations-rollback` | resourceInstallationsRollback |
 | `resource-installations-uninstall` | resourceInstallationsUninstall |
@@ -1334,18 +1335,20 @@ CRUD operations for FunctionInvocation records.
 | `graphExecutionId` | UUID |
 | `id` | UUID |
 | `jobId` | BigInt |
+| `jobKey` | String |
 | `organizationId` | UUID |
 | `parentInvocationId` | UUID |
 | `payload` | JSON |
 | `principalId` | UUID |
 | `provenance` | JSON |
+| `queueName` | String |
 | `result` | JSON |
 | `startedAt` | Datetime |
 | `status` | String |
 | `taskIdentifier` | String |
 
 **Required create fields:** `channel`, `databaseId`, `taskIdentifier`
-**Optional create fields (backend defaults):** `actorId`, `apiBindingId`, `completedAt`, `createdByPrincipal`, `definitionScope`, `durationMs`, `entityId`, `entityType`, `error`, `functionDefinitionId`, `graphExecutionId`, `jobId`, `organizationId`, `parentInvocationId`, `payload`, `principalId`, `provenance`, `result`, `startedAt`, `status`
+**Optional create fields (backend defaults):** `actorId`, `apiBindingId`, `completedAt`, `createdByPrincipal`, `definitionScope`, `durationMs`, `entityId`, `entityType`, `error`, `functionDefinitionId`, `graphExecutionId`, `jobId`, `jobKey`, `organizationId`, `parentInvocationId`, `payload`, `principalId`, `provenance`, `queueName`, `result`, `startedAt`, `status`
 
 ### `function-schedule`
 
@@ -2114,18 +2117,20 @@ CRUD operations for PlatformFunctionInvocation records.
 | `graphExecutionId` | UUID |
 | `id` | UUID |
 | `jobId` | BigInt |
+| `jobKey` | String |
 | `organizationId` | UUID |
 | `parentInvocationId` | UUID |
 | `payload` | JSON |
 | `principalId` | UUID |
 | `provenance` | JSON |
+| `queueName` | String |
 | `result` | JSON |
 | `startedAt` | Datetime |
 | `status` | String |
 | `taskIdentifier` | String |
 
 **Required create fields:** `channel`, `taskIdentifier`
-**Optional create fields (backend defaults):** `actorId`, `apiBindingId`, `completedAt`, `createdByPrincipal`, `databaseId`, `definitionScope`, `durationMs`, `entityId`, `entityType`, `error`, `functionDefinitionId`, `graphExecutionId`, `jobId`, `organizationId`, `parentInvocationId`, `payload`, `principalId`, `provenance`, `result`, `startedAt`, `status`
+**Optional create fields (backend defaults):** `actorId`, `apiBindingId`, `completedAt`, `createdByPrincipal`, `databaseId`, `definitionScope`, `durationMs`, `entityId`, `entityType`, `error`, `functionDefinitionId`, `graphExecutionId`, `jobId`, `jobKey`, `organizationId`, `parentInvocationId`, `payload`, `principalId`, `provenance`, `queueName`, `result`, `startedAt`, `status`
 
 ### `platform-function-schedule`
 
@@ -6050,10 +6055,11 @@ platformResourceInstallationsUpgrade
 ### `provision-bucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**

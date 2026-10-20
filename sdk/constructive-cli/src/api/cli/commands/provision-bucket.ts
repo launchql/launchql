@@ -16,7 +16,7 @@ export default async (
   try {
     if (argv.help || argv.h) {
       console.log(
-        'provision-bucket - Reconcile an S3 bucket for a logical bucket in the database.\nReads the bucket config via RLS, then enqueues the same\nstorage:provision_bucket job used by the INSERT trigger. This is\nidempotent for an already-reconciled bucket; enqueue failures become\nGraphQL errors.\n\nUsage: provision-bucket [OPTIONS]\n'
+        "provision-bucket - Reconcile an S3 bucket for a logical bucket in the database.\nRecords the request on the bucket row via RLS; the bucket's job\ntrigger then enqueues the same storage:provision_bucket job used on\nINSERT, and repeated requests collapse into one pending job. This is\nidempotent for an already-reconciled bucket; failures become GraphQL\nerrors.\n\nUsage: provision-bucket [OPTIONS]\n"
       );
       process.exit(0);
     }

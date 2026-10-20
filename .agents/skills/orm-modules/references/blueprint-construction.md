@@ -9,7 +9,7 @@ Tracks individual construction attempts of a blueprint. Each time construct_blue
 ```typescript
 db.blueprintConstruction.findMany({ select: { id: true } }).execute()
 db.blueprintConstruction.findOne({ id: '<UUID>', select: { id: true } }).execute()
-db.blueprintConstruction.create({ data: { blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', errorDetails: '<String>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' }, select: { id: true } }).execute()
+db.blueprintConstruction.create({ data: { blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' }, select: { id: true } }).execute()
 db.blueprintConstruction.update({ where: { id: '<UUID>' }, data: { blueprintId: '<UUID>' }, select: { id: true } }).execute()
 db.blueprintConstruction.delete({ where: { id: '<UUID>' } }).execute()
 ```
@@ -28,7 +28,7 @@ const items = await db.blueprintConstruction.findMany({
 
 ```typescript
 const item = await db.blueprintConstruction.create({
-  data: { blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', errorDetails: '<String>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' },
+  data: { blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' },
   select: { id: true }
 }).execute();
 ```

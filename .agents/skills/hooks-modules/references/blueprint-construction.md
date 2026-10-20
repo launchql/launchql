@@ -7,8 +7,8 @@ Tracks individual construction attempts of a blueprint. Each time construct_blue
 ## Usage
 
 ```typescript
-useBlueprintConstructionsQuery({ selection: { fields: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, errorDetails: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } } })
-useBlueprintConstructionQuery({ id: '<UUID>', selection: { fields: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, errorDetails: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } } })
+useBlueprintConstructionsQuery({ selection: { fields: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } } })
+useBlueprintConstructionQuery({ id: '<UUID>', selection: { fields: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } } })
 useCreateBlueprintConstructionMutation({ selection: { fields: { id: true } } })
 useUpdateBlueprintConstructionMutation({ selection: { fields: { id: true } } })
 useDeleteBlueprintConstructionMutation({})
@@ -20,7 +20,7 @@ useDeleteBlueprintConstructionMutation({})
 
 ```typescript
 const { data, isLoading } = useBlueprintConstructionsQuery({
-  selection: { fields: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, errorDetails: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } },
+  selection: { fields: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } },
 });
 ```
 
@@ -30,5 +30,5 @@ const { data, isLoading } = useBlueprintConstructionsQuery({
 const { mutate } = useCreateBlueprintConstructionMutation({
   selection: { fields: { id: true } },
 });
-mutate({ blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', errorDetails: '<String>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' });
+mutate({ blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' });
 ```

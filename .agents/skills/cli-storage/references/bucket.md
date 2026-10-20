@@ -12,8 +12,8 @@ csdk bucket list --where.<field>.<op> <value> --orderBy <values>
 csdk bucket list --limit 10 --after <cursor>
 csdk bucket find-first --where.<field>.<op> <value>
 csdk bucket get --id <UUID>
-csdk bucket create --actorId <UUID> --databaseId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
-csdk bucket update --id <UUID> [--actorId <UUID>] [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--databaseId <UUID>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--key <String>] [--maxFileSize <BigInt>] [--physicalName <String>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
+csdk bucket create --actorId <UUID> --databaseId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--provisionRequestedAt <Datetime>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
+csdk bucket update --id <UUID> [--actorId <UUID>] [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--databaseId <UUID>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--key <String>] [--maxFileSize <BigInt>] [--physicalName <String>] [--provisionRequestedAt <Datetime>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
 csdk bucket delete --id <UUID>
 ```
 
@@ -58,7 +58,7 @@ csdk bucket list --where.id.equalTo <value> --orderBy ID_ASC
 ### Create a bucket
 
 ```bash
-csdk bucket create --actorId <UUID> --databaseId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
+csdk bucket create --actorId <UUID> --databaseId <UUID> --key <String> [--allowCustomKeys <Boolean>] [--allowedMimeTypes <String>] [--allowedOrigins <String>] [--description <String>] [--destinationBucketId <UUID>] [--isPublic <Boolean>] [--maxFileSize <BigInt>] [--physicalName <String>] [--provisionRequestedAt <Datetime>] [--stagingTtl <Interval>] [--tags <String>] [--type <BucketType>]
 ```
 
 ### Get a bucket by id

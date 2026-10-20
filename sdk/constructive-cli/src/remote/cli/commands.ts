@@ -28,7 +28,7 @@ const createCommandMap: () => Record<
   'provision-bucket': provisionBucketCmd,
 });
 const usage =
-  '\ncsdk <command>\n\nCommands:\n  context               Manage API contexts\n  auth                  Manage authentication\n  machine              machine CRUD operations\n  machine-message      machineMessage CRUD operations\n  machine-session      machineSession CRUD operations\n  machines-enroll      machinesEnroll\n  provision-bucket     Reconcile an S3 bucket for a logical bucket in the database.\nReads the bucket config via RLS, then enqueues the same\nstorage:provision_bucket job used by the INSERT trigger. This is\nidempotent for an already-reconciled bucket; enqueue failures become\nGraphQL errors.\n\n  --help, -h            Show this help message\n  --version, -v         Show version\n';
+  "\ncsdk <command>\n\nCommands:\n  context               Manage API contexts\n  auth                  Manage authentication\n  machine              machine CRUD operations\n  machine-message      machineMessage CRUD operations\n  machine-session      machineSession CRUD operations\n  machines-enroll      machinesEnroll\n  provision-bucket     Reconcile an S3 bucket for a logical bucket in the database.\nRecords the request on the bucket row via RLS; the bucket's job\ntrigger then enqueues the same storage:provision_bucket job used on\nINSERT, and repeated requests collapse into one pending job. This is\nidempotent for an already-reconciled bucket; failures become GraphQL\nerrors.\n\n  --help, -h            Show this help message\n  --version, -v         Show version\n";
 export const commands = async (
   argv: Partial<Record<string, unknown>>,
   prompter: Inquirerer,

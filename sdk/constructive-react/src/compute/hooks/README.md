@@ -659,10 +659,11 @@ function App() {
 | `usePlatformResourceInstallationsUninstallMutation` | Mutation | platformResourceInstallationsUninstall |
 | `usePlatformResourceInstallationsUpgradeMutation` | Mutation | platformResourceInstallationsUpgrade |
 | `useProvisionBucketMutation` | Mutation | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 | `useResourceInstallationsInstallMutation` | Mutation | resourceInstallationsInstall |
 | `useResourceInstallationsRollbackMutation` | Mutation | resourceInstallationsRollback |
 | `useResourceInstallationsUninstallMutation` | Mutation | resourceInstallationsUninstall |
@@ -1326,20 +1327,20 @@ create({ actorId: '<UUID>', attempt: '<Int>', databaseId: '<UUID>', durationMs: 
 ```typescript
 // List all functionInvocations
 const { data, isLoading } = useFunctionInvocationsQuery({
-  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
+  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
 });
 
 // Get one functionInvocation
 const { data: item } = useFunctionInvocationQuery({
   id: '<UUID>',
-  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
+  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
 });
 
 // Create a functionInvocation
 const { mutate: create } = useCreateFunctionInvocationMutation({
   selection: { fields: { id: true } },
 });
-create({ actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' });
+create({ actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', jobKey: '<String>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', queueName: '<String>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' });
 ```
 
 ### FunctionSchedule
@@ -1797,20 +1798,20 @@ create({ actorId: '<UUID>', attempt: '<Int>', durationMs: '<Int>', error: '<Stri
 ```typescript
 // List all platformFunctionInvocations
 const { data, isLoading } = usePlatformFunctionInvocationsQuery({
-  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
+  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
 });
 
 // Get one platformFunctionInvocation
 const { data: item } = usePlatformFunctionInvocationQuery({
   id: '<UUID>',
-  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
+  selection: { fields: { actorId: true, apiBindingId: true, channel: true, completedAt: true, createdAt: true, createdByPrincipal: true, databaseId: true, definitionScope: true, durationMs: true, entityId: true, entityType: true, error: true, functionDefinitionId: true, graphExecutionId: true, id: true, jobId: true, jobKey: true, organizationId: true, parentInvocationId: true, payload: true, principalId: true, provenance: true, queueName: true, result: true, startedAt: true, status: true, taskIdentifier: true } },
 });
 
 // Create a platformFunctionInvocation
 const { mutate: create } = useCreatePlatformFunctionInvocationMutation({
   selection: { fields: { id: true } },
 });
-create({ actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' });
+create({ actorId: '<UUID>', apiBindingId: '<UUID>', channel: '<String>', completedAt: '<Datetime>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', definitionScope: '<String>', durationMs: '<Int>', entityId: '<UUID>', entityType: '<String>', error: '<String>', functionDefinitionId: '<UUID>', graphExecutionId: '<UUID>', jobId: '<BigInt>', jobKey: '<String>', organizationId: '<UUID>', parentInvocationId: '<UUID>', payload: '<JSON>', principalId: '<UUID>', provenance: '<JSON>', queueName: '<String>', result: '<JSON>', startedAt: '<Datetime>', status: '<String>', taskIdentifier: '<String>' });
 ```
 
 ### PlatformFunctionSchedule
@@ -3763,10 +3764,11 @@ platformResourceInstallationsUpgrade
 ### `useProvisionBucketMutation`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**

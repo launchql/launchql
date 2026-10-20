@@ -482,11 +482,13 @@ export interface FunctionInvocation {
   graphExecutionId: string | null;
   id: string | null;
   jobId: string | null;
+  jobKey: string | null;
   organizationId: string | null;
   parentInvocationId: string | null;
   payload: unknown | null;
   principalId: string | null;
   provenance: unknown | null;
+  queueName: string | null;
   result: unknown | null;
   startedAt: string | null;
   status: string | null;
@@ -827,11 +829,13 @@ export interface PlatformFunctionInvocation {
   graphExecutionId: string | null;
   id: string | null;
   jobId: string | null;
+  jobKey: string | null;
   organizationId: string | null;
   parentInvocationId: string | null;
   payload: unknown | null;
   principalId: string | null;
   provenance: unknown | null;
+  queueName: string | null;
   result: unknown | null;
   startedAt: string | null;
   status: string | null;

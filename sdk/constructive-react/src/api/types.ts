@@ -454,18 +454,6 @@ export interface GetSitePreviewsRecord {
   commitId: string | null;
   name: string | null;
 }
-export interface HostnameBinding {
-  domainId: string | null;
-  hostname: string | null;
-  id: string | null;
-  isWildcard: boolean | null;
-  managed: boolean | null;
-  parentHostname: string | null;
-  tlsSecretName: string | null;
-  tlsStatus: string | null;
-  updatedAt: string | null;
-  verificationStatus: string | null;
-}
 export interface IdentityProviderRegistry {
   authorizationUrl: string | null;
   displayName: string | null;
@@ -513,6 +501,7 @@ export interface ManagedDomain {
   domain: string | null;
   id: string | null;
   isWildcard: boolean | null;
+  publicPort: number | null;
   tlsReadyAt: string | null;
   tlsStatus: string | null;
   updatedAt: string | null;
@@ -709,6 +698,7 @@ export interface PlatformManagedDomain {
   domain: string | null;
   id: string | null;
   isWildcard: boolean | null;
+  publicPort: number | null;
   tlsReadyAt: string | null;
   tlsStatus: string | null;
   updatedAt: string | null;
@@ -903,22 +893,6 @@ export interface RlsSetting {
   databaseId: string | null;
   id: string | null;
   roleSchemaId: string | null;
-  updatedAt: string | null;
-}
-export interface RouteBinding {
-  domainId: string | null;
-  id: string | null;
-  isActive: boolean | null;
-  method: string | null;
-  path: string | null;
-  priority: number | null;
-  servingSiteId: string | null;
-  targetApiId: string | null;
-  targetBucketId: string | null;
-  targetFunctionId: string | null;
-  targetRedirectId: string | null;
-  targetServiceId: string | null;
-  targetSiteId: string | null;
   updatedAt: string | null;
 }
 export interface Route {
@@ -1199,6 +1173,7 @@ export interface UniqueConstraint {
   initiallyDeferred: boolean | null;
   isDeferrable: boolean | null;
   name: string | null;
+  nullsNotDistinct: boolean | null;
   smartTags: unknown | null;
   tableId: string | null;
   tags: string[] | null;

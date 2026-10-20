@@ -137,6 +137,8 @@ export interface BillingProviderModule {
   activatePlanSubscriptionFunction: string | null;
   apiName: string | null;
   applyProviderObservationFunction: string | null;
+  billingConnectionTableId: string | null;
+  billingConnectionTableName: string | null;
   billingCustomersTableId: string | null;
   billingCustomersTableName: string | null;
   billingDisputesTableId: string | null;
@@ -151,6 +153,8 @@ export interface BillingProviderModule {
   billingPricesTableName: string | null;
   billingProductsTableId: string | null;
   billingProductsTableName: string | null;
+  billingProviderConnectedFunction: string | null;
+  billingProviderKeyFunction: string | null;
   billingProviderStateTableId: string | null;
   billingProviderStateTableName: string | null;
   billingRefundsTableId: string | null;
@@ -187,6 +191,7 @@ export interface BillingProviderModule {
   processBillingEventFunction: string | null;
   productsTableId: string | null;
   provider: string | null;
+  recordBillingConnectionFunction: string | null;
   recordBillingHealthFunction: string | null;
   recordDisputeFunction: string | null;
   recordRefundFunction: string | null;
@@ -221,7 +226,6 @@ export interface BlueprintConstruction {
   constructedDefinition: unknown | null;
   createdAt: string | null;
   databaseId: string | null;
-  errorDetails: string | null;
   id: string | null;
   schemaId: string | null;
   status: string | null;
@@ -288,6 +292,8 @@ export interface CatalogModule {
   bucketsTableName: string | null;
   databaseId: string | null;
   defaultCapabilities: string[] | null;
+  domainVerificationsTableId: string | null;
+  domainVerificationsTableName: string | null;
   domainsTableId: string | null;
   domainsTableName: string | null;
   entityTableId: string | null;
@@ -1772,6 +1778,7 @@ export interface StorageModule {
   provisions: unknown | null;
   publicSchemaName: string | null;
   publicUrlPrefix: string | null;
+  region: string | null;
   restrictReads: boolean | null;
   schemaId: string | null;
   scope: string | null;

@@ -33,14 +33,15 @@ csdk auth set-token <your-token>
 | `files-rename` | filesRename |
 | `platform-files-rename` | platformFilesRename |
 | `provision-bucket` | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 | `upload-file` | Upload a file: resolves the bucket by key, creates the file row, and returns a presigned PUT URL. |
-| `upload-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. |
+| `upload-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call. |
 | `upload-platform-file` | Upload a file: resolves the bucket by key, creates the file row, and returns a presigned PUT URL. |
-| `upload-platform-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. |
+| `upload-platform-files` | Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call. |
 
 ## Infrastructure Commands
 
@@ -111,15 +112,17 @@ CRUD operations for Bucket records.
 | `id` | UUID |
 | `isPublic` | Boolean |
 | `key` | String |
+| `maxBulkFiles` | Int |
 | `maxFileSize` | BigInt |
 | `physicalName` | String |
+| `provisionRequestedAt` | Datetime |
 | `stagingTtl` | Interval |
 | `tags` | String |
 | `type` | BucketType |
 | `updatedAt` | Datetime |
 
 **Required create fields:** `actorId`, `databaseId`, `key`
-**Optional create fields (backend defaults):** `allowCustomKeys`, `allowedMimeTypes`, `allowedOrigins`, `description`, `destinationBucketId`, `isPublic`, `maxFileSize`, `physicalName`, `stagingTtl`, `tags`, `type`
+**Optional create fields (backend defaults):** `allowCustomKeys`, `allowedMimeTypes`, `allowedOrigins`, `description`, `destinationBucketId`, `isPublic`, `maxFileSize`, `physicalName`, `provisionRequestedAt`, `stagingTtl`, `tags`, `type`
 
 ### `file`
 
@@ -189,15 +192,17 @@ CRUD operations for PlatformBucket records.
 | `id` | UUID |
 | `isPublic` | Boolean |
 | `key` | String |
+| `maxBulkFiles` | Int |
 | `maxFileSize` | BigInt |
 | `physicalName` | String |
+| `provisionRequestedAt` | Datetime |
 | `stagingTtl` | Interval |
 | `tags` | String |
 | `type` | BucketType |
 | `updatedAt` | Datetime |
 
 **Required create fields:** `actorId`, `key`
-**Optional create fields (backend defaults):** `allowCustomKeys`, `allowedMimeTypes`, `allowedOrigins`, `description`, `destinationBucketId`, `isPublic`, `maxFileSize`, `physicalName`, `stagingTtl`, `tags`, `type`
+**Optional create fields (backend defaults):** `allowCustomKeys`, `allowedMimeTypes`, `allowedOrigins`, `description`, `destinationBucketId`, `isPublic`, `maxFileSize`, `physicalName`, `provisionRequestedAt`, `stagingTtl`, `tags`, `type`
 
 ### `platform-file`
 
@@ -270,10 +275,11 @@ platformFilesRename
 ### `provision-bucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**
@@ -302,7 +308,7 @@ Upload a file: resolves the bucket by key, creates the file row, and returns a p
 
 ### `upload-files`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**
@@ -332,7 +338,7 @@ Upload a file: resolves the bucket by key, creates the file row, and returns a p
 
 ### `upload-platform-files`
 
-Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each.
+Upload multiple files: resolves the bucket by key, creates file rows, and returns presigned PUT URLs for each. Accepts at most the bucket's `maxBulkFiles` files per call.
 
 - **Type:** mutation
 - **Arguments:**

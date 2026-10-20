@@ -72,10 +72,11 @@ csdk auth set-token <your-token>
 | `link-identity` | linkIdentity |
 | `mint-access-token` | mintAccessToken |
 | `provision-bucket` | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 | `refresh-access-token` | refreshAccessToken |
 | `request-cross-origin-token` | requestCrossOriginToken |
 | `request-magic-link` | requestMagicLink |
@@ -975,10 +976,11 @@ mintAccessToken
 ### `provision-bucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**
@@ -1026,6 +1028,7 @@ requestMagicLink
   |----------|------|
   | `--input.clientMutationId` | String |
   | `--input.email` | String |
+  | `--input.next` | String |
 
 ### `reset-password`
 
@@ -1276,13 +1279,10 @@ signUp
   | Argument | Type |
   |----------|------|
   | `--input.clientMutationId` | String |
-  | `--input.credentialKind` | String |
   | `--input.csrfToken` | String |
-  | `--input.deviceToken` | String |
   | `--input.email` | String |
   | `--input.inviteToken` | String |
   | `--input.password` | String |
-  | `--input.rememberMe` | Boolean |
 
 ### `sign-up-magic-link`
 

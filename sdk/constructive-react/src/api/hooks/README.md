@@ -174,11 +174,6 @@ function App() {
 | `useDeleteFunctionMutation` | Mutation | Delete a function |
 | `useGetSitePreviewsQuery` | Query | List all getSitePreviews |
 | `useCreateGetSitePreviewsRecordMutation` | Mutation | Create a getSitePreviewsRecord |
-| `useHostnameBindingsQuery` | Query | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useHostnameBindingQuery` | Query | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useCreateHostnameBindingMutation` | Mutation | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useUpdateHostnameBindingMutation` | Mutation | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
-| `useDeleteHostnameBindingMutation` | Mutation | Compiled hostname index maintained by domain sync triggers; read only through the resolver |
 | `useIdentityProviderRegistriesQuery` | Query | List all identityProviderRegistries |
 | `useIdentityProviderRegistryQuery` | Query | Get one identityProviderRegistry |
 | `useCreateIdentityProviderRegistryMutation` | Mutation | Create a identityProviderRegistry |
@@ -346,11 +341,6 @@ function App() {
 | `useCreateRlsSettingMutation` | Mutation | RLS module runtime configuration; typed references to the authenticate/current_role function plumbing |
 | `useUpdateRlsSettingMutation` | Mutation | RLS module runtime configuration; typed references to the authenticate/current_role function plumbing |
 | `useDeleteRlsSettingMutation` | Mutation | RLS module runtime configuration; typed references to the authenticate/current_role function plumbing |
-| `useRouteBindingsQuery` | Query | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useRouteBindingQuery` | Query | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useCreateRouteBindingMutation` | Mutation | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useUpdateRouteBindingMutation` | Mutation | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
-| `useDeleteRouteBindingMutation` | Mutation | Compiled route precedence index maintained by route sync triggers; carries typed target ids only, read through the resolver |
 | `useRoutesQuery` | Query | Routes binding a domain hostname and path to a typed catalog target |
 | `useRouteQuery` | Query | Routes binding a domain hostname and path to a typed catalog target |
 | `useCreateRouteMutation` | Mutation | Routes binding a domain hostname and path to a typed catalog target |
@@ -488,6 +478,7 @@ function App() {
 | `useDeleteWebauthnSettingMutation` | Mutation | WebAuthn/passkey runtime configuration; relying party options and typed references to the credential/session storage |
 | `useApiSchemaNamesQuery` | Query | apiSchemaNames |
 | `useApplyRegistryDefaultsQuery` | Query | applyRegistryDefaults |
+| `useEmailSharedAccountQuery` | Query | emailSharedAccount |
 | `useGetSitePreviewCommitQuery` | Query | getSitePreviewCommit |
 | `useGetSiteReleaseManifestQuery` | Query | getSiteReleaseManifest |
 | `usePagePublishedQuery` | Query | pagePublished |
@@ -506,6 +497,7 @@ function App() {
 | `useAcceptDatabaseTransferMutation` | Mutation | acceptDatabaseTransfer |
 | `useApplyRlsMutation` | Mutation | applyRls |
 | `useCancelDatabaseTransferMutation` | Mutation | cancelDatabaseTransfer |
+| `useCreateFunctionFromSourceMutation` | Mutation | Creates a `Function` from its `CREATE FUNCTION` source text. |
 | `useDeleteSitePreviewMutation` | Mutation | deleteSitePreview |
 | `useDomainsAssignSubdomainMutation` | Mutation | domainsAssignSubdomain |
 | `useMintSitePreviewTokenMutation` | Mutation | mintSitePreviewToken |
@@ -521,10 +513,11 @@ function App() {
 | `usePlatformSitesInstallMantraMutation` | Mutation | platformSitesInstallMantra |
 | `usePlatformSitesProvisionStaticSiteMutation` | Mutation | platformSitesProvisionStaticSite |
 | `useProvisionBucketMutation` | Mutation | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 | `useProvisionSitePreviewMutation` | Mutation | provisionSitePreview |
 | `useRejectDatabaseTransferMutation` | Mutation | rejectDatabaseTransfer |
 | `useRequestDatabaseMutation` | Mutation | Requests a database and returns a ticket (database_provision_module row) to poll.
@@ -543,6 +536,7 @@ Example usage:
 | `useSitesProvisionStaticSiteMutation` | Mutation | sitesProvisionStaticSite |
 | `useSuspendDatabaseMutation` | Mutation | suspendDatabase |
 | `useUnsuspendDatabaseMutation` | Mutation | unsuspendDatabase |
+| `useUpdateFunctionFromSourceMutation` | Mutation | Replaces a `Function`'s definition from its source text; its database, schema and exposure are unchanged. |
 
 ## Table Hooks
 
@@ -1149,27 +1143,6 @@ const { mutate: create } = useCreateGetSitePreviewsRecordMutation({
 create({ commitId: '<UUID>', name: '<String>' });
 ```
 
-### HostnameBinding
-
-```typescript
-// List all hostnameBindings
-const { data, isLoading } = useHostnameBindingsQuery({
-  selection: { fields: { domainId: true, hostname: true, id: true, isWildcard: true, managed: true, parentHostname: true, tlsSecretName: true, tlsStatus: true, updatedAt: true, verificationStatus: true } },
-});
-
-// Get one hostnameBinding
-const { data: item } = useHostnameBindingQuery({
-  id: '<UUID>',
-  selection: { fields: { domainId: true, hostname: true, id: true, isWildcard: true, managed: true, parentHostname: true, tlsSecretName: true, tlsStatus: true, updatedAt: true, verificationStatus: true } },
-});
-
-// Create a hostnameBinding
-const { mutate: create } = useCreateHostnameBindingMutation({
-  selection: { fields: { id: true } },
-});
-create({ domainId: '<UUID>', hostname: '<String>', isWildcard: '<Boolean>', managed: '<Boolean>', parentHostname: '<String>', tlsSecretName: '<String>', tlsStatus: '<String>', verificationStatus: '<String>' });
-```
-
 ### IdentityProviderRegistry
 
 ```typescript
@@ -1238,20 +1211,20 @@ create({ name: '<String>', ownerId: '<UUID>', suspendedAt: '<Datetime>', suspend
 ```typescript
 // List all managedDomains
 const { data, isLoading } = useManagedDomainsQuery({
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Get one managedDomain
 const { data: item } = useManagedDomainQuery({
   id: '<UUID>',
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, databaseId: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Create a managedDomain
 const { mutate: create } = useCreateManagedDomainMutation({
   selection: { fields: { id: true } },
 });
-create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
+create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', databaseId: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', publicPort: '<Int>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
 ```
 
 ### NodeTypeRegistry
@@ -1547,20 +1520,20 @@ create({ commitId: '<UUID>', name: '<String>' });
 ```typescript
 // List all platformManagedDomains
 const { data, isLoading } = usePlatformManagedDomainsQuery({
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Get one platformManagedDomain
 const { data: item } = usePlatformManagedDomainQuery({
   id: '<UUID>',
-  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
+  selection: { fields: { allowPublicUsage: true, annotations: true, certStatus: true, createdAt: true, createdByPrincipal: true, domain: true, id: true, isWildcard: true, publicPort: true, tlsReadyAt: true, tlsStatus: true, updatedAt: true, updatedByPrincipal: true, verificationStatus: true, verifiedAt: true } },
 });
 
 // Create a platformManagedDomain
 const { mutate: create } = useCreatePlatformManagedDomainMutation({
   selection: { fields: { id: true } },
 });
-create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
+create({ allowPublicUsage: '<Boolean>', annotations: '<JSON>', certStatus: '<String>', createdByPrincipal: '<UUID>', domain: '<String>', isWildcard: '<Boolean>', publicPort: '<Int>', tlsReadyAt: '<Datetime>', tlsStatus: '<String>', updatedByPrincipal: '<UUID>', verificationStatus: '<String>', verifiedAt: '<Datetime>' });
 ```
 
 ### PlatformPage
@@ -1876,27 +1849,6 @@ const { mutate: create } = useCreateRlsSettingMutation({
   selection: { fields: { id: true } },
 });
 create({ authenticateFunctionId: '<UUID>', authenticateSchemaId: '<UUID>', authenticateStrictFunctionId: '<UUID>', currentIpAddressFunctionId: '<UUID>', currentRoleFunctionId: '<UUID>', currentRoleIdFunctionId: '<UUID>', currentUserAgentFunctionId: '<UUID>', databaseId: '<UUID>', roleSchemaId: '<UUID>' });
-```
-
-### RouteBinding
-
-```typescript
-// List all routeBindings
-const { data, isLoading } = useRouteBindingsQuery({
-  selection: { fields: { domainId: true, id: true, isActive: true, method: true, path: true, priority: true, servingSiteId: true, targetApiId: true, targetBucketId: true, targetFunctionId: true, targetRedirectId: true, targetServiceId: true, targetSiteId: true, updatedAt: true } },
-});
-
-// Get one routeBinding
-const { data: item } = useRouteBindingQuery({
-  id: '<UUID>',
-  selection: { fields: { domainId: true, id: true, isActive: true, method: true, path: true, priority: true, servingSiteId: true, targetApiId: true, targetBucketId: true, targetFunctionId: true, targetRedirectId: true, targetServiceId: true, targetSiteId: true, updatedAt: true } },
-});
-
-// Create a routeBinding
-const { mutate: create } = useCreateRouteBindingMutation({
-  selection: { fields: { id: true } },
-});
-create({ domainId: '<UUID>', isActive: '<Boolean>', method: '<String>', path: '<String>', priority: '<Int>', servingSiteId: '<UUID>', targetApiId: '<UUID>', targetBucketId: '<UUID>', targetFunctionId: '<UUID>', targetRedirectId: '<UUID>', targetServiceId: '<UUID>', targetSiteId: '<UUID>' });
 ```
 
 ### Route
@@ -2324,20 +2276,20 @@ create({ databaseId: '<UUID>', modifier: '<String>', scope: '<String>', sortOrde
 ```typescript
 // List all uniqueConstraints
 const { data, isLoading } = useUniqueConstraintsQuery({
-  selection: { fields: { category: true, createdAt: true, databaseId: true, description: true, fieldIds: true, id: true, initiallyDeferred: true, isDeferrable: true, name: true, smartTags: true, tableId: true, tags: true, type: true, updatedAt: true, withoutOverlaps: true } },
+  selection: { fields: { category: true, createdAt: true, databaseId: true, description: true, fieldIds: true, id: true, initiallyDeferred: true, isDeferrable: true, name: true, nullsNotDistinct: true, smartTags: true, tableId: true, tags: true, type: true, updatedAt: true, withoutOverlaps: true } },
 });
 
 // Get one uniqueConstraint
 const { data: item } = useUniqueConstraintQuery({
   id: '<UUID>',
-  selection: { fields: { category: true, createdAt: true, databaseId: true, description: true, fieldIds: true, id: true, initiallyDeferred: true, isDeferrable: true, name: true, smartTags: true, tableId: true, tags: true, type: true, updatedAt: true, withoutOverlaps: true } },
+  selection: { fields: { category: true, createdAt: true, databaseId: true, description: true, fieldIds: true, id: true, initiallyDeferred: true, isDeferrable: true, name: true, nullsNotDistinct: true, smartTags: true, tableId: true, tags: true, type: true, updatedAt: true, withoutOverlaps: true } },
 });
 
 // Create a uniqueConstraint
 const { mutate: create } = useCreateUniqueConstraintMutation({
   selection: { fields: { id: true } },
 });
-create({ category: '<ObjectCategory>', databaseId: '<UUID>', description: '<String>', fieldIds: '<UUID>', initiallyDeferred: '<Boolean>', isDeferrable: '<Boolean>', name: '<String>', smartTags: '<JSON>', tableId: '<UUID>', tags: '<String>', type: '<String>', withoutOverlaps: '<Boolean>' });
+create({ category: '<ObjectCategory>', databaseId: '<UUID>', description: '<String>', fieldIds: '<UUID>', initiallyDeferred: '<Boolean>', isDeferrable: '<Boolean>', name: '<String>', nullsNotDistinct: '<Boolean>', smartTags: '<JSON>', tableId: '<UUID>', tags: '<String>', type: '<String>', withoutOverlaps: '<Boolean>' });
 ```
 
 ### ViewBehavior
@@ -2490,6 +2442,13 @@ applyRegistryDefaults
   |----------|------|
   | `data` | JSON |
   | `nodeType` | String |
+
+### `useEmailSharedAccountQuery`
+
+emailSharedAccount
+
+- **Type:** query
+- **Arguments:** none
 
 ### `useGetSitePreviewCommitQuery`
 
@@ -2702,6 +2661,17 @@ cancelDatabaseTransfer
   |----------|------|
   | `input` | CancelDatabaseTransferInput (required) |
 
+### `useCreateFunctionFromSourceMutation`
+
+Creates a `Function` from its `CREATE FUNCTION` source text.
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | CreateFunctionFromSourceInput (required) |
+
 ### `useDeleteSitePreviewMutation`
 
 deleteSitePreview
@@ -2859,10 +2829,11 @@ platformSitesProvisionStaticSite
 ### `useProvisionBucketMutation`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**
@@ -2998,3 +2969,14 @@ unsuspendDatabase
   | Argument | Type |
   |----------|------|
   | `input` | UnsuspendDatabaseInput (required) |
+
+### `useUpdateFunctionFromSourceMutation`
+
+Replaces a `Function`'s definition from its source text; its database, schema and exposure are unchanged.
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | UpdateFunctionFromSourceInput (required) |

@@ -114,13 +114,14 @@ csdk auth set-token <your-token>
 | `webauthn-auth-module` | webauthnAuthModule CRUD operations |
 | `webauthn-credentials-module` | webauthnCredentialsModule CRUD operations |
 | `webhook-module` | webhookModule CRUD operations |
-| `construct-blueprint` | Executes a blueprint definition by delegating to provision_* procedures. Creates a blueprint_construction record to track the attempt. Eight phases: (0) entity_type_provision for each membership_type entry — provisions entity tables, membership modules, and security. When a prefix already exists (e.g., 'org'), the entry extends the existing entity type instead of creating a new one; if a storage[] key is present, it provisions entity-scoped storage for that type. (0.5) scope-based storage: each storage[] entry has an optional scope ('app' or 'org' only). App-scoped storage seeds buckets at migration time. Org-scoped storage resolves the org membership type, creates org_buckets/org_files with owner_id, and seeds buckets per-entity via an AFTER INSERT trigger on the users table. When function_module is installed, a private functions bucket is auto-injected into org-scoped or entity-scoped storage entries. (1) provision_table() for each table with nodes[], fields[], policies[], and grants (table-level indexes/fts/unique_constraints/check_constraints are deferred). A table entry either names its table (table_name plus optional schema_name) or references one an installed module generated ("module": {"type": "agent", "scope": "org", "table": "message"}), which resolves through the module row's recorded table ids and raises when it matches nothing instead of creating an empty table. After provisioning, optional smart_tags (jsonb object) on the table entry are applied via metaschema.append_table_smart_tags(), and optional smart_tags on individual field entries are applied via metaschema.append_field_smart_tags(). (2) provision_relation() for each relation, (3) provision_index() for top-level + deferred indexes, (4) provision_full_text_search() for top-level + deferred FTS, (5) provision_unique_constraint() for top-level + deferred unique constraints, (6) provision_check_constraint() for top-level + deferred check constraints, (7) seed achievements from definition.achievements[] — resolves events_module by entity_prefix and creates INSERT actions for levels, level_requirements, and achievement_rewards tables. Phase 0 entity tables are added to the table_map so subsequent phases can reference them by name. Table-level entries are deferred to phases 3-6 so they can reference columns created by relations in phase 2. Returns the construction record ID on success, NULL on failure. |
+| `construct-blueprint` | Executes a blueprint definition by delegating to provision_* procedures. Creates a blueprint_construction record to track the attempt. Eight phases: (0) entity_type_provision for each membership_type entry — provisions entity tables, membership modules, and security. When a prefix already exists (e.g., 'org'), the entry extends the existing entity type instead of creating a new one; if a storage[] key is present, it provisions entity-scoped storage for that type. (0.5) scope-based storage: each storage[] entry has an optional scope ('app' or 'org' only). App-scoped storage seeds buckets at migration time. Org-scoped storage resolves the org membership type, creates org_buckets/org_files with owner_id, and seeds buckets per-entity via an AFTER INSERT trigger on the users table. When function_module is installed, a private functions bucket is auto-injected into org-scoped or entity-scoped storage entries. (1) provision_table() for each table with nodes[], fields[], policies[], and grants (table-level indexes/fts/unique_constraints/check_constraints are deferred). A table entry either names its table (table_name plus optional schema_name) or references one an installed module generated ("module": {"type": "agent", "scope": "org", "table": "message"}), which resolves through the module row's recorded table ids and raises when it matches nothing instead of creating an empty table. After provisioning, optional smart_tags (jsonb object) on the table entry are applied via metaschema.append_table_smart_tags(), and optional smart_tags on individual field entries are applied via metaschema.append_field_smart_tags(). (2) provision_relation() for each relation, (3) provision_index() for top-level + deferred indexes, (4) provision_full_text_search() for top-level + deferred FTS, (5) provision_unique_constraint() for top-level + deferred unique constraints, (6) provision_check_constraint() for top-level + deferred check constraints, (7) seed achievements from definition.achievements[] — resolves events_module by entity_prefix and creates INSERT actions for levels, level_requirements, and achievement_rewards tables. Phase 0 entity tables are added to the table_map so subsequent phases can reference them by name. Table-level entries are deferred to phases 3-6 so they can reference columns created by relations in phase 2. Returns the construction record ID. A failure raises its coded error to the caller and rolls back the whole construction, including the construction record. |
 | `copy-template-to-blueprint` | Creates a new blueprint by copying a template definition. Checks visibility: owners can always copy their own templates, others require public visibility. Increments the template copy_count. Returns the new blueprint ID. |
 | `provision-bucket` | Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors. |
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors. |
 
 ## Infrastructure Commands
 
@@ -389,6 +390,8 @@ CRUD operations for BillingProviderModule records.
 | `activatePlanSubscriptionFunction` | String |
 | `apiName` | String |
 | `applyProviderObservationFunction` | String |
+| `billingConnectionTableId` | UUID |
+| `billingConnectionTableName` | String |
 | `billingCustomersTableId` | UUID |
 | `billingCustomersTableName` | String |
 | `billingDisputesTableId` | UUID |
@@ -403,6 +406,8 @@ CRUD operations for BillingProviderModule records.
 | `billingPricesTableName` | String |
 | `billingProductsTableId` | UUID |
 | `billingProductsTableName` | String |
+| `billingProviderConnectedFunction` | String |
+| `billingProviderKeyFunction` | String |
 | `billingProviderStateTableId` | UUID |
 | `billingProviderStateTableName` | String |
 | `billingRefundsTableId` | UUID |
@@ -439,6 +444,7 @@ CRUD operations for BillingProviderModule records.
 | `processBillingEventFunction` | String |
 | `productsTableId` | UUID |
 | `provider` | String |
+| `recordBillingConnectionFunction` | String |
 | `recordBillingHealthFunction` | String |
 | `recordDisputeFunction` | String |
 | `recordRefundFunction` | String |
@@ -454,7 +460,7 @@ CRUD operations for BillingProviderModule records.
 | `usageSyncShardCount` | Int |
 
 **Required create fields:** `databaseId`
-**Optional create fields (backend defaults):** `activatePlanSubscriptionFunction`, `apiName`, `applyProviderObservationFunction`, `billingCustomersTableId`, `billingCustomersTableName`, `billingDisputesTableId`, `billingDisputesTableName`, `billingHealthTableId`, `billingHealthTableName`, `billingInvoicesTableId`, `billingInvoicesTableName`, `billingOperationsTableId`, `billingOperationsTableName`, `billingPricesTableId`, `billingPricesTableName`, `billingProductsTableId`, `billingProductsTableName`, `billingProviderStateTableId`, `billingProviderStateTableName`, `billingRefundsTableId`, `billingRefundsTableName`, `billingSubscriptionsTableId`, `billingSubscriptionsTableName`, `billingWebhookEventsTableId`, `billingWebhookEventsTableName`, `bindCheckoutSessionFunction`, `clearScheduledChangeFunction`, `finishBillingOperationFunction`, `getActivePlanPricingFunction`, `getActivePlanSubscriptionFunction`, `getBillingCustomerFunction`, `getBillingPriceFunction`, `getBillingProductFunction`, `getBillingProviderStateFunction`, `getBillingSubscriptionByEntityFunction`, `getBillingSubscriptionByExternalIdFunction`, `getBillingSubscriptionFunction`, `getFallbackFreePlanFunction`, `getPlanPricingByExternalPriceFunction`, `hasDueReconciliationsFunction`, `listDueReconciliationsFunction`, `listPendingUsageSyncFunction`, `markUsageSyncedFunction`, `prefix`, `prepareScheduledChangeFunction`, `pricesTableId`, `privateApiName`, `privateSchemaId`, `processBillingEventFunction`, `productsTableId`, `provider`, `recordBillingHealthFunction`, `recordDisputeFunction`, `recordRefundFunction`, `reserveBillingOperationFunction`, `schemaId`, `subscriptionsTableId`, `sweepOverdueSubscriptionsFunction`, `upsertBillingCustomerFunction`, `upsertBillingPriceFunction`, `upsertBillingProductFunction`, `upsertBillingSubscriptionFunction`, `upsertInvoiceFunction`, `usageSyncShardCount`
+**Optional create fields (backend defaults):** `activatePlanSubscriptionFunction`, `apiName`, `applyProviderObservationFunction`, `billingConnectionTableId`, `billingConnectionTableName`, `billingCustomersTableId`, `billingCustomersTableName`, `billingDisputesTableId`, `billingDisputesTableName`, `billingHealthTableId`, `billingHealthTableName`, `billingInvoicesTableId`, `billingInvoicesTableName`, `billingOperationsTableId`, `billingOperationsTableName`, `billingPricesTableId`, `billingPricesTableName`, `billingProductsTableId`, `billingProductsTableName`, `billingProviderConnectedFunction`, `billingProviderKeyFunction`, `billingProviderStateTableId`, `billingProviderStateTableName`, `billingRefundsTableId`, `billingRefundsTableName`, `billingSubscriptionsTableId`, `billingSubscriptionsTableName`, `billingWebhookEventsTableId`, `billingWebhookEventsTableName`, `bindCheckoutSessionFunction`, `clearScheduledChangeFunction`, `finishBillingOperationFunction`, `getActivePlanPricingFunction`, `getActivePlanSubscriptionFunction`, `getBillingCustomerFunction`, `getBillingPriceFunction`, `getBillingProductFunction`, `getBillingProviderStateFunction`, `getBillingSubscriptionByEntityFunction`, `getBillingSubscriptionByExternalIdFunction`, `getBillingSubscriptionFunction`, `getFallbackFreePlanFunction`, `getPlanPricingByExternalPriceFunction`, `hasDueReconciliationsFunction`, `listDueReconciliationsFunction`, `listPendingUsageSyncFunction`, `markUsageSyncedFunction`, `prefix`, `prepareScheduledChangeFunction`, `pricesTableId`, `privateApiName`, `privateSchemaId`, `processBillingEventFunction`, `productsTableId`, `provider`, `recordBillingConnectionFunction`, `recordBillingHealthFunction`, `recordDisputeFunction`, `recordRefundFunction`, `reserveBillingOperationFunction`, `schemaId`, `subscriptionsTableId`, `sweepOverdueSubscriptionsFunction`, `upsertBillingCustomerFunction`, `upsertBillingPriceFunction`, `upsertBillingProductFunction`, `upsertBillingSubscriptionFunction`, `upsertInvoiceFunction`, `usageSyncShardCount`
 
 ### `blueprint`
 
@@ -511,7 +517,6 @@ CRUD operations for BlueprintConstruction records.
 | `constructedDefinition` | JSON |
 | `createdAt` | Datetime |
 | `databaseId` | UUID |
-| `errorDetails` | String |
 | `id` | UUID |
 | `schemaId` | UUID |
 | `status` | String |
@@ -519,7 +524,7 @@ CRUD operations for BlueprintConstruction records.
 | `updatedAt` | Datetime |
 
 **Required create fields:** `blueprintId`, `databaseId`
-**Optional create fields (backend defaults):** `constructedAt`, `constructedDefinition`, `errorDetails`, `schemaId`, `status`, `tableMap`
+**Optional create fields (backend defaults):** `constructedAt`, `constructedDefinition`, `schemaId`, `status`, `tableMap`
 
 ### `blueprint-template`
 
@@ -635,6 +640,8 @@ CRUD operations for CatalogModule records.
 | `bucketsTableName` | String |
 | `databaseId` | UUID |
 | `defaultCapabilities` | String |
+| `domainVerificationsTableId` | UUID |
+| `domainVerificationsTableName` | String |
 | `domainsTableId` | UUID |
 | `domainsTableName` | String |
 | `entityTableId` | UUID |
@@ -673,7 +680,7 @@ CRUD operations for CatalogModule records.
 | `sitesWebConfigTableName` | String |
 
 **Required create fields:** `databaseId`, `scope`
-**Optional create fields (backend defaults):** `apiName`, `apisTableId`, `apisTableName`, `appStoreIdentitiesTableId`, `appStoreIdentitiesTableName`, `appsTableId`, `appsTableName`, `bindingsTableId`, `bindingsTableName`, `bucketsTableId`, `bucketsTableName`, `defaultCapabilities`, `domainsTableId`, `domainsTableName`, `entityTableId`, `functionsTableId`, `functionsTableName`, `imagesTableId`, `imagesTableName`, `managedDomainsTableId`, `managedDomainsTableName`, `namespacesTableId`, `namespacesTableName`, `policies`, `privateApiName`, `provisions`, `publicSchemaName`, `redirectsTableId`, `redirectsTableName`, `resourceDefinitionsTableId`, `resourceDefinitionsTableName`, `resourceInstallationsTableId`, `resourceInstallationsTableName`, `resourcesTableId`, `resourcesTableName`, `schemaId`, `sitesAppLinksTableId`, `sitesAppLinksTableName`, `sitesDeepLinksTableId`, `sitesDeepLinksTableName`, `sitesErrorPagesTableId`, `sitesErrorPagesTableName`, `sitesTableId`, `sitesTableName`, `sitesWebConfigTableId`, `sitesWebConfigTableName`
+**Optional create fields (backend defaults):** `apiName`, `apisTableId`, `apisTableName`, `appStoreIdentitiesTableId`, `appStoreIdentitiesTableName`, `appsTableId`, `appsTableName`, `bindingsTableId`, `bindingsTableName`, `bucketsTableId`, `bucketsTableName`, `defaultCapabilities`, `domainVerificationsTableId`, `domainVerificationsTableName`, `domainsTableId`, `domainsTableName`, `entityTableId`, `functionsTableId`, `functionsTableName`, `imagesTableId`, `imagesTableName`, `managedDomainsTableId`, `managedDomainsTableName`, `namespacesTableId`, `namespacesTableName`, `policies`, `privateApiName`, `provisions`, `publicSchemaName`, `redirectsTableId`, `redirectsTableName`, `resourceDefinitionsTableId`, `resourceDefinitionsTableName`, `resourceInstallationsTableId`, `resourceInstallationsTableName`, `resourcesTableId`, `resourcesTableName`, `schemaId`, `sitesAppLinksTableId`, `sitesAppLinksTableName`, `sitesDeepLinksTableId`, `sitesDeepLinksTableName`, `sitesErrorPagesTableId`, `sitesErrorPagesTableName`, `sitesTableId`, `sitesTableName`, `sitesWebConfigTableId`, `sitesWebConfigTableName`
 
 ### `cluster-module`
 
@@ -3410,13 +3417,14 @@ CRUD operations for StorageModule records.
 | `provisions` | JSON |
 | `publicSchemaName` | String |
 | `publicUrlPrefix` | String |
+| `region` | String |
 | `restrictReads` | Boolean |
 | `schemaId` | UUID |
 | `scope` | String |
 | `uploadUrlExpirySeconds` | Int |
 
 **Required create fields:** `databaseId`, `scope`
-**Optional create fields (backend defaults):** `allowedOrigins`, `apiName`, `bucketsTableId`, `bucketsTableName`, `cacheTtlSeconds`, `catalogModuleId`, `confirmUploadDelay`, `defaultCapabilities`, `defaultMaxFileSize`, `downloadUrlExpirySeconds`, `endpoint`, `entityField`, `entityTableId`, `fileEventsTableId`, `filesTableId`, `filesTableName`, `hasAuditLog`, `hasConfirmUpload`, `hasContentHash`, `hasCustomKeys`, `hasPathShares`, `hasVersioning`, `key`, `maxBulkFiles`, `maxBulkTotalSize`, `maxFilenameLength`, `pathSharesTableId`, `policies`, `prefix`, `privateApiName`, `privateSchemaId`, `privateSchemaName`, `provider`, `provisions`, `publicSchemaName`, `publicUrlPrefix`, `restrictReads`, `schemaId`, `uploadUrlExpirySeconds`
+**Optional create fields (backend defaults):** `allowedOrigins`, `apiName`, `bucketsTableId`, `bucketsTableName`, `cacheTtlSeconds`, `catalogModuleId`, `confirmUploadDelay`, `defaultCapabilities`, `defaultMaxFileSize`, `downloadUrlExpirySeconds`, `endpoint`, `entityField`, `entityTableId`, `fileEventsTableId`, `filesTableId`, `filesTableName`, `hasAuditLog`, `hasConfirmUpload`, `hasContentHash`, `hasCustomKeys`, `hasPathShares`, `hasVersioning`, `key`, `maxBulkFiles`, `maxBulkTotalSize`, `maxFilenameLength`, `pathSharesTableId`, `policies`, `prefix`, `privateApiName`, `privateSchemaId`, `privateSchemaName`, `provider`, `provisions`, `publicSchemaName`, `publicUrlPrefix`, `region`, `restrictReads`, `schemaId`, `uploadUrlExpirySeconds`
 
 ### `transfer-log-module`
 
@@ -3767,7 +3775,7 @@ CRUD operations for WebhookModule records.
 
 ### `construct-blueprint`
 
-Executes a blueprint definition by delegating to provision_* procedures. Creates a blueprint_construction record to track the attempt. Eight phases: (0) entity_type_provision for each membership_type entry — provisions entity tables, membership modules, and security. When a prefix already exists (e.g., 'org'), the entry extends the existing entity type instead of creating a new one; if a storage[] key is present, it provisions entity-scoped storage for that type. (0.5) scope-based storage: each storage[] entry has an optional scope ('app' or 'org' only). App-scoped storage seeds buckets at migration time. Org-scoped storage resolves the org membership type, creates org_buckets/org_files with owner_id, and seeds buckets per-entity via an AFTER INSERT trigger on the users table. When function_module is installed, a private functions bucket is auto-injected into org-scoped or entity-scoped storage entries. (1) provision_table() for each table with nodes[], fields[], policies[], and grants (table-level indexes/fts/unique_constraints/check_constraints are deferred). A table entry either names its table (table_name plus optional schema_name) or references one an installed module generated ("module": {"type": "agent", "scope": "org", "table": "message"}), which resolves through the module row's recorded table ids and raises when it matches nothing instead of creating an empty table. After provisioning, optional smart_tags (jsonb object) on the table entry are applied via metaschema.append_table_smart_tags(), and optional smart_tags on individual field entries are applied via metaschema.append_field_smart_tags(). (2) provision_relation() for each relation, (3) provision_index() for top-level + deferred indexes, (4) provision_full_text_search() for top-level + deferred FTS, (5) provision_unique_constraint() for top-level + deferred unique constraints, (6) provision_check_constraint() for top-level + deferred check constraints, (7) seed achievements from definition.achievements[] — resolves events_module by entity_prefix and creates INSERT actions for levels, level_requirements, and achievement_rewards tables. Phase 0 entity tables are added to the table_map so subsequent phases can reference them by name. Table-level entries are deferred to phases 3-6 so they can reference columns created by relations in phase 2. Returns the construction record ID on success, NULL on failure.
+Executes a blueprint definition by delegating to provision_* procedures. Creates a blueprint_construction record to track the attempt. Eight phases: (0) entity_type_provision for each membership_type entry — provisions entity tables, membership modules, and security. When a prefix already exists (e.g., 'org'), the entry extends the existing entity type instead of creating a new one; if a storage[] key is present, it provisions entity-scoped storage for that type. (0.5) scope-based storage: each storage[] entry has an optional scope ('app' or 'org' only). App-scoped storage seeds buckets at migration time. Org-scoped storage resolves the org membership type, creates org_buckets/org_files with owner_id, and seeds buckets per-entity via an AFTER INSERT trigger on the users table. When function_module is installed, a private functions bucket is auto-injected into org-scoped or entity-scoped storage entries. (1) provision_table() for each table with nodes[], fields[], policies[], and grants (table-level indexes/fts/unique_constraints/check_constraints are deferred). A table entry either names its table (table_name plus optional schema_name) or references one an installed module generated ("module": {"type": "agent", "scope": "org", "table": "message"}), which resolves through the module row's recorded table ids and raises when it matches nothing instead of creating an empty table. After provisioning, optional smart_tags (jsonb object) on the table entry are applied via metaschema.append_table_smart_tags(), and optional smart_tags on individual field entries are applied via metaschema.append_field_smart_tags(). (2) provision_relation() for each relation, (3) provision_index() for top-level + deferred indexes, (4) provision_full_text_search() for top-level + deferred FTS, (5) provision_unique_constraint() for top-level + deferred unique constraints, (6) provision_check_constraint() for top-level + deferred check constraints, (7) seed achievements from definition.achievements[] — resolves events_module by entity_prefix and creates INSERT actions for levels, level_requirements, and achievement_rewards tables. Phase 0 entity tables are added to the table_map so subsequent phases can reference them by name. Table-level entries are deferred to phases 3-6 so they can reference columns created by relations in phase 2. Returns the construction record ID. A failure raises its coded error to the caller and rolls back the whole construction, including the construction record.
 
 - **Type:** mutation
 - **Arguments:**
@@ -3797,10 +3805,11 @@ Creates a new blueprint by copying a template definition. Checks visibility: own
 ### `provision-bucket`
 
 Reconcile an S3 bucket for a logical bucket in the database.
-Reads the bucket config via RLS, then enqueues the same
-storage:provision_bucket job used by the INSERT trigger. This is
-idempotent for an already-reconciled bucket; enqueue failures become
-GraphQL errors.
+Records the request on the bucket row via RLS; the bucket's job
+trigger then enqueues the same storage:provision_bucket job used on
+INSERT, and repeated requests collapse into one pending job. This is
+idempotent for an already-reconciled bucket; failures become GraphQL
+errors.
 
 - **Type:** mutation
 - **Arguments:**

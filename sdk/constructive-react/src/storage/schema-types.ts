@@ -59,6 +59,8 @@ export type BucketOrderBy =
   | 'PHYSICAL_NAME_DESC'
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
+  | 'PROVISION_REQUESTED_AT_ASC'
+  | 'PROVISION_REQUESTED_AT_DESC'
   | 'STAGING_TTL_ASC'
   | 'STAGING_TTL_DESC'
   | 'TAGS_ASC'
@@ -139,6 +141,8 @@ export type PlatformBucketOrderBy =
   | 'PHYSICAL_NAME_DESC'
   | 'PRIMARY_KEY_ASC'
   | 'PRIMARY_KEY_DESC'
+  | 'PROVISION_REQUESTED_AT_ASC'
+  | 'PROVISION_REQUESTED_AT_DESC'
   | 'STAGING_TTL_ASC'
   | 'STAGING_TTL_DESC'
   | 'TAGS_ASC'
@@ -232,6 +236,8 @@ export interface BucketFilter {
   or?: BucketFilter[];
   /** Filter by the object’s `physicalName` field. */
   physicalName?: StringFilter;
+  /** Filter by the object’s `provisionRequestedAt` field. */
+  provisionRequestedAt?: DatetimeFilter;
   /** Filter by the object’s `stagingTtl` field. */
   stagingTtl?: IntervalFilter;
   /** Filter by the object’s `tags` field. */
@@ -267,6 +273,8 @@ export interface BucketInput {
   maxFileSize?: string;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: IntervalInput;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -301,6 +309,8 @@ export interface BucketPatch {
   maxFileSize?: string;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: IntervalInput;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -658,6 +668,8 @@ export interface PlatformBucketFilter {
   platformFilesByBucketId?: PlatformBucketToManyPlatformFileFilter;
   /** `platformFilesByBucketId` exist. */
   platformFilesByBucketIdExist?: boolean;
+  /** Filter by the object’s `provisionRequestedAt` field. */
+  provisionRequestedAt?: DatetimeFilter;
   /** Filter by the object’s `stagingTtl` field. */
   stagingTtl?: IntervalFilter;
   /** Filter by the object’s `tags` field. */
@@ -691,6 +703,8 @@ export interface PlatformBucketInput {
   maxFileSize?: string;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: IntervalInput;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -723,6 +737,8 @@ export interface PlatformBucketPatch {
   maxFileSize?: string;
   /** Physical S3/MinIO bucket name recorded at provision time (NULL until the physical bucket exists) */
   physicalName?: string;
+  /** When re-provisioning was last requested (provisionBucket); NULL until requested */
+  provisionRequestedAt?: string;
   /** For a temp bucket, how long an unpromoted staged file survives before it is eligible for expiry. NULL on non-temp buckets; required on temp buckets. */
   stagingTtl?: IntervalInput;
   /** Selector labels for capability resolution and grouping (e.g. uploads, variants, exports). A function's required bucket key is matched against these plus type. */
@@ -1063,13 +1079,13 @@ export interface PlatformFilesRenamePayload {
   result?: PlatformFile | null;
 }
 export interface ProvisionBucketPayload {
-  /** The logical bucket row that was queued for reconciliation. */
+  /** The logical bucket row whose reconciliation was requested. */
   bucketId: string;
   bucketKey: string;
-  /** The reconciler job enqueued to provision this bucket. */
-  jobId: string;
   /** The physical bucket name already recorded, or null when reconciliation has not completed. */
   physicalName?: string | null;
+  /** When reconciliation was last requested for this bucket. */
+  provisionRequestedAt: string;
 }
 export interface UpdateBucketPayload {
   /** The `Bucket` that was updated by this mutation. */
