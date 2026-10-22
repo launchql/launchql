@@ -7,7 +7,7 @@ Execute the setPassword mutation
 ## Usage
 
 ```typescript
-db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<String>' } }).execute()
+db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<String>', signOutOtherSessions: '<Boolean>' } }).execute()
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<S
 ### Run setPassword
 
 ```typescript
-const result = await db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<String>' } }).execute();
+const result = await db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<String>', signOutOtherSessions: '<Boolean>' } }).execute();
 ```
