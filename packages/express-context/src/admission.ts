@@ -294,15 +294,3 @@ export const clientIpFrom = (
   // `[forged, client]`, and both resolve to the entry the ingress appended.
   return chain[chain.length - trustedProxyHops];
 };
-
-/**
- * How many proxies of our own sit in front of the server.
- *
- * Defaults to 0 — the socket peer, which cannot be forged. A deployment behind
- * an ingress sets `TRUSTED_PROXY_HOPS` to the number of hops it owns; guessing
- * a higher number here would let a direct caller pick its own limiter key.
- */
-export const trustedProxyHops = (): number => {
-  const raw = Number(process.env.TRUSTED_PROXY_HOPS ?? '');
-  return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : 0;
-};

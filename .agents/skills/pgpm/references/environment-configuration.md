@@ -120,7 +120,7 @@ const deployOptions = getDeploymentEnvOptions();
 |----------|-------------|
 | `PORT` | Server port |
 | `SERVER_HOST` | Server host |
-| `SERVER_TRUST_PROXY` | Trust proxy headers |
+| `TRUSTED_PROXY_HOPS` | Proxies of our own in front of the server; `X-Forwarded-For` is read that many entries from the right (default 0: socket peer only) |
 | `SERVER_ORIGIN` | Server origin URL |
 | `SERVER_STRICT_AUTH` | Strict authentication mode |
 

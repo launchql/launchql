@@ -91,7 +91,10 @@ export {
 
 // Admission control (in-process concurrency + per-caller rate)
 export type { AdmissionLease, AdmissionRefusal, AdmissionRequest } from './admission';
-export { clientIpFrom, ConcurrencyLimiter, RateWindow, trustedProxyHops } from './admission';
+export { clientIpFrom, ConcurrencyLimiter, RateWindow } from './admission';
+
+// Client address (resolved once per request from the trusted proxy hops)
+export { clientIpMiddleware, clientIpOf } from './client-ip';
 
 // Shared in-memory counter + batch flush (refusal observability, page/request metering)
 export type {

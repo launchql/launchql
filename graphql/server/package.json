@@ -81,8 +81,7 @@
     "pg-env": "workspace:^",
     "pg-query-context": "workspace:^",
     "pg-sql2": "5.0.1",
-    "postgraphile": "5.1.4",
-    "request-ip": "^3.3.0"
+    "postgraphile": "5.1.4"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1052.0",
@@ -91,7 +90,6 @@
     "@types/express": "^5.0.6",
     "@types/graphql-upload": "^8.0.12",
     "@types/pg": "^8.20.4",
-    "@types/request-ip": "^0.0.41",
     "@types/supertest": "^7.2.1",
     "cookie-parser": "^1.4.7",
     "graphile-test": "workspace:*",

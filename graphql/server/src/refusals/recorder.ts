@@ -1,12 +1,7 @@
 import '../middleware/types'; // for Request type
 
 import type { Refusal, RefusalReason, RefusalRecorderStats } from '@constructive-io/express-context';
-import {
-  clientIpFrom,
-  createRecordRefusalsSink,
-  RefusalRecorder,
-  trustedProxyHops
-} from '@constructive-io/express-context';
+import { clientIpOf, createRecordRefusalsSink, RefusalRecorder } from '@constructive-io/express-context';
 import type { ConstructiveOptions } from '@constructive-io/graphql-types';
 import { Logger } from '@pgpmjs/logger';
 import type { Request } from 'express';
@@ -62,23 +57,9 @@ export const getRefusalRecorderStats = (): RefusalRecorderStats | null => instal
 export const routeKeyOf = (req: Request): string =>
   `${req.method} ${req.baseUrl ?? ''}${req.path ?? req.url ?? ''}`;
 
-/**
- * How far back through `X-Forwarded-For` to believe; mirrors admission
- * control's resolution so the refusal source is the same address the limiter
- * keyed on.
- */
-const resolveHops = (req: Request, configured?: number): number => {
-  if (typeof configured === 'number') return configured;
-  const fromEnv = trustedProxyHops();
-  if (fromEnv > 0) return fromEnv;
-  return req.app?.get('trust proxy') ? 1 : 0;
-};
-
 export interface RecordRefusalOptions {
   /** Overrides the address the refusal is attributed to. */
   sourceIp?: string | null;
-  /** See `AdmissionControlOptions.trustedProxyHops`. */
-  trustedProxyHops?: number;
   /** Overrides `req.databaseId`. */
   databaseId?: string | null;
 }
@@ -95,10 +76,7 @@ export const recordRefusal = (req: Request, reason: RefusalReason, opts: RecordR
     lane: 'graphql',
     reason,
     routeKey: routeKeyOf(req),
-    sourceIp:
-      opts.sourceIp !== undefined
-        ? opts.sourceIp
-        : clientIpFrom(req, resolveHops(req, opts.trustedProxyHops))
+    sourceIp: opts.sourceIp !== undefined ? opts.sourceIp : clientIpOf(req)
   };
   try {
     recorder.record(refusal);

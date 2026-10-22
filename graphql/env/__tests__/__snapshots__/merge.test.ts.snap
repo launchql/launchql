@@ -81,7 +81,7 @@ exports[`getEnvOptions merges pgpm defaults, graphql defaults, config, env, and 
     "host": "localhost",
     "port": 5000,
     "strictAuth": false,
-    "trustProxy": false,
+    "trustedProxyHops": 0,
   },
   "sms": {
     "devsms": {

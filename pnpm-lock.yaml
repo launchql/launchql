@@ -1566,9 +1566,6 @@ importers:
       postgraphile:
         specifier: 5.1.4
         version: 5.1.4(6fac2ccd59325b02d1508e585e9ab2d6)
-      request-ip:
-        specifier: ^3.3.0
-        version: 3.3.0
       tamedevil:
         specifier: 0.1.1
         version: 0.1.1
@@ -1585,9 +1582,6 @@ importers:
       '@types/pg':
         specifier: ^8.20.4
         version: 8.20.4
-      '@types/request-ip':
-        specifier: ^0.0.41
-        version: 0.0.41
       graphile-test:
         specifier: workspace:^
         version: link:../graphile-test/dist
@@ -2311,9 +2305,6 @@ importers:
       postgraphile:
         specifier: 5.1.4
         version: 5.1.4(6fac2ccd59325b02d1508e585e9ab2d6)
-      request-ip:
-        specifier: ^3.3.0
-        version: 3.3.0
     devDependencies:
       '@aws-sdk/client-s3':
         specifier: ^3.1052.0
@@ -2333,9 +2324,6 @@ importers:
       '@types/pg':
         specifier: ^8.20.4
         version: 8.20.4
-      '@types/request-ip':
-        specifier: ^0.0.41
-        version: 0.0.41
       '@types/supertest':
         specifier: ^7.2.1
         version: 7.2.1
@@ -8443,11 +8431,6 @@ packages:
         integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==,
       }
 
-  '@types/request-ip@0.0.41':
-    resolution:
-      {
-        integrity: sha512-Qzz0PM2nSZej4lsLzzNfADIORZhhxO7PED0fXpg4FjXiHuJ/lMyUg+YFF5q8x9HPZH3Gl6N+NOM8QZjItNgGKg==,
-      }
 
   '@types/retry@0.12.0':
     resolution:
@@ -14345,11 +14328,6 @@ packages:
         integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==,
       }
 
-  request-ip@3.3.0:
-    resolution:
-      {
-        integrity: sha512-cA6Xh6e0fDBBBwH77SLJaJPBmD3nWVAcF9/XAcsrIHdjhFzFiB5aNQFytdjCGPezU3ROwrR11IddKAM08vohxA==,
-      }
 
   require-directory@2.1.1:
     resolution:
@@ -19324,9 +19302,6 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  '@types/request-ip@0.0.41':
-    dependencies:
-      '@types/node': 22.19.19
 
   '@types/retry@0.12.0': {}
 
@@ -23572,7 +23547,6 @@ snapshots:
 
   reflect-metadata@0.2.2: {}
 
-  request-ip@3.3.0: {}
 
   require-directory@2.1.1: {}
 

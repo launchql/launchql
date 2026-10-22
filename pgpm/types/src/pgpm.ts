@@ -114,8 +114,14 @@ export interface ServerOptions {
     host?: string;
     /** Server port number */
     port?: number;
-    /** Whether to trust proxy headers */
-    trustProxy?: boolean;
+    /**
+     * How many proxies of our own sit in front of the server. 0 (the
+     * default) believes only the socket peer and ignores `X-Forwarded-For`;
+     * 1 believes the single entry our ingress appended, and so on. Guessing
+     * higher than the deployment really has lets a direct caller choose its
+     * own address.
+     */
+    trustedProxyHops?: number;
     /** CORS origin configuration */
     origin?: string;
     /** Whether to enforce strict authentication */
@@ -372,7 +378,7 @@ export const pgpmDefaults: PgpmOptions = {
   server: {
     host: 'localhost',
     port: 3000,
-    trustProxy: false,
+    trustedProxyHops: 0,
     strictAuth: false
   },
   deployment: {
