@@ -213,7 +213,9 @@ class Server {
       csrf.setToken(req as any, res as any, next);
     };
     app.use(csrfSetToken); // Set CSRF token cookie on all requests
-    app.use('/graphql', csrfProtect); // Enforce CSRF on GraphQL mutations
+    // Enforce CSRF on every cookie-authenticated route: GraphQL, the agentic
+    // router (/v1) and REST function invocation (/fn)
+    app.use(['/graphql', '/v1', '/fn'], csrfProtect);
     // The session-cookie opt-out does not bypass CSRF: it only stops sign-in
     // responses from setting cookies (see AuthCookiePlugin).
     app.use('/graphql', rejectInvalidSessionCookieHeader);
