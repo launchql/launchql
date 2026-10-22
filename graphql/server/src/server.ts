@@ -28,7 +28,7 @@ import {
 } from './diagnostics/observability';
 import { createAdmissionControlMiddleware } from './middleware/admission-control';
 import { createApiMiddleware } from './middleware/api';
-import { createAuthenticateMiddleware } from './middleware/auth';
+import { createAuthenticateMiddleware, getBearerToken } from './middleware/auth';
 // Auth cookie handling is done via AuthCookiePlugin in grafserv
 import { createCaptchaMiddleware } from './middleware/captcha';
 import { parseCookieValue, rejectInvalidSessionCookieHeader, SESSION_COOKIE_NAME } from './middleware/cookie';
@@ -196,9 +196,8 @@ class Server {
       }
     });
     const csrfProtect: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-      // Skip CSRF for Bearer token auth
-      const auth = req.headers.authorization;
-      if (auth?.toLowerCase().startsWith('bearer ')) {
+      // Skip CSRF only when authenticate will use the Bearer token, not the cookie
+      if (getBearerToken(req)) {
         return next();
       }
       // Skip if no session cookie (anonymous requests)

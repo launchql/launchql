@@ -144,6 +144,33 @@ describe.each(Object.entries(SIMPLE_BODIES))('cross-site %s POST with the sessio
   });
 });
 
+describe('session cookie with a Bearer header authenticate ignores', () => {
+  let before: number;
+
+  beforeEach(async () => {
+    before = await userRows();
+  });
+
+  afterEach(async () => {
+    expect(await userRows()).toBe(before);
+  });
+
+  // authenticate falls back to the cookie for these, so CSRF must still apply.
+  it.each([
+    ['an empty `Bearer `', 'Bearer '],
+    ['an empty token before the real one', 'Bearer  session-token']
+  ])('is refused without a CSRF token for %s', async (_name, authorization) => {
+    const res = await post(
+      '/fn/resize',
+      { ...crossSite, Authorization: authorization },
+      SIMPLE_BODIES['text/plain']
+    );
+
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('CSRF_TOKEN_MISSING');
+  });
+});
+
 describe('cookie-authenticated request with a valid CSRF token', () => {
   const withToken = {
     Cookie: `${SESSION_COOKIE}; csrf_token=${CSRF_TOKEN}`,
