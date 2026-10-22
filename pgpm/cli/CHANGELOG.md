@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.38.6](https://github.com/constructive-io/constructive/compare/pgpm@5.38.5...pgpm@5.38.6) (2026-10-22)
+
+**Note:** Version bump only for package pgpm
+
 ## [5.38.5](https://github.com/constructive-io/constructive/compare/pgpm@5.38.4...pgpm@5.38.5) (2026-10-19)
 
 **Note:** Version bump only for package pgpm

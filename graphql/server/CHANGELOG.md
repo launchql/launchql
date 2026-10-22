@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.32.6](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.32.5...@constructive-io/graphql-server@5.32.6) (2026-10-22)
+
+### Bug Fixes
+
+- **graphql-server:** enforce CSRF on cookie-authenticated /fn and /v1 routes ([5290f78](https://github.com/constructive-io/constructive/commit/5290f78913dfd261b18db001565f0ff574eb9e2d))
+- **graphql-server:** skip CSRF only when authenticate uses the Bearer token ([921fe56](https://github.com/constructive-io/constructive/commit/921fe568a9ee5c71f63e2a6c8383183484d41e94))
+
 ## [5.32.5](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.32.4...@constructive-io/graphql-server@5.32.5) (2026-10-19)
 
 **Note:** Version bump only for package @constructive-io/graphql-server
