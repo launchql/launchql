@@ -58,6 +58,12 @@ export interface ParsedError {
   context: ErrorContext;
   /** Classification (`internal` when the code is unknown — fail safe). */
   class: ErrorClass;
+  /**
+   * Valid producer classification actually used by parse (canonical error,
+   * DETAIL or GraphQL extensions). Absent when class comes from the registry
+   * or the unknown-code fallback. Describes the immediate input before any further normalization.
+   */
+  explicitClass?: ErrorClass;
   /** `true` when `code` is present in the registry. */
   known: boolean;
   /** Best-effort raw message from the source error. */

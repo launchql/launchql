@@ -119,6 +119,8 @@ function parseMessageCode(message: string): { code: string; args: string[] } | n
  * present, since that source is authoritative for the raise site (and correctly
  * classifies codes not yet in the registry). It falls back to `classify(code)`
  * (registry lookup, unknown ⇒ `internal`) only when no explicit class is given.
+ * `explicitClass` records the producer class actually used, and is absent when
+ * classification falls back to the registry or the unknown-code default.
  */
 export function parse(error: unknown): ParsedError {
   if (error instanceof ConstructiveError) {
@@ -126,6 +128,7 @@ export function parse(error: unknown): ParsedError {
       code: error.code,
       context: error.context ?? {},
       class: error.errorClass,
+      ...(toErrorClass(error.errorClass) ? { explicitClass: error.errorClass } : {}),
       known: Boolean(getDefinition(error.code)),
       rawMessage: error.message,
       originalError: error
@@ -175,6 +178,7 @@ export function parse(error: unknown): ParsedError {
     code,
     context,
     class: explicitClass ?? classify(code),
+    ...(explicitClass ? { explicitClass } : {}),
     known: Boolean(code && getDefinition(code)),
     rawMessage,
     sqlState,

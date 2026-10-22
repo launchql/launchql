@@ -8,7 +8,7 @@ service or client without pulling in pgpm.
 - **`parse(anyError)`** — normalize an error from any source (a
   `ConstructiveError`, a node-postgres `DatabaseError`, a GraphQL error or
   `{ errors: [...] }` wrapper, a plain `Error`, or a string) into a canonical
-  `{ code, context, class, known }`.
+  `{ code, context, class, known, explicitClass? }`.
 - **`format(code, context, locale)`** — render a localized, interpolated
   message. `{{var}}` placeholders + registerable per-locale catalogs (i18n).
 - **`errors.*` factory** — type-safe throwable builders derived from the
@@ -48,6 +48,33 @@ throw errors.ACCOUNT_EXISTS();
     that matter most (public auth/limit copy, native PostgreSQL constraint codes,
     pgpm CLI codes). These override the generated entries.
 - Unregistered codes still `parse()` and are classified `internal` (masked).
+
+## Producer classification
+
+`parse()` keeps its existing classification policy: a valid producer class wins,
+then the registry is consulted, and unknown codes default to internal.
+`explicitClass` is additional metadata, present only when the parser actually
+used a valid producer classification from `ConstructiveError.errorClass`,
+PostgreSQL `DETAIL.class`, or GraphQL `extensions.class` (including request
+wrappers). Missing or invalid producer classes do not populate it. The existing
+code-selection precedence also governs which transport's class can be used.
+
+```ts
+import { parse } from '@constructive-io/errors';
+
+const parsed = parse({ message: 'STORAGE_PROCESSING_CONFLICT' });
+parsed.class; // 'public', from the registry
+parsed.explicitClass; // undefined
+
+// An adapter can retain its own internal default for undeclared classifications
+// without duplicating the DETAIL or GraphQL parser.
+const adapterClass = parsed.explicitClass ?? 'internal';
+```
+
+This describes the **immediate input**. A canonical error is authoritative for
+its class, including errors created by registry
+factories or `toError()`. To distinguish the raw producer's class from a registry
+fallback, inspect `parse(caught)` before normalizing it with `toError()`.
 
 ## HTTP status
 
