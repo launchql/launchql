@@ -30,6 +30,15 @@ const parseCookieToken = (req: Request, cookieName: string): string | undefined 
   return match ? decodeURIComponent(match.split('=')[1].trim()) : undefined;
 };
 
+/**
+ * The Bearer token `authenticate` would use, or undefined when it would fall
+ * back to the session cookie (no header, another scheme, or an empty token).
+ */
+export const getBearerToken = (req: Request): string | undefined => {
+  const [authType, authToken] = (req.headers.authorization ?? '').split(' ');
+  return authType?.toLowerCase() === 'bearer' && authToken ? authToken : undefined;
+};
+
 export const createAuthenticateMiddleware = (
   opts: PgpmOptions
 ): RequestHandler => {
@@ -73,20 +82,19 @@ export const createAuthenticateMiddleware = (
 
     if (authFn && rlsModule.privateSchema.schemaName) {
       const { authorization = '' } = req.headers;
-      const [authType, authToken] = authorization.split(' ');
+      const [authType] = authorization.split(' ');
+      const bearerToken = getBearerToken(req);
       let token: any = {};
 
       log.info(
         `[auth] authorization header present=${!!authorization}, ` +
-          `authType=${authType ?? 'none'}, hasToken=${!!authToken}`
+          `authType=${authType ?? 'none'}, hasToken=${!!bearerToken}`
       );
 
       // Resolve the credential: prefer Bearer header, fall back to session cookie
       const cookieToken = parseCookieToken(req, SESSION_COOKIE_NAME);
-      const effectiveToken = (authType?.toLowerCase() === 'bearer' && authToken)
-        ? authToken
-        : cookieToken;
-      const tokenSource = (authType?.toLowerCase() === 'bearer' && authToken) ? 'bearer' : (cookieToken ? 'cookie' : 'none');
+      const effectiveToken = bearerToken ?? cookieToken;
+      const tokenSource = bearerToken ? 'bearer' : (cookieToken ? 'cookie' : 'none');
 
       if (effectiveToken) {
         log.info(`[auth] Processing ${tokenSource} authentication`);
