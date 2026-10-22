@@ -102,6 +102,41 @@ describe('ConcurrencyLimiter', () => {
     expect(lease.granted).toBe(true);
   });
 
+  it('drops a waiter whose caller gave up, and never hands it the slot', async () => {
+    const limiter = new ConcurrencyLimiter();
+    const held = await limiter.acquire('db', { limit: 1, queueWaitMs: 1_000 });
+
+    const gone = new AbortController();
+    const waiting = limiter.acquire('db', { limit: 1, queueWaitMs: 1_000, signal: gone.signal });
+    expect(limiter.queuedFor('db')).toBe(1);
+
+    gone.abort();
+    const refused = await waiting;
+    expect(refused.granted).toBe(false);
+    expect(refused.refusal).toBe('aborted');
+    expect(limiter.queuedFor('db')).toBe(0);
+
+    held.release();
+    expect(limiter.activeFor('db')).toBe(0);
+
+    const lease = await limiter.acquire('db', { limit: 1, queueWaitMs: 0 });
+    expect(lease.granted).toBe(true);
+  });
+
+  it('refuses at once when the caller had already given up', async () => {
+    const limiter = new ConcurrencyLimiter();
+    const held = await limiter.acquire('db', { limit: 1, queueWaitMs: 1_000 });
+
+    const gone = new AbortController();
+    gone.abort();
+    const refused = await limiter.acquire('db', { limit: 1, queueWaitMs: 1_000, signal: gone.signal });
+    expect(refused.granted).toBe(false);
+    expect(refused.refusal).toBe('aborted');
+    expect(limiter.queuedFor('db')).toBe(0);
+
+    held.release();
+  });
+
   it('counts each database separately', async () => {
     const limiter = new ConcurrencyLimiter();
     const a = await limiter.acquire('a', { limit: 1, queueWaitMs: 0 });

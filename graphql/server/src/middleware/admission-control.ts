@@ -124,14 +124,30 @@ export const createAdmissionControlMiddleware = (
     }
 
     // ─── Per-database concurrency ───────────────────────────────────────────
+    // A client that hangs up while queued must neither keep its place in the
+    // queue nor be handed the slot when its turn comes: nothing would ever
+    // release it. `close` is watched from before the wait, since a listener
+    // attached only after `acquire` resolves misses a hang-up during it.
+    const gone = new AbortController();
+    const onClose = () => gone.abort();
+    res.once('close', onClose);
+
     let lease: AdmissionLease;
     try {
       lease = await concurrency.acquire(databaseId, {
         limit: protection.maxConcurrentRequests,
-        queueWaitMs: protection.maxQueueWaitMs
+        queueWaitMs: protection.maxQueueWaitMs,
+        signal: gone.signal
       });
     } catch (e) {
+      res.off('close', onClose);
       next(e);
+      return;
+    }
+    res.off('close', onClose);
+
+    if (gone.signal.aborted) {
+      lease.release();
       return;
     }
 
