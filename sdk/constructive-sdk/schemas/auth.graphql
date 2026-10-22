@@ -5503,6 +5503,7 @@ input SetPasswordInput {
   clientMutationId: String
   currentPassword: String
   newPassword: String
+  signOutOtherSessions: Boolean
 }
 
 """The output of our `setPassword` mutation."""

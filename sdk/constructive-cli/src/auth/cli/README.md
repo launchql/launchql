@@ -1166,6 +1166,7 @@ setPassword
   | `--input.clientMutationId` | String |
   | `--input.currentPassword` | String |
   | `--input.newPassword` | String |
+  | `--input.signOutOtherSessions` | Boolean |
 
 ### `set-principal-entities`
 

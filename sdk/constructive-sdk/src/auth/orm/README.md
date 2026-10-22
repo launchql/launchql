@@ -1249,7 +1249,7 @@ setPassword
   | `input` | SetPasswordInput (required) |
 
 ```typescript
-const result = await db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<String>' } }).execute();
+const result = await db.mutation.setPassword({ input: { currentPassword: '<String>', newPassword: '<String>', signOutOtherSessions: '<Boolean>' } }).execute();
 ```
 
 ### `db.mutation.setPrincipalEntities`

@@ -1366,6 +1366,7 @@ export interface SetPasswordInput {
   clientMutationId?: string;
   currentPassword?: string;
   newPassword?: string;
+  signOutOtherSessions?: boolean;
 }
 export interface SetPrincipalEntitiesInput {
   clientMutationId?: string;
